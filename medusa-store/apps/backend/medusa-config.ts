@@ -1,0 +1,60 @@
+import { loadEnv, defineConfig } from "@medusajs/framework/utils"
+
+loadEnv(process.env.NODE_ENV || "development", process.cwd())
+
+module.exports = defineConfig({
+  projectConfig: {
+    databaseUrl: process.env.DATABASE_URL,
+    redisUrl: process.env.REDIS_URL,
+    http: {
+      storeCors: process.env.STORE_CORS!,
+      adminCors: process.env.ADMIN_CORS!,
+      authCors: process.env.AUTH_CORS!,
+      jwtSecret: process.env.JWT_SECRET,
+      cookieSecret: process.env.COOKIE_SECRET,
+    }
+  },
+  plugins: [
+    {
+      resolve: "@easypayment/medusa-payment-paypal",
+      options: {},
+    },
+  ],
+  modules: [
+    {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@easypayment/medusa-payment-paypal/providers/paypal",
+            id: "paypal",
+            options: {},
+            dependencies: ["paypal_onboarding"],
+          },
+          {
+            resolve: "@easypayment/medusa-payment-paypal/providers/paypal_card",
+            id: "paypal_card",
+            options: {},
+            dependencies: ["paypal_onboarding"],
+          },
+          // Mollie validates credentials during startup; enable it when configured.
+          ...(process.env.MOLLIE_API_KEY
+            ? [
+                {
+                  resolve: "@variablevic/mollie-payments-medusa/providers/mollie",
+                  id: "mollie",
+                  options: {
+                    apiKey: process.env.MOLLIE_API_KEY,
+                    redirectUrl: process.env.MOLLIE_REDIRECT_URL,
+                    medusaUrl: process.env.MEDUSA_BACKEND_URL,
+                    autoCapture: true,
+                    debug: false,
+                  },
+                },
+              ]
+            : []),
+        ],
+      },
+    },
+  ],
+})

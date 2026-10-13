@@ -1,0 +1,7 @@
+{
+  "battery_options": ["85%", "100%"],
+  "battery_applies_to": "all 30 imported iPhone models",
+  "condition_options": ["S", "A"],
+  "condition_applies_to": "all 30 imported iPhone models",
+  "source": "User confirmations on 2026-10-13; battery and condition options are model availability, not verified per-SKU specifications"
+}

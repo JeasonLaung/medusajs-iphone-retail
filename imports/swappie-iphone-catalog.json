@@ -1,0 +1,1359 @@
+{
+  "source_url": "https://swappie.com/en/iphone/",
+  "source_file_sha256": "bfcdb2b3e4e2067246fdb1fa0e0cac865c9c18a5fbba6d8364b32d2f3a0fa941",
+  "extracted_at": "2026-10-13T07:02:11.046931+00:00",
+  "scope": "Category cards: one verified SKU and starting price per model",
+  "release_year_reference": "https://support.apple.com/en-us/108044",
+  "products": [
+    {
+      "model": "iPhone 14",
+      "slug": "iphone-14",
+      "sku": "SMAP399VD",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512
+      ],
+      "available_colors": [
+        "Blue",
+        "Midnight",
+        "Purple",
+        "Red",
+        "Starlight",
+        "Yellow"
+      ],
+      "card_colors": [
+        {
+          "name": "Midnight",
+          "hex": "#343b43"
+        },
+        {
+          "name": "Purple",
+          "hex": "#e5ddea"
+        },
+        {
+          "name": "Starlight",
+          "hex": "#faf7f2"
+        },
+        {
+          "name": "Red",
+          "hex": "#fb1230"
+        },
+        {
+          "name": "Blue",
+          "hex": "#a9bacc"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#FDF5A2"
+        }
+      ],
+      "price_eur": 319.0,
+      "currency": "EUR",
+      "source_release_year_code": 31,
+      "release_year": 2022,
+      "source_url": "https://swappie.com/en/model/iphone-14/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-14-midnight.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-14-midnight.png",
+      "image_sha256": "9b0b006c165faed9dccbf3f2d24fd3ff33f8d8a0d0349e84d8e1085323d21247"
+    },
+    {
+      "model": "iPhone 15 Pro",
+      "slug": "iphone-15-pro",
+      "sku": "SMAP509MD",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512,
+        1024
+      ],
+      "available_colors": [
+        "Black Titanium",
+        "Blue Titanium",
+        "Natural Titanium",
+        "White Titanium"
+      ],
+      "card_colors": [
+        {
+          "name": "Black Titanium",
+          "hex": "#1e1f20"
+        },
+        {
+          "name": "White Titanium",
+          "hex": "#c9c8c3"
+        },
+        {
+          "name": "Blue Titanium",
+          "hex": "#1a202a"
+        },
+        {
+          "name": "Natural Titanium",
+          "hex": "#8f8a81"
+        }
+      ],
+      "price_eur": 569.0,
+      "currency": "EUR",
+      "source_release_year_code": 35,
+      "release_year": 2023,
+      "source_url": "https://swappie.com/en/model/iphone-15-pro/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-15-pro-natural-titanium.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-15-pro-natural-titanium.png",
+      "image_sha256": "2babd737448fc42f48578aaf599dfb0e8eb90930ebf3fbd0d612061b4de799e3"
+    },
+    {
+      "model": "iPhone 15",
+      "slug": "iphone-15",
+      "sku": "SMAP467MD",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256
+      ],
+      "available_colors": [
+        "Black",
+        "Blue",
+        "Green",
+        "Pink",
+        "Yellow"
+      ],
+      "card_colors": [
+        {
+          "name": "Pink",
+          "hex": "#e3c8ca"
+        },
+        {
+          "name": "Green",
+          "hex": "#cad4c5"
+        },
+        {
+          "name": "Black",
+          "hex": "#35393b"
+        },
+        {
+          "name": "Blue",
+          "hex": "#ced5d9"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#e5e0c1"
+        }
+      ],
+      "price_eur": 445.0,
+      "currency": "EUR",
+      "source_release_year_code": 33,
+      "release_year": 2023,
+      "source_url": "https://swappie.com/en/model/iphone-15/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-15-black.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-15-black.png",
+      "image_sha256": "e0ef6db140afd656d31af8d722e0e75e7f4a6b3e4b816e8edd52aded23bb0d67"
+    },
+    {
+      "model": "iPhone 13",
+      "slug": "iphone-13",
+      "sku": "SMAP335MD",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512
+      ],
+      "available_colors": [
+        "Blue",
+        "Green",
+        "Midnight",
+        "Pink",
+        "Red",
+        "Starlight"
+      ],
+      "card_colors": [
+        {
+          "name": "Pink",
+          "hex": "#FAE0D8"
+        },
+        {
+          "name": "Blue",
+          "hex": "#215E7C"
+        },
+        {
+          "name": "Midnight",
+          "hex": "#171E27"
+        },
+        {
+          "name": "Starlight",
+          "hex": "#F9F3EE"
+        },
+        {
+          "name": "Red",
+          "hex": "#A50011"
+        },
+        {
+          "name": "Green",
+          "hex": "#364935"
+        }
+      ],
+      "price_eur": 265.0,
+      "currency": "EUR",
+      "source_release_year_code": 26,
+      "release_year": 2021,
+      "source_url": "https://swappie.com/en/model/iphone-13/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-13-midnight.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-13-midnight.png",
+      "image_sha256": "91d18f8cd46ead9634136ed3dcebf0ec276e13468fb2a75d17b9d1902f844692"
+    },
+    {
+      "model": "iPhone 14 Pro",
+      "slug": "iphone-14-pro",
+      "sku": "SMAP437MD-PB",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512,
+        1024
+      ],
+      "available_colors": [
+        "Deep Purple",
+        "Gold",
+        "Silver",
+        "Space Black"
+      ],
+      "card_colors": [
+        {
+          "name": "Space Black",
+          "hex": "#4b4845"
+        },
+        {
+          "name": "Silver",
+          "hex": "#e2e4e1"
+        },
+        {
+          "name": "Gold",
+          "hex": "#d4c9b1"
+        },
+        {
+          "name": "Deep Purple",
+          "hex": "#5e5566"
+        }
+      ],
+      "price_eur": 459.0,
+      "currency": "EUR",
+      "source_release_year_code": 29,
+      "release_year": 2022,
+      "source_url": "https://swappie.com/en/model/iphone-14-pro/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-14-pro-gold.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-14-pro-gold.png",
+      "image_sha256": "87ce7eb6521d41357133153f9d50139d740fb2660f09fc3d767573df1028b3c6"
+    },
+    {
+      "model": "iPhone 15 Pro Max",
+      "slug": "iphone-15-pro-max",
+      "sku": "SMAP522MD",
+      "selected_storage_gb": 256,
+      "available_storages_gb": [
+        256,
+        512,
+        1024
+      ],
+      "available_colors": [
+        "Black Titanium",
+        "Blue Titanium",
+        "Natural Titanium",
+        "White Titanium"
+      ],
+      "card_colors": [
+        {
+          "name": "Black Titanium",
+          "hex": "#1e1f20"
+        },
+        {
+          "name": "White Titanium",
+          "hex": "#c9c8c3"
+        },
+        {
+          "name": "Blue Titanium",
+          "hex": "#1a202a"
+        },
+        {
+          "name": "Natural Titanium",
+          "hex": "#8f8a81"
+        }
+      ],
+      "price_eur": 629.0,
+      "currency": "EUR",
+      "source_release_year_code": 36,
+      "release_year": 2023,
+      "source_url": "https://swappie.com/en/model/iphone-15-pro-max/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-15-pro-max-natural-titanium.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-15-pro-max-natural-titanium.png",
+      "image_sha256": "2babd737448fc42f48578aaf599dfb0e8eb90930ebf3fbd0d612061b4de799e3"
+    },
+    {
+      "model": "iPhone 13 Pro",
+      "slug": "iphone-13-pro",
+      "sku": "SMAP348MD-PB",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512
+      ],
+      "available_colors": [
+        "Alpine Green",
+        "Gold",
+        "Graphite",
+        "Sierra Blue",
+        "Silver"
+      ],
+      "card_colors": [
+        {
+          "name": "Sierra Blue",
+          "hex": "#9BB5CE"
+        },
+        {
+          "name": "Silver",
+          "hex": "#F5F5F0"
+        },
+        {
+          "name": "Gold",
+          "hex": "#F9E5C9"
+        },
+        {
+          "name": "Graphite",
+          "hex": "#5C5B57"
+        },
+        {
+          "name": "Alpine Green",
+          "hex": "#505F4E"
+        }
+      ],
+      "price_eur": 355.0,
+      "currency": "EUR",
+      "source_release_year_code": 27,
+      "release_year": 2021,
+      "source_url": "https://swappie.com/en/model/iphone-13-pro/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-13-pro-gold.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-13-pro-gold.png",
+      "image_sha256": "b01aadf4a0ac7dfbbbe31a281361995ca545fb89763c39261230c2b75ca1fbad"
+    },
+    {
+      "model": "iPhone 13 mini",
+      "slug": "iphone-13-mini",
+      "sku": "SMAP376MD",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512
+      ],
+      "available_colors": [
+        "Blue",
+        "Green",
+        "Midnight",
+        "Pink",
+        "Red",
+        "Starlight"
+      ],
+      "card_colors": [
+        {
+          "name": "Pink",
+          "hex": "#FAE0D8"
+        },
+        {
+          "name": "Blue",
+          "hex": "#215E7C"
+        },
+        {
+          "name": "Midnight",
+          "hex": "#171E27"
+        },
+        {
+          "name": "Starlight",
+          "hex": "#F9F3EE"
+        },
+        {
+          "name": "Red",
+          "hex": "#A50011"
+        },
+        {
+          "name": "Green",
+          "hex": "#364935"
+        }
+      ],
+      "price_eur": 255.0,
+      "currency": "EUR",
+      "source_release_year_code": 25,
+      "release_year": 2021,
+      "source_url": "https://swappie.com/en/model/iphone-13-mini/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-13-mini-green.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-13-mini-green.png",
+      "image_sha256": "be652be590ef31b6692d02c8d44296ae6785aae9a91f610bcbc35a1a47e2eee6"
+    },
+    {
+      "model": "iPhone 12",
+      "slug": "iphone-12",
+      "sku": "SMAP254MC",
+      "selected_storage_gb": 64,
+      "available_storages_gb": [
+        64,
+        128,
+        256
+      ],
+      "available_colors": [
+        "Black",
+        "Blue",
+        "Green",
+        "Purple",
+        "Red",
+        "White"
+      ],
+      "card_colors": [
+        {
+          "name": "Black",
+          "hex": "#201D24"
+        },
+        {
+          "name": "White",
+          "hex": "#FBF7F4"
+        },
+        {
+          "name": "Red",
+          "hex": "#E23636"
+        },
+        {
+          "name": "Green",
+          "hex": "#E1F8DC"
+        },
+        {
+          "name": "Blue",
+          "hex": "#043458"
+        },
+        {
+          "name": "Purple",
+          "hex": "#B8AFE6"
+        }
+      ],
+      "price_eur": 205.0,
+      "currency": "EUR",
+      "source_release_year_code": 22,
+      "release_year": 2020,
+      "source_url": "https://swappie.com/en/model/iphone-12/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-12-black.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-12-black.png",
+      "image_sha256": "3d43a478e79c7608539c70b467da842475abf57b96910f2b013f46b1c6c82e3b"
+    },
+    {
+      "model": "iPhone 16 Pro",
+      "slug": "iphone-16-pro",
+      "sku": "SMAP711MD",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512,
+        1024
+      ],
+      "available_colors": [
+        "Black Titanium",
+        "Desert Titanium",
+        "Natural Titanium",
+        "White Titanium"
+      ],
+      "card_colors": [
+        {
+          "name": "Black Titanium",
+          "hex": "#1e1f20"
+        },
+        {
+          "name": "White Titanium",
+          "hex": "#c9c8c3"
+        },
+        {
+          "name": "Natural Titanium",
+          "hex": "#8f8a81"
+        },
+        {
+          "name": "Desert Titanium",
+          "hex": "#d6ae73"
+        }
+      ],
+      "price_eur": 669.0,
+      "currency": "EUR",
+      "source_release_year_code": 39,
+      "release_year": 2024,
+      "source_url": "https://swappie.com/en/model/iphone-16-pro/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-16-pro-black-titanium.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-16-pro-black-titanium.png",
+      "image_sha256": "4101998f988a733607b5de92ed0ea5c68fb1be835ca42ea4a42e06d075846d5e"
+    },
+    {
+      "model": "iPhone 14 Pro Max",
+      "slug": "iphone-14-pro-max",
+      "sku": "SMAP457MD",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512,
+        1024
+      ],
+      "available_colors": [
+        "Deep Purple",
+        "Gold",
+        "Silver",
+        "Space Black"
+      ],
+      "card_colors": [
+        {
+          "name": "Space Black",
+          "hex": "#4b4845"
+        },
+        {
+          "name": "Silver",
+          "hex": "#e2e4e1"
+        },
+        {
+          "name": "Gold",
+          "hex": "#d4c9b1"
+        },
+        {
+          "name": "Deep Purple",
+          "hex": "#5e5566"
+        }
+      ],
+      "price_eur": 525.0,
+      "currency": "EUR",
+      "source_release_year_code": 30,
+      "release_year": 2022,
+      "source_url": "https://swappie.com/en/model/iphone-14-pro-max/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-14-pro-max-deep-purple.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-14-pro-max-deep-purple.png",
+      "image_sha256": "6f4605db736a17b7b2e4c14eeada40eb06d04f02ad59e97d00a20e86e5c743d0"
+    },
+    {
+      "model": "iPhone 16 Pro Max",
+      "slug": "iphone-16-pro-max",
+      "sku": "SMAP775MD",
+      "selected_storage_gb": 256,
+      "available_storages_gb": [
+        256,
+        512,
+        1024
+      ],
+      "available_colors": [
+        "Black Titanium",
+        "Desert Titanium",
+        "Natural Titanium",
+        "White Titanium"
+      ],
+      "card_colors": [
+        {
+          "name": "Black Titanium",
+          "hex": "#1e1f20"
+        },
+        {
+          "name": "White Titanium",
+          "hex": "#c9c8c3"
+        },
+        {
+          "name": "Natural Titanium",
+          "hex": "#8f8a81"
+        },
+        {
+          "name": "Desert Titanium",
+          "hex": "#d6ae73"
+        }
+      ],
+      "price_eur": 769.0,
+      "currency": "EUR",
+      "source_release_year_code": 40,
+      "release_year": 2024,
+      "source_url": "https://swappie.com/en/model/iphone-16-pro-max/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-16-pro-max-desert-titanium.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-16-pro-max-desert-titanium.png",
+      "image_sha256": "817c0f5a279d7642fad116b99d43cc73a3924c4e49d5184aa30fc98fac449ac4"
+    },
+    {
+      "model": "iPhone 12 mini",
+      "slug": "iphone-12-mini",
+      "sku": "SMAP275VC-PB",
+      "selected_storage_gb": 64,
+      "available_storages_gb": [
+        64,
+        128,
+        256
+      ],
+      "available_colors": [
+        "Black",
+        "Blue",
+        "Green",
+        "Purple",
+        "Red",
+        "White"
+      ],
+      "card_colors": [
+        {
+          "name": "Black",
+          "hex": "#201D24"
+        },
+        {
+          "name": "White",
+          "hex": "#FBF7F4"
+        },
+        {
+          "name": "Red",
+          "hex": "#E23636"
+        },
+        {
+          "name": "Green",
+          "hex": "#E1F8DC"
+        },
+        {
+          "name": "Blue",
+          "hex": "#043458"
+        },
+        {
+          "name": "Purple",
+          "hex": "#B8AFE6"
+        }
+      ],
+      "price_eur": 215.0,
+      "currency": "EUR",
+      "source_release_year_code": 21,
+      "release_year": 2020,
+      "source_url": "https://swappie.com/en/model/iphone-12-mini/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-12-mini-red.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-12-mini-red.png",
+      "image_sha256": "0685ed9c4a276dc3cb3315a5ba725d87cbef56b8a7951105fec31b6afefc35a7"
+    },
+    {
+      "model": "iPhone 13 Pro Max",
+      "slug": "iphone-13-pro-max",
+      "sku": "SMAP372MD-PB",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512,
+        1024
+      ],
+      "available_colors": [
+        "Alpine Green",
+        "Gold",
+        "Graphite",
+        "Sierra Blue",
+        "Silver"
+      ],
+      "card_colors": [
+        {
+          "name": "Sierra Blue",
+          "hex": "#9BB5CE"
+        },
+        {
+          "name": "Silver",
+          "hex": "#F5F5F0"
+        },
+        {
+          "name": "Gold",
+          "hex": "#F9E5C9"
+        },
+        {
+          "name": "Graphite",
+          "hex": "#5C5B57"
+        },
+        {
+          "name": "Alpine Green",
+          "hex": "#505F4E"
+        }
+      ],
+      "price_eur": 405.0,
+      "currency": "EUR",
+      "source_release_year_code": 27,
+      "release_year": 2021,
+      "source_url": "https://swappie.com/en/model/iphone-13-pro-max/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-13-pro-max-sierra-blue.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-13-pro-max-sierra-blue.png",
+      "image_sha256": "f93bc4a5161447776929631e820d4b3a07d4197c8da0f912271fdeace581baea"
+    },
+    {
+      "model": "iPhone 11",
+      "slug": "iphone-11",
+      "sku": "SMAP207MB-PB",
+      "selected_storage_gb": 64,
+      "available_storages_gb": [
+        64,
+        128,
+        256
+      ],
+      "available_colors": [
+        "Black",
+        "Green",
+        "Purple",
+        "White"
+      ],
+      "card_colors": [
+        {
+          "name": "Black",
+          "hex": "#1f2020"
+        },
+        {
+          "name": "White",
+          "hex": "#f9f6ef"
+        },
+        {
+          "name": "Red",
+          "hex": "#ba0c2e"
+        },
+        {
+          "name": "Purple",
+          "hex": "#d1cdda"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#ffe681"
+        },
+        {
+          "name": "Green",
+          "hex": "#aee1cd"
+        }
+      ],
+      "price_eur": 259.0,
+      "currency": "EUR",
+      "source_release_year_code": 17,
+      "release_year": 2019,
+      "source_url": "https://swappie.com/en/model/iphone-11/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-11-purple.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-11-purple.png",
+      "image_sha256": "5dad78829e1c55015f43e2cc849faf7b85062bcc5e0b00ec3489cfcc2d78d577"
+    },
+    {
+      "model": "iPhone 15 Plus",
+      "slug": "iphone-15-plus",
+      "sku": "SMAP485MD",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512
+      ],
+      "available_colors": [
+        "Black",
+        "Blue",
+        "Green",
+        "Pink",
+        "Yellow"
+      ],
+      "card_colors": [
+        {
+          "name": "Pink",
+          "hex": "#e3c8ca"
+        },
+        {
+          "name": "Green",
+          "hex": "#cad4c5"
+        },
+        {
+          "name": "Black",
+          "hex": "#35393b"
+        },
+        {
+          "name": "Blue",
+          "hex": "#ced5d9"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#e5e0c1"
+        }
+      ],
+      "price_eur": 475.0,
+      "currency": "EUR",
+      "source_release_year_code": 34,
+      "release_year": 2023,
+      "source_url": "https://swappie.com/en/model/iphone-15-plus/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-15-plus-blue.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-15-plus-blue.png",
+      "image_sha256": "f23a0b7e2c3cd6103f6d1c2f338cc477ae8b8b27c9a97981d41de3514a363c4a"
+    },
+    {
+      "model": "iPhone 16",
+      "slug": "iphone-16",
+      "sku": "SMAP675MD",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512
+      ],
+      "available_colors": [
+        "Black",
+        "Pink",
+        "Teal",
+        "Ultramarine",
+        "White"
+      ],
+      "card_colors": [
+        {
+          "name": "Ultramarine",
+          "hex": "#9aafd6"
+        },
+        {
+          "name": "Teal",
+          "hex": "#b0d4d2"
+        },
+        {
+          "name": "Pink",
+          "hex": "#f2adda"
+        },
+        {
+          "name": "White",
+          "hex": "#fafafa"
+        },
+        {
+          "name": "Black",
+          "hex": "#3c4042"
+        }
+      ],
+      "price_eur": 619.0,
+      "currency": "EUR",
+      "source_release_year_code": 37,
+      "release_year": 2024,
+      "source_url": "https://swappie.com/en/model/iphone-16/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-16-black.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-16-black.png",
+      "image_sha256": "3c085999ee1cb319acd25801b25a1706e1831272856150795743db498ae53843"
+    },
+    {
+      "model": "iPhone 12 Pro",
+      "slug": "iphone-12-pro",
+      "sku": "SMAP288MD-PB",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512
+      ],
+      "available_colors": [
+        "Gold",
+        "Graphite",
+        "Pacific Blue",
+        "Silver"
+      ],
+      "card_colors": [
+        {
+          "name": "Silver",
+          "hex": "#F1F2ED"
+        },
+        {
+          "name": "Gold",
+          "hex": "#FEEDD8"
+        },
+        {
+          "name": "Pacific Blue",
+          "hex": "#2E4755"
+        },
+        {
+          "name": "Graphite",
+          "hex": "#4C4A46"
+        }
+      ],
+      "price_eur": 255.0,
+      "currency": "EUR",
+      "source_release_year_code": 23,
+      "release_year": 2020,
+      "source_url": "https://swappie.com/en/model/iphone-12-pro/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-12-pro-graphite.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-12-pro-graphite.png",
+      "image_sha256": "c2c4df6ad20c72cdb49c55fe9fead4f4527806f33a23de10949557a8d008f5ab"
+    },
+    {
+      "model": "iPhone SE 2022",
+      "slug": "iphone-se-2022",
+      "sku": "SMAP396MB",
+      "selected_storage_gb": 64,
+      "available_storages_gb": [
+        64,
+        128
+      ],
+      "available_colors": [
+        "Midnight",
+        "Red",
+        "Starlight"
+      ],
+      "card_colors": [
+        {
+          "name": "Midnight",
+          "hex": "#232a31"
+        },
+        {
+          "name": "Starlight",
+          "hex": "#faf6f2"
+        },
+        {
+          "name": "Red",
+          "hex": "#bf0013"
+        }
+      ],
+      "price_eur": 175.0,
+      "currency": "EUR",
+      "source_release_year_code": 28,
+      "release_year": 2022,
+      "source_url": "https://swappie.com/en/model/iphone-se-2022/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-se-2022-midnight.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-se-2022-midnight.png",
+      "image_sha256": "77d4610b63681fb7e34807b44c042153797978f386163f7c1b50d7678eaa558e"
+    },
+    {
+      "model": "iPhone 14 Plus",
+      "slug": "iphone-14-plus",
+      "sku": "SMAP414MD-PB",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512
+      ],
+      "available_colors": [
+        "Blue",
+        "Midnight",
+        "Purple",
+        "Red",
+        "Starlight",
+        "Yellow"
+      ],
+      "card_colors": [
+        {
+          "name": "Midnight",
+          "hex": "#343b43"
+        },
+        {
+          "name": "Purple",
+          "hex": "#e5ddea"
+        },
+        {
+          "name": "Starlight",
+          "hex": "#faf7f2"
+        },
+        {
+          "name": "Red",
+          "hex": "#fb1230"
+        },
+        {
+          "name": "Blue",
+          "hex": "#a9bacc"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#FDF5A2"
+        }
+      ],
+      "price_eur": 399.0,
+      "currency": "EUR",
+      "source_release_year_code": 32,
+      "release_year": 2022,
+      "source_url": "https://swappie.com/en/model/iphone-14-plus/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-14-plus-midnight.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-14-plus-midnight.png",
+      "image_sha256": "9b0b006c165faed9dccbf3f2d24fd3ff33f8d8a0d0349e84d8e1085323d21247"
+    },
+    {
+      "model": "iPhone 12 Pro Max",
+      "slug": "iphone-12-pro-max",
+      "sku": "SMAP299MD-PB",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512
+      ],
+      "available_colors": [
+        "Gold",
+        "Graphite",
+        "Pacific Blue",
+        "Silver"
+      ],
+      "card_colors": [
+        {
+          "name": "Silver",
+          "hex": "#F1F2ED"
+        },
+        {
+          "name": "Gold",
+          "hex": "#FEEDD8"
+        },
+        {
+          "name": "Pacific Blue",
+          "hex": "#2E4755"
+        },
+        {
+          "name": "Graphite",
+          "hex": "#4C4A46"
+        }
+      ],
+      "price_eur": 315.0,
+      "currency": "EUR",
+      "source_release_year_code": 24,
+      "release_year": 2020,
+      "source_url": "https://swappie.com/en/model/iphone-12-pro-max/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-12-pro-max-graphite.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-12-pro-max-graphite.png",
+      "image_sha256": "c2c4df6ad20c72cdb49c55fe9fead4f4527806f33a23de10949557a8d008f5ab"
+    },
+    {
+      "model": "iPhone 11 Pro",
+      "slug": "iphone-11-pro",
+      "sku": "SMAP231MB-PB",
+      "selected_storage_gb": 512,
+      "available_storages_gb": [
+        512
+      ],
+      "available_colors": [
+        "Gold"
+      ],
+      "card_colors": [
+        {
+          "name": "Space Gray",
+          "hex": "#535150"
+        },
+        {
+          "name": "Silver",
+          "hex": "#ebebe3"
+        },
+        {
+          "name": "Gold",
+          "hex": "#fad7bd"
+        },
+        {
+          "name": "Midnight Green",
+          "hex": "#4e5851"
+        }
+      ],
+      "price_eur": 349.0,
+      "currency": "EUR",
+      "source_release_year_code": 18,
+      "release_year": 2019,
+      "source_url": "https://swappie.com/en/model/iphone-11-pro/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-11-pro-gold.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-11-pro-gold.png",
+      "image_sha256": "fa7ce751d6dccefb8ebaba2ae6a5c85a15a285986c7a131bd3581eb63170894b"
+    },
+    {
+      "model": "iPhone 16 Plus",
+      "slug": "iphone-16-plus",
+      "sku": "SMAP681MD",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512
+      ],
+      "available_colors": [
+        "Black",
+        "Pink",
+        "Teal",
+        "Ultramarine",
+        "White"
+      ],
+      "card_colors": [
+        {
+          "name": "Ultramarine",
+          "hex": "#9aafd6"
+        },
+        {
+          "name": "Teal",
+          "hex": "#b0d4d2"
+        },
+        {
+          "name": "Pink",
+          "hex": "#f2adda"
+        },
+        {
+          "name": "White",
+          "hex": "#fafafa"
+        },
+        {
+          "name": "Black",
+          "hex": "#3c4042"
+        }
+      ],
+      "price_eur": 649.0,
+      "currency": "EUR",
+      "source_release_year_code": 38,
+      "release_year": 2024,
+      "source_url": "https://swappie.com/en/model/iphone-16-plus/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-16-plus-ultramarine.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-16-plus-ultramarine.png",
+      "image_sha256": "4e5c491fbd894a4cdd3bbc9882a91f693cd8aa9211b364187a25e321b3c39e7a"
+    },
+    {
+      "model": "iPhone 17 Pro",
+      "slug": "iphone-17-pro",
+      "sku": "SMAP838MC",
+      "selected_storage_gb": 256,
+      "available_storages_gb": [
+        256,
+        512,
+        1024
+      ],
+      "available_colors": [
+        "Cosmic Orange",
+        "Deep Blue",
+        "Silver"
+      ],
+      "card_colors": [
+        {
+          "name": "Silver",
+          "hex": "#F5F5F5"
+        },
+        {
+          "name": "Cosmic Orange",
+          "hex": "#F77E2D"
+        },
+        {
+          "name": "Deep Blue",
+          "hex": "#32374A"
+        }
+      ],
+      "price_eur": 1039.0,
+      "currency": "EUR",
+      "source_release_year_code": 42,
+      "release_year": 2025,
+      "source_url": "https://swappie.com/en/model/iphone-17-pro/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-17-pro-deep-blue.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-17-pro-deep-blue.png",
+      "image_sha256": "ceaf2ab4fcb38f7803463d858fbe703519d9a306b592e20acd77d9caf7c3273c"
+    },
+    {
+      "model": "iPhone 16e",
+      "slug": "iphone-16e",
+      "sku": "SMAP787MD",
+      "selected_storage_gb": 128,
+      "available_storages_gb": [
+        128,
+        256,
+        512
+      ],
+      "available_colors": [
+        "Black",
+        "White"
+      ],
+      "card_colors": [
+        {
+          "name": "White",
+          "hex": "#fafafa"
+        },
+        {
+          "name": "Black",
+          "hex": "#3c4042"
+        }
+      ],
+      "price_eur": 519.0,
+      "currency": "EUR",
+      "source_release_year_code": 41,
+      "release_year": 2025,
+      "source_url": "https://swappie.com/en/model/iphone-16e/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-16e-black.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-16e-black.png",
+      "image_sha256": "70eecf5cc6e65fc6b81af438cb92d3705873d49520df7086fa87aa5c01da1da7"
+    },
+    {
+      "model": "iPhone 17 Pro Max",
+      "slug": "iphone-17-pro-max",
+      "sku": "SMAP860MC",
+      "selected_storage_gb": 256,
+      "available_storages_gb": [
+        256,
+        512,
+        1024,
+        2048
+      ],
+      "available_colors": [
+        "Cosmic Orange",
+        "Deep Blue",
+        "Silver"
+      ],
+      "card_colors": [
+        {
+          "name": "Silver",
+          "hex": "#F5F5F5"
+        },
+        {
+          "name": "Cosmic Orange",
+          "hex": "#F77E2D"
+        },
+        {
+          "name": "Deep Blue",
+          "hex": "#32374A"
+        }
+      ],
+      "price_eur": 1119.0,
+      "currency": "EUR",
+      "source_release_year_code": 42,
+      "release_year": 2025,
+      "source_url": "https://swappie.com/en/model/iphone-17-pro-max/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-17-pro-max-deep-blue.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-17-pro-max-deep-blue.png",
+      "image_sha256": "ceaf2ab4fcb38f7803463d858fbe703519d9a306b592e20acd77d9caf7c3273c"
+    },
+    {
+      "model": "iPhone SE 2020",
+      "slug": "iphone-se-2020",
+      "sku": "SMAP245MC-PB",
+      "selected_storage_gb": 64,
+      "available_storages_gb": [
+        64
+      ],
+      "available_colors": [
+        "Black"
+      ],
+      "card_colors": [
+        {
+          "name": "Black",
+          "hex": "#262529"
+        },
+        {
+          "name": "White",
+          "hex": "#f3f3f3"
+        },
+        {
+          "name": "Red",
+          "hex": "#b41325"
+        }
+      ],
+      "price_eur": 155.0,
+      "currency": "EUR",
+      "source_release_year_code": 20,
+      "release_year": 2020,
+      "source_url": "https://swappie.com/en/model/iphone-se-2020/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-se-2020-black.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-se-2020-black.png",
+      "image_sha256": "977243575c8b6e3c7dca1c0bb169f944b4f39a7fd7f1267a07e18f1724971259"
+    },
+    {
+      "model": "iPhone Air",
+      "slug": "iphone-air",
+      "sku": "SMAP813MC",
+      "selected_storage_gb": 256,
+      "available_storages_gb": [
+        256,
+        512,
+        1024
+      ],
+      "available_colors": [
+        "Cloud White",
+        "Light Gold",
+        "Sky Blue",
+        "Space Black"
+      ],
+      "card_colors": [
+        {
+          "name": "Space Black",
+          "hex": "#000000"
+        },
+        {
+          "name": "Cloud White",
+          "hex": "#FCFCFC"
+        },
+        {
+          "name": "Light Gold",
+          "hex": "#FFFCF5"
+        },
+        {
+          "name": "Sky Blue",
+          "hex": "#F0F9FF"
+        }
+      ],
+      "price_eur": 739.0,
+      "currency": "EUR",
+      "source_release_year_code": 42,
+      "release_year": 2025,
+      "source_url": "https://swappie.com/en/model/iphone-air/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-air-space-black.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-air-space-black.png",
+      "image_sha256": "8fb3fea31aa61033003b6266735abcdd3fde81f4983b0e5b24c821c21e555722"
+    },
+    {
+      "model": "iPhone 17",
+      "slug": "iphone-17",
+      "sku": "SMAP794MC",
+      "selected_storage_gb": 256,
+      "available_storages_gb": [
+        256,
+        512
+      ],
+      "available_colors": [
+        "Black",
+        "Lavender",
+        "Mist Blue",
+        "Sage",
+        "White"
+      ],
+      "card_colors": [
+        {
+          "name": "Black",
+          "hex": "#353839"
+        },
+        {
+          "name": "White",
+          "hex": "#F5F5F5"
+        },
+        {
+          "name": "Mist Blue",
+          "hex": "#96AED1"
+        },
+        {
+          "name": "Sage",
+          "hex": "#A9B689"
+        },
+        {
+          "name": "Lavender",
+          "hex": "#DFCEEA"
+        }
+      ],
+      "price_eur": 889.0,
+      "currency": "EUR",
+      "source_release_year_code": 42,
+      "release_year": 2025,
+      "source_url": "https://swappie.com/en/model/iphone-17/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-17-black.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-17-black.png",
+      "image_sha256": "ed45bd7a7f25250a6f6a0b5ae567b329768be21ce0fb46405ae223abae3a75fb"
+    },
+    {
+      "model": "iPhone 17e",
+      "slug": "iphone-17e",
+      "sku": "SMAP876MA",
+      "selected_storage_gb": 256,
+      "available_storages_gb": [
+        256
+      ],
+      "available_colors": [
+        "Black",
+        "Soft Pink",
+        "White"
+      ],
+      "card_colors": [
+        {
+          "name": "Black",
+          "hex": "#45494B"
+        },
+        {
+          "name": "White",
+          "hex": "#FAFAFA"
+        },
+        {
+          "name": "Soft Pink",
+          "hex": "#FCE7E6"
+        }
+      ],
+      "price_eur": 749.0,
+      "currency": "EUR",
+      "source_release_year_code": 43,
+      "release_year": 2026,
+      "source_url": "https://swappie.com/en/model/iphone-17e/",
+      "source_image_url": "https://assets.swappie.com/cdn-cgi/image/width=240,height=240,fit=contain,format=auto/swappie-iphone-17e-soft-pink.png?v=ecc8a403",
+      "local_image_url": "http://127.0.0.1:8000/swappie/swappie-iphone-17e-soft-pink.png",
+      "image_sha256": "0e7a9d3e3831d0ef5fd2c442dc5af039639d8e495dbdb04fb063063e068ee726"
+    }
+  ]
+}
