@@ -1,11 +1,16 @@
 "use client"
 
-import { isManual, isStripeLike } from "@lib/constants"
-import { placeOrder } from "@lib/data/cart"
+import { isManual, isMollie, isPaypal, isStripeLike } from "@lib/constants"
+import { initiatePaymentSession, placeOrder } from "@lib/data/cart"
+import {
+  getActivePaymentSession,
+  getMollieCheckoutUrl,
+} from "@lib/util/payment-session"
+import { MedusaNextPayPalAdapter } from "@easypayment/medusa-paypal-ui"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@modules/common/components/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
-import { useParams } from "next/navigation"
+import { useParams, useSearchParams } from "next/navigation"
 import React, { useState } from "react"
 import ErrorMessage from "../error-message"
 
@@ -25,9 +30,13 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     !cart.email ||
     (cart.shipping_methods?.length ?? 0) < 1
 
-  const paymentSession = cart.payment_collection?.payment_sessions?.[0]
+  const paymentSession = getActivePaymentSession(cart)
 
   switch (true) {
+    case isPaypal(paymentSession?.provider_id):
+      return <PayPalPaymentButton cart={cart} notReady={notReady} />
+    case isMollie(paymentSession?.provider_id):
+      return <MolliePaymentButton cart={cart} notReady={notReady} />
     case isStripeLike(paymentSession?.provider_id):
       return (
         <StripePaymentButton
@@ -43,6 +52,109 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     default:
       return <Button disabled>Select a payment method</Button>
   }
+}
+
+const PayPalPaymentButton = ({
+  cart,
+  notReady,
+}: {
+  cart: HttpTypes.StoreCart
+  notReady: boolean
+}) => {
+  const [error, setError] = useState<string | null>(null)
+  if (notReady) return <Button disabled>Complete your delivery details</Button>
+  return (
+    <div className="max-w-[420px]">
+      <MedusaNextPayPalAdapter
+        cartId={cart.id}
+        currencyCode={cart.currency_code}
+        selectedProviderId={getActivePaymentSession(cart)?.provider_id}
+        baseUrl={process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL!}
+        publishableApiKey={process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY}
+        credentials="omit"
+        onSuccess={async () => {
+          await placeOrder(cart.id)
+        }}
+        onError={setError}
+      />
+      <ErrorMessage error={error} data-testid="paypal-payment-error-message" />
+    </div>
+  )
+}
+
+const MolliePaymentButton = ({
+  cart,
+  notReady,
+}: {
+  cart: HttpTypes.StoreCart
+  notReady: boolean
+}) => {
+  const searchParams = useSearchParams()
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const session = getActivePaymentSession(cart)
+  const pay = async () => {
+    if (submitting || !session || !isMollie(session.provider_id)) return
+    setSubmitting(true)
+    setError(null)
+    try {
+      if (session.status === "authorized") {
+        await placeOrder(cart.id)
+        return
+      }
+      let url =
+        Number(session.amount) === cart.total
+          ? getMollieCheckoutUrl(session.data)
+          : null
+      if (!url) {
+        const response = await initiatePaymentSession(cart, {
+          provider_id: session.provider_id,
+        })
+        const nextSession = response.payment_collection.payment_sessions?.find(
+          (entry) =>
+            entry.provider_id === session.provider_id &&
+            (entry.status === "pending" || entry.status === "requires_more")
+        )
+        url = getMollieCheckoutUrl(nextSession?.data)
+      }
+      if (!url)
+        throw new Error("Could not open Mollie checkout. Please try again.")
+      window.location.assign(url)
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Could not start your payment."
+      )
+      setSubmitting(false)
+    }
+  }
+  return (
+    <>
+      {searchParams.get("payment_status") === "pending" && (
+        <Button
+          className="mb-3"
+          disabled={notReady || submitting}
+          size="large"
+          onClick={() => {
+            window.location.assign(
+              `/api/mollie-return?cart_id=${encodeURIComponent(cart.id)}`
+            )
+          }}
+        >
+          Check payment status
+        </Button>
+      )}
+      <Button
+        disabled={notReady || submitting}
+        isLoading={submitting}
+        onClick={pay}
+        size="large"
+        data-testid="mollie-payment-button"
+      >
+        Continue to Mollie
+      </Button>
+      <ErrorMessage error={error} data-testid="mollie-payment-error-message" />
+    </>
+  )
 }
 
 const StripePaymentButton = ({

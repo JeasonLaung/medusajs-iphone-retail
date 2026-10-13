@@ -21,6 +21,12 @@ module.exports = defineConfig({
     },
   ],
   modules: [
+    { resolve: "./src/modules/after-sales" },
+    { resolve: "./src/modules/devices" },
+    {
+      resolve: "@medusajs/medusa/locking",
+      options: { providers: [{ resolve: "@medusajs/medusa/locking-postgres", id: "locking-postgres", is_default: true }] },
+    },
     {
       resolve: "@medusajs/medusa/payment",
       options: {
@@ -41,11 +47,11 @@ module.exports = defineConfig({
           ...(process.env.MOLLIE_API_KEY
             ? [
                 {
-                  resolve: "@variablevic/mollie-payments-medusa/providers/mollie",
+                  resolve: "./src/modules/mollie",
                   id: "mollie",
                   options: {
                     apiKey: process.env.MOLLIE_API_KEY,
-                    redirectUrl: process.env.MOLLIE_REDIRECT_URL,
+                    redirectUrl: process.env.MOLLIE_REDIRECT_URL || `${process.env.STOREFRONT_URL}/api/mollie-return`,
                     medusaUrl: process.env.MEDUSA_BACKEND_URL,
                     autoCapture: true,
                     debug: false,

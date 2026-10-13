@@ -33,6 +33,7 @@ async function relatedProductIds(
   });
 
   return (data as Record<string, any>[])
+    .filter(Boolean)
     .flatMap(pick)
     .filter((id): id is string => Boolean(id));
 }

@@ -15,6 +15,7 @@ import {
 } from "./cookies"
 import { getRegion } from "./regions"
 import { getLocale } from "./locale-actions"
+import { isMollie } from "@lib/constants"
 
 /**
  * Retrieves a cart by its ID. If no ID is provided, it will use the cart ID from the cookies.
@@ -241,8 +242,22 @@ export async function initiatePaymentSession(
   cart: HttpTypes.StoreCart,
   data: HttpTypes.StoreInitializePaymentSession
 ) {
+  if (!cart.id || cart.id !== (await getCartId())) {
+    throw new Error("Your cart has changed. Please refresh checkout.")
+  }
   const headers = {
     ...(await getAuthHeaders()),
+  }
+
+  if (isMollie(data.provider_id)) {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+    if (!baseUrl) throw new Error("Mollie is currently unavailable.")
+    const returnUrl = new URL("/api/mollie-return", baseUrl)
+    returnUrl.searchParams.set("cart_id", cart.id)
+    data = {
+      ...data,
+      data: { cart_id: cart.id, redirect_url: returnUrl.href },
+    }
   }
 
   return sdk.store.payment
@@ -418,11 +433,11 @@ export async function placeOrder(cartId?: string) {
     const orderCacheTag = await getCacheTag("orders")
     revalidateTag(orderCacheTag)
 
-    removeCartId()
+    await removeCartId()
     redirect(`/${countryCode}/order/${cartRes?.order.id}/confirmed`)
   }
 
-  return cartRes.cart
+  throw new Error(cartRes.error?.message || "We could not finish your order. Please try again.")
 }
 
 /**

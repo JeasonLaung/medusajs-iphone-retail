@@ -29,6 +29,23 @@ export const paymentInfoMap: Record<
     title: "PayPal",
     icon: <PayPal />,
   },
+  pp_paypal_card_paypal_card: {
+    title: "Credit or debit card (PayPal)",
+    icon: <CreditCard />,
+  },
+  "pp_mollie-hosted-checkout_mollie": { title: "Mollie", icon: <CreditCard /> },
+  "pp_mollie-ideal_mollie": { title: "iDEAL", icon: <Ideal /> },
+  "pp_mollie-bancontact_mollie": { title: "Bancontact", icon: <Bancontact /> },
+  "pp_mollie-card_mollie": {
+    title: "Credit or debit card (Mollie)",
+    icon: <CreditCard />,
+  },
+  "pp_mollie-paypal_mollie": { title: "PayPal via Mollie", icon: <PayPal /> },
+  "pp_mollie-apple-pay_mollie": { title: "Apple Pay", icon: <CreditCard /> },
+  "pp_mollie-giftcard_mollie": {
+    title: "Gift card via Mollie",
+    icon: <CreditCard />,
+  },
   pp_system_default: {
     title: "Manual Payment",
     icon: <CreditCard />,
@@ -44,8 +61,13 @@ export const isStripeLike = (providerId?: string) => {
 }
 
 export const isPaypal = (providerId?: string) => {
-  return providerId?.startsWith("pp_paypal")
+  return (
+    providerId === "pp_paypal_paypal" ||
+    providerId === "pp_paypal_card_paypal_card"
+  )
 }
+export const isMollie = (providerId?: string) =>
+  providerId?.startsWith("pp_mollie-") ?? false
 export const isManual = (providerId?: string) => {
   return providerId?.startsWith("pp_system_default")
 }

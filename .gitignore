@@ -1,5 +1,6 @@
 .env
 .admin-credentials
+.device-camera-tls/
 logs/
 node_modules/
 .medusa/

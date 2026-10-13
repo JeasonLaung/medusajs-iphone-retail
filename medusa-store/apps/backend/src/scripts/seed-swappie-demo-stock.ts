@@ -6,6 +6,8 @@ import {
 } from "@medusajs/medusa/core-flows"
 import { readFileSync } from "node:fs"
 import { resolve } from "node:path"
+import { DEVICES_MODULE } from "../modules/devices"
+import DevicesModuleService from "../modules/devices/service"
 
 const DEMO_QUANTITY = 100
 
@@ -21,6 +23,7 @@ export default async function seedSwappieDemoStock({ container }: ExecArgs) {
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Manifest
   const expectedSkus = new Set(manifest.products.map((item) => item.sku))
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
+  const managed = await container.resolve<DevicesModuleService>(DEVICES_MODULE).listDeviceVariants({})
 
   const { data: stores } = await query.graph({
     entity: "store",
@@ -45,6 +48,7 @@ export default async function seedSwappieDemoStock({ container }: ExecArgs) {
     entity: "product_variant",
     fields: [
       "sku",
+      "id",
       "product.handle",
       "inventory_items.inventory_item_id",
       "inventory_items.inventory.location_levels.id",
@@ -70,6 +74,7 @@ export default async function seedSwappieDemoStock({ container }: ExecArgs) {
   let unchanged = 0
 
   for (const variant of targets) {
+    if (managed.some((v) => v.variant_id === variant.id)) { unchanged += 1; continue }
     const inventory = variant.inventory_items?.[0]
     const inventoryItemId = inventory?.inventory_item_id
     if (!inventoryItemId || variant.inventory_items?.length !== 1) {

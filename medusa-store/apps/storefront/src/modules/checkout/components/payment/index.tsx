@@ -1,6 +1,12 @@
 "use client"
 import { RadioGroup } from "@headlessui/react"
-import { isStripeLike, paymentInfoMap } from "@lib/constants"
+import {
+  isMollie,
+  isPaypal,
+  isStripeLike,
+  paymentInfoMap,
+} from "@lib/constants"
+import { getActivePaymentSession } from "@lib/util/payment-session"
 import { initiatePaymentSession } from "@lib/data/cart"
 import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
 import ErrorMessage from "@modules/checkout/components/error-message"
@@ -22,13 +28,13 @@ import { useCallback, useEffect, useState } from "react"
 const Payment = ({
   cart,
   availablePaymentMethods,
+  unavailablePaymentMethods = [],
 }: {
   cart: HttpTypes.StoreCart
   availablePaymentMethods: { id: string }[]
+  unavailablePaymentMethods?: { id: string; title: string }[]
 }) => {
-  const activeSession = cart.payment_collection?.payment_sessions?.find(
-    (paymentSession) => paymentSession.status === "pending"
-  )
+  const activeSession = getActivePaymentSession(cart)
 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -44,21 +50,33 @@ const Payment = ({
   const isOpen = searchParams.get("step") === "payment"
 
   const setPaymentMethod = async (method: string) => {
+    if (isLoading) return
     setError(null)
     setSelectedPaymentMethod(method)
     if (isStripeLike(method)) {
-      await initiatePaymentSession(cart, {
-        provider_id: method,
-      })
+      setIsLoading(true)
+      try {
+        await initiatePaymentSession(cart, { provider_id: method })
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Could not set up payment."
+        )
+      } finally {
+        setIsLoading(false)
+      }
     }
   }
 
   const paidByGiftcard = !!(
-    (cart as unknown as Record<string, unknown>)?.gift_cards && ((cart as unknown as Record<string, unknown>)?.gift_cards as unknown[])?.length > 0 && cart?.total === 0
+    (cart as unknown as Record<string, unknown>)?.gift_cards &&
+    ((cart as unknown as Record<string, unknown>)?.gift_cards as unknown[])
+      ?.length > 0 &&
+    cart?.total === 0
   )
 
   const paymentReady =
-    (activeSession && (cart?.shipping_methods?.length ?? 0) !== 0) || paidByGiftcard
+    (activeSession && (cart?.shipping_methods?.length ?? 0) !== 0) ||
+    paidByGiftcard
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -77,15 +95,24 @@ const Payment = ({
   }
 
   const handleSubmit = async () => {
+    if (
+      isLoading ||
+      (!paidByGiftcard &&
+        !availablePaymentMethods.some(
+          (method) => method.id === selectedPaymentMethod
+        ))
+    )
+      return
     setIsLoading(true)
     try {
       const shouldInputPaymentDetails =
         isStripeLike(selectedPaymentMethod) && !activeSession
 
       const checkActiveSession =
-        activeSession?.provider_id === selectedPaymentMethod
+        activeSession?.provider_id === selectedPaymentMethod &&
+        Number(activeSession.amount) === cart.total
 
-      if (!checkActiveSession) {
+      if (!paidByGiftcard && !checkActiveSession) {
         await initiatePaymentSession(cart, {
           provider_id: selectedPaymentMethod,
         })
@@ -109,6 +136,27 @@ const Payment = ({
   useEffect(() => {
     setError(null)
   }, [isOpen])
+
+  useEffect(() => {
+    if (
+      activeSession?.provider_id &&
+      availablePaymentMethods.some(
+        (method) => method.id === activeSession.provider_id
+      )
+    ) {
+      setSelectedPaymentMethod(activeSession.provider_id)
+    }
+  }, [activeSession?.id, activeSession?.provider_id, availablePaymentMethods])
+
+  const returnedStatus = searchParams.get("payment_status")
+  const returnMessage =
+    returnedStatus === "failed"
+      ? "Payment was not completed. Please try again or choose another payment method."
+      : returnedStatus === "pending"
+      ? "Your payment is still being confirmed. You can check it again below."
+      : returnedStatus === "invalid"
+      ? "We could not match this payment to your current cart. Please reopen checkout."
+      : null
 
   return (
     <div className="bg-white">
@@ -140,7 +188,7 @@ const Payment = ({
       </div>
       <div>
         <div className={isOpen ? "block" : "hidden"}>
-          {!paidByGiftcard && availablePaymentMethods?.length && (
+          {!paidByGiftcard && (
             <>
               <RadioGroup
                 value={selectedPaymentMethod}
@@ -155,15 +203,31 @@ const Payment = ({
                         paymentInfoMap={paymentInfoMap}
                         setError={setError}
                         setPaymentComplete={setPaymentComplete}
+                        disabled={isLoading}
                       />
                     ) : (
                       <PaymentContainer
                         paymentInfoMap={paymentInfoMap}
                         paymentProviderId={paymentMethod.id}
                         selectedPaymentOptionId={selectedPaymentMethod}
+                        disabled={isLoading}
                       />
                     )}
                   </div>
+                ))}
+                {unavailablePaymentMethods.map((method) => (
+                  <PaymentContainer
+                    key={method.id}
+                    paymentInfoMap={paymentInfoMap}
+                    paymentProviderId={method.id}
+                    selectedPaymentOptionId={null}
+                    disabled
+                  >
+                    <Text className="text-ui-fg-subtle">
+                      Currently unavailable. Please choose another payment
+                      method.
+                    </Text>
+                  </PaymentContainer>
                 ))}
               </RadioGroup>
             </>
@@ -184,9 +248,24 @@ const Payment = ({
           )}
 
           <ErrorMessage
-            error={error}
+            error={error || returnMessage}
             data-testid="payment-method-error-message"
           />
+
+          {returnedStatus === "pending" &&
+            isMollie(activeSession?.provider_id) && (
+              <Button
+                size="large"
+                className="mt-4"
+                onClick={() =>
+                  window.location.assign(
+                    `/api/mollie-return?cart_id=${encodeURIComponent(cart.id)}`
+                  )
+                }
+              >
+                Check payment status
+              </Button>
+            )}
 
           <Button
             size="large"
@@ -195,7 +274,12 @@ const Payment = ({
             isLoading={isLoading}
             disabled={
               (isStripeLike(selectedPaymentMethod) && !paymentComplete) ||
-              (!selectedPaymentMethod && !paidByGiftcard)
+              (!selectedPaymentMethod && !paidByGiftcard) ||
+              isLoading ||
+              (!paidByGiftcard &&
+                !availablePaymentMethods.some(
+                  (method) => method.id === selectedPaymentMethod
+                ))
             }
             data-testid="submit-payment-button"
           >
@@ -233,7 +317,13 @@ const Payment = ({
                       <CreditCard />
                     )}
                   </Container>
-                  <Text>Another step will appear</Text>
+                  <Text>
+                    {isMollie(activeSession.provider_id)
+                      ? "You will continue to Mollie to pay securely."
+                      : isPaypal(activeSession.provider_id)
+                      ? "Pay securely with PayPal below."
+                      : "Payment details confirmed"}
+                  </Text>
                 </div>
               </div>
             </div>
