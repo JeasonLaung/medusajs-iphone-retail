@@ -1,9 +1,11 @@
+import { useTranslation } from "react-i18next"
 import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { Button, Container, Heading } from "@medusajs/ui"
 import { useCallback, useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import DeviceScanner from "../../components/device-scanner"
 import { parseDeviceCsv } from "../../lib/device-csv"
+import { localizeDeviceMessage } from "../../lib/device-messages"
 
 type Source = {
   id: string
@@ -55,6 +57,18 @@ type Assignment = {
   tracking_number: string | null
 }
 type Order = {
+  shipping_address?: {
+    first_name?: string
+    last_name?: string
+    company?: string
+    address_1?: string
+    address_2?: string
+    city?: string
+    province?: string
+    postal_code?: string
+    country_code?: string
+    phone?: string
+  } | null
   currency_code: string
   payment_collections: {
     payments: {
@@ -81,6 +95,11 @@ type Request = {
   items: { item_id: string; quantity: number }[]
 }
 type Data = {
+  access: {
+    role: "admin" | "supplier"
+    source_id: string | null
+    order_ids: string[]
+  }
   devices: Device[]
   assigned_devices: Device[]
   count: number
@@ -97,26 +116,6 @@ type Data = {
     created_at: string
     data: Record<string, unknown>
   }[]
-}
-const states: Record<string, string> = {
-  inspection: "待检测",
-  available: "可售",
-  reserved: "已配货",
-  packed: "待发货",
-  shipped: "已发货",
-  repair: "维修中",
-  repair_ready: "维修完成待返还",
-  retired: "报废",
-  supplier_returned: "已退供应商",
-  returned: "已收回",
-  canceled: "已解除",
-}
-const modes = {
-  lookup: "设备查询",
-  intake: "扫码入库 / 导入",
-  orders: "订单配货 / 发货",
-  inspection: "售后收回 / 检测",
-  sources: "仓库 / 供应商库存",
 }
 const box = "w-full min-w-0 rounded-md border bg-ui-bg-base px-3 py-2 text-sm"
 function Field({
@@ -135,6 +134,28 @@ function Field({
 }
 
 const DeviceScanPage = () => {
+  const { t, i18n } = useTranslation()
+  const states: Record<string, string> = {
+    inspection: t("deviceScan.inspection"),
+    available: t("deviceScan.available"),
+    reserved: t("deviceScan.reserved"),
+    packed: t("deviceScan.packed"),
+    shipped: t("deviceScan.shipped"),
+    repair: t("deviceScan.repair"),
+    repair_ready: t("deviceScan.repairReady"),
+    retired: t("deviceScan.retired"),
+    supplier_returned: t("deviceScan.supplierReturned"),
+    returned: t("deviceScan.returned"),
+    canceled: t("deviceScan.canceled"),
+  }
+  const modes = {
+    lookup: t("deviceScan.lookup"),
+    intake: t("deviceScan.intake"),
+    orders: t("deviceScan.orders"),
+    inspection: t("deviceScan.afterSales"),
+    sources: t("deviceScan.sources"),
+  }
+
   const [params] = useSearchParams()
   const [mode, setMode] = useState<keyof typeof modes>(
     params.get("order_id") ? "orders" : "lookup",
@@ -175,6 +196,13 @@ const DeviceScanPage = () => {
   const [paymentId, setPaymentId] = useState("")
   const [refundAmount, setRefundAmount] = useState("")
   const [refundConfirmed, setRefundConfirmed] = useState(false)
+  const [supplierEmail, setSupplierEmail] = useState("")
+  const [supplierPassword, setSupplierPassword] = useState("")
+  const [supplierOrders, setSupplierOrders] = useState("")
+  const [supplierAccounts, setSupplierAccounts] = useState<
+    { email: string; source_id: string; order_ids: string[] }[]
+  >([])
+  const supplier = data?.access?.role === "supplier"
 
   const load = useCallback(async () => {
     const query = new URLSearchParams({ offset: String(offset) })
@@ -186,20 +214,34 @@ const DeviceScanPage = () => {
     const response = await fetch(`/admin/devices?${query}`, {
       credentials: "include",
     })
-    if (!response.ok) throw new Error("无法加载设备数据，请确认后台已登录")
+    if (!response.ok) throw new Error(t("deviceScan.loadError"))
     const next: Data = await response.json()
     setData(next)
+    if (next.access?.role === "supplier")
+      setSourceId(next.access.source_id || "")
+    if (mode === "sources" && next.access?.role !== "supplier") {
+      const accounts = await fetch("/admin/devices/supplier-accounts", {
+        credentials: "include",
+      })
+      if (!accounts.ok) throw new Error(t("deviceScan.loadError"))
+      setSupplierAccounts((await accounts.json()).accounts)
+    }
     if (selected)
       setSelected(next.devices.find((d) => d.id === selected.id) || null)
-    if (orderId && (mode === "orders" || mode === "inspection")) {
+    if (next.access?.role === "supplier") setRequests([])
+    if (
+      next.access?.role !== "supplier" &&
+      orderId &&
+      (mode === "orders" || mode === "inspection")
+    ) {
       const r = await fetch(
         `/admin/orders/${encodeURIComponent(orderId)}/after-sales`,
         { credentials: "include" },
       )
-      if (!r.ok) throw new Error("无法加载该订单的售后申请")
+      if (!r.ok) throw new Error(t("deviceScan.requestLoadError"))
       setRequests((await r.json()).requests)
     }
-  }, [mode, search, orderId, offset, selected?.id])
+  }, [mode, search, orderId, offset, selected?.id, t])
   useEffect(() => {
     setError("")
     load().catch((e) => setError(e.message))
@@ -220,7 +262,7 @@ const DeviceScanPage = () => {
         body: JSON.stringify(body),
       })
       const json = await r.json()
-      if (!r.ok) throw new Error(json.message || "操作失败，请核对信息后重试")
+      if (!r.ok) throw new Error(json.message || t("deviceScan.commandError"))
       setSuccess(message)
       setChecked([])
       setRefundConfirmed(false)
@@ -275,13 +317,13 @@ const DeviceScanPage = () => {
     data?.devices.find((d) => d.id === id) ||
     data?.assigned_devices.find((d) => d.id === id)
   const identity = (d?: Device) =>
-    d?.serial_number || d?.imei || d?.id || "未找到设备"
+    d?.serial_number || d?.imei || d?.id || t("deviceScan.deviceNotFound")
   const variantLabel = (v: Variant) =>
     `${v.product?.title || ""} · ${v.options?.map((o) => o.value).join(" / ") || v.title} · ${v.sku || v.id}`
   const sourceSelect = (
-    <Field label="供货来源 / 收回仓库">
+    <Field label={t("deviceScan.sourceLabel")}>
       <select
-        aria-label="供货来源 / 收回仓库"
+        aria-label={t("deviceScan.sourceLabel")}
         className={box}
         value={sourceId}
         onChange={(e) => {
@@ -289,19 +331,23 @@ const DeviceScanPage = () => {
           setBatch([])
         }}
       >
-        <option value="">请选择</option>
+        <option value="">{t("deviceScan.select")}</option>
         {data?.sources.map((s) => (
           <option key={s.id} value={s.id}>
-            {s.name}（{s.type === "self" ? "本仓" : "供应商"}）
+            {s.name}（
+            {s.type === "self"
+              ? t("deviceScan.ownWarehouse")
+              : t("deviceScan.supplier")}
+            ）
           </option>
         ))}
       </select>
     </Field>
   )
   const variantSelect = (
-    <Field label="商品 SKU">
+    <Field label={t("deviceScan.sku")}>
       <select
-        aria-label="商品 SKU"
+        aria-label={t("deviceScan.sku")}
         className={box}
         value={variantId}
         onChange={(e) => {
@@ -309,7 +355,7 @@ const DeviceScanPage = () => {
           setAcknowledged(false)
         }}
       >
-        <option value="">请选择</option>
+        <option value="">{t("deviceScan.select")}</option>
         {data?.variants.map((v) => (
           <option key={v.id} value={v.id}>
             {variantLabel(v)}
@@ -320,16 +366,16 @@ const DeviceScanPage = () => {
   )
   const deviceFields = (
     <div className="grid gap-3 md:grid-cols-2">
-      <Field label="苹果序列号">
+      <Field label={t("deviceScan.serial")}>
         <input
-          aria-label="苹果序列号"
+          aria-label={t("deviceScan.serial")}
           className={box}
           value={serial}
           onChange={(e) => setSerial(e.target.value.toUpperCase())}
           autoComplete="off"
         />
       </Field>
-      <Field label="IMEI（15 位，可选）">
+      <Field label={t("deviceScan.imei")}>
         <input
           aria-label="IMEI"
           className={box}
@@ -338,9 +384,9 @@ const DeviceScanPage = () => {
           inputMode="numeric"
         />
       </Field>
-      <Field label="成色">
+      <Field label={t("deviceScan.grade")}>
         <select
-          aria-label="成色"
+          aria-label={t("deviceScan.grade")}
           className={box}
           value={grade}
           onChange={(e) => setGrade(e.target.value)}
@@ -350,9 +396,9 @@ const DeviceScanPage = () => {
           ))}
         </select>
       </Field>
-      <Field label="实际电池健康度（%）">
+      <Field label={t("deviceScan.batteryPercent")}>
         <input
-          aria-label="实际电池健康度"
+          aria-label={t("deviceScan.battery")}
           className={box}
           type="number"
           min="0"
@@ -361,9 +407,9 @@ const DeviceScanPage = () => {
           onChange={(e) => setBattery(e.target.value)}
         />
       </Field>
-      <Field label="采购成本（EUR）">
+      <Field label={t("deviceScan.costEur")}>
         <input
-          aria-label="采购成本"
+          aria-label={t("deviceScan.cost")}
           className={box}
           type="number"
           min="0"
@@ -372,9 +418,9 @@ const DeviceScanPage = () => {
           onChange={(e) => setCost(e.target.value)}
         />
       </Field>
-      <Field label="仓位">
+      <Field label={t("deviceScan.bin")}>
         <input
-          aria-label="仓位"
+          aria-label={t("deviceScan.bin")}
           className={box}
           value={bin}
           onChange={(e) => setBin(e.target.value)}
@@ -398,14 +444,14 @@ const DeviceScanPage = () => {
     setError("")
     setBatch([])
     try {
-      if (file.size > 1024 * 1024) throw new Error("CSV 文件请小于 1 MB")
-      const rows = parseDeviceCsv(await file.text())
+      if (file.size > 1024 * 1024) throw new Error(t("deviceScan.csvSize"))
+      const rows = parseDeviceCsv(await file.text(), t)
       const devices = rows.map((r, i) => {
         const v =
           r.variant_id ||
           data?.variants.find((v) => v.sku === r.sku)?.id ||
           variantId
-        if (!v) throw new Error(`第 ${i + 2} 行 SKU 未找到`)
+        if (!v) throw new Error(t("deviceScan.csvSku", { row: i + 2 }))
         return {
           ...(r.serial_number
             ? { serial_number: r.serial_number.toUpperCase() }
@@ -430,36 +476,47 @@ const DeviceScanPage = () => {
   return (
     <Container className="space-y-5" data-testid="device-scan-page">
       <div>
-        <Heading level="h1">设备扫码工作台</Heading>
+        <Heading level="h1">{t("deviceScan.title")}</Heading>
         <p className="mt-1 text-sm text-ui-fg-subtle">
-          一机一档 · 本仓与供应商代发 · 入库、配货、发货、售后与再次销售
+          {t("deviceScan.subtitle")}
         </p>
       </div>
       <div className="flex flex-wrap gap-2">
-        {Object.entries(modes).map(([key, title]) => (
-          <Button
-            key={key}
-            variant={mode === key ? "primary" : "secondary"}
-            disabled={busy}
-            onClick={() => {
-              setMode(key as keyof typeof modes)
-              setSelected(null)
-              setSearch("")
-              setOffset(0)
-              setError("")
-              setSuccess("")
-            }}
-          >
-            {title}
-          </Button>
-        ))}
+        {Object.entries(modes)
+          .filter(
+            ([key]) => !supplier || !["intake", "inspection"].includes(key),
+          )
+          .map(([key, title]) => (
+            <Button
+              key={key}
+              variant={mode === key ? "primary" : "secondary"}
+              disabled={busy}
+              onClick={() => {
+                setMode(key as keyof typeof modes)
+                setSelected(null)
+                setSearch("")
+                setOffset(0)
+                setError("")
+                setSuccess("")
+              }}
+            >
+              {supplier && key === "sources"
+                ? t("deviceScan.supplierStock")
+                : title}
+            </Button>
+          ))}
       </div>
+      {supplier && (
+        <p className="rounded-lg border p-3 text-sm">
+          {t("deviceScan.supplierScope")}
+        </p>
+      )}
       {error && (
         <div
           role="alert"
           className="rounded-lg bg-ui-bg-subtle p-3 text-sm text-ui-fg-error"
         >
-          {error}
+          {localizeDeviceMessage(error, t)}
         </div>
       )}
       {success && (
@@ -468,7 +525,7 @@ const DeviceScanPage = () => {
         </div>
       )}
       {mode !== "sources" && <DeviceScanner key={mode} onScan={onScan} />}
-      {!data && <p>正在加载…</p>}
+      {!data && <p>{t("deviceScan.loading")}</p>}
       {data && (
         <fieldset disabled={busy} className="min-w-0 space-y-5">
           {(mode === "orders" || mode === "inspection") && (
@@ -484,31 +541,53 @@ const DeviceScanPage = () => {
                   setChecked([])
                 }}
               >
+                {supplier && (
+                  <select
+                    className={box}
+                    aria-label={t("deviceScan.authorizedOrders")}
+                    value={orderInput}
+                    onChange={(e) => setOrderInput(e.target.value)}
+                  >
+                    <option value="">{t("deviceScan.authorizedOrders")}</option>
+                    {data.access.order_ids.map((id) => (
+                      <option key={id} value={id}>
+                        {id}
+                      </option>
+                    ))}
+                  </select>
+                )}
                 <input
-                  aria-label="订单 ID"
+                  aria-label={t("deviceScan.orderId")}
                   className={`${box} flex-1`}
-                  placeholder="订单 ID（order_…），也可从订单详情进入"
+                  placeholder={t("deviceScan.orderPlaceholder")}
                   value={orderInput}
                   onChange={(e) => setOrderInput(e.target.value)}
                 />
                 <Button type="submit" variant="secondary">
-                  加载订单
+                  {t("deviceScan.loadOrder")}
                 </Button>
               </form>
               {data.order ? (
                 <>
                   <p>
-                    订单 #{data.order.display_id} · {data.order.status} ·{" "}
-                    <a
-                      className="underline"
-                      href={`/app/orders/${data.order.id}`}
-                    >
-                      打开订单 / 退款操作
-                    </a>
+                    {t("deviceScan.orderPrefix")}
+                    {data.order.display_id} ·{" "}
+                    {t(`deviceScan.orderStatuses.${data.order.status}`, {
+                      defaultValue: data.order.status,
+                    })}{" "}
+                    ·{" "}
+                    {!supplier && (
+                      <a
+                        className="underline"
+                        href={`/app/orders/${data.order.id}`}
+                      >
+                        {t("deviceScan.openOrder")}
+                      </a>
+                    )}
                   </p>
-                  <Field label="订单商品">
+                  <Field label={t("deviceScan.orderItem")}>
                     <select
-                      aria-label="订单商品"
+                      aria-label={t("deviceScan.orderItem")}
                       className={box}
                       value={itemId}
                       onChange={(e) => {
@@ -519,111 +598,264 @@ const DeviceScanPage = () => {
                         if (i) setVariantId(i.variant_id)
                       }}
                     >
-                      <option value="">请选择</option>
+                      <option value="">{t("deviceScan.select")}</option>
                       {data.order.items.map((i) => (
                         <option key={i.id} value={i.id}>
-                          {i.title} · {i.variant_title} · 数量{" "}
-                          {Number(i.detail.quantity)} / 已履约{" "}
+                          {i.title} · {i.variant_title}{" "}
+                          {t("deviceScan.quantityPrefix")}{" "}
+                          {Number(i.detail.quantity)}{" "}
+                          {t("deviceScan.fulfilledPrefix")}{" "}
                           {Number(i.detail.fulfilled_quantity || 0)}
                         </option>
                       ))}
                     </select>
                   </Field>
+                  {supplier && data.order.shipping_address && (
+                    <div className="rounded border p-3 text-sm">
+                      <p className="font-medium">
+                        {t("deviceScan.shippingAddress")}
+                      </p>
+                      <p>
+                        {[
+                          data.order.shipping_address.first_name,
+                          data.order.shipping_address.last_name,
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                      </p>
+                      <p>
+                        {[
+                          data.order.shipping_address.company,
+                          data.order.shipping_address.address_1,
+                          data.order.shipping_address.address_2,
+                        ]
+                          .filter(Boolean)
+                          .join(", ")}
+                      </p>
+                      <p>
+                        {[
+                          data.order.shipping_address.postal_code,
+                          data.order.shipping_address.city,
+                          data.order.shipping_address.province,
+                          data.order.shipping_address.country_code?.toUpperCase(),
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                      </p>
+                      {data.order.shipping_address.phone && (
+                        <p>
+                          {t("deviceScan.recipientPhone", {
+                            phone: data.order.shipping_address.phone,
+                          })}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </>
               ) : (
-                orderId && <p>未找到订单。</p>
+                orderId && <p>{t("deviceScan.orderNotFound")}</p>
               )}
             </div>
           )}
           {mode === "sources" && (
             <>
-              <div className="space-y-3 rounded-lg border p-4">
-                <h2 className="font-medium">新增本仓 / 供应商</h2>
-                <div className="grid gap-3 md:grid-cols-2">
-                  <Field label="来源名称">
-                    <input
-                      className={box}
-                      value={sourceName}
-                      onChange={(e) => setSourceName(e.target.value)}
-                    />
-                  </Field>
-                  <Field label="来源类型">
-                    <select
-                      className={box}
-                      value={sourceType}
-                      onChange={(e) => setSourceType(e.target.value)}
-                    >
-                      <option value="self">自有仓库</option>
-                      <option value="supplier">供应商代发</option>
-                    </select>
-                  </Field>
-                </div>
-                <Button
-                  disabled={!sourceName.trim()}
-                  onClick={() =>
-                    command(
-                      { action: "source", name: sourceName, type: sourceType },
-                      "供货来源已创建，并关联默认销售渠道",
-                    )
-                  }
-                >
-                  创建来源
-                </Button>
-              </div>
-              <div className="space-y-3 rounded-lg border p-4">
-                <h2 className="font-medium">启用 SKU 设备库存</h2>
-                {variantSelect}
-                {variant && (
-                  <p className="text-sm">
-                    现有数量：
-                    {variant.inventory_items
-                      ?.flatMap((i) => i.inventory?.location_levels || [])
-                      .map(
-                        (l) =>
-                          `${data.sources.find((s) => s.location_id === l.location_id)?.name || l.location_id}：${Number(l.stocked_quantity)}（预留 ${Number(l.reserved_quantity)}）`,
-                      )
-                      .join("；") || "0"}
-                  </p>
-                )}
-                {managed ? (
-                  <p>该 SKU 已启用设备管理。</p>
-                ) : (
-                  <>
-                    <p className="text-sm">
-                      接管会把该 SKU
-                      现有数量库存清零，再按本仓实际设备及供应商可供数量建立库存。存在订单预留时无法接管。请核对后执行。
-                    </p>
-                    <label className="flex gap-2 text-sm">
-                      <input
-                        type="checkbox"
-                        checked={acknowledged}
-                        onChange={(e) => setAcknowledged(e.target.checked)}
-                      />
-                      已核对现有库存，同意改用设备库存
-                    </label>
+              {!supplier && (
+                <>
+                  <div className="space-y-3 rounded-lg border p-4">
+                    <h2 className="font-medium">{t("deviceScan.addSource")}</h2>
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <Field label={t("deviceScan.sourceName")}>
+                        <input
+                          className={box}
+                          value={sourceName}
+                          onChange={(e) => setSourceName(e.target.value)}
+                        />
+                      </Field>
+                      <Field label={t("deviceScan.sourceType")}>
+                        <select
+                          className={box}
+                          value={sourceType}
+                          onChange={(e) => setSourceType(e.target.value)}
+                        >
+                          <option value="self">
+                            {t("deviceScan.selfSource")}
+                          </option>
+                          <option value="supplier">
+                            {t("deviceScan.supplierShipping")}
+                          </option>
+                        </select>
+                      </Field>
+                    </div>
                     <Button
-                      disabled={!variantId || !acknowledged}
+                      disabled={!sourceName.trim()}
                       onClick={() =>
                         command(
                           {
-                            action: "enroll",
-                            variant_id: variantId,
-                            acknowledged: true,
+                            action: "source",
+                            name: sourceName,
+                            type: sourceType,
                           },
-                          "SKU 已启用设备库存，请登记实际设备或供应商数量",
+                          t("deviceScan.sourceCreated"),
                         )
                       }
                     >
-                      接管该 SKU 库存
+                      {t("deviceScan.createSource")}
                     </Button>
-                  </>
-                )}
-              </div>
+                  </div>
+                  <div className="space-y-3 rounded-lg border p-4">
+                    <h2 className="font-medium">
+                      {t("deviceScan.enableInventory")}
+                    </h2>
+                    {variantSelect}
+                    {variant && (
+                      <p className="text-sm">
+                        {t("deviceScan.stockPrefix")}
+                        {variant.inventory_items
+                          ?.flatMap((i) => i.inventory?.location_levels || [])
+                          .map((l) =>
+                            t("deviceScan.inventorySummary", {
+                              source:
+                                data.sources.find(
+                                  (s) => s.location_id === l.location_id,
+                                )?.name || l.location_id,
+                              stock: Number(l.stocked_quantity),
+                              reserved: Number(l.reserved_quantity),
+                            }),
+                          )
+                          .join("；") || "0"}
+                      </p>
+                    )}
+                    {managed ? (
+                      <p>{t("deviceScan.inventoryEnabled")}</p>
+                    ) : (
+                      <>
+                        <p className="text-sm">
+                          {t("deviceScan.takeoverWarning")}
+                        </p>
+                        <label className="flex gap-2 text-sm">
+                          <input
+                            type="checkbox"
+                            checked={acknowledged}
+                            onChange={(e) => setAcknowledged(e.target.checked)}
+                          />
+                          {t("deviceScan.takeoverConfirm")}
+                        </label>
+                        <Button
+                          disabled={!variantId || !acknowledged}
+                          onClick={() =>
+                            command(
+                              {
+                                action: "enroll",
+                                variant_id: variantId,
+                                acknowledged: true,
+                              },
+                              t("deviceScan.takeoverSuccess"),
+                            )
+                          }
+                        >
+                          {t("deviceScan.takeover")}
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </>
+              )}
+              {!supplier && (
+                <div className="space-y-3 rounded-lg border p-4">
+                  <h2 className="font-medium">
+                    {t("deviceScan.supplierAccounts")}
+                  </h2>
+                  <p className="text-sm">
+                    {t("deviceScan.supplierAccountHelp")}
+                  </p>
+                  <Field label={t("deviceScan.supplierEmail")}>
+                    <input
+                      className={box}
+                      type="email"
+                      value={supplierEmail}
+                      onChange={(e) => setSupplierEmail(e.target.value)}
+                    />
+                  </Field>
+                  {sourceSelect}
+                  <Field label={t("deviceScan.authorizedOrders")}>
+                    <textarea
+                      className={box}
+                      value={supplierOrders}
+                      onChange={(e) => setSupplierOrders(e.target.value)}
+                      placeholder={t("deviceScan.supplierOrdersHelp")}
+                    />
+                  </Field>
+                  <Field label={t("deviceScan.supplierPassword")}>
+                    <input
+                      className={box}
+                      type="password"
+                      autoComplete="new-password"
+                      value={supplierPassword}
+                      onChange={(e) => setSupplierPassword(e.target.value)}
+                      placeholder={t("deviceScan.supplierPasswordHelp")}
+                    />
+                  </Field>
+                  <Button
+                    disabled={
+                      !supplierEmail.trim() ||
+                      source?.type !== "supplier" ||
+                      (supplierPassword.length > 0 &&
+                        supplierPassword.length < 12)
+                    }
+                    onClick={async () => {
+                      if (
+                        await command(
+                          {
+                            email: supplierEmail.trim(),
+                            ...(supplierPassword
+                              ? { password: supplierPassword }
+                              : {}),
+                            source_id: sourceId,
+                            order_ids: supplierOrders
+                              .split(/[\s,，]+/)
+                              .filter(Boolean),
+                          },
+                          t("deviceScan.supplierAccountSaved"),
+                          "/admin/devices/supplier-accounts",
+                        )
+                      )
+                        setSupplierPassword("")
+                    }}
+                  >
+                    {t("deviceScan.saveSupplierAccount")}
+                  </Button>
+                  {supplierAccounts.map((account) => (
+                    <button
+                      type="button"
+                      className="block w-full rounded border p-3 text-left text-sm"
+                      key={account.email}
+                      onClick={() => {
+                        setSupplierEmail(account.email)
+                        setSupplierPassword("")
+                        setSourceId(account.source_id)
+                        setSupplierOrders(account.order_ids.join("\n"))
+                      }}
+                    >
+                      {account.email} ·{" "}
+                      {
+                        data.sources.find((s) => s.id === account.source_id)
+                          ?.name
+                      }{" "}
+                      ·{" "}
+                      {t("deviceScan.authorizedOrderCount", {
+                        count: account.order_ids.length,
+                      })}
+                    </button>
+                  ))}
+                </div>
+              )}
               <div className="space-y-3 rounded-lg border p-4">
-                <h2 className="font-medium">供应商未分配设备的可供数量</h2>
+                <h2 className="font-medium">
+                  {t("deviceScan.supplierAvailability")}
+                </h2>
                 {sourceSelect}
                 {variantSelect}
-                <Field label="未分配可供数量">
+                <Field label={t("deviceScan.unallocatedQuantity")}>
                   <input
                     className={box}
                     type="number"
@@ -632,9 +864,7 @@ const DeviceScanPage = () => {
                     onChange={(e) => setQuantity(e.target.value)}
                   />
                 </Field>
-                <p className="text-sm">
-                  这里填写供应商尚未登记为具体机器的数量，已登记设备单独计数。重复设置同一数量不会重复增加库存。
-                </p>
+                <p className="text-sm">{t("deviceScan.supplierHelp")}</p>
                 <Button
                   disabled={!managed || source?.type !== "supplier"}
                   onClick={() =>
@@ -645,18 +875,21 @@ const DeviceScanPage = () => {
                         variant_id: variantId,
                         quantity: Number(quantity),
                       },
-                      "供应商可供库存已更新",
+                      t("deviceScan.supplierUpdated"),
                     )
                   }
                 >
-                  更新可供数量
+                  {t("deviceScan.updateAvailability")}
                 </Button>
               </div>
               <div className="space-y-2">
                 {data.sources.map((s) => (
                   <div key={s.id} className="rounded-lg border p-3">
                     <p>
-                      {s.name} · {s.type === "self" ? "本仓" : "供应商代发"}
+                      {s.name} ·{" "}
+                      {s.type === "self"
+                        ? t("deviceScan.ownWarehouse")
+                        : t("deviceScan.supplierShipping")}
                     </p>
                     <p className="break-all text-xs text-ui-fg-subtle">
                       {s.location_id}
@@ -667,7 +900,8 @@ const DeviceScanPage = () => {
                         <p key={p.variant_id} className="text-sm">
                           {data.variants.find((v) => v.id === p.variant_id)
                             ?.sku || p.variant_id}
-                          ：未分配 {p.quantity} 台
+                          {t("deviceScan.unallocatedPrefix")}
+                          {p.quantity} {t("deviceScan.units")}
                         </p>
                       ))}
                   </div>
@@ -680,16 +914,14 @@ const DeviceScanPage = () => {
               {sourceSelect}
               {variantSelect}
               {deviceFields}
-              <Field label="入库备注">
+              <Field label={t("deviceScan.intakeNotes")}>
                 <textarea
                   className={box}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                 />
               </Field>
-              <p className="text-sm">
-                入库后进入待检测；检测通过才增加可售库存。
-              </p>
+              <p className="text-sm">{t("deviceScan.intakeHelp")}</p>
               <Button
                 disabled={
                   source?.type !== "self" || !managed || (!serial && !imei)
@@ -698,7 +930,7 @@ const DeviceScanPage = () => {
                   if (
                     await command(
                       { action: "intake", devices: [newDevice()] },
-                      "设备已入库，等待检测",
+                      t("deviceScan.intakeSuccess"),
                     )
                   ) {
                     setSerial("")
@@ -706,22 +938,20 @@ const DeviceScanPage = () => {
                   }
                 }}
               >
-                登记入库
+                {t("deviceScan.registerIntake")}
               </Button>
               <div className="space-y-3 border-t pt-4">
-                <h2 className="font-medium">批量 CSV 导入</h2>
-                <p className="break-words text-sm">
-                  表头：serial_number,imei,sku,grade,battery_health,cost_eur,currency_code,bin,notes。来源使用上方选项；SKU、成色、电池为空时使用上方默认值。号码列请保存为文本。
-                </p>
+                <h2 className="font-medium">{t("deviceScan.csvTitle")}</h2>
+                <p className="break-words text-sm">{t("deviceScan.csvHelp")}</p>
                 <a
                   className="text-sm underline"
                   download="device-import-template.csv"
                   href={`data:text/csv;charset=utf-8,${encodeURIComponent("\uFEFFserial_number,imei,sku,grade,battery_health,cost_eur,currency_code,bin,notes\r\n")}`}
                 >
-                  下载空白 CSV 模板
+                  {t("deviceScan.csvTemplate")}
                 </a>
                 <input
-                  aria-label="导入设备 CSV"
+                  aria-label={t("deviceScan.csvUpload")}
                   type="file"
                   accept=".csv,text/csv"
                   onChange={(e) => {
@@ -732,14 +962,18 @@ const DeviceScanPage = () => {
                 {batch.length > 0 && (
                   <>
                     <p>
-                      待导入 {batch.length}{" "}
-                      台，核对预览后提交。任一行不合格则整批不执行。
+                      {t("deviceScan.batchPreview", { count: batch.length })}
                     </p>
                     <div className="max-h-64 overflow-auto rounded border p-2 text-xs">
                       {batch.map((d, i) => (
                         <p key={i}>
                           {i + 1}.{" "}
-                          {String(d.serial_number || d.imei || "缺少标识")} ·{" "}
+                          {String(
+                            d.serial_number ||
+                              d.imei ||
+                              t("deviceScan.missingIdentity"),
+                          )}{" "}
+                          ·{" "}
                           {
                             data.variants.find((v) => v.id === d.variant_id)
                               ?.sku
@@ -754,13 +988,13 @@ const DeviceScanPage = () => {
                         if (
                           await command(
                             { action: "intake", devices: batch },
-                            "整批设备已入库，等待检测",
+                            t("deviceScan.batchSuccess"),
                           )
                         )
                           setBatch([])
                       }}
                     >
-                      确认导入 {batch.length} 台
+                      {t("deviceScan.batchConfirm", { count: batch.length })}
                     </Button>
                   </>
                 )}
@@ -771,40 +1005,46 @@ const DeviceScanPage = () => {
             <>
               <div className="space-y-3 rounded-lg border p-4">
                 {sourceSelect}
-                <Field label="换机原始销售记录（普通配货留空）">
-                  <select
-                    className={box}
-                    value={replacement}
-                    onChange={(e) => {
-                      setReplacement(e.target.value)
-                      const a = data.assignments.find(
-                        (a) => a.id === e.target.value,
-                      )
-                      if (a) {
-                        setItemId(a.item_id)
-                        setVariantId(findDevice(a.device_id)?.variant_id || "")
-                      }
-                    }}
-                  >
-                    <option value="">普通订单配货</option>
-                    {data.assignments
-                      .filter(
-                        (a) =>
-                          a.status === "returned" &&
-                          requests.some(
-                            (r) =>
-                              r.id === a.after_sales_request_id &&
-                              r.type === "exchange" &&
-                              r.status === "processing",
-                          ),
-                      )
-                      .map((a) => (
-                        <option key={a.id} value={a.id}>
-                          {identity(findDevice(a.device_id)!)} · {a.id}
-                        </option>
-                      ))}
-                  </select>
-                </Field>
+                {!supplier && (
+                  <Field label={t("deviceScan.replacementLabel")}>
+                    <select
+                      className={box}
+                      value={replacement}
+                      onChange={(e) => {
+                        setReplacement(e.target.value)
+                        const a = data.assignments.find(
+                          (a) => a.id === e.target.value,
+                        )
+                        if (a) {
+                          setItemId(a.item_id)
+                          setVariantId(
+                            findDevice(a.device_id)?.variant_id || "",
+                          )
+                        }
+                      }}
+                    >
+                      <option value="">
+                        {t("deviceScan.normalAllocation")}
+                      </option>
+                      {data.assignments
+                        .filter(
+                          (a) =>
+                            a.status === "returned" &&
+                            requests.some(
+                              (r) =>
+                                r.id === a.after_sales_request_id &&
+                                r.type === "exchange" &&
+                                r.status === "processing",
+                            ),
+                        )
+                        .map((a) => (
+                          <option key={a.id} value={a.id}>
+                            {identity(findDevice(a.device_id)!)} · {a.id}
+                          </option>
+                        ))}
+                    </select>
+                  </Field>
+                )}
                 {source?.type === "supplier" && (
                   <>
                     {variantSelect}
@@ -825,7 +1065,7 @@ const DeviceScanPage = () => {
                                 ? { replacement_of: replacement }
                                 : {}),
                             },
-                            "供应商设备已登记并绑定订单",
+                            t("deviceScan.supplierAllocated"),
                           )
                         ) {
                           setSerial("")
@@ -833,18 +1073,16 @@ const DeviceScanPage = () => {
                         }
                       }}
                     >
-                      登记代发设备并配货
+                      {t("deviceScan.registerSupplier")}
                     </Button>
                   </>
                 )}
                 {source?.type === "self" && (
-                  <p className="text-sm">
-                    扫描或从下方选择可售设备，再点击配货。可以从不同来源分批发货。
-                  </p>
+                  <p className="text-sm">{t("deviceScan.allocateHelp")}</p>
                 )}
               </div>
               <div className="space-y-3 rounded-lg border p-4">
-                <h2 className="font-medium">本次订单设备</h2>
+                <h2 className="font-medium">{t("deviceScan.orderDevices")}</h2>
                 {data.assignments.map((a) => (
                   <div
                     key={a.id}
@@ -855,9 +1093,17 @@ const DeviceScanPage = () => {
                       · {data.sources.find((s) => s.id === a.source_id)?.name}
                     </p>
                     {a.replacement_of && (
-                      <p className="break-all">替换原机：{a.replacement_of}</p>
+                      <p className="break-all">
+                        {t("deviceScan.replacementPrefix")}
+                        {a.replacement_of}
+                      </p>
                     )}
-                    {a.tracking_number && <p>物流：{a.tracking_number}</p>}
+                    {a.tracking_number && (
+                      <p>
+                        {t("deviceScan.trackingPrefix")}
+                        {a.tracking_number}
+                      </p>
+                    )}
                     {a.status === "reserved" && (
                       <div className="flex flex-wrap gap-3">
                         <label className="flex gap-2">
@@ -872,7 +1118,7 @@ const DeviceScanPage = () => {
                               )
                             }
                           />
-                          选中创建履约
+                          {t("deviceScan.selectFulfillment")}
                         </label>
                         <Button
                           size="small"
@@ -880,17 +1126,18 @@ const DeviceScanPage = () => {
                           onClick={() =>
                             command(
                               { action: "release", assignment_id: a.id },
-                              "配货已解除，设备恢复可售",
+                              t("deviceScan.released"),
                             )
                           }
                         >
-                          解除配货
+                          {t("deviceScan.release")}
                         </Button>
                       </div>
                     )}
                     {a.fulfillment_id && (
                       <p className="break-all text-xs">
-                        履约：{a.fulfillment_id}
+                        {t("deviceScan.fulfillmentPrefix")}
+                        {a.fulfillment_id}
                       </p>
                     )}
                   </div>
@@ -900,21 +1147,21 @@ const DeviceScanPage = () => {
                   onClick={() =>
                     command(
                       { action: "fulfill", assignment_ids: checked },
-                      "原生订单履约已创建，库存已扣减，请填写物流发货",
+                      t("deviceScan.fulfillmentCreated"),
                     )
                   }
                 >
-                  为选中的 {checked.length} 台创建履约
+                  {t("deviceScan.createFulfillment", { count: checked.length })}
                 </Button>
-                <Field label="物流单号">
+                <Field label={t("deviceScan.tracking")}>
                   <input
-                    aria-label="物流单号"
+                    aria-label={t("deviceScan.tracking")}
                     className={box}
                     value={tracking}
                     onChange={(e) => setTracking(e.target.value)}
                   />
                 </Field>
-                <Field label="物流查询链接（可选）">
+                <Field label={t("deviceScan.trackingUrl")}>
                   <input
                     className={box}
                     type="url"
@@ -942,22 +1189,22 @@ const DeviceScanPage = () => {
                               ? { tracking_url: trackingUrl }
                               : {}),
                           },
-                          "设备与原生订单均已标记发货",
+                          t("deviceScan.shipSuccess"),
                         )
                       }
                     >
-                      发出履约 {id}
+                      {t("deviceScan.shipFulfillment", { id })}
                     </Button>
                     <Button
                       variant="secondary"
                       onClick={() =>
                         command(
                           { action: "cancel_fulfillment", fulfillment_id: id },
-                          "履约已取消，库存恢复，设备保留配货；可解除或重新创建履约",
+                          t("deviceScan.cancelSuccess"),
                         )
                       }
                     >
-                      取消未发出的履约
+                      {t("deviceScan.cancelFulfillment")}
                     </Button>
                   </div>
                 ))}
@@ -967,14 +1214,21 @@ const DeviceScanPage = () => {
           {mode === "inspection" && (
             <>
               <div className="space-y-3 rounded-lg border p-4">
-                <h2 className="font-medium">售后审核 / 完成</h2>
+                <h2 className="font-medium">{t("deviceScan.reviewTitle")}</h2>
                 {requests.map((r) => (
                   <div
                     className="space-y-2 rounded border p-3 text-sm"
                     key={r.id}
                   >
                     <p className="break-all">
-                      {r.type} · {r.status} · {r.id}
+                      {t(`deviceScan.requestTypes.${r.type}`, {
+                        defaultValue: r.type,
+                      })}{" "}
+                      ·{" "}
+                      {t(`deviceScan.requestStatuses.${r.status}`, {
+                        defaultValue: r.status,
+                      })}{" "}
+                      · {r.id}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {r.status === "pending" && (
@@ -984,12 +1238,12 @@ const DeviceScanPage = () => {
                           onClick={() =>
                             command(
                               { request_id: r.id, status: "processing" },
-                              "售后申请已审核，开始处理",
+                              t("deviceScan.reviewSuccess"),
                               `/admin/orders/${orderId}/after-sales`,
                             )
                           }
                         >
-                          审核并处理
+                          {t("deviceScan.review")}
                         </Button>
                       )}
                       {r.status === "processing" && (
@@ -999,12 +1253,12 @@ const DeviceScanPage = () => {
                           onClick={() =>
                             command(
                               { request_id: r.id, status: "completed" },
-                              "售后申请已完成",
+                              t("deviceScan.completedSuccess"),
                               `/admin/orders/${orderId}/after-sales`,
                             )
                           }
                         >
-                          完成申请
+                          {t("deviceScan.complete")}
                         </Button>
                       )}
                       {r.status === "pending" && (
@@ -1014,27 +1268,27 @@ const DeviceScanPage = () => {
                           onClick={() =>
                             command(
                               { request_id: r.id, status: "rejected" },
-                              "申请已拒绝",
+                              t("deviceScan.rejectedSuccess"),
                               `/admin/orders/${orderId}/after-sales`,
                             )
                           }
                         >
-                          拒绝申请
+                          {t("deviceScan.reject")}
                         </Button>
                       )}
                     </div>
                   </div>
                 ))}
                 {requests.length === 0 && (
-                  <p className="text-sm">客户提交申请后可在这里审核处理。</p>
+                  <p className="text-sm">{t("deviceScan.reviewHelp")}</p>
                 )}
               </div>
               <div className="space-y-3 rounded-lg border p-4">
-                <h2 className="font-medium">售后扫码收回</h2>
+                <h2 className="font-medium">{t("deviceScan.receiveTitle")}</h2>
                 {sourceSelect}
-                <Field label="待收回销售记录">
+                <Field label={t("deviceScan.saleToReceive")}>
                   <select
-                    aria-label="待收回销售记录"
+                    aria-label={t("deviceScan.saleToReceive")}
                     className={box}
                     value={assignmentId}
                     onChange={(e) => {
@@ -1046,7 +1300,7 @@ const DeviceScanPage = () => {
                       if (d) choose(d)
                     }}
                   >
-                    <option value="">请选择</option>
+                    <option value="">{t("deviceScan.select")}</option>
                     {data.assignments
                       .filter((a) => a.status === "shipped")
                       .map((a) => (
@@ -1056,24 +1310,28 @@ const DeviceScanPage = () => {
                       ))}
                   </select>
                 </Field>
-                <Field label="处理中售后申请">
+                <Field label={t("deviceScan.processingRequest")}>
                   <select
                     className={box}
                     value={requestId}
                     onChange={(e) => setRequestId(e.target.value)}
                   >
-                    <option value="">请选择已审核的申请</option>
+                    <option value="">{t("deviceScan.selectReviewed")}</option>
                     {requests
                       .filter((r) => r.status === "processing")
                       .map((r) => (
                         <option key={r.id} value={r.id}>
-                          {r.type} · {r.id}
+                          {t(`deviceScan.requestTypes.${r.type}`, {
+                            defaultValue: r.type,
+                          })}{" "}
+                          · {r.id}
                         </option>
                       ))}
                   </select>
                 </Field>
                 <p className="break-all text-sm">
-                  本次扫描：{scan || "请扫描实际收回机器的序列号 / IMEI"}
+                  {t("deviceScan.scanPrefix")}
+                  {scan || t("deviceScan.scanReturned")}
                 </p>
                 <Button
                   disabled={!assignmentId || !requestId || !sourceId || !scan}
@@ -1086,21 +1344,22 @@ const DeviceScanPage = () => {
                         source_id: sourceId,
                         scan,
                       },
-                      "机器已核对并收回，等待检测；退货已同步原生订单，尚未自动退款",
+                      t("deviceScan.receivedSuccess"),
                     )
                   }
                 >
-                  核对并收回机器
+                  {t("deviceScan.receive")}
                 </Button>
               </div>
               {selected && (
                 <div className="space-y-3 rounded-lg border p-4">
                   <h2 className="font-medium">
-                    检测：{identity(selected)} · {states[selected.state]}
+                    {t("deviceScan.inspectionPrefix")}
+                    {identity(selected)} · {states[selected.state]}
                   </h2>
                   {variantSelect}
                   <div className="grid gap-3 md:grid-cols-2">
-                    <Field label="检测后成色">
+                    <Field label={t("deviceScan.inspectedGrade")}>
                       <select
                         className={box}
                         value={grade}
@@ -1111,7 +1370,7 @@ const DeviceScanPage = () => {
                         ))}
                       </select>
                     </Field>
-                    <Field label="检测后电池健康度">
+                    <Field label={t("deviceScan.inspectedBattery")}>
                       <input
                         className={box}
                         type="number"
@@ -1122,26 +1381,26 @@ const DeviceScanPage = () => {
                       />
                     </Field>
                   </div>
-                  <Field label="检测结果">
+                  <Field label={t("deviceScan.inspectionResult")}>
                     <select
-                      aria-label="检测结果"
+                      aria-label={t("deviceScan.inspectionResult")}
                       className={box}
                       value={result}
                       onChange={(e) => setResult(e.target.value)}
                     >
-                      <option value="pass">
-                        通过（退货重新上架 / 维修待返还）
+                      <option value="pass">{t("deviceScan.pass")}</option>
+                      <option value="repair">
+                        {t("deviceScan.needsRepair")}
                       </option>
-                      <option value="repair">需要维修</option>
-                      <option value="retire">报废，不上架</option>
+                      <option value="retire">{t("deviceScan.retire")}</option>
                       <option value="supplier_return">
-                        退还原供应商，不上架
+                        {t("deviceScan.returnSupplier")}
                       </option>
                     </select>
                   </Field>
-                  <Field label="检测 / 维修说明">
+                  <Field label={t("deviceScan.inspectionNotes")}>
                     <textarea
-                      aria-label="检测 / 维修说明"
+                      aria-label={t("deviceScan.inspectionNotes")}
                       className={box}
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}
@@ -1163,15 +1422,15 @@ const DeviceScanPage = () => {
                           variant_id: variantId,
                           notes,
                         },
-                        "检测结果已保存，可售库存按检测结果同步",
+                        t("deviceScan.inspectionSaved"),
                       )
                     }
                   >
-                    保存检测结果
+                    {t("deviceScan.saveInspection")}
                   </Button>
                   {selected.state === "repair_ready" && (
                     <>
-                      <Field label="维修返还物流单号">
+                      <Field label={t("deviceScan.repairTracking")}>
                         <input
                           className={box}
                           value={tracking}
@@ -1193,11 +1452,11 @@ const DeviceScanPage = () => {
                                 assignment_id: a.id,
                                 tracking_number: tracking,
                               },
-                              "维修原机已返还，物流记录已保存",
+                              t("deviceScan.repairReturned"),
                             )
                         }}
                       >
-                        原机维修返还
+                        {t("deviceScan.returnRepair")}
                       </Button>
                     </>
                   )}
@@ -1211,11 +1470,9 @@ const DeviceScanPage = () => {
               (r) => r.type === "return" && r.status === "processing",
             ) && (
               <div className="space-y-3 rounded-lg border p-4">
-                <h2 className="font-medium">退货退款</h2>
-                <p className="text-sm">
-                  先选择上方退货申请并收回全部机器，再核对实收余额和退款金额。点击后会通过订单原支付渠道实际退款。
-                </p>
-                <Field label="退款支付记录">
+                <h2 className="font-medium">{t("deviceScan.refundTitle")}</h2>
+                <p className="text-sm">{t("deviceScan.refundHelp")}</p>
+                <Field label={t("deviceScan.refundPayment")}>
                   <select
                     className={box}
                     value={paymentId}
@@ -1224,7 +1481,7 @@ const DeviceScanPage = () => {
                       setRefundConfirmed(false)
                     }}
                   >
-                    <option value="">请选择已收款支付</option>
+                    <option value="">{t("deviceScan.selectCaptured")}</option>
                     {data.order.payment_collections
                       ?.flatMap((c) => c.payments || [])
                       .map((p) => {
@@ -1233,7 +1490,8 @@ const DeviceScanPage = () => {
                           p.refunds.reduce((s, r) => s + Number(r.amount), 0)
                         return (
                           <option key={p.id} value={p.id}>
-                            {p.id} · 剩余可退 {balance.toFixed(2)}{" "}
+                            {p.id} {t("deviceScan.refundablePrefix")}
+                            {balance.toFixed(2)}{" "}
                             {data.order!.currency_code.toUpperCase()}
                           </option>
                         )
@@ -1241,7 +1499,9 @@ const DeviceScanPage = () => {
                   </select>
                 </Field>
                 <Field
-                  label={`退款金额（${data.order.currency_code.toUpperCase()}）`}
+                  label={t("deviceScan.refundAmount", {
+                    currency: data.order.currency_code.toUpperCase(),
+                  })}
                 >
                   <input
                     className={box}
@@ -1261,7 +1521,7 @@ const DeviceScanPage = () => {
                     checked={refundConfirmed}
                     onChange={(e) => setRefundConfirmed(e.target.checked)}
                   />
-                  已核对申请、收回机器和金额，确认执行退款
+                  {t("deviceScan.refundConfirm")}
                 </label>
                 <Button
                   disabled={
@@ -1278,23 +1538,25 @@ const DeviceScanPage = () => {
                         amount: Number(refundAmount),
                         confirmed: true,
                       },
-                      "退款已执行并关联售后申请，可以在完成检测后关闭申请",
+                      t("deviceScan.refundSuccess"),
                       "/admin/devices/refunds",
                     )
                   }
                 >
-                  确认执行退款
+                  {t("deviceScan.refund")}
                 </Button>
               </div>
             )}
           {mode !== "sources" && (
             <div className="space-y-3">
-              <h2 className="font-medium">设备列表（{data.count}）</h2>
+              <h2 className="font-medium">
+                {t("deviceScan.deviceList", { count: data.count })}
+              </h2>
               <div className="flex flex-wrap gap-2">
                 <input
-                  aria-label="搜索设备"
+                  aria-label={t("deviceScan.search")}
                   className={`${box} flex-1`}
-                  placeholder="序列号 / IMEI / 设备编号"
+                  placeholder={t("deviceScan.searchPlaceholder")}
                   value={search}
                   onChange={(e) => {
                     setSearch(e.target.value)
@@ -1304,7 +1566,7 @@ const DeviceScanPage = () => {
                 />
                 {selected && (
                   <Button variant="secondary" onClick={() => setSelected(null)}>
-                    返回列表
+                    {t("deviceScan.backToList")}
                   </Button>
                 )}
               </div>
@@ -1319,13 +1581,15 @@ const DeviceScanPage = () => {
                     </p>
                     <p className="text-sm">
                       {data.variants.find((v) => v.id === d.variant_id)?.sku} ·{" "}
-                      {d.grade} · 电池 {d.battery_health}%
+                      {d.grade} {t("deviceScan.batteryPrefix")}
+                      {d.battery_health}%
                     </p>
                     <p className="text-sm">
-                      所在：
+                      {t("deviceScan.locationPrefix")}
                       {data.sources.find((s) => s.location_id === d.location_id)
                         ?.name || d.location_id}{" "}
-                      · 仓位 {d.bin || "—"}
+                      {t("deviceScan.binPrefix")}
+                      {d.bin || "—"}
                     </p>
                     <p className="break-all text-xs text-ui-fg-subtle">
                       {d.id}
@@ -1337,7 +1601,9 @@ const DeviceScanPage = () => {
                         variant="secondary"
                         onClick={() => choose(d)}
                       >
-                        {mode === "inspection" ? "选择检测设备" : "查看设备"}
+                        {mode === "inspection"
+                          ? t("deviceScan.selectInspection")
+                          : t("deviceScan.viewDevice")}
                       </Button>
                       {mode === "orders" && d.state === "available" && (
                         <Button
@@ -1358,11 +1624,11 @@ const DeviceScanPage = () => {
                                   ? { replacement_of: replacement }
                                   : {}),
                               },
-                              "设备已绑定订单",
+                              t("deviceScan.allocated"),
                             )
                           }
                         >
-                          配货到订单
+                          {t("deviceScan.allocate")}
                         </Button>
                       )}
                       {mode === "intake" && d.state === "inspection" && (
@@ -1375,7 +1641,7 @@ const DeviceScanPage = () => {
                             setOrderId("")
                           }}
                         >
-                          去检测
+                          {t("deviceScan.inspect")}
                         </Button>
                       )}
                     </div>
@@ -1383,7 +1649,7 @@ const DeviceScanPage = () => {
                 ))}
               </div>
               {!data.devices.length && (
-                <p className="text-sm">没有匹配设备。</p>
+                <p className="text-sm">{t("deviceScan.noDevices")}</p>
               )}
               {!selected && (
                 <div className="flex gap-2">
@@ -1392,22 +1658,23 @@ const DeviceScanPage = () => {
                     disabled={offset === 0}
                     onClick={() => setOffset(Math.max(0, offset - 50))}
                   >
-                    上一页
+                    {t("deviceScan.previous")}
                   </Button>
                   <Button
                     variant="secondary"
                     disabled={offset + 50 >= data.count}
                     onClick={() => setOffset(offset + 50)}
                   >
-                    下一页
+                    {t("deviceScan.next")}
                   </Button>
                 </div>
               )}
               {mode === "lookup" && selected && (
                 <div className="space-y-3 rounded-lg border p-4">
-                  <h2 className="font-medium">设备完整流水</h2>
+                  <h2 className="font-medium">{t("deviceScan.history")}</h2>
                   <p className="text-sm">
-                    采购成本：{(selected.cost_cents / 100).toFixed(2)}{" "}
+                    {t("deviceScan.costPrefix")}
+                    {(selected.cost_cents / 100).toFixed(2)}{" "}
                     {selected.currency_code.toUpperCase()}
                   </p>
                   {data.assignments.map((a) => (
@@ -1424,9 +1691,18 @@ const DeviceScanPage = () => {
                   {data.events.map((e) => (
                     <details key={e.id} className="rounded border p-2 text-sm">
                       <summary>
-                        {new Date(e.created_at).toLocaleString()} · {e.action}
+                        {new Date(e.created_at).toLocaleString(
+                          i18n.language === "zhCN" ? "zh-CN" : "en-GB",
+                        )}{" "}
+                        ·{" "}
+                        {t(`deviceScan.actions.${e.action}`, {
+                          defaultValue: e.action,
+                        })}
                       </summary>
-                      <p className="break-all">操作人：{e.actor_id}</p>
+                      <p className="break-all">
+                        {t("deviceScan.actorPrefix")}
+                        {e.actor_id}
+                      </p>
                       <pre className="overflow-auto whitespace-pre-wrap break-all text-xs">
                         {JSON.stringify(e.data, null, 2)}
                       </pre>
@@ -1443,4 +1719,8 @@ const DeviceScanPage = () => {
 }
 export default DeviceScanPage
 
-export const config = defineRouteConfig({ label: "设备扫码工作台", rank: 5 })
+export const config = defineRouteConfig({
+  label: "deviceScan.title",
+  translationNs: "translation",
+  rank: 5,
+})

@@ -68,6 +68,9 @@ export default async function checkDevices({ container }: ExecArgs) {
     productIds: string[] = [],
     locationIds: string[] = []
   let variant_id = ""
+  let supplierUserId = ""
+  let supplierAuthId = ""
+  let supplierToken = ""
   const call = async (
     path: string,
     body?: unknown,
@@ -167,6 +170,34 @@ export default async function checkDevices({ container }: ExecArgs) {
     ).source
     sourceIds.push(supplier.id)
     locationIds.push(supplier.location_id)
+    const supplierEmail = `supplier-check-${stamp}@example.invalid`
+    const password = `Supplier-check-${stamp}-${Math.random()}`
+    const createdAccount = await call("/admin/devices/supplier-accounts", {
+      email: supplierEmail,
+      password,
+      source_id: supplier.id,
+      order_ids: [],
+    })
+    assert.equal(
+      createdAccount.status,
+      201,
+      JSON.stringify(createdAccount.data),
+    )
+    const [supplierUser] = await users.listUsers({ email: supplierEmail })
+    supplierUserId = supplierUser.id
+    const [identity] = await container
+      .resolve(Modules.AUTH)
+      .listAuthIdentities({ app_metadata: { user_id: supplierUserId } })
+    supplierAuthId = identity.id
+    const login = await call(
+      "/auth/user/emailpass",
+      { email: supplierUser.email, password },
+      null,
+    )
+    assert.equal(login.status, 200, JSON.stringify(login.data))
+    supplierToken = login.data.token
+    const supplierCall = (path: string, body?: unknown) =>
+      call(path, body, supplierToken)
     await command({ action: "enroll", variant_id, acknowledged: true })
     const base = {
       variant_id,
@@ -288,6 +319,113 @@ export default async function checkDevices({ container }: ExecArgs) {
       return { order, item_id: order.items![0].id }
     }
     const mixed = await makeOrder(2)
+    const accountBody = {
+      email: supplierUser.email,
+      source_id: supplier.id,
+      order_ids: [mixed.order.id],
+    }
+    assert.equal(
+      (await call("/admin/devices/supplier-accounts", accountBody)).status,
+      200,
+    )
+    const supplierListing = await supplierCall("/admin/devices")
+    assert.equal(
+      supplierListing.status,
+      200,
+      JSON.stringify(supplierListing.data),
+    )
+    assert.equal(supplierListing.data.access.role, "supplier")
+    assert.deepEqual(
+      supplierListing.data.sources.map((s: any) => s.id),
+      [supplier.id],
+    )
+    assert(
+      supplierListing.data.devices.every(
+        (d: any) => d.source_id === supplier.id,
+      ),
+    )
+    assert(
+      supplierListing.data.supplies.every(
+        (s: any) => s.source_id === supplier.id,
+      ),
+    )
+    for (const variant of supplierListing.data.variants)
+      for (const item of variant.inventory_items || [])
+        assert(
+          (item.inventory?.location_levels || []).every(
+            (level: any) => level.location_id === supplier.location_id,
+          ),
+        )
+    for (const path of [
+      "/admin/orders",
+      "/admin/users",
+      "/admin/products",
+      "/admin/api-keys",
+      "/admin/devices/supplier-accounts",
+      `/admin/devices?device_id=${a.id}`,
+    ])
+      assert.equal((await supplierCall(path)).status, 403, path)
+    assert.equal(
+      (
+        await supplierCall(`/admin/users/${supplierUser.id}`, {
+          metadata: { device_role: "admin" },
+        })
+      ).status,
+      403,
+    )
+    assert.equal(
+      (
+        await supplierCall("/admin/devices/refunds", {
+          request_id: "fake",
+          payment_id: "fake",
+          amount: 1,
+          confirmed: true,
+        })
+      ).status,
+      403,
+    )
+    assert.equal(
+      (
+        await supplierCall("/admin/devices", {
+          action: "source",
+          name: "denied",
+          type: "supplier",
+        })
+      ).status,
+      403,
+    )
+    assert.equal(
+      (
+        await supplierCall("/admin/devices", {
+          action: "enroll",
+          variant_id,
+          acknowledged: true,
+        })
+      ).status,
+      403,
+    )
+    assert.equal(
+      (
+        await supplierCall("/admin/devices", {
+          action: "supply",
+          source_id: self.id,
+          variant_id,
+          quantity: 3,
+        })
+      ).status,
+      403,
+    )
+    assert.equal(
+      (
+        await supplierCall("/admin/devices", {
+          action: "supply",
+          source_id: supplier.id,
+          variant_id,
+          quantity: 3,
+        })
+      ).status,
+      200,
+    )
     const { result: paycol } =
       await createOrUpdateOrderPaymentCollectionWorkflow(container).run({
         input: { order_id: mixed.order.id },
@@ -336,12 +474,17 @@ export default async function checkDevices({ container }: ExecArgs) {
         status: "reserved",
       })
     }
-    await command({
+    const supplierRegistration = await supplierCall("/admin/devices", {
       action: "supplier_assign",
       device: { ...base, source_id: supplier.id, serial_number: `D${stamp}S` },
       order_id: mixed.order.id,
       item_id: mixed.item_id,
     })
+    assert.equal(
+      supplierRegistration.status,
+      200,
+      JSON.stringify(supplierRegistration.data),
+    )
     const [supplierAssignment] = await service.listDeviceAssignments({
       order_id: mixed.order.id,
       source_id: supplier.id,
@@ -352,6 +495,21 @@ export default async function checkDevices({ container }: ExecArgs) {
       "Registering supplier unit does not add stock",
     )
     const mixedListing = await call(`/admin/devices?order_id=${mixed.order.id}`)
+    const scopedOrder = await supplierCall(
+      `/admin/devices?order_id=${mixed.order.id}`,
+    )
+    assert.equal(scopedOrder.status, 200)
+    assert(!("payment_collections" in scopedOrder.data.order))
+    assert.equal(scopedOrder.data.order.shipping_address.address_1, "Test street 1")
+    assert(
+      scopedOrder.data.assignments.every(
+        (a: any) => a.source_id === supplier.id,
+      ),
+    )
+    assert.equal(
+      (await supplierCall(`/admin/devices?order_id=${other.order.id}`)).status,
+      403,
+    )
     assert.equal(mixedListing.status, 200, JSON.stringify(mixedListing.data))
     assert(
       mixedListing.data.devices.some((d: any) => d.id === b.id),
@@ -375,20 +533,46 @@ export default async function checkDevices({ container }: ExecArgs) {
       action: "fulfill",
       assignment_ids: [assignment.id],
     })
-    const supplierFulfill = await command({
+    assert.equal(
+      (
+        await supplierCall("/admin/devices", {
+          action: "fulfill",
+          assignment_ids: [assignment.id, supplierAssignment.id],
+        })
+      ).status,
+      403,
+    )
+    const supplierFulfillResponse = await supplierCall("/admin/devices", {
       action: "fulfill",
       assignment_ids: [supplierAssignment.id],
     })
+    assert.equal(
+      supplierFulfillResponse.status,
+      200,
+      JSON.stringify(supplierFulfillResponse.data),
+    )
+    const supplierFulfill = supplierFulfillResponse.data
+    assert.equal(
+      (
+        await supplierCall("/admin/devices", {
+          action: "ship",
+          fulfillment_id: ownFulfill.result.fulfillment_id,
+          tracking_number: "DENIED",
+        })
+      ).status,
+      403,
+    )
     await command({
       action: "ship",
       fulfillment_id: ownFulfill.result.fulfillment_id,
       tracking_number: "TEST-OWN",
     })
-    await command({
+    const supplierShip = await supplierCall("/admin/devices", {
       action: "ship",
       fulfillment_id: supplierFulfill.result.fulfillment_id,
       tracking_number: "TEST-SUPPLIER",
     })
+    assert.equal(supplierShip.status, 200, JSON.stringify(supplierShip.data))
     await command(
       {
         action: "ship",
@@ -730,6 +914,11 @@ export default async function checkDevices({ container }: ExecArgs) {
         const page = await browser.newPage({
           viewport: { width: 390, height: 844 },
         })
+        await page
+          .context()
+          .addCookies([
+            { name: "lng", value: "zhCN", url: "http://127.0.0.1:9001" },
+          ])
         await page.route("**/admin/**", async (route: any) => {
           if (
             route.request().resourceType() === "fetch" ||
@@ -764,11 +953,149 @@ export default async function checkDevices({ container }: ExecArgs) {
           fullPage: true,
         })
         console.log("Device workbench browser checks passed.")
+        const supplierContext = await browser.newContext({
+          viewport: { width: 390, height: 844 },
+        })
+        await supplierContext.addCookies([
+          { name: "lng", value: "zhCN", url: "http://127.0.0.1:9001" },
+        ])
+        const supplierPage = await supplierContext.newPage()
+        const browserErrors: string[] = []
+        supplierPage.on("pageerror", (error: Error) =>
+          browserErrors.push(error.message),
+        )
+        await supplierPage.goto("http://127.0.0.1:9001/app/device-scan")
+        await supplierPage
+          .locator('input[name="email"]')
+          .fill(supplierUser.email)
+        await supplierPage.locator('input[type="password"]').fill(password)
+        await supplierPage.locator('button[type="submit"]').click()
+        await supplierPage.getByTestId("device-scan-page").waitFor()
+        await supplierPage.getByText("供应商账号：", { exact: false }).waitFor()
+        assert.equal(
+          await supplierPage
+            .getByRole("button", { name: "设备入库", exact: true })
+            .count(),
+          0,
+        )
+        assert.equal(
+          await supplierPage
+            .getByRole("button", { name: "退回检测", exact: true })
+            .count(),
+          0,
+        )
+        await supplierPage
+          .getByRole("button", { name: "供应商库存", exact: true })
+          .click()
+        await supplierPage
+          .getByText("供应商未分配设备的可供数量", { exact: true })
+          .waitFor()
+        assert.equal(
+          await supplierPage
+            .getByText("新增本仓 / 供应商", { exact: true })
+            .count(),
+          0,
+        )
+        assert.equal(
+          await supplierPage
+            .getByText("供应商账号权限", { exact: true })
+            .count(),
+          0,
+        )
+        assert(
+          await supplierPage.evaluate(
+            () => document.documentElement.scrollWidth <= window.innerWidth,
+          ),
+          "Supplier mobile has no overflow",
+        )
+        await supplierPage.screenshot({
+          path: "../../../logs/device-supplier-zhCN-mobile.png",
+          fullPage: true,
+        })
+        await supplierContext.addCookies([
+          { name: "lng", value: "en", url: "http://127.0.0.1:9001" },
+        ])
+        await supplierPage.reload()
+        await supplierPage
+          .getByRole("button", { name: "Supplier inventory", exact: true })
+          .waitFor()
+        await supplierPage.setViewportSize({ width: 1440, height: 1000 })
+        await supplierPage
+          .getByRole("button", { name: "Allocate & dispatch", exact: true })
+          .click()
+        await supplierPage
+          .getByLabel("Authorized orders")
+          .selectOption(mixed.order.id)
+        const supplierOrderResponse = supplierPage.waitForResponse(
+          (response: any) =>
+            response.url().includes(`/admin/devices?`) &&
+            response.url().includes(`order_id=${mixed.order.id}`),
+        )
+        await supplierPage
+          .getByRole("button", { name: "Load order", exact: true })
+          .click()
+        const loadedOrder = await supplierOrderResponse
+        assert.equal(loadedOrder.status(), 200)
+        assert.equal((await loadedOrder.json()).order.id, mixed.order.id)
+        await supplierPage.getByLabel("Order item", { exact: true }).waitFor()
+        await supplierPage.getByText("Test street 1", { exact: true }).waitFor()
+        await supplierPage
+          .getByText(`D${stamp}S`, { exact: false })
+          .first()
+          .waitFor()
+        assert.equal(
+          await supplierPage
+            .getByRole("link", {
+              name: "Open order / Refund actions",
+              exact: true,
+            })
+            .count(),
+          0,
+        )
+        assert.deepEqual(browserErrors, [])
+        await supplierPage.screenshot({
+          path: "../../../logs/device-supplier-en-desktop.png",
+          fullPage: true,
+        })
+        await supplierContext.close()
+        console.log(
+          "Supplier real login, scoped mobile/desktop UI and Chinese/English checks passed.",
+        )
       } finally {
         await browser.close()
       }
     }
+    assert.equal(
+      (
+        await call("/admin/devices/supplier-accounts", {
+          ...accountBody,
+          order_ids: [],
+        })
+      ).status,
+      200,
+    )
+    assert.equal(
+      (await supplierCall(`/admin/devices?order_id=${mixed.order.id}`)).status,
+      403,
+      "Existing session loses revoked order access immediately",
+    )
+    assert.equal(
+      (
+        await supplierCall("/admin/devices", {
+          action: "ship",
+          fulfillment_id: supplierFulfill.result.fulfillment_id,
+          tracking_number: "DENIED",
+        })
+      ).status,
+      403,
+    )
+    console.log("Supplier order revocation checks passed.")
   } finally {
+    if (supplierAuthId)
+      await container
+        .resolve(Modules.AUTH)
+        .deleteAuthIdentities([supplierAuthId])
+    if (supplierUserId) await users.deleteUsers([supplierUserId])
     const assignments = orderIds.length
       ? await service.listDeviceAssignments({ order_id: orderIds })
       : []

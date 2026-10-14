@@ -1,6 +1,6 @@
 # Medusa 本机试用环境
 
-设备库存、手机扫码及订单售后闭环已加入后台：[设备扫码工作台](http://127.0.0.1:9001/app/device-scan)。使用流程与手机 HTTPS 设置见 [DEVICE-INVENTORY.md](DEVICE-INVENTORY.md)。
+设备库存、手机扫码及订单售后闭环已加入后台：[设备入库出库](http://127.0.0.1:9001/app/device-scan)。使用流程与手机 HTTPS 设置见 [DEVICE-INVENTORY.md](DEVICE-INVENTORY.md)。
 
 Medusa 2 后端与管理后台位于 `medusa-store/apps/backend`，购物前台位于 `medusa-store/apps/storefront`。PostgreSQL 和 Redis 由 `compose.yaml` 启动；它们只监听本机。管理后台运行在 http://127.0.0.1:9001/app，购物前台在 http://127.0.0.1:8000/dk，健康检查为 http://127.0.0.1:9001/health。
 
@@ -28,6 +28,8 @@ corepack pnpm run dev
 
 ## 停止
 
+停止 frp 隧道：`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/stop-frp.ps1`。
+
 ```powershell
 cd C:\Users\Administrator\Desktop\other\iphone_retail\medusa-trial
 taskkill /PID (Get-Content logs/medusa.pid) /T /F
@@ -36,6 +38,20 @@ docker compose down
 ```
 
 `docker compose down` 保留数据库卷和试用数据。这个目录与现有 `iphone-retail` 项目独立。
+
+## frp 内网穿透
+
+客户端连接 `43.156.133.126:7000`，使用 TCP 隧道将服务器现有 Nginx 回源端口 `8081` 转发到本机 `127.0.0.1:18080` 网关，通过 `https://frp.xeappliance.com` 访问项目。配置位于 `frp/frpc.toml`，其中的真实 token 和下载的二进制均已被 Git 忽略；配置模板为 `frp/frpc.example.toml`。
+
+双击 `start.bat` 会在前后台就绪后自动启动 frpc；已有服务运行时，可单独双击 `start-frp.bat`。首次启动会通过 `scripts/install-frp.ps1` 下载官方 Windows amd64 frp 0.71.0，并核对官方 SHA256。日志为 `logs/frpc.out.log` 和 `logs/frpc.err.log`，进程号为 `logs/frpc.pid`。修改配置后先运行 `scripts/stop-frp.ps1`，再启动。
+
+公网前台入口为 `https://frp.xeappliance.com/`，后台为 `https://frp.xeappliance.com/app`。本地网关将 `/app`、`/admin`、`/auth`、`/store`、`/health`、`/static`、`/uploads` 路径转发到后台 `9001`，其余路径转发到前台 `8000`。网关仅监听本机，进程号记录在 `logs/frp-gateway.pid`；停止 frp 的脚本也会停止网关。浏览器无需指定端口。不再使用 18000/19001 代理端口。
+
+证书和 Cloudflare 回源方式由服务器现有入口负责。前台 `.env.local` 中 `NEXT_PUBLIC_BASE_URL=https://frp.xeappliance.com`、`NEXT_PUBLIC_FRP_DOMAIN=frp.xeappliance.com`；浏览器访问该域名时 API 使用同源地址，服务端请求仍使用本机后台。网关保留公网转发头，并对后台同源 Origin 和 Host 做本机转换。
+
+已验证 frpc 认证与代理注册成功，HTTPS 根路径跳转到 `/dk`，前台 `/dk/store`、后台 `/app` 和 `/health` 曾返回 200，前台浏览器无 localhost 请求。本地网关和后台静态资源均正常，但公网加载时出现间歇性 502 与 frpc session shutdown/写入超时，后台登录表单尚未通过浏览器验证。已启用代理压缩与 10 秒心跳，客户端会自动重连；服务器配置保持原样。
+
+配置格式与校验命令见 [frp 官方文档](https://gofrp.org/zh-cn/docs/features/common/configure/)。
 
 ## Swappie iPhone 目录快照
 

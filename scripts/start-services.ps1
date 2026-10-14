@@ -76,6 +76,17 @@ try {
   Start-App 'medusa' $backendDir 9001 'http://127.0.0.1:9001/health'
   Start-App 'storefront' $storefrontDir 8000 'http://127.0.0.1:8000/dk/store'
 
+  $frpConfig = Join-Path $projectDir 'frp\frpc.toml'
+  if (Test-Path -LiteralPath $frpConfig) {
+    $frpText = Get-Content -LiteralPath $frpConfig -Raw
+    if ($frpText -notmatch 'YOUR_FRP_SERVER|YOUR_FRP_TOKEN' -and $frpText -match '(?m)^\s*\[\[proxies\]\]') {
+      & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'start-frp.ps1')
+      if ($LASTEXITCODE -ne 0) { throw 'frpc failed to start. See logs/frpc.*.log.' }
+    } else {
+      Write-Host 'frpc configuration is incomplete; skipping tunnel startup.'
+    }
+  }
+
   Write-Host 'Admin: http://127.0.0.1:9001/app'
   Write-Host 'Store: http://127.0.0.1:8000/dk/store'
   exit 0

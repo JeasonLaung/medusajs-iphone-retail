@@ -134,6 +134,19 @@ claude mcp add --transport http medusa https://docs.medusajs.com/mcp # or agent 
 - **Business logic belongs in workflows**, not in route handlers. Routes resolve and run a workflow; workflows compose steps.
 - Adding a task to `turbo.json` requires declaring its `outputs`, or Turbo will cache nothing/the wrong thing.
 
+## Multilingual Feature Development
+
+- **Set up the admin's base language support first, preferring Medusa's own language resources.** Check the installed dashboard for a Simplified Chinese language pack before installing or writing one. If Medusa ships the pack, enable or reuse it for standard admin operations; only add a compatible pack when it is missing. The current dashboard already ships `zhCN` translations and lists Simplified Chinese in its language selector, so no separate Chinese package is needed.
+- Keep Medusa's standard admin translations supplied by the installed package. Do not copy or retranslate the entire dashboard, edit `node_modules`, or replace built-in translation resources with a custom dictionary. Community translations distributed with Medusa count as the preferred built-in pack; do not describe them as independently authored official translations.
+- **Localize custom features as they are developed, based on the actual feature requirements.** Consider localization when designing, adding, or changing user-facing features in the admin or storefront. The current priority is **Simplified Chinese and English**; add both languages for new or changed UI copy within the feature's scope. Do not turn a feature task into an unsolicited full-project translation or add unused translation keys in advance.
+- Put interface text in translation resources with stable, descriptive keys. Include navigation labels, headings, buttons, field labels, placeholders, accessibility labels, status names, validation errors, notifications, empty states, and loading messages. Do not hardcode Chinese or English copy in components.
+- Reuse the application's existing language selection and translation mechanism. Admin extensions use `react-i18next` and `src/admin/i18n`; add feature translations under Medusa's `zhCN` locale and English under `en`, extending the built-in pack. Reuse suitable built-in translation keys for standard actions; add custom keys for feature-specific copy. Translate custom sidebar labels through `defineRouteConfig`'s `translationNs` option. Storefront features follow the storefront's existing locale mechanism.
+- Keep Chinese and English translation keys and interpolation variables in sync. Translate complete sentences with named variables; do not assemble sentences from translated fragments. Use concise, natural wording in each language.
+- Make user-visible API and business validation errors localizable. Prefer stable error codes with parameters for new errors, and translate them in the UI while retaining useful error details.
+- Keep identifiers, SKUs, serial numbers, IMEIs, API enum values, and stored business data independent of interface language. Preserve user-entered names and notes; translating product content requires its own explicit content translation support.
+- Format dates, numbers, and currencies for the selected locale, and allow layouts to accommodate different text lengths on desktop and mobile. Use the application's English fallback when a translation is unavailable.
+- Before completing a user-facing change, verify affected flows in both Simplified Chinese and English, including language selection, copy coverage, errors, and layout where relevant. Use checks appropriate to the change; a copy-only change does not require a new test suite. Do not silently defer one language or add further locales unless requested.
+
 ## Common Mistakes
 
 - Running storefront commands without checking that `apps/storefront/` exists.

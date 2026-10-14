@@ -3,7 +3,8 @@
 import React, { useActionState, useEffect, useMemo } from "react"
 
 import Input from "@modules/common/components/input"
-import NativeSelect from "@modules/common/components/native-select"
+import CountrySelect from "@modules/checkout/components/country-select"
+import { getCountryOptions } from "@lib/util/countries"
 
 import { addCustomerAddress, updateCustomerAddress } from "@lib/data/customer"
 import { HttpTypes } from "@medusajs/types"
@@ -18,18 +19,7 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
   customer,
   regions,
 }) => {
-  const regionOptions = useMemo(() => {
-    return (
-      regions
-        ?.map((region) => {
-          return region.countries?.map((country) => ({
-            value: country.iso_2,
-            label: country.display_name,
-          }))
-        })
-        .flat() || []
-    )
-  }, [regions])
+  const regionOptions = useMemo(() => getCountryOptions(regions), [regions])
 
   const [successState, setSuccessState] = React.useState(false)
 
@@ -167,21 +157,14 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
             defaultValue={billingAddress?.province || undefined}
             data-testid="billing-province-input"
           />
-          <NativeSelect
+          <CountrySelect
+            regions={regions}
             name="country_code"
             defaultValue={billingAddress?.country_code || undefined}
+            autoComplete="country"
             required
             data-testid="billing-country-code-select"
-          >
-            <option value="">-</option>
-            {regionOptions.map((option, i) => {
-              return (
-                <option key={i} value={option?.value}>
-                  {option?.label}
-                </option>
-              )
-            })}
-          </NativeSelect>
+          />
         </div>
       </AccountInfo>
     </form>

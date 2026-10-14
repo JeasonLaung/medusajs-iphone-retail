@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { BrowserMultiFormatReader, type IScannerControls } from "@zxing/browser"
 import { Button } from "@medusajs/ui"
 import { useEffect, useRef, useState } from "react"
@@ -7,6 +8,7 @@ export default function DeviceScanner({
 }: {
   onScan: (value: string) => void
 }) {
+  const { t } = useTranslation()
   const video = useRef<HTMLVideoElement>(null)
   const controls = useRef<IScannerControls | null>(null)
   const generation = useRef(0)
@@ -40,9 +42,7 @@ export default function DeviceScanner({
     stop()
     setError("")
     if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
-      setError(
-        "手机相机需要通过 HTTPS 打开后台，并允许相机权限。也可以拍照上传识别或手动输入。",
-      )
+      setError(t("deviceScan.cameraHttps"))
       return
     }
     const current = generation.current
@@ -70,9 +70,7 @@ export default function DeviceScanner({
     } catch (e) {
       if (generation.current === current) {
         stop()
-        setError(
-          `无法打开相机：${(e as Error).message}。请检查权限，或拍照上传 / 手动输入。`,
-        )
+        setError(t("deviceScan.cameraError", { message: (e as Error).message }))
       }
     }
   }
@@ -91,9 +89,7 @@ export default function DeviceScanner({
       setValue(text)
       callback.current(text)
     } catch {
-      setError(
-        "未识别到条形码或二维码，请拍摄清晰完整的标签。普通文字请手动输入。",
-      )
+      setError(t("deviceScan.imageError"))
     } finally {
       URL.revokeObjectURL(url)
       setImageBusy(false)
@@ -104,17 +100,15 @@ export default function DeviceScanner({
       className="space-y-3 rounded-lg border p-4"
       data-testid="device-scanner"
     >
-      <p className="font-medium">扫码读取序列号 / IMEI</p>
-      <p className="text-sm text-ui-fg-subtle">
-        支持标签上的条形码、二维码。扫码只填写字段，核对后提交操作。
-      </p>
+      <p className="font-medium">{t("deviceScan.scannerTitle")}</p>
+      <p className="text-sm text-ui-fg-subtle">{t("deviceScan.scannerHelp")}</p>
       <video
         ref={video}
         muted
         playsInline
         className={`w-full rounded-lg bg-black ${running ? "block" : "hidden"}`}
         style={{ maxHeight: 300 }}
-        aria-label="扫码相机预览"
+        aria-label={t("deviceScan.cameraPreview")}
       />
       <div className="flex flex-wrap gap-2">
         <Button
@@ -122,12 +116,12 @@ export default function DeviceScanner({
           onClick={running ? stop : start}
           type="button"
         >
-          {running ? "关闭相机" : "打开手机相机"}
+          {running ? t("deviceScan.stopCamera") : t("deviceScan.startCamera")}
         </Button>
         <label className="cursor-pointer rounded-md border px-3 py-2 text-sm">
-          {imageBusy ? "识别中…" : "拍照 / 上传标签"}
+          {imageBusy ? t("deviceScan.decoding") : t("deviceScan.uploadPhoto")}
           <input
-            aria-label="上传标签图片"
+            aria-label={t("deviceScan.uploadLabel")}
             type="file"
             accept="image/*"
             capture="environment"
@@ -152,20 +146,21 @@ export default function DeviceScanner({
         }}
       >
         <input
-          aria-label="手动输入序列号或 IMEI"
+          aria-label={t("deviceScan.manualInput")}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           className="min-w-0 flex-1 rounded-md border bg-ui-bg-base px-3 py-2"
-          placeholder="手动输入或使用扫码枪"
+          placeholder={t("deviceScan.manualPlaceholder")}
           autoComplete="off"
         />
         <Button type="submit" variant="secondary" disabled={!value.trim()}>
-          使用号码
+          {t("deviceScan.useIdentifier")}
         </Button>
       </form>
       {last && (
         <p className="break-all text-sm" role="status">
-          已读取：{last}
+          {t("deviceScan.readPrefix")}
+          {last}
         </p>
       )}
       {error && (

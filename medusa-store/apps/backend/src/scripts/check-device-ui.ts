@@ -11,8 +11,26 @@ import {
   generateJwtToken,
 } from "@medusajs/framework/utils"
 import { parseDeviceCsv } from "../admin/lib/device-csv"
+import { localizeDeviceMessage } from "../admin/lib/device-messages"
+import en from "../admin/i18n/json/en.json"
+import zhCN from "../admin/i18n/json/zh-CN.json"
 
 export default async function checkDeviceUi({ container }: ExecArgs) {
+  const errors = en.deviceScan.errors
+  assert.equal(
+    localizeDeviceMessage(
+      zhCN.deviceScan.errors.scanMismatch,
+      (key) =>
+        errors[key.replace("deviceScan.errors.", "") as keyof typeof errors],
+    ),
+    errors.scanMismatch,
+    "Business validation errors translate to English",
+  )
+  assert.equal(
+    localizeDeviceMessage("Unexpected provider error", () => "translated"),
+    "Unexpected provider error",
+    "Unknown provider errors retain their details",
+  )
   assert.equal(
     parseDeviceCsv(
       '\uFEFFserial_number,notes\r\nDEVICECHECK123,"quoted, note"\r\n',
@@ -72,6 +90,9 @@ export default async function checkDeviceUi({ container }: ExecArgs) {
       ignoreHTTPSErrors: true,
       viewport: { width: 390, height: 844 },
     })
+    await context.addCookies([
+      { name: "lng", value: "zhCN", url: "https://127.0.0.1:9443" },
+    ])
     const pngPage = await context.newPage()
     await pngPage.setContent(svg)
     const imagePath = resolve(
@@ -149,7 +170,7 @@ export default async function checkDeviceUi({ container }: ExecArgs) {
       "Stop releases camera",
     )
     await page
-      .getByRole("button", { name: "扫码入库 / 导入", exact: true })
+      .getByRole("button", { name: "设备入库", exact: true })
       .click()
     await page.getByLabel("上传标签图片").setInputFiles(imagePath)
     await page.waitForFunction(
@@ -187,12 +208,96 @@ export default async function checkDeviceUi({ container }: ExecArgs) {
       fullPage: true,
     })
     await page
-      .getByRole("button", { name: "仓库 / 供应商库存", exact: true })
+      .getByRole("button", { name: "仓库与供应商", exact: true })
       .click()
     await page.getByText("启用 SKU 设备库存", { exact: true }).waitFor()
+    for (const locale of ["en", "zhCN"]) {
+      await context.addCookies([
+        { name: "lng", value: locale, url: "https://127.0.0.1:9443" },
+      ])
+      await page.reload()
+      const english = locale === "en"
+      const title = english ? "Device intake & dispatch" : "设备入库出库"
+      await page.getByRole("heading", { name: title, exact: true }).waitFor()
+      await page.getByRole("link", { name: title, exact: true }).waitFor()
+      const modes = english
+        ? [
+            "Find devices",
+            "Device intake",
+            "Allocate & dispatch",
+            "Returns & inspection",
+            "Warehouses & suppliers",
+          ]
+        : [
+            "查设备",
+            "设备入库",
+            "配货出库",
+            "退回检测",
+            "仓库与供应商",
+          ]
+      for (const name of modes) {
+        await page.getByRole("button", { name, exact: true }).click()
+        if (name === modes[1]) {
+          await page
+            .getByLabel(english ? "Import device CSV" : "导入设备 CSV")
+            .setInputFiles({
+              name: "invalid.csv",
+              mimeType: "text/csv",
+              buffer: Buffer.from('imei,notes\n123,"unclosed'),
+            })
+          await page
+            .getByRole("alert")
+            .filter({
+              hasText: english ? "Unclosed CSV quote." : "CSV 引号未闭合",
+            })
+            .waitFor()
+        }
+      }
+      await page
+        .getByText(
+          english ? "Enable device inventory for SKU" : "启用 SKU 设备库存",
+          { exact: true },
+        )
+        .waitFor()
+      await page.getByRole("button", { name: modes[0], exact: true }).click()
+      await page
+        .getByLabel(
+          english
+            ? "Enter serial number or IMEI manually"
+            : "手动输入序列号或 IMEI",
+        )
+        .fill("DEVICECHECK123")
+      await page
+        .getByRole("button", {
+          name: english ? "Use identifier" : "使用号码",
+          exact: true,
+        })
+        .click()
+      assert.equal(
+        await page
+          .getByLabel(english ? "Search devices" : "搜索设备")
+          .inputValue(),
+        "DEVICECHECK123",
+      )
+      await page.setViewportSize({ width: 390, height: 844 })
+      assert(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        ),
+        `${locale} mobile page has no overflow`,
+      )
+      await page.screenshot({
+        path: resolve(
+          process.cwd(),
+          `../../../logs/device-scan-${locale}-mobile.png`,
+        ),
+        fullPage: true,
+      })
+      await page.setViewportSize({ width: 1440, height: 1000 })
+    }
     assert.equal(errors.length, 0, errors.join("\n"))
     console.log(
-      "Device UI checks passed: CSV quoting/BOM/errors, HTTPS admin, QR image decoding, manual scanner entry, intake field routing, camera start/stop with a simulated video device, responsive pages and no runtime errors.",
+      "Device UI checks passed: Chinese and English sidebar and all five modes, localized CSV errors, CSV quoting/BOM, HTTPS admin, QR image decoding, manual scanner entry, intake field routing, camera start/stop, responsive pages and no runtime errors.",
     )
   } finally {
     await browser.close()

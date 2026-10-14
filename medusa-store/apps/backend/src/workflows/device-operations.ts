@@ -47,6 +47,7 @@ import type {
   DeviceCommandBody,
   IntakeDeviceBody,
 } from "../api/admin/devices/validators"
+import { authorizeDeviceCommand } from "../api/device-access"
 
 type Input = Exclude<DeviceCommandBody, { action: "source" }> & {
   actor_id: string
@@ -125,6 +126,7 @@ type Plan = {
 const prepareDevices = createStep(
   "prepare-devices",
   async (input: Input, { container }) => {
+    await authorizeDeviceCommand(container, input.actor_id, input)
     const service: DevicesModuleService = container.resolve(DEVICES_MODULE)
     const inventory: IInventoryService = container.resolve(Modules.INVENTORY)
     const query = container.resolve(ContainerRegistrationKeys.QUERY)

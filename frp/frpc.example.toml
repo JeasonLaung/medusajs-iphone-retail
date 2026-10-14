@@ -1,0 +1,19 @@
+# Copy to frpc.toml and fill in your token.
+serverAddr = "43.156.133.126"
+serverPort = 7000
+transport.protocol = "tcp"
+transport.heartbeatInterval = 10
+transport.heartbeatTimeout = 90
+
+[auth]
+method = "token"
+token = "YOUR_FRP_TOKEN"
+
+# Existing Nginx serves https://frp.xeappliance.com/.
+[[proxies]]
+name = "medusa-trial-domain"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 18080
+remotePort = 8081
+transport.useCompression = true

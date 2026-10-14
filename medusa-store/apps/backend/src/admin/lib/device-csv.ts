@@ -1,5 +1,21 @@
+import en from "../i18n/json/en.json"
+
 // RFC-style quoted fields, escaped quotes, CRLF, BOM and multiline cells.
-export function parseDeviceCsv(text: string): Record<string, string>[] {
+export function parseDeviceCsv(
+  text: string,
+  message: (key: string, values?: { row: number }) => string = (
+    key,
+    values,
+  ) => {
+    const template =
+      en.deviceScan[
+        key.replace("deviceScan.", "") as keyof typeof en.deviceScan
+      ]
+    return typeof template === "string"
+      ? template.replace("{{row}}", String(values?.row ?? ""))
+      : key
+  },
+): Record<string, string>[] {
   const rows: string[][] = []
   let row: string[] = [],
     field = "",
@@ -12,7 +28,7 @@ export function parseDeviceCsv(text: string): Record<string, string>[] {
         field += '"'
         i += 1
       } else if (quoted || field.length === 0) quoted = !quoted
-      else throw new Error("CSV 引号格式错误")
+      else throw new Error(message("deviceScan.csvQuotes"))
     } else if (c === "," && !quoted) {
       row.push(field)
       field = ""
@@ -24,21 +40,19 @@ export function parseDeviceCsv(text: string): Record<string, string>[] {
       field = ""
     } else field += c
   }
-  if (quoted) throw new Error("CSV 引号未闭合")
+  if (quoted) throw new Error(message("deviceScan.csvUnclosed"))
   row.push(field)
   if (row.some((s) => s.trim())) rows.push(row)
   const headers = rows.shift()?.map((s) => s.trim().toLowerCase()) || []
   if (!headers.length || new Set(headers).size !== headers.length)
-    throw new Error("CSV 表头缺失或重复")
+    throw new Error(message("deviceScan.csvHeaders"))
   if (!headers.includes("serial_number") && !headers.includes("imei"))
-    throw new Error(
-      "CSV 需要 serial_number 或 imei 列；在 Excel 中请将号码设为文本格式",
-    )
+    throw new Error(message("deviceScan.csvIdentity"))
   if (rows.length > 200 || rows.length === 0)
-    throw new Error("每批请导入 1–200 台设备")
+    throw new Error(message("deviceScan.csvRows"))
   return rows.map((values, index) => {
     if (values.length !== headers.length)
-      throw new Error(`CSV 第 ${index + 2} 行列数不正确`)
+      throw new Error(message("deviceScan.csvColumns", { row: index + 2 }))
     return Object.fromEntries(headers.map((h, i) => [h, values[i].trim()]))
   })
 }
