@@ -9,6 +9,9 @@ import {
 import { ProductOptionRow, toOptionValues } from "./helpers/option-values";
 import { loadPricing, priceFields, toProductPricing } from "./helpers/pricing";
 import { resolveProductIds } from "./helpers/resolve-product-ids";
+import { toColorFamilies } from "./helpers/color-families";
+import { cardSkuOptions } from "./helpers/card-sku-options"
+import { loadStockedVariantIds, stockedStorageOptions } from "./helpers/stocked-options"
 
 const PRODUCT_GRAPH_FIELDS = [
   "id",
@@ -24,6 +27,10 @@ const PRODUCT_GRAPH_FIELDS = [
   "tags.value",
   "options.title",
   "options.values.value",
+  "variants.options.value",
+  "variants.sku",
+  "variants.id",
+  "variants.options.option.title",
 ];
 
 type ProductRow = {
@@ -40,6 +47,7 @@ type ProductRow = {
   categories?: ({ name?: string | null } | null)[] | null;
   tags?: ({ value?: string | null } | null)[] | null;
   options?: ProductOptionRow[] | null;
+  variants?: ({ id?: string; sku?: string | null; options?: ({ value?: string | null; option?: { title?: string | null } | null } | null)[] | null } | null)[] | null;
 };
 
 const productFields = search.define({
@@ -76,6 +84,16 @@ const productFields = search.define({
     .facetable()
     .retrievable(),
   color_hexes: search.keyword().array().retrievable(),
+  model_storage_options: search.keyword().array().retrievable(),
+  sku_storage_options: search.keyword().array().retrievable(),
+  stocked_storage_options: search.keyword().array().retrievable(),
+  sku_color_options: search.keyword().array().retrievable(),
+  color_families: search
+    .keyword()
+    .array()
+    .filterable()
+    .facetable()
+    .retrievable(),
   battery_options: search
     .keyword()
     .array()
@@ -101,6 +119,7 @@ type ProductDocument = SearchTypes.InferSearchDocumentType<
 function toDocument(
   product: ProductRow,
   pricing: Parameters<typeof toProductPricing>[0],
+  stockedIds: Set<string>,
 ): ProductDocument {
   const category = (product.categories ?? [])
     .map((productCategory) => productCategory?.name?.trim())
@@ -137,13 +156,21 @@ function toDocument(
       product.metadata?.source === "swappie-html-snapshot"
         ? (product.title ?? null)
         : null,
-    storage_options: Array.isArray(product.metadata?.available_storages)
-      ? product.metadata.available_storages.filter(
-          (value): value is string => typeof value === "string",
-        )
-      : [],
+    // Only capacities attached to real variants belong in the shopping filter.
+    // Model-level available_storages remains reference data, not a sale offer.
+    storage_options: Array.from(new Set((product.variants ?? []).flatMap((variant) =>
+      (variant?.options ?? []).flatMap((option) => {
+        const value = option?.value?.trim();
+        return value && /^(storage|capacity|容量)$/i.test(option?.option?.title?.trim() ?? "")
+          ? [value]
+          : [];
+      }),
+    ))),
     color_options: cardColors.map((color) => color.name),
+    color_families: toColorFamilies(cardColors),
     color_hexes: cardColors.map((color) => color.hex),
+    ...cardSkuOptions(product.variants, product.metadata?.available_storages),
+    stocked_storage_options: stockedStorageOptions(product, stockedIds),
     battery_options: Array.isArray(product.metadata?.available_batteries)
       ? product.metadata.available_batteries.filter(
           (value): value is string => typeof value === "string",
@@ -181,12 +208,12 @@ const source = {
     rows: ProductRow[],
     context: SearchTypes.SearchIngestionContext,
   ) => {
-    const pricing = await loadPricing(
-      rows.map((row) => row.id),
-      context,
-    );
+    const [pricing, stockedIds] = await Promise.all([
+      loadPricing(rows.map((row) => row.id), context),
+      loadStockedVariantIds(rows, context),
+    ]);
 
-    return rows.map((row) => toDocument(row, pricing.get(row.id)));
+    return rows.map((row) => toDocument(row, pricing.get(row.id), stockedIds));
   },
 };
 
@@ -218,6 +245,12 @@ const PRODUCT_EVENTS = [
   "product-category.updated",
   "product-category.deleted",
   "sales-channel.deleted",
+  "inventory-level.created",
+  "inventory-level.updated",
+  "inventory-level.deleted",
+  "reservation-item.created",
+  "reservation-item.updated",
+  "reservation-item.deleted",
 ];
 
 export default defineSearchIndex({

@@ -2,7 +2,7 @@
 
 import { sdk } from "@lib/config"
 import { revalidateTag } from "next/cache"
-import { cookies as nextCookies } from "next/headers"
+import { cookies as nextCookies, headers as nextHeaders } from "next/headers"
 import { getAuthHeaders, getCacheTag, getCartId } from "./cookies"
 
 const LOCALE_COOKIE_NAME = "_medusa_locale"
@@ -12,6 +12,9 @@ const LOCALE_COOKIE_NAME = "_medusa_locale"
  */
 export const getLocale = async (): Promise<string | null> => {
   try {
+    const headers = await nextHeaders()
+    const routeLocale = headers.get("x-storefront-locale")
+    if (routeLocale) return routeLocale
     const cookies = await nextCookies()
     return cookies.get(LOCALE_COOKIE_NAME)?.value ?? null
   } catch {

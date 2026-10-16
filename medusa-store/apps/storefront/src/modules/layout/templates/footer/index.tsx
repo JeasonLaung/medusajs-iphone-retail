@@ -1,15 +1,17 @@
-import { listCategories } from "@lib/data/categories";
-import { listCollections } from "@lib/data/collections";
-import { Text, clx } from "@modules/common/components/ui";
+import { listCategories } from "@lib/data/categories"
+import { storeSeriesUrl } from "@lib/util/store-series-url"
+import { listCollections } from "@lib/data/collections"
+import { Text, clx } from "@modules/common/components/ui"
 
-import LocalizedClientLink from "@modules/common/components/localized-client-link";
-import MedusaCTA from "@modules/layout/components/medusa-cta";
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import MedusaCTA from "@modules/layout/components/medusa-cta"
 
 export default async function Footer() {
   const { collections } = await listCollections({
     fields: "*products",
-  });
-  const productCategories = await listCategories();
+  })
+  const productCategories = await listCategories()
+  const iphoneCategory = productCategories.find((c) => c.handle === "iphone")
 
   return (
     <footer className="border-t border-ui-border-base w-full">
@@ -24,61 +26,32 @@ export default async function Footer() {
             </LocalizedClientLink>
           </div>
           <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
-            {productCategories && productCategories?.length > 0 && (
+            {iphoneCategory && (
               <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Categories
-                </span>
+                <LocalizedClientLink
+                  className="txt-small-plus txt-ui-fg-base hover:text-ui-fg-subtle"
+                  href="/store"
+                >
+                  {iphoneCategory.name}
+                </LocalizedClientLink>
                 <ul
                   className="grid grid-cols-1 gap-2"
                   data-testid="footer-categories"
                 >
-                  {productCategories?.slice(0, 6).map((c) => {
-                    if (c.parent_category) {
-                      return;
-                    }
-
-                    const children =
-                      c.category_children?.map((child) => ({
-                        name: child.name,
-                        handle: child.handle,
-                        id: child.id,
-                      })) || null;
-
-                    return (
-                      <li
-                        className="flex flex-col gap-2 text-ui-fg-subtle txt-small"
-                        key={c.id}
+                  {iphoneCategory.category_children?.map((c) => (
+                    <li
+                      className="flex flex-col gap-2 text-ui-fg-subtle txt-small"
+                      key={c.id}
+                    >
+                      <LocalizedClientLink
+                        className="hover:text-ui-fg-base"
+                        href={storeSeriesUrl(c.name)}
+                        data-testid="category-link"
                       >
-                        <LocalizedClientLink
-                          className={clx(
-                            "hover:text-ui-fg-base",
-                            children && "txt-small-plus"
-                          )}
-                          href={`/categories/${c.handle}`}
-                          data-testid="category-link"
-                        >
-                          {c.name}
-                        </LocalizedClientLink>
-                        {children && (
-                          <ul className="grid grid-cols-1 ml-3 gap-2">
-                            {children &&
-                              children.map((child) => (
-                                <li key={child.id}>
-                                  <LocalizedClientLink
-                                    className="hover:text-ui-fg-base"
-                                    href={`/categories/${child.handle}`}
-                                    data-testid="category-link"
-                                  >
-                                    {child.name}
-                                  </LocalizedClientLink>
-                                </li>
-                              ))}
-                          </ul>
-                        )}
-                      </li>
-                    );
-                  })}
+                        {c.name}
+                      </LocalizedClientLink>
+                    </li>
+                  ))}
                 </ul>
               </div>
             )}
@@ -153,5 +126,5 @@ export default async function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }

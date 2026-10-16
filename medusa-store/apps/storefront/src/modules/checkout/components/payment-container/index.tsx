@@ -2,13 +2,15 @@ import { Radio as RadioGroupOption } from "@headlessui/react"
 import { Text, clx } from "@modules/common/components/ui"
 import React, { useContext, type JSX } from "react"
 
-import Radio from "@modules/common/components/radio"
+import styles from "../../styles.module.css"
 
 import { isManual } from "@lib/constants"
 import SkeletonCardDetails from "@modules/skeletons/components/skeleton-card-details"
 import { PaymentElement } from "@stripe/react-stripe-js"
 import PaymentTest from "../payment-test"
 import { StripeContext } from "../payment-wrapper/stripe-wrapper"
+import { useParams } from "next/navigation"
+import { getCheckoutCopy } from "../../i18n"
 
 type PaymentContainerProps = {
   paymentProviderId: string
@@ -43,7 +45,7 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
     >
       <div className="flex items-center justify-between ">
         <div className="flex items-center gap-x-4">
-          <Radio checked={selectedPaymentOptionId === paymentProviderId} />
+          <span className={styles.paymentIndicator} aria-hidden="true" data-checked={selectedPaymentOptionId === paymentProviderId}><span /></span>
           <Text className="text-base-regular">
             {paymentInfoMap[paymentProviderId]?.title || paymentProviderId}
           </Text>
@@ -77,6 +79,8 @@ export const StripePaymentContainer = ({
   setPaymentComplete: (complete: boolean) => void
 }) => {
   const stripeReady = useContext(StripeContext)
+  const { countryCode } = useParams<{ countryCode: string }>()
+  const copy = getCheckoutCopy(countryCode)
 
   return (
     <PaymentContainer
@@ -89,7 +93,7 @@ export const StripePaymentContainer = ({
         (stripeReady ? (
           <div className="my-4 transition-all duration-150 ease-in-out">
             <Text className="txt-medium-plus text-ui-fg-base mb-1">
-              Enter your payment details:
+              {copy.enterPayment}
             </Text>
             <PaymentElement
               options={{ layout: "accordion" }}
@@ -104,7 +108,7 @@ export const StripePaymentContainer = ({
               onLoadError={(e) => {
                 setPaymentComplete(false)
                 setError(
-                  e.error?.message ?? "Could not load the payment methods."
+                  e.error?.message ?? copy.paymentLoadError
                 )
               }}
             />

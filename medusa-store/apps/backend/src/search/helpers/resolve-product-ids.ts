@@ -87,6 +87,23 @@ export async function resolveProductIds(
   const deleted = event.name.endsWith(".deleted");
 
   switch (entity) {
+    case "inventory-level":
+    case "reservation-item": {
+      const { data: rows } = await query.graph({
+        entity: entity === "inventory-level" ? "inventory_level" : "reservation",
+        fields: ["inventory_item_id"],
+        filters: { id: ids },
+        withDeleted: deleted,
+      });
+      const inventoryIds = Array.from(new Set(rows.map((row) => row.inventory_item_id).filter(Boolean)));
+      if (!inventoryIds.length) return [];
+      const { data: links } = await query.graph({
+        entity: "product_variant_inventory_items",
+        fields: ["variant.product_id"],
+        filters: { inventory_item_id: inventoryIds },
+      });
+      return Array.from(new Set(links.map((link) => link.variant?.product_id).filter((id): id is string => Boolean(id))));
+    }
     case "product":
       return ids;
     case "product-variant":

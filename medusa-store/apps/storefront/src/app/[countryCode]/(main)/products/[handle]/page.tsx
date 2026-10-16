@@ -4,6 +4,14 @@ import { listProducts } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
 import { HttpTypes } from "@medusajs/types"
+import { productHandleFromSlug, variantSlug } from "@lib/util/product-variants"
+import { cache } from "react"
+
+// Share the same fresh read between metadata and page rendering for this request.
+const getProduct = cache(async (countryCode: string, handle: string) =>
+  listProducts({ countryCode, queryParams: { handle: productHandleFromSlug(handle) } })
+    .then(({ response }) => response.products[0])
+)
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
@@ -36,17 +44,20 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     notFound()
   }
 
-  const product = await listProducts({
-    countryCode: params.countryCode,
-    queryParams: { handle },
-  }).then(({ response }) => response.products[0])
+  const product = await getProduct(params.countryCode, handle)
 
   if (!product) {
     notFound()
   }
 
+  const variant = productHandleFromSlug(handle) !== handle
+    ? product.variants?.find((variant) => variantSlug(variant)?.toLowerCase() === handle.toLowerCase())
+    : undefined
+  if (productHandleFromSlug(handle) !== handle && !variant) notFound()
+
   return {
-    title: `${product.title} | Medusa Store`,
+    title: `${product.title}${variant ? ` ${variant.title}` : ""} | Medusa Store`,
+    alternates: { canonical: `/${params.countryCode}/products/${variantSlug(variant) ?? product.handle}` },
     description: `${product.title}`,
     openGraph: {
       title: `${product.title} | Medusa Store`,
@@ -61,20 +72,22 @@ export default async function ProductPage(props: Props) {
   const region = await getRegion(params.countryCode)
   const searchParams = await props.searchParams
 
-  const selectedVariantId = searchParams.v_id
 
   if (!region) {
     notFound()
   }
 
-  const pricedProduct = await listProducts({
-    countryCode: params.countryCode,
-    queryParams: { handle: params.handle },
-  }).then(({ response }) => response.products[0])
+  const pricedProduct = await getProduct(params.countryCode, params.handle)
 
   if (!pricedProduct) {
     notFound()
   }
+
+  const slugVariant = productHandleFromSlug(params.handle) !== params.handle
+    ? pricedProduct.variants?.find((variant) => variantSlug(variant)?.toLowerCase() === params.handle.toLowerCase())
+    : undefined
+  if (productHandleFromSlug(params.handle) !== params.handle && !slugVariant) notFound()
+  const selectedVariantId = slugVariant?.id ?? searchParams.v_id
 
   const images = getImagesForVariant(pricedProduct, selectedVariantId)
 
@@ -84,6 +97,7 @@ export default async function ProductPage(props: Props) {
       region={region}
       countryCode={params.countryCode}
       images={images ?? []}
+      selectedVariantId={selectedVariantId}
     />
   )
 }

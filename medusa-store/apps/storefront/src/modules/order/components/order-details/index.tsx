@@ -1,3 +1,4 @@
+import { getOrderNumber } from "@lib/util/order-number"
 import { HttpTypes } from "@medusajs/types"
 import { Text } from "@modules/common/components/ui"
 
@@ -32,7 +33,7 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
         </span>
       </Text>
       <Text className="mt-2 text-ui-fg-interactive">
-        Order number: <span data-testid="order-id">{order.display_id}</span>
+        Order number: <span data-testid="order-id">{getOrderNumber(order)}</span>
       </Text>
 
       <div className="flex items-center text-compact-small gap-x-4 mt-4">

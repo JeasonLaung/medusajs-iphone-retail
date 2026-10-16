@@ -3,6 +3,7 @@ import {
   configureStoreSearch,
   defineMiddlewares,
   validateAndTransformBody,
+  validateAndTransformQuery,
 } from "@medusajs/framework/http"
 import { CreateAfterSales } from "./store/orders/[id]/after-sales/validators"
 import { UpdateAfterSales } from "./admin/orders/[id]/after-sales/validators"
@@ -14,11 +15,23 @@ import {
 } from "./device-guards"
 import { guardSupplierAdmin } from "./device-access"
 import { SupplierAccountBody } from "./admin/devices/supplier-accounts/route"
+import { MailCommand, MailListQuery } from "./admin/mail/validators"
+import {
+  guardManualPaymentSelection,
+  guardMarkAsPaid,
+  guardManualCartCompletion,
+  guardManualPaymentAuthorization,
+  guardManualPaymentCapture,
+  listProductionPaymentProviders,
+} from "./payment-guards"
 
 // The product index declares filterable `status` and `sales_channel_ids`, so
 // the route narrows it to published products in the key's sales channels.
 export default defineMiddlewares({
   routes: [
+    { matcher: "/admin/mail", method: "GET", middlewares: [validateAndTransformQuery(MailListQuery, {})] },
+    { matcher: "/admin/mail/commands", method: "POST", bodyParser: { sizeLimit: "16mb" }, middlewares: [validateAndTransformBody(MailCommand)] },
+    { matcher: "/mail/webhooks/:account_id", method: "POST", bodyParser: { preserveRawBody: true, sizeLimit: "1mb" }, middlewares: [] },
     {
       matcher: "/admin/*",
       middlewares: [
@@ -29,6 +42,36 @@ export default defineMiddlewares({
         }),
         guardSupplierAdmin,
       ],
+    },
+    ...["/store/payment-providers", "/admin/payments/payment-providers"].map((matcher) => ({
+      matcher,
+      method: "GET" as const,
+      middlewares: [listProductionPaymentProviders],
+    })),
+    ...["/store/payment-collections/:id/payment-sessions", "/admin/payment-collections/:id/payment-sessions"].map((matcher) => ({
+      matcher,
+      method: "POST" as const,
+      middlewares: [guardManualPaymentSelection],
+    })),
+    {
+      matcher: "/store/carts/:id/complete",
+      method: "POST",
+      middlewares: [guardManualCartCompletion],
+    },
+    {
+      matcher: "/admin/payment-collections/:id/mark-as-paid",
+      method: "POST",
+      middlewares: [guardMarkAsPaid],
+    },
+    {
+      matcher: "/admin/orders/:id/payment-sessions/authorize",
+      method: "POST",
+      middlewares: [guardManualPaymentAuthorization],
+    },
+    {
+      matcher: "/admin/payments/:id/capture",
+      method: "POST",
+      middlewares: [guardManualPaymentCapture],
     },
     {
       matcher: "/admin/devices/supplier-accounts",

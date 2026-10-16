@@ -3,6 +3,7 @@
 import { sdk } from "@lib/config"
 import { HttpTypes } from "@medusajs/types"
 import { getCacheOptions } from "./cookies"
+import { routeCountry } from "@lib/util/storefront-route"
 
 export const listRegions = async () => {
   const next = {
@@ -35,6 +36,7 @@ export const retrieveRegion = async (id: string) => {
 const regionMap = new Map<string, HttpTypes.StoreRegion>()
 
 export const getRegion = async (countryCode: string) => {
+  countryCode = routeCountry(countryCode)
   if (regionMap.has(countryCode)) {
     return regionMap.get(countryCode)
   }

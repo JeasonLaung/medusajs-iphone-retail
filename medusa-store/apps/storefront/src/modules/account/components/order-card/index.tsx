@@ -1,3 +1,4 @@
+import { getOrderNumber } from "@lib/util/order-number"
 import { Button } from "@modules/common/components/ui"
 import { useMemo } from "react"
 
@@ -26,7 +27,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
   return (
     <div className="bg-white flex flex-col" data-testid="order-card">
       <div className="uppercase text-large-semi mb-1">
-        #<span data-testid="order-display-id">{order.display_id}</span>
+        #<span data-testid="order-display-id">{getOrderNumber(order)}</span>
       </div>
       <div className="flex items-center divide-x divide-gray-200 text-small-regular text-ui-fg-base">
         <span className="pr-2" data-testid="order-created-at">

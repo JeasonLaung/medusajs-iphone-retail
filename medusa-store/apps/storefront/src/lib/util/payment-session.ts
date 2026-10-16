@@ -1,12 +1,19 @@
 import type { HttpTypes } from "@medusajs/types"
 
+export const isPaymentProviderAvailable = (providerId?: string) =>
+  process.env.NODE_ENV !== "production" ||
+  !providerId?.startsWith("pp_system_default")
+
 export const getActivePaymentSession = (cart: HttpTypes.StoreCart) =>
   cart.payment_collection?.payment_sessions?.find(
-    (session) => session.status === "authorized"
+    (session) =>
+      isPaymentProviderAvailable(session.provider_id) &&
+      session.status === "authorized"
   ) ??
   cart.payment_collection?.payment_sessions?.find(
     (session) =>
-      session.status === "pending" || session.status === "requires_more"
+      isPaymentProviderAvailable(session.provider_id) &&
+      (session.status === "pending" || session.status === "requires_more")
   )
 
 export const getMollieCheckoutUrl = (data?: Record<string, unknown>) => {

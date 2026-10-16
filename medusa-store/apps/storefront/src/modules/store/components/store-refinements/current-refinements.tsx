@@ -1,6 +1,8 @@
 "use client"
 
 import { XMarkMini } from "@medusajs/icons"
+import { useParams } from "next/navigation"
+import { getRefinementTitle } from "./i18n"
 import { useClearRefinements, useCurrentRefinements } from "react-instantsearch"
 
 import { indexedCurrency, priceAttribute } from "@lib/search-client"
@@ -20,7 +22,11 @@ type Refinement = ReturnType<
  * value, which is the option's `Size:M` form for options and a bare `true` for
  * the on-sale toggle — neither says what it filters on out of context.
  */
-function refinementLabel(refinement: Refinement, currencyCode: string) {
+function refinementLabel(
+  refinement: Refinement,
+  currencyCode: string,
+  countryCode: string
+) {
   const { attribute, label, value, operator } = refinement
 
   if (attribute === OPTION_VALUES_ATTRIBUTE) {
@@ -50,7 +56,7 @@ function refinementLabel(refinement: Refinement, currencyCode: string) {
   }
 
   if (attribute === CATEGORY_ATTRIBUTE) {
-    return `Category: ${label}`
+    return `${getRefinementTitle(attribute, countryCode)}: ${label}`
   }
 
   if (attribute === LABELS_ATTRIBUTE) {
@@ -66,6 +72,7 @@ function refinementLabel(refinement: Refinement, currencyCode: string) {
  * only what the sidebar controls shows up here.
  */
 const CurrentRefinements = ({ currencyCode }: { currencyCode: string }) => {
+  const { countryCode } = useParams<{ countryCode: string }>()
   const { items, refine } = useCurrentRefinements()
   const { canRefine: canClearAll, refine: clearAll } = useClearRefinements()
 
@@ -94,7 +101,7 @@ const CurrentRefinements = ({ currencyCode }: { currencyCode: string }) => {
 
       <ul className="flex flex-wrap gap-2 pr-6">
         {refinements.map((refinement) => {
-          const label = refinementLabel(refinement, currencyCode)
+          const label = refinementLabel(refinement, currencyCode, countryCode)
 
           return (
             <li

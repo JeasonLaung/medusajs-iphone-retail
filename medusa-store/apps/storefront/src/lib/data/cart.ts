@@ -16,6 +16,7 @@ import {
 import { getRegion } from "./regions"
 import { getLocale } from "./locale-actions"
 import { isMollie } from "@lib/constants"
+import { storefrontSegment } from "@lib/util/storefront-route"
 
 /**
  * Retrieves a cart by its ID. If no ID is provided, it will use the cart ID from the cookies.
@@ -283,12 +284,13 @@ export async function applyPromotions(codes: string[]) {
 
   return sdk.store.cart
     .update(cartId, { promo_codes: codes }, {}, headers)
-    .then(async () => {
+    .then(async ({ cart }) => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
 
       const fulfillmentCacheTag = await getCacheTag("fulfillment")
       revalidateTag(fulfillmentCacheTag)
+      return cart
     })
     .catch(medusaError)
 }
@@ -354,7 +356,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
     if (!formData) {
       throw new Error("No form data found when setting addresses")
     }
-    const cartId = getCartId()
+    const cartId = await getCartId()
     if (!cartId) {
       throw new Error("No existing cart found when setting addresses")
     }
@@ -364,7 +366,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
         first_name: formData.get("shipping_address.first_name"),
         last_name: formData.get("shipping_address.last_name"),
         address_1: formData.get("shipping_address.address_1"),
-        address_2: "",
+        address_2: formData.get("shipping_address.address_2") || "",
         company: formData.get("shipping_address.company"),
         postal_code: formData.get("shipping_address.postal_code"),
         city: formData.get("shipping_address.city"),
@@ -383,7 +385,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
         first_name: formData.get("billing_address.first_name"),
         last_name: formData.get("billing_address.last_name"),
         address_1: formData.get("billing_address.address_1"),
-        address_2: "",
+        address_2: formData.get("billing_address.address_2") || "",
         company: formData.get("billing_address.company"),
         postal_code: formData.get("billing_address.postal_code"),
         city: formData.get("billing_address.city"),
@@ -397,7 +399,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
   }
 
   redirect(
-    `/${formData.get("shipping_address.country_code")}/checkout?step=delivery`
+    `/${storefrontSegment(String(formData.get("shipping_address.country_code")), await getLocale())}/checkout?step=delivery`
   )
 }
 
@@ -434,7 +436,7 @@ export async function placeOrder(cartId?: string) {
     revalidateTag(orderCacheTag)
 
     await removeCartId()
-    redirect(`/${countryCode}/order/${cartRes?.order.id}/confirmed`)
+    redirect(`/${storefrontSegment(countryCode || "dk", await getLocale())}/order/${cartRes?.order.id}/confirmed`)
   }
 
   throw new Error(cartRes.error?.message || "We could not finish your order. Please try again.")
@@ -445,7 +447,7 @@ export async function placeOrder(cartId?: string) {
  * @param regionId
  * @param countryCode
  */
-export async function updateRegion(countryCode: string, currentPath: string) {
+export async function updateRegion(countryCode: string, currentPath: string, locale?: string) {
   const cartId = await getCartId()
   const region = await getRegion(countryCode)
 
@@ -465,7 +467,7 @@ export async function updateRegion(countryCode: string, currentPath: string) {
   const productsCacheTag = await getCacheTag("products")
   revalidateTag(productsCacheTag)
 
-  redirect(`/${countryCode}${currentPath}`)
+  redirect(`/${storefrontSegment(countryCode, locale || await getLocale())}${currentPath}`)
 }
 
 export async function listCartOptions() {

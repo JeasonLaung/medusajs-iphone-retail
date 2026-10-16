@@ -25,6 +25,31 @@ function loadSource(file, mocks = {}) {
 }
 
 const helpers = loadSource("lib/util/payment-session.ts")
+
+test("production ignores manual sessions while development keeps them", () => {
+  const previousEnvironment = process.env.NODE_ENV
+  try {
+    process.env.NODE_ENV = "production"
+    const manual = { status: "authorized", provider_id: "pp_system_default" }
+    const online = { status: "pending", provider_id: "pp_paypal_paypal" }
+    assert.equal(helpers.isPaymentProviderAvailable(manual.provider_id), false)
+    assert.equal(helpers.isPaymentProviderAvailable(online.provider_id), true)
+    assert.equal(helpers.getActivePaymentSession({
+      payment_collection: { payment_sessions: [manual, online] },
+    }), online)
+    assert.equal(helpers.getActivePaymentSession({
+      payment_collection: { payment_sessions: [manual] },
+    }), undefined)
+    process.env.NODE_ENV = "development"
+    assert.equal(helpers.isPaymentProviderAvailable(manual.provider_id), true)
+    assert.equal(helpers.getActivePaymentSession({
+      payment_collection: { payment_sessions: [manual] },
+    }), manual)
+  } finally {
+    if (previousEnvironment === undefined) delete process.env.NODE_ENV
+    else process.env.NODE_ENV = previousEnvironment
+  }
+})
 test("checkout selects an actionable payment instead of a canceled first session", () => {
   const active = {
     id: "payses_current",

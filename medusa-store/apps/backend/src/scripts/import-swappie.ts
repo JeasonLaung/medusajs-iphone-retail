@@ -11,6 +11,8 @@ import {
 } from "@medusajs/medusa/core-flows";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import setupIphoneSeries from "./setup-iphone-series";
+import completeIphoneVariants from "./complete-iphone-variants"
 
 type SourceProduct = {
   model: string;
@@ -119,12 +121,12 @@ export default async function importSwappie({ container }: ExecArgs) {
     fields: ["id", "name"],
   });
   let categoryId = categories.find(
-    (category) => category.name === "Swappie iPhones",
+    (category) => category.name === "iPhone" || category.name === "Swappie iPhones",
   )?.id;
   if (!categoryId) {
     const { result } = await createProductCategoriesWorkflow(container).run({
       input: {
-        product_categories: [{ name: "Swappie iPhones", is_active: true }],
+        product_categories: [{ name: "iPhone", handle: "iphone", is_active: true }],
       },
     });
     categoryId = result[0].id;
@@ -199,7 +201,7 @@ export default async function importSwappie({ container }: ExecArgs) {
             title: item.model,
             handle,
             description:
-              "Reference catalog entry from the supplied Swappie category snapshot. " +
+              "Reference catalog entry from the supplied iPhone catalog snapshot. " +
               "Only the displayed SKU and starting price were provided. " +
               "Stock quantity has not been verified.",
             status: ProductStatus.PUBLISHED,
@@ -247,6 +249,9 @@ export default async function importSwappie({ container }: ExecArgs) {
     created += 1;
     console.log(`Imported ${item.model}: ${item.sku}`);
   }
+
+  await setupIphoneSeries({ container });
+  await completeIphoneVariants({ container })
 
   console.log(
     `Swappie import complete: ${created} created, ${updated} updated, ${skipped} skipped`,

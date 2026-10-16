@@ -13,6 +13,7 @@ import { useElements, useStripe } from "@stripe/react-stripe-js"
 import { useParams, useSearchParams } from "next/navigation"
 import React, { useState } from "react"
 import ErrorMessage from "../error-message"
+import { getCheckoutCopy } from "../../i18n"
 
 type PaymentButtonProps = {
   cart: HttpTypes.StoreCart
@@ -23,6 +24,8 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
   cart,
   "data-testid": dataTestId,
 }) => {
+  const { countryCode } = useParams<{ countryCode: string }>()
+  const copy = getCheckoutCopy(countryCode)
   const notReady =
     !cart ||
     !cart.shipping_address ||
@@ -50,7 +53,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
         <ManualTestPaymentButton notReady={notReady} data-testid={dataTestId} />
       )
     default:
-      return <Button disabled>Select a payment method</Button>
+      return <Button disabled>{copy.selectPayment}</Button>
   }
 }
 
@@ -61,8 +64,10 @@ const PayPalPaymentButton = ({
   cart: HttpTypes.StoreCart
   notReady: boolean
 }) => {
+  const { countryCode } = useParams<{ countryCode: string }>()
+  const copy = getCheckoutCopy(countryCode)
   const [error, setError] = useState<string | null>(null)
-  if (notReady) return <Button disabled>Complete your delivery details</Button>
+  if (notReady) return <Button disabled>{copy.completeDelivery}</Button>
   return (
     <div className="max-w-[420px]">
       <MedusaNextPayPalAdapter
@@ -91,6 +96,8 @@ const MolliePaymentButton = ({
 }) => {
   const searchParams = useSearchParams()
   const [submitting, setSubmitting] = useState(false)
+  const { countryCode } = useParams<{ countryCode: string }>()
+  const copy = getCheckoutCopy(countryCode)
   const [error, setError] = useState<string | null>(null)
   const session = getActivePaymentSession(cart)
   const pay = async () => {
@@ -118,11 +125,11 @@ const MolliePaymentButton = ({
         url = getMollieCheckoutUrl(nextSession?.data)
       }
       if (!url)
-        throw new Error("Could not open Mollie checkout. Please try again.")
+        throw new Error(copy.paymentError)
       window.location.assign(url)
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Could not start your payment."
+        err instanceof Error ? err.message : copy.paymentError
       )
       setSubmitting(false)
     }
@@ -140,7 +147,7 @@ const MolliePaymentButton = ({
             )
           }}
         >
-          Check payment status
+          {copy.checkPayment}
         </Button>
       )}
       <Button
@@ -150,7 +157,7 @@ const MolliePaymentButton = ({
         size="large"
         data-testid="mollie-payment-button"
       >
-        Continue to Mollie
+        {copy.mollieHelp}
       </Button>
       <ErrorMessage error={error} data-testid="mollie-payment-error-message" />
     </>
@@ -181,7 +188,8 @@ const StripePaymentButton = ({
 
   const stripe = useStripe()
   const elements = useElements()
-  const { countryCode } = useParams()
+  const { countryCode } = useParams<{ countryCode: string }>()
+  const copy = getCheckoutCopy(countryCode)
 
   const disabled = !stripe || !elements ? true : false
 
@@ -252,13 +260,13 @@ const StripePaymentButton = ({
   return (
     <>
       <Button
-        disabled={disabled || notReady}
+        disabled={disabled || notReady || submitting}
         onClick={handlePayment}
         size="large"
         isLoading={submitting}
         data-testid={dataTestId}
       >
-        Place order
+        {copy.placeOrder}
       </Button>
       <ErrorMessage
         error={errorMessage}
@@ -269,6 +277,8 @@ const StripePaymentButton = ({
 }
 
 const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
+  const { countryCode } = useParams<{ countryCode: string }>()
+  const copy = getCheckoutCopy(countryCode)
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -291,13 +301,13 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
   return (
     <>
       <Button
-        disabled={notReady}
+        disabled={notReady || submitting}
         isLoading={submitting}
         onClick={handlePayment}
         size="large"
         data-testid="submit-order-button"
       >
-        Place order
+        {copy.placeOrder}
       </Button>
       <ErrorMessage
         error={errorMessage}

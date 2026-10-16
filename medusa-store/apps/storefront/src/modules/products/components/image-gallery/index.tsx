@@ -1,41 +1,35 @@
+"use client"
+
 import { HttpTypes } from "@medusajs/types"
-import { Container } from "@modules/common/components/ui"
 import Image from "next/image"
+import { useEffect, useState } from "react"
+import { useParams, usePathname, useSearchParams } from "next/navigation"
+import { variantFromLocation } from "@lib/util/product-variants"
+import { getProductCopy } from "../../i18n"
+import styles from "../product-detail/styles.module.css"
 
-type ImageGalleryProps = {
-  images: HttpTypes.StoreProductImage[]
-}
-
-const ImageGallery = ({ images }: ImageGalleryProps) => {
+export default function ImageGallery({ images, variants = [], initialVariantId, title = "" }: { images: HttpTypes.StoreProductImage[]; variants?: HttpTypes.StoreProductVariant[]; initialVariantId?: string; title?: string }) {
+  const { countryCode } = useParams<{ countryCode: string }>()
+  const copy = getProductCopy(countryCode)
+  const [active, setActive] = useState(0)
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const variant = variantFromLocation(variants, pathname, searchParams.get("v_id"), initialVariantId)
+  const validImages = (variant?.images?.length ? variant.images : images).filter((image) => image.url)
+  useEffect(() => setActive(0), [variant?.id])
+  const index = Math.min(active, Math.max(0, validImages.length - 1))
+  const image = validImages[index]
   return (
-    <div className="flex items-start relative">
-      <div className="flex flex-col flex-1 small:mx-16 gap-y-4">
-        {images.map((image, index) => {
-          return (
-            <Container
-              key={image.id}
-              className="relative aspect-[29/34] w-full overflow-hidden bg-ui-bg-subtle"
-              id={image.id}
-            >
-              {!!image.url && (
-                <Image
-                  src={image.url}
-                  priority={index <= 2 ? true : false}
-                  className="absolute inset-0 rounded-rounded"
-                  alt={`Product image ${index + 1}`}
-                  fill
-                  sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"
-                  style={{
-                    objectFit: "cover",
-                  }}
-                />
-              )}
-            </Container>
-          )
-        })}
+    <section className={styles.gallery} aria-label={copy.gallery}>
+      <div className={styles.stage}>
+        {image ? <Image key={image.id} src={image.url} alt={title + " — " + copy.image + " " + (index + 1)} fill priority sizes="(max-width: 767px) 100vw, 600px" /> : <p className={styles.muted}>{copy.noImage}</p>}
+        {validImages.length > 1 && <>
+          <button type="button" className={styles.galleryArrow} aria-label={copy.previous} onClick={() => setActive((index - 1 + validImages.length) % validImages.length)}>‹</button>
+          <button type="button" className={styles.galleryArrow} aria-label={copy.next} onClick={() => setActive((index + 1) % validImages.length)}>›</button>
+          <span className={styles.counter}>{index + 1} / {validImages.length}</span>
+        </>}
       </div>
-    </div>
+      {validImages.length > 1 && <div className={styles.thumbnails}>{validImages.map((image, i) => <button type="button" key={image.id} className={styles.thumbnail} aria-pressed={i === index} aria-label={copy.image + " " + (i + 1)} onClick={() => setActive(i)}><Image src={image.url} alt="" fill sizes="64px" /></button>)}</div>}
+    </section>
   )
 }
-
-export default ImageGallery

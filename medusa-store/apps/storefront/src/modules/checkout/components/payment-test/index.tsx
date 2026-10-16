@@ -1,12 +1,10 @@
+"use client"
+
 import { Badge } from "@modules/common/components/ui"
+import { useParams } from "next/navigation"
+import { getCheckoutCopy } from "../../i18n"
 
-const PaymentTest = ({ className }: { className?: string }) => {
-  return (
-    <Badge color="orange" className={className}>
-      <span className="font-semibold">Attention:</span> For testing purposes
-      only.
-    </Badge>
-  )
+export default function PaymentTest({ className }: { className?: string }) {
+  const { countryCode } = useParams<{ countryCode: string }>()
+  return <Badge color="orange" className={className}>{getCheckoutCopy(countryCode).testingOnly}</Badge>
 }
-
-export default PaymentTest

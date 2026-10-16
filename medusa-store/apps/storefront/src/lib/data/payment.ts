@@ -4,6 +4,7 @@ import { sdk } from "@lib/config"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { HttpTypes } from "@medusajs/types"
 import { isMollie, isPaypal } from "@lib/constants"
+import { isPaymentProviderAvailable } from "@lib/util/payment-session"
 
 export const listCartPaymentMethods = async (regionId: string) => {
   const headers = {
@@ -26,7 +27,7 @@ export const listCartPaymentMethods = async (regionId: string) => {
       }
     )
     .then(({ payment_providers }) =>
-      payment_providers.sort((a, b) => {
+      payment_providers.filter((method) => isPaymentProviderAvailable(method.id)).sort((a, b) => {
         return a.id > b.id ? 1 : -1
       })
     )

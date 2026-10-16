@@ -1,72 +1,39 @@
 import React, { Suspense } from "react"
-
 import ImageGallery from "@modules/products/components/image-gallery"
 import ProductActions from "@modules/products/components/product-actions"
-import ProductOnboardingCta from "@modules/products/components/product-onboarding-cta"
-import ProductTabs from "@modules/products/components/product-tabs"
+import ProductDetails from "@modules/products/components/product-detail"
 import RelatedProducts from "@modules/products/components/related-products"
-import ProductInfo from "@modules/products/templates/product-info"
+import Breadcrumbs from "@modules/common/components/breadcrumbs"
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products"
 import { notFound } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
-
-import ProductActionsWrapper from "./product-actions-wrapper"
+import { getProductCopy } from "../i18n"
+import styles from "../components/product-detail/styles.module.css"
 
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
   countryCode: string
   images: HttpTypes.StoreProductImage[]
+  selectedVariantId?: string
 }
 
-const ProductTemplate: React.FC<ProductTemplateProps> = ({
-  product,
-  region,
-  countryCode,
-  images,
-}) => {
-  if (!product || !product.id) {
-    return notFound()
-  }
-
-  return (
-    <>
-      <div
-        className="content-container  flex flex-col small:flex-row small:items-start py-6 relative"
-        data-testid="product-container"
-      >
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
-          <ProductInfo product={product} />
-          <ProductTabs product={product} />
-        </div>
-        <div className="block w-full relative">
-          <ImageGallery images={images} />
-        </div>
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
-          <ProductOnboardingCta />
-          <Suspense
-            fallback={
-              <ProductActions
-                disabled={true}
-                product={product}
-                region={region}
-              />
-            }
-          >
-            <ProductActionsWrapper id={product.id} region={region} />
-          </Suspense>
-        </div>
-      </div>
-      <div
-        className="content-container my-16 small:my-32"
-        data-testid="related-products-container"
-      >
-        <Suspense fallback={<SkeletonRelatedProducts />}>
-          <RelatedProducts product={product} countryCode={countryCode} />
-        </Suspense>
-      </div>
-    </>
-  )
+const ProductTemplate: React.FC<ProductTemplateProps> = ({ product, region, countryCode, images, selectedVariantId }) => {
+  if (!product?.id) return notFound()
+  const copy = getProductCopy(countryCode)
+  return <div className={styles.page}>
+    <Breadcrumbs locale={countryCode} items={[
+      { label: copy.back, href: "/store" },
+      { label: product.title ?? "" },
+    ]} />
+    <div className={styles.hero} data-testid="product-container">
+      <div className={styles.visual}><ImageGallery images={product.images ?? images} variants={product.variants ?? []} initialVariantId={selectedVariantId} title={product.title ?? ""} />{product.metadata?.source === "swappie-html-snapshot" && <p className={styles.muted + " mt-4 text-center"}>{copy.imageNote}</p>}</div>
+      <section aria-labelledby="product-title" id="product-info">
+        <ProductActions product={product} region={region} initialVariantId={selectedVariantId} />
+      </section>
+    </div>
+    <ProductDetails product={product} locale={countryCode} />
+    <div className="mt-20" data-testid="related-products-container"><Suspense fallback={<SkeletonRelatedProducts />}><RelatedProducts product={product} countryCode={countryCode} /></Suspense></div>
+  </div>
 }
-
 export default ProductTemplate

@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { NextRequest, NextResponse } from "next/server"
+import { localeFromSegment, routeCountry, routeLanguage, storefrontSegment } from "@lib/util/storefront-route"
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
 const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
@@ -72,7 +73,7 @@ async function getCountryCode(
 ) {
   let countryCode
 
-  const urlCountryCode = request.nextUrl.pathname.split("/")[1]?.toLowerCase()
+  const urlCountryCode = routeCountry(request.nextUrl.pathname.split("/")[1] || "")
 
   // Cloudflare Workers provides country via request.cf.country
   const cloudflareCountryCode = (request as { cf?: { country?: string } }).cf?.country?.toLowerCase()
@@ -114,26 +115,36 @@ export async function middleware(request: NextRequest) {
   // if the country code is available, use it, otherwise use the default region
   const country = countryCode || DEFAULT_REGION
   const firstPathSegment = request.nextUrl.pathname.split("/")[1]?.toLowerCase()
-  const urlHasCountry = firstPathSegment === country.toLowerCase()
+  const hasCountry = regionMap.has(routeCountry(firstPathSegment || ""))
+  const requestedLanguage = hasCountry && firstPathSegment.includes("-")
+    ? firstPathSegment.slice(3)
+    : request.cookies.get("_medusa_locale")?.value
+  const segment = storefrontSegment(country, requestedLanguage)
 
-  if (urlHasCountry) {
-    if (!cacheIdCookie) {
-      const response = NextResponse.next()
-      response.cookies.set("_medusa_cache_id", cacheId, {
-        maxAge: 60 * 60 * 24,
-      })
-      return response
-    }
-    return NextResponse.next()
+  if (firstPathSegment !== segment) {
+    const redirectUrl = request.nextUrl.clone()
+    const rest = hasCountry
+      ? request.nextUrl.pathname.slice(firstPathSegment.length + 1)
+      : request.nextUrl.pathname === "/" ? "" : request.nextUrl.pathname
+    redirectUrl.pathname = `/${segment}${rest}`
+    return NextResponse.redirect(redirectUrl, 307)
   }
 
-  // if the url doesn't have the country, redirect to it
-  const redirectPath =
-    request.nextUrl.pathname === "/" ? "" : request.nextUrl.pathname
-  const queryString = request.nextUrl.search || ""
-  const redirectUrl = `${request.nextUrl.origin}/${country}${redirectPath}${queryString}`
-
-  return NextResponse.redirect(redirectUrl, 307)
+  // The URL is authoritative even when the browser's locale cookie differs.
+  const headers = new Headers(request.headers)
+  headers.set("x-storefront-locale", localeFromSegment(segment))
+  headers.set("x-storefront-country", country)
+  headers.set("x-storefront-url", request.url)
+  const response = NextResponse.next({ request: { headers } })
+  if (!cacheIdCookie) response.cookies.set("_medusa_cache_id", cacheId, { maxAge: 60 * 60 * 24 })
+  // A locale-changing Server Action owns its response cookie. The old URL
+  // must not overwrite the new preference while that action is redirecting.
+  if (!request.headers.has("next-action") && routeLanguage(request.cookies.get("_medusa_locale")?.value) !== routeLanguage(requestedLanguage)) {
+    response.cookies.set("_medusa_locale", localeFromSegment(segment), {
+      maxAge: 60 * 60 * 24 * 365, sameSite: "strict", secure: process.env.NODE_ENV === "production",
+    })
+  }
+  return response
 }
 
 export const config = {

@@ -1,9 +1,11 @@
 import {
   createInstantSearchAdapter,
+  parseSearchParams,
   type MedusaSdkLike,
 } from "@medusajs/instantsearch-adapter"
 
 import { sdk } from "@lib/config"
+import { normalizeProductSearchRequest } from "@lib/util/product-search-query"
 
 export const PRODUCT_INDEX_NAME = "product"
 
@@ -42,6 +44,12 @@ export const priceAttribute = (field: PriceField, currencyCode: string) =>
 export const { searchClient } = createInstantSearchAdapter({
   sdk: sdk as unknown as MedusaSdkLike,
   path: "/store/search",
+  transformQuery: normalizeProductSearchRequest,
+  // Keep the user's original wording in InstantSearch state and shared URLs.
+  transformResponse: (response, _result, request) => ({
+    ...response,
+    query: parseSearchParams(request.params).query ?? "",
+  }),
   additionalSearchParameters: {
     search_options: {
       match_strategy: "last",

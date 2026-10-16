@@ -27,6 +27,7 @@
     ".medusa/types/*"
   ],
   "exclude": [
+    "src/admin",
     "node_modules",
     ".medusa/server",
     ".medusa/admin",

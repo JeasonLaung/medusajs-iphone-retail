@@ -2,14 +2,20 @@ import { loadEnv, defineConfig } from "@medusajs/framework/utils"
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd())
 
+const localStoreOrigins = process.env.NODE_ENV === "production"
+  ? []
+  : ["http://localhost:8000", "http://127.0.0.1:8000"]
+const withLocalStoreOrigins = (configured: string | undefined) =>
+  [...new Set([...(configured || "").split(",").filter(Boolean), ...localStoreOrigins])].join(",")
+
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: process.env.REDIS_URL,
     http: {
-      storeCors: process.env.STORE_CORS!,
+      storeCors: withLocalStoreOrigins(process.env.STORE_CORS),
       adminCors: process.env.ADMIN_CORS!,
-      authCors: process.env.AUTH_CORS!,
+      authCors: withLocalStoreOrigins(process.env.AUTH_CORS),
       jwtSecret: process.env.JWT_SECRET,
       cookieSecret: process.env.COOKIE_SECRET,
     }
@@ -21,6 +27,8 @@ module.exports = defineConfig({
     },
   ],
   modules: [
+    { resolve: "./src/modules/mail" },
+    { resolve: "./src/modules/order-numbering" },
     { resolve: "./src/modules/after-sales" },
     { resolve: "./src/modules/devices" },
     {

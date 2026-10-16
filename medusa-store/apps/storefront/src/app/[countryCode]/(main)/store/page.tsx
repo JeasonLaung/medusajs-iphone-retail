@@ -1,13 +1,17 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { headers } from "next/headers"
 
 import { getRegion } from "@lib/data/regions"
+import { getStoreSearchData } from "@lib/data/store-search"
 import StoreTemplate from "@modules/store/templates"
 
 export const metadata: Metadata = {
   title: "Refurbished iPhones",
   description: "Browse the imported iPhone catalog.",
 }
+
+export const dynamic = "force-dynamic"
 
 export default async function StorePage(props: {
   params: Promise<{ countryCode: string }>
@@ -19,5 +23,14 @@ export default async function StorePage(props: {
     notFound()
   }
 
-  return <StoreTemplate currencyCode={region.currency_code} />
+  const requestUrl = (await headers()).get("x-storefront-url")!
+  const searchData = await getStoreSearchData(requestUrl, region.currency_code)
+
+  return (
+    <StoreTemplate
+      currencyCode={region.currency_code}
+      requestUrl={requestUrl}
+      searchData={searchData}
+    />
+  )
 }

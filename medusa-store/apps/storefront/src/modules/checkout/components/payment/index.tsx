@@ -8,22 +8,16 @@ import {
 } from "@lib/constants"
 import { getActivePaymentSession } from "@lib/util/payment-session"
 import { initiatePaymentSession } from "@lib/data/cart"
-import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import PaymentContainer, {
   StripePaymentContainer,
 } from "@modules/checkout/components/payment-container"
-import Divider from "@modules/common/components/divider"
-import {
-  Button,
-  Container,
-  Heading,
-  Text,
-  clx,
-} from "@modules/common/components/ui"
+import { Button } from "@modules/common/components/ui"
 import { HttpTypes } from "@medusajs/types"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
+import { getCheckoutCopy, paymentTitle } from "../../i18n"
+import styles from "../../styles.module.css"
 
 const Payment = ({
   cart,
@@ -34,6 +28,9 @@ const Payment = ({
   availablePaymentMethods: { id: string }[]
   unavailablePaymentMethods?: { id: string; title: string }[]
 }) => {
+  const { countryCode } = useParams<{ countryCode: string }>()
+  const copy = getCheckoutCopy(countryCode)
+  const localizedPaymentInfo = Object.fromEntries(Object.entries(paymentInfoMap).map(([id, value]) => [id, { ...value, title: paymentTitle(id, countryCode, value.title) }]))
   const activeSession = getActivePaymentSession(cart)
 
   const [isLoading, setIsLoading] = useState(false)
@@ -59,7 +56,7 @@ const Payment = ({
         await initiatePaymentSession(cart, { provider_id: method })
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "Could not set up payment."
+          err instanceof Error ? err.message : copy.paymentSetupError
         )
       } finally {
         setIsLoading(false)
@@ -151,200 +148,34 @@ const Payment = ({
   const returnedStatus = searchParams.get("payment_status")
   const returnMessage =
     returnedStatus === "failed"
-      ? "Payment was not completed. Please try again or choose another payment method."
+      ? copy.paymentFailed
       : returnedStatus === "pending"
-      ? "Your payment is still being confirmed. You can check it again below."
+      ? copy.paymentPending
       : returnedStatus === "invalid"
-      ? "We could not match this payment to your current cart. Please reopen checkout."
+      ? copy.paymentInvalid
       : null
 
-  return (
-    <div className="bg-white">
-      <div className="flex flex-row items-center justify-between mb-6">
-        <Heading
-          level="h2"
-          className={clx(
-            "flex flex-row text-3xl-regular gap-x-2 items-baseline",
-            {
-              "opacity-50 pointer-events-none select-none":
-                !isOpen && !paymentReady,
-            }
-          )}
-        >
-          Payment
-          {!isOpen && paymentReady && <CheckCircleSolid />}
-        </Heading>
-        {!isOpen && paymentReady && (
-          <Text>
-            <button
-              onClick={handleEdit}
-              className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
-              data-testid="edit-payment-button"
-            >
-              Edit
-            </button>
-          </Text>
-        )}
-      </div>
-      <div>
-        <div className={isOpen ? "block" : "hidden"}>
-          {!paidByGiftcard && (
-            <>
-              <RadioGroup
-                value={selectedPaymentMethod}
-                onChange={(value: string) => setPaymentMethod(value)}
-              >
-                {availablePaymentMethods.map((paymentMethod) => (
-                  <div key={paymentMethod.id}>
-                    {isStripeLike(paymentMethod.id) ? (
-                      <StripePaymentContainer
-                        paymentProviderId={paymentMethod.id}
-                        selectedPaymentOptionId={selectedPaymentMethod}
-                        paymentInfoMap={paymentInfoMap}
-                        setError={setError}
-                        setPaymentComplete={setPaymentComplete}
-                        disabled={isLoading}
-                      />
-                    ) : (
-                      <PaymentContainer
-                        paymentInfoMap={paymentInfoMap}
-                        paymentProviderId={paymentMethod.id}
-                        selectedPaymentOptionId={selectedPaymentMethod}
-                        disabled={isLoading}
-                      />
-                    )}
-                  </div>
-                ))}
-                {unavailablePaymentMethods.map((method) => (
-                  <PaymentContainer
-                    key={method.id}
-                    paymentInfoMap={paymentInfoMap}
-                    paymentProviderId={method.id}
-                    selectedPaymentOptionId={null}
-                    disabled
-                  >
-                    <Text className="text-ui-fg-subtle">
-                      Currently unavailable. Please choose another payment
-                      method.
-                    </Text>
-                  </PaymentContainer>
-                ))}
-              </RadioGroup>
-            </>
-          )}
-
-          {paidByGiftcard && (
-            <div className="flex flex-col w-1/3">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Payment method
-              </Text>
-              <Text
-                className="txt-medium text-ui-fg-subtle"
-                data-testid="payment-method-summary"
-              >
-                Gift card
-              </Text>
-            </div>
-          )}
-
-          <ErrorMessage
-            error={error || returnMessage}
-            data-testid="payment-method-error-message"
-          />
-
-          {returnedStatus === "pending" &&
-            isMollie(activeSession?.provider_id) && (
-              <Button
-                size="large"
-                className="mt-4"
-                onClick={() =>
-                  window.location.assign(
-                    `/api/mollie-return?cart_id=${encodeURIComponent(cart.id)}`
-                  )
-                }
-              >
-                Check payment status
-              </Button>
-            )}
-
-          <Button
-            size="large"
-            className="mt-6"
-            onClick={handleSubmit}
-            isLoading={isLoading}
-            disabled={
-              (isStripeLike(selectedPaymentMethod) && !paymentComplete) ||
-              (!selectedPaymentMethod && !paidByGiftcard) ||
-              isLoading ||
-              (!paidByGiftcard &&
-                !availablePaymentMethods.some(
-                  (method) => method.id === selectedPaymentMethod
-                ))
-            }
-            data-testid="submit-payment-button"
-          >
-            {!activeSession && isStripeLike(selectedPaymentMethod)
-              ? "Enter payment details"
-              : "Continue to review"}
-          </Button>
-        </div>
-
-        <div className={isOpen ? "hidden" : "block"}>
-          {cart && paymentReady && activeSession ? (
-            <div className="flex items-start gap-x-1 w-full">
-              <div className="flex flex-col w-1/3">
-                <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                  Payment method
-                </Text>
-                <Text
-                  className="txt-medium text-ui-fg-subtle"
-                  data-testid="payment-method-summary"
-                >
-                  {paymentInfoMap[activeSession?.provider_id]?.title ||
-                    activeSession?.provider_id}
-                </Text>
-              </div>
-              <div className="flex flex-col w-1/3">
-                <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                  Payment details
-                </Text>
-                <div
-                  className="flex gap-2 txt-medium text-ui-fg-subtle items-center"
-                  data-testid="payment-details-summary"
-                >
-                  <Container className="flex items-center h-7 w-fit p-2 bg-ui-button-neutral-hover">
-                    {paymentInfoMap[selectedPaymentMethod]?.icon || (
-                      <CreditCard />
-                    )}
-                  </Container>
-                  <Text>
-                    {isMollie(activeSession.provider_id)
-                      ? "You will continue to Mollie to pay securely."
-                      : isPaypal(activeSession.provider_id)
-                      ? "Pay securely with PayPal below."
-                      : "Payment details confirmed"}
-                  </Text>
-                </div>
-              </div>
-            </div>
-          ) : paidByGiftcard ? (
-            <div className="flex flex-col w-1/3">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Payment method
-              </Text>
-              <Text
-                className="txt-medium text-ui-fg-subtle"
-                data-testid="payment-method-summary"
-              >
-                Gift card
-              </Text>
-            </div>
-          ) : null}
-        </div>
-      </div>
-      <Divider className="mt-8" />
+  return <section aria-labelledby="payment-heading">
+    <div className="flex items-center justify-between gap-4 mb-6"><h2 id="payment-heading" style={{ marginBottom: 0 }}>{copy.paymentMethods}</h2>
+      {!isOpen && paymentReady && <button type="button" onClick={handleEdit} className="text-sm text-blue-600" data-testid="edit-payment-button">{copy.edit}</button>}
     </div>
-  )
+    {isOpen ? <>
+      <h3 className={styles.sectionLabel}>{copy.payNow}</h3>
+      {!paidByGiftcard && <RadioGroup value={selectedPaymentMethod} onChange={(value: string) => setPaymentMethod(value)} aria-label={copy.paymentMethods}>
+        {availablePaymentMethods.map((method) => isStripeLike(method.id) ? <StripePaymentContainer key={method.id} paymentProviderId={method.id} selectedPaymentOptionId={selectedPaymentMethod} paymentInfoMap={localizedPaymentInfo} setError={setError} setPaymentComplete={setPaymentComplete} disabled={isLoading} /> : <PaymentContainer key={method.id} paymentProviderId={method.id} selectedPaymentOptionId={selectedPaymentMethod} paymentInfoMap={localizedPaymentInfo} disabled={isLoading} />)}
+        {unavailablePaymentMethods.map((method) => <PaymentContainer key={method.id} paymentProviderId={method.id} selectedPaymentOptionId={null} paymentInfoMap={localizedPaymentInfo} disabled><p className={styles.muted}>{copy.paymentUnavailable}</p></PaymentContainer>)}
+      </RadioGroup>}
+      {paidByGiftcard && <p>{copy.giftCard}</p>}
+      {!availablePaymentMethods.length && !paidByGiftcard && <p role="alert" className={styles.error}>{copy.noPayment}</p>}
+      <ErrorMessage error={error || returnMessage} data-testid="payment-method-error-message" />
+      {returnedStatus === "pending" && isMollie(activeSession?.provider_id) && <Button className="my-4" onClick={() => window.location.assign(`/api/mollie-return?cart_id=${encodeURIComponent(cart.id)}`)}>{copy.checkPayment}</Button>}
+      <Button className="mt-6" size="large" onClick={handleSubmit} isLoading={isLoading} disabled={(isStripeLike(selectedPaymentMethod) && !paymentComplete) || (!selectedPaymentMethod && !paidByGiftcard) || isLoading || (!paidByGiftcard && !availablePaymentMethods.some((method) => method.id === selectedPaymentMethod))} data-testid="submit-payment-button">{!activeSession && isStripeLike(selectedPaymentMethod) ? copy.enterPayment : copy.reviewPayment}</Button>
+    </> : <div>
+      <p className="font-semibold mb-2" data-testid="payment-method-summary">{activeSession ? localizedPaymentInfo[activeSession.provider_id]?.title ?? activeSession.provider_id : paidByGiftcard ? copy.giftCard : copy.selectPayment}</p>
+      <p className={styles.muted}>{activeSession && isMollie(activeSession.provider_id) ? copy.mollieHelp : activeSession && isPaypal(activeSession.provider_id) ? copy.paypalHelp : copy.paymentConfirmed}</p>
+      {returnMessage && <p role="alert" className={styles.error}>{returnMessage}</p>}
+    </div>}
+  </section>
 }
 
 export default Payment

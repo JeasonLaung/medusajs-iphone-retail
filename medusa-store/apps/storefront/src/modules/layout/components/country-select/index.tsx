@@ -14,6 +14,7 @@ import { StateType } from "@lib/hooks/use-toggle-state"
 import { useParams, usePathname } from "next/navigation"
 import { updateRegion } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
+import { routeCountry } from "@lib/util/storefront-route"
 
 type CountryOption = {
   country: string
@@ -29,8 +30,9 @@ type CountrySelectProps = {
 const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
   const [current, setCurrent] = useState<CountryOption | undefined>(undefined)
 
-  const { countryCode } = useParams()
-  const currentPath = usePathname().split(`/${countryCode}`)[1]
+  const { countryCode: segment } = useParams<{ countryCode: string }>()
+  const countryCode = routeCountry(segment)
+  const currentPath = usePathname().slice(segment.length + 1)
 
   const { state, close } = toggleState
 
