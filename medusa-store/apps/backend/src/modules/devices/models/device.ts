@@ -5,11 +5,12 @@ export const Device = model
     id: model.id({ prefix: "dev" }).primaryKey(),
     serial_number: model.text().nullable(),
     imei: model.text().nullable(),
+    imei2: model.text().nullable(),
     variant_id: model.text(),
     source_id: model.text(),
     location_id: model.text(),
-    grade: model.text(),
-    battery_health: model.number(),
+    grade: model.text().nullable(),
+    battery_health: model.number().nullable(),
     cost_cents: model.number().default(0),
     currency_code: model.text().default("eur"),
     bin: model.text().default(""),
@@ -31,6 +32,7 @@ export const Device = model
   .indexes([
     { on: ["serial_number"], unique: true, where: "serial_number IS NOT NULL" },
     { on: ["imei"], unique: true, where: "imei IS NOT NULL" },
+    { on: ["imei2"], unique: true, where: "imei2 IS NOT NULL" },
     { on: ["variant_id", "location_id", "state"] },
   ])
 

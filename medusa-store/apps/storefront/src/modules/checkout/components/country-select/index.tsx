@@ -20,7 +20,8 @@ import {
 import ReactCountryFlag from "react-country-flag"
 
 import { getCountryOptions, normalizeCountrySearch } from "@lib/util/countries"
-import { getLocale } from "@lib/data/locale-actions"
+import { useParams } from "next/navigation"
+import { localeFromSegment } from "@lib/util/storefront-route"
 import { countrySelectTranslations } from "@lib/data/country-select-translations"
 import { NativeSelectProps } from "@modules/common/components/native-select"
 import { clx } from "@modules/common/components/ui"
@@ -56,22 +57,12 @@ const CountrySelect = forwardRef<HTMLSelectElement, CountrySelectProps>(
     )
     const [query, setQuery] = useState("")
     const [invalid, setInvalid] = useState(false)
-    const [locale, setLocale] = useState("en")
+    const { countryCode } = useParams<{ countryCode: string }>()
+    const locale = localeFromSegment(countryCode || "")
     const copy =
       countrySelectTranslations[locale.startsWith("zh") ? "zh" : "en"]
     const placeholder = customPlaceholder ?? copy.country
 
-    useEffect(() => {
-      let active = true
-      getLocale()
-        .then((currentLocale) => {
-          if (active) setLocale(currentLocale?.toLowerCase() || "en")
-        })
-        .catch(() => {})
-      return () => {
-        active = false
-      }
-    }, [])
     const selectedValue = String(value ?? internalValue).toLowerCase()
     const options = useMemo(
       () => getCountryOptions(regions ?? (region ? [region] : []), locale),

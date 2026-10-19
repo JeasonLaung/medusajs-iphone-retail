@@ -1,3 +1,8 @@
+"use client"
+
+import { useAccountCopy } from "@modules/account/use-account-copy"
+import { getReviewCopy } from "@modules/products/components/product-reviews/i18n"
+
 import { getOrderNumber } from "@lib/util/order-number"
 import { Button } from "@modules/common/components/ui"
 import { useMemo } from "react"
@@ -12,6 +17,7 @@ type OrderCardProps = {
 }
 
 const OrderCard = ({ order }: OrderCardProps) => {
+  const { t, locale } = useAccountCopy()
   const numberOfLines = useMemo(() => {
     return (
       order.items?.reduce((acc, item) => {
@@ -31,17 +37,18 @@ const OrderCard = ({ order }: OrderCardProps) => {
       </div>
       <div className="flex items-center divide-x divide-gray-200 text-small-regular text-ui-fg-base">
         <span className="pr-2" data-testid="order-created-at">
-          {new Date(order.created_at).toDateString()}
+          {new Date(order.created_at).toLocaleDateString(locale)}
         </span>
         <span className="px-2" data-testid="order-amount">
           {convertToLocale({
             amount: order.total,
             currency_code: order.currency_code,
+            locale,
           })}
         </span>
-        <span className="pl-2">{`${numberOfLines} ${
-          numberOfLines > 1 ? "items" : "item"
-        }`}</span>
+        <span className="pl-2">
+          {t(numberOfLines === 1 ? "item" : "items", { count: numberOfLines })}
+        </span>
       </div>
       <div className="grid grid-cols-2 small:grid-cols-4 gap-4 my-4">
         {order.items?.slice(0, 3).map((i) => {
@@ -70,14 +77,25 @@ const OrderCard = ({ order }: OrderCardProps) => {
             <span className="text-small-regular text-ui-fg-base">
               + {numberOfLines - 4}
             </span>
-            <span className="text-small-regular text-ui-fg-base">more</span>
+            <span className="text-small-regular text-ui-fg-base">
+              {t("more")}
+            </span>
           </div>
         )}
       </div>
-      <div className="flex justify-end">
+      <div className="flex flex-wrap justify-end gap-3">
+        {order.payment_status === "captured" && order.status !== "canceled" && (
+          <LocalizedClientLink
+            href={`/account/orders/details/${order.id}#order-reviews`}
+          >
+            <Button variant="secondary">
+              {getReviewCopy(locale).reviewProducts}
+            </Button>
+          </LocalizedClientLink>
+        )}
         <LocalizedClientLink href={`/account/orders/details/${order.id}`}>
           <Button data-testid="order-details-link" variant="secondary">
-            See details
+            {t("details")}
           </Button>
         </LocalizedClientLink>
       </div>

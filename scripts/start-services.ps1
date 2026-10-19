@@ -74,6 +74,8 @@ try {
   }
 
   Start-App 'medusa' $backendDir 9001 'http://127.0.0.1:9001/health'
+  & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'start-device-camera.ps1')
+  if ($LASTEXITCODE -ne 0) { Write-Warning 'Camera HTTPS startup failed. Run start-device-camera.bat to retry; see logs/device-camera.*.log.' }
   Start-App 'storefront' $storefrontDir 8000 'http://127.0.0.1:8000/dk/store'
 
   $frpConfig = Join-Path $projectDir 'frp\frpc.toml'
@@ -87,7 +89,11 @@ try {
     }
   }
 
-  Write-Host 'Admin: http://127.0.0.1:9001/app'
+  $lanAddress = (Get-NetIPAddress -AddressFamily IPv4 -PrefixOrigin Dhcp -ErrorAction SilentlyContinue |
+    Where-Object { $_.IPAddress -notlike '169.254.*' -and $_.IPAddress -ne '127.0.0.1' } |
+    Select-Object -First 1 -ExpandProperty IPAddress)
+  Write-Host 'Admin (local): http://127.0.0.1:9001/app'
+  if ($lanAddress) { Write-Host "Admin (LAN): http://$lanAddress`:9001/app" }
   Write-Host 'Store: http://127.0.0.1:8000/dk/store'
   exit 0
 } catch {

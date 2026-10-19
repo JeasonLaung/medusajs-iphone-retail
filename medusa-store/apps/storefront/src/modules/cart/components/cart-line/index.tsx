@@ -1,7 +1,8 @@
 "use client"
 
+import { Minus, Plus } from "@medusajs/icons"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useEffect, useId, useState } from "react"
 import { HttpTypes } from "@medusajs/types"
 import { deleteLineItem, updateLineItem } from "@lib/data/cart"
 import { variantOptions, variantSlug, variantInStock } from "@lib/util/product-variants"
@@ -17,6 +18,9 @@ export default function CartLine({ item, variant, currency, locale }: { item: Ht
   const [pending, setPending] = useState<"quantity" | "remove" | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [quantity, setQuantity] = useState(String(item.quantity))
+  const quantityId = useId()
+  const enteredQuantity = Number(quantity)
+  const stepQuantity = Number.isSafeInteger(enteredQuantity) && enteredQuantity >= 1 ? enteredQuantity : item.quantity
   useEffect(() => setQuantity(String(item.quantity)), [item.quantity])
   const maximum = variant?.manage_inventory && !variant.allow_backorder && typeof variant.inventory_quantity === "number" ? Math.max(0, variant.inventory_quantity) : undefined
   const unavailable = !!variant && (!variantInStock(variant) || (maximum !== undefined && item.quantity > maximum))
@@ -28,8 +32,9 @@ export default function CartLine({ item, variant, currency, locale }: { item: Ht
   const money = (amount: number) => new Intl.NumberFormat(locale.endsWith("-zh") ? "zh-CN" : "en-IE", { style: "currency", currency }).format(amount)
 
   const changeQuantity = async (next: number) => {
-    if (busy || pending || next === item.quantity) return
-    if (!Number.isInteger(next) || next < 1 || (maximum !== undefined && next > maximum)) { setQuantity(String(item.quantity)); setError(copy.stockChanged); return }
+    if (busy || pending) return
+    if (!Number.isSafeInteger(next) || next < 1 || (maximum !== undefined && next > maximum)) { setQuantity(String(item.quantity)); setError(copy.stockChanged); return }
+    if (next === item.quantity) { setQuantity(String(item.quantity)); return }
     setPending("quantity")
     setBusy(true)
     setError(null)
@@ -52,13 +57,18 @@ export default function CartLine({ item, variant, currency, locale }: { item: Ht
     <LocalizedClientLink href={url} className={styles.thumbnail} aria-label={item.product_title ?? item.title}>{item.thumbnail && <Image src={item.thumbnail} alt={item.product_title ?? item.title} fill sizes="64px" />}</LocalizedClientLink>
     <div>
       <LocalizedClientLink href={url} className={styles.title} data-testid="product-title">{item.product_title ?? item.title}</LocalizedClientLink>
-      <div className={styles.details}>{grade && <span className={styles.grade}>{optionValueLabel(grade, locale)}</span>}<span data-testid="product-variant">{description}</span></div>
-      {battery && <p className={styles.muted}>{copy.battery}: {battery}</p>}
-      <label className={styles.quantity}>{copy.quantity}: {maximum !== undefined && maximum <= 100 ? <select aria-label={copy.quantity} value={quantity} disabled={busy || !!pending} onChange={(event) => changeQuantity(Number(event.target.value))} data-testid="product-select-button">
-        {Array.from({ length: maximum }, (_, index) => <option key={index + 1} value={index + 1}>{index + 1}</option>)}
-        {item.quantity > maximum && <option value={item.quantity}>{item.quantity}</option>}
-      </select> : <input type="number" aria-label={copy.quantity} min={1} max={maximum} step={1} value={quantity} disabled={busy || !!pending} onChange={(event) => setQuantity(event.target.value)} onBlur={() => changeQuantity(Number(quantity))} onKeyDown={(event) => { if (event.key === "Enter") event.currentTarget.blur() }} data-testid="product-select-button" />}</label>
+      <div className={styles.details}>{grade && <span className={styles.grade}>{optionValueLabel(grade, locale)}</span>}<span data-testid="product-variant">{description}</span>{battery && <span className={styles.battery}>· {copy.battery}: {battery}</span>}</div>
+      <div className={styles.lineControls}>
+      <div className={styles.quantity}>
+        <label htmlFor={quantityId}>{copy.quantity}:</label>
+        <div className={styles.quantityStepper} role="group" aria-label={copy.quantity} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) changeQuantity(Number(quantity)) }}>
+          <button type="button" aria-label={copy.decreaseQuantity} disabled={busy || !!pending || stepQuantity <= 1} onClick={() => changeQuantity(stepQuantity - 1)}><Minus aria-hidden="true" width={20} height={20} className="inline-block align-middle shrink-0" /></button>
+          <input id={quantityId} type="number" aria-label={copy.quantity} min={1} max={maximum} step={1} value={quantity} disabled={busy || !!pending} onChange={(event) => setQuantity(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") event.currentTarget.blur() }} data-testid="product-select-button" />
+          <button type="button" aria-label={copy.increaseQuantity} disabled={busy || !!pending || (maximum !== undefined && stepQuantity >= maximum)} onClick={() => changeQuantity(stepQuantity + 1)}><Plus aria-hidden="true" width={20} height={20} className="inline-block align-middle shrink-0" /></button>
+        </div>
+      </div>
       <div className={unavailable ? styles.error : styles.status}>{!unavailable && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M3 4h12v13H3zM15 9h4l3 4v4h-7" /><circle cx="7" cy="18" r="2" /><circle cx="18" cy="18" r="2" /></svg>}{unavailable ? copy.stockChanged : variant ? copy.available : copy.stockUnknown}</div>
+      </div>
       {variant?.metadata?.demo_price_basis === "model-starting-price" && <p className={styles.muted}>{copy.demo}</p>}
       {error && <p role="alert" className={styles.error} data-testid="product-error-message">{error}</p>}
     </div>

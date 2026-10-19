@@ -1,3 +1,5 @@
+import { optionValueLabel } from "@modules/products/i18n"
+
 const titles: Record<string, { en: string; zh: string }> = {
   category: { en: "Series", zh: "系列" },
   model: { en: "Model", zh: "机型" },
@@ -6,13 +8,13 @@ const titles: Record<string, { en: string; zh: string }> = {
   display_size: { en: "Display Size", zh: "屏幕尺寸" },
   color_families: { en: "Colour", zh: "颜色" },
   rear_cameras: { en: "Camera", zh: "相机" },
-  condition_options: { en: "Condition", zh: "成色" },
+  condition_options: { en: "Grade", zh: "等级" },
   release_year: { en: "Release year", zh: "发布年份" },
 }
 
 export const getFilterActionsCopy = (segment: string) => segment?.endsWith("-zh")
-  ? { heading: "筛选", clear: "清除筛选", open: "筛选与排序", close: "关闭筛选", showResults: "查看结果", cancel: "取消", confirm: "确认", sort: "排序", price: "价格", model: "机型", condition: "成色", all: "全部", toolbar: "商品排序与筛选" }
-  : { heading: "Filter by", clear: "Clear filters", open: "Filter & sort", close: "Close filters", showResults: "Show results", cancel: "Cancel", confirm: "Confirm", sort: "Sort by", price: "Price", model: "Model", condition: "Condition", all: "All", toolbar: "Product sorting and filters" }
+  ? { heading: "筛选", clear: "清除筛选", open: "筛选与排序", close: "关闭筛选", showResults: "查看结果", cancel: "取消", confirm: "确认", sort: "排序", price: "价格", model: "机型", condition: "等级", all: "全部", toolbar: "商品排序与筛选" }
+  : { heading: "Filter by", clear: "Clear filters", open: "Filter & sort", close: "Close filters", showResults: "Show results", cancel: "Cancel", confirm: "Confirm", sort: "Sort by", price: "Price", model: "Model", condition: "Grade", all: "All", toolbar: "Product sorting and filters" }
 
 export const getSortLabel = (value: string, fallback: string, segment: string) => {
   if (!segment?.endsWith("-zh")) return fallback
@@ -51,6 +53,8 @@ export const getRefinementLabel = (
   label: string,
   segment: string,
 ) =>
-  attribute === "color_families" && segment?.endsWith("-zh")
+  attribute === "condition_options"
+    ? optionValueLabel(label, segment)
+    : attribute === "color_families" && segment?.endsWith("-zh")
     ? (colorLabels[label] ?? label)
     : label

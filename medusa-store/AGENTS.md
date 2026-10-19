@@ -128,7 +128,17 @@ claude mcp add --transport http medusa https://docs.medusajs.com/mcp # or agent 
 - Files: kebab-case. Types/classes: PascalCase. Functions/variables: camelCase. DB columns: snake_case.
 - No emojis in code, comments, or commit messages.
 
+## UI Icons
+
+- Use SVG icons for all interface icons in the admin and storefront. Do not use text characters, Unicode symbols, emoji, ASCII art, icon fonts, or CSS-generated text as icons, including in buttons, navigation, status indicators, and empty states. Normal text labels and punctuation remain allowed.
+- Prefer existing project SVG icon components. When additional icons are needed, use a maintained SVG icon library, such as GitHub Octicons (https://github.com/primer/octicons), following the project's visual style. Do not install another icon library when the existing library already provides a suitable icon.
+- Render icons as SVG components or SVG assets. Keep sizing, stroke weight, color, and alignment consistent; use `currentColor` when appropriate. Custom icons must also use valid SVG.
+- Mark decorative icons as hidden from assistive technology. Give icon-only controls a localized accessible name; do not rely on the SVG alone to describe the action.
+- When adding or changing an interface, check the affected UI for character-based icons and replace them with SVG icons within the scope of the change.
+
 ## Conventions
+
+- New custom admin pages must show operation and request errors using a transient error toast at the top of the viewport, automatically dismissed after 4 seconds. Reuse `src/admin/lib/notifications.ts` (`notifyError`) with a localized message. Do not insert persistent page-level error banners or error paragraphs into the page layout. Keep actionable field validation next to its input when needed.
 
 - **Backend routing is file-based.** A store endpoint is `src/api/store/<path>/route.ts` exporting `GET`/`POST`/etc. Don't add a router or register routes manually.
 - **Business logic belongs in workflows**, not in route handlers. Routes resolve and run a workflow; workflows compose steps.

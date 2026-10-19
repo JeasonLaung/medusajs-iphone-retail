@@ -20,7 +20,11 @@ export default async function verifyIphoneVariants({ container }: ExecArgs) {
   let stocked = 0
   for (const item of catalogue.products) {
     const product = products.find((product) => product.handle === `swappie-${item.slug}`)!
-    assert(product.variants?.some((variant) => variant?.sku === item.sku), `Original SKU missing: ${item.sku}`)
+    assert(product.variants?.some((variant) => variant?.metadata?.source_sku === item.sku), `Original source SKU missing: ${item.sku}`)
+    for (const variant of product.variants ?? []) {
+      assert.match(variant!.sku!, /^ERP[0-9]+$/)
+      assert(Number(variant!.sku!.slice(3)) > 10000)
+    }
     const expected = item.available_storages_gb.length * item.available_colors.length * 4
     const variants = (product.variants ?? []).filter((variant) => variant?.metadata?.configuration_source === "catalogue-options")
     assert.equal(variants.length, expected, `Incomplete matrix: ${item.slug}`)
@@ -29,7 +33,6 @@ export default async function verifyIphoneVariants({ container }: ExecArgs) {
       assert(variant)
       const values = Object.fromEntries((variant.options ?? []).map((option) => [option?.option?.title, option?.value]))
       const slug = `${item.slug}-${String(values.Storage).replace(/\s+/g, "").toLowerCase()}-${String(values.Color).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}-${values.Condition}${String(values.Battery).replace(/%/g, "")}`
-      assert.equal(variant.sku, slug)
       assert.equal(variant.metadata?.slug, slug)
       assert.equal(variant.manage_inventory, true)
       assert.equal(variant.allow_backorder, false)
@@ -39,5 +42,7 @@ export default async function verifyIphoneVariants({ container }: ExecArgs) {
     }
     combinations += expected
   }
-  console.log(`VERIFIED: ${products.length} models, ${combinations} unique configuration SKUs, ${stocked} stocked combinations; all original SKUs retained`)
+  const skus = products.flatMap((product) => (product.variants ?? []).map((variant) => variant?.sku))
+  assert.equal(new Set(skus).size, skus.length, "Duplicate SKU across products")
+  console.log(`VERIFIED: ${products.length} models, ${combinations} unique configuration SKUs, ${stocked} stocked combinations; ERP numbering and original source references verified`)
 }

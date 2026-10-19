@@ -2,6 +2,8 @@ import React, { Suspense } from "react"
 import ImageGallery from "@modules/products/components/image-gallery"
 import ProductActions from "@modules/products/components/product-actions"
 import ProductDetails from "@modules/products/components/product-detail"
+import ProductReviews from "@modules/products/components/product-reviews"
+import { getReviewCopy } from "@modules/products/components/product-reviews/i18n"
 import RelatedProducts from "@modules/products/components/related-products"
 import Breadcrumbs from "@modules/common/components/breadcrumbs"
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products"
@@ -33,6 +35,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({ product, region, coun
       </section>
     </div>
     <ProductDetails product={product} locale={countryCode} />
+    <Suspense fallback={<p role="status" className="py-12">{getReviewCopy(countryCode).loading}</p>}><ProductReviews productId={product.id} locale={countryCode} /></Suspense>
     <div className="mt-20" data-testid="related-products-container"><Suspense fallback={<SkeletonRelatedProducts />}><RelatedProducts product={product} countryCode={countryCode} /></Suspense></div>
   </div>
 }

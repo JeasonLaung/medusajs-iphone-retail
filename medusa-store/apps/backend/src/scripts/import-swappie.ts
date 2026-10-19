@@ -235,7 +235,7 @@ export default async function importSwappie({ container }: ExecArgs) {
             variants: [
               {
                 title: storage,
-                sku: item.sku,
+                metadata: { source_sku: item.sku },
                 manage_inventory: true,
                 allow_backorder: false,
                 options: { Storage: storage },

@@ -1,3 +1,4 @@
+import { ArrowUpRightMini } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { getProductCopy } from "../../i18n"
 import styles from "./styles.module.css"
@@ -26,6 +27,6 @@ export default function ProductDetails({ product, locale }: { product: HttpTypes
     <h2 id="product-details-title" className={styles.sectionTitle}>{copy.details}</h2>
     {!!highlights.length && <div className={styles.highlights}>{highlights.map(([label, detail]) => <div className={styles.highlight} key={label}><span>{label}</span><strong>{detail}</strong></div>)}</div>}
     {product.description && <details className={styles.specs}><summary>{copy.description}</summary><p className={styles.description + " pb-6"} data-testid="product-description">{product.description}</p></details>}
-    {!!rows.length && <details className={styles.specs} open><summary>{copy.specs}</summary><p className={styles.muted + " mb-6"}>{copy.specNote}</p><dl>{rows.map(([label, detail]) => <div className={styles.specRow} key={label}><dt>{label}</dt><dd>{detail}</dd></div>)}</dl>{safeSource && <a className={styles.source} href={source} target="_blank" rel="noopener noreferrer">{copy.appleSpecs} ↗</a>}</details>}
+    {!!rows.length && <details className={styles.specs} open><summary>{copy.specs}</summary><p className={styles.muted + " mb-6"}>{copy.specNote}</p><dl>{rows.map(([label, detail]) => <div className={styles.specRow} key={label}><dt>{label}</dt><dd>{detail}</dd></div>)}</dl>{safeSource && <a className={styles.source} href={source} target="_blank" rel="noopener noreferrer">{copy.appleSpecs} <ArrowUpRightMini aria-hidden="true" width={16} height={16} className="inline-block align-middle shrink-0" /></a>}</details>}
   </section>
 }

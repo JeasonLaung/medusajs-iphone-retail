@@ -1,5 +1,7 @@
 "use client"
 
+import { useAccountCopy } from "@modules/account/use-account-copy"
+
 import { useEffect, useRef, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { Button } from "@modules/common/components/ui"
@@ -9,6 +11,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 type VerificationState = "verifying" | "success" | "error"
 
 const VerifyAccount = () => {
+  const { t } = useAccountCopy()
   const searchParams = useSearchParams()
   const token = searchParams.get("token")
   const [state, setState] = useState<VerificationState>("verifying")
@@ -37,21 +40,17 @@ const VerifyAccount = () => {
       className="max-w-sm w-full flex flex-col items-center text-center gap-y-4"
       data-testid="verify-account-page"
     >
-      <h1 className="text-large-semi uppercase">Email verification</h1>
+      <h1 className="text-large-semi uppercase">{t("verificationTitle")}</h1>
 
       {state === "verifying" && (
-        <p className="text-base-regular text-ui-fg-base">
-          Verifying your email...
-        </p>
+        <p className="text-base-regular text-ui-fg-base">{t("verifying")}</p>
       )}
 
       {state === "success" && (
         <>
-          <p className="text-base-regular text-ui-fg-base">
-            Your email is verified. You can now sign in to your account.
-          </p>
+          <p className="text-base-regular text-ui-fg-base">{t("verified")}</p>
           <LocalizedClientLink href="/account">
-            <Button variant="primary">Go to sign in</Button>
+            <Button variant="primary">{t("goSignIn")}</Button>
           </LocalizedClientLink>
         </>
       )}
@@ -59,11 +58,10 @@ const VerifyAccount = () => {
       {state === "error" && (
         <>
           <p className="text-base-regular text-ui-fg-base">
-            This verification link is invalid or has expired. Sign in to receive
-            a new verification email.
+            {t("invalidVerification")}
           </p>
           <LocalizedClientLink href="/account">
-            <Button variant="secondary">Go to sign in</Button>
+            <Button variant="secondary">{t("goSignIn")}</Button>
           </LocalizedClientLink>
         </>
       )}

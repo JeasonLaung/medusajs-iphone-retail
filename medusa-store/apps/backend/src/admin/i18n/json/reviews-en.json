@@ -1,0 +1,23 @@
+{
+  "heading": "Product reviews",
+  "description": "Only approved reviews appear on the storefront. Each customer can submit one review per product.",
+  "loading": "Loading reviews…",
+  "loadError": "Unable to load reviews.",
+  "updateError": "Unable to update the review. Please try again.",
+  "retry": "Try again",
+  "empty": "No reviews for this product yet.",
+  "customer": "Customer",
+  "pending": "Awaiting moderation",
+  "approved": "Published",
+  "rejected": "Hidden",
+  "action_approved": "Publish",
+  "action_rejected": "Hide",
+  "action_pending": "Return to pending",
+  "rating": "{{rating}} / 5 stars",
+  "previous": "Previous",
+  "next": "Next",
+  "page": "Page {{page}} of {{pages}}",
+  "verified": "Verified purchase",
+  "openReview": "Open review",
+  "order": "Order: {{id}}"
+}

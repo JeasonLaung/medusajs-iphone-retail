@@ -16,6 +16,7 @@ import {
 import { guardSupplierAdmin } from "./device-access"
 import { SupplierAccountBody } from "./admin/devices/supplier-accounts/route"
 import { MailCommand, MailListQuery } from "./admin/mail/validators"
+import { CreateReview, ModerateReview, ReviewListQuery, ReviewPurchasesQuery } from "./review-validators"
 import {
   guardManualPaymentSelection,
   guardMarkAsPaid,
@@ -29,6 +30,12 @@ import {
 // the route narrows it to published products in the key's sales channels.
 export default defineMiddlewares({
   routes: [
+    { matcher: "/store/product-reviews/purchases", method: "GET", middlewares: [authenticate("customer", ["session", "bearer"]), validateAndTransformQuery(ReviewPurchasesQuery, {})] },
+    { matcher: "/store/orders/:id/product-reviews", method: "GET", middlewares: [authenticate("customer", ["session", "bearer"])] },
+    { matcher: "/store/product-reviews", method: "GET", middlewares: [validateAndTransformQuery(ReviewListQuery, {})] },
+    { matcher: "/store/product-reviews", method: "POST", middlewares: [authenticate("customer", ["session", "bearer"]), validateAndTransformBody(CreateReview)] },
+    { matcher: "/admin/product-reviews", method: "GET", middlewares: [validateAndTransformQuery(ReviewListQuery, {})] },
+    { matcher: "/admin/product-reviews/:id", method: "POST", middlewares: [validateAndTransformBody(ModerateReview)] },
     { matcher: "/admin/mail", method: "GET", middlewares: [validateAndTransformQuery(MailListQuery, {})] },
     { matcher: "/admin/mail/commands", method: "POST", bodyParser: { sizeLimit: "16mb" }, middlewares: [validateAndTransformBody(MailCommand)] },
     { matcher: "/mail/webhooks/:account_id", method: "POST", bodyParser: { preserveRawBody: true, sizeLimit: "1mb" }, middlewares: [] },

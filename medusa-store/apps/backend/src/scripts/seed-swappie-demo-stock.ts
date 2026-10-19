@@ -48,6 +48,7 @@ export default async function seedSwappieDemoStock({ container }: ExecArgs) {
     entity: "product_variant",
     fields: [
       "sku",
+      "metadata",
       "id",
       "product.handle",
       "inventory_items.inventory_item_id",
@@ -55,11 +56,12 @@ export default async function seedSwappieDemoStock({ container }: ExecArgs) {
       "inventory_items.inventory.location_levels.location_id",
       "inventory_items.inventory.location_levels.stocked_quantity",
     ],
+    pagination: { take: 10000 },
   })
   const targets = variants.filter(
     (variant) =>
-      variant.sku &&
-      expectedSkus.has(variant.sku) &&
+      typeof variant.metadata?.source_sku === "string" &&
+      expectedSkus.has(variant.metadata.source_sku) &&
       variant.product?.handle?.startsWith("swappie-")
   )
   if (targets.length !== expectedSkus.size) {

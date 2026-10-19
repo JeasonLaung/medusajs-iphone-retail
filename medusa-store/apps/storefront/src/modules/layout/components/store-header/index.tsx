@@ -1,5 +1,6 @@
 "use client"
 
+import { XMark } from "@medusajs/icons"
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react"
 import { useParams, usePathname } from "next/navigation"
 import type { StoreRegion } from "@medusajs/types"
@@ -68,7 +69,7 @@ export default function StoreHeader({ regions, locales, locale, cartCount }: {
             </PopoverButton>
             <PopoverPanel className={styles.mobilePanel}>
               {({ close }) => <>
-                <button onClick={() => close()} className={styles.close}>{copy.close} ×</button>
+                <button onClick={() => close()} className={styles.close}>{copy.close} <XMark aria-hidden="true" width={20} height={20} className="inline-block align-middle shrink-0" /></button>
                 {items.map((item) => <LocalizedClientLink key={item.href} href={item.href} onClick={() => close()} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</LocalizedClientLink>)}
               </>}
             </PopoverPanel>

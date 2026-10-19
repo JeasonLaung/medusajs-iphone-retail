@@ -1,5 +1,7 @@
 import { Heading } from "@modules/common/components/ui"
 import { cookies as nextCookies } from "next/headers"
+import { getLocale } from "@lib/data/locale-actions"
+import { getAccountCopy } from "@modules/account/i18n"
 
 import CartTotals from "@modules/common/components/cart-totals"
 import AfterSales from "@modules/order/components/after-sales"
@@ -18,6 +20,7 @@ export default async function OrderCompletedTemplate({
   order,
 }: OrderCompletedTemplateProps) {
   const cookies = await nextCookies()
+  const { t } = getAccountCopy(await getLocale())
 
   const isOnboarding = cookies.get("_medusa_onboarding")?.value === "true"
 
@@ -33,12 +36,12 @@ export default async function OrderCompletedTemplate({
             level="h1"
             className="flex flex-col gap-y-3 text-ui-fg-base text-3xl mb-4"
           >
-            <span>Thank you!</span>
-            <span>Your order was placed successfully.</span>
+            <span>{t("orderThankYou")}</span>
+            <span>{t("orderPlaced")}</span>
           </Heading>
           <OrderDetails order={order} />
           <Heading level="h2" className="flex flex-row text-3xl-regular">
-            Summary
+            {t("orderSummary")}
           </Heading>
           <Items order={order} />
           <CartTotals totals={order} />

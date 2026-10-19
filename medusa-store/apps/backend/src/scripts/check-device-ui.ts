@@ -10,7 +10,6 @@ import {
   Modules,
   generateJwtToken,
 } from "@medusajs/framework/utils"
-import { parseDeviceCsv } from "../admin/lib/device-csv"
 import { localizeDeviceMessage } from "../admin/lib/device-messages"
 import en from "../admin/i18n/json/en.json"
 import zhCN from "../admin/i18n/json/zh-CN.json"
@@ -31,19 +30,6 @@ export default async function checkDeviceUi({ container }: ExecArgs) {
     "Unexpected provider error",
     "Unknown provider errors retain their details",
   )
-  assert.equal(
-    parseDeviceCsv(
-      '\uFEFFserial_number,notes\r\nDEVICECHECK123,"quoted, note"\r\n',
-    )[0].notes,
-    "quoted, note",
-  )
-  assert.equal(
-    parseDeviceCsv('imei,notes\n123456789012345,"two\nlines and ""quotes"""')[0]
-      .notes,
-    'two\nlines and "quotes"',
-  )
-  assert.throws(() => parseDeviceCsv('imei,notes\n123,"unterminated'))
-  assert.throws(() => parseDeviceCsv("imei,imei\n123,123"))
   assert(process.env.PLAYWRIGHT_MODULE_PATH, "Set PLAYWRIGHT_MODULE_PATH")
   const config: ConfigModule = container.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE,
@@ -144,7 +130,7 @@ export default async function checkDeviceUi({ container }: ExecArgs) {
       "DEVICECHECK123",
       "Decoded QR fills search",
     )
-    await page.getByLabel("手动输入序列号或 IMEI").fill("123456789012345")
+    await page.getByLabel("手动输入序列号、IMEI 或 EID").fill("123456789012345")
     await page.getByRole("button", { name: "使用号码", exact: true }).click()
     await page.getByText("已读取：123456789012345", { exact: true }).waitFor()
     await page
@@ -169,9 +155,8 @@ export default async function checkDeviceUi({ container }: ExecArgs) {
       }),
       "Stop releases camera",
     )
-    await page
-      .getByRole("button", { name: "设备入库", exact: true })
-      .click()
+    await page.goto("https://127.0.0.1:9443/app/device-scan/intake")
+    await page.getByRole("heading", { name: "设备入库", exact: true }).waitFor()
     await page.getByLabel("上传标签图片").setInputFiles(imagePath)
     await page.waitForFunction(
       () =>
@@ -208,7 +193,7 @@ export default async function checkDeviceUi({ container }: ExecArgs) {
       fullPage: true,
     })
     await page
-      .getByRole("button", { name: "仓库与供应商", exact: true })
+      .getByRole("link", { name: "仓库与供应商", exact: true })
       .click()
     await page.getByText("启用 SKU 设备库存", { exact: true }).waitFor()
     for (const locale of ["en", "zhCN"]) {
@@ -218,7 +203,6 @@ export default async function checkDeviceUi({ container }: ExecArgs) {
       await page.reload()
       const english = locale === "en"
       const title = english ? "Device intake & dispatch" : "设备入库出库"
-      await page.getByRole("heading", { name: title, exact: true }).waitFor()
       await page.getByRole("link", { name: title, exact: true }).waitFor()
       const modes = english
         ? [
@@ -235,20 +219,21 @@ export default async function checkDeviceUi({ container }: ExecArgs) {
             "退回检测",
             "仓库与供应商",
           ]
-      for (const name of modes) {
-        await page.getByRole("button", { name, exact: true }).click()
+      for (const [index, name] of modes.entries()) {
+        await page.goto(`https://127.0.0.1:9443/app/device-scan/${["lookup", "intake", "orders", "inspection", "sources"][index]}`)
+        await page.getByRole("heading", { name, exact: true }).waitFor()
         if (name === modes[1]) {
           await page
-            .getByLabel(english ? "Import device CSV" : "导入设备 CSV")
+            .getByLabel(english ? "Import device XLSX" : "导入设备 XLSX")
             .setInputFiles({
               name: "invalid.csv",
               mimeType: "text/csv",
               buffer: Buffer.from('imei,notes\n123,"unclosed'),
             })
           await page
-            .getByRole("alert")
+            .locator("[data-sonner-toast]")
             .filter({
-              hasText: english ? "Unclosed CSV quote." : "CSV 引号未闭合",
+              hasText: english ? "Choose an XLSX file." : "请选择 XLSX 文件",
             })
             .waitFor()
         }
@@ -259,12 +244,12 @@ export default async function checkDeviceUi({ container }: ExecArgs) {
           { exact: true },
         )
         .waitFor()
-      await page.getByRole("button", { name: modes[0], exact: true }).click()
+      await page.goto("https://127.0.0.1:9443/app/device-scan/lookup")
       await page
         .getByLabel(
           english
-            ? "Enter serial number or IMEI manually"
-            : "手动输入序列号或 IMEI",
+            ? "Enter serial number, IMEI or EID manually"
+            : "手动输入序列号、IMEI 或 EID",
         )
         .fill("DEVICECHECK123")
       await page
@@ -297,7 +282,7 @@ export default async function checkDeviceUi({ container }: ExecArgs) {
     }
     assert.equal(errors.length, 0, errors.join("\n"))
     console.log(
-      "Device UI checks passed: Chinese and English sidebar and all five modes, localized CSV errors, CSV quoting/BOM, HTTPS admin, QR image decoding, manual scanner entry, intake field routing, camera start/stop, responsive pages and no runtime errors.",
+      "Device UI checks passed: Chinese and English sidebar and all five modes, localized XLSX validation, HTTPS admin, QR image decoding, manual scanner entry, intake field routing, camera start/stop, responsive pages and no runtime errors.",
     )
   } finally {
     await browser.close()

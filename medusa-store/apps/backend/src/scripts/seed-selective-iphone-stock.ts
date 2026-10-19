@@ -45,19 +45,21 @@ export default async function seedSelectiveIphoneStock({ container }: ExecArgs) 
   })
   const { data: variants } = await query.graph({
     entity: "product_variant",
-    filters: { sku: plans.map((plan) => plan.sku) },
+    filters: { product: { handle: catalogue.map((item) => `swappie-${item.slug}`) } },
     fields: ["id", "sku", "metadata", "price_set.prices.currency_code", "price_set.prices.amount", "inventory_items.inventory_item_id", "inventory_items.inventory.location_levels.id", "inventory_items.inventory.location_levels.location_id", "inventory_items.inventory.location_levels.stocked_quantity"],
-    pagination: { take: plans.length },
+    pagination: { take: 10000 },
   })
-  if (variants.length !== plans.length) throw new Error("Some planned configuration SKUs are missing; run complete-iphone-variants first")
+  const selected = plans.map((plan) => variants.find((variant) => variant.metadata?.slug === plan.sku))
+  if (selected.some((variant) => !variant)) throw new Error("Some planned configurations are missing; run complete-iphone-variants first")
   // Validate the entire selection before making changes.
-  for (const variant of variants) {
+  for (const variant of selected) {
+    if (!variant) throw new Error("Missing configuration")
     if (variant.inventory_items?.length !== 1) throw new Error(`Expected one inventory item for ${variant.sku}`)
   }
   let created = 0
   let skipped = 0
   for (const plan of plans) {
-    const variant = variants.find((variant) => variant.sku === plan.sku)!
+    const variant = variants.find((variant) => variant.metadata?.slug === plan.sku)!
     if (variant.metadata?.demo_stock_seed === SEED_VERSION || managed.some((managed) => managed.variant_id === variant.id)) {
       skipped++
       continue

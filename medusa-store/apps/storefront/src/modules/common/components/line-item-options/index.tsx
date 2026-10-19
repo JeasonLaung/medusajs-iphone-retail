@@ -1,3 +1,7 @@
+"use client"
+
+import { useAccountCopy } from "@modules/account/use-account-copy"
+
 import { HttpTypes } from "@medusajs/types"
 import { Text } from "@modules/common/components/ui"
 
@@ -12,13 +16,16 @@ const LineItemOptions = ({
   "data-testid": dataTestid,
   "data-value": dataValue,
 }: LineItemOptionsProps) => {
+  const { t } = useAccountCopy()
+  if (!variant?.title || variant.title === "Default variant") return null
+
   return (
     <Text
       data-testid={dataTestid}
       data-value={dataValue}
       className="inline-block txt-medium text-ui-fg-subtle w-full overflow-hidden text-ellipsis"
     >
-      Variant: {variant?.title}
+      {t("variantLabel", { title: variant.title })}
     </Text>
   )
 }

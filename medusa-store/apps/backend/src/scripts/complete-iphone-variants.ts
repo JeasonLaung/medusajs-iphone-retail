@@ -49,8 +49,8 @@ export default async function completeIphoneVariants({ container }: Pick<ExecArg
       const values = Object.fromEntries((variant.options ?? []).map((option) => [optionTitles.get(option.option_id ?? "") ?? "", option.value]))
       if (!definitions.every((option) => values[option.title])) return []
       const canonical = slug(values)
-      return variant.sku === canonical && variant.metadata?.slug === canonical ? [] : [{
-        id: variant.id, sku: canonical, metadata: { ...variant.metadata, slug: canonical },
+      return variant.metadata?.slug === canonical ? [] : [{
+        id: variant.id, metadata: { ...variant.metadata, slug: canonical },
       }]
     })
     for (let index = 0; index < normalized.length; index += 50) {
@@ -58,20 +58,15 @@ export default async function completeIphoneVariants({ container }: Pick<ExecArg
     }
     const key = (values: Record<string, string>) => definitions.map((option) => values[option.title] ?? "").join("|")
     const existingKeys = new Set(updated.variants.map((variant) => key(Object.fromEntries((variant.options ?? []).map((option) => [optionTitles.get(option.option_id ?? "") ?? "", option.value])))))
-    const existingSkus = new Set(updated.variants.map((variant) => variant.sku))
     const combinations = definitions.reduce<Record<string, string>[]>((rows, option) => rows.flatMap((row) => option.values.map((value) => ({ ...row, [option.title]: value }))), [{}])
     const missing = combinations.filter((values) => !existingKeys.has(key(values))).map((values) => ({
       product_id: product.id,
       title: definitions.map((option) => values[option.title]).join(" / "),
-      sku: slug(values),
       options: values,
       manage_inventory: true,
       allow_backorder: false,
       metadata: { configuration_source: "catalogue-options", price_pending: true, slug: slug(values) },
     }))
-    if (new Set(missing.map((variant) => variant.sku)).size !== missing.length || missing.some((variant) => existingSkus.has(variant.sku))) {
-      throw new Error(`SKU collision for ${product.handle}`)
-    }
     for (let index = 0; index < missing.length; index += 50) {
       await createProductVariantsWorkflow(container).run({ input: { product_variants: missing.slice(index, index + 50) } })
     }

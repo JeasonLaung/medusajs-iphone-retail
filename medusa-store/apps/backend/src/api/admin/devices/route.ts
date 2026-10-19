@@ -2,12 +2,17 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import { DEVICES_MODULE } from "../../../modules/devices"
 import DevicesModuleService from "../../../modules/devices/service"
 import { deviceOperationWorkflow } from "../../../workflows/device-operations"
 import { createDeviceSourceWorkflow } from "../../../workflows/device-source"
 import type { DeviceCommandBody } from "./validators"
+import { requiresImei } from "../../../modules/devices/identity"
+import { orderItemQuantities } from "../../../lib/order-item-quantities"
 import {
   authorizeDeviceCommand,
   deviceAccess,
@@ -58,6 +63,7 @@ export async function GET(
             "items.title",
             "items.variant_id",
             "items.variant_title",
+            "items.quantity",
             "items.detail.quantity",
             "items.detail.fulfilled_quantity",
             "shipping_address.first_name",
@@ -80,7 +86,9 @@ export async function GET(
             "items.title",
             "items.variant_id",
             "items.variant_title",
-            "items.detail.*",
+            "items.quantity",
+            "items.detail.quantity",
+            "items.detail.fulfilled_quantity",
             "fulfillments.id",
             "fulfillments.canceled_at",
             "fulfillments.shipped_at",
@@ -92,6 +100,34 @@ export async function GET(
       filters: { id: order_id },
     })
     order = data[0] || null
+    if (order) {
+      const { data: orderVariants } = await query.graph({
+        entity: "product_variant",
+        fields: [
+          "id",
+          "product.title",
+          "product.handle",
+          "product.metadata",
+          "product.type.value",
+        ],
+        filters: {
+          id:
+            order.items?.map((item: any) => item.variant_id).filter(Boolean) ||
+            [],
+        },
+      })
+      order.items = order.items?.map((item: any) => {
+        const quantities = orderItemQuantities(item)
+        return {
+          ...item,
+          quantity: quantities.quantity,
+          detail: { ...item.detail, ...quantities },
+          requires_imei: requiresImei(
+            orderVariants.find((v) => v.id === item.variant_id)?.product,
+          ),
+        }
+      })
+    }
   }
   const assignments = await service.listDeviceAssignments(
     {
@@ -109,6 +145,7 @@ export async function GET(
     $or: [
       { serial_number: { $ilike: `%${q}%` } },
       { imei: { $ilike: `%${q}%` } },
+      { imei2: { $ilike: `%${q}%` } },
       { id: { $ilike: `%${q.toLowerCase()}%` } },
     ],
   }
@@ -122,15 +159,33 @@ export async function GET(
       },
     ],
   }
-  const filters = device_id
-    ? { id: device_id }
-    : order_id
-      ? q
-        ? { $and: [orderFilter, searchFilter] }
-        : orderFilter
-      : q
-        ? searchFilter
-        : {}
+  // Order allocation pickers only list available devices for an item in this order.
+  const availableVariant =
+    typeof req.query.available_variant_id === "string"
+      ? req.query.available_variant_id
+      : undefined
+  if (
+    availableVariant &&
+    !order?.items?.some((item: any) => item.variant_id === availableVariant)
+  ) {
+    throw new MedusaError(MedusaError.Types.INVALID_DATA, "商品不属于该订单")
+  }
+  const filters = availableVariant
+    ? {
+        $and: [
+          { variant_id: availableVariant, state: "available" },
+          ...(q ? [searchFilter] : []),
+        ],
+      }
+    : device_id
+      ? { id: device_id }
+      : order_id
+        ? q
+          ? { $and: [orderFilter, searchFilter] }
+          : orderFilter
+        : q
+          ? searchFilter
+          : {}
   const [devices, count] = await service.listAndCountDevices(
     supplier ? { $and: [filters, { source_id: access.source_id! }] } : filters,
     {
@@ -155,11 +210,25 @@ export async function GET(
       "title",
       "sku",
       "product.title",
+      "product.handle",
+      "product.metadata",
+      "product.type.value",
       "options.value",
       "inventory_items.inventory.location_levels.*",
     ],
     pagination: { take: 200 },
   })
+  const selectedVariantId = typeof req.query.selected_variant_id === "string"
+    ? req.query.selected_variant_id.slice(0, 100) : undefined
+  if (selectedVariantId && !variants.some((variant) => variant.id === selectedVariantId)) {
+    const { data: selectedVariants } = await query.graph({
+      entity: "product_variant",
+      fields: ["id", "title", "sku", "product.title", "product.handle", "product.metadata", "product.type.value", "options.value", "inventory_items.inventory.location_levels.*"],
+      filters: { id: selectedVariantId },
+    })
+    variants.push(...selectedVariants)
+  }
+  for (const variant of variants) Object.assign(variant, { requires_imei: requiresImei(variant.product) })
   const assigned_devices = assignments.length
     ? await service.listDevices(
         {

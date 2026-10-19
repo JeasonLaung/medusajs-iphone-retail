@@ -1,3 +1,8 @@
+"use client"
+
+import { useAccountCopy } from "@modules/account/use-account-copy"
+import { AccountKey } from "@modules/account/i18n"
+
 import { getOrderNumber } from "@lib/util/order-number"
 import { HttpTypes } from "@medusajs/types"
 import { Text } from "@modules/common/components/ui"
@@ -7,8 +12,35 @@ type OrderDetailsProps = {
   showStatus?: boolean
 }
 
+const fulfillmentStatusKeys: Record<string, AccountKey> = {
+  not_fulfilled: "fulfillmentNotFulfilled",
+  partially_fulfilled: "fulfillmentPartiallyFulfilled",
+  fulfilled: "fulfillmentFulfilled",
+  partially_shipped: "fulfillmentPartiallyShipped",
+  shipped: "fulfillmentShipped",
+  partially_delivered: "fulfillmentPartiallyDelivered",
+  delivered: "fulfillmentDelivered",
+  canceled: "fulfillmentCanceled",
+}
+
+const paymentStatusKeys: Record<string, AccountKey> = {
+  not_paid: "paymentNotPaid",
+  awaiting: "paymentAwaiting",
+  authorized: "paymentAuthorized",
+  partially_authorized: "paymentPartiallyAuthorized",
+  captured: "paymentCaptured",
+  partially_captured: "paymentPartiallyCaptured",
+  partially_refunded: "paymentPartiallyRefunded",
+  refunded: "paymentRefunded",
+  canceled: "paymentCanceled",
+  requires_action: "paymentRequiresAction",
+}
+
 const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
-  const formatStatus = (str: string) => {
+  const { t, locale } = useAccountCopy()
+  const formatStatus = (str: string, keys: Record<string, AccountKey>) => {
+    if (keys[str]) return t(keys[str])
+
     const formatted = str.split("_").join(" ")
 
     return formatted.slice(0, 1).toUpperCase() + formatted.slice(1)
@@ -16,42 +48,34 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
 
   return (
     <div>
-      <Text>
-        We have sent the order confirmation details to{" "}
-        <span
-          className="text-ui-fg-medium-plus font-semibold"
-          data-testid="order-email"
-        >
-          {order.email}
-        </span>
-        .
-      </Text>
+      <Text>{t("confirmationEmail", { email: order.email || "" })}</Text>
       <Text className="mt-2">
-        Order date:{" "}
+        {t("orderDate")}{" "}
         <span data-testid="order-date">
-          {new Date(order.created_at).toDateString()}
+          {new Date(order.created_at).toLocaleDateString(locale)}
         </span>
       </Text>
       <Text className="mt-2 text-ui-fg-interactive">
-        Order number: <span data-testid="order-id">{getOrderNumber(order)}</span>
+        {t("orderNumberLabel")}
+        <span data-testid="order-id">{getOrderNumber(order)}</span>
       </Text>
 
       <div className="flex items-center text-compact-small gap-x-4 mt-4">
         {showStatus && (
           <>
             <Text>
-              Order status:{" "}
+              {t("orderStatus")}{" "}
               <span className="text-ui-fg-subtle " data-testid="order-status">
-                {formatStatus(order.fulfillment_status)}
+                {formatStatus(order.fulfillment_status, fulfillmentStatusKeys)}
               </span>
             </Text>
             <Text>
-              Payment status:{" "}
+              {t("paymentStatus")}{" "}
               <span
                 className="text-ui-fg-subtle "
-                sata-testid="order-payment-status"
+                data-testid="order-payment-status"
               >
-                {formatStatus(order.payment_status)}
+                {formatStatus(order.payment_status, paymentStatusKeys)}
               </span>
             </Text>
           </>

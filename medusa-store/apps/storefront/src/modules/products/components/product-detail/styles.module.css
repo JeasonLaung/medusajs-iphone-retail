@@ -5,7 +5,7 @@
 .stage { position: relative; background: #f5f5f7; border-radius: 24px; aspect-ratio: 1/1.04; display: grid; place-items: center; overflow: hidden; }
 .stage img { object-fit: contain; padding: 42px; mix-blend-mode: multiply; }
 .counter { position: absolute; right: 20px; bottom: 18px; background: #fff; border-radius: 30px; padding: 5px 12px; font-size: 12px; color: #6e6e73; }
-.galleryArrow { position: absolute; top: 48%; width: 36px; height: 36px; border-radius: 50%; background: #ffffffd9; z-index: 1; font-size: 22px; }
+.galleryArrow { position: absolute; top: 48%; width: 36px; height: 36px; border-radius: 50%; background: #ffffffd9; z-index: 1; display: grid; place-items: center; }
 .galleryArrow:first-of-type { left: 12px; }
 .galleryArrow:last-of-type { right: 12px; }
 .thumbnails { display: flex; gap: 10px; justify-content: center; margin-top: 18px; overflow-x: auto; padding: 3px; }
@@ -82,7 +82,7 @@
 .page button:focus-visible, .page a:focus-visible, .page summary:focus-visible { outline: 3px solid #0066cc; outline-offset: 4px; }
 @media (max-width: 767px) {
   .desktopBar { display: none; }
-  .page { padding: 20px 20px 110px; }
+  .page { padding: 20px 20px calc(190px + env(safe-area-inset-bottom)); }
   .hero { grid-template-columns: 1fr; gap: 28px; }
   .visual { position: static; }
   .stage { aspect-ratio: 1.15; border-radius: 18px; }
@@ -97,7 +97,11 @@
   .highlight span { margin: 0; }
   .highlight strong { font-size: 17px; text-align: right; }
   .specRow { grid-template-columns: 110px 1fr; gap: 16px; font-size: 13px; }
-  .mobileBar { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; background: #fffffff5; backdrop-filter: blur(12px); border-top: 1px solid #e8e8ed; padding: 12px 20px max(12px, env(safe-area-inset-bottom)); align-items: center; gap: 18px; }
-  .mobileBar .add { width: auto; flex: 1; }
+  .mobileBar { display: grid; grid-template-columns: auto minmax(0, 1fr); position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; background: #fffffff5; backdrop-filter: blur(12px); border-top: 1px solid #e8e8ed; padding: 12px 20px max(12px, env(safe-area-inset-bottom)); align-items: center; gap: 8px 18px; }
+  .mobileBarSelection { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; min-width: 0; overflow-wrap: anywhere; }
+  .mobileBarThumbnail { position: relative; flex: 0 0 48px; height: 48px; background: #f5f5f7; border-radius: 8px; overflow: hidden; }
+  .mobileBarThumbnail img { object-fit: contain; padding: 4px; }
+  .mobileBarDetails { min-width: 0; }
+  .mobileBarSummary { font-size: 13px; line-height: 1.5; color: #1d1d1f; }
   .mobileBar strong { display: block; font-size: 20px; }
 }

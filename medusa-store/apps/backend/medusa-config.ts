@@ -5,17 +5,20 @@ loadEnv(process.env.NODE_ENV || "development", process.cwd())
 const localStoreOrigins = process.env.NODE_ENV === "production"
   ? []
   : ["http://localhost:8000", "http://127.0.0.1:8000"]
-const withLocalStoreOrigins = (configured: string | undefined) =>
-  [...new Set([...(configured || "").split(",").filter(Boolean), ...localStoreOrigins])].join(",")
+const localAdminOrigins = process.env.NODE_ENV === "production"
+  ? []
+  : ["http://localhost:9001", "http://127.0.0.1:9001"]
+const withLocalOrigins = (configured: string | undefined, origins: string[]) =>
+  [...new Set([...(configured || "").split(",").map((origin) => origin.trim()).filter(Boolean), ...origins])].join(",")
 
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: process.env.REDIS_URL,
     http: {
-      storeCors: withLocalStoreOrigins(process.env.STORE_CORS),
-      adminCors: process.env.ADMIN_CORS!,
-      authCors: withLocalStoreOrigins(process.env.AUTH_CORS),
+      storeCors: withLocalOrigins(process.env.STORE_CORS, localStoreOrigins),
+      adminCors: withLocalOrigins(process.env.ADMIN_CORS, localAdminOrigins),
+      authCors: withLocalOrigins(process.env.AUTH_CORS, [...localStoreOrigins, ...localAdminOrigins]),
       jwtSecret: process.env.JWT_SECRET,
       cookieSecret: process.env.COOKIE_SECRET,
     }
@@ -27,6 +30,8 @@ module.exports = defineConfig({
     },
   ],
   modules: [
+    { resolve: "./src/modules/sku-numbering" },
+    { resolve: "./src/modules/product-review" },
     { resolve: "./src/modules/mail" },
     { resolve: "./src/modules/order-numbering" },
     { resolve: "./src/modules/after-sales" },

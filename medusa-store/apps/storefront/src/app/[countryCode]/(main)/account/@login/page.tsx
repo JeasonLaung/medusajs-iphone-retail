@@ -1,12 +1,15 @@
+import { getLocale } from "@lib/data/locale-actions"
+import { getAccountCopy } from "@modules/account/i18n"
 import { Metadata } from "next"
 
 import LoginTemplate from "@modules/account/templates/login-template"
 
-export const metadata: Metadata = {
-  title: "Sign in",
-  description: "Sign in to your Medusa Store account.",
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = getAccountCopy(await getLocale())
+  return { title: t("signIn") }
 }
 
-export default function Login() {
+export default async function Login() {
+  const { t } = getAccountCopy(await getLocale())
   return <LoginTemplate />
 }

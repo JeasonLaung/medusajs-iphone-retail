@@ -3,6 +3,8 @@
 import { indexedCurrency, priceAttribute } from "@lib/search-client"
 import { convertToLocale } from "@lib/util/money"
 import { Text, clx } from "@modules/common/components/ui"
+import { useParams } from "next/navigation"
+import { getProductCardCopy } from "./i18n"
 
 /** The per-currency price fields a hit may carry, e.g. `min_price_eur`. */
 export type HitPricing = Record<string, unknown>
@@ -15,6 +17,8 @@ type HitPriceProps = {
 const amount = (value: unknown) => (typeof value === "number" ? value : null)
 
 const HitPrice = ({ hit, currencyCode }: HitPriceProps) => {
+  const { countryCode } = useParams<{ countryCode: string }>()
+  const copy = getProductCardCopy(countryCode)
   const currency_code = indexedCurrency(currencyCode)
   const min_price = amount(hit[priceAttribute("min_price", currencyCode)])
   const max_price = amount(hit[priceAttribute("max_price", currencyCode)])
@@ -49,7 +53,7 @@ const HitPrice = ({ hit, currencyCode }: HitPriceProps) => {
         })}
         data-testid="price"
       >
-        {isRange ? `${format(min_price)} - ${format(max)}` : format(min_price)}
+        {copy.fromPrice.replace("{price}", format(min_price))}
       </Text>
     </div>
   )

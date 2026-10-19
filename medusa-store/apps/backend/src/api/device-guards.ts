@@ -29,17 +29,17 @@ export async function guardDeviceOrder(
         ?.map((i) => i?.variant_id)
         .filter((id): id is string => Boolean(id)) || [],
   })
-  if (!variants.length) return next()
+  const active = await service.listDeviceAssignments({
+    order_id,
+    status: ["reserved", "packed", "shipped"],
+  })
+  if (!variants.length && !active.length) return next()
   if (req.path.endsWith("/cancel") && !req.path.includes("/fulfillments/")) {
-    const active = await service.listDeviceAssignments({
-      order_id,
-      status: ["reserved", "packed", "shipped"],
-    })
     if (!active.length) return next()
   }
   throw new MedusaError(
     MedusaError.Types.NOT_ALLOWED,
-    "该订单包含序列号设备，请在设备扫码工作台完成配货、履约、发货或解除配货，避免设备与库存记录不一致",
+    "该订单包含序列号设备，请在订单详情的设备与履约区域完成配货、履约、发货或解除配货",
   )
 }
 

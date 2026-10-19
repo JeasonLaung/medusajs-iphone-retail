@@ -1,3 +1,4 @@
+import { CheckCircle } from "@medusajs/icons"
 import { Button, Container, Text } from "@modules/common/components/ui"
 import { cookies as nextCookies } from "next/headers"
 
@@ -14,7 +15,7 @@ async function ProductOnboardingCta() {
     <Container className="max-w-4xl h-full bg-ui-bg-subtle w-full p-8">
       <div className="flex flex-col gap-y-4 center">
         <Text className="text-ui-fg-base text-xl">
-          Your demo product was successfully created! 🎉
+          Your demo product was successfully created! <CheckCircle aria-hidden="true" width={24} height={24} className="inline-block align-middle shrink-0" />
         </Text>
         <Text className="text-ui-fg-subtle text-small-regular">
           You can now continue setting up your store in the admin.

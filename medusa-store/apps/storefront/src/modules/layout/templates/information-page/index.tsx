@@ -1,3 +1,4 @@
+import { ArrowRight } from "@medusajs/icons"
 import { getLocale } from "@lib/data/locale-actions"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getLayoutCopy } from "@modules/layout/i18n"
@@ -22,15 +23,15 @@ export default async function InformationPage({ kind }: { kind: InformationPageK
           <section id="shopping" className={styles.section}>
             <h2>{copy.shopping}</h2>
             <p>{copy.shoppingDescription}</p>
-            <LocalizedClientLink href="/store">{copy.store} <span aria-hidden="true">→</span></LocalizedClientLink>
+            <LocalizedClientLink href="/store">{copy.store} <ArrowRight aria-hidden="true" width={20} height={20} className="inline-block align-middle shrink-0" /></LocalizedClientLink>
           </section>
           <section id="account" className={styles.section}>
             <h2>{copy.orders}</h2>
             <p>{copy.ordersDescription}</p>
-            <LocalizedClientLink href="/account">{copy.account} <span aria-hidden="true">→</span></LocalizedClientLink>
+            <LocalizedClientLink href="/account">{copy.account} <ArrowRight aria-hidden="true" width={20} height={20} className="inline-block align-middle shrink-0" /></LocalizedClientLink>
           </section>
         </div>}
-        <LocalizedClientLink href="/store" className={styles.back}>{copy.back} <span aria-hidden="true">→</span></LocalizedClientLink>
+        <LocalizedClientLink href="/store" className={styles.back}>{copy.back} <ArrowRight aria-hidden="true" width={20} height={20} className="inline-block align-middle shrink-0" /></LocalizedClientLink>
       </div>
     </main>
   )

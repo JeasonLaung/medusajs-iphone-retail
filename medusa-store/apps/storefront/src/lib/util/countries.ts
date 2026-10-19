@@ -1,5 +1,6 @@
 import type { HttpTypes } from "@medusajs/types"
 import europeanCountries from "@lib/data/european-countries.json"
+import countryNameOverrides from "@lib/data/country-name-overrides.json"
 
 // Europe includes all UN M49 European countries/areas plus AM, AZ, CY, GE,
 // KZ and TR for wider European market coverage. XK is a user-assigned code
@@ -25,6 +26,9 @@ export const getCountryOptions = (
   regions: HttpTypes.StoreRegion[],
   locale = "en"
 ) => {
+  // Keep renamed countries consistent across Node and browser ICU versions.
+  const overrides: Record<string, string> =
+    countryNameOverrides[locale.toLowerCase().startsWith("zh") ? "zh" : "en"]
   const names = locale.toLowerCase().startsWith("zh")
     ? chineseNames
     : englishNames
@@ -35,7 +39,7 @@ export const getCountryOptions = (
 
   for (const country of europeanCountries) {
     const { code, alpha3, numeric } = country
-    const label = names.of(code)
+    const label = overrides[code] ?? names.of(code)
     if (!label) continue
     countries.set(code, {
       value: code.toLowerCase(),
@@ -62,7 +66,7 @@ export const getCountryOptions = (
     for (const country of region.countries ?? []) {
       const code = country.iso_2?.toUpperCase()
       if (!code || !/^[A-Z]{2}$/.test(code)) continue
-      const label = names.of(code)
+      const label = overrides[code] ?? names.of(code)
       if (!label) continue
       countries.set(code, {
         value: code.toLowerCase(),

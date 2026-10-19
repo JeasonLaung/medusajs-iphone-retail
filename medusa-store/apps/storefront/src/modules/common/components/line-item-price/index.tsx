@@ -1,3 +1,7 @@
+"use client"
+
+import { useAccountCopy } from "@modules/account/use-account-copy"
+
 import { getPercentageDiff } from "@lib/util/get-percentage-diff"
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
@@ -14,6 +18,7 @@ const LineItemPrice = ({
   style = "default",
   currencyCode,
 }: LineItemPriceProps) => {
+  const { t, locale } = useAccountCopy()
   const { total, original_total } = item
   const originalPrice = original_total ?? 0
   const currentPrice = total ?? 0
@@ -26,7 +31,7 @@ const LineItemPrice = ({
           <>
             <p>
               {style === "default" && (
-                <span className="text-ui-fg-subtle">Original: </span>
+                <span className="text-ui-fg-subtle">{t("originalPriceLabel")} </span>
               )}
               <span
                 className="line-through text-ui-fg-muted"
@@ -35,6 +40,7 @@ const LineItemPrice = ({
                 {convertToLocale({
                   amount: originalPrice,
                   currency_code: currencyCode,
+                  locale,
                 })}
               </span>
             </p>
@@ -54,6 +60,7 @@ const LineItemPrice = ({
           {convertToLocale({
             amount: currentPrice,
             currency_code: currencyCode,
+            locale,
           })}
         </span>
       </div>

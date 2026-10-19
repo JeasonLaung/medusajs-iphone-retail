@@ -1,5 +1,7 @@
 "use client"
 
+import { useAccountCopy } from "@modules/account/use-account-copy"
+
 import React from "react"
 import Input from "@modules/common/components/input"
 import AccountInfo from "../account-info"
@@ -10,7 +12,10 @@ type MyInformationProps = {
   customer: HttpTypes.StoreCustomer
 }
 
-const ProfilePassword: React.FC<MyInformationProps> = ({ customer: _customer }) => {
+const ProfilePassword: React.FC<MyInformationProps> = ({
+  customer: _customer,
+}) => {
+  const { t } = useAccountCopy()
   const [successState, setSuccessState] = React.useState(false)
 
   // TODO: Add support for password updates
@@ -30,10 +35,8 @@ const ProfilePassword: React.FC<MyInformationProps> = ({ customer: _customer }) 
       className="w-full"
     >
       <AccountInfo
-        label="Password"
-        currentInfo={
-          <span>The password is not shown for security reasons</span>
-        }
+        label={t("password")}
+        currentInfo={<span>{t("passwordHidden")}</span>}
         isSuccess={successState}
         isError={false}
         errorMessage={undefined}
@@ -42,21 +45,21 @@ const ProfilePassword: React.FC<MyInformationProps> = ({ customer: _customer }) 
       >
         <div className="grid grid-cols-2 gap-4">
           <Input
-            label="Old password"
+            label={t("oldPassword")}
             name="old_password"
             required
             type="password"
             data-testid="old-password-input"
           />
           <Input
-            label="New password"
+            label={t("newPassword")}
             type="password"
             name="new_password"
             required
             data-testid="new-password-input"
           />
           <Input
-            label="Confirm password"
+            label={t("confirmPassword")}
             type="password"
             name="confirm_password"
             required

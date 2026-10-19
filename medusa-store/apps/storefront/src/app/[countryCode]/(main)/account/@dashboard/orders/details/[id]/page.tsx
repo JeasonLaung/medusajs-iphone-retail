@@ -1,3 +1,5 @@
+import { getLocale } from "@lib/data/locale-actions"
+import { getAccountCopy } from "@modules/account/i18n"
 import { getOrderNumber } from "@lib/util/order-number"
 import { retrieveOrder } from "@lib/data/orders"
 import OrderDetailsTemplate from "@modules/order/templates/order-details-template"
@@ -10,6 +12,7 @@ type Props = {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
+  const { t } = getAccountCopy(await getLocale())
   const order = await retrieveOrder(params.id).catch(() => null)
 
   if (!order) {
@@ -17,8 +20,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   return {
-    title: `Order #${getOrderNumber(order)}`,
-    description: `View your order`,
+    title: t("orderTitle", { number: getOrderNumber(order) }),
+    description: t("viewOrder"),
   }
 }
 

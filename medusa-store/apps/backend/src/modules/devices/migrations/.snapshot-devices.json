@@ -54,6 +54,22 @@
           "enumItems": [],
           "mappedType": "text"
         },
+        "imei2": {
+          "name": "imei2",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
         "variant_id": {
           "name": "variant_id",
           "type": "text",
@@ -108,7 +124,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "unique": false,
           "length": null,
           "precision": null,
@@ -124,7 +140,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "unique": false,
           "length": null,
           "precision": null,
@@ -302,6 +318,15 @@
           "primary": false,
           "unique": false,
           "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_device_imei_unique\" ON \"device\" (\"imei\") WHERE imei IS NOT NULL AND deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_device_imei2_unique",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_device_imei2_unique\" ON \"device\" (\"imei2\") WHERE imei2 IS NOT NULL AND deleted_at IS NULL"
         },
         {
           "keyName": "IDX_device_variant_id_location_id_state",

@@ -11,7 +11,7 @@ type ModalProps = {
   size?: "small" | "medium" | "large"
   search?: boolean
   children: React.ReactNode
-  'data-testid'?: string
+  "data-testid"?: string
 }
 
 const Modal = ({
@@ -20,7 +20,7 @@ const Modal = ({
   size = "medium",
   search = false,
   children,
-  'data-testid': dataTestId
+  "data-testid": dataTestId,
 }: ModalProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -79,14 +79,21 @@ const Modal = ({
   )
 }
 
-const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Title: React.FC<{ children: React.ReactNode; closeLabel?: string }> = ({
+  children,
+  closeLabel,
+}) => {
   const { close } = useModal()
 
   return (
     <Dialog.Title className="flex items-center justify-between">
       <div className="text-large-semi">{children}</div>
       <div>
-        <button onClick={close} data-testid="close-modal-button">
+        <button
+          onClick={close}
+          aria-label={closeLabel}
+          data-testid="close-modal-button"
+        >
           <X size={20} />
         </button>
       </div>

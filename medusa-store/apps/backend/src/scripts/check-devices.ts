@@ -972,21 +972,11 @@ export default async function checkDevices({ container }: ExecArgs) {
         await supplierPage.locator('button[type="submit"]').click()
         await supplierPage.getByTestId("device-scan-page").waitFor()
         await supplierPage.getByText("供应商账号：", { exact: false }).waitFor()
-        assert.equal(
-          await supplierPage
-            .getByRole("button", { name: "设备入库", exact: true })
-            .count(),
-          0,
-        )
-        assert.equal(
-          await supplierPage
-            .getByRole("button", { name: "退回检测", exact: true })
-            .count(),
-          0,
-        )
-        await supplierPage
-          .getByRole("button", { name: "供应商库存", exact: true })
-          .click()
+        for (const restricted of ["intake", "inspection"]) {
+          await supplierPage.goto(`http://127.0.0.1:9001/app/device-scan/${restricted}`)
+          await supplierPage.waitForURL("**/app/device-scan/lookup")
+        }
+        await supplierPage.goto("http://127.0.0.1:9001/app/device-scan/sources")
         await supplierPage
           .getByText("供应商未分配设备的可供数量", { exact: true })
           .waitFor()
@@ -1017,12 +1007,10 @@ export default async function checkDevices({ container }: ExecArgs) {
         ])
         await supplierPage.reload()
         await supplierPage
-          .getByRole("button", { name: "Supplier inventory", exact: true })
+          .getByRole("heading", { name: "Supplier inventory", exact: true })
           .waitFor()
         await supplierPage.setViewportSize({ width: 1440, height: 1000 })
-        await supplierPage
-          .getByRole("button", { name: "Allocate & dispatch", exact: true })
-          .click()
+        await supplierPage.goto("http://127.0.0.1:9001/app/device-scan/orders")
         await supplierPage
           .getByLabel("Authorized orders")
           .selectOption(mixed.order.id)

@@ -1,5 +1,6 @@
 "use client"
 
+import { XMark } from "@medusajs/icons"
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
 import { useState, useTransition } from "react"
 import { useParams, usePathname } from "next/navigation"
@@ -86,7 +87,7 @@ export default function RegionLanguage({ regions, locales, locale }: {
       <DialogPanel className={styles.drawer}>
         <div className={styles.heading}>
           <DialogTitle>{copy.selectRegion}</DialogTitle>
-          <button onClick={() => setOpen(false)} aria-label={copy.closeRegion}>×</button>
+          <button onClick={() => setOpen(false)} aria-label={copy.closeRegion}><XMark aria-hidden="true" width={20} height={20} className="inline-block align-middle shrink-0" /></button>
         </div>
         {error && <p role="alert" className={styles.error}>{copy.error}</p>}
         <ul className={styles.list} aria-busy={pending}>

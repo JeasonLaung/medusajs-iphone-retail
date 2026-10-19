@@ -1,0 +1,23 @@
+{
+  "heading": "商品评价",
+  "description": "只有审核通过的评价会在店铺展示。每位客户对每款商品可提交一条评价。",
+  "loading": "正在加载评价…",
+  "loadError": "无法加载评价。",
+  "updateError": "评价更新失败，请重试。",
+  "retry": "重试",
+  "empty": "该商品暂无评价。",
+  "customer": "用户",
+  "pending": "待审核",
+  "approved": "已发布",
+  "rejected": "已隐藏",
+  "action_approved": "发布",
+  "action_rejected": "隐藏",
+  "action_pending": "退回待审核",
+  "rating": "{{rating}} 星，满分 5 星",
+  "previous": "上一页",
+  "next": "下一页",
+  "page": "第 {{page}} 页，共 {{pages}} 页",
+  "verified": "已验证购买",
+  "openReview": "开放评价",
+  "order": "关联订单：{{id}}"
+}

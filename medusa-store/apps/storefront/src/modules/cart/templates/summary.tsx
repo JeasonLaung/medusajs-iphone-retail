@@ -18,7 +18,7 @@ export default function Summary({ cart, locale, variants }: { cart: HttpTypes.St
   })
   return <aside className={`${styles.card} ${styles.summary}`} aria-label={copy.summary}>
     <div className={styles.summaryRows}>
-      {cart.items?.map((item) => <div key={item.id}><span>{item.product_title ?? item.title}{item.quantity > 1 ? ` × ${item.quantity}` : ""}</span><span>{money(item.subtotal ?? item.unit_price * item.quantity)}</span></div>)}
+      {cart.items?.map((item) => <div key={item.id}><span><strong className="font-bold">{item.product_title ?? item.title}</strong>{item.quantity > 1 ? ` × ${item.quantity}` : ""}</span><span>{money(item.subtotal ?? item.unit_price * item.quantity)}</span></div>)}
       <div><span>{copy.shipping}</span><span data-testid="cart-shipping">{cart.shipping_methods?.length ? money(cart.shipping_subtotal ?? 0) : copy.shippingPending}</span></div>
       {!!cart.discount_total && <div><span>{copy.discount}</span><span>− {money(cart.discount_total)}</span></div>}
       <div><span>{copy.taxes}</span><span>{money(cart.tax_total ?? 0)}</span></div>

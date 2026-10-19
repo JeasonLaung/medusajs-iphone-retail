@@ -1,10 +1,13 @@
 "use client"
 
+import { ArrowUpRightMini } from "@medusajs/icons"
 import { addToCart } from "@lib/data/cart"
 import { getProductPrice, getPricesForVariant } from "@lib/util/get-product-price"
 import { getAppleLaunchPrice } from "@lib/util/get-apple-launch-price"
+import iphoneThumbnails from "@lib/util/iphone-thumbnails.json"
 import { useIntersection } from "@lib/hooks/use-in-view"
 import { HttpTypes } from "@medusajs/types"
+import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { useParams, usePathname, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -85,6 +88,11 @@ export default function ProductActions({ product, disabled, initialVariantId }: 
     return option && options[option.id] ? optionValueLabel(options[option.id], countryCode) : null
   }).filter(Boolean).join(" | ")
   const launchPrice = getAppleLaunchPrice(product, selectedVariant, price?.currency_code)
+  const colorOption = productOptions.find((option) => /colou?r/i.test(option.title ?? ""))
+  const colorSlug = colorOption ? (options[colorOption.id] ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "-") : ""
+  const modelSlug = product.handle?.replace(/^swappie-/, "") ?? ""
+  const localThumbnail = (iphoneThumbnails as Record<string, string>)[`${modelSlug}/${colorSlug}`]
+  const thumbnail = localThumbnail ?? selectedVariant?.images?.find((image) => image.url)?.url ?? product.thumbnail ?? product.images?.find((image) => image.url)?.url
 
   const handleAdd = async () => {
     if (!canAdd || !selectedVariant) return
@@ -125,25 +133,34 @@ export default function ProductActions({ product, disabled, initialVariantId }: 
         return <label key={value} className={styles.choice} data-checked={checked} data-disabled={!inStock || disabled || isAdding}>
           <input type="radio" name={`${product.id}-${option.id}`} value={value} checked={checked} disabled={!inStock} onChange={() => selectOption(option.id, value)} aria-label={optionValueLabel(value, countryCode)} data-testid="option-radio" />
           <span className={styles.choiceLabel}>{colour && <span className={styles.swatch} style={{ background: colour.hex }} aria-hidden="true" />}{optionValueLabel(value, countryCode)}</span>
-          <span className={styles.choicePrice}>{optionPrice}</span>
+          {!checked && <span className={styles.choicePrice}>{optionPrice}</span>}
         </label>
       })}</div>
     </fieldset>)}
     {variants.length < (product.variants?.length ?? 0) && <p className={styles.muted + " mt-4"}>{copy.configurationPending}</p>}
     <div className={styles.purchase} ref={actionsRef}>
       <div className={styles.purchaseTop}><div><strong>{product.title}</strong><p className={styles.muted}>{summary || copy.select}</p></div><span className={styles.purchasePrice}>{formattedPrice}</span></div>
-      {selectedVariant?.sku && <p className={styles.muted + " mb-3"}>{copy.sku}: {selectedVariant.sku}</p>}
       {inStock && <p className={styles.stock}>{copy.stock}</p>}
       <button type="button" className={styles.add} disabled={!canAdd} onClick={handleAdd} data-testid="add-product-button">{buttonText}</button>
       <div role="status" aria-live="polite" className={styles.feedback + (feedback === "error" ? " " + styles.error : "")}>{feedbackContent}</div>
     </div>
     <div className={styles.support}>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><path d="M3 5h12v12H3zM15 9h4l3 4v4h-7M1 9h7M1 12h5" /><circle cx="7" cy="18" r="2" /><circle cx="18" cy="18" r="2" /></svg>
-      <div><strong>{copy.shipping}</strong><p className={styles.muted}>{copy.shippingText}</p><LocalizedClientLink href="/help">{copy.help} ↗</LocalizedClientLink></div>
+      <div><strong>{copy.shipping}</strong><p className={styles.muted}>{copy.shippingText}</p><LocalizedClientLink href="/help">{copy.help} <ArrowUpRightMini aria-hidden="true" width={16} height={16} className="inline-block align-middle shrink-0" /></LocalizedClientLink></div>
     </div>
     <StickyPurchaseBar anchor={priceRef} title={product.title ?? ""} summary={summary || copy.select} price={formattedPrice} label={copy.summary} buttonText={buttonText} disabled={!canAdd} onAdd={handleAdd}>
       {feedbackContent && <p className={styles.feedback + (feedback === "error" ? " " + styles.error : "")}>{feedbackContent}</p>}
     </StickyPurchaseBar>
-    {!inView && <div className={styles.mobileBar}><div><span className={styles.muted}>{product.title}</span><strong>{formattedPrice}</strong></div><button type="button" className={styles.add} disabled={!canAdd} onClick={handleAdd}>{buttonText}</button></div>}
+    {!inView && <aside className={styles.mobileBar} aria-label={copy.summary} data-testid="mobile-purchase-bar">
+      <div className={styles.mobileBarSelection}>
+        {thumbnail && <div className={styles.mobileBarThumbnail}><Image src={thumbnail} alt="" fill sizes="48px" /></div>}
+        <div className={styles.mobileBarDetails}>
+          <span className={styles.muted}>{product.title}</span>
+          <p className={styles.mobileBarSummary} data-testid="mobile-purchase-summary">{summary || copy.select}</p>
+        </div>
+      </div>
+      <strong>{formattedPrice}</strong>
+      <button type="button" className={styles.add} disabled={!canAdd} onClick={handleAdd}>{buttonText}</button>
+    </aside>}
   </div>
 }

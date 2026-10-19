@@ -1,4 +1,5 @@
 const en = {
+  paypalMollie: "PayPal via Mollie", giftCardMollie: "Gift card via Mollie",
   testingOnly: "For testing purposes only.",
   promoInvalid: "This discount code is invalid or does not apply to your order.",
   checkout: "Checkout", back: "Back to cart", details: "Details", delivery: "Delivery", payment: "Payment",
@@ -22,6 +23,7 @@ const en = {
 }
 
 const zh: typeof en = {
+  paypalMollie: "PayPal（通过 Mollie）", giftCardMollie: "礼品卡（通过 Mollie）",
   testingOnly: "仅供测试使用。",
   promoInvalid: "此优惠码无效或不适用于当前订单。",
   checkout: "结账", back: "返回购物车", details: "联系信息", delivery: "配送", payment: "支付",
@@ -50,6 +52,8 @@ export function paymentTitle(id: string, locale: string, fallback?: string) {
   if (id === "pp_system_default") return copy.manualPayment
   if (id === "pp_paypal_card_paypal_card") return copy.cardPaypal
   if (id === "pp_mollie-card_mollie") return copy.cardMollie
+  if (id === "pp_mollie-paypal_mollie") return copy.paypalMollie
+  if (id === "pp_mollie-giftcard_mollie") return copy.giftCardMollie
   if (id === "pp_stripe_stripe" || id === "pp_medusa-payments_default") return copy.card
   return fallback ?? id
 }

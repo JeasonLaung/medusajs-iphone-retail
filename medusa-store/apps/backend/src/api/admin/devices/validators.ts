@@ -3,25 +3,21 @@ import { z } from "@medusajs/framework/zod"
 const id = z.string().trim().min(1).max(100)
 const optionalId = id.optional()
 const identity = {
-  serial_number: z
-    .string()
-    .trim()
-    .toUpperCase()
-    .regex(/^[A-Z0-9]{8,20}$/)
-    .optional(),
+  serial_number: z.string().trim().toUpperCase().min(1).max(100).optional(),
   imei: z
     .string()
     .trim()
-    .regex(/^\d{15}$/)
+    .regex(/^(?:\d{15}|\d{32})$/)
     .optional(),
+  imei2: z.string().trim().regex(/^(?:\d{15}|\d{32})$/).optional(),
 }
 export const IntakeDevice = z
   .object({
     ...identity,
     variant_id: id,
     source_id: id,
-    grade: z.enum(["S", "A", "B", "C"]),
-    battery_health: z.number().int().min(0).max(100),
+    grade: z.enum(["S", "A", "B", "C"]).optional(),
+    battery_health: z.number().int().min(0).max(100).optional(),
     cost_cents: z.number().int().min(0).max(100000000).default(0),
     currency_code: z
       .string()
@@ -31,9 +27,19 @@ export const IntakeDevice = z
     notes: z.string().trim().max(2000).default(""),
   })
   .strict()
-  .refine((d) => d.serial_number || d.imei, "必须提供序列号或 IMEI")
+  .refine((d) => d.serial_number, "请填写设备序列号")
 
 export const DeviceCommand = z.discriminatedUnion("action", [
+  z.strictObject({
+    action: z.literal("order_assign"),
+    order_id: id,
+    item_id: id,
+    serial_number: z.string().trim().toUpperCase().min(1).max(100),
+    imei: identity.imei,
+    imei2: identity.imei2,
+    device_id: optionalId,
+    source_id: optionalId,
+  }),
   z
     .object({
       action: z.literal("source"),

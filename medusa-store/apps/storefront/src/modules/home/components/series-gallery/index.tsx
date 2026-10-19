@@ -1,8 +1,14 @@
+import { ArrowRight } from "@medusajs/icons"
 import Image from "next/image"
 import { listCategories } from "@lib/data/categories"
 import { storeSeriesUrl } from "@lib/util/store-series-url"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import type { HomeCopy } from "@modules/home/i18n"
+import HomeCarousel from "@modules/home/components/home-carousel"
+import SeriesRail from "@modules/home/components/series-rail"
+import HomeReviews from "@modules/home/components/home-reviews"
+import BlogSection from "@modules/home/components/blog-section"
+import { Suspense } from "react"
 import styles from "./styles.module.css"
 
 const families = ["17", "Air", "16", "15", "14", "13", "12", "11", "SE"]
@@ -35,17 +41,26 @@ export default async function SeriesGallery({ copy }: { copy: HomeCopy }) {
   return (
     <main className={styles.home}>
       <div className={styles.container}>
+        <HomeCarousel
+          copy={copy}
+          slides={series.slice(0, 3).map(({ family, category }) => ({
+            id: category.id,
+            title: `iPhone ${family}`,
+            image: seriesImages[family],
+            href: storeSeriesUrl(category.name),
+          }))}
+        />
         <header className={styles.intro}>
           <div>
             <h1>{copy.title}</h1>
           </div>
           <LocalizedClientLink href="/store" className={styles.allModels}>
             {copy.allModels}
-            <span aria-hidden="true">→</span>
+            <ArrowRight aria-hidden="true" width={20} height={20} className="inline-block align-middle shrink-0" />
           </LocalizedClientLink>
         </header>
 
-        <ul className={styles.grid} data-testid="series-gallery">
+        <SeriesRail copy={copy}>
           {series.map(({ family, category }, index) => {
             return (
               <li key={category.id}>
@@ -59,7 +74,7 @@ export default async function SeriesGallery({ copy }: { copy: HomeCopy }) {
                       src={seriesImages[family]}
                       alt={copy.imageAlt.replace("{name}", category.name)}
                       fill
-                      sizes="(max-width: 599px) 45vw, (max-width: 999px) 30vw, (max-width: 1199px) 23vw, 230px"
+                      sizes="100px"
                       priority={index < 5}
                       className={styles.image}
                     />
@@ -71,8 +86,12 @@ export default async function SeriesGallery({ copy }: { copy: HomeCopy }) {
               </li>
             )
           })}
-        </ul>
+        </SeriesRail>
         {!series.length && <p className={styles.description}>{copy.empty}</p>}
+        <Suspense fallback={<section className={styles.description} aria-busy="true">{copy.reviewsLoading}</section>}>
+          <HomeReviews copy={copy} products={Array.from(new Map(series.flatMap(({ category }) => category.products ?? []).map((product) => [product.id, product])).values())} />
+        </Suspense>
+        <BlogSection copy={copy} />
       </div>
     </main>
   )

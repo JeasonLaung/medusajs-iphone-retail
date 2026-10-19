@@ -1,3 +1,4 @@
+import { ChevronRightMini } from "@medusajs/icons"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getBreadcrumbCopy } from "./i18n"
 import styles from "./styles.module.css"
@@ -25,7 +26,7 @@ export default function Breadcrumbs({ items, locale, className }: BreadcrumbsPro
           const isCurrent = index === items.length - 1
           return (
             <li key={`${item.href ?? ""}-${index}`} className={styles.item}>
-              {index > 0 && <span className={styles.separator} aria-hidden="true">/</span>}
+              {index > 0 && <ChevronRightMini className={styles.separator} aria-hidden="true" width={14} height={14} />}
               {isCurrent ? (
                 <span className={styles.current} aria-current="page">{item.label}</span>
               ) : item.href ? (

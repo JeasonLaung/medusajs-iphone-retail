@@ -1,5 +1,6 @@
 "use client"
 
+import { ChevronLeft, ChevronRight } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import Image from "next/image"
 import { useEffect, useState } from "react"
@@ -24,8 +25,8 @@ export default function ImageGallery({ images, variants = [], initialVariantId, 
       <div className={styles.stage}>
         {image ? <Image key={image.id} src={image.url} alt={title + " — " + copy.image + " " + (index + 1)} fill priority sizes="(max-width: 767px) 100vw, 600px" /> : <p className={styles.muted}>{copy.noImage}</p>}
         {validImages.length > 1 && <>
-          <button type="button" className={styles.galleryArrow} aria-label={copy.previous} onClick={() => setActive((index - 1 + validImages.length) % validImages.length)}>‹</button>
-          <button type="button" className={styles.galleryArrow} aria-label={copy.next} onClick={() => setActive((index + 1) % validImages.length)}>›</button>
+          <button type="button" className={styles.galleryArrow} aria-label={copy.previous} onClick={() => setActive((index - 1 + validImages.length) % validImages.length)}><ChevronLeft aria-hidden="true" width={20} height={20} className="inline-block align-middle shrink-0" /></button>
+          <button type="button" className={styles.galleryArrow} aria-label={copy.next} onClick={() => setActive((index + 1) % validImages.length)}><ChevronRight aria-hidden="true" width={20} height={20} className="inline-block align-middle shrink-0" /></button>
           <span className={styles.counter}>{index + 1} / {validImages.length}</span>
         </>}
       </div>

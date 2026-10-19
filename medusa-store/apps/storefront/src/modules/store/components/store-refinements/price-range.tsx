@@ -129,7 +129,7 @@ const PriceRange = ({ currencyCode }: { currencyCode: string }) => {
 
       <div className="flex flex-col gap-y-3 px-2 small:pl-0 small:pr-6">
           <div
-            className="flex h-12 shrink-0 items-end gap-[2px] px-2"
+            className="flex h-12 shrink-0 items-end gap-px px-2"
             role="img"
             aria-label={zh ? "商品价格分布" : "Product price distribution"}
             data-testid="price-histogram"
@@ -140,7 +140,7 @@ const PriceRange = ({ currencyCode }: { currencyCode: string }) => {
               const selected = high >= value[0] && low <= value[1]
               return <span
                 key={index}
-                className="min-w-0 flex-1 rounded-t-sm transition-colors"
+                className="min-w-0 flex-1 rounded-t-full transition-colors"
                 style={{ height: count ? `${Math.max(8, count / peak * 100)}%` : 0, backgroundColor: selected ? "#302cb5" : "#dddde7" }}
                 title={`${format(low)} – ${format(high)}: ${count}`}
                 data-count={count}
