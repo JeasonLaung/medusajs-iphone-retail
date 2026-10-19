@@ -2,6 +2,7 @@
 .admin-credentials
 .device-camera-tls/
 logs/
+log/
 node_modules/
 .medusa/
 .next/

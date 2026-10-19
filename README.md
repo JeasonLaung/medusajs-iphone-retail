@@ -10,6 +10,12 @@ Medusa 2 后端与管理后台位于 `medusa-store/apps/backend`，购物前台�
 
 双击本目录的 `start.bat`，会启动数据库、Medusa 管理后台和购物前台。重复运行时，已启动的服务会跳过；启动日志在 `logs/` 目录。
 
+macOS/Linux 可在项目根目录运行 `./sh/start.sh`。它会在后台启动 Docker 服务、Medusa 后端和购物前台；本次启动的输出追加到根目录 `log/yyyymmddHHMM.log`。再次启动时，已记录的运行中进程会跳过。同一分钟内再次启动会继续追加到同名日志。
+
+首次运行前，需要配置根目录 `.env` 中的 `POSTGRES_PASSWORD`、`medusa-store/apps/backend/.env` 中的 `DATABASE_URL`（连接本机 5433 端口）、`REDIS_URL`（本机 6380 端口），以及 `medusa-store/apps/storefront/.env` 中的 `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY`。后端和前台目录分别有 `.env.template` 可作参考。新数据库还需在后端目录运行 `pnpm exec medusa db:migrate`；初始化数据会创建前台使用的 publishable key。配置文件均被 Git 忽略。
+
+运行 `./sh/log.sh` 可持续查看最新日志，`./sh/log.sh yyyymmddHHMM` 可查看指定启动时间的日志；按 Ctrl+C 退出查看。运行 `./sh/stop.sh` 停止脚本启动的后端、前台及 Docker 服务，并保留数据库卷。
+
 ```powershell
 cd C:\Users\Administrator\Desktop\other\iphone_retail\medusa-trial
 docker compose up -d --wait
