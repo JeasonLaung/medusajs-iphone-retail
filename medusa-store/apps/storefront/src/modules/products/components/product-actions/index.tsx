@@ -69,7 +69,7 @@ export default function ProductActions({ product, disabled, initialVariantId }: 
 
   useEffect(() => {
     if (!selectedVariant || !variantSlug(selectedVariant)) return
-    document.title = `${product.title} ${selectedVariant.title} | Medusa Store`
+    document.title = `${product.title} ${selectedVariant.title} | EuroRefurb`
     const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
     if (canonical) canonical.href = new URL(pathname, canonical.href).href
   }, [selectedVariant, pathname, product.title])

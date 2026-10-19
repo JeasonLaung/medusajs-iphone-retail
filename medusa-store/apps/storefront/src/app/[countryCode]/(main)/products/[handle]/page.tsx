@@ -56,11 +56,11 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   if (productHandleFromSlug(handle) !== handle && !variant) notFound()
 
   return {
-    title: `${product.title}${variant ? ` ${variant.title}` : ""} | Medusa Store`,
+    title: `${product.title}${variant ? ` ${variant.title}` : ""}`,
     alternates: { canonical: `/${params.countryCode}/products/${variantSlug(variant) ?? product.handle}` },
     description: `${product.title}`,
     openGraph: {
-      title: `${product.title} | Medusa Store`,
+      title: `${product.title} | EuroRefurb`,
       description: `${product.title}`,
       images: product.thumbnail ? [product.thumbnail] : [],
     },

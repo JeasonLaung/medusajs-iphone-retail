@@ -1,6 +1,8 @@
 "use client"
 
-import { XMark } from "@medusajs/icons"
+import BrandLogo from "@modules/common/components/brand-logo"
+
+import { ChevronDown, XMark } from "@medusajs/icons"
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react"
 import { useParams, usePathname } from "next/navigation"
 import type { StoreRegion } from "@medusajs/types"
@@ -36,12 +38,12 @@ export default function StoreHeader({ regions, locales, locale, cartCount }: {
   return (
     <header className={styles.header}>
       <nav className={styles.inner} aria-label={copy.navigation}>
-        <LocalizedClientLink href="/" className={styles.brand} data-testid="nav-store-link">Medusa Store</LocalizedClientLink>
+        <LocalizedClientLink href="/" className={styles.brand} data-testid="nav-store-link"><BrandLogo /></LocalizedClientLink>
         <div className={styles.desktop}>
           {items.map((item) => item.children ? (
             <Popover className={styles.dropdown} key={item.href}>
               <PopoverButton className={styles.navLink} data-active={isActive(item.href)}>
-                {item.label}<span className={styles.chevron} aria-hidden="true" />
+                {item.label}<ChevronDown className={styles.chevron} aria-hidden="true" />
               </PopoverButton>
               <PopoverPanel className={styles.panel}>
                 {({ close }) => <>{item.children.map((child) => (

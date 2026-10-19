@@ -17,8 +17,8 @@
 .navLink { display: flex; align-items: center; gap: 9px; min-height: 44px; white-space: nowrap; text-transform: uppercase; font-size: 12px; font-weight: 500; }
 .navLink:hover, .navLink[data-active="true"], .navLink[aria-expanded="true"] { color: var(--header-action); }
 .navLink[data-active="true"] { font-weight: 700; }
-.chevron { width: 7px; height: 7px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: translateY(-2px) rotate(45deg); }
-.navLink[aria-expanded="true"] .chevron { transform: translateY(2px) rotate(225deg); }
+.chevron { width: 12px; height: 12px; }
+.navLink[aria-expanded="true"] .chevron { transform: rotate(180deg); }
 .dropdown { position: relative; }
 .panel { position: absolute; top: calc(100% + 7px); left: -16px; width: 224px; background: #fff; border: 1px solid var(--header-divider); border-radius: 18px; padding: 12px; box-shadow: 0 10px 30px #1d1d1f14; }
 .panel a { display: block; font-size: 14px; padding: 12px; border-radius: 8px; }

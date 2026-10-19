@@ -1,4 +1,5 @@
 const en = {
+  collections: "Collections", rights: "All rights reserved.",
   navigation: "Main navigation", buy: "Buy", sell: "Sell", about: "About us",
   reviews: "Reviews", help: "Help", account: "Account", cart: "Cart",
   menu: "Menu", close: "Close menu", preferences: "Country and language",
@@ -20,6 +21,7 @@ const en = {
 }
 
 const zh: typeof en = {
+  collections: "精选系列", rights: "保留所有权利。",
   navigation: "主导航", buy: "购买", sell: "出售", about: "关于我们",
   reviews: "用户评价", help: "帮助", account: "账户", cart: "购物车",
   menu: "菜单", close: "关闭菜单", preferences: "国家与语言",
