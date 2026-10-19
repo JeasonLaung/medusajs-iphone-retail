@@ -26,6 +26,14 @@ export async function recognizeDeviceLabel(image: Blob | ImageData, signal: Abor
     // The OCR loader expects a stable eng.traineddata.gz filename, while Vite
     // hashes assets in production. Map that one request to the bundled asset.
     bootstrapUrl = URL.createObjectURL(new Blob([`
+      // A worker that fails during initialization has no public handle yet.
+      // Bound its lifetime and close it immediately on an engine error.
+      setTimeout(() => self.close(), 50000)
+      const sendResult = self.postMessage.bind(self)
+      self.postMessage = (message, ...args) => {
+        sendResult(message, ...args)
+        if (message.status === "reject") self.close()
+      }
       const localFetch = self.fetch.bind(self)
       self.fetch = (resource, init) => localFetch(
         typeof resource === "string" && resource.endsWith("/eng.traineddata.gz")

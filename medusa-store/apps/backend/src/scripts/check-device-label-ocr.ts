@@ -67,6 +67,7 @@ export default async function checkDeviceLabelOcr({ container }: ExecArgs) {
     await page.keyboard.press("Escape")
     await scanner.getByLabel("上传标签图片", { exact: true }).setInputFiles(photo)
     await search.waitFor({ timeout: 60000 })
+    await page.waitForFunction(() => (document.querySelector('input[aria-label="搜索商品 SKU"]') as HTMLInputElement)?.value === "iphone 15 128 yellow", undefined, { timeout: 60000 })
     assert.equal(await search.inputValue(), "iphone 15 128 yellow")
     await page.keyboard.press("Escape")
     await serial.fill(""); await first.fill(""); await second.fill("")
@@ -83,6 +84,12 @@ export default async function checkDeviceLabelOcr({ container }: ExecArgs) {
     await page.setViewportSize({ width: 390, height: 844 })
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
     await page.screenshot({ path: resolve(process.cwd(), "../../../logs/device-label-ocr-mobile.png") })
+    await page.keyboard.press("Escape")
+    // The field scanner must close its own popover while opening the SKU picker.
+    await page.getByRole("button", { name: "扫描苹果序列号", exact: true }).click()
+    await page.getByRole("dialog").getByLabel("上传标签图片", { exact: true }).setInputFiles(photo)
+    await page.waitForFunction(() => (document.querySelector('input[aria-label="搜索商品 SKU"]') as HTMLInputElement)?.value === "iphone 15 128 yellow", undefined, { timeout: 60000 })
+    assert.equal(await page.getByRole("button", { name: "停止相机", exact: true }).count(), 0)
     await page.keyboard.press("Escape")
     // Loading failure must preserve barcode filling and explain the SKU fallback.
     await serial.fill(""); await first.fill(""); await second.fill("")
