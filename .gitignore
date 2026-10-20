@@ -18,5 +18,9 @@ __pycache__/
 .env.*
 !.env.template
 !.env.example
-frp/bin/
-frp/frpc.toml
+/frp/
+
+artifacts
+logs
+backups
+output

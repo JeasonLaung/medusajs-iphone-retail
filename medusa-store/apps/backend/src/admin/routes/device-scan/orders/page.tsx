@@ -7,4 +7,4 @@ const DeviceOrdersPage = () => {
 
 export default DeviceOrdersPage
 
-export const config = defineRouteConfig({ label: "deviceScan.orders", translationNs: "translation", rank: 2 })
+export const config = defineRouteConfig({ label: "deviceScan.orders", translationNs: "translation", rank: 4 })

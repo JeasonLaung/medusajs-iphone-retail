@@ -1,9 +1,10 @@
 const http = require("node:http")
 const net = require("node:net")
+const { serveMobileIntakeAssets } = require("./mobile-intake-assets.cjs")
 const domain = "frp.xeappliance.com"
 const port = 18080
 let viteHmrPort = 0
-const backendPath = /^\/(app|admin|auth|store|health|static|uploads)(\/|\?|$)/
+const backendPath = /^\/(app|admin|auth|store|health|static|uploads|mobile-intake)(\/|\?|$)/
 function target(request) { return backendPath.test(request.url) ? 9001 : 8000 }
 function headersFor(request, targetPort) {
   const headers = { ...request.headers, "x-forwarded-host": request.headers.host, "x-forwarded-proto": "https" }
@@ -14,6 +15,7 @@ function headersFor(request, targetPort) {
   return headers
 }
 const server = http.createServer((request, response) => {
+  if (serveMobileIntakeAssets(request, response)) return
   const targetPort = target(request)
   const headers = headersFor(request, targetPort)
   const viteClient = request.url?.split("?")[0] === "/app/@vite/client"

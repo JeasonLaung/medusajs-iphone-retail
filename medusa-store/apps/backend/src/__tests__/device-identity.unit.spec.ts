@@ -5,7 +5,7 @@ import { deviceIdentityFilters, isImeiOrEid } from "../lib/device-identity"
 
 const imei = "012345678901234"
 const eid = "89049032000000000000000000000001"
-const eid2 = "89049032000000000000000000000002"
+const imei2 = "112345678901234"
 const product = { title: "iPhone 14 Pro Max" }
 
 describe("device serial, IMEI and EID identities", () => {
@@ -17,7 +17,7 @@ describe("device serial, IMEI and EID identities", () => {
   })
 
   it("accepts either slot for iPhone and keeps EIDs and leading zeros as text", () => {
-    for (const fields of [{ imei }, { imei: eid }, { imei2: eid }, { imei2: imei }, { imei, imei2: eid }, { imei, imei2: "112345678901234" }, { imei: eid, imei2: eid2 }]) {
+    for (const fields of [{ imei }, { eid }, { imei2: imei }, { imei, eid }, { imei, imei2 }, { imei, imei2, eid }]) {
       const value = { serial_number: "serial123", variant_id: "variant", source_id: "source", ...fields }
       expect(() => assertDeviceIdentity(IntakeDevice.parse(value), product)).not.toThrow()
       const parsed = DeviceCommand.parse({ action: "order_assign", order_id: "order", item_id: "item", ...fields, serial_number: "serial123" })
@@ -28,13 +28,20 @@ describe("device serial, IMEI and EID identities", () => {
     expect(IntakeDevice.safeParse({ serial_number: "serial", variant_id: "variant", source_id: "source", imei2: "1".repeat(20) }).success).toBe(false)
   })
 
-  it("matches all three identifiers and searches either number across both slots", () => {
-    const device = { serial_number: "SERIAL123", imei, imei2: eid }
-    for (const value of [" serial123 ", imei, eid]) expect(matchesIdentity(value, device)).toBe(true)
+  it("rejects EIDs in IMEI slots and IMEIs in the EID slot", () => {
+    for (const fields of [{ imei: eid }, { imei2: eid }, { eid: imei }]) {
+      expect(IntakeDevice.safeParse({ serial_number: "SERIAL", variant_id: "v", source_id: "s", ...fields }).success).toBe(false)
+      expect(() => assertDeviceIdentity({ serial_number: "SERIAL", ...fields }, product)).toThrow()
+    }
+  })
+  it("matches all four identifiers and searches either number across both slots", () => {
+    const device = { serial_number: "SERIAL123", imei, imei2, eid }
+    for (const value of [" serial123 ", imei, imei2, eid]) expect(matchesIdentity(value, device)).toBe(true)
     expect(matchesIdentity("unrelated", device)).toBe(false)
     expect(matchesIdentity("", {})).toBe(false)
     expect(deviceIdentityFilters(device)).toEqual([
-      { serial_number: "SERIAL123" }, { imei }, { imei2: imei }, { imei: eid }, { imei2: eid },
+      { serial_number: "SERIAL123" },
+      ...[imei, imei2, eid].flatMap(value => [{ imei: value }, { imei2: value }, { eid: value }]),
     ])
   })
 })

@@ -48,7 +48,7 @@ test("products, selected filters and the histogram render without JavaScript", {
   } finally { await context.close() }
 })
 
-test("card capacities and colours keep missing SKU options visibly disabled", { skip: !enabled }, async () => {
+test("card capacities and colours use live stock despite stale search data", { skip: !enabled }, async () => {
   for (const language of ["en", "zh"]) {
     const page = await browser.newPage()
     try {
@@ -57,16 +57,29 @@ test("card capacities and colours keep missing SKU options visibly disabled", { 
       await page.route("**/store/search", async (route) => {
         const response = await route.fetch()
         const body = await response.json()
-        if (route.request().postDataJSON().queries?.[0]?.pagination?.take === 12) {
+        if (route.request().postDataJSON().queries?.[0]?.pagination?.take === 50) {
           const document = body.results[0].hits[0]?.document
           assert(document, "the fixture needs one matching product")
           Object.assign(document, {
             model_storage_options: ["64 GB", "128 GB", "256 GB"],
             sku_storage_options: ["64 GB", "128 GB"],
+            stocked_storage_options: ["64 GB", "128 GB", "256 GB"],
             color_options: ["Black", "White", "Pink"],
             color_hexes: ["#222222", "#f9f8f4", "#ef9cae"],
             sku_color_options: ["Black", "White"],
           })
+        }
+        await route.fulfill({ response, json: body })
+      })
+      await page.route("**/store/products?**", async (route) => {
+        const response = await route.fetch()
+        const body = await response.json()
+        for (const product of body.products) {
+          product.options = [{ id: "storage", title: "Storage" }, { id: "color", title: "Color" }]
+          product.variants = [["64 GB", "Black", 2], ["128 GB", "White", 0], ["256 GB", "Pink", 0]].map(([storage, color, stock], index) => ({
+            id: `fixture-${index}`, inventory_quantity: stock,
+            options: [{ option_id: "storage", value: storage }, { option_id: "color", value: color }],
+          }))
         }
         await route.fulfill({ response, json: body })
       })
@@ -78,12 +91,14 @@ test("card capacities and colours keep missing SKU options visibly disabled", { 
       assert.equal(await missingStorage.getAttribute("aria-disabled"), "true")
       assert.equal(await missingStorage.evaluate((element) => getComputedStyle(element).textDecorationLine), "line-through")
       assert.equal(await card.getByTestId("product-storage").filter({ hasText: "64 GB" }).getAttribute("aria-disabled"), null)
+      assert.equal(await card.getByTestId("product-storage").filter({ hasText: "128 GB" }).getAttribute("aria-disabled"), "true")
       const missingColor = card.getByTestId("product-color").filter({ has: page.locator('[aria-hidden="true"]') })
-      assert.equal(await missingColor.count(), 1)
-      assert.equal(await missingColor.getAttribute("aria-label"), "Pink")
-      assert.equal(await missingColor.getAttribute("aria-disabled"), "true")
-      assert.equal(await missingColor.evaluate((element) => getComputedStyle(element).opacity), "0.4")
-      assert.match(await missingColor.getAttribute("title"), language === "zh" ? /暂无对应 SKU/ : /No matching SKU/)
+      assert.equal(await missingColor.count(), 2)
+      for (const swatch of await missingColor.all()) {
+        assert.equal(await swatch.getAttribute("aria-disabled"), "true")
+        assert.equal(await swatch.evaluate((element) => getComputedStyle(element).opacity), "0.4")
+        assert.match(await swatch.getAttribute("title"), language === "zh" ? /暂无库存/ : /Out of stock/)
+      }
       assert.equal(await card.getByTestId("product-color").count(), 3)
     } finally { await page.close() }
   }

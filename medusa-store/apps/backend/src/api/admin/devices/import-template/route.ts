@@ -20,7 +20,7 @@ export async function GET(req: AuthenticatedMedusaRequest, res: MedusaResponse) 
     if (data.length < 1000) break
   }
   const messages = String(req.query.locale || "").toLowerCase().startsWith("zh") ? zhCN.deviceScan : en.deviceScan
-  const buffer = await createDeviceTemplate(variants, { skuPrompt: messages.templateSkuPrompt, skuError: messages.templateSkuError, searchTitle: messages.templateSearchTitle, searchLabel: messages.templateSearchLabel, searchHelp: messages.templateSearchHelp, searchCount: messages.templateSearchCount })
+  const buffer = await createDeviceTemplate(variants, { skuPrompt: messages.templateSkuPrompt, skuError: messages.templateSkuError }, String(req.query.locale || "en"))
   res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
   res.setHeader("Content-Disposition", 'attachment; filename="device-import-template.xlsx"')
   res.setHeader("Cache-Control", "no-store")

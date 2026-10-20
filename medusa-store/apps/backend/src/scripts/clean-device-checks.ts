@@ -130,7 +130,7 @@ export default async function cleanDeviceChecks({ container }: ExecArgs) {
         sourceIds.includes(String(e.data.source_id || "")),
     )
     if (events.length) await service.deleteDeviceEvents(events.map((e) => e.id))
-    if (devices.length) await service.deleteDevices(devices.map((d) => d.id))
+    if (devices.length) await service.softDeleteDevices(devices.map((d) => d.id))
     const supplies = sourceIds.length
       ? await service.listDeviceSupplies({ source_id: sourceIds })
       : []

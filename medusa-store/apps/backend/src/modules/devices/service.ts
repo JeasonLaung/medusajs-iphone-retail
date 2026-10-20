@@ -8,11 +8,19 @@ import {
   DeviceEvent,
 } from "./models/device"
 
-export default class DevicesModuleService extends MedusaService({
+const BaseDevicesModuleService = MedusaService({
   Device,
   DeviceSource,
   DeviceVariant,
   DeviceSupply,
   DeviceAssignment,
   DeviceEvent,
-}) {}
+})
+
+export default class DevicesModuleService extends BaseDevicesModuleService {
+  // Device records must survive every deletion path, including legacy callers.
+  deleteDevices = async (...args: Parameters<InstanceType<typeof BaseDevicesModuleService>["deleteDevices"]>): Promise<void> => {
+    const [ids, context] = args
+    await this.softDeleteDevices(ids, {}, context)
+  }
+}

@@ -11,7 +11,7 @@ import {
   Modules,
   generateEntityId,
 } from "@medusajs/framework/utils"
-import type { IInventoryService } from "@medusajs/framework/types"
+import type { IInventoryService, IFileModuleService } from "@medusajs/framework/types"
 import {
   acquireLockStep,
   releaseLockStep,
@@ -50,8 +50,10 @@ import type {
 } from "../api/admin/devices/validators"
 import { authorizeDeviceCommand } from "../api/device-access"
 import { assertDeviceIdentity } from "../modules/devices/identity"
+import { orderDeviceCapacity } from "../lib/order-device-capacity"
 import { orderItemQuantities } from "../lib/order-item-quantities"
 import { deviceIdentityFilters, deviceRadioValues } from "../lib/device-identity"
+import { devicePhotoUrl } from "../lib/device-photo-url"
 
 type Input = Exclude<DeviceCommandBody, { action: "source" }> & {
   actor_id: string
@@ -64,6 +66,7 @@ type Table =
   | "DeviceAssignments"
   | "DeviceEvents"
 type Mutation = {
+  deleted?: boolean
   table: Table
   before?: Record<string, any>
   after: Record<string, any>
@@ -257,6 +260,13 @@ const prepareDevices = createStep(
           "items.detail.quantity",
           "items.detail.fulfilled_quantity",
           "items.detail.return_received_quantity",
+          "fulfillments.id",
+          "fulfillments.location_id",
+          "fulfillments.shipped_at",
+          "fulfillments.delivered_at",
+          "fulfillments.canceled_at",
+          "fulfillments.items.line_item_id",
+          "fulfillments.items.quantity",
           "shipping_methods.shipping_option_id",
         ],
         filters: { id },
@@ -272,6 +282,10 @@ const prepareDevices = createStep(
       return order
     }
     const intake = async (d: IntakeDeviceBody, supplier = false) => {
+      for (const photo of d.photos || []) {
+        const stored = await container.resolve<IFileModuleService>(Modules.FILE).retrieveFile(photo.id)
+        requireDevice(devicePhotoUrl(stored.url) === photo.url && stored.url.includes("device-"), "DEVICE_PHOTO_INVALID")
+      }
       const source = await service.retrieveDeviceSource(d.source_id)
       requireDevice(
         source.type === (supplier ? "supplier" : "self"),
@@ -298,171 +312,33 @@ const prepareDevices = createStep(
         serial_number: d.serial_number || null,
         imei: d.imei || null,
         imei2: d.imei2 || null,
+        eid: d.eid || null,
         location_id: source.location_id,
-        state: supplier ? "reserved" : "inspection",
+        category: supplier ? "sale" : d.category || "sale",
+        photos: d.photos || [],
+        state: supplier ? "reserved" : (d.category || "sale") === "sale" ? "available" : "inspection",
       }
       mutate("Devices", device)
+      if (!supplier && device.state === "available") await adjust(d.variant_id, source.location_id, 1)
       event(supplier ? "supplier_register" : "intake", { device }, device.id)
       return device
     }
 
-    let registeredDevice: Record<string, any> | undefined
-    let registeredSnapshot: Record<string, any> | undefined
-    let registeredSource:
-      { id: string; location_id: string; type: string } | undefined
     if (input.action === "order_assign") {
-      const itemId = input.item_id
-      const order = await getOrder(input.order_id)
-      const item = order.items?.find((i) => i?.id === itemId)
-      requireDevice(item?.variant_id, "商品不属于该订单")
-      const productVariant = await variant(item.variant_id)
-      const matches = await service.listDevices({
-        $or: deviceIdentityFilters(input),
-      })
-      requireDevice(
-        matches.length <= 1,
-        "号码匹配到多个设备，请核对序列号或 IMEI / EID",
-      )
-      let deviceId = matches[0]?.id
+      const matches = await service.listDevices({ $or: deviceIdentityFilters(input) })
+      requireDevice(matches.length <= 1, "号码匹配到多个设备，请核对序列号或 IMEI / EID")
       const existing = input.device_id
         ? await service.retrieveDevice(input.device_id)
         : matches[0]
-      requireDevice(
-        !existing || matches.every((d) => d.id === existing.id),
-        "序列号与 IMEI / EID 已属于不同设备，请核对后重新填写",
-      )
-      if (existing) {
-        requireDevice(
-          !existing.serial_number ||
-            existing.serial_number === input.serial_number,
-          "序列号与已入库设备不一致",
-        )
-        requireDevice(
-          !existing.imei || !input.imei || existing.imei === input.imei,
-          "第一个 IMEI / EID 与已入库设备不一致",
-        )
-        requireDevice(
-          !existing.imei2 || !input.imei2 || existing.imei2 === input.imei2,
-          "第二个 IMEI / EID 与已入库设备不一致",
-        )
-        registeredSnapshot = existing
-        registeredDevice = {
-          ...existing,
-          serial_number: input.serial_number,
-          imei: input.imei || existing.imei,
-          imei2: input.imei2 || existing.imei2,
-        }
-        assertDeviceIdentity(registeredDevice, productVariant.product)
-        deviceId = existing.id
-      } else assertDeviceIdentity(input, productVariant.product)
-      if (!deviceId) {
-        const v = productVariant
-        const reservations = await inventory.listReservationItems({
-          line_item_id: item.id,
-        })
-        const levels = await inventory.listInventoryLevels({
-          inventory_item_id: v.inventory_item_id,
-        })
-        const { data: locations } = await query.graph({
-          entity: "stock_location",
-          fields: ["id", "name", "sales_channels.id"],
-        })
-        const requestedSource = input.source_id
-          ? await service.retrieveDeviceSource(input.source_id)
-          : undefined
-        const eligible = levels
-          .filter(
-            (l) =>
-              (!requestedSource ||
-                l.location_id === requestedSource.location_id) &&
-              locations.some(
-                (location) =>
-                  location.id === l.location_id &&
-                  location.sales_channels?.some(
-                    (c) => c?.id === order.sales_channel_id,
-                  ),
-              ),
-          )
-          .sort(
-            (a, b) =>
-              Number(
-                reservations.some((r) => r.location_id === b.location_id),
-              ) -
-              Number(reservations.some((r) => r.location_id === a.location_id)),
-          )
-        let selected: (typeof eligible)[number] | undefined
-        for (const l of eligible) {
-          const [, represented] = await service.listAndCountDevices(
-            {
-              variant_id: item.variant_id,
-              location_id: l.location_id,
-              state: ["available", "reserved"],
-            },
-            { take: 1 },
-          )
-          if (Number(l.stocked_quantity) > represented) {
-            selected = l
-            break
-          }
-        }
-        requireDevice(
-          selected,
-          "该仓库没有可用于本次配货的未登记库存，请选择已入库设备或其他供货来源",
-        )
-        const location = locations.find((l) => l.id === selected.location_id)!
-        registeredSource =
-          requestedSource ||
-          (await service.listDeviceSources({ location_id: location.id }))[0]
-        if (!registeredSource) {
-          registeredSource = {
-            id: generateEntityId(undefined, "dsrc"),
-            location_id: location.id,
-            type: "self",
-          }
-          mutate("DeviceSources", { ...registeredSource, name: location.name })
-        }
-        const [supply] = await service.listDeviceSupplies({
-          source_id: registeredSource.id,
-          variant_id: item.variant_id,
-        })
-        if (supply && supply.quantity > 0)
-          mutate(
-            "DeviceSupplies",
-            { ...supply, quantity: supply.quantity - 1 },
-            supply,
-          )
-        deviceId = generateEntityId(undefined, "dev")
-        registeredDevice = {
-          id: deviceId,
-          serial_number: input.serial_number,
-          imei: input.imei || null,
-          imei2: input.imei2 || null,
-          variant_id: item.variant_id,
-          source_id: registeredSource.id,
-          location_id: location.id,
-          grade: null,
-          battery_health: null,
-          state: "available",
-          cost_cents: 0,
-          currency_code: "eur",
-          bin: "",
-          notes: "",
-        }
-        event(
-          "order_register",
-          {
-            serial_number: input.serial_number,
-            imei: input.imei || null,
-            imei2: input.imei2 || null,
-            location_id: location.id,
-          },
-          deviceId,
-          order.id,
-        )
-      }
+      requireDevice(existing, "DEVICE_INTAKE_REQUIRED")
+      requireDevice(matches.every((d) => d.id === existing.id), "序列号与 IMEI / EID 已属于不同设备，请核对后重新填写")
+      requireDevice(existing.serial_number === input.serial_number, "序列号与已入库设备不一致")
+      requireDevice(!input.imei || existing.imei === input.imei, "第一个 IMEI / EID 与已入库设备不一致")
+      requireDevice(!input.imei2 || existing.imei2 === input.imei2, "第二个 IMEI / EID 与已入库设备不一致")
+      requireDevice(!input.eid || existing.eid === input.eid, "EID 与已入库设备不一致")
       input = {
         action: "assign",
-        device_id: deviceId,
+        device_id: existing.id,
         order_id: input.order_id,
         item_id: input.item_id,
         actor_id: input.actor_id,
@@ -509,6 +385,56 @@ const prepareDevices = createStep(
         inventory_item_id: v.inventory_item_id,
       })
       event("enroll", { variant_id: v.id, previous_levels: levels })
+    } else if (input.action === "update") {
+      const device = await service.retrieveDevice(input.device_id)
+      const { action: _action, device_id: _deviceId, ...changes } = input
+      // Pick validated editable fields explicitly: serial and audit identifiers never change.
+      const next = { ...device, variant_id: changes.variant_id, source_id: changes.source_id,
+        location_id: changes.location_id, imei: changes.imei, imei2: changes.imei2, eid: changes.eid,
+        category: changes.category, state: changes.state, grade: changes.grade,
+        battery_health: changes.battery_health, cost_cents: changes.cost_cents,
+        currency_code: changes.currency_code, bin: changes.bin, notes: changes.notes, photos: changes.photos }
+      const assignments = await service.listDeviceAssignments({ device_id: device.id, status: ["reserved", "packed", "shipped"] })
+      const allocationChanged = (["variant_id", "source_id", "location_id", "state", "category"] as const).some((key) => next[key] !== device[key])
+      requireDevice(!assignments.length || !allocationChanged, "DEVICE_EDIT_ALLOCATED")
+      requireDevice(next.state === device.state || !["reserved", "packed", "shipped", "repair_ready"].includes(next.state), "DEVICE_EDIT_STATE")
+      requireDevice(next.state !== "available" || next.category === "sale", "DEVICE_EDIT_CATEGORY")
+      const source = await service.retrieveDeviceSource(next.source_id)
+      const previousSource = await service.retrieveDeviceSource(device.source_id)
+      const { data: locations } = await query.graph({ entity: "stock_location", fields: ["id"], filters: { id: next.location_id } })
+      requireDevice(locations.length, "DEVICE_EDIT_LOCATION")
+      const v = await variant(next.variant_id)
+      assertDeviceIdentity(next, v.product)
+      assertVariantConfiguration(v, next)
+      const duplicates = await service.listDevices({ $or: deviceIdentityFilters(next) })
+      requireDevice(!duplicates.some((other) => other.id !== device.id), "序列号或 IMEI / EID 已存在，整批导入未执行")
+      for (const photo of next.photos) {
+        const stored = await container.resolve<IFileModuleService>(Modules.FILE).retrieveFile(photo.id)
+        requireDevice(devicePhotoUrl(stored.url) === photo.url && stored.url.includes("device-"), "DEVICE_PHOTO_INVALID")
+      }
+      const countedBefore = device.state === "available" && previousSource.type === "self"
+      const countedAfter = next.state === "available" && source.type === "self"
+      const stockChanged = device.variant_id !== next.variant_id || device.location_id !== next.location_id
+      if (countedBefore && (!countedAfter || stockChanged)) await adjust(device.variant_id, device.location_id, -1)
+      if (countedAfter && (!countedBefore || stockChanged)) await adjust(next.variant_id, next.location_id, 1)
+      mutate("Devices", next, device)
+      event("update", { before: device, after: next }, device.id)
+    } else if (input.action === "activate") {
+      const device = await service.retrieveDevice(input.device_id)
+      requireDevice(device.category === "sale" && device.state === "inspection", "DEVICE_LOCKED")
+      requireDevice(!(await service.listDeviceAssignments({ device_id: device.id, status: ["reserved", "packed", "shipped", "returned"] })).length, "DEVICE_HAS_SALES_HISTORY")
+      await adjust(device.variant_id, device.location_id, 1)
+      mutate("Devices", { ...device, state: "available" }, device)
+      event("activate", { previous_state: device.state, category: device.category }, device.id)
+    } else if (input.action === "delete" || input.action === "retire") {
+      const device = await service.retrieveDevice(input.device_id)
+      requireDevice(!["reserved", "packed", "shipped", "repair_ready"].includes(device.state), "DEVICE_LOCKED")
+      const assignments = await service.listDeviceAssignments({ device_id: device.id, status: ["reserved", "packed", "shipped", "returned"] })
+      requireDevice(!assignments.length, "DEVICE_HAS_SALES_HISTORY")
+      if (device.state === "available") await adjust(device.variant_id, device.location_id, -1)
+      if (input.action === "delete") plan.mutations.push({ table: "Devices", before: device, after: device, deleted: true })
+      else mutate("Devices", { ...device, state: "retired" }, device)
+      event(input.action, { previous_state: device.state, category: device.category }, device.id)
     } else if (input.action === "intake") {
       for (const d of input.devices) await intake(d)
     } else if (input.action === "supply") {
@@ -542,15 +468,25 @@ const prepareDevices = createStep(
       })
     } else if (
       input.action === "assign" ||
-      input.action === "supplier_assign"
+      input.action === "supplier_assign" ||
+      input.action === "save_allocation"
     ) {
-      const order = await getOrder(input.order_id)
-      const item = order.items?.find((i) => i?.id === input.item_id)
+      requireDevice(input.action !== "supplier_assign", "DEVICE_INTAKE_REQUIRED")
+      type AllocationInput = Extract<Input, { action: "assign" }> & { assignment_id?: string; fulfillment_id?: string }
+      const allocations: AllocationInput[] = input.action === "save_allocation"
+        ? input.allocations.map((entry) => ({ ...entry, action: "assign", order_id: input.order_id, actor_id: input.actor_id }))
+        : [input]
+      requireDevice(new Set(allocations.map((entry) => entry.device_id)).size === allocations.length, "设备不能重复选择")
+      const changing = allocations.flatMap((entry) => entry.assignment_id ? [entry.assignment_id] : [])
+      requireDevice(new Set(changing).size === changing.length, "设备不能重复选择")
+      for (const allocation of allocations) {
+      const order = await getOrder(allocation.order_id)
+      const item = order.items?.find((i) => i?.id === allocation.item_id)
       requireDevice(item?.variant_id, "商品不属于该订单")
       let replacementRequest: string | undefined
-      if (input.replacement_of) {
+      if (allocation.replacement_of) {
         const original = await service.retrieveDeviceAssignment(
-          input.replacement_of,
+          allocation.replacement_of,
         )
         requireDevice(
           original.order_id === order.id &&
@@ -588,30 +524,27 @@ const prepareDevices = createStep(
         }
         mutate("DeviceAssignments", { ...original }, original)
       }
-      const assignments = await service.listDeviceAssignments({
-        order_id: order.id,
-        item_id: item.id,
-        status: ["reserved", "packed", "shipped"],
-      })
-      const awaiting =
-        Number(item.detail?.quantity) -
-        Number(item.detail?.fulfilled_quantity || 0)
-      if (!input.replacement_of)
-        requireDevice(
-          assignments.filter((a) => a.status === "reserved").length < awaiting,
-          "该订单商品已配足或已履约",
-        )
-      const device =
-        input.action === "supplier_assign"
-          ? await intake(input.device, true)
-          : registeredDevice || (await service.retrieveDevice(input.device_id))
+      const storedAssignments = await service.listDeviceAssignments({ order_id: order.id, item_id: item.id, status: ["reserved", "packed", "shipped"] })
+      const staged = plan.mutations.filter((entry) => entry.table === "DeviceAssignments" && entry.after.order_id === order.id && entry.after.item_id === item.id)
+      const assignments = [...storedAssignments.filter((entry) => !staged.some((change) => change.after.id === entry.id)), ...staged.map((entry) => entry.after)]
+      const previous = allocation.assignment_id ? await service.retrieveDeviceAssignment(allocation.assignment_id) : undefined
+      if (previous) {
+        requireDevice(previous.order_id === order.id && previous.item_id === item.id && ["reserved", "packed"].includes(previous.status), "DEVICE_ALLOCATION_LOCKED")
+        if (previous.fulfillment_id) {
+          const fulfillment = order.fulfillments?.find((f) => f?.id === previous.fulfillment_id)
+          requireDevice(fulfillment && !fulfillment.shipped_at && !fulfillment.delivered_at && !fulfillment.canceled_at, "DEVICE_ALLOCATION_LOCKED")
+        }
+        if (previous.device_id === allocation.device_id) continue
+      }
+      const capacity = orderDeviceCapacity(item, assignments as any, (order.fulfillments || []) as any)
+      if (!allocation.replacement_of && !previous) requireDevice(capacity.remaining > 0, "该订单商品已配足或已履约")
+      const device = await service.retrieveDevice(allocation.device_id)
       assertDeviceIdentity(device, (await variant(item.variant_id)).product)
       requireDevice(
         device.variant_id === item.variant_id,
         "设备 SKU 与订单不匹配",
       )
-      if (input.action === "assign")
-        requireDevice(device.state === "available", "只有可售设备才能配货")
+      requireDevice(device.state === "available" && device.category === "sale", "只有可售设备才能配货")
       requireDevice(
         !(
           await service.listDeviceAssignments({
@@ -632,53 +565,72 @@ const prepareDevices = createStep(
         ),
         "供货来源未关联订单销售渠道",
       )
-      if (input.action === "supplier_assign") {
-        const [supply] = await service.listDeviceSupplies({
-          source_id: device.source_id,
-          variant_id: device.variant_id,
-        })
-        requireDevice(
-          supply && supply.quantity > 0,
-          "供应商可供数量不足，请先更新可供库存",
-        )
-        mutate(
-          "DeviceSupplies",
-          { ...supply, quantity: supply.quantity - 1 },
-          supply,
-        )
-      } else
-        mutate(
-          "Devices",
-          { ...device, state: "reserved" },
-          registeredDevice ? registeredSnapshot : device,
-        )
-      const currentSource =
-        registeredSource ||
-        (
-          await service.listDeviceSources({
-            location_id: device.location_id,
-          })
-        )[0]
+      const slot = !previous && !allocation.replacement_of && (allocation.fulfillment_id || capacity.unfulfilled === 0)
+        ? capacity.slots.find((f) => (!allocation.fulfillment_id || f.id === allocation.fulfillment_id) && f.location_id === device.location_id)
+        : undefined
+      if (!previous && !allocation.replacement_of && (allocation.fulfillment_id || capacity.unfulfilled === 0)) requireDevice(slot, "DEVICE_FULFILLMENT_LOCATION")
+      if (previous) {
+        const oldDevice = await service.retrieveDevice(previous.device_id)
+        requireDevice(oldDevice.state === previous.status, "设备状态已改变")
+        if (previous.status === "packed") requireDevice(oldDevice.location_id === device.location_id && oldDevice.source_id === device.source_id, "DEVICE_FULFILLMENT_LOCATION")
+        mutate("Devices", { ...oldDevice, state: "available" }, oldDevice)
+        event("replace_allocation", { assignment_id: previous.id, previous_device_id: oldDevice.id, device_id: device.id }, oldDevice.id, order.id)
+      }
+      const status = previous?.status || (slot ? "packed" : "reserved")
+      mutate("Devices", { ...device, state: status }, device)
+      const currentSource = (
+        await service.listDeviceSources({ location_id: device.location_id })
+      )[0]
       requireDevice(currentSource, "设备所在仓库没有对应供货来源")
       const assignment = {
-        id: generateEntityId(undefined, "dasg"),
+        ...previous,
+        id: previous?.id || generateEntityId(undefined, "dasg"),
         device_id: device.id,
         order_id: order.id,
         item_id: item.id,
         source_id: currentSource.id,
-        status: "reserved",
-        replacement_of: input.replacement_of || null,
-        after_sales_request_id: replacementRequest || null,
+        status,
+        fulfillment_id: previous?.fulfillment_id || slot?.id || null,
+        replacement_of: previous?.replacement_of || allocation.replacement_of || null,
+        after_sales_request_id: previous?.after_sales_request_id || replacementRequest || null,
       }
-      mutate("DeviceAssignments", assignment)
+      mutate("DeviceAssignments", assignment, previous)
       event("assign", { assignment }, device.id, order.id)
+      }
     } else if (input.action === "release") {
       const a = await service.retrieveDeviceAssignment(input.assignment_id)
-      requireDevice(a.status === "reserved", "只有尚未创建履约的配货可以解除")
+      requireDevice(["reserved", "packed"].includes(a.status), "只有未发货的配货可以解除")
+      await getOrder(a.order_id)
       const device = await service.retrieveDevice(a.device_id)
-      mutate("DeviceAssignments", { ...a, status: "canceled" }, a)
+      requireDevice(device.state === a.status, "设备状态已改变")
+      if (a.status === "packed") {
+        requireDevice(a.fulfillment_id, "履约不存在或已发货")
+        const { data: fulfillments } = await query.graph({
+          entity: "fulfillment",
+          fields: ["id", "shipped_at", "delivered_at", "canceled_at"],
+          filters: { id: a.fulfillment_id },
+        })
+        const fulfillment = fulfillments[0]
+        requireDevice(fulfillment && !fulfillment.shipped_at && !fulfillment.delivered_at && !fulfillment.canceled_at, "履约不存在或已发货")
+        const assignments = await service.listDeviceAssignments({ fulfillment_id: a.fulfillment_id })
+        requireDevice(assignments.some((entry) => entry.id === a.id) && assignments.every((entry) =>
+          entry.status === "packed" && entry.order_id === a.order_id && entry.source_id === a.source_id,
+        ), "只有尚未发出的履约可以取消")
+        // Native fulfillment cancellation restores the whole parcel's inventory.
+        // Keep its other devices allocated so only the selected device is released.
+        for (const other of assignments) {
+          if (other.id === a.id) continue
+          const packedDevice = await service.retrieveDevice(other.device_id)
+          requireDevice(packedDevice.state === "packed", "设备状态已改变")
+          mutate("Devices", { ...packedDevice, state: "reserved" }, packedDevice)
+          mutate("DeviceAssignments", { ...other, status: "reserved", fulfillment_id: null }, other)
+          event("cancel_fulfillment", { fulfillment_id: a.fulfillment_id }, packedDevice.id, a.order_id)
+        }
+        plan.cancel = { order_id: a.order_id, fulfillment_id: a.fulfillment_id }
+      }
+      mutate("DeviceAssignments", { ...a, status: "canceled", fulfillment_id: null }, a)
       mutate("Devices", { ...device, state: "available" }, device)
-      event("release", { assignment_id: a.id }, device.id, a.order_id)
+      event("release", { assignment_id: a.id, fulfillment_id: a.fulfillment_id }, device.id, a.order_id)
     } else if (input.action === "fulfill") {
       requireDevice(
         new Set(input.assignment_ids).size === input.assignment_ids.length,
@@ -906,6 +858,7 @@ const prepareDevices = createStep(
           ...d,
           location_id: source.location_id,
           state: request.type === "repair" ? "repair" : "inspection",
+          category: "returned",
         },
         d,
       )
@@ -933,6 +886,7 @@ const prepareDevices = createStep(
       )
     } else if (input.action === "inspect") {
       const d = await service.retrieveDevice(input.device_id)
+      requireDevice(d.category === "returned" || d.category === "recycled", "DEVICE_INSPECTION_CATEGORY")
       requireDevice(
         ["inspection", "repair"].includes(d.state),
         "设备必须处于待检测或维修状态",
@@ -984,6 +938,7 @@ const prepareDevices = createStep(
           ...d,
           variant_id,
           state,
+          category: state === "available" ? "sale" : d.category,
           grade: input.grade,
           battery_health: input.battery_health,
           notes: input.notes,
@@ -1092,7 +1047,8 @@ const writeDevices = createStep(
           after.id === input.plan.exchange?.original_assignment_id
         )
           after.return_id = input.exchange_return_id
-        await write(service, mutation.table, after, Boolean(mutation.before))
+        if (mutation.deleted) await service.softDeleteDevices(after.id)
+        else await write(service, mutation.table, after, Boolean(mutation.before))
         done.push(mutation)
       }
     } catch (error) {
@@ -1135,7 +1091,9 @@ async function write(
 }
 async function undo(service: DevicesModuleService, mutations: Mutation[]) {
   for (const m of [...mutations].reverse()) {
+    if (m.deleted) { await service.restoreDevices(m.after.id); continue }
     if (m.before) await write(service, m.table, m.before, true)
+    else if (m.table === "Devices") await service.softDeleteDevices(m.after.id)
     else await service[`delete${m.table}`](m.after.id)
   }
 }

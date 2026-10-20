@@ -70,6 +70,22 @@
           "enumItems": [],
           "mappedType": "text"
         },
+        "eid": {
+          "name": "eid",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
         "variant_id": {
           "name": "variant_id",
           "type": "text",
@@ -214,6 +230,42 @@
           "enumItems": [],
           "mappedType": "text"
         },
+        "category": {
+          "name": "category",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'sale'",
+          "comment": null,
+          "enumItems": [
+            "sale",
+            "returned",
+            "recycled"
+          ],
+          "mappedType": "enum"
+        },
+        "photos": {
+          "name": "photos",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'[]'",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
         "state": {
           "name": "state",
           "type": "text",
@@ -225,7 +277,7 @@
           "length": null,
           "precision": null,
           "scale": null,
-          "default": "'inspection'",
+          "default": "'available'",
           "comment": null,
           "enumItems": [
             "inspection",
@@ -327,6 +379,15 @@
           "primary": false,
           "unique": false,
           "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_device_imei2_unique\" ON \"device\" (\"imei2\") WHERE imei2 IS NOT NULL AND deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_device_eid_unique",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_device_eid_unique\" ON \"device\" (\"eid\") WHERE eid IS NOT NULL AND deleted_at IS NULL"
         },
         {
           "keyName": "IDX_device_variant_id_location_id_state",

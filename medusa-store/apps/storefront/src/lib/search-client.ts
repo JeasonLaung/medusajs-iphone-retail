@@ -6,6 +6,7 @@ import {
 
 import { sdk } from "@lib/config"
 import { normalizeProductSearchRequest } from "@lib/util/product-search-query"
+import { refreshProductCardStock } from "@lib/util/product-card-stock"
 
 export const PRODUCT_INDEX_NAME = "product"
 
@@ -41,7 +42,7 @@ export const priceAttribute = (field: PriceField, currencyCode: string) =>
  * searches rather than short-circuiting, which is what the listing needs to
  * show every product before anything is refined.
  */
-export const { searchClient } = createInstantSearchAdapter({
+const { searchClient: indexedSearchClient } = createInstantSearchAdapter({
   sdk: sdk as unknown as MedusaSdkLike,
   path: "/store/search",
   transformQuery: normalizeProductSearchRequest,
@@ -63,3 +64,25 @@ export const { searchClient } = createInstantSearchAdapter({
     `max_price_${currency}`,
   ]),
 })
+
+// Inventory changes can reach the search index later than the product API.
+// Enrich before returning results so server rendering and client updates agree.
+export const searchClient: typeof indexedSearchClient = {
+  ...indexedSearchClient,
+  async search(requests) {
+    const response = await indexedSearchClient.search(requests)
+    const results = await refreshProductCardStock(response.results, async (ids) => {
+      const batches = await Promise.all(Array.from({ length: Math.ceil(ids.length / 100) }, async (_, index) => {
+        const batch = ids.slice(index * 100, (index + 1) * 100)
+        const { products } = await sdk.store.product.list({
+          id: batch,
+          limit: batch.length,
+          fields: "id,*options,variants.id,*variants.options,+variants.inventory_quantity",
+        }, { cache: "no-store" })
+        return products
+      }))
+      return batches.flat()
+    })
+    return { ...response, results }
+  },
+}

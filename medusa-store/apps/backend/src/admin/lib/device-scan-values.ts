@@ -18,7 +18,7 @@ export function classifyDeviceScans(values: string[]) {
   return { serials: [...serials], radios: [...radios], unknown: [...unknown] }
 }
 
-export function mergeDeviceScans(current: { serial: string; imei: string; imei2: string }, values: string[]) {
+export function mergeDeviceScans(current: { serial: string; imei: string; imei2: string; eid: string }, values: string[]) {
   const parsed = classifyDeviceScans(values)
   const next = { ...current }
   let conflict = parsed.serials.length > 1 || parsed.unknown.length > 0
@@ -27,6 +27,11 @@ export function mergeDeviceScans(current: { serial: string; imei: string; imei2:
     else if (next.serial.trim().toUpperCase() !== parsed.serials[0]) conflict = true
   }
   for (const value of parsed.radios) {
+    if (value.length === 32) {
+      if (!next.eid.trim()) next.eid = value
+      else if (next.eid.trim() !== value) conflict = true
+      continue
+    }
     if ([next.imei.trim(), next.imei2.trim()].includes(value)) continue
     if (!next.imei.trim()) next.imei = value
     else if (!next.imei2.trim()) next.imei2 = value

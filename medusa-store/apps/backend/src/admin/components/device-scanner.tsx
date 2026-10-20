@@ -10,14 +10,20 @@ export default function DeviceScanner({
   onScan,
   onScanMany,
   recognizeSku = false,
+  scanTarget,
   showManualInput = true,
   autoStart = false,
+  mode = "both",
+  onBusyChange,
 }: {
   onScan: (value: string) => void
   onScanMany?: (values: string[], skuSearch?: string) => void
   recognizeSku?: boolean
+  scanTarget?: "serial" | "imei" | "eid"
   showManualInput?: boolean
   autoStart?: boolean
+  mode?: "both" | "image" | "camera"
+  onBusyChange?: (busy: boolean) => void
 }) {
   const { t } = useTranslation()
   const video = useRef<HTMLVideoElement>(null)
@@ -38,6 +44,7 @@ export default function DeviceScanner({
   const [imageBusy, setImageBusy] = useState(false)
   const [ocrBusy, setOcrBusy] = useState(false)
   const [ocrNote, setOcrNote] = useState("")
+  useEffect(() => { onBusyChange?.(imageBusy || ocrBusy) }, [imageBusy, ocrBusy, onBusyChange])
   function stop() {
     generation.current += 1
     ocrAbort.current?.abort()
@@ -51,7 +58,7 @@ export default function DeviceScanner({
     setRunning(false)
   }
   useEffect(() => {
-    if (autoStart) void start()
+    if (autoStart && mode !== "image") void start()
     return () => {
       generation.current += 1
       ocrAbort.current?.abort()
@@ -61,7 +68,18 @@ export default function DeviceScanner({
       if (typeof MediaStream !== "undefined" && stream instanceof MediaStream)
         stream.getTracks().forEach((track) => track.stop())
     }
-  }, [autoStart])
+  }, [autoStart, mode])
+  function acceptTarget(values: string[]) {
+    if (!scanTarget) return false
+    const parsed = classifyDeviceScans(values)
+    const candidates = scanTarget === "serial" ? parsed.serials : parsed.radios.filter((value) => value.length === (scanTarget === "eid" ? 32 : 15))
+    if (candidates.length !== 1) return false
+    stop()
+    setLast(candidates[0])
+    setValue("")
+    callback.current(candidates[0])
+    return true
+  }
   async function acceptMany(values: string[], image?: Blob | ImageData) {
     stop()
     const current = generation.current
@@ -121,10 +139,11 @@ export default function DeviceScanner({
           latestFrame.current = context.getImageData(0, 0, canvas.width, canvas.height)
           const values = await decodeDeviceBarcodes(latestFrame.current)
           if (generation.current !== current) return
+          if (acceptTarget(values)) return
           detected.current = [...new Set([...detected.current, ...values])]
           setFound(detected.current)
           const parsed = classifyDeviceScans(detected.current)
-          if (parsed.serials.length === 1 && parsed.radios.length === 2 && !parsed.unknown.length) {
+          if (parsed.serials.length === 1 && parsed.radios.length === 3 && !parsed.unknown.length) {
             await acceptMany(detected.current, latestFrame.current)
             return
           }
@@ -146,11 +165,11 @@ export default function DeviceScanner({
     setFound([])
     setOcrNote("")
     if (!window.isSecureContext) {
-      notifyError(t("deviceScan.cameraHttps"))
+      notifyError(t(mode === "camera" ? "deviceScan.scanCameraHttps" : "deviceScan.cameraHttps"))
       return
     }
     if (!navigator.mediaDevices?.getUserMedia) {
-      notifyError(t("deviceScan.cameraUnsupported"))
+      notifyError(t(mode === "camera" ? "deviceScan.scanCameraUnsupported" : "deviceScan.cameraUnsupported"))
       return
     }
     const current = generation.current
@@ -190,7 +209,7 @@ export default function DeviceScanner({
             : name === "NotReadableError"
               ? "cameraBusy"
               : "cameraError"
-        notifyError(t(`deviceScan.${key}`, { message: (e as Error).message }))
+        notifyError(t(mode === "camera" ? "deviceScan.scanCameraError" : `deviceScan.${key}`, { message: (e as Error).message }))
       }
     }
   }
@@ -206,6 +225,10 @@ export default function DeviceScanner({
         const { decodeDeviceBarcodes } = await import("../lib/device-multi-barcode")
         const values = await decodeDeviceBarcodes(file)
         if (generation.current !== current) return
+        if (scanTarget && values.length === 1) {
+          if (!acceptTarget(values)) notifyError(t("deviceScan.scannerWrongField"))
+          return
+        }
         if (!values.length && !recognizeSku) throw new Error("No barcodes")
         await acceptMany(values, file)
         return
@@ -229,35 +252,35 @@ export default function DeviceScanner({
       className="space-y-3 rounded-lg border p-4"
       data-testid="device-scanner"
     >
-      <p className="font-medium">{t("deviceScan.scannerTitle")}</p>
-      <p className="text-sm text-ui-fg-subtle">{t(onScanMany ? "deviceScan.scannerMultiHelp" : "deviceScan.scannerHelp")}</p>
+      <Text weight="plus">{t(mode === "image" ? "deviceScan.imageIntakeTitle" : "deviceScan.scannerTitle")}</Text>
+      <Text size="small" className="text-ui-fg-subtle">{t(mode === "image" ? "deviceScan.imageIntakeHelp" : mode === "camera" ? (scanTarget ? "deviceScan.cameraFieldHelp" : "deviceScan.cameraIntakeHelp") : scanTarget ? "deviceScan.scannerFieldHelp" : onScanMany ? "deviceScan.scannerMultiHelp" : "deviceScan.scannerHelp")}</Text>
       {recognizeSku && onScanMany && <Text size="small" className="text-ui-fg-subtle">{t("deviceScan.labelTextHelp")}</Text>}
       {ocrBusy && <Text size="small" role="status">{t("deviceScan.labelTextReading")}</Text>}
       {ocrNote && <Text size="small" role="status" className="text-ui-fg-subtle">{ocrNote}</Text>}
-      <video
+      {mode !== "image" && <video
         ref={video}
         muted
         playsInline
         className={`w-full rounded-lg bg-black ${running ? "block" : "hidden"}`}
         style={{ maxHeight: 300 }}
         aria-label={t("deviceScan.cameraPreview")}
-      />
+      />}
       <div className="flex flex-wrap gap-2">
-        <Button
+        {mode !== "image" && <Button
           variant="secondary"
           onClick={running ? stop : start}
           type="button"
           disabled={imageBusy || ocrBusy}
         >
           {running ? t("deviceScan.stopCamera") : t("deviceScan.startCamera")}
-        </Button>
-        <label className="cursor-pointer rounded-md border px-3 py-2 text-sm">
-          {imageBusy ? t("deviceScan.decoding") : t("deviceScan.uploadPhoto")}
+        </Button>}
+        {mode !== "camera" && <label className="cursor-pointer rounded-md border px-3 py-2 text-sm">
+          {imageBusy ? t("deviceScan.decoding") : t(mode === "image" ? "deviceScan.selectLabelImage" : "deviceScan.uploadPhoto")}
           <input
             aria-label={t("deviceScan.uploadLabel")}
             type="file"
             accept="image/*"
-            capture="environment"
+            capture={mode === "image" ? undefined : "environment"}
             className="hidden"
             disabled={imageBusy || ocrBusy}
             onChange={(e) => {
@@ -265,7 +288,7 @@ export default function DeviceScanner({
               e.target.value = ""
             }}
           />
-        </label>
+        </label>}
       </div>
       {onScanMany && found.length > 0 && (
         <div className="space-y-2">
@@ -275,7 +298,7 @@ export default function DeviceScanner({
       )}
       {showManualInput && (
         <form
-          className="flex flex-wrap gap-2"
+          className="grid gap-2 sm:flex sm:flex-wrap"
           onSubmit={(e) => {
             e.preventDefault()
             stop()

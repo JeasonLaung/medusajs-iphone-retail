@@ -11,6 +11,7 @@ export type OrderDeviceCommand = Extract<
       | "fulfill"
       | "ship"
       | "cancel_fulfillment"
+      | "save_allocation"
   }
 >
 
@@ -19,6 +20,7 @@ export type Device = {
   serial_number: string | null
   imei: string | null
   imei2: string | null
+  eid: string | null
   variant_id: string
   source_id: string
   state: string
@@ -47,6 +49,7 @@ export type OrderDeviceData = {
   managed_variants: { variant_id: string }[]
   order: {
     status: string
+    fulfillments?: import("../../lib/order-device-capacity").AllocationFulfillment[]
     items: {
       id: string
       title: string

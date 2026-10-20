@@ -7,4 +7,4 @@ const DeviceInspectionPage = () => {
 
 export default DeviceInspectionPage
 
-export const config = defineRouteConfig({ label: "deviceScan.afterSales", translationNs: "translation", rank: 3 })
+export const config = defineRouteConfig({ label: "deviceScan.afterSales", translationNs: "translation", rank: 5 })

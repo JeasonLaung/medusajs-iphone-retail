@@ -9,16 +9,22 @@ export default function DeviceIdentityInput({
   onScan,
   onScanMany,
   recognizeSku,
+  scanTarget,
+  scannerMode = "both",
   ...props
 }: ComponentProps<typeof Input> & {
   scanLabel: string
   onScan: (value: string) => void
   onScanMany?: (values: string[], skuSearch?: string) => void
   recognizeSku?: boolean
+  scanTarget?: "serial" | "imei" | "eid" | "any"
+  scannerMode?: "both" | "image" | "camera"
 }) {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const label = t("orderDevices.scanField", { field: scanLabel })
+
+  if (scannerMode === "image") return <ClearableInput {...props} medusa />
 
   return (
     <Popover open={open && !props.disabled} onOpenChange={setOpen}>
@@ -55,8 +61,10 @@ export default function DeviceIdentityInput({
         aria-label={label}
       >
         <DeviceScanner
+          mode={scannerMode}
           autoStart
           showManualInput={false}
+          scanTarget={scanTarget === "any" ? undefined : scanTarget || (props.inputMode === "numeric" ? "imei" : "serial")}
           recognizeSku={recognizeSku}
           onScanMany={onScanMany ? (values, skuSearch) => {
             onScanMany(values, skuSearch)

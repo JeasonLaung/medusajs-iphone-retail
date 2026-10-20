@@ -8,6 +8,8 @@ import {
 import { CreateAfterSales } from "./store/orders/[id]/after-sales/validators"
 import { UpdateAfterSales } from "./admin/orders/[id]/after-sales/validators"
 import { DeviceCommand, DeviceRefund } from "./admin/devices/validators"
+import { CreateMobileIntake, MobileIntakeBody } from "./mobile-intake/validators"
+import { DevicePhotoUpload } from "./device-photo-validators"
 import {
   guardDeviceOrder,
   guardDeviceInventory,
@@ -30,6 +32,9 @@ import {
 // the route narrows it to published products in the key's sales channels.
 export default defineMiddlewares({
   routes: [
+    ...["/admin/devices/photos", "/mobile-intake/photos"].map((matcher) => ({ matcher, method: "POST" as const, bodyParser: { sizeLimit: "34mb" }, middlewares: [validateAndTransformBody(DevicePhotoUpload)] })),
+    { matcher: "/admin/devices/mobile-intake", method: "POST", middlewares: [validateAndTransformBody(CreateMobileIntake)] },
+    { matcher: "/mobile-intake", method: "POST", bodyParser: { sizeLimit: "32kb" }, middlewares: [validateAndTransformBody(MobileIntakeBody)] },
     { matcher: "/store/product-reviews/purchases", method: "GET", middlewares: [authenticate("customer", ["session", "bearer"]), validateAndTransformQuery(ReviewPurchasesQuery, {})] },
     { matcher: "/store/orders/:id/product-reviews", method: "GET", middlewares: [authenticate("customer", ["session", "bearer"])] },
     { matcher: "/store/product-reviews", method: "GET", middlewares: [validateAndTransformQuery(ReviewListQuery, {})] },

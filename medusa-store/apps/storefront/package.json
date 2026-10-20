@@ -8,7 +8,8 @@
     "medusa-storefront"
   ],
   "scripts": {
-    "dev": "next dev --turbopack -H 127.0.0.1 -p 8000",
+    "dev": "node ../../../scripts/dev-service.cjs storefront",
+    "dev:stop": "node ../../../scripts/dev-service.cjs storefront stop",
     "build": "next build",
     "start": "next start -p 8000",
     "lint": "next lint",

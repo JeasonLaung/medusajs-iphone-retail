@@ -1,16 +1,23 @@
 import { ClearableInput, ClearableTextarea } from "./clearable-input"
-import { useTranslation } from "react-i18next"
-import { Button, Container, Heading, Text } from "@medusajs/ui"
+import { useDeviceTranslations } from "../lib/use-device-translations"
+import { useQueryClient } from "@tanstack/react-query"
+import { Button, Container, FocusModal, Heading, Text } from "@medusajs/ui"
 import { useCallback, useEffect, useId, useState } from "react"
 import { Link, Navigate, useLocation, useSearchParams } from "react-router-dom"
 import DeviceScanner from "./device-scanner"
+import DeviceIntakeShortcut from "./device-intake-shortcut"
+import DeviceLookupTable from "./device-lookup-table"
+import DevicePhotosInput, { type DevicePhoto } from "./device-photos-input"
+import MobileIntakeLink from "./mobile-intake-link"
+import { createMobileIntakeLink } from "../lib/mobile-intake"
 import DeviceIdentityInput from "./device-identity-input"
 import DeviceVariantSelect, { type DeviceVariantChoice } from "./device-variant-select"
 import { parseDeviceFile } from "../lib/device-xlsx"
+import { templateSkuParameters } from "../../lib/device-import-columns"
 import { sdk } from "../lib/sdk"
 import { localizeDeviceMessage } from "../lib/device-messages"
 import { notifyError } from "../lib/notifications"
-import { isImeiOrEid, matchesDeviceIdentity } from "../../lib/device-identity"
+import { isImei, isEid, matchesDeviceIdentity } from "../../lib/device-identity"
 import { mergeDeviceScans } from "../lib/device-scan-values"
 
 type Source = {
@@ -37,10 +44,12 @@ type Variant = {
   }[]
 }
 type Device = {
+  category: "sale" | "returned" | "recycled"
   id: string
   serial_number: string | null
   imei: string | null
   imei2: string | null
+  eid: string | null
   variant_id: string
   source_id: string
   location_id: string
@@ -145,8 +154,16 @@ function Field({
 
 export type DeviceWorkbenchMode = "lookup" | "intake" | "orders" | "inspection" | "sources"
 
-const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
-  const { t, i18n } = useTranslation()
+const DeviceWorkbench = ({ mode, intakeMethod, onBusyChange, category = "sale" }: {
+  category?: "sale" | "returned" | "recycled"
+  mode: DeviceWorkbenchMode
+  intakeMethod?: "image" | "scan" | "import"
+  onBusyChange?: (busy: boolean) => void
+}) => {
+  const { t, i18n } = useDeviceTranslations()
+  const queryClient = useQueryClient()
+  const [intakeDialog, setIntakeDialog] = useState<"image" | "scan" | "import">()
+  const [intakeBusy, setIntakeBusy] = useState(false)
   const states: Record<string, string> = {
     inspection: t("deviceScan.inspection"),
     available: t("deviceScan.available"),
@@ -172,7 +189,11 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
   const location = useLocation()
   const initialDevice = (location.state as { device?: Device } | null)?.device
   const [data, setData] = useState<Data | null>(null)
+  const [photos, setPhotos] = useState<DevicePhoto[]>([])
+  const [photoBusy, setPhotoBusy] = useState(false)
+  const [scannerBusy, setScannerBusy] = useState(false)
   const [busy, setBusy] = useState(false)
+  useEffect(() => { onBusyChange?.(busy || photoBusy || scannerBusy) }, [busy, photoBusy, scannerBusy, onBusyChange])
   const showError = useCallback((message: string) => {
     notifyError(localizeDeviceMessage(message, t))
   }, [t])
@@ -192,6 +213,7 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
   const [serial, setSerial] = useState("")
   const [imei, setImei] = useState("")
   const [imei2, setImei2] = useState("")
+  const [eid, setEid] = useState("")
   const imeiHelpId = useId()
   const [grade, setGrade] = useState(initialDevice?.grade || "A")
   const [battery, setBattery] = useState(initialDevice ? initialDevice.battery_health == null ? "" : String(initialDevice.battery_health) : "85")
@@ -231,11 +253,7 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
       if (orderId) query.set("order_id", orderId)
       if (search) query.set("q", search)
     } else if (search) query.set("q", search)
-    const response = await fetch(`/admin/devices?${query}`, {
-      credentials: "include",
-    })
-    if (!response.ok) throw new Error(t("deviceScan.loadError"))
-    const next: Data = await response.json()
+    const next = await sdk.client.fetch<Data>(`/admin/devices?${query}`)
     setData(next)
     if (!deviceLinkLoaded && params.get("device_id")) {
       setDeviceLinkLoaded(true)
@@ -244,6 +262,12 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
     }
     if (next.access?.role === "supplier")
       setSourceId(next.access.source_id || "")
+    else if (mode === "intake") {
+      const warehouses = next.sources.filter((source) => source.type === "self")
+      setSourceId((current) => warehouses.some((source) => source.id === current)
+        ? current
+        : warehouses[0]?.id || "")
+    }
     if (mode === "sources" && next.access?.role !== "supplier") {
       const accounts = await fetch("/admin/devices/supplier-accounts", {
         credentials: "include",
@@ -278,18 +302,15 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
     setBusy(true)
     setSuccess("")
     try {
-      const r = await fetch(path, {
+      await sdk.client.fetch(path, {
         method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body,
       })
-      const json = await r.json()
-      if (!r.ok) throw new Error(json.message || t("deviceScan.commandError"))
       setSuccess(message)
       setChecked([])
       setRefundConfirmed(false)
       await load()
+      await queryClient.invalidateQueries({ queryKey: ["device-lookup"] })
       return true
     } catch (e) {
       showError((e as Error).message)
@@ -306,7 +327,10 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
       (mode === "orders" &&
         data?.sources.find((s) => s.id === sourceId)?.type === "supplier")
     ) {
-      if (isImeiOrEid(normalized)) {
+      if (isEid(normalized)) {
+        if (!eid || eid === normalized) setEid(normalized)
+        else showError(t("deviceScan.scannerConflict"))
+      } else if (isImei(normalized)) {
         if (imei === normalized || imei2 === normalized) return
         if (!imei) setImei(normalized)
         else if (!imei2) setImei2(normalized)
@@ -324,10 +348,11 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
     }
   }
   function onScanMany(values: string[], skuSearch?: string) {
-    const next = mergeDeviceScans({ serial, imei, imei2 }, values)
+    const next = mergeDeviceScans({ serial, imei, imei2, eid }, values)
     setSerial(next.serial)
     setImei(next.imei)
     setImei2(next.imei2)
+    setEid(next.eid)
     setScan(values.join(" / "))
     if (skuSearch) setScanSearch((previous) => ({ query: skuSearch, revision: (previous?.revision || 0) + 1 }))
     if (next.conflict) showError(t("deviceScan.scannerConflict"))
@@ -352,21 +377,23 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
     (pickedVariant?.id === variantId ? pickedVariant : undefined)
   const managed = data?.managed_variants.some((v) => v.variant_id === variantId)
   const variantRequiresImei = variant?.requires_imei ?? /\biphone\b/i.test(variant?.product?.title || "")
-  const imeiInvalid = !!imei.trim() && !isImeiOrEid(imei)
-  const imei2Invalid = !!imei2.trim() && !isImeiOrEid(imei2)
+  const imeiInvalid = !!imei.trim() && !isImei(imei)
+  const imei2Invalid = !!imei2.trim() && !isImei(imei2)
+  const eidInvalid = !!eid.trim() && !isEid(eid)
   const intakeIssue = source?.type !== "self" ? t("deviceScan.intakeChooseWarehouse")
     : !variantId ? t("deviceScan.intakeChooseSku")
     : !serial.trim() ? t("deviceScan.intakeSerialRequired")
-    : variantRequiresImei && !imei.trim() && !imei2.trim() ? t("deviceScan.intakeImeiRequired")
+    : variantRequiresImei && !imei.trim() && !imei2.trim() && !eid.trim() ? t("deviceScan.intakeImeiRequired")
     : imeiInvalid ? t("deviceScan.imeiInvalid", { count: imei.trim().length })
     : imei2Invalid ? t("deviceScan.imeiInvalid", { count: imei2.trim().length })
+    : eidInvalid ? t("deviceScan.eidInvalid", { count: eid.trim().length })
     : imei.trim() && imei.trim() === imei2.trim() ? t("deviceScan.radioDuplicate") : ""
   const intakeReady = !intakeIssue
   const findDevice = (id?: string) =>
     data?.devices.find((d) => d.id === id) ||
     data?.assigned_devices.find((d) => d.id === id)
   const identity = (d?: Device) =>
-    d?.serial_number || d?.imei || d?.imei2 || d?.id || t("deviceScan.deviceNotFound")
+    d?.serial_number || d?.imei || d?.imei2 || d?.eid || d?.id || t("deviceScan.deviceNotFound")
   const sourceSelect = (
     <Field label={t("deviceScan.sourceLabel")}>
       <select
@@ -378,8 +405,9 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
           setBatch([])
         }}
       >
-        <option value="">{t("deviceScan.select")}</option>
-        {data?.sources.map((s) => (
+        {!(mode === "intake" && data?.sources.some((source) => source.type === "self")) &&
+          <option value="">{t("deviceScan.select")}</option>}
+        {data?.sources.filter((source) => mode !== "intake" || source.type === "self").map((s) => (
           <option key={s.id} value={s.id}>
             {s.name}（
             {s.type === "self"
@@ -403,6 +431,7 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
       {variantSelect}
       <Field label={t("deviceScan.serial")}>
         <DeviceIdentityInput
+          scannerMode={mode === "intake" ? intakeMethod === "image" ? "image" : "camera" : "both"}
           aria-label={t("deviceScan.serial")}
           scanLabel={t("deviceScan.serial")}
           onScan={setSerial}
@@ -414,11 +443,15 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
         />
       </Field>
       {[{ value: imei, set: setImei, invalid: imeiInvalid, index: 1 },
-        { value: imei2, set: setImei2, invalid: imei2Invalid, index: 2 }].map((field) => (
-      <Field key={field.index} label={t(field.index === 1 ? "orderDevices.imei" : "orderDevices.imei2")}>
+        { value: imei2, set: setImei2, invalid: imei2Invalid, index: 2 },
+        { value: eid, set: setEid, invalid: eidInvalid, index: 3 }].map((field) => (
+      <Field key={field.index} label={t(field.index === 1 ? "orderDevices.imei" : field.index === 2 ? "orderDevices.imei2" : "orderDevices.eid")}>
         <DeviceIdentityInput
-          aria-label={t(field.index === 1 ? "orderDevices.imei" : "orderDevices.imei2")}
-          scanLabel={t(field.index === 1 ? "orderDevices.imei" : "orderDevices.imei2")}
+          scannerMode={mode === "intake" ? intakeMethod === "image" ? "image" : "camera" : "both"}
+          aria-label={t(field.index === 1 ? "orderDevices.imei" : field.index === 2 ? "orderDevices.imei2" : "orderDevices.eid")}
+          scanLabel={t(field.index === 1 ? "orderDevices.imei" : field.index === 2 ? "orderDevices.imei2" : "orderDevices.eid")}
+          scanTarget={field.index === 3 ? "eid" : "imei"}
+          maxLength={100}
           onScan={field.set}
           onScanMany={onScanMany}
           recognizeSku
@@ -430,7 +463,7 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
         />
         <span id={`${imeiHelpId}-${field.index}`} role={field.invalid ? "alert" : undefined}
           className={`block text-xs ${field.invalid ? "text-ui-fg-error" : "text-ui-fg-subtle"}`}>
-          {t(field.invalid ? "deviceScan.imeiInvalid" : "deviceScan.imeiHint", { count: field.value.trim().length })}
+          {t(field.index === 3 ? (field.invalid ? "deviceScan.eidInvalid" : "deviceScan.eidHint") : (field.invalid ? "deviceScan.imeiInvalid" : "deviceScan.imeiHint"), { count: field.value.trim().length })}
         </span>
       </Field>
       ))}
@@ -459,7 +492,9 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
     ...(serial.trim() ? { serial_number: serial.trim() } : {}),
     ...(imei.trim() ? { imei: imei.trim() } : {}),
     ...(imei2.trim() ? { imei2: imei2.trim() } : {}),
+    ...(eid.trim() ? { eid: eid.trim() } : {}),
     source_id: sourceId,
+    category, photos,
     variant_id: variantId,
     cost_cents: Math.round(Number(cost) * 100),
     bin,
@@ -488,12 +523,16 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
             choices.set(key, choice)
           }
         }
+        if (r.sku_parameters && (!choice || templateSkuParameters(choice) !== r.sku_parameters)) {
+          throw new Error(t("deviceScan.importSkuParameters", { row: i + 2 }))
+        }
         devices.push({ variant: choice, device: {
           ...(r.serial_number
             ? { serial_number: r.serial_number.toUpperCase() }
             : {}),
           ...(r.imei ? { imei: r.imei } : {}),
           ...(r.imei2 ? { imei2: r.imei2 } : {}),
+          ...(r.eid ? { eid: r.eid } : {}),
           source_id: sourceId,
           ...(r.grade ? { grade: r.grade } : {}),
           ...(r.battery_health ? { battery_health: Number(r.battery_health) } : {}),
@@ -511,18 +550,29 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
     }
   }
 
+  async function openMobileIntake() {
+    const warehouse = data?.sources.find((source) => source.type === "self")
+    if (!warehouse) { showError(t("deviceScan.intakeChooseWarehouse")); return }
+    setBusy(true)
+    try {
+      const link = await createMobileIntakeLink(warehouse.id, category, i18n.language)
+      window.location.assign(link.url)
+    } catch { notifyError(t("mobileIntake.failed")) }
+    finally { setBusy(false) }
+  }
+
   if (supplier && (mode === "intake" || mode === "inspection")) {
     return <Navigate to="/device-scan/lookup" replace />
   }
 
   return (
-    <Container className="space-y-5" data-testid="device-scan-page">
-      <div>
+    <Container className="min-w-0 space-y-5" data-testid="device-scan-page">
+      {mode !== "lookup" && !intakeMethod && <div>
         <Heading level="h1">{supplier && mode === "sources" ? t("deviceScan.supplierStock") : modes[mode]}</Heading>
         <p className="mt-1 text-sm text-ui-fg-subtle">
           {t("deviceScan.subtitle")}
         </p>
-      </div>
+      </div>}
       {supplier && (
         <p className="rounded-lg border p-3 text-sm">
           {t("deviceScan.supplierScope")}
@@ -533,11 +583,14 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
           {success}
         </div>
       )}
-      {mode !== "sources" && <DeviceScanner key={mode} onScan={onScan} recognizeSku
+      {mode !== "sources" && mode !== "lookup" && intakeMethod !== "import" && !(mode === "intake" && intakeMethod === "scan") && <DeviceScanner key={`${mode}-${intakeMethod}`} onScan={onScan} recognizeSku
+        mode={mode === "intake" ? intakeMethod === "image" ? "image" : "camera" : "both"}
+        showManualInput={intakeMethod !== "image"}
+        onBusyChange={setScannerBusy}
         onScanMany={mode === "intake" || (mode === "orders" && source?.type === "supplier") ? onScanMany : undefined} />}
       {!data && <p>{t("deviceScan.loading")}</p>}
       {data && (
-        <fieldset disabled={busy} className="min-w-0 space-y-5">
+        <fieldset disabled={busy || scannerBusy} className="min-w-0 space-y-5">
           {(mode === "orders" || mode === "inspection") && (
             <div className="space-y-3 rounded-lg border p-4">
               <form
@@ -921,7 +974,9 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
           )}
           {mode === "intake" && (
             <div className="space-y-4 rounded-lg border p-4">
+              <Text size="small" weight="plus">{t("deviceScan.category")}：{t(`deviceScan.categories.${category}`)}</Text>
               {sourceSelect}
+              {intakeMethod === "scan" ? <MobileIntakeLink key={`${sourceId}-${category}`} sourceId={sourceId} category={category} enabled={source?.type === "self"} autoCreate onBusyChange={setBusy} /> : intakeMethod === "import" ? variantSelect : <>
               {deviceFields}
               <Field label={t("deviceScan.intakeNotes")}>
                 <ClearableTextarea
@@ -930,29 +985,33 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
                   onChange={(e) => setNotes(e.target.value)}
                 />
               </Field>
-              <p className="text-sm">{t("deviceScan.intakeHelp")}</p>
+              <DevicePhotosInput value={photos} onChange={setPhotos} disabled={busy} uploading={photoBusy} onUploadingChange={setPhotoBusy} />
+              <p className="text-sm">{t(category === "sale" ? "deviceScan.saleIntakeHelp" : "deviceScan.reviewIntakeHelp")}</p>
               {intakeIssue && <p className="text-sm text-ui-fg-error" role="status">{intakeIssue}</p>}
               <Button
                 disabled={
-                  busy || !intakeReady
+                  busy || photoBusy || scannerBusy || !intakeReady
                 }
                 isLoading={busy}
                 onClick={async () => {
                   if (
                     await command(
                       { action: "intake", devices: [newDevice()] },
-                      t("deviceScan.intakeSuccess"),
+                      t(category === "sale" ? "deviceScan.saleIntakeSuccess" : "deviceScan.reviewIntakeSuccess"),
                     )
                   ) {
+                    setPhotos([])
                     setSerial("")
                     setImei("")
                     setImei2("")
+                          setEid("")
                   }
                 }}
               >
                 {t("deviceScan.registerIntake")}
               </Button>
-              <div className="space-y-3 border-t pt-4">
+              </>}
+              {intakeMethod === "import" && <div className="space-y-3 border-t pt-4">
                 <h2 className="font-medium">{t("deviceScan.csvTitle")}</h2>
                 <p className="break-words text-sm">{t("deviceScan.csvHelp")}</p>
                 <a className="inline-flex text-sm text-ui-fg-interactive underline" href={`/admin/devices/import-template?locale=${encodeURIComponent(i18n.language)}`} download="device-import-template.xlsx">
@@ -961,6 +1020,7 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
                 <input
                   aria-label={t("deviceScan.csvUpload")}
                   type="file"
+                  disabled={busy || photoBusy}
                   accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                   onChange={(e) => {
                     void importFile(e.target.files?.[0])
@@ -974,7 +1034,7 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
                     </p>
                     <div className="max-h-64 overflow-auto rounded border p-2 text-xs">
                       {batch.map(({ device: d, variant: rowVariant }, i) => (
-                        <p key={i}>
+                        <div key={i} className="space-y-2 border-b py-2">
                           {i + 1}.{" "}
                           {String(
                             d.serial_number ||
@@ -987,18 +1047,19 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
                           }{" "}
                           {d.grade ? ` · ${String(d.grade)}` : ""}
                           {d.battery_health != null ? ` · ${String(d.battery_health)}%` : ""}
-                        </p>
+                        <DevicePhotosInput value={(d.photos as DevicePhoto[]) || []} onChange={(next) => setBatch((previous) => previous.map((row, index) => index === i ? { ...row, device: { ...row.device, photos: next } } : row))} disabled={busy} uploading={photoBusy} onUploadingChange={setPhotoBusy} />
+                        </div>
                       ))}
                     </div>
                     <Text size="small" className="text-ui-fg-subtle">{t("deviceScan.batchSkuHelp")}</Text>
                     <Button
                       size="small"
                       isLoading={busy}
-                      disabled={busy || source?.type !== "self" || batch.some((row) => !(row.variant || variant)?.sku)}
+                      disabled={busy || photoBusy || source?.type !== "self" || batch.some((row) => !(row.variant || variant)?.sku)}
                       onClick={async () => {
                         if (
                           await command(
-                            { action: "intake", devices: batch.map((row) => ({ ...row.device, variant_id: (row.variant || variant)!.id })) },
+                            { action: "intake", devices: batch.map((row) => ({ ...row.device, category, source_id: sourceId, variant_id: (row.variant || variant)!.id })) },
                             t("deviceScan.batchSuccess"),
                           )
                         )
@@ -1009,7 +1070,7 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
                     </Button>
                   </>
                 )}
-              </div>
+              </div>}
             </div>
           )}
           {mode === "orders" && (
@@ -1056,41 +1117,7 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
                     </select>
                   </Field>
                 )}
-                {source?.type === "supplier" && (
-                  <>
-                    {deviceFields}
-                    <Button
-                      disabled={
-                        !orderId || !itemId || !managed || (!serial && !imei && !imei2)
-                      }
-                      onClick={async () => {
-                        if (
-                          await command(
-                            {
-                              action: "supplier_assign",
-                              device: newDevice(),
-                              order_id: orderId,
-                              item_id: itemId,
-                              ...(replacement
-                                ? { replacement_of: replacement }
-                                : {}),
-                            },
-                            t("deviceScan.supplierAllocated"),
-                          )
-                        ) {
-                          setSerial("")
-                          setImei("")
-                          setImei2("")
-                        }
-                      }}
-                    >
-                      {t("deviceScan.registerSupplier")}
-                    </Button>
-                  </>
-                )}
-                {source?.type === "self" && (
-                  <p className="text-sm">{t("deviceScan.allocateHelp")}</p>
-                )}
+                <DeviceIntakeShortcut orderId={orderId} busy={busy} fromWorkbench />
               </div>
               <div className="space-y-3 rounded-lg border p-4">
                 <h2 className="font-medium">{t("deviceScan.orderDevices")}</h2>
@@ -1115,9 +1142,9 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
                         {a.tracking_number}
                       </p>
                     )}
-                    {a.status === "reserved" && (
+                    {["reserved", "packed"].includes(a.status) && (
                       <div className="flex flex-wrap gap-3">
-                        <label className="flex gap-2">
+                        {a.status === "reserved" && <label className="flex gap-2">
                           <input
                             type="checkbox"
                             checked={checked.includes(a.id)}
@@ -1130,10 +1157,11 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
                             }
                           />
                           {t("deviceScan.selectFulfillment")}
-                        </label>
+                        </label>}
                         <Button
                           size="small"
                           variant="secondary"
+                          disabled={busy}
                           onClick={() =>
                             command(
                               { action: "release", assignment_id: a.id },
@@ -1141,8 +1169,9 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
                             )
                           }
                         >
-                          {t("deviceScan.release")}
+                          {t("deviceScan.changeAllocation")}
                         </Button>
+                        {a.status === "packed" && <Text size="small">{t("deviceScan.changePackedHelp")}</Text>}
                       </div>
                     )}
                     {a.fulfillment_id && (
@@ -1558,8 +1587,9 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
                 </Button>
               </div>
             )}
-          {mode !== "sources" && (
+          {mode !== "sources" && !intakeMethod && (
             <div className="space-y-3">
+              {mode === "lookup" ? <DeviceLookupTable category={category} onIntake={setIntakeDialog} onDirectIntake={() => void openMobileIntake()} intakeOpening={busy} canIntake={!supplier} initialDeviceId={params.get("device_id") || undefined} /> : <>
               <h2 className="font-medium">
                 {t("deviceScan.deviceList", { count: data.count })}
               </h2>
@@ -1609,6 +1639,7 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
                       {d.id}
                       {d.imei ? ` · ${t("orderDevices.imei")} ${d.imei}` : ""}
                       {d.imei2 ? ` · ${t("orderDevices.imei2")} ${d.imei2}` : ""}
+                      {d.eid ? ` · EID ${d.eid}` : ""}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       <Button
@@ -1620,12 +1651,14 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
                           ? t("deviceScan.selectInspection")
                           : t("deviceScan.viewDevice")}
                       </Button>
-                      {mode === "orders" && d.state === "available" && (
+                      {mode === "orders" && d.state === "available" && d.category === "sale" && (
                         <Button
                           size="small"
                           disabled={
+                            busy ||
                             !orderId ||
                             !itemId ||
+                            d.variant_id !== data.order?.items.find((item) => item.id === itemId)?.variant_id ||
                             d.location_id !== source?.location_id
                           }
                           onClick={() =>
@@ -1682,51 +1715,29 @@ const DeviceWorkbench = ({ mode }: { mode: DeviceWorkbenchMode }) => {
                   </Button>
                 </div>
               )}
-              {mode === "lookup" && selected && (
-                <div className="space-y-3 rounded-lg border p-4">
-                  <h2 className="font-medium">{t("deviceScan.history")}</h2>
-                  <p className="text-sm">
-                    {t("deviceScan.costPrefix")}
-                    {(selected.cost_cents / 100).toFixed(2)}{" "}
-                    {selected.currency_code.toUpperCase()}
-                  </p>
-                  {data.assignments.map((a) => (
-                    <p key={a.id} className="break-all text-sm">
-                      <a
-                        className="underline"
-                        href={`/app/orders/${a.order_id}`}
-                      >
-                        {a.order_id}
-                      </a>{" "}
-                      · {states[a.status]} · {a.tracking_number || ""}
-                    </p>
-                  ))}
-                  {data.events.map((e) => (
-                    <details key={e.id} className="rounded border p-2 text-sm">
-                      <summary>
-                        {new Date(e.created_at).toLocaleString(
-                          i18n.language === "zhCN" ? "zh-CN" : "en-GB",
-                        )}{" "}
-                        ·{" "}
-                        {t(`deviceScan.actions.${e.action}`, {
-                          defaultValue: e.action,
-                        })}
-                      </summary>
-                      <p className="break-all">
-                        {t("deviceScan.actorPrefix")}
-                        {e.actor_id}
-                      </p>
-                      <pre className="overflow-auto whitespace-pre-wrap break-all text-xs">
-                        {JSON.stringify(e.data, null, 2)}
-                      </pre>
-                    </details>
-                  ))}
-                </div>
-              )}
+              </>}
             </div>
           )}
         </fieldset>
       )}
+      {mode === "lookup" && intakeDialog && <FocusModal open onOpenChange={(open) => {
+        if (!open && !intakeBusy) {
+          setIntakeDialog(undefined)
+          void queryClient.invalidateQueries({ queryKey: ["device-lookup"] })
+        }
+      }}>
+        <FocusModal.Content aria-describedby={undefined} onEscapeKeyDown={(event) => { if (intakeBusy) event.preventDefault() }}>
+          <FocusModal.Header>
+            <FocusModal.Title>{t(intakeDialog === "image" ? "deviceScan.lookupImageIntake" : intakeDialog === "scan" ? "deviceScan.lookupScanIntake" : "deviceScan.lookupImportIntake")}</FocusModal.Title>
+            <FocusModal.Close asChild><Button size="small" variant="secondary" disabled={intakeBusy}>{t("deviceScan.lookupClose")}</Button></FocusModal.Close>
+          </FocusModal.Header>
+          <FocusModal.Body className="overflow-y-auto px-6 py-4">
+            <div className="mx-auto w-full max-w-5xl">
+              <DeviceWorkbench mode="intake" category={category} intakeMethod={intakeDialog} onBusyChange={setIntakeBusy} />
+            </div>
+          </FocusModal.Body>
+        </FocusModal.Content>
+      </FocusModal>}
     </Container>
   )
 }

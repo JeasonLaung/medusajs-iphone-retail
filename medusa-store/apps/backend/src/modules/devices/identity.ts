@@ -1,5 +1,5 @@
 import { requireDevice } from "./policy"
-import { deviceRadioValues, isImeiOrEid, type DeviceIdentity } from "../../lib/device-identity"
+import { deviceRadioValues, isImei, isEid, type DeviceIdentity } from "../../lib/device-identity"
 
 export type DeviceProduct = {
   title?: string | null
@@ -30,9 +30,10 @@ export function assertDeviceIdentity(
     "iPhone 必须记录序列号和至少一个 IMEI / EID",
   )
   requireDevice(
-    deviceRadioValues(device).every(isImeiOrEid),
-    "IMEI / EID 必须为 15 位或 32 位数字",
+    [device.imei, device.imei2].filter((v): v is string => !!v).every(isImei),
+    "IMEI 必须为 15 位数字",
   )
+  requireDevice(!device.eid || isEid(device.eid), "EID 必须为 32 位数字")
   const values = deviceRadioValues(device)
-  requireDevice(new Set(values).size === values.length, "两个 IMEI / EID 不能相同")
+  requireDevice(new Set(values).size === values.length, "两个 IMEI 不能相同")
 }

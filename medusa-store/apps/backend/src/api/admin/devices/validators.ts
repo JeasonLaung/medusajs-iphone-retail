@@ -2,20 +2,25 @@ import { z } from "@medusajs/framework/zod"
 
 const id = z.string().trim().min(1).max(100)
 const optionalId = id.optional()
+export const DeviceCategory = z.enum(["sale", "returned", "recycled"])
+export const DevicePhoto = z.strictObject({ id, url: z.string().max(2000).refine((url) => /^https?:\/\//i.test(url) || /^\/static\/[a-zA-Z0-9._-]+$/.test(url)) })
 const identity = {
   serial_number: z.string().trim().toUpperCase().min(1).max(100).optional(),
   imei: z
     .string()
     .trim()
-    .regex(/^(?:\d{15}|\d{32})$/)
+    .regex(/^\d{15}$/)
     .optional(),
-  imei2: z.string().trim().regex(/^(?:\d{15}|\d{32})$/).optional(),
+  imei2: z.string().trim().regex(/^\d{15}$/).optional(),
+  eid: z.string().trim().regex(/^\d{32}$/).optional(),
 }
 export const IntakeDevice = z
   .object({
     ...identity,
     variant_id: id,
     source_id: id,
+    category: DeviceCategory.default("sale"),
+    photos: z.array(DevicePhoto).max(8).default([]),
     grade: z.enum(["S", "A", "B", "C"]).optional(),
     battery_health: z.number().int().min(0).max(100).optional(),
     cost_cents: z.number().int().min(0).max(100000000).default(0),
@@ -29,7 +34,37 @@ export const IntakeDevice = z
   .strict()
   .refine((d) => d.serial_number, "请填写设备序列号")
 
+export const UpdateDevice = z.strictObject({
+  action: z.literal("update"),
+  device_id: id,
+  variant_id: id,
+  source_id: id,
+  location_id: id,
+  imei: identity.imei.unwrap().nullable(),
+  imei2: identity.imei2.unwrap().nullable(),
+  eid: identity.eid.unwrap().nullable(),
+  category: DeviceCategory,
+  state: z.enum(["inspection", "available", "reserved", "packed", "shipped", "repair", "repair_ready", "retired", "supplier_returned"]),
+  grade: z.enum(["S", "A", "B", "C"]).nullable(),
+  battery_health: z.number().int().min(0).max(100).nullable(),
+  cost_cents: z.number().int().min(0).max(100000000),
+  currency_code: z.string().regex(/^[a-z]{3}$/),
+  bin: z.string().trim().max(200),
+  notes: z.string().trim().max(2000),
+  photos: z.array(DevicePhoto).max(8),
+})
+export type UpdateDeviceBody = z.infer<typeof UpdateDevice>
+
 export const DeviceCommand = z.discriminatedUnion("action", [
+  z.strictObject({
+    action: z.literal("save_allocation"),
+    order_id: id,
+    allocations: z.array(z.strictObject({ item_id: id, device_id: id, assignment_id: optionalId, fulfillment_id: optionalId })).min(1).max(100),
+  }),
+  UpdateDevice,
+  z.strictObject({ action: z.literal("activate"), device_id: id }),
+  z.strictObject({ action: z.literal("delete"), device_id: id }),
+  z.strictObject({ action: z.literal("retire"), device_id: id }),
   z.strictObject({
     action: z.literal("order_assign"),
     order_id: id,
@@ -37,6 +72,7 @@ export const DeviceCommand = z.discriminatedUnion("action", [
     serial_number: z.string().trim().toUpperCase().min(1).max(100),
     imei: identity.imei,
     imei2: identity.imei2,
+    eid: identity.eid,
     device_id: optionalId,
     source_id: optionalId,
   }),

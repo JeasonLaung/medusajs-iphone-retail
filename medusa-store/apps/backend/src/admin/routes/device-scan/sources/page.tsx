@@ -7,4 +7,4 @@ const DeviceSourcesPage = () => {
 
 export default DeviceSourcesPage
 
-export const config = defineRouteConfig({ label: "deviceScan.sources", translationNs: "translation", rank: 4 })
+export const config = defineRouteConfig({ label: "deviceScan.sources", translationNs: "translation", rank: 6 })

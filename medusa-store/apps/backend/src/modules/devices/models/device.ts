@@ -6,6 +6,7 @@ export const Device = model
     serial_number: model.text().nullable(),
     imei: model.text().nullable(),
     imei2: model.text().nullable(),
+    eid: model.text().nullable(),
     variant_id: model.text(),
     source_id: model.text(),
     location_id: model.text(),
@@ -15,6 +16,8 @@ export const Device = model
     currency_code: model.text().default("eur"),
     bin: model.text().default(""),
     notes: model.text().default(""),
+    category: model.enum(["sale", "returned", "recycled"]).default("sale"),
+    photos: model.json().default([] as unknown as Record<string, unknown>),
     state: model
       .enum([
         "inspection",
@@ -27,12 +30,13 @@ export const Device = model
         "retired",
         "supplier_returned",
       ])
-      .default("inspection"),
+      .default("available"),
   })
   .indexes([
     { on: ["serial_number"], unique: true, where: "serial_number IS NOT NULL" },
     { on: ["imei"], unique: true, where: "imei IS NOT NULL" },
     { on: ["imei2"], unique: true, where: "imei2 IS NOT NULL" },
+    { on: ["eid"], unique: true, where: "eid IS NOT NULL" },
     { on: ["variant_id", "location_id", "state"] },
   ])
 

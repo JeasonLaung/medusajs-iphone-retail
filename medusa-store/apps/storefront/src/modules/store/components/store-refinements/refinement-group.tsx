@@ -13,6 +13,21 @@ type RefinementGroupProps = {
   title: string
 }
 
+// YYYYMM of the latest generation in each catalog series.
+// iPhone 17 and Air launched together; keep the numbered series first.
+const seriesReleaseMonths: Record<string, number> = {
+  "iPhone 17": 202509,
+  "iPhone Air": 202509,
+  "iPhone 16": 202409,
+  "iPhone 15": 202309,
+  "iPhone 14": 202209,
+  "iPhone SE": 202203,
+  "iPhone 13": 202109,
+  "iPhone 12": 202010,
+  "iPhone 11": 201909,
+}
+const gradeOrder = ["S", "A", "B", "C", "D"]
+
 const RefinementGroup = ({ attribute, title }: RefinementGroupProps) => {
   const { countryCode } = useParams<{ countryCode: string }>()
   const catalogOptions = useFilterOptions(attribute)
@@ -41,8 +56,21 @@ const RefinementGroup = ({ attribute, title }: RefinementGroupProps) => {
       ? allItems.filter((item) => /^iPhone (\d+|Air|SE)$/.test(item.value))
       : allItems
 
-  if (attribute === "release_year") {
-    visibleItems.sort((a, b) => Number(a.value) - Number(b.value))
+  if (attribute === "category") {
+    visibleItems.sort((a, b) =>
+      (seriesReleaseMonths[b.value] ?? 0) - (seriesReleaseMonths[a.value] ?? 0)
+      || a.value.localeCompare(b.value, "en", { numeric: true })
+    )
+  } else if (attribute === "release_year") {
+    visibleItems.sort((a, b) => Number(b.value) - Number(a.value))
+  } else if (attribute === "condition_options") {
+    const rank = (value: string) => {
+      const index = gradeOrder.indexOf(value)
+      return index === -1 ? gradeOrder.length : index
+    }
+    visibleItems.sort((a, b) => rank(a.value) - rank(b.value)
+      || a.value.localeCompare(b.value, "en")
+    )
   }
 
   if (!visibleItems.length) {

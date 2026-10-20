@@ -40,6 +40,16 @@ export async function GET(
       ? req.query.device_id.slice(0, 100)
       : undefined
   const offset = Math.max(0, Math.min(100000, Number(req.query.offset) || 0))
+  const limit = Math.max(1, Math.min(100, Math.floor(Number(req.query.limit) || 50)))
+  const lookupVariant = typeof req.query.lookup_variant_id === "string"
+    ? req.query.lookup_variant_id.slice(0, 100) : undefined
+  const lookupLocation = typeof req.query.lookup_location_id === "string"
+    ? req.query.lookup_location_id.slice(0, 100) : undefined
+  const category = typeof req.query.category === "string" ? req.query.category : undefined
+  if (category && !["sale", "returned", "recycled"].includes(category)) throw new MedusaError(MedusaError.Types.INVALID_DATA, "Invalid device category")
+  const lookupState = typeof req.query.lookup_state === "string" ? req.query.lookup_state : undefined
+  if (lookupState && !["inspection", "available", "reserved", "packed", "shipped", "repair", "repair_ready", "retired", "supplier_returned"].includes(lookupState))
+    throw new MedusaError(MedusaError.Types.INVALID_DATA, "Invalid device state")
   if (supplier && order_id && !access.order_ids.includes(order_id))
     throw supplierDenied()
   if (supplier && device_id) {
@@ -66,6 +76,13 @@ export async function GET(
             "items.quantity",
             "items.detail.quantity",
             "items.detail.fulfilled_quantity",
+            "fulfillments.id",
+            "fulfillments.location_id",
+            "fulfillments.shipped_at",
+            "fulfillments.delivered_at",
+            "fulfillments.canceled_at",
+            "fulfillments.items.line_item_id",
+            "fulfillments.items.quantity",
             "shipping_address.first_name",
             "shipping_address.last_name",
             "shipping_address.company",
@@ -90,8 +107,12 @@ export async function GET(
             "items.detail.quantity",
             "items.detail.fulfilled_quantity",
             "fulfillments.id",
-            "fulfillments.canceled_at",
+            "fulfillments.location_id",
             "fulfillments.shipped_at",
+            "fulfillments.delivered_at",
+            "fulfillments.canceled_at",
+            "fulfillments.items.line_item_id",
+            "fulfillments.items.quantity",
             "payment_collections.payments.id",
             "payment_collections.payments.captures.amount",
             "payment_collections.payments.refunds.amount",
@@ -146,6 +167,7 @@ export async function GET(
       { serial_number: { $ilike: `%${q}%` } },
       { imei: { $ilike: `%${q}%` } },
       { imei2: { $ilike: `%${q}%` } },
+      { eid: { $ilike: `%${q}%` } },
       { id: { $ilike: `%${q.toLowerCase()}%` } },
     ],
   }
@@ -187,11 +209,15 @@ export async function GET(
           ? searchFilter
           : {}
   const [devices, count] = await service.listAndCountDevices(
-    supplier ? { $and: [filters, { source_id: access.source_id! }] } : filters,
+    { $and: [filters, ...(lookupVariant ? [{ variant_id: lookupVariant }] : []),
+      ...(lookupLocation ? [{ location_id: lookupLocation }] : []),
+      ...(lookupState ? [{ state: lookupState }] : []),
+      ...(category ? [{ category }] : []),
+      ...(supplier ? [{ source_id: access.source_id! }] : [])] },
     {
-      take: 50,
+      take: limit,
       skip: offset,
-      order: { created_at: "DESC" },
+      order: { created_at: "DESC", id: "DESC" },
     },
   )
   const sources = await service.listDeviceSources(
@@ -228,6 +254,17 @@ export async function GET(
     })
     variants.push(...selectedVariants)
   }
+  // Resolve every variant on this device page, including those beyond the picker preload.
+  const missingVariantIds = [...new Set(devices.map((device) => device.variant_id))]
+    .filter((id) => !variants.some((variant) => variant.id === id))
+  if (missingVariantIds.length) {
+    const { data: pageVariants } = await query.graph({
+      entity: "product_variant",
+      fields: ["id", "sku", "title", "product.title", "product.handle", "product.metadata", "product.type.value", "options.value", "inventory_items.inventory.location_levels.*"],
+      filters: { id: missingVariantIds },
+    })
+    variants.push(...pageVariants)
+  }
   for (const variant of variants) Object.assign(variant, { requires_imei: requiresImei(variant.product) })
   const assigned_devices = assignments.length
     ? await service.listDevices(
@@ -244,12 +281,15 @@ export async function GET(
         { take: 100, order: { created_at: "DESC" } },
       )
     : []
+  const history = devices.length ? await service.listDeviceAssignments({ device_id: devices.map((d) => d.id), status: ["reserved", "packed", "shipped", "returned"] }, { take: null }) : []
+  const locked = new Set(history.map((a) => a.device_id))
   res.json({
     access,
-    devices,
+    devices: devices.map((d) => ({ ...d, can_delete: !supplier && !locked.has(d.id) && !["reserved", "packed", "shipped", "repair_ready"].includes(d.state), can_retire: !supplier && !locked.has(d.id) && ["available", "inspection", "repair"].includes(d.state) })),
     assigned_devices,
     count,
     offset,
+    limit,
     sources,
     supplies,
     managed_variants,

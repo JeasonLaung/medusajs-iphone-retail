@@ -2,6 +2,7 @@ import assert from "node:assert/strict"
 import type { ConfigModule, ExecArgs, IUserModuleService } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys, Modules, generateJwtToken } from "@medusajs/framework/utils"
 import ExcelJS from "exceljs"
+import { parseDeviceFile } from "../admin/lib/device-xlsx"
 
 export default async function checkDeviceImportTemplate({ container }: ExecArgs) {
   assert(process.env.PLAYWRIGHT_MODULE_PATH, "Set PLAYWRIGHT_MODULE_PATH")
@@ -29,10 +30,27 @@ export default async function checkDeviceImportTemplate({ container }: ExecArgs)
       await workbook.xlsx.readFile(await download.path())
       const source = workbook.getWorksheet("SKU source")!
       assert(source.rowCount > 1, "Live SKU source must contain records")
-      for (const address of ["D2", "D201"]) {
+      assert.deepEqual(workbook.worksheets.filter((sheet) => sheet.state === "visible").map((sheet) => sheet.name), ["Devices", "SKU source"])
+      assert.equal(workbook.getWorksheet("SKU search"), undefined)
+      assert(!/\s/.test(source.getCell("F2").text), "SKU parameters must not require spaces")
+      assert.equal(workbook.worksheets[0].getCell("A1").text, locale === "en" ? "Serial Number" : "序列号")
+      const devices = workbook.worksheets[0]
+      assert.equal(devices.getCell("E1").text, locale === "en" ? "SKU Parameters" : "SKU 参数")
+      assert.equal(devices.getCell("F1").text, "SKU")
+      assert((devices.model as any).sheetProtection.sheet)
+      assert.equal(devices.getCell("E2").protection.locked, false)
+      assert.notEqual(devices.getCell("F2").protection?.locked, false)
+      assert(devices.getCell("F2").formula.includes("MATCH("))
+      for (const address of ["E2", "E201"]) {
         assert(workbook.worksheets[0].getCell(address).dataValidation.formulae[0].includes("SKU choices"))
       }
-      assert(workbook.worksheets[0].getCell("D2").dataValidation.prompt?.includes(locale === "en" ? "keywords" : "关键词"))
+      assert(workbook.worksheets[0].getCell("E2").dataValidation.prompt?.includes(locale === "en" ? "Search model" : "关键词"))
+      devices.getCell("A2").value = "TEMPLATECHECK"
+      devices.getCell("E2").value = source.getCell("F2").text
+      const buffer = await workbook.xlsx.writeBuffer()
+      const rows = await parseDeviceFile({ name: "devices.xlsx", arrayBuffer: async () => buffer } as unknown as File, (key) => key)
+      assert.equal(rows.length, 1)
+      assert.equal(rows[0].sku, source.getCell("A2").text)
       console.log(`PASS ${locale}: downloaded XLSX with ${source.rowCount - 1} SKU choices and validation on all 200 device rows`)
     }
   } finally {

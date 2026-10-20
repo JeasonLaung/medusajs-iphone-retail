@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex,nofollow">
+  <title>设备入库 / Device intake</title>
+  <link rel="stylesheet" href="./vendor/vant.css">
+  <link rel="stylesheet" href="./style.css?v=20261020-identity3">
+  <script defer src="./vendor/vue.global.prod.js"></script>
+  <script defer src="./vendor/vant.min.js"></script>
+  <script defer src="./locales.js?v=20261020-identity3"></script>
+  <script defer src="./app.js?v=20261020-identity3"></script>
+</head>
+<body>
+<div id="app" v-cloak>
+  <main>
+    <div v-if="loading" class="loading"><van-loading>{{ t('loading') }}</van-loading></div>
+    <section v-else-if="invalid" class="status-card"><h2>{{ t('invalidTitle') }}</h2><p>{{ t('invalidHelp') }}</p><van-button block round @click="loadSession">{{ t('retry') }}</van-button></section>
+    <template v-else-if="session">
+      <van-form @submit="submit" :disabled="busy" scroll-to-error>
+        <div class="section-heading"><h2>{{ t('configuration') }}</h2><span>01</span></div>
+        <van-cell-group inset>
+          <van-field :model-value="variant ? variant.title : ''" :label="t('sku')" :placeholder="t('chooseSku')" readonly required @click="showVariants = true; searchVariants(true)"></van-field>
+          <van-field v-if="variant" :model-value="variant.sku" label="SKU" readonly></van-field>
+        </van-cell-group>
+        <div class="section-heading"><h2>{{ t('identity') }}</h2><span>02</span></div>
+        <van-cell-group inset>
+          <van-field v-model="form.serial_number" name="serial" :label="t('serial')" :placeholder="t('serialPlaceholder')" required clearable maxlength="100" autocapitalize="characters" :rules="[{ required:true, message:t('serialRequired') }]" :disabled="busy"><template #button><button class="field-scan" type="button" :aria-label="t('scanSerial')" :disabled="busy" @click="openScanner('serial_number')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M7 7v10m3-10v10m4-10v10m3-10v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></template></van-field>
+          <van-field v-model="form.imei" name="imei" label="IMEI 1" :placeholder="t('imeiPlaceholder')" inputmode="numeric" clearable maxlength="100"  :rules="[{validator:validRadio, message:t('invalidRadio')}]" :disabled="busy"><template #button><button class="field-scan" type="button" :aria-label="t('scanImei')" :disabled="busy" @click="openScanner('imei')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M7 7v10m3-10v10m4-10v10m3-10v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></template></van-field>
+          <van-field v-model="form.imei2" name="imei2" label="IMEI 2" :placeholder="t('optional')" inputmode="numeric" clearable maxlength="100" :rules="[{validator:validRadio, message:t('invalidRadio')}]" :disabled="busy"><template #button><button class="field-scan" type="button" :aria-label="t('scanImei2')" :disabled="busy" @click="openScanner('imei2')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M7 7v10m3-10v10m4-10v10m3-10v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></template></van-field>
+          <van-field v-model="form.eid" name="eid" label="EID" :placeholder="t('eidPlaceholder')" inputmode="numeric" clearable maxlength="100" :rules="[{validator:validEid, message:t('invalidEid')}]" :disabled="busy"><template #button><button class="field-scan" type="button" :aria-label="t('scanEid')" :disabled="busy" @click="openScanner('eid')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M7 7v10m3-10v10m4-10v10m3-10v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></template></van-field>
+        </van-cell-group>
+        <div class="section-heading"><h2>{{ t('details') }}</h2><span>03</span></div>
+        <van-cell-group inset>
+          <van-field v-model="form.cost" :label="t('cost')" type="number" inputmode="decimal" placeholder="0.00" :disabled="busy" :rules="[{validator:validCost, message:t('invalidCost')}]" label-align="left"><template #extra><span class="caption">EUR</span></template></van-field>
+          <van-field v-model="form.bin" :label="t('bin')" :placeholder="t('optional')" maxlength="200" clearable :disabled="busy"></van-field>
+          <van-field v-model="form.notes" :label="t('notes')" :placeholder="t('notesPlaceholder')" type="textarea" autosize rows="2" maxlength="2000" :disabled="busy"></van-field>
+        </van-cell-group>
+        <section class="photos-card">
+          <h2>{{ t('photos') }}</h2><p>{{ t('photoHelp') }}</p>
+          <van-uploader class="photo-uploader" :model-value="photoPreviews" :after-read="uploadPhotos" result-type="file" accept="image/jpeg,image/png,image/webp" multiple :max-count="8" :preview-size="88" :disabled="busy || uploading" :deletable="!busy && !uploading" :preview-options="{closeable:true}" @delete="removePhoto">
+            <van-button native-type="button" :disabled="busy || uploading">{{ t('photoAdd') }}</van-button>
+            <template #preview-delete><svg width="20" height="20" viewBox="0 0 24 24" fill="none" :aria-label="t('photoRemove')" role="img"><path d="m7 7 10 10M17 7 7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></template>
+          </van-uploader>
+          <van-uploader class="photo-camera" :model-value="photoPreviews" :after-read="uploadPhotos" result-type="file" accept="image/jpeg,image/png,image/webp" capture="environment" :preview-image="false" :max-count="8" :disabled="busy || uploading">
+            <van-button native-type="button" :disabled="busy || uploading">{{ t('photoCamera') }}</van-button>
+          </van-uploader>
+          <p v-if="uploading" role="status"><van-loading size="16">{{ t('photoUploading') }}</van-loading></p>
+        </section>
+        <div class="submit-area"><van-button block round type="primary" native-type="submit" :loading="busy" :loading-text="t('submitting')" :disabled="busy || uploading || !variant">{{ t('submit') }}</van-button><p>{{ t('continueHelp') }}</p></div>
+      </van-form>
+      <section v-if="history.length" class="history"><div class="section-heading"><h2>{{ t('recent') }}</h2><span>{{ history.length }}</span></div><article v-for="item in history" :key="item.serial"><div><strong>{{ item.serial }}</strong><small>{{ item.sku }}</small></div><span class="success-text">{{ t('saved') }}</span></article></section>
+    </template>
+    <footer>{{ t('footer') }}</footer>
+  </main>
+  <input ref="scanImageInput" type="file" accept="image/*" hidden @change="scanImage">
+  <nav class="scan-dock" :aria-label="t('scanTitle')">
+    <button type="button" class="language" @click="toggleLanguage" :aria-label="lang === 'zh' ? 'Switch to English' : '切换为简体中文'">{{ lang === 'zh' ? 'EN' : '中文' }}</button>
+    <button type="button" class="stats-trigger" @click="showStats=true" :aria-label="t('statsTitle')"><span>{{ t('stats') }}</span><strong>{{ intakeRecords.length }}</strong></button>
+    <van-button v-if="session && !loading && !invalid" class="scan-trigger" :aria-label="t('scan')" type="primary" :disabled="busy" @click="openScanner"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M7 7v10m3-10v10m4-10v10m3-10v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>{{ t('scanAction') }}</span></van-button>
+  </nav>
+  <van-popup v-model:show="showStats" class="stats-popup" position="bottom" round :style="{height:'85%'}" safe-area-inset-bottom>
+    <div class="popup-heading"><h2>{{ t('statsTitle') }}</h2><van-button size="small" @click="showStats=false">{{ t('close') }}</van-button></div>
+    <div class="stats-content">
+      <p class="stats-help">{{ t('statsHelp') }}</p>
+      <div class="stats-total"><span>{{ t('statsTotal') }}</span><strong>{{ intakeRecords.length }}</strong></div>
+      <h3>{{ t('statsModels') }}</h3>
+      <p v-if="!intakeRecords.length" class="empty">{{ t('statsEmpty') }}</p>
+      <van-cell v-for="item in modelStats" :key="item.model" :title="item.model" :value="item.count"></van-cell>
+      <template v-if="intakeRecords.length">
+        <h3>{{ t('statsDevices') }}</h3>
+        <article class="stats-device" v-for="item in intakeRecords" :key="item.serial">
+          <strong>{{ item.title }}</strong><dl><dt>{{ t('serial') }}</dt><dd>{{ item.serial }}</dd><template v-if="item.imei"><dt>IMEI 1</dt><dd>{{ item.imei }}</dd></template><template v-if="item.imei2"><dt>IMEI 2</dt><dd>{{ item.imei2 }}</dd></template><template v-if="item.eid"><dt>EID</dt><dd>{{ item.eid }}</dd></template><dt>SKU</dt><dd>{{ item.sku }}</dd></dl>
+        </article>
+      </template>
+    </div>
+  </van-popup>
+  <van-popup v-model:show="showVariants" position="bottom" round :style="{height:'85%'}" safe-area-inset-bottom>
+    <div class="popup-heading"><h2>{{ t('chooseSku') }}</h2><button type="button" class="popup-close" :aria-label="t('close')" @click="showVariants=false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+    <div class="variant-search-row">
+      <van-search v-model="query" :placeholder="t('searchPlaceholder')" @search="searchVariants(true)" @clear="searchVariants(true)"></van-search>
+      <van-button class="search-button" native-type="button" size="small" :loading="searching" @click="searchVariants(true)">{{ t('search') }}</van-button>
+    </div>
+    <van-cell v-for="item in variants" :key="item.id" :title="item.title" :label="item.sku" clickable @click="variant=item; showVariants=false"></van-cell>
+    <p v-if="!searching && !variants.length" class="empty">{{ t('noResults') }}</p>
+    <van-button v-if="hasMore" block :loading="searching" @click="searchVariants(false)">{{ t('more') }}</van-button>
+  </van-popup>
+  <van-popup v-model:show="showScanner" position="bottom" round :style="{height:'80%'}" @closed="stopScanner" safe-area-inset-bottom>
+    <div class="popup-heading"><h2>{{ t('scanTitle') }}</h2><van-button size="small" @click="closeScanner">{{ t('done') }}</van-button></div>
+    <div class="camera"><video id="scan-video" muted autoplay playsinline></video><div class="scan-frame"></div><div v-if="cameraLoading" class="camera-loading"><van-loading color="#fff">{{ t('cameraLoading') }}</van-loading></div></div>
+    <div class="scan-details"><p>{{ t(scanTarget ? 'scanFieldInstruction' : 'scanInstruction') }}</p><p role="status">{{ scanStatus }}</p><van-cell :title="t('serial')" :value="form.serial_number || '—'"></van-cell><van-cell title="IMEI 1" :value="form.imei || '—'"></van-cell><van-cell title="IMEI 2" :value="form.imei2 || '—'"></van-cell><van-cell title="EID" :value="form.eid || '—'"></van-cell><p>{{ t('reviewScan') }}</p></div>
+  </van-popup>
+</div>
+<noscript>请启用 JavaScript / Please enable JavaScript.</noscript>
+</body>
+</html>

@@ -28,6 +28,7 @@ type ProductHit = Hit<
     sku_storage_options?: string[]
     stocked_storage_options?: string[]
     sku_color_options?: string[]
+    stocked_color_options?: string[]
   } & HitPricing
 >
 
@@ -135,11 +136,11 @@ const StoreHits = ({ hitsPerPage, currencyCode }: StoreHitsProps) => {
                         <div className={styles.colours}>
                           <span className={styles.label}>{copy.modelColours}</span>
                           <ColorSwatches
-                            unavailableLabel={copy.noSku}
+                            unavailableLabel={copy.outOfStock}
                             swatches={hit.color_options.map((name, index) => ({
                               name,
                               hex: hit.color_hexes![index],
-                              disabled: !(hit.sku_color_options ?? []).some((value) => value.trim().toLowerCase() === name.trim().toLowerCase()),
+                              disabled: !(hit.stocked_color_options ?? []).some((value) => value.trim().toLowerCase() === name.trim().toLowerCase()),
                             }))}
                           />
                         </div>

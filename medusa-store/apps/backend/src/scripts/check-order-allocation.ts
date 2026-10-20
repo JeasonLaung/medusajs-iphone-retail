@@ -9,6 +9,7 @@ import type {
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import {
   createProductsWorkflow,
+  createOrderFulfillmentWorkflow,
   updateProductsWorkflow,
   deleteProductsWorkflow,
   createStockLocationsWorkflow,
@@ -194,17 +195,26 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
       quantity: 2,
       line_item_id: first.itemId,
     })
-    const allocate = (serial_number: string, order = first, imei?: string, imei2?: string) =>
+    const allocate = (serial_number: string, order = first, imei?: string, imei2?: string, eid?: string) =>
       run({
         action: "order_assign",
         serial_number,
         ...(imei ? { imei } : {}),
         ...(imei2 ? { imei2 } : {}),
+        ...(eid ? { eid } : {}),
         order_id: order.orderId,
         item_id: order.itemId,
       })
+    const fixtureSource = await devices.createDeviceSources({ name: `Allocation source ${stamp}`, type: "self", location_id: locationId })
+    const register = (serial_number: string, imei?: string) => devices.createDevices({
+      serial_number, imei: imei || null, variant_id: variantId,
+      source_id: fixtureSource.id, location_id: locationId, state: "available", category: "sale",
+    })
     const serial = `A${stamp}`
     const imei = `86${stamp}`
+    await assert.rejects(allocate(serial), (error) => /DEVICE_INTAKE_REQUIRED/.test(JSON.stringify(error)))
+    assert.equal((await devices.listDevices({ serial_number: serial })).length, 0)
+    await register(serial)
     await allocate(serial)
     assert.equal(await stock(), 3)
     assert.equal(
@@ -248,7 +258,7 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
     assert.equal(listing.order.items[0].detail.quantity, 2)
     assert.equal(listing.order.items[0].requires_imei, true)
     await assert.rejects(allocate(`M${stamp}`), (error) =>
-      /iPhone/.test(JSON.stringify(error)),
+      /DEVICE_INTAKE_REQUIRED/.test(JSON.stringify(error)),
     )
     const [firstAssignment] = await devices.listDeviceAssignments({
       device_id: device.id,
@@ -266,20 +276,24 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
     )
     const eid = `8904903200000000000${stamp}`
     assert.equal(eid.length, 32)
-    await allocate(serial, first, `87${stamp}`, eid)
+    await assert.rejects(allocate(serial, first, `87${stamp}`, `92${stamp}`, eid),
+      (error) => /不一致/.test(JSON.stringify(error)))
+    await devices.updateDevices({ id: device.id, imei: `87${stamp}`, imei2: `92${stamp}`, eid })
+    await allocate(serial, first, `87${stamp}`, `92${stamp}`, eid)
     assert.equal((await devices.retrieveDevice(device.id)).imei, `87${stamp}`)
-    assert.equal((await devices.retrieveDevice(device.id)).imei2, eid)
-    for (const q of [serial, `87${stamp}`, eid]) {
+    assert.equal((await devices.retrieveDevice(device.id)).eid, eid)
+    for (const q of [serial, `87${stamp}`, `92${stamp}`, eid]) {
       let found: any
       await getDevices({ scope: container, auth_context: { actor_id: user.id }, query: { q } } as unknown as AuthenticatedMedusaRequest,
         { json: (data: unknown) => { found = data } } as MedusaResponse)
-      assert(found.devices.some((entry: any) => entry.id === device.id), "All three identity fields locate the same device")
+      assert(found.devices.some((entry: any) => entry.id === device.id), "All four identity fields locate the same device")
     }
     await assert.rejects(allocate(`CROSS${stamp}`, first, undefined, `87${stamp}`),
       (error) => /不一致|不同设备|多个设备/.test(JSON.stringify(error)))
-    await assert.rejects(allocate(`CROSS${stamp}`, first, eid),
+    await assert.rejects(allocate(`CROSS${stamp}`, first, undefined, undefined, eid),
       (error) => /不一致|不同设备|多个设备/.test(JSON.stringify(error)))
 
+    await register(`D${stamp}`, imei)
     await allocate(`D${stamp}`, first, imei)
     assert.equal((await devices.listDevices({ imei })).length, 1)
     await assert.rejects(allocate(`X${stamp}`, first, imei), (error) =>
@@ -309,7 +323,7 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
       3,
       "Choosing a device already in stock does not add inventory",
     )
-    const current = await devices.listDeviceAssignments({
+    let current = await devices.listDeviceAssignments({
       order_id: first.orderId,
       status: "reserved",
     })
@@ -322,11 +336,15 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
       1,
       "Native fulfillment deducts the selected devices exactly once",
     )
-    await run({
-      action: "cancel_fulfillment",
-      fulfillment_id: packed.fulfillment_id!,
-    })
+    await run({ action: "release", assignment_id: current[0].id })
     assert.equal(await stock(), 3)
+    assert.equal((await devices.retrieveDevice(current[0].device_id)).state, "available")
+    assert.equal((await devices.retrieveDeviceAssignment(current[0].id)).status, "canceled")
+    assert.equal((await devices.retrieveDeviceAssignment(current[1].id)).status, "reserved")
+    assert.equal((await devices.retrieveDeviceAssignment(current[1].id)).fulfillment_id, null)
+    assert((await fulfillment.retrieveFulfillment(packed.fulfillment_id!)).canceled_at)
+    await run({ action: "assign", device_id: current[0].device_id, order_id: first.orderId, item_id: first.itemId })
+    current = await devices.listDeviceAssignments({ order_id: first.orderId, status: "reserved" })
     const { result: repacked } = await run({
       action: "fulfill",
       assignment_ids: current.map((a) => a.id),
@@ -337,10 +355,13 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
       tracking_number: "ALLOC-CHECK",
     })
     assert.equal(await stock(), 1)
+    await assert.rejects(run({ action: "release", assignment_id: current[0].id }),
+      (error) => /未发货/.test(JSON.stringify(error)))
+    await register(`B${stamp}`, `88${stamp}`)
     await allocate(`B${stamp}`, second, `88${stamp}`)
     await assert.rejects(
       allocate(`C${stamp}`, await makeOrder(1), `89${stamp}`),
-      (error) => /未登记库存/.test(JSON.stringify(error)),
+      (error) => /DEVICE_INTAKE_REQUIRED/.test(JSON.stringify(error)),
     )
     assert.equal(await stock(), 1)
     assert.equal(
@@ -349,27 +370,56 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
     )
     const intakeEid = `8904903300000000000${stamp}`
     const intakeImei = `90${stamp}`
-    const intakeDevice = { serial_number: `INTAKE${stamp}`, imei: intakeEid, imei2: intakeImei,
-      source_id: device.source_id, variant_id: variantId, cost_cents: 0, currency_code: "eur", bin: "", notes: "" }
+    const intakeDevice = { serial_number: `INTAKE${stamp}`, imei: intakeImei, imei2: `93${stamp}`, eid: intakeEid,
+      category: "sale" as const, photos: [], source_id: device.source_id, variant_id: variantId, cost_cents: 0, currency_code: "eur", bin: "", notes: "" }
     await run({ action: "intake", devices: [intakeDevice] })
     const [storedIntake] = await devices.listDevices({ serial_number: intakeDevice.serial_number })
-    assert.equal(storedIntake.imei, intakeEid)
-    assert.equal(storedIntake.imei2, intakeImei)
-    assert.equal(storedIntake.state, "inspection")
-    assert.equal(await stock(), 1, "Intake in inspection does not increase saleable stock")
+    assert.equal(storedIntake.eid, intakeEid)
+    assert.equal(storedIntake.imei, intakeImei)
+    assert.equal(storedIntake.state, "available")
+    assert.equal(await stock(), 2, "Ordinary intake immediately increases saleable stock")
     const beforeDuplicate = (await devices.listAndCountDevices({ variant_id: variantId }))[1]
     await assert.rejects(run({ action: "intake", devices: [
-      { ...intakeDevice, serial_number: `CROSS-INTAKE${stamp}`, imei: intakeImei, imei2: undefined },
+      { ...intakeDevice, serial_number: `CROSS-INTAKE${stamp}`, imei: intakeImei, imei2: undefined, eid: undefined },
+    ] }), (error) => /已存在/.test(JSON.stringify(error)))
+    await assert.rejects(run({ action: "intake", devices: [
+      { ...intakeDevice, serial_number: `EID-DUP${stamp}`, imei: `94${stamp}`, imei2: undefined },
     ] }), (error) => /已存在/.test(JSON.stringify(error)))
     const batchImei = `91${stamp}`
     await assert.rejects(run({ action: "intake", devices: [
-      { ...intakeDevice, serial_number: `BATCH-A${stamp}`, imei: batchImei, imei2: undefined },
-      { ...intakeDevice, serial_number: `BATCH-B${stamp}`, imei: undefined, imei2: batchImei },
+      { ...intakeDevice, serial_number: `BATCH-A${stamp}`, imei: batchImei, imei2: undefined, eid: undefined },
+      { ...intakeDevice, serial_number: `BATCH-B${stamp}`, imei: undefined, imei2: batchImei, eid: undefined },
     ] }), (error) => /已存在/.test(JSON.stringify(error)))
     assert.equal((await devices.listAndCountDevices({ variant_id: variantId }))[1], beforeDuplicate,
       "Cross-slot duplicates reject the whole batch without partial records")
+    // Native fulfillment was created before serial tracking: bind without deducting stock twice.
+    const nativeOrder = await makeOrder(1)
+    await inventory.createReservationItems({ inventory_item_id: inventoryId, location_id: locationId, quantity: 1, line_item_id: nativeOrder.itemId })
+    const { result: nativeFulfillment } = await createOrderFulfillmentWorkflow(container).run({
+      input: { order_id: nativeOrder.orderId, location_id: locationId, items: [{ id: nativeOrder.itemId, quantity: 1 }] },
+    })
+    const beforeBinding = await stock()
+    const firstNativeDevice = await register(`NATIVE-A${stamp}`, `96${stamp}`)
+    const secondNativeDevice = await register(`NATIVE-B${stamp}`, `97${stamp}`)
+    await run({ action: "save_allocation", order_id: nativeOrder.orderId, allocations: [{ item_id: nativeOrder.itemId, device_id: firstNativeDevice.id, fulfillment_id: nativeFulfillment.id }] })
+    const [bound] = await devices.listDeviceAssignments({ order_id: nativeOrder.orderId, status: "packed" })
+    assert.equal(bound.fulfillment_id, nativeFulfillment.id)
+    assert.equal(await stock(), beforeBinding, "Binding must not deduct native fulfillment stock again")
+    await assert.rejects(run({ action: "save_allocation", order_id: nativeOrder.orderId, allocations: [
+      { item_id: nativeOrder.itemId, device_id: secondNativeDevice.id, assignment_id: bound.id },
+      { item_id: nativeOrder.itemId, device_id: firstNativeDevice.id },
+    ] }))
+    assert.equal((await devices.retrieveDeviceAssignment(bound.id)).device_id, firstNativeDevice.id, "A later invalid selection must not partially replace an earlier one")
+    await run({ action: "save_allocation", order_id: nativeOrder.orderId, allocations: [{ item_id: nativeOrder.itemId, device_id: secondNativeDevice.id, assignment_id: bound.id }] })
+    assert.equal((await devices.retrieveDevice(firstNativeDevice.id)).state, "available")
+    assert.equal((await devices.retrieveDevice(secondNativeDevice.id)).state, "packed")
+    assert.equal((await devices.retrieveDeviceAssignment(bound.id)).device_id, secondNativeDevice.id)
+    assert.equal(await stock(), beforeBinding)
+    await fulfillment.updateFulfillment(nativeFulfillment.id, { shipped_at: new Date() })
+    await assert.rejects(run({ action: "save_allocation", order_id: nativeOrder.orderId, allocations: [{ item_id: nativeOrder.itemId, device_id: firstNativeDevice.id, assignment_id: bound.id }] }),
+      (error) => /DEVICE_ALLOCATION_LOCKED/.test(JSON.stringify(error)))
     console.log(
-      "PASS: serial and both IMEI/EID fields, three-field API search, cross-slot duplicate rejection, atomic batch validation, identity completion, intake, allocation, stock preservation, fulfillment and shipping.",
+      "PASS: serial, IMEI 1, IMEI 2 and EID, four-field API search, cross-slot duplicate rejection, atomic batch validation, registered-device-only allocation, intake, stock preservation, fulfillment and shipping.",
     )
   } finally {
     const records = variantId
@@ -392,7 +442,7 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
     if (records.length) {
       const identityEvents = await devices.listDeviceEvents({ device_id: records.map((d) => d.id) }, { take: 1000 })
       if (identityEvents.length) await devices.deleteDeviceEvents(identityEvents.map((entry) => entry.id))
-      await devices.deleteDevices(records.map((d) => d.id))
+      await devices.softDeleteDevices(records.map((d) => d.id))
     }
     for (const orderId of orderIds) {
       const { data } = await query.graph({

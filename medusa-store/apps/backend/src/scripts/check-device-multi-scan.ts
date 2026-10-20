@@ -33,6 +33,8 @@ export default async function checkDeviceMultiScan({ container }: ExecArgs) {
     await fixture.evaluate(async () => { await Promise.all([...document.images].map((image) => image.decode())) })
     const photo = resolve(process.cwd(), "../../../logs/device-three-barcode-label.png")
     await fixture.screenshot({ path: photo, fullPage: true })
+    const singlePhotos: Buffer[] = []
+    for (let index = 0; index < 3; index++) singlePhotos.push(await fixture.locator("img").nth(index).screenshot())
     await fixture.close()
     // Supply real barcode pixels as a camera stream; exercise the actual decoder.
     await context.addInitScript((frames: string[]) => {
@@ -45,20 +47,22 @@ export default async function checkDeviceMultiScan({ container }: ExecArgs) {
         const draw = (index: number) => {
           const ctx = canvas.getContext("2d")!
           ctx.fillStyle = "white"; ctx.fillRect(0, 0, canvas.width, canvas.height)
-          ctx.drawImage(images[index], 50, 50)
+          if (images[index]) ctx.drawImage(images[index], 50, 50)
         }
         draw(0)
         const stream = canvas.captureStream(8)
-        const cameraWindow = window as Window & { scannerFrameLimit?: number }
+        const cameraWindow = window as Window & { scannerFrameLimit?: number; scannerFrameIndex?: number }
+        if (cameraWindow.scannerFrameIndex != null) draw(cameraWindow.scannerFrameIndex)
         let frame = 0
         const timer = setInterval(() => {
           if (stream.getVideoTracks()[0].readyState === "ended") { clearInterval(timer); return }
-          draw(++frame % (cameraWindow.scannerFrameLimit || images.length))
+          draw(cameraWindow.scannerFrameIndex ?? ++frame % (cameraWindow.scannerFrameLimit || images.length))
         }, 800)
         return stream
       } })
     }, svgs)
     const page = await context.newPage()
+    page.setDefaultTimeout(60000)
     const errors: string[] = []
     page.on("pageerror", (error: Error) => errors.push(error.message))
     page.on("console", (message: any) => { if (message.type() === "error") console.log("Browser error:", message.text()) })
@@ -78,7 +82,12 @@ export default async function checkDeviceMultiScan({ container }: ExecArgs) {
     const second = page.getByRole("textbox", { name: "IMEI / EID 2", exact: true })
     await serialField.waitFor()
     await page.getByLabel("上传标签图片", { exact: true }).setInputFiles(photo)
-    await page.waitForFunction(() => (document.querySelector('input[aria-label="苹果序列号"]') as HTMLInputElement)?.value === "DEVICECHECK123")
+    try {
+      await page.waitForFunction(() => (document.querySelector('input[aria-label="苹果序列号"]') as HTMLInputElement)?.value === "DEVICECHECK123", undefined, { timeout: 60000 })
+    } catch (error) {
+      console.log("Scanner state:", await page.getByTestId("device-scanner").first().innerText())
+      throw error
+    }
     assert.deepEqual([await first.inputValue(), await second.inputValue()].sort(), [imei, eid].sort())
     // Repeated images deduplicate; pre-existing serials are never silently replaced.
     await serialField.fill("KEEP-EXISTING")
@@ -100,10 +109,30 @@ export default async function checkDeviceMultiScan({ container }: ExecArgs) {
     await page.getByRole("button", { name: "打开手机相机", exact: true }).click()
     await page.getByRole("status").filter({ hasText: "已识别 2 个码" }).waitFor()
     await page.getByRole("button", { name: "填入已识别号码", exact: true }).click()
+    await page.waitForFunction(() => (document.querySelector('input[aria-label="苹果序列号"]') as HTMLInputElement)?.value === "DEVICECHECK123")
     assert.equal(await serialField.inputValue(), serial)
     assert.equal(await first.inputValue(), imei)
     assert.equal(await second.inputValue(), "")
     await page.evaluate(() => { (window as Window & { scannerFrameLimit?: number }).scannerFrameLimit = 3 })
+    await serialField.fill(""); await first.fill(""); await second.fill("")
+    // Single-field photo and camera scans must not wait for three codes or OCR.
+    for (const [index, field] of [serialField, first, second].entries()) {
+      await serialField.fill(""); await first.fill(""); await second.fill("")
+      const button = index === 0 ? "扫描苹果序列号" : `扫描IMEI / EID ${index}`
+      await page.evaluate(() => { (window as Window & { scannerFrameIndex?: number }).scannerFrameIndex = -1 })
+      await page.getByRole("button", { name: button, exact: true }).click()
+      const dialog = page.getByRole("dialog")
+      await dialog.getByLabel("上传标签图片", { exact: true }).setInputFiles({ name: "single.png", mimeType: "image/png", buffer: singlePhotos[index] })
+      await dialog.waitFor({ state: "hidden" })
+      assert.equal(await field.inputValue(), [serial, imei, eid][index])
+      assert.equal(await [serialField, first, second][(index + 1) % 3].inputValue(), "")
+      await field.fill("")
+      await page.evaluate((frame: number) => { (window as Window & { scannerFrameIndex?: number }).scannerFrameIndex = frame }, index)
+      await page.getByRole("button", { name: button, exact: true }).click()
+      await dialog.waitFor({ state: "hidden" })
+      assert.equal(await field.inputValue(), [serial, imei, eid][index])
+    }
+    await page.evaluate(() => { (window as Window & { scannerFrameIndex?: number }).scannerFrameIndex = -1 })
     await serialField.fill(""); await first.fill(""); await second.fill("")
     await page.getByRole("button", { name: "扫描苹果序列号", exact: true }).click()
     await page.getByRole("dialog").getByLabel("上传标签图片", { exact: true }).setInputFiles(photo)
@@ -114,6 +143,6 @@ export default async function checkDeviceMultiScan({ container }: ExecArgs) {
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "Multi-scan does not overflow mobile")
     await page.screenshot({ path: resolve(process.cwd(), "../../../logs/device-multi-scan-mobile.png"), fullPage: true })
     assert.deepEqual(errors, [])
-    console.log("PASS: three mixed barcodes from one photo, continuous camera collection, duplicate suppression, existing-field protection, camera release and mobile layout. No devices created.")
+    console.log("PASS: individual serial/IMEI/EID photo and camera scans fill their target field immediately; three-code photos, continuous collection, duplicate suppression, existing-field protection, camera release and mobile layout. No devices created.")
   } finally { await browser.close() }
 }

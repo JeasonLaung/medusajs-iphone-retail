@@ -1,5 +1,9 @@
 # AGENTS.md
 
+## Keep development services available
+
+Follow the parent `../AGENTS.md` development service rules. App `pnpm run dev` commands use the supervised launcher in `../scripts/dev-service.cjs`. Before a backend edit batch, run `node ../scripts/dev-service.cjs backend pause` from this workspace; always resume in cleanup with `node ../scripts/dev-service.cjs backend resume`. Never build into a running dev service's `.next`/`.medusa` directory, kill unrelated Node processes, or launch duplicate services. Verify service health after the batch. Admin/Next.js HMR continues during a backend reload pause.
+
 ## Overview
 
 Medusa DTC Starter — a Turborepo workspace monorepo containing a Medusa backend (`@medusajs/medusa` latest, Node 20+, PostgreSQL 15+) and an optional storefront (Next.js, Tanstack, etc...).

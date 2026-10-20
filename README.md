@@ -8,6 +8,33 @@ Medusa 2 后端与管理后台位于 `medusa-store/apps/backend`，购物前台�
 
 ## 启动
 
+### 开发期间保持服务可用
+
+前后台的 `pnpm run dev` 均通过 `scripts/dev-service.cjs` 启动托管进程，意外退出后自动重试，连续启动失败时逐步延长间隔，最多 30 秒；主动停止不会自动拉起。启动中的实例也有独占锁，避免重复启动。后端启动前运行 Medusa lint，错误需要先修正。
+
+后端等待文件停止变化 2 秒后统一更新。接口和工作流优先使用 Medusa 2.21.2 内置的实验性 HMR；共享库、模块、配置变化或 HMR 失败时，只串行执行一次完整重启。完整重启仍会短暂中断服务。该实现使用当前 Medusa 的内部 IPC 协议，升级 Medusa 后需重新验证。测试、独立脚本和迁移文件不触发重启，迁移仍需按需执行。Admin 和商城前端保留原有热更新。
+
+Agent 批量改后端时，从本目录执行以下命令。暂停期间后端继续响应已加载的代码，恢复后统一应用修改；即使验证失败也必须恢复。暂停 30 分钟后自动过期，较长任务需续期。
+
+```powershell
+node scripts/dev-service.cjs backend pause
+# 写完一批相关文件、完成必要检查或迁移后，在 finally/清理步骤中恢复
+node scripts/dev-service.cjs backend resume
+```
+
+必要时手动请求一次重启：`node scripts/dev-service.cjs backend restart`。主动停止使用：
+
+```powershell
+node scripts/dev-service.cjs backend stop
+node scripts/dev-service.cjs storefront stop
+```
+
+控制命令提交请求，托管进程会在当前更新完成后处理；通过日志确认执行结果。`logs/dev-backend.lock`、`logs/dev-storefront.lock` 记录托管进程 PID。不要手工删除运行实例的锁文件。
+
+不要在运行开发服务的同一目录执行构建或删除 `.next` / `.medusa`；这会破坏开发产物。先做 lint/typecheck，完整构建使用独立检出目录，或主动停止对应服务、完成构建后重新启动。独立稳定预览还需要隔离数据库、Redis 和后台任务配置，当前不自动复制业务数据或启动第二套后台。
+
+回归测试：`node --test scripts/dev-service.test.cjs`。根目录及 `medusa-store/AGENTS.md` 已同步开发服务规则。
+
 双击本目录的 `start.bat`，会启动数据库、Medusa 管理后台和购物前台。重复运行时，已启动的服务会跳过；启动日志在 `logs/` 目录。
 
 macOS/Linux 可在项目根目录运行 `./sh/start.sh`。它会在后台启动 Docker 服务、Medusa 后端和购物前台；本次启动的输出追加到根目录 `log/yyyymmddHHMM.log`。再次启动时，已记录的运行中进程会跳过。同一分钟内再次启动会继续追加到同名日志。
@@ -38,8 +65,8 @@ corepack pnpm run dev
 
 ```powershell
 cd C:\Users\Administrator\Desktop\other\iphone_retail\medusa-trial
-taskkill /PID (Get-Content logs/medusa.pid) /T /F
-taskkill /PID (Get-Content logs/storefront.pid) /T /F
+node scripts/dev-service.cjs backend stop
+node scripts/dev-service.cjs storefront stop
 docker compose down
 ```
 
@@ -47,11 +74,11 @@ docker compose down
 
 ## frp 内网穿透
 
-客户端连接 `43.156.133.126:7000`，使用 TCP 隧道将服务器现有 Nginx 回源端口 `8081` 转发到本机 `127.0.0.1:18080` 网关，通过 `https://frp.xeappliance.com` 访问项目。配置位于 `frp/frpc.toml`，其中的真实 token 和下载的二进制均已被 Git 忽略；配置模板为 `frp/frpc.example.toml`。
+客户端连接 `43.156.133.126:7000`，使用 TCP 隧道将服务器现有 Nginx 回源端口 `8081` 转发到本机 `127.0.0.1:18080` 网关，通过 `https://frp.xeappliance.com` 访问项目。配置位于 `frp/frpc.toml`。整个 `frp/` 目录仅在本地保留，配置、模板、凭据及程序文件均不进入 Git；新检出项目时需单独准备本地配置。
 
 双击 `start.bat` 会在前后台就绪后自动启动 frpc；已有服务运行时，可单独双击 `start-frp.bat`。首次启动会通过 `scripts/install-frp.ps1` 下载官方 Windows amd64 frp 0.71.0，并核对官方 SHA256。日志为 `logs/frpc.out.log` 和 `logs/frpc.err.log`，进程号为 `logs/frpc.pid`。修改配置后先运行 `scripts/stop-frp.ps1`，再启动。
 
-公网前台入口为 `https://frp.xeappliance.com/`，后台为 `https://frp.xeappliance.com/app`。本地网关将 `/app`、`/admin`、`/auth`、`/store`、`/health`、`/static`、`/uploads` 路径转发到后台 `9001`，其余路径转发到前台 `8000`。网关仅监听本机，进程号记录在 `logs/frp-gateway.pid`；停止 frp 的脚本也会停止网关。浏览器无需指定端口。不再使用 18000/19001 代理端口。
+公网前台入口为 `https://frp.xeappliance.com/`，后台为 `https://frp.xeappliance.com/app`。本地网关将 `/app`、`/admin`、`/auth`、`/store`、`/health`、`/static`、`/uploads`、`/mobile-intake` 路径转发到后台 `9001`，其余路径转发到前台 `8000`。手机入库链接可从 `https://frp.xeappliance.com/app/device-scan/intake` 创建，后端地址使用 `https://frp.xeappliance.com`。网关仅监听本机，进程号记录在 `logs/frp-gateway.pid`；停止 frp 的脚本也会停止网关。浏览器无需指定端口。不再使用 18000/19001 代理端口。
 
 证书和 Cloudflare 回源方式由服务器现有入口负责。前台 `.env.local` 中 `NEXT_PUBLIC_BASE_URL=https://frp.xeappliance.com`、`NEXT_PUBLIC_FRP_DOMAIN=frp.xeappliance.com`；浏览器访问该域名时 API 使用同源地址，服务端请求仍使用本机后台。网关保留公网转发头，并对后台同源 Origin 和 Host 做本机转换。
 

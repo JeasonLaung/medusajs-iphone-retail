@@ -200,6 +200,7 @@ export default async function checkDevices({ container }: ExecArgs) {
       call(path, body, supplierToken)
     await command({ action: "enroll", variant_id, acknowledged: true })
     const base = {
+      category: "recycled",
       variant_id,
       source_id: self.id,
       grade: "A",
@@ -1104,7 +1105,7 @@ export default async function checkDevices({ container }: ExecArgs) {
       ? await service.listDevices({ variant_id })
       : []
     if (deviceRows.length)
-      await service.deleteDevices(deviceRows.map((d) => d.id))
+      await service.softDeleteDevices(deviceRows.map((d) => d.id))
     const supplies = sourceIds.length
       ? await service.listDeviceSupplies({ source_id: sourceIds })
       : []
