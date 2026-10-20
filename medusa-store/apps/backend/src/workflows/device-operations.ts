@@ -57,6 +57,7 @@ import { devicePhotoUrl } from "../lib/device-photo-url"
 
 type Input = Exclude<DeviceCommandBody, { action: "source" }> & {
   actor_id: string
+  mobile_intake_session?: { nonce: string; source_id: string; category: string }
 }
 type Table =
   | "Devices"
@@ -128,6 +129,7 @@ type Plan = {
     location_id: string
     unit_price: number
   }
+  fulfillmentUpdates?: { id: string; location_id: string; metadata: Record<string, unknown> }[]
   cancel?: { order_id: string; fulfillment_id: string }
 }
 
@@ -316,11 +318,10 @@ const prepareDevices = createStep(
         location_id: source.location_id,
         category: supplier ? "sale" : d.category || "sale",
         photos: d.photos || [],
-        state: supplier ? "reserved" : (d.category || "sale") === "sale" ? "available" : "inspection",
+        state: supplier ? "reserved" : (d.category || "sale") === "sale" ? "pending" : "inspection",
       }
       mutate("Devices", device)
-      if (!supplier && device.state === "available") await adjust(d.variant_id, source.location_id, 1)
-      event(supplier ? "supplier_register" : "intake", { device }, device.id)
+      event(supplier ? "supplier_register" : "intake", { device, ...(input.mobile_intake_session ? { mobile_intake_nonce: input.mobile_intake_session.nonce } : {}) }, device.id)
       return device
     }
 
@@ -399,6 +400,8 @@ const prepareDevices = createStep(
       requireDevice(!assignments.length || !allocationChanged, "DEVICE_EDIT_ALLOCATED")
       requireDevice(next.state === device.state || !["reserved", "packed", "shipped", "repair_ready"].includes(next.state), "DEVICE_EDIT_STATE")
       requireDevice(next.state !== "available" || next.category === "sale", "DEVICE_EDIT_CATEGORY")
+      requireDevice(device.state !== "pending" || next.state !== "available", "DEVICE_PENDING_REQUIRED")
+      requireDevice(next.state !== "pending" || next.category === "sale", "DEVICE_EDIT_CATEGORY")
       const source = await service.retrieveDeviceSource(next.source_id)
       const previousSource = await service.retrieveDeviceSource(device.source_id)
       const { data: locations } = await query.graph({ entity: "stock_location", fields: ["id"], filters: { id: next.location_id } })
@@ -419,15 +422,28 @@ const prepareDevices = createStep(
       if (countedAfter && (!countedBefore || stockChanged)) await adjust(next.variant_id, next.location_id, 1)
       mutate("Devices", next, device)
       event("update", { before: device, after: next }, device.id)
-    } else if (input.action === "activate") {
-      const device = await service.retrieveDevice(input.device_id)
-      requireDevice(device.category === "sale" && device.state === "inspection", "DEVICE_LOCKED")
-      requireDevice(!(await service.listDeviceAssignments({ device_id: device.id, status: ["reserved", "packed", "shipped", "returned"] })).length, "DEVICE_HAS_SALES_HISTORY")
-      await adjust(device.variant_id, device.location_id, 1)
-      mutate("Devices", { ...device, state: "available" }, device)
-      event("activate", { previous_state: device.state, category: device.category }, device.id)
+    } else if (input.action === "activate" || input.action === "make_available") {
+      const ids = input.action === "activate" ? [input.device_id] : input.device_ids
+      requireDevice(new Set(ids).size === ids.length, "DEVICE_PENDING_REQUIRED")
+      for (const id of ids) {
+        const device = await service.retrieveDevice(id)
+        const source = await service.retrieveDeviceSource(device.source_id)
+        requireDevice(device.category === "sale" && source.type === "self" && device.state === (input.action === "activate" ? "inspection" : "pending"), "DEVICE_PENDING_REQUIRED")
+        requireDevice(!(await service.listDeviceAssignments({ device_id: device.id, status: ["reserved", "packed", "shipped", "returned"] })).length, "DEVICE_HAS_SALES_HISTORY")
+        const v = await variant(device.variant_id)
+        assertDeviceIdentity(device, v.product)
+        assertVariantConfiguration(v, device)
+        await adjust(device.variant_id, device.location_id, 1)
+        mutate("Devices", { ...device, state: "available" }, device)
+        event(input.action, { previous_state: device.state, category: device.category }, device.id)
+      }
     } else if (input.action === "delete" || input.action === "retire") {
       const device = await service.retrieveDevice(input.device_id)
+      if (input.mobile_intake_session) {
+        const session = input.mobile_intake_session
+        const events = await service.listDeviceEvents({ device_id: device.id, actor_id: input.actor_id, action: "intake" }, { take: null })
+        requireDevice(input.action === "delete" && device.source_id === session.source_id && device.category === session.category && ["pending", "inspection"].includes(device.state) && events.some((entry) => entry.data?.mobile_intake_nonce === session.nonce), "MOBILE_INTAKE_DELETE_DENIED")
+      }
       requireDevice(!["reserved", "packed", "shipped", "repair_ready"].includes(device.state), "DEVICE_LOCKED")
       const assignments = await service.listDeviceAssignments({ device_id: device.id, status: ["reserved", "packed", "shipped", "returned"] })
       requireDevice(!assignments.length, "DEVICE_HAS_SALES_HISTORY")
@@ -534,7 +550,14 @@ const prepareDevices = createStep(
           const fulfillment = order.fulfillments?.find((f) => f?.id === previous.fulfillment_id)
           requireDevice(fulfillment && !fulfillment.shipped_at && !fulfillment.delivered_at && !fulfillment.canceled_at, "DEVICE_ALLOCATION_LOCKED")
         }
-        if (previous.device_id === allocation.device_id) continue
+        if (previous.device_id === allocation.device_id) {
+          if (input.action === "save_allocation" && previous.status === "reserved") {
+            const unchanged = await service.retrieveDevice(previous.device_id)
+            requireDevice(unchanged.state === "reserved", "DEVICE_ALLOCATION_LOCKED")
+            mutate("DeviceAssignments", { ...previous }, previous)
+          }
+          continue
+        }
       }
       const capacity = orderDeviceCapacity(item, assignments as any, (order.fulfillments || []) as any)
       if (!allocation.replacement_of && !previous) requireDevice(capacity.remaining > 0, "该订单商品已配足或已履约")
@@ -566,22 +589,20 @@ const prepareDevices = createStep(
         "供货来源未关联订单销售渠道",
       )
       const slot = !previous && !allocation.replacement_of && (allocation.fulfillment_id || capacity.unfulfilled === 0)
-        ? capacity.slots.find((f) => (!allocation.fulfillment_id || f.id === allocation.fulfillment_id) && f.location_id === device.location_id)
+        ? capacity.slots.find((f) => (!allocation.fulfillment_id || f.id === allocation.fulfillment_id) && (input.action === "save_allocation" || f.location_id === device.location_id))
         : undefined
       if (!previous && !allocation.replacement_of && (allocation.fulfillment_id || capacity.unfulfilled === 0)) requireDevice(slot, "DEVICE_FULFILLMENT_LOCATION")
       if (previous) {
         const oldDevice = await service.retrieveDevice(previous.device_id)
         requireDevice(oldDevice.state === previous.status, "设备状态已改变")
-        if (previous.status === "packed") requireDevice(oldDevice.location_id === device.location_id && oldDevice.source_id === device.source_id, "DEVICE_FULFILLMENT_LOCATION")
+        if (previous.status === "packed" && input.action !== "save_allocation") requireDevice(oldDevice.location_id === device.location_id && oldDevice.source_id === device.source_id, "DEVICE_FULFILLMENT_LOCATION")
         mutate("Devices", { ...oldDevice, state: "available" }, oldDevice)
         event("replace_allocation", { assignment_id: previous.id, previous_device_id: oldDevice.id, device_id: device.id }, oldDevice.id, order.id)
       }
       const status = previous?.status || (slot ? "packed" : "reserved")
       mutate("Devices", { ...device, state: status }, device)
-      const currentSource = (
-        await service.listDeviceSources({ location_id: device.location_id })
-      )[0]
-      requireDevice(currentSource, "设备所在仓库没有对应供货来源")
+      const currentSource = await service.retrieveDeviceSource(device.source_id)
+      requireDevice(currentSource.location_id === device.location_id, "设备所在仓库没有对应供货来源")
       const assignment = {
         ...previous,
         id: previous?.id || generateEntityId(undefined, "dasg"),
@@ -596,6 +617,71 @@ const prepareDevices = createStep(
       }
       mutate("DeviceAssignments", assignment, previous)
       event("assign", { assignment }, device.id, order.id)
+      }
+      if (input.action === "save_allocation") {
+        const pending = plan.mutations.filter((m) => m.table === "DeviceAssignments" && m.after.status === "reserved")
+        if (pending.length) {
+          const selectedDevices = await service.listDevices({ id: pending.map((m) => m.after.device_id) }, { take: null })
+          requireDevice(new Set(selectedDevices.map((d) => d.source_id)).size === 1 && new Set(selectedDevices.map((d) => d.location_id)).size === 1, "DEVICE_ALLOCATION_MIXED_SOURCE")
+          const source = await service.retrieveDeviceSource(selectedDevices[0].source_id)
+          const order = await getOrder(input.order_id)
+          requireDevice(order.shipping_methods?.[0]?.shipping_option_id, "订单缺少配送方式，先在订单中添加配送方式")
+          const items: { id: string; quantity: number }[] = []
+          for (const mutation of pending) {
+            const device = selectedDevices.find((d) => d.id === mutation.after.device_id)!
+            mutation.after.status = "packed"
+            const deviceChange = plan.mutations.find((m) => m.table === "Devices" && m.after.id === device.id)
+            if (deviceChange) deviceChange.after.state = "packed"
+            else mutate("Devices", { ...device, state: "packed" }, device)
+            const item = items.find((entry) => entry.id === mutation.after.item_id)
+            if (item) item.quantity++
+            else items.push({ id: mutation.after.item_id, quantity: 1 })
+          }
+          for (const item of items) {
+            const orderItem = order.items!.find((entry) => entry!.id === item.id)!
+            const v = await managed(orderItem.variant_id!)
+            const reservations = await inventory.listReservationItems({ line_item_id: item.id })
+            requireDevice(reservations.length <= 1 && reservations.every((r) => r.inventory_item_id === v.inventory_item_id), "订单存在多笔库存预留，请先在后台合并预留")
+            const [r] = reservations
+            const [stock] = await inventory.listInventoryLevels({ inventory_item_id: v.inventory_item_id, location_id: source.location_id })
+            requireDevice(stock && Number(stock.stocked_quantity) - Number(stock.reserved_quantity) + (r?.location_id === source.location_id ? Number(r.quantity) : 0) >= item.quantity, "DEVICE_ALLOCATION_STOCK")
+            if (r) {
+              requireDevice(Number(r.quantity) >= item.quantity, "订单库存预留不足")
+              plan.reservations.push({ id: r.id, location_id: source.location_id, quantity: item.quantity })
+              if (Number(r.quantity) > item.quantity) plan.remainingReservations.push({ inventory_item_id: v.inventory_item_id, location_id: r.location_id, quantity: Number(r.quantity) - item.quantity, line_item_id: item.id })
+            } else plan.newReservations.push({ inventory_item_id: v.inventory_item_id, location_id: source.location_id, quantity: item.quantity, line_item_id: item.id })
+          }
+          plan.fulfillment = { order_id: input.order_id, location_id: source.location_id, items, metadata: { device_source_id: source.id, device_assignment_ids: pending.map((m) => m.after.id) } }
+        }
+        const touched = [...new Set(plan.mutations.filter((m) => m.table === "DeviceAssignments" && m.after.fulfillment_id).map((m) => m.after.fulfillment_id as string))]
+        for (const id of touched) {
+          const native = await container.resolve(Modules.FULFILLMENT).retrieveFulfillment(id, { relations: ["items", "labels"] })
+          requireDevice(!native.shipped_at && !native.delivered_at && !native.canceled_at, "DEVICE_ALLOCATION_LOCKED")
+          const stored = await service.listDeviceAssignments({ fulfillment_id: id, status: "packed" }, { take: null })
+          const changes = plan.mutations.filter((m) => m.table === "DeviceAssignments" && m.after.fulfillment_id === id)
+          const parcel = [...stored.filter((a) => !changes.some((m) => m.after.id === a.id)), ...changes.map((m) => m.after)]
+          const parcelDevices = await service.listDevices({ id: parcel.map((a) => a.device_id) }, { take: null })
+          requireDevice(new Set(parcelDevices.map((d) => d.location_id)).size === 1 && new Set(parcelDevices.map((d) => d.source_id)).size === 1, "DEVICE_ALLOCATION_MIXED_SOURCE")
+          const selectedDevice = parcelDevices[0]
+          requireDevice(selectedDevice, "DEVICE_INTAKE_REQUIRED")
+          if (native.location_id !== selectedDevice.location_id) {
+            // A provider booking/label cannot be silently moved to another pickup location.
+            requireDevice(native.provider_id === "manual_manual" && !native.labels?.length, "DEVICE_ALLOCATION_BOOKED")
+            for (const entry of native.items) {
+              requireDevice(entry.inventory_item_id, "DEVICE_FULFILLMENT_LOCATION")
+              const amount = Number(entry.quantity)
+              const [targetLevel] = await inventory.listInventoryLevels({ inventory_item_id: entry.inventory_item_id, location_id: selectedDevice.location_id })
+              const staged = plan.adjustments.filter((a) => a.inventory_item_id === entry.inventory_item_id && a.location_id === selectedDevice.location_id).reduce((total, a) => total + a.adjustment, 0)
+              requireDevice(targetLevel && Number(targetLevel.stocked_quantity) + staged - amount >= Number(targetLevel.reserved_quantity), "DEVICE_ALLOCATION_STOCK")
+              plan.adjustments.push(
+                { inventory_item_id: entry.inventory_item_id, location_id: native.location_id, adjustment: amount },
+                { inventory_item_id: entry.inventory_item_id, location_id: selectedDevice.location_id, adjustment: -amount },
+              )
+            }
+          }
+          plan.fulfillmentUpdates ||= []
+          plan.fulfillmentUpdates.push({ id, location_id: selectedDevice.location_id, metadata: { ...native.metadata, device_source_id: selectedDevice.source_id, device_assignment_ids: parcel.map((a) => a.id) } })
+        }
       }
     } else if (input.action === "release") {
       const a = await service.retrieveDeviceAssignment(input.assignment_id)
@@ -1013,6 +1099,30 @@ const prepareDevices = createStep(
   },
 )
 
+// Move native fulfillment headers with snapshots so failed saves restore warehouse/source too.
+const updateAllocationFulfillments = createStep(
+  "update-allocation-fulfillments",
+  async (updates: NonNullable<Plan["fulfillmentUpdates"]>, { container }) => {
+    const service = container.resolve(Modules.FULFILLMENT)
+    const snapshots: NonNullable<Plan["fulfillmentUpdates"]> = []
+    try {
+      for (const update of updates) {
+        const previous = await service.retrieveFulfillment(update.id)
+        snapshots.push({ id: previous.id, location_id: previous.location_id, metadata: previous.metadata || {} })
+        await service.updateFulfillment(update.id, { location_id: update.location_id, metadata: update.metadata })
+      }
+    } catch (error) {
+      for (const previous of snapshots.reverse()) await service.updateFulfillment(previous.id, { location_id: previous.location_id, metadata: previous.metadata })
+      throw error
+    }
+    return new StepResponse(undefined, snapshots)
+  },
+  async (snapshots, { container }) => {
+    const service = container.resolve(Modules.FULFILLMENT)
+    for (const previous of [...(snapshots || [])].reverse()) await service.updateFulfillment(previous.id, { location_id: previous.location_id, metadata: previous.metadata })
+  },
+)
+
 // All module mutations have snapshots. Failed writes and later workflow failures restore them.
 const writeDevices = createStep(
   "write-devices",
@@ -1031,7 +1141,7 @@ const writeDevices = createStep(
     try {
       for (const mutation of input.plan.mutations) {
         const after = { ...mutation.after }
-        if (mutation.table === "DeviceAssignments" && input.fulfillment_id)
+        if (mutation.table === "DeviceAssignments" && input.fulfillment_id && after.status === "packed" && !after.fulfillment_id)
           after.fulfillment_id = input.fulfillment_id
         if (mutation.table === "DeviceAssignments" && input.return_id)
           after.return_id = input.return_id
@@ -1258,6 +1368,9 @@ export const deviceOperationWorkflow = createWorkflow(
       }),
     )
     const result = writeDevices(writeInput)
+    when({ plan, result }, ({ plan }) => Boolean(plan.fulfillmentUpdates?.length)).then(() => {
+      updateAllocationFulfillments(transform(plan, (p) => p.fulfillmentUpdates || []))
+    })
     when({ plan, result }, ({ plan }) => Boolean(plan.cancel)).then(() => {
       cancelOrderFulfillmentWorkflow.runAsStep({
         input: transform(plan, (p) => p.cancel!),

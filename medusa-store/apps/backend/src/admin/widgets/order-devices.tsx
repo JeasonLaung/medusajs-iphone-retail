@@ -36,8 +36,21 @@ function useFulfillmentHosts(order: AdminOrder) {
           element = document.createElement("div")
           element.dataset.orderAllocationHost = order.id
           element.className = "space-y-2 px-6 py-4"
-          card.append(element)
           owned.add(element)
+        }
+        const shippingLabels = [
+          t("orders.fulfillment.markAsShipped"),
+          t("orders.fulfillment.markAsDelivered"),
+          t("orders.fulfillment.markAsPickedUp"),
+        ]
+        const shippingActions = target.fulfillmentId
+          ? [...card.children].find((child) => child !== element && [...child.querySelectorAll("button")].some((button) => shippingLabels.includes(button.textContent?.trim() || "")))
+          : undefined
+        // Keep allocation before the native shipping footer, including after native rerenders.
+        if (shippingActions) {
+          if (element.nextElementSibling !== shippingActions) card.insertBefore(element, shippingActions)
+        } else if (element.parentElement !== card) {
+          card.append(element)
         }
         next.push({ element, fulfillmentId: target.fulfillmentId })
       }
@@ -87,7 +100,10 @@ const OrderDevices = ({ data: order }: DetailWidgetProps<AdminOrder>) => {
       <Text size="small" weight="plus">{t("orderDevices.boundDevices", { count: assignments.length })}</Text>
       {assignments.map((a) => {
         const device = data?.assigned_devices.find((d) => d.id === a.device_id)
-        return <Text size="small" key={a.id}>{device?.serial_number || a.device_id}{device?.imei ? " · " + device.imei : ""}</Text>
+        return <div key={a.id}>
+          <Text size="small">{device?.serial_number || a.device_id}{device?.imei ? " · " + device.imei : ""}</Text>
+          <Text size="small">{t("orderDevices.autoShippingSource", { name: data?.sources.find((source) => source.id === a.source_id)?.name || a.source_id })}</Text>
+        </div>
       })}
       <Button size="small" variant="secondary" disabled={!data || mutation.isPending} onClick={() => setDialog({ fulfillmentId })}>{t("orderDevices.manageAllocation")}</Button>
     </>

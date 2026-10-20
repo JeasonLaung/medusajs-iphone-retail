@@ -74,6 +74,8 @@ docker compose down
 
 ## frp 内网穿透
 
+macOS/Linux：先用 `bash sh/start.sh` 启动开发服务，再运行 `bash frp.sh`。该脚本沿用旧项目的 FRP 启动方式，优先使用 `frp/frpc`，否则使用 PATH 中的 `frpc`；先校验 `frp/frpc.toml`，再启动当前项目的本地网关并连接隧道。先将配置中的 `YOUR_FRP_TOKEN` 替换为服务器的有效 token。按 Ctrl+C 会关闭本次启动的 FRP 和网关，开发服务继续运行。已有其他进程占用网关端口时会拒绝启动。配置与凭据仅保存在被 Git 忽略的 `frp/` 目录。
+
 客户端连接 `43.156.133.126:7000`，使用 TCP 隧道将服务器现有 Nginx 回源端口 `8081` 转发到本机 `127.0.0.1:18080` 网关，通过 `https://frp.xeappliance.com` 访问项目。配置位于 `frp/frpc.toml`。整个 `frp/` 目录仅在本地保留，配置、模板、凭据及程序文件均不进入 Git；新检出项目时需单独准备本地配置。
 
 双击 `start.bat` 会在前后台就绪后自动启动 frpc；已有服务运行时，可单独双击 `start-frp.bat`。首次启动会通过 `scripts/install-frp.ps1` 下载官方 Windows amd64 frp 0.71.0，并核对官方 SHA256。日志为 `logs/frpc.out.log` 和 `logs/frpc.err.log`，进程号为 `logs/frpc.pid`。修改配置后先运行 `scripts/stop-frp.ps1`，再启动。

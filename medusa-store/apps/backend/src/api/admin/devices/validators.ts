@@ -44,7 +44,7 @@ export const UpdateDevice = z.strictObject({
   imei2: identity.imei2.unwrap().nullable(),
   eid: identity.eid.unwrap().nullable(),
   category: DeviceCategory,
-  state: z.enum(["inspection", "available", "reserved", "packed", "shipped", "repair", "repair_ready", "retired", "supplier_returned"]),
+  state: z.enum(["pending", "inspection", "available", "reserved", "packed", "shipped", "repair", "repair_ready", "retired", "supplier_returned"]),
   grade: z.enum(["S", "A", "B", "C"]).nullable(),
   battery_health: z.number().int().min(0).max(100).nullable(),
   cost_cents: z.number().int().min(0).max(100000000),
@@ -63,6 +63,7 @@ export const DeviceCommand = z.discriminatedUnion("action", [
   }),
   UpdateDevice,
   z.strictObject({ action: z.literal("activate"), device_id: id }),
+  z.strictObject({ action: z.literal("make_available"), device_ids: z.array(id).min(1).max(200).refine((ids) => new Set(ids).size === ids.length, "Duplicate device IDs") }),
   z.strictObject({ action: z.literal("delete"), device_id: id }),
   z.strictObject({ action: z.literal("retire"), device_id: id }),
   z.strictObject({

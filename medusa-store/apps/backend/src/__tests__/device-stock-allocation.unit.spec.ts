@@ -18,6 +18,7 @@ function setup(matches: unknown[] = [device], overrides = {}) {
     listDevices: jest.fn().mockResolvedValue(matches),
     retrieveDevice: jest.fn().mockResolvedValue({ ...device, ...overrides }),
     listDeviceAssignments: jest.fn().mockResolvedValue([]),
+    retrieveDeviceSource: jest.fn().mockResolvedValue({ id: "s1", location_id: "l1", ...("source_id" in overrides ? { id: overrides.source_id } : {}) }),
     listDeviceSources: jest.fn().mockResolvedValue([{ id: "s1", location_id: "l1" }]),
   }
   const query = { graph: jest.fn(async ({ entity }) => ({ data: entity === "order"
@@ -39,6 +40,11 @@ describe("only registered devices can be allocated", () => {
     expect(devices).toHaveLength(1)
     expect(devices[0]).toMatchObject({ before: device, after: { ...device, state: "reserved" } })
     expect(output.mutations.some((entry) => entry.table === "DeviceSources")).toBe(false)
+  })
+  it("uses the device source when multiple sources share a warehouse", async () => {
+    const { output } = await prepare(command, { container: setup([device], { source_id: "device-supplier" }) })
+    const assignment = output.mutations.find((entry) => entry.table === "DeviceAssignments")
+    expect(assignment.after.source_id).toBe("device-supplier")
   })
   it("rejects adding identity fields through the old allocation endpoint", async () => {
     await expect(prepare({ ...command, imei2: "223456789012345" }, { container: setup() })).rejects.toThrow("不一致")

@@ -277,9 +277,10 @@
           "length": null,
           "precision": null,
           "scale": null,
-          "default": "'available'",
+          "default": "'pending'",
           "comment": null,
           "enumItems": [
+            "pending",
             "inspection",
             "available",
             "reserved",

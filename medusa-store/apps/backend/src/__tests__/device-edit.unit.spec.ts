@@ -94,3 +94,75 @@ describe("device soft deletion and rollback", () => {
     expect(service.deleteDevices).not.toHaveBeenCalled()
   })
 })
+
+
+describe("pending intake and bulk availability", () => {
+  const pending = { ...device, state: "pending" }
+  it("keeps ordinary intake out of saleable inventory", async () => {
+    const { container } = setup([], [])
+    const { output } = await prepare({ action: "intake", actor_id: "user", devices: [{ ...device, serial_number: "NEW", category: "sale" }] }, { container })
+    expect(output.adjustments).toEqual([])
+    expect(output.mutations.find((m: any) => m.table === "Devices").after.state).toBe("pending")
+  })
+  it("keeps returned intake awaiting inspection without saleable stock", async () => {
+    const { container } = setup([], [])
+    const { output } = await prepare({ action: "intake", actor_id: "user", devices: [{ ...device, serial_number: "RETURN", category: "returned" }] }, { container })
+    expect(output.adjustments).toEqual([])
+    expect(output.mutations.find((m: any) => m.table === "Devices").after.state).toBe("inspection")
+  })
+  it("adds exactly one unit per confirmed pending device and records each transition", async () => {
+    const { container, service } = setup()
+    service.retrieveDevice.mockImplementation(async (id) => ({ ...pending, id }))
+    const { output } = await prepare({ action: "make_available", device_ids: ["dev_1", "dev_2"], actor_id: "user" }, { container })
+    expect(output.adjustments.reduce((sum: number, row: any) => sum + row.adjustment, 0)).toBe(2)
+    expect(output.mutations.filter((m: any) => m.table === "Devices").map((m: any) => m.after.state)).toEqual(["available", "available"])
+    expect(output.mutations.filter((m: any) => m.table === "DeviceEvents")).toHaveLength(2)
+  })
+  it("rejects repeat confirmation, duplicate IDs, supplier devices and mixed invalid batches", async () => {
+    for (const invalid of [device, { ...pending, category: "returned" }, { ...pending, state: "inspection" }]) {
+      const { container, service } = setup()
+      service.retrieveDevice.mockImplementation(async (id) => id === "dev_1" ? pending : invalid)
+      await expect(prepare({ action: "make_available", device_ids: ["dev_1", "dev_2"], actor_id: "user" }, { container })).rejects.toThrow("DEVICE_PENDING_REQUIRED")
+    }
+    const { container, service } = setup()
+    service.retrieveDevice.mockResolvedValue(pending)
+    service.retrieveDeviceSource.mockResolvedValue({ type: "supplier" })
+    await expect(prepare({ action: "make_available", device_ids: ["dev_1"], actor_id: "user" }, { container })).rejects.toThrow("DEVICE_PENDING_REQUIRED")
+    expect(DeviceCommand.safeParse({ action: "make_available", device_ids: ["dev_1", "dev_1"] }).success).toBe(false)
+    expect(DeviceCommand.safeParse({ action: "make_available", device_ids: [] }).success).toBe(false)
+  })
+  it("prevents publishing pending stock by editing its state", async () => {
+    const { container, service } = setup()
+    service.retrieveDevice.mockResolvedValue(pending)
+    await expect(prepare({ ...command, actor_id: "user", state: "available" }, { container })).rejects.toThrow("DEVICE_PENDING_REQUIRED")
+  })
+})
+
+
+describe("mobile intake deletion scope", () => {
+  const session = { nonce: "session_nonce", source_id: "source_1", category: "sale" }
+  const input = { action: "delete", device_id: device.id, actor_id: "user", mobile_intake_session: session }
+  const event = { data: { mobile_intake_nonce: session.nonce } }
+  it("soft deletes a pending device entered through the same link without changing inventory", async () => {
+    const { container, service } = setup()
+    service.retrieveDevice.mockResolvedValue({ ...device, state: "pending" })
+    Object.assign(service, { listDeviceEvents: jest.fn().mockResolvedValue([event]) })
+    const { output } = await prepare(input, { container })
+    expect(output.adjustments).toEqual([])
+    expect(output.mutations[0]).toMatchObject({ table: "Devices", deleted: true })
+  })
+  it("rejects other links, warehouses, categories and devices already made available", async () => {
+    for (const [target, events] of [
+      [{ ...device, state: "pending" }, []],
+      [{ ...device, state: "pending" }, [{ data: { mobile_intake_nonce: "other_link" } }]],
+      [{ ...device, state: "pending", source_id: "other" }, [event]],
+      [{ ...device, state: "pending", category: "recycled" }, [event]],
+      [device, [event]],
+    ] as const) {
+      const { container, service } = setup()
+      service.retrieveDevice.mockResolvedValue(target)
+      Object.assign(service, { listDeviceEvents: jest.fn().mockResolvedValue(events) })
+      await expect(prepare(input, { container })).rejects.toThrow("MOBILE_INTAKE_DELETE_DENIED")
+    }
+  })
+})

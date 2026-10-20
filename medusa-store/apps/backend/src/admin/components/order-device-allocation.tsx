@@ -51,6 +51,8 @@ export default function OrderDeviceAllocation({
   const [search, setSearch] = useState("")
   const [query, setQuery] = useState("")
   const [offset, setOffset] = useState(0)
+  const fulfillmentLocation = data.order?.fulfillments?.find((f) => f.id === fulfillmentId)?.location_id
+  const [warehouse, setWarehouse] = useState("all")
   const item = items.find((i) => i.id === itemId)
   const capacity = item ? orderDeviceCapacity(item, data.assignments, data.order?.fulfillments) : null
   const remaining = item
@@ -71,6 +73,7 @@ export default function OrderDeviceAllocation({
       query,
       offset,
       fulfillmentId,
+      warehouse,
     ],
     queryFn: () =>
       sdk.client.fetch("/admin/devices", {
@@ -78,7 +81,7 @@ export default function OrderDeviceAllocation({
           order_id: orderId,
           available_variant_id: item!.variant_id,
           category: "sale",
-          ...(fulfillmentId ? { lookup_location_id: data.order?.fulfillments?.find((f) => f.id === fulfillmentId)?.location_id } : {}),
+          ...(warehouse !== "all" ? { lookup_location_id: warehouse } : {}),
           q: query,
           offset,
         },
@@ -86,6 +89,8 @@ export default function OrderDeviceAllocation({
     enabled: Boolean(item),
   })
   const searching = search.trim() !== query
+  const stock = candidates.data?.allocation_stock
+  const selectedIds = new Set(data.assignments.filter((a) => ["reserved", "packed", "shipped"].includes(a.status)).map((a) => a.device_id))
 
   return (
     <fieldset
@@ -107,6 +112,7 @@ export default function OrderDeviceAllocation({
                 value={itemId}
                 onValueChange={(value) => {
                   setItemId(value)
+                  setWarehouse("all")
                   setOffset(0)
                 }}
                 disabled={busy}
@@ -131,6 +137,19 @@ export default function OrderDeviceAllocation({
               </Text>
               <DeviceIntakeShortcut orderId={orderId} busy={busy} />
               {fulfillmentId && <Text size="small">{t("orderDevices.fulfillmentWarehouseHelp")}</Text>}
+              {stock && <div className="space-y-2">
+                <Text size="small" weight="plus">{t("orderDevices.availableStock", { count: stock.reduce((total, location) => total + location.count, 0) })}</Text>
+                {fulfillmentLocation && <Text size="small">{t("orderDevices.currentWarehouse", { name: stock.find((location) => location.location_id === fulfillmentLocation)?.name || fulfillmentLocation })}</Text>}
+                <Field label={t("orderDevices.stockWarehouse")}>
+                  {(id) => <Select value={warehouse} disabled={busy} onValueChange={(value) => { setWarehouse(value); setOffset(0) }}>
+                    <Select.Trigger id={id}><Select.Value /></Select.Trigger>
+                    <Select.Content>
+                      <Select.Item value="all">{t("orderDevices.allWarehouses", { count: stock.reduce((total, location) => total + location.count, 0) })}</Select.Item>
+                      {stock.map((location) => <Select.Item key={location.location_id} value={location.location_id}>{t("orderDevices.warehouseStock", { name: location.name, count: location.count })}</Select.Item>)}
+                    </Select.Content>
+                  </Select>}
+                </Field>
+              </div>}
               <Field label={t("deviceScan.search")}>
                 {(id) => (
                   <DeviceIdentityInput
@@ -164,6 +183,7 @@ export default function OrderDeviceAllocation({
                   </Button>
                 </div>
               )}
+              {!searching && !candidates.isError && candidates.data && <Text size="small" role="status">{t("orderDevices.matchingDevices", { count: candidates.data.count })}</Text>}
               {!searching &&
                 !candidates.isError &&
                 candidates.data?.devices.length === 0 && (
@@ -196,6 +216,7 @@ export default function OrderDeviceAllocation({
                           EID: {device.eid}
                         </Text>
                       )}
+                      <Text size="small">{t("orderDevices.deviceWarehouse", { name: stock?.find((location) => location.location_id === device.location_id)?.name || device.location_id })}</Text>
                       <Text size="small" className="text-ui-fg-subtle">
                         {
                           data.sources.find(
@@ -214,6 +235,7 @@ export default function OrderDeviceAllocation({
                       variant="secondary"
                       disabled={
                         busy ||
+                        selectedIds.has(device.id) ||
                         remaining === 0 ||
                         candidates.isFetching ||
                         !device.serial_number ||
@@ -231,7 +253,7 @@ export default function OrderDeviceAllocation({
                         })
                       }}
                     >
-                      {t(selectionMode ? "orderDevices.selectDevice" : "deviceScan.allocate")}
+                      {t(selectedIds.has(device.id) ? "orderDevices.deviceSelected" : selectionMode ? "orderDevices.selectDevice" : "deviceScan.allocate")}
                     </Button>
                   </div>
                 ))}

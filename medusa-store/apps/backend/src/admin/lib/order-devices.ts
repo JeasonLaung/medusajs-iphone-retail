@@ -23,6 +23,7 @@ export type Device = {
   eid: string | null
   variant_id: string
   source_id: string
+  location_id: string
   state: string
   grade: string | null
   battery_health: number | null
@@ -45,6 +46,7 @@ export type OrderDeviceData = {
   assigned_devices: Device[]
   assignments: Assignment[]
   count: number
+  allocation_stock?: { location_id: string; name: string; count: number }[]
   sources: { id: string; name: string; type: "self" | "supplier" }[]
   managed_variants: { variant_id: string }[]
   order: {

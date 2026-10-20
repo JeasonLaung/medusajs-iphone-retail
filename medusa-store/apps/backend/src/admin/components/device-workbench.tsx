@@ -1,7 +1,7 @@
 import { ClearableInput, ClearableTextarea } from "./clearable-input"
 import { useDeviceTranslations } from "../lib/use-device-translations"
 import { useQueryClient } from "@tanstack/react-query"
-import { Button, Container, FocusModal, Heading, Text } from "@medusajs/ui"
+import { Button, Container, FocusModal, Heading, Text, usePrompt } from "@medusajs/ui"
 import { useCallback, useEffect, useId, useState } from "react"
 import { Link, Navigate, useLocation, useSearchParams } from "react-router-dom"
 import DeviceScanner from "./device-scanner"
@@ -162,9 +162,12 @@ const DeviceWorkbench = ({ mode, intakeMethod, onBusyChange, category = "sale" }
 }) => {
   const { t, i18n } = useDeviceTranslations()
   const queryClient = useQueryClient()
+  const prompt = usePrompt()
+  const [recentIntakes, setRecentIntakes] = useState<{ id: string; serial: string; sku: string }[]>([])
   const [intakeDialog, setIntakeDialog] = useState<"image" | "scan" | "import">()
   const [intakeBusy, setIntakeBusy] = useState(false)
   const states: Record<string, string> = {
+    pending: t("deviceScan.pending"),
     inspection: t("deviceScan.inspection"),
     available: t("deviceScan.available"),
     reserved: t("deviceScan.reserved"),
@@ -302,10 +305,15 @@ const DeviceWorkbench = ({ mode, intakeMethod, onBusyChange, category = "sale" }
     setBusy(true)
     setSuccess("")
     try {
-      await sdk.client.fetch(path, {
+      const response = await sdk.client.fetch<{ result?: { device_ids?: string[] } }>(path, {
         method: "POST",
         body,
       })
+      if (body.action === "intake") {
+        const entries = body.devices as { serial_number?: string; variant_id: string }[]
+        const receipts = (response.result?.device_ids || []).map((id, index) => ({ id, serial: entries[index]?.serial_number || id, sku: entries[index]?.variant_id === variant?.id ? variant.sku : data?.variants.find((item) => item.id === entries[index]?.variant_id)?.sku || entries[index]?.variant_id || "" }))
+        setRecentIntakes((previous) => [...receipts, ...previous])
+      } else if (body.action === "delete") setRecentIntakes((previous) => previous.filter((item) => item.id !== body.device_id))
       setSuccess(message)
       setChecked([])
       setRefundConfirmed(false)
@@ -318,6 +326,10 @@ const DeviceWorkbench = ({ mode, intakeMethod, onBusyChange, category = "sale" }
     } finally {
       setBusy(false)
     }
+  }
+  async function deleteRecentIntake(item: { id: string; serial: string }) {
+    const confirmed = await prompt({ title: t("deviceScan.deleteDevice"), description: t("deviceScan.deleteIntakeConfirm", { serial: item.serial }), confirmText: t("deviceScan.deleteDevice"), cancelText: t("deviceScan.lookupClose") })
+    if (confirmed) await command({ action: "delete", device_id: item.id }, t("deviceScan.deleteIntakeSuccess"))
   }
   function onScan(value: string) {
     const normalized = value.trim().toUpperCase()
@@ -1072,6 +1084,15 @@ const DeviceWorkbench = ({ mode, intakeMethod, onBusyChange, category = "sale" }
                 )}
               </div>}
             </div>
+          )}
+          {mode === "intake" && intakeMethod === "image" && recentIntakes.length > 0 && (
+            <section className="space-y-3 border-t pt-4" aria-label={t("deviceScan.recentIntakes")}>
+              <Heading level="h2">{t("deviceScan.recentIntakes")}</Heading>
+              {recentIntakes.map((item) => <div key={item.id} className="flex items-center justify-between gap-3 rounded-lg border p-3">
+                <div className="min-w-0"><Text className="break-all" weight="plus">{item.serial}</Text><Text size="small" className="break-all">{item.sku}</Text></div>
+                <Button size="small" variant="secondary" disabled={busy || photoBusy} onClick={() => void deleteRecentIntake(item)}>{t("deviceScan.deleteDevice")}</Button>
+              </div>)}
+            </section>
           )}
           {mode === "orders" && (
             <>

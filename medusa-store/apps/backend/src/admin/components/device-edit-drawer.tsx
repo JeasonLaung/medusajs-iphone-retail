@@ -65,7 +65,7 @@ export default function DeviceEditDrawer({ device, sources, variants, onClose }:
           {select("source_id", t("deviceScan.lookupSource"), sources.map((source) => ({ value: source.id, label: source.name })))}
           {select("location_id", t("deviceScan.lookupLocation"), [...new Map(sources.map((source) => [source.location_id, { value: source.location_id, label: source.name }])).values()])}
           {select("category", t("deviceScan.category"), ["sale", "returned", "recycled"].map((value) => ({ value, label: t(`deviceScan.categories.${value}`) })))}
-          {select("state", t("deviceScan.lookupState"), [...new Set([form.state, "inspection", "available", "repair", "retired", "supplier_returned"])].map((value) => ({ value, label: stateLabel(value) })))}
+          {select("state", t("deviceScan.lookupState"), [...new Set([form.state, "pending", "inspection", ...(device.state === "pending" ? [] : ["available"]), "repair", "retired", "supplier_returned"])].map((value) => ({ value, label: stateLabel(value) })))}
           {select("grade", t("deviceScan.grade"), [{ value: "none", label: t("orderDevices.notRecorded") }, ...["S", "A", "B", "C"].map((value) => ({ value, label: value }))])}
           {field(t("deviceScan.battery"), <Input type="number" min={0} max={100} step={1} value={form.battery_health ?? ""} aria-label={t("deviceScan.battery")} onChange={(event) => set("battery_health", event.target.value === "" ? null : Number(event.target.value))} />)}
           {field(t("deviceScan.cost"), <Input type="number" min={0} step="0.01" value={cost} aria-label={t("deviceScan.cost")} onChange={(event) => setCost(event.target.value)} />)}

@@ -1,4 +1,4 @@
-import { Button, DataTable, Heading, Select, Text, createDataTableColumnHelper, useDataTable, usePrompt } from "@medusajs/ui"
+import { Button, Checkbox, toast, DataTable, Heading, Select, Text, createDataTableColumnHelper, useDataTable, usePrompt } from "@medusajs/ui"
 import { Link } from "react-router-dom"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -89,9 +89,29 @@ export default function DeviceLookupTable({ onIntake, onDirectIntake, intakeOpen
   useEffect(() => {
     if (results.isError) notifyError(t("deviceScan.loadError"))
   }, [results.isError, t])
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [publishing, setPublishing] = useState(false)
+  useEffect(() => { setSelectedIds([]) }, [category, search, variant?.id, state, location, pagination.pageIndex, pagination.pageSize])
+  const pendingDevices = (results.data?.devices || []).filter((device) => device.state === "pending" && device.category === "sale")
+  const selectedDevices = pendingDevices.filter((device) => selectedIds.includes(device.id))
+  async function makeAvailable() {
+    const ids = selectedDevices.map((device) => device.id)
+    if (!ids.length) return
+    const confirmed = await promptRef.current({ title: t("deviceScan.makeAvailable"), description: t("deviceScan.makeAvailableConfirm", { count: ids.length }), confirmText: t("deviceScan.makeAvailable"), cancelText: t("deviceScan.lookupClose") })
+    if (!confirmed) return
+    setPublishing(true)
+    try {
+      await sdk.client.fetch("/admin/devices", { method: "POST", body: { action: "make_available", device_ids: ids } })
+      setSelectedIds([])
+      await Promise.all(["device-lookup", "device-details", "devices", "order-device-candidates"].map((key) => queryClient.invalidateQueries({ queryKey: [key] })))
+      toast.success(t("deviceScan.makeAvailableSuccess", { count: ids.length }))
+    } catch (error) { notifyError(localizeDeviceMessage(error instanceof Error ? error.message : t("deviceScan.operationError"), t)) }
+    finally { setPublishing(false) }
+  }
   const columns = useMemo(() => {
     const stateKeys: Record<string, string> = { repair_ready: "repairReady", supplier_returned: "supplierReturned" }
     return [
+      ...(canIntake && category === "sale" ? [helper.display({ id: "selection", size: 50, header: () => <Checkbox aria-label={t("deviceScan.selectPendingPage")} checked={pendingDevices.length > 0 && pendingDevices.every((device) => selectedIds.includes(device.id))} disabled={publishing || !pendingDevices.length} onCheckedChange={(checked) => setSelectedIds(checked === true ? pendingDevices.map((device) => device.id) : [])} />, cell: ({ row }) => row.original.state === "pending" ? <Checkbox aria-label={t("deviceScan.selectPendingDevice", { serial: row.original.serial_number || row.original.id })} disabled={publishing} checked={selectedIds.includes(row.original.id)} onCheckedChange={(checked) => setSelectedIds((previous) => checked === true ? [...new Set([...previous, row.original.id])] : previous.filter((id) => id !== row.original.id))} /> : null })] : []),
       helper.display({ id: "sequence", size: 75, header: t("deviceScan.lookupSequence"), cell: ({ row }) => (results.data?.count || 0) - pagination.pageIndex * pagination.pageSize - row.index }),
       helper.accessor("serial_number", { size: 155, header: t("orderDevices.serial"), cell: ({ getValue }) => <Text size="small" className="whitespace-normal break-all">{getValue() || "—"}</Text> }),
       helper.accessor("variant_id", { size: 220, header: t("deviceScan.sku"), cell: ({ getValue }) => {
@@ -119,7 +139,7 @@ export default function DeviceLookupTable({ onIntake, onDirectIntake, intakeOpen
           {row.original.can_delete && <a className="whitespace-nowrap text-ui-fg-error hover:underline aria-disabled:cursor-wait aria-disabled:opacity-50" href="#" aria-disabled={!!acting} onClick={(event) => { event.preventDefault(); if (!acting) void act(row.original, "delete") }}>{t("deviceScan.deleteDevice")}</a>}
         </div> }),
     ]
-  }, [results.data?.variants, results.data?.sources, results.data?.count, pagination.pageIndex, pagination.pageSize, t, i18n.language, canIntake, acting, act])
+  }, [results.data?.variants, results.data?.sources, results.data?.count, pagination.pageIndex, pagination.pageSize, t, i18n.language, canIntake, acting, act, category, pendingDevices, selectedIds, publishing])
   const table = useDataTable({
     data: results.data?.devices || [], columns, getRowId: (device) => device.id,
     rowCount: results.data?.count || 0, isLoading: results.isPending,
@@ -224,7 +244,7 @@ export default function DeviceLookupTable({ onIntake, onDirectIntake, intakeOpen
         <Select value={state} onValueChange={(value) => { setState(value); setPagination((previous) => ({ ...previous, pageIndex: 0 })) }}>
           <Select.Trigger aria-label={t("deviceScan.lookupState")}><Select.Value /></Select.Trigger>
           <Select.Content><Select.Item value="all">{t("deviceScan.lookupAllStates")}</Select.Item>
-            {(category === "sale" ? ["available", "reserved", "packed", "shipped", "retired"] : ["inspection", "repair", "repair_ready", "retired", "supplier_returned"]).map((value) =>
+            {(category === "sale" ? ["pending", "inspection", "available", "reserved", "packed", "shipped", "retired"] : ["inspection", "repair", "repair_ready", "retired", "supplier_returned"]).map((value) =>
               <Select.Item key={value} value={value}>{t(`deviceScan.${({ repair_ready: "repairReady", supplier_returned: "supplierReturned" } as Record<string, string>)[value] || value}`)}</Select.Item>)}
           </Select.Content>
         </Select>
@@ -241,6 +261,7 @@ export default function DeviceLookupTable({ onIntake, onDirectIntake, intakeOpen
     </form>
     <div className="flex flex-wrap items-center justify-between gap-2">
       <Text size="small" className="text-ui-fg-subtle">{t("deviceScan.deviceList", { count: results.data?.count || 0 })}</Text>
+      {canIntake && category === "sale" && <Button size="small" variant="secondary" disabled={!selectedDevices.length || publishing || results.isFetching} isLoading={publishing} onClick={() => void makeAvailable()}>{t("deviceScan.makeAvailableSelected", { count: selectedDevices.length })}</Button>}
       <Button size="small" variant="secondary" onClick={() => {
         setInput(""); setSearch(""); setVariant(undefined)
         setState("all"); setLocation("all")

@@ -16,11 +16,23 @@ export const createMobileIntakeWorkflow = createWorkflow("create-mobile-intake",
 const prepareMobileIntake = createStep("prepare-mobile-intake", async (input: { token: string; device: Omit<IntakeDeviceBody, "source_id" | "category"> }, { container }) => {
   const { session } = await mobileIntakeAccess(container, input.token)
   const device = IntakeDevice.parse({ ...input.device, source_id: session.source_id, category: session.category })
-  return new StepResponse({ action: "intake" as const, actor_id: session.actor_id, devices: [device] })
+  return new StepResponse({ action: "intake" as const, actor_id: session.actor_id, devices: [device], mobile_intake_session: { nonce: session.nonce, source_id: session.source_id, category: session.category } })
 })
 
 export const submitMobileIntakeWorkflow = createWorkflow("submit-mobile-intake", function (input: { token: string; device: Omit<IntakeDeviceBody, "source_id" | "category"> }) {
   const command = prepareMobileIntake(input)
+  const result = deviceOperationWorkflow.runAsStep({ input: command })
+  return new WorkflowResponse(result)
+})
+
+
+const prepareMobileIntakeDelete = createStep("prepare-mobile-intake-delete", async (input: { token: string; device_id: string }, { container }) => {
+  const { session } = await mobileIntakeAccess(container, input.token)
+  return new StepResponse({ action: "delete" as const, actor_id: session.actor_id, device_id: input.device_id, mobile_intake_session: { nonce: session.nonce, source_id: session.source_id, category: session.category } })
+})
+
+export const deleteMobileIntakeWorkflow = createWorkflow("delete-mobile-intake", function (input: { token: string; device_id: string }) {
+  const command = prepareMobileIntakeDelete(input)
   const result = deviceOperationWorkflow.runAsStep({ input: command })
   return new WorkflowResponse(result)
 })

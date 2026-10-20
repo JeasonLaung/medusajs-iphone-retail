@@ -49,6 +49,7 @@ export default function OrderDeviceAllocationDialog({ orderId, data, fulfillment
                 {device?.imei && <Text size="small">{t("orderDevices.imei")}: {device.imei}</Text>}
                 {device?.imei2 && <Text size="small">{t("orderDevices.imei2")}: {device.imei2}</Text>}
                 {device?.eid && <Text size="small">{t("orderDevices.eid")}: {device.eid}</Text>}
+                {device && <Text size="small">{t("orderDevices.autoShippingSource", { name: data.sources.find((source) => source.id === device.source_id)?.name || device.source_id })}</Text>}
               </div>
               {!readOnly && <Button size="small" variant="secondary" disabled={busy} onClick={() => setSelected((entries) => entries.filter((item) => item.device_id !== entry.device_id))}>{t(entry.assignment_id ? "orderDevices.chooseReplacement" : "actions.remove")}</Button>}
             </div>

@@ -5,6 +5,7 @@ import type {
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  Modules,
 } from "@medusajs/framework/utils"
 import { DEVICES_MODULE } from "../../../modules/devices"
 import DevicesModuleService from "../../../modules/devices/service"
@@ -48,7 +49,7 @@ export async function GET(
   const category = typeof req.query.category === "string" ? req.query.category : undefined
   if (category && !["sale", "returned", "recycled"].includes(category)) throw new MedusaError(MedusaError.Types.INVALID_DATA, "Invalid device category")
   const lookupState = typeof req.query.lookup_state === "string" ? req.query.lookup_state : undefined
-  if (lookupState && !["inspection", "available", "reserved", "packed", "shipped", "repair", "repair_ready", "retired", "supplier_returned"].includes(lookupState))
+  if (lookupState && !["pending", "inspection", "available", "reserved", "packed", "shipped", "repair", "repair_ready", "retired", "supplier_returned"].includes(lookupState))
     throw new MedusaError(MedusaError.Types.INVALID_DATA, "Invalid device state")
   if (supplier && order_id && !access.order_ids.includes(order_id))
     throw supplierDenied()
@@ -220,6 +221,26 @@ export async function GET(
       order: { created_at: "DESC", id: "DESC" },
     },
   )
+  // Counts describe this SKU's saleable stock across warehouses, independent of search/page.
+  let allocationStock: { location_id: string; name: string; count: number }[] | undefined
+  if (availableVariant) {
+    const stock = await service.listDevices({
+      variant_id: availableVariant,
+      state: "available",
+      category: "sale",
+      ...(supplier ? { source_id: access.source_id! } : {}),
+    }, { select: ["id", "location_id"], take: null })
+    const fulfillmentLocations = order?.fulfillments?.map((f: any) => f.location_id).filter(Boolean) || []
+    const locationIds = [...new Set<string>([...stock.map((d) => d.location_id), ...fulfillmentLocations])]
+    const locations = locationIds.length
+      ? await req.scope.resolve(Modules.STOCK_LOCATION).listStockLocations({ id: locationIds }, { take: null })
+      : []
+    allocationStock = locationIds.map((id) => ({
+      location_id: id,
+      name: locations.find((location) => location.id === id)?.name || id,
+      count: stock.filter((device) => device.location_id === id).length,
+    }))
+  }
   const sources = await service.listDeviceSources(
     supplier ? { id: access.source_id! } : {},
     { take: 500 },
@@ -281,12 +302,16 @@ export async function GET(
         { take: 100, order: { created_at: "DESC" } },
       )
     : []
+  const actorIds = [...new Set(events.map((event) => event.actor_id))]
+  const actors = actorIds.length ? await req.scope.resolve(Modules.USER).listUsers({ id: actorIds }, { take: actorIds.length }) : []
+  const eventActors = new Map(actors.map((actor) => [actor.id, [actor.first_name, actor.last_name].filter(Boolean).join(" ").trim() || (!supplier ? actor.email : null) || actor.id]))
   const history = devices.length ? await service.listDeviceAssignments({ device_id: devices.map((d) => d.id), status: ["reserved", "packed", "shipped", "returned"] }, { take: null }) : []
   const locked = new Set(history.map((a) => a.device_id))
   res.json({
     access,
-    devices: devices.map((d) => ({ ...d, can_delete: !supplier && !locked.has(d.id) && !["reserved", "packed", "shipped", "repair_ready"].includes(d.state), can_retire: !supplier && !locked.has(d.id) && ["available", "inspection", "repair"].includes(d.state) })),
+    devices: devices.map((d) => ({ ...d, can_delete: !supplier && !locked.has(d.id) && !["reserved", "packed", "shipped", "repair_ready"].includes(d.state), can_retire: !supplier && !locked.has(d.id) && ["pending", "available", "inspection", "repair"].includes(d.state) })),
     assigned_devices,
+    ...(allocationStock ? { allocation_stock: allocationStock } : {}),
     count,
     offset,
     limit,
@@ -310,7 +335,7 @@ export async function GET(
       : variants,
     assignments,
     order,
-    events,
+    events: events.map((event) => ({ ...event, actor_name: eventActors.get(event.actor_id) || event.actor_id })),
   })
 }
 

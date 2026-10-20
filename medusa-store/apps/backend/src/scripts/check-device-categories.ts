@@ -46,13 +46,15 @@ export default async function check({ container }: ExecArgs) {
       await post({ action: "intake", devices: [{ category, source_id: source.id, variant_id: variantId, serial_number: serial, photos: [photo] }] })
       const [device] = await service.listDevices({ serial_number: serial }); ids[category] = device.id
       assert.equal(device.category, category)
-      assert.equal(device.state, category === "sale" ? "available" : "inspection")
+      assert.equal(device.state, category === "sale" ? "pending" : "inspection")
       assert.deepEqual(device.photos, [photo])
       const result = await api(`/admin/devices?category=${category}&lookup_variant_id=${variantId}&limit=1`)
       assert.equal(result.data.count, 1); assert.equal(result.data.devices[0].id, device.id)
       assert.equal(result.data.devices[0].can_delete, true)
     }
-    assert.equal(await stock(), 1, "Only normal intake adds stock")
+    assert.equal(await stock(), 0, "Intake does not add saleable stock before confirmation")
+    await post({ action: "make_available", device_ids: [ids.sale] })
+    assert.equal(await stock(), 1, "Confirming normal intake adds saleable stock")
     assert.equal((await api("/admin/devices", { action: "inspect", device_id: ids.sale, result: "pass", grade: "A", battery_health: 90, notes: "Invalid inspection" })).status, 400, "Ordinary devices do not enter inspection")
     // Lock status and historical sales both reject deletion on the server.
     await service.updateDevices({ id: ids.sale, state: "reserved" })

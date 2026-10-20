@@ -2,13 +2,13 @@
 const intakeToken = location.hash.slice(1)
 Vue.createApp({
   setup() {
-    const { ref, reactive, computed, nextTick, onMounted } = Vue
+    const { ref, reactive, computed, nextTick, onMounted, watch } = Vue
     const lang = ref(new URLSearchParams(location.search).get("lang") === "en" ? "en" : "zh")
     const t = (key) => intakeLocales[lang.value][key] || key
     const session = ref(null), loading = ref(true), invalid = ref(false), busy = ref(false)
     const showVariants = ref(false), variants = ref([]), variant = ref(null), query = ref("")
-    const searching = ref(false), hasMore = ref(false), history = ref([]), showScanner = ref(false)
-    const showStats = ref(false), intakeRecords = ref([])
+    const searching = ref(false), hasMore = ref(false), showScanner = ref(false)
+    const showStats = ref(false), intakeRecords = ref([]), deletingId = ref("")
     const modelStats = computed(() => {
       const models = new Map()
       for (const item of intakeRecords.value) {
@@ -22,13 +22,15 @@ Vue.createApp({
     let scannerLibraryPromise
     const form = reactive({ serial_number: "", imei: "", imei2: "", eid: "", cost: "", bin: "", notes: "" })
     let offset = 0, controls = null, scanGeneration = 0, expiryTimer = null, searchGeneration = 0
-    let scanTimer = null
+    let scanTimer = null, variantSearchTimer = null
     const seen = new Set()
     const validRadio = (value) => !value || /^\d{15}$/.test(value.trim())
     const validEid = (value) => !value || /^\d{32}$/.test(value.trim())
     const validCost = (value) => value === "" || (/^\d+(?:\.\d{1,2})?$/.test(value) && Number(value) <= 1000000)
+    const canSubmit = computed(() => Boolean(session.value && !loading.value && !invalid.value && !busy.value && !uploading.value && !deletingId.value && variant.value && form.serial_number.trim() && form.serial_number.trim().length <= 100 && validRadio(form.imei) && validRadio(form.imei2) && validEid(form.eid) && validCost(form.cost) && (!form.imei.trim() || form.imei.trim() !== form.imei2.trim()) && (!variant.value.requires_imei || form.imei.trim() || form.imei2.trim() || form.eid.trim())))
     const errorToast = (message) => vant.showToast({ message, position: "top", duration: 4000 })
     function localizeError(message) {
+      if (message.includes("MOBILE_INTAKE_DELETE_DENIED")) return t("deleteDenied")
       const match = Object.entries(intakeLocales.zh.errors).find(([, value]) => message.includes(value))
       return match ? intakeLocales[lang.value].errors[match[0]] : t("requestError")
     }
@@ -56,7 +58,25 @@ Vue.createApp({
       } catch { invalid.value = true }
       finally { loading.value = false }
     }
+    watch(query, () => {
+      clearTimeout(variantSearchTimer)
+      ++searchGeneration
+      if (!showVariants.value) return
+      offset = 0
+      variants.value = []
+      hasMore.value = false
+      searching.value = true
+      variantSearchTimer = setTimeout(() => { void searchVariants(true) }, 300)
+    }, { flush: "sync" })
+    watch(showVariants, (open) => {
+      if (!open) {
+        clearTimeout(variantSearchTimer)
+        ++searchGeneration
+        searching.value = false
+      }
+    }, { flush: "sync" })
     async function searchVariants(reset) {
+      clearTimeout(variantSearchTimer)
       const generation = ++searchGeneration
       searching.value = true
       if (reset) { offset = 0; variants.value = []; hasMore.value = false }
@@ -70,14 +90,14 @@ Vue.createApp({
       finally { if (generation === searchGeneration) searching.value = false }
     }
     async function submit() {
-      if (busy.value || uploading.value || invalid.value) return
+      if (!canSubmit.value) return
       if (!variant.value) return errorToast(t("chooseSku"))
       if (variant.value.requires_imei && !form.imei.trim() && !form.imei2.trim() && !form.eid.trim()) return errorToast(t("imeiRequired"))
       if (form.imei.trim() && form.imei.trim() === form.imei2.trim()) return errorToast(t("duplicateRadio"))
       if (!validCost(form.cost)) return errorToast(t("invalidCost"))
       busy.value = true
       try {
-        await api("", { method: "POST", body: JSON.stringify({
+        const receipt = await api("", { method: "POST", body: JSON.stringify({
           variant_id: variant.value.id, serial_number: form.serial_number.trim().toUpperCase(),
           ...(form.imei.trim() ? { imei: form.imei.trim() } : {}),
           ...(form.imei2.trim() ? { imei2: form.imei2.trim() } : {}),
@@ -87,18 +107,30 @@ Vue.createApp({
           bin: form.bin.trim(), notes: form.notes.trim(), photos: photos.value,
         }) })
         intakeRecords.value.unshift({
+          id: receipt.result.device_ids[0],
           serial: form.serial_number.trim().toUpperCase(), imei: form.imei.trim(), imei2: form.imei2.trim(), eid: form.eid.trim(),
           title: variant.value.title, model: variant.value.title.split(" · ")[0] || variant.value.title,
           sku: variant.value.sku,
         })
-        history.value.unshift({ serial: form.serial_number.trim().toUpperCase(), sku: variant.value.sku })
-        history.value = history.value.slice(0, 20)
         form.serial_number = ""; form.imei = ""; form.imei2 = ""; form.eid = ""; form.notes = ""
         photos.value = []
         seen.clear()
         vant.showToast({ message: t(session.value.category === "sale" ? "success" : "reviewSuccess"), position: "top" })
       } catch (error) { errorToast(localizeError(error.message)) }
       finally { busy.value = false }
+    }
+    async function deleteIntake(item) {
+      if (busy.value || uploading.value || deletingId.value || invalid.value) return
+      deletingId.value = item.id
+      try {
+        try {
+          await vant.showConfirmDialog({ title: t("deleteDevice"), message: t("deleteConfirm").replace("{{serial}}", item.serial), confirmButtonText: t("deleteDevice"), cancelButtonText: t("cancel") })
+        } catch { return }
+        await api(`/devices/${encodeURIComponent(item.id)}`, { method: "DELETE" })
+        intakeRecords.value = intakeRecords.value.filter((record) => record.id !== item.id)
+        vant.showToast({ message: t("deleteSuccess"), position: "top" })
+      } catch (error) { errorToast(localizeError(error.message)) }
+      finally { deletingId.value = "" }
     }
     const photoPreviews = computed(() => photos.value.map((photo) => ({ ...photo, isImage: true })))
     function removePhoto(_photo, { index }) {
@@ -287,10 +319,10 @@ Vue.createApp({
       document.title = t("title")
       loadSession()
       document.addEventListener("visibilitychange", () => { if (document.hidden) closeScanner() })
-      window.addEventListener("pagehide", stopScanner)
+      window.addEventListener("pagehide", () => { clearTimeout(variantSearchTimer); ++searchGeneration; stopScanner() })
     })
-    return { scanImageInput, scanImage, chooseScanImage, showStats, intakeRecords, modelStats, cameraLoading, scanTarget, scanStatus, photos, photoPreviews, removePhoto, uploading, uploadPhotos, lang, t, session, loading, invalid, busy, showVariants, variants, variant, query,
-      searching, hasMore, history, showScanner, form, validRadio, validEid, validCost, loadSession,
+    return { canSubmit, deletingId, deleteIntake, scanImageInput, scanImage, chooseScanImage, showStats, intakeRecords, modelStats, cameraLoading, scanTarget, scanStatus, photos, photoPreviews, removePhoto, uploading, uploadPhotos, lang, t, session, loading, invalid, busy, showVariants, variants, variant, query,
+      searching, hasMore, showScanner, form, validRadio, validEid, validCost, loadSession,
       searchVariants, submit, openScanner, closeScanner, stopScanner, toggleLanguage }
   },
 }).use(vant).mount("#app")

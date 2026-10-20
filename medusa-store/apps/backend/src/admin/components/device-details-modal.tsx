@@ -12,14 +12,14 @@ type Details = {
   access: { role: string }
   devices: {
     id: string; serial_number: string | null; imei: string | null; imei2: string | null; eid: string | null
-    variant_id: string; source_id: string; location_id: string; state: "inspection" | "available" | "reserved" | "packed" | "shipped" | "repair" | "repair_ready" | "retired" | "supplier_returned"
+    variant_id: string; source_id: string; location_id: string; state: "pending" | "inspection" | "available" | "reserved" | "packed" | "shipped" | "repair" | "repair_ready" | "retired" | "supplier_returned"
     grade: "S" | "A" | "B" | "C" | null; battery_health: number | null; cost_cents: number
     category: "sale" | "returned" | "recycled"; photos: { id: string; url: string }[]; currency_code: string; bin: string; notes: string; created_at: string; updated_at: string
   }[]
   variants: DeviceVariantChoice[]
   sources: { id: string; location_id: string; name: string }[]
   assignments: { id: string; order_id: string; status: string; tracking_number?: string }[]
-  events: { id: string; created_at: string; action: string; actor_id: string; data: unknown }[]
+  events: { id: string; created_at: string; action: string; actor_id: string; actor_name?: string; data: { mobile_intake_nonce?: string; [key: string]: unknown } }[]
 }
 
 export default function DeviceDetailsModal({ deviceId, onClose, initialEditing = false }: { deviceId: string; onClose: () => void; initialEditing?: boolean }) {
@@ -88,7 +88,7 @@ export default function DeviceDetailsModal({ deviceId, onClose, initialEditing =
                   <Heading level="h2">{t("deviceScan.history")}</Heading>
                   {!query.data?.events.length && <Text size="small" className="text-ui-fg-subtle">{t("deviceScan.lookupNoEvents")}</Text>}
                   {query.data?.events.map((event) => <details key={event.id} className="rounded-lg border p-3 text-sm">
-                    <summary className="cursor-pointer">{date(event.created_at)} · {t(`deviceScan.actions.${event.action}`, { defaultValue: event.action })}</summary>
+                    <summary className="cursor-pointer"><span>{date(event.created_at)} · {t(`deviceScan.actions.${event.action}`, { defaultValue: event.action })}</span><span className="ml-3 break-all">{t("deviceScan.actorPrefix")}{event.actor_name || event.actor_id}{event.data?.mobile_intake_nonce ? ` · ${t("deviceScan.mobileIntakeActor")}` : ""}</span></summary>
                     <Text size="small" className="mt-2 break-all">{t("deviceScan.actorPrefix")}{event.actor_id}</Text>
                     <pre className="mt-2 overflow-auto whitespace-pre-wrap break-all text-xs">{JSON.stringify(event.data, null, 2)}</pre>
                   </details>)}

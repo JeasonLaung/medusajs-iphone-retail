@@ -20,6 +20,7 @@ export const Device = model
     photos: model.json().default([] as unknown as Record<string, unknown>),
     state: model
       .enum([
+        "pending",
         "inspection",
         "available",
         "reserved",
@@ -30,7 +31,7 @@ export const Device = model
         "retired",
         "supplier_returned",
       ])
-      .default("available"),
+      .default("pending"),
   })
   .indexes([
     { on: ["serial_number"], unique: true, where: "serial_number IS NOT NULL" },

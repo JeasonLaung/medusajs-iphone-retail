@@ -86,6 +86,7 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
   let productId = "",
     variantId = "",
     locationId = "",
+    alternateLocationId = "",
     inventoryId = ""
   const orderIds: string[] = []
   const run = (body: DeviceCommandBody) => {
@@ -265,6 +266,21 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
       status: "reserved",
     })
     await run({ action: "release", assignment_id: firstAssignment.id })
+    for (const query of [
+      { lookup_location_id: locationId },
+      { lookup_location_id: locationId, q: `NO-MATCH-${stamp}` },
+    ]) {
+      let stockListing: any
+      await getDevices({
+        scope: container,
+        auth_context: { actor_id: user.id },
+        query: { order_id: first.orderId, available_variant_id: variantId, category: "sale", ...query },
+      } as unknown as AuthenticatedMedusaRequest,
+      { json: (data: unknown) => { stockListing = data } } as MedusaResponse)
+      assert.equal(stockListing.allocation_stock.find((entry: any) => entry.location_id === locationId)?.count, 1,
+        "Saleable stock counts must not depend on identity search")
+      if (query.q) assert.equal(stockListing.count, 0)
+    }
     await assert.rejects(
       run({
         action: "assign",
@@ -376,8 +392,10 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
     const [storedIntake] = await devices.listDevices({ serial_number: intakeDevice.serial_number })
     assert.equal(storedIntake.eid, intakeEid)
     assert.equal(storedIntake.imei, intakeImei)
-    assert.equal(storedIntake.state, "available")
-    assert.equal(await stock(), 2, "Ordinary intake immediately increases saleable stock")
+    assert.equal(storedIntake.state, "pending")
+    assert.equal(await stock(), 1, "Pending intake does not increase saleable stock")
+    await run({ action: "make_available", device_ids: [storedIntake.id] })
+    assert.equal(await stock(), 2, "Confirmed intake increases saleable stock")
     const beforeDuplicate = (await devices.listAndCountDevices({ variant_id: variantId }))[1]
     await assert.rejects(run({ action: "intake", devices: [
       { ...intakeDevice, serial_number: `CROSS-INTAKE${stamp}`, imei: intakeImei, imei2: undefined, eid: undefined },
@@ -415,6 +433,64 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
     assert.equal((await devices.retrieveDevice(secondNativeDevice.id)).state, "packed")
     assert.equal((await devices.retrieveDeviceAssignment(bound.id)).device_id, secondNativeDevice.id)
     assert.equal(await stock(), beforeBinding)
+    const { result: alternate } = await createStockLocationsWorkflow(container).run({ input: { locations: [{ name: `Alternate allocation ${stamp}` }] } })
+    alternateLocationId = alternate[0].id
+    await linkSalesChannelsToStockLocationWorkflow(container).run({ input: { id: alternateLocationId, add: [channelId] } })
+    const alternateSource = await devices.createDeviceSources({ name: `Device supplier ${stamp}`, type: "supplier", location_id: alternateLocationId })
+    const alternateDevice = await devices.createDevices({ serial_number: `ALTERNATE${stamp}`, imei: `98${stamp}`, variant_id: variantId, source_id: alternateSource.id, location_id: alternateLocationId, state: "available", category: "sale" })
+    const alternateLevel = await inventory.createInventoryLevels({ inventory_item_id: inventoryId, location_id: alternateLocationId, stocked_quantity: 0 })
+    await assert.rejects(run({ action: "save_allocation", order_id: nativeOrder.orderId, allocations: [{ item_id: nativeOrder.itemId, device_id: alternateDevice.id, assignment_id: bound.id }] }),
+      (error) => /DEVICE_ALLOCATION_STOCK/.test(JSON.stringify(error)))
+    assert.equal((await fulfillment.retrieveFulfillment(nativeFulfillment.id)).location_id, locationId)
+    assert.equal((await devices.retrieveDeviceAssignment(bound.id)).device_id, secondNativeDevice.id)
+    await inventory.updateInventoryLevels({ id: alternateLevel.id, inventory_item_id: inventoryId, location_id: alternateLocationId, stocked_quantity: 2 })
+    const originalUpdate = fulfillment.updateFulfillment
+    let failUpdate = true
+    ;(fulfillment as any).updateFulfillment = async (id: string, data: any, ...rest: any[]) => {
+      if (id === nativeFulfillment.id && data.location_id === alternateLocationId && failUpdate) {
+        failUpdate = false
+        throw new Error("ALLOCATION_ROLLBACK_FIXTURE")
+      }
+      return originalUpdate.call(fulfillment, id, data, ...rest)
+    }
+    try {
+      await assert.rejects(run({ action: "save_allocation", order_id: nativeOrder.orderId, allocations: [{ item_id: nativeOrder.itemId, device_id: alternateDevice.id, assignment_id: bound.id }] }),
+        (error) => /ALLOCATION_ROLLBACK_FIXTURE/.test(JSON.stringify(error)))
+    } finally {
+      fulfillment.updateFulfillment = originalUpdate
+    }
+    assert.equal(await stock(), beforeBinding, "Failed native update compensates inventory adjustments")
+    assert.equal(Number((await inventory.listInventoryLevels({ id: alternateLevel.id }))[0].stocked_quantity), 2)
+    assert.equal((await devices.retrieveDeviceAssignment(bound.id)).device_id, secondNativeDevice.id)
+    assert.equal((await devices.retrieveDevice(alternateDevice.id)).state, "available")
+    assert.equal((await fulfillment.retrieveFulfillment(nativeFulfillment.id)).location_id, locationId)
+    await run({ action: "save_allocation", order_id: nativeOrder.orderId, allocations: [{ item_id: nativeOrder.itemId, device_id: alternateDevice.id, assignment_id: bound.id }] })
+    const relocated = await fulfillment.retrieveFulfillment(nativeFulfillment.id)
+    assert.equal(relocated.location_id, alternateLocationId)
+    assert.equal(relocated.metadata?.device_source_id, alternateSource.id)
+    assert.equal((await devices.retrieveDeviceAssignment(bound.id)).source_id, alternateSource.id)
+    assert.equal(await stock(), beforeBinding + 1, "Old fulfillment warehouse stock is restored")
+    assert.equal(Number((await inventory.listInventoryLevels({ id: alternateLevel.id }))[0].stocked_quantity), 1, "New fulfillment warehouse stock is deducted once")
+    await run({ action: "save_allocation", order_id: nativeOrder.orderId, allocations: [{ item_id: nativeOrder.itemId, device_id: secondNativeDevice.id, assignment_id: bound.id }] })
+    assert.equal((await fulfillment.retrieveFulfillment(nativeFulfillment.id)).location_id, locationId)
+    assert.equal(await stock(), beforeBinding)
+    assert.equal(Number((await inventory.listInventoryLevels({ id: alternateLevel.id }))[0].stocked_quantity), 2)
+    const mixedOrder = await makeOrder(2)
+    await assert.rejects(run({ action: "save_allocation", order_id: mixedOrder.orderId, allocations: [
+      { item_id: mixedOrder.itemId, device_id: firstNativeDevice.id },
+      { item_id: mixedOrder.itemId, device_id: alternateDevice.id },
+    ] }), (error) => /DEVICE_ALLOCATION_MIXED_SOURCE/.test(JSON.stringify(error)))
+    assert.equal((await devices.listDeviceAssignments({ order_id: mixedOrder.orderId })).length, 0)
+    const automaticOrder = await makeOrder(1)
+    await run({ action: "save_allocation", order_id: automaticOrder.orderId, allocations: [{ item_id: automaticOrder.itemId, device_id: alternateDevice.id }] })
+    const [automaticAssignment] = await devices.listDeviceAssignments({ order_id: automaticOrder.orderId, status: "packed" })
+    assert(automaticAssignment.fulfillment_id)
+    const automaticFulfillment = await fulfillment.retrieveFulfillment(automaticAssignment.fulfillment_id)
+    assert.equal(automaticFulfillment.location_id, alternateLocationId)
+    assert.equal(automaticFulfillment.metadata?.device_source_id, alternateSource.id)
+    await run({ action: "release", assignment_id: automaticAssignment.id })
+    assert.equal(Number((await inventory.listInventoryLevels({ id: alternateLevel.id }))[0].stocked_quantity), 2, "Cancel restores automatically selected warehouse stock")
+    console.log("PASS: cross-warehouse replacement follows device supplier, moves stock once, rejects shortages atomically, and creates/cancels fulfillment from device source")
     await fulfillment.updateFulfillment(nativeFulfillment.id, { shipped_at: new Date() })
     await assert.rejects(run({ action: "save_allocation", order_id: nativeOrder.orderId, allocations: [{ item_id: nativeOrder.itemId, device_id: firstNativeDevice.id, assignment_id: bound.id }] }),
       (error) => /DEVICE_ALLOCATION_LOCKED/.test(JSON.stringify(error)))
@@ -466,6 +542,11 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
       await deleteProductsWorkflow(container).run({
         input: { ids: [productId] },
       })
+    if (alternateLocationId) {
+      const sources = await devices.listDeviceSources({ location_id: alternateLocationId })
+      if (sources.length) await devices.deleteDeviceSources(sources.map((source) => source.id))
+      await deleteStockLocationsWorkflow(container).run({ input: { ids: [alternateLocationId] } })
+    }
     if (locationId) {
       const sources = await devices.listDeviceSources({
         location_id: locationId,
