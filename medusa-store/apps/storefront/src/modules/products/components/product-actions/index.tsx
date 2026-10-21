@@ -16,12 +16,14 @@ import { variantOptions as optionMap, variantInStock as available, completeVaria
 import { isModelColor } from "../color-swatches"
 import StickyPurchaseBar from "../sticky-purchase-bar"
 import styles from "../product-detail/styles.module.css"
+import { cartInventoryLimitReached } from "@lib/util/cart-inventory"
 
-export default function ProductActions({ product, disabled, initialVariantId }: {
+export default function ProductActions({ product, disabled, initialVariantId, cartQuantities }: {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
   disabled?: boolean
   initialVariantId?: string
+  cartQuantities: Record<string, number>
 }) {
   const { countryCode } = useParams<{ countryCode: string }>()
   const copy = getProductCopy(countryCode)
@@ -34,7 +36,9 @@ export default function ProductActions({ product, disabled, initialVariantId }: 
     return initial ? optionMap(initial) : {}
   })
   const [isAdding, setIsAdding] = useState(false)
-  const [feedback, setFeedback] = useState<"added" | "error" | null>(null)
+  const [feedback, setFeedback] = useState<"added" | "error" | "inventory" | null>(null)
+  const [quantities, setQuantities] = useState(cartQuantities)
+  useEffect(() => setQuantities(cartQuantities), [cartQuantities])
   const actionsRef = useRef<HTMLDivElement>(null)
   const priceRef = useRef<HTMLDivElement>(null)
   const inView = useIntersection(actionsRef, "0px")
@@ -79,8 +83,9 @@ export default function ProductActions({ product, disabled, initialVariantId }: 
   const format = (amount: number, currency: string) => new Intl.NumberFormat(countryCode.endsWith("-zh") ? "zh-CN" : "en-IE", { style: "currency", currency }).format(amount)
   const formattedPrice = price ? format(price.calculated_price_number, price.currency_code) : copy.pricePending
   const inStock = available(selectedVariant)
-  const canAdd = inStock && !!selectedVariant && !!price && !disabled && !isAdding
-  const buttonText = isAdding ? copy.adding : !selectedVariant ? (Object.keys(options).length ? copy.unavailable : copy.select) : !inStock ? copy.out : !price ? copy.pricePending : copy.add
+  const atCartLimit = inStock && cartInventoryLimitReached(selectedVariant, quantities)
+  const canAdd = inStock && !atCartLimit && !!selectedVariant && !!price && !disabled && !isAdding
+  const buttonText = isAdding ? copy.adding : !selectedVariant ? (Object.keys(options).length ? copy.unavailable : copy.select) : !inStock ? copy.out : atCartLimit ? copy.cartLimit : !price ? copy.pricePending : copy.add
   const colours = Array.isArray(product.metadata?.card_colors) ? product.metadata.card_colors.filter(isModelColor) : []
   const summary = productOptions.map((option) => options[option.id] && optionValueLabel(options[option.id], countryCode)).filter(Boolean).join(" · ") || selectedVariant?.title
   const headlineSummary = ["storage", "color", "condition"].map((name) => {
@@ -99,8 +104,13 @@ export default function ProductActions({ product, disabled, initialVariantId }: 
     setIsAdding(true)
     setFeedback(null)
     try {
-      await addToCart({ variantId: selectedVariant.id, quantity: 1, countryCode })
-      setFeedback("added")
+      const result = await addToCart({ variantId: selectedVariant.id, quantity: 1, countryCode })
+      if (result.ok) {
+        setQuantities(result.quantities)
+        setFeedback("added")
+      } else {
+        setFeedback(result.error)
+      }
     } catch {
       setFeedback("error")
     } finally {
@@ -108,7 +118,7 @@ export default function ProductActions({ product, disabled, initialVariantId }: 
     }
   }
 
-  const feedbackContent = feedback === "error" ? copy.error : feedback === "added" ? <>{copy.added} · <LocalizedClientLink href="/cart">{copy.viewCart}</LocalizedClientLink></> : null
+  const feedbackContent = feedback === "error" ? copy.error : feedback === "inventory" ? <>{copy.inventoryError} · <LocalizedClientLink href="/cart">{copy.viewCart}</LocalizedClientLink></> : atCartLimit ? <>{copy.cartLimitMessage} · <LocalizedClientLink href="/cart">{copy.viewCart}</LocalizedClientLink></> : feedback === "added" ? <>{copy.added} · <LocalizedClientLink href="/cart">{copy.viewCart}</LocalizedClientLink></> : null
 
   return <div className={styles.actions}>
     <div className={styles.productHeading} ref={priceRef}>

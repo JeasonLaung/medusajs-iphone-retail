@@ -18,6 +18,7 @@ const refinementParams: Record<string, string> = {
 type RouteState = Record<string, unknown>
 
 export function createStoreSearchRouting(indexName: string) {
+  const defaultSort = `${indexName}/sort/created_at:desc`
   return {
     router: {
       createURL({ qsModule, routeState, location }) {
@@ -49,9 +50,11 @@ export function createStoreSearchRouting(indexName: string) {
     } satisfies NonNullable<Parameters<typeof history<RouteState>>[0]>,
     stateMapping: {
       stateToRoute(uiState: UiState): RouteState {
-        const { configure, refinementList, query, ...rest } =
+        const { configure, refinementList, query, sortBy, ...rest } =
           uiState[indexName] ?? {}
         const route: RouteState = { ...rest }
+        // InstantSearch omits sortBy when the base (relevance) index is selected.
+        if (sortBy !== defaultSort) route.sortBy = sortBy || indexName
         if (query) route.q = query
         for (const [attribute, values] of Object.entries(
           refinementList ?? {}
@@ -64,7 +67,10 @@ export function createStoreSearchRouting(indexName: string) {
       routeToState(route: RouteState): UiState {
         // Keep existing shared/bookmarked InstantSearch links working.
         if (route[indexName] && typeof route[indexName] === "object") {
-          const legacy = { ...(route[indexName] as UiState[string]) }
+          const legacy = {
+            sortBy: defaultSort,
+            ...(route[indexName] as UiState[string]),
+          }
           if (legacy.page !== undefined) {
             const page = Number(legacy.page)
             if (Number.isInteger(page) && page > 0) legacy.page = page
@@ -73,7 +79,7 @@ export function createStoreSearchRouting(indexName: string) {
           return { [indexName]: legacy }
         }
 
-        const state: UiState[string] = {}
+        const state: UiState[string] = { sortBy: defaultSort }
         const refinementList: Record<string, string[]> = {}
         for (const [attribute, param] of Object.entries(refinementParams)) {
           const value = route[param]

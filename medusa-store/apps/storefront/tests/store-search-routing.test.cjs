@@ -14,8 +14,10 @@ new Function("require", "module", "exports", code)(
   () => ({ history: (options) => options }), loaded, loaded.exports
 )
 const { router, stateMapping } = loaded.exports.createStoreSearchRouting("product")
+const defaultSort = "product/sort/created_at:desc"
+const withDefaultSort = (state) => ({ product: { sortBy: defaultSort, ...state.product } })
 const createURL = (state) => router.createURL({
-  qsModule: qs, routeState: stateMapping.stateToRoute(state),
+  qsModule: qs, routeState: stateMapping.stateToRoute(withDefaultSort(state)),
   location: new URL("https://example.com/de-zh/store#products"),
 })
 const readURL = (url) => stateMapping.routeToState(router.parseURL({
@@ -28,13 +30,13 @@ test("multiple refinements use short keys and literal comma separators", () => {
   } } }
   const url = createURL(state)
   assert.equal(url, "https://example.com/de-zh/store?color=Silver,Gold&storage=128%20GB,256%20GB#products")
-  assert.deepEqual(readURL(url), state)
+  assert.deepEqual(readURL(url), withDefaultSort(state))
 })
 
 test("single selections and values containing commas or special characters round-trip", () => {
   for (const colors of [["Silver"], ["Red, White", "Gold"], ["黑色", "Blue & Green"], ["%2C", "100%"]]) {
     const state = { product: { refinementList: { color_families: colors } } }
-    assert.deepEqual(readURL(createURL(state)), state)
+    assert.deepEqual(readURL(createURL(state)), withDefaultSort(state))
   }
 })
 
@@ -44,12 +46,12 @@ test("Next.js URL normalization preserves comma arrays and escaped values", () =
   } } }
   const url = new URL(createURL(state))
   url.search = url.searchParams.toString()
-  assert.deepEqual(readURL(url.href), state)
+  assert.deepEqual(readURL(url.href), withDefaultSort(state))
 })
 
 test("legacy indexed refinement URLs still restore selections", () => {
   const state = { product: { refinementList: { color_families: ["Silver", "Gold"] }, page: 2 } }
-  assert.deepEqual(readURL(`https://example.com/de-en/store?${qs.stringify(state)}`), state)
+  assert.deepEqual(readURL(`https://example.com/de-en/store?${qs.stringify(state)}`), withDefaultSort(state))
 })
 
 test("search, pagination, sorting and price range survive URL restoration", () => {
@@ -63,7 +65,7 @@ test("search, pagination, sorting and price range survive URL restoration", () =
 
 test("clear filters drops the query string and omits Configure state", () => {
   assert.equal(createURL({ product: { configure: { hitsPerPage: 12 } } }), "https://example.com/de-zh/store#products")
-  assert.deepEqual(readURL("https://example.com/de-en/store"), { product: {} })
+  assert.deepEqual(readURL("https://example.com/de-en/store"), withDefaultSort({ product: {} }))
 })
 
 test("series links use the compact parameter and restore the series filter", () => {
@@ -76,6 +78,19 @@ test("series links use the compact parameter and restore the series filter", () 
   const url = seriesModule.exports.storeSeriesUrl("iPhone 15")
   assert.equal(url, "/store?series=iPhone+15")
   assert.deepEqual(readURL(`https://example.com/de-en${url}`), {
-    product: { refinementList: { category: ["iPhone 15"] } },
+    product: { sortBy: defaultSort, refinementList: { category: ["iPhone 15"] } },
   })
+})
+
+test("latest arrivals is the default without adding a sort parameter", () => {
+  const state = { product: { sortBy: defaultSort } }
+  assert.equal(createURL(state), "https://example.com/de-zh/store#products")
+  assert.deepEqual(readURL(createURL(state)), state)
+})
+
+test("explicit relevance sorting survives reload and legacy URLs", () => {
+  const state = { product: { sortBy: "product" } }
+  assert.equal(stateMapping.stateToRoute({ product: {} }).sortBy, "product")
+  assert.deepEqual(readURL(createURL(state)), state)
+  assert.deepEqual(readURL(`https://example.com/de-en/store?${qs.stringify(state)}`), state)
 })

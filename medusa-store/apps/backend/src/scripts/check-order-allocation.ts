@@ -6,7 +6,7 @@ import type {
   IFulfillmentModuleService,
   IUserModuleService,
 } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys, Modules, generateJwtToken } from "@medusajs/framework/utils"
 import {
   createProductsWorkflow,
   createOrderFulfillmentWorkflow,
@@ -26,6 +26,8 @@ import {
 import { orderItemQuantities } from "../lib/order-item-quantities"
 import { requiresImei } from "../modules/devices/identity"
 import { GET as getDevices } from "../api/admin/devices/route"
+import { POST as createShipment } from "../api/admin/orders/[id]/fulfillments/[fulfillment_id]/shipments/route"
+import { guardDeviceOrder } from "../api/device-guards"
 import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -365,11 +367,54 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
       action: "fulfill",
       assignment_ids: current.map((a) => a.id),
     })
-    await run({
-      action: "ship",
-      fulfillment_id: repacked.fulfillment_id!,
-      tracking_number: "ALLOC-CHECK",
-    })
+    const ship = async (orderId: string, fulfillmentId: string, items: { id: string; quantity: number }[]) => {
+      let response: any
+      const req = {
+        scope: container,
+        params: { id: orderId, fulfillment_id: fulfillmentId },
+        path: `/admin/orders/${orderId}/fulfillments/${fulfillmentId}/shipments`,
+        auth_context: { actor_id: user.id },
+        validatedBody: { items, labels: [{ tracking_number: "ALLOC-CHECK", tracking_url: "https://example.invalid/track", label_url: "https://example.invalid/label" }], no_notification: true, metadata: { shipment_check: true } },
+        queryConfig: { fields: ["id", "fulfillments.id", "fulfillments.shipped_at", "fulfillments.labels.*"] },
+      } as unknown as Parameters<typeof createShipment>[0]
+      if (process.env.CHECK_SHIPMENT_HTTP === "1") {
+        const config = container.resolve(ContainerRegistrationKeys.CONFIG_MODULE)
+        const token = generateJwtToken({ actor_id: user.id, actor_type: "user", auth_identity_id: "shipment-regression", app_metadata: { user_id: user.id } }, {
+          secret: config.projectConfig.http.jwtSecret,
+          expiresIn: "5m",
+        })
+        const fields = encodeURIComponent("id,*fulfillments,*fulfillments.labels")
+        const result = await fetch(`http://127.0.0.1:9001${req.path}?fields=${fields}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify(req.validatedBody),
+        })
+        const body = await result.json()
+        if (!result.ok) throw body
+        return body
+      }
+      const res = { status: () => res, json: (value: any) => { response = value } } as unknown as MedusaResponse
+      let allowed = false
+      await guardDeviceOrder(req, res, () => { allowed = true })
+      assert(allowed, "Native shipment middleware must reach device-aware route")
+      await createShipment(req, res)
+      return response
+    }
+    await assert.rejects(ship(second.orderId, repacked.fulfillment_id!, [{ id: first.itemId, quantity: 2 }]))
+    await assert.rejects(ship(first.orderId, repacked.fulfillment_id!, [{ id: first.itemId, quantity: 1 }]),
+      (error) => /全部商品/.test(JSON.stringify(error)))
+    assert.equal((await fulfillment.retrieveFulfillment(repacked.fulfillment_id!)).shipped_at, null)
+    assert((await devices.listDeviceAssignments({ fulfillment_id: repacked.fulfillment_id! })).every((a) => a.status === "packed"))
+    const shipped = await ship(first.orderId, repacked.fulfillment_id!, [{ id: first.itemId, quantity: 2 }])
+    assert.equal(shipped.order.id, first.orderId)
+    assert(shipped.order.fulfillments.find((f: any) => f.id === repacked.fulfillment_id).shipped_at)
+    const shippedFulfillment = await fulfillment.retrieveFulfillment(repacked.fulfillment_id!, { relations: ["labels"] })
+    assert.equal(shippedFulfillment.labels[0].tracking_number, "ALLOC-CHECK")
+    assert.equal(shippedFulfillment.labels[0].label_url, "https://example.invalid/label")
+    assert((await devices.listDeviceAssignments({ fulfillment_id: repacked.fulfillment_id! })).every((a) => a.status === "shipped" && a.tracking_number === "ALLOC-CHECK"))
+    assert((await devices.listDevices({ id: current.map((a) => a.device_id) })).every((d) => d.state === "shipped"))
+    await assert.rejects(ship(first.orderId, repacked.fulfillment_id!, [{ id: first.itemId, quantity: 2 }]))
+    console.log("PASS: native shipment route preserves labels, synchronizes devices, rejects wrong order, partial and duplicate shipments")
     assert.equal(await stock(), 1)
     await assert.rejects(run({ action: "release", assignment_id: current[0].id }),
       (error) => /未发货/.test(JSON.stringify(error)))
@@ -419,6 +464,9 @@ export default async function checkOrderAllocation({ container }: ExecArgs) {
     const beforeBinding = await stock()
     const firstNativeDevice = await register(`NATIVE-A${stamp}`, `96${stamp}`)
     const secondNativeDevice = await register(`NATIVE-B${stamp}`, `97${stamp}`)
+    await devices.createDeviceVariants({ variant_id: variantId, inventory_item_id: inventoryId })
+    await assert.rejects(ship(nativeOrder.orderId, nativeFulfillment.id, [{ id: nativeOrder.itemId, quantity: 1 }]))
+    assert.equal((await fulfillment.retrieveFulfillment(nativeFulfillment.id)).shipped_at, null)
     await run({ action: "save_allocation", order_id: nativeOrder.orderId, allocations: [{ item_id: nativeOrder.itemId, device_id: firstNativeDevice.id, fulfillment_id: nativeFulfillment.id }] })
     const [bound] = await devices.listDeviceAssignments({ order_id: nativeOrder.orderId, status: "packed" })
     assert.equal(bound.fulfillment_id, nativeFulfillment.id)

@@ -167,5 +167,15 @@
   "orderTitle": "订单 #{number}",
   "viewOrder": "查看您的订单",
   "verificationDescription": "验证您的电子邮箱，完成账户注册。",
-  "completedRequest": "已完成"
+  "completedRequest": "已完成",
+  "originalOrderTotal": "优惠前总额：",
+  "skuLabel": "SKU：",
+  "notAvailable": "暂无",
+  "statusUnknown": "未知",
+  "orderPending": "处理中",
+  "orderDraft": "草稿",
+  "orderArchived": "已归档",
+  "paidAwaitingFulfillment": "已支付 · 待发货",
+  "paidAt": "最近支付时间：",
+  "paymentTimeUnavailable": "暂无记录"
 }

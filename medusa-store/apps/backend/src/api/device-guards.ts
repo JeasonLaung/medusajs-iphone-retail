@@ -15,6 +15,8 @@ export async function guardDeviceOrder(
   _res: MedusaResponse,
   next: MedusaNextFunction,
 ) {
+  // Shipment validation and device synchronization are handled by our shipment route.
+  if (req.path.endsWith("/shipments")) return next()
   const service: DevicesModuleService = req.scope.resolve(DEVICES_MODULE)
   const order_id = req.params.id
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
@@ -48,15 +50,7 @@ export async function guardDeviceInventory(
   _res: MedusaResponse,
   next: MedusaNextFunction,
 ) {
-  const service: DevicesModuleService = req.scope.resolve(DEVICES_MODULE)
-  const managed = await service.listDeviceVariants({
-    inventory_item_id: req.params.id,
-  })
-  if (managed.length)
-    throw new MedusaError(
-      MedusaError.Types.NOT_ALLOWED,
-      "设备库存由入库检测和供应商可供数量管理，请使用设备扫码工作台",
-    )
+  // Device tracking does not own or restrict native quantity inventory.
   next()
 }
 

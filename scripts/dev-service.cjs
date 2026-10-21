@@ -183,7 +183,11 @@ async function main() {
       const changes = [...pending]
       pending.clear()
       // Modules/config/shared libraries need a full restart to rebuild their state.
-      let hot = app === "backend" && changes.every(([file]) => /^src\/(api|workflows)\//.test(file))
+      // API helpers are imported by registered handlers. Medusa acknowledges their
+      // HMR message without rebuilding those imports, leaving old guards active.
+      let hot = app === "backend" && changes.every(([file]) =>
+        /^src\/workflows\//.test(file) || /^src\/api\/(?:.*\/)?(?:route|middlewares)\.[jt]s$/.test(file)
+      )
       if (hot) for (const [file, action] of changes) {
         if (!(await reload(file, action))) { hot = false; break }
       }

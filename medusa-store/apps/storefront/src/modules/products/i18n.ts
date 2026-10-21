@@ -1,4 +1,7 @@
 const en = {
+  cartLimit: "Stock limit reached",
+  cartLimitMessage: "Your cart already contains all available stock for this configuration. You can continue to checkout from your cart.",
+  inventoryError: "There is not enough stock to add another item. Check your cart or choose another configuration.",
   appleLaunchPrice: "Apple launch price",
   demoPriceNote: "Demo price: this configuration uses the model starting price and has not been individually priced.",
   pricePending: "Price pending", configurationPending: "Some existing stock is awaiting complete configuration details.", imageNote: "Model image shown. The selected colour may differ.",
@@ -9,6 +12,9 @@ const en = {
 }
 
 const zh: typeof en = {
+  cartLimit: "已达可购数量",
+  cartLimitMessage: "购物车中的此配置已达当前可售数量，可前往购物车结账。",
+  inventoryError: "剩余库存不足，无法继续添加。请检查购物车或选择其他配置。",
   appleLaunchPrice: "Apple 首发价",
   demoPriceNote: "演示价格：当前配置沿用机型起售价，尚未单独定价。",
   pricePending: "价格待定", configurationPending: "部分原有库存尚待补齐配置详情，暂不可选。", imageNote: "图片为机型示意，颜色以所选配置为准。",

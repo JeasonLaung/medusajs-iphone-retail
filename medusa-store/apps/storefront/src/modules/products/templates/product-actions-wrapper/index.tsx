@@ -1,6 +1,8 @@
 import { listProducts } from "@lib/data/products"
 import { HttpTypes } from "@medusajs/types"
 import ProductActions from "@modules/products/components/product-actions"
+import { retrieveCart } from "@lib/data/cart"
+import { cartVariantQuantities } from "@lib/util/cart-inventory"
 
 /**
  * Fetches real time pricing for a product and renders the product actions component.
@@ -23,5 +25,6 @@ export default async function ProductActionsWrapper({
     return null
   }
 
-  return <ProductActions product={product} region={region} initialVariantId={initialVariantId} />
+  const cart = await retrieveCart()
+  return <ProductActions product={product} region={region} initialVariantId={initialVariantId} cartQuantities={cartVariantQuantities(cart?.items ?? [])} />
 }

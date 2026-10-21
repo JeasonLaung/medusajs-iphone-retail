@@ -26,7 +26,7 @@ function setup(assignments: unknown[] = [], duplicates = [device]) {
     listDevices: jest.fn().mockResolvedValue(duplicates),
   }
   const inventory = { listInventoryLevels: jest.fn().mockResolvedValue([{ stocked_quantity: 5, reserved_quantity: 1 }]) }
-  const query = { graph: jest.fn().mockImplementation(({ entity, filters }) => Promise.resolve({ data: entity === "stock_location" ? [{ id: filters.id }] : [{ id: filters.id, manage_inventory: true, allow_backorder: false, inventory_items: [{ inventory_item_id: `inv_${filters.id}`, required_quantity: 1 }], product: { title: "iPhone" } }] })) }
+  const query = { graph: jest.fn().mockImplementation(({ entity, filters = { id: "variant_1" } }) => Promise.resolve({ data: entity === "stock_location" ? [{ id: filters.id }] : [{ id: filters.id, manage_inventory: true, allow_backorder: false, inventory_items: [{ inventory_item_id: `inv_${filters.id}`, required_quantity: 1 }], product: { title: "iPhone" } }] })) }
   const container = { resolve: (key: string) => ({ [DEVICES_MODULE]: service, [Modules.INVENTORY]: inventory, [ContainerRegistrationKeys.QUERY]: query })[key] }
   return { container, service, inventory }
 }
@@ -44,18 +44,15 @@ describe("device editing", () => {
     expect(output.mutations[0].after).toMatchObject({ serial_number: "FIXED", notes: "updated" })
     expect(output.mutations[1].after).toMatchObject({ action: "update", device_id: device.id })
   })
-  it("moves saleable stock when SKU and warehouse change", async () => {
+  it("keeps stock unchanged when SKU and warehouse change", async () => {
     const { container } = setup()
     const { output } = await prepare({ ...command, actor_id: "user", variant_id: "variant_2", location_id: "loc_2" }, { container })
-    expect(output.adjustments).toEqual([
-      { inventory_item_id: "inv_variant_1", location_id: "loc_1", adjustment: -1 },
-      { inventory_item_id: "inv_variant_2", location_id: "loc_2", adjustment: 1 },
-    ])
+    expect(output.adjustments).toEqual([])
   })
-  it("removes stock on retirement and rejects conflicting device identities", async () => {
+  it("preserves stock on retirement and rejects conflicting device identities", async () => {
     const { container } = setup()
     const { output } = await prepare({ ...command, actor_id: "user", state: "retired" }, { container })
-    expect(output.adjustments).toEqual([{ inventory_item_id: "inv_variant_1", location_id: "loc_1", adjustment: -1 }])
+    expect(output.adjustments).toEqual([])
     await expect(prepare({ ...command, actor_id: "user" }, { container: setup([], [{ ...device, id: "dev_other" }]).container })).rejects.toThrow()
   })
   it("protects allocation fields while allowing notes on allocated devices", async () => {
@@ -96,13 +93,13 @@ describe("device soft deletion and rollback", () => {
 })
 
 
-describe("pending intake and bulk availability", () => {
+describe("independent device intake and bulk availability", () => {
   const pending = { ...device, state: "pending" }
-  it("keeps ordinary intake out of saleable inventory", async () => {
+  it("makes ordinary intake immediately available without changing stock", async () => {
     const { container } = setup([], [])
     const { output } = await prepare({ action: "intake", actor_id: "user", devices: [{ ...device, serial_number: "NEW", category: "sale" }] }, { container })
     expect(output.adjustments).toEqual([])
-    expect(output.mutations.find((m: any) => m.table === "Devices").after.state).toBe("pending")
+    expect(output.mutations.find((m: any) => m.table === "Devices").after.state).toBe("available")
   })
   it("keeps returned intake awaiting inspection without saleable stock", async () => {
     const { container } = setup([], [])
@@ -110,11 +107,11 @@ describe("pending intake and bulk availability", () => {
     expect(output.adjustments).toEqual([])
     expect(output.mutations.find((m: any) => m.table === "Devices").after.state).toBe("inspection")
   })
-  it("adds exactly one unit per confirmed pending device and records each transition", async () => {
+  it("publishes legacy pending devices without adding stock and records each transition", async () => {
     const { container, service } = setup()
     service.retrieveDevice.mockImplementation(async (id) => ({ ...pending, id }))
     const { output } = await prepare({ action: "make_available", device_ids: ["dev_1", "dev_2"], actor_id: "user" }, { container })
-    expect(output.adjustments.reduce((sum: number, row: any) => sum + row.adjustment, 0)).toBe(2)
+    expect(output.adjustments).toEqual([])
     expect(output.mutations.filter((m: any) => m.table === "Devices").map((m: any) => m.after.state)).toEqual(["available", "available"])
     expect(output.mutations.filter((m: any) => m.table === "DeviceEvents")).toHaveLength(2)
   })
@@ -131,10 +128,12 @@ describe("pending intake and bulk availability", () => {
     expect(DeviceCommand.safeParse({ action: "make_available", device_ids: ["dev_1", "dev_1"] }).success).toBe(false)
     expect(DeviceCommand.safeParse({ action: "make_available", device_ids: [] }).success).toBe(false)
   })
-  it("prevents publishing pending stock by editing its state", async () => {
+  it("allows publishing legacy pending devices without changing stock", async () => {
     const { container, service } = setup()
     service.retrieveDevice.mockResolvedValue(pending)
-    await expect(prepare({ ...command, actor_id: "user", state: "available" }, { container })).rejects.toThrow("DEVICE_PENDING_REQUIRED")
+    const { output } = await prepare({ ...command, actor_id: "user", state: "available" }, { container })
+    expect(output.adjustments).toEqual([])
+    expect(output.mutations[0].after.state).toBe("available")
   })
 })
 
@@ -143,26 +142,56 @@ describe("mobile intake deletion scope", () => {
   const session = { nonce: "session_nonce", source_id: "source_1", category: "sale" }
   const input = { action: "delete", device_id: device.id, actor_id: "user", mobile_intake_session: session }
   const event = { data: { mobile_intake_nonce: session.nonce } }
-  it("soft deletes a pending device entered through the same link without changing inventory", async () => {
+  it("soft deletes an available device entered through the same link without changing inventory", async () => {
     const { container, service } = setup()
-    service.retrieveDevice.mockResolvedValue({ ...device, state: "pending" })
+    service.retrieveDevice.mockResolvedValue(device)
     Object.assign(service, { listDeviceEvents: jest.fn().mockResolvedValue([event]) })
     const { output } = await prepare(input, { container })
     expect(output.adjustments).toEqual([])
     expect(output.mutations[0]).toMatchObject({ table: "Devices", deleted: true })
   })
-  it("rejects other links, warehouses, categories and devices already made available", async () => {
+  it("rejects other links, warehouses, categories and devices already allocated", async () => {
     for (const [target, events] of [
       [{ ...device, state: "pending" }, []],
       [{ ...device, state: "pending" }, [{ data: { mobile_intake_nonce: "other_link" } }]],
       [{ ...device, state: "pending", source_id: "other" }, [event]],
       [{ ...device, state: "pending", category: "recycled" }, [event]],
-      [device, [event]],
+      [{ ...device, state: "reserved" }, [event]],
     ] as const) {
       const { container, service } = setup()
       service.retrieveDevice.mockResolvedValue(target)
       Object.assign(service, { listDeviceEvents: jest.fn().mockResolvedValue(events) })
       await expect(prepare(input, { container })).rejects.toThrow("MOBILE_INTAKE_DELETE_DENIED")
     }
+  })
+})
+
+
+describe("device records never own stock", () => {
+  it("records supplier availability without changing native stock", async () => {
+    const { container, service, inventory } = setup()
+    service.retrieveDeviceSource.mockResolvedValue({ id: "supplier", type: "supplier", location_id: "loc_2" })
+    Object.assign(service, { listDeviceSupplies: jest.fn().mockResolvedValue([{ id: "supply", quantity: 5 }]) })
+    const { output } = await prepare({ action: "supply", source_id: "supplier", variant_id: "variant_1", quantity: 20, actor_id: "user" }, { container })
+    expect(output.adjustments).toEqual([])
+    expect(output.updates).toEqual([])
+    expect(inventory.listInventoryLevels).not.toHaveBeenCalled()
+    expect(output.mutations[0].after.quantity).toBe(20)
+  })
+  it("enables serial tracking without resetting stock or reservations", async () => {
+    const { container, service, inventory } = setup()
+    service.listDeviceVariants.mockResolvedValue([])
+    const { output } = await prepare({ action: "enroll", variant_id: "variant_1", actor_id: "user" }, { container })
+    expect(output.updates).toEqual([])
+    expect(output.adjustments).toEqual([])
+    expect(inventory.listInventoryLevels).not.toHaveBeenCalled()
+    expect(output.mutations[0].table).toBe("DeviceVariants")
+  })
+  it.each(["delete", "retire"])("%s of an available device preserves stock", async (action) => {
+    const { container } = setup()
+    const { output } = await prepare({ action, device_id: device.id, actor_id: "user" }, { container })
+    expect(output.adjustments).toEqual([])
+    expect(output.updates).toEqual([])
+    expect(output.levels).toEqual([])
   })
 })

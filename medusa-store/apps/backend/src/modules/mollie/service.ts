@@ -18,6 +18,10 @@ import type {
   CancelPaymentOutput,
 } from "@medusajs/framework/types"
 import { randomUUID } from "node:crypto"
+import createMollieClient from "@mollie/api-client"
+import { MOLLIE_SETTINGS_MODULE } from "../mollie-settings"
+import type MollieSettingsModuleService from "../mollie-settings/service"
+import { decryptMollieSecret } from "../mollie-settings/security"
 
 type MolliePayment = Record<string, unknown> & {
   id: string
@@ -118,18 +122,35 @@ export function mollieWebhookResult(
 export function createMollieProvider(BaseProvider: MollieProviderConstructor) {
   return class MolliePaymentProvider extends BaseProvider {
     static identifier = BaseProvider.identifier
+    private container_: Record<string, unknown>
 
     constructor(
       container: Record<string, unknown>,
       options: Record<string, unknown>,
     ) {
       super(container, options)
+      this.container_ = container
       this.debug_ = false
+    }
+
+    private async refreshMollieConfig() {
+      const settings = typeof (this.container_ as { resolve?: (name: string) => unknown }).resolve === "function"
+        ? (this.container_ as { resolve: (name: string) => unknown }).resolve(MOLLIE_SETTINGS_MODULE) as MollieSettingsModuleService
+        : undefined
+      if (!settings) return
+      const [configs] = await settings.listAndCountMollieConfigs({}, { take: 1 })
+      const config = configs[0]
+      if (!config?.enabled || !config.api_key) return
+      const apiKey = decryptMollieSecret(config.api_key)
+      if (!apiKey) return
+      this.client_ = createMollieClient({ apiKey }) as unknown as MollieProviderInstance["client_"]
+      this.options_.redirectUrl = config.redirect_url || this.options_.redirectUrl
     }
 
     async initiatePayment(
       input: InitiatePaymentInput,
     ): Promise<InitiatePaymentOutput> {
+      await this.refreshMollieConfig()
       const sessionId = input.data?.session_id || input.context?.idempotency_key
       if (typeof sessionId !== "string")
         throw invalid("Missing payment session reference")
@@ -172,6 +193,7 @@ export function createMollieProvider(BaseProvider: MollieProviderConstructor) {
     async updatePayment(
       input: UpdatePaymentInput,
     ): Promise<UpdatePaymentOutput> {
+      await this.refreshMollieConfig()
       const id = input.data?.id
       if (typeof id !== "string") throw invalid("Missing Mollie payment ID")
       const payment = await this.client_.payments.get(id)
@@ -210,6 +232,7 @@ export function createMollieProvider(BaseProvider: MollieProviderConstructor) {
     async refundPayment(
       input: RefundPaymentInput,
     ): Promise<RefundPaymentOutput> {
+      await this.refreshMollieConfig()
       const id = input.data?.id
       if (typeof id !== "string") throw invalid("Missing Mollie payment ID")
       const payment = await this.client_.payments.get(id)
@@ -227,6 +250,7 @@ export function createMollieProvider(BaseProvider: MollieProviderConstructor) {
     async cancelPayment(
       input: CancelPaymentInput,
     ): Promise<CancelPaymentOutput> {
+      await this.refreshMollieConfig()
       const id = input.data?.id
       if (typeof id !== "string") throw invalid("Missing Mollie payment ID")
       const payment = await this.client_.payments.get(id)
@@ -243,6 +267,7 @@ export function createMollieProvider(BaseProvider: MollieProviderConstructor) {
     async getWebhookActionAndData(
       payload: ProviderWebhookPayload["payload"],
     ): Promise<WebhookActionResult> {
+      await this.refreshMollieConfig()
       const id = payload.data?.id
       if (typeof id !== "string" || !/^tr_[\w]+$/.test(id))
         throw invalid("Invalid Mollie payment ID")
@@ -250,5 +275,6 @@ export function createMollieProvider(BaseProvider: MollieProviderConstructor) {
       // accepting status or amount supplied by the webhook caller.
       return mollieWebhookResult(await this.client_.payments.get(id))
     }
+
   }
 }

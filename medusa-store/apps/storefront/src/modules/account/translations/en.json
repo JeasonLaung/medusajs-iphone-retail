@@ -167,5 +167,15 @@
   "orderTitle": "Order #{number}",
   "viewOrder": "View your order",
   "verificationDescription": "Verify your email address to complete your registration.",
-  "completedRequest": "Completed"
+  "completedRequest": "Completed",
+  "originalOrderTotal": "Original total:",
+  "skuLabel": "SKU:",
+  "notAvailable": "Not available",
+  "statusUnknown": "Unknown",
+  "orderPending": "Processing",
+  "orderDraft": "Draft",
+  "orderArchived": "Archived",
+  "paidAwaitingFulfillment": "Paid · Awaiting shipment",
+  "paidAt": "Latest payment time:",
+  "paymentTimeUnavailable": "No record available"
 }

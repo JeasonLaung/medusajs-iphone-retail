@@ -2,6 +2,7 @@
 
 import { useInstantSearch, useSortBy } from "react-instantsearch"
 import { useParams } from "next/navigation"
+import { PRODUCT_INDEX_NAME } from "@lib/search-client"
 import { getCapacityNote, getFilterActionsCopy, getSortLabel } from "./i18n"
 
 import {
@@ -67,7 +68,9 @@ const SortProducts = ({ currencyCode }: { currencyCode: string }) => {
 const StoreRefinements = ({ currencyCode }: { currencyCode: string }) => {
   const { countryCode } = useParams<{ countryCode: string }>()
   const { setIndexUiState } = useInstantSearch()
-  const clearFilters = () => setIndexUiState({})
+  const clearFilters = () => setIndexUiState({
+    sortBy: `${PRODUCT_INDEX_NAME}/sort/created_at:desc`,
+  })
   const copy = getFilterActionsCopy(countryCode)
   return (
     <MobileFilters>

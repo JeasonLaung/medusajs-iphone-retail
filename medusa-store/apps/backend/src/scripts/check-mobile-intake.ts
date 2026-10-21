@@ -96,7 +96,7 @@ export default async function checkMobileIntake({ container }: ExecArgs) {
       assert.equal(await page.locator("input[name='serial']").inputValue(), "", "Clears serial after receiving")
       const [device] = await service.listDevices({ serial_number: serial })
       assert.equal(device.source_id, source.id)
-      assert.equal(device.state, "pending")
+      assert.equal(device.state, "available")
       assert.equal((device.photos as unknown as unknown[]).length, 1, "Phone photos are saved with the device")
       assert.equal(await page.locator(".van-uploader__preview-image img").count(), 0, "Photos cleared for the next device")
       const duplicate = await api("/mobile-intake", { method: "POST", headers, body: JSON.stringify({ variant_id: managed.variant_id, serial_number: serial, imei: device.imei }) })

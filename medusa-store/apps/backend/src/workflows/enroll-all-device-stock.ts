@@ -1,5 +1,4 @@
-import type { IInventoryService } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys, generateEntityId, MedusaError, Modules } from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys, generateEntityId, MedusaError } from "@medusajs/framework/utils"
 import { createStep, createWorkflow, StepResponse, WorkflowResponse, when } from "@medusajs/framework/workflows-sdk"
 import { acquireLockStep, releaseLockStep, updateInventoryLevelsWorkflow } from "@medusajs/medusa/core-flows"
 import { DEVICES_MODULE } from "../modules/devices"
@@ -10,7 +9,6 @@ type Input = { actor_id: string; preserve_reservations: boolean }
 const prepareAllDeviceStock = createStep("prepare-all-device-stock", async (input: Input, { container }) => {
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
   const service: DevicesModuleService = container.resolve(DEVICES_MODULE)
-  const inventory: IInventoryService = container.resolve(Modules.INVENTORY)
   const { data: variants } = await query.graph({ entity: "product_variant", fields: ["id", "sku", "manage_inventory", "allow_backorder", "inventory_items.inventory_item_id", "inventory_items.required_quantity"], pagination: { take: 100000 } })
   const managed = await service.listDeviceVariants({}, { take: null })
   const pending = variants.filter(v => !managed.some(m => m.variant_id === v.id))
@@ -22,33 +20,10 @@ const prepareAllDeviceStock = createStep("prepare-all-device-stock", async (inpu
     }
     used.add(id)
   }
-  const devices = await service.listDevices({ state: ["available", "reserved"] }, { take: null })
-  const supplies = await service.listDeviceSupplies({}, { take: null })
-  const sources = await service.listDeviceSources({}, { take: null })
-  const levels = await inventory.listInventoryLevels({}, { take: null })
-  const quantities = new Map<string, number>()
-  const add = (variant: string, location: string, quantity: number) => {
-    const key = `${variant}:${location}`
-    quantities.set(key, (quantities.get(key) || 0) + quantity)
-  }
-  for (const d of devices) add(d.variant_id, d.location_id, 1)
-  for (const supply of supplies) {
-    const source = sources.find(s => s.id === supply.source_id)
-    if (!source) throw new MedusaError(MedusaError.Types.INVALID_DATA, `Missing source for ${supply.id}`)
-    add(supply.variant_id, source.location_id, Number(supply.quantity))
-  }
   const rows = pending.map(v => ({ id: generateEntityId(undefined, "dvar"), variant_id: v.id, inventory_item_id: v.inventory_items![0]!.inventory_item_id! }))
-  const updates = rows.flatMap(v => levels.filter(l => l.inventory_item_id === v.inventory_item_id).map(l => {
-    const actual = quantities.get(`${v.variant_id}:${l.location_id}`) || 0
-    const reserved = Number(l.reserved_quantity)
-    if (reserved > actual && !input.preserve_reservations) throw new MedusaError(MedusaError.Types.NOT_ALLOWED, `Existing reservation requires review: ${v.variant_id}`)
-    return { id: l.id, inventory_item_id: l.inventory_item_id, location_id: l.location_id, stocked_quantity: Math.max(actual, reserved) }
-  }))
-  // A missing level with tracked stock is inconsistent and must be repaired first.
-  for (const v of rows) for (const [key, quantity] of quantities) {
-    if (quantity > 0 && key.startsWith(`${v.variant_id}:`) && !updates.some(l => `${v.variant_id}:${l.location_id}` === key)) throw new MedusaError(MedusaError.Types.INVALID_DATA, `Tracked stock has no level: ${key}`)
-  }
-  const previous = levels.filter(l => rows.some(v => v.inventory_item_id === l.inventory_item_id))
+  // Enrolment enables serial tracking while preserving stock and reservations.
+  const updates: { id: string; inventory_item_id: string; location_id: string; stocked_quantity: number }[] = []
+  const previous: unknown[] = []
   return new StepResponse({ rows, updates, actor_id: input.actor_id, previous, preserve_reservations: input.preserve_reservations })
 })
 

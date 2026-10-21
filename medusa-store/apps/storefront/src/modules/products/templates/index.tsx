@@ -11,6 +11,8 @@ import { notFound } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
 import { getProductCopy } from "../i18n"
 import styles from "../components/product-detail/styles.module.css"
+import { retrieveCart } from "@lib/data/cart"
+import { cartVariantQuantities } from "@lib/util/cart-inventory"
 
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
@@ -20,8 +22,9 @@ type ProductTemplateProps = {
   selectedVariantId?: string
 }
 
-const ProductTemplate: React.FC<ProductTemplateProps> = ({ product, region, countryCode, images, selectedVariantId }) => {
+const ProductTemplate = async ({ product, region, countryCode, images, selectedVariantId }: ProductTemplateProps) => {
   if (!product?.id) return notFound()
+  const cart = await retrieveCart()
   const copy = getProductCopy(countryCode)
   return <div className={styles.page}>
     <Breadcrumbs locale={countryCode} items={[
@@ -31,7 +34,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({ product, region, coun
     <div className={styles.hero} data-testid="product-container">
       <div className={styles.visual}><ImageGallery images={product.images ?? images} variants={product.variants ?? []} initialVariantId={selectedVariantId} title={product.title ?? ""} />{product.metadata?.source === "swappie-html-snapshot" && <p className={styles.muted + " mt-4 text-center"}>{copy.imageNote}</p>}</div>
       <section aria-labelledby="product-title" id="product-info">
-        <ProductActions product={product} region={region} initialVariantId={selectedVariantId} />
+        <ProductActions product={product} region={region} initialVariantId={selectedVariantId} cartQuantities={cartVariantQuantities(cart?.items ?? [])} />
       </section>
     </div>
     <ProductDetails product={product} locale={countryCode} />

@@ -23,7 +23,7 @@ export default async function seedSwappieDemoStock({ container }: ExecArgs) {
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Manifest
   const expectedSkus = new Set(manifest.products.map((item) => item.sku))
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
-  const managed = await container.resolve<DevicesModuleService>(DEVICES_MODULE).listDeviceVariants({})
+  const managed = await container.resolve<DevicesModuleService>(DEVICES_MODULE).listDeviceVariants({}, { take: null })
 
   const { data: stores } = await query.graph({
     entity: "store",

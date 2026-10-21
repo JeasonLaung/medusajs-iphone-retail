@@ -17,6 +17,7 @@ import { getRegion } from "./regions"
 import { getLocale } from "./locale-actions"
 import { isMollie } from "@lib/constants"
 import { storefrontSegment } from "@lib/util/storefront-route"
+import { cartVariantQuantities } from "@lib/util/cart-inventory"
 
 /**
  * Retrieves a cart by its ID. If no ID is provided, it will use the cart ID from the cookies.
@@ -139,7 +140,7 @@ export async function addToCart({
     ...(await getAuthHeaders()),
   }
 
-  await sdk.store.cart
+  return sdk.store.cart
     .createLineItem(
       cart.id,
       {
@@ -149,14 +150,22 @@ export async function addToCart({
       {},
       headers
     )
-    .then(async () => {
+    .then(async ({ cart }) => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
 
       const fulfillmentCacheTag = await getCacheTag("fulfillment")
       revalidateTag(fulfillmentCacheTag)
+      return { ok: true as const, quantities: cartVariantQuantities(cart.items ?? []) }
     })
-    .catch(medusaError)
+    .catch(async (error: unknown) => {
+      if (error instanceof Error && /(?:required inventory|insufficient inventory|not enough stock)/i.test(error.message)) {
+        revalidateTag(await getCacheTag("products"))
+        revalidateTag(await getCacheTag("carts"))
+        return { ok: false as const, error: "inventory" as const }
+      }
+      return medusaError(error)
+    })
 }
 
 export async function updateLineItem({

@@ -1,4 +1,5 @@
 import { loadEnv, defineConfig } from "@medusajs/framework/utils"
+import { adminInventorySorting, adminInventorySortingOptimizer } from "./src/lib/admin-inventory-sorting"
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd())
 
@@ -12,6 +13,12 @@ const withLocalOrigins = (configured: string | undefined, origins: string[]) =>
   [...new Set([...(configured || "").split(",").map((origin) => origin.trim()).filter(Boolean), ...origins])].join(",")
 
 module.exports = defineConfig({
+  admin: {
+    vite: () => ({
+      plugins: [adminInventorySorting()],
+      optimizeDeps: { esbuildOptions: { plugins: [adminInventorySortingOptimizer()] } },
+    }),
+  },
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: process.env.REDIS_URL,
@@ -57,23 +64,26 @@ module.exports = defineConfig({
             dependencies: ["paypal_onboarding"],
           },
           // Mollie validates credentials during startup; enable it when configured.
-          ...(process.env.MOLLIE_API_KEY
-            ? [
+          ...[
                 {
                   resolve: "./src/modules/mollie",
                   id: "mollie",
                   options: {
-                    apiKey: process.env.MOLLIE_API_KEY,
-                    redirectUrl: process.env.MOLLIE_REDIRECT_URL || `${process.env.STOREFRONT_URL}/api/mollie-return`,
-                    medusaUrl: process.env.MEDUSA_BACKEND_URL,
+                    // The admin Mollie settings page can replace this at runtime.
+                    // Keep a syntactically valid test key for startup when no env key exists.
+                    apiKey: process.env.MOLLIE_API_KEY || "test_admin_configured_key",
+                    redirectUrl: process.env.MOLLIE_REDIRECT_URL || `${process.env.STOREFRONT_URL || "http://localhost:8000"}/api/mollie-return`,
+                    medusaUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9001",
                     autoCapture: true,
                     debug: false,
                   },
                 },
-              ]
-            : []),
+              ],
         ],
       },
+    },
+    {
+      resolve: "./src/modules/mollie-settings",
     },
   ],
 })
