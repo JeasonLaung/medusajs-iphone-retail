@@ -10,7 +10,7 @@
   background: #fff;
   border-bottom: 1px solid var(--header-divider);
 }
-.inner { max-width: 1440px; height: 80px; padding: 0 24px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+.inner { max-width: var(--storefront-max-width); height: 80px; padding: 0 24px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 32px; }
 .brand { display: flex; align-items: center; font-size: 25px; font-weight: 700; letter-spacing: -.055em; white-space: nowrap; }
 .desktop, .actions { display: flex; align-items: center; gap: 26px; }
 .desktop { margin-left: auto; margin-right: auto; }

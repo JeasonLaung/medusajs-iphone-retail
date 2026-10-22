@@ -27,7 +27,6 @@
 .viewButton { display: inline-flex; align-items: center; justify-content: center; min-height: 36px; padding: 0 16px; flex-shrink: 0; border-radius: 999px; background: #0066cc; color: #fff; font-size: 12px; font-weight: 500; }
 .card:hover .viewButton, .card:focus-visible .viewButton { background: #005bb5; }
 @media (min-width: 1000px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1440px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 599px) {
   .grid { gap: 12px; }
   .contents { grid-template-columns: 36% minmax(0, 1fr); min-height: 200px; }

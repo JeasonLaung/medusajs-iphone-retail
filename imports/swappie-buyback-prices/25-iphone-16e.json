@@ -1,0 +1,5032 @@
+{
+  "model": "iPhone 16e",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2016e&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:27:24.940Z",
+  "http_status": 200,
+  "response_sha256": "51ef2658e26c1a219fc61c591bfbafc11d62a02f6d07a3ab43cdf94971b0b21e",
+  "results": [
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 445,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 440
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 364.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 359.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 274.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 269.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 364.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 359.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 324.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 319.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 341.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 336.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 214.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 209.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 304.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 299.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 264.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 259.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 281.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 276.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 214.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 209.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 174.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 169.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 191.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 186.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 264.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 259.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 281.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 276.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 241.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 236.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 154.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 149.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 114.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 109.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 131.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 126.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 204.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 199.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 221.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 216.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 181.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 176.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 114.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 109.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 131.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 126.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 91.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 86.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 181.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 176.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 54.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 49.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 66.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 28
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 121.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 116.98
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 28
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 28
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 402,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 321.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 231.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 321.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 281.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 298.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 171.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 261.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 221.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 238.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 171.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 131.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 148.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 221.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 238.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 198.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 111.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 161.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 178.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 138.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 48.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 138.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 78.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 455,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 374.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 284.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 374.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 334.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 351.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 224.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 314.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 274.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 291.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 224.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 184.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 201.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 274.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 291.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 251.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 164.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 124.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 141.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 214.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 231.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 191.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 124.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 141.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 101.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 191.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 81.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 131.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 340,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 259.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 259.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 219.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 236.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 109.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 199.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 159.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 176.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 109.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 159.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 176.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 49.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 99.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 116.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 486,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 405.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 315.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 405.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 365.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 382.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 255.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 345.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 305.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 322.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 255.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 232.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 305.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 322.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 282.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 195.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 155.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 245.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 262.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 155.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 132.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 95.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 162.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.98,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 471,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 466
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 386.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 381.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 296.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 291.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 386.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 381.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 346.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 341.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 363.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 358.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 236.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 231.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 326.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 321.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 286.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 281.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 303.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 298.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 236.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 231.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 196.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 191.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 213.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 208.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 286.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 281.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 303.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 298.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 263.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 258.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 176.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 171.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 131.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 153.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 148.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 226.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 221.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 243.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 238.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 198.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 131.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 153.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 148.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 113.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 108.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 198.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 71.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 88.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 53.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 48.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 143.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 138.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 53.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 48.92
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 431,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 346.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 256.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 346.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 306.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 323.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 196.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 286.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 246.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 263.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 196.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 156.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 173.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 246.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 263.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 113.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 163.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 113.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 73.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 163.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 53.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 103.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 490,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 405.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 315.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 405.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 365.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 382.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 255.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 345.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 305.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 322.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 255.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 232.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 305.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 322.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 282.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 195.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 155.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 245.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 262.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 155.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 132.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 95.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 162.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 331,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 246.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 156.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 246.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 206.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 146.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 163.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 56.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 73.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 146.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 163.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 123.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 103.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 63.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 63.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 535,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 450.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 360.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 450.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 410.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 427.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 300.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 390.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 350.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 367.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 300.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 260.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 277.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 350.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 367.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 327.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 240.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 200.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 217.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 290.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 307.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 200.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 217.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 177.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 157.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 207.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16e 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.92,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 320
+}

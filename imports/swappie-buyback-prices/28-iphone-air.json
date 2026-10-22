@@ -1,0 +1,7539 @@
+{
+  "model": "iPhone Air",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%20Air&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:27:42.186Z",
+  "http_status": 200,
+  "response_sha256": "fd87e1b3d86fbb8858ebdffe579fab0b851547338587682efdcefdc350a1e28e",
+  "results": [
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 505,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 500
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 379.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 374.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 224.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 379.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 374.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 174.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 329.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 324.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 124.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 279.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 274.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 74.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 224.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 124.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 74.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 74.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 224.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 124.26
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 40
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 495,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 369.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 219.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 369.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 319.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 219.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 219.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 545,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 419.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 419.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 219.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 369.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 319.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 462,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 336.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 336.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 286.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 236.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 605,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 479.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 329.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 479.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 279.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 429.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 379.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 329.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 329.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.26,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 634,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 629
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 501.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 496.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 351.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 346.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 501.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 496.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 301.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 296.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 451.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 446.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 251.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 246.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 401.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 396.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 201.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 196.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 351.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 346.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 251.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 246.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 52
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 201.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 196.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 201.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 196.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 351.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 346.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 151.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 146.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 151.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 146.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 52
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 101.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 96.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 101.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 96.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 251.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 246.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 52
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 52
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 101.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 96.6
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 52
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 52
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 52
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 52
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 52
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 52
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 52
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 52
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 591,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 458.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 308.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 458.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 258.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 408.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 358.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 308.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 308.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 58.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 58.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 58.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 650,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 517.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 367.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 517.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 317.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 467.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 417.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 217.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 367.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 217.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 217.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 367.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 167.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 167.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 555,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 422.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 422.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 372.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 322.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 750,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 617.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 467.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 617.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 417.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 567.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 367.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 517.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 317.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 467.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 367.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 167.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 317.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 317.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 467.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 217.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 217.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 367.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 167.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 217.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 167.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.6,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 674,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 669
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 536.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 531.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 386.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 381.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 536.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 531.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 336.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 331.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 486.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 481.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 286.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 281.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 436.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 431.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 236.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 231.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 386.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 381.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 286.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 281.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 81.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 236.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 231.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 236.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 231.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 386.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 381.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 181.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 181.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 61
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 131.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 131.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 286.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 281.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 81.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 61
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 131.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 61
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 81.81
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 61
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 61
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 61
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 61
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 61
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 61
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 645,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 507.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 357.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 507.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 307.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 457.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 257.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 407.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 207.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 357.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 257.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 207.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 207.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 357.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 157.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 157.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 257.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 720,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 582.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 432.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 582.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 382.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 532.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 332.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 482.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 282.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 432.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 332.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 132.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 282.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 282.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 432.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 232.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 232.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 182.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 182.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 332.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 132.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 182.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 132.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 82.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 611,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 473.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 323.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 473.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 273.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 423.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 373.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 173.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 323.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 173.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 173.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 323.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 123.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 123.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 73.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 73.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 73.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 765,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 627.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 477.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 627.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 427.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 577.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 377.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 527.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 327.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 477.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 377.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 177.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 327.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 327.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 477.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 277.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 277.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 77.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 377.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 177.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 77.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 177.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 127.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 77.81,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone Air 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 480
+}

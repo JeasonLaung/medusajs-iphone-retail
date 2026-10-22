@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useId, useState, useTransition } from "react"
-import { Star, StarSolid } from "@medusajs/icons"
+import { RatingInput } from "@modules/common/components/rating"
 import {
   getReviewPurchases,
   submitProductReview,
@@ -104,21 +104,15 @@ export default function ReviewForm({
       <fieldset disabled={submitting} className={styles.fields}>
         <legend>{copy.rating}</legend>
         <div className={styles.ratingOptions}>
-          {[1, 2, 3, 4, 5].map((value) => (
-            <label key={value}>
-              <input
-                type="radio"
-                name="rating"
-                value={value}
-                checked={rating === value}
-                onChange={() => setRating(value)}
-                aria-label={copy.stars.replace("{rating}", String(value))}
-              />
-              <span aria-hidden="true" data-active={value <= rating}>
-                {value <= rating ? <StarSolid /> : <Star />}
-              </span>
-            </label>
-          ))}
+          <RatingInput
+            value={rating}
+            onChange={setRating}
+            disabled={submitting}
+            label={copy.rating}
+            starLabels={[1, 2, 3, 4, 5].map((value) =>
+              copy.stars.replace("{rating}", String(value))
+            )}
+          />
         </div>
         {orderId ? (
           <p className={styles.muted}>{copy.verified}</p>

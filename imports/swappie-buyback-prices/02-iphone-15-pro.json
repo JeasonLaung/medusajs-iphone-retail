@@ -1,0 +1,7539 @@
+{
+  "model": "iPhone 15 Pro",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2015%20Pro&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:25:07.922Z",
+  "http_status": 200,
+  "response_sha256": "55886b2b5b1048dd98fee7c1521b67f5fc76ea2125593da2a8429737b1864760",
+  "results": [
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 468,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 463
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 394.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 389.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 203.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 410.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 405.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 329.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 324.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 377.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 372.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 153.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 360.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 355.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 279.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 274.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 327.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 322.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 174.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 169.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 88.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 141.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 136.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 295.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 290.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 343.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 338.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 262.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 257.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 124.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 119.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 38.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 91.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 86.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 245.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 240.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 293.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 288.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 212.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 207.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 59.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 54.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 102.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 34
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 228.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 223.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 34
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 52.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 34
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 178.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 173.63
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 34
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": "",
+        "fixed_price": 34
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 421,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 347.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 161.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 363.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 282.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 330.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 111.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 313.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 232.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 280.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 127.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 94.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 248.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 296.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 77.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 198.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 246.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 165.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 60.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 181.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 131.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 505,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 431.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 245.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 447.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 366.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 414.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 195.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 397.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 316.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 364.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 211.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 178.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 332.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 380.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 299.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 161.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 80.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 128.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 282.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 330.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 249.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 144.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 63.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 265.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 94.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 381,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 307.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 121.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 323.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 242.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 290.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 273.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 192.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 240.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 54.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 256.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 175.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 206.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 125.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 141.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 91.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 525,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 451.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 265.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 467.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 386.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 434.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 417.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 336.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 384.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 231.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 150.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 198.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 352.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 400.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 319.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 181.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 100.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 148.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 302.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 350.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 116.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 164.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 285.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 114.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 235.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 49.63,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39,
+        "currency": "EUR",
+        "limit_price": 39,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 536,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 531
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 459.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 454.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 273.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 268.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 475.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 470.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 394.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 389.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 442.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 437.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 218.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 425.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 420.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 344.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 339.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 392.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 387.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 239.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 234.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 153.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 206.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 201.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 360.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 355.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 408.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 403.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 327.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 322.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 189.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 184.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 103.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 156.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 151.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 310.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 305.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 358.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 353.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 277.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 272.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 124.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 119.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 167.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 91.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 86.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 293.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 288.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 74.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 69.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 117.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 243.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 238.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 52.38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": "",
+        "fixed_price": 38
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 489,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 412.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 226.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 428.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 347.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 395.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 176.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 378.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 297.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 345.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 192.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 111.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 159.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 313.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 361.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 280.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 142.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 109.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 263.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 311.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 230.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 77.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 125.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 246.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 75.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 196.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 569,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 492.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 306.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 508.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 427.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 475.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 256.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 458.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 377.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 425.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 191.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 239.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 393.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 441.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 360.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 141.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 189.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 343.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 391.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 310.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 157.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 205.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 124.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 326.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 155.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 74.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 276.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 429,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 352.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 166.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 368.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 287.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 335.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 116.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 318.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 237.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 285.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 132.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 51.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 99.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 253.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 301.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 220.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 82.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 49.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 251.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 170.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 639,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 562.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 376.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 578.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 497.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 545.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 326.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 528.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 447.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 495.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 342.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 261.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 309.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 463.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 511.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 430.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 292.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 211.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 259.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 413.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 461.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 380.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 275.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 194.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 396.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 177.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 225.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 144.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 346.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 160.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 110.38,
+        "currency": "EUR",
+        "limit_price": 43,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 570,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 565
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 489.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 484.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 303.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 298.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 505.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 500.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 424.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 419.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 472.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 467.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 253.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 248.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 455.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 450.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 374.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 369.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 422.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 417.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 264.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 188.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 183.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 236.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 231.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 390.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 385.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 438.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 433.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 357.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 352.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 219.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 214.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 138.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 133.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 181.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 340.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 335.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 388.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 383.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 307.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 302.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 154.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 149.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 202.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 197.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 121.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 116.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 323.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 318.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 104.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 99.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 152.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 147.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 66.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 273.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 268.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 82.77
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": "",
+        "fixed_price": 42
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 502,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 421.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 235.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 437.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 356.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 404.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 185.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 387.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 306.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 354.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 201.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 120.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 168.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 322.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 370.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 289.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 151.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 118.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 320.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 239.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 134.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 53.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 255.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 84.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 205.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 635,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 554.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 368.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 570.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 489.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 537.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 318.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 520.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 439.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 487.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 334.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 253.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 301.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 455.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 503.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 422.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 284.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 251.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 405.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 453.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 372.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 219.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 388.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 217.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 338.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 152.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 102.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 426,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 345.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 159.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 361.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 280.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 328.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 109.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 311.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 230.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 278.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 125.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 92.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 246.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 294.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 213.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 75.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 196.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 244.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 163.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 58.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 695,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 614.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 428.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 630.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 549.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 597.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 378.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 580.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 499.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 547.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 394.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 313.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 361.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 515.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 563.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 482.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 344.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 263.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 311.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 465.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 513.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 432.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 279.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 327.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 246.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 448.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 277.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 196.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 398.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 212.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 162.77,
+        "currency": "EUR",
+        "limit_price": 47,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 480
+}

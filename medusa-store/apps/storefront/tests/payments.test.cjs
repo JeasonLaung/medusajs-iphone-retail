@@ -100,6 +100,10 @@ function returnHandler({
   retrieveError = false,
   cacheId,
   revalidateTag = () => {},
+  remembered = false,
+  token,
+  customerId,
+  cartCustomerId,
 } = {}) {
   let fetches = 0, completions = 0
   const response = (data) => {
@@ -108,11 +112,18 @@ function returnHandler({
   }
   const route = loadSource("app/api/mollie-return/route.ts", {
     "@lib/config": { sdk: {
-      store: { cart: { complete: async (id) => { completions++; return complete(id) } } },
+      store: {
+        cart: { complete: async (id) => { completions++; return complete(id) } },
+        customer: { retrieve: async () => {
+          if (!customerId) throw Object.assign(new Error("Not authenticated"), { status: 401 })
+          return { customer: { id: customerId } }
+        } },
+      },
       client: { fetch: async () => {
         fetches++
         if (retrieveError) throw new Error("Backend unavailable")
         return { cart: {
+          customer_id: cartCustomerId,
           shipping_address: { country_code: "dk" },
           payment_collection: { payment_sessions: [session] },
         } }
@@ -130,7 +141,8 @@ function returnHandler({
     ...value,
     headers: value.headers || new Headers({ origin: "https://shop.example" }),
     cookies: { get: (key) => {
-      const value = { _medusa_cart_id: cookie, _medusa_cache_id: cacheId }[key]
+      const value = { _medusa_cart_id: cookie, _medusa_cache_id: cacheId,
+        _medusa_jwt: token, _medusa_mollie_cart_current: remembered ? "cart_current" : undefined }[key]
       return value ? { value } : undefined
     } },
   })
@@ -142,6 +154,30 @@ function returnHandler({
 const request = (id) => ({ nextUrl: new URL(
   `https://shop.example/api/mollie-return?cart_id=${id}&status=paid`
 ) })
+
+test("starting a Mollie payment remembers its cart independently of the active cart", async () => {
+  const previous = process.env.NEXT_PUBLIC_BASE_URL
+  let remembered
+  process.env.NEXT_PUBLIC_BASE_URL = "https://shop.example"
+  try {
+    const actions = loadSource("lib/data/cart.ts", {
+      "@lib/config": { sdk: { store: { payment: { initiatePaymentSession: async () => ({ payment_collection: {} }) } } } },
+      "@lib/util/medusa-error": (error) => { throw error },
+      "next/cache": { revalidateTag: () => {} }, "next/navigation": {},
+      "./cookies": { getCartId: async () => "cart_current", getAuthHeaders: async () => ({}),
+        getCacheTag: async () => "", rememberMollieCart: async (id) => { remembered = id } },
+      "./regions": {}, "./locale-actions": {},
+      "@lib/constants": { isMollie: (id) => id.includes("mollie") },
+      "@lib/util/storefront-route": {}, "@lib/util/cart-inventory": {},
+    })
+    await actions.initiatePaymentSession({ id: "cart_current", shipping_address: { country_code: "dk" } },
+      { provider_id: "pp_mollie-hosted-checkout_mollie" })
+    assert.equal(remembered, "cart_current")
+  } finally {
+    if (previous === undefined) delete process.env.NEXT_PUBLIC_BASE_URL
+    else process.env.NEXT_PUBLIC_BASE_URL = previous
+  }
+})
 test("Mollie returns to a dedicated result page before verification", async () => {
   const handler = returnHandler()
   assert.equal((await handler.GET(request("cart_current"))).url, "https://shop.example/payment-result?cart_id=cart_current")
@@ -162,6 +198,27 @@ test("cross-origin verification cannot complete an order", async () => {
   const result = await handler.POST({ ...request("cart_current"), headers: new Headers({ origin: "https://evil.example" }) })
   assert.equal(result.status, 403)
   assert.deepEqual(handler.counts(), { fetches: 0, completions: 0 })
+})
+
+test("configured HTTPS storefront verifies payment behind an HTTP proxy", async () => {
+  const previous = process.env.NEXT_PUBLIC_BASE_URL
+  process.env.NEXT_PUBLIC_BASE_URL = "https://shop.example"
+  try {
+    const handler = returnHandler({ complete: async () => ({ type: "order", order: { id: "order_test" } }) })
+    const proxied = { nextUrl: new URL("http://localhost:8000/api/mollie-return?cart_id=cart_current") }
+    const result = await handler.POST(proxied)
+    assert.equal(result.body.status, "confirmed")
+    assert.equal(handler.counts().completions, 1)
+    for (const origin of ["https://evil.example", "http://shop.example", "null"]) {
+      const rejected = returnHandler()
+      const result = await rejected.POST({ ...proxied, headers: new Headers({ origin, "x-forwarded-host": "evil.example" }) })
+      assert.equal(result.status, 403)
+      assert.deepEqual(rejected.counts(), { fetches: 0, completions: 0 })
+    }
+  } finally {
+    if (previous === undefined) delete process.env.NEXT_PUBLIC_BASE_URL
+    else process.env.NEXT_PUBLIC_BASE_URL = previous
+  }
 })
 test("base return URL verifies only the browser's current cart", async () => {
   const handler = returnHandler({ complete: async (id) => {
@@ -209,11 +266,11 @@ test("a verification outage never asks for another payment", async () => {
   assert.deepEqual((await handler.POST(request("cart_current"))).body, { status: "error" })
   assert.equal(handler.counts().completions, 0)
 })
-test("confirmed orders supply the confirmation URL and clear the cart", async () => {
+test("confirmed orders preserve payment reference and clear the matching cart", async () => {
   const handler = returnHandler({ complete: async () => ({ type: "order", order: { id: "order_test" } }) })
   const result = await handler.POST(request("cart_current"))
   assert.deepEqual(result.body, { status: "confirmed", order_url: "/dk-en/order/order_test/confirmed" })
-  assert.deepEqual(result.cleared, ["_medusa_cart_id"])
+  assert.deepEqual(result.cleared, ["_medusa_mollie_cart_current", "_medusa_cart_id"])
 })
 test("confirmed orders invalidate cart and order caches", async () => {
   const tags = []
@@ -234,8 +291,38 @@ test("a cache invalidation failure cannot turn a confirmed order into pending", 
   })
   const result = await handler.POST(request("cart_current"))
   assert.deepEqual(result.body, { status: "confirmed", order_url: "/dk-en/order/order_test/confirmed" })
-  assert.deepEqual(result.cleared, ["_medusa_cart_id"])
+  assert.deepEqual(result.cleared, ["_medusa_mollie_cart_current", "_medusa_cart_id"])
   assert.deepEqual(handler.counts(), { fetches: 1, completions: 1 })
+})
+
+test("a remembered payment still confirms after the active cart was cleared or replaced", async () => {
+  for (const cookie of [null, "cart_new_shopping"]) {
+    const handler = returnHandler({ cookie, remembered: true,
+      complete: async () => ({ type: "order", order: { id: "order_existing" } }),
+    })
+    const result = await handler.POST(request("cart_current"))
+    assert.equal(result.body.order_url, "/dk-en/order/order_existing/confirmed")
+    assert.deepEqual(result.cleared, ["_medusa_mollie_cart_current"])
+  }
+})
+
+test("an authenticated owner can recover an older payment without the original cart cookie", async () => {
+  const handler = returnHandler({ cookie: "cart_new_shopping", token: "customer-token",
+    customerId: "cus_owner", cartCustomerId: "cus_owner",
+    complete: async () => ({ type: "order", order: { id: "order_existing" } }),
+  })
+  const result = await handler.POST(request("cart_current"))
+  assert.equal(result.body.status, "confirmed")
+  assert.deepEqual(result.cleared, ["_medusa_mollie_cart_current"])
+})
+
+test("another customer or an expired login cannot recover an unremembered payment", async () => {
+  for (const customerId of ["cus_other", undefined]) {
+    const handler = returnHandler({ cookie: null, token: "untrusted-token",
+      customerId, cartCustomerId: "cus_owner" })
+    assert.equal((await handler.POST(request("cart_current"))).body.status, "invalid")
+    assert.equal(handler.counts().completions, 0)
+  }
 })
 
 function directMollie({ cartId = "cart_current", delivery = true, available = true, href = "https://www.mollie.com/checkout/test", status = "pending" } = {}) {

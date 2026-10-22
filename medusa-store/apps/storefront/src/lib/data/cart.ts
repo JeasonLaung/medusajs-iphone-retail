@@ -10,6 +10,7 @@ import {
   getCacheOptions,
   getCacheTag,
   getCartId,
+  rememberMollieCart,
   removeCartId,
   setCartId,
 } from "./cookies"
@@ -24,7 +25,11 @@ import { cartVariantQuantities } from "@lib/util/cart-inventory"
  * @param cartId - optional - The ID of the cart to retrieve.
  * @returns The cart object if found, or null if not found.
  */
-export async function retrieveCart(cartId?: string, fields?: string) {
+export async function retrieveCart(
+  cartId?: string,
+  fields?: string,
+  cache: RequestCache = "force-cache"
+) {
   const id = cartId || (await getCartId())
   fields ??=
     "*items, *region, *items.product, *items.variant, *items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name"
@@ -49,26 +54,31 @@ export async function retrieveCart(cartId?: string, fields?: string) {
       },
       headers,
       next,
-      cache: "force-cache",
+      cache,
     })
     .then(({ cart }: { cart: HttpTypes.StoreCart }) => cart)
     .catch(() => null)
 }
 
 export async function getOrSetCart(countryCode: string) {
-  const region = await getRegion(countryCode)
+  const [region, existingCart] = await Promise.all([
+    getRegion(countryCode),
+    retrieveCart(undefined, "id,region_id,completed_at", "no-store"),
+  ])
 
   if (!region) {
     throw new Error(`Region not found for country code: ${countryCode}`)
   }
 
-  let cart = await retrieveCart(undefined, "id,region_id")
+  // Payment may complete in another tab or through a webhook. Check the live
+  // cart before reusing it, since cached data can still show it as open.
+  let cart = existingCart
 
   const headers = {
     ...(await getAuthHeaders()),
   }
 
-  if (!cart) {
+  if (!cart || cart.completed_at) {
     const locale = await getLocale()
     const cartResp = await sdk.store.cart.create(
       { region_id: region.id, locale: locale || undefined },
@@ -121,10 +131,12 @@ export async function addToCart({
   variantId,
   quantity,
   countryCode,
+  redirectToCart = false,
 }: {
   variantId: string
   quantity: number
   countryCode: string
+  redirectToCart?: boolean
 }) {
   if (!variantId) {
     throw new Error("Missing variant ID when adding to cart")
@@ -140,14 +152,14 @@ export async function addToCart({
     ...(await getAuthHeaders()),
   }
 
-  return sdk.store.cart
+  const result = await sdk.store.cart
     .createLineItem(
       cart.id,
       {
         variant_id: variantId,
         quantity,
       },
-      {},
+      { fields: "id,items.variant_id,items.quantity" },
       headers
     )
     .then(async ({ cart }) => {
@@ -166,6 +178,13 @@ export async function addToCart({
       }
       return medusaError(error)
     })
+
+  // Redirect before Next renders the product page again after invalidation.
+  // Keep this outside the API error handler: redirect throws a Next control signal.
+  if (result.ok && redirectToCart) {
+    redirect(`/${storefrontSegment(countryCode, await getLocale())}/cart`)
+  }
+  return result
 }
 
 export async function updateLineItem({
@@ -240,7 +259,7 @@ export async function setShippingMethod({
   }
 
   return sdk.store.cart
-    .addShippingMethod(cartId, { option_id: shippingMethodId }, {}, headers)
+    .addShippingMethod(cartId, { option_id: shippingMethodId }, { fields: "id" }, headers)
     .then(async () => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
@@ -275,6 +294,7 @@ export async function initiatePaymentSession(
   return sdk.store.payment
     .initiatePaymentSession(cart, data, {}, headers)
     .then(async (resp) => {
+      if (isMollie(data.provider_id)) await rememberMollieCart(cart.id)
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
       return resp

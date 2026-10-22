@@ -13,6 +13,7 @@ import { getProductCopy } from "../i18n"
 import styles from "../components/product-detail/styles.module.css"
 import { retrieveCart } from "@lib/data/cart"
 import { cartVariantQuantities } from "@lib/util/cart-inventory"
+import PageEntryScroll from "@modules/common/components/page-entry-scroll"
 
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
@@ -27,6 +28,7 @@ const ProductTemplate = async ({ product, region, countryCode, images, selectedV
   const cart = await retrieveCart()
   const copy = getProductCopy(countryCode)
   return <div className={styles.page}>
+    <PageEntryScroll />
     <Breadcrumbs locale={countryCode} items={[
       { label: copy.back, href: "/store" },
       { label: product.title ?? "" },

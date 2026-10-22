@@ -22,18 +22,30 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const json = (data: Record<string, unknown>, status = 200) =>
     NextResponse.json(data, { status, headers: { "Cache-Control": "no-store" } })
-  if (req.headers.get("origin") !== req.nextUrl.origin)
+  // HTTPS proxies can expose an internal HTTP origin to Next.js. Trust only
+  // the explicit storefront configuration in addition to the request origin.
+  const storefrontOrigin = process.env.NEXT_PUBLIC_BASE_URL
+    ? new URL(process.env.NEXT_PUBLIC_BASE_URL).origin
+    : req.nextUrl.origin
+  const origin = req.headers.get("origin")
+  if (origin !== req.nextUrl.origin && origin !== storefrontOrigin)
     return json({ status: "invalid" }, 403)
   const currentCartId = req.cookies.get("_medusa_cart_id")?.value
   const cartId = req.nextUrl.searchParams.get("cart_id") || currentCartId
-  if (!currentCartId || !cartId || cartId !== currentCartId || !/^cart_[\w]+$/.test(cartId))
+  if (!cartId || !/^cart_[\w]+$/.test(cartId))
     return json({ status: "invalid" })
   const token = req.cookies.get("_medusa_jwt")?.value
+  const remembered = req.cookies.get(`_medusa_mollie_${cartId}`)?.value === cartId
+  const browserOwnsCart = cartId === currentCartId || remembered
+  if (!browserOwnsCart && !token) {
+    console.warn("[Mollie return] No browser payment reference", { cart_id: cartId, has_current_cart: !!currentCartId })
+    return json({ status: "invalid" })
+  }
   const headers: Record<string, string> = token ? { authorization: `Bearer ${token}` } : {}
   const locale = req.cookies.get("_medusa_locale")?.value || "en"
   const retrieve = () => sdk.client.fetch<HttpTypes.StoreCartResponse>(`/store/carts/${cartId}`, {
     headers,
-    query: { fields: "*payment_collection.payment_sessions,*shipping_address" },
+    query: { fields: "id,customer_id,completed_at,*payment_collection.payment_sessions,*shipping_address" },
     cache: "no-store",
   }).then(({ cart }) => cart)
   let cart: HttpTypes.StoreCart
@@ -41,6 +53,20 @@ export async function POST(req: NextRequest) {
     cart = await retrieve()
   } catch {
     return json({ status: "error" })
+  }
+  if (!browserOwnsCart) {
+    // Older payments have no dedicated return cookie. Recover them only for
+    // the authenticated owner, never from the cart ID in a URL alone.
+    try {
+      const { customer } = await sdk.store.customer.retrieve({ fields: "id" }, headers)
+      if (!cart.customer_id || customer.id !== cart.customer_id) {
+        console.warn("[Mollie return] Customer does not own payment cart", { cart_id: cartId })
+        return json({ status: "invalid" })
+      }
+    } catch (error) {
+      const status = (error as { status?: number })?.status
+      return json({ status: status === 401 || status === 403 ? "invalid" : "error" })
+    }
   }
   const country = cart.shipping_address?.country_code?.toLowerCase()
   const segment = storefrontSegment(country && /^[a-z]{2}$/.test(country) ? country : "dk", locale)
@@ -71,7 +97,12 @@ export async function POST(req: NextRequest) {
       }
     }
     const response = json({ status: "confirmed", order_url: `/${segment}/order/${result.order.id}/confirmed` })
-    response.cookies.set("_medusa_cart_id", "", { maxAge: -1, path: "/" })
+    response.cookies.set(`_medusa_mollie_${cartId}`, cartId, {
+      maxAge: 60 * 60 * 24 * 7, path: "/", httpOnly: true,
+      sameSite: "lax", secure: process.env.NODE_ENV === "production",
+    })
+    if (currentCartId === cartId)
+      response.cookies.set("_medusa_cart_id", "", { maxAge: -1, path: "/" })
     return response
   }
   try {

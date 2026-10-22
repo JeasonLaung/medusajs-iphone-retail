@@ -106,7 +106,7 @@ export default function ProductActions({ product, disabled, initialVariantId, ca
     setIsAdding(true)
     setFeedback(null)
     try {
-      const result = await addToCart({ variantId: selectedVariant.id, quantity: 1, countryCode })
+      const result = await addToCart({ variantId: selectedVariant.id, quantity: 1, countryCode, redirectToCart: true })
       if (result.ok) {
         setQuantities(result.quantities)
         setFeedback("added")

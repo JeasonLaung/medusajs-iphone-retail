@@ -1,0 +1,5032 @@
+{
+  "model": "iPhone 16 Plus",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2016%20Plus&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:27:13.283Z",
+  "http_status": 200,
+  "response_sha256": "4b02f529e7e3f63d2ce93c389432cc47a0c751b6d5682be062d42cd55737dc28",
+  "results": [
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 572,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 567
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 482.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 477.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 354.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 349.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 492.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 487.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 418.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 413.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 483.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 478.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 294.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 289.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 432.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 427.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 358.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 353.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 423.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 418.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 304.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 299.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 230.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 225.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 295.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 290.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 368.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 363.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 433.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 428.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 359.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 354.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 244.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 239.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 170.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 165.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 235.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 230.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 308.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 303.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 373.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 368.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 299.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 294.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 180.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 175.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 245.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 240.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 171.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 166.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 309.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 304.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 120.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 115.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 185.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 180.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 111.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 106.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 249.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 244.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 121.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 116.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": "",
+        "fixed_price": 56.98
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 540,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 450.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 322.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 460.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 386.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 451.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 262.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 400.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 326.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 391.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 198.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 263.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 336.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 401.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 327.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 212.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 138.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 276.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 341.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 148.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 213.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 139.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 277.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 153.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 217.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 89.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 610,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 520.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 392.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 530.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 456.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 521.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 332.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 470.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 396.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 461.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 342.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 268.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 333.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 406.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 471.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 397.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 282.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 273.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 346.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 411.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 337.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 218.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 283.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 209.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 347.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 149.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 287.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 159.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 99.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 440,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 350.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 360.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 286.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 351.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 162.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 300.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 226.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 291.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 98.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 163.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 236.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 301.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 103.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 176.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 241.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 167.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 48.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 113.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 177.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 53.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 640,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 550.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 422.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 560.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 486.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 551.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 362.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 500.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 426.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 491.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 372.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 298.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 363.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 436.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 501.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 427.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 312.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 238.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 303.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 376.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 441.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 367.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 248.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 313.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 239.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 377.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 188.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 253.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 317.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 189.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.98,
+        "currency": "EUR",
+        "limit_price": 45,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 645,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 640
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 551.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 546.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 423.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 418.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 561.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 556.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 487.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 482.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 552.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 547.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 363.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 358.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 501.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 496.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 427.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 422.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 492.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 487.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 373.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 368.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 299.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 294.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 364.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 359.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 437.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 432.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 502.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 497.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 428.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 423.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 313.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 308.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 239.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 234.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 304.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 299.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 377.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 372.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 442.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 437.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 368.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 363.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 249.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 244.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 314.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 309.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 240.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 235.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 378.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 373.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 189.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 184.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 254.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 249.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 180.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 175.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 318.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 313.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 190.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 185.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": "",
+        "fixed_price": 125.64
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 615,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 521.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 393.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 531.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 457.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 522.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 333.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 471.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 397.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 462.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 343.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 334.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 407.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 472.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 398.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 283.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 209.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 274.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 347.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 412.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 338.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 219.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 284.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 210.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 348.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 159.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 224.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 150.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 288.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 160.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 100.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 685,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 591.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 463.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 601.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 527.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 592.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 403.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 541.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 467.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 532.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 413.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 339.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 404.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 477.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 542.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 468.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 353.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 279.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 344.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 417.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 482.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 408.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 289.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 354.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 280.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 418.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 294.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 220.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 358.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 230.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 170.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 542,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 448.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 320.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 458.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 384.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 449.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 260.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 398.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 324.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 389.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 270.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 196.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 261.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 334.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 399.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 325.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 210.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 201.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 274.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 339.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 265.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 146.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 211.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 137.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 275.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 151.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 77.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 729,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 635.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 507.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 645.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 571.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 636.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 447.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 585.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 511.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 576.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 457.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 383.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 448.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 521.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 586.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 512.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 397.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 323.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 388.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 461.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 526.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 452.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 333.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 398.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 324.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 462.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 273.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 338.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 264.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 402.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 274.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 214.64,
+        "currency": "EUR",
+        "limit_price": 57,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 320
+}

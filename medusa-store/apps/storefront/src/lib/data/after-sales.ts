@@ -2,6 +2,7 @@
 
 import { sdk } from "@lib/config"
 import { getAuthHeaders } from "./cookies"
+import { getAfterSalesErrorKey } from "@lib/util/after-sales-error"
 
 export type OrderDevice = { id: string; assignment_id: string; item_id: string; serial_number: string | null; imei: string | null; status: string; replacement_of: string | null; tracking_number: string | null }
 export async function listOrderDevices(orderId: string): Promise<OrderDevice[]> {
@@ -42,15 +43,15 @@ export async function submitAfterSales(orderId: string, body: {
   items: { item_id: string; quantity: number; device_ids?: string[] }[]
 }) {
   const headers = await getAuthHeaders()
-  if (!headers.authorization) return { request: null, error: "Sign in to request after-sales support." }
+  if (!headers.authorization) return { request: null, error: "Sign in to request after-sales support.", errorKey: "afterSalesLogin" as const }
   try {
     const { request } = await sdk.client.fetch<{ request: AfterSalesRequest }>(`/store/orders/${orderId}/after-sales`, {
       method: "POST", headers, body, cache: "no-store",
     })
-    return { request, error: null }
+    return { request, error: null, errorKey: null }
   } catch (error) {
     const status = (error as { status?: number }).status
-    return { request: null, error: status === 401 ? "Your session expired. Please sign in again."
+    return { request: null, errorKey: getAfterSalesErrorKey(error), error: status === 401 ? "Your session expired. Please sign in again."
       : status === 404 ? "This order is not linked to your account."
       : status === 400 || status === 409 ? (error as Error).message
       : "Unable to submit your request. Please try again." }

@@ -107,7 +107,7 @@ export default function AfterSales({ order }: { order: HttpTypes.StoreOrder }) {
         items,
       })
       if (result.error) {
-        setError(t("submitRequestError"))
+        setError(t(result.errorKey || "submitRequestError"))
         return
       }
       if (result.request) {

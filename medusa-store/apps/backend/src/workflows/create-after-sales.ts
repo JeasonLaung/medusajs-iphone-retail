@@ -1,6 +1,6 @@
 import { createStep, createWorkflow, StepResponse, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/framework/utils"
-import { acquireLockStep, releaseLockStep } from "@medusajs/medusa/core-flows"
+import { acquireLockStep, emitEventStep, releaseLockStep } from "@medusajs/medusa/core-flows"
 import { AFTER_SALES_MODULE } from "../modules/after-sales"
 import AfterSalesModuleService from "../modules/after-sales/service"
 import { serializeAfterSales } from "../modules/after-sales/serialize"
@@ -14,7 +14,7 @@ const createRequestStep = createStep("create-request", async (input: Input, { co
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
   const { data: orders } = await query.graph({
     entity: "order",
-    fields: ["id", "customer_id", "status", "items.id", "items.variant_id", "items.detail.quantity", "items.title"],
+    fields: ["id", "customer_id", "status", "items.id", "items.variant_id", "items.detail.quantity", "items.title", "fulfillments.shipped_at", "fulfillments.canceled_at", "fulfillments.items.line_item_id", "fulfillments.items.quantity"],
     filters: { id: input.order_id },
   })
   const order = orders[0]
@@ -35,9 +35,17 @@ const createRequestStep = createStep("create-request", async (input: Input, { co
       throw new MedusaError(MedusaError.Types.INVALID_DATA, "Choose valid order items and quantities")
     }
     ids.add(requested.item_id)
+    const shippedQuantity = (order.fulfillments || [])
+      .filter((fulfillment) => fulfillment?.shipped_at && !fulfillment.canceled_at)
+      .flatMap((fulfillment) => fulfillment?.items || [])
+      .filter((line) => line?.line_item_id === item.id)
+      .reduce((total, line) => total + Number(line?.quantity || 0), 0)
+    // Unshipped returns are reviewed by support without requiring a physical device.
+    const unshippedReturn = input.type === "return" && !requested.device_ids?.length
+      && requested.quantity <= available - shippedQuantity
     if (managed.some((v) => v.variant_id === item.variant_id)) {
       const deviceIds = requested.device_ids || []
-      if (deviceIds.length !== requested.quantity || new Set(deviceIds).size !== deviceIds.length || !deviceIds.every((id) => assignments.some((a) => a.device_id === id && a.item_id === item.id))) {
+      if (!unshippedReturn && (deviceIds.length !== requested.quantity || new Set(deviceIds).size !== deviceIds.length || !deviceIds.every((id) => assignments.some((a) => a.device_id === id && a.item_id === item.id)))) {
         throw new MedusaError(MedusaError.Types.INVALID_DATA, "Select the shipped devices for this order item")
       }
     } else if (requested.device_ids?.length) {
@@ -71,6 +79,10 @@ const createRequestStep = createStep("create-request", async (input: Input, { co
 export const createAfterSalesWorkflow = createWorkflow("create-after-sales", (input: Input) => {
   acquireLockStep({ key: input.order_id, timeout: 10, ttl: 60 })
   const request = createRequestStep(input)
+  emitEventStep({
+    eventName: "after_sales.created",
+    data: { id: request.id, order_id: request.order_id, type: request.type },
+  })
   releaseLockStep({ key: input.order_id })
   return new WorkflowResponse(request)
 })

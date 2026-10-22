@@ -1,25 +1,14 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { Star, StarSolid } from "@medusajs/icons"
+import { StarSolid } from "@medusajs/icons"
+import Rating from "@modules/common/components/rating"
 import { listProductReviews } from "@lib/data/product-reviews"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import type { ProductReviewPage } from "types/product-reviews"
 import { getReviewCopy } from "./i18n"
 import ReviewForm from "./review-form"
 import styles from "./styles.module.css"
-
-const Stars = ({ rating }: { rating: number }) => (
-  <span className={styles.starIcons} aria-hidden="true">
-    {[1, 2, 3, 4, 5].map((value) =>
-      value <= Math.round(rating) ? (
-        <StarSolid key={value} />
-      ) : (
-        <Star key={value} />
-      )
-    )}
-  </span>
-)
 
 export default function ReviewSection({
   productId,
@@ -132,9 +121,9 @@ export default function ReviewSection({
                 }).format(page.average)}
               </strong>
               <span className={styles.muted}>{copy.outOf}</span>
-              <p className={styles.stars} aria-label={starsLabel(page.average)}>
-                <Stars rating={page.average} />
-              </p>
+              <div className={styles.stars}>
+                <Rating value={page.average} label={starsLabel(page.average)} showValue={false} />
+              </div>
               <p>
                 {copy.count.replace(
                   "{count}",
@@ -184,12 +173,9 @@ export default function ReviewSection({
                   {review.verified_purchase && (
                     <span className={styles.verified}>{copy.verified}</span>
                   )}
-                  <p
-                    className={styles.stars}
-                    aria-label={starsLabel(review.rating)}
-                  >
-                    <Stars rating={review.rating} />
-                  </p>
+                  <div className={styles.stars}>
+                    <Rating value={review.rating} label={starsLabel(review.rating)} />
+                  </div>
                   <h3>{review.title}</h3>
                   <p className={styles.content}>{review.content}</p>
                 </article>
@@ -229,7 +215,7 @@ export default function ReviewSection({
         {page?.count === 0 && (
           <div className={styles.empty}>
             <span className={styles.emptyStars}>
-              <Stars rating={0} />
+              <Rating value={0} label={starsLabel(0)} size={30} showValue={false} />
             </span>
             <h3>{copy.empty}</h3>
             <p>{copy.emptyDescription}</p>

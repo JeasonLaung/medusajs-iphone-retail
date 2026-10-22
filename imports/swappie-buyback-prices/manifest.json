@@ -1,0 +1,288 @@
+{
+  "source": "https://swappie.com/api/sell/api/v3/prices/",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "requested_at": "2026-10-22T08:25:01.456Z",
+  "delay_ms": 5000,
+  "models": [
+    "iPhone 14",
+    "iPhone 15 Pro",
+    "iPhone 15",
+    "iPhone 13",
+    "iPhone 14 Pro",
+    "iPhone 15 Pro Max",
+    "iPhone 13 Pro",
+    "iPhone 13 mini",
+    "iPhone 12",
+    "iPhone 16 Pro",
+    "iPhone 14 Pro Max",
+    "iPhone 16 Pro Max",
+    "iPhone 12 mini",
+    "iPhone 13 Pro Max",
+    "iPhone 11",
+    "iPhone 15 Plus",
+    "iPhone 16",
+    "iPhone 12 Pro",
+    "iPhone SE 2022",
+    "iPhone 14 Plus",
+    "iPhone 12 Pro Max",
+    "iPhone 11 Pro",
+    "iPhone 16 Plus",
+    "iPhone 17 Pro",
+    "iPhone 16e",
+    "iPhone 17 Pro Max",
+    "iPhone SE 2020",
+    "iPhone Air",
+    "iPhone 17",
+    "iPhone 17e"
+  ],
+  "files": [
+    {
+      "model": "iPhone 14",
+      "file": "01-iphone-14.json",
+      "fetched_at": "2026-10-22T08:25:01.457Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "4d4a18e53d6b9266b663b5dd8b9cdab13bde48c152e82f474d01ed6b884c55c3"
+    },
+    {
+      "model": "iPhone 15 Pro",
+      "file": "02-iphone-15-pro.json",
+      "fetched_at": "2026-10-22T08:25:07.922Z",
+      "http_status": 200,
+      "total": 480,
+      "response_sha256": "55886b2b5b1048dd98fee7c1521b67f5fc76ea2125593da2a8429737b1864760"
+    },
+    {
+      "model": "iPhone 15",
+      "file": "03-iphone-15.json",
+      "fetched_at": "2026-10-22T08:25:14.085Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "a52cd532a50ed294e068484a01095e4117e44084140701d6a00ae4b003cc0c31"
+    },
+    {
+      "model": "iPhone 13",
+      "file": "04-iphone-13.json",
+      "fetched_at": "2026-10-22T08:25:19.880Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "1a267add4140a7a7353de3af64d02911ac6d28c55cbc6064039da6974d98ebc7"
+    },
+    {
+      "model": "iPhone 14 Pro",
+      "file": "05-iphone-14-pro.json",
+      "fetched_at": "2026-10-22T08:25:26.032Z",
+      "http_status": 200,
+      "total": 480,
+      "response_sha256": "02a71806f21256c98388e3e765f1780ce48dcb85bf348b9a11c62948d73f978b"
+    },
+    {
+      "model": "iPhone 15 Pro Max",
+      "file": "06-iphone-15-pro-max.json",
+      "fetched_at": "2026-10-22T08:25:32.225Z",
+      "http_status": 200,
+      "total": 480,
+      "response_sha256": "90f0e28f30007f3f88c7166ebe3daf1aa66c83d4c30acf4706ffe710c1f3388c"
+    },
+    {
+      "model": "iPhone 13 Pro",
+      "file": "07-iphone-13-pro.json",
+      "fetched_at": "2026-10-22T08:25:38.454Z",
+      "http_status": 200,
+      "total": 480,
+      "response_sha256": "fc4572f986770b72edc0c8569d8de861b1f3056150b0b0875449d9ef983a2e30"
+    },
+    {
+      "model": "iPhone 13 mini",
+      "file": "08-iphone-13-mini.json",
+      "fetched_at": "2026-10-22T08:25:44.411Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "3e635d17e083d084d7bc9ecd593edd04917483719aca5896e0edb6e993e155f2"
+    },
+    {
+      "model": "iPhone 12",
+      "file": "09-iphone-12.json",
+      "fetched_at": "2026-10-22T08:25:50.495Z",
+      "http_status": 200,
+      "total": 160,
+      "response_sha256": "e36dd4974cd8d883f626088b3a0b3151aff097a4db51b75393a6560fd9972eeb"
+    },
+    {
+      "model": "iPhone 16 Pro",
+      "file": "10-iphone-16-pro.json",
+      "fetched_at": "2026-10-22T08:25:56.571Z",
+      "http_status": 200,
+      "total": 480,
+      "response_sha256": "7676a548d1b49c91076da8464a49db349774c3ddc524e4a2249413fbe40278a6"
+    },
+    {
+      "model": "iPhone 14 Pro Max",
+      "file": "11-iphone-14-pro-max.json",
+      "fetched_at": "2026-10-22T08:26:02.662Z",
+      "http_status": 200,
+      "total": 480,
+      "response_sha256": "3cf016472c4db71a718721722828eac09f7886fbc9f4001b85b06d51db85c5e1"
+    },
+    {
+      "model": "iPhone 16 Pro Max",
+      "file": "12-iphone-16-pro-max.json",
+      "fetched_at": "2026-10-22T08:26:08.399Z",
+      "http_status": 200,
+      "total": 480,
+      "response_sha256": "4a02d691518f1c86bb5891cd16ce508a004e7fc210bd86220d9bc14bf89a30c3"
+    },
+    {
+      "model": "iPhone 12 mini",
+      "file": "13-iphone-12-mini.json",
+      "fetched_at": "2026-10-22T08:26:14.552Z",
+      "http_status": 200,
+      "total": 160,
+      "response_sha256": "3c2d29dd04138bc7ddd73710f914793aa639a4a917a31dcce9fcb932e961c33f"
+    },
+    {
+      "model": "iPhone 13 Pro Max",
+      "file": "14-iphone-13-pro-max.json",
+      "fetched_at": "2026-10-22T08:26:20.268Z",
+      "http_status": 200,
+      "total": 480,
+      "response_sha256": "02222f88e160bb0c90230037e9d57b24b9715b18d7caef05d063fc2a00292808"
+    },
+    {
+      "model": "iPhone 11",
+      "file": "15-iphone-11.json",
+      "fetched_at": "2026-10-22T08:26:26.263Z",
+      "http_status": 200,
+      "total": 160,
+      "response_sha256": "0306b18af1829523abe7e6cd6da0a13971f76353ebd5e15bdddc783a72e8bdb2"
+    },
+    {
+      "model": "iPhone 15 Plus",
+      "file": "16-iphone-15-plus.json",
+      "fetched_at": "2026-10-22T08:26:32.105Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "666f4dc1a23dedb12d522861c721fc335956dc9dc1d63a93a58e240780c8c3b1"
+    },
+    {
+      "model": "iPhone 16",
+      "file": "17-iphone-16.json",
+      "fetched_at": "2026-10-22T08:26:37.879Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "b23908bdcf9a5b9a52064af5a7573d30e3a173dbd07bf7b6337694c3e94bb8d3"
+    },
+    {
+      "model": "iPhone 12 Pro",
+      "file": "18-iphone-12-pro.json",
+      "fetched_at": "2026-10-22T08:26:43.971Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "ae781bbafd3f5ee3c053f9a120735fa1c0da5a0afdb20ab19975cfa9933cb88e"
+    },
+    {
+      "model": "iPhone SE 2022",
+      "file": "19-iphone-se-2022.json",
+      "fetched_at": "2026-10-22T08:26:49.805Z",
+      "http_status": 200,
+      "total": 160,
+      "response_sha256": "1f8c6b3e464c08b7aca8848e978b46419a7345b91d37e9a221fd98644d8fbd81"
+    },
+    {
+      "model": "iPhone 14 Plus",
+      "file": "20-iphone-14-plus.json",
+      "fetched_at": "2026-10-22T08:26:55.559Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "3050e241498644c3a9f0030db94838c334c2e937877ef2963b083a7c8d14132c"
+    },
+    {
+      "model": "iPhone 12 Pro Max",
+      "file": "21-iphone-12-pro-max.json",
+      "fetched_at": "2026-10-22T08:27:01.451Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "034876797c7bdefc9a5da1c70d854a27b976de403f3ed9989b847e8998c5c715"
+    },
+    {
+      "model": "iPhone 11 Pro",
+      "file": "22-iphone-11-pro.json",
+      "fetched_at": "2026-10-22T08:27:07.223Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "8bbf6b5c276e653f07ae04239d8056bb68169057dfe0f943cbf8e0bad9d31f7e"
+    },
+    {
+      "model": "iPhone 16 Plus",
+      "file": "23-iphone-16-plus.json",
+      "fetched_at": "2026-10-22T08:27:13.283Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "4b02f529e7e3f63d2ce93c389432cc47a0c751b6d5682be062d42cd55737dc28"
+    },
+    {
+      "model": "iPhone 17 Pro",
+      "file": "24-iphone-17-pro.json",
+      "fetched_at": "2026-10-22T08:27:19.181Z",
+      "http_status": 200,
+      "total": 480,
+      "response_sha256": "6fd1c762d1555030899a142a02cde0cc034ffe837d2eb9c1dcee561d1757e668"
+    },
+    {
+      "model": "iPhone 16e",
+      "file": "25-iphone-16e.json",
+      "fetched_at": "2026-10-22T08:27:24.940Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "51ef2658e26c1a219fc61c591bfbafc11d62a02f6d07a3ab43cdf94971b0b21e"
+    },
+    {
+      "model": "iPhone 17 Pro Max",
+      "file": "26-iphone-17-pro-max.json",
+      "fetched_at": "2026-10-22T08:27:30.762Z",
+      "http_status": 200,
+      "total": 640,
+      "response_sha256": "96bb543492fb7bd91378f3760c616f5976a4bb7b5b59b89c5f7f8471d78dda28"
+    },
+    {
+      "model": "iPhone SE 2020",
+      "file": "27-iphone-se-2020.json",
+      "fetched_at": "2026-10-22T08:27:35.990Z",
+      "http_status": 200,
+      "total": 160,
+      "response_sha256": "c281387279b3ac2b59cc42d8148d66c62de9681c9da5afbf0e7ff0aa5ecfea41"
+    },
+    {
+      "model": "iPhone Air",
+      "file": "28-iphone-air.json",
+      "fetched_at": "2026-10-22T08:27:42.186Z",
+      "http_status": 200,
+      "total": 480,
+      "response_sha256": "fd87e1b3d86fbb8858ebdffe579fab0b851547338587682efdcefdc350a1e28e"
+    },
+    {
+      "model": "iPhone 17",
+      "file": "29-iphone-17.json",
+      "fetched_at": "2026-10-22T08:27:48.838Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "a77a6e7eab3797ec7c048e4ac8454d395daab6a8abea48daa0a4edbd3f5719e7"
+    },
+    {
+      "model": "iPhone 17e",
+      "file": "30-iphone-17e.json",
+      "fetched_at": "2026-10-22T08:27:54.611Z",
+      "http_status": 200,
+      "total": 320,
+      "response_sha256": "8e6bb49a1901225b4ff07431da5836640537599b6eb683e6ac70d19a5e75f572"
+    }
+  ],
+  "completed_at": "2026-10-22T08:27:55.684Z"
+}

@@ -1,0 +1,2525 @@
+{
+  "model": "iPhone 12",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2012&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:25:50.495Z",
+  "http_status": 200,
+  "response_sha256": "e36dd4974cd8d883f626088b3a0b3151aff097a4db51b75393a6560fd9972eeb",
+  "results": [
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 111,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 28.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 56.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 28.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 95,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 90
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 40.39
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 12.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 7.39
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 54.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 49.39
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 40.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 35.39
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 12.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 7.39
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": "",
+        "fixed_price": 6
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 143,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 60.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 102.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 34.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 60.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 27.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 13.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 13.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 79,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 29.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 38.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 24.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 158,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 75.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 49.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 103.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 75.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 42.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 28.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 28.39,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 11,
+        "currency": "EUR",
+        "limit_price": 11,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 160
+}

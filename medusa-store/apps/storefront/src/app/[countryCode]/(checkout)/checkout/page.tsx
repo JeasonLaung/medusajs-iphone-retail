@@ -27,7 +27,8 @@ export default async function Checkout({ params, searchParams }: Props) {
     next.set("step", step)
     redirect(`/${countryCode}/checkout?${next}`)
   }
-  const customer = await retrieveCustomer()
+  // Customer addresses are only used by the address form.
+  const customer = step === "address" ? await retrieveCustomer() : null
   return <div className={styles.page}>
     <CheckoutProgress step={step} />
     <div className={styles.columns}>

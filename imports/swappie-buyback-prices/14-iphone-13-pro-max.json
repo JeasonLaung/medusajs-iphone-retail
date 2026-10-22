@@ -1,0 +1,7539 @@
+{
+  "model": "iPhone 13 Pro Max",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2013%20Pro%20Max&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:26:20.268Z",
+  "http_status": 200,
+  "response_sha256": "02222f88e160bb0c90230037e9d57b24b9715b18d7caef05d063fc2a00292808",
+  "results": [
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 314,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 255.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 253.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 170.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 74.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 210.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 127.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 34.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 125.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 170.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 29.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 82.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 127.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 42.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 286,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 281
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 222.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 89.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 84.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 225.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 220.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 142.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 137.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 187.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 182.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 41.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 182.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 177.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 99.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 94.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 144.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 139.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 39.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 97.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 92.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 142.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 137.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 59.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 54.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 54.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 49.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 99.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 94.4
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 349,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 290.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 152.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 288.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 205.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 250.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 109.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 245.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 162.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 207.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 160.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 205.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 162.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 77.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 34.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 268,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 209.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 207.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 124.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 28.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 164.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 81.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 126.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 124.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 81.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 368,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 309.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 171.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 307.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 224.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 128.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 264.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 181.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 226.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 126.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 224.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 141.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 181.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 98.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 53.4,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 338,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 277.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 139.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 275.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 192.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 237.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 232.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 149.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 194.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 94.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 56.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 147.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 192.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 109.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 51.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 104.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 149.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 304,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 299
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 243.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 238.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 105.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 100.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 241.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 236.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 153.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 198.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 62.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 57.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 198.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 193.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 115.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 110.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 160.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 155.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 60.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 55.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 113.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 108.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 153.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 75.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 70.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 65.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 115.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 110.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 32.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 27.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25.28
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": "",
+        "fixed_price": 25
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 374,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 313.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 175.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 311.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 228.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 273.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 132.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 268.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 185.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 230.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 92.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 183.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 228.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 145.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 49.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 185.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 102.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 100.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 286,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 225.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 185.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 180.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 97.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 142.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 42.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 95.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 97.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 395,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 334.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 196.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 332.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 249.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 294.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 153.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 289.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 206.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 251.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 151.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 68.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 113.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 204.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 249.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 166.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 161.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 206.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 123.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 68.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 121.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 78.28,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30,
+        "currency": "EUR",
+        "limit_price": 30,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 371,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 306.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 168.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 304.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 221.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 266.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 125.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 261.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 178.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 123.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 40.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 85.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 176.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 221.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 138.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 80.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 42.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 133.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 178.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 95.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 40.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 50.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 334,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 329
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 264.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 131.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 126.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 262.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 184.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 179.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 224.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 83.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 224.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 219.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 141.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 136.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 181.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 81.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 31
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 48.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 43.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 139.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 134.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 184.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 179.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 101.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 96.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 38.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 31
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 31
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 91.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 141.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 136.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 58.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 53.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 31
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 31
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 31
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 56.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 51.95
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 31
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 31
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 31
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 31
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 31
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": "",
+        "fixed_price": 31
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 419,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 354.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 216.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 352.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 314.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 173.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 309.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 226.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 271.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 171.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 133.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 224.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 128.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 181.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 226.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 143.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 141.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 98.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 313,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 248.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 110.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 246.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 163.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 120.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 165.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 118.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 163.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 80.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 75.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 120.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 37.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 443,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 378.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 240.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 376.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 293.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 338.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 197.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 333.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 250.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 295.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 195.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 157.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 248.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 293.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 210.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 152.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 114.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 205.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 250.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 167.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 165.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.95,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36,
+        "currency": "EUR",
+        "limit_price": 36,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 480
+}

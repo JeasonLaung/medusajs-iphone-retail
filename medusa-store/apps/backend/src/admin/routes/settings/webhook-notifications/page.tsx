@@ -5,9 +5,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 import { sdk } from "../../../lib/sdk"
 import { notifyError } from "../../../lib/notifications"
+import { webhookEvents as eventNames } from "../../../../lib/webhook-events"
 
 const platforms = ["feishu", "wecom", "dingtalk", "slack", "mattermost", "generic"] as const
-const eventNames = ["order.placed", "order.canceled", "payment.captured", "shipment.created"] as const
 type Provider = typeof platforms[number]
 type Endpoint = {
   id: string; name: string; provider: Provider; keyword: string; enabled: boolean

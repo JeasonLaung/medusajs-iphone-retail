@@ -1,0 +1,7539 @@
+{
+  "model": "iPhone 14 Pro Max",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2014%20Pro%20Max&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:26:02.662Z",
+  "http_status": 200,
+  "response_sha256": "3cf016472c4db71a718721722828eac09f7886fbc9f4001b85b06d51db85c5e1",
+  "results": [
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 396,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 331.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 165.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 312.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 273.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 280.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 230.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 237.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 103.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 211.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 218.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 60.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 168.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 175.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 74.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 335,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 330
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 270.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 265.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 104.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 99.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 251.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 246.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 212.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 207.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 219.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 214.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 56.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 203.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 164.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 176.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 171.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 42.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 37.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 150.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 145.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 157.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 152.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 118.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 113.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 102.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 114.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 109.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 75.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 70.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 56.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 51.59
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": "",
+        "fixed_price": 30
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 459,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 394.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 228.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 375.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 336.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 343.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 185.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 332.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 293.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 300.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 166.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 127.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 134.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 274.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 281.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 242.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 123.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 84.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 91.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 231.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 238.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 199.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 180.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 137.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 315,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 250.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 84.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 231.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 192.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 199.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 188.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 149.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 156.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 137.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 98.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 94.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 516,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 451.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 285.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 432.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 393.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 400.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 242.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 389.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 350.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 357.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 184.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 191.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 331.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 338.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 299.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 180.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 141.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 148.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 288.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 295.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 256.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 237.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 194.59,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35,
+        "currency": "EUR",
+        "limit_price": 35,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 434,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 365.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 199.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 346.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 307.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 314.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 156.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 303.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 264.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 271.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 137.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 98.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 105.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 245.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 252.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 213.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 94.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 62.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 202.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 209.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 170.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 151.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 375,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 370
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 306.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 301.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 135.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 287.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 282.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 248.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 243.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 255.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 250.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 97.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 92.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 244.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 239.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 205.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 200.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 212.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 207.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 78.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 73.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 41.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 181.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 193.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 188.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 154.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 149.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 143.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 138.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 150.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 145.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 111.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 106.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 92.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 87.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 49.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 44.97
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 487,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 418.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 252.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 399.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 360.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 367.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 209.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 356.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 317.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 324.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 190.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 151.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 298.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 305.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 266.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 147.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 115.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 255.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 262.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 89.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 204.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 53.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 161.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 319,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 250.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 84.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 231.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 192.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 199.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 188.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 149.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 156.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 137.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 98.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 94.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 548,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 479.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 313.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 460.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 421.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 428.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 270.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 417.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 378.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 385.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 251.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 212.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 219.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 359.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 366.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 327.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 176.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 316.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 323.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 284.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 150.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 157.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 118.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 265.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 114.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 75.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 56.97,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 464,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 393.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 374.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 335.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 342.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 184.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 331.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 292.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 299.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 165.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 126.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 133.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 273.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 280.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 241.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 230.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 237.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 198.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 402,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 397
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 331.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 326.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 165.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 160.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 312.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 307.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 273.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 268.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 280.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 275.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 117.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 264.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 230.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 225.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 237.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 232.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 103.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 98.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 59.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 66.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 211.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 206.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 218.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 213.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 174.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 60.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 55.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 168.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 163.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 175.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 170.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 131.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 112.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 74.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 69.65
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": "",
+        "fixed_price": 36
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 521,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 450.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 284.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 431.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 392.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 399.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 241.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 388.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 349.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 356.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 183.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 190.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 330.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 337.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 298.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 147.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 287.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 294.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 255.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 121.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 128.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 89.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 236.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 78.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 85.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 193.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 347,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 276.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 110.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 257.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 218.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 225.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 214.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 175.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 182.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 48.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 156.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 163.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 124.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 113.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 120.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 81.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 62.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 581,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 510.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 344.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 491.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 452.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 459.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 301.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 448.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 409.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 416.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 282.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 243.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 250.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 390.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 397.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 358.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 239.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 200.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 207.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 347.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 354.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 315.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 181.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 188.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 149.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 296.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 138.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 145.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 106.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 253.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Pro Max 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.65,
+        "currency": "EUR",
+        "limit_price": 41,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 480
+}

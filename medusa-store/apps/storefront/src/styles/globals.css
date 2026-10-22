@@ -32,6 +32,10 @@
 @font-face { font-family: "DM Sans"; font-style: normal; font-weight: 700; font-display: swap; src: url("https://fonts.gstatic.com/s/dmsans/v17/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwARZthTg.ttf") format("truetype"); }
 
 @layer base {
+  :root {
+    --storefront-max-width: 1200px;
+  }
+
   html, body, button, input, textarea, select {
     font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   }
@@ -100,7 +104,7 @@
 
 @layer components {
   .content-container {
-    @apply max-w-[1440px] w-full mx-auto px-6;
+    @apply max-w-[var(--storefront-max-width)] w-full mx-auto px-6;
   }
 
   .contrast-btn {

@@ -120,6 +120,19 @@ export const getCartId = async () => {
   return cookies.get("_medusa_cart_id")?.value
 }
 
+// Keep payment returns independent of the active shopping cart. A completed
+// checkout clears that cart, and shopping in another tab may replace it.
+export const rememberMollieCart = async (cartId: string) => {
+  const cookies = await nextCookies()
+  cookies.set(`_medusa_mollie_${cartId}`, cartId, {
+    maxAge: 60 * 60 * 24 * 7,
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  })
+}
+
 // See the note on `setAuthToken`: `sameSite: "lax"` so the cart cookie survives
 // the cross-site return navigation from a redirect-based payment method.
 export const setCartId = async (cartId: string) => {

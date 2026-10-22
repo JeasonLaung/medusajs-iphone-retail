@@ -26,8 +26,8 @@
   "clearSecret": "清除签名密钥",
   "clearToken": "清除 Bearer 令牌",
   "security": "地址和凭据加密保存。仅允许使用 443 端口的公网 HTTPS 地址。测试前请先保存修改。",
-  "genericHelp": "通用 JSON 可接入 n8n 等自动化工具。字段：event、resource_id、text、timestamp。请使用已发布并启用 POST 的生产 Webhook。",
-  "deliveryHelp": "每个事件对每个通道尝试发送一次，失败会记录状态，暂不自动重试。事件通知仅包含资源 ID，不包含顾客资料。",
+  "genericHelp": "通用 JSON 可接入 n8n 等自动化工具。字段：event、resource_id、text、timestamp、notification（标题、明细和链接）。请使用已发布并启用 POST 的生产 Webhook。",
+  "deliveryHelp": "按订阅发送订单、支付、履约及售后事件。通知包含订单号、邮箱、收货地址、商品 SKU、金额、时间和后台处理链接；飞书使用可点击的富文本。每个事件对每个通道尝试发送一次，失败会记录状态，暂不自动重试。",
   "status": "最近发送",
   "never": "未发送",
   "success": "成功",
@@ -57,10 +57,27 @@
   "eventLabels": {
     "order": {
       "placed": "新订单",
-      "canceled": "订单取消"
+      "canceled": "订单取消",
+      "completed": "订单完成",
+      "fulfillment_created": "创建订单履约",
+      "fulfillment_canceled": "取消订单履约",
+      "return_requested": "确认退货",
+      "return_received": "退货收货",
+      "exchange_created": "确认换货",
+      "claim_created": "确认索赔"
     },
     "payment": {
-      "captured": "收款成功"
+      "captured": "收款成功",
+      "refunded": "退款成功"
+    },
+    "after_sales": {
+      "created": "新售后申请（退货 / 换货 / 维修）",
+      "processing": "售后处理中",
+      "completed": "售后完成",
+      "rejected": "售后拒绝"
+    },
+    "delivery": {
+      "created": "确认送达"
     },
     "shipment": {
       "created": "创建发货"

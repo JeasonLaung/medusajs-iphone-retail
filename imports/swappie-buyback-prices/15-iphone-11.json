@@ -1,0 +1,2525 @@
+{
+  "model": "iPhone 11",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2011&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:26:26.263Z",
+  "http_status": 200,
+  "response_sha256": "0306b18af1829523abe7e6cd6da0a13971f76353ebd5e15bdddc783a72e8bdb2",
+  "results": [
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 122,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 60.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 28.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 56.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 24.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 108,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 103
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 64.93
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 41.93
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 74.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 69.93
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 12.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 7.93
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 60.93
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 9.93
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 42.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 37.93
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 28.93
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 19.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 14.93
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 5.93
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 38.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 33.93
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 142,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 103.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 80.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 99.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 48.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 53.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 19.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 21.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 12.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 40.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 17.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 82,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 48.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 12.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 153,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 114.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 91.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 110.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 59.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 78.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 21.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 32.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 51.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 28.93,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 160
+}

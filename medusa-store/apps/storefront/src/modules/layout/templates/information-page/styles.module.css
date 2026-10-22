@@ -1,5 +1,5 @@
 .page { background: #f5f5f7; color: #1d1d1f; min-height: 60vh; padding: 80px 32px 96px; }
-.container { max-width: 1216px; margin: auto; }
+.container { max-width: var(--storefront-max-width); margin: auto; }
 .eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #737378; font-weight: 600; margin-bottom: 20px; }
 .page h1 { font-size: clamp(36px, 4.4vw, 58px); line-height: 1.12; letter-spacing: -.045em; font-weight: 600; }
 .description { font-size: 18px; line-height: 1.7; max-width: 660px; color: #616166; margin-top: 24px; }

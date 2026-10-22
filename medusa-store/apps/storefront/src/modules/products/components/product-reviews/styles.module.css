@@ -6,17 +6,14 @@
 .button:disabled, .link:disabled { opacity: .5; cursor: not-allowed; }
 .section button:focus-visible, .section a:focus-visible, .form button:focus-visible, .form a:focus-visible, .form input:focus-visible, .form textarea:focus-visible, .form select:focus-visible { outline: 3px solid var(--review-action); outline-offset: 4px; }
 .empty { background: var(--review-surface); border-radius: 24px; text-align: center; padding: 48px 24px; }
-.emptyStars { color: var(--review-muted); font-size: 32px; letter-spacing: 6px; }
+.emptyStars { display: inline-flex; }
 .empty h3 { font-size: 22px; font-weight: 600; margin: 16px 0 8px; }
 .empty p { color: var(--review-muted); font-size: 14px; line-height: 1.7; margin-top: 8px; }
 .layout { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 64px; }
 .summary { background: var(--review-surface); border-radius: 24px; padding: 28px; align-self: start; }
 .summary > strong { display: block; font-size: 56px; line-height: 1.1; font-weight: 600; letter-spacing: -.04em; }
 .summary > p { font-size: 14px; }
-.stars { color: var(--review-action); font-size: 19px; letter-spacing: 3px; margin: 10px 0; }
-.starIcons { display: inline-flex; align-items: center; gap: 4px; }
-.starIcons svg { width: 20px; height: 20px; }
-.emptyStars svg { width: 30px; height: 30px; }
+.stars { margin: 10px 0; }
 .ratingLabel { display: inline-flex; align-items: center; gap: 3px; }
 .ratingLabel svg { width: 12px; height: 12px; }
 .muted { font-size: 13px; color: var(--review-muted); line-height: 1.7; }
@@ -36,13 +33,7 @@
 .fields { border: 0; min-width: 0; width: 100%; max-width: 680px; }
 .fields > .muted { margin-bottom: 16px; }
 .fields legend { font-size: 14px; font-weight: 600; }
-.ratingOptions { display: flex; gap: 4px; margin: 10px 0 20px; }
-.ratingOptions label { position: relative; width: 44px; height: 44px; display: grid; place-items: center; cursor: pointer; border-radius: 8px; }
-.ratingOptions input { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
-.ratingOptions label:has(input:focus-visible) { outline: 3px solid var(--review-action); outline-offset: 2px; }
-.ratingOptions span { font-size: 30px; color: var(--review-muted); }
-.ratingOptions svg { width: 30px; height: 30px; }
-.ratingOptions span[data-active="true"] { color: var(--review-action); }
+.ratingOptions { margin: 10px 0 20px; }
 .label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 .fields > input, .fields textarea, .fields select { display: block; width: 100%; padding: 12px 14px; border: 1px solid var(--review-muted); background: #fff; color: var(--review-text); border-radius: 8px; font-size: 16px; line-height: 1.5; margin-bottom: 20px; }
 .fields > input::placeholder, .fields textarea::placeholder { color: var(--review-muted); opacity: 1; }

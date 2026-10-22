@@ -1,0 +1,5032 @@
+{
+  "model": "iPhone 14 Plus",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2014%20Plus&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:26:55.559Z",
+  "http_status": 200,
+  "response_sha256": "3050e241498644c3a9f0030db94838c334c2e937877ef2963b083a7c8d14132c",
+  "results": [
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 306,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 247.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 261.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 176.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 244.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 218.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 133.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 201.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 100.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 147.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 40.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 104.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 54.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 101.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 58.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 263,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 258
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 204.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 199.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 81.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 218.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 213.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 133.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 128.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 201.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 196.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 38.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 175.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 170.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 85.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 153.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 52.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 40.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 35.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 104.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 99.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 167.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 82.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 56.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 124.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 39.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 58.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 53.29
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": "",
+        "fixed_price": 21
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 332,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 273.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 155.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 287.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 202.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 270.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 244.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 159.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 126.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 109.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 173.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 241.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 156.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 198.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 113.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 80.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 127.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 37.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 84.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 246,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 187.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 201.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 116.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 184.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 73.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 141.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 40.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 155.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 27.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 349,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 290.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 304.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 219.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 287.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 261.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 176.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 244.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 143.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 58.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 126.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 190.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 258.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 173.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 100.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 147.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 29.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 97.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 144.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 54.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 101.29,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26,
+        "currency": "EUR",
+        "limit_price": 26,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 356,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 293.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 175.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 307.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 290.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 132.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 264.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 247.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 146.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 193.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 261.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 176.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 103.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 150.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 218.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 133.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 100.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 147.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 104.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 321,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 316
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 258.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 253.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 135.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 267.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 187.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 182.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 255.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 250.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 97.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 92.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 224.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 144.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 139.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 212.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 207.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 111.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 106.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 28
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 94.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 89.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 153.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 226.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 221.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 141.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 136.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 68.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 63.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 28
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 51.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 46.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 115.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 110.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 183.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 178.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 98.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 93.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 28
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 60.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 28
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 107.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 28
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 28
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 28
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 64.78
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 28
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": "",
+        "fixed_price": 28
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 387,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 324.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 206.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 338.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 253.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 321.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 163.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 295.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 210.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 278.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 177.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 92.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 160.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 224.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 292.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 207.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 134.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 49.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 181.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 249.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 164.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 63.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 131.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 178.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 135.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 300,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 237.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 251.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 166.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 234.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 123.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 191.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 73.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 137.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 205.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 120.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 94.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 162.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 77.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 91.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 48.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 408,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 345.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 359.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 274.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 342.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 184.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 316.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 231.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 299.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 198.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 113.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 181.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 245.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 313.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 228.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 155.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 138.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 202.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 270.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 185.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 84.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 152.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 199.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 109.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 156.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 38.78,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 14 Plus 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33,
+        "currency": "EUR",
+        "limit_price": 33,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 320
+}

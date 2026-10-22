@@ -25,8 +25,8 @@
 .review footer { display: flex; flex-direction: column; gap: 4px; margin-top: auto; font-size: 13px; }
 .review footer a { color: #0066cc; min-height: 44px; display: flex; align-items: center; }
 .section a:focus-visible, .article a:focus-visible { outline: 3px solid #0066cc; outline-offset: 4px; }
-.journal { max-width: 1280px; margin: auto; padding: 0 32px 80px; }
-.article { max-width: 800px; margin: auto; padding: 40px 24px 80px; color: #1d1d1f; }
+.journal { max-width: var(--storefront-max-width); margin: auto; padding: 0 32px 80px; }
+.article { max-width: var(--storefront-max-width); margin: auto; padding: 40px 24px 80px; color: #1d1d1f; }
 .article > h1 { font-size: clamp(34px, 5vw, 52px); line-height: 1.1; font-weight: 600; letter-spacing: -.04em; margin: 14px 0 20px; }
 .article > p { color: #6e6e73; line-height: 1.7; font-size: 18px; }
 .articleImage { position: relative; height: 300px; background: #f5f5f7; border-radius: 24px; margin: 32px 0; }

@@ -5,6 +5,7 @@ import Summary from "./summary"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getCartCopy } from "../i18n"
 import styles from "../styles.module.css"
+import PageEntryScroll from "@modules/common/components/page-entry-scroll"
 
 export default function CartTemplate({ cart, customer, locale, variants = {} }: {
   cart: HttpTypes.StoreCart | null
@@ -17,6 +18,7 @@ export default function CartTemplate({ cart, customer, locale, variants = {} }: 
   const count = items.reduce((sum, item) => sum + item.quantity, 0)
   const benefits = [[copy.chosenTitle, copy.chosenText], [copy.totalsTitle, copy.totalsText], [copy.checkoutTitle, copy.checkoutText]]
   return <div className={styles.page}><div className={styles.container} data-testid="cart-container">
+    <PageEntryScroll />
     {cart && items.length ? <CartInteractions><div className={styles.columns}>
       <section className={styles.card} aria-labelledby="cart-title">
         <div className={styles.cardHeading}><h1 id="cart-title">{copy.cart}</h1><span>{count} {copy.items}</span></div>

@@ -3,9 +3,11 @@ import { createHmac } from "node:crypto"
 import { lookup } from "node:dns/promises"
 import { BlockList, isIP } from "node:net"
 import { request } from "node:https"
+import { webhookEvents } from "../../lib/webhook-events"
+import type { WebhookMessage } from "./message"
 
 export const providers = ["feishu", "wecom", "dingtalk", "slack", "mattermost", "generic"] as const
-export const events = ["order.placed", "order.canceled", "payment.captured", "shipment.created"] as const
+export const events = webhookEvents
 export type Provider = typeof providers[number]
 export type Target = { provider: Provider; url: string; secret: string; token: string }
 const blocked = new BlockList()
@@ -23,36 +25,58 @@ export function validateUrl(value: string, provider: Provider) {
   if (host === "localhost" || host.endsWith(".localhost") || (isIP(host) && !publicAddress(host))) throw new MedusaError(MedusaError.Types.INVALID_DATA, "webhooks.errors.url")
   return url
 }
-export function buildRequest(target: Target, text: string, event: string, id: string, now = Date.now()) {
+export function buildRequest(target: Target, text: string, event: string, id: string, now = Date.now(), message?: WebhookMessage) {
   const url = validateUrl(target.url, target.provider)
   let body: Record<string, unknown>
   if (target.provider === "feishu") {
-    body = { msg_type: "text", content: { text } }
+    if (message) {
+      const paragraphs: Record<string, string>[][] = message.lines.map(line => [{ tag: "text", text: line }])
+      const links = message.links.map(link => [{ tag: "a", text: link.label, href: link.url }])
+      const post = { title: message.title, content: [...paragraphs, ...links] }
+      body = { msg_type: "post", content: { post: { [message.language === "zh" ? "zh_cn" : "en_us"]: post } } }
+      // Feishu limits robot messages to 20 KB. Keep the action links when shortening long orders.
+      let shortened = false
+      while (Buffer.byteLength(JSON.stringify(body)) > 18500 && paragraphs.length > 1) {
+        paragraphs.pop()
+        shortened = true
+        post.content = [...paragraphs, ...links]
+      }
+      if (shortened) post.content = [...paragraphs, [{ tag: "text", text: message.language === "zh" ? "更多明细请点击链接查看。" : "Follow the link for more details." }], ...links]
+    } else body = { msg_type: "text", content: { text } }
     if (target.secret) {
       const timestamp = String(Math.floor(now / 1000))
       body.timestamp = timestamp
       body.sign = createHmac("sha256", `${timestamp}\n${target.secret}`).update("").digest("base64")
     }
   } else if (target.provider === "wecom" || target.provider === "dingtalk") {
+    if (target.provider === "wecom" && message && Buffer.byteLength(text) > 2000) {
+      const lines = [...message.lines]
+      const suffix = message.links.map(link => `${link.label}: ${link.url}`).join("\n")
+      do { lines.pop(); text = [message.title, ...lines, "…", suffix].join("\n") } while (lines.length && Buffer.byteLength(text) > 2000)
+    }
     body = { msgtype: "text", text: { content: text } }
     if (target.provider === "dingtalk" && target.secret) {
       url.searchParams.set("timestamp", String(now))
       url.searchParams.set("sign", createHmac("sha256", target.secret).update(`${now}\n${target.secret}`).digest("base64"))
     }
   } else if (target.provider === "generic") {
-    body = { event, resource_id: id, text, timestamp: new Date(now).toISOString() }
-  } else body = { text }
+    body = { event, resource_id: id, text, timestamp: new Date(now).toISOString(), ...(message ? { notification: message } : {}) }
+  } else body = { text: target.provider === "slack" && message ? text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : text }
   return { url, body }
 }
-export async function deliver(target: Target, text: string, event: string, id: string) {
-  const { url, body } = buildRequest(target, text, event, id)
+export async function deliver(target: Target, text: string, event: string, id: string, message?: WebhookMessage) {
+  const { url, body } = buildRequest(target, text, event, id, Date.now(), message)
   const addresses = await lookup(url.hostname, { all: true })
   if (!addresses.length || addresses.some(a => !publicAddress(a.address))) throw new MedusaError(MedusaError.Types.INVALID_DATA, "webhooks.errors.url")
   const selected = addresses[0]
   const payload = JSON.stringify(body)
   // Pin the checked DNS result to this connection and refuse redirects.
   const result = await new Promise<string>((resolve, reject) => {
-    const req = request(url, { method: "POST", lookup: (_host, _options, cb) => cb(null, selected.address, selected.family), headers: { "Content-Type": "application/json", "Content-Length": Buffer.byteLength(payload), ...(target.provider === "generic" && target.token ? { Authorization: `Bearer ${target.token}` } : {}) } }, res => {
+    const req = request(url, { method: "POST", lookup: (_host, options, cb) => {
+      // Node's automatic family selection requests an array when all is true.
+      if (options.all) cb(null, [selected])
+      else cb(null, selected.address, selected.family)
+    }, headers: { "Content-Type": "application/json", "Content-Length": Buffer.byteLength(payload), ...(target.provider === "generic" && target.token ? { Authorization: `Bearer ${target.token}` } : {}) } }, res => {
       let response = ""
       res.on("data", chunk => { response += chunk; if (response.length > 65536) req.destroy(new MedusaError(MedusaError.Types.INVALID_DATA, "webhooks.errors.delivery")) })
       res.on("error", reject)

@@ -1,0 +1,5032 @@
+{
+  "model": "iPhone 13",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2013&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:25:19.880Z",
+  "http_status": 200,
+  "response_sha256": "1a267add4140a7a7353de3af64d02911ac6d28c55cbc6064039da6974d98ebc7",
+  "results": [
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 204,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 150.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 165.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 146.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 50.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 103.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 62.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 118.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 43.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 22.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 19.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 75.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 184,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 179
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 125.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 73.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 68.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 145.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 140.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 65.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 126.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 121.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 25.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 102.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 97.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 27.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 22.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 78.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 40.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 21.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 42.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 37.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 98.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 93.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 18.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 50.3
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 226,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 115.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 187.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 168.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 144.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 125.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 68.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 84.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 97.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 22.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 40.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 37.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 166,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 127.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 84.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 27.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 24.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 80.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 37.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 240,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 201.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 126.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 182.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 139.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 101.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 82.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 98.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 154.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 58.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 111.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 54.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 51.3,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 276,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 219.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 162.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 234.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 159.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 191.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 116.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 134.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 59.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 115.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 131.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 187.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 91.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 144.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 31.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 84.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 249,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 244
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 192.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 187.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 135.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 130.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 207.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 202.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 132.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 127.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 188.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 183.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 92.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 87.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 164.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 159.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 89.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 84.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 145.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 140.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 102.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 32.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 27.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 83.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 104.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 99.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 160.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 155.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 85.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 80.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 59.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 18
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 40.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 56.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 112.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 42.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 37.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 18
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 60.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 55.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 18
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 52.32
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 18
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 18
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 18
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 18
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 18
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": "",
+        "fixed_price": 18
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 300,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 243.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 258.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 183.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 239.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 143.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 196.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 139.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 155.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 211.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 115.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 40.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 168.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 111.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 68.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 229,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 115.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 187.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 168.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 144.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 125.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 68.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 84.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 97.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 40.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 37.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 314,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 257.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 200.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 197.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 253.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 157.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 154.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 210.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 97.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 153.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 225.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 150.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 54.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 110.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 126.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 182.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 125.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 50.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 82.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.32,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23,
+        "currency": "EUR",
+        "limit_price": 23,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 320
+}

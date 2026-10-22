@@ -1,4 +1,4 @@
-.page { max-width: 1280px; margin: auto; padding: 28px 40px 80px; color: #1d1d1f; }
+.page { max-width: var(--storefront-max-width); margin: auto; padding: 28px 40px 80px; color: #1d1d1f; }
 .hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
 .visual { position: sticky; top: 110px; }
 .gallery { position: relative; }
@@ -74,7 +74,7 @@
 .source { display: inline-block; color: #0066cc; font-size: 13px; margin: 10px 0 24px; }
 .mobileBar { display: none; }
 .desktopBar { position: fixed; left: 0; right: 0; z-index: 45; background: #fffffff5; backdrop-filter: blur(12px); border-bottom: 1px solid #e8e8ed; box-shadow: 0 4px 16px #1d1d1f08; }
-.desktopBarInner { max-width: 1280px; margin: auto; padding: 18px 40px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(180px, 280px); align-items: center; gap: 8px 28px; }
+.desktopBarInner { max-width: var(--storefront-max-width); margin: auto; padding: 18px 40px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(180px, 280px); align-items: center; gap: 8px 28px; }
 .desktopBarSelection strong { display: block; font-size: 22px; font-weight: 650; letter-spacing: -.035em; margin-bottom: 4px; }
 .desktopBarFeedback { grid-column: 1 / -1; text-align: right; }
 .desktopBarFeedback .feedback { margin-top: 0; }

@@ -1,0 +1,5032 @@
+{
+  "model": "iPhone 12 Pro",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2012%20Pro&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:26:43.971Z",
+  "http_status": 200,
+  "response_sha256": "ae781bbafd3f5ee3c053f9a120735fa1c0da5a0afdb20ab19975cfa9933cb88e",
+  "results": [
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 180,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 81.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 138.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 98.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 29.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 50.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 24.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 159,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 154
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 91.68
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 60.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 55.68
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 112.68
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 34.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 29.68
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 77.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 72.68
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 60.68
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 20.68
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 29.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 24.68
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 41.68
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": "",
+        "fixed_price": 11
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 209,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 146.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 110.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 167.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 84.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 127.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 58.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 115.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 32.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 75.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 53.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 27.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 132,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 50.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 38.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 19.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 227,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 164.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 128.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 185.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 102.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 145.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 133.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 50.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 97.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 114.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 31.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 19.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 62.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26.68,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16,
+        "currency": "EUR",
+        "limit_price": 16,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 207,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 143.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 164.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 81.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 124.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 29.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 50.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 24.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 183,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 178
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 114.27
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 78.27
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 135.27
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 52.27
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 100.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 95.27
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 31.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 26.27
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 83.27
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 48.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 43.27
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 47.27
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 26.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 21.27
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 64.27
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": "",
+        "fixed_price": 13
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 242,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 178.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 142.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 199.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 116.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 159.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 147.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 111.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 28.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 85.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 128.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 59.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 19.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 40.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 154,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 54.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 111.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 28.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 59.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 19.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 40.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 262,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 198.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 162.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 219.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 110.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 167.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 84.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 127.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 131.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 48.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 91.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 105.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 148.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 53.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 60.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 34.27,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18,
+        "currency": "EUR",
+        "limit_price": 18,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 320
+}

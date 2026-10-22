@@ -1,0 +1,5032 @@
+{
+  "model": "iPhone 15",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2015&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:25:14.085Z",
+  "http_status": 200,
+  "response_sha256": "a52cd532a50ed294e068484a01095e4117e44084140701d6a00ae4b003cc0c31",
+  "results": [
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 414,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 409
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 346.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 341.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 251.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 246.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 370.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 365.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 283.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 278.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 344.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 339.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 198.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 322.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 317.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 235.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 230.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 296.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 291.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 222.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 135.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 201.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 196.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 259.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 254.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 320.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 315.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 233.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 228.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 174.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 92.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 87.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 153.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 148.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 211.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 206.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 267.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 185.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 180.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 116.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 111.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 177.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 172.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 85.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 209.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 204.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 68.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 63.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 124.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 42.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 37.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 161.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 156.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 61.08
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 31,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": "",
+        "fixed_price": 26
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 390,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 322.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 346.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 259.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 320.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 298.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 211.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 116.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 177.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 235.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 296.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 209.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 155.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 68.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 187.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 248.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 161.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 92.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 153.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 185.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 105.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 31,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 137.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 42.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 31,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 450,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 382.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 287.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 406.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 319.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 380.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 239.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 358.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 271.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 332.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 263.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 176.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 237.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 295.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 356.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 128.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 189.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 247.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 308.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 221.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 152.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 213.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 126.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 245.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 104.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 165.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 78.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 197.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 102.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 54.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 330,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 262.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 167.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 286.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 199.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 260.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 238.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 151.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 212.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 143.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 56.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 175.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 236.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 149.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 95.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 31,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 127.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 188.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 101.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 32.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 31,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 125.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 31,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 31,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 77.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 31,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 31,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 490,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 422.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 327.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 446.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 359.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 420.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 279.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 398.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 311.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 372.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 303.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 216.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 277.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 335.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 396.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 309.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 255.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 168.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 287.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 348.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 261.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 192.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 253.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 166.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 285.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 144.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 205.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 118.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 237.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 142.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 94.08,
+        "currency": "EUR",
+        "limit_price": 31,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 447,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 442
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 375.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 370.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 280.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 275.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 399.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 394.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 312.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 307.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 373.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 368.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 232.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 227.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 351.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 346.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 264.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 259.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 325.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 320.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 256.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 251.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 164.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 230.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 225.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 288.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 283.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 349.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 344.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 262.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 257.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 203.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 121.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 116.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 182.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 177.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 240.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 235.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 301.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 296.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 214.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 209.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 145.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 140.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 206.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 201.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 114.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 238.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 233.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 97.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 92.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 153.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 66.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 190.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 185.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 95.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 90.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": "",
+        "fixed_price": 42.32
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 415,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 343.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 248.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 367.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 280.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 341.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 200.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 319.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 232.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 293.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 224.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 137.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 198.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 256.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 317.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 230.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 176.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 89.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 150.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 269.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 182.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 113.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 174.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 206.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 126.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 63.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 38,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 505,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 433.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 338.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 457.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 370.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 431.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 290.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 409.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 322.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 383.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 314.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 288.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 346.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 407.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 320.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 266.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 240.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 298.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 359.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 264.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 177.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 296.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 155.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 216.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 129.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 248.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 153.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 105.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 374,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 302.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 207.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 326.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 239.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 300.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 159.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 278.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 191.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 252.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 183.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 96.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 157.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 276.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 189.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 135.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 48.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 109.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 167.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 228.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 141.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 133.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 165.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 38,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 85.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 38,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 38,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 38,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 560,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 488.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 393.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 512.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 425.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 486.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 345.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 464.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 377.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 438.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 369.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 282.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 343.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 401.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 462.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 375.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 321.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 234.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 295.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 353.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 414.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 327.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 258.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 319.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 232.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 351.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 210.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 271.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 184.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 303.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 15 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 160.32,
+        "currency": "EUR",
+        "limit_price": 38,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 320
+}

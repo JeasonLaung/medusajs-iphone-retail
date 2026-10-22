@@ -1,0 +1,5032 @@
+{
+  "model": "iPhone 11 Pro",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2011%20Pro&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:27:07.223Z",
+  "http_status": 200,
+  "response_sha256": "8bbf6b5c276e653f07ae04239d8056bb68169057dfe0f943cbf8e0bad9d31f7e",
+  "results": [
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 101,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 42.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 19.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 59.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 87,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 82
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 28.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 23.78
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 40.78
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 22.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 17.78
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": "",
+        "fixed_price": 3
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 149,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 84.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 15.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 32.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 32.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 9.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 12.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 49.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 65,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 23.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 170,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 111.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 128.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 68.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 105.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 16.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 53.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 53.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18.78,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 8,
+        "currency": "EUR",
+        "limit_price": 8,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 175,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 113.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 38.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 78.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 32.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 155,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 150
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 88.75
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 65.75
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 110.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 105.75
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 50.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 45.75
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 82.75
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 13.75
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 58.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 53.75
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 30.75
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 30.75
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 15.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 10.75
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 47.75
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": "",
+        "fixed_price": 9
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 202,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 157.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 97.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 134.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 105.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 82.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 82.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 22.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 59.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 62.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 99.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 24.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 130,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 68.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 45.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 85.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 62.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 27.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 213,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 151.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 128.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 168.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 145.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 116.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 56.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 33.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 73.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 110.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 50.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 21.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 58.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 35.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 15.75,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 11 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 14,
+        "currency": "EUR",
+        "limit_price": 14,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 320
+}

@@ -1,0 +1,5032 @@
+{
+  "model": "iPhone 13 mini",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2013%20mini&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:25:44.411Z",
+  "http_status": 200,
+  "response_sha256": "3e635d17e083d084d7bc9ecd593edd04917483719aca5896e0edb6e993e155f2",
+  "results": [
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 166,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 115.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 92.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 49.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 21.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 161,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 156
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 107.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 102.31
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 20.31
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 110.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 105.31
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 56.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 51.31
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 87.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 82.31
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 62.31
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 44.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 39.31
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 47.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 42.31
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": "",
+        "fixed_price": 15
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 182,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 128.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 131.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 77.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 34.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 65.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 37.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 68.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 151,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 97.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 100.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 46.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 77.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 57.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 34.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 37.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 184,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 48.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 133.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 79.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 110.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 27.31,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 20,
+        "currency": "EUR",
+        "limit_price": 20,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 286,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 226.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 144.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 175.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 206.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 101.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 132.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 163.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 104.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 50.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 81.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 135.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 166.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 112.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 38.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 92.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 123.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 69.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 41.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 29.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 244,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 239
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 184.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 179.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 102.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 97.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 187.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 182.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 133.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 128.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 164.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 159.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 59.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 54.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 144.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 139.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 85.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 121.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 116.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 62.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 57.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 20
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 39.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 34.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 88.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 124.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 119.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 65.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 20
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 20
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 20
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 50.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 45.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 81.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 76.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 27.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 22.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 20
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 20
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 20
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 30.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 25.87
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 20
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 20
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 20
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 20
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 20
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": "",
+        "fixed_price": 20
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 308,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 248.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 166.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 251.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 197.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 228.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 123.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 154.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 185.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 126.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 103.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 157.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 188.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 134.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 29.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 60.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 114.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 145.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 91.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 32.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 63.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 94.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 51.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 203,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 143.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 146.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 92.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 123.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 103.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 49.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 80.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 29.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 40.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 347,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 287.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 205.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 290.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 236.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 162.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 247.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 193.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 224.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 165.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 111.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 142.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 196.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 173.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 68.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 99.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 153.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 184.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 71.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 102.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 48.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 133.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 28.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 59.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.87,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 13 mini 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 25,
+        "currency": "EUR",
+        "limit_price": 25,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 320
+}

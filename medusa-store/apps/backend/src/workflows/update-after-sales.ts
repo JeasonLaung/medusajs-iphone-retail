@@ -1,6 +1,6 @@
-import { createStep, createWorkflow, StepResponse, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
+import { createStep, createWorkflow, StepResponse, WorkflowResponse, transform } from "@medusajs/framework/workflows-sdk"
 import { MedusaError, ContainerRegistrationKeys } from "@medusajs/framework/utils"
-import { acquireLockStep, releaseLockStep } from "@medusajs/medusa/core-flows"
+import { acquireLockStep, emitEventStep, releaseLockStep } from "@medusajs/medusa/core-flows"
 import { AFTER_SALES_MODULE } from "../modules/after-sales"
 import AfterSalesModuleService from "../modules/after-sales/service"
 import { serializeAfterSales } from "../modules/after-sales/serialize"
@@ -40,7 +40,7 @@ const updateRequestStep = createStep("update-request", async (input: Input, { co
     }
   }
   const request = await service.updateAfterSalesRequests({ id: existing.id, status: input.status })
-  return new StepResponse(serializeAfterSales(request), { id: existing.id, status: existing.status })
+  return new StepResponse({ request: serializeAfterSales(request), previous_status: existing.status }, { id: existing.id, status: existing.status })
 }, async (previous: { id: string; status: "pending" | "processing" } | undefined, { container }) => {
   if (previous) {
     const service: AfterSalesModuleService = container.resolve(AFTER_SALES_MODULE)
@@ -51,8 +51,13 @@ const updateRequestStep = createStep("update-request", async (input: Input, { co
 export const updateAfterSalesWorkflow = createWorkflow("update-after-sales", (input: Input) => {
   acquireLockStep({ key: "device-operations", timeout: 30, ttl: 180 }).config({ name: "lock-device-after-sales" })
   acquireLockStep({ key: input.order_id, timeout: 10, ttl: 60 })
-  const request = updateRequestStep(input)
+  const result = updateRequestStep(input)
+  emitEventStep({
+    eventName: transform(result, ({ request }) => `after_sales.${request.status}`),
+    // Re-saving the current status must not generate another notification.
+    data: transform(result, ({ request, previous_status }) => request.status === previous_status ? [] : [{ id: request.id, order_id: request.order_id, type: request.type }]),
+  })
   releaseLockStep({ key: input.order_id })
   releaseLockStep({ key: "device-operations" }).config({ name: "unlock-device-after-sales" })
-  return new WorkflowResponse(request)
+  return new WorkflowResponse(result.request)
 })

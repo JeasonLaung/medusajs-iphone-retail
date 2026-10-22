@@ -1,0 +1,2525 @@
+{
+  "model": "iPhone 12 mini",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2012%20mini&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:26:14.552Z",
+  "http_status": 200,
+  "response_sha256": "3c2d29dd04138bc7ddd73710f914793aa639a4a917a31dcce9fcb932e961c33f",
+  "results": [
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 88,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 38.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 38.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 19.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 68,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 63
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 13.54
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 18.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 13.54
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": "",
+        "fixed_price": 5
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 105,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 22.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 36.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 12.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 53,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 117,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 67.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 34.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 48.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 24.54,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 12 mini 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 10,
+        "currency": "EUR",
+        "limit_price": 10,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 160
+}

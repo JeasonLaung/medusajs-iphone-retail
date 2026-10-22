@@ -26,8 +26,8 @@
   "clearSecret": "Clear signing secret",
   "clearToken": "Clear bearer token",
   "security": "URLs and credentials are encrypted. Only public HTTPS addresses on port 443 are accepted. Save changes before testing.",
-  "genericHelp": "Generic JSON works with n8n and other automation tools. Payload: event, resource_id, text, timestamp. Use a published production webhook with POST enabled.",
-  "deliveryHelp": "Each event is attempted once per channel. Failed sends are recorded; automatic retries are not enabled. Event notifications include a resource ID without customer details.",
+  "genericHelp": "Generic JSON works with n8n and other automation tools. Payload: event, resource_id, text, timestamp and notification (title, details and links). Use a published production webhook with POST enabled.",
+  "deliveryHelp": "Send subscribed order, payment, fulfillment and after-sales events with the order number, email, shipping address, SKUs, amounts, timestamps and Admin action links. Feishu uses clickable rich text. Each event is attempted once per channel. Failed sends are recorded; automatic retries are not enabled.",
   "status": "Last delivery",
   "never": "Not sent",
   "success": "Success",
@@ -57,10 +57,27 @@
   "eventLabels": {
     "order": {
       "placed": "Order placed",
-      "canceled": "Order canceled"
+      "canceled": "Order canceled",
+      "completed": "Order completed",
+      "fulfillment_created": "Order fulfillment created",
+      "fulfillment_canceled": "Order fulfillment canceled",
+      "return_requested": "Return confirmed",
+      "return_received": "Return received",
+      "exchange_created": "Exchange confirmed",
+      "claim_created": "Claim confirmed"
     },
     "payment": {
-      "captured": "Payment captured"
+      "captured": "Payment captured",
+      "refunded": "Payment refunded"
+    },
+    "after_sales": {
+      "created": "New after-sales request (return / exchange / repair)",
+      "processing": "After-sales request processing",
+      "completed": "After-sales request completed",
+      "rejected": "After-sales request rejected"
+    },
+    "delivery": {
+      "created": "Delivery confirmed"
     },
     "shipment": {
       "created": "Shipment created"

@@ -1,0 +1,5032 @@
+{
+  "model": "iPhone 17",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2017&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:27:48.838Z",
+  "http_status": 200,
+  "response_sha256": "a77a6e7eab3797ec7c048e4ac8454d395daab6a8abea48daa0a4edbd3f5719e7",
+  "results": [
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 685,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 680
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 552.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 547.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 352.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 347.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 572.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 567.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 302.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 297.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 502.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 497.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 252.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 247.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 472.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 467.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 202.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 197.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 402.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 397.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 267.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 56
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 202.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 197.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 217.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 422.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 417.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 152.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 147.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 167.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 56
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 102.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 97.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 117.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 322.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 317.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 56
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 56
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 117.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 56
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 67.18
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 56
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 56
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 56
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 56
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 56
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": "",
+        "fixed_price": 56
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 635,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 502.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 302.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 522.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 252.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 452.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 202.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 422.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 152.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 352.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 152.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 372.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 102.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 705,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 572.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 372.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 592.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 322.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 522.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 492.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 422.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 292.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 242.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 442.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 192.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 142.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 342.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 142.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 92.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 605,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 472.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 272.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 492.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 222.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 422.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 172.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 392.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 322.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 192.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 122.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 142.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 342.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 72.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 92.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 242.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 773,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 640.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 440.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 660.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 390.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 590.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 340.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 560.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 290.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 490.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 360.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 90.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 290.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 310.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 510.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 240.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 260.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 190.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 210.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 410.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 140.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 210.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 160.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 110.18,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61,
+        "currency": "EUR",
+        "limit_price": 61,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 745,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 740
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 603.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 598.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 403.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 398.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 623.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 618.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 353.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 348.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 553.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 548.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 303.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 298.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 523.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 518.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 253.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 248.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 453.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 448.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 323.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 318.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 71
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 253.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 248.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 273.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 268.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 473.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 468.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 198.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 218.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 71
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 153.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 148.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 173.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 168.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 373.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 368.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 103.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 98.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 71
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 173.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 168.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 71
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 123.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 118.07
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 71
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 71
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 71
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 71
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 71
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": "",
+        "fixed_price": 71
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 705,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 563.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 363.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 583.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 313.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 513.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 263.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 483.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 213.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 413.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 283.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 213.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 233.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 433.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 163.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 183.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 113.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 133.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 333.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 133.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 83.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 785,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 643.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 443.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 663.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 393.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 593.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 343.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 563.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 293.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 493.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 363.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 293.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 313.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 513.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 243.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 263.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 193.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 213.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 413.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 143.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 213.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 163.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 113.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 680,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 538.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 338.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 558.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 288.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 488.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 238.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 458.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 188.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 388.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 258.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 188.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 408.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 138.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 88.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 308.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 108.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 865,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 723.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 523.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 743.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 473.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 673.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 423.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 643.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 373.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 573.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 443.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 173.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 373.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 393.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 593.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 323.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 343.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 273.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 293.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 493.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 93.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 293.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 243.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 193.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 143.07,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 17 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76,
+        "currency": "EUR",
+        "limit_price": 76,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 320
+}

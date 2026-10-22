@@ -1,0 +1,13 @@
+.display { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px; vertical-align: middle; line-height: 1; }
+.display :global(.ant-rate) { font-family: inherit; }
+.input { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.input :global(.ant-rate) { font-size: 30px; font-family: inherit; }
+.input :global(.ant-rate-star) { margin-inline-end: 4px; }
+.input :global(.ant-rate-star > div) { min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
+.input :global(.ant-rate-star-first) { inset-block-start: 50%; transform: translateY(-50%); }
+.input :global(.ant-rate-star svg) { stroke: var(--review-muted); stroke-width: 24px; }
+.input :global(.ant-rate-star-focused), .input :global(.ant-rate-star > div:focus-visible) { outline: 2px solid var(--review-action); outline-offset: 2px; border-radius: 4px; }
+.value { color: var(--review-text); font-size: 14px; line-height: 1.5; }
+@media (prefers-reduced-motion: reduce) {
+  .input :global(.ant-rate-star), .input :global(.ant-rate-star > div) { transition: none; }
+}

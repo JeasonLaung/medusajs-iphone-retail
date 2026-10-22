@@ -1,0 +1,7539 @@
+{
+  "model": "iPhone 16 Pro",
+  "country": "BE",
+  "storages": [
+    "256GB",
+    "512GB",
+    "1024GB",
+    "2048GB"
+  ],
+  "variants": [],
+  "endpoint": "https://swappie.com/api/sell/api/v3/prices/?model_name=iPhone%2016%20Pro&country=BE&storages=%5B%22256GB%22%2C%22512GB%22%2C%221024GB%22%2C%222048GB%22%5D&variants=%5B%5D",
+  "fetched_at": "2026-10-22T08:25:56.571Z",
+  "http_status": 200,
+  "response_sha256": "7676a548d1b49c91076da8464a49db349774c3ddc524e4a2249413fbe40278a6",
+  "results": [
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 620,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 615
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 528.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 523.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 343.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 338.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 528.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 523.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 459.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 454.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 500.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 495.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 283.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 278.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 468.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 463.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 399.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 394.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 440.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 435.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 283.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 278.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 214.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 209.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 255.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 250.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 399.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 394.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 440.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 435.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 371.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 366.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 223.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 218.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 154.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 149.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 195.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 190.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 339.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 334.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 380.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 375.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 311.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 306.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 154.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 149.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 195.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 190.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 126.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 121.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 311.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 306.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 94.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 89.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 135.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 130.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 61.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 251.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 246.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 61.04
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": "",
+        "fixed_price": 47
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 540,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 448.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 263.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 448.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 379.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 420.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 388.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 319.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 360.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 203.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 134.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 175.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 319.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 360.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 291.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 143.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 74.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 115.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 259.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 300.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 231.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 74.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 115.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 231.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 55.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 171.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 640,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 548.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 363.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 548.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 479.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 520.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 303.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 488.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 419.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 460.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 303.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 234.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 275.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 419.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 460.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 391.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 243.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 174.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 359.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 400.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 331.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 174.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 146.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 331.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 114.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 155.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 271.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 86.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 467,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 375.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 190.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 375.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 306.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 347.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 315.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 246.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 287.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 130.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 61.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 102.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 246.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 287.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 218.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 70.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 227.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 98.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 52,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 674,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 582.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 397.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 582.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 513.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 554.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 337.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 522.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 453.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 494.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 337.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 268.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 309.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 453.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 494.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 425.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 277.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 249.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 393.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 434.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 365.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 249.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 180.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 365.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 148.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 189.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 120.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 305.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 120.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 256GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 60.04,
+        "currency": "EUR",
+        "limit_price": 52,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 675,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 670
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 576.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 571.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 391.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 386.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 576.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 571.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 507.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 502.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 548.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 543.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 331.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 326.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 516.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 511.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 447.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 442.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 488.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 483.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 331.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 326.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 262.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 257.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 303.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 298.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 447.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 442.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 488.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 483.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 419.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 414.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 271.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 266.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 202.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 197.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 243.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 238.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 387.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 382.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 428.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 423.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 359.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 354.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 202.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 197.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 243.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 238.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 174.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 169.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 359.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 354.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 142.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 137.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 183.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 178.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 114.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 109.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 299.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 294.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 114.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 109.66
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": "",
+        "fixed_price": 59
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 637,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 538.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 353.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 538.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 469.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 510.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 293.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 478.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 409.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 450.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 293.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 224.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 265.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 409.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 450.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 381.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 233.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 164.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 205.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 349.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 390.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 321.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 164.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 205.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 136.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 321.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 104.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 145.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 261.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 76.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 730,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 631.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 446.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 631.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 562.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 603.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 386.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 571.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 502.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 543.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 386.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 317.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 358.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 502.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 543.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 474.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 326.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 257.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 298.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 442.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 483.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 414.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 257.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 298.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 229.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 414.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 197.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 238.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 354.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 109.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 530,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 431.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 246.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 431.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 362.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 403.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 371.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 302.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 343.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 186.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 117.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 158.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 302.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 343.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 274.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 126.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 98.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 242.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 283.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 214.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 98.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 214.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 154.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 64,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 769,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 670.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 485.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 670.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 601.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 642.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 425.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 610.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 541.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 582.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 425.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 356.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 397.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 541.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 582.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 513.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 365.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 296.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 337.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 481.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 522.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 453.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 296.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 337.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 268.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 453.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 236.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 277.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 393.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 208.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 512GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 148.66,
+        "currency": "EUR",
+        "limit_price": 64,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 744,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 739
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 641.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 636.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 456.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 451.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 641.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 636.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 572.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 567.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 613.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 608.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 396.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 391.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 581.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 576.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 512.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 507.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 553.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 548.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 396.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 391.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 327.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 322.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 368.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 363.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 512.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 507.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 553.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 548.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 484.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 479.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 336.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 331.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 262.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 308.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 303.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 452.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 447.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 493.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 488.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 424.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 419.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 262.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 308.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 303.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 239.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 234.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 424.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 419.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 207.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 202.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 248.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 243.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 174.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 364.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 359.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 174.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "ALMOST_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": "",
+        "fixed_price": 114.71
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 674,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 571.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 386.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 571.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 502.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 543.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 326.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 511.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 442.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 483.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 326.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 257.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 298.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 442.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 483.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 414.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 266.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 197.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 238.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 382.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 423.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 354.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 197.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 238.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 169.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 354.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 137.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 178.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 109.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 294.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 109.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "GOOD",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 825,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 722.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 537.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 722.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 653.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 694.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 477.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 662.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 593.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 634.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 477.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 408.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 449.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 593.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 634.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 565.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 417.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 348.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 389.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 533.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 574.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 505.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 348.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 389.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 320.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 505.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 288.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 329.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 260.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 445.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 260.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "LIKE_NEW",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 200.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 615,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 512.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 327.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 512.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 443.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 484.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 452.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 383.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 424.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 267.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 198.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 239.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 383.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 424.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 355.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 207.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 138.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 323.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 364.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 295.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 138.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 179.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 110.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 295.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 78.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 119.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 235.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "MODERATE",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 66,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [],
+      "purchasable": true,
+      "price": {
+        "price": 840,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 737.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 552.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 737.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 668.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 709.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 492.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 677.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 608.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 649.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 492.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 423.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 464.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 608.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 649.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 580.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 432.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 363.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 404.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 548.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 589.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 520.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 363.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 404.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 335.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 520.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 303.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 344.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 275.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 460.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 275.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    },
+    {
+      "model_name": "iPhone 16 Pro 1024GB",
+      "visual_condition": "SEALED_BOX",
+      "functional_condition": [
+        "BROKEN",
+        "BROKEN_SCREEN",
+        "BATTERY_ISSUE",
+        "BROKEN_FRAME",
+        "BROKEN_BACK_CAMERA"
+      ],
+      "purchasable": true,
+      "price": {
+        "price": 215.71,
+        "currency": "EUR",
+        "limit_price": 66,
+        "valid_promo_code": ""
+      }
+    }
+  ],
+  "total": 480
+}

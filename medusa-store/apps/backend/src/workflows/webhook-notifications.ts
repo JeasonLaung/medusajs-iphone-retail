@@ -5,6 +5,7 @@ import { WEBHOOK_NOTIFICATIONS_MODULE } from "../modules/webhook-notifications"
 import type WebhookNotificationsService from "../modules/webhook-notifications/service"
 import { encrypt, decrypt } from "../modules/webhook-notifications/security"
 import { deliver, events, providers, validateUrl } from "../modules/webhook-notifications/transport"
+import { webhookAdminLink, webhookMessageText, type WebhookMessage } from "../modules/webhook-notifications/message"
 
 const schema = z.object({
   name: z.string().trim().min(1).max(100),
@@ -33,7 +34,13 @@ const operateWebhookNotificationStep = createStep("operate-webhook-notification"
   if (input.action === "test") {
     if (!saved) throw new MedusaError(MedusaError.Types.NOT_FOUND, "webhooks.errors.missing")
     try {
-      await deliver({ ...saved, url: decrypt(saved.url), secret: decrypt(saved.secret), token: decrypt(saved.token) }, `${saved.keyword ? saved.keyword + "\n" : ""}${saved.language === "zh" ? "Webhook 测试通知：连接成功。" : "Webhook test notification: connection successful."}`, "test", saved.id)
+      const zh = saved.language === "zh"
+      const message: WebhookMessage = {
+        title: zh ? "Webhook 测试通知" : "Webhook test notification", language: zh ? "zh" : "en",
+        lines: [saved.keyword, zh ? "连接成功。业务通知将包含订单号、邮箱、收货地址、商品 SKU、金额、时间和处理链接。" : "Connected. Business notifications include order number, email, shipping address, SKUs, amounts, timestamps and action links."].filter(Boolean),
+        links: [{ label: zh ? "打开后台订单列表" : "Open Admin orders", url: webhookAdminLink() }],
+      }
+      await deliver({ ...saved, url: decrypt(saved.url), secret: decrypt(saved.secret), token: decrypt(saved.token) }, webhookMessageText(message), "test", saved.id, message)
       await service.updateWebhookEndpoints({ id: saved.id, last_status: "success", last_sent_at: new Date() })
     } catch {
       await service.updateWebhookEndpoints({ id: saved.id, last_status: "failed", last_sent_at: new Date() })
