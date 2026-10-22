@@ -264,6 +264,8 @@ export async function initiatePaymentSession(
     if (!baseUrl) throw new Error("Mollie is currently unavailable.")
     const returnUrl = new URL("/api/mollie-return", baseUrl)
     returnUrl.searchParams.set("cart_id", cart.id)
+    if (cart.shipping_address?.country_code)
+      returnUrl.searchParams.set("country_code", cart.shipping_address.country_code)
     data = {
       ...data,
       data: { cart_id: cart.id, redirect_url: returnUrl.href },

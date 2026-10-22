@@ -11,7 +11,7 @@
   border-bottom: 1px solid var(--header-divider);
 }
 .inner { max-width: 1440px; height: 80px; padding: 0 24px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 32px; }
-.brand { font-size: 25px; font-weight: 700; letter-spacing: -.055em; white-space: nowrap; }
+.brand { display: flex; align-items: center; font-size: 25px; font-weight: 700; letter-spacing: -.055em; white-space: nowrap; }
 .desktop, .actions { display: flex; align-items: center; gap: 26px; }
 .desktop { margin-left: auto; margin-right: auto; }
 .navLink { display: flex; align-items: center; gap: 9px; min-height: 44px; white-space: nowrap; text-transform: uppercase; font-size: 12px; font-weight: 500; }
@@ -26,7 +26,7 @@
 .actions { gap: 14px; }
 .iconButton { position: relative; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; }
 .iconButton svg { width: 24px; height: 24px; }
-.count { position: absolute; right: 1px; top: -2px; min-width: 15px; text-align: center; font-size: 10px; background: #fff; }
+.count { position: absolute; right: 0; top: 0; display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 999px; font-size: 10px; font-weight: 700; line-height: 1; background: #b42318; color: #fff; pointer-events: none; }
 .mobile { display: none; }
 .header a:focus-visible, .header button:focus-visible, .header select:focus-visible { outline: 2px solid var(--header-action); outline-offset: 4px; }
 @media (max-width: 1050px) {
@@ -42,10 +42,11 @@
   .brand { font-size: 21px; }
   .actions { gap: 0; }
   .iconButton { width: 40px; }
-  .mobilePanel { position: absolute; top: 100%; left: 0; right: 0; max-height: calc(100dvh - 68px); overflow: auto; background: #fff; padding: 16px 24px 28px; border-bottom: 1px solid var(--header-divider); box-shadow: 0 18px 24px #1d1d1f0a; }
-  .mobilePanel a { display: block; padding: 14px 0; font-size: 18px; }
-  .mobilePanel a[aria-current="page"] { color: var(--header-action); }
-  .close { display: block; margin-left: auto; min-height: 44px; color: var(--header-muted); font-size: 13px; }
+  .mobilePanel { position: fixed; inset: 0; z-index: 60; height: 100dvh; overflow-y: auto; overscroll-behavior: contain; background: #181818; color: #fff; padding: max(12px, env(safe-area-inset-top)) 24px max(32px, env(safe-area-inset-bottom)); }
+  .mobilePanel a { display: block; padding: 20px 0; font-size: 28px; line-height: 1.4; }
+  .mobilePanel a[aria-current="page"] { font-weight: 700; text-decoration: underline; text-underline-offset: 8px; }
+  .mobilePanel a:focus-visible, .mobilePanel button:focus-visible { outline-color: #fff; }
+  .close { display: flex; align-items: center; justify-content: center; gap: 8px; margin-left: auto; margin-bottom: 24px; min-height: 44px; color: #fff; font-size: 14px; }
 }
 @media (max-width: 359px) {
   .inner { padding: 0 24px; }

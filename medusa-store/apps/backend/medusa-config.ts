@@ -1,4 +1,6 @@
 import { loadEnv, defineConfig } from "@medusajs/framework/utils"
+import { adminDeviceFulfillment, adminDeviceFulfillmentOptimizer } from "./src/lib/admin-device-fulfillment"
+import { adminWarehouseMenu, adminWarehouseMenuOptimizer } from "./src/lib/admin-warehouse-menu"
 import { adminInventorySorting, adminInventorySortingOptimizer } from "./src/lib/admin-inventory-sorting"
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd())
@@ -13,10 +15,11 @@ const withLocalOrigins = (configured: string | undefined, origins: string[]) =>
   [...new Set([...(configured || "").split(",").map((origin) => origin.trim()).filter(Boolean), ...origins])].join(",")
 
 module.exports = defineConfig({
+  featureFlags: { rbac: true },
   admin: {
     vite: () => ({
-      plugins: [adminInventorySorting()],
-      optimizeDeps: { esbuildOptions: { plugins: [adminInventorySortingOptimizer()] } },
+      plugins: [adminInventorySorting(), adminDeviceFulfillment(), adminWarehouseMenu()],
+      optimizeDeps: { esbuildOptions: { plugins: [adminInventorySortingOptimizer(), adminDeviceFulfillmentOptimizer(), adminWarehouseMenuOptimizer()] } },
     }),
   },
   projectConfig: {
@@ -37,6 +40,8 @@ module.exports = defineConfig({
     },
   ],
   modules: [
+    { resolve: "@medusajs/medusa/rbac" },
+    { resolve: "./src/modules/webhook-notifications" },
     { resolve: "./src/modules/sku-numbering" },
     { resolve: "./src/modules/product-review" },
     { resolve: "./src/modules/mail" },
@@ -49,6 +54,7 @@ module.exports = defineConfig({
     },
     {
       resolve: "@medusajs/medusa/payment",
+      dependencies: ["mollieSettings"],
       options: {
         providers: [
           {
@@ -73,7 +79,7 @@ module.exports = defineConfig({
                     // Keep a syntactically valid test key for startup when no env key exists.
                     apiKey: process.env.MOLLIE_API_KEY || "test_admin_configured_key",
                     redirectUrl: process.env.MOLLIE_REDIRECT_URL || `${process.env.STOREFRONT_URL || "http://localhost:8000"}/api/mollie-return`,
-                    medusaUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9001",
+                    medusaUrl: process.env.MOLLIE_WEBHOOK_BASE_URL || process.env.MEDUSA_BACKEND_URL || "http://localhost:9001",
                     autoCapture: true,
                     debug: false,
                   },

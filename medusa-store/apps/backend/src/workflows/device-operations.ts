@@ -1,3 +1,4 @@
+import { isOrderPaidForAllocation } from "../lib/order-device-payment"
 import {
   createStep,
   createWorkflow,
@@ -48,6 +49,7 @@ import type {
   DeviceCommandBody,
   IntakeDeviceBody,
 } from "../api/admin/devices/validators"
+import { authorizeWarehouseCommand } from "../api/warehouse-guards"
 import { authorizeDeviceCommand } from "../api/device-access"
 import { assertDeviceIdentity } from "../modules/devices/identity"
 import { orderDeviceCapacity } from "../lib/order-device-capacity"
@@ -65,6 +67,7 @@ type Input = Exclude<DeviceCommandBody, { action: "source" }> & {
   actor_id: string
   mobile_intake_session?: { nonce: string; source_id: string; category: string }
   native_shipment?: NativeShipment
+  native_cancel?: { order_id: string; no_notification?: boolean; canceled_by?: string }
 }
 type Table =
   | "Devices"
@@ -116,6 +119,8 @@ type Plan = {
     location_id: string
     items: { id: string; quantity: number }[]
     metadata: Record<string, unknown>
+    shipping_option_id?: string
+    no_notification?: boolean
   }
   shipment?: NativeShipment
   return?: { order_id: string; location_id: string; item_id: string }
@@ -128,13 +133,17 @@ type Plan = {
     unit_price: number
   }
   fulfillmentUpdates?: { id: string; location_id: string; metadata: Record<string, unknown> }[]
-  cancel?: { order_id: string; fulfillment_id: string }
+  cancel?: { order_id: string; fulfillment_id: string; no_notification?: boolean; canceled_by?: string }
 }
 
 const prepareDevices = createStep(
   "prepare-devices",
   async (command: Input, { container }) => {
-    let input = command
+    const requestedFulfillment = command.action === "create_fulfillment" ? command.fulfillment : undefined
+    let input: Input = command.action === "create_fulfillment"
+      ? { action: "save_allocation", order_id: command.order_id, actor_id: command.actor_id, allocations: command.allocations }
+      : command
+    await authorizeWarehouseCommand(container, command.actor_id, command)
     await authorizeDeviceCommand(container, input.actor_id, input)
     const service: DevicesModuleService = container.resolve(DEVICES_MODULE)
     const inventory: IInventoryService = container.resolve(Modules.INVENTORY)
@@ -212,6 +221,7 @@ const prepareDevices = createStep(
           "id",
           "status",
           "sales_channel_id",
+          "payment_collections.status",
           "items.id",
           "items.unit_price",
           "items.variant_id",
@@ -427,6 +437,7 @@ const prepareDevices = createStep(
       requireDevice(new Set(changing).size === changing.length, "设备不能重复选择")
       for (const allocation of allocations) {
       const order = await getOrder(allocation.order_id)
+      requireDevice(isOrderPaidForAllocation(order), "DEVICE_PAYMENT_REQUIRED")
       const item = order.items?.find((i) => i?.id === allocation.item_id)
       requireDevice(item?.variant_id, "商品不属于该订单")
       let replacementRequest: string | undefined
@@ -475,6 +486,7 @@ const prepareDevices = createStep(
       const assignments = [...storedAssignments.filter((entry) => !staged.some((change) => change.after.id === entry.id)), ...staged.map((entry) => entry.after)]
       const previous = allocation.assignment_id ? await service.retrieveDeviceAssignment(allocation.assignment_id) : undefined
       if (previous) {
+        if (requestedFulfillment) requireDevice(previous.status === "reserved" && !previous.fulfillment_id, "DEVICE_ALLOCATION_LOCKED")
         requireDevice(previous.order_id === order.id && previous.item_id === item.id && ["reserved", "packed"].includes(previous.status), "DEVICE_ALLOCATION_LOCKED")
         if (previous.fulfillment_id) {
           const fulfillment = order.fulfillments?.find((f) => f?.id === previous.fulfillment_id)
@@ -490,6 +502,7 @@ const prepareDevices = createStep(
         }
       }
       const capacity = orderDeviceCapacity(item, assignments as any, (order.fulfillments || []) as any)
+      if (requestedFulfillment && !previous) requireDevice(capacity.unfulfilled > 0, "该订单商品已配足或已履约")
       if (!allocation.replacement_of && !previous) requireDevice(capacity.remaining > 0, "该订单商品已配足或已履约")
       const device = await service.retrieveDevice(allocation.device_id)
       assertDeviceIdentity(device, (await variant(item.variant_id)).product)
@@ -518,7 +531,7 @@ const prepareDevices = createStep(
         ),
         "供货来源未关联订单销售渠道",
       )
-      const slot = !previous && !allocation.replacement_of && (allocation.fulfillment_id || capacity.unfulfilled === 0)
+      const slot = !requestedFulfillment && !previous && !allocation.replacement_of && (allocation.fulfillment_id || capacity.unfulfilled === 0)
         ? capacity.slots.find((f) => (!allocation.fulfillment_id || f.id === allocation.fulfillment_id) && (input.action === "save_allocation" || f.location_id === device.location_id))
         : undefined
       if (!previous && !allocation.replacement_of && (allocation.fulfillment_id || capacity.unfulfilled === 0)) requireDevice(slot, "DEVICE_FULFILLMENT_LOCATION")
@@ -549,13 +562,31 @@ const prepareDevices = createStep(
       event("assign", { assignment }, device.id, order.id)
       }
       if (input.action === "save_allocation") {
+        if (requestedFulfillment) {
+          const order = await getOrder(input.order_id)
+          requireDevice(isOrderPaidForAllocation(order), "DEVICE_PAYMENT_REQUIRED")
+          for (const item of requestedFulfillment.items) {
+            const orderItem = order.items?.find((entry) => entry?.id === item.id)
+            requireDevice(orderItem, "商品不属于该订单")
+            const reserved = await service.listDeviceAssignments({ order_id: input.order_id, item_id: item.id, status: "reserved" })
+            const remaining = reserved.filter((assignment) => !input.allocations.some((allocation) => allocation.assignment_id === assignment.id))
+            const quantities = orderItemQuantities(orderItem)
+            requireDevice(remaining.length <= quantities.quantity - quantities.fulfilled_quantity - item.quantity, "DEVICE_ALLOCATION_LOCKED")
+          }
+          for (const allocation of input.allocations) {
+            const item = requestedFulfillment.items.find((entry) => entry.id === allocation.item_id)
+            const count = input.allocations.filter((entry) => entry.item_id === allocation.item_id).length
+            const device = await service.retrieveDevice(allocation.device_id)
+            requireDevice(item && count <= item.quantity && device.location_id === requestedFulfillment.location_id, "DEVICE_FULFILLMENT_LOCATION")
+          }
+        }
         const pending = plan.mutations.filter((m) => m.table === "DeviceAssignments" && m.after.status === "reserved")
-        if (pending.length) {
+        if (pending.length && !input.reserve_only) {
           const selectedDevices = await service.listDevices({ id: pending.map((m) => m.after.device_id) }, { take: null })
           requireDevice(new Set(selectedDevices.map((d) => d.source_id)).size === 1 && new Set(selectedDevices.map((d) => d.location_id)).size === 1, "DEVICE_ALLOCATION_MIXED_SOURCE")
           const source = await service.retrieveDeviceSource(selectedDevices[0].source_id)
           const order = await getOrder(input.order_id)
-          requireDevice(order.shipping_methods?.[0]?.shipping_option_id, "订单缺少配送方式，先在订单中添加配送方式")
+          requireDevice(requestedFulfillment?.shipping_option_id || order.shipping_methods?.[0]?.shipping_option_id, "订单缺少配送方式，先在订单中添加配送方式")
           const items: { id: string; quantity: number }[] = []
           for (const mutation of pending) {
             const device = selectedDevices.find((d) => d.id === mutation.after.device_id)!
@@ -567,7 +598,7 @@ const prepareDevices = createStep(
             if (item) item.quantity++
             else items.push({ id: mutation.after.item_id, quantity: 1 })
           }
-          for (const item of items) {
+          for (const item of (requestedFulfillment?.items || items).filter((entry) => items.some((allocated) => allocated.id === entry.id))) {
             const orderItem = order.items!.find((entry) => entry!.id === item.id)!
             const v = await managed(orderItem.variant_id!)
             const reservations = await inventory.listReservationItems({ line_item_id: item.id })
@@ -582,6 +613,13 @@ const prepareDevices = createStep(
             } else plan.newReservations.push({ inventory_item_id: v.inventory_item_id, location_id: source.location_id, quantity: item.quantity, line_item_id: item.id })
           }
           plan.fulfillment = { order_id: input.order_id, location_id: source.location_id, items, metadata: { device_source_id: source.id, device_assignment_ids: pending.map((m) => m.after.id) } }
+        }
+        if (requestedFulfillment) {
+          plan.fulfillment = {
+            ...requestedFulfillment,
+            order_id: input.order_id,
+            metadata: plan.fulfillment?.metadata || {},
+          }
         }
         const touched = [...new Set(plan.mutations.filter((m) => m.table === "DeviceAssignments" && m.after.fulfillment_id).map((m) => m.after.fulfillment_id as string))]
         for (const id of touched) {
@@ -764,8 +802,13 @@ const prepareDevices = createStep(
       const assignments = await service.listDeviceAssignments({
         fulfillment_id: input.fulfillment_id,
       })
+      const orderId = input.native_cancel?.order_id || assignments[0]?.order_id
+      requireDevice(orderId, "只有尚未发出的履约可以取消")
+      const order = await getOrder(orderId)
+      const fulfillment = order.fulfillments?.find((entry) => entry?.id === input.fulfillment_id)
       requireDevice(
-        assignments.length && assignments.every((a) => a.status === "packed"),
+        fulfillment && !fulfillment.shipped_at && !fulfillment.delivered_at && !fulfillment.canceled_at &&
+          assignments.every((a) => a.status === "packed" && a.order_id === orderId),
         "只有尚未发出的履约可以取消",
       )
       for (const a of assignments) {
@@ -785,7 +828,8 @@ const prepareDevices = createStep(
         )
       }
       plan.cancel = {
-        order_id: assignments[0].order_id,
+        ...input.native_cancel,
+        order_id: orderId,
         fulfillment_id: input.fulfillment_id,
       }
     } else if (input.action === "ship") {

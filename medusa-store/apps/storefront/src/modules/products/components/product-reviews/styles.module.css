@@ -4,7 +4,7 @@
 .header p { color: var(--review-muted); margin-top: 12px; font-size: 15px; }
 .button { display: inline-flex; align-items: center; justify-content: center; background: var(--review-action); color: white; border-radius: 24px; padding: 12px 24px; min-height: 44px; font-size: 14px; flex-shrink: 0; }
 .button:disabled, .link:disabled { opacity: .5; cursor: not-allowed; }
-.section button:focus-visible, .section a:focus-visible, .form input:focus-visible, .form textarea:focus-visible, .form select:focus-visible { outline: 3px solid var(--review-action); outline-offset: 4px; }
+.section button:focus-visible, .section a:focus-visible, .form button:focus-visible, .form a:focus-visible, .form input:focus-visible, .form textarea:focus-visible, .form select:focus-visible { outline: 3px solid var(--review-action); outline-offset: 4px; }
 .empty { background: var(--review-surface); border-radius: 24px; text-align: center; padding: 48px 24px; }
 .emptyStars { color: var(--review-muted); font-size: 32px; letter-spacing: 6px; }
 .empty h3 { font-size: 22px; font-weight: 600; margin: 16px 0 8px; }
@@ -32,8 +32,9 @@
 .pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 24px; font-size: 13px; }
 .link { color: var(--review-action); min-height: 44px; padding: 8px 0; }
 .notice { background: var(--review-surface); border-radius: 16px; padding: 20px 24px; margin-bottom: 24px; font-size: 14px; line-height: 1.7; }
-.form { background: var(--review-surface); border-radius: 24px; padding: 28px; margin-bottom: 32px; }
-.fields { border: 0; min-width: 0; max-width: 680px; }
+.form { --review-surface: #f5f5f7; --review-text: #1d1d1f; --review-muted: #6e6e73; --review-action: #0066cc; --review-divider: #e8e8ed; background: var(--review-surface); color: var(--review-text); border-radius: 12px; padding: 24px; margin-top: 20px; margin-bottom: 24px; }
+.fields { border: 0; min-width: 0; width: 100%; max-width: 680px; }
+.fields > .muted { margin-bottom: 16px; }
 .fields legend { font-size: 14px; font-weight: 600; }
 .ratingOptions { display: flex; gap: 4px; margin: 10px 0 20px; }
 .ratingOptions label { position: relative; width: 44px; height: 44px; display: grid; place-items: center; cursor: pointer; border-radius: 8px; }
@@ -43,8 +44,9 @@
 .ratingOptions svg { width: 30px; height: 30px; }
 .ratingOptions span[data-active="true"] { color: var(--review-action); }
 .label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
-.fields > input, .fields textarea, .fields select { display: block; width: 100%; padding: 14px 16px; border: 1px solid var(--review-divider); background: white; border-radius: 12px; font-size: 16px; margin-bottom: 20px; }
-.fields textarea { resize: vertical; }
+.fields > input, .fields textarea, .fields select { display: block; width: 100%; padding: 12px 14px; border: 1px solid var(--review-muted); background: #fff; color: var(--review-text); border-radius: 8px; font-size: 16px; line-height: 1.5; margin-bottom: 20px; }
+.fields > input::placeholder, .fields textarea::placeholder { color: var(--review-muted); opacity: 1; }
+.fields textarea { min-height: 140px; resize: vertical; }
 .formActions { display: flex; align-items: center; gap: 24px; margin-top: 20px; }
 .error { color: #b42318; font-size: 14px; margin-top: 12px; }
 .loading { min-height: 24px; font-size: 13px; color: var(--review-muted); margin-top: 12px; }

@@ -1,0 +1,57 @@
+# 待续任务（2026-10-22）
+
+## 当前需求与完成范围
+
+- [x] 开启 Medusa 原生 RBAC；已执行 RBAC 数据库迁移并初始化角色。
+- [x] 创建 `role_retail_warehouse` 仓库角色，默认允许订单查看、入库、退回、已有履约的设备配货。
+- [x] 仓库用户菜单过滤：订单、出入库中的入库和退回；隐藏设置和邮件入口。
+- [x] 后端按绑定仓库限制订单、履约、设备、来源、库存；产品/SKU 定义共享，库存层级和聚合数量按仓库过滤。
+- [x] 通过履约所属仓库查找订单，不要求仓库提前录入设备；跨仓订单/设备操作拒绝；空绑定返回空数据。
+- [x] 平台管理员保持全部权限；明确设置为不限仓库的仓库管理员可处理全部仓库。
+- [x] 配货仓库下拉展示“已录入设备数/库存账面数”。
+
+## 明天继续
+
+- [ ] 确认要绑定的用户账号及仓库列表。当前真实用户未做仓库绑定，现有平台管理员保持原权限，勿自行猜测账号归属。
+- [ ] 完成“用户绑定仓库”后台设置页面。绑定 API 和 workflow 已存在，但尚无设置页。
+  - 根目录 `AGENTS.md` 要求使用/改变界面颜色前先明确确认。已提议沿用后台高对比配色（深色背景、浅色文字、清晰边框、现有组件），尚未获得确认，不能视为默认同意。
+  - 页面需支持平台管理员、不限仓库的仓库管理员、绑定指定仓库三种范围；只允许平台管理员修改，禁止自己修改自己的范围。
+  - 中英文文案同步；错误使用 `notifyError`；API 使用现有 Medusa SDK。
+- [ ] 使用已获授权的仓库账号验证实际浏览器菜单、订单详情、入库、退回与配货弹窗，分别验证中英文；当前仓库角色只完成真实 HTTP API 验证与单测，尚未完成仓库账号浏览器验证。
+  - 自动审批拒绝过创建临时认证账号/密码做 UI 验证，理由：用户未明确授权新增登录身份，清理存在残留账号风险。该认证账号未创建；不得通过其他方式绕过拒绝。若仍要创建，需要用户明确批准，或使用用户提供的现有仓库账号。
+- [ ] 继续审查共享订单的字段裁剪和多仓拆单：本仓数量/金额、取消履约、已有配货替换、售后记录、库存嵌套字段，避免泄漏其他仓库数据；需实际浏览器确认裁剪后原生详情页兼容性。
+- [ ] 验证手机入库链接在仓库绑定变更/权限撤销后拒绝跨仓操作；验证订单配货只修改本仓履约。
+- [ ] 验证修改角色策略后菜单即时跟随（入库/退回可分别撤销），并验证原生 RBAC 开启后的供应商账号兼容性。
+- [ ] 部署其他环境时运行 RBAC 迁移和 `setup-warehouse-rbac.ts`。初始化脚本会确保默认仓库角色策略；不要在正常用户绑定时反复重设策略。
+
+## 主要入口
+
+以下路径均相对于仓库根目录：
+
+- `medusa-store/apps/backend/medusa-config.ts`：RBAC 开关/模块、Admin 菜单转换插件。
+- `medusa-store/apps/backend/src/lib/warehouse-access.ts`：绑定范围、履约关联订单、订单与库存裁剪。
+- `medusa-store/apps/backend/src/api/warehouse-guards.ts`：仓库 API 白名单、操作权限与对象归属校验。
+- `medusa-store/apps/backend/src/lib/warehouse-role.ts`、`src/policies/warehouse.ts`：角色与持久注册的自定义策略（后者相对 backend）。
+- `medusa-store/apps/backend/src/api/admin/warehouse-access/`：`GET /admin/warehouse-access` 管理列表，`POST` 保存绑定，`GET /me` 当前范围与菜单权限。
+- `medusa-store/apps/backend/src/workflows/warehouse-access.ts`：绑定业务逻辑及失败回滚。
+- `medusa-store/apps/backend/src/admin/lib/use-warehouse-menu.ts`、`src/lib/admin-warehouse-menu.ts`：菜单过滤及原生 Dashboard 集成（后者相对 backend）。Dashboard 升级后要复核转换锚点。
+- `medusa-store/apps/backend/src/__tests__/warehouse-access.unit.spec.ts`：18 项权限/隔离测试。
+- `medusa-store/apps/backend/src/scripts/check-warehouse-access.ts`：只读 API 验证，临时用户和角色关联在 finally 清理；不创建认证身份/密码，不修改订单、设备、库存、支付。
+- `medusa-store/apps/backend/src/scripts/setup-warehouse-rbac.ts`：显式初始化脚本；现有非供应商账号只在首次初始化时保留平台管理员权限，不自动提升未来新用户。
+
+## 已执行验证与限制
+
+- 后端全量单测：26 套、233 项通过；后续权限范围小改后再次运行18项隔离测试通过。
+- 后端 TypeScript 检查通过。
+- 后端 lint：0 errors、13 warnings；未为通过检查而禁用规则。
+- 独立 `/tmp` 副本完成后端及 Admin 构建通过；未在运行中的 checkout 执行构建。最后角色绑定 workflow 的小改仅复核类型，完整 UI 回归仍待完成。
+- 真实 HTTP 验证通过：本仓订单可见（包括未录设备的履约）、他仓订单/仓库403、设备/来源隔离、空绑定无记录、无关后台接口403；测试用户已清理。
+- 平台调试账号重新登录后，浏览器订单页面正常，原生设置中 Roles/Policies 入口已出现。
+- 本地 `/health`、`/app`、店铺 `/dk-en` 最后检查均200；检查过服务日志，后端 reload 已恢复，没有遗留 pause。
+- 调试凭据在根目录 Git 忽略文件 `.admin-credentials`，不要打印、写进文档或提交。
+- 仓库还有其他任务的支付、Webhook、店铺 UI 等代码改动；用户明确要求本次一起提交 push。不要将所有变更归因于仓库权限功能。
+- 私有库存导出 CSV 属于本地产物，不属于代码，不应随代码推送。
+
+## 开发服务规则
+
+遵守根目录与 `medusa-store/AGENTS.md`：后端编辑批次前 pause，finally/cleanup 恢复 resume；使用监督脚本，勿另起原始后端或对运行目录 build/清理输出。只读验证不能通过修改真实业务数据完成。

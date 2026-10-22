@@ -7,6 +7,7 @@ import { HttpTypes } from "@medusajs/types"
 import { deleteLineItem, updateLineItem } from "@lib/data/cart"
 import { variantOptions, variantSlug, variantInStock } from "@lib/util/product-variants"
 import { optionValueLabel } from "@modules/products/i18n"
+import GradeBadge, { isGrade } from "@modules/common/components/grade-badge"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getCartCopy } from "../../i18n"
 import styles from "../../styles.module.css"
@@ -26,7 +27,7 @@ export default function CartLine({ item, variant, currency, locale }: { item: Ht
   const unavailable = !!variant && (!variantInStock(variant) || (maximum !== undefined && item.quantity > maximum))
   const url = `/products/${variantSlug(variant) ?? item.product_handle}`
   const values = variant ? Object.values(variantOptions(variant)) : (item.variant_title ?? "").split(" / ").filter(Boolean)
-  const grade = values.find((value) => value === "S" || value === "A")
+  const grade = values.find(isGrade)
   const battery = values.find((value) => /^\d+%$/.test(value))
   const description = values.filter((value) => value !== grade && value !== battery).map((value) => optionValueLabel(value, locale)).join(" · ")
   const money = (amount: number) => new Intl.NumberFormat(locale.endsWith("-zh") ? "zh-CN" : "en-IE", { style: "currency", currency }).format(amount)
@@ -57,7 +58,7 @@ export default function CartLine({ item, variant, currency, locale }: { item: Ht
     <LocalizedClientLink href={url} className={styles.thumbnail} aria-label={item.product_title ?? item.title}>{item.thumbnail && <Image src={item.thumbnail} alt={item.product_title ?? item.title} fill sizes="64px" />}</LocalizedClientLink>
     <div>
       <LocalizedClientLink href={url} className={styles.title} data-testid="product-title">{item.product_title ?? item.title}</LocalizedClientLink>
-      <div className={styles.details}>{grade && <span className={styles.grade}>{optionValueLabel(grade, locale)}</span>}<span data-testid="product-variant">{description}</span>{battery && <span className={styles.battery}>· {copy.battery}: {battery}</span>}</div>
+      <div className={styles.details}>{grade && <GradeBadge grade={grade} locale={locale} />}<span data-testid="product-variant">{description}</span>{battery && <span className={styles.battery}>· {copy.battery}: {battery}</span>}</div>
       <div className={styles.lineControls}>
       <div className={styles.quantity}>
         <label htmlFor={quantityId}>{copy.quantity}:</label>

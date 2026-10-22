@@ -4,8 +4,9 @@
     "availableStock": "Available devices for this configuration: {{count}}",
     "currentWarehouse": "Fulfillment warehouse: {{name}}",
     "stockWarehouse": "Browse stock by warehouse",
-    "allWarehouses": "All warehouses ({{count}})",
-    "warehouseStock": "{{name}} ({{count}})",
+    "allWarehouses": "All warehouses ({{registered}}/{{stocked}} units)",
+    "warehouseStock": "{{name}} ({{registered}}/{{stocked}} units)",
+    "warehouseCountsHelp": "Registered / Stocked: registered devices still in stock (including pending, inspection and reserved devices) / inventory quantity entered. Only available devices can be selected below.",
     "matchingDevices": "Matching devices in this list: {{count}}",
     "deviceWarehouse": "Warehouse: {{name}}",
     "otherWarehouseDevice": "Different fulfillment warehouse. Recreate fulfillment from this warehouse to allocate this device.",
@@ -13,13 +14,16 @@
     "fulfillmentWarehouseHelp": "Select devices first. Saving allocation sets the shipping warehouse and source from the devices. Devices in one fulfillment must share a warehouse and source.",
     "selectDevice": "Select device",
     "dialogTitle": "Allocate devices",
-    "dialogHelp": "Select devices, then confirm to set their shipping warehouse and supply source and create or update the unshipped fulfillment. Closing this dialog leaves the allocation unchanged.",
+    "dialogHelp": "Add or replace devices for this product and confirm to save. Existing fulfillments receive the device assignments; unfulfilled items only reserve devices.",
     "selectedDevices": "Selected devices: {{count}}",
     "chooseReplacement": "Choose replacement",
     "replacementRequired": "Select a replacement for each device being changed before saving.",
     "confirmAllocation": "Confirm and save allocation",
     "allocationSaved": "Device allocation saved",
     "boundDevices": "Allocated devices: {{count}}",
+    "allocationLabel": "Allocated devices",
+    "replaceAllocation": "Change allocation",
+    "paymentRequired": "Complete payment before allocating devices.",
     "manageAllocation": "Device allocation",
     "stockOnlyHelp": "Allocate only available devices already registered in stock. If a device is missing, register intake first, then return to this order.",
     "goToIntake": "Go to device intake",
@@ -49,7 +53,10 @@
     "remaining": "Devices still needed: {{count}}",
     "allocationMode": "Allocation method",
     "existingDevice": "Select available devices",
-    "eid": "EID"
+    "eid": "EID",
+    "supplementAllocation": "Add devices",
+    "fulfillmentAllocationHelp": "Select devices for this fulfillment. Selections are saved when the fulfillment is created. Devices can also be added from the product row afterward without deducting stock again.",
+    "chooseLocationFirst": "Select a fulfillment location first to choose its available devices."
   },
   "deviceScan": {
     "mobileIntakeActor": "Mobile intake link creator",
@@ -324,6 +331,7 @@
     "shipFulfillment": "Ship fulfillment {{id}}",
     "deviceList": "Devices ({{count}})",
     "errors": {
+      "paymentRequired": "Complete payment before allocating devices.",
       "allocationMixedSource": "Devices in one fulfillment must share a warehouse and supply source. Allocate separate parcels.",
       "allocationBooked": "This fulfillment has a carrier booking or label. Handle the booking before changing the shipping warehouse.",
       "allocationStock": "The device warehouse has insufficient available stock for the entire fulfillment.",
@@ -421,7 +429,8 @@
       "photoInvalid": "Photo is invalid or exceeds 3 MB. Please upload again.",
       "inspectionCategory": "Only returned or recycled devices require inspection.",
       "eidFormat": "EID must contain 32 digits",
-      "eidMismatch": "EID does not match the registered device"
+      "eidMismatch": "EID does not match the registered device",
+      "warehouseAccessDenied": "You do not have permission to access this warehouse or perform this action."
     },
     "requestTypes": {
       "return": "Return and refund",

@@ -15,6 +15,8 @@ import {
   guardDeviceInventory,
   guardDeviceReturn,
 } from "./device-guards"
+import { WarehouseBindingBody } from "./admin/warehouse-access/validators"
+import { guardWarehouseAdmin } from "./warehouse-guards"
 import { guardSupplierAdmin } from "./device-access"
 import { SupplierAccountBody } from "./admin/devices/supplier-accounts/route"
 import { MailCommand, MailListQuery } from "./admin/mail/validators"
@@ -32,6 +34,7 @@ import {
 // the route narrows it to published products in the key's sales channels.
 export default defineMiddlewares({
   routes: [
+    { matcher: "/admin/warehouse-access", method: "POST", middlewares: [validateAndTransformBody(WarehouseBindingBody)] },
     ...["/admin/devices/photos", "/mobile-intake/photos"].map((matcher) => ({ matcher, method: "POST" as const, bodyParser: { sizeLimit: "34mb" }, middlewares: [validateAndTransformBody(DevicePhotoUpload)] })),
     { matcher: "/admin/devices/mobile-intake", method: "POST", middlewares: [validateAndTransformBody(CreateMobileIntake)] },
     { matcher: "/mobile-intake", method: "POST", bodyParser: { sizeLimit: "32kb" }, middlewares: [validateAndTransformBody(MobileIntakeBody)] },
@@ -53,6 +56,7 @@ export default defineMiddlewares({
           requireMfa: true,
         }),
         guardSupplierAdmin,
+        guardWarehouseAdmin,
       ],
     },
     ...["/store/payment-providers", "/admin/payments/payment-providers"].map((matcher) => ({

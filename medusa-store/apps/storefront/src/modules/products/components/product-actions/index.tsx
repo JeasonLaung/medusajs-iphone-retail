@@ -9,7 +9,8 @@ import { useIntersection } from "@lib/hooks/use-in-view"
 import { HttpTypes } from "@medusajs/types"
 import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { useParams, usePathname, useSearchParams } from "next/navigation"
+import GradeBadge, { isGrade } from "@modules/common/components/grade-badge"
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { getProductCopy, optionLabel, optionValueLabel } from "../../i18n"
 import { variantOptions as optionMap, variantInStock as available, completeVariants, preferredOptionVariant, purchaseOptions, variantSlug, variantFromLocation } from "@lib/util/product-variants"
@@ -26,6 +27,7 @@ export default function ProductActions({ product, disabled, initialVariantId, ca
   cartQuantities: Record<string, number>
 }) {
   const { countryCode } = useParams<{ countryCode: string }>()
+  const router = useRouter()
   const copy = getProductCopy(countryCode)
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -108,6 +110,7 @@ export default function ProductActions({ product, disabled, initialVariantId, ca
       if (result.ok) {
         setQuantities(result.quantities)
         setFeedback("added")
+        router.push(`/${countryCode}/cart`)
       } else {
         setFeedback(result.error)
       }
@@ -142,7 +145,7 @@ export default function ProductActions({ product, disabled, initialVariantId, ca
         const colour = /colou?r/i.test(option.title ?? "") ? colours.find((colour) => colour.name.toLowerCase() === value.toLowerCase()) : null
         return <label key={value} className={styles.choice} data-checked={checked} data-disabled={!inStock || disabled || isAdding}>
           <input type="radio" name={`${product.id}-${option.id}`} value={value} checked={checked} disabled={!inStock} onChange={() => selectOption(option.id, value)} aria-label={optionValueLabel(value, countryCode)} data-testid="option-radio" />
-          <span className={styles.choiceLabel}>{colour && <span className={styles.swatch} style={{ background: colour.hex }} aria-hidden="true" />}{optionValueLabel(value, countryCode)}</span>
+          <span className={styles.choiceLabel}>{colour && <span className={styles.swatch} style={{ background: colour.hex }} aria-hidden="true" />}{/condition|grade/i.test(option.title ?? "") && isGrade(value) ? <GradeBadge grade={value} locale={countryCode} /> : optionValueLabel(value, countryCode)}</span>
           {!checked && <span className={styles.choicePrice}>{optionPrice}</span>}
         </label>
       })}</div>

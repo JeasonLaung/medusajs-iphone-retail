@@ -7,8 +7,9 @@
     "availableStock": "此配置可售设备共 {{count}} 台",
     "currentWarehouse": "当前履约仓库：{{name}}",
     "stockWarehouse": "查看库存设备",
-    "allWarehouses": "全部仓库（{{count}} 台）",
-    "warehouseStock": "{{name}}（{{count}} 台）",
+    "allWarehouses": "全部仓库（{{registered}}/{{stocked}} 台）",
+    "warehouseStock": "{{name}}（{{registered}}/{{stocked}} 台）",
+    "warehouseCountsHelp": "左侧为已录入且仍在库的机器数（含待上架、待验机和已预留），右侧为库存填写的数量；下方仅可选择可售设备。",
     "matchingDevices": "当前列表匹配 {{count}} 台设备",
     "deviceWarehouse": "仓库：{{name}}",
     "otherWarehouseDevice": "与当前履约仓库不同，需更换履约仓库后配货。",
@@ -16,13 +17,16 @@
     "fulfillmentWarehouseHelp": "先选择设备，保存配货时将自动按设备确定发货地和供货来源。同一履约包裹的设备须来自同一仓库和供货来源。",
     "selectDevice": "选择设备",
     "dialogTitle": "设备配货",
-    "dialogHelp": "选择设备后，点击“确认保存配货”，将按设备自动设置发货地和供货来源，并创建或更新未发货履约单。关闭弹窗不会修改原配货。",
+    "dialogHelp": "为当前商品补配或更换设备，再确认保存。已创建履约的商品补配到对应履约；未履约商品仅保存配货。",
     "selectedDevices": "已选设备：{{count}} 台",
     "chooseReplacement": "选择替换设备",
     "replacementRequired": "请为需要更换的设备选择替换设备后再保存。",
     "confirmAllocation": "确认保存配货",
     "allocationSaved": "设备配货已保存",
     "boundDevices": "已配货设备：{{count}} 台",
+    "allocationLabel": "配货设备",
+    "replaceAllocation": "更换配货",
+    "paymentRequired": "订单支付完成后才能配货。",
     "manageAllocation": "设备配货",
     "stockOnlyHelp": "配货仅可选择已入库的可售设备。找不到设备时，请先前往入库，再返回订单配货。",
     "goToIntake": "前往设备入库",
@@ -52,7 +56,10 @@
     "remaining": "还需配货 {{count}} 台",
     "allocationMode": "配货方式",
     "existingDevice": "选择已有可售设备",
-    "eid": "EID"
+    "eid": "EID",
+    "supplementAllocation": "补配设备",
+    "fulfillmentAllocationHelp": "选择本次履约的设备，创建履约时一并保存。暂未录入的设备可在创建履约后从商品行补配；补配不会重复扣减库存。",
+    "chooseLocationFirst": "请先选择发货仓库，再选择该仓库的可售设备。"
   },
   "deviceScan": {
     "mobileIntakeActor": "手机临时链接创建账号",
@@ -327,6 +334,7 @@
     "shipFulfillment": "发出履约 {{id}}",
     "deviceList": "设备列表（{{count}}）",
     "errors": {
+      "paymentRequired": "订单支付完成后才能配货。",
       "allocationMixedSource": "同一履约包裹须使用同一仓库和供货来源的设备，请分批配货。",
       "allocationBooked": "此履约已关联物流服务或面单，无法自动更换发货地，请先处理物流预订。",
       "allocationStock": "设备所在仓库的可用库存不足以承接整个履约包裹。",
@@ -424,7 +432,8 @@
       "photoInvalid": "照片无效或超过 3MB，请重新上传",
       "inspectionCategory": "仅退回或回收设备需要检测",
       "eidFormat": "EID 必须为 32 位数字",
-      "eidMismatch": "EID 与已入库设备不一致"
+      "eidMismatch": "EID 与已入库设备不一致",
+      "warehouseAccessDenied": "你没有此仓库或此操作的权限。"
     },
     "requestTypes": {
       "return": "退货退款",

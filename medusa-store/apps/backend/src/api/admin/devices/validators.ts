@@ -57,8 +57,21 @@ export type UpdateDeviceBody = z.infer<typeof UpdateDevice>
 
 export const DeviceCommand = z.discriminatedUnion("action", [
   z.strictObject({
+    action: z.literal("create_fulfillment"),
+    order_id: id,
+    allocations: z.array(z.strictObject({ item_id: id, device_id: id, assignment_id: optionalId })).max(100),
+    fulfillment: z.strictObject({
+      location_id: id,
+      shipping_option_id: id,
+      no_notification: z.boolean(),
+      items: z.array(z.strictObject({ id, quantity: z.number().int().positive() })).min(1)
+        .refine((items) => new Set(items.map((item) => item.id)).size === items.length, "Duplicate order items"),
+    }),
+  }),
+  z.strictObject({
     action: z.literal("save_allocation"),
     order_id: id,
+    reserve_only: z.boolean().optional(),
     allocations: z.array(z.strictObject({ item_id: id, device_id: id, assignment_id: optionalId, fulfillment_id: optionalId })).min(1).max(100),
   }),
   UpdateDevice,

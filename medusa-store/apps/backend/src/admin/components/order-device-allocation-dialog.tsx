@@ -7,12 +7,12 @@ import { sdk } from "../lib/sdk"
 
 type Selection = { item_id: string; device_id: string; assignment_id?: string; fulfillment_id?: string }
 
-export default function OrderDeviceAllocationDialog({ orderId, data, fulfillmentId, busy, readOnly, run, onClose }: {
-  orderId: string; data: OrderDeviceData; fulfillmentId?: string; busy: boolean; readOnly: boolean
+export default function OrderDeviceAllocationDialog({ orderId, data, fulfillmentId, itemId, busy, readOnly, run, onClose }: {
+  orderId: string; data: OrderDeviceData; fulfillmentId?: string; itemId?: string; busy: boolean; readOnly: boolean
   run: RunOrderDeviceCommand; onClose: () => void
 }) {
   const { t } = useDeviceTranslations()
-  const initial = data.assignments.filter((a) => fulfillmentId ? a.fulfillment_id === fulfillmentId && ["packed", "shipped"].includes(a.status) : a.status === "reserved")
+  const initial = data.assignments.filter((a) => (!itemId || a.item_id === itemId) && (fulfillmentId ? a.fulfillment_id === fulfillmentId && ["packed", "shipped"].includes(a.status) : a.status === "reserved"))
   const [selected, setSelected] = useState<Selection[]>(initial.map((a) => ({ item_id: a.item_id, device_id: a.device_id, assignment_id: a.id, ...(fulfillmentId ? { fulfillment_id: fulfillmentId } : {}) })))
   const [draftDevices, setDraftDevices] = useState(data.assigned_devices)
   const missingReplacement = initial.some((a) => !selected.some((entry) => entry.assignment_id === a.id))
@@ -22,7 +22,7 @@ export default function OrderDeviceAllocationDialog({ orderId, data, fulfillment
       ...data.assignments.filter((a) => !initial.some((entry) => entry.id === a.id)),
       ...selected.map((entry, index) => ({ id: `draft-${index}`, ...entry, source_id: "", status: fulfillmentId ? "packed" : "reserved", fulfillment_id: fulfillmentId || null, tracking_number: null, replacement_of: null })),
     ],
-    order: data.order && { ...data.order, items: data.order.items.filter((item) => !fulfillmentId || data.order?.fulfillments?.find((f) => f.id === fulfillmentId)?.items?.some((entry) => entry.line_item_id === item.id)) },
+    order: data.order && { ...data.order, items: data.order.items.filter((item) => (!itemId || item.id === itemId) && (!fulfillmentId || data.order?.fulfillments?.find((f) => f.id === fulfillmentId)?.items?.some((entry) => entry.line_item_id === item.id))) },
   }
   const select: RunOrderDeviceCommand = async (body) => {
     if (body.action !== "assign" || selected.some((entry) => entry.device_id === body.device_id)) return false
@@ -60,7 +60,7 @@ export default function OrderDeviceAllocationDialog({ orderId, data, fulfillment
       <FocusModal.Footer>
         <Button size="small" variant="secondary" disabled={busy} onClick={onClose}>{t("actions.cancel")}</Button>
         {!readOnly && <Button size="small" isLoading={busy} disabled={busy || !selected.length || missingReplacement} onClick={async () => {
-          if (await run({ action: "save_allocation", order_id: orderId, allocations: selected })) onClose()
+          if (await run({ action: "save_allocation", order_id: orderId, reserve_only: !fulfillmentId, allocations: selected })) onClose()
         }}>{t("orderDevices.confirmAllocation")}</Button>}
       </FocusModal.Footer>
     </FocusModal.Content>

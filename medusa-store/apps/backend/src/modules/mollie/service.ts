@@ -26,6 +26,7 @@ import { decryptMollieSecret } from "../mollie-settings/security"
 type MolliePayment = Record<string, unknown> & {
   id: string
   status: string
+  isCancelable?: boolean | null
   amount: { value: string; currency: string }
   metadata?: {
     session_id?: string
@@ -134,9 +135,7 @@ export function createMollieProvider(BaseProvider: MollieProviderConstructor) {
     }
 
     private async refreshMollieConfig() {
-      const settings = typeof (this.container_ as { resolve?: (name: string) => unknown }).resolve === "function"
-        ? (this.container_ as { resolve: (name: string) => unknown }).resolve(MOLLIE_SETTINGS_MODULE) as MollieSettingsModuleService
-        : undefined
+      const settings = this.container_[MOLLIE_SETTINGS_MODULE] as MollieSettingsModuleService | undefined
       if (!settings) return
       const [configs] = await settings.listAndCountMollieConfigs({}, { take: 1 })
       const config = configs[0]
@@ -260,6 +259,10 @@ export function createMollieProvider(BaseProvider: MollieProviderConstructor) {
         )
       if (["canceled", "expired", "failed"].includes(payment.status))
         return { data: input.data }
+      // Hosted checkout payments can be open without supporting cancellation.
+      // Their local session may be discarded, but never hide a processing payment.
+      if (payment.status === "open" && payment.isCancelable === false)
+        return { data: { ...input.data, ...payment } }
       const canceled = await this.client_.payments.cancel(id)
       return { data: { ...input.data, ...canceled } }
     }

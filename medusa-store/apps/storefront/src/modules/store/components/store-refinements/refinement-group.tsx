@@ -1,6 +1,7 @@
 "use client"
 
 import clsx from "clsx"
+import GradeBadge, { isGrade } from "@modules/common/components/grade-badge"
 import { useParams } from "next/navigation"
 import { useRefinementList } from "react-instantsearch"
 import { getRefinementLabel, getRefinementTitle } from "./i18n"
@@ -83,7 +84,7 @@ const RefinementGroup = ({ attribute, title }: RefinementGroupProps) => {
     return <fieldset className={styles.options} data-testid={`filter-group-${attribute}`}>
       <legend className="sr-only">{getRefinementTitle(attribute, countryCode) ?? title}</legend>
       {visibleItems.map((item) => <label key={item.value} className={styles.option} data-disabled={item.count === 0 && !item.isRefined}>
-        <span>{getRefinementLabel(attribute, item.label, countryCode)}</span>
+        <span>{attribute === "condition_options" && isGrade(item.value) ? <GradeBadge grade={item.value} locale={countryCode} /> : getRefinementLabel(attribute, item.label, countryCode)}</span>
         <input
           type="checkbox"
           checked={item.isRefined}
@@ -119,7 +120,7 @@ const RefinementGroup = ({ attribute, title }: RefinementGroupProps) => {
               )}
               data-testid={`refinement-${attribute}`}
             >
-              {getRefinementLabel(attribute, item.label, countryCode)}
+              {attribute === "condition_options" && isGrade(item.value) ? <GradeBadge grade={item.value} locale={countryCode} /> : getRefinementLabel(attribute, item.label, countryCode)}
             </button>
           </li>
         ))}

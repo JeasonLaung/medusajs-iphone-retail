@@ -1,5 +1,17 @@
 # Project instructions
 
+## Preserve existing functionality and styling
+
+- Before adding or extending a feature, inspect the existing implementation and reuse or extend it where practical.
+- When a feature already exists, preserve its existing behavior, interactions, and styling as much as possible. Make the smallest changes needed for the requested addition, and avoid unrelated rewrites, removals, or visual redesigns.
+- If the requested addition requires changing existing behavior or styling, keep the change limited to what is necessary and explain its impact. Follow the frontend color confirmation requirements below for any color changes.
+- Verify that the added functionality works and that the affected existing functionality and styling remain intact.
+
+## Local Admin debugging
+
+- The user provides a dedicated debugging account and authorizes signing in to the local Admin at `http://localhost:9001/app` for development verification. Its `EMAIL` and `PASSWORD` are stored in the repository root `.admin-credentials`, which Git ignores. Read that file when a login is required; never print credentials in logs or commit them.
+- Use the provided local account for read-only UI checks. Do not change real orders, devices, stock, or payments merely to test a UI change.
+
 ## Development service availability
 
 - Keep the existing development services available while editing. Use `start.bat` on Windows or `sh/start.sh` on macOS/Linux; app `pnpm run dev` scripts use `scripts/dev-service.cjs` for supervision. Do not start a second raw `medusa develop` or `next dev` instance on ports 9001/8000.

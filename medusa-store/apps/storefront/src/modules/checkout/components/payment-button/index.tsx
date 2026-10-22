@@ -10,7 +10,7 @@ import { MedusaNextPayPalAdapter } from "@easypayment/medusa-paypal-ui"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@modules/common/components/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
-import { useParams, useSearchParams } from "next/navigation"
+import { useParams } from "next/navigation"
 import React, { useState } from "react"
 import ErrorMessage from "../error-message"
 import { getCheckoutCopy } from "../../i18n"
@@ -94,7 +94,6 @@ const MolliePaymentButton = ({
   cart: HttpTypes.StoreCart
   notReady: boolean
 }) => {
-  const searchParams = useSearchParams()
   const [submitting, setSubmitting] = useState(false)
   const { countryCode } = useParams<{ countryCode: string }>()
   const copy = getCheckoutCopy(countryCode)
@@ -136,20 +135,6 @@ const MolliePaymentButton = ({
   }
   return (
     <>
-      {searchParams.get("payment_status") === "pending" && (
-        <Button
-          className="mb-3"
-          disabled={notReady || submitting}
-          size="large"
-          onClick={() => {
-            window.location.assign(
-              `/api/mollie-return?cart_id=${encodeURIComponent(cart.id)}`
-            )
-          }}
-        >
-          {copy.checkPayment}
-        </Button>
-      )}
       <Button
         disabled={notReady || submitting}
         isLoading={submitting}

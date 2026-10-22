@@ -9,6 +9,7 @@ jest.mock("@medusajs/framework/workflows-sdk", () => ({
   StepResponse: class { constructor(public output: unknown) {} }, WorkflowResponse: jest.fn(),
 }))
 jest.mock("@medusajs/medusa/core-flows", () => ({}))
+jest.mock("../api/warehouse-guards", () => ({ authorizeWarehouseCommand: jest.fn() }))
 jest.mock("../api/device-access", () => ({ authorizeDeviceCommand: jest.fn() }))
 
 const device = { id: "dev_1", serial_number: "FIXED", variant_id: "variant_1", source_id: "source_1", location_id: "loc_1", imei: "123456789012345", imei2: null, eid: null, category: "sale", state: "available", grade: "A", battery_health: 90, cost_cents: 12345, currency_code: "eur", bin: "A1", notes: "", photos: [] }

@@ -12,11 +12,12 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import { getLayoutCopy } from "@modules/layout/i18n"
 import styles from "./styles.module.css"
 
-export default function StoreHeader({ regions, locales, locale, cartCount }: {
+export default function StoreHeader({ regions, locales, locale, cartCount, isLoggedIn }: {
   regions: StoreRegion[]
   locales: Locale[]
   locale: string | null
   cartCount: number
+  isLoggedIn: boolean
 }) {
   const copy = getLayoutCopy(locale)
   const { countryCode } = useParams<{ countryCode: string }>()
@@ -58,20 +59,20 @@ export default function StoreHeader({ regions, locales, locale, cartCount }: {
         </div>
         <div className={styles.actions}>
           <LocalizedClientLink href="/account" className={styles.iconButton} aria-label={copy.account} data-testid="nav-account-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><circle cx="12" cy="7" r="4" /><path d="M3 22v-2a9 9 0 0 1 18 0v2Z" /></svg>
+            <svg viewBox="0 0 24 24" fill={isLoggedIn ? "#000" : "none"} stroke={isLoggedIn ? "#000" : "currentColor"} strokeWidth="1.4" aria-hidden="true"><circle cx="12" cy="7" r="4" /><path d="M3 22v-2a9 9 0 0 1 18 0v2Z" /></svg>
           </LocalizedClientLink>
           <LocalizedClientLink href="/cart" className={styles.iconButton} aria-label={`${copy.cart} (${cartCount})`} data-testid="nav-cart-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><path d="M1 2h3l3 15h13l3-11H5" /><circle cx="9" cy="21" r="1" /><circle cx="19" cy="21" r="1" /></svg>
-            <span className={styles.count}>{cartCount}</span>
+            {cartCount > 0 && <span className={styles.count} aria-hidden="true">{cartCount > 99 ? "99+" : cartCount}</span>}
           </LocalizedClientLink>
           <RegionLanguage regions={regions} locales={locales} locale={locale} />
           <Popover className={styles.mobile}>
             <PopoverButton className={styles.iconButton} aria-label={copy.menu} data-testid="nav-menu-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
             </PopoverButton>
-            <PopoverPanel className={styles.mobilePanel}>
+            <PopoverPanel className={styles.mobilePanel} modal focus>
               {({ close }) => <>
-                <button onClick={() => close()} className={styles.close}>{copy.close} <XMark aria-hidden="true" width={20} height={20} className="inline-block align-middle shrink-0" /></button>
+                <button onClick={() => close()} className={styles.close} aria-label={copy.close}><XMark aria-hidden="true" width={24} height={24} className="inline-block align-middle shrink-0" /></button>
                 {items.map((item) => <LocalizedClientLink key={item.href} href={item.href} onClick={() => close()} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</LocalizedClientLink>)}
               </>}
             </PopoverPanel>

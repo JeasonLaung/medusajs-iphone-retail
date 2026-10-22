@@ -1,9 +1,10 @@
 "use client"
 
 import { setShippingMethod } from "@lib/data/cart"
+import { startMolliePayment } from "@lib/data/mollie"
 import { calculatePriceForShippingOption } from "@lib/data/fulfillment"
 import { HttpTypes } from "@medusajs/types"
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Button } from "@modules/common/components/ui"
 import { getCheckoutCopy } from "../../i18n"
@@ -15,11 +16,9 @@ const isPickup = (option: Option) => (option as unknown as { service_zone?: { fu
 export default function Shipping({ cart, availableShippingMethods }: { cart: HttpTypes.StoreCart; availableShippingMethods: Option[] | null }) {
   const { countryCode } = useParams<{ countryCode: string }>()
   const copy = getCheckoutCopy(countryCode)
-  const router = useRouter()
-  const pathname = usePathname()
-  const query = useSearchParams()
   const [selected, setSelected] = useState(cart.shipping_methods?.at(-1)?.shipping_option_id ?? "")
   const [saving, setSaving] = useState(false)
+  const [paying, setPaying] = useState(false)
   const [loading, setLoading] = useState(true)
   const [prices, setPrices] = useState<Record<string, number>>({})
   const [error, setError] = useState<string | null>(null)
@@ -42,7 +41,7 @@ export default function Shipping({ cart, availableShippingMethods }: { cart: Htt
   }, [availableShippingMethods, cart.id])
 
   const choose = async (id: string) => {
-    if (saving) return
+    if (saving || paying) return
     setSaving(true)
     setError(null)
     const previous = selected
@@ -60,7 +59,7 @@ export default function Shipping({ cart, availableShippingMethods }: { cart: Htt
       return <div key={String(pickup)}><h3 className={styles.sectionLabel}>{pickup ? copy.pickup : copy.homeDelivery}</h3>
         {options.map((method) => {
           const amount = method.price_type === "flat" ? method.amount : prices[method.id]
-          const unavailable = saving || method.insufficient_inventory || typeof amount !== "number"
+          const unavailable = saving || paying || method.insufficient_inventory || typeof amount !== "number"
           return <label key={method.id} className={styles.method} data-checked={selected === method.id} data-disabled={!!unavailable}>
             <input type="radio" name="delivery-method" value={method.id} checked={selected === method.id} disabled={!!unavailable} onChange={() => choose(method.id)} data-testid="delivery-option-radio" />
             <div><strong>{method.name}</strong>{method.type?.description && <p className={styles.muted}>{method.type.description}</p>}</div><strong className={styles.methodPrice}>{typeof amount === "number" ? money(amount) : loading ? "…" : copy.pricePending}</strong>
@@ -69,11 +68,15 @@ export default function Shipping({ cart, availableShippingMethods }: { cart: Htt
       </div>
     })}
     {error && <p role="alert" className={styles.error}>{error}</p>}
-    <Button className={styles.primary} onClick={() => {
-      const next = new URLSearchParams(query.toString())
-      next.set("step", "payment")
-      next.delete("payment_status")
-      router.push(pathname + "?" + next.toString())
-    }} disabled={saving || !selected || !cart.shipping_methods?.some((method) => method.shipping_option_id === selected) || !methods.some((method) => method.id === selected && !method.insufficient_inventory && typeof (method.price_type === "flat" ? method.amount : prices[method.id]) === "number")} isLoading={saving} data-testid="submit-delivery-option-button">{copy.continuePayment}</Button>
+    <Button className={styles.primary} onClick={async () => {
+      if (saving || paying) return
+      setPaying(true)
+      setError(null)
+      try { window.location.assign(await startMolliePayment()) }
+      catch (err) {
+        setError(err instanceof Error ? err.message : copy.paymentError)
+        setPaying(false)
+      }
+    }} disabled={saving || paying || !selected || !cart.shipping_methods?.some((method) => method.shipping_option_id === selected) || !methods.some((method) => method.id === selected && !method.insufficient_inventory && typeof (method.price_type === "flat" ? method.amount : prices[method.id]) === "number")} isLoading={saving || paying} data-testid="submit-delivery-option-button">{copy.continuePayment}</Button>
   </section>
 }

@@ -30,9 +30,13 @@ export default async function enableCheckoutPayments({
     { is_enabled: true },
     { take: 100 },
   )
+  const requested = args.slice(1)
+  if (requested.some((id) => !providers.some((provider) => provider.id === id)))
+    throw new MedusaError(MedusaError.Types.INVALID_DATA, "Requested payment provider is not enabled")
   const added = providers
     .filter(
       (provider) =>
+        requested.length ? requested.includes(provider.id) :
         provider.id === "pp_paypal_paypal" ||
         provider.id === "pp_paypal_card_paypal_card" ||
         provider.id.startsWith("pp_mollie-"),

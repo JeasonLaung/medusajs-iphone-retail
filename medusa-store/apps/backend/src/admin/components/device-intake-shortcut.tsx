@@ -17,7 +17,7 @@ export default function DeviceIntakeShortcut({
   return (
     <div className="space-y-2">
       <Text size="small">{t("orderDevices.stockOnlyHelp")}</Text>
-      <Button size="small" variant="secondary" asChild disabled={busy}>
+      <Button type="button" size="small" variant="secondary" asChild disabled={busy}>
         <Link
           to={`/device-scan/intake?${params}`}
           onClick={(event) => {

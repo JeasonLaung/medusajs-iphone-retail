@@ -1,11 +1,13 @@
 import type { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/framework/utils"
 import { deviceVariantSearchFilters } from "../../../../lib/device-variant-search"
+import { warehouseAccess, scopeInventoryLevels } from "../../../../lib/warehouse-access"
 import { deviceAccess } from "../../../device-access"
 import { requiresImei } from "../../../../modules/devices/identity"
 
 export async function GET(req: AuthenticatedMedusaRequest, res: MedusaResponse) {
   await deviceAccess(req.scope, req.auth_context.actor_id)
+  const access = await warehouseAccess(req.scope, req.auth_context.actor_id)
   const search = typeof req.query.q === "string" ? req.query.q : ""
   const sku = typeof req.query.sku === "string" ? req.query.sku.trim() : ""
   const id = typeof req.query.id === "string" ? req.query.id.trim() : ""
@@ -20,5 +22,5 @@ export async function GET(req: AuthenticatedMedusaRequest, res: MedusaResponse) 
     filters: { ...deviceVariantSearchFilters(search), ...(sku ? { sku } : {}), ...(id ? { id } : {}) },
     pagination: { take: 20, skip: offset, order: { sku: "ASC", id: "ASC" } },
   })
-  res.json({ variants: variants.map((variant) => ({ ...variant, requires_imei: requiresImei(variant.product) })), count: metadata?.count || 0, offset, limit: 20 })
+  res.json({ variants: variants.map((variant) => ({ ...scopeInventoryLevels(variant, access), requires_imei: requiresImei(variant.product) })), count: metadata?.count || 0, offset, limit: 20 })
 }

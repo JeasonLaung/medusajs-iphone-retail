@@ -1,0 +1,69 @@
+{
+  "title": "Webhook 通知",
+  "description": "将商店事件发送到群机器人或通用 HTTPS Webhook。",
+  "add": "添加通道",
+  "name": "通道名称",
+  "provider": "平台",
+  "url": "Webhook 地址",
+  "secret": "签名密钥（飞书 / 钉钉）",
+  "token": "Bearer 令牌（通用 Webhook）",
+  "keyword": "消息前缀 / 安全关键词",
+  "language": "通知语言",
+  "enabled": "启用通知",
+  "events": "订阅事件",
+  "save": "保存通道",
+  "cancel": "取消",
+  "edit": "编辑",
+  "delete": "删除",
+  "confirmDelete": "确定删除此通知通道？",
+  "test": "发送测试",
+  "saved": "通道已保存",
+  "deleted": "通道已删除",
+  "tested": "测试通知已发送",
+  "empty": "尚未配置通知通道。",
+  "loading": "加载中…",
+  "keep": "留空保留已保存的值",
+  "clearSecret": "清除签名密钥",
+  "clearToken": "清除 Bearer 令牌",
+  "security": "地址和凭据加密保存。仅允许使用 443 端口的公网 HTTPS 地址。测试前请先保存修改。",
+  "genericHelp": "通用 JSON 可接入 n8n 等自动化工具。字段：event、resource_id、text、timestamp。请使用已发布并启用 POST 的生产 Webhook。",
+  "deliveryHelp": "每个事件对每个通道尝试发送一次，失败会记录状态，暂不自动重试。事件通知仅包含资源 ID，不包含顾客资料。",
+  "status": "最近发送",
+  "never": "未发送",
+  "success": "成功",
+  "failed": "失败",
+  "generic": "通用 JSON / n8n",
+  "errors": {
+    "load": "无法加载通知通道",
+    "validation": "请填写名称、平台、语言，并选择至少一个事件。",
+    "url": "请输入对应平台的有效公网 HTTPS Webhook 地址（443 端口）。",
+    "delivery": "发送失败，请检查地址、签名密钥、安全关键词及机器人权限。",
+    "encryption": "请在服务端配置 WEBHOOK_ENCRYPTION_KEY 或非默认的 COOKIE_SECRET。",
+    "missing": "此通知通道已不存在。",
+    "request": "请求失败，请重试。"
+  },
+  "feishu": "飞书 / Lark",
+  "wecom": "企业微信",
+  "dingtalk": "钉钉",
+  "slack": "Slack",
+  "mattermost": "Mattermost",
+  "disabled": "已停用",
+  "enabledStatus": "已启用",
+  "retry": "重试",
+  "zh": "简体中文",
+  "en": "English",
+  "required": "请填写此项。",
+  "chooseEvents": "请至少选择一个事件。",
+  "eventLabels": {
+    "order": {
+      "placed": "新订单",
+      "canceled": "订单取消"
+    },
+    "payment": {
+      "captured": "收款成功"
+    },
+    "shipment": {
+      "created": "创建发货"
+    }
+  }
+}

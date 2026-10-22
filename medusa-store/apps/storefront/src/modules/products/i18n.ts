@@ -45,7 +45,7 @@ const colourNames: Record<string, string> = {
 
 export const optionValueLabel = (value: string, locale: string) => {
   const isChinese = locale.startsWith("zh") || locale.endsWith("-zh")
-  if (value === "S" || value === "A") return isChinese ? `${value} 级` : `Grade ${value}`
+  if (["S", "A", "B", "C"].includes(value)) return isChinese ? `${value} 级` : `Grade ${value}`
   if (!isChinese) return value
   return colourNames[value] ?? value
 }

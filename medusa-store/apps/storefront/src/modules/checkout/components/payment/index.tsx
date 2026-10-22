@@ -37,7 +37,8 @@ const Payment = ({
   const [error, setError] = useState<string | null>(null)
   const [paymentComplete, setPaymentComplete] = useState(false)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
-    activeSession?.provider_id ?? ""
+    activeSession?.provider_id ??
+      availablePaymentMethods.find((method) => isMollie(method.id))?.id ?? ""
   )
 
   const searchParams = useSearchParams()
@@ -168,7 +169,6 @@ const Payment = ({
       {paidByGiftcard && <p>{copy.giftCard}</p>}
       {!availablePaymentMethods.length && !paidByGiftcard && <p role="alert" className={styles.error}>{copy.noPayment}</p>}
       <ErrorMessage error={error || returnMessage} data-testid="payment-method-error-message" />
-      {returnedStatus === "pending" && isMollie(activeSession?.provider_id) && <Button className="my-4" onClick={() => window.location.assign(`/api/mollie-return?cart_id=${encodeURIComponent(cart.id)}`)}>{copy.checkPayment}</Button>}
       <Button className="mt-6" size="large" onClick={handleSubmit} isLoading={isLoading} disabled={(isStripeLike(selectedPaymentMethod) && !paymentComplete) || (!selectedPaymentMethod && !paidByGiftcard) || isLoading || (!paidByGiftcard && !availablePaymentMethods.some((method) => method.id === selectedPaymentMethod))} data-testid="submit-payment-button">{!activeSession && isStripeLike(selectedPaymentMethod) ? copy.enterPayment : copy.reviewPayment}</Button>
     </> : <div>
       <p className="font-semibold mb-2" data-testid="payment-method-summary">{activeSession ? localizedPaymentInfo[activeSession.provider_id]?.title ?? activeSession.provider_id : paidByGiftcard ? copy.giftCard : copy.selectPayment}</p>

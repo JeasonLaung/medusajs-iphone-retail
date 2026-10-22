@@ -7,6 +7,8 @@ import {
   MedusaError,
   Modules,
 } from "@medusajs/framework/utils"
+import { warehouseAccess, assertWarehouseLocation, assertWarehouseOrder, scopeWarehouseOrder, scopeInventoryLevels } from "../../../lib/warehouse-access"
+import { authorizeWarehouseCommand } from "../../warehouse-guards"
 import { DEVICES_MODULE } from "../../../modules/devices"
 import DevicesModuleService from "../../../modules/devices/service"
 import { deviceOperationWorkflow } from "../../../workflows/device-operations"
@@ -28,6 +30,8 @@ export async function GET(
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const access = await deviceAccess(req.scope, req.auth_context.actor_id)
   const supplier = access.role === "supplier"
+  const warehouse = await warehouseAccess(req.scope, req.auth_context.actor_id)
+  const locationFilter = warehouse.location_ids === null ? {} : { location_id: warehouse.location_ids.length ? warehouse.location_ids : ["__no_warehouse__"] }
   const q =
     typeof req.query.q === "string"
       ? req.query.q.trim().toUpperCase().slice(0, 100)
@@ -60,6 +64,11 @@ export async function GET(
     })
     if (!device) throw supplierDenied()
   }
+  if (warehouse.warehouse && order_id) await assertWarehouseOrder(req.scope, warehouse, order_id)
+  if (warehouse.warehouse && device_id) {
+    const device = await service.retrieveDevice(device_id)
+    assertWarehouseLocation(warehouse, device.location_id)
+  }
   let order: any = null
   if (order_id) {
     const { data } = await query.graph({
@@ -70,6 +79,7 @@ export async function GET(
             "display_id",
             "status",
             "currency_code",
+            "payment_collections.status",
             "items.id",
             "items.title",
             "items.variant_id",
@@ -100,6 +110,7 @@ export async function GET(
             "display_id",
             "status",
             "currency_code",
+            "payment_collections.status",
             "items.id",
             "items.title",
             "items.variant_id",
@@ -151,7 +162,8 @@ export async function GET(
       })
     }
   }
-  const assignments = await service.listDeviceAssignments(
+  if (order && warehouse.warehouse) order = scopeWarehouseOrder(order, warehouse)
+  let assignments = await service.listDeviceAssignments(
     {
       ...(order_id ? { order_id } : device_id ? { device_id } : {}),
       ...(supplier
@@ -163,6 +175,11 @@ export async function GET(
     },
     { take: 1000, order: { created_at: "DESC" } },
   )
+  if (warehouse.location_ids !== null && assignments.length) {
+    const visible = await service.listDevices({ id: assignments.map((assignment) => assignment.device_id), ...locationFilter }, { select: ["id"], take: null })
+    const ids = new Set(visible.map((device) => device.id))
+    assignments = assignments.filter((assignment) => ids.has(assignment.device_id) && (!order || !assignment.fulfillment_id || order?.fulfillments?.some((f) => f.id === assignment.fulfillment_id)))
+  }
   const searchFilter = {
     $or: [
       { serial_number: { $ilike: `%${q}%` } },
@@ -210,10 +227,10 @@ export async function GET(
           ? searchFilter
           : {}
   const [devices, count] = await service.listAndCountDevices(
-    { $and: [filters, ...(lookupVariant ? [{ variant_id: lookupVariant }] : []),
+    { $and: [filters, locationFilter, ...(lookupVariant ? [{ variant_id: lookupVariant }] : []),
       ...(lookupLocation ? [{ location_id: lookupLocation }] : []),
       ...(lookupState ? [{ state: lookupState }] : []),
-      ...(category ? [{ category }] : []),
+      ...(category ? [{ category }] : warehouse.warehouse ? [{ category: ["sale", "returned"] }] : []),
       ...(supplier ? [{ source_id: access.source_id! }] : [])] },
     {
       take: limit,
@@ -221,32 +238,45 @@ export async function GET(
       order: { created_at: "DESC", id: "DESC" },
     },
   )
-  // Counts describe this SKU's saleable stock across warehouses, independent of search/page.
-  let allocationStock: { location_id: string; name: string; count: number }[] | undefined
+  // Warehouse totals are independent of the device search, selected warehouse and page.
+  let allocationStock: { location_id: string; name: string; count: number; registered_count: number; stocked_quantity: number }[] | undefined
   if (availableVariant) {
     const stock = await service.listDevices({
+      ...locationFilter,
       variant_id: availableVariant,
-      state: "available",
+      state: ["pending", "inspection", "available", "reserved"],
       category: "sale",
       ...(supplier ? { source_id: access.source_id! } : {}),
-    }, { select: ["id", "location_id"], take: null })
+    }, { select: ["id", "location_id", "state"], take: null })
+    const { data: inventoryVariants } = await query.graph({
+      entity: "product_variant",
+      fields: ["id", "inventory_items.inventory.location_levels.location_id", "inventory_items.inventory.location_levels.stocked_quantity"],
+      filters: { id: availableVariant },
+    })
+    // Serial-managed variants use one inventory item per device.
+    const levels = (inventoryVariants[0]?.inventory_items?.[0]?.inventory?.location_levels || [])
+      .filter((level): level is NonNullable<typeof level> => Boolean(level))
+    const [supplierSource] = supplier ? await service.listDeviceSources({ id: access.source_id! }) : []
+    const visibleLevels = levels.filter((level) => (warehouse.location_ids === null || warehouse.location_ids.includes(level.location_id)) && (!supplier || level.location_id === supplierSource?.location_id))
     const fulfillmentLocations = order?.fulfillments?.map((f: any) => f.location_id).filter(Boolean) || []
-    const locationIds = [...new Set<string>([...stock.map((d) => d.location_id), ...fulfillmentLocations])]
+    const locationIds = [...new Set<string>([...stock.map((d) => d.location_id), ...visibleLevels.map((level) => level.location_id), ...(supplier ? [] : fulfillmentLocations)])]
     const locations = locationIds.length
       ? await req.scope.resolve(Modules.STOCK_LOCATION).listStockLocations({ id: locationIds }, { take: null })
       : []
     allocationStock = locationIds.map((id) => ({
       location_id: id,
       name: locations.find((location) => location.id === id)?.name || id,
-      count: stock.filter((device) => device.location_id === id).length,
+      count: stock.filter((device) => device.location_id === id && device.state === "available").length,
+      registered_count: stock.filter((device) => device.location_id === id).length,
+      stocked_quantity: visibleLevels.filter((level) => level.location_id === id).reduce((total, level) => total + Number(level.stocked_quantity), 0),
     }))
   }
   const sources = await service.listDeviceSources(
-    supplier ? { id: access.source_id! } : {},
+    supplier ? { id: access.source_id! } : { ...locationFilter, ...(warehouse.warehouse ? { type: "self" } : {}) },
     { take: 500 },
   )
   const supplies = await service.listDeviceSupplies(
-    supplier ? { source_id: access.source_id! } : {},
+    supplier ? { source_id: access.source_id! } : warehouse.warehouse ? { source_id: sources.map((source) => source.id) } : {},
     { take: 2000 },
   )
   const managed_variants = await service.listDeviceVariants({}, { take: 2000 })
@@ -291,6 +321,7 @@ export async function GET(
     ? await service.listDevices(
         {
           id: assignments.map((a) => a.device_id),
+          ...locationFilter,
           ...(supplier ? { source_id: access.source_id! } : {}),
         },
         { take: 1000 },
@@ -308,7 +339,7 @@ export async function GET(
   const history = devices.length ? await service.listDeviceAssignments({ device_id: devices.map((d) => d.id), status: ["reserved", "packed", "shipped", "returned"] }, { take: null }) : []
   const locked = new Set(history.map((a) => a.device_id))
   res.json({
-    access,
+    access: { ...access, warehouse: warehouse.warehouse, location_ids: warehouse.location_ids },
     devices: devices.map((d) => ({ ...d, can_delete: !supplier && !locked.has(d.id) && !["reserved", "packed", "shipped", "repair_ready"].includes(d.state), can_retire: !supplier && !locked.has(d.id) && ["pending", "available", "inspection", "repair"].includes(d.state) })),
     assigned_devices,
     ...(allocationStock ? { allocation_stock: allocationStock } : {}),
@@ -332,7 +363,7 @@ export async function GET(
             },
           })),
         }))
-      : variants,
+      : variants.map((variant) => scopeInventoryLevels(variant, warehouse)),
     assignments,
     order,
     events: events.map((event) => ({ ...event, actor_name: eventActors.get(event.actor_id) || event.actor_id })),
@@ -344,6 +375,7 @@ export async function POST(
   res: MedusaResponse,
 ) {
   const body = req.validatedBody
+  await authorizeWarehouseCommand(req.scope, req.auth_context.actor_id, req.validatedBody)
   await authorizeDeviceCommand(req.scope, req.auth_context.actor_id, body)
   if (body.action === "source") {
     const { result } = await createDeviceSourceWorkflow(req.scope).run({

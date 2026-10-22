@@ -15,8 +15,8 @@ export async function guardDeviceOrder(
   _res: MedusaResponse,
   next: MedusaNextFunction,
 ) {
-  // Shipment validation and device synchronization are handled by our shipment route.
-  if (req.path.endsWith("/shipments")) return next()
+  // Dedicated routes synchronize native shipments and cancellations with device records.
+  if (req.path.endsWith("/shipments") || (req.params.fulfillment_id && req.path.endsWith("/cancel"))) return next()
   const service: DevicesModuleService = req.scope.resolve(DEVICES_MODULE)
   const order_id = req.params.id
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)

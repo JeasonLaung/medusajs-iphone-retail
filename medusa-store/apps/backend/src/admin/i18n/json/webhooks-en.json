@@ -1,0 +1,69 @@
+{
+  "title": "Webhook notifications",
+  "description": "Send store events to chat robots or a generic HTTPS webhook.",
+  "add": "Add channel",
+  "name": "Channel name",
+  "provider": "Platform",
+  "url": "Webhook URL",
+  "secret": "Signing secret (Feishu / DingTalk)",
+  "token": "Bearer token (generic webhook)",
+  "keyword": "Message prefix / security keyword",
+  "language": "Notification language",
+  "enabled": "Enable notifications",
+  "events": "Subscribed events",
+  "save": "Save channel",
+  "cancel": "Cancel",
+  "edit": "Edit",
+  "delete": "Delete",
+  "confirmDelete": "Delete this notification channel?",
+  "test": "Send test",
+  "saved": "Channel saved",
+  "deleted": "Channel deleted",
+  "tested": "Test notification sent",
+  "empty": "No notification channels configured.",
+  "loading": "Loading…",
+  "keep": "Leave blank to keep the saved value",
+  "clearSecret": "Clear signing secret",
+  "clearToken": "Clear bearer token",
+  "security": "URLs and credentials are encrypted. Only public HTTPS addresses on port 443 are accepted. Save changes before testing.",
+  "genericHelp": "Generic JSON works with n8n and other automation tools. Payload: event, resource_id, text, timestamp. Use a published production webhook with POST enabled.",
+  "deliveryHelp": "Each event is attempted once per channel. Failed sends are recorded; automatic retries are not enabled. Event notifications include a resource ID without customer details.",
+  "status": "Last delivery",
+  "never": "Not sent",
+  "success": "Success",
+  "failed": "Failed",
+  "generic": "Generic JSON / n8n",
+  "errors": {
+    "load": "Unable to load notification channels",
+    "validation": "Enter a name, platform, language and at least one event.",
+    "url": "Enter a valid public HTTPS webhook URL for this platform (port 443).",
+    "delivery": "Delivery failed. Check the webhook address, signing secret, keyword and robot permissions.",
+    "encryption": "Configure WEBHOOK_ENCRYPTION_KEY or a non-default COOKIE_SECRET on the server.",
+    "missing": "This notification channel no longer exists.",
+    "request": "The request failed. Please try again."
+  },
+  "feishu": "Feishu / Lark",
+  "wecom": "WeCom",
+  "dingtalk": "DingTalk",
+  "slack": "Slack",
+  "mattermost": "Mattermost",
+  "disabled": "Disabled",
+  "enabledStatus": "Enabled",
+  "retry": "Retry",
+  "zh": "Simplified Chinese",
+  "en": "English",
+  "required": "This field is required.",
+  "chooseEvents": "Select at least one event.",
+  "eventLabels": {
+    "order": {
+      "placed": "Order placed",
+      "canceled": "Order canceled"
+    },
+    "payment": {
+      "captured": "Payment captured"
+    },
+    "shipment": {
+      "created": "Shipment created"
+    }
+  }
+}

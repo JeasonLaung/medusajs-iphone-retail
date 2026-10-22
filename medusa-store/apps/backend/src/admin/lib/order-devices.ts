@@ -12,6 +12,7 @@ export type OrderDeviceCommand = Extract<
       | "ship"
       | "cancel_fulfillment"
       | "save_allocation"
+      | "create_fulfillment"
   }
 >
 
@@ -46,11 +47,12 @@ export type OrderDeviceData = {
   assigned_devices: Device[]
   assignments: Assignment[]
   count: number
-  allocation_stock?: { location_id: string; name: string; count: number }[]
-  sources: { id: string; name: string; type: "self" | "supplier" }[]
+  allocation_stock?: { location_id: string; name: string; count: number; registered_count: number; stocked_quantity: number }[]
+  sources: { id: string; name: string; location_id?: string; type: "self" | "supplier" }[]
   managed_variants: { variant_id: string }[]
   order: {
     status: string
+    payment_collections?: { status: string }[]
     fulfillments?: import("../../lib/order-device-capacity").AllocationFulfillment[]
     items: {
       id: string

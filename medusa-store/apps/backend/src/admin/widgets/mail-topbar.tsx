@@ -3,6 +3,7 @@ import { IconButton, Text, Tooltip } from "@medusajs/ui"
 import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
 import { useTranslation } from "react-i18next"
+import { useWarehouseAccess } from "../lib/use-warehouse-menu"
 import { mailGet } from "../lib/mail"
 
 export const MailIcon = () => (
@@ -22,12 +23,15 @@ export const MailIcon = () => (
 
 const MailTopbar = () => {
   const { t } = useTranslation()
+  const { data: access } = useWarehouseAccess()
   const { data } = useQuery({
     queryKey: ["mail", "summary"],
     queryFn: () => mailGet<{ unread: number }>({ resource: "summary" }),
+    enabled: Boolean(access && !access.warehouse),
     refetchInterval: 30_000,
     retry: false,
   })
+  if (!access || access.warehouse) return null
   const count = data?.unread || 0
   return (
     <Tooltip content={t("mail.unreadCount", { count })}>

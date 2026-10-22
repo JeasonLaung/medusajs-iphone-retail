@@ -79,6 +79,7 @@ export async function guardSupplierAdmin(
     return next()
   if (path === "/admin/devices" && ["GET", "POST"].includes(req.method))
     return next()
+  if (path === "/admin/warehouse-access/me" && req.method === "GET") return next()
   if (path === "/admin/devices/variants" && req.method === "GET") return next()
   if (
     req.method === "GET" &&

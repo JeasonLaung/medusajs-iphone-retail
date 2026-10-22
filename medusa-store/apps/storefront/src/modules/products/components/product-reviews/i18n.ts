@@ -18,7 +18,7 @@ const en = {
   pending: "Submitted — awaiting moderation",
   approved: "Published",
   rejected: "Not published",
-  reviewProducts: "Review products",
+  reviewProducts: "Review",
   heading: "Customer reviews.",
   intro: "A closer look, from the people using it.",
   empty: "No reviews yet.",

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useId, useState, useTransition } from "react"
-import { StarSolid } from "@medusajs/icons"
+import { Star, StarSolid } from "@medusajs/icons"
 import {
   getReviewPurchases,
   submitProductReview,
@@ -115,7 +115,7 @@ export default function ReviewForm({
                 aria-label={copy.stars.replace("{rating}", String(value))}
               />
               <span aria-hidden="true" data-active={value <= rating}>
-                <StarSolid />
+                {value <= rating ? <StarSolid /> : <Star />}
               </span>
             </label>
           ))}

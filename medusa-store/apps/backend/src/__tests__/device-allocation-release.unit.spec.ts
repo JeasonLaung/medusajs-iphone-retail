@@ -8,6 +8,7 @@ jest.mock("@medusajs/framework/workflows-sdk", () => ({
   StepResponse: class { constructor(public output: unknown) {} }, WorkflowResponse: jest.fn(),
 }))
 jest.mock("@medusajs/medusa/core-flows", () => ({}))
+jest.mock("../api/warehouse-guards", () => ({ authorizeWarehouseCommand: jest.fn() }))
 jest.mock("../api/device-access", () => ({ authorizeDeviceCommand: jest.fn() }))
 
 const prepare = (createStep as jest.Mock).mock.calls.find(([name]) => name === "prepare-devices")[1]
@@ -62,5 +63,42 @@ describe("release allocations before shipment", () => {
     const { run, service } = setup()
     service.retrieveDevice.mockResolvedValue({ id: "d1", state: "shipped" })
     await expect(run()).rejects.toThrow("设备状态已改变")
+  })
+})
+
+function cancellationSetup(assignments: Record<string, unknown>[] = [assignment], fulfillment: Record<string, unknown> = {}, deviceState = "packed") {
+  const service = {
+    listDeviceAssignments: jest.fn().mockResolvedValue(assignments),
+    retrieveDevice: jest.fn(async (id) => ({ id, state: deviceState })),
+  }
+  const query = { graph: jest.fn().mockResolvedValue({ data: [{ id: "o1", status: "pending", items: [], fulfillments: [{ id: "f1", ...fulfillment }] }] }) }
+  const container = { resolve: (key: string) => ({ [DEVICES_MODULE]: service, [Modules.INVENTORY]: {}, [ContainerRegistrationKeys.QUERY]: query })[key] }
+  return () => prepare({ action: "cancel_fulfillment", fulfillment_id: "f1", actor_id: "u1", native_cancel: { order_id: "o1", canceled_by: "u1", no_notification: true } }, { container })
+}
+
+describe("cancel fulfillment from the native order card", () => {
+  it("cancels a fulfillment awaiting device registration", async () => {
+    const { output } = await cancellationSetup([])()
+    expect(output.cancel).toEqual({ order_id: "o1", fulfillment_id: "f1", canceled_by: "u1", no_notification: true })
+    expect(output.mutations).toEqual([])
+    expect(output.adjustments).toEqual([])
+  })
+  it("returns bound devices to reserved and leaves stock restoration to native cancellation", async () => {
+    const { output } = await cancellationSetup()()
+    expect(output.cancel.fulfillment_id).toBe("f1")
+    expect(output.adjustments).toEqual([])
+    expect(output.mutations).toEqual(expect.arrayContaining([
+      expect.objectContaining({ table: "Devices", after: { id: "d1", state: "reserved" } }),
+      expect.objectContaining({ table: "DeviceAssignments", after: expect.objectContaining({ status: "reserved", fulfillment_id: null }) }),
+    ]))
+  })
+  it.each([{ shipped_at: "now" }, { delivered_at: "now" }, { canceled_at: "now" }, { id: "other" }])("rejects closed or unrelated fulfillments: %j", async (fulfillment) => {
+    await expect(cancellationSetup([], fulfillment)()).rejects.toThrow("只有尚未发出的履约可以取消")
+  })
+  it.each([{ ...assignment, order_id: "o2" }, { ...assignment, status: "shipped" }])("rejects inconsistent assignments: %j", async (entry) => {
+    await expect(cancellationSetup([entry])()).rejects.toThrow("只有尚未发出的履约可以取消")
+  })
+  it("rejects an inconsistent device state", async () => {
+    await expect(cancellationSetup([assignment], {}, "shipped")()).rejects.toThrow("设备状态已改变")
   })
 })

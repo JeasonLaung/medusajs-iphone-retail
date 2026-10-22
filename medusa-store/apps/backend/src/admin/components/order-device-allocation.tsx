@@ -36,6 +36,8 @@ export default function OrderDeviceAllocation({
   run,
   fulfillmentId,
   selectionMode = false,
+  locationId,
+  locationName,
 }: {
   orderId: string
   data: OrderDeviceData
@@ -43,6 +45,8 @@ export default function OrderDeviceAllocation({
   run: RunOrderDeviceCommand
   fulfillmentId?: string
   selectionMode?: boolean
+  locationId?: string
+  locationName?: string
 }) {
   const { t } = useDeviceTranslations()
   const items =
@@ -52,7 +56,7 @@ export default function OrderDeviceAllocation({
   const [query, setQuery] = useState("")
   const [offset, setOffset] = useState(0)
   const fulfillmentLocation = data.order?.fulfillments?.find((f) => f.id === fulfillmentId)?.location_id
-  const [warehouse, setWarehouse] = useState("all")
+  const [warehouse, setWarehouse] = useState(locationId || "all")
   const item = items.find((i) => i.id === itemId)
   const capacity = item ? orderDeviceCapacity(item, data.assignments, data.order?.fulfillments) : null
   const remaining = item
@@ -89,7 +93,13 @@ export default function OrderDeviceAllocation({
     enabled: Boolean(item),
   })
   const searching = search.trim() !== query
-  const stock = candidates.data?.allocation_stock
+  const stock = candidates.data?.allocation_stock && locationId && !candidates.data.allocation_stock.some((location) => location.location_id === locationId)
+    ? [...candidates.data.allocation_stock, { location_id: locationId, name: locationName || data.sources.find((source) => source.location_id === locationId)?.name || locationId, count: 0, registered_count: 0, stocked_quantity: 0 }]
+    : candidates.data?.allocation_stock
+  const stockTotals = stock?.reduce((total, location) => ({
+    registered: total.registered + location.registered_count,
+    stocked: total.stocked + location.stocked_quantity,
+  }), { registered: 0, stocked: 0 })
   const selectedIds = new Set(data.assignments.filter((a) => ["reserved", "packed", "shipped"].includes(a.status)).map((a) => a.device_id))
 
   return (
@@ -112,7 +122,7 @@ export default function OrderDeviceAllocation({
                 value={itemId}
                 onValueChange={(value) => {
                   setItemId(value)
-                  setWarehouse("all")
+                  setWarehouse(locationId || "all")
                   setOffset(0)
                 }}
                 disabled={busy}
@@ -140,12 +150,13 @@ export default function OrderDeviceAllocation({
               {stock && <div className="space-y-2">
                 <Text size="small" weight="plus">{t("orderDevices.availableStock", { count: stock.reduce((total, location) => total + location.count, 0) })}</Text>
                 {fulfillmentLocation && <Text size="small">{t("orderDevices.currentWarehouse", { name: stock.find((location) => location.location_id === fulfillmentLocation)?.name || fulfillmentLocation })}</Text>}
+                <Text size="small">{t("orderDevices.warehouseCountsHelp")}</Text>
                 <Field label={t("orderDevices.stockWarehouse")}>
-                  {(id) => <Select value={warehouse} disabled={busy} onValueChange={(value) => { setWarehouse(value); setOffset(0) }}>
+                  {(id) => <Select value={warehouse} disabled={busy || Boolean(locationId)} onValueChange={(value) => { setWarehouse(value); setOffset(0) }}>
                     <Select.Trigger id={id}><Select.Value /></Select.Trigger>
                     <Select.Content>
-                      <Select.Item value="all">{t("orderDevices.allWarehouses", { count: stock.reduce((total, location) => total + location.count, 0) })}</Select.Item>
-                      {stock.map((location) => <Select.Item key={location.location_id} value={location.location_id}>{t("orderDevices.warehouseStock", { name: location.name, count: location.count })}</Select.Item>)}
+                      <Select.Item value="all">{t("orderDevices.allWarehouses", { registered: stockTotals?.registered, stocked: stockTotals?.stocked })}</Select.Item>
+                      {stock.map((location) => <Select.Item key={location.location_id} value={location.location_id}>{t("orderDevices.warehouseStock", { name: location.name, registered: location.registered_count, stocked: location.stocked_quantity })}</Select.Item>)}
                     </Select.Content>
                   </Select>}
                 </Field>
@@ -175,6 +186,7 @@ export default function OrderDeviceAllocation({
                     {t("deviceScan.deviceLoadError")}
                   </Text>
                   <Button
+                    type="button"
                     size="small"
                     variant="secondary"
                     onClick={() => candidates.refetch()}
@@ -231,6 +243,7 @@ export default function OrderDeviceAllocation({
                       </Text>
                     </div>
                     <Button
+                    type="button"
                       size="small"
                       variant="secondary"
                       disabled={
@@ -260,6 +273,7 @@ export default function OrderDeviceAllocation({
               {candidates.data && candidates.data.count > 50 && (
                 <div className="flex gap-2">
                   <Button
+                    type="button"
                     size="small"
                     variant="secondary"
                     disabled={
@@ -270,6 +284,7 @@ export default function OrderDeviceAllocation({
                     {t("deviceScan.previous")}
                   </Button>
                   <Button
+                    type="button"
                     size="small"
                     variant="secondary"
                     disabled={
