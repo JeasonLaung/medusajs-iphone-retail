@@ -238,7 +238,7 @@ export function createMollieProvider(BaseProvider: MollieProviderConstructor) {
       const refund = await this.client_.paymentRefunds.create({
         paymentId: id,
         amount: {
-          value: Number(input.amount.toString()).toFixed(2),
+          value: new BigNumber(input.amount).numeric.toFixed(2),
           currency: payment.amount.currency,
         },
       })

@@ -122,3 +122,85 @@ for (const lang of ["en", "zh"]) {
     assert.ok(unpaid.includes("FALLBACK-SKU"))
   })
 }
+
+for (const lang of ["en", "zh"]) {
+  test(`canceled order details hide reviews and after-sales in ${lang}`, () => {
+    const React = require("react")
+    const { renderToStaticMarkup } = require("react-dom/server")
+    const copy = require(`../src/modules/account/translations/${lang}.json`)
+    const marker = (name) => ({ __esModule: true, default: () => React.createElement("div", { "data-testid": name }) })
+    const { default: Template } = load("modules/order/templates/order-details-template.tsx", {
+      "@modules/account/use-account-copy": { useAccountCopy: () => ({ t: (key) => copy[key] }) },
+      "@medusajs/icons": { XMark: () => null },
+      "@modules/common/components/localized-client-link": { __esModule: true, default: ({ children }) => children },
+      "@modules/order/components/after-sales": marker("after-sales-section"),
+      "@modules/order/components/order-reviews": marker("order-reviews"),
+      "@modules/order/components/items": marker("items"),
+      "@modules/order/components/order-details": marker("details"),
+      "@modules/order/components/order-timeline": marker("order-timeline"),
+      "@modules/order/components/order-summary": marker("summary"),
+      "@modules/order/components/shipping-details": marker("shipping"),
+    })
+    const render = (status) => renderToStaticMarkup(React.createElement(Template, { order: { id: "order_test", status } }))
+    const canceled = render("canceled")
+    assert.equal(canceled.includes('data-testid="order-reviews"'), false)
+    assert.equal(canceled.includes('data-testid="after-sales-section"'), false)
+    assert.ok(canceled.includes('data-testid="items"'))
+    assert.ok(canceled.includes('data-testid="summary"'))
+    const pending = render("pending")
+    assert.ok(pending.includes('data-testid="order-reviews"'))
+    assert.ok(pending.includes('data-testid="after-sales-section"'))
+  })
+}
+
+for (const lang of ["en", "zh"]) {
+  test(`order progress renders recorded cancellation and refund separately in ${lang}`, () => {
+    const React = require("react")
+    const { renderToStaticMarkup } = require("react-dom/server")
+    const copy = require(`../src/modules/account/translations/${lang}.json`)
+    const { default: Steps } = load("modules/order/components/order-timeline/index.tsx", {
+      "./styles.module.css": { timeline: "order-progress" },
+      "@modules/account/use-account-copy": { useAccountCopy: () => ({ t: (key) => copy[key], locale: lang === "zh" ? "zh-CN" : "en-GB" }) },
+      "@lib/data/orders": { retrieveOrderTimeline: () => null },
+      "@lib/util/money": { convertToLocale: ({ amount }) => `EUR ${amount}` },
+      "@modules/common/components/ui": { Button: ({ children }) => React.createElement("button", null, children) },
+    })
+    const initialTimeline = { currency_code: "eur", events: [
+      { id: "o1", kind: "placed", occurred_at: "2026-10-21T10:00:00Z" },
+      { id: "p1", kind: "paid", occurred_at: "2026-10-21T10:01:00Z", amount: 959 },
+      { id: "cancel", kind: "canceled", occurred_at: "2026-10-22T10:00:00Z" },
+    ] }
+    const render = (timeline) => renderToStaticMarkup(React.createElement(Steps, { orderId: "o1", initialTimeline: timeline }))
+    const html = render(initialTimeline)
+    assert.ok(html.includes("ant-steps-vertical"))
+    assert.equal(html.includes("ant-timeline"), false)
+    assert.ok(html.includes("ant-steps-item-error"))
+    assert.ok(html.includes("anticon-close"))
+    assert.ok(html.includes('data-testid="timeline-placed" data-state="history"'))
+    assert.ok(html.includes('data-testid="timeline-paid" data-state="history"'))
+    assert.ok(html.includes('data-testid="timeline-canceled" data-state="danger"'))
+    assert.ok(html.includes('color:var(--order-progress-danger)'))
+    assert.ok(html.includes("anticon-check"))
+    assert.ok(html.includes(copy.timelineTitle))
+    assert.ok(html.includes(copy.timelineCanceled))
+    assert.ok(html.includes("EUR 959"))
+    assert.ok(html.includes('dateTime="2026-10-22T10:00:00Z"'))
+    assert.equal(html.includes('data-testid="timeline-refund"'), false)
+    assert.equal(html.includes('data-testid="timeline-shipped"'), false)
+    const refunded = render({ ...initialTimeline, events: [...initialTimeline.events, { id: "r1", kind: "refund", occurred_at: "2026-10-22T10:05:00Z", amount: 959 }] })
+    assert.ok(refunded.includes(copy.timelineRefund))
+    assert.ok(refunded.includes("ant-steps-item-process"))
+    assert.ok(refunded.includes('data-testid="timeline-canceled" data-state="history"'))
+    assert.ok(refunded.includes('data-testid="timeline-refund" data-state="current"'))
+    assert.ok(refunded.indexOf('data-testid="timeline-canceled"') < refunded.indexOf('data-testid="timeline-refund"'))
+    for (const [kind, state] of [["paid", "current"], ["packed", "current"], ["shipped", "current"], ["delivered", "success"], ["fulfillment_canceled", "danger"]]) {
+      const progress = render({ ...initialTimeline, events: [initialTimeline.events[0], { id: "latest", kind, occurred_at: "2026-10-22T10:05:00Z" }] })
+      assert.ok(progress.includes(`data-testid="timeline-${kind}" data-state="${state}"`))
+      assert.ok(progress.includes(`var(--order-progress-${state})`))
+    }
+    const failed = render(null)
+    assert.ok(failed.includes(copy.timelineError))
+    assert.ok(failed.includes(copy.timelineRetry))
+    assert.equal(failed.includes('data-testid="timeline-placed"'), false)
+  })
+}

@@ -5,6 +5,8 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework/http"
+import { CustomerServiceBody } from "./admin/customer-service/validators"
+import { CancelOrderBody } from "./admin/orders/[id]/cancel/validators"
 import { CreateAfterSales } from "./store/orders/[id]/after-sales/validators"
 import { UpdateAfterSales } from "./admin/orders/[id]/after-sales/validators"
 import { DeviceCommand, DeviceRefund } from "./admin/devices/validators"
@@ -34,6 +36,8 @@ import {
 // the route narrows it to published products in the key's sales channels.
 export default defineMiddlewares({
   routes: [
+    { matcher: "/admin/orders/:id/cancel", method: "POST", middlewares: [validateAndTransformBody(CancelOrderBody)] },
+    { matcher: "/admin/customer-service", method: "POST", middlewares: [validateAndTransformBody(CustomerServiceBody)] },
     { matcher: "/admin/warehouse-access", method: "POST", middlewares: [validateAndTransformBody(WarehouseBindingBody)] },
     ...["/admin/devices/photos", "/mobile-intake/photos"].map((matcher) => ({ matcher, method: "POST" as const, bodyParser: { sizeLimit: "34mb" }, middlewares: [validateAndTransformBody(DevicePhotoUpload)] })),
     { matcher: "/admin/devices/mobile-intake", method: "POST", middlewares: [validateAndTransformBody(CreateMobileIntake)] },
@@ -139,6 +143,11 @@ export default defineMiddlewares({
       matcher: "/admin/devices",
       method: ["POST"],
       middlewares: [validateAndTransformBody(DeviceCommand)],
+    },
+    {
+      matcher: "/store/orders/:id/timeline",
+      method: ["GET"],
+      middlewares: [authenticate("customer", ["session", "bearer"])],
     },
     {
       matcher: "/store/orders/:id/devices",

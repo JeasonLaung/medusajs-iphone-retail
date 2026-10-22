@@ -1,0 +1,8 @@
+{
+  "reason": "Cancellation reason",
+  "placeholder": "Explain why this order is being canceled",
+  "required": "Enter a cancellation reason (up to 1,000 characters).",
+  "confirm": "Cancel order",
+  "back": "Keep order",
+  "missing": "No cancellation reason was recorded."
+}

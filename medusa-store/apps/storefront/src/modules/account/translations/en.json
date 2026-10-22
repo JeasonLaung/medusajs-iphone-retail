@@ -182,5 +182,20 @@
   "orderArchived": "Archived",
   "paidAwaitingFulfillment": "Paid · Awaiting shipment",
   "paidAt": "Latest payment time:",
-  "paymentTimeUnavailable": "No record available"
+  "paymentTimeUnavailable": "No record available",
+  "timelineTitle": "Order progress",
+  "timelineError": "Unable to load order progress.",
+  "timelineRetry": "Retry",
+  "timelineLatest": "Latest update",
+  "timelinePlaced": "Order placed",
+  "timelinePaid": "Payment received",
+  "timelineRefund": "Refund initiated",
+  "timelineAllocated": "Device allocated",
+  "timelineReleased": "Device allocation released",
+  "timelineReallocated": "Device allocation replaced",
+  "timelinePacked": "Packed and ready for dispatch",
+  "timelineShipped": "Dispatched",
+  "timelineDelivered": "Delivered",
+  "timelineFulfillmentCanceled": "Fulfillment canceled",
+  "timelineCanceled": "Order canceled"
 }

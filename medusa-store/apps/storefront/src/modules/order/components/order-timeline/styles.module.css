@@ -1,0 +1,8 @@
+/* Approved palette for order progress nodes; labels retain their existing text colors. */
+.timeline {
+  --order-progress-surface: #ffffff;
+  --order-progress-current: #1677ff;
+  --order-progress-history: #6b7280;
+  --order-progress-danger: #f5222d;
+  --order-progress-success: #52c41a;
+}

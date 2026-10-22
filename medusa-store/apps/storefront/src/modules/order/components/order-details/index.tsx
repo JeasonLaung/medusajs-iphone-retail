@@ -60,19 +60,24 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
         <span data-testid="order-id">{getOrderNumber(order)}</span>
       </Text>
 
-      <div className="flex items-center text-compact-small gap-x-4 mt-4">
+      <div className="flex flex-wrap items-center text-compact-small gap-x-6 gap-y-3 mt-4">
         {showStatus && (
           <>
-            <Text>
+            <Text className="flex items-center gap-2">
               {t("orderStatus")}{" "}
-              <span className="text-ui-fg-subtle " data-testid="order-status">
-                {formatStatus(order.fulfillment_status, fulfillmentStatusKeys)}
+              <span
+                className="inline-flex items-center whitespace-nowrap rounded-md border border-current px-2 py-0.5 font-medium text-ui-fg-subtle"
+                data-testid="order-status"
+              >
+                {order.status === "canceled"
+                  ? t("fulfillmentCanceled")
+                  : formatStatus(order.fulfillment_status, fulfillmentStatusKeys)}
               </span>
             </Text>
-            <Text>
+            <Text className="flex items-center gap-2">
               {t("paymentStatus")}{" "}
               <span
-                className="text-ui-fg-subtle "
+                className="inline-flex items-center whitespace-nowrap rounded-md border border-current px-2 py-0.5 font-medium text-ui-fg-subtle"
                 data-testid="order-payment-status"
               >
                 {formatStatus(order.payment_status, paymentStatusKeys)}

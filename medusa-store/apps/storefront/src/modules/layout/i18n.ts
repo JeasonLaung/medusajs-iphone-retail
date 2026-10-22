@@ -15,7 +15,7 @@ const en = {
   reviewsTitle: "Customer reviews.",
   reviewsDescription: "Read customer reviews on each iPhone product page, or sign in to share your experience. Reviews are published after moderation.",
   helpTitle: "How can we help?",
-  helpDescription: "Start with the collection, or access your account to view your orders.",
+  helpDescription: "Contact our pre-sales and after-sales team, or find help with shopping and orders.",
   shoppingDescription: "Browse iPhones by series, open a product to see its details and options, and review your selection in the cart before checkout.",
   ordersDescription: "Sign in to your account to view your orders and manage your profile and addresses.",
 }
@@ -37,7 +37,7 @@ const zh: typeof en = {
   reviewsTitle: "用户评价。",
   reviewsDescription: "进入各款 iPhone 商品页即可查看用户评价，登录后也可分享你的使用体验。评价审核通过后公开展示。",
   helpTitle: "需要什么帮助？",
-  helpDescription: "从商品目录开始选购，或登录账户查看你的订单。",
+  helpDescription: "联系售前与售后客服，或查看选购、账户及订单帮助。",
   shoppingDescription: "按系列浏览 iPhone，进入商品页查看详情和可选配置，在结账前通过购物车确认所选商品。",
   ordersDescription: "登录账户即可查看订单，并管理个人资料与地址。",
 }

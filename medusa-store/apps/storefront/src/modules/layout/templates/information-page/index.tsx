@@ -2,14 +2,18 @@ import { ArrowRight } from "@medusajs/icons"
 import { getLocale } from "@lib/data/locale-actions"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getLayoutCopy } from "@modules/layout/i18n"
+import CustomerService from "@modules/customer-service"
+import { getServiceContacts } from "@lib/data/customer-service"
 import styles from "./styles.module.css"
 
 export type InformationPageKind = "sell" | "about" | "reviews" | "help"
 
 export default async function InformationPage({ kind }: { kind: InformationPageKind }) {
-  const copy = getLayoutCopy(await getLocale())
+  const locale = await getLocale()
+  const copy = getLayoutCopy(locale)
+  const service = kind === "help" ? await getServiceContacts() : null
   return (
-    <main className={styles.page}>
+    <main className={`${styles.page} ${kind === "help" ? styles.help : ""}`}>
       <div className={styles.container}>
         <p className={styles.eyebrow}>{copy[kind]}</p>
         <h1>{copy[`${kind}Title`]}</h1>
@@ -19,6 +23,7 @@ export default async function InformationPage({ kind }: { kind: InformationPageK
           <h2>{copy.focus}</h2>
           <p>{copy.focusDescription}</p>
         </section>}
+        {service && <CustomerService {...service} locale={locale} />}
         {kind === "help" && <div className={styles.sections}>
           <section id="shopping" className={styles.section}>
             <h2>{copy.shopping}</h2>

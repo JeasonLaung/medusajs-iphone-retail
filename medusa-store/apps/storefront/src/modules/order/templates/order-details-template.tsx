@@ -9,16 +9,20 @@ import AfterSales from "@modules/order/components/after-sales"
 import OrderReviews from "@modules/order/components/order-reviews"
 import Items from "@modules/order/components/items"
 import OrderDetails from "@modules/order/components/order-details"
+import OrderTimelineSteps from "@modules/order/components/order-timeline"
+import type { OrderTimeline } from "types/order-timeline"
 import OrderSummary from "@modules/order/components/order-summary"
 import ShippingDetails from "@modules/order/components/shipping-details"
 import React from "react"
 
 type OrderDetailsTemplateProps = {
   order: HttpTypes.StoreOrder
+  timeline?: OrderTimeline | null
 }
 
 const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
   order,
+  timeline = null,
 }) => {
   const { t } = useAccountCopy()
   return (
@@ -39,11 +43,22 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
         data-testid="order-details-container"
       >
         <OrderDetails order={order} showStatus />
-        <Items order={order} />
-        <ShippingDetails order={order} />
-        <OrderSummary order={order} />
-        <OrderReviews key={order.id} order={order} />
-        <AfterSales order={order} />
+        <div className="grid grid-cols-1 gap-8 small:grid-cols-[minmax(0,1fr)_260px]">
+          <div className="min-w-0 flex flex-col gap-4">
+            <Items order={order} />
+            <ShippingDetails order={order} />
+            <OrderSummary order={order} />
+            {order.status !== "canceled" && (
+              <>
+                <OrderReviews key={order.id} order={order} />
+                <AfterSales order={order} />
+              </>
+            )}
+          </div>
+          <aside className="order-first min-w-0 small:order-last">
+            <OrderTimelineSteps key={order.id} orderId={order.id} initialTimeline={timeline} />
+          </aside>
+        </div>
       </div>
     </div>
   )

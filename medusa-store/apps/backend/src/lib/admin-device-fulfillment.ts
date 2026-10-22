@@ -1,6 +1,7 @@
 import path from "node:path"
 import fs from "node:fs"
 import { MedusaError } from "@medusajs/framework/utils"
+import { transformOrderCancellation } from "./admin-order-cancellation"
 import type { DepOptimizationOptions, Plugin } from "vite" with { "resolution-mode": "import" }
 
 // Extend the installed dashboard at its form/row boundaries, without vendor edits.
@@ -35,7 +36,7 @@ export function transformDeviceFulfillment(source: string, id: string) {
       ] }) }, f_item.line_item_id)`
   replace(product, `deviceExtensionJsx("li", { children: [deviceExtensionJsx(Text8, { size: "small", children: f_item.quantity + "x " + f_item.title }), deviceExtensionJsx(OrderItemDevices, { orderId: order.id, itemId: f_item.line_item_id, fulfillmentId: fulfillment.id })] }, f_item.line_item_id)`)
 
-  return `import { jsx as deviceExtensionJsx } from "react/jsx-runtime"\nimport { OrderItemDevices } from ${component("../admin/widgets/order-devices.tsx")}\n${code}`
+  return `import { jsx as deviceExtensionJsx } from "react/jsx-runtime"\nimport { OrderItemDevices } from ${component("../admin/widgets/order-devices.tsx")}\n${transformOrderCancellation(code)}`
 }
 
 
@@ -50,10 +51,10 @@ export const adminDeviceFulfillment = (): Plugin => ({
 
 type OptimizationPlugin = NonNullable<NonNullable<DepOptimizationOptions["esbuildOptions"]>["plugins"]>[number]
 export const adminDeviceFulfillmentOptimizer = (): OptimizationPlugin => ({
-  name: "admin-device-fulfillment-optimizer",
+  name: "admin-device-fulfillment-order-cancellation-optimizer",
   setup(build) {
     // Keep workspace components in Vite's pipeline so asset ?url imports and HMR work.
-    build.onResolve({ filter: /\/src\/admin\/(?:components\/device-fulfillment|widgets\/order-devices)\.tsx$/ }, (args) => ({
+    build.onResolve({ filter: /\/src\/admin\/(?:components\/(?:device-fulfillment|order-cancellation)|widgets\/order-devices)\.tsx$/ }, (args) => ({
       path: `/@fs/${args.path}`,
       external: true,
     }))

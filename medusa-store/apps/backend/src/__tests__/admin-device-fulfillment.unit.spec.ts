@@ -12,6 +12,12 @@ describe("native fulfillment integration", () => {
     const id = path.join(dist, filename)
     const transformed = transformDeviceFulfillment(fs.readFileSync(id, "utf8"), id)!
     expect(transformed).toContain(prefix === "order-detail-" ? "itemId: f_item.line_item_id" : "await deviceFulfillment.create(payload)")
+    if (prefix === "order-detail-") {
+      expect(transformed).toContain("useOrderCancellation(order)")
+      expect(transformed).toContain("children: [cancellationDialog,")
+      expect(transformed).toContain("OrderCancellationReason, { cancellation: order.metadata?.cancellation }")
+      expect(transformed).not.toContain("await cancelOrder(void 0")
+    }
     const swc = require("@swc/core")
     expect(() => swc.parseSync(transformed, { syntax: "ecmascript" })).not.toThrow()
   })

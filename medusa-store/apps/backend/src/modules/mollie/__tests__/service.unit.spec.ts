@@ -166,6 +166,18 @@ describe("Mollie checkout", () => {
     expect(result.data?.id).toBe("tr_test")
   })
 
+  it("refunds the raw amount object passed by Medusa's payment module", async () => {
+    const { service, client } = setup()
+    await service.refundPayment({
+      amount: { value: "959", precision: 20 },
+      data: { id: "tr_test" },
+    })
+    expect(client.paymentRefunds.create).toHaveBeenCalledWith({
+      paymentId: "tr_test",
+      amount: { value: "959.00", currency: "EUR" },
+    })
+  })
+
   it("never replaces or cancels a paid payment when the cart total changes", async () => {
     const { service, client } = setup()
     await expect(

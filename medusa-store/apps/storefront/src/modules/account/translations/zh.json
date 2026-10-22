@@ -182,5 +182,20 @@
   "orderArchived": "已归档",
   "paidAwaitingFulfillment": "已支付 · 待发货",
   "paidAt": "最近支付时间：",
-  "paymentTimeUnavailable": "暂无记录"
+  "paymentTimeUnavailable": "暂无记录",
+  "timelineTitle": "订单进度",
+  "timelineError": "订单进度加载失败。",
+  "timelineRetry": "重试",
+  "timelineLatest": "最新记录",
+  "timelinePlaced": "订单已提交",
+  "timelinePaid": "已收款",
+  "timelineRefund": "退款已发起",
+  "timelineAllocated": "设备已配货",
+  "timelineReleased": "已解除配货",
+  "timelineReallocated": "已更换配货设备",
+  "timelinePacked": "已打包，等待发货",
+  "timelineShipped": "已发货",
+  "timelineDelivered": "已送达",
+  "timelineFulfillmentCanceled": "履约已取消",
+  "timelineCanceled": "订单已取消"
 }

@@ -5,6 +5,7 @@ import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { getProductPrice } from "@lib/util/get-product-price"
 import { getProductCopy } from "../../i18n"
+import RelatedProductsRail from "./rail"
 
 type RelatedProductsProps = {
   product: HttpTypes.StoreProduct
@@ -45,7 +46,7 @@ export default async function RelatedProducts({
     return response.products.filter(
       (responseProduct) => responseProduct.id !== product.id &&
         (!/^iPhone\b/i.test(product.title ?? "") || /^iPhone\b/i.test(responseProduct.title ?? ""))
-    ).slice(0, 4)
+    ).slice(0, 12)
   })
 
   if (!products.length) {
@@ -54,8 +55,8 @@ export default async function RelatedProducts({
 
   return (
     <div className="product-page-constraint">
-      <div className="flex flex-col items-center text-center mb-16">
-        <span className="text-base-regular text-gray-600 mb-6">
+      <div className="flex flex-col items-center text-center mb-6">
+        <span className="text-base-regular text-gray-600 mb-2">
           {copy.related}
         </span>
         <p className="text-2xl-regular text-ui-fg-base max-w-lg">
@@ -63,21 +64,21 @@ export default async function RelatedProducts({
         </p>
       </div>
 
-      <ul className="grid grid-cols-1 small:grid-cols-2 gap-x-6 gap-y-8">
+      <RelatedProductsRail label={copy.related} previous={copy.previousProducts} next={copy.nextProducts}>
         {products.map((product) => {
           const { cheapestPrice } = getProductPrice({ product })
           return <li key={product.id}>
             <LocalizedClientLink href={`/products/${product.handle}`} className="group block">
-              <div className="relative aspect-square overflow-hidden rounded-2xl bg-[#f5f5f7]">
-                {product.thumbnail && <Image src={product.thumbnail} alt={product.title ?? ""} fill sizes="(max-width: 767px) 45vw, 280px" className="object-contain p-6 transition-transform group-hover:scale-105" />}
+              <div className="relative aspect-square overflow-hidden rounded-xl bg-[#f5f5f7]">
+                {product.thumbnail && <Image src={product.thumbnail} alt={product.title ?? ""} fill sizes="(max-width: 1023px) 144px, 176px" className="object-contain p-4 transition-transform motion-reduce:transition-none group-hover:scale-105 motion-reduce:group-hover:scale-100" />}
               </div>
-              <div className="mt-4 flex flex-wrap justify-between gap-2 text-sm"><span>{product.title}</span>
+              <div className="mt-3 flex flex-col gap-1 text-sm"><span>{product.title}</span>
                 {cheapestPrice && <span className="text-[#6e6e73]">{new Intl.NumberFormat(countryCode.endsWith("-zh") ? "zh-CN" : "en-IE", { style: "currency", currency: cheapestPrice.currency_code }).format(cheapestPrice.calculated_price_number)}</span>}
               </div>
             </LocalizedClientLink>
           </li>
         })}
-      </ul>
+      </RelatedProductsRail>
     </div>
   )
 }

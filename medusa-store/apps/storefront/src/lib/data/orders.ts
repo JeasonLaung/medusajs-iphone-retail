@@ -4,14 +4,22 @@ import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { HttpTypes } from "@medusajs/types"
+import type { OrderTimeline } from "types/order-timeline"
+
+export const retrieveOrderTimeline = async (id: string): Promise<OrderTimeline | null> => {
+  try {
+    return await sdk.client.fetch<OrderTimeline>(`/store/orders/${id}/timeline`, {
+      headers: await getAuthHeaders(),
+      cache: "no-store",
+    })
+  } catch {
+    return null
+  }
+}
 
 export const retrieveOrder = async (id: string) => {
   const headers = {
     ...(await getAuthHeaders()),
-  }
-
-  const next = {
-    ...(await getCacheOptions("orders")),
   }
 
   return sdk.client
@@ -22,8 +30,7 @@ export const retrieveOrder = async (id: string) => {
           "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product",
       },
       headers,
-      next,
-      cache: "force-cache",
+      cache: "no-store",
     })
     .then(({ order }) => order)
     .catch((err) => medusaError(err))
