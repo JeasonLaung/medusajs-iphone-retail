@@ -15,7 +15,7 @@ export function warehouseMenu<T extends MenuItem>(items: T[], access?: Access): 
   return items.filter((item) => permitted[item.to]).map((item) => ({ ...item, items: item.items ? warehouseMenu(item.items, access) : undefined }))
 }
 export function useWarehouseAccess() {
-  return useQuery({ queryKey: ["warehouse-menu"], queryFn: () => sdk.client.fetch<Access>("/admin/warehouse-access/me"), staleTime: 0 })
+  return useQuery({ queryKey: ["warehouse-menu"], queryFn: () => sdk.client.fetch<Access>("/admin/warehouse-access/me"), staleTime: 0, refetchInterval: 30_000 })
 }
 export function useWarehouseMenu() {
   const { data } = useWarehouseAccess()

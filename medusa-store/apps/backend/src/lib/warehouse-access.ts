@@ -107,8 +107,17 @@ export function scopeInventoryLevels(variant: any, access: WarehouseAccess) {
 
 }
 
-export async function assertWarehousePermission(container: MedusaContainer, actorId: string, resource: string, operation: string) {
+export async function hasWarehousePermission(container: MedusaContainer, actorId: string, resource: string, operation: string) {
   const { data }: { data: any[] } = await container.resolve(ContainerRegistrationKeys.QUERY).graph({ entity: "user", fields: ["id", "rbac_roles.id"], filters: { id: actorId } })
   const roles = data[0]?.rbac_roles?.filter(Boolean).map((role) => role.id) || []
-  if (!roles.length || !await hasPermission({ container, roles, actions: { resource, operation } })) throw warehouseDenied()
+  return Boolean(roles.length && await hasPermission({ container, roles, actions: { resource, operation } }))
+}
+
+export async function assertWarehousePermission(container: MedusaContainer, actorId: string, resource: string, operation: string) {
+  if (!await hasWarehousePermission(container, actorId, resource, operation)) throw warehouseDenied()
+}
+
+export function warehouseDeviceResource(category?: string) {
+  if (category === "recycled") throw warehouseDenied()
+  return category === "returned" ? "warehouse_return" : "warehouse_intake"
 }

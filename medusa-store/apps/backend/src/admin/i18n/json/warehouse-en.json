@@ -1,0 +1,42 @@
+{
+  "title": "Warehouse access",
+  "description": "Bind users to warehouses and control their order, intake and return access.",
+  "loading": "Loading users and warehouses…",
+  "retry": "Retry",
+  "account": "Account",
+  "access": "Access scope",
+  "warehouses": "Warehouses",
+  "actions": "Actions",
+  "currentAccount": "Current account",
+  "edit": "Edit",
+  "editAccount": "Edit warehouse access for {{email}}",
+  "editTitle": "Edit warehouse access",
+  "unbound": "No warehouse bound · no data access",
+  "empty": "No users available.",
+  "noWarehouses": "No warehouses available. Create a warehouse in Locations & Shipping first.",
+  "save": "Save",
+  "cancel": "Cancel",
+  "saved": "Warehouse access saved",
+  "selfHelp": "You cannot change your own access here. Ask another platform administrator.",
+  "menuHelp": "Warehouse users see Orders and Device intake & dispatch → Intake / Returned. Product and SKU definitions are shared; warehouse data stays within their assigned scope.",
+  "sessionHelp": "Warehouse restrictions apply to subsequent requests. Menu permissions refresh automatically; sign in again after a role change to refresh native permissions.",
+  "scope": {
+    "platform": "Platform administrator",
+    "all": "Warehouse administrator · all warehouses",
+    "bound": "Warehouse user · assigned warehouses"
+  },
+  "help": {
+    "platform": "Full platform access, including all warehouses and permission settings.",
+    "all": "Access orders, intake, returns and allocation across all warehouses. Platform settings remain restricted.",
+    "bound": "Only see and operate on fulfillment orders, devices and stock in the warehouses selected below."
+  },
+  "errors": {
+    "request": "Could not load or save warehouse access. Please retry.",
+    "denied": "Only a platform administrator can manage warehouse access.",
+    "self": "You cannot change your own access.",
+    "locationsRequired": "Select at least one warehouse.",
+    "locationsInvalid": "A selected warehouse no longer exists. Refresh and select again.",
+    "supplier": "Supplier accounts use their separate supplier access settings.",
+    "roleMissing": "The warehouse role has not been initialized. Contact a platform administrator."
+  }
+}

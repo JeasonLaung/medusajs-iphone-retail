@@ -2,7 +2,7 @@ import type { MedusaContainer } from "@medusajs/framework/types"
 import type { AuthenticatedMedusaRequest, MedusaResponse, MedusaNextFunction } from "@medusajs/framework/http"
 import { DEVICES_MODULE } from "../modules/devices"
 import type DevicesModuleService from "../modules/devices/service"
-import { assertWarehousePermission, assertWarehouseFulfillment, assertWarehouseLocation, assertWarehouseOrder, assertWarehouseSource, scopeInventoryLevels, scopeWarehouseOrder, warehouseAccess, warehouseDenied, warehouseOrders } from "../lib/warehouse-access"
+import { hasWarehousePermission, warehouseDeviceResource, assertWarehousePermission, assertWarehouseFulfillment, assertWarehouseLocation, assertWarehouseOrder, assertWarehouseSource, scopeInventoryLevels, scopeWarehouseOrder, warehouseAccess, warehouseDenied, warehouseOrders } from "../lib/warehouse-access"
 import type { DeviceCommandBody } from "./admin/devices/validators"
 
 export async function authorizeWarehouseCommand(container: MedusaContainer, actorId: string, body: DeviceCommandBody) {
@@ -10,11 +10,12 @@ export async function authorizeWarehouseCommand(container: MedusaContainer, acto
   if (!access.warehouse) return
   const resource = ["save_allocation", "assign", "order_assign", "release", "ship"].includes(body.action) ? "warehouse_allocation"
     : ["receive", "inspect"].includes(body.action) ? "warehouse_return" : "warehouse_intake"
-  await assertWarehousePermission(container, actorId, resource, "update")
+  if (!["intake", "update", "activate", "delete", "retire", "inspect", "make_available"].includes(body.action)) await assertWarehousePermission(container, actorId, resource, "update")
   const devices = container.resolve<DevicesModuleService>(DEVICES_MODULE)
   const ownDevice = async (id: string) => {
     const device = await devices.retrieveDevice(id)
     assertWarehouseLocation(access, device.location_id)
+    if (["update", "activate", "delete", "retire", "inspect", "make_available"].includes(body.action)) await assertWarehousePermission(container, actorId, warehouseDeviceResource(device.category), "update")
     return device
   }
   const ownAssignment = async (id: string) => {
@@ -26,10 +27,14 @@ export async function authorizeWarehouseCommand(container: MedusaContainer, acto
   }
   switch (body.action) {
     case "intake":
-      for (const device of body.devices) await assertWarehouseSource(container, access, device.source_id)
+      for (const device of body.devices) {
+        await assertWarehousePermission(container, actorId, warehouseDeviceResource(device.category), "update")
+        await assertWarehouseSource(container, access, device.source_id)
+      }
       return
     case "update":
       await ownDevice(body.device_id)
+      await assertWarehousePermission(container, actorId, warehouseDeviceResource(body.category), "update")
       assertWarehouseLocation(access, body.location_id)
       await assertWarehouseSource(container, access, body.source_id)
       return
@@ -80,8 +85,8 @@ export async function guardWarehouseAdmin(req: AuthenticatedMedusaRequest, res: 
     const category = get ? req.query.category : (req.body as { category?: string })?.category
     if (get && category === "recycled") throw warehouseDenied()
     if (get || path !== "/admin/devices") {
-      const resource = category === "returned" ? "warehouse_return" : "warehouse_intake"
-      await assertWarehousePermission(req.scope, req.auth_context.actor_id, resource, get ? "read" : "update")
+      if (category) await assertWarehousePermission(req.scope, req.auth_context.actor_id, warehouseDeviceResource(String(category)), get ? "read" : "update")
+      else if (!await hasWarehousePermission(req.scope, req.auth_context.actor_id, "warehouse_intake", get ? "read" : "update") && !await hasWarehousePermission(req.scope, req.auth_context.actor_id, "warehouse_return", get ? "read" : "update")) throw warehouseDenied()
     }
     return next()
   }
@@ -89,8 +94,18 @@ export async function guardWarehouseAdmin(req: AuthenticatedMedusaRequest, res: 
   if (get && /^\/admin\/layouts\//.test(path)) return next()
   // Product definitions/SKUs are shared; warehouse inventory levels are still scoped.
   if (get && /^\/admin\/(products|product-variants|product-types|product-tags|product-categories|product-collections)(\/|$)/.test(path)) {
+    // Shared definitions do not grant arbitrary traversal into linked warehouse data.
+    if (!/^\/admin\/(products|product-variants|product-types|product-tags|product-categories|product-collections)(?:\/[^/]+)?$/.test(path)) throw warehouseDenied()
+    if (typeof req.query.fields === "string") {
+      const sharedRelations = /^(?:options(?:\.values)?|variants(?:\.(?:options|prices|inventory_items(?:\.inventory(?:\.location_levels)?)?))?|inventory_items(?:\.inventory(?:\.location_levels)?)?|product|prices|images|tags|type|collection|categories|parent_category|category_children)\.[^.*]+$|^(?:options(?:\.values)?|variants(?:\.(?:options|prices|inventory_items(?:\.inventory(?:\.location_levels)?)?))?|inventory_items(?:\.inventory(?:\.location_levels)?)?|product|prices|images|tags|type|collection|categories|parent_category|category_children)\.\*$/
+      for (const field of req.query.fields.split(",")) {
+        const value = field.replace(/^[+*\-]+/, "")
+        if (value.includes(".") && !sharedRelations.test(value)) throw warehouseDenied()
+      }
+    }
     const json = res.json.bind(res)
     res.json = ((body: any) => {
+      if (body.variant) body.variant = scopeInventoryLevels(body.variant, access)
       if (body.variants) body.variants = body.variants.map((variant) => scopeInventoryLevels(variant, access))
       for (const product of [...(body.products || []), ...(body.product ? [body.product] : [])]) if (product.variants) product.variants = product.variants.map((variant) => scopeInventoryLevels(variant, access))
       return json(body)

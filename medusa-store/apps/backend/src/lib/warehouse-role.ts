@@ -4,7 +4,7 @@ import { WAREHOUSE_ROLE, warehouseDenied } from "./warehouse-access"
 
 export async function assertWarehouseAdministrator(container: MedusaContainer, actorId: string) {
   const { data }: { data: any[] } = await container.resolve(ContainerRegistrationKeys.QUERY).graph({ entity: "user", fields: ["id", "metadata", "rbac_roles.id"], filters: { id: actorId } })
-  if (!data[0] || data[0].metadata?.device_role === "warehouse" || Array.isArray(data[0].metadata?.warehouse_location_ids) || !data[0].rbac_roles?.some((role) => role?.id === "role_super_admin")) throw warehouseDenied()
+  if (!data[0] || data[0].rbac_roles?.some((role) => role?.id === WAREHOUSE_ROLE) || data[0].metadata?.device_role === "warehouse" || Array.isArray(data[0].metadata?.warehouse_location_ids) || !data[0].rbac_roles?.some((role) => role?.id === "role_super_admin")) throw warehouseDenied()
 }
 
 export async function ensureWarehouseRole(container: MedusaContainer) {

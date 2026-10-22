@@ -86,3 +86,39 @@ test("direct calls to unrelated admin APIs are forbidden", async () => {
   const req: any = { scope: setup().container, auth_context: { actor_id: "actor", actor_type: "user" }, originalUrl: "/admin/warehouse-access", method: "POST" }
   await expect(guardWarehouseAdmin(req, {} as any, jest.fn())).rejects.toThrow("WAREHOUSE_ACCESS_DENIED")
 })
+
+test("returns-only users can read shared SKU definitions without intake permission", async () => {
+  ;(hasPermission as jest.Mock).mockImplementation(async ({ actions }) => actions.resource === "warehouse_return")
+  const req: any = { scope: setup().container, auth_context: { actor_id: "actor", actor_type: "user" }, originalUrl: "/admin/devices/variants", method: "GET", query: {} }
+  const next = jest.fn()
+  await guardWarehouseAdmin(req, {} as any, next)
+  expect(next).toHaveBeenCalledTimes(1)
+  ;(hasPermission as jest.Mock).mockResolvedValue(true)
+})
+
+test("returned intake and edits require return permission instead of intake permission", async () => {
+  const { container, devices } = setup()
+  ;(hasPermission as jest.Mock).mockImplementation(async ({ actions }) => actions.resource === "warehouse_return")
+  await expect(authorizeWarehouseCommand(container, "actor", { action: "intake", devices: [{ source_id: "own", category: "returned" }] } as any)).resolves.toBeUndefined()
+  await expect(authorizeWarehouseCommand(container, "actor", { action: "intake", devices: [{ source_id: "own", category: "sale" }] } as any)).rejects.toThrow("WAREHOUSE_ACCESS_DENIED")
+  devices.retrieveDevice.mockResolvedValue({ id: "own", location_id: "own", category: "returned" })
+  await expect(authorizeWarehouseCommand(container, "actor", { action: "delete", device_id: "own" })).resolves.toBeUndefined()
+  await expect(authorizeWarehouseCommand(container, "actor", { action: "update", device_id: "own", location_id: "own", source_id: "own", category: "sale" } as any)).rejects.toThrow("WAREHOUSE_ACCESS_DENIED")
+  ;(hasPermission as jest.Mock).mockResolvedValue(true)
+})
+
+test("warehouse users cannot intake recycled devices even with intake permission", async () => {
+  await expect(authorizeWarehouseCommand(setup().container, "actor", { action: "intake", devices: [{ source_id: "own", category: "recycled" }] } as any)).rejects.toThrow("WAREHOUSE_ACCESS_DENIED")
+})
+
+test.each([
+  "/admin/products/product/variants",
+  "/admin/product-variants/variant/inventory-items",
+])("shared definitions do not open unrestricted linked endpoints: %s", async (path) => {
+  const req: any = { scope: setup().container, auth_context: { actor_id: "actor", actor_type: "user" }, originalUrl: path, method: "GET", query: {} }
+  await expect(guardWarehouseAdmin(req, {} as any, jest.fn())).rejects.toThrow("WAREHOUSE_ACCESS_DENIED")
+})
+test("shared product requests cannot traverse into another warehouse via linked relations", async () => {
+  const req: any = { scope: setup().container, auth_context: { actor_id: "actor", actor_type: "user" }, originalUrl: "/admin/products", method: "GET", query: { fields: "variants.inventory_items.inventory.location_levels.stock_locations.inventory_levels.*" } }
+  await expect(guardWarehouseAdmin(req, {} as any, jest.fn())).rejects.toThrow("WAREHOUSE_ACCESS_DENIED")
+})

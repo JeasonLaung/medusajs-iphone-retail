@@ -1,6 +1,7 @@
 import assert from "node:assert/strict"
 import type { ExecArgs } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys, Modules, generateJwtToken } from "@medusajs/framework/utils"
+import { createIntakeToken } from "../lib/mobile-intake-token"
 import { WAREHOUSE_ROLE, warehouseOrders } from "../lib/warehouse-access"
 
 // Creates a disposable user, makes read-only API requests, then removes the user.
@@ -38,18 +39,29 @@ export default async function checkWarehouseAccess({ container }: ExecArgs) {
     }
     const foreign = allOrders.find((order) => order.fulfillments?.every((f) => f.location_id !== location.id))
     if (foreign) await get(`/admin/orders/${foreign.id}`, 403)
+    let mobileToken: string | undefined
     for (const category of ["sale", "returned"]) {
       const body = await get(`/admin/devices?category=${category}&limit=100`)
       assert(body.devices.every((entry) => entry.location_id === location.id))
       assert(body.sources.every((entry) => entry.location_id === location.id))
+      if (body.sources[0] && !mobileToken) mobileToken = createIntakeToken(user.id, body.sources[0].id, String(config.projectConfig.http.jwtSecret)).token
     }
     await get("/admin/rbac/roles", 403)
     await get("/admin/warehouse-access", 403)
     await get("/admin/customers", 403)
+    if (mobileToken) {
+      const response = await fetch("http://127.0.0.1:9001/mobile-intake", { headers: { "x-intake-token": mobileToken } })
+      assert.equal(response.status, 200, "Bound mobile link should work")
+    }
     await users.updateUsers({ id: user.id, metadata: { device_role: "warehouse", warehouse_scope: "bound", warehouse_location_ids: [] } })
     assert.equal((await get("/admin/orders")).count, 0)
     assert.equal((await get("/admin/devices?category=sale")).devices.length, 0)
     assert.equal((await get("/admin/stock-locations")).count, 0)
+    if (mobileToken) {
+      const response = await fetch("http://127.0.0.1:9001/mobile-intake", { headers: { "x-intake-token": mobileToken } })
+      assert.equal(response.status, 403, "An existing mobile link must stop working after warehouse scope removal")
+      console.log("Mobile link warehouse revocation passed")
+    }
     console.log(`Warehouse API isolation passed; ${orders.orders.length} assigned orders visible without requiring device records`)
   } finally {
     await link.dismiss(binding)

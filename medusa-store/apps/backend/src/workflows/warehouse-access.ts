@@ -26,12 +26,20 @@ const updateWarehouseBinding = createStep("update-warehouse-binding", async (inp
   const opposite = input.scope === "platform" ? WAREHOUSE_ROLE : "role_super_admin"
   // Persist the restriction first; a role update failure must not leave widened access.
   await users.updateUsers({ id: user.id, metadata })
+  let addedDesired = false
+  let removedOpposite = false
   try {
-    if (!originalRoles.includes(desired)) await link.create({ [Modules.USER]: { user_id: user.id }, [Modules.RBAC]: { rbac_role_id: desired } })
-    if (originalRoles.includes(opposite)) await link.dismiss({ [Modules.USER]: { user_id: user.id }, [Modules.RBAC]: { rbac_role_id: opposite } })
+    if (!originalRoles.includes(desired)) {
+      await link.create({ [Modules.USER]: { user_id: user.id }, [Modules.RBAC]: { rbac_role_id: desired } })
+      addedDesired = true
+    }
+    if (originalRoles.includes(opposite)) {
+      await link.dismiss({ [Modules.USER]: { user_id: user.id }, [Modules.RBAC]: { rbac_role_id: opposite } })
+      removedOpposite = true
+    }
   } catch (error) {
-    if (!originalRoles.includes(desired)) await link.dismiss({ [Modules.USER]: { user_id: user.id }, [Modules.RBAC]: { rbac_role_id: desired } })
-    if (originalRoles.includes(opposite)) await link.create({ [Modules.USER]: { user_id: user.id }, [Modules.RBAC]: { rbac_role_id: opposite } })
+    if (addedDesired) await link.dismiss({ [Modules.USER]: { user_id: user.id }, [Modules.RBAC]: { rbac_role_id: desired } })
+    if (removedOpposite) await link.create({ [Modules.USER]: { user_id: user.id }, [Modules.RBAC]: { rbac_role_id: opposite } })
     await users.updateUsers({ id: user.id, metadata: user.metadata })
     throw error
   }

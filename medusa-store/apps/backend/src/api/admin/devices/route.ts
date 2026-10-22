@@ -7,7 +7,7 @@ import {
   MedusaError,
   Modules,
 } from "@medusajs/framework/utils"
-import { warehouseAccess, assertWarehouseLocation, assertWarehouseOrder, scopeWarehouseOrder, scopeInventoryLevels } from "../../../lib/warehouse-access"
+import { warehouseDenied, hasWarehousePermission, warehouseAccess, assertWarehouseLocation, assertWarehouseOrder, scopeWarehouseOrder, scopeInventoryLevels } from "../../../lib/warehouse-access"
 import { authorizeWarehouseCommand } from "../../warehouse-guards"
 import { DEVICES_MODULE } from "../../../modules/devices"
 import DevicesModuleService from "../../../modules/devices/service"
@@ -31,6 +31,8 @@ export async function GET(
   const access = await deviceAccess(req.scope, req.auth_context.actor_id)
   const supplier = access.role === "supplier"
   const warehouse = await warehouseAccess(req.scope, req.auth_context.actor_id)
+  const visibleCategories = warehouse.warehouse ? (await Promise.all(["sale", "returned"].map(async (category) => await hasWarehousePermission(req.scope, req.auth_context.actor_id, category === "returned" ? "warehouse_return" : "warehouse_intake", "read") ? category : null))).filter(Boolean) : null
+  const categoryFilter = visibleCategories ? { category: visibleCategories.length ? visibleCategories : ["__no_category__"] } : {}
   const locationFilter = warehouse.location_ids === null ? {} : { location_id: warehouse.location_ids.length ? warehouse.location_ids : ["__no_warehouse__"] }
   const q =
     typeof req.query.q === "string"
@@ -68,6 +70,7 @@ export async function GET(
   if (warehouse.warehouse && device_id) {
     const device = await service.retrieveDevice(device_id)
     assertWarehouseLocation(warehouse, device.location_id)
+    if (!visibleCategories?.includes(device.category)) throw warehouseDenied()
   }
   let order: any = null
   if (order_id) {
@@ -175,8 +178,8 @@ export async function GET(
     },
     { take: 1000, order: { created_at: "DESC" } },
   )
-  if (warehouse.location_ids !== null && assignments.length) {
-    const visible = await service.listDevices({ id: assignments.map((assignment) => assignment.device_id), ...locationFilter }, { select: ["id"], take: null })
+  if (warehouse.warehouse && assignments.length) {
+    const visible = await service.listDevices({ id: assignments.map((assignment) => assignment.device_id), ...locationFilter, ...categoryFilter }, { select: ["id"], take: null })
     const ids = new Set(visible.map((device) => device.id))
     assignments = assignments.filter((assignment) => ids.has(assignment.device_id) && (!order || !assignment.fulfillment_id || order?.fulfillments?.some((f) => f.id === assignment.fulfillment_id)))
   }
@@ -227,7 +230,7 @@ export async function GET(
           ? searchFilter
           : {}
   const [devices, count] = await service.listAndCountDevices(
-    { $and: [filters, locationFilter, ...(lookupVariant ? [{ variant_id: lookupVariant }] : []),
+    { $and: [filters, locationFilter, categoryFilter, ...(lookupVariant ? [{ variant_id: lookupVariant }] : []),
       ...(lookupLocation ? [{ location_id: lookupLocation }] : []),
       ...(lookupState ? [{ state: lookupState }] : []),
       ...(category ? [{ category }] : warehouse.warehouse ? [{ category: ["sale", "returned"] }] : []),
@@ -322,6 +325,7 @@ export async function GET(
         {
           id: assignments.map((a) => a.device_id),
           ...locationFilter,
+          ...categoryFilter,
           ...(supplier ? { source_id: access.source_id! } : {}),
         },
         { take: 1000 },

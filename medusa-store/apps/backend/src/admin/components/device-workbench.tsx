@@ -248,7 +248,7 @@ const DeviceWorkbench = ({ mode, intakeMethod, onBusyChange, category = "sale" }
   const supplier = data?.access?.role === "supplier"
 
   const load = useCallback(async () => {
-    const query = new URLSearchParams({ offset: String(offset) })
+    const query = new URLSearchParams({ offset: String(offset), category })
     if (variantId) query.set("selected_variant_id", variantId)
     if ((mode === "lookup" || mode === "inspection") && selected) query.set("device_id", selected.id)
     else if (!deviceLinkLoaded && params.get("device_id")) query.set("device_id", params.get("device_id")!)
@@ -293,7 +293,7 @@ const DeviceWorkbench = ({ mode, intakeMethod, onBusyChange, category = "sale" }
       if (!r.ok) throw new Error(t("deviceScan.requestLoadError"))
       setRequests((await r.json()).requests)
     }
-  }, [mode, search, orderId, offset, selected?.id, variantId, deviceLinkLoaded, params, t])
+  }, [category, mode, search, orderId, offset, selected?.id, variantId, deviceLinkLoaded, params, t])
   useEffect(() => {
     load().catch((e) => showError(e.message))
   }, [load, showError])

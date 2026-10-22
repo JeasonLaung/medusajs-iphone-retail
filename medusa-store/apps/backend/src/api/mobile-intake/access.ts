@@ -1,7 +1,7 @@
 import type { MedusaContainer } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/framework/utils"
 import { verifyIntakeToken } from "../../lib/mobile-intake-token"
-import { warehouseAccess, assertWarehouseSource, assertWarehousePermission } from "../../lib/warehouse-access"
+import { warehouseDeviceResource, warehouseAccess, assertWarehouseSource, assertWarehousePermission } from "../../lib/warehouse-access"
 import { deviceAccess } from "../device-access"
 import { DEVICES_MODULE } from "../../modules/devices"
 import type DevicesModuleService from "../../modules/devices/service"
@@ -13,11 +13,11 @@ export function intakeSecret(container: MedusaContainer): string {
   return secret
 }
 
-export async function intakeSource(container: MedusaContainer, actorId: string, sourceId: string) {
+export async function intakeSource(container: MedusaContainer, actorId: string, sourceId: string, category: "sale" | "returned" | "recycled" = "sale") {
   const access = await deviceAccess(container, actorId)
   if (access.role !== "admin") throw new MedusaError(MedusaError.Types.FORBIDDEN, "MOBILE_INTAKE_LINK_INVALID")
   const warehouse = await warehouseAccess(container, actorId)
-  if (warehouse.warehouse) await assertWarehousePermission(container, actorId, "warehouse_intake", "update")
+  if (warehouse.warehouse) await assertWarehousePermission(container, actorId, warehouseDeviceResource(category), "update")
   await assertWarehouseSource(container, warehouse, sourceId)
   const service: DevicesModuleService = container.resolve(DEVICES_MODULE)
   const source = await service.retrieveDeviceSource(sourceId)
@@ -27,6 +27,6 @@ export async function intakeSource(container: MedusaContainer, actorId: string, 
 
 export async function mobileIntakeAccess(container: MedusaContainer, token: string) {
   const session = verifyIntakeToken(token, intakeSecret(container))
-  const source = await intakeSource(container, session.actor_id, session.source_id)
+  const source = await intakeSource(container, session.actor_id, session.source_id, session.category)
   return { session, source }
 }

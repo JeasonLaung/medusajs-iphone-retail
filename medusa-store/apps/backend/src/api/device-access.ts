@@ -79,6 +79,17 @@ export async function guardSupplierAdmin(
     return next()
   if (path === "/admin/devices" && ["GET", "POST"].includes(req.method))
     return next()
+  // These bootstrap responses must remain usable by scoped supplier accounts
+  // that intentionally hold no native order/customer permissions.
+  if (req.method === "GET" && path === "/admin/users/me") {
+    const user = await req.scope.resolve<IUserModuleService>(Modules.USER).retrieveUser(req.auth_context.actor_id)
+    return res.json({ user: { id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name, avatar_url: user.avatar_url, metadata: user.metadata } })
+  }
+  if (req.method === "GET" && path === "/admin/rbac/me/permissions") return res.json({ permissions: [] })
+  if (req.method === "GET" && (/^\/admin\/layouts\//.test(path) || path === "/admin/plugins" || path === "/admin/notifications")) {
+    if (path === "/admin/notifications") return res.json({ notifications: [], count: 0, offset: 0, limit: 1 })
+    return next()
+  }
   if (path === "/admin/warehouse-access/me" && req.method === "GET") return next()
   if (path === "/admin/devices/variants" && req.method === "GET") return next()
   if (

@@ -5,7 +5,7 @@ import { IntakeDevice, type IntakeDeviceBody } from "../api/admin/devices/valida
 import { deviceOperationWorkflow } from "./device-operations"
 
 const createMobileIntakeLink = createStep("create-mobile-intake-link", async (input: { actor_id: string; source_id: string; category?: "sale" | "returned" | "recycled" }, { container }) => {
-  await intakeSource(container, input.actor_id, input.source_id)
+  await intakeSource(container, input.actor_id, input.source_id, input.category)
   return new StepResponse(createIntakeToken(input.actor_id, input.source_id, intakeSecret(container), Date.now(), input.category))
 })
 

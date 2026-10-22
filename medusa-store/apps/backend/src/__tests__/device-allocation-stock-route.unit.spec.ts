@@ -2,7 +2,7 @@ import { GET } from "../api/admin/devices/route"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { DEVICES_MODULE } from "../modules/devices"
 
-jest.mock("../lib/warehouse-access", () => ({ warehouseAccess: jest.fn().mockResolvedValue({ warehouse: false, location_ids: null }), scopeInventoryLevels: (variant) => variant }))
+jest.mock("../lib/warehouse-access", () => ({ warehouseDenied: () => new Error("WAREHOUSE_ACCESS_DENIED"), assertWarehouseLocation: jest.fn(), hasWarehousePermission: jest.fn().mockImplementation(async (_scope, _actor, resource) => resource === "warehouse_return"), warehouseAccess: jest.fn().mockResolvedValue({ warehouse: false, location_ids: null }), scopeInventoryLevels: (variant) => variant }))
 jest.mock("../workflows/device-operations", () => ({ deviceOperationWorkflow: jest.fn() }))
 jest.mock("../workflows/device-source", () => ({ createDeviceSourceWorkflow: jest.fn() }))
 jest.mock("../api/warehouse-guards", () => ({ authorizeWarehouseCommand: jest.fn() }))
@@ -56,4 +56,15 @@ test("supplier totals only expose their own warehouse inventory", async () => {
   const { stock, service } = await loadStock([], [{ location_id: "own", stocked_quantity: 3 }, { location_id: "private", stocked_quantity: 12 }], true)
   expect(stock).toEqual([{ location_id: "own", name: "own", count: 0, registered_count: 0, stocked_quantity: 3 }])
   expect(service.listDevices).toHaveBeenCalledWith(expect.objectContaining({ source_id: "source" }), expect.anything())
+})
+
+
+test("returns-only users cannot retrieve sale-device history by an explicit device ID", async () => {
+  const { warehouseAccess } = jest.requireMock("../lib/warehouse-access")
+  warehouseAccess.mockResolvedValueOnce({ warehouse: true, location_ids: ["own"] })
+  deviceAccess.mockResolvedValue({ role: "admin" })
+  const devices = { retrieveDevice: jest.fn().mockResolvedValue({ id: "sale", category: "sale", location_id: "own" }), listDeviceEvents: jest.fn() }
+  const req: any = { auth_context: { actor_id: "user" }, query: { device_id: "sale" }, scope: { resolve: (key) => key === DEVICES_MODULE ? devices : {} } }
+  await expect(GET(req, { json: jest.fn() } as any)).rejects.toThrow("WAREHOUSE_ACCESS_DENIED")
+  expect(devices.listDeviceEvents).not.toHaveBeenCalled()
 })
