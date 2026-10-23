@@ -2,6 +2,9 @@ packages:
   - "apps/**"
   - "!apps/backend/.medusa/**"
 
+patchedDependencies:
+  "@agilo/medusa-analytics-plugin@1.4.0": "patches/@agilo__medusa-analytics-plugin@1.4.0.patch"
+
 # pnpm 11+
 allowBuilds:
   "@medusajs/telemetry": true

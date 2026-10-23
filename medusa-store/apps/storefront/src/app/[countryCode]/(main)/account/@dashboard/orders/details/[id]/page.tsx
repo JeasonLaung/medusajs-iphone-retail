@@ -1,3 +1,4 @@
+import { withSEO } from "@lib/data/seo"
 import { getLocale } from "@lib/data/locale-actions"
 import { getAccountCopy } from "@modules/account/i18n"
 import { getOrderNumber } from "@lib/util/order-number"
@@ -10,7 +11,7 @@ type Props = {
   params: Promise<{ id: string }>
 }
 
-export async function generateMetadata(props: Props): Promise<Metadata> {
+async function defaultPageMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
   const { t } = getAccountCopy(await getLocale())
   const order = await retrieveOrder(params.id).catch(() => null)
@@ -37,4 +38,8 @@ export default async function OrderDetailPage(props: Props) {
   }
 
   return <OrderDetailsTemplate order={order} timeline={timeline} />
+}
+
+export async function generateMetadata(...args: Parameters<typeof defaultPageMetadata>): Promise<Metadata> {
+  return withSEO(await defaultPageMetadata(...args))
 }

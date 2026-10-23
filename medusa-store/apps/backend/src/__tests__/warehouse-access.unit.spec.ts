@@ -75,6 +75,19 @@ test.each([
 ])("rejects cross-warehouse or administrative command %#", async (body) => {
   await expect(authorizeWarehouseCommand(setup().container, "actor", body as any)).rejects.toThrow("WAREHOUSE_ACCESS_DENIED")
 })
+test("moving sale devices to returns requires both category permissions and warehouse ownership", async () => {
+  const body = { action: "transfer_return", device_id: "own", notes: "Reinspect" } as any
+  const { container } = setup()
+  ;(hasPermission as jest.Mock).mockResolvedValue(true)
+  await expect(authorizeWarehouseCommand(container, "actor", body)).resolves.toBeUndefined()
+  for (const allowed of ["warehouse_return", "warehouse_intake"]) {
+    ;(hasPermission as jest.Mock).mockImplementation(async ({ actions }) => actions.resource === allowed)
+    await expect(authorizeWarehouseCommand(container, "actor", body)).rejects.toThrow("WAREHOUSE_ACCESS_DENIED")
+  }
+  ;(hasPermission as jest.Mock).mockResolvedValue(true)
+  await expect(authorizeWarehouseCommand(container, "actor", { ...body, device_id: "foreign" })).rejects.toThrow("WAREHOUSE_ACCESS_DENIED")
+})
+
 test("allows binding a local device to its existing local fulfillment", async () => {
   await expect(authorizeWarehouseCommand(setup().container, "actor", { action: "save_allocation", order_id: "order", allocations: [{ device_id: "own", item_id: "line", fulfillment_id: "parcel" }] })).resolves.toBeUndefined()
 })

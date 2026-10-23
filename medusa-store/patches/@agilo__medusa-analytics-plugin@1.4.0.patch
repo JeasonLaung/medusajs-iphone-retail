@@ -1,0 +1,37 @@
+diff --git a/.medusa/server/src/api/admin/agilo-analytics/orders/route.js b/.medusa/server/src/api/admin/agilo-analytics/orders/route.js
+index 4d71900a93dfbf8565660a54885d15652b062384..1118af00e68ebe5568978e92d02abaa736503155 100644
+--- a/.medusa/server/src/api/admin/agilo-analytics/orders/route.js
++++ b/.medusa/server/src/api/admin/agilo-analytics/orders/route.js
+@@ -47,7 +47,7 @@ async function GET(req, res) {
+                 'created_at',
+                 'status',
+                 'currency_code',
+-                'region.name',
++                'shipping_address.country_code',
+             ],
+             pagination: {
+                 order: {
+@@ -123,10 +123,9 @@ async function GET(req, res) {
+         groupedByKey[key].orderCount += 1;
+         groupedByKey[key].sales += orderTotal;
+         totalSales += orderTotal;
+-        if (order.region?.name) {
+-            regions[order.region.name] =
+-                (regions[order.region.name] ?? 0) + orderTotal;
+-        }
++        const countryCode = order.shipping_address?.country_code?.trim().toUpperCase();
++        const country = countryCode && /^[A-Z]{2}$/.test(countryCode) ? countryCode : 'unknown';
++        regions[country] = (regions[country] ?? 0) + orderTotal;
+         if (order.status) {
+             statuses[order.status] = (statuses[order.status] ?? 0) + 1;
+         }
+@@ -155,8 +154,7 @@ async function GET(req, res) {
+         name: region,
+         sales: Number(amount.toFixed(2)),
+     }))
+-        .sort((a, b) => b.sales - a.sales)
+-        .slice(0, 5);
++        .sort((a, b) => b.sales - a.sales);
+     const statusesArray = Object.entries(statuses).map(([status, count]) => ({
+         name: status,
+         count,

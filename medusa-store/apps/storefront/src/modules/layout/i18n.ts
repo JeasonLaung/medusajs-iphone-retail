@@ -1,7 +1,7 @@
 const en = {
   collections: "Collections", rights: "All rights reserved.",
   navigation: "Main navigation", buy: "Buy", sell: "Sell", about: "About us",
-  reviews: "Reviews", help: "Help", account: "Account", cart: "Cart",
+  reviews: "Reviews", help: "Help", account: "Account", cart: "Cart", ui: "UI",
   menu: "Menu", close: "Close menu", preferences: "Country and language",
   country: "Shipping country", language: "Language", save: "Apply", error: "Unable to save your preferences. Please try again.",
   selectRegion: "Select region and language", closeRegion: "Close region and language selection", noRegions: "No shipping regions are available.",
@@ -23,7 +23,7 @@ const en = {
 const zh: typeof en = {
   collections: "精选系列", rights: "保留所有权利。",
   navigation: "主导航", buy: "购买", sell: "出售", about: "关于我们",
-  reviews: "用户评价", help: "帮助", account: "账户", cart: "购物车",
+  reviews: "用户评价", help: "帮助", account: "账户", cart: "购物车", ui: "UI",
   menu: "菜单", close: "关闭菜单", preferences: "国家与语言",
   country: "配送国家", language: "语言", save: "应用", error: "偏好设置保存失败，请重试。",
   selectRegion: "选择地区与语言", closeRegion: "关闭地区与语言选择", noRegions: "暂无可用配送地区。",

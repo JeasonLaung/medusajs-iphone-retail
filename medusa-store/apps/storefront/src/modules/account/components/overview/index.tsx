@@ -1,7 +1,8 @@
+import { Container } from "@modules/account/components/ui"
+import { Progress, Statistic, Empty } from "antd"
 import { getLocale } from "@lib/data/locale-actions"
 import { getAccountCopy } from "@modules/account/i18n"
 import { getOrderNumber } from "@lib/util/order-number"
-import { Container } from "@modules/common/components/ui"
 
 import ChevronDown from "@modules/common/icons/chevron-down"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -18,7 +19,7 @@ const Overview = async ({ customer, orders }: OverviewProps) => {
   return (
     <div data-testid="overview-page-wrapper">
       <div className="hidden small:block">
-        <div className="text-xl-semi flex justify-between items-center mb-4">
+        <div className="text-xl-semi flex flex-wrap gap-3 justify-between items-center mb-4">
           <span data-testid="welcome-message" data-value={customer?.first_name}>
             {t("hello", { name: customer?.first_name || "" })}
           </span>
@@ -39,13 +40,16 @@ const Overview = async ({ customer, orders }: OverviewProps) => {
               <div className="flex flex-col gap-y-4">
                 <h3 className="text-large-semi">{t("profile")}</h3>
                 <div className="flex items-end gap-x-2">
-                  <span
-                    className="text-3xl-semi leading-none"
+                  <div
                     data-testid="customer-profile-completion"
                     data-value={getProfileCompletion(customer)}
                   >
-                    {getProfileCompletion(customer)}%
-                  </span>
+                    <Progress
+                      type="circle"
+                      size={72}
+                      percent={getProfileCompletion(customer)}
+                    />
+                  </div>
                   <span className="uppercase text-base-regular text-ui-fg-subtle">
                     {t("completed")}
                   </span>
@@ -55,13 +59,12 @@ const Overview = async ({ customer, orders }: OverviewProps) => {
               <div className="flex flex-col gap-y-4">
                 <h3 className="text-large-semi">{t("addresses")}</h3>
                 <div className="flex items-end gap-x-2">
-                  <span
-                    className="text-3xl-semi leading-none"
+                  <div
                     data-testid="addresses-count"
                     data-value={customer?.addresses?.length || 0}
                   >
-                    {customer?.addresses?.length || 0}
-                  </span>
+                    <Statistic value={customer?.addresses?.length || 0} />
+                  </div>
                   <span className="uppercase text-base-regular text-ui-fg-subtle">
                     {t("saved")}
                   </span>
@@ -118,7 +121,7 @@ const Overview = async ({ customer, orders }: OverviewProps) => {
                                 })}
                               </span>
                             </div>
-                            <button
+                            <span
                               className="flex items-center justify-between"
                               data-testid="open-order-button"
                             >
@@ -128,16 +131,17 @@ const Overview = async ({ customer, orders }: OverviewProps) => {
                                 })}
                               </span>
                               <ChevronDown className="-rotate-90" />
-                            </button>
+                            </span>
                           </Container>
                         </LocalizedClientLink>
                       </li>
                     )
                   })
                 ) : (
-                  <span data-testid="no-orders-message">
-                    {t("noRecentOrders")}
-                  </span>
+                  <Empty
+                    data-testid="no-orders-message"
+                    description={t("noRecentOrders")}
+                  />
                 )}
               </ul>
             </div>

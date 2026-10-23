@@ -1,22 +1,37 @@
 "use client"
 
+import {
+  Button,
+  Input,
+  ErrorMessage,
+  SubmitButton,
+} from "@modules/account/components/ui"
+
+import VerificationNotice from "@modules/account/components/verification-notice"
 import { useAccountCopy } from "@modules/account/use-account-copy"
 
-import { useActionState } from "react"
-import Input from "@modules/common/components/input"
+import { useActionState, useEffect, useRef } from "react"
 import { LOGIN_VIEW } from "@modules/account/templates/login-template"
-import ErrorMessage from "@modules/checkout/components/error-message"
-import { SubmitButton } from "@modules/checkout/components/submit-button"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { signup } from "@lib/data/customer"
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
+  onSuccess?: () => void
 }
 
-const Register = ({ setCurrentView }: Props) => {
+const Register = ({ setCurrentView, onSuccess }: Props) => {
   const { t } = useAccountCopy()
   const [message, formAction] = useActionState(signup, null)
+  const handledSuccess = useRef(false)
+  useEffect(() => {
+    if (message?.state !== "success") {
+      handledSuccess.current = false
+    } else if (!handledSuccess.current) {
+      handledSuccess.current = true
+      onSuccess?.()
+    }
+  }, [message, onSuccess])
 
   return (
     <div
@@ -28,12 +43,7 @@ const Register = ({ setCurrentView }: Props) => {
         {t("registerDescription")}
       </p>
       {message?.state === "verification_required" && (
-        <div
-          className="w-full mb-4 text-center text-base-regular text-ui-fg-base bg-ui-bg-subtle border border-ui-border-base rounded-rounded p-4"
-          data-testid="register-verification-message"
-        >
-          {t("verificationSent", { email: message.email })}
-        </div>
+        <div className="w-full" data-testid="register-verification-message"><VerificationNotice email={message.email} delivery={message.delivery} /></div>
       )}
       <form className="w-full flex flex-col" action={formAction}>
         <div className="flex flex-col w-full gap-y-2">
@@ -110,12 +120,13 @@ const Register = ({ setCurrentView }: Props) => {
       </form>
       <span className="text-center text-ui-fg-base text-small-regular mt-6">
         {t("alreadyMember")}{" "}
-        <button
+        <Button
+          variant="transparent"
           onClick={() => setCurrentView(LOGIN_VIEW.SIGN_IN)}
           className="underline"
         >
           {t("signIn")}
-        </button>
+        </Button>
         .
       </span>
     </div>

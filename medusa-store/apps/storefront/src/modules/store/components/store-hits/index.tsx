@@ -77,7 +77,7 @@ const StoreHits = ({ hitsPerPage, currencyCode }: StoreHitsProps) => {
   return (
     <>
       {showSkeleton ? (
-        <SkeletonProductGrid numberOfProducts={hitsPerPage} />
+        <SkeletonProductGrid numberOfProducts={hitsPerPage} layout="card" />
       ) : !items.length ? (
         <Text
           className="py-16 text-center text-ui-fg-subtle"

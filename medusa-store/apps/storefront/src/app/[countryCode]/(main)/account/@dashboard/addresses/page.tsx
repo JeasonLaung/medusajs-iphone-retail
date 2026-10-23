@@ -1,3 +1,4 @@
+import { withSEO } from "@lib/data/seo"
 import { getLocale } from "@lib/data/locale-actions"
 import { getAccountCopy } from "@modules/account/i18n"
 import { Metadata } from "next"
@@ -8,7 +9,7 @@ import AddressBook from "@modules/account/components/address-book"
 import { getRegion } from "@lib/data/regions"
 import { retrieveCustomer } from "@lib/data/customer"
 
-export async function generateMetadata(): Promise<Metadata> {
+async function defaultPageMetadata(): Promise<Metadata> {
   const { t } = getAccountCopy(await getLocale())
   return { title: t("addresses") }
 }
@@ -35,4 +36,8 @@ export default async function Addresses(props: {
       <AddressBook customer={customer} region={region} />
     </div>
   )
+}
+
+export async function generateMetadata(...args: Parameters<typeof defaultPageMetadata>): Promise<Metadata> {
+  return withSEO(await defaultPageMetadata(...args))
 }

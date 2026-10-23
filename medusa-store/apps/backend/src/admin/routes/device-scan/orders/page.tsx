@@ -1,10 +1,9 @@
-import { defineRouteConfig } from "@medusajs/admin-sdk"
-import DeviceWorkbench from "../../../components/device-workbench"
+import { Navigate, useSearchParams } from "react-router-dom"
 
 const DeviceOrdersPage = () => {
-  return <DeviceWorkbench key="orders" mode="orders" />
+  const [params] = useSearchParams()
+  const orderId = params.get("order_id")
+  return <Navigate to={orderId ? `/orders/${encodeURIComponent(orderId)}` : "/orders"} replace />
 }
 
 export default DeviceOrdersPage
-
-export const config = defineRouteConfig({ label: "deviceScan.orders", translationNs: "translation", rank: 4 })

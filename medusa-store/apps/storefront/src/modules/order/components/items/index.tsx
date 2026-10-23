@@ -1,44 +1,80 @@
-import repeat from "@lib/util/repeat"
-import { HttpTypes } from "@medusajs/types"
-import { Table } from "@modules/common/components/ui"
+"use client"
 
-import Divider from "@modules/common/components/divider"
-import Item from "@modules/order/components/item"
-import SkeletonLineItem from "@modules/skeletons/components/skeleton-line-item"
+import { Table } from "antd"
+import type { HttpTypes } from "@medusajs/types"
+import { useAccountCopy } from "@modules/account/use-account-copy"
+import Thumbnail from "@modules/products/components/thumbnail"
+import { getOrderItemThumbnail } from "@lib/util/order-item-thumbnail"
+import LineItemOptions from "@modules/common/components/line-item-options"
+import LineItemPrice from "@modules/common/components/line-item-price"
+import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
 
-type ItemsProps = {
-  order: HttpTypes.StoreOrder
-}
-
-const Items = ({ order }: ItemsProps) => {
-  const items = order.items
-
+export default function Items({ order }: { order: HttpTypes.StoreOrder }) {
+  const { t } = useAccountCopy()
   return (
-    <div className="flex flex-col">
-      <Divider className="!mb-0" />
-      <Table>
-        <Table.Body data-testid="products-table">
-          {items?.length
-            ? items
-                .sort((a, b) => {
-                  return (a.created_at ?? "") > (b.created_at ?? "") ? -1 : 1
-                })
-                .map((item) => {
-                  return (
-                    <Item
-                      key={item.id}
-                      item={item}
-                      currencyCode={order.currency_code}
-                    />
-                  )
-                })
-            : repeat(5).map((i) => {
-                return <SkeletonLineItem key={i} />
-              })}
-        </Table.Body>
-      </Table>
+    <div data-testid="products-table">
+      <Table<HttpTypes.StoreOrderLineItem>
+        rowKey="id"
+        pagination={false}
+        showHeader={false}
+        size="small"
+        dataSource={[...(order.items ?? [])].sort((a, b) =>
+          (a.created_at ?? "") > (b.created_at ?? "") ? -1 : 1
+        )}
+        onRow={() =>
+          ({
+            "data-testid": "product-row",
+          } as React.HTMLAttributes<HTMLTableRowElement>)
+        }
+        columns={[
+          {
+            key: "image",
+            width: 80,
+            render: (_, item) => (
+              <div className="w-16">
+                <Thumbnail thumbnail={getOrderItemThumbnail(item)} size="square" />
+              </div>
+            ),
+          },
+          {
+            key: "product",
+            title: t("items"),
+            render: (_, item) => (
+              <div className="min-w-0 break-words">
+                <span className="font-semibold" data-testid="product-name">
+                  {item.product_title}
+                </span>
+                <LineItemOptions
+                  variant={item.variant}
+                  data-testid="product-variant"
+                />
+              </div>
+            ),
+          },
+          {
+            key: "price",
+            align: "right",
+            title: t("total"),
+            render: (_, item) => (
+              <div className="flex flex-col items-end">
+                <span className="flex gap-1">
+                  <span data-testid="product-quantity">{item.quantity}</span>x{" "}
+                  <LineItemUnitPrice
+                    item={item}
+                    style="tight"
+                    currencyCode={order.currency_code}
+                  />
+                </span>
+                <LineItemPrice
+                  item={item}
+                  style="tight"
+                  currencyCode={order.currency_code}
+                />
+              </div>
+            ),
+          },
+        ]}
+      />
     </div>
   )
 }
-
-export default Items

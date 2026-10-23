@@ -15,6 +15,7 @@ import { deviceOperationWorkflow } from "../../../workflows/device-operations"
 import { createDeviceSourceWorkflow } from "../../../workflows/device-source"
 import type { DeviceCommandBody } from "./validators"
 import { requiresImei } from "../../../modules/devices/identity"
+import { canTransferDeviceToReturned } from "../../../modules/devices/policy"
 import { orderItemQuantities } from "../../../lib/order-item-quantities"
 import {
   authorizeDeviceCommand,
@@ -342,9 +343,10 @@ export async function GET(
   const eventActors = new Map(actors.map((actor) => [actor.id, [actor.first_name, actor.last_name].filter(Boolean).join(" ").trim() || (!supplier ? actor.email : null) || actor.id]))
   const history = devices.length ? await service.listDeviceAssignments({ device_id: devices.map((d) => d.id), status: ["reserved", "packed", "shipped", "returned"] }, { take: null }) : []
   const locked = new Set(history.map((a) => a.device_id))
+  const activeAssignments = new Set(history.filter((a) => a.status !== "returned").map((a) => a.device_id))
   res.json({
     access: { ...access, warehouse: warehouse.warehouse, location_ids: warehouse.location_ids },
-    devices: devices.map((d) => ({ ...d, can_delete: !supplier && !locked.has(d.id) && !["reserved", "packed", "shipped", "repair_ready"].includes(d.state), can_retire: !supplier && !locked.has(d.id) && ["pending", "available", "inspection", "repair"].includes(d.state) })),
+    devices: devices.map((d) => ({ ...d, can_transfer_return: !supplier && canTransferDeviceToReturned(d, activeAssignments.has(d.id)) && sources.some((source) => source.type === "self" && source.location_id === d.location_id), can_delete: !supplier && !locked.has(d.id) && !["reserved", "packed", "shipped", "repair_ready"].includes(d.state), can_retire: !supplier && !locked.has(d.id) && ["pending", "available", "inspection", "repair"].includes(d.state) })),
     assigned_devices,
     ...(allocationStock ? { allocation_stock: allocationStock } : {}),
     count,

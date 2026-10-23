@@ -1,10 +1,7 @@
-import { defineRouteConfig } from "@medusajs/admin-sdk"
-import DeviceWorkbench from "../../../components/device-workbench"
+import { Navigate } from "react-router-dom"
 
 const DeviceSourcesPage = () => {
-  return <DeviceWorkbench key="sources" mode="sources" />
+  return <Navigate to="/device-scan" replace />
 }
 
 export default DeviceSourcesPage
-
-export const config = defineRouteConfig({ label: "deviceScan.sources", translationNs: "translation", rank: 6 })

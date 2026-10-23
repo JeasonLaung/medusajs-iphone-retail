@@ -1,3 +1,4 @@
+import { withSEO } from "@lib/data/seo"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { headers } from "next/headers"
@@ -6,7 +7,7 @@ import { getRegion } from "@lib/data/regions"
 import { getStoreSearchData } from "@lib/data/store-search"
 import StoreTemplate from "@modules/store/templates"
 
-export const metadata: Metadata = {
+const defaultPageMetadata: Metadata = {
   title: "Refurbished iPhones",
   description: "Browse the imported iPhone catalog.",
 }
@@ -34,3 +35,5 @@ export default async function StorePage(props: {
     />
   )
 }
+
+export async function generateMetadata(): Promise<Metadata> { return withSEO(defaultPageMetadata) }

@@ -1,5 +1,6 @@
 "use client"
 
+import { Alert, Checkbox, Input, Select, Spin } from "antd"
 import { useAccountCopy } from "@modules/account/use-account-copy"
 import { useEffect, useState } from "react"
 import { HttpTypes } from "@medusajs/types"
@@ -10,7 +11,7 @@ import {
   listOrderDevices,
   OrderDevice,
 } from "@lib/data/after-sales"
-import { Button } from "@modules/common/components/ui"
+import { Button } from "@modules/account/components/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 export default function AfterSales({ order }: { order: HttpTypes.StoreOrder }) {
@@ -148,7 +149,9 @@ export default function AfterSales({ order }: { order: HttpTypes.StoreOrder }) {
       {open && (
         <div id={`after-sales-${order.id}`} className="mt-5 space-y-5">
           {loading ? (
-            <p role="status">{t("loadingRequests")}</p>
+            <div role="status">
+              <Spin /> {t("loadingRequests")}
+            </div>
           ) : loginRequired ? (
             <p className="text-sm">
               <LocalizedClientLink href="/account" className="underline">
@@ -169,9 +172,7 @@ export default function AfterSales({ order }: { order: HttpTypes.StoreOrder }) {
           ) : (
             <>
               {success && (
-                <p role="status" className="text-sm text-green-700">
-                  {t("requestSuccess")}
-                </p>
+                <Alert type="success" showIcon title={t("requestSuccess")} />
               )}
               {requests.length > 0 && (
                 <div className="space-y-3">
@@ -221,22 +222,16 @@ export default function AfterSales({ order }: { order: HttpTypes.StoreOrder }) {
                       >
                         {t("requestType")}
                       </label>
-                      <select
+                      <Select
                         id={`request-type-${order.id}`}
                         value={type}
-                        onChange={(event) =>
-                          setType(
-                            event.target.value as AfterSalesRequest["type"]
-                          )
-                        }
-                        className="w-full rounded-md border border-ui-border-base bg-white p-3 text-sm"
-                      >
-                        {Object.entries(types).map(([value, label]) => (
-                          <option value={value} key={value}>
-                            {label}
-                          </option>
-                        ))}
-                      </select>
+                        disabled={submitting}
+                        onChange={setType}
+                        style={{ width: "100%" }}
+                        options={Object.entries(types).map(
+                          ([value, label]) => ({ value, label })
+                        )}
+                      />
                     </div>
                     <fieldset className="space-y-3">
                       <legend className="mb-2 text-sm font-medium">
@@ -248,8 +243,8 @@ export default function AfterSales({ order }: { order: HttpTypes.StoreOrder }) {
                           className="flex flex-wrap items-center justify-between gap-3 text-sm"
                         >
                           <label className="flex items-center gap-2">
-                            <input
-                              type="checkbox"
+                            <Checkbox
+                              disabled={submitting}
                               checked={item.id in selected}
                               onChange={(event) =>
                                 setSelected((current) => {
@@ -268,7 +263,8 @@ export default function AfterSales({ order }: { order: HttpTypes.StoreOrder }) {
                           </label>
                           {item.id in selected &&
                             !devices.some((d) => d.item_id === item.id) && (
-                              <input
+                              <Input
+                                disabled={submitting}
                                 aria-label={t("quantityFor", {
                                   title: item.title || "",
                                 })}
@@ -299,8 +295,8 @@ export default function AfterSales({ order }: { order: HttpTypes.StoreOrder }) {
                                     key={d.assignment_id}
                                     className="flex items-center gap-2 break-all"
                                   >
-                                    <input
-                                      type="checkbox"
+                                    <Checkbox
+                                      disabled={submitting}
                                       checked={selectedDevices.includes(d.id)}
                                       onChange={(e) =>
                                         setSelectedDevices(
@@ -327,7 +323,8 @@ export default function AfterSales({ order }: { order: HttpTypes.StoreOrder }) {
                       >
                         {t("describeIssue")}
                       </label>
-                      <textarea
+                      <Input.TextArea
+                        disabled={submitting}
                         id={`request-reason-${order.id}`}
                         required
                         minLength={10}
@@ -336,17 +333,13 @@ export default function AfterSales({ order }: { order: HttpTypes.StoreOrder }) {
                         value={reason}
                         onChange={(event) => setReason(event.target.value)}
                         placeholder={t("issuePlaceholder")}
-                        className="w-full rounded-md border border-ui-border-base p-3 text-sm"
+                        className="w-full"
                       />
                     </div>
                     <p className="text-xs text-ui-fg-subtle">
                       {t("returnInstructions")}
                     </p>
-                    {error && (
-                      <p role="alert" className="text-sm text-red-700">
-                        {error}
-                      </p>
-                    )}
+                    {error && <Alert type="error" showIcon title={error} />}
                     <Button type="submit" isLoading={submitting}>
                       {t("submitRequest")}
                     </Button>

@@ -3,7 +3,7 @@ import { useDeviceTranslations } from "../lib/use-device-translations"
 import { useQueryClient } from "@tanstack/react-query"
 import { Button, Container, FocusModal, Heading, Text, usePrompt } from "@medusajs/ui"
 import { useCallback, useEffect, useId, useState } from "react"
-import { Link, Navigate, useLocation, useSearchParams } from "react-router-dom"
+import { Navigate, useLocation, useSearchParams } from "react-router-dom"
 import DeviceScanner from "./device-scanner"
 import DeviceIntakeShortcut from "./device-intake-shortcut"
 import DeviceLookupTable from "./device-lookup-table"
@@ -1698,17 +1698,6 @@ const DeviceWorkbench = ({ mode, intakeMethod, onBusyChange, category = "sale" }
                           }
                         >
                           {t("deviceScan.allocate")}
-                        </Button>
-                      )}
-                      {mode === "intake" && d.state === "inspection" && (
-                        <Button
-                          size="small"
-                          variant="secondary"
-                          asChild
-                        >
-                          <Link to={`/device-scan/inspection?device_id=${encodeURIComponent(d.id)}`} state={{ device: d }}>
-                            {t("deviceScan.inspect")}
-                          </Link>
                         </Button>
                       )}
                     </div>

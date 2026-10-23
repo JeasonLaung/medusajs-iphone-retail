@@ -1,10 +1,10 @@
 "use client"
 
+import { Input } from "@modules/account/components/ui"
+
 import { useAccountCopy } from "@modules/account/use-account-copy"
 
 import React, { useEffect, useActionState } from "react"
-
-import Input from "@modules/common/components/input"
 
 import AccountInfo from "../account-info"
 import { HttpTypes } from "@medusajs/types"

@@ -1,21 +1,36 @@
 "use client"
 
+import {
+  Button,
+  ErrorMessage,
+  SubmitButton,
+  Input,
+} from "@modules/account/components/ui"
+
+import VerificationNotice from "@modules/account/components/verification-notice"
 import { useAccountCopy } from "@modules/account/use-account-copy"
 
 import { login } from "@lib/data/customer"
 import { LOGIN_VIEW } from "@modules/account/templates/login-template"
-import ErrorMessage from "@modules/checkout/components/error-message"
-import { SubmitButton } from "@modules/checkout/components/submit-button"
-import Input from "@modules/common/components/input"
-import { useActionState } from "react"
+import { useActionState, useEffect, useRef } from "react"
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
+  onSuccess?: () => void
 }
 
-const Login = ({ setCurrentView }: Props) => {
+const Login = ({ setCurrentView, onSuccess }: Props) => {
   const { t } = useAccountCopy()
   const [message, formAction] = useActionState(login, null)
+  const handledSuccess = useRef(false)
+  useEffect(() => {
+    if (message?.state !== "success") {
+      handledSuccess.current = false
+    } else if (!handledSuccess.current) {
+      handledSuccess.current = true
+      onSuccess?.()
+    }
+  }, [message, onSuccess])
 
   return (
     <div
@@ -27,12 +42,7 @@ const Login = ({ setCurrentView }: Props) => {
         {t("loginDescription")}
       </p>
       {message?.state === "verification_required" && (
-        <div
-          className="w-full mb-6 text-center text-base-regular text-ui-fg-base bg-ui-bg-subtle border border-ui-border-base rounded-rounded p-4"
-          data-testid="login-verification-message"
-        >
-          {t("verificationSent", { email: message.email })}
-        </div>
+        <div className="w-full" data-testid="login-verification-message"><VerificationNotice email={message.email} delivery={message.delivery} /></div>
       )}
       <form className="w-full" action={formAction}>
         <div className="flex flex-col w-full gap-y-2">
@@ -64,13 +74,14 @@ const Login = ({ setCurrentView }: Props) => {
       </form>
       <span className="text-center text-ui-fg-base text-small-regular mt-6">
         {t("notMember")}{" "}
-        <button
+        <Button
+          variant="transparent"
           onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
           className="underline"
           data-testid="register-button"
         >
           {t("joinUs")}
-        </button>
+        </Button>
         .
       </span>
     </div>

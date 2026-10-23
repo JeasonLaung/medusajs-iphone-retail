@@ -7,6 +7,10 @@ export function requireDevice(condition: unknown, message: string): asserts cond
 
 export const matchesIdentity = matchesDeviceIdentity
 
+export function canTransferDeviceToReturned(device: { category: string; state: string }, hasActiveAssignment: boolean) {
+  return device.category === "sale" && ["pending", "inspection", "available"].includes(device.state) && !hasActiveAssignment
+}
+
 type ConfiguredVariant = { options?: { value?: string; option?: { title?: string } | null }[] }
 type DeviceConfiguration = { grade?: string | null; battery_health?: number | null }
 

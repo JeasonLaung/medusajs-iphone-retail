@@ -1,12 +1,12 @@
 "use client"
 
+import { Heading, Input, SubmitButton } from "@modules/account/components/ui"
+
 import { useAccountCopy } from "@modules/account/use-account-copy"
 import { createTransferRequest } from "@lib/data/orders"
-import { CheckCircleMiniSolid, XCircleSolid } from "@medusajs/icons"
-import { Heading, IconButton, Input, Text } from "@modules/common/components/ui"
+import { Alert } from "antd"
 import { useActionState } from "react"
 // TODO: Re-add Toaster component when needed
-import { SubmitButton } from "@modules/checkout/components/submit-button"
 import { useEffect, useState } from "react"
 
 export default function TransferRequestForm() {
@@ -60,31 +60,17 @@ export default function TransferRequestForm() {
         </form>
       </div>
       {!state.success && state.error && (
-        <Text className="text-base-regular text-rose-500 text-right">
-          {t("error")}
-        </Text>
+        <Alert type="error" showIcon title={t("error")} />
       )}
       {showSuccess && (
-        <div className="flex justify-between p-4 bg-neutral-50 shadow-borders-base w-full self-stretch items-center">
-          <div className="flex gap-x-2 items-center">
-            <CheckCircleMiniSolid className="w-4 h-4 text-emerald-500" />
-            <div className="flex flex-col gap-y-1">
-              <Text className="text-medim-pl text-neutral-950">
-                {t("transferRequested", { id: state.order?.id || "" })}
-              </Text>
-              <Text className="text-base-regular text-neutral-600">
-                {t("transferEmail", { email: state.order?.email || "" })}
-              </Text>
-            </div>
-          </div>
-          <IconButton
-            className="h-fit"
-            aria-label={t("close")}
-            onClick={() => setShowSuccess(false)}
-          >
-            <XCircleSolid className="w-4 h-4 text-neutral-500" />
-          </IconButton>
-        </div>
+        <Alert
+          type="success"
+          showIcon
+          closable
+          onClose={() => setShowSuccess(false)}
+          title={t("transferRequested", { id: state.order?.id || "" })}
+          description={t("transferEmail", { email: state.order?.email || "" })}
+        />
       )}
     </div>
   )

@@ -331,6 +331,8 @@
     "shipFulfillment": "Ship fulfillment {{id}}",
     "deviceList": "Devices ({{count}})",
     "errors": {
+      "actorRequired": "Sign in before changing device information or status.",
+      "transferReturnInvalid": "Only unallocated sale devices awaiting intake, awaiting inspection or available in an owned warehouse can be moved to returned devices. Shipped devices must use the order after-sales return process.",
       "paymentRequired": "Complete payment before allocating devices.",
       "allocationMixedSource": "Devices in one fulfillment must share a warehouse and supply source. Allocate separate parcels.",
       "allocationBooked": "This fulfillment has a carrier booking or label. Handle the booking before changing the shipping warehouse.",
@@ -465,11 +467,14 @@
       "ship": "Ship",
       "receive": "Receive return",
       "inspect": "Inspect",
+      "transfer_return": "Moved to returned devices",
       "repair_ship": "Return repaired device",
       "refund": "Refund",
       "delete": "Delete device",
       "retire": "Retire device",
-      "activate": "Activate legacy intake"
+      "activate": "Activate legacy intake",
+      "make_available": "Make available",
+      "replace_allocation": "Replace allocated device"
     },
     "supplierStock": "Supplier inventory",
     "supplierScope": "Supplier account: view your own devices, maintain availability, and register, allocate and ship devices for authorized orders.",
@@ -509,6 +514,33 @@
       "variant": "Variant"
     },
     "returnedDevices": "Returned devices",
+    "returnTransfer": {
+      "title": "Move to returned devices",
+      "confirm": "Confirm transfer",
+      "help": "Move this device from the sale devices list into returned devices awaiting inspection. The transfer reason and operator will be recorded in the processing log.",
+      "notes": "Transfer reason",
+      "saved": "Device moved to returned devices awaiting inspection."
+    },
+    "returnProcessing": {
+      "photos": "Processing photos",
+      "photoAlt": "Processing photo {{number}}",
+      "title": "Set processing status",
+      "status": "Processing result",
+      "help": "Returned devices start awaiting inspection. Passing inspection moves the device to the sale devices list as available. Devices under an active original-device repair request become ready to return to the customer instead. Supplier returns require an original supplier source.",
+      "notes": "Processing notes",
+      "required": "Select a SKU and grade, enter a whole battery percentage from 0 to 100, and add processing notes.",
+      "saved": "Processing status saved and logged.",
+      "viewLogs": "Details / processing log",
+      "history": "Processing log",
+      "noHistory": "No processing records yet.",
+      "transition": "{{before}} → {{after}}",
+      "options": {
+        "pass": "Passed inspection (available / ready to return)",
+        "repair": "Under repair",
+        "retire": "Retired",
+        "supplier_return": "Returned to supplier"
+      }
+    },
     "recycledDevices": "Recycled devices",
     "category": "Device type",
     "categories": {
@@ -534,7 +566,170 @@
     "retireConfirm": "Retire device {{serial}}? Stock is unchanged.",
     "operationError": "Operation failed. Refresh and retry.",
     "eidInvalid": "Enter a 32-digit EID. Currently {{count}} digits.",
-    "eidHint": "Optional 32-digit EID. One per device."
+    "eidHint": "Optional 32-digit EID. One per device.",
+    "buyback": {
+      "back": "Back",
+      "next": "Continue",
+      "model": "Model",
+      "estimated": "Estimated value:",
+      "select": "Select device model",
+      "edit": "Edit",
+      "yes": "Yes",
+      "no": "No",
+      "or": "OR",
+      "unavailable": "No storage options are configured for this model.",
+      "summary": "Summary",
+      "answers": "Your answers",
+      "restart": "Start over",
+      "show": "Show all answers",
+      "hide": "Show fewer answers",
+      "batteryInput": "Enter battery capacity",
+      "batteryPlaceholder": "Use numbers (e.g. 87)",
+      "unsure": "Unable to check",
+      "unsureHelp": "Battery capacity needs to be confirmed during inspection.",
+      "batteryError": "Enter a whole number from 1 to 100, or choose Unable to check.",
+      "allWorks": "Everything works",
+      "none": "No cracks, chips or heavy scratches",
+      "common": "Most common answer",
+      "ineligible": "Not eligible",
+      "cannotBuy": "We can’t purchase this device.",
+      "cannotBuyHelp": "Devices that cannot stay powered on or connect to a mobile network cannot continue through this buyback flow. You can edit your answers or start over.",
+      "titles": [
+        "iPhone model",
+        "Storage capacity",
+        "Battery health",
+        "Functional check",
+        "Screen functionality",
+        "Screen glass",
+        "Screen condition",
+        "Sides condition",
+        "Back condition"
+      ],
+      "subtitles": [
+        "Check the device’s model",
+        "Check the device’s storage size",
+        "Check the battery’s maximum capacity",
+        "Check the functionality of your device",
+        "Inspect for bright spots, dead pixels or lines/burn-in",
+        "Inspect screen for cracks, chips and heavy scratches",
+        "Inspect screen for scratches and wear",
+        "Inspect sides for scratches and wear",
+        "Inspect back for scratches and wear"
+      ],
+      "help": [
+        "Find in Settings → General → About → Model Name",
+        "Find in Settings → General → About",
+        "Find in Settings → Battery → Battery Health & Charging"
+      ],
+      "checks": [
+        [
+          "Does your device power on and stay on without restarting?",
+          "Hold the side button. Charge the phone if needed, then check whether it stays on without restarting.",
+          "Device turns on"
+        ],
+        [
+          "Can your device connect to a network?",
+          "Dial *#06# and check that the IMEI appears. If it does not, choose No.",
+          "Network connectivity"
+        ],
+        [
+          "Does your Face ID work?",
+          "Lock your phone and try unlocking it with Face ID. You can check setup in Settings → Face ID & Passcode.",
+          "Face ID"
+        ],
+        [
+          "Is your front camera working?",
+          "Open the camera in selfie mode and check that the picture is clear.",
+          "Front camera"
+        ],
+        [
+          "Does the speaker at the top of your device work?",
+          "Play a ringtone in Settings → Sounds & Haptics. Cover the bottom speaker and listen to the top speaker.",
+          "Top speaker"
+        ]
+      ],
+      "touchId": [
+        "Does your Touch ID work?",
+        "Lock your phone and try unlocking it with your fingerprint.",
+        "Touch ID"
+      ],
+      "faults": [
+        "Bright spots",
+        "Dead pixels",
+        "Lines/burn-in"
+      ],
+      "glass": [
+        [
+          "Cracked",
+          "There are visible cracks that you can feel with a fingertip."
+        ],
+        [
+          "Chipped",
+          "There are chips, including around the edges of the screen."
+        ],
+        [
+          "Heavily scratched",
+          "Many scratches are visible without shining a light on the screen."
+        ]
+      ],
+      "grades": [
+        "Damaged",
+        "Visible wear",
+        "Some signs of wear",
+        "Minimal signs of wear",
+        "No signs of use"
+      ],
+      "screenHelp": [
+        "",
+        "Noticeable scratches are visible without a light and can be felt.",
+        "Light scratches or marks, often near the corners.",
+        "Micro scratches that become visible under a light.",
+        "No visible scratches, including under a light."
+      ],
+      "frameHelp": [
+        "Bent, cracked or severely dented sides; damage can be felt with a fingernail.",
+        "Clear scratches, dents or discolouration that can be felt.",
+        "Scratches, marks or a small dent, often around the charging port.",
+        "Minor scratches visible under a light.",
+        "The sides look new, with no visible scratches under a light."
+      ],
+      "backHelp": [
+        "Cracked back glass or dented metal; damage can be felt with a fingernail.",
+        "Clear scratches, dents or colour marks that can be felt.",
+        "Visible scratches or wear marks, often around the camera.",
+        "Minor scratches visible under a light.",
+        "The back looks new, with no visible scratches under a light."
+      ],
+      "title": "Register recycled phone",
+      "description": "Record the customer's phone manually, following the storefront buyback questionnaire. No barcode is needed.",
+      "steps": [
+        "Device information",
+        "Functional check",
+        "Appearance",
+        "Review and register"
+      ],
+      "modelSearch": "Find iPhone model",
+      "configuration": "Catalogue configuration",
+      "configurationHelp": "Select the matching colour and catalogue configuration. The detailed condition below is recorded separately; registration does not make the phone available for sale.",
+      "identityHelp": "Read the serial number and IMEI from Settings → General → About. Enter them manually; a packaging barcode is not needed.",
+      "required": "Complete the required fields before continuing.",
+      "iphoneOnly": "Choose an iPhone model.",
+      "costHelp": "Leave blank if the buyback price has not been agreed. No online estimate is calculated.",
+      "pendingCost": "Not agreed",
+      "price": "Agreed buyback price (EUR)",
+      "save": "Register for inspection",
+      "success": "Recycled phone registered and awaiting inspection. Stock is unchanged.",
+      "report": "Buyback assessment",
+      "empty": "No iPhone models are configured.",
+      "leaveTitle": "Discard this registration?",
+      "leaveHelp": "The information entered has not been saved.",
+      "discard": "Discard",
+      "stay": "Keep editing",
+      "batteryTier": "The battery health is below this catalogue configuration's minimum. Choose a suitable configuration.",
+      "unknownBattery": "Battery health is unconfirmed. Any catalogue battery tier is a reference only; confirm the actual health during inspection.",
+      "recordedIssues": "Issues recorded — view assessment",
+      "modelConfiguration": "Model / storage / configuration"
+    }
   },
   "mobileIntake": {
     "title": "Temporary mobile intake",

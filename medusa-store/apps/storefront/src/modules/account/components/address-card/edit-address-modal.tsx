@@ -1,5 +1,15 @@
 "use client"
 
+import {
+  CountrySelect,
+  SubmitButton,
+  Input,
+  Modal,
+  Button,
+  Heading,
+  Text,
+} from "@modules/account/components/ui"
+
 import { useAccountCopy } from "@modules/account/use-account-copy"
 
 import {
@@ -9,12 +19,8 @@ import {
 import useToggleState from "@lib/hooks/use-toggle-state"
 import { PencilSquare as Edit, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import CountrySelect from "@modules/checkout/components/country-select"
-import { SubmitButton } from "@modules/checkout/components/submit-button"
-import Input from "@modules/common/components/input"
-import Modal from "@modules/common/components/modal"
-import { Button, Heading, Text, clx } from "@modules/common/components/ui"
-import Spinner from "@modules/common/icons/spinner"
+import { clx } from "@modules/common/components/ui"
+import { Alert } from "antd"
 import React, { useActionState, useEffect, useState } from "react"
 
 type EditAddressProps = {
@@ -30,6 +36,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
 }) => {
   const { t } = useAccountCopy()
   const [removing, setRemoving] = useState(false)
+  const [removeError, setRemoveError] = useState(false)
   const [successState, setSuccessState] = useState(false)
   const { state, open, close: closeModal } = useToggleState(false)
 
@@ -58,8 +65,14 @@ const EditAddress: React.FC<EditAddressProps> = ({
 
   const removeAddress = async () => {
     setRemoving(true)
-    await deleteCustomerAddress(address.id)
-    setRemoving(false)
+    setRemoveError(false)
+    try {
+      await deleteCustomerAddress(address.id)
+    } catch {
+      setRemoveError(true)
+    } finally {
+      setRemoving(false)
+    }
   }
 
   return (
@@ -103,25 +116,30 @@ const EditAddress: React.FC<EditAddressProps> = ({
           </Text>
         </div>
         <div className="flex items-center gap-x-4">
-          <button
+          <Button
+            variant="transparent"
             className="text-small-regular text-ui-fg-base flex items-center gap-x-2"
             onClick={open}
             data-testid="address-edit-button"
           >
             <Edit />
             {t("edit")}
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="transparent"
             className="text-small-regular text-ui-fg-base flex items-center gap-x-2"
             onClick={removeAddress}
             data-testid="address-delete-button"
+            danger
+            isLoading={removing}
           >
-            {removing ? <Spinner /> : <Trash />}
+            <Trash />
             {t("remove")}
-          </button>
+          </Button>
         </div>
       </div>
 
+      {removeError && <Alert type="error" showIcon title={t("error")} />}
       <Modal isOpen={state} close={close} data-testid="edit-address-modal">
         <Modal.Title closeLabel={t("close")}>
           <Heading className="mb-2">{t("editAddress")}</Heading>

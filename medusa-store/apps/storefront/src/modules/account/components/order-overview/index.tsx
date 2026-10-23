@@ -1,11 +1,12 @@
 "use client"
 
+import { LinkButton } from "@modules/account/components/ui"
+
+import { Empty } from "antd"
 import { useAccountCopy } from "@modules/account/use-account-copy"
 
-import { Button } from "@modules/common/components/ui"
-
 import OrderCard from "../order-card"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
+
 import { HttpTypes } from "@medusajs/types"
 
 const OrderOverview = ({ orders }: { orders: HttpTypes.StoreOrder[] }) => {
@@ -31,13 +32,11 @@ const OrderOverview = ({ orders }: { orders: HttpTypes.StoreOrder[] }) => {
       data-testid="no-orders-container"
     >
       <h2 className="text-large-semi">{t("noOrdersTitle")}</h2>
-      <p className="text-base-regular">{t("noOrders")}</p>
+      <Empty description={t("noOrders")} />
       <div className="mt-4">
-        <LocalizedClientLink href="/" passHref>
-          <Button data-testid="continue-shopping-button">
-            {t("continueShopping")}
-          </Button>
-        </LocalizedClientLink>
+        <LinkButton href="/" data-testid="continue-shopping-button">
+          {t("continueShopping")}
+        </LinkButton>
       </div>
     </div>
   )

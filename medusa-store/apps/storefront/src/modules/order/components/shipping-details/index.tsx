@@ -4,9 +4,9 @@ import { useAccountCopy } from "@modules/account/use-account-copy"
 
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
-import { Heading, Text } from "@modules/common/components/ui"
+import { Heading, Text } from "@modules/account/components/ui"
 
-import Divider from "@modules/common/components/divider"
+import { Divider } from "antd"
 
 type ShippingDetailsProps = {
   order: HttpTypes.StoreOrder
@@ -19,9 +19,9 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
       <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
         {t("delivery")}
       </Heading>
-      <div className="flex items-start gap-x-8">
+      <div className="grid grid-cols-1 small:grid-cols-3 gap-4 break-words">
         <div
-          className="flex flex-col w-1/3"
+          className="min-w-0 flex flex-col"
           data-testid="shipping-address-summary"
         >
           <Text className="txt-medium-plus text-ui-fg-base mb-1">
@@ -45,7 +45,7 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
         </div>
 
         <div
-          className="flex flex-col w-1/3 "
+          className="min-w-0 flex flex-col "
           data-testid="shipping-contact-summary"
         >
           <Text className="txt-medium-plus text-ui-fg-base mb-1">
@@ -58,7 +58,7 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
         </div>
 
         <div
-          className="flex flex-col w-1/3"
+          className="min-w-0 flex flex-col"
           data-testid="shipping-method-summary"
         >
           <Text className="txt-medium-plus text-ui-fg-base mb-1">

@@ -1,18 +1,22 @@
 "use client"
 
+import {
+  Button,
+  Heading,
+  CountrySelect,
+  SubmitButton,
+  Input,
+  Modal,
+} from "@modules/account/components/ui"
+
 import { useAccountCopy } from "@modules/account/use-account-copy"
 
 import { Plus } from "@medusajs/icons"
-import { Button, Heading } from "@modules/common/components/ui"
 import { useActionState, useEffect, useState } from "react"
 
 import { addCustomerAddress } from "@lib/data/customer"
 import useToggleState from "@lib/hooks/use-toggle-state"
 import { HttpTypes } from "@medusajs/types"
-import CountrySelect from "@modules/checkout/components/country-select"
-import { SubmitButton } from "@modules/checkout/components/submit-button"
-import Input from "@modules/common/components/input"
-import Modal from "@modules/common/components/modal"
 
 const AddAddress = ({
   region,
@@ -49,14 +53,15 @@ const AddAddress = ({
 
   return (
     <>
-      <button
+      <Button
+        variant="transparent"
         className="border border-ui-border-base rounded-rounded p-5 min-h-[220px] h-full w-full flex flex-col justify-between"
         onClick={open}
         data-testid="add-address-button"
       >
         <span className="text-base-semi">{t("newAddress")}</span>
         <Plus />
-      </button>
+      </Button>
 
       <Modal isOpen={state} close={close} data-testid="add-address-modal">
         <Modal.Title closeLabel={t("close")}>

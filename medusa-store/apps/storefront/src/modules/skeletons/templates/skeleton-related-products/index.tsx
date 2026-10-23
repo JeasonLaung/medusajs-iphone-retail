@@ -14,7 +14,7 @@ const SkeletonRelatedProducts = () => {
       <ul className="flex gap-4 overflow-hidden px-14">
         {repeat(6).map((index) => (
           <li key={index} className="w-36 small:w-44 shrink-0">
-            <SkeletonProductPreview />
+            <SkeletonProductPreview layout="preview" />
           </li>
         ))}
       </ul>

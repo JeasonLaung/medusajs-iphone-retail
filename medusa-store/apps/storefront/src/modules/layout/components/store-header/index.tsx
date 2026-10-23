@@ -1,6 +1,7 @@
 "use client"
 
 import BrandLogo from "@modules/common/components/brand-logo"
+import NotificationBell from "@modules/notifications/notification-bell"
 
 import { ChevronDown, XMark } from "@medusajs/icons"
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react"
@@ -23,6 +24,7 @@ export default function StoreHeader({ regions, locales, locale, cartCount, isLog
   const { countryCode } = useParams<{ countryCode: string }>()
   const pathname = usePathname()
   const items = [
+    { label: copy.ui, href: "/ui" },
     { label: copy.buy, href: "/store" },
     { label: copy.sell, href: "/sell" },
     { label: copy.about, href: "/about", children: [
@@ -37,9 +39,9 @@ export default function StoreHeader({ regions, locales, locale, cartCount, isLog
     (href === "/store" && /\/(categories|products)\//.test(pathname))
 
   return (
-    <header className={styles.header}>
+    <header className={styles.header} data-signed-in={isLoggedIn}>
       <nav className={styles.inner} aria-label={copy.navigation}>
-        <LocalizedClientLink href="/" className={styles.brand} data-testid="nav-store-link"><BrandLogo /></LocalizedClientLink>
+        <LocalizedClientLink href="/" className={styles.brand} aria-label="EuroRefurb" data-testid="nav-store-link"><BrandLogo /></LocalizedClientLink>
         <div className={styles.desktop}>
           {items.map((item) => item.children ? (
             <Popover className={styles.dropdown} key={item.href}>
@@ -58,6 +60,7 @@ export default function StoreHeader({ regions, locales, locale, cartCount, isLog
           ))}
         </div>
         <div className={styles.actions}>
+          {isLoggedIn && <NotificationBell locale={locale} />}
           <LocalizedClientLink href="/account" className={styles.iconButton} aria-label={copy.account} data-testid="nav-account-link">
             <svg viewBox="0 0 24 24" fill={isLoggedIn ? "#000" : "none"} stroke={isLoggedIn ? "#000" : "currentColor"} strokeWidth="1.4" aria-hidden="true"><circle cx="12" cy="7" r="4" /><path d="M3 22v-2a9 9 0 0 1 18 0v2Z" /></svg>
           </LocalizedClientLink>

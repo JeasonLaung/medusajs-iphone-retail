@@ -7,7 +7,7 @@ import { getOrderReviewContext } from "@lib/data/product-reviews"
 import type { OrderReviewContext } from "types/product-reviews"
 import ReviewForm from "@modules/products/components/product-reviews/review-form"
 import { getReviewCopy } from "@modules/products/components/product-reviews/i18n"
-import { Button } from "@modules/common/components/ui"
+import { Button } from "@modules/account/components/ui"
 
 export default function OrderReviews({
   order,
@@ -111,6 +111,7 @@ export default function OrderReviews({
                   {activeProduct === productId && !status && (
                     <div className="mt-4">
                       <ReviewForm
+                        antDesign
                         productId={productId}
                         locale={locale}
                         orderId={order.id}

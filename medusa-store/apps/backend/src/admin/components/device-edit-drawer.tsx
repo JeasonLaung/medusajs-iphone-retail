@@ -7,6 +7,7 @@ import { sdk } from "../lib/sdk"
 import { notifyError } from "../lib/notifications"
 import { localizeDeviceMessage } from "../lib/device-messages"
 import { useDeviceTranslations } from "../lib/use-device-translations"
+import { assessmentNotes, readAssessment } from "../lib/recycled-assessment"
 import DevicePhotosInput from "./device-photos-input"
 import DeviceVariantSelect from "./device-variant-select"
 import type { DeviceVariantChoice } from "./device-variant-select"
@@ -19,7 +20,8 @@ export default function DeviceEditDrawer({ device, sources, variants, onClose }:
 }) {
   const { t } = useDeviceTranslations()
   const client = useQueryClient()
-  const [form, setForm] = useState(device)
+  const assessment = readAssessment(device.notes)
+  const [form, setForm] = useState({ ...device, notes: assessment.notes })
   const [variant, setVariant] = useState(variants.find((entry) => entry.id === device.variant_id))
   const [cost, setCost] = useState((device.cost_cents / 100).toFixed(2))
   const [uploading, setUploading] = useState(false)
@@ -33,7 +35,10 @@ export default function DeviceEditDrawer({ device, sources, variants, onClose }:
         imei: form.imei?.trim() || null, imei2: form.imei2?.trim() || null, eid: form.eid?.trim() || null,
         category: form.category, state: form.state, grade: form.grade, battery_health: form.battery_health,
         cost_cents: Math.round(amount * 100), currency_code: form.currency_code.toLowerCase(),
-        bin: form.bin, notes: form.notes, photos: form.photos || [] }
+        bin: form.bin, notes: assessment.assessment ? assessmentNotes({ ...assessment.assessment,
+          ...(form.battery_health !== device.battery_health ? { battery: form.battery_health == null ? "unknown" : String(form.battery_health) } : {}),
+          ...(cost !== (device.cost_cents / 100).toFixed(2) ? { priceAgreed: true } : {}),
+        }, form.notes) : form.notes, photos: form.photos || [] }
       return sdk.client.fetch("/admin/devices", { method: "POST", body })
     },
     onSuccess: async () => {
@@ -71,7 +76,7 @@ export default function DeviceEditDrawer({ device, sources, variants, onClose }:
           {field(t("deviceScan.cost"), <Input type="number" min={0} step="0.01" value={cost} aria-label={t("deviceScan.cost")} onChange={(event) => setCost(event.target.value)} />)}
           {field(t("deviceScan.lookupCurrency"), <Input maxLength={3} value={form.currency_code} aria-label={t("deviceScan.lookupCurrency")} onChange={(event) => set("currency_code", event.target.value.toLowerCase())} />)}
           {field(t("deviceScan.bin"), <Input maxLength={200} value={form.bin || ""} aria-label={t("deviceScan.bin")} onChange={(event) => set("bin", event.target.value)} />)}
-          {field(t("deviceScan.intakeNotes"), <Textarea maxLength={2000} value={form.notes || ""} aria-label={t("deviceScan.intakeNotes")} onChange={(event) => set("notes", event.target.value)} />)}
+          {field(t("deviceScan.intakeNotes"), <Textarea maxLength={assessment.assessment ? 900 : 2000} value={form.notes || ""} aria-label={t("deviceScan.intakeNotes")} onChange={(event) => set("notes", event.target.value)} />)}
         </fieldset>
         <DevicePhotosInput value={form.photos || []} onChange={(value) => set("photos", value)} disabled={mutation.isPending} uploading={uploading} onUploadingChange={setUploading} />
       </Drawer.Body>

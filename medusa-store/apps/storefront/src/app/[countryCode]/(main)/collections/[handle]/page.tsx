@@ -1,3 +1,4 @@
+import { withSEO } from "@lib/data/seo"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
@@ -17,7 +18,7 @@ type Props = {
   >
 }
 
-export async function generateMetadata(props: Props): Promise<Metadata> {
+async function defaultPageMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
   const collection = await getCollectionByHandle(params.handle)
 
@@ -56,4 +57,8 @@ export default async function CollectionPage(props: Props) {
       optionValueIds={optionValueIds}
     />
   )
+}
+
+export async function generateMetadata(...args: Parameters<typeof defaultPageMetadata>): Promise<Metadata> {
+  return withSEO(await defaultPageMetadata(...args))
 }

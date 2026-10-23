@@ -1,5 +1,7 @@
 "use client"
 
+import { Input as AntInput } from "antd"
+import { Button as AntButton } from "@modules/account/components/ui"
 import { useEffect, useId, useState, useTransition } from "react"
 import { RatingInput } from "@modules/common/components/rating"
 import {
@@ -11,18 +13,23 @@ import { getReviewCopy } from "./i18n"
 import styles from "./styles.module.css"
 
 export default function ReviewForm({
+  antDesign = false,
   productId,
   locale,
   orderId,
   onSuccess,
   onCancel,
 }: {
+  antDesign?: boolean
   productId: string
   locale: string
   orderId?: string
   onSuccess: () => void
   onCancel: () => void
 }) {
+  const TitleInput = antDesign ? AntInput : "input"
+  const ContentInput = antDesign ? AntInput.TextArea : "textarea"
+  const ActionButton = antDesign ? AntButton : "button"
   const copy = getReviewCopy(locale)
   const id = useId()
   const intlLocale =
@@ -78,7 +85,9 @@ export default function ReviewForm({
 
   return (
     <form
-      className={styles.form}
+      className={
+        antDesign ? "my-4 p-4 bg-ui-bg-subtle rounded-md" : styles.form
+      }
       data-testid="review-form"
       onSubmit={(event) => {
         event.preventDefault()
@@ -101,7 +110,10 @@ export default function ReviewForm({
         })
       }}
     >
-      <fieldset disabled={submitting} className={styles.fields}>
+      <fieldset
+        disabled={submitting}
+        className={antDesign ? "min-w-0 flex flex-col gap-3" : styles.fields}
+      >
         <legend>{copy.rating}</legend>
         <div className={styles.ratingOptions}>
           <RatingInput
@@ -153,32 +165,32 @@ export default function ReviewForm({
             {ordersError && (
               <p role="alert" className={styles.error}>
                 {copy.purchasesError}{" "}
-                <button
+                <ActionButton
                   type="button"
-                  className={styles.link}
+                  className={antDesign ? undefined : styles.link}
                   onClick={() => setRetry(retry + 1)}
                 >
                   {copy.retry}
-                </button>
+                </ActionButton>
               </p>
             )}
             {purchases &&
               purchases.offset + purchases.limit < purchases.count && (
-                <button
+                <ActionButton
                   type="button"
                   disabled={ordersLoading}
-                  className={styles.link}
+                  className={antDesign ? undefined : styles.link}
                   onClick={moreOrders}
                 >
                   {copy.moreOrders}
-                </button>
+                </ActionButton>
               )}
           </>
         )}
         <label className={styles.label} htmlFor={`${id}-title`}>
           {copy.title}
         </label>
-        <input
+        <TitleInput
           id={`${id}-title`}
           name="title"
           required
@@ -189,7 +201,7 @@ export default function ReviewForm({
         <label className={styles.label} htmlFor={`${id}-content`}>
           {copy.content}
         </label>
-        <textarea
+        <ContentInput
           id={`${id}-content`}
           name="content"
           required
@@ -211,16 +223,20 @@ export default function ReviewForm({
           </p>
         )}
         <div className={styles.formActions}>
-          <button
-            className={styles.button}
+          <ActionButton
+            className={antDesign ? undefined : styles.button}
             type="submit"
             disabled={ordersLoading}
           >
             {submitting ? copy.submitting : copy.submit}
-          </button>
-          <button className={styles.link} type="button" onClick={onCancel}>
+          </ActionButton>
+          <ActionButton
+            className={antDesign ? undefined : styles.link}
+            type="button"
+            onClick={onCancel}
+          >
             {copy.cancel}
-          </button>
+          </ActionButton>
         </div>
       </fieldset>
     </form>

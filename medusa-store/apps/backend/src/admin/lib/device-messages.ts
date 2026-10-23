@@ -16,6 +16,8 @@ export function localizeDeviceMessage(
   message: string,
   translate: (key: string) => string,
 ) {
+  message = message.split("DEVICE_ACTOR_REQUIRED").join(translate("deviceScan.errors.actorRequired"))
+  message = message.split("DEVICE_TRANSFER_RETURN_INVALID").join(translate("deviceScan.errors.transferReturnInvalid"))
   const codes: Record<string, string> = { WAREHOUSE_ACCESS_DENIED: "warehouseAccessDenied", DEVICE_PAYMENT_REQUIRED: "paymentRequired", DEVICE_ALLOCATION_MIXED_SOURCE: "allocationMixedSource", DEVICE_ALLOCATION_BOOKED: "allocationBooked", DEVICE_ALLOCATION_STOCK: "allocationStock", DEVICE_PENDING_REQUIRED: "pendingRequired", DEVICE_ALLOCATION_LOCKED: "allocationLocked", DEVICE_FULFILLMENT_LOCATION: "fulfillmentLocation", DEVICE_INTAKE_REQUIRED: "intakeRequired", DEVICE_INSPECTION_CATEGORY: "inspectionCategory", DEVICE_LOCKED: "deviceLocked", DEVICE_HAS_SALES_HISTORY: "deviceSaleHistory", DEVICE_PHOTO_INVALID: "photoInvalid", DEVICE_EDIT_ALLOCATED: "editAllocated", DEVICE_EDIT_STATE: "editState", DEVICE_EDIT_CATEGORY: "editCategory", DEVICE_EDIT_LOCATION: "editLocation" }
   for (const [code, key] of Object.entries(codes)) message = message.split(code).join(translate(`deviceScan.errors.${key}`))
   return messages.reduce(

@@ -1,3 +1,5 @@
+import { Divider } from "antd"
+import { withSEO } from "@lib/data/seo"
 import { getLocale } from "@lib/data/locale-actions"
 import { getAccountCopy } from "@modules/account/i18n"
 import { Metadata } from "next"
@@ -10,7 +12,7 @@ import { notFound } from "next/navigation"
 import { listRegions } from "@lib/data/regions"
 import { retrieveCustomer } from "@lib/data/customer"
 
-export async function generateMetadata(): Promise<Metadata> {
+async function defaultPageMetadata(): Promise<Metadata> {
   const { t } = getAccountCopy(await getLocale())
   return { title: t("profile") }
 }
@@ -45,6 +47,7 @@ export default async function Profile() {
   )
 }
 
-const Divider = () => {
-  return <div className="w-full h-px bg-gray-200" />
+
+export async function generateMetadata(...args: Parameters<typeof defaultPageMetadata>): Promise<Metadata> {
+  return withSEO(await defaultPageMetadata(...args))
 }

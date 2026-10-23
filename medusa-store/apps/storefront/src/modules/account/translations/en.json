@@ -20,7 +20,10 @@
   "customerService": "Customer Service",
   "welcome": "Welcome back",
   "loginDescription": "Sign in to access an enhanced shopping experience.",
-  "verificationSent": "We sent a verification link to {email}. Please verify your email, then sign in.",
+  "verificationSent": "A verification email for {email} is queued for delivery. Please check your inbox and spam folder, verify your email within 15 minutes, then sign in to complete registration.",
+  "verificationSendFailed": "Unable to send a verification email to {email}. Please try again shortly or contact customer service.",
+  "resendVerification": "Resend verification email",
+  "resendCountdown": "Resend in {seconds}s",
   "email": "Email",
   "validEmail": "Enter a valid email address.",
   "password": "Password",
@@ -197,5 +200,6 @@
   "timelineShipped": "Dispatched",
   "timelineDelivered": "Delivered",
   "timelineFulfillmentCanceled": "Fulfillment canceled",
-  "timelineCanceled": "Order canceled"
+  "timelineCanceled": "Order canceled",
+  "country": "Country / Region"
 }

@@ -87,6 +87,9 @@ for (const lang of ["en", "zh"]) {
       "@modules/products/components/product-reviews/i18n": { getReviewCopy: () => ({ reviewProducts: "Review" }) },
       "@lib/util/order-number": { getOrderNumber: () => "2026102112345678901" },
       "@lib/util/order-card-details": details,
+      "@lib/util/order-item-thumbnail": load("lib/util/order-item-thumbnail.ts", {
+        "./iphone-thumbnails.json": require("../src/lib/util/iphone-thumbnails.json"),
+      }),
       "@modules/common/components/ui": { Button: ({ children }) => React.createElement("button", null, children) },
       "@modules/products/components/thumbnail": { default: () => null, __esModule: true },
       "@modules/common/components/localized-client-link": { default: ({ children }) => children, __esModule: true },

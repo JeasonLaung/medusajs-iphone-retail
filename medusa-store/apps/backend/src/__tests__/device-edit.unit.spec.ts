@@ -70,6 +70,103 @@ describe("device editing", () => {
 })
 
 
+describe("moving sale devices to returned devices", () => {
+  const transfer = { action: "transfer_return", actor_id: "user", device_id: device.id, notes: "Screen requires a new inspection" }
+  function ownWarehouse(assignments: unknown[] = []) {
+    const base = setup(assignments)
+    Object.assign(base.service, { listDeviceSources: jest.fn().mockResolvedValue([{ id: "source_1", type: "self", location_id: "loc_1" }]) })
+    return base
+  }
+  it("validates the transfer reason and rejects injected device fields", () => {
+    const { actor_id: _actor, ...body } = transfer
+    expect(DeviceCommand.safeParse(body).success).toBe(true)
+    for (const extra of [{ notes: " " }, { category: "sale" }, { state: "available" }]) expect(DeviceCommand.safeParse({ ...body, ...extra }).success).toBe(false)
+  })
+  it.each(["available", "pending", "inspection"])("moves an unallocated %s device to returned inspection and logs the change", async (state) => {
+    const { container, service } = ownWarehouse()
+    service.retrieveDevice.mockResolvedValue({ ...device, state })
+    const { output } = await prepare(transfer, { container })
+    expect(output.mutations.find((m: any) => m.table === "Devices").after).toEqual({ ...device, category: "returned", state: "inspection" })
+    expect(output.mutations.find((m: any) => m.table === "DeviceEvents").after).toMatchObject({ action: "transfer_return", actor_id: "user", device_id: device.id, data: { notes: transfer.notes, before: { category: "sale", state }, after: { category: "returned", state: "inspection" } } })
+    expect(output.adjustments).toEqual([])
+    expect(output.newReservations).toEqual([])
+  })
+  it.each(["reserved", "packed", "shipped", "repair_ready", "retired", "supplier_returned"])("rejects %s devices", async (state) => {
+    const { container, service } = ownWarehouse()
+    service.retrieveDevice.mockResolvedValue({ ...device, state })
+    await expect(prepare(transfer, { container })).rejects.toThrow("DEVICE_TRANSFER_RETURN_INVALID")
+  })
+  it("rejects active assignments, returned/recycled devices and devices outside an owned warehouse", async () => {
+    await expect(prepare(transfer, { container: ownWarehouse([{}]).container })).rejects.toThrow("DEVICE_TRANSFER_RETURN_INVALID")
+    for (const category of ["returned", "recycled"]) {
+      const { container, service } = ownWarehouse()
+      service.retrieveDevice.mockResolvedValue({ ...device, category })
+      await expect(prepare(transfer, { container })).rejects.toThrow("DEVICE_TRANSFER_RETURN_INVALID")
+    }
+    const { container, service } = ownWarehouse()
+    Object.assign(service, { listDeviceSources: jest.fn().mockResolvedValue([]) })
+    await expect(prepare(transfer, { container })).rejects.toThrow("DEVICE_TRANSFER_RETURN_INVALID")
+  })
+})
+
+describe("returned device processing", () => {
+  const inspect = { action: "inspect", actor_id: "user", device_id: device.id, result: "pass", grade: "A", battery_health: 90, notes: "Inspection completed" }
+  function returned(repair = false) {
+    const base = setup(repair ? [{ after_sales_request_id: "request_1" }] : [])
+    base.service.retrieveDevice.mockResolvedValue({ ...device, category: "returned", state: "inspection" })
+    Object.assign(base.service, { listDeviceSources: jest.fn().mockResolvedValue([{ id: "source_1", type: "self" }]) })
+    const container = { resolve: (key: string) => base.container.resolve(key) || { retrieveAfterSalesRequest: jest.fn().mockResolvedValue({ type: "repair", status: "processing" }) } }
+    return { ...base, container }
+  }
+  it("moves passing returns to sale devices and writes the operator, transition and notes without changing stock", async () => {
+    const { output } = await prepare(inspect, { container: returned().container })
+    expect(output.mutations.find((m: any) => m.table === "Devices").after).toMatchObject({ state: "available", category: "sale" })
+    expect(output.mutations.find((m: any) => m.table === "DeviceEvents").after).toMatchObject({ action: "inspect", actor_id: "user", device_id: device.id, data: { notes: inspect.notes, before: { state: "inspection" }, after: { state: "available" } } })
+    expect(output.adjustments).toEqual([])
+  })
+  it("keeps customer repair devices awaiting return instead of offering them for sale", async () => {
+    const { output } = await prepare(inspect, { container: returned(true).container })
+    expect(output.mutations.find((m: any) => m.table === "Devices").after).toMatchObject({ state: "repair_ready", category: "returned" })
+  })
+  it("attaches verified photos to this processing record with the operator while preserving intake photos", async () => {
+    const photo = { id: "file_processing", url: "/static/device-processing.jpg" }
+    const base = returned()
+    const files = { retrieveFile: jest.fn().mockResolvedValue({ ...photo, url: "http://localhost:9001" + photo.url }) }
+    const container = { resolve: (key: string) => key === Modules.FILE ? files : base.container.resolve(key) }
+    const { output } = await prepare({ ...inspect, photos: [photo] }, { container })
+    expect(files.retrieveFile).toHaveBeenCalledWith(photo.id)
+    expect(output.mutations.find((m: any) => m.table === "DeviceEvents").after).toMatchObject({ actor_id: "user", data: { photos: [photo], notes: inspect.notes } })
+    expect(output.mutations.find((m: any) => m.table === "Devices").after.photos).toEqual(device.photos)
+  })
+  it("rejects mismatched file URLs before recording photos or changing status", async () => {
+    const base = returned()
+    const files = { retrieveFile: jest.fn().mockResolvedValue({ id: "file_processing", url: "http://localhost:9001/static/device-real.jpg" }) }
+    const container = { resolve: (key: string) => key === Modules.FILE ? files : base.container.resolve(key) }
+    await expect(prepare({ ...inspect, photos: [{ id: "file_processing", url: "/static/device-other.jpg" }] }, { container })).rejects.toThrow("DEVICE_PHOTO_INVALID")
+  })
+  it("validates photo count and prevents clients from supplying the operator", () => {
+    const { actor_id: _actor, ...body } = inspect
+    const photo = { id: "file_processing", url: "/static/device-processing.jpg" }
+    expect(DeviceCommand.safeParse({ ...body, photos: [photo] }).success).toBe(true)
+    expect(DeviceCommand.safeParse({ ...body, photos: Array(9).fill(photo) }).success).toBe(false)
+    expect(DeviceCommand.safeParse({ ...body, photos: [{ ...photo, url: "javascript:alert(1)" }] }).success).toBe(false)
+    expect(DeviceCommand.safeParse({ ...body, actor_id: "another-user" }).success).toBe(false)
+  })
+  it.each(["", " ", undefined])("rejects state changes without an operator (%s)", async (actor_id) => {
+    await expect(prepare({ ...inspect, actor_id }, { container: returned().container })).rejects.toThrow("DEVICE_ACTOR_REQUIRED")
+  })
+  it.each([["repair", "repair"], ["retire", "retired"]])("records %s while retaining the returned category", async (result, state) => {
+    const { output } = await prepare({ ...inspect, result }, { container: returned().container })
+    expect(output.mutations.find((m: any) => m.table === "Devices").after).toMatchObject({ state, category: "returned" })
+  })
+  it("rejects supplier returns for devices without a supplier source and repeated processing of available devices", async () => {
+    await expect(prepare({ ...inspect, result: "supplier_return" }, { container: returned().container })).rejects.toThrow()
+    const { container, service } = returned()
+    service.retrieveDevice.mockResolvedValue({ ...device, category: "returned" })
+    await expect(prepare(inspect, { container })).rejects.toThrow()
+  })
+})
+
 describe("device soft deletion and rollback", () => {
   const writeStep = (createStep as jest.Mock).mock.calls.find(([name]) => name === "write-devices")
   it("soft deletes a device without physically deleting its record", async () => {

@@ -10,6 +10,7 @@ import { HttpTypes } from "@medusajs/types"
 import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import GradeBadge, { isGrade } from "@modules/common/components/grade-badge"
+import SelectionRow from "@modules/common/components/selection-row"
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { getProductCopy, optionLabel, optionValueLabel } from "../../i18n"
@@ -99,7 +100,7 @@ export default function ProductActions({ product, disabled, initialVariantId, ca
   const colorSlug = colorOption ? (options[colorOption.id] ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "-") : ""
   const modelSlug = product.handle?.replace(/^swappie-/, "") ?? ""
   const localThumbnail = (iphoneThumbnails as Record<string, string>)[`${modelSlug}/${colorSlug}`]
-  const thumbnail = localThumbnail ?? selectedVariant?.images?.find((image) => image.url)?.url ?? product.thumbnail ?? product.images?.find((image) => image.url)?.url
+  const thumbnail = selectedVariant?.thumbnail ?? selectedVariant?.images?.find((image) => image.url)?.url ?? localThumbnail ?? product.thumbnail ?? product.images?.find((image) => image.url)?.url
 
   const handleAdd = async () => {
     if (!canAdd || !selectedVariant) return
@@ -143,11 +144,9 @@ export default function ProductActions({ product, disabled, initialVariantId, ca
         const difference = candidatePrice && price && candidatePrice.currency_code === price.currency_code ? candidatePrice.calculated_price_number - price.calculated_price_number : null
         const optionPrice = !inStock ? copy.out : !candidatePrice ? copy.pricePending : difference === null || difference === 0 || checked ? format(candidatePrice.calculated_price_number, candidatePrice.currency_code) : `${difference > 0 ? "+" : "−"} ${format(Math.abs(difference), candidatePrice.currency_code)}`
         const colour = /colou?r/i.test(option.title ?? "") ? colours.find((colour) => colour.name.toLowerCase() === value.toLowerCase()) : null
-        return <label key={value} className={styles.choice} data-checked={checked} data-disabled={!inStock || disabled || isAdding}>
-          <input type="radio" name={`${product.id}-${option.id}`} value={value} checked={checked} disabled={!inStock} onChange={() => selectOption(option.id, value)} aria-label={optionValueLabel(value, countryCode)} data-testid="option-radio" />
-          <span className={styles.choiceLabel}>{colour && <span className={styles.swatch} style={{ background: colour.hex }} aria-hidden="true" />}{/condition|grade/i.test(option.title ?? "") && isGrade(value) ? <GradeBadge grade={value} locale={countryCode} /> : optionValueLabel(value, countryCode)}</span>
-          {!checked && <span className={styles.choicePrice}>{optionPrice}</span>}
-        </label>
+        return <SelectionRow key={value} name={`${product.id}-${option.id}`} value={value} checked={checked} disabled={!inStock || disabled || isAdding} onChange={() => selectOption(option.id, value)} aria-label={optionValueLabel(value, countryCode)} data-testid="option-radio" trailing={!checked ? optionPrice : undefined}>
+          {colour && <span className={styles.swatch} style={{ background: colour.hex }} aria-hidden="true" />}{/condition|grade/i.test(option.title ?? "") && isGrade(value) ? <GradeBadge grade={value} locale={countryCode} /> : optionValueLabel(value, countryCode)}
+        </SelectionRow>
       })}</div>
     </fieldset>)}
     {variants.length < (product.variants?.length ?? 0) && <p className={styles.muted + " mt-4"}>{copy.configurationPending}</p>}

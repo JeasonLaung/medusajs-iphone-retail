@@ -1,19 +1,21 @@
 "use client"
 
+import { LinkButton } from "@modules/account/components/ui"
+
 import { useAccountCopy } from "@modules/account/use-account-copy"
 import { getReviewCopy } from "@modules/products/components/product-reviews/i18n"
 
 import { getOrderNumber } from "@lib/util/order-number"
 import {
   getOrderStatusKey,
-  getOrderStatusClasses,
   getOrderOriginalTotal,
 } from "@lib/util/order-card-details"
-import { Button } from "@modules/common/components/ui"
+import { Tag } from "antd"
 import { useMemo } from "react"
 
 import Thumbnail from "@modules/products/components/thumbnail"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { getOrderItemThumbnail } from "@lib/util/order-item-thumbnail"
+
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 
@@ -42,14 +44,25 @@ const OrderCard = ({ order }: OrderCardProps) => {
       <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
         <div className="min-w-0">
           <div className="mb-1 flex flex-wrap items-center gap-2">
-            <span
-              className={`inline-flex items-center rounded-md border px-2 py-0.5 text-small-regular ${getOrderStatusClasses(
-                statusKey
-              )}`}
+            <Tag
+              color={
+                statusKey === "completed" ||
+                statusKey === "fulfillmentDelivered"
+                  ? "success"
+                  : statusKey === "paymentRequiresAction"
+                  ? "error"
+                  : statusKey.startsWith("payment") &&
+                    statusKey !== "paymentCaptured"
+                  ? "warning"
+                  : statusKey === "fulfillmentCanceled" ||
+                    statusKey === "orderArchived"
+                  ? "default"
+                  : "processing"
+              }
               data-testid="order-status"
             >
               {t(statusKey)}
-            </span>
+            </Tag>
             <span className="uppercase text-large-semi break-all">
               #
               <span data-testid="order-display-id">
@@ -92,7 +105,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
               data-testid="order-item"
             >
               <Thumbnail
-                thumbnail={i.thumbnail}
+                thumbnail={getOrderItemThumbnail(i)}
                 images={[]}
                 size="square"
                 imageFit="contain"
@@ -158,19 +171,20 @@ const OrderCard = ({ order }: OrderCardProps) => {
         <div className="ml-auto flex shrink-0 flex-nowrap items-center justify-end gap-3 whitespace-nowrap">
           {order.payment_status === "captured" &&
             order.status !== "canceled" && (
-              <LocalizedClientLink
+              <LinkButton
                 href={`/account/orders/details/${order.id}#order-reviews`}
+                variant="secondary"
               >
-                <Button variant="secondary">
-                  {getReviewCopy(locale).reviewProducts}
-                </Button>
-              </LocalizedClientLink>
+                {getReviewCopy(locale).reviewProducts}
+              </LinkButton>
             )}
-          <LocalizedClientLink href={`/account/orders/details/${order.id}`}>
-            <Button data-testid="order-details-link" variant="secondary">
-              {t("details")}
-            </Button>
-          </LocalizedClientLink>
+          <LinkButton
+            href={`/account/orders/details/${order.id}`}
+            data-testid="order-details-link"
+            variant="secondary"
+          >
+            {t("details")}
+          </LinkButton>
         </div>
       </div>
     </div>

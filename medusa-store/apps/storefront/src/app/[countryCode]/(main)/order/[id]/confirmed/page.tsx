@@ -1,3 +1,4 @@
+import { withSEO } from "@lib/data/seo"
 import { retrieveOrder } from "@lib/data/orders"
 import OrderCompletedTemplate from "@modules/order/templates/order-completed-template"
 import { Metadata } from "next"
@@ -8,7 +9,7 @@ import { getAccountCopy } from "@modules/account/i18n"
 type Props = {
   params: Promise<{ id: string }>
 }
-export async function generateMetadata(): Promise<Metadata> {
+async function defaultPageMetadata(): Promise<Metadata> {
   const { t } = getAccountCopy(await getLocale())
   return {
     title: t("orderConfirmed"),
@@ -25,4 +26,8 @@ export default async function OrderConfirmedPage(props: Props) {
   }
 
   return <OrderCompletedTemplate order={order} />
+}
+
+export async function generateMetadata(...args: Parameters<typeof defaultPageMetadata>): Promise<Metadata> {
+  return withSEO(await defaultPageMetadata(...args))
 }

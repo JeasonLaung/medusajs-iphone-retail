@@ -1,0 +1,41 @@
+const en = {
+  title: "UI component library",
+  selectionSingle: "SelectionRow · single selection (radio)", selectionHelp: "Use this row style for single choices. Select anywhere on a row; only one option in each group can be selected.", selectionMultiple: "SelectionRow · multiple selection (checkbox)", selectionMultipleHelp: "Use the same row style with checkboxes for multiple choices. Each option can be selected or cleared independently.", selectionGrade: "Grade", selectionBattery: "Battery", selectionExtras: "Accessories", selectionCable: "Charging cable", selectionCharger: "Power adapter", selectionCase: "Protective case", selectionSelected: "Selected option",
+  intro: "Explore the storefront’s shared components and the controls used in accounts, checkout, reviews and buyback. All examples use local demo data.",
+  navigation: "Component sections", home: "Home", actions: "Buttons & links", forms: "Form controls", shared: "Shared storefront components", feedback: "Feedback & states", data: "Data & navigation", overlays: "Dialogs & forms", commerce: "Product & cart components",
+  commerceNote: "Thumbnail · CartTotals · SkeletonProductPreview · existing product and checkout display components", thumbnail: "Thumbnail · empty product image", totals: "CartTotals · demo order summary", productSkeleton: "SkeletonProductPreview · product loading state",
+  actionsNote: "Account Button / IconButton · antd Button · shared InteractiveLink",
+  formsNote: "Account Input · antd Form, Input, Select, Checkbox, Radio, Upload · used in account, review and buyback forms",
+  sharedNote: "modules/common/components · existing controls and product indicators, rendered with their current styling",
+  feedbackNote: "antd Alert, Tag, Spin, Skeleton, Empty, Result · used in accounts, orders and buyback",
+  dataNote: "antd Table, Statistic, Progress, Steps, Timeline, Collapse, Pagination, Menu · used in accounts, orders and buyback",
+  overlaysNote: "Account Modal and shared Modal · form validation and submission run locally",
+  primary: "Primary action", secondary: "Secondary action", text: "Text action", danger: "Delete demo", loading: "Loading", disabled: "Disabled", small: "Small", large: "Large", browse: "Browse iPhones", icon: "Search demo",
+  name: "Name", email: "Email", password: "Password", phone: "Phone", notes: "Notes", placeholder: "Enter a value", search: "Search demo components", model: "Model", storage: "Storage", choose: "Choose an option", multiple: "Multiple selection", required: "Please fill in this field.", invalidEmail: "Enter a valid email address.", errorField: "Error state", warningField: "Warning state", errorHelp: "Check this demo value.", warningHelp: "Please confirm this demo value.", consent: "I agree to the demo terms", radio: "Choose a capacity", upload: "Select demo images", uploadHelp: "Local preview only; no files are uploaded.", rating: "Rating", stars: ["1 star", "2 stars", "3 stars", "4 stars", "5 stars"],
+  native: "NativeSelect · checkout country selection", floating: "Input · floating label", basic: "Shared Input", filters: "FilterRadioGroup · sorting", newest: "Newest", price: "Price", checkbox: "CheckboxWithLabel · address options", checked: "Use as demo billing address", badge: "Badge / IconBadge", grade: "GradeBadge · product condition", readRating: "Rating · 4.5 out of 5", inputRating: "RatingInput · review form", typography: "Heading / Text / Label / Container", textSample: "Existing shared text and container styling.",
+  success: "Success", warning: "Warning", error: "Error", info: "Information", successMessage: "Demo completed successfully.", warningMessage: "This example requires attention.", errorMessage: "This is an example error message.", infoMessage: "Examples do not change orders, inventory or payments.", empty: "No demo records", result: "Preview complete", resultNote: "This is a demonstration of the result component.",
+  product: "Product", status: "Status", amount: "Price", available: "Available", pending: "Pending", unavailable: "Unavailable", total: "Demo products", progress: "Progress", steps: ["Submitted", "Inspected", "Completed"], timeline: ["Demo request submitted", "Demo inspection completed"], faq: "How do these examples work?", faqAnswer: "Interact with controls on this page to preview their behavior. Demo values are reset when you reload the page.", list: "Demo list", details: "Demo details",
+  openAccount: "Open account modal", openShared: "Open shared modal", modalTitle: "Demo dialog", modalBody: "Preview the existing modal’s layout, focus handling and close behavior.", close: "Close", submit: "Validate & preview", reset: "Reset", saved: "Demo form validated. No data was saved.", tryForm: "Try submitting with empty or invalid fields to see validation.", clicked: "Demo action triggered.",
+}
+
+const zh: typeof en = {
+  title: "UI 组件总览",
+  selectionSingle: "SelectionRow · 单选（radio）", selectionHelp: "单选优先使用此整行样式。点击整行即可选择，每组只能选一项。", selectionMultiple: "SelectionRow · 多选（checkbox）", selectionMultipleHelp: "多选使用相同的整行样式，控件改为 checkbox，各项可独立勾选或取消。", selectionGrade: "等级", selectionBattery: "电池", selectionExtras: "配件", selectionCable: "充电线", selectionCharger: "电源适配器", selectionCase: "保护壳", selectionSelected: "已选选项",
+  intro: "集中查看前台通用组件，以及账户、结账、评价和回收流程中使用的控件。所有示例均使用本地演示数据。",
+  navigation: "组件分区", home: "首页", actions: "按钮与链接", forms: "表单控件", shared: "前台通用组件", feedback: "反馈与状态", data: "数据展示与导航", overlays: "弹窗与表单", commerce: "商品与购物车组件",
+  commerceNote: "Thumbnail · CartTotals · SkeletonProductPreview · 现有商品与结账展示组件", thumbnail: "Thumbnail · 商品图片缺省状态", totals: "CartTotals · 演示订单汇总", productSkeleton: "SkeletonProductPreview · 商品加载状态",
+  actionsNote: "账户 Button / IconButton · antd Button · 通用 InteractiveLink",
+  formsNote: "账户 Input · antd Form、Input、Select、Checkbox、Radio、Upload · 用于账户、评价与回收表单",
+  sharedNote: "modules/common/components · 展示现有控件及商品标识，保留各自当前样式",
+  feedbackNote: "antd Alert、Tag、Spin、Skeleton、Empty、Result · 用于账户、订单与回收页面",
+  dataNote: "antd Table、Statistic、Progress、Steps、Timeline、Collapse、Pagination、Menu · 用于账户、订单与回收页面",
+  overlaysNote: "账户 Modal 与通用 Modal · 表单校验和提交仅在本页演示",
+  primary: "主要操作", secondary: "次要操作", text: "文字按钮", danger: "删除演示", loading: "加载中", disabled: "禁用状态", small: "小按钮", large: "大按钮", browse: "浏览 iPhone", icon: "搜索演示",
+  name: "姓名", email: "邮箱", password: "密码", phone: "电话", notes: "备注", placeholder: "请输入内容", search: "搜索演示组件", model: "机型", storage: "容量", choose: "请选择", multiple: "多选", required: "请填写此项。", invalidEmail: "请输入有效的邮箱地址。", errorField: "错误状态", warningField: "警告状态", errorHelp: "请检查此演示值。", warningHelp: "请确认此演示值。", consent: "我同意演示条款", radio: "选择容量", upload: "选择演示图片", uploadHelp: "仅本地预览，不会上传文件。", rating: "评分", stars: ["1 星", "2 星", "3 星", "4 星", "5 星"],
+  native: "NativeSelect · 结账国家选择", floating: "Input · 浮动标签", basic: "通用 Input", filters: "FilterRadioGroup · 排序", newest: "最新", price: "价格", checkbox: "CheckboxWithLabel · 地址选项", checked: "用作演示账单地址", badge: "Badge / IconBadge", grade: "GradeBadge · 商品成色", readRating: "Rating · 4.5 分，满分 5 分", inputRating: "RatingInput · 评价表单", typography: "Heading / Text / Label / Container", textSample: "现有通用文字及容器样式。",
+  success: "成功", warning: "警告", error: "错误", info: "信息", successMessage: "演示操作已完成。", warningMessage: "这是一条需要关注的演示提示。", errorMessage: "这是一条错误信息示例。", infoMessage: "演示不会修改订单、库存或支付。", empty: "暂无演示记录", result: "预览完成", resultNote: "此处展示操作结果组件。",
+  product: "商品", status: "状态", amount: "价格", available: "可用", pending: "处理中", unavailable: "不可用", total: "演示商品", progress: "进度", steps: ["已提交", "已检测", "已完成"], timeline: ["演示申请已提交", "演示检测已完成"], faq: "这些示例如何使用？", faqAnswer: "可在此页操作控件，查看交互效果。刷新页面后，演示值会重置。", list: "演示列表", details: "演示详情",
+  openAccount: "打开账户弹窗", openShared: "打开通用弹窗", modalTitle: "演示弹窗", modalBody: "查看现有弹窗的布局、焦点处理与关闭交互。", close: "关闭", submit: "校验并预览", reset: "重置", saved: "演示表单校验成功，未保存任何数据。", tryForm: "尝试直接提交或填写错误内容，查看表单校验。", clicked: "已触发演示操作。",
+}
+
+export const getUiCopy = (locale: string | null) => locale?.startsWith("zh") ? zh : en

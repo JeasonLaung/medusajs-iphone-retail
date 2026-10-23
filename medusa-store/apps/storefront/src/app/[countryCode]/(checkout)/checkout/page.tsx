@@ -1,3 +1,4 @@
+import { withSEO } from "@lib/data/seo"
 import { retrieveCart } from "@lib/data/cart"
 import { retrieveCustomer } from "@lib/data/customer"
 import { checkoutStep } from "@lib/util/checkout-step"
@@ -11,7 +12,7 @@ import { Metadata } from "next"
 import { notFound, redirect } from "next/navigation"
 
 type Props = { params: Promise<{ countryCode: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> }
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+async function defaultPageMetadata({ params }: Props): Promise<Metadata> {
   return { title: getCheckoutCopy((await params).countryCode).checkout }
 }
 
@@ -36,4 +37,8 @@ export default async function Checkout({ params, searchParams }: Props) {
       <CheckoutSummary cart={cart} step={step} locale={countryCode} />
     </div>
   </div>
+}
+
+export async function generateMetadata(...args: Parameters<typeof defaultPageMetadata>): Promise<Metadata> {
+  return withSEO(await defaultPageMetadata(...args))
 }

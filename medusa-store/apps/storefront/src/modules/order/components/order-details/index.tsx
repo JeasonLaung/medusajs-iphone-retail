@@ -1,11 +1,12 @@
 "use client"
 
+import { Tag } from "antd"
 import { useAccountCopy } from "@modules/account/use-account-copy"
 import { AccountKey } from "@modules/account/i18n"
 
 import { getOrderNumber } from "@lib/util/order-number"
 import { HttpTypes } from "@medusajs/types"
-import { Text } from "@modules/common/components/ui"
+import { Text } from "@modules/account/components/ui"
 
 type OrderDetailsProps = {
   order: HttpTypes.StoreOrder
@@ -65,23 +66,20 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
           <>
             <Text className="flex items-center gap-2">
               {t("orderStatus")}{" "}
-              <span
-                className="inline-flex items-center whitespace-nowrap rounded-md border border-current px-2 py-0.5 font-medium text-ui-fg-subtle"
-                data-testid="order-status"
-              >
+              <Tag data-testid="order-status">
                 {order.status === "canceled"
                   ? t("fulfillmentCanceled")
-                  : formatStatus(order.fulfillment_status, fulfillmentStatusKeys)}
-              </span>
+                  : formatStatus(
+                      order.fulfillment_status,
+                      fulfillmentStatusKeys
+                    )}
+              </Tag>
             </Text>
             <Text className="flex items-center gap-2">
               {t("paymentStatus")}{" "}
-              <span
-                className="inline-flex items-center whitespace-nowrap rounded-md border border-current px-2 py-0.5 font-medium text-ui-fg-subtle"
-                data-testid="order-payment-status"
-              >
+              <Tag data-testid="order-payment-status">
                 {formatStatus(order.payment_status, paymentStatusKeys)}
-              </span>
+              </Tag>
             </Text>
           </>
         )}

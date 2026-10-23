@@ -102,6 +102,12 @@ async function getCountryCode(
  * Middleware to handle region selection and onboarding status.
  */
 export async function middleware(request: NextRequest) {
+  const verification = request.nextUrl.pathname.match(/^\/([A-Za-z0-9-]{8,128})\.txt$/)
+  if (verification) {
+    const target = request.nextUrl.clone()
+    target.pathname = `/api/seo-artifacts/${verification[1]}`
+    return NextResponse.rewrite(target)
+  }
   if (request.nextUrl.pathname.includes(".")) {
     return NextResponse.next()
   }

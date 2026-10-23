@@ -120,6 +120,23 @@ export const getCartId = async () => {
   return cookies.get("_medusa_cart_id")?.value
 }
 
+export const setPendingVerification = async (value: { email: string; token: string }) => {
+  const cookies = await nextCookies()
+  cookies.set("_medusa_pending_verification", JSON.stringify(value), {
+    maxAge: 60 * 60, httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production",
+  })
+}
+
+export const getPendingVerification = async (): Promise<{ email: string; token: string } | null> => {
+  const cookies = await nextCookies()
+  try { return JSON.parse(cookies.get("_medusa_pending_verification")?.value || "null") } catch { return null }
+}
+
+export const removePendingVerification = async () => {
+  const cookies = await nextCookies()
+  cookies.set("_medusa_pending_verification", "", { maxAge: -1 })
+}
+
 // Keep payment returns independent of the active shopping cart. A completed
 // checkout clears that cart, and shopping in another tab may replace it.
 export const rememberMollieCart = async (cartId: string) => {

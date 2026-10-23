@@ -1,3 +1,4 @@
+import { withSEO } from "@lib/data/seo"
 import { Metadata } from "next"
 
 import { listCartOptions, retrieveCart } from "@lib/data/cart"
@@ -9,7 +10,7 @@ import Footer from "@modules/layout/templates/footer"
 import Nav from "@modules/layout/templates/nav"
 import FreeShippingPriceNudge from "@modules/shipping/components/free-shipping-price-nudge"
 
-export const metadata: Metadata = {
+const defaultPageMetadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
 }
 
@@ -42,3 +43,5 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
     </>
   )
 }
+
+export async function generateMetadata(): Promise<Metadata> { return withSEO(defaultPageMetadata) }

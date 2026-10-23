@@ -9,10 +9,7 @@ const DeviceIntakePage = () => {
   const { t } = useDeviceTranslations()
   const [params] = useSearchParams()
   const orderId = params.get("order_id")
-  const returnTo =
-    params.get("return_to") === "workbench"
-      ? `/device-scan/orders?order_id=${encodeURIComponent(orderId || "")}`
-      : `/orders/${encodeURIComponent(orderId || "")}`
+  const returnTo = `/orders/${encodeURIComponent(orderId || "")}`
   const [method, setMethod] = useState<"image" | "scan" | "import">("scan")
   const [busy, setBusy] = useState(false)
   return (

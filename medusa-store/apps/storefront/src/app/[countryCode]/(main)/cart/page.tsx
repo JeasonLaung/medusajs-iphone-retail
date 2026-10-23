@@ -1,3 +1,4 @@
+import { withSEO } from "@lib/data/seo"
 import { retrieveCart } from "@lib/data/cart"
 import { retrieveCustomer } from "@lib/data/customer"
 import { listProducts } from "@lib/data/products"
@@ -7,7 +8,7 @@ import { HttpTypes } from "@medusajs/types"
 import { Metadata } from "next"
 
 type Props = { params: Promise<{ countryCode: string }> }
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+async function defaultPageMetadata({ params }: Props): Promise<Metadata> {
   return { title: getCartCopy((await params).countryCode).cart }
 }
 
@@ -20,4 +21,8 @@ export default async function Cart({ params }: Props) {
     products.forEach((product) => product.variants?.forEach((variant) => { variants[variant.id] = variant }))
   }
   return <CartTemplate cart={cart} customer={customer} locale={countryCode} variants={variants} />
+}
+
+export async function generateMetadata(...args: Parameters<typeof defaultPageMetadata>): Promise<Metadata> {
+  return withSEO(await defaultPageMetadata(...args))
 }

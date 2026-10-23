@@ -1,3 +1,4 @@
+import { withSEO } from "@lib/data/seo"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { listProducts } from "@lib/data/products"
@@ -35,7 +36,7 @@ function getImagesForVariant(
   return product.images?.filter((i) => imageIdsMap.has(i.id)) ?? null
 }
 
-export async function generateMetadata(props: Props): Promise<Metadata> {
+async function defaultPageMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
   const { handle } = params
   const region = await getRegion(params.countryCode)
@@ -100,4 +101,8 @@ export default async function ProductPage(props: Props) {
       selectedVariantId={selectedVariantId}
     />
   )
+}
+
+export async function generateMetadata(...args: Parameters<typeof defaultPageMetadata>): Promise<Metadata> {
+  return withSEO(await defaultPageMetadata(...args))
 }

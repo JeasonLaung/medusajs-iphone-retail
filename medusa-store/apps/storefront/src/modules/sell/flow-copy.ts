@@ -1,5 +1,5 @@
 const en = {
-  back: "Back", next: "Continue", model: "Model", estimated: "Estimated value:",
+  condition: "Appearance", back: "Back", next: "Continue", model: "Model", estimated: "Estimated value:",
   select: "Select device model", edit: "Edit", yes: "Yes", no: "No", or: "OR",
   unavailable: "No storage options are configured for this model.",
   quotePending: "Online valuations and sale submissions are not available yet. You can review your answers below.",
@@ -8,7 +8,7 @@ const en = {
   unsure: "Unable to check", unsureHelp: "Battery capacity needs to be confirmed during inspection.",
   batteryError: "Enter a whole number from 1 to 100, or choose Unable to check.",
   allWorks: "Everything works", none: "No cracks, chips or heavy scratches", common: "Most common answer",
-  ineligible: "Not eligible", cannotBuy: "We can’t purchase this device.", cannotBuyHelp: "Devices that cannot stay powered on or connect to a mobile network cannot continue through this buyback flow. You can edit your answers or start over.",
+  ineligible: "Not eligible", cannotBuy: "We can’t purchase this device.", cannotBuyHelp: "Devices that cannot stay powered on or connect to a mobile network cannot be sold through this service. You can edit your answers or start over.",
   storageWarning: "This browser cannot save your answers. Refreshing or leaving the page may lose your progress.",
   titles: ["iPhone model", "Storage capacity", "Battery health", "Functional check", "Screen functionality", "Screen glass", "Screen condition", "Sides condition", "Back condition"],
   subtitles: ["Check the device’s model", "Check the device’s storage size", "Check the battery’s maximum capacity", "Check the functionality of your device", "Inspect for bright spots, dead pixels or lines/burn-in", "Inspect screen for cracks, chips and heavy scratches", "Inspect screen for scratches and wear", "Inspect sides for scratches and wear", "Inspect back for scratches and wear"],
@@ -34,7 +34,7 @@ const en = {
 }
 
 const zh: typeof en = {
-  back: "返回", next: "继续", model: "型号", estimated: "预估价值：",
+  condition: "外观成色", back: "返回", next: "继续", model: "型号", estimated: "预估价值：",
   select: "请选择手机型号", edit: "修改", yes: "是", no: "否", or: "或",
   unavailable: "这款型号尚未配置容量选项。",
   quotePending: "线上估价与回收申请提交暂未开放，你可以在下方核对填写的信息。",

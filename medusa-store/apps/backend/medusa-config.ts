@@ -2,6 +2,7 @@ import { loadEnv, defineConfig } from "@medusajs/framework/utils"
 import { adminDeviceFulfillment, adminDeviceFulfillmentOptimizer } from "./src/lib/admin-device-fulfillment"
 import { adminWarehouseMenu, adminWarehouseMenuOptimizer } from "./src/lib/admin-warehouse-menu"
 import { adminInventorySorting, adminInventorySortingOptimizer } from "./src/lib/admin-inventory-sorting"
+import { adminAnalytics, adminAnalyticsOptimizer } from "./src/lib/admin-analytics"
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd())
 
@@ -18,8 +19,8 @@ module.exports = defineConfig({
   featureFlags: { rbac: true },
   admin: {
     vite: () => ({
-      plugins: [adminInventorySorting(), adminDeviceFulfillment(), adminWarehouseMenu()],
-      optimizeDeps: { esbuildOptions: { plugins: [adminInventorySortingOptimizer(), adminDeviceFulfillmentOptimizer(), adminWarehouseMenuOptimizer()] } },
+      plugins: [adminInventorySorting(), adminDeviceFulfillment(), adminWarehouseMenu(), adminAnalytics()],
+      optimizeDeps: { esbuildOptions: { plugins: [adminInventorySortingOptimizer(), adminDeviceFulfillmentOptimizer(), adminWarehouseMenuOptimizer(), adminAnalyticsOptimizer()] } },
     }),
   },
   projectConfig: {
@@ -31,9 +32,16 @@ module.exports = defineConfig({
       authCors: withLocalOrigins(process.env.AUTH_CORS, [...localStoreOrigins, ...localAdminOrigins]),
       jwtSecret: process.env.JWT_SECRET,
       cookieSecret: process.env.COOKIE_SECRET,
+      authVerificationsPerActor: {
+        customer: [{ entity_type: "email", auth_provider: "emailpass" }],
+      },
     }
   },
   plugins: [
+    {
+      resolve: "@agilo/medusa-analytics-plugin",
+      options: {},
+    },
     {
       resolve: "@easypayment/medusa-payment-paypal",
       options: {},
@@ -42,12 +50,22 @@ module.exports = defineConfig({
   modules: [
     { resolve: "@medusajs/medusa/rbac" },
     { resolve: "./src/modules/webhook-notifications" },
+    { resolve: "./src/modules/customer-notifications" },
     { resolve: "./src/modules/sku-numbering" },
     { resolve: "./src/modules/product-review" },
     { resolve: "./src/modules/mail" },
     { resolve: "./src/modules/order-numbering" },
     { resolve: "./src/modules/after-sales" },
     { resolve: "./src/modules/devices" },
+    { resolve: "./src/modules/buyback" },
+    { resolve: "./src/modules/seo" },
+    {
+      resolve: "@medusajs/medusa/file",
+      options: { providers: [{ resolve: "@medusajs/medusa/file-local", id: "local", options: {
+        private_upload_dir: process.env.BUYBACK_PRIVATE_UPLOAD_DIR || ".private-files",
+        backend_url: `${(process.env.MEDUSA_BACKEND_URL || "http://localhost:9001").replace(/\/$/, "")}/static`,
+      } }] },
+    },
     {
       resolve: "@medusajs/medusa/locking",
       options: { providers: [{ resolve: "@medusajs/medusa/locking-postgres", id: "locking-postgres", is_default: true }] },

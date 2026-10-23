@@ -1,3 +1,4 @@
+import { withSEO } from "@lib/data/seo"
 import type { Metadata } from "next"
 import Image from "next/image"
 import { notFound } from "next/navigation"
@@ -9,7 +10,7 @@ import styles from "@modules/home/components/home-sections.module.css"
 
 type Props = { params: Promise<{ slug: string }> }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+async function defaultPageMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const post = getHomeCopy(await getLocale()).blogPosts.find((post) => post.slug === slug)
   if (!post) notFound()
@@ -28,4 +29,8 @@ export default async function Article({ params }: Props) {
     {post.sections.map((section) => <section key={section.title}><h2>{section.title}</h2><p>{section.text}</p></section>)}
     <LocalizedClientLink href="/store" className={styles.back}>{copy.blogShop}<ArrowRight width={18} height={18} aria-hidden="true" /></LocalizedClientLink>
   </main>
+}
+
+export async function generateMetadata(...args: Parameters<typeof defaultPageMetadata>): Promise<Metadata> {
+  return withSEO(await defaultPageMetadata(...args))
 }

@@ -1,11 +1,11 @@
 "use client"
 
+import { Input, CountrySelect } from "@modules/account/components/ui"
+
 import { useAccountCopy } from "@modules/account/use-account-copy"
 
 import React, { useActionState, useEffect, useMemo } from "react"
 
-import Input from "@modules/common/components/input"
-import CountrySelect from "@modules/checkout/components/country-select"
 import { getCountryOptions } from "@lib/util/countries"
 
 import { addCustomerAddress, updateCustomerAddress } from "@lib/data/customer"

@@ -24,11 +24,13 @@ async function photoContent(file: File) {
   } finally { URL.revokeObjectURL(url) }
 }
 
-export default function DevicePhotosInput({ value, onChange, disabled, uploading, onUploadingChange }: {
+export default function DevicePhotosInput({ value, onChange, disabled, uploading, onUploadingChange, label }: {
   value: DevicePhoto[]; onChange: (value: DevicePhoto[]) => void
+  label?: string
   disabled?: boolean; uploading: boolean; onUploadingChange: (value: boolean) => void
 }) {
   const { t } = useDeviceTranslations()
+  const photoLabel = label || t("deviceScan.photos")
   const id = useId()
   async function upload(files: File[]) {
     if (!files.length || uploading || disabled) return
@@ -45,12 +47,12 @@ export default function DevicePhotosInput({ value, onChange, disabled, uploading
     finally { onUploadingChange(false) }
   }
   return <section className="space-y-2 rounded-lg border p-3">
-    <Text size="small" weight="plus">{t("deviceScan.photos")}</Text>
+    <Text size="small" weight="plus">{photoLabel}</Text>
     <Text size="small" className="text-ui-fg-subtle">{t("deviceScan.photosHelp")}</Text>
     <div className="flex flex-wrap gap-3">
       {value.map((photo, index) => <div key={photo.id} className="space-y-1">
-        <a href={photo.url} target="_blank" rel="noreferrer"><img src={photo.url} alt={`${t("deviceScan.photos")} ${index + 1}`} style={{ width: 96, height: 96, objectFit: "cover", borderRadius: 8 }} /></a>
-        <Button size="small" variant="secondary" disabled={disabled || uploading} onClick={() => onChange(value.filter((entry) => entry.id !== photo.id))}>{t("deviceScan.photoRemove")}</Button>
+        <a href={photo.url} target="_blank" rel="noreferrer"><img src={photo.url} alt={`${photoLabel} ${index + 1}`} style={{ width: 96, height: 96, objectFit: "cover", borderRadius: 8 }} /></a>
+        <Button type="button" size="small" variant="secondary" disabled={disabled || uploading} onClick={() => onChange(value.filter((entry) => entry.id !== photo.id))}>{t("deviceScan.photoRemove")}</Button>
       </div>)}
     </div>
     <label className="block space-y-1" htmlFor={id}><Text size="small">{uploading ? t("deviceScan.photosUploading") : t("deviceScan.photosAdd")}</Text>

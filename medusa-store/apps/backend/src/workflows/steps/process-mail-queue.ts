@@ -1,5 +1,7 @@
 import { Resend, type CreateEmailOptions } from "resend"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import type { IAuthModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import MailModuleService from "../../modules/mail/service"
 import { MAIL_MODULE } from "../../modules/mail"
 import {
@@ -53,6 +55,17 @@ export const processMailQueueStep = createStep(
       { take: 10, order: { created_at: "ASC" } }
     )
     for (const message of messages) {
+      if (message.created_by === "registration-verification") {
+        const auth: IAuthModuleService = container.resolve(Modules.AUTH)
+        const [verification] = await auth.listAuthVerifications({
+          entity_type: "email",
+          entity_id: arrayValue<string>(message.to)[0],
+        })
+        if (!verification || verification.provider_metadata?.token_hash !== message.id.slice("mail_verify_".length) || verification.verified_at || !verification.requested_at || new Date(verification.requested_at).getTime() + 900_000 <= Date.now()) {
+          await service.updateMailMessages({ id: message.id, status: "failed", error: "verification_expired_or_replaced" })
+          continue
+        }
+      }
       const account = await service.retrieveMailAccount(message.account_id)
       if (!account.enabled) continue
       if (expired(message.first_attempt_at)) {

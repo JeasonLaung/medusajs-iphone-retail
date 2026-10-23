@@ -3,7 +3,7 @@ import "server-only"
 import { sdk } from "@lib/config"
 
 // Reuse the catalogue until buyback eligibility has its own configuration.
-export type SellModel = { name: string; handle: string; capacities: string[] }
+export type SellModel = { id: string; name: string; handle: string; capacities: string[] }
 
 export async function getSellModels(): Promise<SellModel[]> {
   const models = new Map<string, SellModel>()
@@ -21,7 +21,7 @@ export async function getSellModels(): Promise<SellModel[]> {
         .flatMap((option) => option.values ?? [])
         .map(({ value }) => value.replace(/\s+/g, "").toUpperCase())
         .filter((value) => /^\d+(GB|TB)$/.test(value))
-      models.set(title, { name: title, handle: product.handle.replace(/^swappie-/, ""),
+      models.set(title, { id: product.id, name: title, handle: product.handle.replace(/^swappie-/, ""),
         capacities: Array.from(new Set(capacities)).sort((a, b) =>
           parseInt(a) * (a.endsWith("TB") ? 1024 : 1) - parseInt(b) * (b.endsWith("TB") ? 1024 : 1)) })
     }

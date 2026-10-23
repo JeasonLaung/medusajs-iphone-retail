@@ -6,6 +6,8 @@ import { HttpTypes } from "@medusajs/types"
 import { FetchError } from "@medusajs/js-sdk"
 import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
+import { headers } from "next/headers"
+import { getLocale } from "./locale-actions"
 import {
   getAuthHeaders,
   getCacheTag,
@@ -16,11 +18,14 @@ import {
   removePendingCustomer,
   setAuthToken,
   setPendingCustomer,
+  setPendingVerification,
+  getPendingVerification,
+  removePendingVerification,
 } from "./cookies"
 
 export type CustomerAuthState =
   | { state: "error"; error: string }
-  | { state: "verification_required"; email: string }
+  | { state: "verification_required"; email: string; delivery: "queued" | "failed" }
   | { state: "success" }
   | null
 
@@ -28,15 +33,27 @@ export type CustomerAuthState =
 // authenticated with a token tied to the auth identity (the token returned by
 // register or by a login that requires verification).
 async function requestVerificationEmail(email: string, token: string) {
+  const requestHeaders = await headers()
+  const locale = (await getLocale())?.startsWith("zh") ? "zh" : "en"
   await sdk.auth.verification.request(
     {
       entity_id: email,
       entity_type: "email",
+      metadata: { locale, country: requestHeaders.get("x-storefront-country") || "dk" },
     },
     {
       authorization: `Bearer ${token}`,
     }
   )
+}
+
+export async function resendVerificationEmail(): Promise<{ success: boolean }> {
+  const pending = await getPendingVerification()
+  if (!pending) return { success: false }
+  try {
+    await requestVerificationEmail(pending.email, pending.token)
+    return { success: true }
+  } catch { return { success: false } }
 }
 
 export const retrieveCustomer =
@@ -86,7 +103,7 @@ export async function signup(
 ): Promise<CustomerAuthState> {
   const password = formData.get("password") as string
   const customerForm = {
-    email: formData.get("email") as string,
+    email: String(formData.get("email") || "").trim().toLowerCase(),
     first_name: formData.get("first_name") as string,
     last_name: formData.get("last_name") as string,
     phone: formData.get("phone") as string,
@@ -124,7 +141,7 @@ export async function login(
   _currentState: unknown,
   formData: FormData
 ): Promise<CustomerAuthState> {
-  const email = formData.get("email") as string
+  const email = String(formData.get("email") || "").trim().toLowerCase()
   const password = formData.get("password") as string
 
   return completeLogin(email, password)
@@ -161,12 +178,13 @@ async function completeLogin(
     "verification_required" in result &&
     result.verification_required
   ) {
+    await setPendingVerification({ email, token: result.token })
     try {
       await requestVerificationEmail(email, result.token)
     } catch {
-      // Ignore: the customer can resend from the verification page.
+      return { state: "verification_required", email, delivery: "failed" }
     }
-    return { state: "verification_required", email }
+    return { state: "verification_required", email, delivery: "queued" }
   }
 
   if (typeof result !== "string") {
@@ -189,7 +207,8 @@ async function completeLogin(
     .catch(() => false)
 
   if (!customerExists) {
-    const pending = await getPendingCustomer()
+    const saved = await getPendingCustomer()
+    const pending = saved?.email === email ? saved : null
 
     try {
       await sdk.store.customer.create(
@@ -203,10 +222,12 @@ async function completeLogin(
         { authorization: `Bearer ${token}` }
       )
 
-      token = (await sdk.auth.login("customer", "emailpass", {
+      const loginResult = await sdk.auth.login("customer", "emailpass", {
         email,
         password,
-      })) as string
+      })
+      if (typeof loginResult !== "string") return { state: "error", error: "Unable to complete login" }
+      token = loginResult
     } catch (error) {
       return { state: "error", error: String(error) }
     }
@@ -215,6 +236,7 @@ async function completeLogin(
   }
 
   await setAuthToken(token)
+  await removePendingVerification()
 
   const customerCacheTag = await getCacheTag("customers")
   revalidateTag(customerCacheTag)
@@ -247,6 +269,8 @@ export async function signout(countryCode: string) {
   await sdk.auth.logout()
 
   await removeAuthToken()
+  await removePendingVerification()
+  await removePendingCustomer()
 
   const customerCacheTag = await getCacheTag("customers")
   revalidateTag(customerCacheTag)

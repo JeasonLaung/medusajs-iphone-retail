@@ -1,3 +1,4 @@
+import { withSEO } from "@lib/data/seo"
 import { getLocale } from "@lib/data/locale-actions"
 import { getAccountCopy } from "@modules/account/i18n"
 import { Metadata } from "next"
@@ -5,7 +6,7 @@ import { Suspense } from "react"
 
 import VerifyAccount from "@modules/account/components/verify-account"
 
-export async function generateMetadata(): Promise<Metadata> {
+async function defaultPageMetadata(): Promise<Metadata> {
   const { t } = getAccountCopy(await getLocale())
   return {
     title: t("verificationTitle"),
@@ -26,4 +27,8 @@ export default async function VerifyAccountPage() {
       </Suspense>
     </div>
   )
+}
+
+export async function generateMetadata(...args: Parameters<typeof defaultPageMetadata>): Promise<Metadata> {
+  return withSEO(await defaultPageMetadata(...args))
 }

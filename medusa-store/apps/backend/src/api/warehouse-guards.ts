@@ -10,12 +10,12 @@ export async function authorizeWarehouseCommand(container: MedusaContainer, acto
   if (!access.warehouse) return
   const resource = ["save_allocation", "assign", "order_assign", "release", "ship"].includes(body.action) ? "warehouse_allocation"
     : ["receive", "inspect"].includes(body.action) ? "warehouse_return" : "warehouse_intake"
-  if (!["intake", "update", "activate", "delete", "retire", "inspect", "make_available"].includes(body.action)) await assertWarehousePermission(container, actorId, resource, "update")
+  if (!["intake", "update", "activate", "delete", "retire", "inspect", "make_available", "transfer_return"].includes(body.action)) await assertWarehousePermission(container, actorId, resource, "update")
   const devices = container.resolve<DevicesModuleService>(DEVICES_MODULE)
   const ownDevice = async (id: string) => {
     const device = await devices.retrieveDevice(id)
     assertWarehouseLocation(access, device.location_id)
-    if (["update", "activate", "delete", "retire", "inspect", "make_available"].includes(body.action)) await assertWarehousePermission(container, actorId, warehouseDeviceResource(device.category), "update")
+    if (["update", "activate", "delete", "retire", "inspect", "make_available", "transfer_return"].includes(body.action)) await assertWarehousePermission(container, actorId, warehouseDeviceResource(device.category), "update")
     return device
   }
   const ownAssignment = async (id: string) => {
@@ -37,6 +37,10 @@ export async function authorizeWarehouseCommand(container: MedusaContainer, acto
       await assertWarehousePermission(container, actorId, warehouseDeviceResource(body.category), "update")
       assertWarehouseLocation(access, body.location_id)
       await assertWarehouseSource(container, access, body.source_id)
+      return
+    case "transfer_return":
+      await ownDevice(body.device_id)
+      await assertWarehousePermission(container, actorId, "warehouse_return", "update")
       return
     case "activate": case "delete": case "retire": case "inspect":
       await ownDevice(body.device_id)

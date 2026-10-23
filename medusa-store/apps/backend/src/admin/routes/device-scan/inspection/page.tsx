@@ -1,10 +1,9 @@
-import { defineRouteConfig } from "@medusajs/admin-sdk"
-import DeviceWorkbench from "../../../components/device-workbench"
+import { Navigate, useSearchParams } from "react-router-dom"
 
 const DeviceInspectionPage = () => {
-  return <DeviceWorkbench key="inspection" mode="inspection" />
+  const [params] = useSearchParams()
+  const deviceId = params.get("device_id")
+  return <Navigate to={`/device-scan/returned${deviceId ? `?device_id=${encodeURIComponent(deviceId)}` : ""}`} replace />
 }
 
 export default DeviceInspectionPage
-
-export const config = defineRouteConfig({ label: "deviceScan.afterSales", translationNs: "translation", rank: 5 })

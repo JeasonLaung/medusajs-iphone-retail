@@ -6,6 +6,9 @@ import { notifyError } from "../lib/notifications"
 import { useDeviceTranslations } from "../lib/use-device-translations"
 
 import DeviceEditDrawer from "./device-edit-drawer"
+import DeviceProcessingHistory from "./device-processing-history"
+import RecycledAssessmentSummary from "./recycled-assessment-summary"
+import { readAssessment } from "../lib/recycled-assessment"
 import type { DeviceVariantChoice } from "./device-variant-select"
 
 type Details = {
@@ -33,6 +36,7 @@ export default function DeviceDetailsModal({ deviceId, onClose, initialEditing =
     if (query.isError) notifyError(t("deviceScan.loadError"))
   }, [query.isError, t])
   const device = query.data?.devices[0]
+  const assessment = readAssessment(device?.notes || "")
   const variant = query.data?.variants.find((entry) => entry.id === device?.variant_id)
   const state = (value: string) => t(`deviceScan.${({ repair_ready: "repairReady", supplier_returned: "supplierReturned" } as Record<string, string>)[value] || value}`)
   const date = (value: string) => new Date(value).toLocaleString(i18n.language.startsWith("zh") ? "zh-CN" : "en-GB")
@@ -46,15 +50,15 @@ export default function DeviceDetailsModal({ deviceId, onClose, initialEditing =
     [t("deviceScan.lookupState"), state(device.state)],
     [t("deviceScan.category"), t(`deviceScan.categories.${device.category}`)],
     [t("deviceScan.grade"), device.grade],
-    [t("deviceScan.battery"), device.battery_health == null ? null : `${device.battery_health}%`],
+    [t("deviceScan.battery"), assessment.assessment?.battery === "unknown" ? t("deviceScan.buyback.unsure") : device.battery_health == null ? null : `${device.battery_health}%`],
     [t("deviceScan.lookupLocation"), query.data?.sources.find((entry) => entry.location_id === device.location_id)?.name || device.location_id],
     [t("deviceScan.lookupSource"), query.data?.sources.find((entry) => entry.id === device.source_id)?.name || device.source_id],
     [t("deviceScan.bin"), device.bin],
-    [t("deviceScan.cost"), new Intl.NumberFormat(i18n.language.startsWith("zh") ? "zh-CN" : "en-GB", { style: "currency", currency: device.currency_code }).format(device.cost_cents / 100)],
+    [t("deviceScan.cost"), assessment.assessment?.priceAgreed === false ? t("deviceScan.buyback.pendingCost") : new Intl.NumberFormat(i18n.language.startsWith("zh") ? "zh-CN" : "en-GB", { style: "currency", currency: device.currency_code }).format(device.cost_cents / 100)],
     [t("deviceScan.lookupCreated"), date(device.created_at)],
     [t("deviceScan.lookupUpdated"), date(device.updated_at)],
     [t("deviceScan.lookupDeviceId"), device.id],
-    [t("deviceScan.intakeNotes"), device.notes],
+    [t("deviceScan.intakeNotes"), assessment.notes],
   ] : []
   return <FocusModal open onOpenChange={(open) => { if (!open) onClose() }}>
     <FocusModal.Content aria-describedby={undefined}>
@@ -68,6 +72,8 @@ export default function DeviceDetailsModal({ deviceId, onClose, initialEditing =
             <Button size="small" variant="secondary" onClick={() => query.refetch()}>{t("orderDevices.retry")}</Button> : !device ?
               <Text>{t("deviceScan.deviceNotFound")}</Text> : <>
                 <Heading level="h2">{device.serial_number || device.id}</Heading>
+                {!!query.data?.events.length && <DeviceProcessingHistory events={query.data.events} />}
+                {assessment.assessment && <RecycledAssessmentSummary value={assessment.assessment} touchId={variant?.product?.title.includes("SE")} />}
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))", gap: 16 }}>
                   {fields.map(([label, value]) => <div key={label} className="min-w-0 space-y-1">
                     <Text size="small" className="text-ui-fg-subtle">{label}</Text>

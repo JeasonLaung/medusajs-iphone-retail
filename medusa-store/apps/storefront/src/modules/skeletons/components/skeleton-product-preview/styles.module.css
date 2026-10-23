@@ -1,0 +1,11 @@
+.skeleton { pointer-events: none; }
+.block { @apply bg-ui-border-base; border-radius: 4px; animation: pulse 2s ease-in-out infinite; }
+.phone { position: absolute; top: 18%; left: 25%; width: 50%; height: 64%; border-radius: 12px; }
+.title { width: 70%; height: 21px; }
+.capacity { width: 52px; height: 24px; border-radius: 999px; }
+.caption { width: 64px; height: 14px; }
+.colour { width: 20px; height: 20px; border-radius: 50%; }
+.price { width: 80px; max-width: 100%; height: 24px; }
+.button { width: 64px; height: 36px; border-radius: 999px; }
+@keyframes pulse { 50% { opacity: .45; } }
+@media (prefers-reduced-motion: reduce) { .block { animation: none; } }

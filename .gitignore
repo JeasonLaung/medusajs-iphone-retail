@@ -1,6 +1,7 @@
 .env
 .admin-credentials
 .device-camera-tls/
+.private-files/
 logs/
 log/
 node_modules/

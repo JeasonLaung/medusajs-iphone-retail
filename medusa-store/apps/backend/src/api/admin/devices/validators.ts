@@ -79,6 +79,7 @@ export const DeviceCommand = z.discriminatedUnion("action", [
   z.strictObject({ action: z.literal("make_available"), device_ids: z.array(id).min(1).max(200).refine((ids) => new Set(ids).size === ids.length, "Duplicate device IDs") }),
   z.strictObject({ action: z.literal("delete"), device_id: id }),
   z.strictObject({ action: z.literal("retire"), device_id: id }),
+  z.strictObject({ action: z.literal("transfer_return"), device_id: id, notes: z.string().trim().min(1).max(2000) }),
   z.strictObject({
     action: z.literal("order_assign"),
     order_id: id,
@@ -172,6 +173,7 @@ export const DeviceCommand = z.discriminatedUnion("action", [
       action: z.literal("inspect"),
       device_id: id,
       result: z.enum(["pass", "repair", "retire", "supplier_return"]),
+      photos: z.array(DevicePhoto).max(8).optional(),
       grade: z.enum(["S", "A", "B", "C"]),
       battery_health: z.number().int().min(0).max(100),
       variant_id: optionalId,

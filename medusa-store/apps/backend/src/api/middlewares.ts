@@ -1,3 +1,5 @@
+import { guardRegistrationVerification, guardVerifiedCustomerRegistration } from "./registration-guards"
+import { ReadNoticesBody } from "./store/notifications/validators"
 import {
   authenticate,
   configureStoreSearch,
@@ -6,6 +8,9 @@ import {
   validateAndTransformQuery,
 } from "@medusajs/framework/http"
 import { CustomerServiceBody } from "./admin/customer-service/validators"
+import { CreateBuyback, BuybackAdminCommand, BuybackCustomerCommand, BuybackPhotoUpload, BuybackReferencePrice } from "./buyback-validators"
+import { BuybackCatalogCommand, BuybackEstimateBody } from "./buyback-pricing-validators"
+import { SeoCommandBody } from "./seo-validators"
 import { CancelOrderBody } from "./admin/orders/[id]/cancel/validators"
 import { CreateAfterSales } from "./store/orders/[id]/after-sales/validators"
 import { UpdateAfterSales } from "./admin/orders/[id]/after-sales/validators"
@@ -36,6 +41,20 @@ import {
 // the route narrows it to published products in the key's sales channels.
 export default defineMiddlewares({
   routes: [
+    { matcher: "/store/notifications", middlewares: [authenticate("customer", ["session", "bearer"])] },
+    { matcher: "/store/notifications", method: "POST", middlewares: [validateAndTransformBody(ReadNoticesBody)] },
+    { matcher: "/auth/verification/request", method: "POST", middlewares: [authenticate("*", ["session", "bearer"], { allowUnregistered: true, requireMfa: false }), guardRegistrationVerification] },
+    { matcher: "/store/customers", method: "POST", middlewares: [authenticate("customer", ["session", "bearer"], { allowUnregistered: true }), guardVerifiedCustomerRegistration] },
+    { matcher: "/admin/seo/commands", method: "POST", middlewares: [validateAndTransformBody(SeoCommandBody)] },
+    { matcher: "/store/buyback/requests*", middlewares: [authenticate("customer", ["session", "bearer"])] },
+    { matcher: "/store/buyback/estimate", method: "POST", middlewares: [validateAndTransformBody(BuybackEstimateBody)] },
+    { matcher: "/admin/buyback-catalog", method: "POST", middlewares: [validateAndTransformBody(BuybackCatalogCommand)] },
+    { matcher: "/store/buyback/requests", method: "POST", middlewares: [validateAndTransformBody(CreateBuyback)] },
+    { matcher: "/store/buyback/requests/:id", method: "POST", middlewares: [validateAndTransformBody(BuybackCustomerCommand)] },
+    { matcher: "/store/buyback/requests/:id/photos", method: "POST", bodyParser: { sizeLimit: "6mb" }, middlewares: [validateAndTransformBody(BuybackPhotoUpload)] },
+    { matcher: "/admin/buyback*", middlewares: [authenticate("user", ["session", "bearer", "api-key"])] },
+    { matcher: "/admin/buyback/:id", method: "POST", middlewares: [validateAndTransformBody(BuybackAdminCommand)] },
+    { matcher: "/admin/buyback-prices", method: "POST", middlewares: [validateAndTransformBody(BuybackReferencePrice)] },
     { matcher: "/admin/orders/:id/cancel", method: "POST", middlewares: [validateAndTransformBody(CancelOrderBody)] },
     { matcher: "/admin/customer-service", method: "POST", middlewares: [validateAndTransformBody(CustomerServiceBody)] },
     { matcher: "/admin/warehouse-access", method: "POST", middlewares: [validateAndTransformBody(WarehouseBindingBody)] },

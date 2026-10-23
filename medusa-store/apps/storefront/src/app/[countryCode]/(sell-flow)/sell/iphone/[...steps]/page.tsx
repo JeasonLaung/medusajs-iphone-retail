@@ -1,3 +1,4 @@
+import { withSEO } from "@lib/data/seo"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getLocale } from "@lib/data/locale-actions"
@@ -6,8 +7,9 @@ import { getSellCopy } from "@modules/sell/i18n"
 import SellFlow from "@modules/sell/components/sell-flow"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import styles from "@modules/sell/flow.module.css"
+import { retrieveCustomer } from "@lib/data/customer"
 
-export async function generateMetadata(): Promise<Metadata> {
+async function defaultPageMetadata(): Promise<Metadata> {
   const copy = getSellCopy(await getLocale())
   return { title: copy.title, description: copy.intro, robots: { index: false } }
 }
@@ -28,5 +30,10 @@ export default async function Page({ params }: { params: Promise<{ countryCode: 
     steps.length === 3 && models.some((m) => m.handle === steps[0] && m.capacities.some((c) => c.toLowerCase() === steps[1])) &&
       ["battery", "functionality", "screen-faults", "screen-glass", "screen", "frame", "back", "summary"].includes(steps[2])
   if (!valid) notFound()
-  return <SellFlow models={models} steps={steps} locale={locale} />
+  const customer = steps[2] === "summary" ? await retrieveCustomer() : null
+  return <SellFlow models={models} steps={steps} locale={locale} customer={customer ? { first_name: customer.first_name, last_name: customer.last_name, phone: customer.phone } : null} />
+}
+
+export async function generateMetadata(...args: Parameters<typeof defaultPageMetadata>): Promise<Metadata> {
+  return withSEO(await defaultPageMetadata(...args))
 }

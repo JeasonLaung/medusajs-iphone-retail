@@ -6,7 +6,7 @@ import { retrieveOrderTimeline } from "@lib/data/orders"
 import { convertToLocale } from "@lib/util/money"
 import { useAccountCopy } from "@modules/account/use-account-copy"
 import type { AccountKey } from "@modules/account/i18n"
-import { Button } from "@modules/common/components/ui"
+import { Button } from "@modules/account/components/ui"
 import type { OrderTimeline, OrderTimelineKind } from "types/order-timeline"
 import styles from "./styles.module.css"
 

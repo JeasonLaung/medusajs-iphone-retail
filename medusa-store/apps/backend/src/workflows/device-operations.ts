@@ -44,6 +44,7 @@ import {
   matchesIdentity,
   assertVariantConfiguration,
   intakeDeviceConfiguration,
+  canTransferDeviceToReturned,
 } from "../modules/devices/policy"
 import type {
   DeviceCommandBody,
@@ -139,6 +140,7 @@ type Plan = {
 const prepareDevices = createStep(
   "prepare-devices",
   async (command: Input, { container }) => {
+    requireDevice(Boolean(command.actor_id?.trim()), "DEVICE_ACTOR_REQUIRED")
     const requestedFulfillment = command.action === "create_fulfillment" ? command.fulfillment : undefined
     let input: Input = command.action === "create_fulfillment"
       ? { action: "save_allocation", order_id: command.order_id, actor_id: command.actor_id, allocations: command.allocations }
@@ -369,6 +371,15 @@ const prepareDevices = createStep(
       }
       mutate("Devices", next, device)
       event("update", { before: device, after: next }, device.id)
+    } else if (input.action === "transfer_return") {
+      const device = await service.retrieveDevice(input.device_id)
+      const assignments = await service.listDeviceAssignments({ device_id: device.id, status: ["reserved", "packed", "shipped"] })
+      requireDevice(canTransferDeviceToReturned(device, assignments.length > 0), "DEVICE_TRANSFER_RETURN_INVALID")
+      const [warehouse] = await service.listDeviceSources({ location_id: device.location_id, type: "self" })
+      requireDevice(warehouse, "DEVICE_TRANSFER_RETURN_INVALID")
+      const next = { ...device, category: "returned", state: "inspection" }
+      mutate("Devices", next, device)
+      event("transfer_return", { notes: input.notes, before: { category: device.category, state: device.state }, after: { category: next.category, state: next.state } }, device.id)
     } else if (input.action === "activate" || input.action === "make_available") {
       const ids = input.action === "activate" ? [input.device_id] : input.device_ids
       requireDevice(new Set(ids).size === ids.length, "DEVICE_PENDING_REQUIRED")
@@ -974,6 +985,10 @@ const prepareDevices = createStep(
         ["inspection", "repair"].includes(d.state),
         "设备必须处于待检测或维修状态",
       )
+      for (const photo of input.photos || []) {
+        const stored = await container.resolve<IFileModuleService>(Modules.FILE).retrieveFile(photo.id)
+        requireDevice(devicePhotoUrl(stored.url) === photo.url && stored.url.includes("device-"), "DEVICE_PHOTO_INVALID")
+      }
       const variant_id = input.variant_id || d.variant_id
       await managed(variant_id)
       const source = (
@@ -1032,6 +1047,7 @@ const prepareDevices = createStep(
         {
           result: input.result,
           notes: input.notes,
+          photos: input.photos || [],
           before: {
             state: d.state,
             variant_id: d.variant_id,

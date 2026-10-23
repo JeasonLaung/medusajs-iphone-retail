@@ -1,5 +1,4 @@
 import { Button, Checkbox, toast, DataTable, Heading, Select, Text, createDataTableColumnHelper, useDataTable, usePrompt } from "@medusajs/ui"
-import { Link } from "react-router-dom"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useDeviceTranslations } from "../lib/use-device-translations"
@@ -8,7 +7,11 @@ import { notifyError } from "../lib/notifications"
 import { ClearableInput } from "./clearable-input"
 import DeviceVariantSelect, { type DeviceVariantChoice } from "./device-variant-select"
 import DeviceDetailsModal from "./device-details-modal"
+import ReturnedDeviceProcessing from "./returned-device-processing"
+import DeviceReturnTransfer from "./device-return-transfer"
 import ScanIntakeMenu from "./scan-intake-menu"
+import RecycledDeviceIntake from "./recycled-device-intake"
+import { readAssessment } from "../lib/recycled-assessment"
 import { localizeDeviceMessage } from "../lib/device-messages"
 import { buildDeviceExport } from "../lib/device-xlsx"
 
@@ -16,6 +19,7 @@ type LookupDevice = {
   category: string
   can_delete: boolean
   can_retire: boolean
+  can_transfer_return: boolean
   id: string
   serial_number: string | null
   imei: string | null
@@ -76,6 +80,9 @@ export default function DeviceLookupTable({ onIntake, onDirectIntake, intakeOpen
   const [location, setLocation] = useState("all")
   const [deviceId, setDeviceId] = useState(initialDeviceId)
   const [editingDevice, setEditingDevice] = useState(false)
+  const [processingDevice, setProcessingDevice] = useState<LookupDevice>()
+  const [returningDevice, setReturningDevice] = useState<LookupDevice>()
+  const [registeringRecycled, setRegisteringRecycled] = useState(false)
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 20 })
   const results = useQuery<Results>({
     queryKey: ["device-lookup", category, search, variant?.id, state, location, pagination],
@@ -114,11 +121,11 @@ export default function DeviceLookupTable({ onIntake, onDirectIntake, intakeOpen
       ...(canIntake && category === "sale" ? [helper.display({ id: "selection", size: 50, header: () => <Checkbox aria-label={t("deviceScan.selectPendingPage")} checked={pendingDevices.length > 0 && pendingDevices.every((device) => selectedIds.includes(device.id))} disabled={publishing || !pendingDevices.length} onCheckedChange={(checked) => setSelectedIds(checked === true ? pendingDevices.map((device) => device.id) : [])} />, cell: ({ row }) => row.original.state === "pending" ? <Checkbox aria-label={t("deviceScan.selectPendingDevice", { serial: row.original.serial_number || row.original.id })} disabled={publishing} checked={selectedIds.includes(row.original.id)} onCheckedChange={(checked) => setSelectedIds((previous) => checked === true ? [...new Set([...previous, row.original.id])] : previous.filter((id) => id !== row.original.id))} /> : null })] : []),
       helper.display({ id: "sequence", size: 75, header: t("deviceScan.lookupSequence"), cell: ({ row }) => (results.data?.count || 0) - pagination.pageIndex * pagination.pageSize - row.index }),
       helper.accessor("serial_number", { size: 155, header: t("orderDevices.serial"), cell: ({ getValue }) => <Text size="small" className="whitespace-normal break-all">{getValue() || "—"}</Text> }),
-      helper.accessor("variant_id", { size: 220, header: t("deviceScan.sku"), cell: ({ getValue }) => {
+      helper.accessor("variant_id", { size: 220, header: t(category === "recycled" ? "deviceScan.buyback.modelConfiguration" : "deviceScan.sku"), cell: ({ getValue }) => {
         const sku = results.data?.variants.find((item) => item.id === getValue())
         return <div className="whitespace-normal break-words py-2">
-          <Text size="small" weight="plus">{sku?.sku || "—"}</Text>
-          <Text size="small" className="text-ui-fg-subtle">{[sku?.product?.title, sku?.title].filter(Boolean).join(" · ")}</Text>
+          <Text size="small" weight="plus">{category === "recycled" ? [sku?.product?.title, sku?.title].filter(Boolean).join(" · ") || "—" : sku?.sku || "—"}</Text>
+          <Text size="small" className="text-ui-fg-subtle">{category === "recycled" ? sku?.sku : [sku?.product?.title, sku?.title].filter(Boolean).join(" · ")}</Text>
         </div>
       } }),
       helper.accessor("imei", { size: 155, header: t("orderDevices.imei"), cell: ({ getValue }) => <Text size="small" className="whitespace-normal break-all">{getValue() || "—"}</Text> }),
@@ -126,19 +133,24 @@ export default function DeviceLookupTable({ onIntake, onDirectIntake, intakeOpen
       helper.accessor("eid", { size: 220, header: t("orderDevices.eid"), cell: ({ getValue }) => <Text size="small" className="whitespace-normal break-all">{getValue() || "—"}</Text> }),
       helper.accessor("state", { size: 100, header: t("deviceScan.lookupState"), cell: ({ getValue }) => t(`deviceScan.${stateKeys[getValue()] || getValue()}`) }),
       helper.accessor("grade", { size: 75, header: t("deviceScan.grade"), cell: ({ getValue }) => getValue() || t("orderDevices.notRecorded") }),
-      helper.accessor("battery_health", { size: 85, header: t("deviceScan.lookupBattery"), cell: ({ getValue }) => getValue() == null ? t("orderDevices.notRecorded") : `${getValue()}%` }),
+      helper.accessor("battery_health", { size: 85, header: t("deviceScan.lookupBattery"), cell: ({ getValue, row }) => readAssessment(row.original.notes)?.assessment?.battery === "unknown" ? t("deviceScan.buyback.unsure") : getValue() == null ? t("orderDevices.notRecorded") : `${getValue()}%` }),
+      ...(category === "recycled" ? [helper.display({ id: "buyback-checks", size: 180, header: t("deviceScan.buyback.report"), cell: ({ row }) => {
+        const assessment = readAssessment(row.original.notes).assessment
+        return <Text size="small" className="whitespace-normal">{assessment ? t(assessment.checks.every(Boolean) && assessment.faults.includes("none") && assessment.glass.includes("none") ? "deviceScan.buyback.allWorks" : "deviceScan.buyback.recordedIssues") : t("orderDevices.notRecorded")}</Text>
+      } }), helper.accessor("cost_cents", { size: 120, header: t("deviceScan.buyback.price"), cell: ({ row, getValue }) => readAssessment(row.original.notes).assessment?.priceAgreed === false ? t("deviceScan.buyback.pendingCost") : new Intl.NumberFormat(i18n.language.startsWith("zh") ? "zh-CN" : "en-GB", { style: "currency", currency: row.original.currency_code }).format(getValue() / 100) })] : []),
       helper.accessor("location_id", { size: 120, header: t("deviceScan.lookupLocation"), cell: ({ getValue }) => <Text size="small" className="whitespace-normal break-words">{results.data?.sources.find((source) => source.location_id === getValue())?.name || getValue()}</Text> }),
       helper.accessor("bin", { size: 80, header: t("deviceScan.bin"), cell: ({ getValue }) => getValue() || "—" }),
       helper.accessor("created_at", { size: 180, header: t("deviceScan.lookupCreated"), cell: ({ getValue }) => <Text size="small" className="whitespace-nowrap">{getValue() ? new Date(getValue()).toLocaleString(i18n.language.startsWith("zh") ? "zh-CN" : "en-GB", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }) : "—"}</Text> }),
       helper.display({ id: "actions", size: 230, header: t("deviceScan.lookupActions"), cell: ({ row }) =>
         <div className="flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-1 py-2 text-sm">
-          <a className="whitespace-nowrap text-ui-fg-interactive hover:underline" href={`?device_id=${encodeURIComponent(row.original.id)}`} onClick={(event) => { event.preventDefault(); setEditingDevice(false); setDeviceId(row.original.id) }}>{t("deviceScan.viewDevice")}</a>
-          {canIntake && <Button size="small" variant="secondary" onClick={() => { setEditingDevice(true); setDeviceId(row.original.id) }}>{t("deviceScan.editDevice")}</Button>}
-          {canIntake && ["inspection", "repair"].includes(row.original.state) && <Link className="whitespace-nowrap text-ui-fg-interactive hover:underline" to="/device-scan/inspection" state={{ device: row.original }}>{t("deviceScan.inspectDevice")}</Link>}
+          <a className="whitespace-nowrap text-ui-fg-interactive hover:underline" href={`?device_id=${encodeURIComponent(row.original.id)}`} onClick={(event) => { event.preventDefault(); setEditingDevice(false); setDeviceId(row.original.id) }}>{t(category === "returned" ? "deviceScan.returnProcessing.viewLogs" : "deviceScan.viewDevice")}</a>
+          {canIntake && category === "returned" && ["inspection", "repair"].includes(row.original.state) && <Button size="small" variant="secondary" onClick={() => setProcessingDevice(row.original)}>{t("deviceScan.returnProcessing.title")}</Button>}
+          {canIntake && <button type="button" className="whitespace-nowrap text-ui-fg-interactive hover:underline focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-ui-border-interactive" onClick={() => { setEditingDevice(true); setDeviceId(row.original.id) }}>{t("deviceScan.editDevice")}</button>}
+          {canIntake && category === "sale" && row.original.can_transfer_return && <button type="button" className="whitespace-nowrap text-ui-fg-interactive hover:underline focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-ui-border-interactive" onClick={() => setReturningDevice(row.original)}>{t("deviceScan.returnTransfer.title")}</button>}
           {row.original.can_retire && <a className="whitespace-nowrap text-ui-fg-interactive hover:underline aria-disabled:cursor-wait aria-disabled:opacity-50" href="#" aria-disabled={!!acting} onClick={(event) => { event.preventDefault(); if (!acting) void act(row.original, "retire") }}>{t("deviceScan.retireDevice")}</a>}
           {row.original.can_delete && <a className="whitespace-nowrap text-ui-fg-error hover:underline aria-disabled:cursor-wait aria-disabled:opacity-50" href="#" aria-disabled={!!acting} onClick={(event) => { event.preventDefault(); if (!acting) void act(row.original, "delete") }}>{t("deviceScan.deleteDevice")}</a>}
         </div> }),
-    ]
+    ].filter((column) => category !== "recycled" || !("accessorKey" in column && ["imei2", "eid", "grade"].includes(String(column.accessorKey))))
   }, [results.data?.variants, results.data?.sources, results.data?.count, pagination.pageIndex, pagination.pageSize, t, i18n.language, canIntake, acting, act, category, pendingDevices, selectedIds, publishing])
   const table = useDataTable({
     data: results.data?.devices || [], columns, getRowId: (device) => device.id,
@@ -212,13 +224,16 @@ export default function DeviceLookupTable({ onIntake, onDirectIntake, intakeOpen
         <Button size="small" variant="secondary" isLoading={exporting} disabled={results.isPending || results.isError || !results.data?.count || exporting} onClick={() => void exportDevices()}>
           {exporting ? t("deviceScan.lookupExporting", { count: exportCount }) : t("deviceScan.lookupExport")}
         </Button>
-        {canIntake && <>
+        {canIntake && category === "recycled" && <Button size="small" onClick={() => setRegisteringRecycled(true)}>{t("deviceScan.buyback.title")}</Button>}
+        {canIntake && category !== "recycled" && <>
         <Button size="small" variant="secondary" onClick={() => onIntake("import")}>{t("deviceScan.lookupImportIntake")}</Button>
         <Button size="small" variant="secondary" onClick={() => onIntake("image")}>{t("deviceScan.lookupImageIntake")}</Button>
         <ScanIntakeMenu onDirect={onDirectIntake} onQr={() => onIntake("scan")} busy={intakeOpening} />
         </>}
       </div>
     </div>
+    {category === "recycled" && <Text size="small" className="text-ui-fg-subtle">{t("deviceScan.buyback.description")}</Text>}
+    {registeringRecycled && <RecycledDeviceIntake onClose={() => setRegisteringRecycled(false)} />}
     <form style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", gap: 12 }} onSubmit={(event) => {
         event.preventDefault()
         setSearch(input.trim())
@@ -274,5 +289,7 @@ export default function DeviceLookupTable({ onIntake, onDirectIntake, intakeOpen
         <DataTable.Pagination translations={{ of: t("general.of"), results: t("deviceScan.lookupResults"), pages: t("deviceScan.lookupPages"), prev: t("deviceScan.previous"), next: t("deviceScan.next") }} />
       </DataTable></div>}
     {deviceId && <DeviceDetailsModal deviceId={deviceId} initialEditing={editingDevice} onClose={() => setDeviceId(undefined)} />}
+    {processingDevice && <ReturnedDeviceProcessing key={processingDevice.id} device={processingDevice} initialVariant={results.data?.variants.find((entry) => entry.id === processingDevice.variant_id)} onClose={() => setProcessingDevice(undefined)} />}
+    {returningDevice && <DeviceReturnTransfer key={returningDevice.id} device={returningDevice} onClose={() => setReturningDevice(undefined)} />}
   </div>
 }

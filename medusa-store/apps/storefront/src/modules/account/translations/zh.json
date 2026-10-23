@@ -20,7 +20,10 @@
   "customerService": "帮助中心",
   "welcome": "欢迎回来",
   "loginDescription": "登录账户，查看订单并管理个人资料。",
-  "verificationSent": "验证链接已发送至 {email}。请先验证邮箱，再登录账户。",
+  "verificationSent": "发往 {email} 的验证邮件已加入发送队列。请检查收件箱及垃圾邮件，在 15 分钟内验证邮箱后登录完成注册。",
+  "verificationSendFailed": "暂时无法向 {email} 发送验证邮件，请稍后重试或联系客服。",
+  "resendVerification": "重新发送验证邮件",
+  "resendCountdown": "{seconds} 秒后可重新发送",
   "email": "电子邮箱",
   "validEmail": "请输入有效的电子邮箱地址。",
   "password": "密码",
@@ -197,5 +200,6 @@
   "timelineShipped": "已发货",
   "timelineDelivered": "已送达",
   "timelineFulfillmentCanceled": "履约已取消",
-  "timelineCanceled": "订单已取消"
+  "timelineCanceled": "订单已取消",
+  "country": "国家 / 地区"
 }
