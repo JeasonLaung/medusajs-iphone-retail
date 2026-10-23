@@ -1,5 +1,5 @@
 import tr from "./translate"
-import { App as AntdApp } from "antd"
+import { App as AntdApp, theme } from "antd"
 // AI 引用监测：任务管理 + 采样运行 + 证据
 import { useEffect, useState } from 'react'
 import { Alert, Button, Card, Drawer, Form, Input, InputNumber, Modal, Popconfirm, Select, Space, Switch, Tag, Typography } from 'antd'
@@ -20,6 +20,7 @@ import {
 
 export default function CitationMonitorPage() {
   const { message } = AntdApp.useApp()
+  const { token } = theme.useToken()
   // monitors
   const [monitors, setMonitors] = useState<SEOCitationMonitor[]>([])
   const [mLoading, setMLoading] = useState(false)
@@ -353,13 +354,13 @@ export default function CitationMonitorPage() {
             )}
             <div>
               <Typography.Title level={5}>Prompt</Typography.Title>
-              <pre style={{ background: '#f5f5f5', padding: 12, borderRadius: 8, whiteSpace: 'pre-wrap' }}>
+              <pre style={{ background: token.colorFillAlter, padding: 12, borderRadius: 8, whiteSpace: 'pre-wrap' }}>
                 {evidenceRun.prompt_text || '(empty)'}
               </pre>
             </div>
             <div>
               <Typography.Title level={5}>Answer</Typography.Title>
-              <pre style={{ background: '#f5f5f5', padding: 12, borderRadius: 8, whiteSpace: 'pre-wrap', maxHeight: 320, overflow: 'auto' }}>
+              <pre style={{ background: token.colorFillAlter, padding: 12, borderRadius: 8, whiteSpace: 'pre-wrap', maxHeight: 320, overflow: 'auto' }}>
                 {evidenceRun.answer_text || '(empty)'}
               </pre>
             </div>

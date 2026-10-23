@@ -1,10 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Alert, Button, Collapse, Empty, Image as AntImage, Input, Modal, Pagination, Skeleton, Tag, Timeline, Upload } from "antd"
+import { Alert, Button, Collapse, Empty, Image as AntImage, Input, Modal, Pagination, Skeleton, Tag, Steps, Upload, theme } from "antd"
+import { ArrowLeft, ArrowPath, Camera, CheckCircle, Clock, CurrencyDollar, TruckFast, XCircle } from "@medusajs/icons"
 import { useParams } from "next/navigation"
 import SellTheme from "./sell-theme"
-import { getBuybackPhoto, getBuybackRequest, listBuybackRequests, updateBuybackRequest, uploadBuybackPhoto, type BuybackRequest, type BuybackPhoto, type BuybackCommand } from "@lib/data/buyback"
+import { getBuybackPhoto, getBuybackRequest, listBuybackRequests, updateBuybackRequest, uploadBuybackPhoto, type BuybackRequest, type BuybackPhoto, type BuybackCommand, type BuybackSummary } from "@lib/data/buyback"
 import { getBuybackCopy, type BuybackCopy } from "../buyback-copy"
 import styles from "../request.module.css"
 
@@ -60,6 +61,7 @@ async function compressedPhoto(file: File) {
 function RequestDetails({ initial, copy, locale }: { initial: BuybackRequest; copy: BuybackCopy; locale: string | null }) {
   const { countryCode } = useParams<{ countryCode: string }>()
   const [request, setRequest] = useState(initial)
+  const { token } = theme.useToken()
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState("")
   const [tracking, setTracking] = useState("")
@@ -123,9 +125,30 @@ function RequestDetails({ initial, copy, locale }: { initial: BuybackRequest; co
     const invalid = validationTarget?.itemId === itemId && validationTarget.field === type
     return <div key={type} id={fieldId(itemId, type)} className={styles.photo}><strong>{label}</strong>{invalid && <Alert type="error" showIcon title={validationTarget.message} />}<PhotoUpload requestId={request.id} photo={photo} copy={copy} label={label} canUpload={canUpload} busy={busy} onUpload={(file) => { if (invalid) setValidationTarget(null); void upload(itemId, type, file) }} /></div>
   }
+  const history = [...request.history].reverse().sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
+  const progress = history[0]?.status === request.status ? history : [{ at: "", action: "", status: request.status, note: "" }, ...history]
+  const completed = ["paid", "returned", "canceled"].includes(request.status)
+  const ProgressIcon = ({ awaiting_photos: Camera, photo_review: Camera, ready_to_ship: TruckFast, in_transit: TruckFast, received: CheckCircle, final_offer: CurrencyDollar, accepted: Clock, paid: CheckCircle, return_requested: Clock, returning: TruckFast, returned: CheckCircle, canceled: XCircle } as Record<string, typeof Clock>)[request.status] || Clock
+  function actorLabel(event: BuybackRequest["history"][number]) {
+    if (event.actor === "customer") return copy.actorCustomer
+    if (event.actor === "platform") return copy.actorPlatform
+    if (["submitted", "submit_photos", "mark_shipped", "accept_offer", "decline_offer"].includes(event.action)) return copy.actorCustomer
+    if (["review_photo", "approve_shipping", "mark_received", "link_device", "final_offer", "mark_paid", "request_return", "mark_returning", "mark_returned"].includes(event.action)) return copy.actorPlatform
+    return copy.actorUnknown
+  }
   return <div data-testid="buyback-request-details">
-    <div className={styles.actions}><Button type="link" href={`/${countryCode}/account/buyback`}>{copy.myRequests}</Button><Button type="default" disabled={busy} onClick={() => void refresh()}>{copy.refresh}</Button></div>
-    <section className={styles.section}><h2>{request.id}</h2><Tag color={statusColor(request.status)}>{copy.statuses[request.status as keyof typeof copy.statuses]}</Tag><p>{copy.reference}: {money(request.reference_amount)}</p><p>{copy.final}: {request.final_amount == null ? "—" : money(request.final_amount)}</p><p className={styles.notice}>{copy.referenceHelp}</p>{request.review_note && <p>{copy.reviewNote}: {request.review_note}</p>}</section>
+    <header className={styles.detailHeader}>
+      <div className={styles.detailHeading}><Button type="text" href={`/${countryCode}/account/buyback`} aria-label={copy.back} title={copy.back} icon={<ArrowLeft aria-hidden="true" />} /><h1 title={request.id}>{copy.requestHeading} …{request.id.slice(-8)}</h1></div>
+      <Button type="default" disabled={busy} aria-busy={busy} aria-label={copy.refresh} title={copy.refresh} icon={<ArrowPath aria-hidden="true" />} onClick={() => void refresh()} />
+    </header>
+    <div className={styles.detailLayout}>
+    <div className={styles.detailMain}>
+    <section className={`${styles.section} ${styles.summary}`}>
+      <Tag color={statusColor(request.status)}>{copy.statuses[request.status as keyof typeof copy.statuses]}</Tag>
+      <div className={styles.summaryDevices}>{request.items.map(item => <div key={item.id}><h2>{item.model_name} · {item.capacity}</h2><p className={styles.notice}>{copy.serial}: {item.serial_number || "—"} · {copy.imei}: {item.imei || "—"}</p></div>)}</div>
+      <dl className={styles.grid}><div><dt className={styles.notice}>{copy.reference}</dt><dd className={styles.summaryAmount}>{money(request.reference_amount)}</dd></div><div><dt className={styles.notice}>{copy.final}</dt><dd className={styles.summaryAmount}>{request.final_amount == null ? "—" : money(request.final_amount)}</dd></div></dl>
+      <p className={styles.notice}>{copy.referenceHelp}</p>{request.review_note && <p>{copy.reviewNote}: {request.review_note}</p>}
+    </section>
     <section className={styles.section}><h2>{copy.contact}</h2><address className={styles.address}>{[request.contact_name, request.phone, request.email, request.return_address.address_1, request.return_address.address_2, `${request.return_address.postal_code} ${request.return_address.city}`, request.return_address.country_code.toUpperCase()].filter(Boolean).join("\n")}</address><p className={styles.notice}>{copy.originalAddress}</p></section>
     {["awaiting_photos", "photo_review", "ready_to_ship"].includes(request.status) && <><p className={styles.notice}>{copy.photoHelp}</p><p className={styles.notice}>{copy.photoEvidence}</p><p className={styles.notice}>{copy.privacy}</p></>}
     {request.items.map((item, index) => <section className={styles.section} key={item.id}>
@@ -149,14 +172,24 @@ function RequestDetails({ initial, copy, locale }: { initial: BuybackRequest; co
     {["awaiting_photos", "photo_review", "ready_to_ship"].includes(request.status) && <div className={styles.actions}><Button type="default" disabled={busy} onClick={() => setChoice({ action: "cancel" })}>{copy.cancel}</Button></div>}
     <Modal open={Boolean(choice)} title={choice?.action === "cancel" ? copy.cancelConfirm : copy.offerConfirm} onOk={() => { if (choice) void command(choice) }} onCancel={() => { if (!busy) setChoice(null) }} okText={copy.confirmChoice} cancelText={copy.cancelChoice} confirmLoading={busy} cancelButtonProps={{ disabled: busy }} closable={!busy} mask={{ closable: !busy }} okButtonProps={{ danger: choice?.action === "cancel" || choice?.action === "decline_offer" }} />
     {error && <Alert type="error" showIcon title={error} />}
-    <section className={styles.section}><h2>{copy.history}</h2><Timeline items={request.history.map(event => ({ title: new Date(event.at).toLocaleString(locale?.startsWith("zh") ? "zh-CN" : "en-GB"), content: <>{copy.statuses[event.status as keyof typeof copy.statuses]}{event.note ? ` · ${event.note}` : ""}</>, color: ["paid", "returned"].includes(event.status) ? "green" : event.status === "canceled" ? "gray" : "blue" }))} /></section>
+    </div>
+    <aside className={`${styles.section} ${styles.progress}`} aria-labelledby="buyback-progress-title">
+      <h2 id="buyback-progress-title">{copy.history}</h2>
+      <Steps orientation="vertical" size="small" current={0} items={progress.map((event, index) => ({
+        title: <span aria-current={index === 0 ? "step" : undefined}>{copy.statuses[event.status as keyof typeof copy.statuses]}</span>,
+        icon: index === 0 ? <ProgressIcon width={24} height={24} aria-hidden="true" /> : <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ color: token.colorTextQuaternary }}><circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" /></svg>,
+        content: <><span className={styles.progressActor}>{actorLabel(event)}</span>{event.at && <time dateTime={event.at}>{new Date(event.at).toLocaleString(locale?.startsWith("zh") ? "zh-CN" : "en-GB")}</time>}{event.note && <p>{event.note}</p>}</>,
+        status: index === 0 ? completed ? "finish" : "process" : "wait",
+      }))} />
+    </aside>
+    </div>
   </div>
 }
 
 export default function BuybackRequests({ locale, requestId, signedIn }: { locale: string | null; requestId?: string; signedIn: boolean }) {
   const copy = getBuybackCopy(locale)
   const { countryCode } = useParams<{ countryCode: string }>()
-  const [data, setData] = useState<{ requests: BuybackRequest[]; count: number } | null>(null)
+  const [data, setData] = useState<{ requests: BuybackRequest[]; count: number; summary: BuybackSummary } | null>(null)
   const [request, setRequest] = useState<BuybackRequest | null>(null)
   const [offset, setOffset] = useState(0)
   const [loading, setLoading] = useState(signedIn)
@@ -170,8 +203,12 @@ export default function BuybackRequests({ locale, requestId, signedIn }: { local
     work.finally(() => { if (active) setLoading(false) })
     return () => { active = false }
   }, [signedIn, requestId, offset, revision, copy])
-  return <SellTheme locale={locale}><div className={styles.page}><h1 className="text-2xl-semi">{copy.title}</h1>{!signedIn ? <><p className={styles.notice}>{copy.login}</p><Button type="primary" href={`/${countryCode}/account`}>{copy.signIn}</Button></> : loading ? <Skeleton active paragraph={{ rows: 5 }} aria-label={copy.loading} /> : error ? <><Alert type="error" showIcon title={error} /><Button type="default" onClick={() => setRevision(revision + 1)}>{copy.retry}</Button></> : request ? <RequestDetails key={request.id} initial={request} copy={copy} locale={locale} /> : <>
-    <div className={styles.actions}><Button type="primary" href={`/${countryCode}/sell/iphone/model`}>{copy.newRequest}</Button><Button type="default" onClick={() => setRevision(revision + 1)}>{copy.refresh}</Button></div>
+  return <SellTheme locale={locale}><div className={styles.page}>{!requestId && <header className={styles.listHeader}><h1 className="text-2xl-semi">{copy.title}</h1>{signedIn && <div className={styles.listActions}><Button type="primary" href={`/${countryCode}/sell/iphone/model`}>{copy.newRequest}</Button><Button type="default" disabled={loading} onClick={() => setRevision(revision + 1)}>{copy.refresh}</Button></div>}</header>}{!signedIn ? <><p className={styles.notice}>{copy.login}</p><Button type="primary" href={`/${countryCode}/account`}>{copy.signIn}</Button></> : loading ? <Skeleton active paragraph={{ rows: 5 }} aria-label={copy.loading} /> : error ? <><Alert type="error" showIcon title={error} /><Button type="default" onClick={() => setRevision(revision + 1)}>{copy.retry}</Button></> : request ? <RequestDetails key={request.id} initial={request} copy={copy} locale={locale} /> : <>
+    {data && <dl className={styles.statistics}>
+      <div><dt className={styles.notice}>{copy.recycledCount}</dt><dd>{new Intl.NumberFormat(locale?.startsWith("zh") ? "zh-CN" : "en-GB").format(data.summary.recycled)}</dd></div>
+      <div><dt className={styles.notice}>{copy.processingCount}</dt><dd>{new Intl.NumberFormat(locale?.startsWith("zh") ? "zh-CN" : "en-GB").format(data.summary.processing)}</dd></div>
+      <div><dt className={styles.notice}>{copy.receivedTotal}</dt><dd>{data.summary.received.length ? data.summary.received.map(payment => <span key={payment.currency_code}>{new Intl.NumberFormat(locale?.startsWith("zh") ? "zh-CN" : "en-GB", { style: "currency", currency: payment.currency_code }).format(payment.amount)}</span>) : <span className={styles.notice}>{copy.noPayments}</span>}</dd></div>
+    </dl>}
     <div className={styles.list}>{data?.requests.map((item) => <article className={styles.row} key={item.id}><div><strong>{item.items.map((phone) => `${phone.model_name} ${phone.capacity}`).join(" · ")}</strong><Tag color={statusColor(item.status)}>{copy.statuses[item.status as keyof typeof copy.statuses]}</Tag><p>{new Date(item.created_at).toLocaleString(locale?.startsWith("zh") ? "zh-CN" : "en-GB")}</p><p>{item.id}</p></div><Button href={`/${countryCode}/account/buyback/${item.id}`}>{copy.view}</Button></article>)}{data?.count === 0 && <Empty description={copy.empty} />}</div>
     <div className={styles.actions}><Pagination current={offset / 20 + 1} pageSize={20} total={data?.count || 0} showSizeChanger={false} onChange={page => setOffset((page - 1) * 20)} /></div>
   </>}</div></SellTheme>

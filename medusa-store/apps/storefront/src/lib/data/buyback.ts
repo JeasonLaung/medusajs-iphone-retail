@@ -11,7 +11,7 @@ export type BuybackRequest = {
   id: string; status: string; contact_name: string; email: string; phone: string; return_address: BuybackAddress;
   items: BuybackItem[]; photos: BuybackPhoto[]; reference_amount: number | null; final_amount: number | null; currency_code: string;
   shipping_instructions: string; tracking_number: string; return_tracking: string; payment_reference: string; review_note: string;
-  created_at: string; retention_days: number; history: { at: string; action: string; status: string; note: string }[]
+  created_at: string; retention_days: number; history: { at: string; action: string; actor?: "customer" | "platform"; status: string; note: string }[]
 }
 export type BuybackDraft = { submission_key: string; contact_name: string; phone: string; return_address: BuybackAddress; reference_acknowledged: true; privacy_acknowledged: true; items: { model: string; capacity: string; assessment: BuybackAssessment }[] }
 export type BuybackCommand = { action: "submit_photos"; items: { item_id: string; serial_number: string; imei: string }[] } | { action: "mark_shipped"; tracking_number: string } | { action: "accept_offer"; final_amount: number } | { action: "decline_offer" | "cancel" }
@@ -28,7 +28,8 @@ async function call<T>(path: string, body?: unknown) {
     return { data, error: null }
   } catch (error) { return { data: null, error: errorCode(error) } }
 }
-export async function listBuybackRequests(offset = 0) { return call<{ requests: BuybackRequest[]; count: number }>(`/store/buyback/requests?offset=${Math.max(0, offset)}`) }
+export type BuybackSummary = { recycled: number; processing: number; received: { currency_code: string; amount: number }[] }
+export async function listBuybackRequests(offset = 0) { return call<{ requests: BuybackRequest[]; count: number; summary: BuybackSummary }>(`/store/buyback/requests?offset=${Math.max(0, offset)}`) }
 export async function getBuybackRequest(id: string) { return call<{ request: BuybackRequest }>(`/store/buyback/requests/${encodeURIComponent(id)}`) }
 export async function createBuybackRequest(body: BuybackDraft) { return call<{ request: BuybackRequest }>("/store/buyback/requests", body) }
 export async function updateBuybackRequest(id: string, body: BuybackCommand) { return call<{ request: BuybackRequest }>(`/store/buyback/requests/${encodeURIComponent(id)}`, body) }

@@ -36,7 +36,7 @@ const createBuybackRequest = createStep("create-buyback-request", async (input: 
     customer_id: input.customer_id, submission_key: input.submission_key, email: customers[0].email,
     contact_name: input.contact_name, phone: input.phone, return_address: input.return_address,
     items: json(items), reference_amount: items.every((item) => item.reference_amount != null) ? amount(items.map((item) => item.reference_amount!)) : null,
-    history: json([{ at: new Date().toISOString(), action: "submitted", status: "awaiting_photos" }]),
+    history: json([{ at: new Date().toISOString(), action: "submitted", actor: "customer", status: "awaiting_photos" }]),
   })
   return new StepResponse(await serializeBuyback(container, request), request.id)
 }, async (id: string | undefined, { container }) => {
@@ -178,7 +178,7 @@ const updateBuybackRequest = createStep("update-buyback-request", async (input: 
     const history = Array.isArray(request.history) ? request.history : []
     const updated = await service.updateBuybackRequests({ id: request.id, ...change, items: json(items), status,
       ...(["paid", "returned", "canceled"].includes(status) ? { closed_at: new Date() } : {}),
-      history: json([...history, { at: new Date().toISOString(), action: command.action, status, note: "note" in command ? command.note : "", ...(command.action === "review_photo" ? { photo_id: command.photo_id } : {}) }]),
+      history: json([...history, { at: new Date().toISOString(), action: command.action, actor: input.customer_id ? "customer" : "platform", status, note: "note" in command ? command.note : "", ...(command.action === "review_photo" ? { photo_id: command.photo_id } : {}) }]),
     })
     return new StepResponse(await serializeBuyback(container, updated), before)
   } catch (error) {
@@ -194,8 +194,8 @@ const updateBuybackRequest = createStep("update-buyback-request", async (input: 
   if (before.link_id) await service.deleteBuybackDeviceLinks(before.link_id)
   await service.updateBuybackRequests(before.request)
 })
-const buybackNoticeInput = createStep("buyback-notice-input", async (input: { request_id: string; actor_id?: string; command: { action: string } }, { container }) => {
-  if (!input.actor_id || input.command.action === "link_device") return new StepResponse(null)
+const buybackNoticeInput = createStep("buyback-notice-input", async (input: { request_id: string; actor_id?: string; command: { action: string; review_status?: string } }, { container }) => {
+  if (!input.actor_id || input.command.action === "link_device" || (input.command.action === "review_photo" && input.command.review_status !== "retake")) return new StepResponse(null)
   const request = await container.resolve<BuybackModuleService>(BUYBACK_MODULE).retrieveBuybackRequest(input.request_id)
   const history = request.history as unknown as { at: string }[]
   return new StepResponse({ customer_id: request.customer_id, event_key: `buyback:${request.id}:${history[history.length - 1].at}`, kind: "buyback.updated", resource_id: request.id, reference: request.id, action: input.command.action })

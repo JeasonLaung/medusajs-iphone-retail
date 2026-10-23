@@ -87,7 +87,7 @@ function DailyTrendChart({ stats, filters }: { stats: TrafficStats; filters: Dat
   const { token } = antdTheme.useToken()
   const points = useMemo(() => fillDailyTrend(stats.trend, filters), [filters, stats.trend])
   const option = useMemo<ChartOption>(() => ({
-    tooltip: { trigger: 'axis' },
+    tooltip: { trigger: 'axis', backgroundColor: token.colorBgElevated, borderColor: token.colorBorder, textStyle: { color: token.colorText } },
     grid: { left: 20, right: 20, top: 24, bottom: 12, containLabel: true },
     xAxis: { type: 'category', boundaryGap: false, data: points.map((point) => point.date), axisLabel: { color: token.colorTextSecondary } },
     yAxis: { type: 'value', minInterval: 1, axisLabel: { color: token.colorTextSecondary }, splitLine: { lineStyle: { color: token.colorBorderSecondary } } },
@@ -105,7 +105,7 @@ function DistributionChart({ items, label }: { items: CrawlerStatsRow[]; label: 
     const formatPercentage = (value: number) => `${value.toLocaleString('zh-CN', { maximumFractionDigits: 1 })}%`
 
     return {
-      tooltip: { trigger: 'item', renderMode: 'richText', formatter: '{b}\n{c} ({d}%)' },
+      tooltip: { trigger: 'item', backgroundColor: token.colorBgElevated, borderColor: token.colorBorder, textStyle: { color: token.colorText }, renderMode: 'richText', formatter: '{b}\n{c} ({d}%)' },
       legend: {
         type: 'scroll',
         bottom: 0,

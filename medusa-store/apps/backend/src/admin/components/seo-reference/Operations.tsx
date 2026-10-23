@@ -1,5 +1,5 @@
 import tr from "./translate"
-import { App as AntdApp } from "antd"
+import { App as AntdApp, theme } from "antd"
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Alert, Button, Card, Col, Empty, List, Row, Space, Statistic, Tag, Typography } from 'antd'
 import { Table } from './ResizableTable'
@@ -21,19 +21,19 @@ function Metric({ title, value }: { title: string; value: string | number }) { r
 const number = new Intl.NumberFormat('en-GB', { maximumFractionDigits: 1 })
 
 function GA4TrendChart({ data }: { data: GoogleDailyMetric[] }) {
+  const { token } = theme.useToken()
   const host = useRef<HTMLDivElement>(null)
   const ordered = useMemo(() => [...data].sort((a, b) => a.date.localeCompare(b.date)), [data])
   useEffect(() => {
     if (!host.current || ordered.length === 0) return
     const chart = echarts.init(host.current)
-    const styles = getComputedStyle(host.current)
-    const colors = ['--chart-series-1', '--chart-series-2', '--chart-series-3', '--chart-series-4'].map((name) => styles.getPropertyValue(name).trim())
-    const axisColor = styles.getPropertyValue('--chart-axis').trim()
-    const splitColor = styles.getPropertyValue('--chart-split').trim()
+    const colors = [token.colorPrimary, token.colorSuccess, token.colorPrimaryActive, token.colorWarning]
+    const axisColor = token.colorTextSecondary
+    const splitColor = token.colorSplit
     chart.setOption({
       color: colors,
-      tooltip: { trigger: 'axis' },
-      legend: { data: [tr("活跃用户"), tr("新用户"), tr("会话"), tr("关键事件")], top: 0 },
+      tooltip: { trigger: 'axis', backgroundColor: token.colorBgElevated, borderColor: token.colorBorder, textStyle: { color: token.colorText } },
+      legend: { data: [tr("活跃用户"), tr("新用户"), tr("会话"), tr("关键事件")], top: 0, textStyle: { color: token.colorTextSecondary } },
       grid: { left: 52, right: 20, top: 52, bottom: 42 },
       xAxis: { type: 'category', boundaryGap: false, data: ordered.map((item) => item.date.slice(5)), axisLabel: { color: axisColor }, axisLine: { lineStyle: { color: axisColor } } },
       yAxis: { type: 'value', minInterval: 1, axisLabel: { color: axisColor }, splitLine: { lineStyle: { color: splitColor } } },
@@ -47,22 +47,22 @@ function GA4TrendChart({ data }: { data: GoogleDailyMetric[] }) {
     const observer = new ResizeObserver(() => chart.resize())
     observer.observe(host.current)
     return () => { observer.disconnect(); chart.dispose() }
-  }, [ordered])
+  }, [ordered, token])
   return <div ref={host} className="google-trend-chart" role="img" aria-label={tr("Google Analytics 4 每日趋势折线图")} />
 }
 
 function TrafficTrendChart({ data }: { data: TrafficStats['trend'] }) {
+  const { token } = theme.useToken()
   const host = useRef<HTMLDivElement>(null)
   const ordered = useMemo(() => [...data].sort((a, b) => a.date.localeCompare(b.date)), [data])
   useEffect(() => {
     if (!host.current || ordered.length === 0) return
     const chart = echarts.init(host.current)
-    const styles = getComputedStyle(host.current)
-    const color = styles.getPropertyValue('--chart-series-2').trim()
-    const axisColor = styles.getPropertyValue('--chart-axis').trim()
-    const splitColor = styles.getPropertyValue('--chart-split').trim()
+    const color = token.colorSuccess
+    const axisColor = token.colorTextSecondary
+    const splitColor = token.colorSplit
     chart.setOption({
-      tooltip: { trigger: 'axis' },
+      tooltip: { trigger: 'axis', backgroundColor: token.colorBgElevated, borderColor: token.colorBorder, textStyle: { color: token.colorText } },
       grid: { left: 52, right: 20, top: 20, bottom: 42 },
       xAxis: { type: 'category', boundaryGap: false, data: ordered.map((item) => item.date.slice(5)), axisLabel: { color: axisColor }, axisLine: { lineStyle: { color: axisColor } } },
       yAxis: { type: 'value', minInterval: 1, axisLabel: { color: axisColor }, splitLine: { lineStyle: { color: splitColor } } },
@@ -71,7 +71,7 @@ function TrafficTrendChart({ data }: { data: TrafficStats['trend'] }) {
     const observer = new ResizeObserver(() => chart.resize())
     observer.observe(host.current)
     return () => { observer.disconnect(); chart.dispose() }
-  }, [ordered])
+  }, [ordered, token])
   return <div ref={host} className="google-trend-chart" role="img" aria-label={tr("渠道来源最近 30 天每日趋势折线图")} />
 }
 

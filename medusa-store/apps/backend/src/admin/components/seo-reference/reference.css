@@ -1,4 +1,4 @@
-.seo-reference { --seo-text: #000000E0; --seo-secondary: #000000A6; --seo-border: #D9D9D9; --seo-divider: #0505050F; --chart-series-1: #1677FF; --chart-series-2: #52C41A; --chart-series-3: #0958D9; --chart-series-4: #FA8C16; --chart-axis: #000000A6; --chart-split: #0505050F; min-width: 0; }
+.seo-reference { min-width: 0; color: var(--seo-text); }
 .seo-reference .operations-dashboard { display: flex; flex-direction: column; gap: 16px; }
 .seo-reference .operations-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
 .seo-reference .operations-heading h2 { margin: 2px 0 4px; color: var(--seo-text); }.seo-reference .eyebrow { display: block; color: var(--seo-secondary); font-size: 12px; letter-spacing: 1.5px; font-weight: 700; }
@@ -7,10 +7,10 @@
 .seo-reference .crawler-summary-row > .ant-col { display: flex; }
 .seo-reference .operations-card-row > .ant-col > .ant-card,
 .seo-reference .crawler-summary-row > .ant-col > .ant-card { width: 100%; height: 100%; }
-.seo-reference .discover-check-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }.seo-reference .discover-check { min-height: 68px; display: flex; align-items: center; gap: 11px; padding: 12px 14px; border: 1px solid var(--seo-divider); border-radius: 10px; background: #F8F8F8; }.seo-reference .discover-check-icon { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; font-size: 18px; }.seo-reference .is-pass .discover-check-icon { color: #52C41A; background: #F6FFED; }.seo-reference .is-warn .discover-check-icon { color: #FA8C16; background: #FFF7E6; }.seo-reference .discover-check-body { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 3px; }.seo-reference .discover-check-body .ant-typography-secondary { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }.seo-reference .discover-check-label { color: var(--seo-secondary); font-size: 11px; }.seo-reference .status-icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px; background: #F8F8F8; color: var(--seo-secondary); font-size: 16px; }
-.seo-reference .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 8px 0 18px; }.seo-reference .metric-card { min-width: 0; padding: 13px 14px; background: #F8F8F8; border-radius: 10px; }.seo-reference .metric-card .ant-typography { font-size: 12px; }.seo-reference .metric-value { margin-top: 5px; font-size: 21px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }.seo-reference .google-data-row > .ant-col { display: flex; }.seo-reference .google-data-row > .ant-col > .ant-card { width: 100%; }.seo-reference .google-trend-chart { width: 100%; height: 340px; }.seo-reference .google-search-table .ant-table-column-sorters { justify-content: flex-end; }.seo-reference .google-search-table th:first-child .ant-table-column-sorters { justify-content: flex-start; }
-.seo-reference .datasource-section { margin: 14px 0; padding: 16px; border-radius: 10px; background: #F8F8F8; }.seo-reference .datasource-section h5 { margin-top: 0; }.seo-reference .form-two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }.seo-reference .datasource-check { margin: -2px 0 12px; }
-.seo-reference .indexnow-sitemap-card { margin-bottom: 16px; }.seo-reference .indexnow-sitemap-tree { min-height: 220px; max-height: 380px; overflow: auto; }.seo-reference .indexnow-response { margin-top: 16px; }.seo-reference .indexnow-response pre { max-height: 220px; margin: 8px 0 16px; padding: 12px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; border-radius: 6px; background: rgba(0, 0, 0, .04); }
+.seo-reference .discover-check-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }.seo-reference .discover-check { min-height: 68px; display: flex; align-items: center; gap: 11px; padding: 12px 14px; border: 1px solid var(--seo-divider); border-radius: 10px; background: var(--seo-surface); }.seo-reference .discover-check-icon { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; font-size: 18px; }.seo-reference .is-pass .discover-check-icon { color: var(--seo-success); background: var(--seo-success-bg); }.seo-reference .is-warn .discover-check-icon { color: var(--seo-warning); background: var(--seo-warning-bg); }.seo-reference .discover-check-body { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 3px; }.seo-reference .discover-check-body .ant-typography-secondary { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }.seo-reference .discover-check-label { color: var(--seo-secondary); font-size: 11px; }.seo-reference .status-icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px; background: var(--seo-surface); color: var(--seo-secondary); font-size: 16px; }
+.seo-reference .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 8px 0 18px; }.seo-reference .metric-card { min-width: 0; padding: 13px 14px; background: var(--seo-surface); border-radius: 10px; }.seo-reference .metric-card .ant-typography { font-size: 12px; }.seo-reference .metric-value { margin-top: 5px; font-size: 21px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }.seo-reference .google-data-row > .ant-col { display: flex; }.seo-reference .google-data-row > .ant-col > .ant-card { width: 100%; }.seo-reference .google-trend-chart { width: 100%; height: 340px; }.seo-reference .google-search-table .ant-table-column-sorters { justify-content: flex-end; }.seo-reference .google-search-table th:first-child .ant-table-column-sorters { justify-content: flex-start; }
+.seo-reference .datasource-section { margin: 14px 0; padding: 16px; border-radius: 10px; background: var(--seo-surface); }.seo-reference .datasource-section h5 { margin-top: 0; }.seo-reference .form-two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }.seo-reference .datasource-check { margin: -2px 0 12px; }
+.seo-reference .indexnow-sitemap-card { margin-bottom: 16px; }.seo-reference .indexnow-sitemap-tree { min-height: 220px; max-height: 380px; overflow: auto; }.seo-reference .indexnow-response { margin-top: 16px; }.seo-reference .indexnow-response pre { max-height: 220px; margin: 8px 0 16px; padding: 12px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; border-radius: 6px; background: var(--seo-surface); }
 @media (max-width: 700px) { .seo-reference .operations-heading, .seo-reference .discover-summary .ant-card-body { flex-direction: column; align-items: stretch; }.seo-reference .summary-score { text-align: left; }.seo-reference .discover-check-grid, .seo-reference .metric-grid, .seo-reference .form-two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }.seo-reference .google-trend-chart { height: 280px; } }
 
 .seo-reference .crawler-logs-page > .ant-space-item { width: 100%; }
@@ -53,7 +53,7 @@
   width: 2px;
   height: 56%;
   border-radius: 2px;
-  background: #D9D9D9;
+  background: var(--seo-border);
   content: '';
   opacity: 0;
   transition: opacity .16s ease, background-color .16s ease;
@@ -63,7 +63,7 @@
   opacity: 1;
 }
 .seo-reference .table-column-resize-handle:focus-visible {
-  outline: 2px solid #1677ff;
+  outline: 2px solid var(--seo-primary);
   outline-offset: -3px;
 }
 .is-resizing-table-column,

@@ -38,6 +38,14 @@ function setup(status = "received", extra: Record<string, unknown> = {}, photos 
   return { service, files, container, admin, customer }
 }
 describe("buyback inspection, customer decision and photo controls", () => {
+  it.each(["customer", "platform"] as const)("records who canceled the request: %s", async (actor) => {
+    const flow = setup("awaiting_photos")
+    const { output } = actor === "customer"
+      ? await flow.customer({ action: "cancel" })
+      : await flow.admin({ action: "cancel", note: "Canceled by platform" })
+    expect(output.history).toEqual([expect.objectContaining({ action: "cancel", actor, status: "canceled" })])
+  })
+
   it("recalculates and snapshots the questionnaire estimate when creating a request", async () => {
     const service = {
       listBuybackRequests: jest.fn().mockResolvedValue([]),

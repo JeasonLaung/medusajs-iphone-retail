@@ -35,11 +35,11 @@ it("does not assign a guest order's notifications to another customer", async ()
 it.each(["review_photo", "approve_shipping", "mark_received", "final_offer", "mark_paid", "request_return", "mark_returning", "mark_returned", "cancel"])("notifies the request owner after Admin action %s", async action => {
   const request = { id: "buyback1", customer_id: "customer1", history: [{ at: "2026-10-23T08:00:00Z" }] }
   const container = { resolve: () => ({ retrieveBuybackRequest: async () => request }) }
-  const response = await prepareBuyback({ request_id: request.id, actor_id: "admin1", command: { action } }, { container })
+  const response = await prepareBuyback({ request_id: request.id, actor_id: "admin1", command: { action, ...(action === "review_photo" ? { review_status: "retake" } : {}) } }, { container })
   expect(response.output).toEqual({ customer_id: "customer1", event_key: "buyback:buyback1:2026-10-23T08:00:00Z", kind: "buyback.updated", resource_id: request.id, reference: request.id, action })
 })
 
-it.each([{ customer_id: "customer1", command: { action: "accept_offer" } }, { actor_id: "admin1", command: { action: "link_device" } }])("skips customer actions and internal device links", async input => {
+it.each([{ customer_id: "customer1", command: { action: "accept_offer" } }, { actor_id: "admin1", command: { action: "link_device" } }, { actor_id: "admin1", command: { action: "review_photo", review_status: "approved" } }])("skips customer actions and internal device links", async input => {
   const container = { resolve: jest.fn() }
   expect((await prepareBuyback(input, { container })).output).toBeNull()
   expect(container.resolve).not.toHaveBeenCalled()
