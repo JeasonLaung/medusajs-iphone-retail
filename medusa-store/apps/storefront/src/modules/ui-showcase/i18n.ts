@@ -1,5 +1,6 @@
 const en = {
   title: "UI component library",
+  europeanCountry: "CountrySelect · European countries / regions", chooseCountry: "Select a European country / region",
   selectionSingle: "SelectionRow · single selection (radio)", selectionHelp: "Use this row style for single choices. Select anywhere on a row; only one option in each group can be selected.", selectionMultiple: "SelectionRow · multiple selection (checkbox)", selectionMultipleHelp: "Use the same row style with checkboxes for multiple choices. Each option can be selected or cleared independently.", selectionGrade: "Grade", selectionBattery: "Battery", selectionExtras: "Accessories", selectionCable: "Charging cable", selectionCharger: "Power adapter", selectionCase: "Protective case", selectionSelected: "Selected option",
   intro: "Explore the storefront’s shared components and the controls used in accounts, checkout, reviews and buyback. All examples use local demo data.",
   navigation: "Component sections", home: "Home", actions: "Buttons & links", forms: "Form controls", shared: "Shared storefront components", feedback: "Feedback & states", data: "Data & navigation", overlays: "Dialogs & forms", commerce: "Product & cart components",
@@ -20,6 +21,7 @@ const en = {
 
 const zh: typeof en = {
   title: "UI 组件总览",
+  europeanCountry: "CountrySelect · 欧洲国家 / 地区选择", chooseCountry: "请选择欧洲国家 / 地区",
   selectionSingle: "SelectionRow · 单选（radio）", selectionHelp: "单选优先使用此整行样式。点击整行即可选择，每组只能选一项。", selectionMultiple: "SelectionRow · 多选（checkbox）", selectionMultipleHelp: "多选使用相同的整行样式，控件改为 checkbox，各项可独立勾选或取消。", selectionGrade: "等级", selectionBattery: "电池", selectionExtras: "配件", selectionCable: "充电线", selectionCharger: "电源适配器", selectionCase: "保护壳", selectionSelected: "已选选项",
   intro: "集中查看前台通用组件，以及账户、结账、评价和回收流程中使用的控件。所有示例均使用本地演示数据。",
   navigation: "组件分区", home: "首页", actions: "按钮与链接", forms: "表单控件", shared: "前台通用组件", feedback: "反馈与状态", data: "数据展示与导航", overlays: "弹窗与表单", commerce: "商品与购物车组件",

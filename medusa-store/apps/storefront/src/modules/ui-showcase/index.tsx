@@ -7,6 +7,7 @@ import { Button, IconButton, Input as AccountInput, Modal as AccountModal } from
 import * as Shared from "@modules/common/components/ui"
 import FloatingInput from "@modules/common/components/input"
 import NativeSelect from "@modules/common/components/native-select"
+import CountrySelect from "@modules/checkout/components/country-select"
 import CheckboxWithLabel from "@modules/common/components/checkbox"
 import FilterRadioGroup from "@modules/common/components/filter-radio-group"
 import SelectionRow from "@modules/common/components/selection-row"
@@ -85,6 +86,7 @@ export default function UiShowcase({ locale }: { locale: string | null }) {
           <Form.Item label={c.search} layout="vertical"><Input.Search aria-label={c.search} placeholder={c.search} allowClear onSearch={() => setNotice(true)} /></Form.Item>
           <Form.Item label={c.disabled} layout="vertical"><Input aria-label={c.disabled} disabled value={c.disabled} /></Form.Item>
           <Form.Item label={c.model} layout="vertical"><Select aria-label={c.model} className={styles.full} showSearch allowClear placeholder={c.choose} options={models} /></Form.Item>
+          <Form.Item label={c.europeanCountry} layout="vertical"><CountrySelect aria-label={c.europeanCountry} placeholder={c.chooseCountry} data-testid="ui-european-country" /></Form.Item>
           <Form.Item label={c.multiple} layout="vertical"><Select aria-label={c.multiple} mode="multiple" className={styles.full} placeholder={c.choose} options={capacities} /></Form.Item>
           <Form.Item label={c.errorField} layout="vertical" validateStatus="error" help={c.errorHelp}><Input aria-label={c.errorField} aria-invalid="true" /></Form.Item>
           <Form.Item label={c.warningField} layout="vertical" validateStatus="warning" help={c.warningHelp}><Input aria-label={c.warningField} /></Form.Item>
