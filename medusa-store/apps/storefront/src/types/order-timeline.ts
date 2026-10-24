@@ -3,6 +3,7 @@ export type OrderTimelineKind =
   | "packed" | "shipped" | "delivered" | "fulfillment_canceled" | "canceled"
 
 export type OrderShipment = {
+  official_demo?: boolean
   id: string
   shipped_at: string | null
   delivered_at: string | null

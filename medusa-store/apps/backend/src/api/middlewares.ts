@@ -41,6 +41,7 @@ import {
 // the route narrows it to published products in the key's sales channels.
 export default defineMiddlewares({
   routes: [
+    { matcher: "/admin/shipping-demo/*", middlewares: [authenticate("user", ["session", "bearer", "api-key"])] },
     { matcher: "/store/notifications", middlewares: [authenticate("customer", ["session", "bearer"])] },
     { matcher: "/store/notifications", method: "POST", middlewares: [validateAndTransformBody(ReadNoticesBody)] },
     { matcher: "/auth/verification/request", method: "POST", middlewares: [authenticate("*", ["session", "bearer"], { allowUnregistered: true, requireMfa: false }), guardRegistrationVerification] },

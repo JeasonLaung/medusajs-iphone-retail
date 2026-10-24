@@ -1,6 +1,6 @@
 import { Heading } from "@modules/common/components/ui"
 import { cookies as nextCookies } from "next/headers"
-import { retrieveOrderTimeline } from "@lib/data/orders"
+import { retrieveOrderTimeline, retrieveShippingDemo } from "@lib/data/orders"
 import { getLocale } from "@lib/data/locale-actions"
 import { getAccountCopy } from "@modules/account/i18n"
 
@@ -22,6 +22,7 @@ export default async function OrderCompletedTemplate({
 }: OrderCompletedTemplateProps) {
   const cookies = await nextCookies()
   const timeline = await retrieveOrderTimeline(order.id)
+  const shipments = timeline?.shipments ?? (order.email === "dhl-native-demo@example.invalid" ? await retrieveShippingDemo(order.id) : undefined)
   const { t } = getAccountCopy(await getLocale())
 
   const isOnboarding = cookies.get("_medusa_onboarding")?.value === "true"
@@ -47,7 +48,7 @@ export default async function OrderCompletedTemplate({
           </Heading>
           <Items order={order} />
           <CartTotals totals={order} />
-          <ShippingDetails order={order} shipments={timeline?.shipments} />
+          <ShippingDetails order={order} shipments={shipments} />
           <PaymentDetails order={order} />
           <AfterSales order={order} />
         </div>

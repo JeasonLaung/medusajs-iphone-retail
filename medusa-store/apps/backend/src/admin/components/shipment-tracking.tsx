@@ -10,8 +10,9 @@ type Shipment = {
   labels?: { tracking_number: string; tracking_url: string }[]
 }
 
-export default function ShipmentTracking({ shipments, demonstration = false }: {
+export default function ShipmentTracking({ shipments, demonstration = false, carrierDemo = false }: {
   shipments: Shipment[]
+  carrierDemo?: boolean
   demonstration?: boolean
 }) {
   const { i18n } = useTranslation()
@@ -33,7 +34,7 @@ export default function ShipmentTracking({ shipments, demonstration = false }: {
       {demonstration ? <>
         <ol className="space-y-4" aria-label={zh ? "模拟物流轨迹" : "Simulated transit events"}>{demo.events.map((event, index) => <li key={event.time} className="flex gap-3"><Badge color={index === 0 ? "blue" : "grey"}>{index + 1}</Badge><div><Text size="small">{zh ? event.zh : event.en}</Text><Text size="small" className="text-ui-fg-subtle"><time dateTime={event.time}>{new Date(event.time).toLocaleString(zh ? "zh-CN" : "en-GB", { timeZone: "Asia/Shanghai", timeZoneName: "short", hour12: false })}</time></Text></div></li>)}</ol>
         <Text size="small"><a className="text-ui-fg-interactive underline" href={demo.source_url} target="_blank" rel="noopener noreferrer">{zh ? "官方测试单号说明" : "Official test number documentation"}</a></Text>
-      </> : <Text size="small" className="text-ui-fg-subtle">{zh ? "暂未接入站内运输轨迹；如提供查询链接，可前往承运商页面查看。" : "In-site transit events are not connected yet. Use the carrier link, if provided, for tracking details."}</Text>}
+      </> : !carrierDemo && <Text size="small" className="text-ui-fg-subtle">{zh ? "暂未接入站内运输轨迹；如提供查询链接，可前往承运商页面查看。" : "In-site transit events are not connected yet. Use the carrier link, if provided, for tracking details."}</Text>}
     </div>)}
   </Container>
 }

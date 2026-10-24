@@ -4,7 +4,7 @@ import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { HttpTypes } from "@medusajs/types"
-import type { OrderTimeline } from "types/order-timeline"
+import type { OrderShipment, OrderTimeline } from "types/order-timeline"
 
 export const retrieveOrderTimeline = async (id: string): Promise<OrderTimeline | null> => {
   try {
@@ -116,4 +116,12 @@ export const declineTransferRequest = async (id: string, token: string) => {
     .declineTransfer(id, { token }, {}, headers)
     .then(({ order }) => ({ success: true, error: null, order }))
     .catch((err) => ({ success: false, error: err.message, order: null }))
+}
+
+// Guest preview is restricted by the backend to explicit development fixtures.
+export const retrieveShippingDemo = async (id: string): Promise<OrderShipment[]> => {
+  try {
+    const response = await sdk.client.fetch<{ shipments: OrderShipment[] }>(`/store/shipping-demo/orders/${id}`, { cache: "no-store" })
+    return response.shipments
+  } catch { return [] }
 }

@@ -1,5 +1,6 @@
 "use client"
 
+import DhlOfficialTracking from "@modules/order/components/dhl-official-tracking"
 import { Alert, Tag, Timeline } from "antd"
 import { useAccountCopy } from "@modules/account/use-account-copy"
 import type { OrderShipment } from "types/order-timeline"
@@ -31,7 +32,8 @@ export default function ShipmentTracking({ shipments = [], demonstration = false
       {demonstration ? <>
         <Timeline className="pt-3" items={demo.events.map((event) => ({ content: <div><p>{zh ? event.zh : event.en}</p><time className="text-sm text-ui-fg-subtle" dateTime={event.time}>{new Date(event.time).toLocaleString(locale, { timeZone: "Asia/Shanghai", timeZoneName: "short", hour12: false })}</time></div> }))} />
         <a className="text-sm text-ui-fg-interactive underline" href={demo.source_url} target="_blank" rel="noopener noreferrer">{zh ? "官方测试单号说明" : "Official test number documentation"}</a>
-      </> : <p className="text-sm text-ui-fg-subtle">{zh ? "暂未接入站内运输轨迹；如提供查询链接，可前往承运商页面查看。" : "In-site transit events are not connected yet. Use the carrier link, if provided, for tracking details."}</p>}
+      </> : !shipment.official_demo && <p className="text-sm text-ui-fg-subtle">{zh ? "暂未接入站内运输轨迹；如提供查询链接，可前往承运商页面查看。" : "In-site transit events are not connected yet. Use the carrier link, if provided, for tracking details."}</p>}
+      {shipment.official_demo && <DhlOfficialTracking />}
     </div>)}
   </section>
 }
