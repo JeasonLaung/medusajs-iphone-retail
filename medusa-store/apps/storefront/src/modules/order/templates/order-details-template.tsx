@@ -46,7 +46,7 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
         <div className="grid grid-cols-1 gap-8 small:grid-cols-[minmax(0,1fr)_260px]">
           <div className="min-w-0 flex flex-col gap-4">
             <Items order={order} />
-            <ShippingDetails order={order} />
+            <ShippingDetails order={order} shipments={timeline?.shipments} />
             <OrderSummary order={order} />
             {order.status !== "canceled" && (
               <>

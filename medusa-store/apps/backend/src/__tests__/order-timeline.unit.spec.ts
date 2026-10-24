@@ -61,8 +61,28 @@ it("returns only customer-facing event fields from device records", async () => 
     { order_id: "o1", action: ["assign", "release", "replace_allocation"] },
     expect.objectContaining({ select: ["id", "action", "created_at"] }),
   )
-  expect(res.json).toHaveBeenCalledWith({ currency_code: "eur", events: [
+  expect(res.json).toHaveBeenCalledWith({ shipments: [], currency_code: "eur", events: [
     { id: "o1", kind: "placed", occurred_at: "2026-10-21T10:00:00.000Z" },
     { id: "e1", kind: "allocated", occurred_at: "2026-10-21T10:01:00.000Z" },
   ] })
+})
+
+
+it("shows only shipped active packages and excludes internal fulfillment data", async () => {
+  const shipped = {
+    id: "f1", created_at: "2026-10-21T10:01:00Z", shipped_at: "2026-10-21T10:02:00Z", delivered_at: null,
+    data: { internal_cost: 100 },
+    labels: [{ tracking_number: "DEMO-TEST", tracking_url: "https://example.com/track", label_url: "https://example.com/private-label" }],
+  }
+  const graph = jest.fn().mockResolvedValue({ data: [{ ...order, currency_code: "eur", fulfillments: [
+    null, shipped, { ...shipped, id: "canceled", canceled_at: "2026-10-21T10:03:00Z" },
+    { ...shipped, id: "packed", shipped_at: null },
+  ] }] })
+  const res = { json: jest.fn() }
+  await GET({ params: { id: "o1" }, auth_context: { actor_id: "c1" }, scope: { resolve: (key: string) => key === ContainerRegistrationKeys.QUERY ? { graph } : { listDeviceEvents: async () => [] } } } as any, res as any)
+  expect(res.json.mock.calls[0][0].shipments).toEqual([{
+    id: "f1", shipped_at: shipped.shipped_at, delivered_at: null,
+    labels: [{ tracking_number: "DEMO-TEST", tracking_url: "https://example.com/track" }],
+  }])
+  expect(graph).toHaveBeenCalledWith(expect.objectContaining({ filters: { id: "o1", customer_id: "c1" } }))
 })

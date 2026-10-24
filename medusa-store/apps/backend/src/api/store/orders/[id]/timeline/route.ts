@@ -13,6 +13,7 @@ export async function GET(req: AuthenticatedMedusaRequest, res: MedusaResponse) 
       "payment_collections.payments.id", "payment_collections.payments.amount", "payment_collections.payments.captured_at",
       "payment_collections.payments.captures.id", "payment_collections.payments.captures.amount", "payment_collections.payments.captures.created_at",
       "payment_collections.payments.refunds.id", "payment_collections.payments.refunds.amount", "payment_collections.payments.refunds.created_at",
+      "fulfillments.labels.tracking_number", "fulfillments.labels.tracking_url",
       "fulfillments.id", "fulfillments.created_at", "fulfillments.shipped_at", "fulfillments.delivered_at", "fulfillments.canceled_at",
     ],
     filters: { id: req.params.id, customer_id: req.auth_context.actor_id },
@@ -24,5 +25,19 @@ export async function GET(req: AuthenticatedMedusaRequest, res: MedusaResponse) 
     { order_id: order.id, action: ["assign", "release", "replace_allocation"] },
     { select: ["id", "action", "created_at"], take: null, order: { created_at: "ASC" } },
   )
-  res.json({ events: buildOrderTimeline(order, events), currency_code: order.currency_code })
+  res.json({
+    events: buildOrderTimeline(order, events),
+    currency_code: order.currency_code,
+    shipments: (order.fulfillments || [])
+      .filter((fulfillment): fulfillment is NonNullable<typeof fulfillment> => Boolean(fulfillment && !fulfillment.canceled_at && fulfillment.shipped_at))
+      .map((fulfillment) => ({
+        id: fulfillment.id,
+        shipped_at: fulfillment.shipped_at,
+        delivered_at: fulfillment.delivered_at,
+        labels: (fulfillment.labels || []).map((label) => ({
+          tracking_number: label.tracking_number,
+          tracking_url: label.tracking_url,
+        })),
+      })),
+  })
 }

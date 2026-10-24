@@ -1,5 +1,6 @@
 import { Heading } from "@modules/common/components/ui"
 import { cookies as nextCookies } from "next/headers"
+import { retrieveOrderTimeline } from "@lib/data/orders"
 import { getLocale } from "@lib/data/locale-actions"
 import { getAccountCopy } from "@modules/account/i18n"
 
@@ -20,6 +21,7 @@ export default async function OrderCompletedTemplate({
   order,
 }: OrderCompletedTemplateProps) {
   const cookies = await nextCookies()
+  const timeline = await retrieveOrderTimeline(order.id)
   const { t } = getAccountCopy(await getLocale())
 
   const isOnboarding = cookies.get("_medusa_onboarding")?.value === "true"
@@ -45,7 +47,7 @@ export default async function OrderCompletedTemplate({
           </Heading>
           <Items order={order} />
           <CartTotals totals={order} />
-          <ShippingDetails order={order} />
+          <ShippingDetails order={order} shipments={timeline?.shipments} />
           <PaymentDetails order={order} />
           <AfterSales order={order} />
         </div>

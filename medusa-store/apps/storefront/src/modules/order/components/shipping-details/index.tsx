@@ -6,13 +6,17 @@ import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 import { Heading, Text } from "@modules/account/components/ui"
 
+import ShipmentTracking from "@modules/order/components/shipment-tracking"
+import type { OrderShipment } from "types/order-timeline"
+
 import { Divider } from "antd"
 
 type ShippingDetailsProps = {
   order: HttpTypes.StoreOrder
+  shipments?: OrderShipment[]
 }
 
-const ShippingDetails = ({ order }: ShippingDetailsProps) => {
+const ShippingDetails = ({ order, shipments }: ShippingDetailsProps) => {
   const { t, locale } = useAccountCopy()
   return (
     <div>
@@ -75,6 +79,7 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
           </Text>
         </div>
       </div>
+      <ShipmentTracking shipments={shipments} />
       <Divider className="mt-8" />
     </div>
   )
