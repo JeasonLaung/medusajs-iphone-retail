@@ -1,3 +1,5 @@
+import { PolicyOperation } from "@medusajs/framework/utils"
+import { UpdateShipmentTracking } from "./admin/orders/[id]/fulfillments/[fulfillment_id]/tracking/validators"
 import { guardRegistrationVerification, guardVerifiedCustomerRegistration } from "./registration-guards"
 import { ReadNoticesBody } from "./store/notifications/validators"
 import {
@@ -41,6 +43,12 @@ import {
 // the route narrows it to published products in the key's sales channels.
 export default defineMiddlewares({
   routes: [
+    {
+      matcher: "/admin/orders/:id/fulfillments/:fulfillment_id/tracking",
+      method: "POST",
+      middlewares: [authenticate("user", ["session", "bearer", "api-key"]), validateAndTransformBody(UpdateShipmentTracking)],
+      policies: [{ resource: "fulfillment", operation: PolicyOperation.update }],
+    },
     { matcher: "/admin/shipping-demo/*", middlewares: [authenticate("user", ["session", "bearer", "api-key"])] },
     { matcher: "/store/notifications", middlewares: [authenticate("customer", ["session", "bearer"])] },
     { matcher: "/store/notifications", method: "POST", middlewares: [validateAndTransformBody(ReadNoticesBody)] },

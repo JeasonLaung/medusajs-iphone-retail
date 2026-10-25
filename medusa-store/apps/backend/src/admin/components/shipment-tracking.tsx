@@ -1,21 +1,25 @@
-import { Container, Text, Badge } from "@medusajs/ui"
+import { Button, Container, Text, Badge } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import { useState } from "react"
+import ShipmentTrackingDrawer from "./shipment-tracking-drawer"
 import demo from "../../../../../shared/shipping-demo.json"
 
-type Shipment = {
+export type Shipment = {
   id: string
   shipped_at?: string | Date | null
   delivered_at?: string | Date | null
   canceled_at?: string | Date | null
-  labels?: { tracking_number: string; tracking_url: string }[]
+  labels?: { id?: string; tracking_number: string; tracking_url: string }[]
 }
 
-export default function ShipmentTracking({ shipments, demonstration = false, carrierDemo = false }: {
+export default function ShipmentTracking({ shipments, demonstration = false, carrierDemo = false, orderId }: {
+  orderId?: string
   shipments: Shipment[]
   carrierDemo?: boolean
   demonstration?: boolean
 }) {
-  const { i18n } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const [editing, setEditing] = useState<Shipment>()
   const zh = i18n.language.startsWith("zh")
   const active = shipments.filter((shipment) => !shipment.canceled_at && shipment.shipped_at)
   return <Container className="space-y-4 px-6 py-4" data-testid="admin-shipment-tracking">
@@ -24,6 +28,7 @@ export default function ShipmentTracking({ shipments, demonstration = false, car
     {!active.length && <Text size="small" className="text-ui-fg-subtle">{zh ? "暂无已发货包裹" : "No shipped packages yet"}</Text>}
     {active.map((shipment, index) => <div key={shipment.id} className="min-w-0 space-y-3 rounded-md bg-ui-bg-subtle p-4">
       <div className="flex flex-wrap items-center gap-2"><Text size="small" weight="plus">{zh ? `包裹 ${index + 1}` : `Package ${index + 1}`}</Text><Badge color={shipment.delivered_at ? "green" : "blue"}>{demonstration ? (zh ? "派送中（模拟）" : "Out for delivery (simulated)") : shipment.delivered_at ? (zh ? "已送达" : "Delivered") : (zh ? "已发货" : "Shipped")}</Badge></div>
+      {orderId && !demonstration && <Button size="small" variant="secondary" onClick={() => setEditing(shipment)}>{t(shipment.labels?.some((label) => label.tracking_number) ? "shipmentTracking.edit" : "shipmentTracking.add")}</Button>}
       {shipment.labels?.length ? shipment.labels.map((label, labelIndex) => {
         const safeUrl = /^https?:\/\//i.test(label.tracking_url) ? label.tracking_url : null
         return <div key={labelIndex} className="min-w-0 space-y-1">
@@ -36,5 +41,6 @@ export default function ShipmentTracking({ shipments, demonstration = false, car
         <Text size="small"><a className="text-ui-fg-interactive underline" href={demo.source_url} target="_blank" rel="noopener noreferrer">{zh ? "官方测试单号说明" : "Official test number documentation"}</a></Text>
       </> : !carrierDemo && <Text size="small" className="text-ui-fg-subtle">{zh ? "暂未接入站内运输轨迹；如提供查询链接，可前往承运商页面查看。" : "In-site transit events are not connected yet. Use the carrier link, if provided, for tracking details."}</Text>}
     </div>)}
+    {editing && orderId && <ShipmentTrackingDrawer orderId={orderId} shipment={editing} onClose={() => setEditing(undefined)} />}
   </Container>
 }

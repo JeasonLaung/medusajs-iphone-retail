@@ -1,4 +1,20 @@
 {
+  "shipmentTracking": {
+    "add": "Add tracking number",
+    "edit": "Edit tracking numbers",
+    "title": "Shipment tracking",
+    "description": "Update tracking details only. Shipment status and shipment time stay the same. No new shipping notification will be sent.",
+    "entry": "Tracking entry {{number}}",
+    "number": "Tracking number",
+    "url": "Tracking URL (optional)",
+    "numberRequired": "Enter a tracking number.",
+    "invalidUrl": "Enter a valid HTTP or HTTPS URL.",
+    "addEntry": "Add another tracking number",
+    "saved": "Tracking details saved",
+    "notShipped": "Only shipped, uncanceled packages can be updated.",
+    "staleLabels": "Tracking details changed. Close this panel, refresh the order and try again.",
+    "saveError": "Unable to save tracking details. Please try again."
+  },
   "orderDevices": {
     "autoShippingSource": "Device supply source: {{name}}",
     "availableStock": "Available devices for this configuration: {{count}}",
@@ -271,6 +287,7 @@
     "lookupCreated": "Intake date",
     "lookupUpdated": "Last updated",
     "lookupDeviceId": "Device ID",
+    "lookupOrderNumber": "Order number",
     "lookupOrders": "Linked orders",
     "lookupNoOrders": "No linked orders",
     "lookupNoEvents": "No activity recorded",

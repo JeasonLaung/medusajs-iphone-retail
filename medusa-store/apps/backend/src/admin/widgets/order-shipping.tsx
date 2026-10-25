@@ -16,7 +16,7 @@ const OrderShipping = ({ data: order }: DetailWidgetProps<AdminOrder>) => {
   })
   if (query.isPending) return <Container className="px-6 py-4"><Text role="status">{zh ? "正在加载物流…" : "Loading shipping…"}</Text></Container>
   if (query.isError) return <Container className="space-y-3 px-6 py-4"><Text role="alert">{zh ? "物流信息加载失败" : "Unable to load shipping"}</Text><Button size="small" variant="secondary" onClick={() => void query.refetch()}>{zh ? "重试" : "Retry"}</Button></Container>
-  return <><ShipmentTracking shipments={query.data.order.fulfillments || []} carrierDemo={query.data.order.metadata?.shipping_demo === "dhl-official"} />{query.data.order.metadata?.shipping_demo === "dhl-official" && <DhlOfficialTracking />}</>
+  return <><ShipmentTracking orderId={order.id} shipments={query.data.order.fulfillments || []} carrierDemo={query.data.order.metadata?.shipping_demo === "dhl-official"} />{query.data.order.metadata?.shipping_demo === "dhl-official" && <DhlOfficialTracking />}</>
 }
 
 export const config = defineWidgetConfig({ zone: "order.details.after" })

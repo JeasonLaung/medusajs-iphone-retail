@@ -1,5 +1,6 @@
 import { Button, Checkbox, toast, DataTable, Heading, Select, Text, createDataTableColumnHelper, useDataTable, usePrompt } from "@medusajs/ui"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
+import { Link } from "react-router-dom"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useDeviceTranslations } from "../lib/use-device-translations"
 import { sdk } from "../lib/sdk"
@@ -17,6 +18,7 @@ import { buildDeviceExport } from "../lib/device-xlsx"
 
 type LookupDevice = {
   category: string
+  order?: { id: string; display_id: number | null } | null
   can_delete: boolean
   can_retire: boolean
   can_transfer_return: boolean
@@ -132,6 +134,8 @@ export default function DeviceLookupTable({ onIntake, onDirectIntake, intakeOpen
       helper.accessor("imei2", { size: 155, header: t("orderDevices.imei2"), cell: ({ getValue }) => <Text size="small" className="whitespace-normal break-all">{getValue() || "—"}</Text> }),
       helper.accessor("eid", { size: 220, header: t("orderDevices.eid"), cell: ({ getValue }) => <Text size="small" className="whitespace-normal break-all">{getValue() || "—"}</Text> }),
       helper.accessor("state", { size: 100, header: t("deviceScan.lookupState"), cell: ({ getValue }) => t(`deviceScan.${stateKeys[getValue()] || getValue()}`) }),
+      ...(category === "sale" ? [helper.display({ id: "order", size: 140, header: t("deviceScan.lookupOrderNumber"), cell: ({ row }) => row.original.order ?
+        <Link to={`/orders/${encodeURIComponent(row.original.order.id)}`} className="whitespace-nowrap text-ui-fg-interactive underline hover:no-underline focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-ui-border-interactive">{row.original.order.display_id != null ? `#${row.original.order.display_id}` : row.original.order.id}</Link> : "—" })] : []),
       helper.accessor("grade", { size: 75, header: t("deviceScan.grade"), cell: ({ getValue }) => getValue() || t("orderDevices.notRecorded") }),
       helper.accessor("battery_health", { size: 85, header: t("deviceScan.lookupBattery"), cell: ({ getValue, row }) => readAssessment(row.original.notes)?.assessment?.battery === "unknown" ? t("deviceScan.buyback.unsure") : getValue() == null ? t("orderDevices.notRecorded") : `${getValue()}%` }),
       ...(category === "recycled" ? [helper.display({ id: "buyback-checks", size: 180, header: t("deviceScan.buyback.report"), cell: ({ row }) => {

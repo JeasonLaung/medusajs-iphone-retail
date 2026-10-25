@@ -1,4 +1,20 @@
 {
+  "shipmentTracking": {
+    "add": "补充追踪号码",
+    "edit": "修改追踪号码",
+    "title": "包裹追踪信息",
+    "description": "仅更新追踪信息，保留原发货状态和发货时间，不会重新发送发货通知。",
+    "entry": "追踪信息 {{number}}",
+    "number": "追踪号码",
+    "url": "物流查询链接（选填）",
+    "numberRequired": "请输入追踪号码。",
+    "invalidUrl": "请输入有效的 HTTP 或 HTTPS 链接。",
+    "addEntry": "添加其他追踪号码",
+    "saved": "追踪信息已保存",
+    "notShipped": "仅可更新已发货且未取消的包裹。",
+    "staleLabels": "追踪信息已变化，请关闭面板，刷新订单后重试。",
+    "saveError": "追踪信息保存失败，请重试。"
+  },
   "general": {
     "of": "/"
   },
@@ -274,6 +290,7 @@
     "lookupCreated": "入库时间",
     "lookupUpdated": "更新时间",
     "lookupDeviceId": "设备编号",
+    "lookupOrderNumber": "订单号",
     "lookupOrders": "关联订单",
     "lookupNoOrders": "暂无关联订单",
     "lookupNoEvents": "暂无操作记录",

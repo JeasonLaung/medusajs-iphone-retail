@@ -344,9 +344,20 @@ export async function GET(
   const history = devices.length ? await service.listDeviceAssignments({ device_id: devices.map((d) => d.id), status: ["reserved", "packed", "shipped", "returned"] }, { take: null }) : []
   const locked = new Set(history.map((a) => a.device_id))
   const activeAssignments = new Set(history.filter((a) => a.status !== "returned").map((a) => a.device_id))
+  const pageOrderAssignments = category === "sale" ? history.filter((assignment) =>
+    assignment.status !== "returned" && (!supplier || (assignment.source_id === access.source_id && access.order_ids.includes(assignment.order_id))),
+  ) : []
+  const pageOrderIds = [...new Set(pageOrderAssignments.map((assignment) => assignment.order_id))]
+  const pageOrders = pageOrderIds.length ? (await query.graph({
+    entity: "order",
+    fields: ["id", "display_id"],
+    filters: { id: pageOrderIds },
+  })).data : []
+  const ordersById = new Map(pageOrders.map((entry) => [entry.id, { id: entry.id, display_id: entry.display_id }]))
+  const deviceOrders = new Map(pageOrderAssignments.map((assignment) => [assignment.device_id, ordersById.get(assignment.order_id) || null]))
   res.json({
     access: { ...access, warehouse: warehouse.warehouse, location_ids: warehouse.location_ids },
-    devices: devices.map((d) => ({ ...d, can_transfer_return: !supplier && canTransferDeviceToReturned(d, activeAssignments.has(d.id)) && sources.some((source) => source.type === "self" && source.location_id === d.location_id), can_delete: !supplier && !locked.has(d.id) && !["reserved", "packed", "shipped", "repair_ready"].includes(d.state), can_retire: !supplier && !locked.has(d.id) && ["pending", "available", "inspection", "repair"].includes(d.state) })),
+    devices: devices.map((d) => ({ ...d, ...(category === "sale" ? { order: deviceOrders.get(d.id) || null } : {}), can_transfer_return: !supplier && canTransferDeviceToReturned(d, activeAssignments.has(d.id)) && sources.some((source) => source.type === "self" && source.location_id === d.location_id), can_delete: !supplier && !locked.has(d.id) && !["reserved", "packed", "shipped", "repair_ready"].includes(d.state), can_retire: !supplier && !locked.has(d.id) && ["pending", "available", "inspection", "repair"].includes(d.state) })),
     assigned_devices,
     ...(allocationStock ? { allocation_stock: allocationStock } : {}),
     count,
