@@ -1,4 +1,11 @@
 const en = {
+  gradeGuide: "View grade guide", gradeGuideTitle: "Quality description", gradeGuideIntro: "Compare the cosmetic condition of Grade S and Grade A.",
+  gradeGuideClose: "Close grade guide", gradeGuideS: "Like new", gradeGuideA: "Excellent",
+  gradeGuideSPoints: ["Like-new condition with minimal visible wear.", "Very light hairline marks may be present.", "Core functions are assessed according to the stated inspection scope.", "Battery condition, parts information and any exceptions are confirmed with the product offer."],
+  gradeGuideAPoints: ["Excellent condition with light signs of previous use.", "Minor marks or hairline scratches may be present.", "Core functions are assessed according to the stated inspection scope.", "Battery health is supplied as an 85% or 100% specification; check the selected battery option."],
+  gradeGuideBody: "Body", gradeGuideScreen: "Screen", gradeGuideImage: "iPhone 13 Pro, {grade}, {view} condition example",
+  gradeGuideImageNote: "iPhone 13 Pro shown as a cosmetic condition example. Model and colour may differ from your selection.",
+  gradeGuideZoom: "Hover over the image to inspect the details.",
   cartLimit: "Stock limit reached",
   cartLimitMessage: "Your cart already contains all available stock for this configuration. You can continue to checkout from your cart.",
   inventoryError: "There is not enough stock to add another item. Check your cart or choose another configuration.",
@@ -12,6 +19,13 @@ const en = {
 }
 
 const zh: typeof en = {
+  gradeGuide: "查看等级说明", gradeGuideTitle: "成色说明", gradeGuideIntro: "对比 S 级与 A 级的外观成色。",
+  gradeGuideClose: "关闭等级说明", gradeGuideS: "接近全新", gradeGuideA: "成色优秀",
+  gradeGuideSPoints: ["外观接近全新，几乎无明显使用痕迹。", "可能存在极轻微的细纹。", "主要功能按照所述检测范围进行检查。", "电池状况、零部件信息及特殊情况以商品说明为准。"],
+  gradeGuideAPoints: ["整体成色优秀，有轻微使用痕迹。", "可能存在轻微印记或细小划痕。", "主要功能按照所述检测范围进行检查。", "电池健康度提供 85% 或 100% 规格，请以所选电池选项为准。"],
+  gradeGuideBody: "机身", gradeGuideScreen: "屏幕", gradeGuideImage: "iPhone 13 Pro，{grade}，{view}成色示例",
+  gradeGuideImageNote: "图片使用 iPhone 13 Pro 展示成色标准，机型和颜色可能与所选商品不同。",
+  gradeGuideZoom: "将鼠标移至图片上可放大查看细节。",
   cartLimit: "已达可购数量",
   cartLimitMessage: "购物车中的此配置已达当前可售数量，可前往购物车结账。",
   inventoryError: "剩余库存不足，无法继续添加。请检查购物车或选择其他配置。",
@@ -32,7 +46,7 @@ export const optionLabel = (title: string, locale: string) => {
   const key = title.toLowerCase()
   if (/storage|capacity/.test(key)) return copy.capacity
   if (/colou?r/.test(key)) return copy.colour
-  if (/condition/.test(key)) return copy.condition
+  if (/condition|grade/.test(key)) return copy.condition
   if (/battery/.test(key)) return copy.battery
   return title
 }

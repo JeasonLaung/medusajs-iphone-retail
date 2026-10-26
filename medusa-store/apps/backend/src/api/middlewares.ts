@@ -10,6 +10,7 @@ import {
   validateAndTransformQuery,
 } from "@medusajs/framework/http"
 import { CustomerServiceBody } from "./admin/customer-service/validators"
+import { BuyPoliciesBody } from "../lib/buy-policies"
 import { CreateBuyback, BuybackAdminCommand, BuybackCustomerCommand, BuybackPhotoUpload, BuybackReferencePrice } from "./buyback-validators"
 import { BuybackCatalogCommand, BuybackEstimateBody } from "./buyback-pricing-validators"
 import { SeoCommandBody } from "./seo-validators"
@@ -66,6 +67,8 @@ export default defineMiddlewares({
     { matcher: "/admin/buyback-prices", method: "POST", middlewares: [validateAndTransformBody(BuybackReferencePrice)] },
     { matcher: "/admin/orders/:id/cancel", method: "POST", middlewares: [validateAndTransformBody(CancelOrderBody)] },
     { matcher: "/admin/customer-service", method: "POST", middlewares: [validateAndTransformBody(CustomerServiceBody)] },
+    { matcher: "/admin/buy-policies", middlewares: [authenticate("user", ["session", "bearer", "api-key"])] },
+    { matcher: "/admin/buy-policies", method: "POST", middlewares: [validateAndTransformBody(BuyPoliciesBody)] },
     { matcher: "/admin/warehouse-access", method: "POST", middlewares: [validateAndTransformBody(WarehouseBindingBody)] },
     ...["/admin/devices/photos", "/mobile-intake/photos"].map((matcher) => ({ matcher, method: "POST" as const, bodyParser: { sizeLimit: "34mb" }, middlewares: [validateAndTransformBody(DevicePhotoUpload)] })),
     { matcher: "/admin/devices/mobile-intake", method: "POST", middlewares: [validateAndTransformBody(CreateMobileIntake)] },

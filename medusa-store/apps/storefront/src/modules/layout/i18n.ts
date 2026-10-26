@@ -1,5 +1,9 @@
 const en = {
+  backToTop: "Back to top", whatsappContact: "WhatsApp · Contact customer service",
   collections: "Collections", rights: "All rights reserved.",
+  footerDescription: "Used and refurbished iPhones. Explore models, compare configurations and find your next iPhone.",
+  knowledge: "Knowledge", contact: "Contact us", storageGuide: "Storage guide",
+  configurationGuide: "Configuration guide", beforeOrder: "Before you order", allArticles: "All articles",
   navigation: "Main navigation", buy: "Buy", sell: "Sell", about: "About us",
   reviews: "Reviews", help: "Help", account: "Account", cart: "Cart", ui: "UI",
   menu: "Menu", close: "Close menu", preferences: "Country and language",
@@ -21,7 +25,11 @@ const en = {
 }
 
 const zh: typeof en = {
+  backToTop: "回到顶部", whatsappContact: "WhatsApp · 联系客服",
   collections: "精选系列", rights: "保留所有权利。",
+  footerDescription: "二手与翻新 iPhone，按机型探索、比较配置，找到适合你的下一部手机。",
+  knowledge: "知识指南", contact: "联系我们", storageGuide: "容量选购指南",
+  configurationGuide: "机型配置指南", beforeOrder: "下单前须知", allArticles: "全部文章",
   navigation: "主导航", buy: "购买", sell: "出售", about: "关于我们",
   reviews: "用户评价", help: "帮助", account: "账户", cart: "购物车", ui: "UI",
   menu: "菜单", close: "关闭菜单", preferences: "国家与语言",

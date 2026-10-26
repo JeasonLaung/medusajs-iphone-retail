@@ -1,0 +1,66 @@
+.actions {
+  position: fixed;
+  right: max(clamp(16px, 2.5vw, 32px), env(safe-area-inset-right));
+  bottom: max(52px, calc(env(safe-area-inset-bottom) + 12px));
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border: 2px solid color-mix(in srgb, var(--floating-surface) 92%, transparent);
+  border-radius: 9999px;
+  background: var(--floating-surface);
+  color: var(--floating-text);
+  cursor: pointer;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--floating-text) 12%, transparent);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.action:hover { color: var(--floating-brand); background: var(--floating-selected); transform: translateY(-3px) scale(1.03); }
+.action:active { color: var(--floating-active); }
+.action:focus-visible { outline: 3px solid var(--floating-brand); outline-offset: 3px; }
+.contact { color: var(--floating-surface); background: var(--floating-whatsapp); box-shadow: 0 10px 24px color-mix(in srgb, var(--floating-whatsapp) 36%, transparent); }
+.contact:hover { color: var(--floating-surface); background: var(--floating-whatsapp-hover); box-shadow: 0 14px 30px color-mix(in srgb, var(--floating-whatsapp) 44%, transparent); }
+.contact:active { background: var(--floating-whatsapp-hover); transform: translateY(0) scale(0.98); }
+.contact svg { width: 32px; height: 32px; }
+
+.action::before {
+  content: attr(data-label);
+  position: absolute;
+  right: calc(100% + 12px);
+  padding: 7px 11px;
+  border-radius: 7px;
+  background: var(--floating-active);
+  color: var(--floating-surface);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.action:hover::before, .action:focus-visible::before { opacity: 1; transform: translateX(0); }
+
+@media (max-width: 480px) {
+  .actions { right: max(16px, env(safe-area-inset-right)); bottom: max(16px, calc(env(safe-area-inset-bottom) + 10px)); }
+  .action { width: 56px; height: 56px; }
+  .contact svg { width: 30px; height: 30px; }
+  .action::before { display: none; }
+}
+
+/* Keep the local Next.js development indicator clear of the customer controls. */
+.actions[data-development="true"] { bottom: max(72px, calc(env(safe-area-inset-bottom) + 10px)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .action, .action::before { transition: none; }
+}

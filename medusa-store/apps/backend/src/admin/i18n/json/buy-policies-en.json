@@ -1,0 +1,20 @@
+{
+  "title": "Buy page policies",
+  "description": "Configure the warranty and return information shown on the Buy page. Changes apply to all storefront markets after refresh. These display settings do not change order eligibility or after-sales processing.",
+  "warrantyMonths": "Warranty (months)",
+  "returnDays": "Returns (days)",
+  "warrantyNoteEn": "Warranty note (English)",
+  "warrantyNoteZh": "Warranty note (Simplified Chinese)",
+  "returnNoteEn": "Returns note (English)",
+  "returnNoteZh": "Returns note (Simplified Chinese)",
+  "help": "Use 0 to show that warranty or returns are unavailable. Notes are optional, up to 200 characters each. If a Chinese note is empty, its English note is shown.",
+  "edit": "Edit",
+  "save": "Save",
+  "cancel": "Cancel",
+  "loading": "Loading policies…",
+  "retry": "Retry",
+  "empty": "No additional note",
+  "saved": "Buy page policies saved",
+  "requestError": "Unable to load or save policies. Please try again.",
+  "validation": "Enter whole months from 0 to 120 and whole days from 0 to 365. Each note must be 200 characters or fewer."
+}

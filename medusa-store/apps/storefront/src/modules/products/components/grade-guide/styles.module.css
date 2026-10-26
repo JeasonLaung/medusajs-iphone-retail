@@ -1,0 +1,28 @@
+.trigger { margin-left: 8px; vertical-align: middle; color: var(--guide-secondary); }
+.trigger:hover { color: var(--guide-action) !important; background: var(--guide-selected) !important; }
+.trigger:focus-visible, .guide button:focus-visible { outline: 2px solid var(--guide-primary); outline-offset: 3px; }
+.guide { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: 32px; padding-top: 16px; color: var(--guide-text); font-size: 14px; font-weight: 400; }
+.copy { align-self: center; }
+.intro, .note, .zoomHint { color: var(--guide-secondary); line-height: 1.6; }
+.grades, .views { display: flex; gap: 12px; margin: 24px 0; }
+.guide button { min-height: 40px; padding: 8px 24px; border: 1px solid var(--guide-border); border-radius: 8px; font-weight: 600; }
+.guide button:hover { border-color: var(--guide-primary); color: var(--guide-action); }
+.guide button:active { background: var(--guide-selected); }
+.guide button[aria-pressed="true"] { border-color: var(--guide-primary); background: var(--guide-selected); color: var(--guide-action); box-shadow: inset 0 0 0 1px var(--guide-primary); }
+.copy h3 { font-size: 22px; line-height: 1.4; font-weight: 600; margin-bottom: 16px; }
+.copy ul { list-style: disc; padding-left: 20px; color: var(--guide-secondary); line-height: 1.7; }
+.copy li + li { margin-top: 12px; }
+.visual { min-width: 0; }
+.image { position: relative; overflow: hidden; aspect-ratio: 1; background: var(--guide-surface); border-radius: 12px; }
+.image img { display: block; width: 100%; height: 100%; object-fit: contain; user-select: none; }
+.lens { position: absolute; width: 140px; height: 140px; transform: translate(-50%, -50%); border: 2px solid var(--guide-primary); border-radius: 50%; background-color: var(--guide-surface); background-size: 800px 800px; background-repeat: no-repeat; pointer-events: none; }
+.views { justify-content: center; margin: 16px 0; }
+.note, .zoomHint { font-size: 12px; }
+.zoomHint { text-align: center; margin-bottom: 8px; }
+@media (max-width: 700px) {
+  .guide { grid-template-columns: 1fr; gap: 24px; }
+  .grades { margin: 16px 0; }
+  .image { max-width: 360px; margin: auto; }
+  .zoomHint { display: none; }
+}
+@media (hover: none) { .zoomHint { display: none; } }

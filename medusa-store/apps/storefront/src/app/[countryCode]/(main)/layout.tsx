@@ -9,13 +9,15 @@ import CartMismatchBanner from "@modules/layout/components/cart-mismatch-banner"
 import Footer from "@modules/layout/templates/footer"
 import Nav from "@modules/layout/templates/nav"
 import FreeShippingPriceNudge from "@modules/shipping/components/free-shipping-price-nudge"
+import FloatingActions from "@modules/layout/components/floating-actions"
+import { getLocale } from "@lib/data/locale-actions"
 
 const defaultPageMetadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
 }
 
 export default async function PageLayout(props: { children: React.ReactNode }) {
-  const [customer, cart] = await Promise.all([retrieveCustomer(), retrieveCart()])
+  const [customer, cart, locale] = await Promise.all([retrieveCustomer(), retrieveCart(), getLocale()])
   let shippingOptions: StoreCartShippingOption[] = []
 
   if (cart) {
@@ -40,6 +42,7 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
       )}
       {props.children}
       <Footer />
+      <FloatingActions locale={locale} />
     </>
   )
 }

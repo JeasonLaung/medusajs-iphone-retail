@@ -201,7 +201,7 @@ function FreeShippingPopup({
   return (
     <div
       className={clx(
-        "fixed bottom-5 right-5 flex flex-col items-end gap-2 transition-all duration-500 ease-in-out z-10",
+        "fixed bottom-5 right-24 flex flex-col items-end gap-2 transition-all duration-500 ease-in-out z-10",
         {
           "opacity-0 invisible delay-1000": price.target_reached,
           "opacity-0 invisible": isClosed,
@@ -218,7 +218,7 @@ function FreeShippingPopup({
         </Button>
       </div>
 
-      <div className="w-[400px] bg-black text-white p-6 rounded-lg ">
+      <div className="w-[400px] max-w-[calc(100vw-112px)] bg-black text-white p-6 rounded-lg ">
         <div className="pb-4">
           <div className="space-y-3">
             <div className="flex justify-between text-[15px] text-neutral-400">

@@ -5,6 +5,7 @@ import { headers } from "next/headers"
 
 import { getRegion } from "@lib/data/regions"
 import { getStoreSearchData } from "@lib/data/store-search"
+import { getBuyPolicies } from "@lib/data/buy-policies"
 import StoreTemplate from "@modules/store/templates"
 
 const defaultPageMetadata: Metadata = {
@@ -25,13 +26,17 @@ export default async function StorePage(props: {
   }
 
   const requestUrl = (await headers()).get("x-storefront-url")!
-  const searchData = await getStoreSearchData(requestUrl, region.currency_code)
+  const [searchData, policies] = await Promise.all([
+    getStoreSearchData(requestUrl, region.currency_code),
+    getBuyPolicies(),
+  ])
 
   return (
     <StoreTemplate
       currencyCode={region.currency_code}
       requestUrl={requestUrl}
       searchData={searchData}
+      policies={policies}
     />
   )
 }

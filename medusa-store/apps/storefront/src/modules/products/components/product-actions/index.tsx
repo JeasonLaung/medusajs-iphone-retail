@@ -17,6 +17,7 @@ import { getProductCopy, optionLabel, optionValueLabel } from "../../i18n"
 import { variantOptions as optionMap, variantInStock as available, completeVariants, preferredOptionVariant, purchaseOptions, variantSlug, variantFromLocation } from "@lib/util/product-variants"
 import { isModelColor } from "../color-swatches"
 import StickyPurchaseBar from "../sticky-purchase-bar"
+import GradeGuide from "../grade-guide"
 import styles from "../product-detail/styles.module.css"
 import { cartInventoryLimitReached } from "@lib/util/cart-inventory"
 
@@ -135,7 +136,7 @@ export default function ProductActions({ product, disabled, initialVariantId, ca
     </div>
     {selectedVariant?.metadata?.demo_price_basis === "model-starting-price" && <p className={styles.demoPriceNote}>{copy.demoPriceNote}</p>}
     {productOptions.map((option) => <fieldset key={option.id} className={styles.option} disabled={disabled || isAdding}>
-      <legend className={styles.legend}>{optionLabel(option.title ?? "", countryCode)}</legend>
+      <legend className={styles.legend}>{optionLabel(option.title ?? "", countryCode)}{/condition|grade/i.test(option.title ?? "") && option.values?.some(({ value }) => value === "S" || value === "A") && <GradeGuide locale={countryCode} selectedGrade={options[option.id]} />}</legend>
       <div className={styles.choices} data-testid="product-options">{Array.from(new Set((option.values ?? []).map((v) => v.value))).map((value) => {
         const candidate = preferredOptionVariant(product, options, option.id, value)
         const inStock = !!candidate
