@@ -73,6 +73,8 @@ chmod 600 .env backend.env storefront.env
 
 填写真实随机密码、JWT/Cookie 和支付/邮件加密密钥。`.env` 的 `POSTGRES_PASSWORD` 与 `backend.env` 的数据库密码必须一致；建议用十六进制随机密码避免数据库 URL 转义问题。迁移现有数据库时必须保留原加密密钥，否则已保存的支付/邮件凭据无法解密。
 
+内网 PostgreSQL 使用 `DATABASE_URL=postgres://...@postgres:5432/medusa?sslmode=disable`。Medusa 对非 localhost 数据库地址默认启用 SSL，这里仅关闭同一 Docker 网络中的连接 SSL；公网网站仍需 HTTPS。临时迁移容器以 root 执行，以便迁移器创建依赖包内的 migrations 目录；长期运行的后端仍是普通 node 用户。
+
 数据库和 Redis 只在 Docker 网络可见；前后台分别监听服务器回环地址 9001 和 8000。若端口已被使用，调整 `.env` 的 `BACKEND_PORT` / `STOREFRONT_PORT` 并同步反向代理。Compose 固定使用独立项目 `iphone-retail`。
 
 自动部署使用短期 `GITHUB_TOKEN` 在服务器项目独立的 `.docker` 目录登录 GHCR，发布结束退出登录，不覆盖其他项目的凭据。下面的一次性手动登录仅用于人工初始化或故障处理。对于私有 GHCR 镜像，用具有 `read:packages` 权限且能访问此仓库 package 的 token 在服务器登录一次（通过标准输入，勿在命令行写 token）：
