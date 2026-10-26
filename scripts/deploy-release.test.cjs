@@ -40,6 +40,7 @@ test("backend release leaves storefront untouched and migrates exactly once", ()
   assert.match(state, new RegExp(`BACKEND_IMAGE=${prefix}/backend:${sha}`))
   assert.ok(state.includes(`STOREFRONT_IMAGE=${oldStorefront}`))
   assert.equal(calls.filter(call => call.includes(" db:migrate")).length, 1)
+  assert.ok(calls.find(call => call.includes(" db:migrate")).includes("--user 0:0 backend"))
   assert.ok(!calls.some(call => / (pull|up) .* storefront\|/.test(call)))
 })
 test("frontend release does not run backend migrations", () => {

@@ -43,7 +43,9 @@ deploy_service() {
   compose pull "$service"
   if [[ "$service" == backend ]]; then
     # One migration job, before replacing the running backend. Failure stops deployment.
-    compose run --rm --no-deps backend node node_modules/@medusajs/cli/cli.js db:migrate
+    # MikroORM creates migration directories inside installed provider packages.
+    # Only the short-lived migrator needs root; the application remains user node.
+    compose run --rm --no-deps --user 0:0 backend node node_modules/@medusajs/cli/cli.js db:migrate
   fi
   if ! compose up -d --no-deps --wait --wait-timeout 240 "$service"; then
     echo "Health check failed for $service; restoring previous image if available." >&2
