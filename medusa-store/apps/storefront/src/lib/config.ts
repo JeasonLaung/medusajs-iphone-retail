@@ -8,6 +8,11 @@ if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
   MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
 }
 
+// Container-side requests can reach Medusa without public DNS or a proxy round trip.
+if (typeof window === "undefined" && process.env.MEDUSA_INTERNAL_BACKEND_URL) {
+  MEDUSA_BACKEND_URL = process.env.MEDUSA_INTERNAL_BACKEND_URL
+}
+
 // The public tunnel routes browser API calls and the storefront on one origin.
 // Server-side requests keep using the local backend URL.
 if (
