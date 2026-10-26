@@ -1,5 +1,7 @@
 # Medusa 本机试用环境
 
+生产服务器 Docker 部署及按前后端变化分别发布的 GitHub Actions 配置见 [部署说明](docs/deployment.md)。自动部署分支为 `main`。
+
 设备库存、手机扫码及订单售后闭环已加入后台：[设备入库出库](http://127.0.0.1:9001/app/device-scan)。使用流程与手机 HTTPS 设置见 [DEVICE-INVENTORY.md](DEVICE-INVENTORY.md)。
 
 Medusa 2 后端与管理后台位于 `medusa-store/apps/backend`，购物前台位于 `medusa-store/apps/storefront`。PostgreSQL 和 Redis 由 `compose.yaml` 启动；它们只监听本机。管理后台运行在 http://127.0.0.1:9001/app，购物前台在 http://127.0.0.1:8000/dk，健康检查为 http://127.0.0.1:9001/health。

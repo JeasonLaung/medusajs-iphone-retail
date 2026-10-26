@@ -1,0 +1,72 @@
+name: iphone-retail
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    mem_limit: 256m
+    memswap_limit: 384m
+    environment:
+      POSTGRES_DB: medusa
+      POSTGRES_USER: medusa
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U medusa -d medusa"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    mem_limit: 96m
+    memswap_limit: 128m
+    command: [redis-server, --appendonly, 'yes']
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  backend:
+    image: ${BACKEND_IMAGE:?Set BACKEND_IMAGE}
+    restart: unless-stopped
+    mem_limit: 1g
+    memswap_limit: 1536m
+    env_file: ${DEPLOY_ROOT:?Set DEPLOY_ROOT}/backend.env
+    ports:
+      - '127.0.0.1:${BACKEND_PORT:-9001}:9000'
+    volumes:
+      - public_uploads:/app/apps/backend/static
+      - private_uploads:/app/apps/backend/.private-files
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:9000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      start_period: 60s
+      retries: 12
+    stop_grace_period: 60s
+  storefront:
+    image: ${STOREFRONT_IMAGE:?Set STOREFRONT_IMAGE}
+    restart: unless-stopped
+    mem_limit: 384m
+    memswap_limit: 768m
+    env_file: ${DEPLOY_ROOT:?Set DEPLOY_ROOT}/storefront.env
+    ports:
+      - '127.0.0.1:${STOREFRONT_PORT:-8000}:8000'
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:8000/dk').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 10s
+      start_period: 30s
+      retries: 8
+    stop_grace_period: 30s
+volumes:
+  postgres_data:
+  redis_data:
+  public_uploads:
+  private_uploads:
