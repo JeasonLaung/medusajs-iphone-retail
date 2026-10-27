@@ -1,0 +1,630 @@
+{
+  "format_version": 1,
+  "scope": "Artificial input-preparation fixtures only; not availability confirmation, reservation, concurrency or checkout acceptance",
+  "sources": {
+    "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/utils/prepare-confirm-inventory-input.js": "60e343924043c38a1dc14ce585619f29d109d2a3460f145472ae5ac93504fbaa"
+  },
+  "cases": [
+    {
+      "name": "unmanaged",
+      "input": {
+        "input": {
+          "sales_channel_id": "fixture-channel",
+          "variants": [
+            {
+              "id": "fixture-variant",
+              "manage_inventory": false,
+              "allow_backorder": false,
+              "inventory_items": [
+                {
+                  "variant_id": "fixture-variant",
+                  "inventory_item_id": "fixture-inventory",
+                  "required_quantity": "1",
+                  "inventory": {
+                    "location_levels": []
+                  }
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": "fixture-line",
+              "variant_id": "fixture-variant",
+              "quantity": "2"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "items": []
+      }
+    },
+    {
+      "name": "available",
+      "input": {
+        "input": {
+          "sales_channel_id": "fixture-channel",
+          "variants": [
+            {
+              "id": "fixture-variant",
+              "manage_inventory": true,
+              "allow_backorder": false,
+              "inventory_items": [
+                {
+                  "variant_id": "fixture-variant",
+                  "inventory_item_id": "fixture-inventory",
+                  "required_quantity": "1",
+                  "inventory": {
+                    "location_levels": [
+                      {
+                        "location_id": "fixture-a",
+                        "stocked_quantity": "5",
+                        "reserved_quantity": "1",
+                        "stock_locations": {
+                          "id": "fixture-a",
+                          "sales_channels": [
+                            {
+                              "id": "fixture-channel"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": "fixture-line",
+              "variant_id": "fixture-variant",
+              "quantity": "2"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "items": [
+          {
+            "id": "fixture-line",
+            "inventory_item_id": "fixture-inventory",
+            "required_quantity": "1",
+            "allow_backorder": false,
+            "quantity": "2",
+            "location_ids": [
+              "fixture-a"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "reserved-shortfall-is-preparation-only",
+      "input": {
+        "input": {
+          "sales_channel_id": "fixture-channel",
+          "variants": [
+            {
+              "id": "fixture-variant",
+              "manage_inventory": true,
+              "allow_backorder": false,
+              "inventory_items": [
+                {
+                  "variant_id": "fixture-variant",
+                  "inventory_item_id": "fixture-inventory",
+                  "required_quantity": "1",
+                  "inventory": {
+                    "location_levels": [
+                      {
+                        "location_id": "fixture-a",
+                        "stocked_quantity": "5",
+                        "reserved_quantity": "4",
+                        "stock_locations": {
+                          "id": "fixture-a",
+                          "sales_channels": [
+                            {
+                              "id": "fixture-channel"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": "fixture-line",
+              "variant_id": "fixture-variant",
+              "quantity": "2"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "items": [
+          {
+            "id": "fixture-line",
+            "inventory_item_id": "fixture-inventory",
+            "required_quantity": "1",
+            "allow_backorder": false,
+            "quantity": "2",
+            "location_ids": [
+              "fixture-a"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "prefer-location-with-full-coverage",
+      "input": {
+        "input": {
+          "sales_channel_id": "fixture-channel",
+          "variants": [
+            {
+              "id": "fixture-variant",
+              "manage_inventory": true,
+              "allow_backorder": false,
+              "inventory_items": [
+                {
+                  "variant_id": "fixture-variant",
+                  "inventory_item_id": "fixture-inventory",
+                  "required_quantity": "1",
+                  "inventory": {
+                    "location_levels": [
+                      {
+                        "location_id": "fixture-a",
+                        "stocked_quantity": "1",
+                        "reserved_quantity": "0",
+                        "stock_locations": {
+                          "id": "fixture-a",
+                          "sales_channels": [
+                            {
+                              "id": "fixture-channel"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "location_id": "fixture-b",
+                        "stocked_quantity": "5",
+                        "reserved_quantity": "0",
+                        "stock_locations": {
+                          "id": "fixture-b",
+                          "sales_channels": [
+                            {
+                              "id": "fixture-channel"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": "fixture-line",
+              "variant_id": "fixture-variant",
+              "quantity": "2"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "items": [
+          {
+            "id": "fixture-line",
+            "inventory_item_id": "fixture-inventory",
+            "required_quantity": "1",
+            "allow_backorder": false,
+            "quantity": "2",
+            "location_ids": [
+              "fixture-b"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "split-stock-falls-back-to-existing-levels",
+      "input": {
+        "input": {
+          "sales_channel_id": "fixture-channel",
+          "variants": [
+            {
+              "id": "fixture-variant",
+              "manage_inventory": true,
+              "allow_backorder": false,
+              "inventory_items": [
+                {
+                  "variant_id": "fixture-variant",
+                  "inventory_item_id": "fixture-inventory",
+                  "required_quantity": "1",
+                  "inventory": {
+                    "location_levels": [
+                      {
+                        "location_id": "fixture-a",
+                        "stocked_quantity": "1",
+                        "reserved_quantity": "0",
+                        "stock_locations": {
+                          "id": "fixture-a",
+                          "sales_channels": [
+                            {
+                              "id": "fixture-channel"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "location_id": "fixture-b",
+                        "stocked_quantity": "1",
+                        "reserved_quantity": "0",
+                        "stock_locations": {
+                          "id": "fixture-b",
+                          "sales_channels": [
+                            {
+                              "id": "fixture-channel"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": "fixture-line",
+              "variant_id": "fixture-variant",
+              "quantity": "2"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "items": [
+          {
+            "id": "fixture-line",
+            "inventory_item_id": "fixture-inventory",
+            "required_quantity": "1",
+            "allow_backorder": false,
+            "quantity": "2",
+            "location_ids": [
+              "fixture-a",
+              "fixture-b"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "foreign-channel-denied",
+      "input": {
+        "input": {
+          "sales_channel_id": "fixture-channel",
+          "variants": [
+            {
+              "id": "fixture-variant",
+              "manage_inventory": true,
+              "allow_backorder": false,
+              "inventory_items": [
+                {
+                  "variant_id": "fixture-variant",
+                  "inventory_item_id": "fixture-inventory",
+                  "required_quantity": "1",
+                  "inventory": {
+                    "location_levels": [
+                      {
+                        "location_id": "fixture-a",
+                        "stocked_quantity": "10",
+                        "reserved_quantity": "0",
+                        "stock_locations": {
+                          "id": "fixture-a",
+                          "sales_channels": [
+                            {
+                              "id": "fixture-foreign"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": "fixture-line",
+              "variant_id": "fixture-variant",
+              "quantity": "2"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "error_type": "invalid_data",
+        "message": "Sales channel fixture-channel is not associated with any stock location for variant fixture-variant."
+      }
+    },
+    {
+      "name": "backorder-without-channel-location",
+      "input": {
+        "input": {
+          "sales_channel_id": "fixture-channel",
+          "variants": [
+            {
+              "id": "fixture-variant",
+              "manage_inventory": true,
+              "allow_backorder": true,
+              "inventory_items": [
+                {
+                  "variant_id": "fixture-variant",
+                  "inventory_item_id": "fixture-inventory",
+                  "required_quantity": "1",
+                  "inventory": {
+                    "location_levels": [
+                      {
+                        "location_id": "fixture-a",
+                        "stocked_quantity": "0",
+                        "reserved_quantity": "0",
+                        "stock_locations": {
+                          "id": "fixture-a",
+                          "sales_channels": [
+                            {
+                              "id": "fixture-foreign"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": "fixture-line",
+              "variant_id": "fixture-variant",
+              "quantity": "2"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "items": [
+          {
+            "id": "fixture-line",
+            "inventory_item_id": "fixture-inventory",
+            "required_quantity": "1",
+            "allow_backorder": true,
+            "quantity": "2",
+            "location_ids": []
+          }
+        ]
+      }
+    },
+    {
+      "name": "item-backorder-override",
+      "input": {
+        "input": {
+          "sales_channel_id": "fixture-channel",
+          "variants": [
+            {
+              "id": "fixture-variant",
+              "manage_inventory": true,
+              "allow_backorder": false,
+              "inventory_items": [
+                {
+                  "variant_id": "fixture-variant",
+                  "inventory_item_id": "fixture-inventory",
+                  "required_quantity": "1",
+                  "inventory": {
+                    "location_levels": [
+                      {
+                        "location_id": "fixture-a",
+                        "stocked_quantity": "0",
+                        "reserved_quantity": "0",
+                        "stock_locations": {
+                          "id": "fixture-a",
+                          "sales_channels": [
+                            {
+                              "id": "fixture-channel"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": "fixture-line",
+              "variant_id": "fixture-variant",
+              "quantity": "2",
+              "allow_backorder": true
+            }
+          ]
+        }
+      },
+      "expected": {
+        "items": [
+          {
+            "id": "fixture-line",
+            "inventory_item_id": "fixture-inventory",
+            "required_quantity": "1",
+            "allow_backorder": true,
+            "quantity": "2",
+            "location_ids": [
+              "fixture-a"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "raw-quantity-precedence",
+      "input": {
+        "input": {
+          "sales_channel_id": "fixture-channel",
+          "variants": [
+            {
+              "id": "fixture-variant",
+              "manage_inventory": true,
+              "allow_backorder": false,
+              "inventory_items": [
+                {
+                  "variant_id": "fixture-variant",
+                  "inventory_item_id": "fixture-inventory",
+                  "required_quantity": "1",
+                  "inventory": {
+                    "location_levels": [
+                      {
+                        "location_id": "fixture-a",
+                        "stocked_quantity": "10",
+                        "reserved_quantity": "0",
+                        "stock_locations": {
+                          "id": "fixture-a",
+                          "sales_channels": [
+                            {
+                              "id": "fixture-channel"
+                            }
+                          ]
+                        },
+                        "raw_stocked_quantity": {
+                          "value": "1",
+                          "precision": 20
+                        }
+                      },
+                      {
+                        "location_id": "fixture-b",
+                        "stocked_quantity": "5",
+                        "reserved_quantity": "0",
+                        "stock_locations": {
+                          "id": "fixture-b",
+                          "sales_channels": [
+                            {
+                              "id": "fixture-channel"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": "fixture-line",
+              "variant_id": "fixture-variant",
+              "quantity": "2"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "items": [
+          {
+            "id": "fixture-line",
+            "inventory_item_id": "fixture-inventory",
+            "required_quantity": "1",
+            "allow_backorder": false,
+            "quantity": "2",
+            "location_ids": [
+              "fixture-b"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "required-quantity",
+      "input": {
+        "input": {
+          "sales_channel_id": "fixture-channel",
+          "variants": [
+            {
+              "id": "fixture-variant",
+              "manage_inventory": true,
+              "allow_backorder": false,
+              "inventory_items": [
+                {
+                  "variant_id": "fixture-variant",
+                  "inventory_item_id": "fixture-inventory",
+                  "required_quantity": "2",
+                  "inventory": {
+                    "location_levels": [
+                      {
+                        "location_id": "fixture-a",
+                        "stocked_quantity": "3",
+                        "reserved_quantity": "0",
+                        "stock_locations": {
+                          "id": "fixture-a",
+                          "sales_channels": [
+                            {
+                              "id": "fixture-channel"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "location_id": "fixture-b",
+                        "stocked_quantity": "4",
+                        "reserved_quantity": "0",
+                        "stock_locations": {
+                          "id": "fixture-b",
+                          "sales_channels": [
+                            {
+                              "id": "fixture-channel"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": "fixture-line",
+              "variant_id": "fixture-variant",
+              "quantity": "2"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "items": [
+          {
+            "id": "fixture-line",
+            "inventory_item_id": "fixture-inventory",
+            "required_quantity": "2",
+            "allow_backorder": false,
+            "quantity": "2",
+            "location_ids": [
+              "fixture-b"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

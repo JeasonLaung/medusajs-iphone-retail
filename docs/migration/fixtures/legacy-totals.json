@@ -1,0 +1,4866 @@
+{
+  "format_version": 1,
+  "scope": "Artificial pure-arithmetic fixtures from installed legacy utility; not promotion selection, provider rounding or checkout integration acceptance",
+  "sources": {
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/cart/index.js": "5d464f4c1e908e18784a1e3795a52d614356a60ab0fefe2395046c89c2bcffd5",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/line-item/index.js": "d7c41d526466c7aad925dee736cbcd3d470b6a82a43eb02af398a234b0df140c",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/shipping-method/index.js": "c1a9637bba3694ad0b377645a224db1b38db7dba592e998d2e0b5318f6746cc4",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/adjustment/index.js": "7dcce83d87e3cbb092cfeec59e9fd31e3b9acbee7828cba8ccfa918cc53f11a5",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/tax/index.js": "b98e41e25a42e131fd1bfeeb16f70eb42058bc8419750e0da7d8467b062296d6",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/credit-lines/index.js": "221247490fd18566801c67f7232a5e3c5a697448651aa835cfae80e098e01cbd",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/big-number.js": "4407e278ee599bd0073f5506a777ec7b79616d802e00ae2c49284a95171de07f",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/math.js": "8a51bcffcbe7293b75db5cb58ac31227f62f1315eeb7dd954c0fc3bd57edebe1",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/transform-properties-to-bignumber.js": "09d4cc27e037e4535c23b447a5cd8d99aa746f593071b406c0599b77ce76512f"
+  },
+  "cases": [
+    {
+      "name": "empty",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "0.00",
+      "totals": {
+        "total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [],
+      "shipping_methods": []
+    },
+    {
+      "name": "no-tax",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "99.95",
+            "quantity": "2",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "0"
+              }
+            ],
+            "adjustments": []
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "199.90",
+      "totals": {
+        "total": {
+          "decimal": "199.9",
+          "raw": {
+            "value": "199.90000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "199.9",
+          "raw": {
+            "value": "199.90000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "199.9",
+          "raw": {
+            "value": "199.90000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "199.9",
+          "raw": {
+            "value": "199.90000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "199.9",
+          "raw": {
+            "value": "199.90000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "199.9",
+          "raw": {
+            "value": "199.90000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "199.9",
+              "raw": {
+                "value": "199.90000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "199.9",
+              "raw": {
+                "value": "199.90000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "199.9",
+              "raw": {
+                "value": "199.90000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "199.9",
+              "raw": {
+                "value": "199.90000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": []
+        }
+      ],
+      "shipping_methods": []
+    },
+    {
+      "name": "exclusive-with-shipping",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "100",
+            "quantity": "2",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": []
+          }
+        ],
+        "shipping_methods": [
+          {
+            "id": "fixture-shipping",
+            "amount": "10",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": []
+          }
+        ],
+        "credit_lines": []
+      },
+      "expected_display_total": "262.50",
+      "totals": {
+        "total": {
+          "decimal": "262.5",
+          "raw": {
+            "value": "262.50000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "210",
+          "raw": {
+            "value": "210.00000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "52.5",
+          "raw": {
+            "value": "52.500000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "262.5",
+          "raw": {
+            "value": "262.50000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "210",
+          "raw": {
+            "value": "210.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "52.5",
+          "raw": {
+            "value": "52.500000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "250",
+          "raw": {
+            "value": "250.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "50",
+          "raw": {
+            "value": "50.000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "12.5",
+          "raw": {
+            "value": "12.500000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "10",
+          "raw": {
+            "value": "10.000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "2.5",
+          "raw": {
+            "value": "2.5000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "250",
+              "raw": {
+                "value": "250.00000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "50",
+              "raw": {
+                "value": "50.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "250",
+              "raw": {
+                "value": "250.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "50",
+              "raw": {
+                "value": "50.000000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": []
+        }
+      ],
+      "shipping_methods": [
+        {
+          "id": "fixture-shipping",
+          "totals": {
+            "total": {
+              "decimal": "12.5",
+              "raw": {
+                "value": "12.500000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "10",
+              "raw": {
+                "value": "10.000000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "2.5",
+              "raw": {
+                "value": "2.5000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "12.5",
+              "raw": {
+                "value": "12.500000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "10",
+              "raw": {
+                "value": "10.000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "2.5",
+              "raw": {
+                "value": "2.5000000000000000000",
+                "precision": 20
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "inclusive-with-shipping",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "125",
+            "quantity": "2",
+            "is_tax_inclusive": true,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": []
+          }
+        ],
+        "shipping_methods": [
+          {
+            "id": "fixture-shipping",
+            "amount": "12.5",
+            "is_tax_inclusive": true,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": []
+          }
+        ],
+        "credit_lines": []
+      },
+      "expected_display_total": "262.50",
+      "totals": {
+        "total": {
+          "decimal": "262.5",
+          "raw": {
+            "value": "262.50000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "210",
+          "raw": {
+            "value": "210.00000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "52.5",
+          "raw": {
+            "value": "52.500000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "262.5",
+          "raw": {
+            "value": "262.50000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "210",
+          "raw": {
+            "value": "210.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "52.5",
+          "raw": {
+            "value": "52.500000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "250",
+          "raw": {
+            "value": "250.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "50",
+          "raw": {
+            "value": "50.000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "12.5",
+          "raw": {
+            "value": "12.500000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "10",
+          "raw": {
+            "value": "10.000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "2.5",
+          "raw": {
+            "value": "2.5000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "250",
+              "raw": {
+                "value": "250.00000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "50",
+              "raw": {
+                "value": "50.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "250",
+              "raw": {
+                "value": "250.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "50",
+              "raw": {
+                "value": "50.000000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": []
+        }
+      ],
+      "shipping_methods": [
+        {
+          "id": "fixture-shipping",
+          "totals": {
+            "total": {
+              "decimal": "12.5",
+              "raw": {
+                "value": "12.500000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "10",
+              "raw": {
+                "value": "10.000000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "2.5",
+              "raw": {
+                "value": "2.5000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "12.5",
+              "raw": {
+                "value": "12.500000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "10",
+              "raw": {
+                "value": "10.000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "2.5",
+              "raw": {
+                "value": "2.5000000000000000000",
+                "precision": 20
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "exclusive-discount",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "100",
+            "quantity": "2",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": [
+              {
+                "amount": "20",
+                "is_tax_inclusive": false
+              }
+            ]
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "225.00",
+      "totals": {
+        "total": {
+          "decimal": "225",
+          "raw": {
+            "value": "225.00000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "45",
+          "raw": {
+            "value": "45.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "20",
+          "raw": {
+            "value": "20.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "5",
+          "raw": {
+            "value": "5.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "250",
+          "raw": {
+            "value": "250.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "50",
+          "raw": {
+            "value": "50.000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "225",
+          "raw": {
+            "value": "225.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "45",
+          "raw": {
+            "value": "45.000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "225",
+              "raw": {
+                "value": "225.00000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "45",
+              "raw": {
+                "value": "45.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "20",
+              "raw": {
+                "value": "20.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "5",
+              "raw": {
+                "value": "5.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "250",
+              "raw": {
+                "value": "250.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "50",
+              "raw": {
+                "value": "50.000000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": [
+            {
+              "total": {
+                "decimal": "25",
+                "raw": {
+                  "value": "25.000000000000000000",
+                  "precision": 20
+                }
+              },
+              "subtotal": {
+                "decimal": "20",
+                "raw": {
+                  "value": "20.000000000000000000",
+                  "precision": 20
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "shipping_methods": []
+    },
+    {
+      "name": "inclusive-discount",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "125",
+            "quantity": "2",
+            "is_tax_inclusive": true,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": [
+              {
+                "amount": "25",
+                "is_tax_inclusive": true
+              }
+            ]
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "225.00",
+      "totals": {
+        "total": {
+          "decimal": "225",
+          "raw": {
+            "value": "225.00000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "45",
+          "raw": {
+            "value": "45.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "20",
+          "raw": {
+            "value": "20.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "5",
+          "raw": {
+            "value": "5.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "250",
+          "raw": {
+            "value": "250.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "50",
+          "raw": {
+            "value": "50.000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "225",
+          "raw": {
+            "value": "225.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "45",
+          "raw": {
+            "value": "45.000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "225",
+              "raw": {
+                "value": "225.00000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "45",
+              "raw": {
+                "value": "45.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "20",
+              "raw": {
+                "value": "20.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "5",
+              "raw": {
+                "value": "5.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "250",
+              "raw": {
+                "value": "250.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "50",
+              "raw": {
+                "value": "50.000000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": [
+            {
+              "total": {
+                "decimal": "25",
+                "raw": {
+                  "value": "25.000000000000000000",
+                  "precision": 20
+                }
+              },
+              "subtotal": {
+                "decimal": "20",
+                "raw": {
+                  "value": "20.000000000000000000",
+                  "precision": 20
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "shipping_methods": []
+    },
+    {
+      "name": "multiple-adjustments",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "100",
+            "quantity": "2",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": [
+              {
+                "amount": "10",
+                "is_tax_inclusive": false
+              },
+              {
+                "amount": "5",
+                "is_tax_inclusive": false
+              }
+            ]
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "231.25",
+      "totals": {
+        "total": {
+          "decimal": "231.25",
+          "raw": {
+            "value": "231.25000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "46.25",
+          "raw": {
+            "value": "46.250000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "18.75",
+          "raw": {
+            "value": "18.750000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "15",
+          "raw": {
+            "value": "15.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "3.75",
+          "raw": {
+            "value": "3.7500000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "250",
+          "raw": {
+            "value": "250.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "50",
+          "raw": {
+            "value": "50.000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "231.25",
+          "raw": {
+            "value": "231.25000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "46.25",
+          "raw": {
+            "value": "46.250000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "18.75",
+          "raw": {
+            "value": "18.750000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "231.25",
+              "raw": {
+                "value": "231.25000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "46.25",
+              "raw": {
+                "value": "46.250000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "18.75",
+              "raw": {
+                "value": "18.750000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "15",
+              "raw": {
+                "value": "15.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "3.75",
+              "raw": {
+                "value": "3.7500000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "250",
+              "raw": {
+                "value": "250.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "50",
+              "raw": {
+                "value": "50.000000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": [
+            {
+              "total": {
+                "decimal": "12.5",
+                "raw": {
+                  "value": "12.500000000000000000",
+                  "precision": 20
+                }
+              },
+              "subtotal": {
+                "decimal": "10",
+                "raw": {
+                  "value": "10.000000000000000000",
+                  "precision": 20
+                }
+              }
+            },
+            {
+              "total": {
+                "decimal": "6.25",
+                "raw": {
+                  "value": "6.2500000000000000000",
+                  "precision": 20
+                }
+              },
+              "subtotal": {
+                "decimal": "5",
+                "raw": {
+                  "value": "5.0000000000000000000",
+                  "precision": 20
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "shipping_methods": []
+    },
+    {
+      "name": "shipping-discount",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "100",
+            "quantity": "1",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": []
+          }
+        ],
+        "shipping_methods": [
+          {
+            "id": "fixture-shipping",
+            "amount": "10",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": [
+              {
+                "amount": "2",
+                "is_tax_inclusive": false
+              }
+            ]
+          }
+        ],
+        "credit_lines": []
+      },
+      "expected_display_total": "135.00",
+      "totals": {
+        "total": {
+          "decimal": "135",
+          "raw": {
+            "value": "135.00000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "110",
+          "raw": {
+            "value": "110.00000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "27",
+          "raw": {
+            "value": "27.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "2.5",
+          "raw": {
+            "value": "2.5000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "2",
+          "raw": {
+            "value": "2.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "0.5",
+          "raw": {
+            "value": "0.50000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "137.5",
+          "raw": {
+            "value": "137.50000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "110",
+          "raw": {
+            "value": "110.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "27.5",
+          "raw": {
+            "value": "27.500000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "125",
+          "raw": {
+            "value": "125.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "100",
+          "raw": {
+            "value": "100.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "10",
+          "raw": {
+            "value": "10.000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "10",
+          "raw": {
+            "value": "10.000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "2",
+          "raw": {
+            "value": "2.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "2.5",
+          "raw": {
+            "value": "2.5000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "125",
+              "raw": {
+                "value": "125.00000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "100",
+              "raw": {
+                "value": "100.00000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "125",
+              "raw": {
+                "value": "125.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "100",
+              "raw": {
+                "value": "100.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": []
+        }
+      ],
+      "shipping_methods": [
+        {
+          "id": "fixture-shipping",
+          "totals": {
+            "total": {
+              "decimal": "10",
+              "raw": {
+                "value": "10.000000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "10",
+              "raw": {
+                "value": "10.000000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "2",
+              "raw": {
+                "value": "2.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "2.5",
+              "raw": {
+                "value": "2.5000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "2",
+              "raw": {
+                "value": "2.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0.5",
+              "raw": {
+                "value": "0.50000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "12.5",
+              "raw": {
+                "value": "12.500000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "10",
+              "raw": {
+                "value": "10.000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "2.5",
+              "raw": {
+                "value": "2.5000000000000000000",
+                "precision": 20
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "received-return",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "100",
+            "quantity": "3",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": [
+              {
+                "amount": "30",
+                "is_tax_inclusive": false
+              }
+            ],
+            "detail": {
+              "return_received_quantity": "1"
+            }
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "225.00",
+      "totals": {
+        "total": {
+          "decimal": "225",
+          "raw": {
+            "value": "225.00000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "45",
+          "raw": {
+            "value": "45.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "20",
+          "raw": {
+            "value": "20.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "5",
+          "raw": {
+            "value": "5.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "250",
+          "raw": {
+            "value": "250.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "50",
+          "raw": {
+            "value": "50.000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "225",
+          "raw": {
+            "value": "225.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "45",
+          "raw": {
+            "value": "45.000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "return_received_total": {
+          "decimal": "112.5",
+          "raw": {
+            "value": "112.50000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "225",
+              "raw": {
+                "value": "225.00000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "45",
+              "raw": {
+                "value": "45.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "20",
+              "raw": {
+                "value": "20.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "5",
+              "raw": {
+                "value": "5.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "250",
+              "raw": {
+                "value": "250.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "50",
+              "raw": {
+                "value": "50.000000000000000000",
+                "precision": 20
+              }
+            },
+            "refundable_total": {
+              "decimal": "225",
+              "raw": {
+                "value": "225.00000000000000000",
+                "precision": 20
+              }
+            },
+            "refundable_total_per_unit": {
+              "decimal": "112.5",
+              "raw": {
+                "value": "112.50000000000000000",
+                "precision": 20
+              }
+            },
+            "return_received_total": {
+              "decimal": "112.5",
+              "raw": {
+                "value": "112.50000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": [
+            {
+              "total": {
+                "decimal": "37.5",
+                "raw": {
+                  "value": "37.500000000000000000",
+                  "precision": 20
+                }
+              },
+              "subtotal": {
+                "decimal": "30",
+                "raw": {
+                  "value": "30.000000000000000000",
+                  "precision": 20
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "shipping_methods": []
+    },
+    {
+      "name": "requested-return",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "100",
+            "quantity": "3",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": [
+              {
+                "amount": "30",
+                "is_tax_inclusive": false
+              }
+            ],
+            "detail": {
+              "return_requested_quantity": "1"
+            }
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "337.50",
+      "totals": {
+        "total": {
+          "decimal": "337.5",
+          "raw": {
+            "value": "337.50000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "300",
+          "raw": {
+            "value": "300.00000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "67.5",
+          "raw": {
+            "value": "67.500000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "37.5",
+          "raw": {
+            "value": "37.500000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "30",
+          "raw": {
+            "value": "30.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "7.5",
+          "raw": {
+            "value": "7.5000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "375",
+          "raw": {
+            "value": "375.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "300",
+          "raw": {
+            "value": "300.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "75",
+          "raw": {
+            "value": "75.000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "337.5",
+          "raw": {
+            "value": "337.50000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "300",
+          "raw": {
+            "value": "300.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "67.5",
+          "raw": {
+            "value": "67.500000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "37.5",
+          "raw": {
+            "value": "37.500000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "return_requested_total": {
+          "decimal": "112.5",
+          "raw": {
+            "value": "112.50000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "337.5",
+              "raw": {
+                "value": "337.50000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "300",
+              "raw": {
+                "value": "300.00000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "67.5",
+              "raw": {
+                "value": "67.500000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "37.5",
+              "raw": {
+                "value": "37.500000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "30",
+              "raw": {
+                "value": "30.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "7.5",
+              "raw": {
+                "value": "7.5000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "375",
+              "raw": {
+                "value": "375.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "300",
+              "raw": {
+                "value": "300.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "75",
+              "raw": {
+                "value": "75.000000000000000000",
+                "precision": 20
+              }
+            },
+            "refundable_total": {
+              "decimal": "225",
+              "raw": {
+                "value": "225.00000000000000000",
+                "precision": 20
+              }
+            },
+            "refundable_total_per_unit": {
+              "decimal": "112.5",
+              "raw": {
+                "value": "112.50000000000000000",
+                "precision": 20
+              }
+            },
+            "return_requested_total": {
+              "decimal": "112.5",
+              "raw": {
+                "value": "112.50000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": [
+            {
+              "total": {
+                "decimal": "37.5",
+                "raw": {
+                  "value": "37.500000000000000000",
+                  "precision": 20
+                }
+              },
+              "subtotal": {
+                "decimal": "30",
+                "raw": {
+                  "value": "30.000000000000000000",
+                  "precision": 20
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "shipping_methods": []
+    },
+    {
+      "name": "dismissed-return",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "125",
+            "quantity": "3",
+            "is_tax_inclusive": true,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": [
+              {
+                "amount": "37.5",
+                "is_tax_inclusive": true
+              }
+            ],
+            "detail": {
+              "return_dismissed_quantity": "1"
+            }
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "225.00",
+      "totals": {
+        "total": {
+          "decimal": "225",
+          "raw": {
+            "value": "225.00000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "45",
+          "raw": {
+            "value": "45.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "20",
+          "raw": {
+            "value": "20.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "5",
+          "raw": {
+            "value": "5.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "250",
+          "raw": {
+            "value": "250.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "50",
+          "raw": {
+            "value": "50.000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "225",
+          "raw": {
+            "value": "225.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "45",
+          "raw": {
+            "value": "45.000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "return_dismissed_total": {
+          "decimal": "112.5",
+          "raw": {
+            "value": "112.50000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "225",
+              "raw": {
+                "value": "225.00000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "45",
+              "raw": {
+                "value": "45.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "20",
+              "raw": {
+                "value": "20.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "5",
+              "raw": {
+                "value": "5.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "250",
+              "raw": {
+                "value": "250.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "200",
+              "raw": {
+                "value": "200.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "50",
+              "raw": {
+                "value": "50.000000000000000000",
+                "precision": 20
+              }
+            },
+            "refundable_total": {
+              "decimal": "225",
+              "raw": {
+                "value": "225.00000000000000000",
+                "precision": 20
+              }
+            },
+            "refundable_total_per_unit": {
+              "decimal": "112.5",
+              "raw": {
+                "value": "112.50000000000000000",
+                "precision": 20
+              }
+            },
+            "return_dismissed_total": {
+              "decimal": "112.5",
+              "raw": {
+                "value": "112.50000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": [
+            {
+              "total": {
+                "decimal": "37.5",
+                "raw": {
+                  "value": "37.500000000000000000",
+                  "precision": 20
+                }
+              },
+              "subtotal": {
+                "decimal": "30",
+                "raw": {
+                  "value": "30.000000000000000000",
+                  "precision": 20
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "shipping_methods": []
+    },
+    {
+      "name": "multiple-tax-lines",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "100",
+            "quantity": "1",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "20"
+              },
+              {
+                "rate": "5"
+              }
+            ],
+            "adjustments": []
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "125.00",
+      "totals": {
+        "total": {
+          "decimal": "125",
+          "raw": {
+            "value": "125.00000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "100",
+          "raw": {
+            "value": "100.00000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "125",
+          "raw": {
+            "value": "125.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "100",
+          "raw": {
+            "value": "100.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "125",
+          "raw": {
+            "value": "125.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "100",
+          "raw": {
+            "value": "100.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "125",
+              "raw": {
+                "value": "125.00000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "100",
+              "raw": {
+                "value": "100.00000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "125",
+              "raw": {
+                "value": "125.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "100",
+              "raw": {
+                "value": "100.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": []
+        }
+      ],
+      "shipping_methods": []
+    },
+    {
+      "name": "credit-line",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "100",
+            "quantity": "1",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": []
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": [
+          {
+            "amount": "25"
+          }
+        ]
+      },
+      "expected_display_total": "100.00",
+      "totals": {
+        "total": {
+          "decimal": "100",
+          "raw": {
+            "value": "100.00000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "100",
+          "raw": {
+            "value": "100.00000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "125",
+          "raw": {
+            "value": "125.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "100",
+          "raw": {
+            "value": "100.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "125",
+          "raw": {
+            "value": "125.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "100",
+          "raw": {
+            "value": "100.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "25",
+          "raw": {
+            "value": "25.000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "125",
+              "raw": {
+                "value": "125.00000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "100",
+              "raw": {
+                "value": "100.00000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "125",
+              "raw": {
+                "value": "125.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "100",
+              "raw": {
+                "value": "100.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": []
+        }
+      ],
+      "shipping_methods": []
+    },
+    {
+      "name": "zero-quantity",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "100",
+            "quantity": "0",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": []
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "0.00",
+      "totals": {
+        "total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": []
+        }
+      ],
+      "shipping_methods": []
+    },
+    {
+      "name": "fractional-price-and-quantity",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "0.33333333",
+            "quantity": "1.5",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "20"
+              }
+            ],
+            "adjustments": []
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "0.60",
+      "totals": {
+        "total": {
+          "decimal": "0.599999994",
+          "raw": {
+            "value": "0.59999999400000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "0.499999995",
+          "raw": {
+            "value": "0.49999999500000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "0.099999999",
+          "raw": {
+            "value": "0.099999999000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "0.599999994",
+          "raw": {
+            "value": "0.59999999400000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "0.499999995",
+          "raw": {
+            "value": "0.49999999500000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "0.099999999",
+          "raw": {
+            "value": "0.099999999000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "0.599999994",
+          "raw": {
+            "value": "0.59999999400000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "0.499999995",
+          "raw": {
+            "value": "0.49999999500000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "0.099999999",
+          "raw": {
+            "value": "0.099999999000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "0.599999994",
+              "raw": {
+                "value": "0.59999999400000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "0.499999995",
+              "raw": {
+                "value": "0.49999999500000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "0.099999999",
+              "raw": {
+                "value": "0.099999999000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "0.599999994",
+              "raw": {
+                "value": "0.59999999400000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "0.499999995",
+              "raw": {
+                "value": "0.49999999500000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "0.099999999",
+              "raw": {
+                "value": "0.099999999000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": []
+        }
+      ],
+      "shipping_methods": []
+    },
+    {
+      "name": "inclusive-repeating-division",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "99.99",
+            "quantity": "3",
+            "is_tax_inclusive": true,
+            "tax_lines": [
+              {
+                "rate": "21"
+              }
+            ],
+            "adjustments": []
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "299.97",
+      "totals": {
+        "total": {
+          "decimal": "299.9700000000000000000011",
+          "raw": {
+            "value": "299.97000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "247.90909090909090909091",
+          "raw": {
+            "value": "247.90909090909090909",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "52.0609090909090909090911",
+          "raw": {
+            "value": "52.060909090909090909",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "299.97",
+          "raw": {
+            "value": "299.97000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "247.90909090909090909091",
+          "raw": {
+            "value": "247.90909090909090909",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "52.0609090909090909090911",
+          "raw": {
+            "value": "52.060909090909090909",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "299.9700000000000000000011",
+          "raw": {
+            "value": "299.97000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "247.90909090909090909091",
+          "raw": {
+            "value": "247.90909090909090909",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "52.0609090909090909090911",
+          "raw": {
+            "value": "52.060909090909090909",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "299.9700000000000000000011",
+              "raw": {
+                "value": "299.97000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "247.90909090909090909091",
+              "raw": {
+                "value": "247.90909090909090909",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "52.0609090909090909090911",
+              "raw": {
+                "value": "52.060909090909090909",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "299.97",
+              "raw": {
+                "value": "299.97000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "247.9090909090909090909089",
+              "raw": {
+                "value": "247.90909090909090909",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "52.0609090909090909090911",
+              "raw": {
+                "value": "52.060909090909090909",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": []
+        }
+      ],
+      "shipping_methods": []
+    },
+    {
+      "name": "mixed-inclusive-and-exclusive",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-exclusive",
+            "unit_price": "100",
+            "quantity": "1",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": []
+          },
+          {
+            "id": "fixture-inclusive",
+            "unit_price": "125",
+            "quantity": "1",
+            "is_tax_inclusive": true,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": []
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "250.00",
+      "totals": {
+        "total": {
+          "decimal": "250",
+          "raw": {
+            "value": "250.00000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "50",
+          "raw": {
+            "value": "50.000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "250",
+          "raw": {
+            "value": "250.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "50",
+          "raw": {
+            "value": "50.000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "250",
+          "raw": {
+            "value": "250.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "200",
+          "raw": {
+            "value": "200.00000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "50",
+          "raw": {
+            "value": "50.000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-exclusive",
+          "totals": {
+            "total": {
+              "decimal": "125",
+              "raw": {
+                "value": "125.00000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "100",
+              "raw": {
+                "value": "100.00000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "125",
+              "raw": {
+                "value": "125.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "100",
+              "raw": {
+                "value": "100.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": []
+        },
+        {
+          "id": "fixture-inclusive",
+          "totals": {
+            "total": {
+              "decimal": "125",
+              "raw": {
+                "value": "125.00000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "100",
+              "raw": {
+                "value": "100.00000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "125",
+              "raw": {
+                "value": "125.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "100",
+              "raw": {
+                "value": "100.00000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "25",
+              "raw": {
+                "value": "25.000000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": []
+        }
+      ],
+      "shipping_methods": []
+    },
+    {
+      "name": "all-returned",
+      "input": {
+        "currency_code": "eur",
+        "region": {
+          "automatic_taxes": true
+        },
+        "items": [
+          {
+            "id": "fixture-item",
+            "unit_price": "100",
+            "quantity": "1",
+            "is_tax_inclusive": false,
+            "tax_lines": [
+              {
+                "rate": "25"
+              }
+            ],
+            "adjustments": [],
+            "detail": {
+              "return_received_quantity": "1"
+            }
+          }
+        ],
+        "shipping_methods": [],
+        "credit_lines": []
+      },
+      "expected_display_total": "0.00",
+      "totals": {
+        "total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "discount_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "original_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "credit_line_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "item_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_subtotal": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_tax_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "shipping_discount_total": {
+          "decimal": "0",
+          "raw": {
+            "value": "0.0000000000000000000",
+            "precision": 20
+          }
+        },
+        "return_received_total": {
+          "decimal": "125",
+          "raw": {
+            "value": "125.00000000000000000",
+            "precision": 20
+          }
+        }
+      },
+      "items": [
+        {
+          "id": "fixture-item",
+          "totals": {
+            "total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "discount_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_subtotal": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "original_tax_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "refundable_total": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "refundable_total_per_unit": {
+              "decimal": "0",
+              "raw": {
+                "value": "0.0000000000000000000",
+                "precision": 20
+              }
+            },
+            "return_received_total": {
+              "decimal": "125",
+              "raw": {
+                "value": "125.00000000000000000",
+                "precision": 20
+              }
+            }
+          },
+          "adjustments": []
+        }
+      ],
+      "shipping_methods": []
+    }
+  ]
+}

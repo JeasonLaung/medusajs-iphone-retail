@@ -21,7 +21,7 @@
 
 所有任务默认 **待开始**。状态流转：待开始 → 进行中 → 待验收 → 已验收；有阻碍时记录具体原因和依赖，不把缺实现记作完成。
 
-2026-10-27：T001—T006 进行中，均未验收；T007 及后续实现任务待开始。已形成以下可复查交付物：
+2026-10-27：T001—T007 进行中，均未验收；后续实现任务待开始。已形成以下可复查交付物：
 
 - [业务基线](migration/business-baseline.md) 与 [源码证据追踪表](migration/source-traceability.md)：67 个路由文件、86 个方法导出、36 处原生 SDK 调用候选。
 - [设备命令与权限](migration/device-commands.md)：22 个动作、角色/仓库/来源范围、数量库存副作用及固定用例；[回收与邮件](migration/buyback-and-mail.md) 补充状态与可靠重试规则；[授权矩阵](migration/authorization-matrix.md) 覆盖查询、写入、嵌套字段、附件和移动凭证。
@@ -29,6 +29,8 @@
 - [前台采集基线](migration/frontend-baseline.md)：14 个公开或未登录状态，中英及三个宽度共 84 张截图；[路由模式表](migration/frontend-routes.md) 已确认 32 种页面 URL 与 7 个非页面 handler，不能代替全部状态验收。
 - [商品契约](migration/catalog-contract.md)、[搜索契约](migration/search-contract.md) 和 [支付基线](migration/payment-contract.md)：固定实际消费、数据关系、兼容链接与草稿缺口；属于 T007 领域草案，整体 API 契约仍待完成。
 - [数据去向与转换](migration/data-mapping.md)：193 张表、1,961 列结构元数据及 27,779 行只读快照计数；逐表有处置类别，逐字段业务映射仍待完善。
+- [购物车与交易计算](migration/checkout-contract.md)：18 组人工精确金额及 10 组库存准备样例已运行并固定；完整促销/税/运费引擎和 Gin 对照仍待验证。
+- [API 通用约定](migration/api-conventions.md) 与 [后台组件承接](migration/admin-ui-contract.md)：明确错误/分页/幂等/会话边界，23 个页面文件与 6 个 widgets 有 Ant Design / ECharts 承接设计；重定向入口继续保留，不冒充独立业务页面。
 
 调用方、剩余领域授权、原生交易与支付插件契约、登录后页面及完整字段映射继续核对。源码盘点、截图成功和元数据清单都不等于业务迁移完成。
 
