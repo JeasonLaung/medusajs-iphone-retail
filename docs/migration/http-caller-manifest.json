@@ -1,0 +1,1826 @@
+{
+  "format_version": 1,
+  "scope": "AST candidates for calls named fetch across storefront/admin source. Includes wrappers and external URLs; excludes SDK resource methods and calls under different names. No app execution. Unknown paths/methods remain unresolved.",
+  "source_sha256": {
+    "medusa-store/apps/storefront/src/app/api/mollie-return/route.ts": "7b1775e2865551a4cdb2adb9eb16c70bc9902a0ca7015178383400abebb28897",
+    "medusa-store/apps/storefront/src/app/api/payment-return/route.ts": "d2655e4423d2ae48d5b6ddda53176b8d62bbe616c64f34efcbf5f07ed59c241d",
+    "medusa-store/apps/storefront/src/app/sitemap.xml/route.ts": "419de71fca63862b91674e9179f25c5c89c2784220c525164e0dbe15656c84a5",
+    "medusa-store/apps/storefront/src/lib/data/after-sales.ts": "3ff413e5718d9863dd1b5c9a9686e4cb248414fa4cfa79ff30b4c86e7ebd98e9",
+    "medusa-store/apps/storefront/src/lib/data/buy-policies.ts": "7ca9defe0e38d2a3b8a7ead2174e5567a054cef9304055b6df06752d552adc03",
+    "medusa-store/apps/storefront/src/lib/data/buyback.ts": "209aa3644696af3f3fa65a5acca5d3c7d061ab5adad1e5c06ec9ea70995ebc67",
+    "medusa-store/apps/storefront/src/lib/data/cart.ts": "ff70408f70af8d04dae8b943e4610bd709a9a339c79b704c1ac204b740532ab5",
+    "medusa-store/apps/storefront/src/lib/data/categories.ts": "ab2ab0c88a68cbdcdab533602f73adbb6da38896de11d3e50f5331f60ab97e54",
+    "medusa-store/apps/storefront/src/lib/data/collections.ts": "d7de6c35bec1e523519855f1a95ec8d258dd94189dce746631ee73ba3c18fef4",
+    "medusa-store/apps/storefront/src/lib/data/customer-service.ts": "3f3eea0f6b5cd418d76cb3bcb71caa56c236118a58f53b1ce9c63ddb0a4be7c6",
+    "medusa-store/apps/storefront/src/lib/data/customer.ts": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be",
+    "medusa-store/apps/storefront/src/lib/data/fulfillment.ts": "4b4247e0da4d66d43536bd702d0439cd9145443edd80d4b0b19afcc580b37d35",
+    "medusa-store/apps/storefront/src/lib/data/locales.ts": "910629dfb21ac4a829ab77a1dd5ea6296a8767fc0830401bcc57b706b1883264",
+    "medusa-store/apps/storefront/src/lib/data/notifications.ts": "7cd8a616c34741c794077a26d3071809ff020d6d9a29cdbc3cc65facbafbc839",
+    "medusa-store/apps/storefront/src/lib/data/orders.ts": "75b404011e8d68051810eea4cb18fd6ecfb3d00104a79d9fae53682c31c63090",
+    "medusa-store/apps/storefront/src/lib/data/payment.ts": "39235b4ba94413f36553d91ec4e8955184cb81a494e3359cece1c91e249d6c9a",
+    "medusa-store/apps/storefront/src/lib/data/product-reviews.ts": "1ce9b784b774d5d0c914fcf6376a162fc8ef3a009c3a84d1d833263eb0230a41",
+    "medusa-store/apps/storefront/src/lib/data/products.ts": "808c81cdea2b3ffd47a8b0649b034fcbb4528e025d2a56edab25c15414db2068",
+    "medusa-store/apps/storefront/src/lib/data/regions.ts": "56d70a0f97d9996c68060dd8940b8ae0f80aff9838aabaebfa179349d53e2fd6",
+    "medusa-store/apps/storefront/src/lib/data/seo.ts": "a30895638409ed90a49a7d9faa6429c59602f0ebd48be0200ad869dc3865792b",
+    "medusa-store/apps/storefront/src/lib/data/store-search.ts": "2805efe6b3c11c65f0e97f74efdac7d7c002d6c4103dcf27b97284cb9202ee28",
+    "medusa-store/apps/storefront/src/lib/data/variants.ts": "7f1baf0647b19cbd7e9d9619b716b9e0543dd94622e5c754e8e18727e420aa70",
+    "medusa-store/apps/storefront/src/middleware.ts": "0d92e3b3f567c0ad302fe08dc677ec1446a5a20376111cca581fbd96b468baa9",
+    "medusa-store/apps/storefront/src/modules/checkout/components/payment-result/index.tsx": "cfd91ecb2b8d81297ae0fe3c282a097e87e8e928586df0af5c35fe5939e02438",
+    "medusa-store/apps/storefront/src/modules/order/components/dhl-official-tracking/index.tsx": "68f0a65f327458fb41affb70ead9b1c2b82495eb0acc97af611191aec19321dd",
+    "medusa-store/apps/storefront/src/modules/store/components/refinement-list/options-picker/index.tsx": "7d8907ebbe0aed4bcf95cdda24c63b20bd87be7b02d9eb920d0222c89a6f18e0",
+    "medusa-store/apps/backend/src/admin/components/buyback-applications.tsx": "b531b598f8022c8b4e3811527f484351ec51f0961d444a011a4b5f7ff1d966aa",
+    "medusa-store/apps/backend/src/admin/components/buyback-price-catalog.tsx": "c12638d58ade9ce234f7b5dca88d9e6df221965a88d66a3f31751a1ee6ad17c7",
+    "medusa-store/apps/backend/src/admin/components/device-details-modal.tsx": "4b8a87a20fefe08bd624a07b892514cbca974ca4d289da6956b6977d14df5fb7",
+    "medusa-store/apps/backend/src/admin/components/device-edit-drawer.tsx": "7d33d450bdee09c918a238800681d50939c6c8522db97c1471f42e65627b603d",
+    "medusa-store/apps/backend/src/admin/components/device-fulfillment.tsx": "6358f6ec00ad5a0f7fa814cbe9cad1ab138eed1ed4475be8ef05df4008501084",
+    "medusa-store/apps/backend/src/admin/components/device-lookup-table.tsx": "cf19d0d65661b17ac4ea774fe243162eb5105f526189642f00329e872efd0bc8",
+    "medusa-store/apps/backend/src/admin/components/device-photos-input.tsx": "d123fa35c0d987b842de5013f0d8580e3254eefc697d9a8e4e5242eb3bc232ee",
+    "medusa-store/apps/backend/src/admin/components/device-return-transfer.tsx": "18ee44c0745eb77f81f18cb658694ad68cc57f6e677480cad0a321ea3a36eff6",
+    "medusa-store/apps/backend/src/admin/components/device-variant-select.tsx": "30368aefcb920910ba6bc2887570c8593eda6764f8555534f8435695e379d0a6",
+    "medusa-store/apps/backend/src/admin/components/device-workbench.tsx": "e20a349387804d822aa790963b8ff04070aa01619ab11b29244fb03ae7bb2aaf",
+    "medusa-store/apps/backend/src/admin/components/dhl-official-tracking.tsx": "d427cf0d224795489d7ba68bb128303db47a5e65182f6c8b6f25dec367c7941a",
+    "medusa-store/apps/backend/src/admin/components/order-cancellation.tsx": "936be3e051a6ebacec02506c0228999839fd3c6fd32ee0f570751e7b8375aecf",
+    "medusa-store/apps/backend/src/admin/components/order-device-allocation-dialog.tsx": "05ee435bb51cc960e31da580643d87bd1acec3de87ecc378fd79574bf8b3662e",
+    "medusa-store/apps/backend/src/admin/components/order-device-allocation.tsx": "711a4d073b6419f8c3531b1ffd58c48063f91a2b1271f687e34ba7e152471d3d",
+    "medusa-store/apps/backend/src/admin/components/recycled-device-intake.tsx": "7504dd804f7e75bbfef4e8a7814efa5cb02aca7d9f1d2014f96472888e17789c",
+    "medusa-store/apps/backend/src/admin/components/returned-device-processing.tsx": "b69878b0c7a2e103b7c53769fba3f3bb2f3b936ec79f17795731b1c407a94ad7",
+    "medusa-store/apps/backend/src/admin/components/seo-reference/FilePicker.tsx": "d6f713e1370e0ae0cfab3de10fb5de356ea38524cc7bad509eb3f61f4a3988d4",
+    "medusa-store/apps/backend/src/admin/components/seo-reference/SubmissionHistory.tsx": "4615c8205352c30396159c674231bf184835363757173cc0b4ea71fdbb62ad17",
+    "medusa-store/apps/backend/src/admin/components/seo-reference/client.ts": "749d906473e4358d2aca7fd41e69c93c46175c5b3ccf94ffec850990935cd63a",
+    "medusa-store/apps/backend/src/admin/components/shipment-tracking-drawer.tsx": "d5efd23e3c949a6903ba9e7bb560313edb1f330df59b7e5dfc12f93537308f8f",
+    "medusa-store/apps/backend/src/admin/lib/mail.ts": "9979f43e21be26972a52ed77632c99f9275a0d522931624c202e1281c1abc8dc",
+    "medusa-store/apps/backend/src/admin/lib/mobile-intake.ts": "b27c129f7323859383e6105dbdccf493ca39660db0a46d09fa8bca8ae144fad2",
+    "medusa-store/apps/backend/src/admin/lib/use-warehouse-menu.ts": "251ee3143ff17e31d6ac6491a6c863ce36bf62c66359d2a62803b61789e844f4",
+    "medusa-store/apps/backend/src/admin/routes/mail/page.tsx": "aa6cf68597c33cc5bd9da50bb7aa6f0b0e279d302009407c1cbc4d2dbbf7ead3",
+    "medusa-store/apps/backend/src/admin/routes/settings/buy-policies/page.tsx": "30a469891238b5b88557f551944b8beaa6ddc183e1c81b09f5d1aec2a06ebf41",
+    "medusa-store/apps/backend/src/admin/routes/settings/customer-service/page.tsx": "48c90a2381e4912fc3f0058e77375d5fb69ea57284a2eba3a837b2b6c26a2692",
+    "medusa-store/apps/backend/src/admin/routes/settings/mollie/page.tsx": "037bc99b9fe72ced192dfb59695ef6f8526e2c8efb0658ff3c989440f7d5ef7a",
+    "medusa-store/apps/backend/src/admin/routes/settings/warehouse-access/page.tsx": "5c98e18b2a0f46e66cdede0b968da4344c4f62af78e5da9bc49923cbf37f4861",
+    "medusa-store/apps/backend/src/admin/routes/settings/webhook-notifications/page.tsx": "81bd1ac463c6670595d4edb65052a11605bcd49d1e6de095ca37decb41d7403b",
+    "medusa-store/apps/backend/src/admin/widgets/order-after-sales.tsx": "d4e457bca7a24c83e385de422194e58ef3dcd347611ac1675764d18863fded80",
+    "medusa-store/apps/backend/src/admin/widgets/order-devices.tsx": "b320998973dde145e45d3225c5b631e8889203fe70b3e3e9aa2e95ad14c67f1c",
+    "medusa-store/apps/backend/src/admin/widgets/product-reviews.tsx": "7ecea924f502279a651481c48967d4570f479fd6dea89d196e47a8b07c332b85"
+  },
+  "calls": [
+    {
+      "source": "medusa-store/apps/storefront/src/app/api/mollie-return/route.ts",
+      "line": 46,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/store/carts/${cartId}`",
+      "endpoint_pattern": "/store/carts/{cartId}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/app/api/payment-return/route.ts",
+      "line": 29,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "`/store/carts/${cartId}`",
+      "endpoint_pattern": "/store/carts/{cartId}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "query",
+        "headers",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/app/sitemap.xml/route.ts",
+      "line": 9,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/store/seo/pages\"",
+      "endpoint_pattern": "/store/seo/pages",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/after-sales.ts",
+      "line": 11,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/store/orders/${orderId}/devices`",
+      "endpoint_pattern": "/store/orders/{orderId}/devices",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/after-sales.ts",
+      "line": 28,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/store/orders/${orderId}/after-sales`",
+      "endpoint_pattern": "/store/orders/{orderId}/after-sales",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/after-sales.ts",
+      "line": 48,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/store/orders/${orderId}/after-sales`",
+      "endpoint_pattern": "/store/orders/{orderId}/after-sales",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/buy-policies.ts",
+      "line": 13,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/store/buy-policies\"",
+      "endpoint_pattern": "/store/buy-policies",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/buyback.ts",
+      "line": 27,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "path",
+      "endpoint_pattern": null,
+      "endpoint_resolution": "dynamic-review-required",
+      "methods": [],
+      "method_evidence": "spread may override method; review required",
+      "fields": [
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/buyback.ts",
+      "line": 40,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/store/buyback/prices?product_id=${encodeURIComponent(productId)}`",
+      "endpoint_pattern": "/store/buyback/prices?product_id={encodeURIComponent(productId)}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/buyback.ts",
+      "line": 48,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/store/buyback/estimate\"",
+      "endpoint_pattern": "/store/buyback/estimate",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+      "line": 49,
+      "callee": "sdk.client\r\n    .fetch",
+      "endpoint_expression": "`/store/carts/${id}`",
+      "endpoint_pattern": "/store/carts/{id}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+      "line": 513,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/store/shipping-options\"",
+      "endpoint_pattern": "/store/shipping-options",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/categories.ts",
+      "line": 12,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "\"/store/product-categories\"",
+      "endpoint_pattern": "/store/product-categories",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/categories.ts",
+      "line": 36,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "`/store/product-categories`",
+      "endpoint_pattern": "/store/product-categories",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/collections.ts",
+      "line": 12,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "`/store/collections/${id}`",
+      "endpoint_pattern": "/store/collections/{id}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/collections.ts",
+      "line": 33,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "\"/store/collections\"",
+      "endpoint_pattern": "/store/collections",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/collections.ts",
+      "line": 52,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "`/store/collections`",
+      "endpoint_pattern": "/store/collections",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/customer-service.ts",
+      "line": 7,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/store/customer-service\"",
+      "endpoint_pattern": "/store/customer-service",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 69,
+      "callee": "sdk.client\n      .fetch",
+      "endpoint_expression": "`/store/customers/me`",
+      "endpoint_pattern": "/store/customers/me",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/fulfillment.ts",
+      "line": 16,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "`/store/shipping-options`",
+      "endpoint_pattern": "/store/shipping-options",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/fulfillment.ts",
+      "line": 54,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "`/store/shipping-options/${optionId}/calculate`",
+      "endpoint_pattern": "/store/shipping-options/{optionId}/calculate",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/locales.ts",
+      "line": 20,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "`/store/locales`",
+      "endpoint_pattern": "/store/locales",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/notifications.ts",
+      "line": 12,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/store/notifications?offset=${Math.max(0, offset)}`",
+      "endpoint_pattern": "/store/notifications?offset={Math.max(0, offset)}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/notifications.ts",
+      "line": 19,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/store/notifications\"",
+      "endpoint_pattern": "/store/notifications",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/orders.ts",
+      "line": 11,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/store/orders/${id}/timeline`",
+      "endpoint_pattern": "/store/orders/{id}/timeline",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "headers",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/orders.ts",
+      "line": 25,
+      "callee": "sdk.client\r\n    .fetch",
+      "endpoint_expression": "`/store/orders/${id}`",
+      "endpoint_pattern": "/store/orders/{id}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/orders.ts",
+      "line": 52,
+      "callee": "sdk.client\r\n    .fetch",
+      "endpoint_expression": "`/store/orders`",
+      "endpoint_pattern": "/store/orders",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/orders.ts",
+      "line": 124,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/store/shipping-demo/orders/${id}`",
+      "endpoint_pattern": "/store/shipping-demo/orders/{id}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/payment.ts",
+      "line": 18,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "`/store/payment-providers`",
+      "endpoint_pattern": "/store/payment-providers",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/payment.ts",
+      "line": 50,
+      "callee": "sdk.client\n      .fetch",
+      "endpoint_expression": "\"/store/paypal/config\"",
+      "endpoint_pattern": "/store/paypal/config",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query",
+        "headers",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/product-reviews.ts",
+      "line": 16,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/store/product-reviews\"",
+      "endpoint_pattern": "/store/product-reviews",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/product-reviews.ts",
+      "line": 36,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/store/product-reviews\"",
+      "endpoint_pattern": "/store/product-reviews",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/product-reviews.ts",
+      "line": 61,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/store/product-reviews/purchases\"",
+      "endpoint_pattern": "/store/product-reviews/purchases",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query",
+        "headers",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/product-reviews.ts",
+      "line": 78,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/store/orders/${orderId}/product-reviews`",
+      "endpoint_pattern": "/store/orders/{orderId}/product-reviews",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "headers",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/products.ts",
+      "line": 63,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "`/store/products`",
+      "endpoint_pattern": "/store/products",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/regions.ts",
+      "line": 13,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "`/store/regions`",
+      "endpoint_pattern": "/store/regions",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/regions.ts",
+      "line": 27,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "`/store/regions/${id}`",
+      "endpoint_pattern": "/store/regions/{id}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/seo.ts",
+      "line": 11,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/store/seo\"",
+      "endpoint_pattern": "/store/seo",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/store-search.ts",
+      "line": 70,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/store/search\"",
+      "endpoint_pattern": "/store/search",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/data/variants.ts",
+      "line": 23,
+      "callee": "sdk.client\n    .fetch",
+      "endpoint_expression": "`/store/product-variants/${variant_id}`",
+      "endpoint_pattern": "/store/product-variants/{variant_id}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "query",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/middleware.ts",
+      "line": 28,
+      "callee": "fetch",
+      "endpoint_expression": "`${BACKEND_URL}/store/regions`",
+      "endpoint_pattern": "{BACKEND_URL}/store/regions",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "headers",
+        "next",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/checkout/components/payment-result/index.tsx",
+      "line": 24,
+      "callee": "fetch",
+      "endpoint_expression": "`/api/mollie-return${query}`",
+      "endpoint_pattern": "/api/mollie-return{query}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "cache"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/order/components/dhl-official-tracking/index.tsx",
+      "line": 23,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/store/shipping-demo/dhl\"",
+      "endpoint_pattern": "/store/shipping-demo/dhl",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/refinement-list/options-picker/index.tsx",
+      "line": 26,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/store/product-options\"",
+      "endpoint_pattern": "/store/product-options",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/buyback-applications.tsx",
+      "line": 31,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/admin/buyback/${requestId}/photos/${photo.id}`",
+      "endpoint_pattern": "/admin/buyback/{requestId}/photos/{photo.id}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/buyback-applications.tsx",
+      "line": 57,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/admin/buyback/${request.id}`",
+      "endpoint_pattern": "/admin/buyback/{request.id}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/buyback-applications.tsx",
+      "line": 109,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/admin/buyback/${requestId}/photos/${photo.id}`",
+      "endpoint_pattern": "/admin/buyback/{requestId}/photos/{photo.id}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/buyback-applications.tsx",
+      "line": 115,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/admin/buyback/${id}`",
+      "endpoint_pattern": "/admin/buyback/{id}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/buyback-applications.tsx",
+      "line": 132,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/buyback-prices\"",
+      "endpoint_pattern": "/admin/buyback-prices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/buyback-applications.tsx",
+      "line": 135,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/buyback-prices\"",
+      "endpoint_pattern": "/admin/buyback-prices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/buyback-applications.tsx",
+      "line": 156,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/buyback\"",
+      "endpoint_pattern": "/admin/buyback",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/buyback-price-catalog.tsx",
+      "line": 28,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/buyback-catalog\"",
+      "endpoint_pattern": "/admin/buyback-catalog",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/buyback-price-catalog.tsx",
+      "line": 80,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/buyback-catalog\"",
+      "endpoint_pattern": "/admin/buyback-catalog",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-details-modal.tsx",
+      "line": 33,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-edit-drawer.tsx",
+      "line": 42,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-fulfillment.tsx",
+      "line": 22,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-fulfillment.tsx",
+      "line": 37,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-fulfillment.tsx",
+      "line": 75,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-lookup-table.tsx",
+      "line": 70,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-lookup-table.tsx",
+      "line": 91,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-lookup-table.tsx",
+      "line": 113,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-lookup-table.tsx",
+      "line": 173,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-photos-input.tsx",
+      "line": 42,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices/photos\"",
+      "endpoint_pattern": "/admin/devices/photos",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-return-transfer.tsx",
+      "line": 17,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-variant-select.tsx",
+      "line": 68,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices/variants\"",
+      "endpoint_pattern": "/admin/devices/variants",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-workbench.tsx",
+      "line": 259,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/admin/devices?${query}`",
+      "endpoint_pattern": "/admin/devices?{query}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-workbench.tsx",
+      "line": 275,
+      "callee": "fetch",
+      "endpoint_expression": "\"/admin/devices/supplier-accounts\"",
+      "endpoint_pattern": "/admin/devices/supplier-accounts",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "credentials"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-workbench.tsx",
+      "line": 289,
+      "callee": "fetch",
+      "endpoint_expression": "`/admin/orders/${encodeURIComponent(orderId)}/after-sales`",
+      "endpoint_pattern": "/admin/orders/{encodeURIComponent(orderId)}/after-sales",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "credentials"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-workbench.tsx",
+      "line": 308,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "path",
+      "endpoint_pattern": null,
+      "endpoint_resolution": "dynamic-review-required",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/device-workbench.tsx",
+      "line": 530,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices/variants\"",
+      "endpoint_pattern": "/admin/devices/variants",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/dhl-official-tracking.tsx",
+      "line": 14,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/shipping-demo/dhl\"",
+      "endpoint_pattern": "/admin/shipping-demo/dhl",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/order-cancellation.tsx",
+      "line": 28,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/admin/orders/${order.id}/cancel`",
+      "endpoint_pattern": "/admin/orders/{order.id}/cancel",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/order-device-allocation-dialog.tsx",
+      "line": 32,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/order-device-allocation.tsx",
+      "line": 83,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/recycled-device-intake.tsx",
+      "line": 50,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/recycled-device-intake.tsx",
+      "line": 80,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/returned-device-processing.tsx",
+      "line": 31,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/returned-device-processing.tsx",
+      "line": 51,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/seo-reference/FilePicker.tsx",
+      "line": 17,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/uploads\"",
+      "endpoint_pattern": "/admin/uploads",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "headers"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/seo-reference/SubmissionHistory.tsx",
+      "line": 11,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/seo/submissions\"",
+      "endpoint_pattern": "/admin/seo/submissions",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/seo-reference/client.ts",
+      "line": 25,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/admin/seo/${resource}`",
+      "endpoint_pattern": "/admin/seo/{resource}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/seo-reference/client.ts",
+      "line": 36,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/seo/commands\"",
+      "endpoint_pattern": "/admin/seo/commands",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/components/shipment-tracking-drawer.tsx",
+      "line": 21,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`/admin/orders/${encodeURIComponent(orderId)}/fulfillments/${encodeURIComponent(shipment.id)}/tracking`",
+      "endpoint_pattern": "/admin/orders/{encodeURIComponent(orderId)}/fulfillments/{encodeURIComponent(shipment.id)}/tracking",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/lib/mail.ts",
+      "line": 10,
+      "callee": "mailSdk.client.fetch",
+      "endpoint_expression": "\"/admin/mail\"",
+      "endpoint_pattern": "/admin/mail",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/lib/mail.ts",
+      "line": 13,
+      "callee": "mailSdk.client.fetch",
+      "endpoint_expression": "\"/admin/mail/commands\"",
+      "endpoint_pattern": "/admin/mail/commands",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/lib/mobile-intake.ts",
+      "line": 6,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices/mobile-intake\"",
+      "endpoint_pattern": "/admin/devices/mobile-intake",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/lib/use-warehouse-menu.ts",
+      "line": 18,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/warehouse-access/me\"",
+      "endpoint_pattern": "/admin/warehouse-access/me",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/mail/page.tsx",
+      "line": 109,
+      "callee": "mailSdk.client.fetch",
+      "endpoint_expression": "`/admin/mail/messages/${selectedId}`",
+      "endpoint_pattern": "/admin/mail/messages/{selectedId}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/mail/page.tsx",
+      "line": 143,
+      "callee": "mailSdk.client\n        .fetch",
+      "endpoint_expression": "`/admin/mail/messages/${item.id}`",
+      "endpoint_pattern": "/admin/mail/messages/{item.id}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/mail/page.tsx",
+      "line": 196,
+      "callee": "mailSdk.client.fetch",
+      "endpoint_expression": "`/admin/mail/messages/${message.id}/attachments/${item.id || index}`",
+      "endpoint_pattern": "/admin/mail/messages/{message.id}/attachments/{item.id || index}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/settings/buy-policies/page.tsx",
+      "line": 38,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "api",
+      "endpoint_pattern": "/admin/buy-policies",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/settings/buy-policies/page.tsx",
+      "line": 42,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "api",
+      "endpoint_pattern": "/admin/buy-policies",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/settings/customer-service/page.tsx",
+      "line": 33,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "api",
+      "endpoint_pattern": "/admin/customer-service",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/settings/customer-service/page.tsx",
+      "line": 37,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "api",
+      "endpoint_pattern": "/admin/customer-service",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/settings/mollie/page.tsx",
+      "line": 17,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/mollie\"",
+      "endpoint_pattern": "/admin/mollie",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/settings/mollie/page.tsx",
+      "line": 26,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/mollie\"",
+      "endpoint_pattern": "/admin/mollie",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/settings/warehouse-access/page.tsx",
+      "line": 29,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "api",
+      "endpoint_pattern": "/admin/warehouse-access",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/settings/warehouse-access/page.tsx",
+      "line": 45,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "api",
+      "endpoint_pattern": "/admin/warehouse-access",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/settings/webhook-notifications/page.tsx",
+      "line": 34,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "api",
+      "endpoint_pattern": "/admin/webhook-notifications",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "fetch default; no options",
+      "fields": [],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/settings/webhook-notifications/page.tsx",
+      "line": 55,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "saved ? `${api}/${saved.id}` : api",
+      "endpoint_pattern": null,
+      "endpoint_resolution": "dynamic-review-required",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/settings/webhook-notifications/page.tsx",
+      "line": 62,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`${api}/${id}`",
+      "endpoint_pattern": "/admin/webhook-notifications/{id}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "DELETE"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/routes/settings/webhook-notifications/page.tsx",
+      "line": 67,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "`${api}/${id}/test`",
+      "endpoint_pattern": "/admin/webhook-notifications/{id}/test",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/widgets/order-after-sales.tsx",
+      "line": 26,
+      "callee": "fetch",
+      "endpoint_expression": "`/admin/orders/${order.id}/after-sales`",
+      "endpoint_pattern": "/admin/orders/{order.id}/after-sales",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "credentials"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/widgets/order-after-sales.tsx",
+      "line": 36,
+      "callee": "fetch",
+      "endpoint_expression": "`/admin/orders/${order.id}/after-sales`",
+      "endpoint_pattern": "/admin/orders/{order.id}/after-sales",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "credentials",
+        "headers",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/widgets/order-devices.tsx",
+      "line": 20,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/widgets/order-devices.tsx",
+      "line": 23,
+      "callee": "sdk.client.fetch",
+      "endpoint_expression": "\"/admin/devices\"",
+      "endpoint_pattern": "/admin/devices",
+      "endpoint_resolution": "static",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/widgets/product-reviews.tsx",
+      "line": 20,
+      "callee": "reviewSdk.client.fetch",
+      "endpoint_expression": "\"/admin/product-reviews\"",
+      "endpoint_pattern": "/admin/product-reviews",
+      "endpoint_resolution": "static",
+      "methods": [
+        "GET"
+      ],
+      "method_evidence": "object has no method/spread",
+      "fields": [
+        "query"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/admin/widgets/product-reviews.tsx",
+      "line": 23,
+      "callee": "reviewSdk.client.fetch",
+      "endpoint_expression": "`/admin/product-reviews/${id}`",
+      "endpoint_pattern": "/admin/product-reviews/{id}",
+      "endpoint_resolution": "static-prefix-with-runtime-segments",
+      "methods": [
+        "POST"
+      ],
+      "method_evidence": "static method property",
+      "fields": [
+        "method",
+        "body"
+      ],
+      "status": "source-candidate-only; not reachability, authorization or new API mapping"
+    }
+  ]
+}

@@ -10,6 +10,7 @@
 | 交易领域 | [商品及数据关系](catalog-contract.md)、[搜索筛选](search-contract.md)、[支付与订单完成](payment-contract.md)、[购物车/合计/库存/成单](checkout-contract.md)、[促销/税率/配送](promotion-tax-shipping-contract.md) |
 | API 与后台组件 | [API 通用约定](api-conventions.md)、[Ant Design / ECharts 及 23 页承接](admin-ui-contract.md) |
 | 输入验证/SDK去向 | [请求结构、精度适配与Gin草稿差距](request-validation-and-sdk-contract.md)、schemas/legacy-request-inputs.json、fixtures/legacy-request-validation.json、storefront-sdk-contract.json |
+| 直接HTTP去向 | [108个候选与动态封装](http-caller-contract.md)、http-caller-manifest.json、http-caller-contract.json |
 | 自定义业务 | [设备命令及固定用例](device-commands.md)、[回收与邮件](buyback-and-mail.md)、[SEO 与引用监测](seo-contract.md) |
 | 统计 | [Analytics 实际口径](analytics-contract.md) |
 | 数据继承 | [源数据去向与转换](data-mapping.md)、[第一批36表292列设计](catalog-field-design.md)、catalog-field-mapping.json/.csv、catalog-preflight-report.json、data-table-disposition.csv、data-source-manifest.json |
@@ -30,6 +31,9 @@ node retail/scripts/capture-inventory.cjs --check
 node retail/scripts/capture-commerce-rules.cjs --check
 node retail/scripts/capture-request-validation.cjs --check
 python retail/scripts/map-storefront-sdk-contract.py --check
+node retail/scripts/test-http-callers.cjs
+node retail/scripts/inventory-http-callers.cjs --check
+python retail/scripts/map-http-caller-contract.py --check
 python retail/scripts/capture-schema-constraints.py --check
 python retail/scripts/map-catalog-fields.py --check
 python retail/scripts/preflight-catalog-mapping.py --bundle logs/gin-migration/source-20261026.json
