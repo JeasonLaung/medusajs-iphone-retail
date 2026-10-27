@@ -14,6 +14,7 @@ import (
 
 	"github.com/eurorefurb/retail/internal/importvalue"
 	"github.com/eurorefurb/retail/internal/protected"
+	"github.com/eurorefurb/retail/internal/rowimport"
 	"github.com/eurorefurb/retail/migrations"
 	"github.com/go-sql-driver/mysql"
 )
@@ -478,6 +479,61 @@ func TestRegistryMySQL(t *testing.T) {
 		}
 		if gotAmount != amount || gotInstant != "2026-10-27 00:00:00.123456" || gotJSON != original {
 			t.Fatal("strict importer SQL values changed")
+		}
+	})
+	t.Run("mapped_source_row_bound_sql_and_unique_claim_same_transaction", func(t *testing.T) {
+		jsonCell := func(value string) rowimport.Cell { return rowimport.Cell{Raw: json.RawMessage(value)} }
+		source := rowimport.SourceRow{
+			"id": jsonCell(`"mapped-tag"`), "value": jsonCell(`" Exact tag "`),
+			"metadata":   jsonCell(` {"n":9007199254740993,"n":1.2300} `),
+			"created_at": jsonCell(`"2026-10-27T08:00:00.123456+08:00"`), "updated_at": jsonCell(`"2026-10-27T08:00:00.123456+08:00"`),
+			"deleted_at": {SQLNull: true}, "external_id": {SQLNull: true},
+		}
+		bound, err := rowimport.Convert("product_tag", source)
+		if err != nil {
+			t.Fatal(err)
+		}
+		tx, err := db.BeginTx(ctx, nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer tx.Rollback()
+		if err = ApplySourceRow(ctx, tx, bound.Table, row(map[string]any{"id": "mapped-tag", "value": " Exact tag ", "deleted_at": nil})); err != nil {
+			t.Fatal(err)
+		}
+		var columns, markers []string
+		for _, column := range bound.Columns {
+			columns = append(columns, "`"+column+"`")
+			markers = append(markers, "?")
+		}
+		if _, err = tx.ExecContext(ctx, "INSERT INTO relational_fixture.`"+bound.Table+"` ("+strings.Join(columns, ",")+") VALUES("+strings.Join(markers, ",")+")", bound.Values...); err != nil {
+			t.Fatal(err)
+		}
+		if err = tx.Commit(); err != nil {
+			t.Fatal(err)
+		}
+		var metadata, created, value string
+		var deleted, external sql.NullString
+		if err = db.QueryRowContext(ctx, "SELECT value,metadata,DATE_FORMAT(created_at,'%Y-%m-%d %H:%i:%s.%f'),deleted_at,external_id FROM relational_fixture.catalog_tags WHERE id='mapped-tag'").Scan(&value, &metadata, &created, &deleted, &external); err != nil {
+			t.Fatal(err)
+		}
+		if value != " Exact tag " || metadata != string(source["metadata"].Raw) || created != "2026-10-27 00:00:00.123456" || deleted.Valid || external.Valid {
+			t.Fatal("mapped row roundtrip mismatch")
+		}
+		// JSON document null remains a non-NULL text value, unlike SQL NULL.
+		source["id"] = jsonCell(`"mapped-tag-null"`)
+		source["value"] = jsonCell(`"JSON null tag"`)
+		source["metadata"] = jsonCell(`null`)
+		bound, err = rowimport.Convert("product_tag", source)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, err = db.ExecContext(ctx, "INSERT INTO relational_fixture.`"+bound.Table+"` ("+strings.Join(columns, ",")+") VALUES("+strings.Join(markers, ",")+")", bound.Values...); err != nil {
+			t.Fatal(err)
+		}
+		var isNull int
+		if err = db.QueryRowContext(ctx, "SELECT metadata IS NULL,metadata FROM relational_fixture.catalog_tags WHERE id='mapped-tag-null'").Scan(&isNull, &metadata); err != nil || isNull != 0 || metadata != "null" {
+			t.Fatal("JSON null collapsed to SQL NULL")
 		}
 	})
 }

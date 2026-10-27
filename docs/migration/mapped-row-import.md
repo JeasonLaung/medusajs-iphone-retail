@@ -1,0 +1,31 @@
+# 显式字段计划的Go整行转换
+
+日期：2026-10-27。`retail/backend/internal/rowimport`执行六批映射的159表/1,691列转换计划；已经人工MySQL验证目录标签整行、唯一登记及参数化SQL同事务路径。它尚不是完整导入执行器，旧目录导入草稿没有被替换，也没有导入固定真实快照。T006/T012/T018继续进行。
+
+## 计划与范围
+
+`build-import-plans.py`严格使用六个固定字段映射文件生成Go嵌入的field_plans.json，含各输入的规范换行SHA256、源表/字段、目标表/字段、类型、nullable、转换名、字符上限和显式枚举值。校验表/字段集合及目标列不重复；未知转换或缺少枚举定义拒绝生成。`--check`检测漂移，不读业务行、环境或数据库。程序在进程中只解码一次为私有不可变查询表，避免每行解析全部映射。
+
+Convert只接受有计划的源表，34项排除/重建表不能通过此入口恢复。必须提交该表全部源列，缺字段、额外字段、非法值任一失败都返回空BoundRow，不输出半行。返回固定目标表及有序Columns/Values，Values用于SQL绑定，不能拼接业务值进SQL；不会运行源默认值、改ID、补epoch/now或按邮箱建立新账号关系。
+
+Cell显式包含SQLNull和Raw：SQLNull=true时Raw必须为空且列可NULL；SQLNull=false时必须有合法字段值。JSON字段的Raw=null是非SQL-NULL文档，空字符串也不是NULL。任何把SQL NULL与JSON null合并成同一JSON null的旧导出均不能直接喂给本接口；快照适配必须提供来源证明或显式报告歧义，不能猜测。当前没有用推断补足真实快照中的null类别。
+
+普通文本/身份/历史主体引用保留原文，遵从映射字符上限；枚举按逐字段允许列表；布尔、整数、金额及时间使用[严格值组件](strict-import-values.md)。时间作为显式UTC微秒SQL字符串绑定。minor_unit_integer按源int32范围保留整数，不换算单位；数值raw配对与单位仍须上层验证。有限float32仅用于尺寸字段，先解析为源float32值再承接DOUBLE；legacy_float_rate_decimal按源十进制呈现转换，不混入尺寸浮点路径。文本数组保留数组顺序、空字符串、NULL元素及原JSON文本，不接受数值元素或逗号拼接。
+
+受保护非NULL字符串/JSON返回ErrProtection，必须后续逐域解密/密封再绑定，不可写原文或绕过；可NULL字段的SQL NULL可以保留而无需解密。JSON字段合法性与原文保留不意味着其provider token已获准公开。错误固定且不包含业务值、行ID、密文或源payload。
+
+## 已运行验证
+
+`go test ./internal/rowimport`逐项执行159张表/1,691字段人工类型输入；受保护项明确断言ErrProtection，不能把这些计作已导入。逐表验证缺列/多列拒绝，标签表显式SQL NULL/非法NULL双重表示，独立手写期望覆盖int64边界、38位金额、UTC微秒、布尔false、数组/NULL/含逗号文本、尺寸浮点、原文身份与非法类型/溢出。默认go test无数据库写入。
+
+`TestRegistryMySQL/mapped_source_row_bound_sql_and_unique_claim_same_transaction`调用真实Convert(product_tag)、源唯一键适配及实际生成的catalog_tags表，在同一事务绑定写入，读回验证标题空格、JSON大整数/重复键/小数尾零、UTC微秒与可NULL列。另行插入JSON null文档并证实metadata IS NULL为false。该次人工表写入不构成完整导入器或全表事务策略；测试记录见mysql-type-fixture-report.json。
+
+```powershell
+python retail/scripts/build-import-plans.py --check
+```
+
+MySQL集成复现沿用[登记组件隔离流程](mysql-unique-key-registry.md)，编译Linux测试二进制后使用本地镜像禁网、无端口、1核/768MiB执行并清理。
+
+## 剩余实现
+
+真实快照SQL NULL/JSON null来源适配、重复字段检测和流式读取；受保护域转换；全部raw数值配对、源CHECK及关联检查；有顺序的正式SQL迁移与完整事务/幂等/运行账本；唯一登记/业务写入/恢复覆盖；已发现库存与交易差异对账。空库字段可转换、少数人工行可写入不代表全量数据已迁移或可以切换运行时。
