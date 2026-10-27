@@ -13,6 +13,7 @@
 | 直接HTTP去向 | [108个候选与动态封装](http-caller-contract.md)、http-caller-manifest.json、http-caller-contract.json |
 | 能力/下载/邮件回调 | [11个入口与签名/状态规则](capability-entrypoints.md)、capability-entrypoint-contract.json、fixtures/legacy-capability-rules.json |
 | 自定义路由逐方法 | [67文件86方法及十项补充](custom-route-contract.md)、custom-route-contract.json |
+| 供应商账号与绑定 | [创建/编辑/范围及失败清理](supplier-account-contract.md)、fixtures/legacy-supplier-account-rules.json |
 | 自定义业务 | [设备命令及固定用例](device-commands.md)、[回收与邮件](buyback-and-mail.md)、[SEO 与引用监测](seo-contract.md) |
 | 统计 | [Analytics 实际口径](analytics-contract.md) |
 | 数据继承 | [源数据去向与转换](data-mapping.md)、[第一批36表292列设计](catalog-field-design.md)、catalog-field-mapping.json/.csv、catalog-preflight-report.json、data-table-disposition.csv、data-source-manifest.json |
@@ -39,6 +40,7 @@ python retail/scripts/map-http-caller-contract.py --check
 node retail/scripts/capture-capability-rules.cjs --check
 python retail/scripts/map-capability-entrypoints.py --check
 python retail/scripts/map-custom-route-contract.py --check
+node retail/scripts/capture-supplier-account-rules.cjs --check
 python retail/scripts/capture-schema-constraints.py --check
 python retail/scripts/map-catalog-fields.py --check
 python retail/scripts/preflight-catalog-mapping.py --bundle logs/gin-migration/source-20261026.json
@@ -93,6 +95,6 @@ Python 需 3.9+；命令中的 python 替换为本机已安装运行时路径。
 - T003：剩余页面及登录/抽屉/错误/加载/交易状态；需要隔离夹具，不在旧业务库造订单。
 - T004/T005：剩余领域授权、完整交易金额样例和状态用例运行证据。
 - T006：193表1,961列处置设计已覆盖（159表1,691列映射，34表270列排除/重建），仍需全部约束/默认值转换、语义关联、私有文件清单及密文转换演练；库存预留差异、设备软删历史及交易孤儿引用另行对账。字段设计齐全不等于MySQL导入或账号排除已验证。
-- T007：已有统一 API 约定及后台组件/页面承接草案；可验证 schemas、完整原生/自定义旧入口到新 API 的映射仍待交付。
+- T007：已有统一 API 约定、后台组件/页面承接、35份旧输入结构，以及全部86个自定义方法的设计映射；完整新schemas、动作/资源分支和原生/插件入口仍待交付。覆盖数量不替代运行验证。
 
 这些待办明确保留，不把未知能力当作未使用删除。后续按领域补齐后再实现及验收。

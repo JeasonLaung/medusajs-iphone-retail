@@ -38,10 +38,11 @@
 - [购物车与交易计算](migration/checkout-contract.md)：18 组人工精确金额及 10 组库存准备样例已运行并固定；完整促销/税/运费引擎和 Gin 对照仍待验证。
 - [促销/税率/配送](migration/promotion-tax-shipping-contract.md)：另有 46 组规则人工样例及流程核对；记录每件额度默认值、预算提交锁、税率粒度优先级、运费 profile 替换和旧验证边界。
 - [API 通用约定](migration/api-conventions.md) 与 [后台组件承接](migration/admin-ui-contract.md)：明确错误/分页/幂等/会话边界，23 个页面文件与 6 个 widgets 有 Ant Design / ECharts 承接设计；重定向入口继续保留，不冒充独立业务页面。
-- [请求验证与SDK承接](migration/request-validation-and-sdk-contract.md)：15个验证器导出34份旧输入结构，69处额外规则显式登记，22个人工用例可重现；36个SDK候选映射到27个新操作设计。直接fetch、原生后台/插件和完整新字段schemas仍待完成；Gin草稿差距已按文件登记。
+- [请求验证与SDK承接](migration/request-validation-and-sdk-contract.md)：15个验证器加1个内联导出共35份旧输入结构，72处额外规则显式登记，35个人工用例可重现；36个SDK候选映射到27个新操作设计。原生后台/插件和完整新字段schemas仍待完成；Gin草稿差距已按文件登记。
 - [直接HTTP调用承接](migration/http-caller-contract.md)：58文件108个fetch候选，3个动态路径封装人工展开，共117条分支设计、88个目标方法/路径；9个扫描器反例通过。移动HTML、下载/回调和原生后台/插件仍需补齐，非全入口验收。
 - [能力入口承接](migration/capability-entrypoints.md)：移动静态页/入库凭证/照片/同nonce撤销、XLSX模板、退订及Resend回调共11个入口设计、28文件哈希；40个人工签名/状态用例可复现。新Gin与HTTP/文件/撤权并发仍待验，源码入口数量不累加为独立功能数。
 - [自定义路由逐方法承接](migration/custom-route-contract.md)：67文件86方法均有明确设计引用，补充10项原生包装/占位/付款入口，校验149个源码哈希；完整字段、动作分支、原生与插件及运行时授权仍待验证，不作为T007验收。
+- [供应商账号与绑定](migration/supplier-account-contract.md)：实际3个旧步骤回调对人工端口运行20项授权/状态/失败清理样例；发现清理失败跳过后续清理和覆盖原错误的旧边界。新事务、撤权和Ant表单仍待实现，未迁移旧账号。
 
 调用方、剩余领域授权、原生交易与支付插件契约、登录后页面及完整字段映射继续核对。源码盘点、截图成功和元数据清单都不等于业务迁移完成。
 

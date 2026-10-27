@@ -3,6 +3,7 @@
   "scope": "Legacy JSON input shapes only; refinements, transforms, coercion/default output, workflow state, authorization and files require separate implementation. This is not a new API acceptance contract.",
   "source_sha256": {
     "medusa-store/apps/backend/src/api/admin/customer-service/validators.ts": "b37e4a9ac48d91b763339a71a4f18b64e1c48ebe576954fbb9ed1e4147219462",
+    "medusa-store/apps/backend/src/api/admin/devices/supplier-accounts/route.ts": "e394ba2d5931e0fae34a0ee3a6a3fd5b75c3d315a3be0d88504c54e26648f08b",
     "medusa-store/apps/backend/src/api/admin/devices/validators.ts": "1b81d8e16d2d5d5f7201f2b52d2764d23adbfbd8dd8f8e378f71953491dc262f",
     "medusa-store/apps/backend/src/api/admin/mail/validators.ts": "9274395678928b2f74d8949fd363ee51f01453f98824b797b94d36fcd3919eef",
     "medusa-store/apps/backend/src/api/admin/orders/[id]/after-sales/validators.ts": "18bf9885a642baab5f864bcd614a40a7662a3cde276331f5936b5e33d5db9951",
@@ -20,6 +21,15 @@
     "medusa-store/apps/backend/src/lib/buyback-pricing.ts": "8184f3e4f7bafbc1c427ad10e2303e9fe0cf5c915559212bd1b1ce215bd3a78a",
     "medusa-store/apps/backend/src/lib/recycled-assessment.ts": "3c9d9f539dd34535d5a169173c3cbd541adbd11233a02dd07034f73a4b2ea15d"
   },
+  "inline_schema_extraction": [
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/supplier-accounts/route.ts",
+      "exports": [
+        "SupplierAccountBody"
+      ],
+      "policy": "Only selected exported declarations execute; route imports, handlers and workflows never load"
+    }
+  ],
   "special_rules_not_represented_by_json_schema": [
     {
       "source": "medusa-store/apps/backend/src/api/admin/customer-service/validators.ts",
@@ -83,6 +93,27 @@
         "value => new Set(value.contacts.map(contact => contact.id)).size === value.contacts.length",
         "\"SERVICE_DUPLICATE_ID\""
       ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/supplier-accounts/route.ts",
+      "line": 16,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/supplier-accounts/route.ts",
+      "line": 17,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/supplier-accounts/route.ts",
+      "line": 18,
+      "method": "trim",
+      "arguments": [],
       "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
     },
     {
@@ -749,6 +780,48 @@
         "required": [
           "contacts"
         ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/supplier-accounts/route.ts",
+      "export": "SupplierAccountBody",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "format": "email",
+            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "source_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "order_ids": {
+            "maxItems": 200,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "password": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "email",
+          "source_id",
+          "order_ids"
+        ],
+        "additionalProperties": false
       },
       "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
     },

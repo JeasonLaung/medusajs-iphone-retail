@@ -19,27 +19,47 @@ function files(dir) {
     return entry.isDirectory() ? files(file) : [file]
   })
 }
-const validators = files(apiRoot).filter(file => file.endsWith('validators.ts')).sort()
+// Route modules can import workflows/services. Extract only explicitly reviewed
+// schema declarations instead of evaluating the module to obtain its exports.
+const inlineDeclarations = new Map([
+  [path.join(apiRoot, 'admin/devices/supplier-accounts/route.ts'), ['SupplierAccountBody']],
+])
+const validators = [...files(apiRoot).filter(file => file.endsWith('validators.ts')), ...inlineDeclarations.keys()].sort()
 const allowed = new Set([...validators, ...['recycled-assessment.ts', 'buyback-pricing.ts'].map(f => path.join(backendRoot, 'src/lib', f))])
 function load(file) {
   file = path.resolve(file)
   assert(allowed.has(file), 'Pure-source allowlist rejected dependency')
   if (cache.has(file)) return cache.get(file)
-  const text = fs.readFileSync(file, 'utf8')
+  let text = fs.readFileSync(file, 'utf8')
   hashes[relative(file)] = crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')
-  const ast = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true)
+  let ast = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true)
+  if (inlineDeclarations.has(file)) {
+    const names = inlineDeclarations.get(file)
+    const selected = ast.statements.filter(statement => ts.isVariableStatement(statement) &&
+      statement.modifiers?.some(modifier => modifier.kind === ts.SyntaxKind.ExportKeyword) &&
+      statement.declarationList.declarations.length === 1 &&
+      ts.isIdentifier(statement.declarationList.declarations[0].name) &&
+      names.includes(statement.declarationList.declarations[0].name.text))
+    assert.equal(selected.length, names.length, 'Reviewed inline schema export moved or disappeared')
+    // Keep original line numbers for special-rule provenance. The original AST
+    // is visited below; only these declarations reach the restricted VM.
+    text = 'import { z } from "@medusajs/framework/zod";\n' + selected.map(s => s.getText(ast)).join('\n')
+    ast = { original: ast, selected }
+  }
   function visit(node) {
     if (ts.isCallExpression(node) && ts.isPropertyAccessExpression(node.expression)) {
       const method = node.expression.name.text
       if (['refine', 'superRefine', 'transform', 'trim', 'toUpperCase', 'toLowerCase', 'preprocess'].includes(method)) {
-        specialRules.push({ source: relative(file), line: ast.getLineAndCharacterOfPosition(node.getStart()).line + 1,
-          method, arguments: node.arguments.map(arg => arg.getText(ast)),
+        const sourceAst = ast.original || ast
+        specialRules.push({ source: relative(file), line: sourceAst.getLineAndCharacterOfPosition(node.getStart()).line + 1,
+          method, arguments: node.arguments.map(arg => arg.getText(sourceAst)),
           disposition: 'Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior' })
       }
     }
     ts.forEachChild(node, visit)
   }
-  visit(ast)
+  if (ast.selected) ast.selected.forEach(visit)
+  else visit(ast)
   const module = { exports: {} }
   cache.set(file, module.exports)
   const requirePure = name => {
@@ -63,6 +83,8 @@ for (const file of validators) {
 const result = { format_version: 1,
   scope: 'Legacy JSON input shapes only; refinements, transforms, coercion/default output, workflow state, authorization and files require separate implementation. This is not a new API acceptance contract.',
   source_sha256: Object.fromEntries(Object.entries(hashes).sort()),
+  inline_schema_extraction: [...inlineDeclarations].map(([file, names]) => ({ source: relative(file), exports: names,
+    policy: 'Only selected exported declarations execute; route imports, handlers and workflows never load' })),
   special_rules_not_represented_by_json_schema: specialRules.sort((a,b) => a.source.localeCompare(b.source) || a.line-b.line),
   schemas }
 const cases = []
@@ -100,6 +122,23 @@ check('store/orders/[id]/after-sales/validators.ts', 'CreateAfterSales', 'reject
 check('admin/mail/validators.ts', 'MailListQuery', 'pagination-over-limit', { limit: 101 }, false)
 check('admin/mail/validators.ts', 'MailCommand', 'campaign-operation-boundary', { action: 'campaign', id: 'c', operation: 'delete' }, false)
 check('seo-validators.ts', 'SeoCommandBody', 'internal-tick-is-not-browser-command', { action: 'tick' }, false)
+const supplierFile = 'admin/devices/supplier-accounts/route.ts'
+const supplier = { email: 'supplier@example.invalid', source_id: 'source-fixture', order_ids: [] }
+check(supplierFile, 'SupplierAccountBody', 'trim-without-lowercase-or-password-mutation',
+  { email: ' Supplier@example.invalid ', source_id: ' source-fixture ', order_ids: [' order-fixture '], password: '  TestOnly123  ' }, true,
+  { email: 'Supplier@example.invalid', source_id: 'source-fixture', order_ids: ['order-fixture'], password: '  TestOnly123  ' })
+check(supplierFile, 'SupplierAccountBody', 'empty-orders-allowed-not-global-grant', supplier, true, supplier)
+check(supplierFile, 'SupplierAccountBody', 'password-omitted-is-binding-edit', supplier, true)
+check(supplierFile, 'SupplierAccountBody', 'password-11-rejected', { ...supplier, password: 'x'.repeat(11) }, false)
+check(supplierFile, 'SupplierAccountBody', 'password-12-accepted', { ...supplier, password: 'x'.repeat(12) }, true)
+check(supplierFile, 'SupplierAccountBody', 'password-128-accepted', { ...supplier, password: 'x'.repeat(128) }, true)
+check(supplierFile, 'SupplierAccountBody', 'password-129-rejected', { ...supplier, password: 'x'.repeat(129) }, false)
+check(supplierFile, 'SupplierAccountBody', 'empty-source-after-trim-rejected', { ...supplier, source_id: ' ' }, false)
+check(supplierFile, 'SupplierAccountBody', 'invalid-email-rejected', { ...supplier, email: 'invalid' }, false)
+check(supplierFile, 'SupplierAccountBody', 'unknown-metadata-rejected', { ...supplier, metadata: { device_role: 'admin' } }, false)
+check(supplierFile, 'SupplierAccountBody', 'duplicate-order-ids-legacy-accepted', { ...supplier, order_ids: ['o', 'o'] }, true)
+check(supplierFile, 'SupplierAccountBody', '200-orders-accepted', { ...supplier, order_ids: Array.from({ length: 200 }, (_, i) => `o${i}`) }, true)
+check(supplierFile, 'SupplierAccountBody', '201-orders-rejected', { ...supplier, order_ids: Array.from({ length: 201 }, (_, i) => `o${i}`) }, false)
 function write(file, value) {
   const target = path.join(root, file), content = JSON.stringify(value, null, 2) + '\n'
   if (process.argv.includes('--check')) assert.equal(fs.readFileSync(target, 'utf8').replaceAll('\r\n', '\n'), content, `${file} changed`)

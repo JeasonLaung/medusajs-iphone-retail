@@ -1,0 +1,377 @@
+{
+  "format_version": 1,
+  "scope": "Artificial port-level execution of selected actual legacy step callbacks; framework/SQL/auth-provider/RBAC/transaction integration not executed. Cleanup gaps are observations, not target requirements.",
+  "source_sha256": {
+    "medusa-store/apps/backend/src/workflows/device-supplier-account.ts": "6b2678f3e3c9c06af2859ef7b851294b8fbdb70e1e92c463a6a79727283efd7a"
+  },
+  "cases": [
+    {
+      "name": "binding-preserves-metadata-deduplicates-order-ids",
+      "callback": "prepareAccount:1",
+      "artificial_options": {},
+      "outcome": {
+        "success": true
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "users.lookup",
+        "sources.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "orders.lookup"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "prepareAccount:1-non-admin-denied-before-reads",
+      "callback": "prepareAccount:1",
+      "artificial_options": {
+        "role": "supplier"
+      },
+      "outcome": {
+        "error": "SUPPLIER_DENIED"
+      },
+      "observed_port_calls": [
+        "actor.access"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "createSupplierAccount:1-non-admin-denied-before-reads",
+      "callback": "createSupplierAccount:1",
+      "artificial_options": {
+        "role": "supplier"
+      },
+      "outcome": {
+        "error": "SUPPLIER_DENIED"
+      },
+      "observed_port_calls": [
+        "actor.access"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "binding-missing-account-rejected",
+      "callback": "prepareAccount:1",
+      "artificial_options": {
+        "user": false
+      },
+      "outcome": {
+        "error": "Supplier account not found"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "users.lookup"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "binding-self-rejected",
+      "callback": "prepareAccount:1",
+      "artificial_options": {
+        "self": true
+      },
+      "outcome": {
+        "error": "Cannot bind your own account as supplier"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "users.lookup"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "binding-wrong-source-rejected",
+      "callback": "prepareAccount:1",
+      "artificial_options": {
+        "source": false
+      },
+      "outcome": {
+        "error": "Select a supplier source"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "users.lookup",
+        "sources.lookup"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "binding-missing-order-rejected",
+      "callback": "prepareAccount:1",
+      "artificial_options": {
+        "badOrder": "order-b"
+      },
+      "outcome": {
+        "error": "ORDER_MISSING"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "users.lookup",
+        "sources.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "orders.lookup"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "create-existing-account-rejected-before-registration",
+      "callback": "createSupplierAccount:1",
+      "artificial_options": {},
+      "outcome": {
+        "error": "Supplier account already exists; leave password empty to update permissions"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "sources.lookup",
+        "users.lookup"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "create-wrong-source-rejected",
+      "callback": "createSupplierAccount:1",
+      "artificial_options": {
+        "source": false
+      },
+      "outcome": {
+        "error": "Select a supplier source"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "sources.lookup"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "create-missing-order-before-registration",
+      "callback": "createSupplierAccount:1",
+      "artificial_options": {
+        "user": false,
+        "badOrder": "order-b"
+      },
+      "outcome": {
+        "error": "ORDER_MISSING"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "sources.lookup",
+        "users.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "orders.lookup"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "create-role-restrictions-before-login-link",
+      "callback": "createSupplierAccount:1",
+      "artificial_options": {
+        "user": false
+      },
+      "outcome": {
+        "success": true
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "sources.lookup",
+        "users.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "auth.register",
+        "users.create",
+        "auth.link"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "registration-failed-no-user-created",
+      "callback": "createSupplierAccount:1",
+      "artificial_options": {
+        "user": false,
+        "registration": "failed"
+      },
+      "outcome": {
+        "error": "Unable to create supplier login"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "sources.lookup",
+        "users.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "auth.register"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "registration-no-identity-no-user-created",
+      "callback": "createSupplierAccount:1",
+      "artificial_options": {
+        "user": false,
+        "registration": "no-identity"
+      },
+      "outcome": {
+        "error": "Unable to create supplier login"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "sources.lookup",
+        "users.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "auth.register"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "registration-throw-no-user-created",
+      "callback": "createSupplierAccount:1",
+      "artificial_options": {
+        "user": false,
+        "registration": "throw"
+      },
+      "outcome": {
+        "error": "REGISTER_FAILED"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "sources.lookup",
+        "users.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "auth.register"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "user-create-failure-cleans-auth",
+      "callback": "createSupplierAccount:1",
+      "artificial_options": {
+        "user": false,
+        "failCreate": true
+      },
+      "outcome": {
+        "error": "CREATE_FAILED"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "sources.lookup",
+        "users.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "auth.register",
+        "users.create",
+        "auth.delete"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "link-failure-cleans-user-then-auth",
+      "callback": "createSupplierAccount:1",
+      "artificial_options": {
+        "user": false,
+        "failLink": true
+      },
+      "outcome": {
+        "error": "LINK_FAILED"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "sources.lookup",
+        "users.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "auth.register",
+        "users.create",
+        "auth.link",
+        "users.delete",
+        "auth.delete"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "legacy-user-cleanup-failure-skips-auth-cleanup",
+      "callback": "createSupplierAccount:1",
+      "artificial_options": {
+        "user": false,
+        "failLink": true,
+        "failUserDelete": true
+      },
+      "outcome": {
+        "error": "USER_DELETE_FAILED"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "sources.lookup",
+        "users.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "auth.register",
+        "users.create",
+        "auth.link",
+        "users.delete"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "legacy-auth-cleanup-failure-overwrites-initial-error",
+      "callback": "createSupplierAccount:1",
+      "artificial_options": {
+        "user": false,
+        "failCreate": true,
+        "failAuthDelete": true
+      },
+      "outcome": {
+        "error": "AUTH_DELETE_FAILED"
+      },
+      "observed_port_calls": [
+        "actor.access",
+        "sources.lookup",
+        "users.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "orders.lookup",
+        "auth.register",
+        "users.create",
+        "auth.delete"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "framework-compensation-deletes-auth-then-user",
+      "callback": "createSupplierAccount:2",
+      "artificial_options": {},
+      "outcome": {
+        "success": true
+      },
+      "observed_port_calls": [
+        "auth.delete",
+        "users.delete"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "legacy-compensation-auth-failure-skips-user-cleanup",
+      "callback": "createSupplierAccount:2",
+      "artificial_options": {
+        "failAuthDelete": true
+      },
+      "outcome": {
+        "error": "AUTH_DELETE_FAILED"
+      },
+      "observed_port_calls": [
+        "auth.delete"
+      ],
+      "independent_assertions_passed": true
+    }
+  ]
+}

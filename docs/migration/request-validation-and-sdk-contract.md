@@ -4,11 +4,13 @@ T001/T004/T007 的部分交付，尚未验收。新增机器证据不表示 Gin 
 
 ## 可重现的旧输入行为
 
-`retail/scripts/capture-request-validation.cjs` 仅允许加载 15 个 API 验证器和 2 个纯业务工具，以及当前安装的 framework Zod。使用 TypeScript 转译及受限 require，不读取环境/凭据，不加载 app、workflow、container、数据库或网络模块。
+`retail/scripts/capture-request-validation.cjs` 仅允许加载 15 个 API 验证器、1 个经过选择性 AST 提取的内联验证器和 2 个纯业务工具，以及当前安装的 framework Zod。内联 SupplierAccountBody 来自路由文件，但只执行该导出声明，不执行其 imports、GET/POST 或 workflow。使用 TypeScript 转译及受限 require，不读取环境/凭据，不加载 app、workflow、container、数据库或网络模块。
 
-- `schemas/legacy-request-inputs.json`：34 个导出的输入 JSON Schema，记录 17 个来源文件 SHA-256；输入结构保留各字段上下限、数组、枚举、strict 及默认声明。
-- 同文件单列 69 处 refine/superRefine/transform/trim/大小写等操作及源码位置。它们需要 Gin 独立实现；JSON Schema 不能证明已复制运行行为，也不能替代业务状态、对象授权或文件真实性检查。
-- `fixtures/legacy-request-validation.json`：22 个人工用例，有独立接受/拒绝及部分标准化输出预期。覆盖评价星级/分页、仓库空范围与重复项、设备 SN/IMEI、默认值/严格未知字段、重复设备、回收金额/照片、售后数量、邮件操作及禁止公开 tick。
+- `schemas/legacy-request-inputs.json`：35 个导出的输入 JSON Schema，记录 18 个来源文件 SHA-256；输入结构保留各字段上下限、数组、枚举、strict 及默认声明。
+- 同文件单列 72 处 refine/superRefine/transform/trim/大小写等操作及源码位置。它们需要 Gin 独立实现；JSON Schema 不能证明已复制运行行为，也不能替代业务状态、对象授权或文件真实性检查。
+- `fixtures/legacy-request-validation.json`：35 个人工用例，有独立接受/拒绝及部分标准化输出预期。原 22 项之外新增供应商邮箱/来源/订单 trim、密码原文与 12—128 边界、未知字段、200 条订单上限和重复订单行为。
+
+SupplierAccountBody 不将邮箱转小写、不 trim 密码；省略密码是绑定编辑，非空有效密码进入创建分支，空密码字符串被结构验证拒绝。输入层接受重复订单 ID，工作流才去重，不能把 [] 解释为所有订单。完整账号/绑定边界见 [供应商账号](supplier-account-contract.md)。
 
 重要差异：旧 CreateReview 的 z.object 会剥离额外 customer_id；新入口依旧只能从会话取得 customer_id，不能将剥离行为视为完整授权。旧 DeviceCommand 声明允许的 action 不一定能成功：例如 supplier_assign 工作流始终拒绝，必须同时使用设备动作契约。
 
