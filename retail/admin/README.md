@@ -35,8 +35,23 @@ npm test
 Only artificial identities appear in these tests. Screenshots and failure
 artifacts go to the repository's ignored `logs/gin-migration/admin-ui` folder.
 The reproducible report wrapper is `python retail/scripts/test-admin-ui.py`
-from the repository root. These UI fixtures do not prove a real browser login
-against Gin/MySQL/Redis. That end-to-end check remains pending.
+from the repository root. These UI fixtures alone do not prove a real browser
+login against Gin/MySQL/Redis.
+
+For that separate live check, run `python retail/scripts/test-admin-live.py`
+from the repository root with the same optional browser override. It builds the
+actual Gin executable and uses owned disposable MySQL/Redis containers, nine
+schema migrations and one artificial new account. No intercepted API responses
+are used. It requires the existing `mysql:8.4` and `redis:7-alpine` images and
+never pulls images. Only a randomly allocated API port is published on host
+loopback; SQL/Redis have no published ports. The dedicated bridge does not
+restrict outbound traffic. Owned containers, network and binaries are removed.
+`ADMIN_TEST_API_TARGET` is an explicit loopback-only Vite proxy override used
+by this runner; normal development still defaults to port 9100.
+
+The live check covers loopback HTTP cookies, CSRF, Origin, reload, logout and
+old-session replay. It does not establish production HTTPS/Secure-cookie or
+customer, permission and business-module acceptance.
 
 Ant Design 5 is pinned to the inspected reference generation. React 19 uses
 Ant Design's official compatibility patch. There are no charts yet; all future

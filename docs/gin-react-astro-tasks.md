@@ -270,3 +270,5 @@
 2026-10-27后台登录补充：[联合运行路径](migration/admin-auth-runtime.md)移除旧MySQL会话及内存限流，Gin正式进程使用独立Redis、精确Origin及Secure配置。新账号auth_version、一次性挑战、写CSRF、双维限流、会话轮换/退出和逐请求MySQL复核落地；独占真实MySQL/Redis人工账号验证撤销恢复不复活、旧/客户会话拒绝、依赖关闭503、九文件schema执行/重复。客户、Ant页面、完整权限/对象范围、账号修改/撤销事务、真实浏览器/TLS/宕机仍缺，T014/T015/T019未验收。
 
 2026-10-28后台UI补充：[Ant登录与账号](migration/admin-login-ui.md)新增独立React应用及锁定依赖，Ant Form/Layout/Menu/Drawer/Descriptions直接调用Gin协议；不存储凭据/账号资料，挑战每次重取、错误/过期/退出失败分别处理。类型/build及7项浏览器人工HTTP测试、9张中英三宽截图通过；默认浏览器由本机Edge显式覆盖。真实浏览器到Gin/MySQL/Redis、完整外壳/权限/全部业务页和图表仍缺，bundle大包告警保留；T014/T023/T024未验收。
+
+2026-10-28真实浏览器补充：[Gin端到端链路](migration/admin-live-browser.md)实际cmd/api、独占MySQL/Redis与Vite代理通过本机Edge验证，未拦截响应。九文件迁移及人工新账号，覆盖失败重试、刷新、Cookie/CSRF/Origin、正常退出与旧会话重放拒绝；自有临时资源清理完成。此证据补齐上条回环HTTP串联缺口；生产HTTPS/Secure、客户、完整权限及业务页仍缺，T014/T023/T024未验收。后台优先使用Ant组件，图表统一ECharts。

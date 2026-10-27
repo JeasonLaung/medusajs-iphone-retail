@@ -14,4 +14,4 @@ API客户端固定同源`/api/admin/auth`，10秒请求超时，拒绝重定向�
 
 [浏览器实证](admin-ui-report.json)：TypeScript及生产build通过，7项真实浏览器测试使用人工HTTP响应，覆盖登录/刷新/退出、私有资料不进storage、错误凭据清密码并重取挑战、依赖失败不伪装成匿名、退出失败保留登录并重试成功，以及390/768/1440px三宽度的中英登录/账号状态与移动Drawer。语言Select用键盘打开并点击选项验证，检查无横向溢出及无运行时异常；九张截图留在忽略目录，报告仅保存摘要。已目视检查中文桌面登录与英文手机账号页面。
 
-本次浏览器采用显式本机Edge覆盖路径，不声称Playwright默认Chromium或跨浏览器通过。接口响应由测试拦截，不连接真实Gin/MySQL/Redis；后端[联合实证](admin-auth-runtime.md)独立存在，仍缺两者端到端串联和真实cookie/Origin/代理验证。生产bundle当前约889kB（gzip283kB），保留构建体积告警，后续领域路由须按需拆分。测试不证明完整后台外壳、页签/业务菜单权限、客户认证、商品页或Astro完成。T014/T023/T024仍未验收。
+本次七项UI浏览器测试采用显式本机Edge覆盖路径，不声称Playwright默认Chromium或跨浏览器通过；接口响应由测试拦截，不连接真实Gin/MySQL/Redis。另有[真实浏览器链路验证](admin-live-browser.md)，已串联实际Gin进程、MySQL和Redis，验证回环HTTP下cookie/Origin/代理。生产bundle当前约889kB（gzip283kB），保留构建体积告警，后续领域路由须按需拆分。生产HTTPS/Secure、完整后台外壳、页签/业务菜单权限、客户认证、商品页或Astro仍缺。T014/T023/T024仍未验收。

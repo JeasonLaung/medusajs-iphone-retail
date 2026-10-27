@@ -42,3 +42,9 @@
 详见 [业务基线](../docs/migration/business-baseline.md)、[设备命令](../docs/migration/device-commands.md)、[回收与邮件](../docs/migration/buyback-and-mail.md)、[数据映射](../docs/migration/data-mapping.md) 和 [前台基线](../docs/migration/frontend-baseline.md)。原始业务快照及截图仅留在 Git 忽略目录，不提交身份凭据或业务行数据。
 
 新增契约见 [购物车与合计](../docs/migration/checkout-contract.md)、[API 约定](../docs/migration/api-conventions.md) 和 [后台组件](../docs/migration/admin-ui-contract.md)。样例仅用人工输入，不代表真实支付或新应用验收。
+# 2026-10-28：真实浏览器认证补充
+
+已通过独占Vite代理到实际Gin二进制、人工MySQL/Redis的浏览器登录闭环；见
+[实证](../docs/migration/admin-live-browser.md)。开发HTTP下的Cookie、Origin/CSRF、
+刷新及退出/旧会话拒绝已覆盖。生产TLS、客户权限和完整业务仍未验收。
+后台优先Ant Design组件，全部图表使用ECharts；不制作虚构业务统计。

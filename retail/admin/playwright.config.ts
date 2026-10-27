@@ -3,7 +3,7 @@ import path from 'node:path'
 
 const output = path.resolve('../../logs/gin-migration/admin-ui')
 export default defineConfig({
-  testDir: './tests', fullyParallel: false, workers: 1,
+  testDir: './tests', testMatch: 'auth.spec.ts', fullyParallel: false, workers: 1,
   outputDir: output, reporter: 'list',
   use: { baseURL: 'http://127.0.0.1:19200', headless: true, trace: 'off', screenshot: 'off',
     ...(process.env.ADMIN_TEST_BROWSER ? { launchOptions: { executablePath: process.env.ADMIN_TEST_BROWSER } } : {}),

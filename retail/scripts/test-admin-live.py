@@ -1,0 +1,162 @@
+"""Real browser -> Vite -> production Gin binary, with owned artificial SQL/Redis."""
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import secrets
+import subprocess
+import time
+import urllib.request
+import uuid
+
+ROOT = Path(__file__).resolve().parents[2]
+LABEL = 'eurorefurb.browser-rehearsal'
+
+
+def docker(*args, timeout=90):
+    return subprocess.run(['docker', *args], capture_output=True, timeout=timeout)
+
+
+def main():
+    for image in ['mysql:8.4', 'redis:7-alpine']:
+        if docker('image', 'inspect', image).returncode:
+            raise RuntimeError('Existing fixture images required; no pull performed')
+    owner = uuid.uuid4().hex
+    binaries = [ROOT / 'logs/gin-migration' / ('browser-' + owner + suffix) for suffix in ['-api', '-prep.test']]
+    for binary in binaries:
+        if binary.exists() or subprocess.run(['git', 'check-ignore', '--quiet', str(binary)], cwd=ROOT, capture_output=True).returncode:
+            raise RuntimeError('New ignored runner paths required')
+    env = os.environ.copy()
+    env.update(GOOS='linux', GOARCH='amd64', CGO_ENABLED='0')
+    containers, network, owned_binaries = [], None, []
+    password = secrets.token_urlsafe(32)
+    try:
+        for binary, command in zip(binaries, [['go', 'build', '-o', str(binaries[0]), './cmd/api'],
+                                              ['go', 'test', '-c', '-o', str(binaries[1]), './internal/identity']]):
+            owned_binaries.append(binary)
+            if subprocess.run(command, cwd=ROOT / 'retail/backend', env=env, capture_output=True, timeout=120).returncode:
+                raise RuntimeError('Browser API runner compilation failed')
+        # An internal Docker network suppresses published ports on this engine.
+        # Use a dedicated bridge; publish only the API on a random host loopback
+        # port. SQL and Redis remain unpublished. This does not restrict egress.
+        created = docker('network', 'create', '--label', LABEL + '=' + owner, 'eurorefurb-browser-' + owner[:12])
+        if created.returncode:
+            raise RuntimeError('Owned bridge network creation failed')
+        network = created.stdout.decode().strip()
+        created = docker('run', '-d', '--name', 'eurorefurb-browser-mysql-' + owner[:12],
+                         '--label', LABEL + '=' + owner, '--network', network, '--cpus', '1',
+                         '--memory', '768m', '--memory-swap', '768m', '--pids-limit', '192',
+                         '--tmpfs', '/var/lib/mysql:rw,size=512m', '--tmpfs', '/tmp:rw,size=32m,mode=1777',
+                         '-p', '127.0.0.1::9100', '-e', 'MYSQL_ROOT_PASSWORD=' + password,
+                         '-e', 'MYSQL_DATABASE=browser_identity', 'mysql:8.4', '--skip-log-bin',
+                         '--innodb-buffer-pool-size=64M', '--performance-schema=OFF', '--mysqlx=OFF', '--max-connections=16')
+        if created.returncode:
+            raise RuntimeError('Owned browser MySQL creation failed')
+        mysql_id = created.stdout.decode().strip()
+        containers.append(mysql_id)
+        created = docker('run', '-d', '--name', 'eurorefurb-browser-redis-' + owner[:12],
+                         '--label', LABEL + '=' + owner, '--network', 'container:' + mysql_id,
+                         '--cpus', '1', '--memory', '128m', '--memory-swap', '128m', '--pids-limit', '64',
+                         '--tmpfs', '/data:rw,size=16m', 'redis:7-alpine', 'redis-server', '--bind', '127.0.0.1',
+                         '--save', '', '--appendonly', 'no', '--maxmemory', '16mb', '--maxmemory-policy', 'noeviction')
+        if created.returncode:
+            raise RuntimeError('Owned browser Redis creation failed')
+        redis_id = created.stdout.decode().strip()
+        containers.append(redis_id)
+        for _ in range(100):
+            if not docker('exec', '-e', 'MYSQL_PWD=' + password, mysql_id, 'mysql', '-uroot', '--protocol=socket', '-e', 'SELECT 1', timeout=10).returncode:
+                break
+            time.sleep(.5)
+        else:
+            raise RuntimeError('Owned browser MySQL not ready')
+        if docker('exec', redis_id, 'redis-cli', 'PING').stdout.strip() != b'PONG':
+            raise RuntimeError('Owned browser Redis not ready')
+        for binary, target in zip(binaries, ['/opt/api', '/opt/prep.test']):
+            with binary.open('rb') as source:
+                copied = subprocess.run(['docker', 'exec', '-i', mysql_id, '/bin/sh', '-c', 'umask 077; cat > ' + target],
+                                        stdin=source, capture_output=True, timeout=60)
+            if copied.returncode or docker('exec', mysql_id, 'chmod', '700', target).returncode:
+                raise RuntimeError('Browser runner transfer failed')
+        prepared = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'BROWSER_IDENTITY_FIXTURE=1', mysql_id,
+                          '/opt/prep.test', '-test.v', '-test.run', '^TestPrepareOwnedBrowserAPI$', '-test.timeout', '40s')
+        if prepared.returncode or b'OWNED_BROWSER_FIXTURE_READY' not in prepared.stdout:
+            raise RuntimeError('Owned browser schema/account preparation failed')
+        app_env = {'GIN_MODE': 'release', 'APP_BIND': '0.0.0.0', 'APP_PORT': '9100', 'APP_ENV': 'development',
+                   'MYSQL_DSN': 'root:' + password + '@unix(/var/run/mysqld/mysqld.sock)/browser_identity?parseTime=true&loc=UTC',
+                   'SESSION_REDIS_URL': 'redis://127.0.0.1:6379/0', 'SESSION_REDIS_PREFIX': 'eurorefurb:browser_fixture:v1:',
+                   'ADMIN_ORIGIN': 'http://127.0.0.1:19200', 'SESSION_SECURE': 'false'}
+        args = ['exec', '-d', '-w', '/opt']
+        for key, value in app_env.items():
+            args.extend(['-e', key + '=' + value])
+        if docker(*args, mysql_id, '/opt/api').returncode:
+            raise RuntimeError('Owned Gin listener launch failed')
+        published = docker('port', mysql_id, '9100/tcp')
+        match = re.fullmatch(r'127\.0\.0\.1:(\d+)\s*', published.stdout.decode())
+        if published.returncode or not match or not 1 <= int(match[1]) <= 65535:
+            raise RuntimeError('Expected one loopback-only ephemeral API port')
+        target = 'http://127.0.0.1:' + match[1]
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+        for _ in range(40):
+            try:
+                with opener.open(target + '/health', timeout=2) as response:
+                    if response.status == 200:
+                        break
+            except OSError:
+                pass
+            time.sleep(.25)
+        else:
+            raise RuntimeError('Owned Gin listener not ready')
+        browser_env = os.environ.copy()
+        browser_env['ADMIN_TEST_API_TARGET'] = target
+        npm = 'npm.cmd' if os.name == 'nt' else 'npm'
+        tested = subprocess.run([npm, 'exec', 'playwright', 'test', '--', '--config', 'playwright.live.config.ts', '--reporter=json'],
+                                cwd=ROOT / 'retail/admin', env=browser_env, capture_output=True, timeout=180)
+        # Private browser cookies or server state never enter a committed report.
+        result = json.loads(tested.stdout)
+        if tested.returncode or result['stats']['expected'] != 1 or any(result['stats'][k] for k in ['unexpected', 'skipped', 'flaky']):
+            (ROOT / 'logs/gin-migration/admin-live-result.json').write_bytes(tested.stdout)
+            raise RuntimeError('Live browser checks failed; inspect ignored local result')
+        files = ['retail/scripts/test-admin-live.py', 'retail/backend/cmd/api/main.go',
+                 'retail/backend/internal/identity/browser_fixture_test.go', 'retail/backend/internal/identity/admin.go',
+                 'retail/backend/internal/platform/database.go', 'retail/backend/internal/platform/request.go',
+                 'retail/backend/internal/server/router.go', 'retail/backend/internal/sessionstore/store.go',
+                 'retail/backend/internal/sessionstore/config.go']
+        files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/backend/migrations').glob('*.sql')]
+        files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/admin').rglob('*')
+                  if p.is_file() and not any(part in ('node_modules', 'dist') for part in p.relative_to(ROOT / 'retail/admin').parts)]
+        report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
+                  'browser_tests_passed': 1, 'migrations_applied': 9, 'mocked_api_responses': False,
+                  'browser_executable_override_used': bool(os.environ.get('ADMIN_TEST_BROWSER')),
+                  'checked': ['wrong password then retry', 'real login and reload', 'HttpOnly and SameSite cookies',
+                              'no credentials in browser storage', 'private response cache and request ID',
+                              'missing CSRF and foreign Origin rejected', 'logout and old-cookie replay rejected'],
+                  'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
+                             'network': 'owned bridge network; egress not restricted', 'published_ports': 'one random API port bound to 127.0.0.1 only'},
+                  'real_accounts_used': False, 'application_resources_used': False, 'tls_secure_cookie_verified': False,
+                  'full_authentication_accepted': False, 'full_admin_accepted': False,
+                  'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in sorted(files)}}
+    finally:
+        password = ''
+        for container in reversed(containers):
+            inspected = docker('inspect', container, '--format', '{{index .Config.Labels "' + LABEL + '"}}')
+            if inspected.returncode or inspected.stdout.decode().strip() != owner:
+                raise RuntimeError('Browser fixture ownership mismatch; cleanup refused')
+            if docker('rm', '-f', '-v', container).returncode:
+                raise RuntimeError('Owned browser container cleanup failed')
+        if network:
+            inspected = docker('network', 'inspect', network, '--format', '{{index .Labels "' + LABEL + '"}}')
+            if inspected.returncode or inspected.stdout.decode().strip() != owner:
+                raise RuntimeError('Browser network ownership mismatch; cleanup refused')
+            if docker('network', 'rm', network).returncode:
+                raise RuntimeError('Owned browser network cleanup failed')
+        for binary in owned_binaries:
+            if binary.exists():
+                binary.unlink()
+    report['cleanup'] = 'both owned containers, bridge network and temporary binaries removed'
+    (ROOT / 'docs/migration/admin-live-report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+    print(json.dumps({'browser_tests': 1, 'real_api': True, 'real_mysql_redis': True, 'cleanup': 'complete'}))
+
+
+if __name__ == '__main__':
+    main()
