@@ -56,15 +56,15 @@ func TestSchemaRunnerMySQL(t *testing.T) {
 			t.Fatal("embedded plan invalid")
 		}
 		r, err := schema.Apply(ctx, db, p)
-		if err != nil || r.Applied != 17 || r.Skipped != 0 {
+		if err != nil || r.Applied != 18 || r.Skipped != 0 {
 			t.Fatal("embedded explicit migration execution failed", err)
 		}
 		r, err = schema.Apply(ctx, db, p)
-		if err != nil || r.Applied != 0 || r.Skipped != 17 {
+		if err != nil || r.Applied != 0 || r.Skipped != 18 {
 			t.Fatal("embedded migration repeat failed", err)
 		}
-		count(db, "SELECT COUNT(*) FROM schema_migrations", 17)
-		count(db, "SELECT COUNT(*) FROM schema_migration_steps WHERE status='applied' AND inflight=FALSE AND next_statement=statement_count", 17)
+		count(db, "SELECT COUNT(*) FROM schema_migrations", 18)
+		count(db, "SELECT COUNT(*) FROM schema_migration_steps WHERE status='applied' AND inflight=FALSE AND next_statement=statement_count", 18)
 		entries, _ := migrations.Files.ReadDir(".")
 		changed := fstest.MapFS{}
 		for _, e := range entries {

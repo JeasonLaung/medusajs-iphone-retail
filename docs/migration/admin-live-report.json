@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only",
   "browser_tests_passed": 1,
-  "migrations_applied": 17,
+  "migrations_applied": 18,
   "mocked_api_responses": false,
   "reviewed_relational_schema_used": true,
   "empty_draft_tables_retained_by_migration": 7,
@@ -86,7 +86,7 @@
     "retail/backend/internal/catalog/models.go": "212e73fdbf318abf0d8252ee0a3139a249856dbdab58d80cd8cabc5fa11fe97c",
     "retail/backend/internal/catalog/schema.go": "aadd8fc2d82c87d9a8467ae60c232cd300081f6a3880ee22a1a73666511e04ab",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
-    "retail/backend/internal/identity/browser_fixture_test.go": "dadbd2e96841c41449b29b31c1d7cebb111a0ab4a4f6a38d4fd9061f6abebe12",
+    "retail/backend/internal/identity/browser_fixture_test.go": "592544f61af3c65e85262c666f11ccaae16bc65a9570beeec6c7c231da532a81",
     "retail/backend/internal/inventory/edit.go": "99763329e4ccfa401acdd5bf4b823e0db87e90d25b2b278496693070941ff8e1",
     "retail/backend/internal/inventory/edit_test.go": "d422fda3dc223157be967f3927ed019b296c9836960ab1a83bd0efd7d459d047",
     "retail/backend/internal/inventory/http.go": "7ea9031ec1388ccfe36cf87029c54f52c092004a753f8d18464909785c66a4df",
@@ -123,8 +123,9 @@
     "retail/backend/migrations/0015_inventory_reservation_operations.sql": "57b097d3e1698bf556a8903741c68d0973e3e8c342f02052347aefec8176cb45",
     "retail/backend/migrations/0016_order_relational.sql": "a7f26ab595178dba744b65333f5d1e94d3871f6cfdce59338124ed769cbd4dab",
     "retail/backend/migrations/0017_order_import_evidence.sql": "1aee7e10b016ce61553f020aa5cab1f11d944df625e91c28d461f634298ca82e",
+    "retail/backend/migrations/0018_customer_history_dispositions.sql": "6a40b359899574e67bd6d08f208cd5cb9ff98c6521adaf3e03f3c1babfc7c1e3",
     "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb",
-    "retail/scripts/test-admin-live.py": "bba20d3c38846e7e2b63eb8e523ea71d5d3d64c68b1e791bdb221b41aa904abe"
+    "retail/scripts/test-admin-live.py": "e33b81bfe8dff2e970a4575b6791d201d11ad989b7fc3ee8b454086f4d0cc044"
   },
   "cleanup": "both owned containers, bridge network and temporary binaries removed"
 }

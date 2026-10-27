@@ -128,7 +128,8 @@ def main():
         files += ['retail/backend/internal/orders/schema.go','retail/backend/internal/orders/schema_plan.json','retail/scripts/generate-order-schema.py']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/orderimport').glob('*') if p.is_file()]
         files += ['retail/scripts/generate-order-import-plan.py']
-        report = {'format_version': 1, 'scope': '36 catalog tables, nine parent dependencies, two inventory tables and 28 ordinary order tables in disposable tmpfs MySQL; protected customer excluded and catalog parent rows have no ledger; no full import/runtime acceptance',
+        files += ['retail/backend/internal/customerimport/import.go','retail/backend/internal/rowimport/history_customer.go']
+        report = {'format_version': 1, 'scope': '36 catalog tables, nine parent dependencies, two inventory tables and 28 ordinary order tables in disposable tmpfs MySQL; five historical customer subjects without account bindings and catalog parent rows have no ledger; no full import/runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
                   'embedded_migration_plan_used': True, 'review_ddl_injected': False,
                   'limits': {'cpus': 1, 'memory_mib': 768, 'mysql_tmpfs_mib': 512, 'private_input_tmpfs_mib': 128, 'network': 'none', 'published_ports': 0},

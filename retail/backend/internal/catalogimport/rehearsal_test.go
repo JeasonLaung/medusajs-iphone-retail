@@ -3,6 +3,7 @@ package catalogimport
 import (
 	"bytes"
 	"context"
+	"crypto/rand"
 	"crypto/sha256"
 	"database/sql"
 	"encoding/binary"
@@ -18,10 +19,12 @@ import (
 	"time"
 
 	cataloghttp "github.com/eurorefurb/retail/internal/catalog"
+	"github.com/eurorefurb/retail/internal/customerimport"
 	"github.com/eurorefurb/retail/internal/importvalue"
 	"github.com/eurorefurb/retail/internal/inventory"
 	"github.com/eurorefurb/retail/internal/inventoryimport"
 	"github.com/eurorefurb/retail/internal/orderimport"
+	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/rowimport"
 	"github.com/eurorefurb/retail/internal/schema"
 	"github.com/eurorefurb/retail/migrations"
@@ -107,6 +110,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 	if err != nil || len(orderTables) != 28 {
 		t.Fatal("ordinary order import scope unavailable")
 	}
+	var customerSelected []rowimport.SourceRow
 	orderSelected := map[string][]rowimport.SourceRow{}
 	for _, name := range orderTables {
 		orderSelected[name] = nil
@@ -117,6 +121,9 @@ func TestActualCatalogMySQL(t *testing.T) {
 	}
 	defer file.Close()
 	verified, err := rowimport.VerifyStream(file, snapshotHash, func(table string, row rowimport.SourceRow) error {
+		if table == "customer" {
+			customerSelected = append(customerSelected, row)
+		}
 		if _, ok := orderSelected[table]; ok {
 			orderSelected[table] = append(orderSelected[table], row)
 		}
@@ -253,14 +260,14 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog embedded schema plan invalid")
 	}
 	created, err := schema.Apply(ctx, db, plan)
-	if err != nil || created.Applied != 17 || schema.CheckApplied(ctx, db, plan) != nil {
+	if err != nil || created.Applied != 18 || schema.CheckApplied(ctx, db, plan) != nil {
 		t.Fatal("catalog embedded migration failed")
 	}
 	repeated, err := schema.Apply(ctx, db, plan)
-	if err != nil || repeated.Skipped != 17 {
+	if err != nil || repeated.Skipped != 18 {
 		t.Fatal("catalog embedded migration replay failed")
 	}
-	counts["explicit_schema_migrations"] = 17
+	counts["explicit_schema_migrations"] = 18
 	var enabled int
 	if db.QueryRowContext(ctx, "SELECT @@foreign_key_checks").Scan(&enabled) != nil || enabled != 1 {
 		t.Fatal("catalog physical constraints must remain enabled")
@@ -414,6 +421,45 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("known inventory reservation difference changed")
 	}
 	counts["preserved_inventory_reservation_mismatches"] = mismatch
+	customerKey := make([]byte, 32)
+	if _, err := rand.Read(customerKey); err != nil {
+		t.Fatal("temporary customer key unavailable")
+	}
+	defer clear(customerKey)
+	customerRing, err := protected.New("rehearsal", map[string][]byte{"rehearsal": customerKey})
+	if err != nil {
+		t.Fatal("customer ring unavailable")
+	}
+	customerImporter, err := customerimport.New(customerRing)
+	if err != nil {
+		t.Fatal("customer importer unavailable")
+	}
+	stageCustomers := func(commit bool) {
+		tx, err := db.BeginTx(ctx, nil)
+		if err != nil {
+			t.Fatal("customer rehearsal transaction unavailable")
+		}
+		defer tx.Rollback()
+		for _, row := range customerSelected {
+			if customerImporter.Import(ctx, tx, snapshotHash, row) != nil {
+				t.Fatal("actual customer protected history staging failed")
+			}
+		}
+		if commit && tx.Commit() != nil {
+			t.Fatal("actual customer protected history commit failed")
+		}
+	}
+	stageCustomers(false)
+	if count("historical_customer_subjects") != 0 || count("migration_customer_dispositions") != 0 {
+		t.Fatal("customer rollback left facts")
+	}
+	stageCustomers(true)
+	if count("historical_customer_subjects") != 5 || count("migration_customer_dispositions") != 5 || count("admin_users") != 0 || count("admin_sessions") != 0 {
+		t.Fatal("customer facts or login exclusions differ")
+	}
+	counts["historical_customer_subject_rows"] = 5
+	counts["excluded_customer_login_bindings"] = 5
+	counts["created_login_accounts"] = 0
 	stageOrders := func(commit bool) orderimport.Result {
 		tx, err := db.BeginTx(ctx, nil)
 		if err != nil {
@@ -447,7 +493,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 			t.Fatal("order committed row count differs")
 		}
 	}
-	if committedOrders.Rows != 336 || count("migration_order_rows") != 336 || count("historical_customer_subjects") != 0 {
+	if committedOrders.Rows != 336 || count("migration_order_rows") != 336 || count("historical_customer_subjects") != 5 {
 		t.Fatal("order provenance or excluded customer count differs")
 	}
 	counts["ordinary_order_tables"] = 28
@@ -455,10 +501,14 @@ func TestActualCatalogMySQL(t *testing.T) {
 	counts["order_provenance_rows"] = count("migration_order_rows")
 	counts["order_reference_holds"] = count("order_migration_reference_holds")
 	counts["order_import_rollback_rows"] = 336
-	counts["protected_customer_rows_not_imported"] = verified.Tables["customer"].Rows
+	counts["protected_customer_rows_imported_without_login"] = verified.Tables["customer"].Rows
 	fingerprint := func() []byte {
 		h := sha256.New()
 		targets := map[string]string{}
+		targets["historical_customer_subjects"] = "id"
+		targets["migration_customer_dispositions"] = "source_id"
+		targets["admin_users"] = "id"
+		targets["admin_sessions"] = "token_hash"
 		targets["migration_order_rows"] = "source_table,identity_sha256"
 		targets["order_migration_reference_holds"] = "source_table,identity_sha256,column_name"
 		for _, name := range orderTables {
@@ -745,11 +795,13 @@ func TestActualCatalogMySQL(t *testing.T) {
 	counts["http_queries_preserved_full_fingerprint"] = 1
 	stage(false, true)
 	stageInventory(true)
+	stageCustomers(true)
 	replayedOrders := stageOrders(true)
 	if replayedOrders.ReplayedRows != 336 {
 		t.Fatal("ordinary order replay duplicated facts")
 	}
 	counts["exact_replay_ordinary_order_rows"] = 336
+	counts["exact_replay_historical_customer_rows"] = 5
 	if !bytes.Equal(before, fingerprint()) {
 		t.Fatal("actual catalog replay changed evidence")
 	}

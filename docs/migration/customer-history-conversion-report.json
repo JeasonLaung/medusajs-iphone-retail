@@ -1,0 +1,34 @@
+{
+  "format_version": 1,
+  "scope": "Five historical customer subjects through full v2 validation and ephemeral dedicated conversion; metadata baseline all SQL NULL, no SQL or account restoration",
+  "snapshot_sha256": "b58a26812eeea8e75c6bd3e4ec4635b6260d8e704bc9a63fd095f0e7d9f13985",
+  "counts": {
+    "source_tables": 159,
+    "source_rows": 27140,
+    "customer_rows": 5,
+    "bound_fields": 60,
+    "metadata_sql_nulls": 5,
+    "ordinary_import_rejections": 5,
+    "excluded_account_bindings": 5,
+    "sql_written": false,
+    "login_accounts_created": 0
+  },
+  "source_database_connection": false,
+  "target_database_connection": false,
+  "provider_called": false,
+  "new_keys_or_envelopes_persisted": false,
+  "private_values_in_report": false,
+  "legacy_login_accounts_restored": false,
+  "historical_email_or_id_is_authorization": false,
+  "sql_operation_holds_persisted": false,
+  "implementation_sha256": {
+    "retail/scripts/audit-customer-history.py": "b1644adc6355aebff65975e0b78e4043ab59f13f8dc0f7b119658b9411e2edc8",
+    "retail/backend/internal/rowimport/history_customer.go": "6cd6f081d3c9256f504d0cfef91f5a34505401358f0fc5640f6920e8c41dc653",
+    "retail/backend/internal/rowimport/history_customer_test.go": "b0dc705af6a464666baf79b7c4402d832d00d1045f44ac3d05a2eef75afa503d",
+    "retail/backend/internal/rowimport/convert.go": "02faf48f76231c5637adee5edc8709ce818995ce26c6920c787bd8190438e9d7",
+    "retail/backend/internal/rowimport/field_plans.json": "d3bff5f26b890e19f7424888430a638d4e45f6b46766e3643913e6eb670c5b77",
+    "retail/backend/internal/rowimport/record.go": "9da4ad1becb6c0ab0c20d147c1a71fb6a1fa44f317fca6cee7c4b0f2aa6c3cc8",
+    "retail/backend/internal/rowimport/stream.go": "3c650e235ee516443b53b639efa67645b17a755691bd0e342df7f64ddf65a946",
+    "retail/backend/internal/protected/envelope.go": "4a27c708e7e5f4f630783b025a1cfb7b431a7bb27d1a5e53e6cc20cb67a6e2a4"
+  }
+}
