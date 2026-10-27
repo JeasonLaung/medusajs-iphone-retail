@@ -1,0 +1,35 @@
+{
+  "format_version": 1,
+  "scope": "Artificial actual Redis component test only; HTTP/MySQL/role revocation/login not accepted",
+  "counts": {
+    "allowed_login_attempts": 8,
+    "concurrent_login_attempts": 24,
+    "concurrent_prelogin_attempts": 16,
+    "namespace_isolation": 1,
+    "outage_fail_closed": 1,
+    "prelogin_winners": 1,
+    "realms": 2,
+    "ttl_expiry": 1
+  },
+  "limits": {
+    "cpus": 1,
+    "memory_mib": 128,
+    "network": "none",
+    "published_ports": 0
+  },
+  "real_accounts_used": false,
+  "application_redis_used": false,
+  "source_database_connection": false,
+  "private_values_in_report": false,
+  "runtime_login_accepted": false,
+  "implementation_sha256": {
+    "retail/scripts/test-redis-sessions.py": "bcd072a36ce84a9c1f1e707c1f9afc4007d475cfd547b4df50945bdf21f51a7c",
+    "retail/backend/internal/sessionstore/store.go": "d2a748b38e7c769ca137752f3978f65f97d4d66b7d9ee62c8368e563c18e1df8",
+    "retail/backend/internal/sessionstore/config.go": "3a06b19b9f71032d4243cc9266499d7eb7cf6a8e7facfcfac3ae63ac1a339440",
+    "retail/backend/internal/sessionstore/config_test.go": "a2422d5f82bd9e9173e9efe0983193f3cbdf650c5822b12ed7df857dddd537f2",
+    "retail/backend/internal/sessionstore/redis_test.go": "ccb3e3b763de0c97d085a53d2abc6bf937271533c32b279a01afe0bf85df93f4",
+    "retail/backend/go.mod": "d172f1878274b95de97d1db201834cff727c7e6a7371b2b5ca2c0fbc21f3e4b2",
+    "retail/backend/go.sum": "cab27e69f0740d100e5fdf9b57bd677eb7262fe95adb5a65ec40c344e9881582"
+  },
+  "cleanup": "owned container and temporary runner removed"
+}

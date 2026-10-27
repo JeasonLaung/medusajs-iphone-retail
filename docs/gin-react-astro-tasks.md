@@ -264,3 +264,5 @@
 2026-10-27导入入口补充：[v2离线预检与旧入口退役](migration/v2-preflight.md)关闭旧v1命令及库函数，删除静默解析/缺省时间/不完整字段写入实现。新check-snapshot只读组合完整流、全部普通值及关系检查，真实159表27,140行返回已知375项缺失/退出2；无效摘要、超限和损坏输入不输出部分报告。保护/历史专用规则、正式schema和全域写入协调器仍缺，T018不因此完成。
 
 2026-10-27 Gin基础补充：[HTTP边界](migration/gin-http-boundary.md)替换默认访问/异常/SQL日志，服务器生成请求ID，统一错误/404/405及请求体上限、后台私有响应禁止缓存。真实Gin分发人工请求验证秘密URL/query/header/body/SQL/panic不出现在日志及错误体，已知长度和分块超大请求返回413。数据库HTTP、CSRF/Redis会话、权限及领域DTO仍缺；T010/T014/T015未验收。
+
+2026-10-27 Redis组件补充：[会话/挑战/限流](migration/redis-session-store.md)新增独立Go组件及显式连接配置，后台/客户和应用namespace分离；真实禁网单核临时Redis验证16路一次性挑战仅1成功、24路限流仅8通过，TTL/撤销/定向淘汰/坏记录/关闭连接默认拒绝。未接入Gin登录、MySQL权限版本和浏览器Origin/cookie/CSRF，真实宕机/TLS/联合HTTP仍缺，T014/T019未验收。
