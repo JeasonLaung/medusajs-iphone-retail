@@ -54,6 +54,7 @@ func checkActualPublicProducts(t *testing.T, ctx context.Context, db *sql.DB, ro
 				t.Fatal("actual public product relation counts differ")
 			}
 			for _, v := range p.Variants {
+				checkActualAvailability(t, ctx, db, channel, v, counts)
 				var vt string
 				var sku, thumb sql.NullString
 				var rank sql.NullInt64

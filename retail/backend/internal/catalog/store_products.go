@@ -7,6 +7,7 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/eurorefurb/retail/internal/inventory"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/eurorefurb/retail/internal/pricing"
 	"github.com/gin-gonic/gin"
@@ -86,8 +87,8 @@ func parseStoreProducts(raw string, detail bool) (storeProductQuery, error) {
 	return q, nil
 }
 
-// Price projection requires an explicit valid region; stock and checkout remain
-// independent capabilities and cannot be inferred from a configured price.
+// Price projection requires an explicit region. Availability is channel-scoped;
+// neither observation authorizes checkout or reserves stock.
 type StoreProduct struct {
 	ID           string         `json:"id"`
 	Title        string         `json:"title"`
@@ -101,15 +102,19 @@ type StoreProduct struct {
 	Variants     []StoreVariant `json:"variants" gorm:"-"`
 }
 type StoreVariant struct {
-	ID                    string              `json:"id"`
-	Title                 string              `json:"title"`
-	SKU                   *string             `json:"sku"`
-	Thumbnail             *string             `json:"thumbnail"`
-	VariantRank           *int                `json:"variant_rank"`
-	Options               []AdminVariantValue `json:"options" gorm:"-"`
-	Images                []AdminImage        `json:"images" gorm:"-"`
-	ConfigurationComplete bool                `json:"configuration_complete" gorm:"-"`
-	CalculatedPrice       *pricing.Quote      `json:"calculated_price" gorm:"-"`
+	ID                    string                 `json:"id"`
+	Title                 string                 `json:"title"`
+	SKU                   *string                `json:"sku"`
+	Thumbnail             *string                `json:"thumbnail"`
+	VariantRank           *int                   `json:"variant_rank"`
+	Options               []AdminVariantValue    `json:"options" gorm:"-"`
+	Images                []AdminImage           `json:"images" gorm:"-"`
+	ConfigurationComplete bool                   `json:"configuration_complete" gorm:"-"`
+	CalculatedPrice       *pricing.Quote         `json:"calculated_price" gorm:"-"`
+	ManageInventory       bool                   `json:"manage_inventory"`
+	AllowBackorder        bool                   `json:"allow_backorder"`
+	InventoryQuantity     *string                `json:"inventory_quantity" gorm:"-"`
+	Availability          inventory.Availability `json:"availability" gorm:"-"`
 }
 
 func publicProducts(tx *gorm.DB, channel string) *gorm.DB {
@@ -209,6 +214,23 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 				}
 			}
 		}
+		variants := []inventory.AvailableVariant{}
+		for _, p := range products {
+			for _, v := range p.Variants {
+				variants = append(variants, inventory.AvailableVariant{ID: v.ID, ManageInventory: v.ManageInventory, AllowBackorder: v.AllowBackorder, Complete: v.ConfigurationComplete})
+			}
+		}
+		availability, e := inventory.ReadAvailability(tx, variants, channel, q.quantity)
+		if e != nil {
+			return e
+		}
+		for i := range products {
+			for j := range products[i].Variants {
+				v := &products[i].Variants[j]
+				v.Availability = availability[v.ID]
+				v.InventoryQuantity = v.Availability.Quantity
+			}
+		}
 		return nil
 	}, &sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true})
 	if err != nil {
@@ -216,7 +238,7 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 		return
 	}
 	c.Header("Cache-Control", "public, max-age=0, must-revalidate")
-	capabilities := gin.H{"pricing": priceContext != nil, "availability": false, "checkout": false}
+	capabilities := gin.H{"pricing": priceContext != nil, "availability": true, "checkout": false}
 	if detail {
 		c.JSON(200, gin.H{"product": products[0], "capabilities": capabilities})
 	} else {
@@ -238,7 +260,7 @@ func publicProductRelations(tx *gorm.DB, p *StoreProduct, budget *int) error {
 	if len(p.Images) > 1000 {
 		return errDetailLimit
 	}
-	if err = tx.Table("catalog_variants").Select("id,title,sku,thumbnail,variant_rank").Where("product_id=? AND deleted_at IS NULL", p.ID).Order("variant_rank IS NULL,variant_rank,id").Limit(1001).Scan(&p.Variants).Error; err != nil {
+	if err = tx.Table("catalog_variants").Select("id,title,sku,thumbnail,variant_rank,manage_inventory,allow_backorder").Where("product_id=? AND deleted_at IS NULL", p.ID).Order("variant_rank IS NULL,variant_rank,id").Limit(1001).Scan(&p.Variants).Error; err != nil {
 		return err
 	}
 	if len(p.Variants) > 1000 {

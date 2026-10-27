@@ -112,6 +112,9 @@ def main():
             raise RuntimeError('Owned MySQL/Redis authentication checks failed')
         counts = json.loads(markers[0])
         product_markers=[line.split('STORE_PRODUCT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_PRODUCT_REHEARSAL ' in line]
+        availability_markers=[line.split('STORE_AVAILABILITY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_AVAILABILITY_REHEARSAL ' in line]
+        if len(availability_markers)!=1:
+            raise RuntimeError('Store availability verification missing')
         pricing_markers=[line.split('STORE_PRICING_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_PRICING_REHEARSAL ' in line]
         if len(pricing_markers)!=1:
             raise RuntimeError('Store pricing verification missing')
@@ -217,10 +220,12 @@ def main():
         files += ['retail/backend/internal/catalog/store_taxonomy.go','retail/backend/internal/catalog/store_taxonomy_test.go','retail/backend/internal/identity/store_taxonomy_test.go']
         files += ['retail/backend/internal/catalog/store_products.go','retail/backend/internal/catalog/store_products_test.go','retail/backend/internal/identity/store_products_test.go']
         files += ['retail/backend/internal/identity/store_pricing_test.go']
+        files += ['retail/backend/internal/identity/store_availability_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/pricing').glob('*.go')]
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                   'store_products': json.loads(product_markers[0]),
                   'store_pricing': json.loads(pricing_markers[0]),
+                  'store_availability': json.loads(availability_markers[0]),
                   'store_taxonomy': json.loads(taxonomy_markers[0]),
                   'store_regions': json.loads(region_markers[0]),
                   'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,

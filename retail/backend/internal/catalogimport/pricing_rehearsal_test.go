@@ -37,7 +37,7 @@ func checkActualStorePrices(t *testing.T, router *gin.Engine, counts map[string]
 				Count        int64
 				Capabilities map[string]bool
 			}
-			if w.Code != 200 || json.Unmarshal(w.Body.Bytes(), &page) != nil || !page.Capabilities["pricing"] || page.Capabilities["availability"] || page.Capabilities["checkout"] {
+			if w.Code != 200 || json.Unmarshal(w.Body.Bytes(), &page) != nil || !page.Capabilities["pricing"] || !page.Capabilities["availability"] || page.Capabilities["checkout"] {
 				t.Fatal("actual regional product price page failed")
 			}
 			if count >= 0 && count != page.Count {

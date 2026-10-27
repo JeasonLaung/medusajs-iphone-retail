@@ -12,7 +12,7 @@
 
 同一个只读 Repeatable Read 事务覆盖渠道、计数及全部关系。每商品最多 1000 变体/图片，复用选项原有上限，整个响应的选项、值、图片、变体、选择及变体图片共同限制为 10000 条；超限整体 503，不返回看似完整的截断关系。成功公共重验证；错误 no-store；不读取身份 cookie 或建立会话。
 
-后续已增加[区域与数量选价](store-pricing.md)：显式有效 region_id 时 pricing=true，缺省仍为 false，变体 calculated_price 明确为报价对象或 null；quantity 必须伴随 region_id。availability/checkout 仍为 false。可售数量、购物车、税务结算及 Astro 业务页面尚未完成，此响应不能作为可购买商品实现验收。
+后续已增加[区域与数量选价](store-pricing.md)：显式有效 region_id 时 pricing=true，缺省仍为 false，变体 calculated_price 明确为报价对象或 null；quantity 必须伴随 region_id。[可售观察](store-availability.md)已增加精确库存数量及单仓可满足状态，availability=true，checkout=false。购物车、税务结算及 Astro 业务页面尚未完成，此响应不能作为可购买商品实现验收。
 
 [人工 SQL 报告](admin-auth-report.json) 的 store_products 验证双渠道、共享商品、草稿/删除、文字搜索、筛选、ID 详情、选项及图片归属、不完整配置、空数组、关系超限、未实现能力及读取指纹。[固定来源整合报告](catalog-mysql-rehearsal-report.json) 核对所有实际公开商品与变体字段、选项归属、图片、分页和详情；[真实 Gin/browser 报告](admin-live-report.json) 在登录前验证公开接口及非公开商品拒绝，再回归原有 Ant 后台功能。报告中的哈希约束对应实现版本，不代表全前台或完整交易验收。
 

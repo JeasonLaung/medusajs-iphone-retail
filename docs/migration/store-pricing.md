@@ -20,7 +20,7 @@
 
 calculated_price 返回 calculated_amount、nullable original_amount、currency_code、两种含税标记、两种价目表标记，以及 calculated_price.price_list_type。内部选中价格/集合 ID 保留供未来服务端购物车事务使用，但不序列化公开；规则、表标题/描述/metadata、raw JSON 不返回。
 
-整个商品读取继续用 Repeatable Read，只读取已验证完整变体。单次最多 10000 个有效变体关联，价格/价格规则/价目表/表规则共同最多 20000 行，偏好最多 100 行；超限整体 503，不能先分页价格再挑选。成功公共重验证；错误 no-store；没有写入、预留或支付操作。availability/checkout 仍为 false。
+整个商品读取继续用 Repeatable Read，只读取已验证完整变体。单次最多 10000 个有效变体关联，价格/价格规则/价目表/表规则共同最多 20000 行，偏好最多 100 行；超限整体 503，不能先分页价格再挑选。成功公共重验证；错误 no-store；没有写入、预留或支付操作。[可售观察](store-availability.md)已开启 availability=true，checkout 仍为 false。
 
 ## 验证与剩余
 
@@ -28,4 +28,4 @@ calculated_price 返回 calculated_amount、nullable original_amount、currency_
 
 [固定来源报告](catalog-mysql-rehearsal-report.json) 对实际 30 个公开商品、1558 个有效变体，在 1 区域的数量 1/2 两个上下文中，比对 3056 个有效报价及 60 个不完整变体未报价结果。独立 Node 工具读取已钉住私有来源，在无 DB/网络/服务启动条件下调用安装的旧价格服务，对照原价/现价、币种、价目表及含税标记；原始输入及输出仅在独占容器 tmpfs，最终公开报告仅数量和源码哈希。固定来源无活动价目表，表类型行为由人工 SQL 和纯函数另外验证，不虚称真实样本已覆盖该情形。
 
-[真实浏览器报告](admin-live-report.json) 验证显式店铺币种的区域查询、未知区域/币种覆盖拒绝、不完整配置仍为 null，再回归 Ant 后台和 Astro SSR。选价不等于全量交易验收：地址/客户规则扩展、客户身份、数量可售、税/优惠/配送、购物车、checkout、逐键展示 metadata 和 Astro 实际页面仍需继续；前台尚不能使用旧 number helper 直接展示精确字符串，必须完成独立 adapter。
+[真实浏览器报告](admin-live-report.json) 验证显式店铺币种的区域查询、未知区域/币种覆盖拒绝、不完整配置仍为 null，再回归 Ant 后台和 Astro SSR。选价不等于全量交易验收：地址/客户规则扩展、客户身份、交易库存预留、税/优惠/配送、购物车、checkout、逐键展示 metadata 和 Astro 实际页面仍需继续；前台尚不能使用旧 number helper 直接展示精确字符串，必须完成独立 adapter。

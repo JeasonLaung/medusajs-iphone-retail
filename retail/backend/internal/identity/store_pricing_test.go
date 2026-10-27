@@ -83,7 +83,7 @@ func checkStorePricing(t *testing.T, db *gorm.DB, router http.Handler) {
 			Product      catalog.StoreProduct
 			Capabilities map[string]bool
 		}
-		if json.Unmarshal(w.Body.Bytes(), &out) != nil || !out.Capabilities["pricing"] || out.Capabilities["checkout"] || out.Capabilities["availability"] {
+		if json.Unmarshal(w.Body.Bytes(), &out) != nil || !out.Capabilities["pricing"] || out.Capabilities["checkout"] || !out.Capabilities["availability"] {
 			t.Fatal("regional pricing capability incorrect")
 		}
 		count := 0
@@ -144,4 +144,5 @@ func checkStorePricing(t *testing.T, db *gorm.DB, router http.Handler) {
 	call("region_id=price-region", 503, "", "", false)
 	exec("DELETE FROM pricing_price_rules WHERE id LIKE 'quote-overflow-%'")
 	t.Log(`STORE_PRICING_REHEARSAL {"regional_currency":true,"quantity_bounds":true,"specificity":true,"sale_override_reference":true,"shared_sets":true,"incomplete_variant_unquoted":true,"unknown_condition_unquoted":true,"missing_price_null":true,"exact_raw_validation":true,"tax_preferences":true,"private_fields_excluded":true,"rule_overflow_503":true,"read_fingerprint_unchanged":true}`)
+	checkStoreAvailability(t, db, router)
 }

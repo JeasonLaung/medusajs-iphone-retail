@@ -42,7 +42,7 @@ func checkStoreProducts(t *testing.T, db *gorm.DB, router http.Handler) {
 		if w.Code != status {
 			t.Fatalf("public product status %d expected %d on %s", w.Code, status, path)
 		}
-		for _, s := range []string{"product-secret", "variant-secret", "metadata", "payload", "status", "revision", "public-main", "private-256", "private-image", "deleted-image", "inventory_quantity"} {
+		for _, s := range []string{"product-secret", "variant-secret", "metadata", "payload", "status", "revision", "public-main", "private-256", "private-image", "deleted-image"} {
 			if strings.Contains(w.Body.String(), s) {
 				t.Fatal("public product private or unimplemented field escaped")
 			}
@@ -72,7 +72,7 @@ func checkStoreProducts(t *testing.T, db *gorm.DB, router http.Handler) {
 		Count        int
 		Capabilities map[string]bool
 	}
-	if json.Unmarshal(call("/api/store/products", 200), &list) != nil || list.Count != 1 || len(list.Products) != 1 || list.Products[0].ID != "public-a" || len(list.Capabilities) != 3 || list.Capabilities["checkout"] || list.Capabilities["pricing"] || list.Capabilities["availability"] {
+	if json.Unmarshal(call("/api/store/products", 200), &list) != nil || list.Count != 1 || len(list.Products) != 1 || list.Products[0].ID != "public-a" || len(list.Capabilities) != 3 || list.Capabilities["checkout"] || list.Capabilities["pricing"] || !list.Capabilities["availability"] {
 		t.Fatal("public product scope or capability projection incorrect")
 	}
 	p := list.Products[0]
