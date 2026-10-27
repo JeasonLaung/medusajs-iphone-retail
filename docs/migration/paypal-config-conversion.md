@@ -36,7 +36,7 @@ SQL NULL 与 JSON `null` 分开；未知字段、重复键、非法Unicode、类
 
 存在非空credentials映射时必须提供active_environment，且与行environment一致；活动环境的client ID、解密后的secret、merchant ID和email需与四个seller_*镜像列一致，不能偷偷修复。缺/NULL/空业务值按无非空凭据处理，不制造新值；非NULL别名冲突仍拒绝。允许只有inactive环境凭据，但活动镜像必须空/NULL，不因此启用另一环境或登录账号。旧个人密码/权限等额外字段及未知环境/对象类型/重复键均hold。
 
-人工完整MySQL用不同nonce密封相同活动秘密，在metadata双别名和镜像列中分别认证解密后匹配；另保留不同sandbox秘密。实际审查表的整行插入、事务回滚、提交读取、三个嵌套秘密投影、SQL NULL及错行AAD拒绝通过；目标metadata解密后不再含旧enc:v1前缀。结果见mysql-type-fixture-report.json的`nested_paypal_credential_projection_sql_roundtrip_and_rollback`。不含真实PayPal凭据、不启动provider，商户配置操作hold/正式导入仍待实现。
+人工完整MySQL用不同nonce密封相同活动秘密，在metadata双别名和镜像列中分别认证解密后匹配；另保留不同sandbox秘密。实际审查表的整行插入、事务回滚、提交读取、三个嵌套秘密投影、SQL NULL及错行AAD拒绝通过；目标metadata解密后不再含旧enc:v1前缀。结果见mysql-type-fixture-report.json的`nested_paypal_credential_projection_sql_roundtrip_and_rollback`。不含真实PayPal凭据、不启动provider。新增[商户配置原子导入](merchant-config-import.md)组合操作hold账本；正式导入及worker接入仍缺。
 
 真实 v2 离线验证见 [paypal-config-v2-report.json](paypal-config-v2-report.json)：完整159表流校验后，1条connection和1条settings转换成功，两个JSON临时信封往返及错行AAD拒绝通过，3个秘密字段明确SQL NULL。快照没有实际非空 PayPal 凭据，人工互操作不能当作真实凭据验证；未将真实新密文或 key 持久化。
 
@@ -45,4 +45,4 @@ node retail/scripts/test-paypal-secret-interop.cjs
 python retail/scripts/audit-paypal-config.py --snapshot logs/gin-migration/source-v2-20261027-payment-rows.ndjson
 ```
 
-仍缺其他设置section、merchant配置的持久化副作用hold、真实配置SQL演练、密钥备份/恢复、读取权限及Gin provider运行时。固定快照没有实际非空分环境凭据，不能将人工转换验证称为真实商户验证。来源插件自动ensureSettingsDefaults、ensureWebhookRegistration等动作绝不在转换时调用。全部历史付款与原账号限制继续有效，T006/T018/T035不验收。
+仍缺其他设置section、商户配置hold的worker强制执行、真实配置SQL演练、密钥备份/恢复、读取权限及Gin provider运行时。固定快照没有实际非空分环境凭据，不能将人工转换验证称为真实商户验证。来源插件自动ensureSettingsDefaults、ensureWebhookRegistration等动作绝不在转换时调用。全部历史付款与原账号限制继续有效，T006/T018/T035不验收。

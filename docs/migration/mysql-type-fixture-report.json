@@ -350,7 +350,7 @@
     "Concurrency, failure recovery, Gin and UI behavior"
   ],
   "go_registry_fixture": {
-    "binary_sha256": "1a00f8e64c9652a5d7b13b6551352aa924396fe4225196c756084be2c7e120e5",
+    "binary_sha256": "da233e29188f7a5e0efd0959db382f5a539c6bda88b58417704160f3d5803199",
     "passed_tests": [
       "TestTupleEncoding",
       "TestRegistryMySQL",
@@ -405,7 +405,16 @@
       "TestAllSourcePlans/source_uk_1bc7590ed3925ad55fb0d006",
       "TestSourcePredicateBoundaries",
       "TestTypedInputDoesNotNormalize",
-      "TestHistoricalCustomerAndTaxKeys"
+      "TestHistoricalCustomerAndTaxKeys",
+      "TestMerchantFixtureConversion",
+      "TestMerchantImportMySQL",
+      "TestMerchantImportMySQL/all_seven_row_hold_and_identity_rollback",
+      "TestMerchantImportMySQL/all_seven_commit_replay_rotation_and_binary_protection",
+      "TestMerchantImportMySQL/eight_way_exact_replay",
+      "TestMerchantImportMySQL/identity_source_snapshot_and_target_conflicts",
+      "TestMerchantImportMySQL/valid_reseal_tampered_digest_and_missing_target_conflict",
+      "TestMerchantImportMySQL/failed_business_insert_rolls_back_hold_and_identity",
+      "TestMerchantImportMySQL/missing_unknown_and_release_fail_closed"
     ],
     "scope": "Artificial rows only, including actual source adapter and domain row transaction; no HTTP/importer integration acceptance"
   },
