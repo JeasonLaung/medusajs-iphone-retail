@@ -1,0 +1,4480 @@
+{
+  "format_version": 1,
+  "scope": "Legacy JSON input shapes only; refinements, transforms, coercion/default output, workflow state, authorization and files require separate implementation. This is not a new API acceptance contract.",
+  "source_sha256": {
+    "medusa-store/apps/backend/src/api/admin/customer-service/validators.ts": "b37e4a9ac48d91b763339a71a4f18b64e1c48ebe576954fbb9ed1e4147219462",
+    "medusa-store/apps/backend/src/api/admin/devices/validators.ts": "1b81d8e16d2d5d5f7201f2b52d2764d23adbfbd8dd8f8e378f71953491dc262f",
+    "medusa-store/apps/backend/src/api/admin/mail/validators.ts": "9274395678928b2f74d8949fd363ee51f01453f98824b797b94d36fcd3919eef",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/after-sales/validators.ts": "18bf9885a642baab5f864bcd614a40a7662a3cde276331f5936b5e33d5db9951",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/cancel/validators.ts": "7401fd3884dce6fafaa71a80a52e83c7983cba855b6d31fdb3246afdd0851020",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/tracking/validators.ts": "8bcc6d341ea6cb725ea14d81190c49e0e13a556734c3729a8d6e928202bbb48d",
+    "medusa-store/apps/backend/src/api/admin/warehouse-access/validators.ts": "af4810836f7d6d6206d2194d733899a6e8be220561dc79276e7b6a276d47c26e",
+    "medusa-store/apps/backend/src/api/buyback-pricing-validators.ts": "5ba29a5d456e9f7a4cc2b0fb53985f04f4f18007101fda2e9846c450b82083e0",
+    "medusa-store/apps/backend/src/api/buyback-validators.ts": "9a566c72c0b883489f56262f2094c34cdfe54bdd0581f1d338ad5664d8e1217d",
+    "medusa-store/apps/backend/src/api/device-photo-validators.ts": "39a49398dad3ba7f8bc7a3afae2bd74a44e39c2166a9f7e78d420d5ffbf4d89f",
+    "medusa-store/apps/backend/src/api/mobile-intake/validators.ts": "266f11d2e3f8479f4bd3a0bdc16283e34952220b82e59b6eadd60b5f2aa93656",
+    "medusa-store/apps/backend/src/api/review-validators.ts": "54cc82e03e00dce60a89852eecaa90a0257afab1742acff5b19904dd0a83627d",
+    "medusa-store/apps/backend/src/api/seo-validators.ts": "7c421a2b1480db58b5c1066ec6340d2d06f3d865c9a7b1141bb1f54858ea4365",
+    "medusa-store/apps/backend/src/api/store/notifications/validators.ts": "ad107def076b4a8476a9588ca660cb5f31f69236e0bd9f3e8c7c447264641e90",
+    "medusa-store/apps/backend/src/api/store/orders/[id]/after-sales/validators.ts": "2f6ce53ea506846b405e96e494af6b568070e26888a5505ebaf6d7313c6564f8",
+    "medusa-store/apps/backend/src/lib/buyback-pricing.ts": "8184f3e4f7bafbc1c427ad10e2303e9fe0cf5c915559212bd1b1ce215bd3a78a",
+    "medusa-store/apps/backend/src/lib/recycled-assessment.ts": "3c9d9f539dd34535d5a169173c3cbd541adbd11233a02dd07034f73a4b2ea15d"
+  },
+  "special_rules_not_represented_by_json_schema": [
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/customer-service/validators.ts",
+      "line": 4,
+      "method": "refine",
+      "arguments": [
+        "value => value.start < value.end",
+        "\"SERVICE_HOURS_INVALID\""
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/customer-service/validators.ts",
+      "line": 4,
+      "method": "refine",
+      "arguments": [
+        "value => Boolean(value.whatsapp || value.email)",
+        "\"SERVICE_CHANNEL_REQUIRED\""
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/customer-service/validators.ts",
+      "line": 6,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/customer-service/validators.ts",
+      "line": 8,
+      "method": "refine",
+      "arguments": [
+        "value => !value || /^\\+?[1-9]\\d{6,14}$/.test(value)",
+        "\"SERVICE_WHATSAPP_INVALID\""
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/customer-service/validators.ts",
+      "line": 8,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/customer-service/validators.ts",
+      "line": 10,
+      "method": "refine",
+      "arguments": [
+        "value => {\r\n    try { new Intl.DateTimeFormat(\"en\", { timeZone: value }); return Boolean(value) } catch { return false }\r\n  }",
+        "\"SERVICE_TIMEZONE_INVALID\""
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/customer-service/validators.ts",
+      "line": 21,
+      "method": "refine",
+      "arguments": [
+        "value => new Set(value.contacts.map(contact => contact.id)).size === value.contacts.length",
+        "\"SERVICE_DUPLICATE_ID\""
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 3,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 6,
+      "method": "refine",
+      "arguments": [
+        "(url) => /^https?:\\/\\//i.test(url) || /^\\/static\\/[a-zA-Z0-9._-]+$/.test(url)"
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 8,
+      "method": "toUpperCase",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 8,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 9,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 14,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 15,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 17,
+      "method": "refine",
+      "arguments": [
+        "(d) => d.serial_number",
+        "\"请填写设备序列号\""
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 31,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 32,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 52,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 53,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 67,
+      "method": "refine",
+      "arguments": [
+        "(items) => new Set(items.map((item) => item.id)).size === items.length",
+        "\"Duplicate order items\""
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 79,
+      "method": "refine",
+      "arguments": [
+        "(ids) => new Set(ids).size === ids.length",
+        "\"Duplicate device IDs\""
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 82,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 87,
+      "method": "toUpperCase",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 87,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 97,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 151,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 152,
+      "method": "refine",
+      "arguments": [
+        "(url) => /^https?:\\/\\//i.test(url)"
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 180,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "line": 187,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/mail/validators.ts",
+      "line": 4,
+      "method": "transform",
+      "arguments": [
+        "(value) => value.toLowerCase()"
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/mail/validators.ts",
+      "line": 7,
+      "method": "toLowerCase",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/mail/validators.ts",
+      "line": 31,
+      "method": "refine",
+      "arguments": [
+        "(value) => value.to.length + value.cc.length + value.bcc.length <= 50",
+        "\"mail.invalidRecipients\""
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/mail/validators.ts",
+      "line": 31,
+      "method": "refine",
+      "arguments": [
+        "(value) =>\n        value.attachments.reduce((total, a) => total + a.content.length, 0) <=\n        14_000_000",
+        "\"mail.attachmentsTooLarge\""
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/cancel/validators.ts",
+      "line": 4,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/tracking/validators.ts",
+      "line": 6,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/warehouse-access/validators.ts",
+      "line": 3,
+      "method": "refine",
+      "arguments": [
+        "(ids) => new Set(ids).size === ids.length",
+        "\"Duplicate locations\""
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-pricing-validators.ts",
+      "line": 4,
+      "method": "refine",
+      "arguments": [
+        "(value) => Math.abs(value * 100 - Math.round(value * 100)) < 0.000001"
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-pricing-validators.ts",
+      "line": 5,
+      "method": "refine",
+      "arguments": [
+        "(rules) => rules.bases.LIKE_NEW >= rules.bases.ALMOST_NEW && rules.bases.ALMOST_NEW >= rules.bases.GOOD && rules.bases.GOOD >= rules.bases.MODERATE && rules.bases.MODERATE >= rules.floor",
+        "{ message: \"BUYBACK_INVALID_PRICE_ORDER\" }"
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-pricing-validators.ts",
+      "line": 17,
+      "method": "refine",
+      "arguments": [
+        "(value) => value === \"\" || value === \"unknown\" || /^\\d{1,3}$/.test(value) && Number(value) >= 1 && Number(value) <= 100"
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 4,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 6,
+      "method": "refine",
+      "arguments": [
+        "completeAssessment",
+        "\"BUYBACK_INVALID_ASSESSMENT\""
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 13,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 13,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 14,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 14,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 15,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 18,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 19,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 21,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 24,
+      "method": "toUpperCase",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 24,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 27,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 34,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 35,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 38,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 39,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 40,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 41,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "line": 43,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/mobile-intake/validators.ts",
+      "line": 4,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/mobile-intake/validators.ts",
+      "line": 8,
+      "method": "refine",
+      "arguments": [
+        "(device) => device.serial_number",
+        "\"请填写设备序列号\""
+      ],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "line": 4,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "line": 9,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "line": 10,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "line": 12,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "line": 13,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "line": 17,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/store/orders/[id]/after-sales/validators.ts",
+      "line": 5,
+      "method": "trim",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/lib/buyback-pricing.ts",
+      "line": 15,
+      "method": "toUpperCase",
+      "arguments": [],
+      "disposition": "Must reproduce in Gin and test independently; JSON Schema alone does not encode this behavior"
+    }
+  ],
+  "schemas": [
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/customer-service/validators.ts",
+      "export": "ServiceContact",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "department": {
+            "type": "string",
+            "enum": [
+              "pre_sales",
+              "after_sales"
+            ]
+          },
+          "whatsapp": {
+            "type": "string",
+            "maxLength": 30
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email",
+                "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+              },
+              {
+                "type": "string",
+                "const": ""
+              }
+            ]
+          },
+          "timezone": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "days": {
+            "minItems": 1,
+            "maxItems": 7,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6
+            }
+          },
+          "start": {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+          },
+          "end": {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+          },
+          "availability": {
+            "type": "string",
+            "enum": [
+              "schedule",
+              "online",
+              "offline"
+            ]
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "department",
+          "whatsapp",
+          "email",
+          "timezone",
+          "days",
+          "start",
+          "end",
+          "availability",
+          "enabled"
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/customer-service/validators.ts",
+      "export": "CustomerServiceBody",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "contacts": {
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "department": {
+                  "type": "string",
+                  "enum": [
+                    "pre_sales",
+                    "after_sales"
+                  ]
+                },
+                "whatsapp": {
+                  "type": "string",
+                  "maxLength": 30
+                },
+                "email": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "email",
+                      "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                    },
+                    {
+                      "type": "string",
+                      "const": ""
+                    }
+                  ]
+                },
+                "timezone": {
+                  "type": "string",
+                  "maxLength": 80
+                },
+                "days": {
+                  "minItems": 1,
+                  "maxItems": 7,
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 6
+                  }
+                },
+                "start": {
+                  "type": "string",
+                  "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                },
+                "end": {
+                  "type": "string",
+                  "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                },
+                "availability": {
+                  "type": "string",
+                  "enum": [
+                    "schedule",
+                    "online",
+                    "offline"
+                  ]
+                },
+                "enabled": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "department",
+                "whatsapp",
+                "email",
+                "timezone",
+                "days",
+                "start",
+                "end",
+                "availability",
+                "enabled"
+              ]
+            }
+          }
+        },
+        "required": [
+          "contacts"
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "export": "DeviceCategory",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "string",
+        "enum": [
+          "sale",
+          "returned",
+          "recycled"
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "export": "DevicePhoto",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "id",
+          "url"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "export": "IntakeDevice",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "serial_number": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "imei": {
+            "type": "string",
+            "pattern": "^\\d{15}$"
+          },
+          "imei2": {
+            "type": "string",
+            "pattern": "^\\d{15}$"
+          },
+          "eid": {
+            "type": "string",
+            "pattern": "^\\d{32}$"
+          },
+          "variant_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "source_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "category": {
+            "default": "sale",
+            "type": "string",
+            "enum": [
+              "sale",
+              "returned",
+              "recycled"
+            ]
+          },
+          "photos": {
+            "default": [],
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "url": {
+                  "type": "string",
+                  "maxLength": 2000
+                }
+              },
+              "required": [
+                "id",
+                "url"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "grade": {
+            "type": "string",
+            "enum": [
+              "S",
+              "A",
+              "B",
+              "C"
+            ]
+          },
+          "battery_health": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "cost_cents": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000000
+          },
+          "currency_code": {
+            "default": "eur",
+            "type": "string",
+            "pattern": "^[a-z]{3}$"
+          },
+          "bin": {
+            "default": "",
+            "type": "string",
+            "maxLength": 200
+          },
+          "notes": {
+            "default": "",
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "variant_id",
+          "source_id"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "export": "UpdateDevice",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "const": "update"
+          },
+          "device_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "variant_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "source_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "location_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "imei": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d{15}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "imei2": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d{15}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "eid": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d{32}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "sale",
+              "returned",
+              "recycled"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "inspection",
+              "available",
+              "reserved",
+              "packed",
+              "shipped",
+              "repair",
+              "repair_ready",
+              "retired",
+              "supplier_returned"
+            ]
+          },
+          "grade": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "S",
+                  "A",
+                  "B",
+                  "C"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "battery_health": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cost_cents": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000000
+          },
+          "currency_code": {
+            "type": "string",
+            "pattern": "^[a-z]{3}$"
+          },
+          "bin": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "photos": {
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "url": {
+                  "type": "string",
+                  "maxLength": 2000
+                }
+              },
+              "required": [
+                "id",
+                "url"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "action",
+          "device_id",
+          "variant_id",
+          "source_id",
+          "location_id",
+          "imei",
+          "imei2",
+          "eid",
+          "category",
+          "state",
+          "grade",
+          "battery_health",
+          "cost_cents",
+          "currency_code",
+          "bin",
+          "notes",
+          "photos"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "export": "DeviceCommand",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "create_fulfillment"
+              },
+              "order_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "allocations": {
+                "maxItems": 100,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "item_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "device_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "assignment_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    }
+                  },
+                  "required": [
+                    "item_id",
+                    "device_id"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "fulfillment": {
+                "type": "object",
+                "properties": {
+                  "location_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "shipping_option_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "no_notification": {
+                    "type": "boolean"
+                  },
+                  "items": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0,
+                          "maximum": 9007199254740991
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "quantity"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "location_id",
+                  "shipping_option_id",
+                  "no_notification",
+                  "items"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "action",
+              "order_id",
+              "allocations",
+              "fulfillment"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "save_allocation"
+              },
+              "order_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "reserve_only": {
+                "type": "boolean"
+              },
+              "allocations": {
+                "minItems": 1,
+                "maxItems": 100,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "item_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "device_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "assignment_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "fulfillment_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    }
+                  },
+                  "required": [
+                    "item_id",
+                    "device_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "action",
+              "order_id",
+              "allocations"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "update"
+              },
+              "device_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "variant_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "source_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "location_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "imei": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^\\d{15}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "imei2": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^\\d{15}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "eid": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^\\d{32}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "category": {
+                "type": "string",
+                "enum": [
+                  "sale",
+                  "returned",
+                  "recycled"
+                ]
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "inspection",
+                  "available",
+                  "reserved",
+                  "packed",
+                  "shipped",
+                  "repair",
+                  "repair_ready",
+                  "retired",
+                  "supplier_returned"
+                ]
+              },
+              "grade": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "S",
+                      "A",
+                      "B",
+                      "C"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "battery_health": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "cost_cents": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100000000
+              },
+              "currency_code": {
+                "type": "string",
+                "pattern": "^[a-z]{3}$"
+              },
+              "bin": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "photos": {
+                "maxItems": 8,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "url": {
+                      "type": "string",
+                      "maxLength": 2000
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "url"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "action",
+              "device_id",
+              "variant_id",
+              "source_id",
+              "location_id",
+              "imei",
+              "imei2",
+              "eid",
+              "category",
+              "state",
+              "grade",
+              "battery_health",
+              "cost_cents",
+              "currency_code",
+              "bin",
+              "notes",
+              "photos"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "activate"
+              },
+              "device_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "action",
+              "device_id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "make_available"
+              },
+              "device_ids": {
+                "minItems": 1,
+                "maxItems": 200,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "required": [
+              "action",
+              "device_ids"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "delete"
+              },
+              "device_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "action",
+              "device_id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "retire"
+              },
+              "device_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "action",
+              "device_id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "transfer_return"
+              },
+              "device_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "notes": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "action",
+              "device_id",
+              "notes"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "order_assign"
+              },
+              "order_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "item_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "serial_number": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "imei": {
+                "type": "string",
+                "pattern": "^\\d{15}$"
+              },
+              "imei2": {
+                "type": "string",
+                "pattern": "^\\d{15}$"
+              },
+              "eid": {
+                "type": "string",
+                "pattern": "^\\d{32}$"
+              },
+              "device_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "source_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "action",
+              "order_id",
+              "item_id",
+              "serial_number"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "source"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "self",
+                  "supplier"
+                ]
+              }
+            },
+            "required": [
+              "action",
+              "name",
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "enroll"
+              },
+              "variant_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "acknowledged": {
+                "type": "boolean",
+                "const": true
+              }
+            },
+            "required": [
+              "action",
+              "variant_id",
+              "acknowledged"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "intake"
+              },
+              "devices": {
+                "minItems": 1,
+                "maxItems": 200,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "serial_number": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "imei": {
+                      "type": "string",
+                      "pattern": "^\\d{15}$"
+                    },
+                    "imei2": {
+                      "type": "string",
+                      "pattern": "^\\d{15}$"
+                    },
+                    "eid": {
+                      "type": "string",
+                      "pattern": "^\\d{32}$"
+                    },
+                    "variant_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "source_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "category": {
+                      "default": "sale",
+                      "type": "string",
+                      "enum": [
+                        "sale",
+                        "returned",
+                        "recycled"
+                      ]
+                    },
+                    "photos": {
+                      "default": [],
+                      "maxItems": 8,
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "url": {
+                            "type": "string",
+                            "maxLength": 2000
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "url"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "grade": {
+                      "type": "string",
+                      "enum": [
+                        "S",
+                        "A",
+                        "B",
+                        "C"
+                      ]
+                    },
+                    "battery_health": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 100
+                    },
+                    "cost_cents": {
+                      "default": 0,
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 100000000
+                    },
+                    "currency_code": {
+                      "default": "eur",
+                      "type": "string",
+                      "pattern": "^[a-z]{3}$"
+                    },
+                    "bin": {
+                      "default": "",
+                      "type": "string",
+                      "maxLength": 200
+                    },
+                    "notes": {
+                      "default": "",
+                      "type": "string",
+                      "maxLength": 2000
+                    }
+                  },
+                  "required": [
+                    "variant_id",
+                    "source_id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "action",
+              "devices"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "supply"
+              },
+              "source_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "variant_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "quantity": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100000
+              }
+            },
+            "required": [
+              "action",
+              "source_id",
+              "variant_id",
+              "quantity"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "assign"
+              },
+              "device_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "order_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "item_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "replacement_of": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "action",
+              "device_id",
+              "order_id",
+              "item_id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "supplier_assign"
+              },
+              "device": {
+                "type": "object",
+                "properties": {
+                  "serial_number": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "imei": {
+                    "type": "string",
+                    "pattern": "^\\d{15}$"
+                  },
+                  "imei2": {
+                    "type": "string",
+                    "pattern": "^\\d{15}$"
+                  },
+                  "eid": {
+                    "type": "string",
+                    "pattern": "^\\d{32}$"
+                  },
+                  "variant_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "source_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "category": {
+                    "default": "sale",
+                    "type": "string",
+                    "enum": [
+                      "sale",
+                      "returned",
+                      "recycled"
+                    ]
+                  },
+                  "photos": {
+                    "default": [],
+                    "maxItems": 8,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100
+                        },
+                        "url": {
+                          "type": "string",
+                          "maxLength": 2000
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "url"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "grade": {
+                    "type": "string",
+                    "enum": [
+                      "S",
+                      "A",
+                      "B",
+                      "C"
+                    ]
+                  },
+                  "battery_health": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "cost_cents": {
+                    "default": 0,
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100000000
+                  },
+                  "currency_code": {
+                    "default": "eur",
+                    "type": "string",
+                    "pattern": "^[a-z]{3}$"
+                  },
+                  "bin": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  "notes": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "required": [
+                  "variant_id",
+                  "source_id"
+                ],
+                "additionalProperties": false
+              },
+              "order_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "item_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "replacement_of": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "action",
+              "device",
+              "order_id",
+              "item_id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "release"
+              },
+              "assignment_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "action",
+              "assignment_id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "fulfill"
+              },
+              "assignment_ids": {
+                "minItems": 1,
+                "maxItems": 100,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "required": [
+              "action",
+              "assignment_ids"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "ship"
+              },
+              "fulfillment_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "tracking_number": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "tracking_url": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "required": [
+              "action",
+              "fulfillment_id",
+              "tracking_number"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "cancel_fulfillment"
+              },
+              "fulfillment_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "action",
+              "fulfillment_id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "receive"
+              },
+              "assignment_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "scan": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "source_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "request_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "action",
+              "assignment_id",
+              "scan",
+              "source_id",
+              "request_id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "inspect"
+              },
+              "device_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "result": {
+                "type": "string",
+                "enum": [
+                  "pass",
+                  "repair",
+                  "retire",
+                  "supplier_return"
+                ]
+              },
+              "photos": {
+                "maxItems": 8,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "url": {
+                      "type": "string",
+                      "maxLength": 2000
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "url"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "grade": {
+                "type": "string",
+                "enum": [
+                  "S",
+                  "A",
+                  "B",
+                  "C"
+                ]
+              },
+              "battery_health": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "variant_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "notes": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "action",
+              "device_id",
+              "result",
+              "grade",
+              "battery_health",
+              "notes"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "repair_ship"
+              },
+              "assignment_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "tracking_number": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "action",
+              "assignment_id",
+              "tracking_number"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "export": "DeviceRefund",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "payment_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "amount": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1000000
+          },
+          "confirmed": {
+            "type": "boolean",
+            "const": true
+          }
+        },
+        "required": [
+          "request_id",
+          "payment_id",
+          "amount",
+          "confirmed"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/mail/validators.ts",
+      "export": "MailCommand",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "save_account"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "pattern": "^[^\\r\\n<>]*$"
+              },
+              "email": {
+                "type": "string",
+                "maxLength": 254,
+                "format": "email",
+                "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+              },
+              "reply_to": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 254,
+                    "format": "email",
+                    "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                  },
+                  {
+                    "type": "string",
+                    "const": ""
+                  }
+                ]
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "api_key": {
+                "default": "",
+                "type": "string",
+                "maxLength": 512
+              },
+              "webhook_secret": {
+                "default": "",
+                "type": "string",
+                "maxLength": 512
+              }
+            },
+            "required": [
+              "action",
+              "name",
+              "email",
+              "enabled"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "delete_account"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              }
+            },
+            "required": [
+              "action",
+              "id"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "save_draft"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "account_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "to": {
+                "maxItems": 50,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 254,
+                  "format": "email",
+                  "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                }
+              },
+              "cc": {
+                "maxItems": 50,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 254,
+                  "format": "email",
+                  "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                }
+              },
+              "bcc": {
+                "maxItems": 50,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 254,
+                  "format": "email",
+                  "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                }
+              },
+              "subject": {
+                "type": "string",
+                "maxLength": 998,
+                "pattern": "^[^\\r\\n]*$"
+              },
+              "text_body": {
+                "default": "",
+                "type": "string",
+                "maxLength": 500000
+              },
+              "html_body": {
+                "default": "",
+                "type": "string",
+                "maxLength": 1000000
+              },
+              "attachments": {
+                "default": [],
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "filename": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 255
+                    },
+                    "content": {
+                      "type": "string",
+                      "maxLength": 14000000,
+                      "pattern": "^[A-Za-z0-9+/]*={0,2}$"
+                    }
+                  },
+                  "required": [
+                    "filename",
+                    "content"
+                  ]
+                }
+              },
+              "in_reply_to": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 998,
+                    "pattern": "^[^\\r\\n]*$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "action",
+              "account_id",
+              "to",
+              "subject"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "send"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              }
+            },
+            "required": [
+              "action",
+              "id"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "messages"
+              },
+              "ids": {
+                "minItems": 1,
+                "maxItems": 100,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                }
+              },
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "read",
+                  "unread",
+                  "star",
+                  "unstar",
+                  "trash",
+                  "restore",
+                  "archive",
+                  "delete",
+                  "retry"
+                ]
+              }
+            },
+            "required": [
+              "action",
+              "ids",
+              "operation"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "contacts"
+              },
+              "contacts": {
+                "minItems": 1,
+                "maxItems": 1000,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "maxLength": 254,
+                      "format": "email",
+                      "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                    },
+                    "name": {
+                      "default": "",
+                      "type": "string",
+                      "maxLength": 255
+                    },
+                    "subscribed": {
+                      "default": false,
+                      "type": "boolean"
+                    },
+                    "consent_source": {
+                      "default": "",
+                      "type": "string",
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "email"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "action",
+              "contacts"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "unsubscribe_contact"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              }
+            },
+            "required": [
+              "action",
+              "id"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "save_campaign"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "account_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "subject": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 998,
+                "pattern": "^[^\\r\\n]*$"
+              },
+              "text_body": {
+                "default": "",
+                "type": "string",
+                "maxLength": 500000
+              },
+              "html_body": {
+                "default": "",
+                "type": "string",
+                "maxLength": 1000000
+              }
+            },
+            "required": [
+              "action",
+              "account_id",
+              "name",
+              "subject"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "campaign"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "queue",
+                  "pause",
+                  "resume",
+                  "retry"
+                ]
+              },
+              "contact_ids": {
+                "maxItems": 10000,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255
+                }
+              }
+            },
+            "required": [
+              "action",
+              "id",
+              "operation"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "save_template"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "subject": {
+                "type": "string",
+                "maxLength": 998
+              },
+              "text_body": {
+                "default": "",
+                "type": "string",
+                "maxLength": 500000
+              },
+              "html_body": {
+                "default": "",
+                "type": "string",
+                "maxLength": 1000000
+              }
+            },
+            "required": [
+              "action",
+              "name",
+              "subject"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "delete_template"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              }
+            },
+            "required": [
+              "action",
+              "id"
+            ]
+          }
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/mail/validators.ts",
+      "export": "MailListQuery",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "resource": {
+            "default": "messages",
+            "type": "string",
+            "enum": [
+              "messages",
+              "summary",
+              "accounts",
+              "contacts",
+              "campaigns",
+              "deliveries",
+              "templates",
+              "events"
+            ]
+          },
+          "folder": {
+            "default": "inbox",
+            "type": "string",
+            "enum": [
+              "inbox",
+              "draft",
+              "outbox",
+              "sent",
+              "archive",
+              "trash"
+            ]
+          },
+          "account_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "campaign_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "q": {
+            "default": "",
+            "type": "string",
+            "maxLength": 255
+          },
+          "unread": {
+            "type": "string",
+            "enum": [
+              "true",
+              "false"
+            ]
+          },
+          "starred": {
+            "type": "string",
+            "enum": [
+              "true",
+              "false"
+            ]
+          },
+          "offset": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "limit": {
+            "default": 30,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        }
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/after-sales/validators.ts",
+      "export": "UpdateAfterSales",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "processing",
+              "completed",
+              "rejected"
+            ]
+          }
+        },
+        "required": [
+          "request_id",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/cancel/validators.ts",
+      "export": "CancelOrderBody",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/tracking/validators.ts",
+      "export": "UpdateShipmentTracking",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "labels": {
+            "minItems": 1,
+            "maxItems": 20,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "tracking_number": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "tracking_url": {
+                  "default": "",
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "const": ""
+                    },
+                    {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "tracking_number"
+              ]
+            }
+          }
+        },
+        "required": [
+          "labels"
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/warehouse-access/validators.ts",
+      "export": "WarehouseBindingBody",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "platform",
+              "all",
+              "bound"
+            ]
+          },
+          "location_ids": {
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        },
+        "required": [
+          "user_id",
+          "scope",
+          "location_ids"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-pricing-validators.ts",
+      "export": "PricingRulesBody",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "number",
+            "const": 1
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "bases": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "enum": [
+                "LIKE_NEW",
+                "ALMOST_NEW",
+                "GOOD",
+                "MODERATE"
+              ]
+            },
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1000000
+            }
+          },
+          "fault_costs": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "enum": [
+                "BROKEN",
+                "BROKEN_SCREEN",
+                "BATTERY_ISSUE",
+                "BROKEN_FRAME",
+                "BROKEN_BACK_CAMERA"
+              ]
+            },
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1000000
+            }
+          },
+          "damage_fee": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "floor": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "battery_threshold": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "unknown_battery_issue": {
+            "type": "boolean"
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 40
+              },
+              "country": {
+                "type": "string",
+                "maxLength": 4
+              },
+              "fetched_at": {
+                "type": "string",
+                "maxLength": 40
+              }
+            },
+            "required": [
+              "name",
+              "country",
+              "fetched_at"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "version",
+          "enabled",
+          "bases",
+          "fault_costs",
+          "damage_fee",
+          "floor",
+          "battery_threshold",
+          "unknown_battery_issue"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-pricing-validators.ts",
+      "export": "BuybackCatalogCommand",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "save"
+              },
+              "product_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "capacity": {
+                "type": "string",
+                "pattern": "^\\d+(GB|TB)$"
+              },
+              "rules": {
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "type": "number",
+                    "const": 1
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "bases": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string",
+                      "enum": [
+                        "LIKE_NEW",
+                        "ALMOST_NEW",
+                        "GOOD",
+                        "MODERATE"
+                      ]
+                    },
+                    "additionalProperties": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1000000
+                    }
+                  },
+                  "fault_costs": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string",
+                      "enum": [
+                        "BROKEN",
+                        "BROKEN_SCREEN",
+                        "BATTERY_ISSUE",
+                        "BROKEN_FRAME",
+                        "BROKEN_BACK_CAMERA"
+                      ]
+                    },
+                    "additionalProperties": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1000000
+                    }
+                  },
+                  "damage_fee": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1000000
+                  },
+                  "floor": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1000000
+                  },
+                  "battery_threshold": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  },
+                  "unknown_battery_issue": {
+                    "type": "boolean"
+                  },
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "maxLength": 40
+                      },
+                      "country": {
+                        "type": "string",
+                        "maxLength": 4
+                      },
+                      "fetched_at": {
+                        "type": "string",
+                        "maxLength": 40
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "country",
+                      "fetched_at"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "version",
+                  "enabled",
+                  "bases",
+                  "fault_costs",
+                  "damage_fee",
+                  "floor",
+                  "battery_threshold",
+                  "unknown_battery_issue"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "action",
+              "product_id",
+              "capacity",
+              "rules"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "reference"
+              },
+              "keys": {
+                "minItems": 1,
+                "maxItems": 200,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 150
+                }
+              },
+              "only_missing": {
+                "default": true,
+                "type": "boolean"
+              },
+              "percentage": {
+                "default": 0,
+                "type": "number",
+                "minimum": -100,
+                "maximum": 500
+              },
+              "adjustment": {
+                "default": 0,
+                "type": "number",
+                "minimum": -100000,
+                "maximum": 100000
+              }
+            },
+            "required": [
+              "action",
+              "keys"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "adjust"
+              },
+              "keys": {
+                "minItems": 1,
+                "maxItems": 200,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 150
+                }
+              },
+              "percentage": {
+                "type": "number",
+                "minimum": -100,
+                "maximum": 500
+              },
+              "adjustment": {
+                "type": "number",
+                "minimum": -100000,
+                "maximum": 100000
+              }
+            },
+            "required": [
+              "action",
+              "keys",
+              "percentage",
+              "adjustment"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-pricing-validators.ts",
+      "export": "BuybackEstimateBody",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "capacity": {
+            "type": "string",
+            "pattern": "^\\d+(GB|TB)$"
+          },
+          "assessment": {
+            "type": "object",
+            "properties": {
+              "battery": {
+                "type": "string",
+                "maxLength": 7
+              },
+              "checks": {
+                "minItems": 5,
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "faults": {
+                "maxItems": 4,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "bright",
+                    "pixels",
+                    "lines",
+                    "none"
+                  ]
+                }
+              },
+              "glass": {
+                "maxItems": 4,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "cracked",
+                    "chipped",
+                    "scratched",
+                    "none"
+                  ]
+                }
+              },
+              "screen": {
+                "type": "string",
+                "enum": [
+                  "",
+                  "visible",
+                  "some",
+                  "minimal",
+                  "none"
+                ]
+              },
+              "frame": {
+                "type": "string",
+                "enum": [
+                  "",
+                  "damaged",
+                  "visible",
+                  "some",
+                  "minimal",
+                  "none"
+                ]
+              },
+              "back": {
+                "type": "string",
+                "enum": [
+                  "",
+                  "damaged",
+                  "visible",
+                  "some",
+                  "minimal",
+                  "none"
+                ]
+              }
+            },
+            "required": [
+              "battery",
+              "checks",
+              "faults",
+              "glass",
+              "screen",
+              "frame",
+              "back"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "product_id",
+          "capacity",
+          "assessment"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "export": "BuybackAssessment",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "battery": {
+            "type": "string",
+            "maxLength": 7
+          },
+          "checks": {
+            "minItems": 5,
+            "maxItems": 5,
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "faults": {
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "bright",
+                "pixels",
+                "lines",
+                "none"
+              ]
+            }
+          },
+          "glass": {
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "cracked",
+                "chipped",
+                "scratched",
+                "none"
+              ]
+            }
+          },
+          "screen": {
+            "type": "string",
+            "maxLength": 10
+          },
+          "frame": {
+            "type": "string",
+            "maxLength": 10
+          },
+          "back": {
+            "type": "string",
+            "maxLength": 10
+          }
+        },
+        "required": [
+          "battery",
+          "checks",
+          "faults",
+          "glass",
+          "screen",
+          "frame",
+          "back"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "export": "ReturnAddress",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+          },
+          "address_1": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 200
+          },
+          "address_2": {
+            "default": "",
+            "type": "string",
+            "maxLength": 200
+          },
+          "city": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "postal_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 30
+          },
+          "country_code": {
+            "type": "string",
+            "pattern": "^[a-z]{2}$"
+          }
+        },
+        "required": [
+          "name",
+          "address_1",
+          "city",
+          "postal_code",
+          "country_code"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "export": "CreateBuyback",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "submission_key": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "contact_name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+          },
+          "phone": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 50
+          },
+          "return_address": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 100
+              },
+              "address_1": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 200
+              },
+              "address_2": {
+                "default": "",
+                "type": "string",
+                "maxLength": 200
+              },
+              "city": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "postal_code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 30
+              },
+              "country_code": {
+                "type": "string",
+                "pattern": "^[a-z]{2}$"
+              }
+            },
+            "required": [
+              "name",
+              "address_1",
+              "city",
+              "postal_code",
+              "country_code"
+            ],
+            "additionalProperties": false
+          },
+          "reference_acknowledged": {
+            "type": "boolean",
+            "const": true
+          },
+          "privacy_acknowledged": {
+            "type": "boolean",
+            "const": true
+          },
+          "items": {
+            "minItems": 1,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "model": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 150
+                },
+                "capacity": {
+                  "type": "string",
+                  "pattern": "^\\d+(GB|TB)$"
+                },
+                "assessment": {
+                  "type": "object",
+                  "properties": {
+                    "battery": {
+                      "type": "string",
+                      "maxLength": 7
+                    },
+                    "checks": {
+                      "minItems": 5,
+                      "maxItems": 5,
+                      "type": "array",
+                      "items": {
+                        "type": "boolean"
+                      }
+                    },
+                    "faults": {
+                      "minItems": 1,
+                      "maxItems": 3,
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "bright",
+                          "pixels",
+                          "lines",
+                          "none"
+                        ]
+                      }
+                    },
+                    "glass": {
+                      "minItems": 1,
+                      "maxItems": 3,
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "cracked",
+                          "chipped",
+                          "scratched",
+                          "none"
+                        ]
+                      }
+                    },
+                    "screen": {
+                      "type": "string",
+                      "maxLength": 10
+                    },
+                    "frame": {
+                      "type": "string",
+                      "maxLength": 10
+                    },
+                    "back": {
+                      "type": "string",
+                      "maxLength": 10
+                    }
+                  },
+                  "required": [
+                    "battery",
+                    "checks",
+                    "faults",
+                    "glass",
+                    "screen",
+                    "frame",
+                    "back"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "model",
+                "capacity",
+                "assessment"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "submission_key",
+          "contact_name",
+          "phone",
+          "return_address",
+          "reference_acknowledged",
+          "privacy_acknowledged",
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "export": "BuybackCustomerCommand",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "submit_photos"
+              },
+              "items": {
+                "minItems": 1,
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "item_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "serial_number": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "imei": {
+                      "type": "string",
+                      "pattern": "^\\d{15}$"
+                    }
+                  },
+                  "required": [
+                    "item_id",
+                    "serial_number",
+                    "imei"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "action",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "mark_shipped"
+              },
+              "tracking_number": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 150
+              }
+            },
+            "required": [
+              "action",
+              "tracking_number"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "accept_offer"
+              },
+              "final_amount": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1000000,
+                "multipleOf": 0.01
+              }
+            },
+            "required": [
+              "action",
+              "final_amount"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "decline_offer"
+              }
+            },
+            "required": [
+              "action"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "cancel"
+              }
+            },
+            "required": [
+              "action"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "export": "BuybackAdminCommand",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "review_photo"
+              },
+              "photo_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "review_status": {
+                "type": "string",
+                "enum": [
+                  "approved",
+                  "retake"
+                ]
+              },
+              "note": {
+                "default": "",
+                "type": "string",
+                "maxLength": 500
+              }
+            },
+            "required": [
+              "action",
+              "photo_id",
+              "review_status"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "approve_shipping"
+              },
+              "shipping_instructions": {
+                "type": "string",
+                "minLength": 5,
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "action",
+              "shipping_instructions"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "mark_received"
+              }
+            },
+            "required": [
+              "action"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "link_device"
+              },
+              "item_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "device_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "action",
+              "item_id",
+              "device_id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "final_offer"
+              },
+              "items": {
+                "minItems": 1,
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "item_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "amount": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1000000,
+                      "multipleOf": 0.01
+                    },
+                    "notes": {
+                      "type": "string",
+                      "minLength": 3,
+                      "maxLength": 1000
+                    }
+                  },
+                  "required": [
+                    "item_id",
+                    "amount",
+                    "notes"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "action",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "mark_paid"
+              },
+              "payment_reference": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "action",
+              "payment_reference"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "request_return"
+              },
+              "note": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "action",
+              "note"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "mark_returning"
+              },
+              "return_tracking": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 150
+              }
+            },
+            "required": [
+              "action",
+              "return_tracking"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "mark_returned"
+              }
+            },
+            "required": [
+              "action"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "cancel"
+              },
+              "note": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "action",
+              "note"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "export": "BuybackReferencePrice",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "capacity": {
+            "type": "string",
+            "pattern": "^\\d+(GB|TB)$"
+          },
+          "amount": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000,
+            "multipleOf": 0.01
+          }
+        },
+        "required": [
+          "product_id",
+          "capacity",
+          "amount"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "export": "BuybackPhotoUpload",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "photo_type": {
+            "type": "string",
+            "enum": [
+              "front",
+              "back",
+              "edges",
+              "damage",
+              "packaging",
+              "sealed"
+            ]
+          },
+          "mime_type": {
+            "type": "string",
+            "enum": [
+              "image/jpeg",
+              "image/png",
+              "image/webp"
+            ]
+          },
+          "content": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 4200000,
+            "pattern": "^[A-Za-z0-9+/]+={0,2}$"
+          }
+        },
+        "required": [
+          "item_id",
+          "photo_type",
+          "mime_type",
+          "content"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/device-photo-validators.ts",
+      "export": "DevicePhotoUpload",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "files": {
+            "minItems": 1,
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "filename": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "mime_type": {
+                  "type": "string",
+                  "enum": [
+                    "image/jpeg",
+                    "image/png",
+                    "image/webp"
+                  ]
+                },
+                "content": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4194304
+                }
+              },
+              "required": [
+                "filename",
+                "mime_type",
+                "content"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "files"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/mobile-intake/validators.ts",
+      "export": "CreateMobileIntake",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "category": {
+            "default": "sale",
+            "type": "string",
+            "enum": [
+              "sale",
+              "returned",
+              "recycled"
+            ]
+          }
+        },
+        "required": [
+          "source_id"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/mobile-intake/validators.ts",
+      "export": "MobileIntakeBody",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "serial_number": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "imei": {
+            "type": "string",
+            "pattern": "^\\d{15}$"
+          },
+          "imei2": {
+            "type": "string",
+            "pattern": "^\\d{15}$"
+          },
+          "eid": {
+            "type": "string",
+            "pattern": "^\\d{32}$"
+          },
+          "variant_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "photos": {
+            "default": [],
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "url": {
+                  "type": "string",
+                  "maxLength": 2000
+                }
+              },
+              "required": [
+                "id",
+                "url"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "grade": {
+            "type": "string",
+            "enum": [
+              "S",
+              "A",
+              "B",
+              "C"
+            ]
+          },
+          "battery_health": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "cost_cents": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000000
+          },
+          "currency_code": {
+            "default": "eur",
+            "type": "string",
+            "pattern": "^[a-z]{3}$"
+          },
+          "bin": {
+            "default": "",
+            "type": "string",
+            "maxLength": 200
+          },
+          "notes": {
+            "default": "",
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "variant_id"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "export": "ReviewListQuery",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "offset": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "limit": {
+            "default": 5,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20
+          }
+        },
+        "required": [
+          "product_id"
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "export": "CreateReview",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "order_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "title": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 120
+          },
+          "content": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 3000
+          }
+        },
+        "required": [
+          "product_id",
+          "rating",
+          "title",
+          "content"
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "export": "ReviewPurchasesQuery",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "offset": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "product_id"
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "export": "ModerateReview",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "approved",
+              "rejected"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/seo-validators.ts",
+      "export": "SeoCommandBody",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "save",
+              "delete",
+              "scan",
+              "run",
+              "indexnow",
+              "google-test"
+            ]
+          },
+          "resource": {
+            "type": "string",
+            "enum": [
+              "settings",
+              "page-metas",
+              "crawler-sources",
+              "providers",
+              "citation-monitors"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "data": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "action"
+        ]
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/store/notifications/validators.ts",
+      "export": "ReadNoticesBody",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        }
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/store/orders/[id]/after-sales/validators.ts",
+      "export": "CreateAfterSales",
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "return",
+              "exchange",
+              "repair"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 2000
+          },
+          "items": {
+            "minItems": 1,
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "item_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10000
+                },
+                "device_ids": {
+                  "minItems": 1,
+                  "maxItems": 100,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  }
+                }
+              },
+              "required": [
+                "item_id",
+                "quantity"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "type",
+          "reason",
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "status": "legacy-input-shape-only; not Gin contract or runtime authorization"
+    }
+  ]
+}

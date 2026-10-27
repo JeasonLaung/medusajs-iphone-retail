@@ -1,0 +1,446 @@
+{
+  "format_version": 1,
+  "scope": "Artificial legacy input parsing cases with independent accepted/normalized expectations; not business state, auth, real files or new Gin acceptance",
+  "source_sha256": {
+    "medusa-store/apps/backend/src/api/admin/customer-service/validators.ts": "b37e4a9ac48d91b763339a71a4f18b64e1c48ebe576954fbb9ed1e4147219462",
+    "medusa-store/apps/backend/src/api/admin/devices/validators.ts": "1b81d8e16d2d5d5f7201f2b52d2764d23adbfbd8dd8f8e378f71953491dc262f",
+    "medusa-store/apps/backend/src/api/admin/mail/validators.ts": "9274395678928b2f74d8949fd363ee51f01453f98824b797b94d36fcd3919eef",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/after-sales/validators.ts": "18bf9885a642baab5f864bcd614a40a7662a3cde276331f5936b5e33d5db9951",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/cancel/validators.ts": "7401fd3884dce6fafaa71a80a52e83c7983cba855b6d31fdb3246afdd0851020",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/tracking/validators.ts": "8bcc6d341ea6cb725ea14d81190c49e0e13a556734c3729a8d6e928202bbb48d",
+    "medusa-store/apps/backend/src/api/admin/warehouse-access/validators.ts": "af4810836f7d6d6206d2194d733899a6e8be220561dc79276e7b6a276d47c26e",
+    "medusa-store/apps/backend/src/api/buyback-pricing-validators.ts": "5ba29a5d456e9f7a4cc2b0fb53985f04f4f18007101fda2e9846c450b82083e0",
+    "medusa-store/apps/backend/src/api/buyback-validators.ts": "9a566c72c0b883489f56262f2094c34cdfe54bdd0581f1d338ad5664d8e1217d",
+    "medusa-store/apps/backend/src/api/device-photo-validators.ts": "39a49398dad3ba7f8bc7a3afae2bd74a44e39c2166a9f7e78d420d5ffbf4d89f",
+    "medusa-store/apps/backend/src/api/mobile-intake/validators.ts": "266f11d2e3f8479f4bd3a0bdc16283e34952220b82e59b6eadd60b5f2aa93656",
+    "medusa-store/apps/backend/src/api/review-validators.ts": "54cc82e03e00dce60a89852eecaa90a0257afab1742acff5b19904dd0a83627d",
+    "medusa-store/apps/backend/src/api/seo-validators.ts": "7c421a2b1480db58b5c1066ec6340d2d06f3d865c9a7b1141bb1f54858ea4365",
+    "medusa-store/apps/backend/src/api/store/notifications/validators.ts": "ad107def076b4a8476a9588ca660cb5f31f69236e0bd9f3e8c7c447264641e90",
+    "medusa-store/apps/backend/src/api/store/orders/[id]/after-sales/validators.ts": "2f6ce53ea506846b405e96e494af6b568070e26888a5505ebaf6d7313c6564f8",
+    "medusa-store/apps/backend/src/lib/buyback-pricing.ts": "8184f3e4f7bafbc1c427ad10e2303e9fe0cf5c915559212bd1b1ce215bd3a78a",
+    "medusa-store/apps/backend/src/lib/recycled-assessment.ts": "3c9d9f539dd34535d5a169173c3cbd541adbd11233a02dd07034f73a4b2ea15d"
+  },
+  "cases": [
+    {
+      "validator": "CreateReview",
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "name": "trim-input",
+      "input": {
+        "product_id": "p",
+        "rating": 5,
+        "title": " Good ",
+        "content": "Works very well."
+      },
+      "accepted": true,
+      "output": {
+        "product_id": "p",
+        "rating": 5,
+        "title": "Good",
+        "content": "Works very well."
+      }
+    },
+    {
+      "validator": "CreateReview",
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "name": "rating-zero",
+      "input": {
+        "product_id": "p",
+        "rating": 0,
+        "title": "Good",
+        "content": "Works very well."
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [
+            "rating"
+          ],
+          "code": "too_small"
+        }
+      ]
+    },
+    {
+      "validator": "CreateReview",
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "name": "rating-string-not-integer",
+      "input": {
+        "product_id": "p",
+        "rating": "5",
+        "title": "Good",
+        "content": "Works very well."
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [
+            "rating"
+          ],
+          "code": "invalid_type"
+        }
+      ]
+    },
+    {
+      "validator": "ReviewListQuery",
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "name": "coerce-pagination",
+      "input": {
+        "product_id": "p",
+        "limit": "20",
+        "offset": "0"
+      },
+      "accepted": true,
+      "output": {
+        "product_id": "p",
+        "offset": 0,
+        "limit": 20
+      }
+    },
+    {
+      "validator": "ReviewListQuery",
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "name": "review-limit-21-rejected",
+      "input": {
+        "product_id": "p",
+        "limit": "21"
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [
+            "limit"
+          ],
+          "code": "too_big"
+        }
+      ]
+    },
+    {
+      "validator": "CreateReview",
+      "source": "medusa-store/apps/backend/src/api/review-validators.ts",
+      "name": "legacy-strips-extra-ownership-field",
+      "input": {
+        "product_id": "p",
+        "rating": 5,
+        "title": "Good",
+        "content": "Works very well.",
+        "customer_id": "other"
+      },
+      "accepted": true,
+      "output": {
+        "product_id": "p",
+        "rating": 5,
+        "title": "Good",
+        "content": "Works very well."
+      }
+    },
+    {
+      "validator": "WarehouseBindingBody",
+      "source": "medusa-store/apps/backend/src/api/admin/warehouse-access/validators.ts",
+      "name": "duplicate-locations",
+      "input": {
+        "user_id": "u",
+        "scope": "bound",
+        "location_ids": [
+          "l",
+          "l"
+        ]
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [
+            "location_ids"
+          ],
+          "code": "custom"
+        }
+      ]
+    },
+    {
+      "validator": "WarehouseBindingBody",
+      "source": "medusa-store/apps/backend/src/api/admin/warehouse-access/validators.ts",
+      "name": "empty-bound-is-not-all",
+      "input": {
+        "user_id": "u",
+        "scope": "bound",
+        "location_ids": []
+      },
+      "accepted": true,
+      "output": {
+        "user_id": "u",
+        "scope": "bound",
+        "location_ids": []
+      }
+    },
+    {
+      "validator": "IntakeDevice",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "name": "normalization-and-defaults",
+      "input": {
+        "variant_id": "v",
+        "source_id": "s",
+        "serial_number": " abc "
+      },
+      "accepted": true,
+      "output": {
+        "serial_number": "ABC",
+        "variant_id": "v",
+        "source_id": "s",
+        "category": "sale",
+        "photos": [],
+        "cost_cents": 0,
+        "currency_code": "eur",
+        "bin": "",
+        "notes": ""
+      }
+    },
+    {
+      "validator": "IntakeDevice",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "name": "missing-serial-refinement",
+      "input": {
+        "variant_id": "v",
+        "source_id": "s"
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [],
+          "code": "custom"
+        }
+      ]
+    },
+    {
+      "validator": "IntakeDevice",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "name": "imei-preserves-leading-zero",
+      "input": {
+        "variant_id": "v",
+        "source_id": "s",
+        "serial_number": " abc ",
+        "imei": "001234567890123"
+      },
+      "accepted": true,
+      "output": {
+        "serial_number": "ABC",
+        "imei": "001234567890123",
+        "variant_id": "v",
+        "source_id": "s",
+        "category": "sale",
+        "photos": [],
+        "cost_cents": 0,
+        "currency_code": "eur",
+        "bin": "",
+        "notes": ""
+      }
+    },
+    {
+      "validator": "IntakeDevice",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "name": "imei-short",
+      "input": {
+        "variant_id": "v",
+        "source_id": "s",
+        "serial_number": " abc ",
+        "imei": "123"
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [
+            "imei"
+          ],
+          "code": "invalid_format"
+        }
+      ]
+    },
+    {
+      "validator": "IntakeDevice",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "name": "strict-unknown-field",
+      "input": {
+        "variant_id": "v",
+        "source_id": "s",
+        "serial_number": " abc ",
+        "role": "admin"
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [],
+          "code": "unrecognized_keys"
+        }
+      ]
+    },
+    {
+      "validator": "DeviceCommand",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "name": "duplicate-availability-devices",
+      "input": {
+        "action": "make_available",
+        "device_ids": [
+          "d",
+          "d"
+        ]
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [
+            "device_ids"
+          ],
+          "code": "custom"
+        }
+      ]
+    },
+    {
+      "validator": "BuybackReferencePrice",
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "name": "legacy-money-number",
+      "input": {
+        "product_id": "p",
+        "capacity": "128GB",
+        "amount": 0
+      },
+      "accepted": true,
+      "output": {
+        "product_id": "p",
+        "capacity": "128GB",
+        "amount": 0
+      }
+    },
+    {
+      "validator": "BuybackReferencePrice",
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "name": "legacy-money-string-rejected",
+      "input": {
+        "product_id": "p",
+        "capacity": "128GB",
+        "amount": "0"
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [
+            "amount"
+          ],
+          "code": "invalid_type"
+        }
+      ]
+    },
+    {
+      "validator": "BuybackCustomerCommand",
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "name": "unknown-action",
+      "input": {
+        "action": "mark_paid"
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [
+            "action"
+          ],
+          "code": "invalid_union"
+        }
+      ]
+    },
+    {
+      "validator": "BuybackPhotoUpload",
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "name": "invalid-base64",
+      "input": {
+        "item_id": "i",
+        "photo_type": "front",
+        "mime_type": "image/png",
+        "content": "!!!!"
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [
+            "content"
+          ],
+          "code": "invalid_format"
+        }
+      ]
+    },
+    {
+      "validator": "CreateAfterSales",
+      "source": "medusa-store/apps/backend/src/api/store/orders/[id]/after-sales/validators.ts",
+      "name": "reject-quantity-zero",
+      "input": {
+        "type": "repair",
+        "reason": "A broken device",
+        "items": [
+          {
+            "item_id": "i",
+            "quantity": 0
+          }
+        ]
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [
+            "items",
+            0,
+            "quantity"
+          ],
+          "code": "too_small"
+        }
+      ]
+    },
+    {
+      "validator": "MailListQuery",
+      "source": "medusa-store/apps/backend/src/api/admin/mail/validators.ts",
+      "name": "pagination-over-limit",
+      "input": {
+        "limit": 101
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [
+            "limit"
+          ],
+          "code": "too_big"
+        }
+      ]
+    },
+    {
+      "validator": "MailCommand",
+      "source": "medusa-store/apps/backend/src/api/admin/mail/validators.ts",
+      "name": "campaign-operation-boundary",
+      "input": {
+        "action": "campaign",
+        "id": "c",
+        "operation": "delete"
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [
+            "operation"
+          ],
+          "code": "invalid_value"
+        }
+      ]
+    },
+    {
+      "validator": "SeoCommandBody",
+      "source": "medusa-store/apps/backend/src/api/seo-validators.ts",
+      "name": "internal-tick-is-not-browser-command",
+      "input": {
+        "action": "tick"
+      },
+      "accepted": false,
+      "issues": [
+        {
+          "path": [
+            "action"
+          ],
+          "code": "invalid_value"
+        }
+      ]
+    }
+  ]
+}

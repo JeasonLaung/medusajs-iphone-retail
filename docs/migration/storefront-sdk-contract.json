@@ -1,0 +1,643 @@
+{
+  "format_version": 1,
+  "scope": "All 36 statically recorded SDK candidates mapped; not all direct fetch, built-in Admin, plugin or custom route APIs. New paths are design choices, not claims about old HTTP paths.",
+  "source_manifest_sha256": "9ca7caa5e96bf42a03733897dc2841a94997a9d9a001cb931f6f68553dfaea0c",
+  "operations": [
+    {
+      "legacy_sdk_expression": "sdk.store.customer.retrieve",
+      "new_method": "GET",
+      "new_path": "/api/store/customers/me",
+      "identity": "customer-session",
+      "response_contract": "customer",
+      "task": "T030",
+      "csrf": false,
+      "idempotency": "not-applicable-read",
+      "behavior": "Only new registered customer; no historical subject/email matching; no-store; registration no longer probes retrieval errors as proof customer does not exist",
+      "call_sites": [
+        {
+          "expression": "sdk.store.customer.retrieve",
+          "source": "medusa-store/apps/storefront/src/app/api/mollie-return/route.ts",
+          "line": 61,
+          "source_sha256": "7b1775e2865551a4cdb2adb9eb16c70bc9902a0ca7015178383400abebb28897"
+        },
+        {
+          "expression": "sdk.store.customer.retrieve",
+          "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+          "line": 204,
+          "source_sha256": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.customer.update",
+      "new_method": "PATCH",
+      "new_path": "/api/store/customers/me",
+      "identity": "customer-session",
+      "response_contract": "customer",
+      "task": "T030",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Allowlisted new customer profile; no metadata/role/identity grants",
+      "call_sites": [
+        {
+          "expression": "sdk.store.customer.update",
+          "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+          "line": 89,
+          "source_sha256": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.customer.create",
+      "new_method": "POST",
+      "new_path": "/api/store/auth/register",
+      "identity": "anonymous-csrf",
+      "response_contract": "auth-state",
+      "task": "T030",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Fold profile creation into durable registration command; frontend removes legacy retrieve-failure/create/relogin loop; never create based on an arbitrary retrieve failure",
+      "call_sites": [
+        {
+          "expression": "sdk.store.customer.create",
+          "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+          "line": 214,
+          "source_sha256": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.auth.register",
+      "new_method": "POST",
+      "new_path": "/api/store/auth/register",
+      "identity": "anonymous-csrf",
+      "response_contract": "auth-state",
+      "task": "T030",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "New customer identity/profile only; do not link a staff identity sharing email; verification-required state preserves current UI",
+      "call_sites": [
+        {
+          "expression": "sdk.auth.register",
+          "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+          "line": 113,
+          "source_sha256": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.auth.login",
+      "new_method": "POST",
+      "new_path": "/api/store/auth/login",
+      "identity": "anonymous-csrf",
+      "response_contract": "auth-state",
+      "task": "T030",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Customer-only session or restricted verification challenge; no general customer privileges before verification; no bearer token exposed to browser JS",
+      "call_sites": [
+        {
+          "expression": "sdk.auth.login",
+          "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+          "line": 160,
+          "source_sha256": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be"
+        },
+        {
+          "expression": "sdk.auth.login",
+          "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+          "line": 225,
+          "source_sha256": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.auth.logout",
+      "new_method": "POST",
+      "new_path": "/api/store/auth/logout",
+      "identity": "customer-session",
+      "response_contract": "success",
+      "task": "T030",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Invalidate current session and cookie; Astro removes private cached data/cart ownership assumptions",
+      "call_sites": [
+        {
+          "expression": "sdk.auth.logout",
+          "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+          "line": 269,
+          "source_sha256": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.auth.verification.request",
+      "new_method": "POST",
+      "new_path": "/api/store/auth/verification/request",
+      "identity": "verification-challenge",
+      "response_contract": "delivery-state",
+      "task": "T030",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Bound new identity email; 60s resend limit; protected outbox; no arbitrary recipient/entity_type; old verification tokens rejected",
+      "call_sites": [
+        {
+          "expression": "sdk.auth.verification.request",
+          "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+          "line": 38,
+          "source_sha256": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.auth.verification.confirm",
+      "new_method": "POST",
+      "new_path": "/api/store/auth/verification/confirm",
+      "identity": "new-verification-capability-csrf",
+      "response_contract": "success",
+      "task": "T030",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Consume valid new token atomically on explicit POST; page GET only renders confirmation state; expired/replaced/used tokens fail; no old token restoration",
+      "call_sites": [
+        {
+          "expression": "sdk.auth.verification.confirm",
+          "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+          "line": 261,
+          "source_sha256": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.customer.createAddress",
+      "new_method": "POST",
+      "new_path": "/api/store/customers/me/addresses",
+      "identity": "customer-session",
+      "response_contract": "customer",
+      "task": "T030",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "New customer address book only; server assigns owner; country/address validation; idempotent create",
+      "call_sites": [
+        {
+          "expression": "sdk.store.customer.createAddress",
+          "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+          "line": 327,
+          "source_sha256": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.customer.updateAddress",
+      "new_method": "PATCH",
+      "new_path": "/api/store/customers/me/addresses/{address_id}",
+      "identity": "customer-session",
+      "response_contract": "customer",
+      "task": "T030",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Check current ownership and version; no old address-book restore",
+      "call_sites": [
+        {
+          "expression": "sdk.store.customer.updateAddress",
+          "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+          "line": 391,
+          "source_sha256": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.customer.deleteAddress",
+      "new_method": "DELETE",
+      "new_path": "/api/store/customers/me/addresses/{address_id}",
+      "identity": "customer-session",
+      "response_contract": "customer",
+      "task": "T030",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Check current ownership; existing order address snapshots unaffected",
+      "call_sites": [
+        {
+          "expression": "sdk.store.customer.deleteAddress",
+          "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+          "line": 346,
+          "source_sha256": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.region.list",
+      "new_method": "GET",
+      "new_path": "/api/store/regions",
+      "identity": "public-context",
+      "response_contract": "regions-page",
+      "task": "T020",
+      "csrf": false,
+      "idempotency": "not-applicable-read",
+      "behavior": "Country/currency/locale/channel context explicit; paginated sitemap traversal, no assumption one page includes all",
+      "call_sites": [
+        {
+          "expression": "sdk.store.region.list",
+          "source": "medusa-store/apps/storefront/src/app/sitemap.xml/route.ts",
+          "line": 9,
+          "source_sha256": "419de71fca63862b91674e9179f25c5c89c2784220c525164e0dbe15656c84a5"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.product.list",
+      "new_method": "GET",
+      "new_path": "/api/store/products",
+      "identity": "public-context",
+      "response_contract": "products-page",
+      "task": "T020",
+      "csrf": false,
+      "idempotency": "not-applicable-read",
+      "behavior": "Published and channel-visible; bounded include; exact price string adapter; complete variants/images/options required by selected page DTO",
+      "call_sites": [
+        {
+          "expression": "sdk.store.product.list",
+          "source": "medusa-store/apps/storefront/src/app/sitemap.xml/route.ts",
+          "line": 15,
+          "source_sha256": "419de71fca63862b91674e9179f25c5c89c2784220c525164e0dbe15656c84a5"
+        },
+        {
+          "expression": "sdk.store.product.list",
+          "source": "medusa-store/apps/storefront/src/lib/data/sell-models.ts",
+          "line": 12,
+          "source_sha256": "6595c1a824dcec9243e9b30320f37eaa0ded7de4bda2085be4f0fb79692b7114"
+        },
+        {
+          "expression": "sdk.store.product.list",
+          "source": "medusa-store/apps/storefront/src/lib/search-client.ts",
+          "line": 77,
+          "source_sha256": "43798f0bdbff8ce19a6eae1ef97b4d3751bd734f5e33a2af9f157ce7833fd508"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.collection.list",
+      "new_method": "GET",
+      "new_path": "/api/store/collections",
+      "identity": "public-context",
+      "response_contract": "collections-page",
+      "task": "T020",
+      "csrf": false,
+      "idempotency": "not-applicable-read",
+      "behavior": "Public DTO only; stable pagination; preserve collection URLs/sitemap",
+      "call_sites": [
+        {
+          "expression": "sdk.store.collection.list",
+          "source": "medusa-store/apps/storefront/src/app/sitemap.xml/route.ts",
+          "line": 21,
+          "source_sha256": "419de71fca63862b91674e9179f25c5c89c2784220c525164e0dbe15656c84a5"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.category.list",
+      "new_method": "GET",
+      "new_path": "/api/store/product-categories",
+      "identity": "public-context",
+      "response_contract": "categories-page",
+      "task": "T020",
+      "csrf": false,
+      "idempotency": "not-applicable-read",
+      "behavior": "Active noninternal tree with explicit parent/descendant query; no unrestricted fields syntax",
+      "call_sites": [
+        {
+          "expression": "sdk.store.category.list",
+          "source": "medusa-store/apps/storefront/src/lib/data/store-search.ts",
+          "line": 77,
+          "source_sha256": "2805efe6b3c11c65f0e97f74efdac7d7c002d6c4103dcf27b97284cb9202ee28"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.cart.create",
+      "new_method": "POST",
+      "new_path": "/api/store/carts",
+      "identity": "anonymous-csrf",
+      "response_contract": "cart",
+      "task": "T032",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Issue scoped anonymous cart possession cookie; new region/locale/channel version; cart ID alone is insufficient credential",
+      "call_sites": [
+        {
+          "expression": "sdk.store.cart.create",
+          "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+          "line": 83,
+          "source_sha256": "ff70408f70af8d04dae8b943e4610bd709a9a339c79b704c1ac204b740532ab5"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.cart.retrieve",
+      "new_method": "GET",
+      "new_path": "/api/store/carts/{cart_id}",
+      "identity": "cart-possession-or-owner",
+      "response_contract": "cart",
+      "task": "T032",
+      "csrf": false,
+      "idempotency": "not-applicable-read",
+      "behavior": "Private no-store; owned customer or valid scoped possession; completed state checked before reuse",
+      "call_sites": [
+        {
+          "expression": "sdk.store.cart.retrieve",
+          "source": "medusa-store/apps/storefront/src/lib/data/mollie.ts",
+          "line": 17,
+          "source_sha256": "1c63d22d6d9209527f2f50227b54ff3e32e2268cc2d5dbe6ccc628ae1993c3db"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.cart.update",
+      "new_method": "PATCH",
+      "new_path": "/api/store/carts/{cart_id}",
+      "identity": "cart-possession-or-owner",
+      "response_contract": "cart",
+      "task": "T032",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Explicit addresses/contact/locale/region/promotion fields; version checked; changes invalidate incompatible shipping/payment quotes; no client-provided totals",
+      "call_sites": [
+        {
+          "expression": "sdk.store.cart.update",
+          "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+          "line": 97,
+          "source_sha256": "ff70408f70af8d04dae8b943e4610bd709a9a339c79b704c1ac204b740532ab5"
+        },
+        {
+          "expression": "sdk.store.cart.update",
+          "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+          "line": 116,
+          "source_sha256": "ff70408f70af8d04dae8b943e4610bd709a9a339c79b704c1ac204b740532ab5"
+        },
+        {
+          "expression": "sdk.store.cart.update",
+          "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+          "line": 316,
+          "source_sha256": "ff70408f70af8d04dae8b943e4610bd709a9a339c79b704c1ac204b740532ab5"
+        },
+        {
+          "expression": "sdk.store.cart.update",
+          "source": "medusa-store/apps/storefront/src/lib/data/locale-actions.ts",
+          "line": 52,
+          "source_sha256": "d358c190ddf679b7d745601eaecab2d91a05798dcb56bb2a819508aee2d80d92"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.cart.createLineItem",
+      "new_method": "POST",
+      "new_path": "/api/store/carts/{cart_id}/line-items",
+      "identity": "cart-possession-or-owner",
+      "response_contract": "cart",
+      "task": "T032",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Variant and quantity only; price/stock validated on server; add does not reserve stock; inventory error code replaces English string matching",
+      "call_sites": [
+        {
+          "expression": "sdk.store.cart.createLineItem",
+          "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+          "line": 155,
+          "source_sha256": "ff70408f70af8d04dae8b943e4610bd709a9a339c79b704c1ac204b740532ab5"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.cart.updateLineItem",
+      "new_method": "PATCH",
+      "new_path": "/api/store/carts/{cart_id}/line-items/{item_id}",
+      "identity": "cart-possession-or-owner",
+      "response_contract": "cart",
+      "task": "T032",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Item must belong to cart; exact quantity and version; no zero-default coercion",
+      "call_sites": [
+        {
+          "expression": "sdk.store.cart.updateLineItem",
+          "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+          "line": 211,
+          "source_sha256": "ff70408f70af8d04dae8b943e4610bd709a9a339c79b704c1ac204b740532ab5"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.cart.deleteLineItem",
+      "new_method": "DELETE",
+      "new_path": "/api/store/carts/{cart_id}/line-items/{item_id}",
+      "identity": "cart-possession-or-owner",
+      "response_contract": "cart",
+      "task": "T032",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Item ownership and cart version; recompute quote and invalidate payment binding",
+      "call_sites": [
+        {
+          "expression": "sdk.store.cart.deleteLineItem",
+          "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+          "line": 238,
+          "source_sha256": "ff70408f70af8d04dae8b943e4610bd709a9a339c79b704c1ac204b740532ab5"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.cart.addShippingMethod",
+      "new_method": "POST",
+      "new_path": "/api/store/carts/{cart_id}/shipping-methods",
+      "identity": "cart-possession-or-owner",
+      "response_contract": "cart",
+      "task": "T033",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Validate option/profile/address/data and recalculate server amount; no client shipping price",
+      "call_sites": [
+        {
+          "expression": "sdk.store.cart.addShippingMethod",
+          "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+          "line": 261,
+          "source_sha256": "ff70408f70af8d04dae8b943e4610bd709a9a339c79b704c1ac204b740532ab5"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.cart.transferCart",
+      "new_method": "POST",
+      "new_path": "/api/store/carts/{cart_id}/claim",
+      "identity": "customer-session-and-cart-possession",
+      "response_contract": "cart",
+      "task": "T032",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Explicitly transfer current cart ownership; this is not merging two carts; previous owner mismatch fails; new session cannot claim historical customer carts by email",
+      "call_sites": [
+        {
+          "expression": "sdk.store.cart.transferCart",
+          "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+          "line": 295,
+          "source_sha256": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.payment.initiatePaymentSession",
+      "new_method": "POST",
+      "new_path": "/api/store/carts/{cart_id}/payment-attempts",
+      "identity": "cart-possession-or-owner",
+      "response_contract": "payment-attempt",
+      "task": "T035",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Derive collection from cart rather than trust arbitrary collection ID; bind cart version/amount/currency/provider; stable durable idempotency; browser gets allowlisted checkout config only",
+      "call_sites": [
+        {
+          "expression": "sdk.store.payment.initiatePaymentSession",
+          "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+          "line": 294,
+          "source_sha256": "ff70408f70af8d04dae8b943e4610bd709a9a339c79b704c1ac204b740532ab5"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.cart.complete",
+      "new_method": "POST",
+      "new_path": "/api/store/carts/{cart_id}/complete",
+      "identity": "cart-possession-or-owner",
+      "response_contract": "completion-state",
+      "task": "T034",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Unique cart order; durable operation/intent and inventory locks; pending unknown states remain recoverable; GET return page cannot complete transaction",
+      "call_sites": [
+        {
+          "expression": "sdk.store.cart.complete",
+          "source": "medusa-store/apps/storefront/src/app/api/mollie-return/route.ts",
+          "line": 83,
+          "source_sha256": "7b1775e2865551a4cdb2adb9eb16c70bc9902a0ca7015178383400abebb28897"
+        },
+        {
+          "expression": "sdk.store.cart.complete",
+          "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+          "line": 453,
+          "source_sha256": "ff70408f70af8d04dae8b943e4610bd709a9a339c79b704c1ac204b740532ab5"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.order.requestTransfer",
+      "new_method": "POST",
+      "new_path": "/api/store/orders/{order_id}/transfer-requests",
+      "identity": "customer-session",
+      "response_contract": "transfer-request-state",
+      "task": "T034",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Request does not grant ownership; durable explicit new transfer capability; no historical account email auto-claim; prevent leaking order email/existence",
+      "call_sites": [
+        {
+          "expression": "sdk.store.order.requestTransfer",
+          "source": "medusa-store/apps/storefront/src/lib/data/orders.ts",
+          "line": 90,
+          "source_sha256": "75b404011e8d68051810eea4cb18fd6ecfb3d00104a79d9fae53682c31c63090"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.order.acceptTransfer",
+      "new_method": "POST",
+      "new_path": "/api/store/orders/{order_id}/transfer-requests/accept",
+      "identity": "customer-session-and-transfer-capability",
+      "response_contract": "order",
+      "task": "T034",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Validate purpose/order/new recipient/expiry/current state and consume once atomically; old transfer capability rejected; confirmation POST only",
+      "call_sites": [
+        {
+          "expression": "sdk.store.order.acceptTransfer",
+          "source": "medusa-store/apps/storefront/src/lib/data/orders.ts",
+          "line": 106,
+          "source_sha256": "75b404011e8d68051810eea4cb18fd6ecfb3d00104a79d9fae53682c31c63090"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    },
+    {
+      "legacy_sdk_expression": "sdk.store.order.declineTransfer",
+      "new_method": "POST",
+      "new_path": "/api/store/orders/{order_id}/transfer-requests/decline",
+      "identity": "customer-session-and-transfer-capability",
+      "response_contract": "success",
+      "task": "T034",
+      "csrf": true,
+      "idempotency": "durable-command-or-explicit-version-policy-required",
+      "behavior": "Same capability binding; decline revokes request without changing ownership; confirmation GET cannot consume",
+      "call_sites": [
+        {
+          "expression": "sdk.store.order.declineTransfer",
+          "source": "medusa-store/apps/storefront/src/lib/data/orders.ts",
+          "line": 115,
+          "source_sha256": "75b404011e8d68051810eea4cb18fd6ecfb3d00104a79d9fae53682c31c63090"
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Request/response field schemas, error/status cases, route/caller reachability and runtime contract tests still required"
+    }
+  ]
+}

@@ -38,6 +38,7 @@
 - [购物车与交易计算](migration/checkout-contract.md)：18 组人工精确金额及 10 组库存准备样例已运行并固定；完整促销/税/运费引擎和 Gin 对照仍待验证。
 - [促销/税率/配送](migration/promotion-tax-shipping-contract.md)：另有 46 组规则人工样例及流程核对；记录每件额度默认值、预算提交锁、税率粒度优先级、运费 profile 替换和旧验证边界。
 - [API 通用约定](migration/api-conventions.md) 与 [后台组件承接](migration/admin-ui-contract.md)：明确错误/分页/幂等/会话边界，23 个页面文件与 6 个 widgets 有 Ant Design / ECharts 承接设计；重定向入口继续保留，不冒充独立业务页面。
+- [请求验证与SDK承接](migration/request-validation-and-sdk-contract.md)：15个验证器导出34份旧输入结构，69处额外规则显式登记，22个人工用例可重现；36个SDK候选映射到27个新操作设计。直接fetch、原生后台/插件和完整新字段schemas仍待完成；Gin草稿差距已按文件登记。
 
 调用方、剩余领域授权、原生交易与支付插件契约、登录后页面及完整字段映射继续核对。源码盘点、截图成功和元数据清单都不等于业务迁移完成。
 
