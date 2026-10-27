@@ -1,0 +1,16 @@
+{
+  "format_version": 1,
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "scope": "Historical numbering floors and pending-work observations only; not concurrent allocation, decryption, identity exclusion or provider reconciliation acceptance",
+  "checks": {
+    "historical_erp_counter_floor": 1565,
+    "historical_order_clock_floor": 10,
+    "script_completion": 7,
+    "singleton_counter": 2
+  },
+  "blocking_findings": {},
+  "migration_holds": {
+    "order_number:legacy_format_requires_preservation": 3,
+    "paypal_connection:credential_review_no_refresh": 1
+  }
+}

@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle", required=True)
-    parser.add_argument("--domain", choices=["catalog", "inventory-device", "commerce", "checkout-rules", "operations"], default="catalog")
+    parser.add_argument("--domain", choices=["catalog", "inventory-device", "commerce", "checkout-rules", "operations", "history-integration"], default="catalog")
     args = parser.parse_args()
     bundle_path = Path(args.bundle).resolve()
     ignored = subprocess.run(["git", "check-ignore", "--quiet", str(bundle_path)], cwd=ROOT, capture_output=True)
@@ -34,7 +34,7 @@ def main():
             raise ValueError("Field mapping evidence is stale; regenerate and review before preflight")
     fields = mapping["fields"]
     source_by_target = {t["target_table"]: t["source_table"] for t in mapping["tables"]}
-    for related in ("catalog", "inventory-device", "commerce", "checkout-rules", "operations"):
+    for related in ("catalog", "inventory-device", "commerce", "checkout-rules", "operations", "history-integration"):
         related_mapping = json.loads((ROOT / "docs/migration" / f"{related}-field-mapping.json").read_text(encoding="utf-8-sig"))
         source_by_target.update({t["target_table"]: t["source_table"] for t in related_mapping["tables"]})
     source_by_target.update({"inventory_items": "inventory_item", "inventory_locations": "stock_location",
@@ -80,6 +80,9 @@ def main():
             elif transform == "strict_boolean":
                 if not isinstance(value, bool):
                     fail(field, "expected_boolean")
+            elif transform == "text_array_json":
+                if not isinstance(value, list) or any(v is not None and not isinstance(v, str) for v in value):
+                    fail(field, "expected_text_array")
             elif transform in {"checked_int32", "minor_unit_integer", "checked_int64"}:
                 bits = 64 if transform == "checked_int64" else 32
                 if isinstance(value, bool) or not isinstance(value, int) or not -(2**(bits-1)) <= value < 2**(bits-1):

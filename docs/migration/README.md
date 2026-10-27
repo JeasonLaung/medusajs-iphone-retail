@@ -16,6 +16,7 @@
 | 交易数据 | [第三批42表523列设计](commerce-field-design.md)、commerce-field-mapping.json/.csv、[字段差异报告](commerce-preflight-report.json)、[交易语义审计](commerce-semantic-report.json) |
 | 结账规则数据 | [第四批33表321列设计](checkout-rules-field-design.md)、checkout-rules-field-mapping.json/.csv、checkout-rules-preflight-report.json、checkout-rules-semantic-report.json |
 | 自定义运营数据 | [第五批24表308列设计](operations-field-design.md)、operations-field-mapping.json/.csv、operations-preflight-report.json、operations-semantic-report.json |
+| 历史主体/集成与排除 | [第六批12表108列及34表270列排除/重建设计](history-integration-field-design.md)、history-integration-field-mapping.json/.csv、history-integration-preflight-report.json、history-integration-semantic-report.json、nonimport-field-disposition.json/.csv |
 
 ## 本轮已运行验证
 
@@ -45,6 +46,11 @@ python retail/scripts/map-operations-fields.py --check
 python retail/scripts/preflight-catalog-mapping.py --domain operations --bundle logs/gin-migration/source-20261026.json
 python retail/scripts/audit-operations-snapshot.py --bundle logs/gin-migration/source-20261026.json
 python retail/scripts/test-operations-audit.py
+python retail/scripts/map-history-integration-fields.py --check
+python retail/scripts/preflight-catalog-mapping.py --domain history-integration --bundle logs/gin-migration/source-20261026.json
+python retail/scripts/audit-history-integration-snapshot.py --bundle logs/gin-migration/source-20261026.json
+python retail/scripts/test-history-integration-audit.py
+python retail/scripts/design-nonimport-fields.py --check
 python retail/scripts/verify-field-mappings.py
 git diff --check
 ```
@@ -74,7 +80,7 @@ Python 需 3.9+；命令中的 python 替换为本机已安装运行时路径。
 - T001/T002：剩余命令/调用方、完整促销资格/预算/buy-get、税运费 provider 集成、PayPal 实际运行产物及后台内置功能；已有纯函数基线不替代集成。
 - T003：剩余页面及登录/抽屉/错误/加载/交易状态；需要隔离夹具，不在旧业务库造订单。
 - T004/T005：剩余领域授权、完整交易金额样例和状态用例运行证据。
-- T006：已设计147表1,583列；剩余46表378列、全部约束转换/语义关联、私有文件清单及密文转换演练待完成；库存预留差异、设备软删历史及交易孤儿引用另行对账，全表元数据不是全字段映射完成。
+- T006：193表1,961列处置设计已覆盖（159表1,691列映射，34表270列排除/重建），仍需全部约束/默认值转换、语义关联、私有文件清单及密文转换演练；库存预留差异、设备软删历史及交易孤儿引用另行对账。字段设计齐全不等于MySQL导入或账号排除已验证。
 - T007：已有统一 API 约定及后台组件/页面承接草案；可验证 schemas、完整原生/自定义旧入口到新 API 的映射仍待交付。
 
 这些待办明确保留，不把未知能力当作未使用删除。后续按领域补齐后再实现及验收。
