@@ -183,6 +183,7 @@ func testPaymentHistoryImportSQL(t *testing.T, ctx context.Context) {
 	}
 	for _, test := range []struct{ id, update string }{
 		{"import-tampered-scalar", "UPDATE payment_sessions SET status='error' WHERE id=?"},
+		{"import-tampered-final-decimal", "UPDATE payment_sessions SET amount=1.230000000000000001 WHERE id=?"},
 		{"import-tampered-cipher", "UPDATE payment_sessions SET data='plaintext-not-envelope' WHERE id=?"},
 		{"import-missing-target", "DELETE FROM payment_sessions WHERE id=?"},
 		{"import-tampered-digest", "UPDATE migration_payment_dispositions SET target_row_sha256=UNHEX(REPEAT('00',32)) WHERE source_id=?"},

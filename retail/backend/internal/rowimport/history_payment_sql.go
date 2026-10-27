@@ -139,7 +139,13 @@ func (p *PaymentHistory) Import(ctx context.Context, tx *sql.Tx, snapshotSHA256,
 		quoted := "`" + column + "`"
 		columns = append(columns, quoted)
 		markers = append(markers, "?")
-		comparisons = append(comparisons, "("+quoted+" <=> ?)")
+		parameter := "?"
+		if column == "amount" {
+			// Bound exact decimals are strings. Force DECIMAL comparison rather
+			// than relying on string/numeric implicit coercion during replay.
+			parameter = "CAST(? AS DECIMAL(38,18))"
+		}
+		comparisons = append(comparisons, "("+quoted+" <=> "+parameter+")")
 	}
 	if first {
 		_, err = tx.ExecContext(ctx, "INSERT INTO `"+converted.Row.Table+"` ("+strings.Join(columns, ",")+") VALUES("+strings.Join(markers, ",")+")", converted.Row.Values...)

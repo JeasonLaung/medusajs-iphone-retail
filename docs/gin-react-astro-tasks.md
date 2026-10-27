@@ -217,6 +217,8 @@
 
 ## 执行顺序与“完成”的定义
 
+2026-10-27真实支付MySQL补充：[独立演练](migration/payment-mysql-rehearsal.md)使用已验证v2流，在禁网/单核/768MiB临时库中完成23付款集合、42支付行、42操作hold的整批回滚/提交/原密文重放及私有字段读取，结束清理。金额比较新增显式DECIMAL CAST及末位篡改反例；375项全域引用缺失仍失败，不作为全域导入或运行时验收。
+
 2026-10-27支付持久化补充：[同事务导入](migration/payment-history-import.md)新增0005操作hold账本与Go写入，人工MySQL验证原密文精确重放、active key轮换读取、来源/目标冲突、回滚和八路并发。普通入口继续要求历史处置；尚未写入真实支付行，正式导入组合/worker和远端对账仍缺。
 
 2026-10-27完整支付行补充：[支付历史转换](migration/payment-history-conversion.md)组合14列/data/context/metadata和强制操作hold；首次实际只读v2导出159表/27,140行并通过Go完整流及关系校验，375项历史缺失继续保留失败。42个真实支付整行转换、23个明确SQL NULL、19个空metadata对象验证通过，人工MySQL完整collection/session/payment事务回滚/读取通过。正式导入、持久化操作hold/worker及其他保护域尚缺。
