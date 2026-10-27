@@ -6,7 +6,7 @@
 | --- | --- |
 | 全量入口与承接任务 | [业务基线](business-baseline.md)、[源码追踪](source-traceability.md)、source-manifest.json |
 | 页面与状态 | [32 种 URL + 7 个 handler](frontend-routes.md)、[84 张本机截图索引](frontend-baseline.md) |
-| 身份与数据范围 | [授权矩阵](authorization-matrix.md)、[设备逐动作权限](device-commands.md) |
+| 身份与数据范围 | [授权矩阵](authorization-matrix.md)、[设备逐动作权限](device-commands.md)、[仓库范围/逐对象72项执行](warehouse-access-contract.md)、fixtures/legacy-warehouse-access.json |
 | 交易领域 | [商品及数据关系](catalog-contract.md)、[搜索筛选](search-contract.md)、[支付与订单完成](payment-contract.md)、[购物车/合计/库存/成单](checkout-contract.md)、[促销/税率/配送](promotion-tax-shipping-contract.md) |
 | API 与后台组件 | [API 通用约定](api-conventions.md)、[Ant Design / ECharts 及 23 页承接](admin-ui-contract.md) |
 | 输入验证/SDK去向 | [请求结构、精度适配与Gin草稿差距](request-validation-and-sdk-contract.md)、schemas/legacy-request-inputs.json、fixtures/legacy-request-validation.json、storefront-sdk-contract.json |

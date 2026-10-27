@@ -1,0 +1,311 @@
+{
+  "format_version": 1,
+  "scope": "Actual legacy warehouse library and authorizeWarehouseCommand with artificial objects and explicit query/permission ports; not native RBAC engine, HTTP routing, SQL, full workflows or new Gin acceptance.",
+  "source_sha256": {
+    "medusa-store/apps/backend/src/lib/warehouse-access.ts": "af0c92f4b39a8e8c3e5283261b15fb0e29d70d7a25fdbc40974741dccb736a15",
+    "medusa-store/apps/backend/src/api/warehouse-guards.ts": "bdd4557386b6a43e203862767a1ea8ba11169b74634a82f1f4ac4c0af6a5517c"
+  },
+  "cases": [
+    {
+      "name": "missing-user-legacy-nonwarehouse-not-auth-proof",
+      "passed": true
+    },
+    {
+      "name": "ordinary-user-nonwarehouse",
+      "passed": true
+    },
+    {
+      "name": "role-without-bindings-empty-scope",
+      "passed": true
+    },
+    {
+      "name": "metadata-role-without-bindings-empty-scope",
+      "passed": true
+    },
+    {
+      "name": "empty-location-array-enables-warehouse",
+      "passed": true
+    },
+    {
+      "name": "warehouse-all-explicit",
+      "passed": true
+    },
+    {
+      "name": "scope-all-alone-does-not-enable-warehouse",
+      "passed": true
+    },
+    {
+      "name": "bindings-filter-nonstrings-and-empty-dedupe",
+      "passed": true
+    },
+    {
+      "name": "legacy-whitespace-location-not-trimmed",
+      "passed": true
+    },
+    {
+      "name": "own-location-allowed",
+      "passed": true
+    },
+    {
+      "name": "cross-location-denied",
+      "passed": true
+    },
+    {
+      "name": "empty-scope-denies-location",
+      "passed": true
+    },
+    {
+      "name": "all-scope-allows-location",
+      "passed": true
+    },
+    {
+      "name": "own-self-source",
+      "passed": true
+    },
+    {
+      "name": "cross-self-source",
+      "passed": true
+    },
+    {
+      "name": "own-supplier-source",
+      "passed": true
+    },
+    {
+      "name": "device-resource-new",
+      "passed": true
+    },
+    {
+      "name": "device-resource-returned",
+      "passed": true
+    },
+    {
+      "name": "device-resource-undefined",
+      "passed": true
+    },
+    {
+      "name": "recycled-device-category-denied",
+      "passed": true
+    },
+    {
+      "name": "rbac-0-true",
+      "passed": true
+    },
+    {
+      "name": "rbac-1-false",
+      "passed": true
+    },
+    {
+      "name": "rbac-1-true",
+      "passed": true
+    },
+    {
+      "name": "inventory-only-own-levels-recompute-required-quantity-minimum",
+      "passed": true
+    },
+    {
+      "name": "inventory-empty-scope-zero-stock",
+      "passed": true
+    },
+    {
+      "name": "inventory-no-items-is-undefined-not-zero",
+      "passed": true
+    },
+    {
+      "name": "inventory-full-scope-bypasses-projection",
+      "passed": true
+    },
+    {
+      "name": "legacy-inventory-unknown-fields-remain",
+      "passed": true
+    },
+    {
+      "name": "order-filter-items-scale-totals-strip-known-private-fields",
+      "passed": true
+    },
+    {
+      "name": "legacy-canceled-own-fulfillment-retained-but-not-counted",
+      "passed": true
+    },
+    {
+      "name": "legacy-order-unknown-and-line-metadata-fields-remain",
+      "passed": true
+    },
+    {
+      "name": "legacy-bare-subtotal-not-matched-by-underscore-suffix",
+      "passed": true
+    },
+    {
+      "name": "order-empty-scope-no-items-zero-totals",
+      "passed": true
+    },
+    {
+      "name": "order-full-scope-bypasses-projection-not-payment-permission",
+      "passed": true
+    },
+    {
+      "name": "legacy-ratio-retains-floating-point-tail",
+      "passed": true
+    },
+    {
+      "name": "order-same-item-multiple-own-parcels-sums-quantities",
+      "passed": true
+    },
+    {
+      "name": "order-query-scoped-scope-and-canceled-filter",
+      "passed": true
+    },
+    {
+      "name": "order-query-empty-scope-and-canceled-filter",
+      "passed": true
+    },
+    {
+      "name": "order-query-all-scope-and-canceled-filter",
+      "passed": true
+    },
+    {
+      "name": "all-canceled-parcels-skip-order-link-query",
+      "passed": true
+    },
+    {
+      "name": "fulfillment-must-belong-to-path-order",
+      "passed": true
+    },
+    {
+      "name": "fulfillment-location-checked-before-order-lookup",
+      "passed": true
+    },
+    {
+      "name": "own-fulfillment-and-order-allowed",
+      "passed": true
+    },
+    {
+      "name": "order-without-own-active-parcel-denied",
+      "passed": true
+    },
+    {
+      "name": "command-nonwarehouse-bypasses-guard-not-authorization",
+      "passed": true
+    },
+    {
+      "name": "command-activate-own-device",
+      "passed": true
+    },
+    {
+      "name": "command-activate-cross-device-denied",
+      "passed": true
+    },
+    {
+      "name": "command-delete-own-device",
+      "passed": true
+    },
+    {
+      "name": "command-delete-cross-device-denied",
+      "passed": true
+    },
+    {
+      "name": "command-retire-own-device",
+      "passed": true
+    },
+    {
+      "name": "command-retire-cross-device-denied",
+      "passed": true
+    },
+    {
+      "name": "command-inspect-own-device",
+      "passed": true
+    },
+    {
+      "name": "command-inspect-cross-device-denied",
+      "passed": true
+    },
+    {
+      "name": "command-intake-every-device-source-checked",
+      "passed": true
+    },
+    {
+      "name": "command-intake-supplier-source-denied",
+      "passed": true
+    },
+    {
+      "name": "command-intake-recycled-denied",
+      "passed": true
+    },
+    {
+      "name": "command-make-available-second-device-cross-scope-denied",
+      "passed": true
+    },
+    {
+      "name": "command-update-new-location-denied",
+      "passed": true
+    },
+    {
+      "name": "command-update-requires-both-old-and-new-category-permission",
+      "passed": true
+    },
+    {
+      "name": "command-transfer-return-requires-both-resources",
+      "passed": true
+    },
+    {
+      "name": "command-assign-denied",
+      "passed": true
+    },
+    {
+      "name": "command-order_assign-denied",
+      "passed": true
+    },
+    {
+      "name": "command-unknown-denied",
+      "passed": true
+    },
+    {
+      "name": "command-release-checks-assignment-device-and-order",
+      "passed": true
+    },
+    {
+      "name": "command-release-other-order-denied",
+      "passed": true
+    },
+    {
+      "name": "command-receive-supplier-destination-denied",
+      "passed": true
+    },
+    {
+      "name": "command-ship-no-action-permission-denied-before-device-read",
+      "passed": true
+    },
+    {
+      "name": "command-ship-own-parcel-allowed",
+      "passed": true
+    },
+    {
+      "name": "command-save-allocation-own-parcel-and-line",
+      "passed": true
+    },
+    {
+      "name": "command-save-allocation-requires-parcel",
+      "passed": true
+    },
+    {
+      "name": "command-save-allocation-rejects-other-line",
+      "passed": true
+    },
+    {
+      "name": "command-save-allocation-second-cross-device-denied",
+      "passed": true
+    }
+  ],
+  "observed_legacy_gaps": [
+    "Missing staff returns nonwarehouse scope; caller authentication is still required",
+    "Full scope returns original object; scope alone is not action or field authorization",
+    "Object spreads retain unknown order/line/inventory fields; target needs allowlisted DTOs",
+    "Bare subtotal is not matched by _subtotal suffix and remains unscoped at order and line levels",
+    "Canceled own fulfillments remain in projected payload while excluded from quantities",
+    "Proportional money uses Number and can retain fractional floating-point tails"
+  ],
+  "remaining": [
+    "Actual route/command authorization and every bulk member",
+    "Gin exact decimal projection, permissions and allowlisted DTOs",
+    "Full native RBAC and HTTP/DB integration"
+  ]
+}

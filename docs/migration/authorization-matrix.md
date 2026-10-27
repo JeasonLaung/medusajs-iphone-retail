@@ -47,11 +47,13 @@
 
 ## 仓库响应裁剪不能简化成 WHERE location_id
 
-旧 `scopeWarehouseOrder` 对非全仓范围：仅本仓履约；按未取消履约汇总行数量；对应金额按数量比例裁剪；付款集合只保留 status；移除 credit_lines、returns、claims、exchanges、summary、metadata、promotions、shipping_methods；客户只保留业务联系字段。全店订单合计不可直接暴露。
+旧 `scopeWarehouseOrder` 对非全仓范围：仅本仓履约（包括本仓取消历史）；按未取消履约汇总行数量；部分对应金额按数量比例裁剪；付款集合只保留 status；移除 credit_lines、returns、claims、exchanges、summary、metadata、promotions、shipping_methods；客户只保留业务联系字段。实际执行发现裸 subtotal 未裁剪，且未知字段/行metadata仍可透传；不能把旧函数当作安全DTO直接复制。新系统全店订单合计不可直接暴露。
 
 旧代码用 Number 比例运算，Gin 需使用精确金额并定义尾差归属；这属于保留范围语义、修复金额实现，不能把全单总额或其他仓数据作为“兼容”返回。全仓范围分支直接返回原订单，需在新契约中明确该权限的含义，并验证未额外授予支付操作。
 
 共享商品的关系查询经过白名单，库存嵌套同样裁剪；禁止客户端用 `fields=*`、任意深层关联或导出接口绕开范围。
+
+另见[仓库范围执行证据](warehouse-access-contract.md)：真实库函数和authorizeWarehouseCommand共72项人工端口样例，含空/全范围、跨仓、逐数组成员、类别权限、包裹归属及金额/字段缺口。未执行原生RBAC引擎、HTTP或SQL，不能据此验收完整授权。
 
 ## 注册与文件凭证
 
