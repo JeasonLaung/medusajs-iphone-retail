@@ -80,7 +80,7 @@ def main():
         # otherwise cumulative DDL consumes the bounded fixture memory.
         suites = ['AdminAuthentication','CatalogSchemaTransition','ProductEdits','ProductPrices',
                   'ProductInventory','InventoryStockEdits','ReservationTransactions','OrderSchema',
-                  'OrderImport','CustomerHistory','OrderRead','PaymentSchema','PaymentImport']
+                  'OrderImport','CustomerHistory','OrderRead','PaymentSchema','PaymentImport','FulfillmentHistory']
         output, errors = b'', b''
         for suite in suites:
             tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1', mysql_id,
@@ -111,6 +111,9 @@ def main():
             print(json.dumps({'test_exit_code': tested.returncode, 'mysql_oom_and_exit': state.stdout.decode().strip()}))
             raise RuntimeError('Owned MySQL/Redis authentication checks failed')
         counts = json.loads(markers[0])
+        fulfillment_markers = [line.split('FULFILLMENT_HISTORY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'FULFILLMENT_HISTORY_REHEARSAL ' in line]
+        if len(fulfillment_markers)!=1:
+            raise RuntimeError('Fulfillment history verification missing')
         payment_read_markers=[line.split('ORDER_PAYMENT_READ_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_PAYMENT_READ_REHEARSAL ' in line]
         if len(payment_read_markers)!=1:
             raise RuntimeError('Order payment read verification missing')
@@ -183,6 +186,8 @@ def main():
         files += ['retail/backend/internal/identity/payment_import_test.go','retail/backend/migrations/0020_payment_import_evidence.sql','retail/scripts/generate-payment-import-plan.py','retail/backend/internal/holderimport/import.go','retail/backend/internal/rowimport/history_payment_sql.go','retail/backend/internal/rowimport/history_account_holder.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/paymentimport').glob('*') if p.is_file()]
         files += ['retail/backend/internal/orders/payments.go','retail/backend/internal/identity/order_payments_test.go']
+        files += ['retail/backend/migrations/0021_fulfillment_relational.sql','retail/backend/migrations/0022_fulfillment_import_evidence.sql','retail/scripts/generate-fulfillment-schema.py','retail/scripts/generate-fulfillment-import-plan.py','retail/backend/internal/identity/fulfillment_history_test.go']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('fulfillment','fulfillmentimport') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                   'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                               'network': 'owned shared namespace with no external network', 'published_ports': 0},
@@ -195,6 +200,7 @@ def main():
                   'inventory_import': json.loads(import_markers[0]),
                   'inventory_stock_edit': json.loads(stock_markers[0]),
                   'reservation_transactions': json.loads(reservation_markers[0]),
+                  'fulfillment_history': json.loads(fulfillment_markers[0]),
                   'payment_import': json.loads(payment_import_markers[0]),
                   'payment_schema': json.loads(payment_markers[0]),
                   'order_schema': json.loads(order_markers[0]),

@@ -144,8 +144,10 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/totals').glob('*.go')]
         files += ['retail/backend/internal/payments/schema.go','retail/backend/internal/payments/schema_plan.json']
         files += ['retail/backend/internal/orders/payments.go','retail/backend/internal/identity/order_payments_test.go']
+        files += ['retail/backend/migrations/0021_fulfillment_relational.sql','retail/backend/migrations/0022_fulfillment_import_evidence.sql','retail/scripts/generate-fulfillment-schema.py','retail/scripts/generate-fulfillment-import-plan.py','retail/backend/internal/identity/fulfillment_history_test.go']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/fulfillment').glob('*') if p.is_file()]
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
-                  'browser_tests_passed': 1, 'migrations_applied': 20, 'mocked_api_responses': False,
+                  'browser_tests_passed': 1, 'migrations_applied': 22, 'mocked_api_responses': False,
                   'reviewed_relational_schema_used': True, 'empty_draft_tables_retained_by_migration': 7,
                   'explicit_catalog_read_schema_migration_used': True, 'test_only_schema_rewrite': False,
                   'browser_executable_override_used': bool(os.environ.get('ADMIN_TEST_BROWSER')),

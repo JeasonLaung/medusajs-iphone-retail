@@ -1,0 +1,48 @@
+{
+  "format_version": 1,
+  "schema_version": 1,
+  "model_sha256": "6736df15d94a4ed483777d5a757fff05cdf3c7ca44d619c9da2398841b192de6",
+  "migration": "0021_fulfillment_relational.sql",
+  "tables": [
+    "fulfillment_addresses",
+    "fulfillment_items",
+    "fulfillment_labels",
+    "fulfillment_location_providers",
+    "fulfillment_location_sets",
+    "fulfillment_option_rules",
+    "fulfillments"
+  ],
+  "source_tables": [
+    "fulfillment",
+    "fulfillment_address",
+    "fulfillment_item",
+    "fulfillment_label",
+    "location_fulfillment_provider",
+    "location_fulfillment_set",
+    "shipping_option_rule"
+  ],
+  "source_columns": 72,
+  "reads_enabled": true,
+  "writes_enabled": false,
+  "full_business_accepted": false,
+  "historical_accounts_restored": false,
+  "explicit_enum_constraints": [
+    {
+      "table": "fulfillment_option_rules",
+      "column": "operator",
+      "allowed": [
+        "in",
+        "eq",
+        "ne",
+        "gt",
+        "gte",
+        "lt",
+        "lte",
+        "nin"
+      ]
+    }
+  ],
+  "unresolved_semantic_dependencies": [],
+  "unresolved_source_indexes": [],
+  "migration_sha256_lf": "3a8877a3b317a7135cdb30a5cfc7fa69a70bbde3a1ccec0d19098bb8b4df2735"
+}

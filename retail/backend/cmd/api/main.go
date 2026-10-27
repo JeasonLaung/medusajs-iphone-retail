@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/eurorefurb/retail/internal/catalog"
+	"github.com/eurorefurb/retail/internal/fulfillment"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/inventory"
 	"github.com/eurorefurb/retail/internal/orders"
@@ -57,6 +58,9 @@ func main() {
 	}
 	if err == nil {
 		err = payments.Ready(verifyCtx, db)
+	}
+	if err == nil {
+		err = fulfillment.Ready(verifyCtx, db)
 	}
 	cancelVerify()
 	if err != nil {

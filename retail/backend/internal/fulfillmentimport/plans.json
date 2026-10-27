@@ -1,0 +1,626 @@
+{
+  "version": 1,
+  "model_sha256": "6736df15d94a4ed483777d5a757fff05cdf3c7ca44d619c9da2398841b192de6",
+  "tables": [
+    {
+      "source": "fulfillment_address",
+      "target": "fulfillment_addresses",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "company",
+          "target": "company",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "first_name",
+          "target": "first_name",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "last_name",
+          "target": "last_name",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "address_1",
+          "target": "address_1",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "address_2",
+          "target": "address_2",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "city",
+          "target": "city",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "country_code",
+          "target": "country_code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "province",
+          "target": "province",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "postal_code",
+          "target": "postal_code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "phone",
+          "target": "phone",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": []
+    },
+    {
+      "source": "location_fulfillment_provider",
+      "target": "fulfillment_location_providers",
+      "columns": [
+        {
+          "source": "stock_location_id",
+          "target": "stock_location_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "fulfillment_provider_id",
+          "target": "fulfillment_provider_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "stock_location_id",
+          "target": "stock_location_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "fulfillment_provider_id",
+          "target": "fulfillment_provider_id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "stock_location_id",
+          "parent": "inventory_locations",
+          "parent_column": "id"
+        },
+        {
+          "column": "fulfillment_provider_id",
+          "parent": "fulfillment_providers",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "location_fulfillment_set",
+      "target": "fulfillment_location_sets",
+      "columns": [
+        {
+          "source": "stock_location_id",
+          "target": "stock_location_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "fulfillment_set_id",
+          "target": "fulfillment_set_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "stock_location_id",
+          "target": "stock_location_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "fulfillment_set_id",
+          "target": "fulfillment_set_id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "stock_location_id",
+          "parent": "inventory_locations",
+          "parent_column": "id"
+        },
+        {
+          "column": "fulfillment_set_id",
+          "parent": "fulfillment_sets",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "shipping_option_rule",
+      "target": "fulfillment_option_rules",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "attribute",
+          "target": "attribute",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "operator",
+          "target": "operator",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "value",
+          "target": "value",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "shipping_option_id",
+          "target": "shipping_option_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "shipping_option_id",
+          "parent": "fulfillment_shipping_options",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "fulfillment",
+      "target": "fulfillments",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "location_id",
+          "target": "location_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "packed_at",
+          "target": "packed_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "shipped_at",
+          "target": "shipped_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "delivered_at",
+          "target": "delivered_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "canceled_at",
+          "target": "canceled_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "data",
+          "target": "data",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "provider_id",
+          "target": "provider_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "shipping_option_id",
+          "target": "shipping_option_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "delivery_address_id",
+          "target": "delivery_address_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "marked_shipped_by",
+          "target": "marked_shipped_by",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_by",
+          "target": "created_by",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "requires_shipping",
+          "target": "requires_shipping",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "location_id",
+          "parent": "inventory_locations",
+          "parent_column": "id"
+        },
+        {
+          "column": "provider_id",
+          "parent": "fulfillment_providers",
+          "parent_column": "id"
+        },
+        {
+          "column": "shipping_option_id",
+          "parent": "fulfillment_shipping_options",
+          "parent_column": "id"
+        },
+        {
+          "column": "delivery_address_id",
+          "parent": "fulfillment_addresses",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "fulfillment_item",
+      "target": "fulfillment_items",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "title",
+          "target": "title",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "sku",
+          "target": "sku",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "barcode",
+          "target": "barcode",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "quantity",
+          "target": "quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_quantity",
+          "target": "raw_quantity",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "line_item_id",
+          "target": "line_item_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "inventory_item_id",
+          "target": "inventory_item_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "fulfillment_id",
+          "target": "fulfillment_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "line_item_id",
+          "parent": "order_line_items",
+          "parent_column": "id"
+        },
+        {
+          "column": "inventory_item_id",
+          "parent": "inventory_items",
+          "parent_column": "id"
+        },
+        {
+          "column": "fulfillment_id",
+          "parent": "fulfillments",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "fulfillment_label",
+      "target": "fulfillment_labels",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "tracking_number",
+          "target": "tracking_number",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "tracking_url",
+          "target": "tracking_url",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "label_url",
+          "target": "label_url",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "fulfillment_id",
+          "target": "fulfillment_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "fulfillment_id",
+          "parent": "fulfillments",
+          "parent_column": "id"
+        }
+      ]
+    }
+  ]
+}

@@ -20,6 +20,7 @@ import (
 
 	cataloghttp "github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/customerimport"
+	"github.com/eurorefurb/retail/internal/fulfillmentimport"
 	"github.com/eurorefurb/retail/internal/importvalue"
 	"github.com/eurorefurb/retail/internal/inventory"
 	"github.com/eurorefurb/retail/internal/inventoryimport"
@@ -120,6 +121,14 @@ func TestActualCatalogMySQL(t *testing.T) {
 	for _, name := range paymentTables {
 		paymentSelected[name] = nil
 	}
+	fulfillmentTables, err := fulfillmentimport.SourceTables()
+	if err != nil || len(fulfillmentTables) != 7 {
+		t.Fatal("fulfillment import scope unavailable")
+	}
+	fulfillmentSelected := map[string][]rowimport.SourceRow{}
+	for _, name := range fulfillmentTables {
+		fulfillmentSelected[name] = nil
+	}
 	var customerSelected []rowimport.SourceRow
 	orderSelected := map[string][]rowimport.SourceRow{}
 	for _, name := range orderTables {
@@ -133,6 +142,9 @@ func TestActualCatalogMySQL(t *testing.T) {
 	verified, err := rowimport.VerifyStream(file, snapshotHash, func(table string, row rowimport.SourceRow) error {
 		if _, ok := paymentSelected[table]; ok {
 			paymentSelected[table] = append(paymentSelected[table], row)
+		}
+		if _, ok := fulfillmentSelected[table]; ok {
+			fulfillmentSelected[table] = append(fulfillmentSelected[table], row)
 		}
 		if table == "customer" {
 			customerSelected = append(customerSelected, row)
@@ -273,14 +285,14 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog embedded schema plan invalid")
 	}
 	created, err := schema.Apply(ctx, db, plan)
-	if err != nil || created.Applied != 20 || schema.CheckApplied(ctx, db, plan) != nil {
+	if err != nil || created.Applied != 22 || schema.CheckApplied(ctx, db, plan) != nil {
 		t.Fatal("catalog embedded migration failed")
 	}
 	repeated, err := schema.Apply(ctx, db, plan)
-	if err != nil || repeated.Skipped != 20 {
+	if err != nil || repeated.Skipped != 22 {
 		t.Fatal("catalog embedded migration replay failed")
 	}
-	counts["explicit_schema_migrations"] = 20
+	counts["explicit_schema_migrations"] = 22
 	var enabled int
 	if db.QueryRowContext(ctx, "SELECT @@foreign_key_checks").Scan(&enabled) != nil || enabled != 1 {
 		t.Fatal("catalog physical constraints must remain enabled")
@@ -573,6 +585,52 @@ func TestActualCatalogMySQL(t *testing.T) {
 	counts["order_reference_holds"] = count("order_migration_reference_holds")
 	counts["order_import_rollback_rows"] = 336
 	counts["protected_customer_rows_imported_without_login"] = verified.Tables["customer"].Rows
+	fulfillmentRows := 0
+	for _, name := range fulfillmentTables {
+		fulfillmentRows += len(fulfillmentSelected[name])
+	}
+	stageFulfillments := func(commit bool) fulfillmentimport.Result {
+		tx, err := db.BeginTx(ctx, nil)
+		if err != nil {
+			t.Fatal("fulfillment rehearsal transaction unavailable")
+		}
+		defer tx.Rollback()
+		result, err := fulfillmentimport.Import(ctx, tx, snapshotHash, fulfillmentSelected)
+		if err != nil {
+			t.Fatal("actual fulfillment batch staging failed")
+		}
+		if commit && tx.Commit() != nil {
+			t.Fatal("actual fulfillment batch commit failed")
+		}
+		return result
+	}
+	rolledFulfillments := stageFulfillments(false)
+	if rolledFulfillments.Rows != fulfillmentRows {
+		t.Fatal("actual fulfillment source scope differs")
+	}
+	for _, name := range fulfillmentTables {
+		if count(all[name].Target) != 0 {
+			t.Fatal("fulfillment rollback left business rows")
+		}
+	}
+	if count("migration_fulfillment_rows") != 0 || count("fulfillment_migration_reference_holds") != 0 {
+		t.Fatal("fulfillment rollback left evidence")
+	}
+	committedFulfillments := stageFulfillments(true)
+	if committedFulfillments.Rows != fulfillmentRows || count("migration_fulfillment_rows") != int64(fulfillmentRows) {
+		t.Fatal("fulfillment provenance differs")
+	}
+	for _, name := range fulfillmentTables {
+		if count(all[name].Target) != int64(len(fulfillmentSelected[name])) {
+			t.Fatal("fulfillment committed table count differs")
+		}
+		counts["fulfillment_import_"+name+"_rows"] = int64(len(fulfillmentSelected[name]))
+	}
+	counts["fulfillment_batch_source_tables"] = 7
+	counts["fulfillment_batch_source_columns"] = 72
+	counts["fulfillment_batch_rows"] = int64(fulfillmentRows)
+	counts["fulfillment_batch_rollback_rows"] = int64(rolledFulfillments.Rows)
+	counts["fulfillment_reference_holds"] = count("fulfillment_migration_reference_holds")
 	fingerprint := func() []byte {
 		h := sha256.New()
 		targets := map[string]string{}
@@ -583,6 +641,20 @@ func TestActualCatalogMySQL(t *testing.T) {
 		targets["migration_payment_dispositions"] = "source_table,source_id"
 		targets["migration_holder_dispositions"] = "source_id"
 		for _, name := range paymentTables {
+			layout := all[name]
+			var primary []string
+			for _, key := range layout.Primary {
+				for _, f := range layout.Fields {
+					if f.Source == key {
+						primary = append(primary, "`"+f.Target+"`")
+					}
+				}
+			}
+			targets[layout.Target] = strings.Join(primary, ",")
+		}
+		targets["migration_fulfillment_rows"] = "source_table,identity_sha256"
+		targets["fulfillment_migration_reference_holds"] = "source_table,identity_sha256,column_name"
+		for _, name := range fulfillmentTables {
 			layout := all[name]
 			var primary []string
 			for _, key := range layout.Primary {
@@ -1044,6 +1116,10 @@ func TestActualCatalogMySQL(t *testing.T) {
 	if replayedOrders.ReplayedRows != 336 {
 		t.Fatal("ordinary order replay duplicated facts")
 	}
+	if replayed := stageFulfillments(true); replayed.ReplayedRows != fulfillmentRows {
+		t.Fatal("actual fulfillment replay duplicated or changed facts")
+	}
+	counts["exact_replay_fulfillment_rows"] = int64(fulfillmentRows)
 	counts["exact_replay_ordinary_order_rows"] = 336
 	counts["exact_replay_historical_customer_rows"] = 5
 	if !bytes.Equal(before, fingerprint()) {
