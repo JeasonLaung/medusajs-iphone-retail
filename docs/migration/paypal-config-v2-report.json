@@ -1,0 +1,28 @@
+{
+  "format_version": 1,
+  "scope": "Actual two PayPal rows with empty credentials metadata and reviewed onboarding/API settings only; encrypted actual merchant credentials absent",
+  "snapshot_sha256": "b58a26812eeea8e75c6bd3e4ec4635b6260d8e704bc9a63fd095f0e7d9f13985",
+  "counts": {
+    "explicit_sql_null_secret_fields": 3,
+    "paypal_connection.complete_rows": 1,
+    "paypal_settings.complete_rows": 1,
+    "protected_json_roundtrips": 2,
+    "wrong_row_rejections": 2
+  },
+  "source_database_connection": false,
+  "provider_called": false,
+  "new_keys_or_envelopes_persisted": false,
+  "private_values_in_report": false,
+  "nonempty_nested_credentials_supported": false,
+  "implementation_sha256": {
+    "retail/backend/internal/rowimport/config_secret.go": "0dca7240f0131cdc5c7bb24590bd723ccd79c0e3cd40dd913615d9021896841f",
+    "retail/backend/internal/rowimport/paypal_config_json.go": "6a4b347f943a0ff4a541ed60360f10927dd22fe74460b3272daaa0eadaf3729a",
+    "retail/backend/internal/rowimport/paypal_config_json_test.go": "c397e3ecf13acad2295c6174fe83417b7d33ba322f4ff22fc1efba766fae51f3",
+    "retail/scripts/audit-paypal-config.py": "d4d2f685c45d0c483860fd15706de2e5b2b397b7a33f21e4714627f29809065d",
+    "medusa-store/apps/backend/node_modules/@easypayment/medusa-payment-paypal/src/modules/paypal/service.ts": "c9bc7dff33cfc9f5eb46b242fd7ee42b9250c5377f7b97d28f03bd950a4e9409",
+    "medusa-store/apps/backend/node_modules/@easypayment/medusa-payment-paypal/src/modules/paypal/models/paypal_connection.ts": "475178891bd38ebd6a5ac88998241bd7330d2064727fff1adb84fbba34dd39cb",
+    "medusa-store/apps/backend/node_modules/@easypayment/medusa-payment-paypal/src/modules/paypal/models/paypal_settings.ts": "be012ef9d5a747bb25a2f6063d3d3c5f95698e766ceb19927df9ec8e63d9b391",
+    "medusa-store/apps/backend/node_modules/@easypayment/medusa-payment-paypal/src/api/admin/paypal/settings/route.ts": "3ee3fca4ede50674378e140b5a52ff76e3e84901ce402fc82a535f66629dc630",
+    "medusa-store/apps/backend/node_modules/@easypayment/medusa-payment-paypal/.medusa/server/src/modules/paypal/service.js": "7cdd3ae26c54262768aa5413f5b92ed3b46937ef9e1561eb9504b2c30bb9d956"
+  }
+}

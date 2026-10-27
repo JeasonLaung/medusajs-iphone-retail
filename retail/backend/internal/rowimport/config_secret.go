@@ -9,18 +9,26 @@ import (
 )
 
 // ConfigSecrets converts only the twelve explicitly reviewed merchant string
-// fields. Non-NULL protected JSON still returns ErrProtection. The caller owns
-// independent target key provisioning/backup and must not log BoundRow secrets.
+// fields and the explicitly reviewed PayPal merchant JSON baseline. Other
+// non-NULL protected JSON returns ErrProtection. The caller owns independent
+// target key provisioning/backup and must not log BoundRow secrets.
 type ConfigSecrets struct {
 	target *protected.Ring
 	source *legacysecret.Keys
+	paypal *legacysecret.PayPal
 }
 
 func NewConfigSecrets(target *protected.Ring, source *legacysecret.Keys) (*ConfigSecrets, error) {
+	return NewConfigSecretsWithPayPal(target, source, nil)
+}
+
+// PayPal source encryption has its own explicit key and versioned format.
+// A nil PayPal reader accepts legacy plaintext only, never encrypted fallback.
+func NewConfigSecretsWithPayPal(target *protected.Ring, source *legacysecret.Keys, paypal *legacysecret.PayPal) (*ConfigSecrets, error) {
 	if target == nil {
 		return nil, ErrProtection
 	}
-	return &ConfigSecrets{target: target, source: source}, nil
+	return &ConfigSecrets{target: target, source: source, paypal: paypal}, nil
 }
 
 func configDomain(table, column string, row SourceRow) (domain, purpose string, err error) {
@@ -60,11 +68,7 @@ func (c *ConfigSecrets) Convert(table string, row SourceRow) (BoundRow, error) {
 		return BoundRow{}, ErrProtection
 	}
 	return convertRow(table, row, func(f field, raw json.RawMessage) (any, error) {
-		if f.Transform != "protected_string" {
-			return nil, ErrProtection
-		}
-		domain, purpose, err := configDomain(table, f.Source, row)
-		if err != nil {
+		if f.Transform != "protected_string" && f.Transform != "protected_exact_json" {
 			return nil, ErrProtection
 		}
 		idCell, exists := row["id"]
@@ -75,12 +79,47 @@ func (c *ConfigSecrets) Convert(table string, row SourceRow) (BoundRow, error) {
 		if err != nil || id == "" {
 			return nil, ErrProtection
 		}
+		plans, err := compiledPlans()
+		if err != nil {
+			return nil, ErrProtection
+		}
+		if f.Transform == "protected_exact_json" {
+			reviewed, err := ReviewPayPalConfigJSON(table, f.Source, raw)
+			if err != nil {
+				return nil, ErrProtection
+			}
+			defer clear(reviewed)
+			if table == "paypal_connection" && !jsonNull(raw) {
+				values, _ := object(raw)
+				if active, exists := values["active_environment"]; exists {
+					environment, err := importvalue.Text(row["environment"].Raw, 0)
+					selected, ok := paymentString(active)
+					if row["environment"].SQLNull || err != nil || !ok || selected != environment {
+						return nil, ErrProtection
+					}
+				}
+			}
+			envelope, err := c.target.Seal(protected.Context{Purpose: "merchant-config", Table: plans[table].Target, Column: f.Target, Row: id}, reviewed)
+			if err != nil {
+				return nil, ErrProtection
+			}
+			return envelope, nil
+		}
+		domain, purpose, err := configDomain(table, f.Source, row)
+		if err != nil {
+			return nil, ErrProtection
+		}
 		value, err := importvalue.Text(raw, 0)
 		if err != nil || len(value) > 2*protected.MaxPlaintext {
 			return nil, ErrProtection
 		}
 		var plaintext []byte
-		if domain != "" {
+		if table == "paypal_connection" && (f.Source == "seller_client_secret" || f.Source == "app_access_token") {
+			plaintext, err = c.paypal.Open(value)
+			if err != nil {
+				return nil, ErrProtection
+			}
+		} else if domain != "" {
 			plaintext, err = c.source.Open(domain, value)
 			if err != nil {
 				return nil, ErrProtection
@@ -89,10 +128,6 @@ func (c *ConfigSecrets) Convert(table string, row SourceRow) (BoundRow, error) {
 			plaintext = []byte(value)
 		}
 		defer clear(plaintext)
-		plans, err := compiledPlans()
-		if err != nil {
-			return nil, ErrProtection
-		}
 		envelope, err := c.target.Seal(protected.Context{Purpose: purpose, Table: plans[table].Target, Column: f.Target, Row: id}, plaintext)
 		if err != nil {
 			return nil, ErrProtection

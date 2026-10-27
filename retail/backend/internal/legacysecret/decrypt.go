@@ -1,5 +1,6 @@
 // Package legacysecret reads the pinned Medusa merchant cipher format for
-// offline migration only. It never reads environment or falls back to plaintext.
+// offline migration only. It never reads environment. The four dot-separated
+// domains do not fall back to plaintext; PayPal has a separate explicit reader.
 package legacysecret
 
 import (

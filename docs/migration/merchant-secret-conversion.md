@@ -19,12 +19,13 @@
 | seo_setting.value | is_secret=true使用seo解密；false保留原文字节 | merchant-config |
 | webhook_endpoint.url/secret/token | webhook域认证解密，URL不试发 | merchant-config |
 | mollie_config.api_key | mollie域认证解密，不验证商户凭据 | merchant-config |
-| paypal_connection.auth_code/seller_client_secret/app_access_token | 源字符串作为明文商户秘密密封，不交换或刷新 | merchant-config |
+| paypal_connection.auth_code | 源onboarding code按商户原文密封，不交换 | merchant-config |
+| paypal_connection.seller_client_secret/app_access_token | [PayPal专用读取](paypal-config-conversion.md)：显式旧明文/v1/v2认证解密后密封，不交换或刷新 | merchant-config |
 | mail_contact.unsubscribe_token | 源业务退订能力密封，不作为登录材料 | business-capability |
 
 新AAD绑定精确目标表、目标列和保留的源ID，purpose与现有protected/uniquekey组件一致。返回参数为二进制信封，匹配这12字段的LONGBLOB设计；SEO非secret设置的原文存于信封内，不能直接把源文本写入该列。空字符串生成有效的空明文信封；可NULL字段的SQL NULL继续绑定nil，不混同空信封。任一字段失败返回空BoundRow/固定ErrProtection，不返回部分密封结果或底层带值错误。
 
-普通Convert仍对所有非NULL保护字段返回ErrProtection。新入口不会密封未知protected_string，全部protected_exact_json仍hold（包括非NULL的PayPal metadata），不能借此绕过历史认证能力清理或payload内容审查。必填旧认证账号/密码/会话/验证令牌仍在排除设计，不导入。新入口无数据库、环境、HTTP或日志副作用，也没有接入旧目录导入草稿。
+普通Convert仍对非NULL保护字段拒绝，历史邮件/支付还要求专用处置。新入口不会密封未知protected_string；后续仅显式开放[PayPal已审查配置JSON](paypal-config-conversion.md)，其中非空分环境credentials及其他保护JSON继续hold，不能借此绕过旧身份清理或载荷审查。旧认证账号/密码/会话/验证令牌仍排除。入口无数据库、环境、HTTP或日志副作用，未接入旧目录导入草稿。
 
 新Ring由调用方提供，组件不写密钥文件或生成无法恢复的生产密钥。暂时明文字节缓冲使用后clear，但Go字符串、源JSON和密码学内部副本不保证物理内存擦除，不能声称已完成内存销毁。调用方不得打印SourceRow、BoundRow、密钥或密文；正式导入还须密钥备份/丢失策略、唯一登记、事务、恢复和读取授权。
 
@@ -51,4 +52,4 @@ node retail/scripts/audit-protected-config.cjs --bundle logs/gin-migration/sourc
 node retail/scripts/audit-go-merchant-config.cjs --bundle logs/gin-migration/source-20261026.json --env medusa-store/apps/backend/.env
 ```
 
-实际MySQL测试沿用[唯一登记隔离流程](mysql-unique-key-registry.md)编译测试二进制并执行test-mysql-types.py；单核、768MiB、禁网、无发布端口，结束核对所有权删除容器。真实一致v2快照、真实新信封持久化演练、受保护JSON转换、可恢复密钥配置和生产读取权限仍缺，T006/T018不验收。
+实际MySQL测试沿用[唯一登记隔离流程](mysql-unique-key-registry.md)编译测试二进制并执行test-mysql-types.py；单核、768MiB、禁网、无发布端口，结束核对所有权删除容器。实际v2流已验证、支付子图已隔离持久化；商户配置真实SQL演练、剩余保护JSON、可恢复密钥和生产读取权限仍缺，T006/T018不验收。
