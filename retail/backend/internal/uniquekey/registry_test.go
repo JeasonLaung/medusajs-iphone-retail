@@ -186,4 +186,44 @@ func TestRegistryMySQL(t *testing.T) {
 			t.Fatal("concurrent uniqueness violated", winners)
 		}
 	})
+	t.Run("source_option_adapter_and_domain_row_share_transaction", func(t *testing.T) {
+		write := func(id, title string, commit bool) error {
+			tx, err := db.BeginTx(ctx, nil)
+			if err != nil {
+				return err
+			}
+			defer tx.Rollback()
+			err = ApplySourceRow(ctx, tx, "catalog_options", row(map[string]any{"id": id, "title": title, "deleted_at": nil, "is_exclusive": false}))
+			if err != nil {
+				return err
+			}
+			_, err = tx.ExecContext(ctx, "INSERT INTO relational_fixture.catalog_options(id,title,created_at,updated_at,is_exclusive) VALUES(?,?, '2026-10-27','2026-10-27',false)", id, title)
+			if err != nil {
+				return err
+			}
+			if commit {
+				return tx.Commit()
+			}
+			return nil
+		}
+		if err := write("option-a", "Long exact title ", true); err != nil {
+			t.Fatal(err)
+		}
+		if err := write("option-b", "Long exact title ", true); err != ErrConflict {
+			t.Fatal("source adapter duplicate escaped", err)
+		}
+		if err := write("option-c", "Long exact title", true); err != nil {
+			t.Fatal("trailing space collapsed", err)
+		}
+		if err := write("option-d", "Rollback title", false); err != nil {
+			t.Fatal(err)
+		}
+		if err := write("option-e", "Rollback title", true); err != nil {
+			t.Fatal("claim not rolled back with business row", err)
+		}
+		var count int
+		if err := db.QueryRowContext(ctx, "SELECT COUNT(*) FROM relational_fixture.catalog_options WHERE id IN ('option-a','option-b','option-c','option-d','option-e')").Scan(&count); err != nil || count != 3 {
+			t.Fatal("business rows mismatch", count, err)
+		}
+	})
 }

@@ -1,0 +1,881 @@
+{
+  "version": 1,
+  "source_hashes": {
+    "catalog-field-mapping.json": "e760f3ea032fa7fd09119fe017bb9c634cbade3b08648a47cfc1c3481cc2255b",
+    "checkout-rules-field-mapping.json": "4c62f47a4f9e74cd19e16a9edb92b18de1e5e213cd8e565e5d5684e3aad5c7c8",
+    "commerce-field-mapping.json": "7c9526d97ed3612245202c2bde253311de3e488c9c75d741f0aa3ec2bc48d7d0",
+    "history-integration-field-mapping.json": "3490b81a95831f82a3b873d87a4c9cec2053c9d1f81494fcb0c13082fcf36f7d",
+    "inventory-device-field-mapping.json": "28e6e3d3200ff7de6f28cb8eb1abfcbfb9b0c9c265d636bc9f70bb9da2561b23",
+    "operations-field-mapping.json": "02e8348f1fe6101680769bbbaa516c306320d530739e24eae1c0e9e3ee5b5335",
+    "mysql-relational-review.json": "67ef84a4c0afa0e6cfbc54ea718ed388b283fc7ab1fd361a0ecec2fc00483d09"
+  },
+  "plans": [
+    {
+      "source_table": "account_holder",
+      "source_index": "IDX_account_holder_provider_id_external_id_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_account_holder_provider_id_external_id_unique\" ON public.account_holder USING btree (provider_id, external_id) WHERE (deleted_at IS NULL)",
+      "target_table": "payment_account_holders",
+      "scope": "source_uk_81dae4f5552d02c1dcaedcd4",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "provider_id",
+          "kind": "text",
+          "nullable": false
+        },
+        {
+          "column": "external_id",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "buyback_price",
+      "source_index": "IDX_buyback_price_product_id_capacity_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_buyback_price_product_id_capacity_unique\" ON public.buyback_price USING btree (product_id, capacity) WHERE (deleted_at IS NULL)",
+      "target_table": "buyback_prices",
+      "scope": "source_uk_1105dc31a6fea06d299b4703",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "product_id",
+          "kind": "text",
+          "nullable": false
+        },
+        {
+          "column": "capacity",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "buyback_request",
+      "source_index": "IDX_buyback_request_customer_id_submission_key_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_buyback_request_customer_id_submission_key_unique\" ON public.buyback_request USING btree (customer_id, submission_key) WHERE (deleted_at IS NULL)",
+      "target_table": "buyback_requests",
+      "scope": "source_uk_6354576c8e03ce5368305282",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "customer_id",
+          "kind": "text",
+          "nullable": false
+        },
+        {
+          "column": "submission_key",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "customer",
+      "source_index": "IDX_customer_email_has_account_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_customer_email_has_account_unique\" ON public.customer USING btree (email, has_account) WHERE (deleted_at IS NULL)",
+      "target_table": "historical_customer_subjects",
+      "scope": "source_uk_e2d90979d804034219501f10",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "email",
+          "kind": "text",
+          "nullable": true
+        },
+        {
+          "column": "legacy_had_account",
+          "kind": "bool",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "customer_group",
+      "source_index": "IDX_customer_group_name_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_customer_group_name_unique\" ON public.customer_group USING btree (name) WHERE (deleted_at IS NULL)",
+      "target_table": "historical_customer_groups",
+      "scope": "source_uk_f3303ab012ee95a78808502e",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "name",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "customer_notice",
+      "source_index": "IDX_customer_notice_event_key_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_customer_notice_event_key_unique\" ON public.customer_notice USING btree (event_key) WHERE (deleted_at IS NULL)",
+      "target_table": "customer_notices",
+      "scope": "source_uk_45dccadc07ac8cd0b620b147",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "event_key",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "fulfillment_set",
+      "source_index": "IDX_fulfillment_set_name_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_fulfillment_set_name_unique\" ON public.fulfillment_set USING btree (name) WHERE (deleted_at IS NULL)",
+      "target_table": "fulfillment_sets",
+      "scope": "source_uk_fbecdbe3d3d1b31febf4fc3b",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "name",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "mail_account",
+      "source_index": "IDX_mail_account_email_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_mail_account_email_unique\" ON public.mail_account USING btree (email) WHERE (deleted_at IS NULL)",
+      "target_table": "mail_accounts",
+      "scope": "source_uk_0dd39c15e819059c91c55ba4",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "email",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "mail_contact",
+      "source_index": "IDX_mail_contact_email_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_mail_contact_email_unique\" ON public.mail_contact USING btree (email) WHERE (deleted_at IS NULL)",
+      "target_table": "mail_contacts",
+      "scope": "source_uk_7d4019850221bfb608a69040",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "email",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "mail_contact",
+      "source_index": "IDX_mail_contact_unsubscribe_token_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_mail_contact_unsubscribe_token_unique\" ON public.mail_contact USING btree (unsubscribe_token) WHERE (deleted_at IS NULL)",
+      "target_table": "mail_contacts",
+      "scope": "source_uk_0393ca228244befd283245b7",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "unsubscribe_token",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": true,
+      "status": "blocked-protected-value-comparator"
+    },
+    {
+      "source_table": "notification",
+      "source_index": "IDX_notification_idempotency_key_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_notification_idempotency_key_unique\" ON public.notification USING btree (idempotency_key) WHERE (deleted_at IS NULL)",
+      "target_table": "historical_notifications",
+      "scope": "source_uk_911edc6c9b79f35c1c4dd544",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "idempotency_key",
+          "kind": "text",
+          "nullable": true
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "paypal_metric",
+      "source_index": "paypal_metric_name_unique",
+      "source_definition": "CREATE UNIQUE INDEX paypal_metric_name_unique ON public.paypal_metric USING btree (name)",
+      "target_table": "paypal_legacy_metrics",
+      "scope": "source_uk_522b2bcc4050c16f3183b07c",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "name",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "price_preference",
+      "source_index": "IDX_price_preference_attribute_value",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_price_preference_attribute_value\" ON public.price_preference USING btree (attribute, value) WHERE (deleted_at IS NULL)",
+      "target_table": "pricing_preferences",
+      "scope": "source_uk_aad933693e403d1a3de37f9e",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "attribute",
+          "kind": "text",
+          "nullable": false
+        },
+        {
+          "column": "value",
+          "kind": "text",
+          "nullable": true
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "price_rule",
+      "source_index": "IDX_price_rule_price_id_attribute_operator_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_price_rule_price_id_attribute_operator_unique\" ON public.price_rule USING btree (price_id, attribute, operator) WHERE (deleted_at IS NULL)",
+      "target_table": "pricing_price_rules",
+      "scope": "source_uk_50c74bae458605e37b8a088b",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "price_id",
+          "kind": "text",
+          "nullable": false
+        },
+        {
+          "column": "attribute",
+          "kind": "text",
+          "nullable": false
+        },
+        {
+          "column": "operator",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "product_option",
+      "source_index": "IDX_product_option_global_title_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_product_option_global_title_unique\" ON public.product_option USING btree (title) WHERE ((deleted_at IS NULL) AND (is_exclusive = false))",
+      "target_table": "catalog_options",
+      "scope": "source_uk_35e8c8ce0ad8fb4922f4125b",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "title",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        },
+        {
+          "column": "is_exclusive",
+          "operation": "is_false",
+          "kind": "bool",
+          "nullable": false
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "product_option_value",
+      "source_index": "IDX_option_value_option_id_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_option_value_option_id_unique\" ON public.product_option_value USING btree (option_id, value) WHERE (deleted_at IS NULL)",
+      "target_table": "catalog_option_values",
+      "scope": "source_uk_56289ec166e4d6ecbb153739",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "option_id",
+          "kind": "text",
+          "nullable": true
+        },
+        {
+          "column": "value",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "product_tag",
+      "source_index": "IDX_tag_value_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_tag_value_unique\" ON public.product_tag USING btree (value) WHERE (deleted_at IS NULL)",
+      "target_table": "catalog_tags",
+      "scope": "source_uk_fd185550fada3294420c682f",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "value",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "product_type",
+      "source_index": "IDX_type_value_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_type_value_unique\" ON public.product_type USING btree (value) WHERE (deleted_at IS NULL)",
+      "target_table": "catalog_product_types",
+      "scope": "source_uk_a26c7d7093949c707152444d",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "value",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "promotion_campaign",
+      "source_index": "IDX_promotion_campaign_campaign_identifier_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_promotion_campaign_campaign_identifier_unique\" ON public.promotion_campaign USING btree (campaign_identifier) WHERE (deleted_at IS NULL)",
+      "target_table": "promotion_campaigns",
+      "scope": "source_uk_840928fda61e1e0498874a71",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "campaign_identifier",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "promotion_campaign_budget_usage",
+      "source_index": "IDX_promotion_campaign_budget_usage_attribute_value_budget_id_u",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_promotion_campaign_budget_usage_attribute_value_budget_id_u\" ON public.promotion_campaign_budget_usage USING btree (attribute_value, budget_id) WHERE (deleted_at IS NULL)",
+      "target_table": "promotion_budget_usages",
+      "scope": "source_uk_d67ef7707e196a777f4cbf5e",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "attribute_value",
+          "kind": "text",
+          "nullable": false
+        },
+        {
+          "column": "budget_id",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "seo_crawler_visit",
+      "source_index": "IDX_seo_crawler_visit_event_hash_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_seo_crawler_visit_event_hash_unique\" ON public.seo_crawler_visit USING btree (event_hash) WHERE (deleted_at IS NULL)",
+      "target_table": "seo_crawler_visits",
+      "scope": "source_uk_2075ad40dd7a0e662dbb51ca",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "event_hash",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "seo_page",
+      "source_index": "IDX_seo_page_path_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_seo_page_path_unique\" ON public.seo_page USING btree (path) WHERE (deleted_at IS NULL)",
+      "target_table": "seo_pages",
+      "scope": "source_uk_3fe623cd79fac2c091634f57",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "path",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "seo_setting",
+      "source_index": "IDX_seo_setting_key_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_seo_setting_key_unique\" ON public.seo_setting USING btree (key) WHERE (deleted_at IS NULL)",
+      "target_table": "seo_settings",
+      "scope": "source_uk_4343a7de6b195b087c5ef77f",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "key",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "seo_traffic_visit",
+      "source_index": "IDX_seo_traffic_visit_event_hash_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_seo_traffic_visit_event_hash_unique\" ON public.seo_traffic_visit USING btree (event_hash) WHERE (deleted_at IS NULL)",
+      "target_table": "seo_traffic_visits",
+      "scope": "source_uk_3f454ee088f2fc6d04dbf4eb",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "event_hash",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "service_zone",
+      "source_index": "IDX_service_zone_name_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_service_zone_name_unique\" ON public.service_zone USING btree (name) WHERE (deleted_at IS NULL)",
+      "target_table": "fulfillment_service_zones",
+      "scope": "source_uk_50ef720e0a57770cded277de",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "name",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "shipping_profile",
+      "source_index": "IDX_shipping_profile_name_unique",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_shipping_profile_name_unique\" ON public.shipping_profile USING btree (name) WHERE (deleted_at IS NULL)",
+      "target_table": "fulfillment_shipping_profiles",
+      "scope": "source_uk_85ad294f63597803824290f4",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "name",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "tax_region",
+      "source_index": "IDX_tax_region_unique_country_nullable_province",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_tax_region_unique_country_nullable_province\" ON public.tax_region USING btree (country_code) WHERE ((province_code IS NULL) AND (deleted_at IS NULL))",
+      "target_table": "tax_regions",
+      "scope": "source_uk_0c1bdcce28a6a0a9f37a7d5e",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "country_code",
+          "kind": "text",
+          "nullable": false
+        }
+      ],
+      "conditions": [
+        {
+          "column": "province_code",
+          "operation": "is_null",
+          "kind": "text",
+          "nullable": true
+        },
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    },
+    {
+      "source_table": "tax_region",
+      "source_index": "IDX_tax_region_unique_country_province",
+      "source_definition": "CREATE UNIQUE INDEX \"IDX_tax_region_unique_country_province\" ON public.tax_region USING btree (country_code, province_code) WHERE (deleted_at IS NULL)",
+      "target_table": "tax_regions",
+      "scope": "source_uk_1bc7590ed3925ad55fb0d006",
+      "owner": {
+        "column": "id",
+        "kind": "text",
+        "nullable": false
+      },
+      "keys": [
+        {
+          "column": "country_code",
+          "kind": "text",
+          "nullable": false
+        },
+        {
+          "column": "province_code",
+          "kind": "text",
+          "nullable": true
+        }
+      ],
+      "conditions": [
+        {
+          "column": "deleted_at",
+          "operation": "is_null",
+          "kind": "time",
+          "nullable": true
+        }
+      ],
+      "protected": false,
+      "status": "adapter-not-connected-to-domain-writers"
+    }
+  ]
+}

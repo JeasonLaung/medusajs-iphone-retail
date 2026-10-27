@@ -4,6 +4,7 @@ import json
 import hashlib
 from pathlib import Path
 import secrets
+import re
 import subprocess
 import time
 import uuid
@@ -257,6 +258,11 @@ INDEX prefix_access(value_text(128))) ENGINE=InnoDB;''')
                       'Convert source instants to UTC before DATETIME(6), configure every connection UTC',
                       'Composite long-text identity needs full-value transactional registry/collision verification, never prefix uniqueness'],
                   'remaining': ['Remaining held source constraints/indexes and formal domain migrations', 'Exact JSON/number/time importer validation and real data reconciliation', 'Concurrency, failure recovery, Gin and UI behavior']}
+        if args.registry_test_binary:
+            report['go_registry_fixture'] = {
+                'binary_sha256': hashlib.sha256(args.registry_test_binary.read_bytes()).hexdigest(),
+                'passed_tests': re.findall(r'--- PASS: (\S+) ', tested.stdout),
+                'scope': 'Artificial rows only, including actual source adapter and domain row transaction; no HTTP/importer integration acceptance'}
     finally:
         password = ''
         if container:
