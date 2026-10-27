@@ -328,3 +328,5 @@
 2026-10-28 公共选价补充：[Gin 精确区域/数量选价](migration/store-pricing.md)增加显式地区、店铺币种、数量阶梯、规则具体度、sale/override 原价、含税偏好及有界集合读取；未知条件/不完整变体不报价。固定来源两个上下文与旧服务核对，人工 SQL 覆盖价目表及失败边界。availability/checkout 仍关闭；客户身份、完整税/优惠/配送交易、可售、metadata 和 Astro 页面继续推进，T020/T025/T026 未整体验收。
 
 2026-10-28 可售观察补充：[Gin 渠道库存与单仓容量](migration/store-availability.md)增加精确整件数量、共同仓库约束、背单和不跟踪状态，实时核对预留并排除持久 hold；availability=true、checkout=false。人工 SQL、固定来源独立关系核验及浏览器报告跟踪。实际预留/购物车/结账、Astro 页面仍缺，相关任务未整体验收。后台优先 Ant Design，图表统一 ECharts。
+
+2026-10-28 Astro 商品适配补充：[独立 Gin 商品 DTO 与精确金额](migration/astro-products.md)承接列表/原 ID 详情、严格匿名传输、关联和库存状态校验，精确比较最低价、选中 SKU、选项差价及货币显示；缺价、未知库存和依赖失败分别处理。10 项单元、类型/build、独占真实 Gin 源模块串联及生产 SSR 报告跟踪。业务页面尚未引用商品模块，CSS/资源/slug/筛选/购物车继续待办，不代表页面保真或完整交易验收。
