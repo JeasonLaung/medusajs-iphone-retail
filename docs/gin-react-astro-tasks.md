@@ -268,3 +268,5 @@
 2026-10-27 Redis组件补充：[会话/挑战/限流](migration/redis-session-store.md)新增独立Go组件及显式连接配置，后台/客户和应用namespace分离；真实禁网单核临时Redis验证16路一次性挑战仅1成功、24路限流仅8通过，TTL/撤销/定向淘汰/坏记录/关闭连接默认拒绝。未接入Gin登录、MySQL权限版本和浏览器Origin/cookie/CSRF，真实宕机/TLS/联合HTTP仍缺，T014/T019未验收。
 
 2026-10-27后台登录补充：[联合运行路径](migration/admin-auth-runtime.md)移除旧MySQL会话及内存限流，Gin正式进程使用独立Redis、精确Origin及Secure配置。新账号auth_version、一次性挑战、写CSRF、双维限流、会话轮换/退出和逐请求MySQL复核落地；独占真实MySQL/Redis人工账号验证撤销恢复不复活、旧/客户会话拒绝、依赖关闭503、九文件schema执行/重复。客户、Ant页面、完整权限/对象范围、账号修改/撤销事务、真实浏览器/TLS/宕机仍缺，T014/T015/T019未验收。
+
+2026-10-28后台UI补充：[Ant登录与账号](migration/admin-login-ui.md)新增独立React应用及锁定依赖，Ant Form/Layout/Menu/Drawer/Descriptions直接调用Gin协议；不存储凭据/账号资料，挑战每次重取、错误/过期/退出失败分别处理。类型/build及7项浏览器人工HTTP测试、9张中英三宽截图通过；默认浏览器由本机Edge显式覆盖。真实浏览器到Gin/MySQL/Redis、完整外壳/权限/全部业务页和图表仍缺，bundle大包告警保留；T014/T023/T024未验收。
