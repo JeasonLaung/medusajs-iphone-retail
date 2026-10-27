@@ -1,0 +1,170 @@
+{
+  "format_version": 1,
+  "scope": "Installed Medusa API entry loader, ApiLoader, RoutesLoader, MiddlewareFileLoader, RoutesSorter, RoutesFinder, permission matcher/wrapper and Express over ephemeral loopback. Route modules/middleware bodies, authentication, DB/cache, validators/providers are artificial ports; no real business handlers or writes.",
+  "source_dirs": [
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api",
+    "medusa-store/node_modules/.pnpm/@agilo+medusa-analytics-plu_e3e3df540e23a9ff56a474c17efd6246/node_modules/@agilo/medusa-analytics-plugin/.medusa/server/src/api",
+    "medusa-store/node_modules/.pnpm/@easypayment+medusa-payment_6f86ea7b3dfa050e69dbdffe6b024ced/node_modules/@easypayment/medusa-payment-paypal/.medusa/server/src/api",
+    "medusa-store/apps/backend/src/api"
+  ],
+  "cases": [
+    {
+      "name": "source-order-core-plugins-project-last",
+      "passed": true
+    },
+    {
+      "name": "project-handler-overrides-GET /admin/inventory-items",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-denies-before-handler-GET /admin/inventory-items",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-allows-required-grants-GET /admin/inventory-items",
+      "passed": true
+    },
+    {
+      "name": "project-handler-overrides-POST /admin/orders/:id/cancel",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-denies-before-handler-POST /admin/orders/:id/cancel",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-allows-required-grants-POST /admin/orders/:id/cancel",
+      "passed": true
+    },
+    {
+      "name": "project-handler-overrides-POST /admin/orders/:id/fulfillments/:fulfillment_id/cancel",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-denies-before-handler-POST /admin/orders/:id/fulfillments/:fulfillment_id/cancel",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-allows-required-grants-POST /admin/orders/:id/fulfillments/:fulfillment_id/cancel",
+      "passed": true
+    },
+    {
+      "name": "project-handler-overrides-POST /admin/orders/:id/fulfillments/:fulfillment_id/shipments",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-denies-before-handler-POST /admin/orders/:id/fulfillments/:fulfillment_id/shipments",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-allows-required-grants-POST /admin/orders/:id/fulfillments/:fulfillment_id/shipments",
+      "passed": true
+    },
+    {
+      "name": "project-handler-overrides-GET /admin/orders/:id",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-denies-before-handler-GET /admin/orders/:id",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-allows-required-grants-GET /admin/orders/:id",
+      "passed": true
+    },
+    {
+      "name": "project-handler-overrides-GET /admin/orders",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-denies-before-handler-GET /admin/orders",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-allows-required-grants-GET /admin/orders",
+      "passed": true
+    },
+    {
+      "name": "project-handler-overrides-GET /admin/stock-locations/:id",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-denies-before-handler-GET /admin/stock-locations/:id",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-allows-required-grants-GET /admin/stock-locations/:id",
+      "passed": true
+    },
+    {
+      "name": "project-handler-overrides-GET /admin/stock-locations",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-denies-before-handler-GET /admin/stock-locations",
+      "passed": true
+    },
+    {
+      "name": "inherited-policy-allows-required-grants-GET /admin/stock-locations",
+      "passed": true
+    },
+    {
+      "name": "project-handler-overrides-POST /store/payment-collections/:id/payment-sessions",
+      "passed": true
+    },
+    {
+      "name": "anonymous-admin-blocked-before-artificial-handler",
+      "passed": true
+    },
+    {
+      "name": "native-feature-flags-auth-optout-honored",
+      "passed": true
+    },
+    {
+      "name": "native-invite-accept-optout-does-not-prove-invite-validation",
+      "passed": true
+    },
+    {
+      "name": "after-sales-read-policy-alone-reaches-handler-scope-not-write-acceptance",
+      "passed": true
+    },
+    {
+      "name": "tracking-needs-order-read-and-fulfillment-update",
+      "passed": true
+    },
+    {
+      "name": "configured-plugin-handler-loaded-/admin/agilo-analytics/customers",
+      "passed": true
+    },
+    {
+      "name": "configured-plugin-handler-loaded-/admin/agilo-analytics/orders",
+      "passed": true
+    },
+    {
+      "name": "configured-plugin-handler-loaded-/admin/agilo-analytics/products",
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "docs/migration/route-policy-registrations.json": "9779cdf0a30e264dda38e2613eb96e3095bff9e1544e44485bcfe1e72b64a858",
+    "medusa-store/apps/backend/medusa-config.ts": "9c18f31216407658d1cc17519283181710b2afcddfc062403ecc819e928396e9",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/common/get-resolved-plugins.js": "a8eab2856e7e54021a1d3c61d63e58fea4411a20e97e19018b90190b12902188",
+    "medusa-store/apps/backend/node_modules/@medusajs/framework/dist/http/types.js": "a8c0c252334518962a054dafeef52ca4810d5f3f7177dcfe1203cdcede6af4f2",
+    "medusa-store/apps/backend/node_modules/@medusajs/framework/dist/http/utils/define-middlewares.js": "581bbfc5e6bfbe64f55ba4c7da0da1fb92abee7e8cc8129d17e9075a6959942c",
+    "medusa-store/apps/backend/node_modules/@medusajs/framework/dist/policies/has-permission.js": "02c7828709e5d31ed459171b5eedcdd2a1d41f7643ece37d43f50688c877a9a1",
+    "medusa-store/apps/backend/node_modules/@medusajs/framework/dist/http/middlewares/check-permissions.js": "be2af0aeb00643329dc365762d15e9f5d6057af48d400a2aee658c5f3e922745",
+    "medusa-store/apps/backend/node_modules/@medusajs/framework/dist/http/routes-loader.js": "82e7cdd170c0b3291771c519967cc9f035d74e9e88eecac7cf4091d3ed4a0596",
+    "medusa-store/apps/backend/node_modules/@medusajs/framework/dist/http/middleware-file-loader.js": "c38f29efbc699091414fc9ea16646d9a004f613ec8054b18049a19834978de63",
+    "medusa-store/apps/backend/node_modules/@medusajs/framework/dist/http/routes-sorter.js": "8a97b48084b395db18279bdf2b9804bdcd9203181d288eb7a333cb4958712c54",
+    "medusa-store/apps/backend/node_modules/@medusajs/framework/dist/http/routes-finder.js": "dc62cd501be362a443e41fb842b774cb730e25edf6de7248c4ae3cd27413c544",
+    "medusa-store/apps/backend/node_modules/@medusajs/framework/dist/http/utils/wrap-handler.js": "137f02420603bf6cf7baf30fba7cce56e0c1398b475d569f90f3b8f38484354b",
+    "medusa-store/apps/backend/node_modules/@medusajs/framework/dist/http/router.js": "09d00847b93d50f74a4752b899d53a62d9da87e60416d0ec4c10afe23d113707",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/loaders/api.js": "0b327f66964a51d18302875370fc604a6dc3f4d2bca8dfb81ba0b74d5a328a62"
+  },
+  "cleanup": "ephemeral loopback listener closed; no database, Redis or server deployment connected",
+  "remaining": [
+    "Live service effective routes/dynamic HMR may differ; not inspected by mutating requests",
+    "Real authentication, role refresh/revocation, custom guards, validation/field filters and full workflows",
+    "Gin explicit permissions and transaction acceptance"
+  ]
+}

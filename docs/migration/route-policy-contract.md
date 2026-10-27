@@ -23,7 +23,7 @@ node retail/scripts/inventory-route-policies.cjs --check
 | 已配置Analytics插件 | 3 | 3 | 0 |
 | 合计（含重复候选） | 576 | 465 | 390 |
 
-包括9组原生/项目同方法同路径候选，清单逐项列出。源routes-loader的registerRoute按matcher/method覆盖前项，但当前扫描没有运行整套sourceDirs加载顺序，不能据此宣称其中哪一个是已验证生效处理器。购物车付款session的项目包装也在重复清单内，后续实现不能漏掉包装语义。
+包括9组原生/项目同方法同路径候选，清单逐项列出。源routes-loader的registerRoute按matcher/method覆盖前项；本扫描仅静态追踪，后续[34项隔离加载/HTTP验证](route-loading-contract.md)已用实际加载器及人工处理器确认项目覆盖并保留继承policy。该执行不证明真实业务处理器或当前旧进程的HMR状态。购物车付款session的项目包装也在重复清单内，后续实现不能漏掉包装语义。
 
 本次插件范围明确为已配置的Analytics三个查询端点；支付provider的运行时入口、框架动态路由和完整插件发现顺序仍需单独核对。没有把磁盘中全部未配置插件算成实际业务。
 
