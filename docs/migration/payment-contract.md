@@ -60,4 +60,4 @@ PayPal 使用本机已安装 `@easypayment/medusa-payment-paypal@1.3.2`；包 ex
 | P11 | 授权成功但未实收时请求设备配货 | 拒绝；确认实收后才允许 |
 | P12 | 多 worker 同时恢复失效租约、次数耗尽 | 单次认领，dead-letter 可查可审计 |
 
-以上为规格，尚未运行用例。下一步继续核对 PayPal create/capture/授权与编译产物、原生购物车合计及库存预留，再形成完整 Gin API 定义。
+以上P01—P12仍为完整集成规格，尚未在新系统运行。已有[原生保护基线](native-guard-contract.md)对实际生产付款guard运行人工端口样例，覆盖手工选择/授权/扣款/完成和provider列表；不证明库存、订单或provider无副作用。下一步继续核对 PayPal create/capture/授权与编译产物、原生购物车合计及库存预留，再形成完整 Gin API 定义。

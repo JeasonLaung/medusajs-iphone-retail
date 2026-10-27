@@ -62,4 +62,4 @@ X-Request-ID 由服务端生成或严格验证可信上游值；响应与日志�
 
 ## 仍需交付
 
-本约定是新实现设计；现有 `retail/backend` 草稿未满足它。[请求基线与SDK承接](request-validation-and-sdk-contract.md)已提取34份旧输入结构、69处额外规则、22个人工用例，并为36个SDK候选设计27个新操作；这些不是完整的新API schemas或全部入口。待补直接fetch、原生后台/插件、每个旧方法/多动作到新API的完整映射、请求/响应字段、领域错误码表、CSRF/会话生命周期及契约测试。相应更改进入T010—T019时逐项实现，不修改旧Medusa运行约定。
+本约定是新实现设计；现有 `retail/backend` 草稿未满足它。[请求基线与SDK承接](request-validation-and-sdk-contract.md)已提取35份旧输入结构、72处额外规则、35个人工用例，并为36个SDK候选设计27个新操作；[直接HTTP](http-caller-contract.md)和[全部86个自定义方法](custom-route-contract.md)已有设计引用。这些不是完整的新API schemas或全部原生入口。[原生保护](native-guard-contract.md)另登记25条挂载及46个隔离样例，不能当作处理器或授权验收。待补原生后台/插件、多动作/资源分支的完整映射、请求/响应字段、领域错误码表、CSRF/会话生命周期及契约测试。相应更改进入T010—T019时逐项实现，不修改旧Medusa运行约定。

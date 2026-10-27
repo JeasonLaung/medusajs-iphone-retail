@@ -1,0 +1,1382 @@
+{
+  "format_version": 1,
+  "scope": "Actual project middleware mount syntax plus isolated actual guard execution against artificial ports; native validation/auth/SQL/provider/transaction and handler execution not proven. Delegation is not authorization.",
+  "installed_medusa_version": "2.21.2",
+  "source_sha256": {
+    "medusa-store/apps/backend/src/api/middlewares.ts": "380175e9894f94410d0afbf653f156fce220b1abfc9689b603879db3441262c1",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/package.json": "5b7a27c8b1f2c582945674b53f1d9e1f8d00ff3f78f05d6ba5720494b2b29f0f",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/store/payment-providers/route.js": "be2cc29d6a37dc2d78eb9a6cc6939996e536aa7db2f25d20a5ef59630bfc97b8",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/payments/payment-providers/route.js": "ce36ccb2e97524b673b2fee9259b4bc1d9606e7a593c3c2d5c8162b3fc0a9cab",
+    "medusa-store/apps/backend/src/api/store/payment-collections/[id]/payment-sessions/route.ts": "e16e4ea5c03f4e8f2f2746c3ce6ad97bf38f8a5ddc64ffc9bd1f623f5f5f7dcf",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/store/payment-collections/[id]/payment-sessions/route.js": "eaad0a11148ad99de725d92e1f177d2e97419d47b4ab715091247f899066c006",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/payment-collections/[id]/payment-sessions/route.js": "2a8d35c8d29f9dd7873f44bd680cdcbb148c2ab926d5b8ad76d492e943aa711a",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/store/carts/[id]/complete/route.js": "db0ea4de27ff333a83206f40a4c54164d14fdf9cacb8027c65d9d231dc5d3c55",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/payment-collections/[id]/mark-as-paid/route.js": "3b284b497a558b06a6852717d049efd632505a5e075c78ca1d4e4a36823050ce",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/orders/[id]/payment-sessions/authorize/route.js": "5ae2e6c5c19bfe73a8597441813a4d1b38860fcc99fd2ab741aaae59c5bb6ea4",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/payments/[id]/capture/route.js": "db88c5e7238ec228e91a60b15faab471ace0e42883949196dd7e71bf9e555910",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/orders/[id]/fulfillments/route.js": "cde9cf173b99aee5d739a17303f5e386b79013e4fcdbcf488347298fc1dc1c7f",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/shipments/route.ts": "32edbbbd3ea2ad6bb9e049defa4781e0b577a6cb2c0d01e383ec2b9318f9483c",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/orders/[id]/fulfillments/[fulfillment_id]/shipments/route.js": "7acc5b550b48987b972d4aebf4492c120860b85d822df66aff26312ab7ca84ce",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/cancel/route.ts": "47f1f9f944477caf27ef4237d6101a6c62b737155b046b76d499909941f3a75e",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/orders/[id]/fulfillments/[fulfillment_id]/cancel/route.js": "fe13165324518e30578cd3444072362efb7edd6435c07d7d2ab574c7426d4402",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/cancel/route.ts": "2e5fe261ccb7a46f287212729fb700a157c73f34289495e7098e610e7b44b197",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/orders/[id]/cancel/route.js": "08ec603cd3ec2ef2185862638128ada39317d8729fb4917aa4360a0319c036de",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/inventory-items/[id]/location-levels/route.js": "5deb52e25da14b95211d478f04298bece78cd5a05cbcbc7e8e645c48e906a670",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/inventory-items/[id]/location-levels/[location_id]/route.js": "878b9b2d7317b2ea0a1b10951834d123ff99d31575ec934fd051117f2ad6aa6f",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/inventory-items/[id]/location-levels/batch/route.js": "b9598447cfacaa4c30605da51cf0e6777b3209de0d2fa25298e488ae43d35357",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/returns/route.js": "d7e60da23b750b8d746daf5f1cfd019eb4b3d4c839ce05b3f9bdab98bb1083a4",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/returns/[id]/receive/confirm/route.js": "6df615908f0357a65efa6ce50b8f7b9a36069fd914bb17f60d1429e99c1a8fb8",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/store/returns/route.js": "6f6e36ba2164fbfcf009646efb49467a4ebe57d1cc690c6f340e54c9683fe856",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/exchanges/route.js": "768c448ace9427489bd244560319dab4c2532ba17e57b886deb359542ad70ea5",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/inventory-items/[id]/route.js": "0e6114072dcb3647f7fa9e141c144410840d5372590d32dd6c09c1986e6a9f40",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/order-edits/route.js": "622dee764aea6c34d3fb806f3aee873dc84b15db2a32736079249c744f185d76",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/order-edits/[id]/request/route.js": "958862a7da345990aef34e8242ac078c8e39a2bccc529f8de8398d627bca9a14",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/order-edits/[id]/confirm/route.js": "0acd02e509bd3eabcdf294b9eaca774ad6e5df2e5c4c337100e2add0e5e4ee85",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/exchanges/[id]/request/route.js": "8c900da0f53707ff6973ee69df0c3967551805b7417e817a20ea5661c0033bd1",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/order-edits/middlewares.js": "6a6562c8ccd816a03db5857090c72d7a5285535613d62db9aa2361b7c33d5050",
+    "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/exchanges/middlewares.js": "d9c150ede6ed697b189acf028e3600dbfd5d6c57c819ba4cca2f7b2c60246cf0",
+    "medusa-store/apps/backend/src/api/device-guards.ts": "69024bd8e61f6cdedf44e00bcd13401f5312cdd786822966245249c07da52ff9",
+    "medusa-store/apps/backend/src/api/payment-guards.ts": "442e9fab990810329fb597ae334cb472179730f76fa5bc64098c0daead5ba7dc"
+  },
+  "mounts": [
+    {
+      "method": "GET",
+      "path": "/store/payment-providers",
+      "guard": "listProductionPaymentProviders",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 97,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/store/payment-providers/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payments/payment-providers",
+      "guard": "listProductionPaymentProviders",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 97,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/payments/payment-providers/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/store/payment-collections/:id/payment-sessions",
+      "guard": "guardManualPaymentSelection",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 102,
+      "handler_evidence": {
+        "custom_file": "medusa-store/apps/backend/src/api/store/payment-collections/[id]/payment-sessions/route.ts",
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/store/payment-collections/[id]/payment-sessions/route.js",
+        "custom_method_exported": true,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/payment-collections/:id/payment-sessions",
+      "guard": "guardManualPaymentSelection",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 102,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/payment-collections/[id]/payment-sessions/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/store/carts/:id/complete",
+      "guard": "guardManualCartCompletion",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 107,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/store/carts/[id]/complete/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/payment-collections/:id/mark-as-paid",
+      "guard": "guardMarkAsPaid",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 112,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/payment-collections/[id]/mark-as-paid/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/orders/:id/payment-sessions/authorize",
+      "guard": "guardManualPaymentAuthorization",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 117,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/orders/[id]/payment-sessions/authorize/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/payments/:id/capture",
+      "guard": "guardManualPaymentCapture",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 122,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/payments/[id]/capture/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/orders/:id/fulfillments",
+      "guard": "guardDeviceOrder",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 143,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/orders/[id]/fulfillments/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/orders/:id/fulfillments/:fulfillment_id/shipments",
+      "guard": "guardDeviceOrder",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 143,
+      "handler_evidence": {
+        "custom_file": "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/shipments/route.ts",
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/orders/[id]/fulfillments/[fulfillment_id]/shipments/route.js",
+        "custom_method_exported": true,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/orders/:id/fulfillments/:fulfillment_id/cancel",
+      "guard": "guardDeviceOrder",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 143,
+      "handler_evidence": {
+        "custom_file": "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/cancel/route.ts",
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/orders/[id]/fulfillments/[fulfillment_id]/cancel/route.js",
+        "custom_method_exported": true,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/orders/:id/cancel",
+      "guard": "guardDeviceOrder",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 143,
+      "handler_evidence": {
+        "custom_file": "medusa-store/apps/backend/src/api/admin/orders/[id]/cancel/route.ts",
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/orders/[id]/cancel/route.js",
+        "custom_method_exported": true,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/orders/:id/edits",
+      "guard": "guardDeviceOrder",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 143,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": null,
+        "custom_method_exported": false,
+        "native_method_exported": false,
+        "status": "no-exact-handler-file-found-not-a-removal-decision"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/inventory-items/:id/location-levels",
+      "guard": "guardDeviceInventory",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 152,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/inventory-items/[id]/location-levels/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/inventory-items/:id/location-levels",
+      "guard": "guardDeviceInventory",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 152,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/inventory-items/[id]/location-levels/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": false,
+        "status": "native-file-found-method-not-exported"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/inventory-items/:id/location-levels/:location_id",
+      "guard": "guardDeviceInventory",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 152,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/inventory-items/[id]/location-levels/[location_id]/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/inventory-items/:id/location-levels/:location_id",
+      "guard": "guardDeviceInventory",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 152,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/inventory-items/[id]/location-levels/[location_id]/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/inventory-items/:id/location-levels/batch",
+      "guard": "guardDeviceInventory",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 152,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/inventory-items/[id]/location-levels/batch/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/inventory-items/:id/location-levels/batch",
+      "guard": "guardDeviceInventory",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 152,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/inventory-items/[id]/location-levels/batch/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": false,
+        "status": "native-file-found-method-not-exported"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/returns",
+      "guard": "guardDeviceReturn",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 163,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/returns/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/returns/:id/receive/confirm",
+      "guard": "guardDeviceReturn",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 163,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/returns/[id]/receive/confirm/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/store/returns",
+      "guard": "guardDeviceReturn",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 163,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/store/returns/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/exchanges",
+      "guard": "guardDeviceReturn",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 163,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/exchanges/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/admin/exchanges/:id/request/confirm",
+      "guard": "guardDeviceReturn",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 163,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": null,
+        "custom_method_exported": false,
+        "native_method_exported": false,
+        "status": "no-exact-handler-file-found-not-a-removal-decision"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/inventory-items/:id",
+      "guard": "guardDeviceInventory",
+      "source": "medusa-store/apps/backend/src/api/middlewares.ts",
+      "line": 168,
+      "handler_evidence": {
+        "custom_file": null,
+        "native_file": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/inventory-items/[id]/route.js",
+        "custom_method_exported": false,
+        "native_method_exported": true,
+        "status": "handler-source-found-runtime-not-proven"
+      }
+    }
+  ],
+  "traced_native_entrypoints": [
+    {
+      "method": "POST",
+      "path": "/admin/order-edits",
+      "source": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/order-edits/route.js",
+      "workflow": "beginOrderEditOrderWorkflow",
+      "migration_requirement": "Actual edit creation uses body order_id, not /orders/:id/edits; bind order and device guards here",
+      "status": "installed-source-only-not-runtime-or-target-schema-acceptance"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/order-edits/:id/request",
+      "source": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/order-edits/[id]/request/route.js",
+      "workflow": "requestOrderEditRequestWorkflow",
+      "migration_requirement": "Resolve change/order before requesting customer confirmation; exact workflow export reviewed separately",
+      "status": "installed-source-only-not-runtime-or-target-schema-acceptance"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/order-edits/:id/confirm",
+      "source": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/order-edits/[id]/confirm/route.js",
+      "workflow": "confirmOrderEditRequestWorkflow",
+      "migration_requirement": "Resolve change/order and recheck state and devices at commit, not just draft creation",
+      "status": "installed-source-only-not-runtime-or-target-schema-acceptance"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/exchanges/:id/request",
+      "source": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/exchanges/[id]/request/route.js",
+      "workflow": "confirmExchangeRequestWorkflow",
+      "migration_requirement": "Actual exchange confirmation has no /confirm suffix; guard exact route and nested order",
+      "status": "installed-source-only-not-runtime-or-target-schema-acceptance"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/inventory-items/:id/location-levels/batch",
+      "source": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/inventory-items/[id]/location-levels/batch/route.js",
+      "workflow": "batchInventoryItemLevelsWorkflow",
+      "migration_requirement": "Actual batch delete is validatedBody.delete on POST; scope every member and force semantics",
+      "status": "installed-source-only-not-runtime-or-target-schema-acceptance"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/inventory-items/:id/location-levels/:location_id",
+      "source": "medusa-store/apps/backend/node_modules/@medusajs/medusa/dist/api/admin/inventory-items/[id]/location-levels/[location_id]/route.js",
+      "workflow": "deleteInventoryLevelsWorkflow",
+      "migration_requirement": "Actual single-location delete path includes location_id; verify reservation and history behavior",
+      "status": "installed-source-only-not-runtime-or-target-schema-acceptance"
+    }
+  ],
+  "cases": [
+    {
+      "name": "/admin/orders/order-fixture/fulfillments-ordinary-allowed",
+      "guard": "guardDeviceOrder",
+      "artificial_input": {
+        "path": "/admin/orders/order-fixture/fulfillments",
+        "data": [
+          {
+            "id": "order-fixture",
+            "items": [
+              {
+                "variant_id": "variant-fixture"
+              }
+            ]
+          }
+        ]
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [
+        "query",
+        "variants",
+        "assignments"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "/admin/orders/order-fixture/fulfillments-managed-rejected",
+      "guard": "guardDeviceOrder",
+      "artificial_input": {
+        "path": "/admin/orders/order-fixture/fulfillments",
+        "data": [
+          {
+            "id": "order-fixture",
+            "items": [
+              {
+                "variant_id": "variant-fixture"
+              }
+            ]
+          }
+        ],
+        "managed": true
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "该订单包含序列号设备，请在订单详情的设备与履约区域完成配货、履约、发货或解除配货"
+      },
+      "observed_port_calls": [
+        "query",
+        "variants",
+        "assignments"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "/admin/orders/order-fixture/fulfillments-assignment-alone-rejected",
+      "guard": "guardDeviceOrder",
+      "artificial_input": {
+        "path": "/admin/orders/order-fixture/fulfillments",
+        "data": [
+          {
+            "id": "order-fixture",
+            "items": [
+              {
+                "variant_id": "variant-fixture"
+              }
+            ]
+          }
+        ],
+        "assigned": true
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "该订单包含序列号设备，请在订单详情的设备与履约区域完成配货、履约、发货或解除配货"
+      },
+      "observed_port_calls": [
+        "query",
+        "variants",
+        "assignments"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "/admin/orders/order-fixture/edits-ordinary-allowed",
+      "guard": "guardDeviceOrder",
+      "artificial_input": {
+        "path": "/admin/orders/order-fixture/edits",
+        "data": [
+          {
+            "id": "order-fixture",
+            "items": [
+              {
+                "variant_id": "variant-fixture"
+              }
+            ]
+          }
+        ]
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [
+        "query",
+        "variants",
+        "assignments"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "/admin/orders/order-fixture/edits-managed-rejected",
+      "guard": "guardDeviceOrder",
+      "artificial_input": {
+        "path": "/admin/orders/order-fixture/edits",
+        "data": [
+          {
+            "id": "order-fixture",
+            "items": [
+              {
+                "variant_id": "variant-fixture"
+              }
+            ]
+          }
+        ],
+        "managed": true
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "该订单包含序列号设备，请在订单详情的设备与履约区域完成配货、履约、发货或解除配货"
+      },
+      "observed_port_calls": [
+        "query",
+        "variants",
+        "assignments"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "/admin/orders/order-fixture/edits-assignment-alone-rejected",
+      "guard": "guardDeviceOrder",
+      "artificial_input": {
+        "path": "/admin/orders/order-fixture/edits",
+        "data": [
+          {
+            "id": "order-fixture",
+            "items": [
+              {
+                "variant_id": "variant-fixture"
+              }
+            ]
+          }
+        ],
+        "assigned": true
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "该订单包含序列号设备，请在订单详情的设备与履约区域完成配货、履约、发货或解除配货"
+      },
+      "observed_port_calls": [
+        "query",
+        "variants",
+        "assignments"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "cancel-managed-no-active-assignment-allowed",
+      "guard": "guardDeviceOrder",
+      "artificial_input": {
+        "path": "/admin/orders/order-fixture/cancel",
+        "data": [
+          {
+            "id": "order-fixture",
+            "items": [
+              {
+                "variant_id": "variant-fixture"
+              }
+            ]
+          }
+        ],
+        "managed": true
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [
+        "query",
+        "variants",
+        "assignments"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "cancel-active-assignment-rejected",
+      "guard": "guardDeviceOrder",
+      "artificial_input": {
+        "path": "/admin/orders/order-fixture/cancel",
+        "data": [
+          {
+            "id": "order-fixture",
+            "items": [
+              {
+                "variant_id": "variant-fixture"
+              }
+            ]
+          }
+        ],
+        "assigned": true
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "该订单包含序列号设备，请在订单详情的设备与履约区域完成配货、履约、发货或解除配货"
+      },
+      "observed_port_calls": [
+        "query",
+        "variants",
+        "assignments"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "dedicated-shipment-delegates-without-device-reads",
+      "guard": "guardDeviceOrder",
+      "artificial_input": {
+        "path": "/admin/orders/order-fixture/fulfillments/f/shipments",
+        "managed": true,
+        "assigned": true
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "dedicated-fulfillment-cancel-delegates",
+      "guard": "guardDeviceOrder",
+      "artificial_input": {
+        "path": "/admin/orders/order-fixture/fulfillments/f/cancel",
+        "params": {
+          "id": "order-fixture",
+          "fulfillment_id": "f"
+        },
+        "managed": true,
+        "assigned": true
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "quantity-inventory-guard-is-noop",
+      "guard": "guardDeviceInventory",
+      "artificial_input": {
+        "managed": true,
+        "assigned": true
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "ordinary-return-allowed",
+      "guard": "guardDeviceReturn",
+      "artificial_input": {
+        "body": {
+          "order_id": "order-fixture"
+        }
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [
+        "assignments"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "any-device-assignment-blocks-native-return",
+      "guard": "guardDeviceReturn",
+      "artificial_input": {
+        "body": {
+          "order_id": "order-fixture"
+        },
+        "assigned": true
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "序列号设备退回必须在扫码工作台核对原机并进入待检测，请从订单售后申请处理"
+      },
+      "observed_port_calls": [
+        "assignments"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "return-resolves-order-before-denial",
+      "guard": "guardDeviceReturn",
+      "artificial_input": {
+        "path": "/admin/returns/record-fixture/receive/confirm",
+        "params": {
+          "id": "record-fixture"
+        },
+        "data": [
+          {
+            "order_id": "resolved-order"
+          }
+        ],
+        "assigned": true
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "序列号设备退回必须在扫码工作台核对原机并进入待检测，请从订单售后申请处理"
+      },
+      "observed_port_calls": [
+        "query",
+        "assignments"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "exchange-resolves-order-before-denial",
+      "guard": "guardDeviceReturn",
+      "artificial_input": {
+        "path": "/admin/exchanges/record-fixture/receive/confirm",
+        "params": {
+          "id": "record-fixture"
+        },
+        "data": [
+          {
+            "order_id": "resolved-order"
+          }
+        ],
+        "assigned": true
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "序列号设备退回必须在扫码工作台核对原机并进入待检测，请从订单售后申请处理"
+      },
+      "observed_port_calls": [
+        "query",
+        "assignments"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "missing-order-delegates-not-authorized-proof",
+      "guard": "guardDeviceReturn",
+      "artificial_input": {
+        "params": {}
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "legacy-body-order-precedes-return-path-order",
+      "guard": "guardDeviceReturn",
+      "artificial_input": {
+        "body": {
+          "order_id": "body-order"
+        },
+        "path": "/admin/returns/r/receive/confirm",
+        "assigned": true
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "序列号设备退回必须在扫码工作台核对原机并进入待检测，请从订单售后申请处理"
+      },
+      "observed_port_calls": [
+        "assignments"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "manual-selection-production",
+      "guard": "guardManualPaymentSelection",
+      "artificial_input": {
+        "mode": "production",
+        "body": {
+          "provider_id": "pp_system_default"
+        }
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "Manual payment is disabled in production. Choose an online payment method."
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "mark-paid-production",
+      "guard": "guardMarkAsPaid",
+      "artificial_input": {
+        "mode": "production"
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "Manual payment is disabled in production. Choose an online payment method."
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "manual-selection-development",
+      "guard": "guardManualPaymentSelection",
+      "artificial_input": {
+        "mode": "development",
+        "body": {
+          "provider_id": "pp_system_default"
+        }
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "mark-paid-development",
+      "guard": "guardMarkAsPaid",
+      "artificial_input": {
+        "mode": "development"
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "manual-selection-test",
+      "guard": "guardManualPaymentSelection",
+      "artificial_input": {
+        "mode": "test",
+        "body": {
+          "provider_id": "pp_system_default"
+        }
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "mark-paid-test",
+      "guard": "guardMarkAsPaid",
+      "artificial_input": {
+        "mode": "test"
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "online-selection-allowed",
+      "guard": "guardManualPaymentSelection",
+      "artificial_input": {
+        "body": {
+          "provider_id": "online-fixture"
+        }
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "cart-manual-pending",
+      "guard": "guardManualCartCompletion",
+      "artificial_input": {
+        "data": [
+          {
+            "payment_collection": {
+              "payment_sessions": [
+                {
+                  "provider_id": "pp_system_default",
+                  "status": "pending"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "Manual payment is disabled in production. Choose an online payment method."
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "cart-manual-requires_more",
+      "guard": "guardManualCartCompletion",
+      "artificial_input": {
+        "data": [
+          {
+            "payment_collection": {
+              "payment_sessions": [
+                {
+                  "provider_id": "pp_system_default",
+                  "status": "requires_more"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "Manual payment is disabled in production. Choose an online payment method."
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "cart-manual-authorized",
+      "guard": "guardManualCartCompletion",
+      "artificial_input": {
+        "data": [
+          {
+            "payment_collection": {
+              "payment_sessions": [
+                {
+                  "provider_id": "pp_system_default",
+                  "status": "authorized"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "Manual payment is disabled in production. Choose an online payment method."
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "cart-manual-captured",
+      "guard": "guardManualCartCompletion",
+      "artificial_input": {
+        "data": [
+          {
+            "payment_collection": {
+              "payment_sessions": [
+                {
+                  "provider_id": "pp_system_default",
+                  "status": "captured"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "Manual payment is disabled in production. Choose an online payment method."
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "cart-manual-pending_authorization",
+      "guard": "guardManualCartCompletion",
+      "artificial_input": {
+        "data": [
+          {
+            "payment_collection": {
+              "payment_sessions": [
+                {
+                  "provider_id": "pp_system_default",
+                  "status": "pending_authorization"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "Manual payment is disabled in production. Choose an online payment method."
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "cart-manual-canceled",
+      "guard": "guardManualCartCompletion",
+      "artificial_input": {
+        "data": [
+          {
+            "payment_collection": {
+              "payment_sessions": [
+                {
+                  "provider_id": "pp_system_default",
+                  "status": "canceled"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "cart-manual-error",
+      "guard": "guardManualCartCompletion",
+      "artificial_input": {
+        "data": [
+          {
+            "payment_collection": {
+              "payment_sessions": [
+                {
+                  "provider_id": "pp_system_default",
+                  "status": "error"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "cart-online-allowed",
+      "guard": "guardManualCartCompletion",
+      "artificial_input": {
+        "data": [
+          {
+            "payment_collection": {
+              "payment_sessions": [
+                {
+                  "provider_id": "online-fixture",
+                  "status": "authorized"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "legacy-missing-cart-delegates",
+      "guard": "guardManualCartCompletion",
+      "artificial_input": {},
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "development-cart-skips-query",
+      "guard": "guardManualCartCompletion",
+      "artificial_input": {
+        "mode": "development"
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "guardManualPaymentAuthorization-manual-blocked",
+      "guard": "guardManualPaymentAuthorization",
+      "artificial_input": {
+        "body": {
+          "payment_session_id": "session-fixture"
+        },
+        "data": [
+          {
+            "provider_id": "pp_system_default"
+          }
+        ]
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "Manual payment is disabled in production. Choose an online payment method."
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "guardManualPaymentAuthorization-online-allowed",
+      "guard": "guardManualPaymentAuthorization",
+      "artificial_input": {
+        "body": {
+          "payment_session_id": "session-fixture"
+        },
+        "data": [
+          {
+            "provider_id": "online-fixture"
+          }
+        ]
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "guardManualPaymentAuthorization-missing-delegates",
+      "guard": "guardManualPaymentAuthorization",
+      "artificial_input": {
+        "body": {
+          "payment_session_id": "session-fixture"
+        }
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "guardManualPaymentAuthorization-development-skips-query",
+      "guard": "guardManualPaymentAuthorization",
+      "artificial_input": {
+        "mode": "development",
+        "body": {
+          "payment_session_id": "session-fixture"
+        }
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "guardManualPaymentCapture-manual-blocked",
+      "guard": "guardManualPaymentCapture",
+      "artificial_input": {
+        "body": {
+          "payment_session_id": "session-fixture"
+        },
+        "data": [
+          {
+            "provider_id": "pp_system_default"
+          }
+        ]
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "Manual payment is disabled in production. Choose an online payment method."
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "guardManualPaymentCapture-online-allowed",
+      "guard": "guardManualPaymentCapture",
+      "artificial_input": {
+        "body": {
+          "payment_session_id": "session-fixture"
+        },
+        "data": [
+          {
+            "provider_id": "online-fixture"
+          }
+        ]
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "guardManualPaymentCapture-missing-delegates",
+      "guard": "guardManualPaymentCapture",
+      "artificial_input": {
+        "body": {
+          "payment_session_id": "session-fixture"
+        }
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [
+        "query"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "guardManualPaymentCapture-development-skips-query",
+      "guard": "guardManualPaymentCapture",
+      "artificial_input": {
+        "mode": "development",
+        "body": {
+          "payment_session_id": "session-fixture"
+        }
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "provider-store-region-required",
+      "guard": "listProductionPaymentProviders",
+      "artificial_input": {
+        "path": "/store/payment-providers"
+      },
+      "outcome": {
+        "type": "not_allowed",
+        "message": "You must provide the region_id to list payment providers"
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "provider-store-only-region-online-projection",
+      "guard": "listProductionPaymentProviders",
+      "artificial_input": {
+        "path": "/store/payment-providers",
+        "filters": {
+          "region_id": "region-fixture",
+          "ignored": "not-forwarded"
+        },
+        "remoteRows": [
+          {
+            "payment_provider": {
+              "id": "online-fixture"
+            }
+          }
+        ]
+      },
+      "outcome": {
+        "next": 0,
+        "response": {
+          "payment_providers": [
+            {
+              "id": "online-fixture"
+            }
+          ],
+          "count": 2,
+          "offset": 1,
+          "limit": 20
+        }
+      },
+      "observed_port_calls": [
+        "remote"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "provider-admin-ands-existing-filter",
+      "guard": "listProductionPaymentProviders",
+      "artificial_input": {
+        "path": "/admin/payments/payment-providers",
+        "filters": {
+          "is_enabled": true
+        }
+      },
+      "outcome": {
+        "next": 0,
+        "response": {
+          "payment_providers": [],
+          "count": 2,
+          "offset": 1,
+          "limit": 20
+        }
+      },
+      "observed_port_calls": [
+        "remote"
+      ],
+      "independent_assertions_passed": true
+    },
+    {
+      "name": "provider-development-delegates",
+      "guard": "listProductionPaymentProviders",
+      "artificial_input": {
+        "mode": "development",
+        "path": "/store/payment-providers"
+      },
+      "outcome": {
+        "next": 1
+      },
+      "observed_port_calls": [],
+      "independent_assertions_passed": true
+    }
+  ]
+}

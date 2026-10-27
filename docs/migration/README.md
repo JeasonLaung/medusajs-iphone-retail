@@ -14,6 +14,7 @@
 | 能力/下载/邮件回调 | [11个入口与签名/状态规则](capability-entrypoints.md)、capability-entrypoint-contract.json、fixtures/legacy-capability-rules.json |
 | 自定义路由逐方法 | [67文件86方法及十项补充](custom-route-contract.md)、custom-route-contract.json |
 | 供应商账号与绑定 | [创建/编辑/范围及失败清理](supplier-account-contract.md)、fixtures/legacy-supplier-account-rules.json |
+| 原生入口项目保护 | [设备/数量库存/生产付款保护](native-guard-contract.md)、fixtures/legacy-native-guards.json |
 | 自定义业务 | [设备命令及固定用例](device-commands.md)、[回收与邮件](buyback-and-mail.md)、[SEO 与引用监测](seo-contract.md) |
 | 统计 | [Analytics 实际口径](analytics-contract.md) |
 | 数据继承 | [源数据去向与转换](data-mapping.md)、[第一批36表292列设计](catalog-field-design.md)、catalog-field-mapping.json/.csv、catalog-preflight-report.json、data-table-disposition.csv、data-source-manifest.json |
@@ -41,6 +42,7 @@ node retail/scripts/capture-capability-rules.cjs --check
 python retail/scripts/map-capability-entrypoints.py --check
 python retail/scripts/map-custom-route-contract.py --check
 node retail/scripts/capture-supplier-account-rules.cjs --check
+node retail/scripts/capture-native-guards.cjs --check
 python retail/scripts/capture-schema-constraints.py --check
 python retail/scripts/map-catalog-fields.py --check
 python retail/scripts/preflight-catalog-mapping.py --bundle logs/gin-migration/source-20261026.json
