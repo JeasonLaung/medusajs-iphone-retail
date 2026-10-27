@@ -1,3 +1,4 @@
+import {useAccess} from './Permissions'
 import { useEffect, useState } from 'react'
 import { Alert, Button, Descriptions, Empty, Image, Result, Space, Spin, Table, Tag, Typography } from 'antd'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
@@ -18,6 +19,7 @@ function CatalogImage({url,alt,size,copy}:{url:string;alt:string;size:number;cop
   return <Image src={src} alt={alt} width={size} height={size} style={{objectFit:'contain'}} onError={()=>setFailed(true)}/>
 }
 export default function ProductDetail({copy,onExpired}:{copy:Copy;onExpired():void}) {
+  const access=useAccess()
   const {id=''}=useParams()
   const [params,setParams]=useSearchParams()
   const query=params.toString()
@@ -44,7 +46,7 @@ export default function ProductDetail({copy,onExpired}:{copy:Copy;onExpired():vo
     {state.loading?<Spin aria-label={copy.loadingProduct}/>:state.error!==undefined?
       state.error instanceof APIError&&state.error.status===404?<Result status="404" title={copy.productNotFound}/>:<Space direction="vertical"><Alert type="error" showIcon message={state.error instanceof APIError&&state.error.status===400?copy.invalidFilters:copy.unavailable}/><Space><Button onClick={()=>setAttempt(n=>n+1)}>{copy.retry}</Button><Button onClick={()=>setParams(new URLSearchParams())}>{copy.reset}</Button></Space></Space>:
       p&&v&&<Space direction="vertical" size={32} className="full-width">
-        <div><Space wrap><Typography.Title level={3}>{p.title}</Typography.Title><Button onClick={()=>setEditing(true)}>{copy.editProduct}</Button></Space><Descriptions column={{xs:1,sm:2}} items={[
+        <div><Space wrap><Typography.Title level={3}>{p.title}</Typography.Title>{access.can('product.write')&&<Button onClick={()=>setEditing(true)}>{copy.editProduct}</Button>}</Space><Descriptions column={{xs:1,sm:2}} items={[
           {key:'id',label:'ID',children:p.id},{key:'handle',label:'Handle',children:p.handle},
           {key:'status',label:copy.status,children:<Tag color={p.status==='published'?'success':p.status==='rejected'?'error':undefined}>{statuses[p.status]}</Tag>},
           {key:'count',label:copy.variants,children:p.variant_count},
@@ -59,12 +61,12 @@ export default function ProductDetail({copy,onExpired}:{copy:Copy;onExpired():vo
           {title:copy.configuration,dataIndex:'configuration_complete',render:(complete:boolean)=>complete?<Tag color="success">{copy.complete}</Tag>:<Tag color="warning">{copy.incomplete}</Tag>},
           {title:copy.manageInventory,dataIndex:'manage_inventory',render:(enabled:boolean)=>enabled?copy.yes:copy.no},
           {title:copy.allowBackorder,dataIndex:'allow_backorder',render:(enabled:boolean)=>enabled?copy.yes:copy.no},
-          {title:copy.configuredPrices,key:'prices',render:(_,variant)=><Button onClick={()=>setPriceVariant(variant)}>{copy.viewPrices}</Button>},
-          {title:copy.inventoryDetails,key:'inventory',render:(_,variant)=><Button onClick={()=>setInventoryVariant(variant)}>{copy.viewInventory}</Button>},
+          {title:copy.configuredPrices,key:'prices',render:(_,variant)=>access.can('price.read')?<Button onClick={()=>setPriceVariant(variant)}>{copy.viewPrices}</Button>:null},
+          {title:copy.inventoryDetails,key:'inventory',render:(_,variant)=>access.can('inventory.read')?<Button onClick={()=>setInventoryVariant(variant)}>{copy.viewInventory}</Button>:null},
         ]} pagination={{current:Math.floor(v.offset/v.limit)+1,pageSize:v.limit,total:v.count,showSizeChanger:true,pageSizeOptions:[20,50,100],onChange:(page,size)=>{const next=new URLSearchParams();next.set('limit',String(size));next.set('offset',String((page-1)*size));setParams(next)}}}/></div>
       </Space>}
-    {editing&&p&&<ProductEdit key={p.id} product={p} copy={copy} onExpired={onExpired} onClose={()=>{setEditing(false);setAttempt(n=>n+1)}} onSaved={()=>{setEditing(false);setAttempt(n=>n+1)}}/>}
-    {priceVariant&&<VariantPrices key={`${id}:${priceVariant.id}`} productID={id} variant={priceVariant} copy={copy} onClose={()=>setPriceVariant(undefined)} onExpired={onExpired}/>}
-    {inventoryVariant&&<VariantInventory key={`${id}:${inventoryVariant.id}`} productID={id} variant={inventoryVariant} copy={copy} onClose={()=>setInventoryVariant(undefined)} onExpired={onExpired}/>}
+    {access.can('product.write')&&editing&&p&&<ProductEdit key={p.id} product={p} copy={copy} onExpired={onExpired} onClose={()=>{setEditing(false);setAttempt(n=>n+1)}} onSaved={()=>{setEditing(false);setAttempt(n=>n+1)}}/>}
+    {access.can('price.read')&&priceVariant&&<VariantPrices key={`${id}:${priceVariant.id}`} productID={id} variant={priceVariant} copy={copy} onClose={()=>setPriceVariant(undefined)} onExpired={onExpired}/>}
+    {access.can('inventory.read')&&inventoryVariant&&<VariantInventory key={`${id}:${inventoryVariant.id}`} productID={id} variant={inventoryVariant} copy={copy} onClose={()=>setInventoryVariant(undefined)} onExpired={onExpired}/>}
   </section>
 }

@@ -6,11 +6,14 @@ import (
 	"strings"
 	"time"
 
+	"context"
+	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -31,7 +34,12 @@ func main() {
 		log.Fatal(err)
 	}
 	user := identity.User{ID: "usr_" + uuid.NewString(), Email: email, PasswordHash: string(encoded), Name: "Administrator", Role: "admin", Enabled: true, AuthVersion: 1, CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()}
-	if err = db.Create(&user).Error; err != nil {
+	if err = db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&user).Error; err != nil {
+			return err
+		}
+		return authorization.Bootstrap(context.Background(), tx, user.ID)
+	}); err != nil {
 		log.Fatal("Unable to create account (it may already exist)")
 	}
 	log.Print("Created independent migration Admin account")

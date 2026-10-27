@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/schema"
 	"github.com/eurorefurb/retail/migrations"
@@ -48,7 +49,7 @@ func TestPrepareOwnedBrowserAPI(t *testing.T) {
 		t.Fatal("fixture plan invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 22 {
+	if err != nil || result.Applied != 23 {
 		t.Fatal("fixture migrations failed")
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte("artificial-browser-password"), bcrypt.DefaultCost)
@@ -58,6 +59,9 @@ func TestPrepareOwnedBrowserAPI(t *testing.T) {
 	u := identity.User{ID: "new-browser-fixture", Email: "browser@example.invalid", Name: "Browser Fixture", Role: "admin", Enabled: true, AuthVersion: 1, PasswordHash: string(hash), CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()}
 	if db.Create(&u).Error != nil {
 		t.Fatal("fixture new account failed")
+	}
+	if db.Transaction(func(tx *gorm.DB) error { return authorization.Bootstrap(ctx, tx, u.ID) }) != nil {
+		t.Fatal("explicit fixture grants failed")
 	}
 	t.Log("OWNED_BROWSER_FIXTURE_READY")
 }

@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/fulfillment"
 	"github.com/eurorefurb/retail/internal/identity"
@@ -61,6 +62,9 @@ func main() {
 	}
 	if err == nil {
 		err = fulfillment.Ready(verifyCtx, db)
+	}
+	if err == nil {
+		err = authorization.Ready(verifyCtx, db)
 	}
 	cancelVerify()
 	if err != nil {

@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/fulfillment"
 	"github.com/eurorefurb/retail/internal/identity"
@@ -69,6 +70,9 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 		if err == nil {
 			err = fulfillment.Ready(ctx, db)
 		}
+		if err == nil {
+			err = authorization.Ready(ctx, db)
+		}
 		if err != nil {
 			platform.Fail(c, 503, "dependency_unavailable", "Application dependency unavailable")
 			return
@@ -90,18 +94,20 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	private.Use(auth.Require)
 	private.GET("/auth/me", auth.Me)
 	private.POST("/auth/logout", auth.Logout)
-	private.GET("/orders", (orders.Handler{DB: db}).List)
-	private.GET("/orders/:id", (orders.Handler{DB: db}).Detail)
-	private.GET("/orders/:id/amounts", (orders.Handler{DB: db}).Amounts)
-	private.GET("/orders/:id/payments", (orders.Handler{DB: db}).Payments)
-	private.GET("/orders/:id/fulfillments", (orders.Handler{DB: db}).Fulfillments)
-	private.GET("/products", h.AdminProducts)
-	private.GET("/products/:id", h.AdminProduct)
-	private.GET("/products/:id/variants", h.AdminVariants)
-	private.GET("/products/:id/variants/:variant_id/prices", h.AdminVariantPrices)
-	private.GET("/products/:id/variants/:variant_id/inventory", (inventory.Handler{DB: db}).AdminVariant)
-	private.POST("/inventory-levels/:id/stock", (inventory.Handler{DB: db}).UpdateStock)
-	private.PATCH("/products/:id", h.UpdateProduct)
+	access := authorization.Handler{DB: db}
+	private.GET("/auth/permissions", access.Snapshot)
+	private.GET("/orders", access.Require(authorization.OrderRead), (orders.Handler{DB: db}).List)
+	private.GET("/orders/:id", access.Require(authorization.OrderRead), (orders.Handler{DB: db}).Detail)
+	private.GET("/orders/:id/amounts", access.Require(authorization.OrderRead, authorization.OrderAmountRead), (orders.Handler{DB: db}).Amounts)
+	private.GET("/orders/:id/payments", access.Require(authorization.OrderRead, authorization.OrderPaymentRead), (orders.Handler{DB: db}).Payments)
+	private.GET("/orders/:id/fulfillments", access.Require(authorization.OrderRead, authorization.OrderFulfillmentRead), (orders.Handler{DB: db}).Fulfillments)
+	private.GET("/products", access.Require(authorization.ProductRead), h.AdminProducts)
+	private.GET("/products/:id", access.Require(authorization.ProductRead), h.AdminProduct)
+	private.GET("/products/:id/variants", access.Require(authorization.ProductRead), h.AdminVariants)
+	private.GET("/products/:id/variants/:variant_id/prices", access.Require(authorization.ProductRead, authorization.PriceRead), h.AdminVariantPrices)
+	private.GET("/products/:id/variants/:variant_id/inventory", access.Require(authorization.ProductRead, authorization.InventoryRead), (inventory.Handler{DB: db}).AdminVariant)
+	private.POST("/inventory-levels/:id/stock", access.Require(authorization.InventoryRead, authorization.StockWrite), (inventory.Handler{DB: db}).UpdateStock)
+	private.PATCH("/products/:id", access.Require(authorization.ProductWrite), h.UpdateProduct)
 	if root := os.Getenv("PUBLIC_ASSET_ROOT"); root != "" {
 		r.Static("/assets", root)
 	}

@@ -13,6 +13,7 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/importvalue"
 	"github.com/eurorefurb/retail/internal/platform"
@@ -146,16 +147,13 @@ func (h Handler) EditBasics(ctx context.Context, id string, actor identity.User,
 	}
 	request, _ := json.Marshal(in)
 	err := h.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		var current identity.User
-		if err := tx.Clauses(clause.Locking{Strength: "SHARE"}).Where("id=?", actor.ID).Take(&current).Error; err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
+		if err := authorization.CheckTx(ctx, tx, actor, authorization.ProductWrite); err != nil {
+			if errors.Is(err, authorization.ErrDenied) {
 				return ErrEditDenied
 			}
 			return err
 		}
-		if !identity.SameAuthority(current, actor) {
-			return ErrEditDenied
-		}
+
 		var capability struct {
 			Version int
 			Enabled bool

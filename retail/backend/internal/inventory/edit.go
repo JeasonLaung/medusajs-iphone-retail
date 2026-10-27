@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/importvalue"
 	"github.com/eurorefurb/retail/internal/platform"
@@ -137,17 +138,14 @@ func (h Handler) EditStock(ctx context.Context, levelID string, actor identity.U
 	}
 	request, _ := json.Marshal(in)
 	err := h.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		var current identity.User
-		err := tx.Clauses(clause.Locking{Strength: "SHARE"}).Where("id=?", actor.ID).Take(&current).Error
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return ErrStockDenied
-		}
-		if err != nil {
+		if err := authorization.CheckTx(ctx, tx, actor, authorization.InventoryRead, authorization.StockWrite); err != nil {
+			if errors.Is(err, authorization.ErrDenied) {
+				return ErrStockDenied
+			}
 			return err
 		}
-		if !identity.SameAuthority(current, actor) {
-			return ErrStockDenied
-		}
+		var err error
+
 		var marker struct{ ID int }
 		if tx.Table("inventory_runtime_schema").Select("id").Clauses(clause.Locking{Strength: "SHARE"}).Where("id=1").Take(&marker).Error != nil || Ready(ctx, tx) != nil {
 			return ErrSchema

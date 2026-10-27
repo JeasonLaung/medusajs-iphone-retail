@@ -1,3 +1,4 @@
+import {useAccess} from './Permissions'
 import { useEffect, useState } from 'react'
 import { Alert, Button, Collapse, Descriptions, Empty, Space, Spin, Table, Tag, Typography } from 'antd'
 import { Drawer } from 'antd'
@@ -8,6 +9,7 @@ import type { Copy } from './i18n'
 import StockEdit from './StockEdit'
 
 export default function VariantInventory({productID,variant,copy,onClose,onExpired}:{productID:string;variant:VariantDetail;copy:Copy;onClose():void;onExpired():void}){
+  const access=useAccess()
   const [attempt,setAttempt]=useState(0)
   const [editing,setEditing]=useState<InventoryLevel>()
   const refreshed=()=>{setEditing(undefined);setAttempt(n=>n+1)}
@@ -40,13 +42,13 @@ export default function VariantInventory({productID,variant,copy,onClose,onExpir
             {title:copy.incomingQuantity,dataIndex:'incoming_quantity',render:amountText},
             {title:copy.reservationTotal,dataIndex:'reservation_quantity',render:amountText},
             {title:copy.reservationCount,dataIndex:'reservation_count'},
-            {title:copy.editStock,key:'edit',render:(_,l)=>d.stock_edit_enabled&&i.item_available&&l.location_name!==null?<Button aria-label={copy.editStock+' '+l.location_id} onClick={()=>setEditing(l)}>{copy.editStock}</Button>:null},
+            {title:copy.editStock,key:'edit',render:(_,l)=>access.can('inventory.stock.write')&&d.stock_edit_enabled&&i.item_available&&l.location_name!==null?<Button aria-label={copy.editStock+' '+l.location_id} onClick={()=>setEditing(l)}>{copy.editStock}</Button>:null},
             {title:copy.reconciliation,dataIndex:'reconciled',render:(ok:boolean)=>ok?<Tag color="success">{copy.reconciled}</Tag>:<Tag color="warning">{copy.needsReconciliation}</Tag>},
           ]}/>
           {i.unmatched_reservations.length>0&&<><Alert type="warning" showIcon message={copy.unmatchedReservations}/><Table rowKey="location_id" dataSource={i.unmatched_reservations} pagination={false} scroll={{x:550}} columns={[{title:copy.stockLocation,dataIndex:'location_id'},{title:copy.reservationTotal,dataIndex:'quantity',render:amountText},{title:copy.reservationCount,dataIndex:'count'}]}/></>}
         </Space>}))}/>}
       </>}
     </Space>
-    {editing&&<StockEdit level={editing} copy={copy} onClose={refreshed} onSaved={refreshed} onExpired={onExpired}/>}
+    {access.can('inventory.stock.write')&&editing&&<StockEdit level={editing} copy={copy} onClose={refreshed} onSaved={refreshed} onExpired={onExpired}/>}
   </Drawer>
 }

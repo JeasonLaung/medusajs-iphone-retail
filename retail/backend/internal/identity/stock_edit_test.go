@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/inventory"
 	"github.com/eurorefurb/retail/internal/schema"
@@ -58,13 +59,16 @@ func TestOwnedInventoryStockEdits(t *testing.T) {
 		t.Fatal("stock fixture plan failed")
 	}
 	applied, err := schema.Apply(ctx, pool, plan)
-	if err != nil || applied.Applied != 22 {
+	if err != nil || applied.Applied != 23 {
 		t.Fatal("stock fixture migrations failed")
 	}
 	seedReviewedCatalogFixture(t, db)
 	user := identity.User{ID: "stock-fixture-admin", Email: "stock@example.invalid", Name: "Stock", Role: "admin", Enabled: true, AuthVersion: 1, PasswordHash: "artificial-hash", CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()}
 	if db.Create(&user).Error != nil {
 		t.Fatal("stock fixture account failed")
+	}
+	if db.Transaction(func(tx *gorm.DB) error { return authorization.Bootstrap(ctx, tx, user.ID) }) != nil {
+		t.Fatal("explicit fixture grants failed")
 	}
 	for _, q := range []string{
 		`INSERT INTO inventory_locations(id,name,created_at,updated_at) VALUES ('stock-edit-location','Stock edit location',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
@@ -109,6 +113,16 @@ func TestOwnedInventoryStockEdits(t *testing.T) {
 	result, err := h.EditStock(ctx, "stock-edit-level", user, in)
 	if err != nil || result.Replayed || result.Revision != level("stock-edit-level").Revision || auditCount() != 1 {
 		t.Fatal("exact stock edit failed")
+	}
+
+	if db.Exec("DELETE a FROM authorization_role_actions a JOIN authorization_memberships m ON m.role_id=a.role_id WHERE m.user_id=? AND a.action_code=?", user.ID, "inventory.stock.write").Error != nil {
+		t.Fatal("permission revocation failed")
+	}
+	if _, err := h.EditStock(ctx, "stock-edit-level", user, in); !errors.Is(err, inventory.ErrStockDenied) || auditCount() != 1 {
+		t.Fatal("revoked permission replay disclosed prior success")
+	}
+	if db.Exec("INSERT INTO authorization_role_actions(role_id,action_code) SELECT role_id,? FROM authorization_memberships WHERE user_id=?", "inventory.stock.write", user.ID).Error != nil {
+		t.Fatal("permission restoration failed")
 	}
 	if again, err := h.EditStock(ctx, "stock-edit-level", user, in); err != nil || !again.Replayed || again.Revision != result.Revision || auditCount() != 1 {
 		t.Fatal("stock replay duplicated edit")
@@ -262,5 +276,5 @@ func TestOwnedInventoryStockEdits(t *testing.T) {
 	if auditCount() != 4 {
 		t.Fatal("denied stock edit created audit")
 	}
-	t.Log(`STOCK_EDIT_REHEARSAL {"migrations":22,"exact_decimal":true,"concurrent_attempts":8,"concurrent_wins":1,"conflicts":7,"duplicate_attempts":8,"duplicate_replays":7,"audit_rows":4,"audit_failure_rollback":true,"historical_hold_enforced":true,"live_mismatch_enforced":true,"held_increase_preserves_hold":true,"reservation_and_metadata_preserved":true,"deleted_parent_rejected":true,"stale_authority_rejected":true,"disabled_command_rejected":true}`)
+	t.Log(`STOCK_EDIT_REHEARSAL {"migrations":23,"exact_decimal":true,"concurrent_attempts":8,"concurrent_wins":1,"conflicts":7,"duplicate_attempts":8,"duplicate_replays":7,"audit_rows":4,"audit_failure_rollback":true,"historical_hold_enforced":true,"live_mismatch_enforced":true,"held_increase_preserves_hold":true,"reservation_and_metadata_preserved":true,"deleted_parent_rejected":true,"stale_authority_rejected":true,"revoked_action_replay_denied":true,"disabled_command_rejected":true}`)
 }

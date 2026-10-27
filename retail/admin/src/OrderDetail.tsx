@@ -1,3 +1,4 @@
+import {useAccess} from './Permissions'
 import { useEffect, useState } from 'react'
 import { Alert, Button, Descriptions, Empty, Space, Spin, Table, Tag, Typography } from 'antd'
 import { Link, useLocation, useParams } from 'react-router-dom'
@@ -10,6 +11,7 @@ import OrderPayments from './OrderPayments'
 import OrderFulfillments from './OrderFulfillments'
 
 export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void}) {
+  const access=useAccess()
   const {id=''}=useParams()
   const location=useLocation()
   const [attempt,setAttempt]=useState(0)
@@ -50,9 +52,9 @@ export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void
           {key:'received',label:copy.returnReceivedQuantity,children:amountText(row.return_received_quantity)},
           {key:'dismissed',label:copy.returnDismissedQuantity,children:amountText(row.return_dismissed_quantity)},
         ]} />}} />
-        <OrderAmounts id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>
-<OrderPayments id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>
-<OrderFulfillments id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>
+        {access.can('order.amount.read')&&<OrderAmounts id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>}
+{access.can('order.payment.read')&&<OrderPayments id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>}
+{access.can('order.fulfillment.read')&&<OrderFulfillments id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>}
       </>}
     </Space>
   </section>

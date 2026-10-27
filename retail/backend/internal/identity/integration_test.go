@@ -13,6 +13,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/schema"
 	"github.com/eurorefurb/retail/internal/server"
@@ -55,11 +56,11 @@ func TestOwnedAdminAuthentication(t *testing.T) {
 		t.Fatal("embedded schema invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 22 {
+	if err != nil || result.Applied != 23 {
 		t.Fatal("ten explicit migrations not applied")
 	}
 	result, err = schema.Apply(ctx, pool, plan)
-	if err != nil || result.Skipped != 22 {
+	if err != nil || result.Skipped != 23 {
 		t.Fatal("ten migrations not repeatable")
 	}
 	sessions, client, err := sessionstore.Open(ctx, "redis://127.0.0.1:6379/0", "eurorefurb:identity_fixture:v1:")
@@ -83,6 +84,9 @@ func TestOwnedAdminAuthentication(t *testing.T) {
 	u := identity.User{ID: "new-fixture-admin", Email: "new@example.invalid", Name: "Fixture", Role: "admin", Enabled: true, AuthVersion: 1, PasswordHash: string(hash), CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()}
 	if db.Create(&u).Error != nil {
 		t.Fatal("new fixture account creation failed")
+	}
+	if db.Transaction(func(tx *gorm.DB) error { return authorization.Bootstrap(ctx, tx, u.ID) }) != nil {
+		t.Fatal("explicit fixture grants failed")
 	}
 	if db.Exec("UPDATE admin_users SET auth_version=0 WHERE id=?", u.ID).Error == nil {
 		t.Fatal("zero revocation generation accepted")
@@ -174,13 +178,16 @@ func TestOwnedAdminAuthentication(t *testing.T) {
 	csrf = parseCSRF(out)
 	call("POST", "/api/admin/auth/login", loginBody, origin, csrf, []*http.Cookie{pre}, 401)
 	call("GET", "/api/admin/auth/me", "", origin, "", []*http.Cookie{session}, 200)
+	checkAuthorization(t, db, u, func(path string, status int) []byte {
+		return call("GET", path, "", origin, "", []*http.Cookie{session}, status).Body.Bytes()
+	})
 	call("PATCH", "/api/admin/products/fixture", `{"title":"fixture","status":"published"}`, origin, "", []*http.Cookie{session}, 403)
 	call("PATCH", "/api/admin/products/fixture", `{"title":"fixture","status":"published"}`, origin, csrf, []*http.Cookie{session}, 400)
 	call("POST", "/api/admin/inventory-levels/fixture/stock", `{}`, origin, "", []*http.Cookie{session}, 403)
 	call("POST", "/api/admin/inventory-levels/fixture/stock", `{}`, origin, csrf, []*http.Cookie{session}, 400)
 	call("POST", "/api/admin/inventory-levels/fixture/stock", `{}`, origin, csrf, nil, 401)
 	var unimplementedWrites int64
-	if db.Table("audit_events").Count(&unimplementedWrites).Error != nil || unimplementedWrites != 0 {
+	if db.Table("audit_events").Where("action <> ?", "authorization.bootstrap").Count(&unimplementedWrites).Error != nil || unimplementedWrites != 0 {
 		t.Fatal("unimplemented product write created audit data")
 	}
 	call("GET", "/api/admin/auth/me", "", origin, "", []*http.Cookie{session, session}, 401)
@@ -268,5 +275,5 @@ func TestOwnedAdminAuthentication(t *testing.T) {
 	}
 	_ = pool.Close()
 	call("GET", "/api/admin/auth/me", "", origin, "", []*http.Cookie{active}, 503)
-	t.Log("IDENTITY_REHEARSAL " + `{"explicit_migrations":22,"login_and_me":1,"csrf_and_origin_rejection":1,"session_rotation":1,"logout_revocation":1,"disable_reenable_revocation":1,"role_restore_revocation":1,"password_restore_revocation":1,"invalid_credentials_rejection":1,"login_rate_limit":1,"generation_revocation":1,"legacy_and_customer_rejection":1,"redis_failure_rejection":1,"mysql_failure_rejection":1}`)
+	t.Log("IDENTITY_REHEARSAL " + `{"explicit_migrations":23,"login_and_me":1,"csrf_and_origin_rejection":1,"session_rotation":1,"logout_revocation":1,"disable_reenable_revocation":1,"role_restore_revocation":1,"password_restore_revocation":1,"invalid_credentials_rejection":1,"login_rate_limit":1,"generation_revocation":1,"legacy_and_customer_rejection":1,"redis_failure_rejection":1,"mysql_failure_rejection":1}`)
 }

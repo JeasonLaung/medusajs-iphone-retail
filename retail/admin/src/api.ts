@@ -214,3 +214,13 @@ export async function getOrderFulfillments(id:string,signal?:AbortSignal):Promis
   return {id:f.id,availability:f.availability,record:r?{location_id:r.location_id,provider_id:r.provider_id,shipping_option_id:r.shipping_option_id,delivery_address_id:r.delivery_address_id,requires_shipping:r.requires_shipping,created_at:r.created_at,packed_at:r.packed_at,shipped_at:r.shipped_at,delivered_at:r.delivered_at,canceled_at:r.canceled_at,address:a?{id:a.id,company:a.company,first_name:a.first_name,last_name:a.last_name,address_1:a.address_1,address_2:a.address_2,city:a.city,country_code:a.country_code,province:a.province,postal_code:a.postal_code,phone:a.phone}:null,items:r.items.map(({id,title,sku,barcode,quantity,line_item_id,inventory_item_id})=>({id,title,sku,barcode,quantity,line_item_id,inventory_item_id})),labels:r.labels.map(({id,tracking_number,tracking_url,label_url})=>({id,tracking_number,tracking_url,label_url}))}:null}
  })}
 }
+
+
+export const ACTIONS=['inventory.read','inventory.stock.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','product.read','product.write'] as const
+export type Action=typeof ACTIONS[number]
+export type Permissions={revision:string;scope:'none'|'employee'|'warehouse'|'supplier';actions:Action[]}
+export async function getPermissions(signal?:AbortSignal):Promise<Permissions>{
+ const d=await request<Permissions>('permissions',{signal})
+ if(!d||typeof d.revision!=='string'||!/^[1-9]\d{0,19}$/.test(d.revision)||!['none','employee','warehouse','supplier'].includes(d.scope)||!Array.isArray(d.actions)||d.actions.length>ACTIONS.length||d.actions.some(a=>!ACTIONS.includes(a))||new Set(d.actions).size!==d.actions.length||d.scope!=='employee'&&d.actions.length!==0)throw new APIError(0,'request.invalid_response')
+ return {revision:d.revision,scope:d.scope,actions:[...d.actions]}
+}

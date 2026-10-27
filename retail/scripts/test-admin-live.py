@@ -147,12 +147,13 @@ def main():
         files += ['retail/backend/migrations/0021_fulfillment_relational.sql','retail/backend/migrations/0022_fulfillment_import_evidence.sql','retail/scripts/generate-fulfillment-schema.py','retail/scripts/generate-fulfillment-import-plan.py','retail/backend/internal/identity/fulfillment_history_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/fulfillment').glob('*') if p.is_file()]
         files += ['retail/backend/internal/orders/fulfillments.go','retail/backend/internal/identity/order_fulfillments_test.go']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/authorization').glob('*.go')]
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
-                  'browser_tests_passed': 1, 'migrations_applied': 22, 'mocked_api_responses': False,
+                  'browser_tests_passed': 1, 'migrations_applied': 23, 'mocked_api_responses': False,
                   'reviewed_relational_schema_used': True, 'empty_draft_tables_retained_by_migration': 7,
                   'explicit_catalog_read_schema_migration_used': True, 'test_only_schema_rewrite': False,
                   'browser_executable_override_used': bool(os.environ.get('ADMIN_TEST_BROWSER')),
-                  'checked': ['wrong password then retry', 'real login and reload', 'HttpOnly and SameSite cookies',
+                  'checked': ['explicit new-account action grants and current permission snapshot; unknown query and anonymous rejection', 'wrong password then retry', 'real login and reload', 'HttpOnly and SameSite cookies',
                               'no credentials in browser storage', 'private response cache and request ID',
                               'missing CSRF and foreign Origin rejected', 'logout and old-cookie replay rejected',
                               'explicit product list projection and literal wildcard filtering', 'Ant product table search reload reset and empty state',

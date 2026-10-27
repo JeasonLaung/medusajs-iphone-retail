@@ -11,6 +11,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/schema"
@@ -58,12 +59,15 @@ func TestOwnedProductEdits(t *testing.T) {
 		t.Fatal("fixture plan failed")
 	}
 	applied, err := schema.Apply(ctx, pool, plan)
-	if err != nil || applied.Applied != 22 {
+	if err != nil || applied.Applied != 23 {
 		t.Fatal("eleven migrations failed")
 	}
 	user := identity.User{ID: "edit-fixture-admin", Email: "edit@example.invalid", Name: "Edit", Role: "admin", Enabled: true, AuthVersion: 1, PasswordHash: "artificial-hash", CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()}
 	if db.Create(&user).Error != nil {
 		t.Fatal("fixture account failed")
+	}
+	if db.Transaction(func(tx *gorm.DB) error { return authorization.Bootstrap(ctx, tx, user.ID) }) != nil {
+		t.Fatal("explicit fixture grants failed")
 	}
 	if db.Exec(`INSERT INTO catalog_products(id,title,handle,is_giftcard,status,discountable,created_at,updated_at,metadata) VALUES ('edit-fixture','Original','edit-fixture',0,'draft',1,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),'{"private":"unchanged"}')`).Error != nil {
 		t.Fatal("fixture product failed")
@@ -90,6 +94,16 @@ func TestOwnedProductEdits(t *testing.T) {
 	result, err := h.EditBasics(ctx, "edit-fixture", user, in)
 	if err != nil || result.Replayed || result.Revision == initial || result.Revision != revision() || auditCount() != 1 {
 		t.Fatal("atomic edit/revision failed")
+	}
+
+	if db.Exec("DELETE a FROM authorization_role_actions a JOIN authorization_memberships m ON m.role_id=a.role_id WHERE m.user_id=? AND a.action_code=?", user.ID, "product.write").Error != nil {
+		t.Fatal("permission revocation failed")
+	}
+	if _, err := h.EditBasics(ctx, "edit-fixture", user, in); !errors.Is(err, catalog.ErrEditDenied) || auditCount() != 1 {
+		t.Fatal("revoked permission replay disclosed prior success")
+	}
+	if db.Exec("INSERT INTO authorization_role_actions(role_id,action_code) SELECT role_id,? FROM authorization_memberships WHERE user_id=?", "product.write", user.ID).Error != nil {
+		t.Fatal("permission restoration failed")
 	}
 	replay, err := h.EditBasics(ctx, "edit-fixture", user, in)
 	if err != nil || !replay.Replayed || replay.Revision != result.Revision || auditCount() != 1 {
@@ -226,5 +240,5 @@ func TestOwnedProductEdits(t *testing.T) {
 	if json.Unmarshal([]byte(audit.BeforeJSON), &a) != nil || json.Unmarshal([]byte(audit.AfterJSON), &b) != nil || a.Title != "Original" || b.Title != in.Title || b.Status != "published" || b.Subtitle != nil || b.Description != nil {
 		t.Fatal("audit evidence incorrect")
 	}
-	t.Log(`PRODUCT_EDIT_REHEARSAL {"migrations":22,"concurrent_attempts":8,"concurrent_wins":1,"conflicts":7,"concurrent_duplicate_attempts":8,"concurrent_duplicate_commits":1,"audit_rows":3,"replay_single_commit":true,"audit_failure_rollback":true,"stale_authority_rejected":true,"disabled_actor_rejected":true,"disabled_command_rejected":true,"unrelated_fields_preserved":true}`)
+	t.Log(`PRODUCT_EDIT_REHEARSAL {"migrations":23,"concurrent_attempts":8,"concurrent_wins":1,"conflicts":7,"concurrent_duplicate_attempts":8,"concurrent_duplicate_commits":1,"audit_rows":3,"replay_single_commit":true,"audit_failure_rollback":true,"stale_authority_rejected":true,"revoked_action_replay_denied":true,"disabled_actor_rejected":true,"disabled_command_rejected":true,"unrelated_fields_preserved":true}`)
 }

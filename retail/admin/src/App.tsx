@@ -1,3 +1,4 @@
+import {PermissionsProvider,RequireAction,useAccess} from './Permissions'
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { Alert, App as AntApp, Button, ConfigProvider, Descriptions, Drawer, Form, Input, Layout, Menu, Result, Select, Space, Spin, Tag, Typography } from 'antd'
 import { MenuOutlined, UserOutlined } from '@ant-design/icons'
@@ -55,10 +56,16 @@ function Login({ copy, expired, onLogin }: { copy: Copy; expired?: boolean; onLo
   </section></main>
 }
 
-function Workspace({ copy, session, onSession }: { copy: Copy; session: Extract<Session, { status: 'authenticated' }>; onSession(value: Session): void }) {
+function Workspace(props:{copy:Copy;session:Extract<Session,{status:'authenticated'}>;onSession(value:Session):void}){
+ const onExpired=useCallback(()=>props.onSession({status:'anonymous',expired:true}),[props.onSession])
+ return <PermissionsProvider onExpired={onExpired}><WorkspaceContent {...props}/></PermissionsProvider>
+}
+
+function WorkspaceContent({ copy, session, onSession }: { copy: Copy; session: Extract<Session, { status: 'authenticated' }>; onSession(value: Session): void }) {
   const navigate = useNavigate()
   const location = useLocation()
   const onExpired = useCallback(() => onSession({ status:'anonymous',expired:true }),[onSession])
+  const access=useAccess()
   const orderPage = location.pathname === '/orders' || location.pathname.startsWith('/orders/')
   const productPage = location.pathname === '/products' || location.pathname.startsWith('/products/')
   const [drawer, setDrawer] = useState(false)
@@ -88,7 +95,7 @@ function Workspace({ copy, session, onSession }: { copy: Copy; session: Extract<
       else setError(error)
     } finally { busy.current = false; setPending(false) }
   }
-  const menu = <Menu selectedKeys={[orderPage?'orders':productPage?'products':'account']} items={[{key:'orders',label:copy.orders},{ key:'products',label:copy.products },{ key: 'account', icon: <UserOutlined />, label: copy.account }]} onClick={({key}) => { navigate(`/${key}`); setDrawer(false) }} />
+  const menu = <Menu selectedKeys={[orderPage?'orders':productPage?'products':'account']} items={[...(access.can('order.read')?[{key:'orders',label:copy.orders}]:[]),...(access.can('product.read')?[{key:'products',label:copy.products}]:[]),{ key: 'account', icon: <UserOutlined />, label: copy.account }]} onClick={({key}) => { navigate(`/${key}`); setDrawer(false) }} />
   return <Layout className="workspace">
     <Layout.Sider className="desktop-nav" width={208} theme="light"><nav aria-label={copy.admin}>{menu}</nav></Layout.Sider>
     <Drawer open={drawer} onClose={() => setDrawer(false)} title={copy.admin} placement="left" width={256}>{menu}</Drawer>
@@ -96,10 +103,10 @@ function Workspace({ copy, session, onSession }: { copy: Copy; session: Extract<
       <div className="page-toolbar"><Button className="mobile-nav" icon={<MenuOutlined />} aria-label={copy.navigation} onClick={() => setDrawer(true)} /><Typography.Title level={2}>{orderPage?copy.orders:productPage?copy.products:copy.account}</Typography.Title><Button aria-label={copy.logout} disabled={pending} loading={pending} onClick={logout}>{copy.logout}</Button></div>
       {error !== undefined && <div className="request-error"><ErrorNotice error={error} copy={copy} /></div>}
       <Routes>
-        <Route path="/orders" element={<Suspense fallback={<Spin />}><Orders copy={copy} onExpired={onExpired} /></Suspense>} />
-        <Route path="/orders/:id" element={<Suspense fallback={<Spin />}><OrderDetail copy={copy} onExpired={onExpired} /></Suspense>} />
-        <Route path="/products" element={<Suspense fallback={<Spin />}><Products copy={copy} onExpired={onExpired} /></Suspense>} />
-        <Route path="/products/:id" element={<Suspense fallback={<Spin />}><ProductDetail copy={copy} onExpired={onExpired} /></Suspense>} />
+        <Route path="/orders" element={<Suspense fallback={<Spin />}><RequireAction action="order.read" copy={copy}><Orders copy={copy} onExpired={onExpired} /></RequireAction></Suspense>} />
+        <Route path="/orders/:id" element={<Suspense fallback={<Spin />}><RequireAction action="order.read" copy={copy}><OrderDetail copy={copy} onExpired={onExpired} /></RequireAction></Suspense>} />
+        <Route path="/products" element={<Suspense fallback={<Spin />}><RequireAction action="product.read" copy={copy}><Products copy={copy} onExpired={onExpired} /></RequireAction></Suspense>} />
+        <Route path="/products/:id" element={<Suspense fallback={<Spin />}><RequireAction action="product.read" copy={copy}><ProductDetail copy={copy} onExpired={onExpired} /></RequireAction></Suspense>} />
         <Route path="/account" element={<section className="account-panel"><Space direction="vertical" size={24} className="full-width">
           <Space><Tag color="success">{copy.signedIn}</Tag><Typography.Text type="secondary">{copy.accountDescription}</Typography.Text></Space>
           <Descriptions column={1} items={[{ key: 'name', label: copy.name, children: session.user.name || '—' }, { key: 'email', label: copy.email, children: session.user.email }, { key: 'role', label: copy.role, children: copy.administrator }]} />

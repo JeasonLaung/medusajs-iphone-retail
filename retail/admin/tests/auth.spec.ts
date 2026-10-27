@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import {ACTIONS} from '../src/api'
 import type { Page } from '@playwright/test'
 
 const user = { id: 'artificial-admin', email: 'fixture@example.invalid', name: 'Fixture Admin', role: 'admin', enabled: true }
@@ -12,13 +13,14 @@ test.beforeEach(({page})=>{
 })
 test.afterEach(({page})=>{expect(runtimeErrors.get(page)).toEqual([])})
 
-async function fixture(page: Page, options: { failMe?: boolean; invalidLogin?: boolean; failLogout?: boolean } = {}) {
+async function fixture(page: Page, options: { failMe?: boolean; invalidLogin?: boolean; failLogout?: boolean;permissions?: string[];failPermissions?:boolean } = {}) {
   let signedIn = false
   const calls = { challenge: 0, login: 0, logout: 0 }
   await page.route('**/api/admin/auth/**', async route => {
     const request = route.request()
     const path = new URL(request.url()).pathname
     const error = (status: number, code: string) => route.fulfill({ status, json: { error: { code, message: 'artificial fallback', request_id: 'req_12345678-1234-1234-1234-123456789abc' } } })
+    if(path.endsWith('/permissions')) {if(options.failPermissions)return error(503,'authorization.unavailable');return signedIn?route.fulfill({json:{revision:'1',scope:'employee',actions:options.permissions??ACTIONS}}):error(401,'auth.unauthorized')}
     if (path.endsWith('/me')) {
       if (options.failMe) return error(503, 'auth.unavailable')
       return signedIn ? route.fulfill({ json: { user } }) : error(401, 'auth.unauthorized')
@@ -417,4 +419,27 @@ test('Ant fulfillment evidence preserves missing records, safe links, exact stri
  mode='empty';await region.getByRole('button',{name:'重新连接',exact:true}).click()
  await expect(region.getByText('未关联包裹',{exact:true})).toBeVisible()
  mode='expired';await page.reload();await expect(page).toHaveURL('/login')
+})
+
+
+test('current permissions hide menus, deny direct navigation and retry an unavailable authority source',async({page})=>{
+ const options:{permissions:string[];failPermissions:boolean}={permissions:['product.read'],failPermissions:false}
+ await fixture(page,options)
+ await page.route('**/api/admin/products?*',route=>route.fulfill({json:{products:[],count:0,limit:20,offset:0}}))
+ await page.goto('/account');await signIn(page)
+ await expect(page.getByRole('menuitem',{name:'商品',exact:true})).toBeVisible()
+ await expect(page.getByRole('menuitem',{name:'订单',exact:true})).toHaveCount(0)
+ await page.goto('/orders')
+ await expect(page.getByText('没有访问此功能的权限',{exact:true})).toBeVisible()
+ options.failPermissions=true;await page.reload()
+ await expect(page.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
+ options.failPermissions=false;options.permissions=['order.read']
+ await page.getByRole('button',{name:'重新连接',exact:true}).click()
+ await expect(page.getByRole('menuitem',{name:'订单',exact:true})).toBeVisible()
+ await expect(page.getByRole('menuitem',{name:'商品',exact:true})).toHaveCount(0)
+ await page.goto('/products')
+ await expect(page.getByText('没有访问此功能的权限',{exact:true})).toBeVisible()
+ options.permissions=['*'];await page.reload()
+ await expect(page.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
+ await expect(page.getByRole('menuitem',{name:'商品',exact:true})).toHaveCount(0)
 })
