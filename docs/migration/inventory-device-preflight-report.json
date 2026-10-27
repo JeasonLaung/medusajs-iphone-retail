@@ -1,0 +1,19 @@
+{
+  "format_version": 1,
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "mapping_sha256": "28e6e3d3200ff7de6f28cb8eb1abfcbfb9b0c9c265d636bc9f70bb9da2561b23",
+  "scope": "Source snapshot scalar type/length/precision/raw-pair/reference preflight only; not MySQL import, active uniqueness, semantic joins, public DTO or JSON lexical acceptance",
+  "tables": 12,
+  "fields": 139,
+  "checks": {
+    "field_values": 55692,
+    "references_including_soft_deleted": 5506,
+    "raw_scalar_pairs": 2880
+  },
+  "failures": {},
+  "historical_unresolved_references": {
+    "device.source_id": 34,
+    "reservation_item.line_item_id": 85
+  },
+  "history_disposition": "Preserve raw legacy reference in history plus nullable resolved reference; no fabricated entity or new-login FK; unresolved history is not relational acceptance"
+}

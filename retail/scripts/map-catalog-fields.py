@@ -111,6 +111,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
+    generate(TABLES, mapping, REFS, RENAMES, "catalog",
+             "Explicit catalog/pricing/region/channel/store field design only; not accepted DDL/import or all193 tables", args.check)
+
+
+def generate(declarations, convert, references, renames, prefix, scope, check, reference_policies=None):
     manifest_path = OUT / "data-source-manifest.json"
     constraints_path = OUT / "source-schema-constraints.json"
     raw = manifest_path.read_bytes()
@@ -119,28 +124,30 @@ def main():
     constraints = json.loads(constraints_raw)
     source = {t["source_table"]: t for t in manifest["tables"]}
     records = []
-    for table, (target, declared) in TABLES.items():
+    for table, (target, declared) in declarations.items():
         columns = source[table]["columns"]
         names = declared.split()
         if len(names) != len(set(names)) or set(names) != {c["column_name"] for c in columns}:
             raise ValueError(f"Explicit field list no longer covers {table}; review schema change")
         for c in columns:
             name = c["column_name"]
-            target_type, transform, assertions = mapping(table, c)
+            target_type, transform, assertions = convert(table, c)
             records.append({"source_table": table, "source_column": name, "source_type": c["udt_name"],
                             "source_expression": f"{table}.{name}", "target_table": target,
-                            "target_column": RENAMES.get((table, name), name), "target_type_design": target_type,
+                            "target_column": renames.get((table, name), name), "target_type_design": target_type,
                             "nullable": c["is_nullable"] == "YES", "missing_policy": "reject missing field; preserve explicit NULL only when nullable",
-                            "transform": transform, "reference": REFS.get((table, name), ""),
+                            "transform": transform, "reference": references.get((table, name), ""),
                             "assertions": assertions, "status": "designed-not-implemented"})
+            if reference_policies is not None:
+                records[-1]["reference_policy"] = reference_policies.get((table, name), "require-existing-if-nonnull") if (table, name) in references else "not-an-entity-reference"
     tables = []
-    for name, (target, _) in TABLES.items():
+    for name, (target, _) in declarations.items():
         tables.append({"source_table": name, "target_table": target, "status": "designed-not-implemented",
                        "source_columns": len(source[name]["columns"]),
                        "source_constraint_names": [r["constraint_name"] for r in constraints["constraints"] if r["source_table"] == name],
                        "source_index_names": [r["index_name"] for r in constraints["indexes"] if r["source_table"] == name]})
     result = {"format_version": 1, "source_commit": manifest["source_commit"],
-              "scope": "Explicit catalog/pricing/region/channel/store field design only; not accepted DDL/import or all193 tables",
+              "scope": scope,
               "source_manifest_sha256": hashlib.sha256(raw.replace(b'\r\n', b'\n')).hexdigest(),
               "source_constraints_sha256": hashlib.sha256(constraints_raw.replace(b'\r\n', b'\n')).hexdigest(),
               "tables": tables, "fields": records}
@@ -148,16 +155,16 @@ def main():
     writer = csv.DictWriter(csv_output, fieldnames=list(records[0]), lineterminator="\n")
     writer.writeheader()
     writer.writerows(records)
-    outputs = {OUT / "catalog-field-mapping.json": json.dumps(result, ensure_ascii=False, indent=2) + "\n",
-               OUT / "catalog-field-mapping.csv": csv_output.getvalue()}
+    outputs = {OUT / f"{prefix}-field-mapping.json": json.dumps(result, ensure_ascii=False, indent=2) + "\n",
+               OUT / f"{prefix}-field-mapping.csv": csv_output.getvalue()}
     for target, content in outputs.items():
-        if args.check:
+        if check:
             if target.read_text(encoding="utf-8-sig") != content:
                 raise ValueError(f"Mapping changed; review before regenerating {target.name}")
         else:
             target.write_text(content, encoding="utf-8", newline="")
     print(json.dumps({"tables": len(tables), "fields": len(records), "remaining_tables": len(source) - len(tables),
-                      "status": "design only; no MySQL import", "mode": "check" if args.check else "generate"}))
+                      "status": "design only; no MySQL import", "mode": "check" if check else "generate"}))
 
 
 if __name__ == "__main__":

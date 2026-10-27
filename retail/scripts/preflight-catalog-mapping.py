@@ -1,4 +1,4 @@
-"""Check ignored source snapshot against catalog field design; output aggregates only."""
+"""Check ignored source snapshot against a field design; output aggregates only."""
 import argparse
 import hashlib
 import json
@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle", required=True)
+    parser.add_argument("--domain", choices=["catalog", "inventory-device"], default="catalog")
     args = parser.parse_args()
     bundle_path = Path(args.bundle).resolve()
     ignored = subprocess.run(["git", "check-ignore", "--quiet", str(bundle_path)], cwd=ROOT, capture_output=True)
@@ -25,7 +26,7 @@ def main():
     manifest = json.loads((ROOT / "docs/migration/data-source-manifest.json").read_text(encoding="utf-8-sig"))
     if hashlib.sha256(raw).hexdigest() != manifest["bundle_sha256"]:
         raise ValueError("Snapshot hash differs from recorded evidence; review inventory first")
-    mapping_path = ROOT / "docs/migration/catalog-field-mapping.json"
+    mapping_path = ROOT / "docs/migration" / f"{args.domain}-field-mapping.json"
     mapping = json.loads(mapping_path.read_text(encoding="utf-8-sig"))
     for key, source in [("source_manifest_sha256", "data-source-manifest.json"), ("source_constraints_sha256", "source-schema-constraints.json")]:
         content = (ROOT / "docs/migration" / source).read_bytes().replace(b'\r\n', b'\n')
@@ -34,9 +35,12 @@ def main():
     fields = mapping["fields"]
     source_by_target = {t["target_table"]: t["source_table"] for t in mapping["tables"]}
     source_by_target.update({"inventory_items": "inventory_item", "inventory_locations": "stock_location",
-                             "payment_providers": "payment_provider", "fulfillment_shipping_options": "shipping_option"})
+                             "payment_providers": "payment_provider", "fulfillment_shipping_options": "shipping_option",
+                             "catalog_variants": "product_variant", "commerce_currencies": "currency",
+                             "orders": "order", "order_line_items": "order_line_item", "fulfillments": "fulfillment", "returns": "return"})
     rename = {(f["target_table"], f["target_column"]): f["source_column"] for f in fields}
     failures = Counter()
+    historical_unresolved = Counter()
     checks = Counter()
     reference_indexes = {}
 
@@ -55,18 +59,24 @@ def main():
                 if not field["nullable"]:
                     fail(field, "unexpected_null")
                 continue
-            if transform in {"identity_string", "binary_text", "code_string", "utf8_text"}:
+            if transform in {"identity_string", "binary_text", "code_string", "utf8_text", "historical_subject_ref", "device_identity_text", "enum_text"}:
                 if not isinstance(value, str):
                     fail(field, "expected_string")
                     continue
                 value.encode("utf-8", errors="strict")
-                maximum = {"identity_string": 191, "binary_text": 512, "code_string": 16}.get(transform)
+                maximum = {"identity_string": 191, "historical_subject_ref": 191, "binary_text": 512, "code_string": 16, "enum_text": 32}.get(transform)
+                if transform == "device_identity_text":
+                    maximum = 191 if name == "serial_number" else 32 if name == "eid" else 15
                 if maximum and len(value) > maximum:
                     fail(field, "length_overflow")
+                if transform == "enum_text":
+                    allowed = field["assertions"].split(";", 1)[0].removeprefix("Allowed: ").split()
+                    if value not in allowed:
+                        fail(field, "unknown_enum")
             elif transform == "strict_boolean":
                 if not isinstance(value, bool):
                     fail(field, "expected_boolean")
-            elif transform == "checked_int32":
+            elif transform in {"checked_int32", "minor_unit_integer"}:
                 if isinstance(value, bool) or not isinstance(value, int) or not -(2**31) <= value < 2**31:
                     fail(field, "expected_int32")
             elif transform == "utc_datetime6":
@@ -118,16 +128,23 @@ def main():
                     reference_indexes[key] = {r[source_column] for r in bundle["tables"][source_table] if r.get(source_column) is not None}
                 checks["references_including_soft_deleted"] += 1
                 if value not in reference_indexes[key]:
-                    fail(field, "missing_reference")
+                    if field.get("reference_policy") == "preserve-unresolved-on-soft-deleted-row-only" and row.get("deleted_at") is not None:
+                        historical_unresolved[f"{table}.{name}"] += 1
+                    else:
+                        fail(field, "missing_reference")
     report = {"format_version": 1, "bundle_sha256": manifest["bundle_sha256"],
               "mapping_sha256": hashlib.sha256(mapping_path.read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
               "scope": "Source snapshot scalar type/length/precision/raw-pair/reference preflight only; not MySQL import, active uniqueness, semantic joins, public DTO or JSON lexical acceptance",
               "tables": len(mapping["tables"]), "fields": len(fields),
               "checks": dict(checks), "failures": dict(sorted(failures.items()))}
-    target = ROOT / "docs/migration/catalog-preflight-report.json"
+    if args.domain != "catalog":
+        report["historical_unresolved_references"] = dict(sorted(historical_unresolved.items()))
+        report["history_disposition"] = "Preserve raw legacy reference in history plus nullable resolved reference; no fabricated entity or new-login FK; unresolved history is not relational acceptance"
+    target = ROOT / "docs/migration" / f"{args.domain}-preflight-report.json"
     target.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"tables": report["tables"], "fields": report["fields"], "checks": dict(checks),
-                      "failure_categories": len(failures), "failed_values": sum(failures.values())}))
+                      "failure_categories": len(failures), "failed_values": sum(failures.values()),
+                      "historical_unresolved_references": sum(historical_unresolved.values())}))
     if failures:
         raise SystemExit(1)
 

@@ -1,0 +1,26 @@
+{
+  "format_version": 1,
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "scope": "Snapshot inventory/device semantic audit only; no source writes or MySQL acceptance; counts contain no business rows or identifiers",
+  "checks": {
+    "active_device_identities": 9,
+    "active_reservation_location_pairs": 9,
+    "active_unique_keys": 5556,
+    "after_sales_envelopes": 2,
+    "after_sales_lines": 2,
+    "assignment_order_line_ownership": 2,
+    "level_reserved_vs_reservations": 849
+  },
+  "blocking_findings": {
+    "inventory_level:reserved_total_differs_from_active_reservations": 1
+  },
+  "historical_unresolved_references": {
+    "device.source_id:unresolved_deleted": 34,
+    "reservation_item.line_item_id:unresolved_deleted": 85
+  },
+  "observations": {
+    "inventory_level:reserved_exceeds_stocked_check_backorder": 3
+  },
+  "source_repair_performed": false,
+  "disposition": "Preserve mismatches and unresolved history; no automatic quantity recomputation, fake sources or silent discard; isolated import must record issues and prevent affected new writes until reconciled"
+}

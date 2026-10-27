@@ -22,7 +22,7 @@
 | migrate-sequence | 2 | 保留订单逻辑时钟及 ERP SKU 计数位置 |
 | review-provider-history | 1 | PayPal metrics 的用途和重报风险单独核对 |
 
-所有表已有初步分类，无默认忽略；原始元数据清单的 status 保持 mapping-pending，单独的领域字段设计才记录设计进度。第一批 [目录及配置逐字段设计](catalog-field-design.md) 覆盖36表292列，其余157表未展开。T006 验收还需要全域逐字段目标、约束、关系、默认值、导入顺序和对账断言，不能因分类齐全就标记完成。
+所有表已有初步分类，无默认忽略；原始元数据清单的 status 保持 mapping-pending，单独的领域字段设计才记录设计进度。[目录及配置](catalog-field-design.md)36表292列，加上[库存/设备/售后](inventory-device-field-design.md)12表139列，累计48表431列，其余145表未展开。T006 验收还需要全域逐字段目标、约束、关系、默认值、导入顺序和对账断言，不能因分类齐全就标记完成。
 
 ## 关键字段转换
 
@@ -63,3 +63,5 @@
 按依赖先建 catalog/pricing/region/channel 的精确字段表，再 inventory/device，再订单/付款/履约/售后及回收、邮件运营。每个目标字段附 source expression、转换函数、NULL/默认、精度/单位、索引/关系、导入断言及去向任务。旧表不迁移的字段必须有原因；source-manifest 与导入工具差异检查作为门槛。
 
 第一批机器映射见 catalog-field-mapping.json / .csv；349条源约束、759个索引和17个枚举值见 source-schema-constraints.json。真实只读快照的标量/长度/精度/raw配对/引用预检见 catalog-preflight-report.json：151,907个字段值、1,779个raw配对、36,535个含软删对象的引用检查无失败。未验证MySQL DDL/活动唯一键/所有语义关联/JSON词法往返，不能当作已导入。
+
+第二批预检见inventory-device-preflight-report.json：55,692字段值、2,880 raw配对、5,506引用检查；119条软删历史引用未解析单独保留。inventory-device-semantic-report.json有1条库存层预留合计差异及3条预留>现货观察项，审计退出1，不改旧源、不覆盖数量、不假造来源或订单行。隔离导入问题账本和受影响写入限制见该领域设计，未完成对账不标验收。
