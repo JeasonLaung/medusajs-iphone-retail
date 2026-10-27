@@ -2,6 +2,7 @@
   "version": 1,
   "source_columns_sha256": "7e9bc4be4f59ca941327e787694911332937a36d9d803589162f354450ae29c6",
   "input_sha256": {
+    "source-schema-constraints.json": "082a6388af6d59f0cb2b1ee3e3ec96f4ae72651c5da00bc0bbbf3fe5cb4cce8c",
     "catalog-field-mapping.json": "e760f3ea032fa7fd09119fe017bb9c634cbade3b08648a47cfc1c3481cc2255b",
     "inventory-device-field-mapping.json": "28e6e3d3200ff7de6f28cb8eb1abfcbfb9b0c9c265d636bc9f70bb9da2561b23",
     "commerce-field-mapping.json": "7c9526d97ed3612245202c2bde253311de3e488c9c75d741f0aa3ec2bc48d7d0",
@@ -110,7 +111,8 @@
           "raw": "raw_rounding",
           "scalar": "rounding"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "product",
@@ -333,7 +335,22 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "product_status_check",
+          "kind": "enum",
+          "columns": [
+            "status"
+          ],
+          "allowed": [
+            "draft",
+            "proposed",
+            "published",
+            "rejected"
+          ]
+        }
+      ]
     },
     {
       "source": "product_variant",
@@ -547,7 +564,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_category",
@@ -680,7 +698,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_category_product",
@@ -705,7 +724,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_collection",
@@ -784,7 +804,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_type",
@@ -854,7 +875,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_tag",
@@ -924,7 +946,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_tags",
@@ -949,7 +972,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_option",
@@ -1019,7 +1043,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_option_value",
@@ -1098,7 +1123,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_product_option",
@@ -1159,7 +1185,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_product_option_value",
@@ -1220,7 +1247,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_variant_option",
@@ -1245,7 +1273,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "image",
@@ -1324,7 +1353,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_variant_product_image",
@@ -1385,7 +1415,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "price_set",
@@ -1428,7 +1459,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_variant_price_set",
@@ -1489,7 +1521,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "price",
@@ -1644,7 +1677,8 @@
           "raw": "raw_max_quantity",
           "scalar": "max_quantity"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "price_rule",
@@ -1732,7 +1766,23 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "price_rule_operator_check",
+          "kind": "enum",
+          "columns": [
+            "operator"
+          ],
+          "allowed": [
+            "gte",
+            "lte",
+            "gt",
+            "lt",
+            "eq"
+          ]
+        }
+      ]
     },
     {
       "source": "price_list",
@@ -1847,7 +1897,31 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "price_list_status_check",
+          "kind": "enum",
+          "columns": [
+            "status"
+          ],
+          "allowed": [
+            "active",
+            "draft"
+          ]
+        },
+        {
+          "source_constraint": "price_list_type_check",
+          "kind": "enum",
+          "columns": [
+            "type"
+          ],
+          "allowed": [
+            "sale",
+            "override"
+          ]
+        }
+      ]
     },
     {
       "source": "price_list_rule",
@@ -1917,7 +1991,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "price_preference",
@@ -1987,7 +2062,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_sales_channel",
@@ -2048,7 +2124,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_shipping_profile",
@@ -2109,7 +2186,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_variant_inventory_item",
@@ -2179,7 +2257,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "sales_channel",
@@ -2258,7 +2337,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "sales_channel_stock_location",
@@ -2319,7 +2399,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "region",
@@ -2398,7 +2479,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "region_country",
@@ -2495,7 +2577,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "region_payment_provider",
@@ -2556,7 +2639,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "store",
@@ -2644,7 +2728,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "store_currency",
@@ -2714,7 +2799,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "store_locale",
@@ -2775,7 +2861,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "shipping_profile",
@@ -2845,7 +2932,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "shipping_option_price_set",
@@ -2906,7 +2994,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "inventory_item",
@@ -3084,7 +3173,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "inventory_level",
@@ -3221,7 +3311,8 @@
           "raw": "raw_incoming_quantity",
           "scalar": "incoming_quantity"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "reservation_item",
@@ -3359,7 +3450,8 @@
           "raw": "raw_quantity",
           "scalar": "quantity"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "stock_location",
@@ -3429,7 +3521,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "stock_location_address",
@@ -3553,7 +3646,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "device",
@@ -3755,7 +3849,40 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "device_category_check",
+          "kind": "enum",
+          "columns": [
+            "category"
+          ],
+          "allowed": [
+            "sale",
+            "returned",
+            "recycled"
+          ]
+        },
+        {
+          "source_constraint": "device_state_check",
+          "kind": "enum",
+          "columns": [
+            "state"
+          ],
+          "allowed": [
+            "pending",
+            "inspection",
+            "available",
+            "reserved",
+            "packed",
+            "shipped",
+            "repair",
+            "repair_ready",
+            "retired",
+            "supplier_returned"
+          ]
+        }
+      ]
     },
     {
       "source": "device_source",
@@ -3828,7 +3955,20 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "device_source_type_check",
+          "kind": "enum",
+          "columns": [
+            "type"
+          ],
+          "allowed": [
+            "self",
+            "supplier"
+          ]
+        }
+      ]
     },
     {
       "source": "device_variant",
@@ -3889,7 +4029,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "device_supply",
@@ -3959,7 +4100,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "device_assignment",
@@ -4098,7 +4240,23 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "device_assignment_status_check",
+          "kind": "enum",
+          "columns": [
+            "status"
+          ],
+          "allowed": [
+            "reserved",
+            "packed",
+            "shipped",
+            "returned",
+            "canceled"
+          ]
+        }
+      ]
     },
     {
       "source": "device_event",
@@ -4186,7 +4344,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "after_sales_request",
@@ -4292,7 +4451,34 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "after_sales_request_status_check",
+          "kind": "enum",
+          "columns": [
+            "status"
+          ],
+          "allowed": [
+            "pending",
+            "processing",
+            "completed",
+            "rejected"
+          ]
+        },
+        {
+          "source_constraint": "after_sales_request_type_check",
+          "kind": "enum",
+          "columns": [
+            "type"
+          ],
+          "allowed": [
+            "return",
+            "exchange",
+            "repair"
+          ]
+        }
+      ]
     },
     {
       "source": "order",
@@ -4486,7 +4672,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "order_address",
@@ -4637,7 +4824,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "order_cart",
@@ -4698,7 +4886,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "order_item",
@@ -4998,7 +5187,8 @@
           "raw": "raw_compare_at_unit_price",
           "scalar": "compare_at_unit_price"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "order_line_item",
@@ -5293,7 +5483,8 @@
           "raw": "raw_unit_price",
           "scalar": "unit_price"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "order_line_item_adjustment",
@@ -5422,7 +5613,8 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "order_line_item_tax_line",
@@ -5551,7 +5743,8 @@
           "raw": "raw_rate",
           "scalar": "rate"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "order_shipping",
@@ -5648,7 +5841,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "order_shipping_method",
@@ -5777,7 +5971,8 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "order_shipping_method_adjustment",
@@ -5897,7 +6092,8 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "order_shipping_method_tax_line",
@@ -6026,7 +6222,8 @@
           "raw": "raw_rate",
           "scalar": "rate"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "order_summary",
@@ -6096,7 +6293,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "order_transaction",
@@ -6234,7 +6432,8 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "order_credit_line",
@@ -6345,7 +6544,8 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "order_payment_collection",
@@ -6406,7 +6606,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "order_fulfillment",
@@ -6467,7 +6668,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "order_promotion",
@@ -6528,7 +6730,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "order_change",
@@ -6775,7 +6978,23 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "order_change_status_check",
+          "kind": "enum",
+          "columns": [
+            "status"
+          ],
+          "allowed": [
+            "confirmed",
+            "declined",
+            "requested",
+            "pending",
+            "canceled"
+          ]
+        }
+      ]
     },
     {
       "source": "order_change_action",
@@ -6958,7 +7177,8 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "order_claim",
@@ -7108,7 +7328,8 @@
           "raw": "raw_refund_amount",
           "scalar": "refund_amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "order_claim_item",
@@ -7233,7 +7454,8 @@
           "raw": "raw_quantity",
           "scalar": "quantity"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "order_claim_item_image",
@@ -7303,7 +7525,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "order_exchange",
@@ -7450,7 +7673,8 @@
           "raw": "raw_difference_due",
           "scalar": "difference_due"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "order_exchange_item",
@@ -7552,7 +7776,8 @@
           "raw": "raw_quantity",
           "scalar": "quantity"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "return",
@@ -7741,7 +7966,8 @@
           "raw": "raw_refund_amount",
           "scalar": "refund_amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "return_item",
@@ -7896,7 +8122,8 @@
           "raw": "raw_damaged_quantity",
           "scalar": "damaged_quantity"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "return_reason",
@@ -7984,7 +8211,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "return_fulfillment",
@@ -8045,7 +8273,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "payment_collection",
@@ -8222,6 +8451,25 @@
           "raw": "raw_refunded_amount",
           "scalar": "refunded_amount"
         }
+      ],
+      "checks": [
+        {
+          "source_constraint": "payment_collection_status_check",
+          "kind": "enum",
+          "columns": [
+            "status"
+          ],
+          "allowed": [
+            "not_paid",
+            "awaiting",
+            "authorized",
+            "partially_authorized",
+            "canceled",
+            "failed",
+            "partially_captured",
+            "completed"
+          ]
+        }
       ]
     },
     {
@@ -8368,6 +8616,24 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
+      ],
+      "checks": [
+        {
+          "source_constraint": "payment_session_status_check",
+          "kind": "enum",
+          "columns": [
+            "status"
+          ],
+          "allowed": [
+            "authorized",
+            "captured",
+            "pending",
+            "requires_more",
+            "error",
+            "canceled",
+            "pending_authorization"
+          ]
+        }
       ]
     },
     {
@@ -8506,7 +8772,8 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "capture",
@@ -8599,7 +8866,8 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "refund",
@@ -8710,7 +8978,8 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "refund_reason",
@@ -8789,7 +9058,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "payment_provider",
@@ -8841,7 +9111,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "payment_collection_payment_providers",
@@ -8866,7 +9137,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "account_holder",
@@ -8954,7 +9226,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "fulfillment",
@@ -9114,7 +9387,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "fulfillment_address",
@@ -9256,7 +9530,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "fulfillment_item",
@@ -9376,7 +9651,8 @@
           "raw": "raw_quantity",
           "scalar": "quantity"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "fulfillment_label",
@@ -9455,7 +9731,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "fulfillment_provider",
@@ -9507,7 +9784,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "cart",
@@ -9640,7 +9918,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "cart_address",
@@ -9791,7 +10070,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "cart_line_item",
@@ -10095,6 +10375,16 @@
           "raw": "raw_unit_price",
           "scalar": "unit_price"
         }
+      ],
+      "checks": [
+        {
+          "source_constraint": "cart_line_item_unit_price_check",
+          "kind": "nonnegative_decimal",
+          "columns": [
+            "unit_price"
+          ],
+          "allowed": []
+        }
       ]
     },
     {
@@ -10224,6 +10514,16 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
+      ],
+      "checks": [
+        {
+          "source_constraint": "cart_line_item_adjustment_check",
+          "kind": "nonnegative_decimal",
+          "columns": [
+            "amount"
+          ],
+          "allowed": []
+        }
       ]
     },
     {
@@ -10339,7 +10639,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "cart_payment_collection",
@@ -10400,7 +10701,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "cart_promotion",
@@ -10461,7 +10763,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "cart_shipping_method",
@@ -10590,6 +10893,16 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
+      ],
+      "checks": [
+        {
+          "source_constraint": "cart_shipping_method_check",
+          "kind": "nonnegative_decimal",
+          "columns": [
+            "amount"
+          ],
+          "allowed": []
+        }
       ]
     },
     {
@@ -10710,7 +11023,8 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "cart_shipping_method_tax_line",
@@ -10825,7 +11139,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "credit_line",
@@ -10927,7 +11242,8 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "promotion",
@@ -11058,7 +11374,32 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "promotion_status_check",
+          "kind": "enum",
+          "columns": [
+            "status"
+          ],
+          "allowed": [
+            "draft",
+            "active",
+            "inactive"
+          ]
+        },
+        {
+          "source_constraint": "promotion_type_check",
+          "kind": "enum",
+          "columns": [
+            "type"
+          ],
+          "allowed": [
+            "standard",
+            "buyget"
+          ]
+        }
+      ]
     },
     {
       "source": "promotion_application_method",
@@ -11207,6 +11548,43 @@
           "raw": "raw_value",
           "scalar": "value"
         }
+      ],
+      "checks": [
+        {
+          "source_constraint": "promotion_application_method_allocation_check",
+          "kind": "enum",
+          "columns": [
+            "allocation"
+          ],
+          "allowed": [
+            "each",
+            "across",
+            "once"
+          ]
+        },
+        {
+          "source_constraint": "promotion_application_method_target_type_check",
+          "kind": "enum",
+          "columns": [
+            "target_type"
+          ],
+          "allowed": [
+            "order",
+            "shipping_methods",
+            "items"
+          ]
+        },
+        {
+          "source_constraint": "promotion_application_method_type_check",
+          "kind": "enum",
+          "columns": [
+            "type"
+          ],
+          "allowed": [
+            "fixed",
+            "percentage"
+          ]
+        }
       ]
     },
     {
@@ -11295,7 +11673,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "promotion_campaign_budget",
@@ -11424,6 +11803,21 @@
           "raw": "raw_used",
           "scalar": "used"
         }
+      ],
+      "checks": [
+        {
+          "source_constraint": "promotion_campaign_budget_type_check",
+          "kind": "enum",
+          "columns": [
+            "type"
+          ],
+          "allowed": [
+            "spend",
+            "usage",
+            "use_by_attribute",
+            "spend_by_attribute"
+          ]
+        }
       ]
     },
     {
@@ -11508,7 +11902,8 @@
           "raw": "raw_used",
           "scalar": "used"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "promotion_promotion_rule",
@@ -11533,7 +11928,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "promotion_rule",
@@ -11611,7 +12007,25 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "promotion_rule_operator_check",
+          "kind": "enum",
+          "columns": [
+            "operator"
+          ],
+          "allowed": [
+            "gte",
+            "lte",
+            "gt",
+            "lt",
+            "eq",
+            "ne",
+            "in"
+          ]
+        }
+      ]
     },
     {
       "source": "promotion_rule_value",
@@ -11672,7 +12086,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "application_method_buy_rules",
@@ -11697,7 +12112,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "application_method_target_rules",
@@ -11722,7 +12138,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "tax_provider",
@@ -11774,7 +12191,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "tax_region",
@@ -11871,7 +12289,27 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "CK_tax_region_country_top_level",
+          "kind": "null_or_not_null",
+          "columns": [
+            "parent_id",
+            "province_code"
+          ],
+          "allowed": []
+        },
+        {
+          "source_constraint": "CK_tax_region_provider_top_level",
+          "kind": "null_or_null",
+          "columns": [
+            "parent_id",
+            "provider_id"
+          ],
+          "allowed": []
+        }
+      ]
     },
     {
       "source": "tax_rate",
@@ -11986,7 +12424,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "tax_rate_rule",
@@ -12074,7 +12513,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "fulfillment_set",
@@ -12144,7 +12584,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "service_zone",
@@ -12214,7 +12655,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "geo_zone",
@@ -12325,7 +12767,22 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "geo_zone_type_check",
+          "kind": "enum",
+          "columns": [
+            "type"
+          ],
+          "allowed": [
+            "country",
+            "province",
+            "city",
+            "zip"
+          ]
+        }
+      ]
     },
     {
       "source": "shipping_option",
@@ -12443,7 +12900,20 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "shipping_option_price_type_check",
+          "kind": "enum",
+          "columns": [
+            "price_type"
+          ],
+          "allowed": [
+            "calculated",
+            "flat"
+          ]
+        }
+      ]
     },
     {
       "source": "shipping_option_rule",
@@ -12531,7 +13001,26 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "shipping_option_rule_operator_check",
+          "kind": "enum",
+          "columns": [
+            "operator"
+          ],
+          "allowed": [
+            "in",
+            "eq",
+            "ne",
+            "gt",
+            "gte",
+            "lt",
+            "lte",
+            "nin"
+          ]
+        }
+      ]
     },
     {
       "source": "shipping_option_type",
@@ -12601,7 +13090,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "location_fulfillment_provider",
@@ -12662,7 +13152,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "location_fulfillment_set",
@@ -12723,7 +13214,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "buyback_request",
@@ -12968,6 +13460,29 @@
           "raw": "raw_final_amount",
           "scalar": "final_amount"
         }
+      ],
+      "checks": [
+        {
+          "source_constraint": "buyback_request_status_check",
+          "kind": "enum",
+          "columns": [
+            "status"
+          ],
+          "allowed": [
+            "awaiting_photos",
+            "photo_review",
+            "ready_to_ship",
+            "in_transit",
+            "received",
+            "final_offer",
+            "accepted",
+            "paid",
+            "return_requested",
+            "returning",
+            "returned",
+            "canceled"
+          ]
+        }
       ]
     },
     {
@@ -13095,7 +13610,37 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "buyback_photo_photo_type_check",
+          "kind": "enum",
+          "columns": [
+            "photo_type"
+          ],
+          "allowed": [
+            "front",
+            "back",
+            "edges",
+            "damage",
+            "packaging",
+            "sealed"
+          ]
+        },
+        {
+          "source_constraint": "buyback_photo_review_status_check",
+          "kind": "enum",
+          "columns": [
+            "review_status"
+          ],
+          "allowed": [
+            "pending",
+            "approved",
+            "retake",
+            "expired"
+          ]
+        }
+      ]
     },
     {
       "source": "buyback_price",
@@ -13197,7 +13742,8 @@
           "raw": "raw_amount",
           "scalar": "amount"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "buyback_device_link",
@@ -13267,7 +13813,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "mail_account",
@@ -13364,7 +13911,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "mail_campaign",
@@ -13476,7 +14024,23 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "mail_campaign_status_check",
+          "kind": "enum",
+          "columns": [
+            "status"
+          ],
+          "allowed": [
+            "draft",
+            "queued",
+            "sending",
+            "paused",
+            "completed"
+          ]
+        }
+      ]
     },
     {
       "source": "mail_contact",
@@ -13582,7 +14146,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "mail_delivery",
@@ -13724,7 +14289,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "mail_event",
@@ -13812,7 +14378,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "mail_message",
@@ -14090,7 +14657,35 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "mail_message_direction_check",
+          "kind": "enum",
+          "columns": [
+            "direction"
+          ],
+          "allowed": [
+            "inbound",
+            "outbound"
+          ]
+        },
+        {
+          "source_constraint": "mail_message_folder_check",
+          "kind": "enum",
+          "columns": [
+            "folder"
+          ],
+          "allowed": [
+            "inbox",
+            "draft",
+            "outbox",
+            "sent",
+            "archive",
+            "trash"
+          ]
+        }
+      ]
     },
     {
       "source": "mail_template",
@@ -14169,7 +14764,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "seo_crawler_visit",
@@ -14275,7 +14871,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "seo_evidence",
@@ -14357,7 +14954,20 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "seo_evidence_evidence_type_check",
+          "kind": "enum",
+          "columns": [
+            "evidence_type"
+          ],
+          "allowed": [
+            "provider_citation",
+            "answer_link"
+          ]
+        }
+      ]
     },
     {
       "source": "seo_monitor",
@@ -14466,7 +15076,20 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "seo_monitor_provider_check",
+          "kind": "enum",
+          "columns": [
+            "provider"
+          ],
+          "allowed": [
+            "chatgpt",
+            "deepseek"
+          ]
+        }
+      ]
     },
     {
       "source": "seo_page",
@@ -14581,7 +15204,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "seo_provider",
@@ -14676,7 +15300,32 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "seo_provider_provider_check",
+          "kind": "enum",
+          "columns": [
+            "provider"
+          ],
+          "allowed": [
+            "chatgpt",
+            "deepseek"
+          ]
+        },
+        {
+          "source_constraint": "seo_provider_wire_api_check",
+          "kind": "enum",
+          "columns": [
+            "wire_api"
+          ],
+          "allowed": [
+            "responses",
+            "chat",
+            "chat_input"
+          ]
+        }
+      ]
     },
     {
       "source": "seo_run",
@@ -14822,7 +15471,21 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "seo_run_status_check",
+          "kind": "enum",
+          "columns": [
+            "status"
+          ],
+          "allowed": [
+            "running",
+            "completed",
+            "failed"
+          ]
+        }
+      ]
     },
     {
       "source": "seo_setting",
@@ -14901,7 +15564,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "seo_source",
@@ -15084,7 +15748,8 @@
           "raw": "raw_read_offset",
           "scalar": "read_offset"
         }
-      ]
+      ],
+      "checks": []
     },
     {
       "source": "seo_submission",
@@ -15199,7 +15864,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "seo_traffic_visit",
@@ -15368,7 +16034,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "product_review",
@@ -15496,7 +16163,21 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "product_review_status_check",
+          "kind": "enum",
+          "columns": [
+            "status"
+          ],
+          "allowed": [
+            "pending",
+            "approved",
+            "rejected"
+          ]
+        }
+      ]
     },
     {
       "source": "customer_notice",
@@ -15602,7 +16283,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "webhook_endpoint",
@@ -15754,7 +16436,35 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "webhook_endpoint_language_check",
+          "kind": "enum",
+          "columns": [
+            "language"
+          ],
+          "allowed": [
+            "zh",
+            "en"
+          ]
+        },
+        {
+          "source_constraint": "webhook_endpoint_provider_check",
+          "kind": "enum",
+          "columns": [
+            "provider"
+          ],
+          "allowed": [
+            "feishu",
+            "wecom",
+            "dingtalk",
+            "slack",
+            "mattermost",
+            "generic"
+          ]
+        }
+      ]
     },
     {
       "source": "customer",
@@ -15869,7 +16579,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "customer_group",
@@ -15939,7 +16650,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "customer_group_customer",
@@ -16018,7 +16730,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "mollie_config",
@@ -16097,7 +16810,20 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "mollie_config_environment_check",
+          "kind": "enum",
+          "columns": [
+            "environment"
+          ],
+          "allowed": [
+            "test",
+            "production"
+          ]
+        }
+      ]
     },
     {
       "source": "paypal_connection",
@@ -16239,7 +16965,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "paypal_settings",
@@ -16291,7 +17018,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "paypal_metric",
@@ -16352,7 +17080,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "paypal_webhook_event",
@@ -16503,7 +17232,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "notification",
@@ -16681,7 +17411,21 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "notification_status_check",
+          "kind": "enum",
+          "columns": [
+            "status"
+          ],
+          "allowed": [
+            "pending",
+            "success",
+            "failure"
+          ]
+        }
+      ]
     },
     {
       "source": "notification_provider",
@@ -16760,7 +17504,8 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": []
     },
     {
       "source": "order_number_clock",
@@ -16785,7 +17530,17 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "order_number_clock_id_check",
+          "kind": "true",
+          "columns": [
+            "id"
+          ],
+          "allowed": []
+        }
+      ]
     },
     {
       "source": "sku_number_counter",
@@ -16810,7 +17565,25 @@
           "allowed": []
         }
       ],
-      "raw_pairs": []
+      "raw_pairs": [],
+      "checks": [
+        {
+          "source_constraint": "sku_number_counter_id_check",
+          "kind": "true",
+          "columns": [
+            "id"
+          ],
+          "allowed": []
+        },
+        {
+          "source_constraint": "sku_number_counter_last_id_check",
+          "kind": "nonnegative_integer",
+          "columns": [
+            "last_id"
+          ],
+          "allowed": []
+        }
+      ]
     }
   ]
 }

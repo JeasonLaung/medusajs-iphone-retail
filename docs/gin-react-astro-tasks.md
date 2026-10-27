@@ -84,7 +84,7 @@
 
 新增实现输入：[严格导入值组件](migration/strict-import-values.md)，Go精确数值、UTF/原文JSON、布尔整数及UTC微秒检查已被源唯一键适配复用；人工MySQL往返验证通过。完整导入器及旧目录草稿替换尚缺，不据此验收字段或导入任务。
 
-[显式整行转换](migration/mapped-row-import.md)已执行159表/1,691列计划，缺列/多列/非法值失败、SQL NULL与JSON文档null分离；59组raw与标量使用精确有理数配对，不以float64或舍入掩盖不一致。普通字段有Go转换，受保护非NULL字段明确hold。人工MySQL目录标签整行绑定写入及唯一登记同事务通过；v2完整流在人工PostgreSQL验证，真实快照适配和正式导入执行器仍缺。
+[显式整行转换](migration/mapped-row-import.md)已执行159表/1,691列计划，缺列/多列/非法值失败、SQL NULL与JSON文档null分离；59组raw与标量使用精确有理数配对，47条源CHECK以结构化规则验证（包括6个普通文本字段的源枚举限制），不以float64或舍入掩盖不一致。普通字段有Go转换，受保护非NULL字段明确hold。人工MySQL目录标签整行绑定写入及唯一登记同事务通过；v2完整流在人工PostgreSQL验证，真实快照适配和正式导入执行器仍缺。
 
 [逐列快照记录](migration/cell-record-contract.md)已确认旧v1快照NULL歧义，新增v2纯SQL构造及Go严格记录解码；人工PostgreSQL三行实际类型验证、全部159表投影SQL验证通过。没有重新采集业务库，完整一致导出/流式处理/真实NULL来源处置仍待完成。
 

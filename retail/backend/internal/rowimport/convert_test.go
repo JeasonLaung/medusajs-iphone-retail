@@ -34,6 +34,20 @@ func artificial(f field) json.RawMessage {
 	}
 }
 
+func satisfyFixtureChecks(plan tablePlan, row SourceRow) {
+	for _, check := range plan.Checks {
+		switch check.Kind {
+		case "enum":
+			raw, _ := json.Marshal(check.Allowed[0])
+			row[check.Columns[0]] = Cell{Raw: raw}
+		case "true":
+			row[check.Columns[0]] = Cell{Raw: json.RawMessage(`true`)}
+		case "null_or_null", "null_or_not_null":
+			row[check.Columns[0]] = Cell{SQLNull: true}
+		}
+	}
+}
+
 func TestAllPinnedFields(t *testing.T) {
 	var program struct {
 		Tables []tablePlan `json:"tables"`
@@ -63,6 +77,7 @@ func TestAllPinnedFields(t *testing.T) {
 					t.Fatal("valid mapped field rejected", f.Source, err)
 				}
 			}
+			satisfyFixtureChecks(plan, row)
 			bound, err := Convert(plan.Source, row)
 			if blocked {
 				if err != ErrProtection {

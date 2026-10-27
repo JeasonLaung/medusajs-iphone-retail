@@ -22,6 +22,21 @@ Cell显式包含SQLNull和Raw：SQLNull=true时Raw必须为空且列可NULL；SQ
 
 受保护非NULL字符串/JSON返回ErrProtection，必须后续逐域解密/密封再绑定，不可写原文或绕过；可NULL字段的SQL NULL可以保留而无需解密。JSON字段合法性与原文保留不意味着其provider token已获准公开。错误固定且不包含业务值、行ID、密文或源payload。
 
+### 源CHECK约束
+
+字段计划现钉住source-schema-constraints.json的SHA256，并核对六批映射的约束证据hash。生成器将159张映射表涉及的全部47条源CHECK编译成结构化规则：39条文本枚举、3条金额非负、1条整数非负、2条布尔单例、2条税区NULL组合。剩余3条源CHECK属于排除/重建表，不恢复旧表。运行时不执行源SQL；未知表达式、未映射字段、字段转换类型不匹配、enum_text允许值与源CHECK不一致均拒绝生成。
+
+其中商品状态、价格表状态/类型、价格规则操作符、通知状态、Mollie环境原本使用utf8_text转换；现在仍保留其原始文本与目标设计，额外由CHECK验证允许值。枚举逐字节匹配，不做大小写或空格归一化。CHECK接受UNKNOWN（SQL NULL），与字段NOT NULL独立；JSON文档null不是SQL NULL。非负金额用精确有理数检查，负零通过，负的最小可表示小数失败。税区分别执行parent_id IS NULL OR province_code IS NOT NULL、parent_id IS NULL OR provider_id IS NULL，不合并为另一条业务规则，也不补造关联。
+
+Convert在全部字段及raw配对之后执行CHECK，只在全部通过时返回BoundRow；必填受保护字段仍先hold。Go测试覆盖47条计划的合法/非法输入、完整NULL真值表、精确数值边界，以及商品/价格/编号/购物车整行拒绝；购物车反例的raw和负标量保持一致，确保失败来自非负CHECK。Python生成器6组边界测试拒绝未知SQL、不同cast、缺字段、错类型及枚举漂移。这些测试不是47条真实业务数据对账或新业务写路径接入的证据；税区外键与MySQL CHECK级联冲突仍须另行解决。
+
+离线审计另以固定SHA256的原始忽略快照执行Go的同一CHECK组件：35张有约束的映射表、47条规则，其中30条有真实行、17条为空样本；397次行/约束检查、21次NULL列输入、无失败。见[source-check-snapshot-report.json](source-check-snapshot-report.json)，逐约束保留次数和实现hash，不保存业务值。这一检查只允许已证明为文本/布尔/数值的CHECK列利用v1的null，不尝试区分JSON列的SQL NULL/JSON null，也不执行Convert或MySQL导入。空样本继续由人工边界覆盖，不作真实历史覆盖承诺。
+
+```powershell
+python retail/scripts/test-import-plan-checks.py
+python retail/scripts/audit-source-checks.py --bundle logs/gin-migration/source-20261026.json
+```
+
 ## 已运行验证
 
 `go test ./internal/rowimport`逐项执行159张表/1,691字段人工类型输入；受保护项明确断言ErrProtection，不能把这些计作已导入。逐表验证缺列/多列拒绝，标签表显式SQL NULL/非法NULL双重表示，独立手写期望覆盖int64边界、38位金额、UTC微秒、布尔false、数组/NULL/含逗号文本、尺寸浮点、原文身份与非法类型/溢出。默认go test无数据库写入。
@@ -36,4 +51,4 @@ MySQL集成复现沿用[登记组件隔离流程](mysql-unique-key-registry.md)�
 
 ## 剩余实现
 
-[逐列v2记录](cell-record-contract.md)已在人工PostgreSQL证明SQL NULL/JSON null来源区分及Go重复字段拒绝，完整159表流封装与校验和验证已运行；旧v1固定快照不能据此自动消除歧义。仍需真实一致快照导出与正式导入执行器；受保护域转换；真实raw数值对账、源CHECK及关联检查；有顺序的正式SQL迁移与完整事务/幂等/运行账本；唯一登记/业务写入/恢复覆盖；已发现库存与交易差异对账。空库字段可转换、少数人工行可写入不代表全量数据已迁移或可以切换运行时。
+[逐列v2记录](cell-record-contract.md)已在人工PostgreSQL证明SQL NULL/JSON null来源区分及Go重复字段拒绝，完整159表流封装与校验和验证已运行；旧v1固定快照不能据此自动消除歧义。仍需真实一致快照导出与正式导入执行器；受保护域转换；真实raw/CHECK对账及关联检查；有顺序的正式SQL迁移与完整事务/幂等/运行账本；唯一登记/业务写入/恢复覆盖；已发现库存与交易差异对账。空库字段可转换、少数人工行可写入不代表全量数据已迁移或可以切换运行时。
