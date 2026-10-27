@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Pinned v1 scalar source CHECK audit only; not v2 acceptance, MySQL import, or business reconciliation",
   "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
-  "plan_sha256": "519b5da2fdfa8ad3b907eff41eeb88e9609605f04afd32a5221820e3eaa60d0c",
+  "plan_sha256": "d3bff5f26b890e19f7424888430a638d4e45f6b46766e3643913e6eb670c5b77",
   "implementation_sha256": {
     "source_check.go": "3b57f147055ed362d823d648159fcb18704fd741955f751f25fae94062d7d48e",
     "source_check_snapshot_test.go": "ecc70782faa94b859dfaf1cb2ccde01ec69ca1bcdcbacd06e6e27475ba4390d7",

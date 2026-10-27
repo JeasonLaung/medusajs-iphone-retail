@@ -1,0 +1,83 @@
+{
+  "format_version": 1,
+  "scope": "Pinned v1 scalar identity/reference audit only; not v2 acceptance, complete data import or domain validation",
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "evidence": {
+    "relations": {
+      "rules": 224,
+      "physical_foreign_keys": 88,
+      "rows": 27140,
+      "null_references": 2549,
+      "nonnull_references": 43496,
+      "resolved_references": 43121,
+      "missing": {
+        "device.source_id": 34,
+        "fulfillment_item.line_item_id": 1,
+        "order_exchange.order_id": 10,
+        "order_exchange_item.item_id": 10,
+        "order_fulfillment.fulfillment_id": 85,
+        "order_fulfillment.order_id": 85,
+        "order_payment_collection.order_id": 18,
+        "order_payment_collection.payment_collection_id": 9,
+        "reservation_item.line_item_id": 85,
+        "return.order_id": 19,
+        "return_item.item_id": 19
+      },
+      "physical_missing": {},
+      "missing_on_deleted_rows": {
+        "device.source_id": 34,
+        "order_payment_collection.order_id": 6,
+        "order_payment_collection.payment_collection_id": 6,
+        "reservation_item.line_item_id": 85
+      },
+      "history_policy_missing": {
+        "device.source_id": 34,
+        "reservation_item.line_item_id": 85
+      },
+      "resolved_to_deleted_rows": {
+        "device.location_id": 34,
+        "device.variant_id": 34,
+        "device_event.device_id": 8,
+        "device_variant.inventory_item_id": 2,
+        "device_variant.variant_id": 2,
+        "fulfillment.location_id": 1,
+        "image.product_id": 10,
+        "inventory_level.inventory_item_id": 78,
+        "inventory_level.location_id": 58,
+        "location_fulfillment_provider.stock_location_id": 61,
+        "location_fulfillment_set.fulfillment_set_id": 1,
+        "price.price_set_id": 89,
+        "product_category_product.product_category_id": 4,
+        "product_category_product.product_id": 4,
+        "product_option_value.option_id": 90,
+        "product_product_option.product_id": 88,
+        "product_product_option.product_option_id": 83,
+        "product_product_option_value.product_option_value_id": 90,
+        "product_product_option_value.product_product_option_id": 90,
+        "product_sales_channel.product_id": 36,
+        "product_shipping_profile.product_id": 36,
+        "product_variant.product_id": 79,
+        "product_variant_inventory_item.inventory_item_id": 79,
+        "product_variant_inventory_item.variant_id": 79,
+        "product_variant_option.option_value_id": 90,
+        "product_variant_option.variant_id": 118,
+        "product_variant_price_set.price_set_id": 79,
+        "product_variant_price_set.variant_id": 79,
+        "reservation_item.inventory_item_id": 85,
+        "reservation_item.location_id": 85,
+        "return.location_id": 19,
+        "sales_channel_stock_location.stock_location_id": 63
+      }
+    },
+    "relations_accepted": false
+  },
+  "implementation_sha256": {
+    "field_plans.json": "d3bff5f26b890e19f7424888430a638d4e45f6b46766e3643913e6eb670c5b77",
+    "relationships.go": "0ede1ef7c9a558a3df815fdbec4e25948237a14c1a2f74d4f04d237e1461c755",
+    "relationships_snapshot_test.go": "d483d1f50ac79badb8915cd1afdaeadc6d34f6bb7ca0f982a61dbd45cb053c19",
+    "audit-relationships.py": "84bbe5937407e7517346ecb033d8c5fcb2664487495da2bc57b1aaeaeecb1173"
+  },
+  "go_audit_completed": true,
+  "source_database_connection": false,
+  "source_values_in_report": false
+}

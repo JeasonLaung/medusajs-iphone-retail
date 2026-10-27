@@ -75,4 +75,11 @@ func TestActualPostgresSnapshotStream(t *testing.T) {
 	if err != nil || len(evidence.Tables) != 159 || visits != 3 || evidence.Tables["product_tag"].Rows != 3 {
 		t.Fatal("actual export rejected", err)
 	}
+	if _, err := file.Seek(0, 0); err != nil {
+		t.Fatal("artificial stream rewind failed")
+	}
+	relations, err := VerifyRelationships(file, strings.TrimSpace(string(checksum)), RelationLimits{MaxRows: 100, KeyBytes: 1 << 20})
+	if err != nil || relations.Relations.Rows != 3 || relations.Relations.Rules != 224 || relations.Relations.NonNullReferences != 0 {
+		t.Fatal("actual stream primary key and relationship audit failed", err)
+	}
 }

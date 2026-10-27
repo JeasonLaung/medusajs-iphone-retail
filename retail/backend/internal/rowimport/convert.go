@@ -33,11 +33,13 @@ type field struct {
 	Allowed    []string `json:"allowed"`
 }
 type tablePlan struct {
-	Source   string        `json:"source"`
-	Target   string        `json:"target"`
-	Fields   []field       `json:"fields"`
-	RawPairs []numberPair  `json:"raw_pairs"`
-	Checks   []sourceCheck `json:"checks"`
+	Source     string          `json:"source"`
+	Target     string          `json:"target"`
+	Fields     []field         `json:"fields"`
+	RawPairs   []numberPair    `json:"raw_pairs"`
+	Checks     []sourceCheck   `json:"checks"`
+	PrimaryKey []string        `json:"primary_key"`
+	References []referenceRule `json:"references"`
 }
 
 // Cell explicitly distinguishes SQL NULL from JSON null. JSON fields containing

@@ -152,6 +152,8 @@ INSERT INTO product_tag VALUES
                             'other_empty_projection_sql_parsed': 158,
                             'full_read_only_transaction_export': True,
                             'go_159_table_stream_footer_counts_and_hash_verified': True,
+                            'go_primary_key_and_relationship_wrapper_verified': True,
+                            'nonempty_reference_rules_in_fixture': 0,
                             'all_tables_use_pinned_source_types_and_nullability': True,
                             'source_shape_drift_refused': [case[0] for case in drift_cases],
                             'max_mapped_columns': max(len(p['fields']) for p in all_plans)},

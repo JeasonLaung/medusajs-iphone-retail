@@ -21,6 +21,8 @@
     "other_empty_projection_sql_parsed": 158,
     "full_read_only_transaction_export": true,
     "go_159_table_stream_footer_counts_and_hash_verified": true,
+    "go_primary_key_and_relationship_wrapper_verified": true,
+    "nonempty_reference_rules_in_fixture": 0,
     "all_tables_use_pinned_source_types_and_nullability": true,
     "source_shape_drift_refused": [
       "type",

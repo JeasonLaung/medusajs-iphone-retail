@@ -44,12 +44,63 @@ def source_check(constraint, fields):
     return {'source_constraint': constraint['constraint_name'], **result}
 
 
+def relationships(plans, mapped_fields, constraints):
+    by_target = {(f['target_table'], f['target_column']): f for f in mapped_fields}
+    by_source = {(f['source_table'], f['source_column']): f for f in mapped_fields}
+    tables = {p['source']: p for p in plans}
+    for plan in plans:
+        pkeys = [c for c in constraints if c['source_table'] == plan['source'] and c['constraint_type'] == 'p']
+        assert len(pkeys) == 1, 'Expected explicit source primary key'
+        match = re.fullmatch(r'PRIMARY KEY \(([a-z_][a-z_0-9]*(?:, [a-z_][a-z_0-9]*)*)\)', pkeys[0]['definition'])
+        assert match, 'Unreviewed primary key'
+        plan['primary_key'] = match[1].split(', ')
+        for column in plan['primary_key']:
+            f = by_source[(plan['source'], column)]
+            assert not f['nullable'] and f['transform'] in {'identity_string', 'code_string', 'strict_boolean'}, 'Unreviewed primary key type'
+        refs = {}
+        for f in mapped_fields:
+            if f['source_table'] != plan['source'] or not f['reference']:
+                continue
+            target = f['reference'].split(' ', 1)[0].split('.')
+            assert len(target) == 2 and tuple(target) in by_target, 'Unmapped reference target'
+            parent = by_target[tuple(target)]
+            assert f['transform'] in {'identity_string', 'code_string', 'utf8_text'}
+            assert parent['transform'] in {'identity_string', 'code_string'}
+            policy = f.get('reference_policy') or 'require-existing-if-nonnull'
+            assert policy in {'require-existing-if-nonnull', 'preserve-unresolved-on-soft-deleted-row-only'}
+            refs[f['source_column']] = {'column': f['source_column'], 'parent_table': parent['source_table'],
+                                        'parent_column': parent['source_column'], 'policy': policy, 'physical_constraint': ''}
+        for c in constraints:
+            if c['source_table'] != plan['source'] or c['constraint_type'] != 'f':
+                continue
+            match = re.fullmatch(r'FOREIGN KEY \(([a-z_][a-z_0-9]*)\) REFERENCES "?([a-z_][a-z_0-9]*)"?\(([a-z_][a-z_0-9]*)\)(?: ON (?:UPDATE|DELETE) (?:CASCADE|SET NULL|RESTRICT|NO ACTION))*', c['definition'])
+            assert match, 'Unreviewed source foreign key'
+            column, parent, parent_column = match.groups()
+            assert parent in tables and (parent, parent_column) in by_source
+            assert by_source[(plan['source'], column)]['transform'] in {'identity_string', 'code_string', 'utf8_text'}
+            assert by_source[(parent, parent_column)]['transform'] in {'identity_string', 'code_string'}
+            rule = refs.setdefault(column, {'column': column, 'parent_table': parent, 'parent_column': parent_column,
+                                           'policy': 'require-existing-if-nonnull', 'physical_constraint': ''})
+            assert (rule['parent_table'], rule['parent_column']) == (parent, parent_column), 'Foreign key and field mapping disagree'
+            assert not rule['physical_constraint'], 'Duplicate foreign key field needs explicit multi-rule design'
+            rule['physical_constraint'] = c['constraint_name']
+        plan['references'] = list(refs.values())
+    # The current source has only single-column parent reference keys. Do not
+    # accidentally accept a prefix of a composite PK or a nonunique column.
+    for plan in plans:
+        for ref in plan['references']:
+            assert tables[ref['parent_table']]['primary_key'] == [ref['parent_column']], 'Reference target is not the full primary key'
+    assert sum(len(p['references']) for p in plans) == 224, 'Reference coverage drift'
+    assert sum(bool(r['physical_constraint']) for p in plans for r in p['references']) == 88, 'Foreign key coverage drift'
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
     inputs = {}
     plans = []
+    mapped_fields = []
     manifest_path = DOC / 'data-source-manifest.json'
     manifest_sha = hashlib.sha256(manifest_path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
     constraints_path = DOC / 'source-schema-constraints.json'
@@ -60,6 +111,7 @@ def main():
         path = DOC / (domain + '-field-mapping.json')
         inputs[path.name] = hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
         mapping = json.loads(path.read_text(encoding='utf-8'))
+        mapped_fields.extend(mapping['fields'])
         assert mapping['source_manifest_sha256'] == manifest_sha, 'Source column manifest drift'
         assert mapping['source_constraints_sha256'] == constraints_sha, 'Source constraints drift'
         for table in mapping['tables']:
@@ -96,6 +148,7 @@ def main():
     assert len({p['source'] for p in plans}) == len(plans)
     assert sum(len(p['raw_pairs']) for p in plans) == 59, 'Raw number pair coverage drift'
     assert sum(len(p['checks']) for p in plans) == 47, 'Source CHECK coverage drift'
+    relationships(plans, mapped_fields, constraints)
     content = json.dumps({'version': 1, 'source_columns_sha256': manifest_sha, 'input_sha256': inputs, 'tables': plans}, ensure_ascii=False, indent=2) + '\n'
     if args.check:
         assert OUT.read_text(encoding='utf-8').replace('\r\n', '\n') == content, 'Import field program drift'
