@@ -2,6 +2,7 @@
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import secrets
 import subprocess
@@ -13,7 +14,10 @@ LABEL = 'eurorefurb.identity-rehearsal'
 
 
 def docker(*args, timeout=90):
-    return subprocess.run(['docker', *args], capture_output=True, timeout=timeout)
+    try:
+        return subprocess.run(['docker', *args], capture_output=True, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        raise RuntimeError('Owned fixture Docker operation timed out; arguments suppressed') from None
 
 
 def main():
@@ -71,8 +75,34 @@ def main():
                                     stdin=source, capture_output=True, timeout=60)
         if copied.returncode or docker('exec', mysql_id, 'chmod', '700', '/opt/identity.test').returncode:
             raise RuntimeError('Identity runner transfer failed')
-        tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1', mysql_id,
-                        '/opt/identity.test', '-test.v', '-test.run', '^TestOwned(AdminAuthentication|CatalogSchemaTransition|ProductEdits|ProductPrices|ProductInventory|InventoryStockEdits|ReservationTransactions|OrderSchema|OrderImport|CustomerHistory|OrderRead)$', '-test.timeout', '240s', timeout=270)
+        # Each suite owns artificial databases in this uniquely labelled,
+        # disconnected server. Release their tmpfs tables before the next suite;
+        # otherwise cumulative DDL consumes the bounded fixture memory.
+        suites = ['AdminAuthentication','CatalogSchemaTransition','ProductEdits','ProductPrices',
+                  'ProductInventory','InventoryStockEdits','ReservationTransactions','OrderSchema',
+                  'OrderImport','CustomerHistory','OrderRead','PaymentSchema']
+        output, errors = b'', b''
+        for suite in suites:
+            tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1', mysql_id,
+                            '/opt/identity.test', '-test.v', '-test.run', '^TestOwned' + suite + '$',
+                            '-test.timeout', '150s', timeout=180)
+            output += tested.stdout
+            errors += tested.stderr
+            if tested.returncode:
+                break
+            names = docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket',
+                           '--batch','--skip-column-names','-e',
+                           "SELECT schema_name FROM information_schema.schemata WHERE schema_name NOT IN ('mysql','information_schema','performance_schema','sys')")
+            if names.returncode:
+                raise RuntimeError('Owned artificial database enumeration failed')
+            databases = names.stdout.decode('ascii').splitlines()
+            if any(not re.fullmatch(r'[A-Za-z0-9_]+',name) for name in databases):
+                raise RuntimeError('Unexpected artificial database identifier; cleanup refused')
+            cleanup = ''.join('DROP DATABASE `' + name + '`;' for name in databases)
+            cleanup += 'CREATE DATABASE identity_rehearsal;'
+            if docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket','-e',cleanup).returncode:
+                raise RuntimeError('Owned artificial database cleanup failed')
+        tested = subprocess.CompletedProcess([], tested.returncode, output, errors)
         markers = [line.split('IDENTITY_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'IDENTITY_REHEARSAL ' in line]
         if tested.returncode or len(markers) != 1:
             # All inputs and failure messages in this binary are artificial.
@@ -81,6 +111,9 @@ def main():
             print(json.dumps({'test_exit_code': tested.returncode, 'mysql_oom_and_exit': state.stdout.decode().strip()}))
             raise RuntimeError('Owned MySQL/Redis authentication checks failed')
         counts = json.loads(markers[0])
+        payment_markers = [line.split('PAYMENT_SCHEMA_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'PAYMENT_SCHEMA_REHEARSAL ' in line]
+        if len(payment_markers)!=1:
+            raise RuntimeError('Payment schema verification missing')
         schema_markers = [line.split('CATALOG_SCHEMA_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CATALOG_SCHEMA_REHEARSAL ' in line]
         if len(schema_markers)!=1:
             raise RuntimeError('Catalog schema verification missing')
@@ -140,10 +173,11 @@ def main():
         files += ['retail/backend/internal/orders/admin.go','retail/backend/internal/identity/order_read_test.go']
         files += ['retail/backend/internal/orders/amounts.go','retail/backend/internal/orders/amount_json.go','retail/backend/internal/identity/order_amounts_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/totals').glob('*.go')]
+        files += ['retail/backend/internal/identity/payment_schema_test.go','retail/backend/migrations/0019_payment_relational.sql','retail/scripts/generate-payment-schema.py','retail/backend/internal/payments/schema.go','retail/backend/internal/payments/schema_plan.json']
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                   'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                               'network': 'owned shared namespace with no external network', 'published_ports': 0},
-                  'real_accounts_used': False, 'application_resources_used': False, 'private_values_in_report': False,
+                  'real_accounts_used': False, 'application_resources_used': False, 'private_values_in_report': False, 'temporary_databases_cleared_between_suites': True,
                   'full_authentication_accepted': False,
                   'catalog_schema_transition': json.loads(schema_markers[0]),
                   'product_edit_transaction': json.loads(edit_markers[0]),
@@ -152,6 +186,7 @@ def main():
                   'inventory_import': json.loads(import_markers[0]),
                   'inventory_stock_edit': json.loads(stock_markers[0]),
                   'reservation_transactions': json.loads(reservation_markers[0]),
+                  'payment_schema': json.loads(payment_markers[0]),
                   'order_schema': json.loads(order_markers[0]),
                   'order_import': json.loads(order_import_markers[0]),
                   'customer_history': json.loads(customer_markers[0]),

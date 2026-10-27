@@ -90,10 +90,6 @@ def main():
         else:
             raise RuntimeError('Isolated rehearsal MySQL did not become ready')
         version = sql('SELECT VERSION();')
-        sql(ddl.read_text(encoding='utf-8'))
-        if sql("SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA='payment_rehearsal';") != '159':
-            raise RuntimeError('Complete review schema not created')
-        sql((ROOT / 'retail/backend/migrations/0005_migration_payment_dispositions.sql').read_text(encoding='utf-8'))
         for local, remote in [(executable, '/opt/payment-rehearsal.test'), (snapshot, '/tmp/payment-source.ndjson')]:
             # Stream private source directly into the running tmpfs mount.
             # The non-private executable uses the container filesystem because
@@ -128,7 +124,9 @@ def main():
                  'retail/backend/internal/rowimport/payment_context_envelope.go', 'retail/backend/internal/rowimport/convert.go',
                  'retail/backend/internal/rowimport/field_plans.json', 'retail/backend/migrations/0005_migration_payment_dispositions.sql',
                  'docs/migration/mysql-relational-review.sql']
-        report = {'format_version': 1, 'scope': 'Actual pinned payment subgraph in disposable tmpfs MySQL only; no full migration or payment runtime acceptance',
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
+        files += ['retail/backend/internal/schema/run.go','retail/backend/internal/schema/plan.go','retail/backend/internal/payments/schema.go','retail/backend/internal/payments/schema_plan.json']
+        report = {'format_version': 1, 'scope': 'Actual pinned payment subgraph under all 19 formal migrations in disposable tmpfs MySQL only; no full migration or payment runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
                   'limits': {'cpus': 1, 'memory_mib': 768, 'mysql_tmpfs_mib': 512, 'private_input_tmpfs_mib': 128, 'network': 'none', 'published_ports': 0},
                   'target_business_rows_written': True, 'target_operation_holds_written': True, 'production_target_used': False,

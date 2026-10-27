@@ -261,14 +261,14 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog embedded schema plan invalid")
 	}
 	created, err := schema.Apply(ctx, db, plan)
-	if err != nil || created.Applied != 18 || schema.CheckApplied(ctx, db, plan) != nil {
+	if err != nil || created.Applied != 19 || schema.CheckApplied(ctx, db, plan) != nil {
 		t.Fatal("catalog embedded migration failed")
 	}
 	repeated, err := schema.Apply(ctx, db, plan)
-	if err != nil || repeated.Skipped != 18 {
+	if err != nil || repeated.Skipped != 19 {
 		t.Fatal("catalog embedded migration replay failed")
 	}
-	counts["explicit_schema_migrations"] = 18
+	counts["explicit_schema_migrations"] = 19
 	var enabled int
 	if db.QueryRowContext(ctx, "SELECT @@foreign_key_checks").Scan(&enabled) != nil || enabled != 1 {
 		t.Fatal("catalog physical constraints must remain enabled")

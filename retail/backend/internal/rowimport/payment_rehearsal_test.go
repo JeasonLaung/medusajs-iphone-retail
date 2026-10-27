@@ -14,6 +14,8 @@ import (
 	"time"
 
 	"github.com/eurorefurb/retail/internal/protected"
+	"github.com/eurorefurb/retail/internal/schema"
+	"github.com/eurorefurb/retail/migrations"
 	"github.com/go-sql-driver/mysql"
 )
 
@@ -64,7 +66,20 @@ func TestActualPaymentHistoryMySQL(t *testing.T) {
 	}
 	defer db.Close()
 	db.SetMaxOpenConns(2)
-	counts := map[string]int64{"source_verified_tables": 159, "unresolved_global_references": missing, "source_verified_rows": relations.Relations.Rows}
+	plan, err := schema.Load(migrations.Files)
+	if err != nil {
+		t.Fatal("formal payment plan invalid")
+	}
+	applied, err := schema.Apply(ctx, db, plan)
+	if err != nil || applied.Applied != 19 || schema.CheckApplied(ctx, db, plan) != nil {
+		t.Fatal("formal payment schema application failed")
+	}
+	replay, err := schema.Apply(ctx, db, plan)
+	if err != nil || replay.Skipped != 19 {
+		t.Fatal("formal payment schema replay failed")
+	}
+
+	counts := map[string]int64{"explicit_migrations": 19, "payment_schema_tables": 8, "payment_source_columns": 83, "source_verified_tables": 159, "unresolved_global_references": missing, "source_verified_rows": relations.Relations.Rows}
 	targetCount := func(table string) int64 {
 		var count int64
 		if err := db.QueryRowContext(ctx, "SELECT COUNT(*) FROM `"+table+"`").Scan(&count); err != nil {

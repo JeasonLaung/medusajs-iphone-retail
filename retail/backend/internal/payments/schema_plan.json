@@ -1,0 +1,71 @@
+{
+  "format_version": 1,
+  "schema_version": 1,
+  "model_sha256": "bf2b1d2d79e1797ef958a9f7c4c3b75fa4be67f048d84653653a338443043819",
+  "migration": "0019_payment_relational.sql",
+  "tables": [
+    "payment_account_holders",
+    "payment_captures",
+    "payment_collection_providers",
+    "payment_collections",
+    "payment_refund_reasons",
+    "payment_refunds",
+    "payment_sessions",
+    "payments"
+  ],
+  "source_tables": [
+    "account_holder",
+    "capture",
+    "payment",
+    "payment_collection",
+    "payment_collection_payment_providers",
+    "payment_session",
+    "refund",
+    "refund_reason"
+  ],
+  "source_columns": 83,
+  "reads_enabled": true,
+  "writes_enabled": false,
+  "full_business_accepted": false,
+  "historical_accounts_restored": false,
+  "explicit_enum_constraints": [
+    {
+      "table": "payment_collections",
+      "column": "status",
+      "allowed": [
+        "not_paid",
+        "awaiting",
+        "authorized",
+        "partially_authorized",
+        "canceled",
+        "failed",
+        "partially_captured",
+        "completed"
+      ]
+    },
+    {
+      "table": "payment_sessions",
+      "column": "status",
+      "allowed": [
+        "authorized",
+        "captured",
+        "pending",
+        "requires_more",
+        "error",
+        "canceled",
+        "pending_authorization"
+      ]
+    }
+  ],
+  "unresolved_semantic_dependencies": [],
+  "unresolved_source_indexes": [
+    {
+      "source_table": "account_holder",
+      "index_name": "IDX_account_holder_provider_id_external_id_unique",
+      "definition": "CREATE UNIQUE INDEX \"IDX_account_holder_provider_id_external_id_unique\" ON public.account_holder USING btree (provider_id, external_id) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    }
+  ],
+  "migration_sha256_lf": "9ee1e50acff85c9164b7572aaaebb6368521a2d56ea801b65772f1038ae75da2"
+}
