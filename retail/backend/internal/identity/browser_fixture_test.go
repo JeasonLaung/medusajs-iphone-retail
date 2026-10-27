@@ -96,6 +96,7 @@ func TestPrepareReviewedCatalogFixture(t *testing.T) {
 	for _, statement := range []string{
 		`INSERT INTO commerce_sales_channels(id,name,is_disabled,created_at,updated_at) VALUES('fixture-channel','Public',FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
 		`INSERT INTO commerce_stores(id,name,default_sales_channel_id,created_at,updated_at) VALUES('fixture-store','Shop','fixture-channel',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO commerce_store_currencies(id,store_id,currency_code,is_default,created_at,updated_at) VALUES('fixture-store-currency','fixture-store','eur',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
 		`INSERT INTO catalog_product_channels(product_id,sales_channel_id,id,created_at,updated_at) VALUES('fixture-b','fixture-channel','fixture-channel-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
 		`INSERT INTO catalog_collections(id,title,handle,created_at,updated_at) VALUES('fixture-collection','Public collection','public-collection',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
 		`UPDATE catalog_products SET collection_id='fixture-collection' WHERE id='fixture-b'`,

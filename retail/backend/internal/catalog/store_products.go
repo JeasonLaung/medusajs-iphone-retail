@@ -4,9 +4,11 @@ import (
 	"database/sql"
 	"net/url"
 	"strconv"
+	"time"
 	"unicode/utf8"
 
 	"github.com/eurorefurb/retail/internal/platform"
+	"github.com/eurorefurb/retail/internal/pricing"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -14,20 +16,32 @@ import (
 type storeProductQuery struct {
 	limit, offset                        int
 	search, handle, collection, category string
+	region, quantity                     string
 }
 
 func parseStoreProducts(raw string, detail bool) (storeProductQuery, error) {
-	q := storeProductQuery{limit: 12}
+	q := storeProductQuery{limit: 12, quantity: "1"}
 	values, err := url.ParseQuery(raw)
 	if err != nil {
 		return q, errListQuery
 	}
 	for key, vs := range values {
-		if detail || len(vs) != 1 || vs[0] == "" || !utf8.ValidString(vs[0]) || containsControl(vs[0]) {
+		if detail && key != "region_id" && key != "quantity" || len(vs) != 1 || vs[0] == "" || !utf8.ValidString(vs[0]) || containsControl(vs[0]) {
 			return q, errListQuery
 		}
 		v := vs[0]
 		switch key {
+		case "region_id":
+			if !validProductID(v) {
+				return q, errListQuery
+			}
+			q.region = v
+		case "quantity":
+			n, e := strconv.Atoi(v)
+			if e != nil || strconv.Itoa(n) != v || n < 1 || n > 1000000000 {
+				return q, errListQuery
+			}
+			q.quantity = v
 		case "limit", "offset":
 			n, e := strconv.Atoi(v)
 			if e != nil || strconv.Itoa(n) != v || n < 0 {
@@ -66,11 +80,14 @@ func parseStoreProducts(raw string, detail bool) (storeProductQuery, error) {
 			return q, errListQuery
 		}
 	}
+	if values.Has("quantity") && q.region == "" {
+		return q, errListQuery
+	}
 	return q, nil
 }
 
-// Presentation resources do not claim prices, availability, or checkout support.
-// Those capabilities require the independent regional pricing/stock engine.
+// Price projection requires an explicit valid region; stock and checkout remain
+// independent capabilities and cannot be inferred from a configured price.
 type StoreProduct struct {
 	ID           string         `json:"id"`
 	Title        string         `json:"title"`
@@ -92,6 +109,7 @@ type StoreVariant struct {
 	Options               []AdminVariantValue `json:"options" gorm:"-"`
 	Images                []AdminImage        `json:"images" gorm:"-"`
 	ConfigurationComplete bool                `json:"configuration_complete" gorm:"-"`
+	CalculatedPrice       *pricing.Quote      `json:"calculated_price" gorm:"-"`
 }
 
 func publicProducts(tx *gorm.DB, channel string) *gorm.DB {
@@ -112,10 +130,28 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 	}
 	products := []StoreProduct{}
 	var count int64
+	var priceContext *pricing.Context
 	err = h.DB.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
 		channel, e := h.channel(tx)
 		if e != nil {
 			return e
+		}
+		if q.region != "" {
+			var region struct{ CurrencyCode string }
+			if e = tx.Table("commerce_regions").Select("currency_code").Where("id=? AND deleted_at IS NULL", q.region).Take(&region).Error; e != nil {
+				return e
+			}
+			if !regionCurrency.MatchString(region.CurrencyCode) {
+				return pricing.ErrInput
+			}
+			var currencies int64
+			if e = tx.Table("commerce_store_currencies sc").Joins("JOIN commerce_currencies cur ON cur.code=sc.currency_code AND cur.deleted_at IS NULL").Where("sc.store_id=? AND sc.currency_code=? AND sc.deleted_at IS NULL", h.StoreID, region.CurrencyCode).Count(&currencies).Error; e != nil {
+				return e
+			}
+			if currencies != 1 {
+				return pricing.ErrInput
+			}
+			priceContext = &pricing.Context{Region: q.region, Currency: region.CurrencyCode, Channel: channel, Quantity: q.quantity}
 		}
 		base := func() *gorm.DB {
 			db := publicProducts(tx, channel)
@@ -153,6 +189,26 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 				return e
 			}
 		}
+		if priceContext != nil {
+			ids := []string{}
+			for _, p := range products {
+				for _, v := range p.Variants {
+					if v.ConfigurationComplete {
+						ids = append(ids, v.ID)
+					}
+				}
+			}
+			quotes, e := pricing.Read(tx, ids, *priceContext, time.Now().UTC())
+			if e != nil {
+				return e
+			}
+			for i := range products {
+				for j := range products[i].Variants {
+					v := &products[i].Variants[j]
+					v.CalculatedPrice = quotes[v.ID]
+				}
+			}
+		}
 		return nil
 	}, &sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true})
 	if err != nil {
@@ -160,7 +216,7 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 		return
 	}
 	c.Header("Cache-Control", "public, max-age=0, must-revalidate")
-	capabilities := gin.H{"pricing": false, "availability": false, "checkout": false}
+	capabilities := gin.H{"pricing": priceContext != nil, "availability": false, "checkout": false}
 	if detail {
 		c.JSON(200, gin.H{"product": products[0], "capabilities": capabilities})
 	} else {

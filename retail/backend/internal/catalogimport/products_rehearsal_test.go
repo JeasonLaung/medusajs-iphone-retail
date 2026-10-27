@@ -94,4 +94,5 @@ func checkActualPublicProducts(t *testing.T, ctx context.Context, db *sql.DB, ro
 	if int64(len(seen)) != expected {
 		t.Fatal("actual public product page omitted resources")
 	}
+	checkActualStorePrices(t, router, counts)
 }

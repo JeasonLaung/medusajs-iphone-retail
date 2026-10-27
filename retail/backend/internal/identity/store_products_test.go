@@ -42,7 +42,7 @@ func checkStoreProducts(t *testing.T, db *gorm.DB, router http.Handler) {
 		if w.Code != status {
 			t.Fatalf("public product status %d expected %d on %s", w.Code, status, path)
 		}
-		for _, s := range []string{"product-secret", "variant-secret", "metadata", "payload", "status", "revision", "public-main", "private-256", "private-image", "deleted-image", "calculated_price", "inventory_quantity"} {
+		for _, s := range []string{"product-secret", "variant-secret", "metadata", "payload", "status", "revision", "public-main", "private-256", "private-image", "deleted-image", "inventory_quantity"} {
 			if strings.Contains(w.Body.String(), s) {
 				t.Fatal("public product private or unimplemented field escaped")
 			}
@@ -104,7 +104,8 @@ func checkStoreProducts(t *testing.T, db *gorm.DB, router http.Handler) {
 	for _, id := range []string{"visible", "public-b", "public-draft", "public-deleted", "missing"} {
 		call("/api/store/products/"+id, 404)
 	}
-	for _, query := range []string{"fields=*", "sales_channel_id=public-other", "region_id=unknown", "limit=0", "q=a&q=b"} {
+	call("/api/store/products?region_id=unknown", 404)
+	for _, query := range []string{"fields=*", "sales_channel_id=public-other", "quantity=1", "limit=0", "q=a&q=b"} {
 		call("/api/store/products?"+query, 400)
 	}
 	call("/api/store/products/public-a?handle=visible", 400)
@@ -131,4 +132,5 @@ func checkStoreProducts(t *testing.T, db *gorm.DB, router http.Handler) {
 		t.Fatal("public product failure checks changed evidence")
 	}
 	t.Log(`STORE_PRODUCT_REHEARSAL {"current_channel_only":true,"published_live_only":true,"strict_query":true,"literal_search":true,"exact_detail_id":true,"configuration_membership":true,"foreign_options_and_images_hidden":true,"stable_pagination":true,"empty_arrays":true,"relation_overflow_503":true,"no_legacy_payload_or_prices":true,"unimplemented_capabilities_explicit":true,"read_fingerprint_unchanged":true}`)
+	checkStorePricing(t, db, router)
 }

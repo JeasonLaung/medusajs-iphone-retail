@@ -137,7 +137,7 @@ def main():
                  'retail/backend/internal/platform/database.go', 'retail/backend/internal/platform/request.go',
                  'retail/backend/internal/server/router.go', 'retail/backend/internal/sessionstore/store.go',
                  'retail/backend/internal/sessionstore/config.go']
-        files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/backend/internal/catalog').glob('*.go')]
+        files += [str(p.relative_to(ROOT)).replace('\\', '/') for folder in ('catalog','pricing') for p in (ROOT / 'retail/backend/internal'/folder).glob('*.go')]
         files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/backend/migrations').glob('*.sql')]
         files += ['docs/migration/mysql-relational-review.sql']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/inventory').glob('*') if p.is_file()]

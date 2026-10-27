@@ -13,7 +13,7 @@ func TestStoreProductQueryBoundary(t *testing.T) {
 			t.Fatal("valid public product query rejected")
 		}
 	}
-	for _, q := range []string{"limit=0", "limit=101", "limit=01", "offset=-1", "offset=100001", "q=", "q=%00", "q=%FF", "bad%zz", "limit=1&limit=2", "fields=*", "sales_channel_id=other", "region_id=unknown", "currency_code=eur"} {
+	for _, q := range []string{"limit=0", "limit=101", "limit=01", "offset=-1", "offset=100001", "q=", "q=%00", "q=%FF", "bad%zz", "limit=1&limit=2", "fields=*", "sales_channel_id=other", "quantity=1", "quantity=0&region_id=r", "quantity=01&region_id=r", "quantity=1000000001&region_id=r", "currency_code=eur"} {
 		if _, err := parseStoreProducts(q, false); err == nil {
 			t.Fatal("invalid public product query accepted")
 		}

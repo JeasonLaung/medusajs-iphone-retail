@@ -105,6 +105,14 @@ def main():
         if docker('exec', '-i', container, '/bin/sh', '-c', 'umask 077; cat > /tmp/order-amounts-expected.json', input=expected.stdout).returncode:
             raise RuntimeError('Private order arithmetic expectation transfer failed')
         expected = None
+        with snapshot.open('rb') as private_source:
+            expected = subprocess.run(['node', str(ROOT/'retail/scripts/capture-store-prices.cjs')],
+                                      stdin=private_source, capture_output=True, timeout=60)
+        if expected.returncode:
+            raise RuntimeError('Private independent store price oracle failed')
+        if docker('exec', '-i', container, '/bin/sh', '-c', 'umask 077; cat > /tmp/store-prices-expected.json', input=expected.stdout).returncode:
+            raise RuntimeError('Private store price expectation transfer failed')
+        expected = None
         if docker('exec', container, 'chmod', '700', '/opt/catalog-rehearsal.test').returncode:
             raise RuntimeError('Catalog runner preparation failed')
         tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'CATALOG_MYSQL_REHEARSAL=1', container,
@@ -153,6 +161,8 @@ def main():
         files += ['retail/backend/internal/catalog/store_regions.go','retail/backend/internal/catalogimport/regions_rehearsal_test.go']
         files += ['retail/backend/internal/catalog/store_taxonomy.go','retail/backend/internal/catalogimport/taxonomy_rehearsal_test.go']
         files += ['retail/backend/internal/catalog/store_products.go','retail/backend/internal/catalogimport/products_rehearsal_test.go']
+        files += ['retail/scripts/capture-store-prices.cjs','retail/backend/internal/catalogimport/pricing_rehearsal_test.go']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/pricing').glob('*.go')]
         report = {'format_version': 1, 'scope': '36 catalog tables, nine parent dependencies, two inventory tables, 28 ordinary order tables, eight payment tables and seven fulfillment tables in disposable tmpfs MySQL; five historical customer subjects without account bindings and catalog parent rows have no ledger; no full import/runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
                   'embedded_migration_plan_used': True, 'review_ddl_injected': False,

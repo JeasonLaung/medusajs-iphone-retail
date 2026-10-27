@@ -16,6 +16,21 @@
     "unimplemented_capabilities_explicit": true,
     "read_fingerprint_unchanged": true
   },
+  "store_pricing": {
+    "regional_currency": true,
+    "quantity_bounds": true,
+    "specificity": true,
+    "sale_override_reference": true,
+    "shared_sets": true,
+    "incomplete_variant_unquoted": true,
+    "unknown_condition_unquoted": true,
+    "missing_price_null": true,
+    "exact_raw_validation": true,
+    "tax_preferences": true,
+    "private_fields_excluded": true,
+    "rule_overflow_503": true,
+    "read_fingerprint_unchanged": true
+  },
   "store_taxonomy": {
     "explicit_store_binding": true,
     "unconfigured_store_503": true,
@@ -388,7 +403,7 @@
     "amount_dependency_failures_rejected": true
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "8fbd1ede988f7a18c355beb42fe63013f44200f9ae0d47e917efeb63d73a3f5e",
+    "retail/scripts/test-admin-auth.py": "b9d22db4902471e242fc3259997a1c79dac9b2592cf53ddaa4111dfbc0b4701e",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "d4d2eda37a6f7b4afbc0394eba330b0b11aba9a39d6f64ab62e1152a4f5ffd01",
@@ -410,7 +425,7 @@
     "retail/backend/internal/catalog/edit_test.go": "6ecd4a4a68fc93c78fa223ce7005422dd035a0759a83c2cc84150a77c584c550",
     "retail/backend/internal/identity/product_edit_test.go": "efa48674463ea39bfc58a6f0667b34ce3165a3eaa8d4896d36a94db8710dd66f",
     "retail/backend/internal/identity/product_prices_test.go": "31f6311e064caebb6a5d0a74de611d27732a192b5c7944ca1cbcba61d189c20e",
-    "retail/backend/internal/identity/browser_fixture_test.go": "dfb2c38f2ee8636c2e5b061f5bb1694062f0b2594e7c25e93fa6fe4944d00412",
+    "retail/backend/internal/identity/browser_fixture_test.go": "9b417c54a12461f327e0772c32b3f2fc4a7da277476577bcb3a4105c277370f7",
     "retail/backend/internal/catalog/admin_prices.go": "30743325e77c2b53ff91d990663a4a874ca89ee62e3dd8afaecfac9239ac795a",
     "retail/backend/internal/catalog/admin_prices_test.go": "cc11724c0df95e3897726de133929d35f87e8c874dc6aaacef32629ef990c03e",
     "retail/backend/internal/inventory/edit.go": "2d9b6f06a1b139f748d9150deb1b1f82a41942552ea6d9d320b4077a58e4809f",
@@ -501,9 +516,14 @@
     "retail/backend/internal/catalog/store_taxonomy.go": "90ea7c6edb6261b9bf182ecb779fd4fe6863d91e466f46b0a8fee8769dcb6e2e",
     "retail/backend/internal/catalog/store_taxonomy_test.go": "accebd5a69ebd60034fd49a65a725bd9c5ce379741ad01608e3bc4864602740b",
     "retail/backend/internal/identity/store_taxonomy_test.go": "bc266a98e0c639139982277037531f489d70f019218a846c03a3cca77dc86561",
-    "retail/backend/internal/catalog/store_products.go": "537eddc708ef0cc60ff2c3e5109e58204fdc94f849c413d45c8006c1be9958c1",
-    "retail/backend/internal/catalog/store_products_test.go": "601f7afb1bc2237ccf6579e16c720f2755e44c8374c8483245ff6706f4337168",
-    "retail/backend/internal/identity/store_products_test.go": "96f0e2de54237dfbbfc79b927f2a1a548ff73d23655877effa2a84f2f70aa7e3"
+    "retail/backend/internal/catalog/store_products.go": "5e29fa97bf999f8ccc56f9579892c5e7ff02cf02147e7111e1ef904afb953ca7",
+    "retail/backend/internal/catalog/store_products_test.go": "840e06fb71ab1dd5bee45ac4de634272c874d46ff9e233c4ad56c4ffecd567d1",
+    "retail/backend/internal/identity/store_products_test.go": "623a55513c53332d9d53f5bc1d59b9c7163ac276e14fe1b3f2dca155fe9479e5",
+    "retail/backend/internal/identity/store_pricing_test.go": "cd28b63f9eea764bec1232a9f640235fa8dbd14721623cff54731c49d765552d",
+    "retail/backend/internal/pricing/number.go": "cea262e800a6b5fd479e602c31d606a48fb2c4113c20e6f0c9b404d6f253e476",
+    "retail/backend/internal/pricing/read.go": "cf2473f88ac89ab415bd448b876176a4a66f5fb786d8761b337b4d125f43e284",
+    "retail/backend/internal/pricing/select.go": "d3a33c44caf074592ce4c51627ee651c9a2a125c380d3c1e83bae44af1215998",
+    "retail/backend/internal/pricing/select_test.go": "9db9fb4959d9878faee473ff8c0c4ef8e82ca1fae570f3a8ab050c18c131493b"
   },
   "cleanup": "both owned containers and temporary runner removed"
 }
