@@ -58,11 +58,11 @@ func TestOwnedOrderSchema(t *testing.T) {
 	}
 	db, gdb := open("order_schema_fresh")
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 19 || schema.CheckApplied(ctx, db, plan) != nil || orders.Ready(ctx, gdb) != nil {
+	if err != nil || r.Applied != 20 || schema.CheckApplied(ctx, db, plan) != nil || orders.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh order schema failed")
 	}
 	r, err = schema.Apply(ctx, db, plan)
-	if err != nil || r.Skipped != 19 {
+	if err != nil || r.Skipped != 20 {
 		t.Fatal("order schema replay changed facts")
 	}
 	ddl, err := migrations.Files.ReadFile("0016_order_relational.sql")
@@ -178,7 +178,7 @@ func TestOwnedOrderSchema(t *testing.T) {
 	if blocked.QueryRowContext(ctx, "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name IN ('order_items','order_runtime_schema')").Scan(&created) != nil || created != 0 {
 		t.Fatal("guard failed after partially creating order schema")
 	}
-	result := map[string]any{"migrations": 19, "tables": 29, "source_columns": 390,
+	result := map[string]any{"migrations": 20, "tables": 29, "source_columns": 390,
 		"physical_foreign_keys_enabled": true, "exact_decimal_and_string_ids": true,
 		"versions_and_nullable_cycle_retained": true, "invalid_enum_json_boolean_rejected": true,
 		"historical_subject_without_login": true, "orphan_references_preserved": true,

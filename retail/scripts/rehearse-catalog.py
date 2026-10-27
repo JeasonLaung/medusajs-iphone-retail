@@ -1,7 +1,7 @@
 """Real pinned catalog dependency graph in an owned disposable tmpfs MySQL.
 
 No application DSN, source database, deployment server or provider is contacted.
-Source and target data live in tmpfs; no encryption key is needed for this scope.
+Source and target data live in tmpfs; temporary protection keys remain in Go memory.
 """
 import argparse
 import hashlib
@@ -141,6 +141,8 @@ def main():
         files += ['retail/backend/internal/orders/amounts.go','retail/backend/internal/orders/amount_json.go','retail/backend/internal/identity/order_amounts_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/totals').glob('*.go')]
         files += ['retail/backend/internal/payments/schema.go','retail/backend/internal/payments/schema_plan.json']
+        files += ['retail/scripts/generate-payment-import-plan.py','retail/backend/internal/holderimport/import.go','retail/backend/internal/rowimport/history_payment_sql.go','retail/backend/internal/rowimport/history_account_holder.go']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/paymentimport').glob('*') if p.is_file()]
         report = {'format_version': 1, 'scope': '36 catalog tables, nine parent dependencies, two inventory tables and 28 ordinary order tables in disposable tmpfs MySQL; five historical customer subjects without account bindings and catalog parent rows have no ledger; no full import/runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
                   'embedded_migration_plan_used': True, 'review_ddl_injected': False,

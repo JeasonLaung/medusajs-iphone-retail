@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "scope": "Actual pinned payment subgraph under all 19 formal migrations in disposable tmpfs MySQL only; no full migration or payment runtime acceptance",
+  "scope": "Actual pinned payment subgraph under all 20 formal migrations in disposable tmpfs MySQL only; no full migration or payment runtime acceptance",
   "snapshot_sha256": "b58a26812eeea8e75c6bd3e4ec4635b6260d8e704bc9a63fd095f0e7d9f13985",
   "mysql_version": "8.4.11",
   "counts": {
@@ -11,7 +11,7 @@
     "exact_replay_parent_rows": 23,
     "exact_replay_payment_rows": 42,
     "excluded_profile_fields": 34,
-    "explicit_migrations": 19,
+    "explicit_migrations": 20,
     "operation_holds_checked": 126,
     "payment_schema_tables": 8,
     "payment_sessions.context.protected_readbacks": 21,
@@ -44,8 +44,8 @@
   "private_values_in_report": false,
   "relational_acceptance": false,
   "implementation_sha256": {
-    "retail/scripts/rehearse-payment-history.py": "dce6e86a7aa4e32f65b0b3c0e958744bee6e618924c37eeedc84fc9a7208f505",
-    "retail/backend/internal/rowimport/payment_rehearsal_test.go": "81a004f5206954405bb3a0b906f6780980faf3f57cdae1d1209c5e5f0be01347",
+    "retail/scripts/rehearse-payment-history.py": "554f3cd0648fae1318a0af07085c4537550c106bc082c8cc401e36e37d8fac99",
+    "retail/backend/internal/rowimport/payment_rehearsal_test.go": "7e8bfe29ebf18257bfe7c93a34bc4611aaa80d83bb6fbc0365f1291b884e0e96",
     "retail/backend/internal/rowimport/history_payment_sql.go": "cc82944f26ffc83e287ffabe5166557dad58e46a756bdd361f44ea1185adb5d4",
     "retail/backend/internal/rowimport/history_payment.go": "ec780ae8739d96a4c480717e5e10a012cd71e147b52c92a88bfd76465ca8b4af",
     "retail/backend/internal/rowimport/payment_data.go": "f6a7475403b8a31c1cd346eb40f82e8e91297cd1e18361adc0104443432929ff",
@@ -73,6 +73,7 @@
     "retail/backend/migrations/0017_order_import_evidence.sql": "1aee7e10b016ce61553f020aa5cab1f11d944df625e91c28d461f634298ca82e",
     "retail/backend/migrations/0018_customer_history_dispositions.sql": "6a40b359899574e67bd6d08f208cd5cb9ff98c6521adaf3e03f3c1babfc7c1e3",
     "retail/backend/migrations/0019_payment_relational.sql": "9ee1e50acff85c9164b7572aaaebb6368521a2d56ea801b65772f1038ae75da2",
+    "retail/backend/migrations/0020_payment_import_evidence.sql": "ba22c090bdd5acdcde1ef8ca9f8d27969d28357e9a442995e7dbe3687cd8a8b9",
     "retail/backend/internal/schema/run.go": "56f369159ab7cee4fc51694ba6dc0cbd58daff7656fd02e4205350c1b1d9f8b3",
     "retail/backend/internal/schema/plan.go": "57e554e749ef6d75c12ca6cbb20f71b8ced1e29b39b49b15e5cb8d9a4c98de56",
     "retail/backend/internal/payments/schema.go": "9394bc8f899e88dd3a5ee440171bbbe675ac43dfd4ae9a59f7b2d2df04bd02d1",

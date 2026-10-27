@@ -1,0 +1,623 @@
+{
+  "version": 1,
+  "model_sha256": "bf2b1d2d79e1797ef958a9f7c4c3b75fa4be67f048d84653653a338443043819",
+  "tables": [
+    {
+      "source": "account_holder",
+      "target": "payment_account_holders",
+      "mode": "holder_history",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "provider_id",
+          "target": "provider_id",
+          "decimal": false
+        },
+        {
+          "source": "external_id",
+          "target": "external_id",
+          "decimal": false
+        },
+        {
+          "source": "email",
+          "target": "email",
+          "decimal": false
+        },
+        {
+          "source": "data",
+          "target": "data",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        }
+      ],
+      "references": [
+        {
+          "column": "provider_id",
+          "parent": "payment_providers",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "payment_collection",
+      "target": "payment_collections",
+      "mode": "ordinary",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "currency_code",
+          "target": "currency_code",
+          "decimal": false
+        },
+        {
+          "source": "amount",
+          "target": "amount",
+          "decimal": true
+        },
+        {
+          "source": "raw_amount",
+          "target": "raw_amount",
+          "decimal": false
+        },
+        {
+          "source": "authorized_amount",
+          "target": "authorized_amount",
+          "decimal": true
+        },
+        {
+          "source": "raw_authorized_amount",
+          "target": "raw_authorized_amount",
+          "decimal": false
+        },
+        {
+          "source": "captured_amount",
+          "target": "captured_amount",
+          "decimal": true
+        },
+        {
+          "source": "raw_captured_amount",
+          "target": "raw_captured_amount",
+          "decimal": false
+        },
+        {
+          "source": "refunded_amount",
+          "target": "refunded_amount",
+          "decimal": true
+        },
+        {
+          "source": "raw_refunded_amount",
+          "target": "raw_refunded_amount",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "completed_at",
+          "target": "completed_at",
+          "decimal": false
+        },
+        {
+          "source": "status",
+          "target": "status",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        }
+      ],
+      "references": [
+        {
+          "column": "currency_code",
+          "parent": "commerce_currencies",
+          "parent_column": "code"
+        }
+      ]
+    },
+    {
+      "source": "refund_reason",
+      "target": "payment_refund_reasons",
+      "mode": "ordinary",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "label",
+          "target": "label",
+          "decimal": false
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "code",
+          "target": "code",
+          "decimal": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        }
+      ],
+      "references": []
+    },
+    {
+      "source": "payment",
+      "target": "payments",
+      "mode": "payment_history",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "amount",
+          "target": "amount",
+          "decimal": true
+        },
+        {
+          "source": "raw_amount",
+          "target": "raw_amount",
+          "decimal": false
+        },
+        {
+          "source": "currency_code",
+          "target": "currency_code",
+          "decimal": false
+        },
+        {
+          "source": "provider_id",
+          "target": "provider_id",
+          "decimal": false
+        },
+        {
+          "source": "data",
+          "target": "data",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "captured_at",
+          "target": "captured_at",
+          "decimal": false
+        },
+        {
+          "source": "canceled_at",
+          "target": "canceled_at",
+          "decimal": false
+        },
+        {
+          "source": "payment_collection_id",
+          "target": "payment_collection_id",
+          "decimal": false
+        },
+        {
+          "source": "payment_session_id",
+          "target": "payment_session_id",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        }
+      ],
+      "references": [
+        {
+          "column": "currency_code",
+          "parent": "commerce_currencies",
+          "parent_column": "code"
+        },
+        {
+          "column": "provider_id",
+          "parent": "payment_providers",
+          "parent_column": "id"
+        },
+        {
+          "column": "payment_collection_id",
+          "parent": "payment_collections",
+          "parent_column": "id"
+        },
+        {
+          "column": "payment_session_id",
+          "parent": "payment_sessions",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "payment_collection_payment_providers",
+      "target": "payment_collection_providers",
+      "mode": "ordinary",
+      "columns": [
+        {
+          "source": "payment_collection_id",
+          "target": "payment_collection_id",
+          "decimal": false
+        },
+        {
+          "source": "payment_provider_id",
+          "target": "payment_provider_id",
+          "decimal": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "payment_collection_id",
+          "target": "payment_collection_id",
+          "decimal": false
+        },
+        {
+          "source": "payment_provider_id",
+          "target": "payment_provider_id",
+          "decimal": false
+        }
+      ],
+      "references": [
+        {
+          "column": "payment_collection_id",
+          "parent": "payment_collections",
+          "parent_column": "id"
+        },
+        {
+          "column": "payment_provider_id",
+          "parent": "payment_providers",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "payment_session",
+      "target": "payment_sessions",
+      "mode": "payment_history",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "currency_code",
+          "target": "currency_code",
+          "decimal": false
+        },
+        {
+          "source": "amount",
+          "target": "amount",
+          "decimal": true
+        },
+        {
+          "source": "raw_amount",
+          "target": "raw_amount",
+          "decimal": false
+        },
+        {
+          "source": "provider_id",
+          "target": "provider_id",
+          "decimal": false
+        },
+        {
+          "source": "data",
+          "target": "data",
+          "decimal": false
+        },
+        {
+          "source": "context",
+          "target": "context",
+          "decimal": false
+        },
+        {
+          "source": "status",
+          "target": "status",
+          "decimal": false
+        },
+        {
+          "source": "authorized_at",
+          "target": "authorized_at",
+          "decimal": false
+        },
+        {
+          "source": "payment_collection_id",
+          "target": "payment_collection_id",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        }
+      ],
+      "references": [
+        {
+          "column": "currency_code",
+          "parent": "commerce_currencies",
+          "parent_column": "code"
+        },
+        {
+          "column": "provider_id",
+          "parent": "payment_providers",
+          "parent_column": "id"
+        },
+        {
+          "column": "payment_collection_id",
+          "parent": "payment_collections",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "capture",
+      "target": "payment_captures",
+      "mode": "ordinary",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "amount",
+          "target": "amount",
+          "decimal": true
+        },
+        {
+          "source": "raw_amount",
+          "target": "raw_amount",
+          "decimal": false
+        },
+        {
+          "source": "payment_id",
+          "target": "payment_id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "created_by",
+          "target": "created_by",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        }
+      ],
+      "references": [
+        {
+          "column": "payment_id",
+          "parent": "payments",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "refund",
+      "target": "payment_refunds",
+      "mode": "ordinary",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "amount",
+          "target": "amount",
+          "decimal": true
+        },
+        {
+          "source": "raw_amount",
+          "target": "raw_amount",
+          "decimal": false
+        },
+        {
+          "source": "payment_id",
+          "target": "payment_id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "created_by",
+          "target": "created_by",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "refund_reason_id",
+          "target": "refund_reason_id",
+          "decimal": false
+        },
+        {
+          "source": "note",
+          "target": "note",
+          "decimal": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        }
+      ],
+      "references": [
+        {
+          "column": "payment_id",
+          "parent": "payments",
+          "parent_column": "id"
+        },
+        {
+          "column": "refund_reason_id",
+          "parent": "payment_refund_reasons",
+          "parent_column": "id"
+        }
+      ]
+    }
+  ]
+}

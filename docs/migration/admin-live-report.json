@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only",
   "browser_tests_passed": 1,
-  "migrations_applied": 19,
+  "migrations_applied": 20,
   "mocked_api_responses": false,
   "reviewed_relational_schema_used": true,
   "empty_draft_tables_retained_by_migration": 7,
@@ -91,9 +91,9 @@
     "retail/backend/internal/catalog/models.go": "212e73fdbf318abf0d8252ee0a3139a249856dbdab58d80cd8cabc5fa11fe97c",
     "retail/backend/internal/catalog/schema.go": "aadd8fc2d82c87d9a8467ae60c232cd300081f6a3880ee22a1a73666511e04ab",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
-    "retail/backend/internal/identity/browser_fixture_test.go": "71f617d6ff3600912930209e691b9e0345241b031bf40c5e5004b0fc0a3ab2ec",
+    "retail/backend/internal/identity/browser_fixture_test.go": "28bbdcbd3e4723a1ab377cec4e309a5becb7ecbadf424f992df44df4dd38b17a",
     "retail/backend/internal/identity/order_amounts_test.go": "fc30b3050e94b326edada1f9de68c3f566555ace237df056677f95b01423029d",
-    "retail/backend/internal/identity/order_read_test.go": "7fe870a416395b597ef309e788d6106071b872d9d232b06ecc6da0872729877f",
+    "retail/backend/internal/identity/order_read_test.go": "d06721b40e45ee055a7b8f06b165662f666d07a9437346da75d9a5572b9f77fe",
     "retail/backend/internal/inventory/edit.go": "99763329e4ccfa401acdd5bf4b823e0db87e90d25b2b278496693070941ff8e1",
     "retail/backend/internal/inventory/edit_test.go": "d422fda3dc223157be967f3927ed019b296c9836960ab1a83bd0efd7d459d047",
     "retail/backend/internal/inventory/http.go": "7ea9031ec1388ccfe36cf87029c54f52c092004a753f8d18464909785c66a4df",
@@ -141,8 +141,9 @@
     "retail/backend/migrations/0017_order_import_evidence.sql": "1aee7e10b016ce61553f020aa5cab1f11d944df625e91c28d461f634298ca82e",
     "retail/backend/migrations/0018_customer_history_dispositions.sql": "6a40b359899574e67bd6d08f208cd5cb9ff98c6521adaf3e03f3c1babfc7c1e3",
     "retail/backend/migrations/0019_payment_relational.sql": "9ee1e50acff85c9164b7572aaaebb6368521a2d56ea801b65772f1038ae75da2",
+    "retail/backend/migrations/0020_payment_import_evidence.sql": "ba22c090bdd5acdcde1ef8ca9f8d27969d28357e9a442995e7dbe3687cd8a8b9",
     "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb",
-    "retail/scripts/test-admin-live.py": "68e6ec427b452db5b4f5c17d8d854e97e8a2a559dc1f0d52277cdbda25fc62f4"
+    "retail/scripts/test-admin-live.py": "43a8065837e7773f016be1f9fdd408e578a5db8935ce6314c7c1a58a21f13a38"
   },
   "cleanup": "both owned containers, bridge network and temporary binaries removed"
 }

@@ -25,6 +25,7 @@ import (
 	"github.com/eurorefurb/retail/internal/inventoryimport"
 	"github.com/eurorefurb/retail/internal/orderimport"
 	"github.com/eurorefurb/retail/internal/orders"
+	"github.com/eurorefurb/retail/internal/paymentimport"
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/rowimport"
 	"github.com/eurorefurb/retail/internal/schema"
@@ -111,6 +112,14 @@ func TestActualCatalogMySQL(t *testing.T) {
 	if err != nil || len(orderTables) != 28 {
 		t.Fatal("ordinary order import scope unavailable")
 	}
+	paymentTables, err := paymentimport.SourceTables()
+	if err != nil || len(paymentTables) != 8 {
+		t.Fatal("payment import scope unavailable")
+	}
+	paymentSelected := map[string][]rowimport.SourceRow{}
+	for _, name := range paymentTables {
+		paymentSelected[name] = nil
+	}
 	var customerSelected []rowimport.SourceRow
 	orderSelected := map[string][]rowimport.SourceRow{}
 	for _, name := range orderTables {
@@ -122,6 +131,9 @@ func TestActualCatalogMySQL(t *testing.T) {
 	}
 	defer file.Close()
 	verified, err := rowimport.VerifyStream(file, snapshotHash, func(table string, row rowimport.SourceRow) error {
+		if _, ok := paymentSelected[table]; ok {
+			paymentSelected[table] = append(paymentSelected[table], row)
+		}
 		if table == "customer" {
 			customerSelected = append(customerSelected, row)
 		}
@@ -261,14 +273,14 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog embedded schema plan invalid")
 	}
 	created, err := schema.Apply(ctx, db, plan)
-	if err != nil || created.Applied != 19 || schema.CheckApplied(ctx, db, plan) != nil {
+	if err != nil || created.Applied != 20 || schema.CheckApplied(ctx, db, plan) != nil {
 		t.Fatal("catalog embedded migration failed")
 	}
 	repeated, err := schema.Apply(ctx, db, plan)
-	if err != nil || repeated.Skipped != 19 {
+	if err != nil || repeated.Skipped != 20 {
 		t.Fatal("catalog embedded migration replay failed")
 	}
-	counts["explicit_schema_migrations"] = 19
+	counts["explicit_schema_migrations"] = 20
 	var enabled int
 	if db.QueryRowContext(ctx, "SELECT @@foreign_key_checks").Scan(&enabled) != nil || enabled != 1 {
 		t.Fatal("catalog physical constraints must remain enabled")
@@ -461,6 +473,64 @@ func TestActualCatalogMySQL(t *testing.T) {
 	counts["historical_customer_subject_rows"] = 5
 	counts["excluded_customer_login_bindings"] = 5
 	counts["created_login_accounts"] = 0
+	paymentImporter, err := paymentimport.New(customerRing)
+	if err != nil {
+		t.Fatal("payment importer unavailable")
+	}
+	paymentRows := 0
+	for _, name := range paymentTables {
+		paymentRows += len(paymentSelected[name])
+	}
+	stagePayments := func(commit bool) paymentimport.Result {
+		tx, err := db.BeginTx(ctx, nil)
+		if err != nil {
+			t.Fatal("payment rehearsal transaction unavailable")
+		}
+		defer tx.Rollback()
+		result, err := paymentImporter.Import(ctx, tx, snapshotHash, paymentSelected)
+		if err != nil {
+			t.Fatal("actual payment batch staging failed")
+		}
+		if commit && tx.Commit() != nil {
+			t.Fatal("actual payment batch commit failed")
+		}
+		return result
+	}
+	rolledPayments := stagePayments(false)
+	if rolledPayments.Rows != paymentRows {
+		t.Fatal("actual payment source scope differs")
+	}
+	for _, name := range paymentTables {
+		if count(all[name].Target) != 0 {
+			t.Fatal("payment rollback left business rows")
+		}
+	}
+	for _, name := range []string{"migration_payment_rows", "migration_payment_dispositions", "migration_holder_dispositions", "payment_migration_reference_holds"} {
+		if count(name) != 0 {
+			t.Fatal("payment rollback left evidence")
+		}
+	}
+	committedPayments := stagePayments(true)
+	if committedPayments.Rows != paymentRows || count("migration_payment_rows") != int64(paymentRows) {
+		t.Fatal("payment batch provenance differs")
+	}
+	for _, name := range paymentTables {
+		if count(all[name].Target) != int64(len(paymentSelected[name])) {
+			t.Fatal("payment committed table count differs")
+		}
+		counts["payment_import_"+name+"_rows"] = int64(len(paymentSelected[name]))
+	}
+	if count("migration_payment_dispositions") != int64(len(paymentSelected["payment"])+len(paymentSelected["payment_session"])) || count("migration_holder_dispositions") != int64(len(paymentSelected["account_holder"])) {
+		t.Fatal("payment operation holds differ")
+	}
+	counts["payment_batch_source_tables"] = 8
+	counts["payment_batch_source_columns"] = 83
+	counts["payment_batch_rows"] = int64(paymentRows)
+	counts["payment_batch_rollback_rows"] = int64(rolledPayments.Rows)
+	counts["payment_batch_provenance_rows"] = count("migration_payment_rows")
+	counts["payment_operation_holds"] = count("migration_payment_dispositions")
+	counts["historical_holder_operation_holds"] = count("migration_holder_dispositions")
+	counts["payment_reference_holds"] = count("payment_migration_reference_holds")
 	stageOrders := func(commit bool) orderimport.Result {
 		tx, err := db.BeginTx(ctx, nil)
 		if err != nil {
@@ -508,6 +578,22 @@ func TestActualCatalogMySQL(t *testing.T) {
 		targets := map[string]string{}
 		targets["historical_customer_subjects"] = "id"
 		targets["migration_customer_dispositions"] = "source_id"
+		targets["migration_payment_rows"] = "source_table,identity_sha256"
+		targets["payment_migration_reference_holds"] = "source_table,identity_sha256,column_name"
+		targets["migration_payment_dispositions"] = "source_table,source_id"
+		targets["migration_holder_dispositions"] = "source_id"
+		for _, name := range paymentTables {
+			layout := all[name]
+			var primary []string
+			for _, key := range layout.Primary {
+				for _, f := range layout.Fields {
+					if f.Source == key {
+						primary = append(primary, "`"+f.Target+"`")
+					}
+				}
+			}
+			targets[layout.Target] = strings.Join(primary, ",")
+		}
 		targets["admin_users"] = "id"
 		targets["admin_sessions"] = "token_hash"
 		targets["migration_order_rows"] = "source_table,identity_sha256"
@@ -891,6 +977,11 @@ func TestActualCatalogMySQL(t *testing.T) {
 	stage(false, true)
 	stageInventory(true)
 	stageCustomers(true)
+	replayedPayments := stagePayments(true)
+	if replayedPayments.ReplayedRows != paymentRows {
+		t.Fatal("actual payment replay duplicated or changed facts")
+	}
+	counts["exact_replay_payment_batch_rows"] = int64(paymentRows)
 	replayedOrders := stageOrders(true)
 	if replayedOrders.ReplayedRows != 336 {
 		t.Fatal("ordinary order replay duplicated facts")
