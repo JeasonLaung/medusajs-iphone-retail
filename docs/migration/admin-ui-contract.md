@@ -1,6 +1,6 @@
 # React 后台组件与页面承接契约
 
-日期：2026-10-27。落实用户指定的 Ant Design + Apache ECharts；属于 T007/T023/T027/T038/T048/T054—T059 的设计输入，尚无已验收的新后台业务页。2026-10-28已新增[Ant登录/账号局部实现](admin-login-ui.md)、[真实浏览器认证](admin-live-browser.md)及[商品列表](admin-product-list.md)；完整权限、商品闭环及全部业务页仍缺。
+日期：2026-10-27。落实用户指定的 Ant Design + Apache ECharts；属于 T007/T023/T027/T038/T048/T054—T059 的设计输入，尚无已验收的新后台业务页。2026-10-28已新增[Ant登录/账号局部实现](admin-login-ui.md)、[真实浏览器认证](admin-live-browser.md)、[商品列表](admin-product-list.md)及[详情/变体](admin-product-detail.md)；完整权限、商品闭环及全部业务页仍缺。
 
 ## 参考范围
 

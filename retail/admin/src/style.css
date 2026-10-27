@@ -21,6 +21,12 @@ html, body, #root { min-width: 320px; min-height: 100%; margin: 0; }
 .product-filters { gap: 16px; margin-bottom: 24px; }
 .product-filters .ant-form-item { margin: 0; max-width: 100%; }
 .product-filters .ant-form-item-control { min-width: 0; }
+.product-link, .back-link { text-decoration: underline; text-underline-offset: 3px; }
+.back-link { display: inline-block; margin-bottom: 24px; }
+.product-detail .ant-space-item { max-width: 100%; }
+.product-description { white-space: pre-wrap; overflow-wrap: anywhere; }
+.identifier { overflow-wrap: anywhere; }
+.unavailable-image { display: flex; align-items: center; justify-content: center; background: var(--canvas); }
 .mobile-nav { display: none; }
 .ant-descriptions-item-content { overflow-wrap: anywhere; }
 :focus-visible { outline: 2px solid var(--brand-strong); outline-offset: 3px; }

@@ -120,7 +120,7 @@ def main():
                  'retail/backend/internal/uniquekey/source.go', 'retail/backend/internal/uniquekey/source_plans.json',
                  'retail/backend/migrations/0002_unique_key_registry.sql', 'retail/backend/migrations/0003_unique_key_secret_scopes.sql',
                  'retail/backend/migrations/0008_migration_catalog_rows.sql', 'docs/migration/mysql-relational-review.sql']
-        files += ['retail/backend/internal/catalog/admin_list.go']
+        files += ['retail/backend/internal/catalog/admin_list.go','retail/backend/internal/catalog/admin_detail.go']
         report = {'format_version': 1, 'scope': '36 actual catalog tables and nine parent dependencies in disposable tmpfs MySQL only; parent rows have no formal migration ledger; no full import/runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
                   'limits': {'cpus': 1, 'memory_mib': 768, 'mysql_tmpfs_mib': 512, 'private_input_tmpfs_mib': 128, 'network': 'none', 'published_ports': 0},

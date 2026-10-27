@@ -58,7 +58,11 @@
     "dependency_tables": 9,
     "exact_replay_catalog_rows": 21837,
     "exact_replay_dependency_rows": 1722,
+    "http_complete_actual_variants": 1528,
+    "http_detailed_actual_products": 30,
+    "http_incomplete_actual_variants": 30,
     "http_projected_actual_products": 30,
+    "http_projected_actual_variants": 1558,
     "http_queries_preserved_full_fingerprint": 1,
     "physical_foreign_key_checks_enabled": 1,
     "rollback_business_rows": 23559,
@@ -86,9 +90,9 @@
   "relational_acceptance": false,
   "full_business_acceptance": false,
   "implementation_sha256": {
-    "retail/scripts/rehearse-catalog.py": "0ae33dbfb3c01e37b788548ba8f757c27d03231009c5500194ec055a53388df5",
+    "retail/scripts/rehearse-catalog.py": "d6c31281438407ccff754851110f0a308543aec5f2be73e386ba7e134104b448",
     "retail/backend/internal/catalogimport/import.go": "51835174a7264397177318dc184d0769fce7565de737cd1522ab6d703ca20570",
-    "retail/backend/internal/catalogimport/rehearsal_test.go": "da99ae0be5439757c5a8192047258b3079b0d45c1b79c5b04cad271b26cf3661",
+    "retail/backend/internal/catalogimport/rehearsal_test.go": "0bfb2b129e5a7b71681f6f056f02a2467eaa2fcab9f3118f6b1f69bf89e9ae12",
     "retail/backend/internal/catalogimport/plans.json": "65ef08d81fb47a476c47387fd99da67a34e3002d190069e2fd3b64adc666bf59",
     "retail/backend/internal/rowimport/convert.go": "bd96b9020318079476ac9172d38cb13fd162da4e29d065cb1f64977b4d4ba182",
     "retail/backend/internal/rowimport/record.go": "9da4ad1becb6c0ab0c20d147c1a71fb6a1fa44f317fca6cee7c4b0f2aa6c3cc8",
@@ -102,7 +106,8 @@
     "retail/backend/migrations/0003_unique_key_secret_scopes.sql": "3a46fe588f40b86d1461274acc50c52e9f2439de82845055dbc8c5736729086d",
     "retail/backend/migrations/0008_migration_catalog_rows.sql": "2ff0e3138514c8aeb7fac4a131eae6e805d624dd8f4107c3f6e84d20bc9cc7d7",
     "docs/migration/mysql-relational-review.sql": "e5cad256d0c8976ad9eb410cfe978385041d2ac5f4e594975e99158ee4b3aa9e",
-    "retail/backend/internal/catalog/admin_list.go": "0059d5ac8130c5b866fd0d3e559d50763923921478efa756ae3f66b75964d400"
+    "retail/backend/internal/catalog/admin_list.go": "0059d5ac8130c5b866fd0d3e559d50763923921478efa756ae3f66b75964d400",
+    "retail/backend/internal/catalog/admin_detail.go": "bfddfe29e01e2d3218b362eef09fc6bdd9ee51ba6d5e45cc429891aa86e152d9"
   },
   "cleanup": "owned container removed after label verification; tmpfs source/target copies and temporary runner removed"
 }

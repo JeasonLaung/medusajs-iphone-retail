@@ -50,6 +50,25 @@ async function request<T>(path: string, options: { method?: 'GET' | 'POST'; body
 
 export type ProductSummary = { id: string; title: string; handle: string; status: 'draft' | 'proposed' | 'published' | 'rejected'; thumbnail: string | null; collection_id: string | null; created_at: string; updated_at: string; variant_count: number }
 export type ProductList = { products: ProductSummary[]; count: number; limit: number; offset: number }
+export type ProductImage = {id:string;url:string;rank:number}
+export type ProductOption = {id:string;title:string;values:{id:string;value:string;rank:number|null}[]}
+export type ProductDetail = ProductSummary & {subtitle:string|null;description:string|null;options:ProductOption[];images:ProductImage[]}
+export type VariantDetail = {id:string;product_id:string;title:string;sku:string|null;thumbnail:string|null;variant_rank:number|null;manage_inventory:boolean;allow_backorder:boolean;options:{id:string;option_id:string;value:string}[];unassigned_option_value_ids:string[];configuration_complete:boolean;images:ProductImage[]}
+export type VariantList = {variants:VariantDetail[];count:number;limit:number;offset:number}
+const nullableText=(value:unknown)=>value===null||typeof value==='string'
+const imagesValid=(images:ProductImage[])=>Array.isArray(images)&&images.every(i=>i&&typeof i.id==='string'&&typeof i.url==='string'&&Number.isSafeInteger(i.rank))
+const projectImages=(images:ProductImage[])=>images.map(({id,url,rank})=>({id,url,rank}))
+export async function productDetail(id:string,signal:AbortSignal):Promise<ProductDetail> {
+  const data=await request<{product:ProductDetail}>(`products/${encodeURIComponent(id)}`,{signal},'/api/admin/')
+  const p=data?.product
+  if(!p||p.id!==id||typeof p.title!=='string'||typeof p.handle!=='string'||!['draft','proposed','published','rejected'].includes(p.status)||!nullableText(p.subtitle)||!nullableText(p.description)||!nullableText(p.thumbnail)||!nullableText(p.collection_id)||typeof p.created_at!=='string'||typeof p.updated_at!=='string'||!Number.isFinite(Date.parse(p.created_at))||!Number.isFinite(Date.parse(p.updated_at))||!Number.isSafeInteger(p.variant_count)||p.variant_count<0||!Array.isArray(p.options)||!imagesValid(p.images)||!p.options.every(o=>o&&typeof o.id==='string'&&typeof o.title==='string'&&Array.isArray(o.values)&&o.values.every(v=>v&&typeof v.id==='string'&&typeof v.value==='string'&&(v.rank===null||Number.isSafeInteger(v.rank)))))throw new APIError(0,'request.invalid_response')
+  return {id:p.id,title:p.title,handle:p.handle,status:p.status,thumbnail:p.thumbnail,collection_id:p.collection_id,created_at:p.created_at,updated_at:p.updated_at,variant_count:p.variant_count,subtitle:p.subtitle,description:p.description,images:projectImages(p.images),options:p.options.map(({id,title,values})=>({id,title,values:values.map(({id,value,rank})=>({id,value,rank}))}))}
+}
+export async function productVariants(id:string,query:URLSearchParams,signal:AbortSignal):Promise<VariantList>{
+  const data=await request<VariantList>(`products/${encodeURIComponent(id)}/variants?${query}`,{signal},'/api/admin/')
+  if(!data||!Number.isSafeInteger(data.count)||data.count<0||!Number.isSafeInteger(data.limit)||data.limit<1||data.limit>100||!Number.isSafeInteger(data.offset)||data.offset<0||!Array.isArray(data.variants)||data.variants.length>data.limit||!data.variants.every(v=>v&&typeof v.id==='string'&&v.product_id===id&&typeof v.title==='string'&&nullableText(v.sku)&&nullableText(v.thumbnail)&&(v.variant_rank===null||Number.isSafeInteger(v.variant_rank))&&typeof v.manage_inventory==='boolean'&&typeof v.allow_backorder==='boolean'&&typeof v.configuration_complete==='boolean'&&Array.isArray(v.unassigned_option_value_ids)&&v.unassigned_option_value_ids.every(x=>typeof x==='string')&&imagesValid(v.images)&&Array.isArray(v.options)&&v.options.every(o=>o&&typeof o.id==='string'&&typeof o.option_id==='string'&&typeof o.value==='string')))throw new APIError(0,'request.invalid_response')
+  return {count:data.count,limit:data.limit,offset:data.offset,variants:data.variants.map(v=>({id:v.id,product_id:v.product_id,title:v.title,sku:v.sku,thumbnail:v.thumbnail,variant_rank:v.variant_rank,manage_inventory:v.manage_inventory,allow_backorder:v.allow_backorder,configuration_complete:v.configuration_complete,unassigned_option_value_ids:[...v.unassigned_option_value_ids],options:v.options.map(({id,option_id,value})=>({id,option_id,value})),images:projectImages(v.images)}))}
+}
 export async function listProducts(query: URLSearchParams, signal: AbortSignal): Promise<ProductList> {
   const data = await request<ProductList>(`products?${query}`, { signal }, '/api/admin/')
   if (!data || !Number.isSafeInteger(data.count) || data.count < 0 || !Number.isSafeInteger(data.limit) || data.limit < 1 || data.limit > 100 || !Number.isSafeInteger(data.offset) || data.offset < 0 || !Array.isArray(data.products) || data.products.length > data.limit) throw new APIError(0, 'request.invalid_response')

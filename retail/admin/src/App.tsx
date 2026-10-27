@@ -9,6 +9,7 @@ import type { User } from './api'
 import { copies } from './i18n'
 import type { Copy, Language } from './i18n'
 const Products = lazy(() => import('./Products'))
+const ProductDetail = lazy(() => import('./ProductDetail'))
 
 type Session = { status: 'loading' } | { status: 'anonymous'; expired?: boolean } | { status: 'authenticated'; user: User } | { status: 'error'; error: unknown }
 
@@ -56,7 +57,7 @@ function Workspace({ copy, session, onSession }: { copy: Copy; session: Extract<
   const navigate = useNavigate()
   const location = useLocation()
   const onExpired = useCallback(() => onSession({ status:'anonymous',expired:true }),[onSession])
-  const productPage = location.pathname === '/products'
+  const productPage = location.pathname === '/products' || location.pathname.startsWith('/products/')
   const [drawer, setDrawer] = useState(false)
   const [pending, setPending] = useState(false)
   const busy = useRef(false)
@@ -93,6 +94,7 @@ function Workspace({ copy, session, onSession }: { copy: Copy; session: Extract<
       {error !== undefined && <div className="request-error"><ErrorNotice error={error} copy={copy} /></div>}
       <Routes>
         <Route path="/products" element={<Suspense fallback={<Spin />}><Products copy={copy} onExpired={onExpired} /></Suspense>} />
+        <Route path="/products/:id" element={<Suspense fallback={<Spin />}><ProductDetail copy={copy} onExpired={onExpired} /></Suspense>} />
         <Route path="/account" element={<section className="account-panel"><Space direction="vertical" size={24} className="full-width">
           <Space><Tag color="success">{copy.signedIn}</Tag><Typography.Text type="secondary">{copy.accountDescription}</Typography.Text></Space>
           <Descriptions column={1} items={[{ key: 'name', label: copy.name, children: session.user.name || '—' }, { key: 'email', label: copy.email, children: session.user.email }, { key: 'role', label: copy.role, children: copy.administrator }]} />

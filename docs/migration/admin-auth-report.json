@@ -34,7 +34,7 @@
     "retail/backend/internal/identity/admin.go": "122cd19c9ae0daffa7514ff2dc5500c8d414a5dff5877ec3eacfd4de67fdac29",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "367fce81db21f1bb1c8edb1c2cf1f690574bbffeb99888ffec6b2be87706ba02",
-    "retail/backend/internal/server/router.go": "c65b4169a9ade0a3215fe2099974551cd7227878b098b41fae09bf87eba99a55",
+    "retail/backend/internal/server/router.go": "fdb9e668c9de36d2818364b1ffebee6bdb0c11de688204378f0733577141a87b",
     "retail/backend/internal/platform/http.go": "2d0725f3fa8d60f060b14de792f8d4f1aa8dda38ff8c26b4d8c2af7c137e642a",
     "retail/backend/internal/platform/request.go": "b8abeda445a6ae84c451a6ba9678308973feb5c0627fdc73dccf5de68aec648e",
     "retail/backend/cmd/api/main.go": "d8ad7c2fd35e6050d6423d591a9d36dd18802c499f5e6087fcacbb71c84eec7f",

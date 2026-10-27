@@ -57,8 +57,11 @@ Ant Design 5 is pinned to the inspected reference generation. React 19 uses
 Ant Design's official compatibility patch. There are no charts yet; all future
 Admin charts must use Apache ECharts. Do not add fabricated statistics.
 
-The lazy-loaded `/products` page now reads the Gin admin product-list endpoint
-using Ant forms, filters, table, pagination and empty/error feedback. Filters
-persist in the URL. This first list has no edit/detail or batch command links;
-the older product detail/write drafts are not accepted implementations.
-See `docs/migration/admin-product-list.md` for scope and remaining work.
+The lazy-loaded `/products` page reads the Gin admin product-list endpoint using
+Ant forms, filters, table, pagination and empty/error feedback. Filters persist
+in the URL. Product title links open `/products/:id` with Ant descriptions,
+images, options and paginated variants. The new detail requires the reviewed
+relational schema; it cannot read the older draft payload schema. The live
+runner prepares that schema only in its disposable fixture database; this is
+not a formal schema-upgrade tool. Product editing is still an unaccepted draft.
+See `docs/migration/admin-product-list.md` and `admin-product-detail.md` for scope.

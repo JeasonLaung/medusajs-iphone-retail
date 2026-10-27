@@ -73,8 +73,7 @@ func (h Handler) products(c *gin.Context, admin bool) {
 	}
 	c.JSON(200, gin.H{"products": result, "count": count, "limit": limit, "offset": offset})
 }
-func (h Handler) Product(c *gin.Context)      { h.detail(c, false) }
-func (h Handler) AdminProduct(c *gin.Context) { h.detail(c, true) }
+func (h Handler) Product(c *gin.Context) { h.detail(c, false) }
 func (h Handler) detail(c *gin.Context, admin bool) {
 	var p Product
 	q := h.DB.Where("deleted_at IS NULL AND (id=? OR handle=?)", c.Param("id"), c.Param("id"))

@@ -54,6 +54,28 @@ async function signIn(page: Page) {
   await page.getByRole('button', { name: '登录', exact: true }).click()
 }
 
+test('detail dependency failure retries and a missing product stays distinct',async({page})=>{
+  await fixture(page)
+  let mode:'failed'|'ready'|'missing'='failed'
+  const product={id:'artificial-product',title:'Text <img src=x onerror=alert(1)>',handle:'artificial-product',status:'draft',thumbnail:null,collection_id:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',variant_count:0,subtitle:null,description:'<script>window.unwanted=true</script>',options:[],images:[]}
+  await page.route('**/api/admin/products/artificial-product**',route=>{
+    if(mode==='failed')return route.fulfill({status:503,json:{error:{code:'catalog.unavailable'}}})
+    if(mode==='missing')return route.fulfill({status:404,json:{error:{code:'catalog.not_found'}}})
+    return route.fulfill({json:new URL(route.request().url()).pathname.endsWith('/variants')?{variants:[],count:0,limit:20,offset:0}:{product}})
+  })
+  await page.goto('/account');await signIn(page)
+  await page.goto('/products/artificial-product')
+  await expect(page.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
+  mode='ready'
+  await page.getByRole('button',{name:'重新连接',exact:true}).click()
+  await expect(page.getByRole('heading',{name:product.title,exact:true})).toBeVisible()
+  await expect(page.getByText(product.description,{exact:true})).toBeVisible()
+  await expect(page.getByText('暂无变体',{exact:true})).toBeVisible()
+  expect(await page.evaluate(()=>Object.hasOwn(window,'unwanted'))).toBe(false)
+  mode='missing';await page.reload()
+  await expect(page.getByText('商品不存在或已删除',{exact:true})).toBeVisible()
+})
+
 test('product dependency failure is distinct from empty state and supports retry and expiry', async ({page})=>{
   await fixture(page)
   let mode:'failed'|'ready'|'expired'='failed'

@@ -31,6 +31,10 @@ def main():
     env.update(GOOS='linux', GOARCH='amd64', CGO_ENABLED='0')
     containers, network, owned_binaries = [], None, []
     password = secrets.token_urlsafe(32)
+    ddl = ROOT / 'docs/migration/mysql-relational-review.sql'
+    review = json.loads((ROOT / 'docs/migration/mysql-relational-review.json').read_text(encoding='utf-8'))
+    if hashlib.sha256(ddl.read_bytes().replace(b'\r\n', b'\n')).hexdigest() != review['ddl_sha256']:
+        raise RuntimeError('Reviewed schema digest differs')
     try:
         for binary, command in zip(binaries, [['go', 'build', '-o', str(binaries[0]), './cmd/api'],
                                               ['go', 'test', '-c', '-o', str(binaries[1]), './internal/identity']]):
@@ -82,6 +86,21 @@ def main():
                           '/opt/prep.test', '-test.v', '-test.run', '^TestPrepareOwnedBrowserAPI$', '-test.timeout', '40s')
         if prepared.returncode or b'OWNED_BROWSER_FIXTURE_READY' not in prepared.stdout:
             raise RuntimeError('Owned browser schema/account preparation failed')
+        # This is a throwaway rehearsal, not a formal schema upgrade. Retain
+        # the seven empty/artificial draft domain tables under explicit names;
+        # the complete reviewed relational schema then owns the runtime names.
+        draft_tables = ['catalog_products', 'catalog_variants', 'catalog_prices', 'catalog_categories',
+                        'catalog_category_products', 'catalog_collections', 'commerce_regions']
+        rename = 'RENAME TABLE ' + ','.join('`' + name + '` TO `draft_' + name + '`' for name in draft_tables) + ';\n'
+        reviewed = subprocess.run(['docker','exec','-i','-e','MYSQL_PWD=' + password,mysql_id,
+                                   'mysql','-uroot','--protocol=socket','--default-character-set=utf8mb4','browser_identity'],
+                                  input=(rename + ddl.read_text(encoding='utf-8')).encode('utf-8'),capture_output=True,timeout=60)
+        if reviewed.returncode:
+            raise RuntimeError('Owned reviewed schema preparation failed; private output suppressed')
+        prepared = docker('exec','-e','MYSQL_PWD=' + password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,
+                          '/opt/prep.test','-test.v','-test.run','^TestPrepareReviewedCatalogFixture$','-test.timeout','40s')
+        if prepared.returncode or b'OWNED_REVIEWED_CATALOG_READY' not in prepared.stdout:
+            raise RuntimeError('Reviewed artificial catalog preparation failed')
         app_env = {'GIN_MODE': 'release', 'APP_BIND': '0.0.0.0', 'APP_PORT': '9100', 'APP_ENV': 'development',
                    'MYSQL_DSN': 'root:' + password + '@unix(/var/run/mysqld/mysqld.sock)/browser_identity?parseTime=true&loc=UTC',
                    'SESSION_REDIS_URL': 'redis://127.0.0.1:6379/0', 'SESSION_REDIS_PREFIX': 'eurorefurb:browser_fixture:v1:',
@@ -124,15 +143,20 @@ def main():
                  'retail/backend/internal/sessionstore/config.go']
         files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/backend/internal/catalog').glob('*.go')]
         files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/backend/migrations').glob('*.sql')]
+        files += ['docs/migration/mysql-relational-review.sql']
         files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/admin').rglob('*')
                   if p.is_file() and not any(part in ('node_modules', 'dist') for part in p.relative_to(ROOT / 'retail/admin').parts)]
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
                   'browser_tests_passed': 1, 'migrations_applied': 9, 'mocked_api_responses': False,
+                  'reviewed_relational_schema_used': True, 'draft_domain_tables_retained_under_test_names': 7,
+                  'formal_schema_upgrade_accepted': False,
                   'browser_executable_override_used': bool(os.environ.get('ADMIN_TEST_BROWSER')),
                   'checked': ['wrong password then retry', 'real login and reload', 'HttpOnly and SameSite cookies',
                               'no credentials in browser storage', 'private response cache and request ID',
                               'missing CSRF and foreign Origin rejected', 'logout and old-cookie replay rejected',
-                              'explicit product list projection and literal wildcard filtering', 'Ant product table search reload reset and empty state'],
+                              'explicit product list projection and literal wildcard filtering', 'Ant product table search reload reset and empty state',
+                              'reviewed schema product detail and paginated variants', 'per-product option membership and incomplete variant retained',
+                              'SKU string precision and image soft-delete filters', 'Ant detail navigation reload missing state and three viewport widths'],
                   'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                              'network': 'owned bridge network; egress not restricted', 'published_ports': 'one random API port bound to 127.0.0.1 only'},
                   'real_accounts_used': False, 'application_resources_used': False, 'tls_secure_cookie_verified': False,

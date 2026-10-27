@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Alert, Button, Empty, Form, Input, Select, Space, Table, Tag, Typography } from 'antd'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { APIError, listProducts } from './api'
 import type { ProductList, ProductSummary } from './api'
 import type { Copy } from './i18n'
@@ -45,7 +45,7 @@ export default function Products({ copy, onExpired }: { copy:Copy; onExpired():v
     </Form>
     {state.error!==undefined ? <Space direction="vertical"><Alert type="error" showIcon message={state.error instanceof APIError && state.error.status===400?copy.invalidFilters:copy.unavailable} /><Button onClick={()=>setAttempt(n=>n+1)}>{copy.retry}</Button></Space> :
       <Table<ProductSummary> rowKey="id" loading={state.loading} dataSource={state.data?.products??[]} scroll={{x:720}} locale={{emptyText:<Empty description={copy.noProducts} />}} columns={[
-        {title:copy.productTitle,dataIndex:'title',render:(title:string,row)=><Space direction="vertical" size={0}><Typography.Text strong>{title}</Typography.Text><Typography.Text type="secondary">{row.handle}</Typography.Text></Space>},
+        {title:copy.productTitle,dataIndex:'title',render:(title:string,row)=><Space direction="vertical" size={0}><Link to={`/products/${encodeURIComponent(row.id)}`} className="product-link">{title}</Link><Typography.Text type="secondary">{row.handle}</Typography.Text></Space>},
         {title:copy.status,dataIndex:'status',render:(status:string)=><Tag color={status==='published'?'success':status==='rejected'?'error':undefined}>{statuses[status]}</Tag>},
         {title:copy.variants,dataIndex:'variant_count'},
         {title:copy.createdAt,dataIndex:'created_at',render:(value:string)=><time dateTime={value}>{new Date(value).toLocaleString(document.documentElement.lang)}</time>},

@@ -413,6 +413,8 @@ func TestActualCatalogMySQL(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
 	router.GET("/products", (cataloghttp.Handler{DB: gdb}).AdminProducts)
+	router.GET("/products/:id", (cataloghttp.Handler{DB: gdb}).AdminProduct)
+	router.GET("/products/:id/variants", (cataloghttp.Handler{DB: gdb}).AdminVariants)
 	var expected int64
 	if db.QueryRow("SELECT COUNT(*) FROM catalog_products WHERE deleted_at IS NULL").Scan(&expected) != nil {
 		t.Fatal("catalog HTTP expected count unavailable")
@@ -466,6 +468,64 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog HTTP query changed data or lost filter match")
 	}
 	counts["http_projected_actual_products"] = expected
+	for id := range seen {
+		detailReply := httptest.NewRecorder()
+		router.ServeHTTP(detailReply, httptest.NewRequest("GET", "/products/"+url.PathEscape(id), nil))
+		var detail struct {
+			Product cataloghttp.AdminProductDetail `json:"product"`
+		}
+		if detailReply.Code != 200 || json.Unmarshal(detailReply.Body.Bytes(), &detail) != nil || detail.Product.ID != id || detail.Product.Options == nil || detail.Product.Images == nil {
+			t.Fatal("actual catalog detail HTTP failed")
+		}
+		var imageCount int64
+		if db.QueryRow("SELECT COUNT(*) FROM catalog_images WHERE product_id=? AND deleted_at IS NULL", id).Scan(&imageCount) != nil || int64(len(detail.Product.Images)) != imageCount {
+			t.Fatal("actual catalog detail images differ")
+		}
+		for _, o := range detail.Product.Options {
+			for _, v := range o.Values {
+				var member int64
+				if db.QueryRow("SELECT COUNT(*) FROM catalog_product_options po JOIN catalog_product_option_values pv ON pv.product_product_option_id=po.id AND pv.deleted_at IS NULL JOIN catalog_option_values v ON v.id=pv.product_option_value_id AND v.deleted_at IS NULL AND v.option_id=po.product_option_id WHERE po.product_id=? AND po.deleted_at IS NULL AND po.product_option_id=? AND v.id=?", id, o.ID, v.ID).Scan(&member) != nil || member == 0 {
+					t.Fatal("actual catalog detail option membership differs")
+				}
+			}
+		}
+		variantIDs := map[string]bool{}
+		for offset := 0; int64(offset) < detail.Product.VariantCount; offset += 100 {
+			vr := httptest.NewRecorder()
+			router.ServeHTTP(vr, httptest.NewRequest("GET", "/products/"+url.PathEscape(id)+"/variants?limit=100&offset="+strconv.Itoa(offset), nil))
+			var response struct {
+				Variants []cataloghttp.AdminVariant `json:"variants"`
+				Count    int64                      `json:"count"`
+			}
+			if vr.Code != 200 || json.Unmarshal(vr.Body.Bytes(), &response) != nil || response.Count != detail.Product.VariantCount || len(response.Variants) == 0 {
+				t.Fatal("actual catalog variant HTTP failed")
+			}
+			for _, v := range response.Variants {
+				if v.ProductID != id || variantIDs[v.ID] || v.Options == nil || v.Images == nil || v.UnassignedValueIDs == nil {
+					t.Fatal("actual catalog variant projection failed")
+				}
+				variantIDs[v.ID] = true
+				var title string
+				var sku sql.NullString
+				if db.QueryRow("SELECT title,sku FROM catalog_variants WHERE id=? AND product_id=? AND deleted_at IS NULL", v.ID, id).Scan(&title, &sku) != nil || title != v.Title || (sku.Valid != (v.SKU != nil)) || (sku.Valid && sku.String != *v.SKU) {
+					t.Fatal("actual catalog variant SQL differs")
+				}
+				if v.ConfigurationComplete {
+					counts["http_complete_actual_variants"]++
+				} else {
+					counts["http_incomplete_actual_variants"]++
+				}
+			}
+		}
+		if int64(len(variantIDs)) != detail.Product.VariantCount {
+			t.Fatal("actual catalog variant pagination incomplete")
+		}
+		counts["http_detailed_actual_products"]++
+		counts["http_projected_actual_variants"] += int64(len(variantIDs))
+	}
+	if !bytes.Equal(before, fingerprint()) {
+		t.Fatal("actual catalog detail HTTP changed data")
+	}
 	counts["http_queries_preserved_full_fingerprint"] = 1
 	stage(false, true)
 	if !bytes.Equal(before, fingerprint()) {

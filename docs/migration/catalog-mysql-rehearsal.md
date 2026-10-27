@@ -24,3 +24,8 @@ python retail/scripts/rehearse-catalog.py --snapshot logs/gin-migration/source-v
 完整45业务表/5辅助表指纹相同，原回滚/提交/重放检查继续通过。该隔离分发不带
 认证中间件和浏览器；人工账号的浏览器证据另见[商品列表](admin-product-list.md)。
 不改变原有全域引用差异和未验收边界。
+
+后续补充：同一真实目录子图现另验证30商品详情、1558变体分页、实际图片数及
+选项值成员、title/SKU与SQL一致，1528完整/30不完整配置保持原事实；读取后
+完整指纹相同。对应[详情实现](admin-product-detail.md)不等于正式schema、权限或
+编辑/价格库存业务完成。

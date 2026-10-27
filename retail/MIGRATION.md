@@ -52,3 +52,7 @@
 2026-10-28：[商品列表](../docs/migration/admin-product-list.md)接入Ant筛选/表格和
 Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离有人工浏览器证据。
 详情写入、完整结构提升、权限、价格库存和Astro仍待完成。
+
+2026-10-28：[后台详情/变体](../docs/migration/admin-product-detail.md)改为明确关系
+投影并接入Ant详情页。完整审查版结构用于隔离测试，正式schema升级仍未完成；
+详情编辑、价格/库存、权限和Astro继续待办。

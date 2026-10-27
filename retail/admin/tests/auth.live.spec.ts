@@ -4,6 +4,8 @@ import path from 'node:path'
 // Fixed artificial identity is created only in the owned throwaway database.
 // No route interception or mocked API responses in this file.
 test('real browser cookie, Origin and CSRF flow through Vite to Gin and Redis', async ({ page, context }) => {
+  // One owned account exercises login, catalog and nine viewport screenshots.
+  test.setTimeout(60_000)
   const failures:string[]=[]
   page.on('pageerror',error=>failures.push(error.name))
   const signIn=async(password:string)=>{
@@ -53,6 +55,27 @@ test('real browser cookie, Origin and CSRF flow through Vite to Gin and Redis', 
   expect((await empty.json()).products).toEqual([])
   expect((await context.request.get('/api/admin/products?fields=*')).status()).toBe(400)
   expect((await context.request.get('/api/admin/products?limit=1&limit=2')).status()).toBe(400)
+  const detail=await context.request.get('/api/admin/products/fixture-a')
+  expect(detail.status()).toBe(200)
+  const product=(await detail.json()).product
+  expect(product.options).toEqual([{id:'fixture-storage',title:'Storage',values:[{id:'fixture-128',value:'128 GB',rank:null}]}])
+  expect(product.images).toEqual([{id:'fixture-image',url:'/fixture-product.svg',rank:0}])
+  expect(await detail.text()).not.toContain('must-not-escape')
+  const variantData=await context.request.get('/api/admin/products/fixture-a/variants')
+  expect(variantData.status()).toBe(200)
+  const variants=(await variantData.json()).variants
+  expect(variants[0].sku).toBe('0000123456789012345')
+  expect(variants[0].configuration_complete).toBe(true)
+  expect(variants[0].images).toEqual(product.images)
+  expect(await variantData.text()).not.toContain('variant-secret')
+  const incomplete=(await (await context.request.get('/api/admin/products/fixture-b/variants')).json()).variants[0]
+  expect(incomplete.configuration_complete).toBe(false)
+  expect(incomplete.options).toEqual([])
+  expect(incomplete.unassigned_option_value_ids).toEqual(['fixture-128'])
+  expect((await context.request.get('/api/admin/products/fixture-deleted')).status()).toBe(404)
+  expect((await context.request.get('/api/admin/products/missing')).status()).toBe(404)
+  expect((await context.request.get('/api/admin/products/fixture-a?fields=*')).status()).toBe(400)
+  expect((await context.request.get('/api/admin/products/fixture-a/variants?sort=title_asc')).status()).toBe(400)
   await page.getByRole('menuitem',{name:'商品',exact:true}).click()
   await expect(page).toHaveURL('/products')
   await expect(page.getByRole('cell',{name:'Phone 50%_! fixture-a'})).toBeVisible()
@@ -76,6 +99,39 @@ test('real browser cookie, Origin and CSRF flow through Vite to Gin and Redis', 
     await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true)
     await page.screenshot({path:path.resolve(`../../logs/gin-migration/admin-live/products-${width}.png`),fullPage:true})
   }
+  await page.getByRole('link',{name:'Phone 50%_!',exact:true}).click()
+  await expect(page).toHaveURL('/products/fixture-a')
+  await expect(page.getByRole('cell',{name:'0000123456789012345',exact:true})).toBeVisible()
+  await expect(page.getByText('配置完整',{exact:true})).toBeVisible()
+  await page.reload()
+  await expect(page.getByRole('heading',{name:'Phone 50%_!',exact:true})).toBeVisible()
+  await page.locator('button.ant-table-row-expand-icon').click()
+  await expect(page.getByText('ID: fixture-v',{exact:true})).toBeVisible()
+  for(const width of [390,768,1440]) {
+    await page.setViewportSize({width,height:900})
+    await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true)
+    await page.screenshot({path:path.resolve(`../../logs/gin-migration/admin-live/product-detail-${width}.png`),fullPage:true})
+  }
+  await page.getByRole('combobox',{name:'语言',exact:true}).focus()
+  await page.getByRole('combobox',{name:'语言',exact:true}).press('Enter')
+  await page.getByRole('option',{name:'English',exact:true}).click()
+  await expect(page.getByRole('heading',{name:'Product variants',exact:true})).toBeVisible()
+  for(const width of [390,768,1440]) {
+    await page.setViewportSize({width,height:900})
+    await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true)
+    await page.screenshot({path:path.resolve(`../../logs/gin-migration/admin-live/product-detail-en-${width}.png`),fullPage:true})
+  }
+  await page.getByRole('combobox',{name:'Language',exact:true}).focus()
+  await page.getByRole('combobox',{name:'Language',exact:true}).press('Enter')
+  await page.getByRole('option',{name:'简体中文',exact:true}).click()
+  await page.goto('/products/fixture-b')
+  await expect(page.getByText('配置待补全',{exact:true})).toBeVisible()
+  await page.locator('button.ant-table-row-expand-icon').click()
+  await expect(page.getByText('以下选项值不属于当前商品的有效配置',{exact:true})).toBeVisible()
+  await page.goto('/products/fixture-deleted')
+  await expect(page.getByText('商品不存在或已删除',{exact:true})).toBeVisible()
+  await page.getByRole('link',{name:'返回商品列表',exact:true}).click()
+  await expect(page).toHaveURL('/products')
   const noCSRF=await context.request.post('/api/admin/auth/logout',{headers:{Origin:'http://127.0.0.1:19200'}})
   expect(noCSRF.status()).toBe(403)
   const wrongOrigin=await context.request.post('/api/admin/auth/logout',{headers:{Origin:'https://evil.example','X-CSRF-Token':csrf!.value}})
