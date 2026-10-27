@@ -33,9 +33,10 @@ type field struct {
 	Allowed    []string `json:"allowed"`
 }
 type tablePlan struct {
-	Source string  `json:"source"`
-	Target string  `json:"target"`
-	Fields []field `json:"fields"`
+	Source   string       `json:"source"`
+	Target   string       `json:"target"`
+	Fields   []field      `json:"fields"`
+	RawPairs []numberPair `json:"raw_pairs"`
 }
 
 // Cell explicitly distinguishes SQL NULL from JSON null. JSON fields containing
@@ -77,7 +78,7 @@ var compiledPlans = sync.OnceValues(func() (map[string]tablePlan, error) {
 
 // Convert rejects unknown/missing fields and only returns a COMPLETE ordered row.
 // Returned values are for bound SQL arguments, never string interpolation. It
-// does not check references, raw-number pairs, source CHECK constraints, identity
+// checks exact raw-number pairs, but not references, source CHECK constraints, identity
 // claims or domain states. Protected non-NULL fields deliberately fail closed
 // until their source-specific authenticated conversion is provided.
 func Convert(sourceTable string, row SourceRow) (BoundRow, error) {
@@ -112,6 +113,9 @@ func Convert(sourceTable string, row SourceRow) (BoundRow, error) {
 		}
 		bound.Columns = append(bound.Columns, f.Target)
 		bound.Values = append(bound.Values, value)
+	}
+	if err := checkNumberPairs(plan.RawPairs, row); err != nil {
+		return BoundRow{}, ErrRow
 	}
 	return bound, nil
 }

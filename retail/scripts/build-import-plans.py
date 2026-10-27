@@ -44,9 +44,19 @@ def main():
                                'allowed': enum})
             assert len(fields) == table['source_columns']
             assert len({f['target'] for f in fields}) == len(fields)
-            plans.append({'source': table['source_table'], 'target': table['target_table'], 'fields': fields})
+            by_name = {f['source']: f for f in fields}
+            pairs = []
+            for f in fields:
+                if not f['source'].startswith('raw_'):
+                    continue
+                scalar = f['source'][4:]
+                assert f['transform'] == 'exact_json_text' and scalar in by_name
+                assert by_name[scalar]['transform'] in {'money_major_decimal', 'quantity_decimal', 'rate_decimal', 'budget_decimal', 'promotion_value_decimal'}
+                pairs.append({'raw': f['source'], 'scalar': scalar})
+            plans.append({'source': table['source_table'], 'target': table['target_table'], 'fields': fields, 'raw_pairs': pairs})
     assert len(plans) == 159 and sum(len(p['fields']) for p in plans) == 1691
     assert len({p['source'] for p in plans}) == len(plans)
+    assert sum(len(p['raw_pairs']) for p in plans) == 59, 'Raw number pair coverage drift'
     content = json.dumps({'version': 1, 'source_columns_sha256': manifest_sha, 'input_sha256': inputs, 'tables': plans}, ensure_ascii=False, indent=2) + '\n'
     if args.check:
         assert OUT.read_text(encoding='utf-8').replace('\r\n', '\n') == content, 'Import field program drift'

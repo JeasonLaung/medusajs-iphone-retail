@@ -10,7 +10,15 @@ Convert只接受有计划的源表，34项排除/重建表不能通过此入口�
 
 Cell显式包含SQLNull和Raw：SQLNull=true时Raw必须为空且列可NULL；SQLNull=false时必须有合法字段值。JSON字段的Raw=null是非SQL-NULL文档，空字符串也不是NULL。任何把SQL NULL与JSON null合并成同一JSON null的旧导出均不能直接喂给本接口；快照适配必须提供来源证明或显式报告歧义，不能猜测。当前没有用推断补足真实快照中的null类别。
 
-普通文本/身份/历史主体引用保留原文，遵从映射字符上限；枚举按逐字段允许列表；布尔、整数、金额及时间使用[严格值组件](strict-import-values.md)。时间作为显式UTC微秒SQL字符串绑定。minor_unit_integer按源int32范围保留整数，不换算单位；数值raw配对与单位仍须上层验证。有限float32仅用于尺寸字段，先解析为源float32值再承接DOUBLE；legacy_float_rate_decimal按源十进制呈现转换，不混入尺寸浮点路径。文本数组保留数组顺序、空字符串、NULL元素及原JSON文本，不接受数值元素或逗号拼接。
+普通文本/身份/历史主体引用保留原文，遵从映射字符上限；枚举按逐字段允许列表；布尔、整数、金额及时间使用[严格值组件](strict-import-values.md)。时间作为显式UTC微秒SQL字符串绑定。minor_unit_integer按源int32范围保留整数，不换算单位。有限float32仅用于尺寸字段，先解析为源float32值再承接DOUBLE；legacy_float_rate_decimal按源十进制呈现转换，不混入尺寸浮点路径。文本数组保留数组顺序、空字符串、NULL元素及原JSON文本，不接受数值元素或逗号拼接。
+
+### raw数值配对
+
+生成计划显式列出59组raw字段及对应标量字段；缺对应字段、非数值转换或覆盖数漂移拒绝生成。Convert只在完整字段转换及全部配对通过后返回BoundRow：两侧SQL NULL必须一致；非NULL raw必须是精确含value和precision的对象，缺键、重复键、额外键和JSON null均拒绝。precision须为1—1,000,000,000的JSON整数，保留其原值。value按十进制语法、1024字节及指数±1024上限解析，用math/big.Rat与已经过DECIMAL(38,18)检查的标量精确比较；无float64、容差、舍入或乘除100。
+
+本机安装的@medusajs/utils 2.21.2 `dist/totals/big-number.js`使用bignumber.js的toPrecision(precision)，默认20；bignumber.js 9.3.1的precision有效范围上限为1E9。precision是有效数字设置，不是MySQL小数位数。raw的`1.2300000000000000000`应与标量1.23相等，因此raw.value不套用标量18位小数的词法限制；原始raw JSON仍原文绑定，绝不按precision再次舍入。未知历史对象形态明确拒绝，不能当作可自动修复。
+
+人工测试覆盖59组计划、超JS安全整数的一位差异、38位数、负零、指数、小数尾零、微小不相等、NULL组合及非法对象。含必填受保护字段的行仍返回ErrProtection，该类表的配对测试只验证独立配对组件，不计作已解密或已导入。非受保护行验证不一致时返回空BoundRow。真实历史数值与业务单位对账仍须完成；此处不是业务计算引擎。
 
 受保护非NULL字符串/JSON返回ErrProtection，必须后续逐域解密/密封再绑定，不可写原文或绕过；可NULL字段的SQL NULL可以保留而无需解密。JSON字段合法性与原文保留不意味着其provider token已获准公开。错误固定且不包含业务值、行ID、密文或源payload。
 
@@ -28,4 +36,4 @@ MySQL集成复现沿用[登记组件隔离流程](mysql-unique-key-registry.md)�
 
 ## 剩余实现
 
-[逐列v2记录](cell-record-contract.md)已在人工PostgreSQL证明SQL NULL/JSON null来源区分及Go重复字段拒绝；旧v1固定快照不能据此自动消除歧义。仍需真实一致快照导出与流式读取；受保护域转换；全部raw数值配对、源CHECK及关联检查；有顺序的正式SQL迁移与完整事务/幂等/运行账本；唯一登记/业务写入/恢复覆盖；已发现库存与交易差异对账。空库字段可转换、少数人工行可写入不代表全量数据已迁移或可以切换运行时。
+[逐列v2记录](cell-record-contract.md)已在人工PostgreSQL证明SQL NULL/JSON null来源区分及Go重复字段拒绝，完整159表流封装与校验和验证已运行；旧v1固定快照不能据此自动消除歧义。仍需真实一致快照导出与正式导入执行器；受保护域转换；真实raw数值对账、源CHECK及关联检查；有顺序的正式SQL迁移与完整事务/幂等/运行账本；唯一登记/业务写入/恢复覆盖；已发现库存与交易差异对账。空库字段可转换、少数人工行可写入不代表全量数据已迁移或可以切换运行时。

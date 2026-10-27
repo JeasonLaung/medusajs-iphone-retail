@@ -8,6 +8,9 @@ import (
 )
 
 func artificial(f field) json.RawMessage {
+	if strings.HasPrefix(f.Source, "raw_") {
+		return json.RawMessage(`{"value":"1.2300000000000000000","precision":20}`)
+	}
 	switch f.Transform {
 	case "strict_boolean":
 		return json.RawMessage(`false`)

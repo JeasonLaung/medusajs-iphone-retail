@@ -104,6 +104,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_rounding",
+          "scalar": "rounding"
+        }
       ]
     },
     {
@@ -326,7 +332,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_variant",
@@ -539,7 +546,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_category",
@@ -671,7 +679,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_category_product",
@@ -695,7 +704,8 @@
           "max_chars": 191,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_collection",
@@ -773,7 +783,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_type",
@@ -842,7 +853,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_tag",
@@ -911,7 +923,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_tags",
@@ -935,7 +948,8 @@
           "max_chars": 191,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_option",
@@ -1004,7 +1018,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_option_value",
@@ -1082,7 +1097,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_product_option",
@@ -1142,7 +1158,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_product_option_value",
@@ -1202,7 +1219,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_variant_option",
@@ -1226,7 +1244,8 @@
           "max_chars": 191,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "image",
@@ -1304,7 +1323,8 @@
           "max_chars": 191,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_variant_product_image",
@@ -1364,7 +1384,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "price_set",
@@ -1406,7 +1427,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_variant_price_set",
@@ -1466,7 +1488,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "price",
@@ -1607,6 +1630,20 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
+        },
+        {
+          "raw": "raw_min_quantity",
+          "scalar": "min_quantity"
+        },
+        {
+          "raw": "raw_max_quantity",
+          "scalar": "max_quantity"
+        }
       ]
     },
     {
@@ -1694,7 +1731,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "price_list",
@@ -1808,7 +1846,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "price_list_rule",
@@ -1877,7 +1916,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "price_preference",
@@ -1946,7 +1986,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_sales_channel",
@@ -2006,7 +2047,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_shipping_profile",
@@ -2066,7 +2108,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_variant_inventory_item",
@@ -2135,7 +2178,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "sales_channel",
@@ -2213,7 +2257,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "sales_channel_stock_location",
@@ -2273,7 +2318,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "region",
@@ -2351,7 +2397,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "region_country",
@@ -2447,7 +2494,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "region_payment_provider",
@@ -2507,7 +2555,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "store",
@@ -2594,7 +2643,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "store_currency",
@@ -2663,7 +2713,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "store_locale",
@@ -2723,7 +2774,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "shipping_profile",
@@ -2792,7 +2844,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "shipping_option_price_set",
@@ -2852,7 +2905,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "inventory_item",
@@ -3029,7 +3083,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "inventory_level",
@@ -3151,6 +3206,20 @@
           "target_type": "LONGTEXT utf8mb4_0900_bin + CHECK JSON_VALID",
           "max_chars": 0,
           "allowed": []
+        }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_stocked_quantity",
+          "scalar": "stocked_quantity"
+        },
+        {
+          "raw": "raw_reserved_quantity",
+          "scalar": "reserved_quantity"
+        },
+        {
+          "raw": "raw_incoming_quantity",
+          "scalar": "incoming_quantity"
         }
       ]
     },
@@ -3284,6 +3353,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_quantity",
+          "scalar": "quantity"
+        }
       ]
     },
     {
@@ -3353,7 +3428,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "stock_location_address",
@@ -3476,7 +3552,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "device",
@@ -3677,7 +3754,8 @@
           "max_chars": 32,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "device_source",
@@ -3749,7 +3827,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "device_variant",
@@ -3809,7 +3888,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "device_supply",
@@ -3878,7 +3958,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "device_assignment",
@@ -4016,7 +4097,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "device_event",
@@ -4103,7 +4185,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "after_sales_request",
@@ -4208,7 +4291,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "order",
@@ -4401,7 +4485,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "order_address",
@@ -4551,7 +4636,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "order_cart",
@@ -4611,7 +4697,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "order_item",
@@ -4868,6 +4955,48 @@
           "target_type": "LONGTEXT utf8mb4_0900_bin + CHECK JSON_VALID",
           "max_chars": 0,
           "allowed": []
+        }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_quantity",
+          "scalar": "quantity"
+        },
+        {
+          "raw": "raw_fulfilled_quantity",
+          "scalar": "fulfilled_quantity"
+        },
+        {
+          "raw": "raw_shipped_quantity",
+          "scalar": "shipped_quantity"
+        },
+        {
+          "raw": "raw_return_requested_quantity",
+          "scalar": "return_requested_quantity"
+        },
+        {
+          "raw": "raw_return_received_quantity",
+          "scalar": "return_received_quantity"
+        },
+        {
+          "raw": "raw_return_dismissed_quantity",
+          "scalar": "return_dismissed_quantity"
+        },
+        {
+          "raw": "raw_written_off_quantity",
+          "scalar": "written_off_quantity"
+        },
+        {
+          "raw": "raw_delivered_quantity",
+          "scalar": "delivered_quantity"
+        },
+        {
+          "raw": "raw_unit_price",
+          "scalar": "unit_price"
+        },
+        {
+          "raw": "raw_compare_at_unit_price",
+          "scalar": "compare_at_unit_price"
         }
       ]
     },
@@ -5154,6 +5283,16 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_compare_at_unit_price",
+          "scalar": "compare_at_unit_price"
+        },
+        {
+          "raw": "raw_unit_price",
+          "scalar": "unit_price"
+        }
       ]
     },
     {
@@ -5276,6 +5415,12 @@
           "target_type": "INT",
           "max_chars": 0,
           "allowed": []
+        }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
         }
       ]
     },
@@ -5400,6 +5545,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_rate",
+          "scalar": "rate"
+        }
       ]
     },
     {
@@ -5496,7 +5647,8 @@
           "max_chars": 191,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "order_shipping_method",
@@ -5619,6 +5771,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
+        }
       ]
     },
     {
@@ -5732,6 +5890,12 @@
           "target_type": "INT",
           "max_chars": 0,
           "allowed": []
+        }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
         }
       ]
     },
@@ -5856,6 +6020,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_rate",
+          "scalar": "rate"
+        }
       ]
     },
     {
@@ -5925,7 +6095,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "order_transaction",
@@ -6057,6 +6228,12 @@
           "max_chars": 191,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
+        }
       ]
     },
     {
@@ -6162,6 +6339,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
+        }
       ]
     },
     {
@@ -6222,7 +6405,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "order_fulfillment",
@@ -6282,7 +6466,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "order_promotion",
@@ -6342,7 +6527,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "order_change",
@@ -6588,7 +6774,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "order_change_action",
@@ -6765,6 +6952,12 @@
           "max_chars": 191,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
+        }
       ]
     },
     {
@@ -6909,6 +7102,12 @@
           "max_chars": 191,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_refund_amount",
+          "scalar": "refund_amount"
+        }
       ]
     },
     {
@@ -7028,6 +7227,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_quantity",
+          "scalar": "quantity"
+        }
       ]
     },
     {
@@ -7097,7 +7302,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "order_exchange",
@@ -7238,6 +7444,12 @@
           "max_chars": 191,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_difference_due",
+          "scalar": "difference_due"
+        }
       ]
     },
     {
@@ -7333,6 +7545,12 @@
           "target_type": "DATETIME(6)",
           "max_chars": 0,
           "allowed": []
+        }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_quantity",
+          "scalar": "quantity"
         }
       ]
     },
@@ -7517,6 +7735,12 @@
           "max_chars": 191,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_refund_amount",
+          "scalar": "refund_amount"
+        }
       ]
     },
     {
@@ -7658,6 +7882,20 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_quantity",
+          "scalar": "quantity"
+        },
+        {
+          "raw": "raw_received_quantity",
+          "scalar": "received_quantity"
+        },
+        {
+          "raw": "raw_damaged_quantity",
+          "scalar": "damaged_quantity"
+        }
       ]
     },
     {
@@ -7745,7 +7983,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "return_fulfillment",
@@ -7805,7 +8044,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "payment_collection",
@@ -7964,6 +8204,24 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
+        },
+        {
+          "raw": "raw_authorized_amount",
+          "scalar": "authorized_amount"
+        },
+        {
+          "raw": "raw_captured_amount",
+          "scalar": "captured_amount"
+        },
+        {
+          "raw": "raw_refunded_amount",
+          "scalar": "refunded_amount"
+        }
       ]
     },
     {
@@ -8104,6 +8362,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
+        }
       ]
     },
     {
@@ -8236,6 +8500,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
+        }
       ]
     },
     {
@@ -8322,6 +8592,12 @@
           "target_type": "LONGTEXT utf8mb4_0900_bin + CHECK JSON_VALID",
           "max_chars": 0,
           "allowed": []
+        }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
         }
       ]
     },
@@ -8428,6 +8704,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
+        }
       ]
     },
     {
@@ -8506,7 +8788,8 @@
           "max_chars": 191,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "payment_provider",
@@ -8557,7 +8840,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "payment_collection_payment_providers",
@@ -8581,7 +8865,8 @@
           "max_chars": 191,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "account_holder",
@@ -8668,7 +8953,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "fulfillment",
@@ -8827,7 +9113,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "fulfillment_address",
@@ -8968,7 +9255,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "fulfillment_item",
@@ -9082,6 +9370,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_quantity",
+          "scalar": "quantity"
+        }
       ]
     },
     {
@@ -9160,7 +9454,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "fulfillment_provider",
@@ -9211,7 +9506,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "cart",
@@ -9343,7 +9639,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "cart_address",
@@ -9493,7 +9790,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "cart_line_item",
@@ -9787,6 +10085,16 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_compare_at_unit_price",
+          "scalar": "compare_at_unit_price"
+        },
+        {
+          "raw": "raw_unit_price",
+          "scalar": "unit_price"
+        }
       ]
     },
     {
@@ -9910,6 +10218,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
+        }
       ]
     },
     {
@@ -10024,7 +10338,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "cart_payment_collection",
@@ -10084,7 +10399,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "cart_promotion",
@@ -10144,7 +10460,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "cart_shipping_method",
@@ -10267,6 +10584,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
+        }
       ]
     },
     {
@@ -10380,6 +10703,12 @@
           "target_type": "VARCHAR(191) utf8mb4_0900_bin",
           "max_chars": 191,
           "allowed": []
+        }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
         }
       ]
     },
@@ -10495,7 +10824,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "credit_line",
@@ -10590,6 +10920,12 @@
           "target_type": "DATETIME(6)",
           "max_chars": 0,
           "allowed": []
+        }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
         }
       ]
     },
@@ -10721,7 +11057,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "promotion_application_method",
@@ -10864,6 +11201,12 @@
           "max_chars": 16,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_value",
+          "scalar": "value"
+        }
       ]
     },
     {
@@ -10951,7 +11294,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "promotion_campaign_budget",
@@ -11070,6 +11414,16 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_limit",
+          "scalar": "limit"
+        },
+        {
+          "raw": "raw_used",
+          "scalar": "used"
+        }
       ]
     },
     {
@@ -11148,6 +11502,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_used",
+          "scalar": "used"
+        }
       ]
     },
     {
@@ -11172,7 +11532,8 @@
           "max_chars": 191,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "promotion_rule",
@@ -11249,7 +11610,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "promotion_rule_value",
@@ -11309,7 +11671,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "application_method_buy_rules",
@@ -11333,7 +11696,8 @@
           "max_chars": 191,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "application_method_target_rules",
@@ -11357,7 +11721,8 @@
           "max_chars": 191,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "tax_provider",
@@ -11408,7 +11773,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "tax_region",
@@ -11504,7 +11870,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "tax_rate",
@@ -11618,7 +11985,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "tax_rate_rule",
@@ -11705,7 +12073,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "fulfillment_set",
@@ -11774,7 +12143,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "service_zone",
@@ -11843,7 +12213,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "geo_zone",
@@ -11953,7 +12324,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "shipping_option",
@@ -12070,7 +12442,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "shipping_option_rule",
@@ -12157,7 +12530,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "shipping_option_type",
@@ -12226,7 +12600,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "location_fulfillment_provider",
@@ -12286,7 +12661,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "location_fulfillment_set",
@@ -12346,7 +12722,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "buyback_request",
@@ -12581,6 +12958,16 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_reference_amount",
+          "scalar": "reference_amount"
+        },
+        {
+          "raw": "raw_final_amount",
+          "scalar": "final_amount"
+        }
       ]
     },
     {
@@ -12707,7 +13094,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "buyback_price",
@@ -12803,6 +13191,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_amount",
+          "scalar": "amount"
+        }
       ]
     },
     {
@@ -12872,7 +13266,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "mail_account",
@@ -12968,7 +13363,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "mail_campaign",
@@ -13079,7 +13475,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "mail_contact",
@@ -13184,7 +13581,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "mail_delivery",
@@ -13325,7 +13723,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "mail_event",
@@ -13412,7 +13811,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "mail_message",
@@ -13689,7 +14089,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "mail_template",
@@ -13767,7 +14168,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "seo_crawler_visit",
@@ -13872,7 +14274,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "seo_evidence",
@@ -13953,7 +14356,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "seo_monitor",
@@ -14061,7 +14465,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "seo_page",
@@ -14175,7 +14580,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "seo_provider",
@@ -14269,7 +14675,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "seo_run",
@@ -14414,7 +14821,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "seo_setting",
@@ -14492,7 +14900,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "seo_source",
@@ -14669,6 +15078,12 @@
           "max_chars": 0,
           "allowed": []
         }
+      ],
+      "raw_pairs": [
+        {
+          "raw": "raw_read_offset",
+          "scalar": "read_offset"
+        }
       ]
     },
     {
@@ -14783,7 +15198,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "seo_traffic_visit",
@@ -14951,7 +15367,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "product_review",
@@ -15078,7 +15495,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "customer_notice",
@@ -15183,7 +15601,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "webhook_endpoint",
@@ -15334,7 +15753,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "customer",
@@ -15448,7 +15868,8 @@
           "max_chars": 191,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "customer_group",
@@ -15517,7 +15938,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "customer_group_customer",
@@ -15595,7 +16017,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "mollie_config",
@@ -15673,7 +16096,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "paypal_connection",
@@ -15814,7 +16238,8 @@
           "max_chars": 191,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "paypal_settings",
@@ -15865,7 +16290,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "paypal_metric",
@@ -15925,7 +16351,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "paypal_webhook_event",
@@ -16075,7 +16502,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "notification",
@@ -16252,7 +16680,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "notification_provider",
@@ -16330,7 +16759,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "order_number_clock",
@@ -16354,7 +16784,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     },
     {
       "source": "sku_number_counter",
@@ -16378,7 +16809,8 @@
           "max_chars": 0,
           "allowed": []
         }
-      ]
+      ],
+      "raw_pairs": []
     }
   ]
 }
