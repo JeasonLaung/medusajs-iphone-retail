@@ -131,3 +131,13 @@ func (n Number) value() (decimal, error) {
 	}
 	return parse(n.Decimal)
 }
+
+// Resolve exposes the exact effective scalar for trusted snapshot projections.
+// It shares the calculator's raw precedence and validation; no float conversion.
+func Resolve(n Number) (string, error) {
+	v, err := n.value()
+	if err != nil {
+		return "", err
+	}
+	return v.text(), nil
+}

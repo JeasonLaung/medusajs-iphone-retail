@@ -64,6 +64,8 @@
     "excluded_customer_login_bindings": 5,
     "explicit_schema_migrations": 18,
     "historical_customer_subject_rows": 5,
+    "http_actual_order_amount_fields": 771,
+    "http_actual_order_amounts_verified": 13,
     "http_complete_actual_variants": 1528,
     "http_detailed_actual_orders": 13,
     "http_detailed_actual_products": 30,
@@ -116,9 +118,9 @@
   "relational_acceptance": false,
   "full_business_acceptance": false,
   "implementation_sha256": {
-    "retail/scripts/rehearse-catalog.py": "22a48814cb28a2e1a2ec7ff6c8879b49f3ce28c06fe29c9224ce16709c08aa6f",
+    "retail/scripts/rehearse-catalog.py": "b4fb41eed04936cfdb7adbf2f0180b339bdeb05fae997952df7c4a4d0deba96c",
     "retail/backend/internal/catalogimport/import.go": "51835174a7264397177318dc184d0769fce7565de737cd1522ab6d703ca20570",
-    "retail/backend/internal/catalogimport/rehearsal_test.go": "4792497abc8c5e0585f4919613be475a15ef8889d5b713e051e11212c920957d",
+    "retail/backend/internal/catalogimport/rehearsal_test.go": "6cc11810ff13fab2efb8feb110c0d6f9d9a858f4ddb4b2f4f717b987dbb9aecd",
     "retail/backend/internal/catalogimport/plans.json": "65ef08d81fb47a476c47387fd99da67a34e3002d190069e2fd3b64adc666bf59",
     "retail/backend/internal/rowimport/convert.go": "02faf48f76231c5637adee5edc8709ce818995ce26c6920c787bd8190438e9d7",
     "retail/backend/internal/rowimport/record.go": "9da4ad1becb6c0ab0c20d147c1a71fb6a1fa44f317fca6cee7c4b0f2aa6c3cc8",
@@ -179,7 +181,15 @@
     "retail/scripts/generate-order-import-plan.py": "b11fe97550626035b5eba08ef2c8511fd9f322bc155ae9f7544974070c394a4b",
     "retail/backend/internal/customerimport/import.go": "e567d10b95d558fe31a8b92927a99084efa8a4d6e72f5ddd0ef8a0008e7ade81",
     "retail/backend/internal/rowimport/history_customer.go": "6cd6f081d3c9256f504d0cfef91f5a34505401358f0fc5640f6920e8c41dc653",
-    "retail/backend/internal/orders/admin.go": "e5e0d75a7caec388dd830d2247a2fb33408583bd5cc9c1b4354e32ec1d47697c"
+    "retail/backend/internal/orders/admin.go": "e5e0d75a7caec388dd830d2247a2fb33408583bd5cc9c1b4354e32ec1d47697c",
+    "retail/scripts/capture-order-amounts.cjs": "dc6ac3c690bae96697366b3dbf58eba3fff7c0d2908a2a873ac103502d44f360",
+    "retail/backend/internal/orders/amounts.go": "337df58c1b8a2482633a3799b5de3890cf9eddbc1a04e652a3043089d1c2e7df",
+    "retail/backend/internal/orders/amount_json.go": "a1c9a0097e4cca8e138cd2e708ffa670b37708acda0ae51899d18401e60fb0d8",
+    "retail/backend/internal/identity/order_amounts_test.go": "fc30b3050e94b326edada1f9de68c3f566555ace237df056677f95b01423029d",
+    "retail/backend/internal/totals/calculate.go": "9f6779d9901e8c256bd60a56be26a91557c6eb3d68c6db2bb3e504955d7bfc41",
+    "retail/backend/internal/totals/decimal.go": "d21d4bae6b2699126b86ef54306b5716b2ecb9ee4792b5e0e431f7b2ebf1aff9",
+    "retail/backend/internal/totals/parity_test.go": "83b02eb1437162c7d3a9c21bd8264126ad56622e855276358f76441792262418",
+    "retail/backend/internal/totals/validation_test.go": "f9288463b8f3d242bcdadca68b1fee141378f13749671e2fe4cf59223272bc82"
   },
   "cleanup": "owned container removed after label verification; tmpfs source/target copies and temporary runner removed"
 }

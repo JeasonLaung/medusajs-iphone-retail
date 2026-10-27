@@ -49,6 +49,7 @@ func seedOrderReadFixture(t *testing.T, db *gorm.DB) {
 	if db.Exec(`UPDATE order_line_items SET totals_id='current-order-item' WHERE id='read-line'`).Error != nil {
 		t.Fatal("artificial order cycle seed failed")
 	}
+	seedOrderAmountFixture(t, db)
 }
 
 func TestOwnedOrderRead(t *testing.T) {
@@ -90,6 +91,7 @@ func TestOwnedOrderRead(t *testing.T) {
 	h := orders.Handler{DB: db}
 	router.GET("/orders", h.List)
 	router.GET("/orders/:id", h.Detail)
+	router.GET("/orders/:id/amounts", h.Amounts)
 	call := func(path string, status int) []byte {
 		t.Helper()
 		w := httptest.NewRecorder()
@@ -104,7 +106,7 @@ func TestOwnedOrderRead(t *testing.T) {
 	}
 	fingerprint := func() [32]byte {
 		var evidence []json.RawMessage
-		for _, table := range []string{"orders", "order_line_items", "order_items"} {
+		for _, table := range []string{"orders", "order_line_items", "order_items", "order_line_tax_lines", "order_line_adjustments", "order_shipping_methods", "order_shipping_versions", "order_shipping_tax_lines", "order_shipping_adjustments", "order_credit_lines", "order_summaries"} {
 			var rows []map[string]any
 			if db.Table(table).Order("id ASC").Find(&rows).Error != nil {
 				t.Fatal("order fingerprint failed")
@@ -145,14 +147,26 @@ func TestOwnedOrderRead(t *testing.T) {
 	call("/orders/deleted-order", 404)
 	call("/orders/missing", 404)
 	call("/orders/read-order?fields=*", 400)
+	checkOrderAmounts(t, call)
 	if before != fingerprint() {
 		t.Fatal("order queries mutated history")
 	}
+	checkOrderAmountFailures(t, db, call)
 	if db.Exec("UPDATE order_items SET unit_price=NULL WHERE id='current-order-item'").Error != nil {
 		t.Fatal("order fallback fixture failed")
 	}
 	if json.Unmarshal(call("/orders/read-order", 200), &detail) != nil || detail.Lines[0].UnitPrice != "10.000000000000000000" {
 		t.Fatal("order snapshot price fallback incorrect")
+	}
+	var financial orders.AmountDetail
+	if json.Unmarshal(call("/orders/read-order/amounts", 200), &financial) != nil || financial.Lines[0].UnitPrice != "9007199254740993.000000000000000001" {
+		t.Fatal("independent raw price precedence lost")
+	}
+	if db.Exec("UPDATE order_items SET raw_unit_price=NULL WHERE id='current-order-item'").Error != nil {
+		t.Fatal("raw fallback fixture failed")
+	}
+	if json.Unmarshal(call("/orders/read-order/amounts", 200), &financial) != nil || financial.Lines[0].UnitPrice != "10" || financial.Totals["total"] != "19.5" {
+		t.Fatal("raw snapshot fallback differs")
 	}
 	if db.Exec("UPDATE order_line_items SET deleted_at=UTC_TIMESTAMP(6) WHERE id='read-line'").Error != nil {
 		t.Fatal("order incomplete fixture failed")
@@ -162,5 +176,5 @@ func TestOwnedOrderRead(t *testing.T) {
 		t.Fatal("order drift fixture failed")
 	}
 	call("/orders", 503)
-	t.Log(`ORDER_READ_REHEARSAL {"migrations":18,"read_only_fingerprint":true,"exact_decimal_and_ids":true,"current_version_only":true,"snapshot_price_override_and_fallback":true,"literal_wildcard_search":true,"stable_pagination":true,"private_payload_excluded":true,"incomplete_snapshot_rejected":true,"schema_drift_rejected":true}`)
+	t.Log(`ORDER_READ_REHEARSAL {"migrations":18,"read_only_fingerprint":true,"exact_decimal_and_ids":true,"current_version_only":true,"snapshot_price_override_and_fallback":true,"literal_wildcard_search":true,"stable_pagination":true,"private_payload_excluded":true,"incomplete_snapshot_rejected":true,"schema_drift_rejected":true,"order_amounts_exact":true,"amount_version_filters":true,"independent_raw_price_precedence":true,"amount_dependency_failures_rejected":true}`)
 }

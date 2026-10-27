@@ -26,7 +26,7 @@
     "docs/migration/fixtures/legacy-totals-boundaries.json": "280ba2934876858d5f718fbae96e82280a63bb8f8995f8bb3f238835fba5d2a6",
     "docs/migration/fixtures/legacy-totals.json": "5d5fc4947d6c0886e9e7b86cd0b7ce5e4ffddd362b2cb4aea5af15ed9e45e35f",
     "retail/backend/internal/totals/calculate.go": "9f6779d9901e8c256bd60a56be26a91557c6eb3d68c6db2bb3e504955d7bfc41",
-    "retail/backend/internal/totals/decimal.go": "15b39f020bdab9450ccacabe7bf3326c0455d9c76e4242f98d7801484de38665",
+    "retail/backend/internal/totals/decimal.go": "d21d4bae6b2699126b86ef54306b5716b2ecb9ee4792b5e0e431f7b2ebf1aff9",
     "retail/backend/internal/totals/parity_test.go": "83b02eb1437162c7d3a9c21bd8264126ad56622e855276358f76441792262418",
     "retail/backend/internal/totals/validation_test.go": "f9288463b8f3d242bcdadca68b1fee141378f13749671e2fe4cf59223272bc82",
     "retail/scripts/capture-totals-boundaries.cjs": "f4136cded71f17a889ca28e81d997e49d8dad1a996d9594d70b4da14bd7d6aa5",

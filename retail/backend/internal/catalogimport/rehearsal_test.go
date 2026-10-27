@@ -601,6 +601,37 @@ func TestActualCatalogMySQL(t *testing.T) {
 	router := gin.New()
 	router.GET("/orders", (orders.Handler{DB: gdb}).List)
 	router.GET("/orders/:id", (orders.Handler{DB: gdb}).Detail)
+	router.GET("/orders/:id/amounts", (orders.Handler{DB: gdb}).Amounts)
+	oracleBytes, err := os.ReadFile("/tmp/order-amounts-expected.json")
+	var oracle struct {
+		SnapshotSHA string `json:"snapshot_sha256"`
+		Orders      []orders.AmountDetail
+	}
+	if err != nil || json.Unmarshal(oracleBytes, &oracle) != nil || oracle.SnapshotSHA != snapshotHash || len(oracle.Orders) != 13 {
+		t.Fatal("private order arithmetic oracle unavailable")
+	}
+	for _, expected := range oracle.Orders {
+		reply := httptest.NewRecorder()
+		router.ServeHTTP(reply, httptest.NewRequest("GET", "/orders/"+url.PathEscape(expected.OrderID)+"/amounts", nil))
+		var actual orders.AmountDetail
+		if reply.Code != 200 || json.Unmarshal(reply.Body.Bytes(), &actual) != nil {
+			t.Fatal("actual order financial projection failed")
+		}
+		actualBytes, _ := json.Marshal(actual)
+		expectedBytes, _ := json.Marshal(expected)
+		if !bytes.Equal(actualBytes, expectedBytes) {
+			t.Fatal("actual order amounts differ from independent legacy oracle")
+		}
+		counts["http_actual_order_amounts_verified"]++
+		counts["http_actual_order_amount_fields"] += int64(len(actual.Totals))
+		for _, line := range actual.Lines {
+			counts["http_actual_order_amount_fields"] += int64(len(line.Totals))
+		}
+		for _, method := range actual.ShippingMethods {
+			counts["http_actual_order_amount_fields"] += int64(len(method.Totals))
+		}
+	}
+
 	var expectedOrders int64
 	if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM orders WHERE deleted_at IS NULL").Scan(&expectedOrders) != nil {
 		t.Fatal("actual order count unavailable")

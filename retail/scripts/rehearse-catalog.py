@@ -97,6 +97,14 @@ def main():
                                              stdin=private_file, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=60)
             if transferred.returncode:
                 raise RuntimeError('Private catalog input transfer failed')
+        with snapshot.open('rb') as private_source:
+            expected = subprocess.run(['node', str(ROOT/'retail/scripts/capture-order-amounts.cjs')],
+                                      stdin=private_source, capture_output=True, timeout=60)
+        if expected.returncode:
+            raise RuntimeError('Private independent order arithmetic oracle failed')
+        if docker('exec', '-i', container, '/bin/sh', '-c', 'umask 077; cat > /tmp/order-amounts-expected.json', input=expected.stdout).returncode:
+            raise RuntimeError('Private order arithmetic expectation transfer failed')
+        expected = None
         if docker('exec', container, 'chmod', '700', '/opt/catalog-rehearsal.test').returncode:
             raise RuntimeError('Catalog runner preparation failed')
         tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'CATALOG_MYSQL_REHEARSAL=1', container,
@@ -129,7 +137,9 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/orderimport').glob('*') if p.is_file()]
         files += ['retail/scripts/generate-order-import-plan.py']
         files += ['retail/backend/internal/customerimport/import.go','retail/backend/internal/rowimport/history_customer.go']
-        files += ['retail/backend/internal/orders/admin.go']
+        files += ['retail/backend/internal/orders/admin.go','retail/scripts/capture-order-amounts.cjs']
+        files += ['retail/backend/internal/orders/amounts.go','retail/backend/internal/orders/amount_json.go','retail/backend/internal/identity/order_amounts_test.go']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/totals').glob('*.go')]
         report = {'format_version': 1, 'scope': '36 catalog tables, nine parent dependencies, two inventory tables and 28 ordinary order tables in disposable tmpfs MySQL; five historical customer subjects without account bindings and catalog parent rows have no ledger; no full import/runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
                   'embedded_migration_plan_used': True, 'review_ddl_injected': False,

@@ -167,3 +167,5 @@ export type OrderLine = {id:string;item_id:string;title:string;variant_sku:strin
 export type OrderDetail = {order:OrderSummary;lines:OrderLine[]}
 export function listOrders(params:URLSearchParams,signal?:AbortSignal):Promise<OrderList> {return request(`orders?${params}`,{signal},'/api/admin/')}
 export function getOrder(id:string,signal?:AbortSignal):Promise<OrderDetail> {return request(`orders/${encodeURIComponent(id)}`,{signal},'/api/admin/')}
+export type OrderAmounts = {order_id:string;version:number;currency_code:string;totals:Record<string,string>;lines:{id:string;item_id:string;unit_price:string;quantity:string;totals:Record<string,string>}[];shipping_methods:{id:string;shipping_method_id:string;name:string;amount:string;is_tax_inclusive:boolean;totals:Record<string,string>}[];summary:{transaction_total:string;pending_difference:string}|null}
+export function getOrderAmounts(id:string,signal?:AbortSignal):Promise<OrderAmounts> {return request(`orders/${encodeURIComponent(id)}/amounts`,{signal},'/api/admin/')}

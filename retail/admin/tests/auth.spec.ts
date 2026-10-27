@@ -54,6 +54,28 @@ async function signIn(page: Page) {
   await page.getByRole('button', { name: '登录', exact: true }).click()
 }
 
+test('order amounts retry separately and reject a different order version',async({page})=>{
+ await fixture(page)
+ const order={id:'artificial-order',version:2,status:'pending',currency_code:'eur',custom_display_id:'Order fixture',display_id:'1',is_draft_order:false,email:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',line_count:0}
+ let mode:'failed'|'ready'|'changed'='failed'
+ await page.route('**/api/admin/orders/artificial-order**',route=>{
+  if(!new URL(route.request().url()).pathname.endsWith('/amounts'))return route.fulfill({json:{order,lines:[]}})
+  if(mode==='failed')return route.fulfill({status:503,json:{error:{code:'orders.amounts_unavailable'}}})
+  return route.fulfill({json:{order_id:order.id,version:mode==='changed'?3:2,currency_code:'eur',totals:{item_subtotal:'0',shipping_subtotal:'0',discount_subtotal:'0',tax_total:'0',credit_line_total:'0',total:'0'},lines:[],shipping_methods:[],summary:null}})
+ })
+ await page.goto('/account');await signIn(page);await page.goto('/orders/artificial-order')
+ await expect(page.getByRole('heading',{name:'Order fixture',exact:true})).toBeVisible()
+ const amounts=page.getByRole('region',{name:'订单金额',exact:true})
+ await expect(amounts.getByRole('alert')).toBeVisible()
+ mode='ready';await amounts.getByRole('button',{name:'重新连接',exact:true}).click()
+ await expect(amounts.getByText('当前合计',{exact:true})).toBeVisible()
+ await expect(amounts.getByText('记录交易额',{exact:true})).toHaveCount(0)
+ mode='changed';await page.reload()
+ await expect(amounts.getByText('订单版本已变化，请刷新详情后重试。',{exact:true})).toBeVisible()
+ await expect(amounts.getByText('当前合计',{exact:true})).toHaveCount(0)
+ await expect(page.getByRole('heading',{name:'Order fixture',exact:true})).toBeVisible()
+})
+
 test('detail dependency failure retries and a missing product stays distinct',async({page})=>{
   await fixture(page)
   let mode:'failed'|'ready'|'missing'='failed'

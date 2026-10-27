@@ -204,14 +204,18 @@
     "stable_pagination": true,
     "private_payload_excluded": true,
     "incomplete_snapshot_rejected": true,
-    "schema_drift_rejected": true
+    "schema_drift_rejected": true,
+    "order_amounts_exact": true,
+    "amount_version_filters": true,
+    "independent_raw_price_precedence": true,
+    "amount_dependency_failures_rejected": true
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "1089e0c351b08193ae813f091ea9dc08e6911b805750b5af470a84513b23ddfd",
+    "retail/scripts/test-admin-auth.py": "a2a396f4961004bc2439ef8fe2c4314738c00d70a812a9ed2fa2ccd6e25d3ef3",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "9ab3c8ead44410b7ce10ddf96cf84b5b5142a075ffb15b8d07bf7c37114d8af6",
-    "retail/backend/internal/server/router.go": "ab9a13e5433b362e8500a70b09c6e061e65c94c3578bf4b63608340c20472672",
+    "retail/backend/internal/server/router.go": "6a7489e174815bb1ae5f8d35c9e17078a86d5c4c533cd25f07b5bebe514a6048",
     "retail/backend/internal/platform/http.go": "2d0725f3fa8d60f060b14de792f8d4f1aa8dda38ff8c26b4d8c2af7c137e642a",
     "retail/backend/internal/platform/request.go": "b8abeda445a6ae84c451a6ba9678308973feb5c0627fdc73dccf5de68aec648e",
     "retail/backend/cmd/api/main.go": "fc40c969c7b865225cb49d6d1d25764a161ecec6a941e2e2816992f0edee0804",
@@ -272,7 +276,14 @@
     "retail/backend/internal/identity/customer_history_test.go": "a17bbbfd77314cdb5a0babbe9f5b4ee4dfe84e2674ee829eff73c6909f2f3962",
     "retail/backend/internal/rowimport/convert.go": "02faf48f76231c5637adee5edc8709ce818995ce26c6920c787bd8190438e9d7",
     "retail/backend/internal/orders/admin.go": "e5e0d75a7caec388dd830d2247a2fb33408583bd5cc9c1b4354e32ec1d47697c",
-    "retail/backend/internal/identity/order_read_test.go": "ed719f0ae29c42853bd43032c43faa0fd8dfed4f271e26e590742f6a0c656e9f"
+    "retail/backend/internal/identity/order_read_test.go": "732ba0f1619d8ed331a99d0f741a7f311deb8262d8de3e8b0667f8222394f698",
+    "retail/backend/internal/orders/amounts.go": "337df58c1b8a2482633a3799b5de3890cf9eddbc1a04e652a3043089d1c2e7df",
+    "retail/backend/internal/orders/amount_json.go": "a1c9a0097e4cca8e138cd2e708ffa670b37708acda0ae51899d18401e60fb0d8",
+    "retail/backend/internal/identity/order_amounts_test.go": "fc30b3050e94b326edada1f9de68c3f566555ace237df056677f95b01423029d",
+    "retail/backend/internal/totals/calculate.go": "9f6779d9901e8c256bd60a56be26a91557c6eb3d68c6db2bb3e504955d7bfc41",
+    "retail/backend/internal/totals/decimal.go": "d21d4bae6b2699126b86ef54306b5716b2ecb9ee4792b5e0e431f7b2ebf1aff9",
+    "retail/backend/internal/totals/parity_test.go": "83b02eb1437162c7d3a9c21bd8264126ad56622e855276358f76441792262418",
+    "retail/backend/internal/totals/validation_test.go": "f9288463b8f3d242bcdadca68b1fee141378f13749671e2fe4cf59223272bc82"
   },
   "cleanup": "both owned containers and temporary runner removed"
 }

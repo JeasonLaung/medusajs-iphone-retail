@@ -5,6 +5,7 @@ import { APIError, getOrder } from './api'
 import type { OrderDetail as Detail, OrderLine } from './api'
 import type { Copy } from './i18n'
 import { amountText } from './VariantPrices'
+import OrderAmounts from './OrderAmounts'
 
 export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void}) {
   const {id=''}=useParams()
@@ -47,6 +48,7 @@ export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void
           {key:'received',label:copy.returnReceivedQuantity,children:amountText(row.return_received_quantity)},
           {key:'dismissed',label:copy.returnDismissedQuantity,children:amountText(row.return_dismissed_quantity)},
         ]} />}} />
+        <OrderAmounts id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>
       </>}
     </Space>
   </section>

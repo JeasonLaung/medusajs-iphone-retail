@@ -138,6 +138,8 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/orderimport').glob('*') if p.is_file()]
         files += ['retail/backend/migrations/0018_customer_history_dispositions.sql','retail/backend/internal/customerimport/import.go','retail/backend/internal/rowimport/history_customer.go','retail/backend/internal/rowimport/history_customer_test.go','retail/backend/internal/identity/customer_history_test.go','retail/backend/internal/rowimport/convert.go']
         files += ['retail/backend/internal/orders/admin.go','retail/backend/internal/identity/order_read_test.go']
+        files += ['retail/backend/internal/orders/amounts.go','retail/backend/internal/orders/amount_json.go','retail/backend/internal/identity/order_amounts_test.go']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/totals').glob('*.go')]
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                   'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                               'network': 'owned shared namespace with no external network', 'published_ports': 0},
