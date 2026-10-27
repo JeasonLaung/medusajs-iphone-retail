@@ -1,0 +1,35 @@
+{
+  "format_version": 1,
+  "scope": "One actual system-provider account-holder baseline through full v2 validation and ephemeral Go conversion only; no SQL, ownership or full import acceptance",
+  "snapshot_sha256": "b58a26812eeea8e75c6bd3e4ec4635b6260d8e704bc9a63fd095f0e7d9f13985",
+  "counts": {
+    "source_tables": 159,
+    "rows": 1,
+    "bound_columns": 9,
+    "protected_readbacks": 1,
+    "sql_nulls": 1,
+    "wrong_context_rejections": 1,
+    "required_operation_holds": 1
+  },
+  "source_database_connection": false,
+  "target_database_connection": false,
+  "provider_called": false,
+  "new_keys_or_envelopes_persisted": false,
+  "private_values_in_report": false,
+  "legacy_customer_payment_links_restored": false,
+  "historical_external_reference_is_authorization": false,
+  "sql_operation_holds_persisted": false,
+  "implementation_sha256": {
+    "retail/scripts/audit-account-holder.py": "73adbbb85f06e8a3c039a204a340ecc1417a817d808c90124fb4b1a2400feb20",
+    "retail/backend/internal/rowimport/history_account_holder.go": "4923ea8b65b12065b3c753efa4c3f1c0e67ee3e045dbab8515c9c1946d88dc19",
+    "retail/backend/internal/rowimport/history_account_holder_test.go": "c9d5e9f6999d0debc1407d7b8a3528491c34d244e5c123659b512c074f9f791f",
+    "retail/backend/internal/rowimport/convert.go": "bd96b9020318079476ac9172d38cb13fd162da4e29d065cb1f64977b4d4ba182",
+    "retail/backend/internal/rowimport/field_plans.json": "d3bff5f26b890e19f7424888430a638d4e45f6b46766e3643913e6eb670c5b77",
+    "retail/backend/internal/rowimport/record.go": "9da4ad1becb6c0ab0c20d147c1a71fb6a1fa44f317fca6cee7c4b0f2aa6c3cc8",
+    "retail/backend/internal/rowimport/stream.go": "3c650e235ee516443b53b639efa67645b17a755691bd0e342df7f64ddf65a946",
+    "retail/backend/internal/protected/envelope.go": "4a27c708e7e5f4f630783b025a1cfb7b431a7bb27d1a5e53e6cc20cb67a6e2a4",
+    "medusa-store/node_modules/.pnpm/@medusajs+payment@2.21.2_@m_072c5129ba1eab96dcbe12750c118438/node_modules/@medusajs/payment/dist/models/account-holder.js": "a8d7a4d1184be44488430f8ecc86a471f89bbdb17b1488e47748f6c599c3d8c0",
+    "medusa-store/node_modules/.pnpm/@medusajs+payment@2.21.2_@m_072c5129ba1eab96dcbe12750c118438/node_modules/@medusajs/payment/dist/providers/system.js": "d9689317d1d3ff82be30d6049f07d37fbef111b59441c2fb3adcc8eab44d0fdd",
+    "medusa-store/node_modules/.pnpm/@medusajs+payment@2.21.2_@m_072c5129ba1eab96dcbe12750c118438/node_modules/@medusajs/payment/dist/services/payment-module.js": "c010936222b771133578d0fe8e90f1c092934327466aa60d058ceb8eeef8d21e"
+  }
+}

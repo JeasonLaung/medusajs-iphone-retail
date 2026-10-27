@@ -34,7 +34,7 @@ func InspectValues(table string, row SourceRow) (ValueInspection, error) {
 		}
 	}
 	r := ValueInspection{Fields: len(p.Fields), InvalidColumns: []string{}, ProtectedColumns: []string{},
-		RequiresHistoryPolicy: table == "mail_message" || table == "payment_session" || table == "payment"}
+		RequiresHistoryPolicy: table == "mail_message" || table == "payment_session" || table == "payment" || table == "account_holder"}
 	for _, f := range p.Fields {
 		cell := row[f.Source]
 		if cell.SQLNull {

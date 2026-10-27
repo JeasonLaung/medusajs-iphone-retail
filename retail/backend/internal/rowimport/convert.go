@@ -90,6 +90,9 @@ func Convert(sourceTable string, row SourceRow) (BoundRow, error) {
 }
 
 func convertRow(sourceTable string, row SourceRow, protect func(field, json.RawMessage) (any, error), historyPolicy string) (BoundRow, error) {
+	if sourceTable == "account_holder" && historyPolicy != "account-holder-history" {
+		return BoundRow{}, ErrHistoryPolicy
+	}
 	if sourceTable == "mail_message" && historyPolicy != "mail-history" {
 		return BoundRow{}, ErrHistoryPolicy
 	}
