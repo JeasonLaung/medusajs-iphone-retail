@@ -1,0 +1,1978 @@
+{
+  "version": 1,
+  "input_sha256": {
+    "docs/migration/catalog-field-mapping.json": "e760f3ea032fa7fd09119fe017bb9c634cbade3b08648a47cfc1c3481cc2255b",
+    "retail/backend/internal/rowimport/field_plans.json": "d3bff5f26b890e19f7424888430a638d4e45f6b46766e3643913e6eb670c5b77",
+    "retail/backend/internal/uniquekey/source_plans.json": "827c3e69e269b0e3ad1445ec03ae0182a1c16a9d33634c570f03be7b56dcf01b"
+  },
+  "tables": [
+    {
+      "source": "currency",
+      "target": "commerce_currencies",
+      "primary": [
+        {
+          "source": "code",
+          "target": "code"
+        }
+      ],
+      "columns": [
+        {
+          "source": "code",
+          "target": "code",
+          "decimal": false
+        },
+        {
+          "source": "symbol",
+          "target": "symbol",
+          "decimal": false
+        },
+        {
+          "source": "symbol_native",
+          "target": "symbol_native",
+          "decimal": false
+        },
+        {
+          "source": "decimal_digits",
+          "target": "decimal_digits",
+          "decimal": false
+        },
+        {
+          "source": "rounding",
+          "target": "rounding",
+          "decimal": true
+        },
+        {
+          "source": "raw_rounding",
+          "target": "raw_rounding",
+          "decimal": false
+        },
+        {
+          "source": "name",
+          "target": "name",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "product",
+      "target": "catalog_products",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "title",
+          "target": "title",
+          "decimal": false
+        },
+        {
+          "source": "handle",
+          "target": "handle",
+          "decimal": false
+        },
+        {
+          "source": "subtitle",
+          "target": "subtitle",
+          "decimal": false
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "decimal": false
+        },
+        {
+          "source": "is_giftcard",
+          "target": "is_giftcard",
+          "decimal": false
+        },
+        {
+          "source": "status",
+          "target": "status",
+          "decimal": false
+        },
+        {
+          "source": "thumbnail",
+          "target": "thumbnail",
+          "decimal": false
+        },
+        {
+          "source": "weight",
+          "target": "weight",
+          "decimal": false
+        },
+        {
+          "source": "length",
+          "target": "length",
+          "decimal": false
+        },
+        {
+          "source": "height",
+          "target": "height",
+          "decimal": false
+        },
+        {
+          "source": "width",
+          "target": "width",
+          "decimal": false
+        },
+        {
+          "source": "origin_country",
+          "target": "origin_country",
+          "decimal": false
+        },
+        {
+          "source": "hs_code",
+          "target": "hs_code",
+          "decimal": false
+        },
+        {
+          "source": "mid_code",
+          "target": "mid_code",
+          "decimal": false
+        },
+        {
+          "source": "material",
+          "target": "material",
+          "decimal": false
+        },
+        {
+          "source": "collection_id",
+          "target": "collection_id",
+          "decimal": false
+        },
+        {
+          "source": "type_id",
+          "target": "type_id",
+          "decimal": false
+        },
+        {
+          "source": "discountable",
+          "target": "discountable",
+          "decimal": false
+        },
+        {
+          "source": "external_id",
+          "target": "external_id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "product_variant",
+      "target": "catalog_variants",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "title",
+          "target": "title",
+          "decimal": false
+        },
+        {
+          "source": "sku",
+          "target": "sku",
+          "decimal": false
+        },
+        {
+          "source": "barcode",
+          "target": "barcode",
+          "decimal": false
+        },
+        {
+          "source": "ean",
+          "target": "ean",
+          "decimal": false
+        },
+        {
+          "source": "upc",
+          "target": "upc",
+          "decimal": false
+        },
+        {
+          "source": "allow_backorder",
+          "target": "allow_backorder",
+          "decimal": false
+        },
+        {
+          "source": "manage_inventory",
+          "target": "manage_inventory",
+          "decimal": false
+        },
+        {
+          "source": "hs_code",
+          "target": "hs_code",
+          "decimal": false
+        },
+        {
+          "source": "origin_country",
+          "target": "origin_country",
+          "decimal": false
+        },
+        {
+          "source": "mid_code",
+          "target": "mid_code",
+          "decimal": false
+        },
+        {
+          "source": "material",
+          "target": "material",
+          "decimal": false
+        },
+        {
+          "source": "weight",
+          "target": "weight",
+          "decimal": false
+        },
+        {
+          "source": "length",
+          "target": "length",
+          "decimal": false
+        },
+        {
+          "source": "height",
+          "target": "height",
+          "decimal": false
+        },
+        {
+          "source": "width",
+          "target": "width",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "variant_rank",
+          "target": "variant_rank",
+          "decimal": false
+        },
+        {
+          "source": "product_id",
+          "target": "product_id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "thumbnail",
+          "target": "thumbnail",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "product_category",
+      "target": "catalog_categories",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "name",
+          "target": "name",
+          "decimal": false
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "decimal": false
+        },
+        {
+          "source": "handle",
+          "target": "handle",
+          "decimal": false
+        },
+        {
+          "source": "mpath",
+          "target": "mpath",
+          "decimal": false
+        },
+        {
+          "source": "is_active",
+          "target": "is_active",
+          "decimal": false
+        },
+        {
+          "source": "is_internal",
+          "target": "is_internal",
+          "decimal": false
+        },
+        {
+          "source": "rank",
+          "target": "rank",
+          "decimal": false
+        },
+        {
+          "source": "parent_category_id",
+          "target": "parent_category_id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "external_id",
+          "target": "external_id",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "product_category_product",
+      "target": "catalog_category_products",
+      "primary": [
+        {
+          "source": "product_id",
+          "target": "product_id"
+        },
+        {
+          "source": "product_category_id",
+          "target": "category_id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "product_id",
+          "target": "product_id",
+          "decimal": false
+        },
+        {
+          "source": "product_category_id",
+          "target": "category_id",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "product_collection",
+      "target": "catalog_collections",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "title",
+          "target": "title",
+          "decimal": false
+        },
+        {
+          "source": "handle",
+          "target": "handle",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "external_id",
+          "target": "external_id",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "product_type",
+      "target": "catalog_product_types",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "value",
+          "target": "value",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "external_id",
+          "target": "external_id",
+          "decimal": false
+        }
+      ],
+      "registry": true
+    },
+    {
+      "source": "product_tag",
+      "target": "catalog_tags",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "value",
+          "target": "value",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "external_id",
+          "target": "external_id",
+          "decimal": false
+        }
+      ],
+      "registry": true
+    },
+    {
+      "source": "product_tags",
+      "target": "catalog_product_tags",
+      "primary": [
+        {
+          "source": "product_id",
+          "target": "product_id"
+        },
+        {
+          "source": "product_tag_id",
+          "target": "tag_id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "product_id",
+          "target": "product_id",
+          "decimal": false
+        },
+        {
+          "source": "product_tag_id",
+          "target": "tag_id",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "product_option",
+      "target": "catalog_options",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "title",
+          "target": "title",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "is_exclusive",
+          "target": "is_exclusive",
+          "decimal": false
+        }
+      ],
+      "registry": true
+    },
+    {
+      "source": "product_option_value",
+      "target": "catalog_option_values",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "value",
+          "target": "value",
+          "decimal": false
+        },
+        {
+          "source": "option_id",
+          "target": "option_id",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "rank",
+          "target": "rank",
+          "decimal": false
+        }
+      ],
+      "registry": true
+    },
+    {
+      "source": "product_product_option",
+      "target": "catalog_product_options",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "product_id",
+          "target": "product_id",
+          "decimal": false
+        },
+        {
+          "source": "product_option_id",
+          "target": "product_option_id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "product_product_option_value",
+      "target": "catalog_product_option_values",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "product_product_option_id",
+          "target": "product_product_option_id",
+          "decimal": false
+        },
+        {
+          "source": "product_option_value_id",
+          "target": "product_option_value_id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "product_variant_option",
+      "target": "catalog_variant_options",
+      "primary": [
+        {
+          "source": "variant_id",
+          "target": "variant_id"
+        },
+        {
+          "source": "option_value_id",
+          "target": "option_value_id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "variant_id",
+          "target": "variant_id",
+          "decimal": false
+        },
+        {
+          "source": "option_value_id",
+          "target": "option_value_id",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "image",
+      "target": "catalog_images",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "url",
+          "target": "url",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "rank",
+          "target": "rank",
+          "decimal": false
+        },
+        {
+          "source": "product_id",
+          "target": "product_id",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "product_variant_product_image",
+      "target": "catalog_variant_images",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "variant_id",
+          "target": "variant_id",
+          "decimal": false
+        },
+        {
+          "source": "image_id",
+          "target": "image_id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "price_set",
+      "target": "pricing_price_sets",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "product_variant_price_set",
+      "target": "catalog_variant_price_sets",
+      "primary": [
+        {
+          "source": "variant_id",
+          "target": "variant_id"
+        },
+        {
+          "source": "price_set_id",
+          "target": "price_set_id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "variant_id",
+          "target": "variant_id",
+          "decimal": false
+        },
+        {
+          "source": "price_set_id",
+          "target": "price_set_id",
+          "decimal": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "price",
+      "target": "pricing_prices",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "title",
+          "target": "title",
+          "decimal": false
+        },
+        {
+          "source": "price_set_id",
+          "target": "price_set_id",
+          "decimal": false
+        },
+        {
+          "source": "currency_code",
+          "target": "currency_code",
+          "decimal": false
+        },
+        {
+          "source": "raw_amount",
+          "target": "raw_amount",
+          "decimal": false
+        },
+        {
+          "source": "rules_count",
+          "target": "rules_count",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "price_list_id",
+          "target": "price_list_id",
+          "decimal": false
+        },
+        {
+          "source": "amount",
+          "target": "amount",
+          "decimal": true
+        },
+        {
+          "source": "min_quantity",
+          "target": "min_quantity",
+          "decimal": true
+        },
+        {
+          "source": "max_quantity",
+          "target": "max_quantity",
+          "decimal": true
+        },
+        {
+          "source": "raw_min_quantity",
+          "target": "raw_min_quantity",
+          "decimal": false
+        },
+        {
+          "source": "raw_max_quantity",
+          "target": "raw_max_quantity",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "price_rule",
+      "target": "pricing_price_rules",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "value",
+          "target": "value",
+          "decimal": false
+        },
+        {
+          "source": "priority",
+          "target": "priority",
+          "decimal": false
+        },
+        {
+          "source": "price_id",
+          "target": "price_id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "attribute",
+          "target": "attribute",
+          "decimal": false
+        },
+        {
+          "source": "operator",
+          "target": "operator",
+          "decimal": false
+        }
+      ],
+      "registry": true
+    },
+    {
+      "source": "price_list",
+      "target": "pricing_price_lists",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "status",
+          "target": "status",
+          "decimal": false
+        },
+        {
+          "source": "starts_at",
+          "target": "starts_at",
+          "decimal": false
+        },
+        {
+          "source": "ends_at",
+          "target": "ends_at",
+          "decimal": false
+        },
+        {
+          "source": "rules_count",
+          "target": "rules_count",
+          "decimal": false
+        },
+        {
+          "source": "title",
+          "target": "title",
+          "decimal": false
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "decimal": false
+        },
+        {
+          "source": "type",
+          "target": "type",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "price_list_rule",
+      "target": "pricing_price_list_rules",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "price_list_id",
+          "target": "price_list_id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "value",
+          "target": "value",
+          "decimal": false
+        },
+        {
+          "source": "attribute",
+          "target": "attribute",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "price_preference",
+      "target": "pricing_preferences",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "attribute",
+          "target": "attribute",
+          "decimal": false
+        },
+        {
+          "source": "value",
+          "target": "value",
+          "decimal": false
+        },
+        {
+          "source": "is_tax_inclusive",
+          "target": "is_tax_inclusive",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": true
+    },
+    {
+      "source": "product_sales_channel",
+      "target": "catalog_product_channels",
+      "primary": [
+        {
+          "source": "product_id",
+          "target": "product_id"
+        },
+        {
+          "source": "sales_channel_id",
+          "target": "sales_channel_id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "product_id",
+          "target": "product_id",
+          "decimal": false
+        },
+        {
+          "source": "sales_channel_id",
+          "target": "sales_channel_id",
+          "decimal": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "product_shipping_profile",
+      "target": "catalog_product_shipping_profiles",
+      "primary": [
+        {
+          "source": "product_id",
+          "target": "product_id"
+        },
+        {
+          "source": "shipping_profile_id",
+          "target": "shipping_profile_id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "product_id",
+          "target": "product_id",
+          "decimal": false
+        },
+        {
+          "source": "shipping_profile_id",
+          "target": "shipping_profile_id",
+          "decimal": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "product_variant_inventory_item",
+      "target": "catalog_variant_inventory_items",
+      "primary": [
+        {
+          "source": "variant_id",
+          "target": "variant_id"
+        },
+        {
+          "source": "inventory_item_id",
+          "target": "inventory_item_id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "variant_id",
+          "target": "variant_id",
+          "decimal": false
+        },
+        {
+          "source": "inventory_item_id",
+          "target": "inventory_item_id",
+          "decimal": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "required_quantity",
+          "target": "required_quantity",
+          "decimal": true
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "sales_channel",
+      "target": "commerce_sales_channels",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "name",
+          "target": "name",
+          "decimal": false
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "decimal": false
+        },
+        {
+          "source": "is_disabled",
+          "target": "is_disabled",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "sales_channel_stock_location",
+      "target": "commerce_channel_locations",
+      "primary": [
+        {
+          "source": "sales_channel_id",
+          "target": "sales_channel_id"
+        },
+        {
+          "source": "stock_location_id",
+          "target": "stock_location_id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "sales_channel_id",
+          "target": "sales_channel_id",
+          "decimal": false
+        },
+        {
+          "source": "stock_location_id",
+          "target": "stock_location_id",
+          "decimal": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "region",
+      "target": "commerce_regions",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "name",
+          "target": "name",
+          "decimal": false
+        },
+        {
+          "source": "currency_code",
+          "target": "currency_code",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "automatic_taxes",
+          "target": "automatic_taxes",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "region_country",
+      "target": "commerce_countries",
+      "primary": [
+        {
+          "source": "iso_2",
+          "target": "iso_2"
+        }
+      ],
+      "columns": [
+        {
+          "source": "iso_2",
+          "target": "iso_2",
+          "decimal": false
+        },
+        {
+          "source": "iso_3",
+          "target": "iso_3",
+          "decimal": false
+        },
+        {
+          "source": "num_code",
+          "target": "num_code",
+          "decimal": false
+        },
+        {
+          "source": "name",
+          "target": "name",
+          "decimal": false
+        },
+        {
+          "source": "display_name",
+          "target": "display_name",
+          "decimal": false
+        },
+        {
+          "source": "region_id",
+          "target": "region_id",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "region_payment_provider",
+      "target": "commerce_region_payment_providers",
+      "primary": [
+        {
+          "source": "region_id",
+          "target": "region_id"
+        },
+        {
+          "source": "payment_provider_id",
+          "target": "payment_provider_id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "region_id",
+          "target": "region_id",
+          "decimal": false
+        },
+        {
+          "source": "payment_provider_id",
+          "target": "payment_provider_id",
+          "decimal": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "store",
+      "target": "commerce_stores",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "name",
+          "target": "name",
+          "decimal": false
+        },
+        {
+          "source": "default_sales_channel_id",
+          "target": "default_sales_channel_id",
+          "decimal": false
+        },
+        {
+          "source": "default_region_id",
+          "target": "default_region_id",
+          "decimal": false
+        },
+        {
+          "source": "default_location_id",
+          "target": "default_location_id",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "store_currency",
+      "target": "commerce_store_currencies",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "currency_code",
+          "target": "currency_code",
+          "decimal": false
+        },
+        {
+          "source": "is_default",
+          "target": "is_default",
+          "decimal": false
+        },
+        {
+          "source": "store_id",
+          "target": "store_id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "store_locale",
+      "target": "commerce_store_locales",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "locale_code",
+          "target": "locale_code",
+          "decimal": false
+        },
+        {
+          "source": "store_id",
+          "target": "store_id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "shipping_profile",
+      "target": "fulfillment_shipping_profiles",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "name",
+          "target": "name",
+          "decimal": false
+        },
+        {
+          "source": "type",
+          "target": "type",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": true
+    },
+    {
+      "source": "shipping_option_price_set",
+      "target": "fulfillment_option_price_sets",
+      "primary": [
+        {
+          "source": "shipping_option_id",
+          "target": "shipping_option_id"
+        },
+        {
+          "source": "price_set_id",
+          "target": "price_set_id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "shipping_option_id",
+          "target": "shipping_option_id",
+          "decimal": false
+        },
+        {
+          "source": "price_set_id",
+          "target": "price_set_id",
+          "decimal": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    }
+  ]
+}
