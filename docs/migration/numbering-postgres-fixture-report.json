@@ -1,0 +1,203 @@
+{
+  "format_version": 1,
+  "source_schema_sha256": "4222a1590a9eedd28ea084304514fbb29239a267186ee849909f969779dcca66",
+  "scope": "Actual captured PostgreSQL trigger bodies executed in disposable isolated PostgreSQL with minimal artificial tables; not full Medusa workflows, historical import or MySQL implementation acceptance.",
+  "image": "postgres:16-alpine",
+  "local_image_id": "sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+  "isolation": {
+    "network": "none",
+    "published_ports": 0,
+    "cpus": 1,
+    "memory_mib": 384,
+    "data": "bounded temporary tmpfs; no host/database volumes",
+    "source_business_connection": false
+  },
+  "concurrent_connections": 6,
+  "parallel_rows_per_domain": 60,
+  "cases": [
+    {
+      "name": "null-sku-allocates-first",
+      "passed": true
+    },
+    {
+      "name": "empty-sku-allocates-next",
+      "passed": true
+    },
+    {
+      "name": "whitespace-sku-allocates-next",
+      "passed": true
+    },
+    {
+      "name": "clear-generated-sku-retains-identity",
+      "passed": true
+    },
+    {
+      "name": "clearing-generated-does-not-advance",
+      "passed": true
+    },
+    {
+      "name": "manual-sku-preserved",
+      "passed": true
+    },
+    {
+      "name": "clearing-custom-sku-allocates",
+      "passed": true
+    },
+    {
+      "name": "explicit-erp-leading-zero-text-preserved",
+      "passed": true
+    },
+    {
+      "name": "explicit-erp-reserves-numeric-position",
+      "passed": true
+    },
+    {
+      "name": "low-explicit-erp-does-not-decrement",
+      "passed": true
+    },
+    {
+      "name": "erp-10000-not-allocated-range",
+      "passed": true
+    },
+    {
+      "name": "short-erp-custom-not-counter",
+      "passed": true
+    },
+    {
+      "name": "next-allocation-follows-explicit-reservation",
+      "passed": true
+    },
+    {
+      "name": "active-duplicate-sku-rejected",
+      "passed": true,
+      "expected_sqlstate": "23505"
+    },
+    {
+      "name": "soft-delete-does-not-release-counter",
+      "passed": true
+    },
+    {
+      "name": "legacy-soft-deleted-code-reuse-allowed-by-partial-index",
+      "passed": true
+    },
+    {
+      "name": "rolled-back-sku-counter-restored",
+      "passed": true
+    },
+    {
+      "name": "rolled-back-sku-row-absent",
+      "passed": true
+    },
+    {
+      "name": "false-singleton-key-rejected",
+      "passed": true,
+      "expected_sqlstate": "23514"
+    },
+    {
+      "name": "second-singleton-row-rejected",
+      "passed": true,
+      "expected_sqlstate": "23505"
+    },
+    {
+      "name": "negative-sku-counter-rejected",
+      "passed": true,
+      "expected_sqlstate": "23514"
+    },
+    {
+      "name": "sku-prefix-offset-overflow-fails",
+      "passed": true,
+      "expected_sqlstate": "22003"
+    },
+    {
+      "name": "overflow-does-not-commit-counter",
+      "passed": true
+    },
+    {
+      "name": "missing-counter-auto-sku-fails-strict",
+      "passed": true,
+      "expected_sqlstate": "P0002"
+    },
+    {
+      "name": "legacy-explicit-sku-with-missing-counter-succeeds",
+      "passed": true
+    },
+    {
+      "name": "order-trigger-overwrites-supplied-number",
+      "passed": true
+    },
+    {
+      "name": "order-clock-advances-one-when-wall-clock-behind",
+      "passed": true
+    },
+    {
+      "name": "order-clock-rolls-back",
+      "passed": true
+    },
+    {
+      "name": "native-sequence-does-not-roll-back",
+      "passed": true
+    },
+    {
+      "name": "next-order-has-sequence-gap",
+      "passed": true
+    },
+    {
+      "name": "order-trigger-is-insert-only-legacy-update-allowed",
+      "passed": true
+    },
+    {
+      "name": "missing-order-clock-insert-fails",
+      "passed": true,
+      "expected_sqlstate": "P0002"
+    },
+    {
+      "name": "max-order-clock-increment-fails",
+      "passed": true,
+      "expected_sqlstate": "22003"
+    },
+    {
+      "name": "parallel-sku-60-rows",
+      "passed": true
+    },
+    {
+      "name": "parallel-sku-60-unique",
+      "passed": true
+    },
+    {
+      "name": "parallel-sku-counter-60",
+      "passed": true
+    },
+    {
+      "name": "parallel-sku-contiguous-artificial-run",
+      "passed": true
+    },
+    {
+      "name": "parallel-order-60-rows",
+      "passed": true
+    },
+    {
+      "name": "parallel-order-60-unique",
+      "passed": true
+    },
+    {
+      "name": "parallel-order-clock-60",
+      "passed": true
+    },
+    {
+      "name": "parallel-order-19-digit-output",
+      "passed": true
+    }
+  ],
+  "observed_legacy_gaps": [
+    "Explicit valid ERP insert may succeed with missing singleton counter",
+    "Order custom_display_id can be changed by UPDATE because trigger is INSERT-only",
+    "Active-only unique SKU index permits reuse of soft-deleted code; counter floor alone does not prevent explicit reuse"
+  ],
+  "remaining": [
+    "Target Gin/MySQL persistent allocators and full transaction/idempotency tests",
+    "Full schema constraints/foreign keys and all workflow paths",
+    "Formal write freeze and history/sequence seed reconciliation"
+  ],
+  "status": "legacy-isolated-numbering-tested-not-migrated",
+  "cleanup": "owned fixture container and anonymous volumes removed after verification"
+}
