@@ -215,8 +215,21 @@
     {
       "name": "counter-transaction-rollback",
       "passed": true
+    },
+    {
+      "name": "all-review-tables-created",
+      "passed": true
+    },
+    {
+      "name": "all-review-source-columns-created",
+      "passed": true
+    },
+    {
+      "name": "every-review-table-innodb",
+      "passed": true
     }
   ],
+  "relational_review_ddl_sha256": "4f54bb27c9beff49eb168a08733fffa8989271e0da2dea4bc99455062ed762c7",
   "required_application_checks": [
     "Reject decimal scale/integer overflow before SQL; strict mode rounds excess scale",
     "Reject excess timestamp precision or explicitly normalize with documented policy; strict mode rounds",

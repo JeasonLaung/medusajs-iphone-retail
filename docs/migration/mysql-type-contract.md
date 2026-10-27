@@ -8,9 +8,9 @@
 python retail/scripts/test-mysql-types.py
 ```
 
-使用已存在本机mysql:8.4镜像，实际执行版本8.4.11；45项结果见 `mysql-type-fixture-report.json`。临时容器network=none、不发布端口、限制1核/768MiB内存/512MiB数据tmpfs，所有表和数据均为人工；随机root密码仅用于本次初始化，未打印或写入报告。finally核对随机所有权标签后清理容器及卷；已清理。没有连接现有MySQL/PostgreSQL/Redis、源业务快照或部署服务器。
+使用已存在本机mysql:8.4镜像，实际执行版本8.4.11；45项类型检查加3项全表结构检查，共48项结果见 `mysql-type-fixture-report.json`。临时容器network=none、不发布端口、限制1核/768MiB内存/512MiB数据tmpfs，所有表和数据均为人工；随机root密码仅用于本次初始化，未打印或写入报告。finally核对随机所有权标签后清理容器及卷；已清理。没有连接现有MySQL/PostgreSQL/Redis、源业务快照或部署服务器。
 
-每次SQL连接设UTC与STRICT_ALL_TABLES、NO_ZERO_DATE、NO_ZERO_IN_DATE等明确模式。测试是人工最小表及真实SQL约束，不创建全部159张目标业务表、不运行新Gin、不导入真实历史数据。
+每次SQL连接设UTC与STRICT_ALL_TABLES、NO_ZERO_DATE、NO_ZERO_IN_DATE等明确模式。除人工最小表及真实SQL约束外，另在隔离空库执行[159表审查DDL](mysql-relational-review.md)，核对表数、列数和InnoDB。审查稿有显式约束/索引hold，不是完整目标迁移；不运行新Gin、不导入真实历史数据。
 
 ## 45项结果与迁移影响
 

@@ -55,6 +55,7 @@
 - [商户配置离线基线](migration/protected-config-baseline.md)：四域真实加密函数、12个受保护字段设计，3个非空密文解密及临时AAD往返通过，3空值/3NULL，33个人工断言通过；不调用provider、不输出秘密。选定.env不证明部署密钥，新持久信封/轮换/导入及旧认证材料排除仍待实现。
 - [默认值设计](migration/column-default-design.md)：193表1,961列默认值元数据及目标处置，603源列有默认，1,691映射/270排除逐列覆盖；10个人工边界测试通过。保留2个布尔单例计数器及5个业务sequence；触发器/sequence位置、MySQL DDL/事务仍待验证。
 - [MySQL实际类型约束](migration/mysql-type-contract.md)：禁网/单核临时MySQL8.4.11人工DDL执行45项，验证DECIMAL38,18、原文JSON、NO PAD ID、UTC时间、活动/条件唯一键、复合NULL、外键与单例回滚。实际确认严格模式仍舍入超精度金额/时间、原生JSON大数转DOUBLE、超宽复合键失败；容器已清理，全量DDL/导入/并发及Gin仍待实现。
+- [159表关系DDL审查稿](migration/mysql-relational-review.md)：1,691列、159主键/47源CHECK/86外键实际空库建表通过，类型及结构共48项检查；349源约束/759索引全部登记，4约束和460索引hold。实际发现税区CHECK与级联FK冲突3823并明确待重构；本稿非正式migration，全量唯一性/默认/真实导入/失败恢复及新业务表仍待实现。
 - [编号数据库基线](migration/numbering-database-contract.md)：2个生效触发器及函数定义、8个sequence和2个单例当前位置只读采集；29项检查通过，含10个实际SQL人工订单格式样例。另在禁网/单核/384MiB临时PostgreSQL执行真实触发器，41项检查通过，含6连接分别并发生成60个SKU及订单号、回滚和溢出；容器已清理。3个旧迁移sequence不导入，位置明细不入Git；冻结种子及MySQL分配器仍待实现。
 
 调用方、剩余领域授权、原生交易与支付插件契约、登录后页面及完整字段映射继续核对。源码盘点、截图成功和元数据清单都不等于业务迁移完成。

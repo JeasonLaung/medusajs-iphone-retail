@@ -24,6 +24,7 @@
 | 密钥/商户秘密 | [四域加密与离线可读性](protected-config-baseline.md)、protected-config-report.json；无明文/密文/密钥指纹 |
 | 默认值转换 | [193表1,961列默认值去向](column-default-design.md)、source-column-defaults.json、column-default-design.json |
 | MySQL实际类型/约束 | [45项隔离SQL检查](mysql-type-contract.md)、mysql-type-fixture-report.json；人工表，非全量DDL/导入验收 |
+| 159表结构审查 | [1,691列及约束处置](mysql-relational-review.md)、mysql-relational-review.sql/.json；空库执行通过，4约束/460索引待处理，非正式迁移 |
 | 编号数据库规则 | [2触发器/8序列/接续种子](numbering-database-contract.md)、source-numbering-database.json、numbering-database-report.json、numbering-postgres-fixture-report.json（41项隔离执行）；当前位置仅在忽略目录 |
 | 自定义业务 | [设备命令及固定用例](device-commands.md)、[回收与邮件](buyback-and-mail.md)、[SEO 与引用监测](seo-contract.md) |
 | 统计 | [Analytics 实际口径](analytics-contract.md) |

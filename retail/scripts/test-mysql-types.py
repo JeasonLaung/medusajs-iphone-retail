@@ -1,5 +1,6 @@
 """Artificial-only MySQL 8.4 dialect checks in a bounded disposable container."""
 import json
+import hashlib
 from pathlib import Path
 import secrets
 import subprocess
@@ -51,7 +52,7 @@ def main():
                     raise AssertionError('Expected MySQL error ' + str(expected_error))
                 return None
             if result.returncode:
-                raise AssertionError('Artificial MySQL SQL failed (no source connection)')
+                raise AssertionError('Artificial MySQL SQL failed (no source connection): ' + result.stderr.strip())
             return result.stdout.strip()
 
         for _ in range(100):
@@ -178,10 +179,20 @@ INSERT INTO singleton_counter VALUES(true,0);''')
         denied('singleton-second-true-key-denied', 'INSERT INTO singleton_counter VALUES(true,1);', 1062)
         denied('singleton-negative-value-denied', 'UPDATE singleton_counter SET last_id=-1 WHERE id=true;', 3819)
         expect('counter-transaction-rollback', 'START TRANSACTION; UPDATE singleton_counter SET last_id=1 WHERE id=true; ROLLBACK; SELECT last_id FROM singleton_counter;', 0)
+        review_file = ROOT / 'docs/migration/mysql-relational-review.sql'
+        review_bytes = review_file.read_bytes().replace(b'\r\n', b'\n')
+        review_report = json.loads((ROOT / 'docs/migration/mysql-relational-review.json').read_text(encoding='utf-8'))
+        if hashlib.sha256(review_bytes).hexdigest() != review_report['ddl_sha256']:
+            raise AssertionError('Review DDL checksum mismatch')
+        sql('CREATE DATABASE relational_fixture CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin; USE relational_fixture;\n' + review_bytes.decode())
+        expect('all-review-tables-created', "SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA='relational_fixture';", 159)
+        expect('all-review-source-columns-created', "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='relational_fixture';", 1691)
+        expect('every-review-table-innodb', "SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA='relational_fixture' AND ENGINE='InnoDB';", 159)
         report = {'format_version': 1, 'scope': 'Actual MySQL dialect on artificial minimal DDL/data only; not full domain migrations, source import, allocator concurrency or application validation acceptance.',
                   'image': 'mysql:8.4', 'local_image_id': image.stdout.strip(), 'server_version': version,
                   'isolation': {'network': 'none', 'published_ports': 0, 'cpus': 1, 'memory_mib': 768, 'data_tmpfs_mib': 512, 'source_business_connection': False},
                   'session_sql_mode': mode, 'session_timezone': '+00:00', 'cases': cases,
+                  'relational_review_ddl_sha256': review_report['ddl_sha256'],
                   'required_application_checks': ['Reject decimal scale/integer overflow before SQL; strict mode rounds excess scale',
                       'Reject excess timestamp precision or explicitly normalize with documented policy; strict mode rounds',
                       'Convert source instants to UTC before DATETIME(6), configure every connection UTC',
