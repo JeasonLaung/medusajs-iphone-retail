@@ -7,6 +7,7 @@ import type { Copy } from './i18n'
 import { amountText } from './VariantPrices'
 import OrderAmounts from './OrderAmounts'
 import OrderPayments from './OrderPayments'
+import OrderFulfillments from './OrderFulfillments'
 
 export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void}) {
   const {id=''}=useParams()
@@ -51,6 +52,7 @@ export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void
         ]} />}} />
         <OrderAmounts id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>
 <OrderPayments id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>
+<OrderFulfillments id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>
       </>}
     </Space>
   </section>

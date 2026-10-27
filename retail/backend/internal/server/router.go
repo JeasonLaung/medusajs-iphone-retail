@@ -94,6 +94,7 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	private.GET("/orders/:id", (orders.Handler{DB: db}).Detail)
 	private.GET("/orders/:id/amounts", (orders.Handler{DB: db}).Amounts)
 	private.GET("/orders/:id/payments", (orders.Handler{DB: db}).Payments)
+	private.GET("/orders/:id/fulfillments", (orders.Handler{DB: db}).Fulfillments)
 	private.GET("/products", h.AdminProducts)
 	private.GET("/products/:id", h.AdminProduct)
 	private.GET("/products/:id/variants", h.AdminVariants)

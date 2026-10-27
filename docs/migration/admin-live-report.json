@@ -38,7 +38,8 @@
     "Chinese and English stock edit drawers at three viewport widths",
     "Order list filters, current-version snapshot details and exact decimals in Chinese and English at three widths",
     "Ant order amounts, exact taxes/discounts/shipping/credits and summary at three widths in Chinese and English; anonymous and unknown-query rejection",
-    "Ant order payment collections, sessions, expanded captures/refunds, exact 18-digit fractional money, held/unverified indicators and private payload exclusion; Chinese/English at three widths"
+    "Ant order payment collections, sessions, expanded captures/refunds, exact 18-digit fractional money, held/unverified indicators and private payload exclusion; Chinese/English at three widths",
+    "Ant order fulfillment packages, explicit missing/deleted evidence, items with exact quantity and identifiers, labels with HTTP(S) links only, nullable delivery address and private provider payload exclusion; Chinese/English at three widths"
   ],
   "limits": {
     "mysql_cpus": 1,
@@ -63,7 +64,8 @@
     "retail/admin/playwright.live.config.ts": "e87682decce2a6528da34d1300dc891155d10309e1b36550a8919236b21eaf0b",
     "retail/admin/src/App.tsx": "e7da3c10acce62e14d14733cf924f31f71527173deca0cf1a54df088d67ff22e",
     "retail/admin/src/OrderAmounts.tsx": "4d1e714e662532a7de102518fbca90bcbc044cf04e96edbc2030de157c219587",
-    "retail/admin/src/OrderDetail.tsx": "033749e9c77d72731d01cece7438dd6389d0417b2fd219b6d37b276c4fd6791e",
+    "retail/admin/src/OrderDetail.tsx": "9336c35dbbe065a63d91842e0498a07d8b31ed683e6c314f932c6caac7ec61d6",
+    "retail/admin/src/OrderFulfillments.tsx": "f26c0bdb995fae1675f7576489ef1b6d067f52b1f6ec77873766079fcd948f03",
     "retail/admin/src/OrderPayments.tsx": "4cc632ab89d2604c2c248f3f033e1b6ed80bb6d5b26db5cc183a11e33b0e45e8",
     "retail/admin/src/Orders.tsx": "3614c4956eaec2e0183e18b27ec926e82ea4e2a7d40f8b0f03c017c32756d8d8",
     "retail/admin/src/ProductDetail.tsx": "e43c8a6002cf858115683d9504e8bc10bec95830670dbfd44835d74ec5827389",
@@ -72,12 +74,12 @@
     "retail/admin/src/StockEdit.tsx": "f42e3299c2afd844053fbe2488cd9bc5f67509ecc2c22f2a436bde41c592761b",
     "retail/admin/src/VariantInventory.tsx": "bace69a0d8fb6c841aa46557f8b3aea91c44c7c0e489903bd7b95479a15be47f",
     "retail/admin/src/VariantPrices.tsx": "860f9e1c624474325a5d7c804396d25f65673283b7cf57891826f5f076d17fce",
-    "retail/admin/src/api.ts": "384dcd8b5caa96a7237ce773333c95dea1c5b697275f2007c47dc690fb5a2e8a",
-    "retail/admin/src/i18n.ts": "f2e1b2abc8965dc9aa88a49dee4a5b745942d6a31df434440c7c92fd52eb7a3d",
+    "retail/admin/src/api.ts": "ea24f23139a414613f3372ab3f4d0aa70c8cfd4a7bbfea510395b34aacba9eea",
+    "retail/admin/src/i18n.ts": "45e5644796984909e873e132e1af07d470d291a965ca450010c5694cf5a9d7d1",
     "retail/admin/src/main.tsx": "a114e06b121c44c091c06bae73b1f2fc5a17a919e38cee9d71531f3929566a62",
     "retail/admin/src/style.css": "26d97ab31d413ea26b8d64a8331fb2e756804c4e1b5798a440313f96c12f3d92",
-    "retail/admin/tests/auth.live.spec.ts": "9c45fc3ff18a66fb741f9210b277bbe1c9f8f07659f6957583e963ba0dc7c80d",
-    "retail/admin/tests/auth.spec.ts": "45188e7d2e5dc2612d6884a8bcdb34cf93bb2f56ca7d2456d3dc9c3630960f23",
+    "retail/admin/tests/auth.live.spec.ts": "3b13bbc42adf2324c8ae1d94262aab3e930da7e9acd599f2892b222e51d4b80c",
+    "retail/admin/tests/auth.spec.ts": "03b3a7a9d3f159aa5a3cb30a276c6156b6b795cbec039f35d277360977b2c41f",
     "retail/admin/tsconfig.json": "c4769ad8ef4c9dfac534234e5679e8b9bdc702a978793eb6f3b893e4c02fd3d7",
     "retail/admin/vite.config.ts": "9f665557c617064816daa9a9b8cfbe746073d93cec4be2d2ef897dae85d9eb54",
     "retail/backend/cmd/api/main.go": "6d57fb41d68f2770bdf82c6f056186b404c971382f5c0aef16a5cf77e3f9253f",
@@ -98,8 +100,9 @@
     "retail/backend/internal/identity/browser_fixture_test.go": "d05cb695d3ba4f55b63a6cc813ba424afcb215ed076b3db7ef707442992e5b42",
     "retail/backend/internal/identity/fulfillment_history_test.go": "a77bdd2c84cfcfd94eda550b52839b90ca532b8693a73c6b5a20df87462d229b",
     "retail/backend/internal/identity/order_amounts_test.go": "fc30b3050e94b326edada1f9de68c3f566555ace237df056677f95b01423029d",
+    "retail/backend/internal/identity/order_fulfillments_test.go": "e1864aa0d957a6ca8eccfdb635a6baa46fc536a02929c0c610d73cf6be3e2f17",
     "retail/backend/internal/identity/order_payments_test.go": "b627b1a86a5e3b643002af821dc155f5f05030fc6bd836f746c60b3c33728cb4",
-    "retail/backend/internal/identity/order_read_test.go": "5957f5f93b14299e699657424e53959be7d26540724a85666dab24507911db64",
+    "retail/backend/internal/identity/order_read_test.go": "3d708001c0f9c443e4e20f7b11236f68753698c61d35a46717bf7d0b7fc4789d",
     "retail/backend/internal/inventory/edit.go": "99763329e4ccfa401acdd5bf4b823e0db87e90d25b2b278496693070941ff8e1",
     "retail/backend/internal/inventory/edit_test.go": "d422fda3dc223157be967f3927ed019b296c9836960ab1a83bd0efd7d459d047",
     "retail/backend/internal/inventory/http.go": "7ea9031ec1388ccfe36cf87029c54f52c092004a753f8d18464909785c66a4df",
@@ -112,6 +115,7 @@
     "retail/backend/internal/orders/admin.go": "e5e0d75a7caec388dd830d2247a2fb33408583bd5cc9c1b4354e32ec1d47697c",
     "retail/backend/internal/orders/amount_json.go": "a1c9a0097e4cca8e138cd2e708ffa670b37708acda0ae51899d18401e60fb0d8",
     "retail/backend/internal/orders/amounts.go": "337df58c1b8a2482633a3799b5de3890cf9eddbc1a04e652a3043089d1c2e7df",
+    "retail/backend/internal/orders/fulfillments.go": "e88933730b22937f9966bfc01f599cdc598ac03f41d032485c24879d6c0dda92",
     "retail/backend/internal/orders/payments.go": "0bf0cdff6629efe94cd31a4568a8c92f391448977b2e1f7cc85ff809b112d96a",
     "retail/backend/internal/orders/schema.go": "f309485a3e2cf97c068f0be4f814e86a0a81cc38b67587f0b5c3280db5dda3d7",
     "retail/backend/internal/orders/schema_plan.json": "cfc3afdb2a2ff3dddd80a6a3b14a9e8def92300bf615b29452342dc192a99fe1",
@@ -122,7 +126,7 @@
     "retail/backend/internal/schema/plan.go": "57e554e749ef6d75c12ca6cbb20f71b8ced1e29b39b49b15e5cb8d9a4c98de56",
     "retail/backend/internal/schema/ready.go": "136238fca088d5594ae5ddc8af5954f090aab286f8dedcf17f90ad42c6a5a5ad",
     "retail/backend/internal/schema/run.go": "56f369159ab7cee4fc51694ba6dc0cbd58daff7656fd02e4205350c1b1d9f8b3",
-    "retail/backend/internal/server/router.go": "2a0d26a00ff027077a51219036072534e39766bfce1b33b3fe8c158ba7dd6b3d",
+    "retail/backend/internal/server/router.go": "3a7f666a9e4cb59bcba1f1265dc4c4e8873e1c973130bb481efa88f0e995f1a1",
     "retail/backend/internal/sessionstore/config.go": "3a06b19b9f71032d4243cc9266499d7eb7cf6a8e7facfcfac3ae63ac1a339440",
     "retail/backend/internal/sessionstore/store.go": "1474b97c45baebfbc00de252da3b77b3dfa4a7749e9cf2cf894d697f508f83aa",
     "retail/backend/internal/totals/calculate.go": "9f6779d9901e8c256bd60a56be26a91557c6eb3d68c6db2bb3e504955d7bfc41",
@@ -154,7 +158,7 @@
     "retail/scripts/generate-fulfillment-import-plan.py": "9f9dd5e5e21ea6582349678d6b9464e20ebe8d150bf768f2d4a5398fe0836b19",
     "retail/scripts/generate-fulfillment-schema.py": "3c1fa30b9c75cd402dc1f5d3bf160b37883a1a59b4683171435fe64c68f297fe",
     "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb",
-    "retail/scripts/test-admin-live.py": "d6facf4b6d69081012b51d20dcc20cee98fe4bf8b43e775122ed7b6077bf74cd"
+    "retail/scripts/test-admin-live.py": "138eb36374e9afd44dad7fe0451d8c28550947863679883f319427e6eacce1d2"
   },
   "cleanup": "both owned containers, bridge network and temporary binaries removed"
 }

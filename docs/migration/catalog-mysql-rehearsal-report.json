@@ -79,8 +79,12 @@
     "fulfillment_reference_holds": 1,
     "historical_customer_subject_rows": 5,
     "historical_holder_operation_holds": 1,
+    "http_actual_fulfillment_addresses_verified": 3,
+    "http_actual_fulfillment_items_verified": 3,
+    "http_actual_fulfillments_verified": 3,
     "http_actual_order_amount_fields": 771,
     "http_actual_order_amounts_verified": 13,
+    "http_actual_order_fulfillments_verified": 13,
     "http_actual_order_payments_verified": 13,
     "http_actual_payment_captures_verified": 10,
     "http_actual_payment_sessions_verified": 13,
@@ -152,9 +156,9 @@
   "relational_acceptance": false,
   "full_business_acceptance": false,
   "implementation_sha256": {
-    "retail/scripts/rehearse-catalog.py": "12f06ad7049566beb33a3b32a625c086cf151186005d4ef1f2519f551d276c43",
+    "retail/scripts/rehearse-catalog.py": "b7dad400e42d4637c9410e417f2e3d098a62bed21cc35b87044c64e963a3c59f",
     "retail/backend/internal/catalogimport/import.go": "51835174a7264397177318dc184d0769fce7565de737cd1522ab6d703ca20570",
-    "retail/backend/internal/catalogimport/rehearsal_test.go": "4c568c805c207b64aa4f1d0c78f776cd78d3f13d962e972ec6ab98452ee973e2",
+    "retail/backend/internal/catalogimport/rehearsal_test.go": "0b9fd25c3228dc2095b81061e6e98dffdd10e3ce22443135636fe140a776787c",
     "retail/backend/internal/catalogimport/plans.json": "65ef08d81fb47a476c47387fd99da67a34e3002d190069e2fd3b64adc666bf59",
     "retail/backend/internal/rowimport/convert.go": "02faf48f76231c5637adee5edc8709ce818995ce26c6920c787bd8190438e9d7",
     "retail/backend/internal/rowimport/record.go": "9da4ad1becb6c0ab0c20d147c1a71fb6a1fa44f317fca6cee7c4b0f2aa6c3cc8",
@@ -243,7 +247,10 @@
     "retail/backend/internal/fulfillment/schema.go": "f1f9a1a89527fad333a639373c6de3d729174775f7fd0a569f53494166b469ed",
     "retail/backend/internal/fulfillment/schema_plan.json": "aa41b2a41eccd35b20128f0bf837d50b6e502f8388ff51680394e2e93ba3af4e",
     "retail/backend/internal/fulfillmentimport/import.go": "c63da65b7df56c06c6d67c665a17cd3ab608532ab561d6dc7cbea9b459cceaf9",
-    "retail/backend/internal/fulfillmentimport/plans.json": "50c013413834c87fe8c3b51c107e29d0676b834e033ba64fdd7bed4e75962502"
+    "retail/backend/internal/fulfillmentimport/plans.json": "50c013413834c87fe8c3b51c107e29d0676b834e033ba64fdd7bed4e75962502",
+    "retail/backend/internal/orders/fulfillments.go": "e88933730b22937f9966bfc01f599cdc598ac03f41d032485c24879d6c0dda92",
+    "retail/backend/internal/identity/order_fulfillments_test.go": "e1864aa0d957a6ca8eccfdb635a6baa46fc536a02929c0c610d73cf6be3e2f17",
+    "retail/backend/internal/catalogimport/fulfillment_rehearsal_test.go": "2b14238dc07c9e841e13fce64c6ea26c5b5f05ad975e390bcf78c66b5b7c8e5c"
   },
   "cleanup": "owned container removed after label verification; tmpfs source/target copies and temporary runner removed"
 }

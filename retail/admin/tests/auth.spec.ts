@@ -59,6 +59,7 @@ test('order amounts retry separately and reject a different order version',async
  const order={id:'artificial-order',version:2,status:'pending',currency_code:'eur',custom_display_id:'Order fixture',display_id:'1',is_draft_order:false,email:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',line_count:0}
  let mode:'failed'|'ready'|'changed'='failed'
  await page.route('**/api/admin/orders/artificial-order**',route=>{
+  if(new URL(route.request().url()).pathname.endsWith('/fulfillments'))return route.fulfill({json:{order_id:order.id,version:2,operations_enabled:false,fulfillments:[]}})
   if(new URL(route.request().url()).pathname.endsWith('/payments'))return route.fulfill({json:{order_id:order.id,version:2,operations_enabled:false,collections:[]}})
   if(!new URL(route.request().url()).pathname.endsWith('/amounts'))return route.fulfill({json:{order,lines:[]}})
   if(mode==='failed')return route.fulfill({status:503,json:{error:{code:'orders.amounts_unavailable'}}})
@@ -358,6 +359,7 @@ test('payment evidence retry, malformed amounts and mixed versions stay separate
  let mode:'failed'|'ready'|'changed'|'numeric'='failed'
  await page.route('**/api/admin/orders/payment-order**',route=>{
   const path=new URL(route.request().url()).pathname
+  if(path.endsWith('/fulfillments'))return route.fulfill({json:{order_id:order.id,version:2,operations_enabled:false,fulfillments:[]}})
   if(path.endsWith('/amounts'))return route.fulfill({json:{order_id:order.id,version:2,currency_code:'eur',totals:{item_subtotal:'0',shipping_subtotal:'0',discount_subtotal:'0',tax_total:'0',credit_line_total:'0',total:'0'},lines:[],shipping_methods:[],summary:null}})
   if(!path.endsWith('/payments'))return route.fulfill({json:{order,lines:[]}})
   if(mode==='failed')return route.fulfill({status:503,json:{error:{code:'orders.payments_unavailable'}}})
@@ -374,4 +376,45 @@ test('payment evidence retry, malformed amounts and mixed versions stay separate
  mode='numeric';await region.getByRole('button',{name:'重新连接',exact:true}).click()
  await expect(region.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
  await expect(region.getByText('未关联付款集合',{exact:true})).toHaveCount(0)
+})
+
+
+test('Ant fulfillment evidence preserves missing records, safe links, exact strings and independent retry',async({page})=>{
+ await fixture(page)
+ const order={id:'fulfillment-order',version:2,status:'pending',currency_code:'eur',custom_display_id:'Fulfillment fixture',display_id:'1',is_draft_order:false,email:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',line_count:0}
+ const record={location_id:'retired-location',provider_id:null,shipping_option_id:null,delivery_address_id:'missing-address',requires_shipping:true,created_at:'2026-10-28T00:00:00Z',packed_at:null,shipped_at:null,delivered_at:null,canceled_at:null,address:null,items:[{id:'item',title:'Packed <script>phone</script>',sku:'0000123456789012345',barcode:'00000001234567890',quantity:'9007199254740993.000000000000000001',line_item_id:null,inventory_item_id:'missing-stock'}],labels:[{id:'label',tracking_number:'000012345678901234567890',tracking_url:'javascript:alert(1)',label_url:'https://example.invalid/private-label'}]}
+ let mode:'failed'|'ready'|'empty'|'changed'|'numeric'|'expired'='failed'
+ const requested:string[]=[];page.on('request',r=>{if(r.url().startsWith('https://example.invalid'))requested.push(r.url())})
+ await page.route('**/api/admin/orders/fulfillment-order**',route=>{
+  const path=new URL(route.request().url()).pathname
+  if(path.endsWith('/amounts'))return route.fulfill({json:{order_id:order.id,version:2,currency_code:'eur',totals:{item_subtotal:'0',shipping_subtotal:'0',discount_subtotal:'0',tax_total:'0',credit_line_total:'0',total:'0'},lines:[],shipping_methods:[],summary:null}})
+  if(path.endsWith('/payments'))return route.fulfill({json:{order_id:order.id,version:2,operations_enabled:false,collections:[]}})
+  if(!path.endsWith('/fulfillments'))return route.fulfill({json:{order,lines:[]}})
+  if(mode==='failed'||mode==='expired')return route.fulfill({status:mode==='expired'?401:503,json:{error:{code:'orders.fulfillments_unavailable'}}})
+  return route.fulfill({json:{order_id:order.id,version:mode==='changed'?3:2,operations_enabled:false,fulfillments:mode==='empty'?[]:[{id:'missing-package',availability:'missing',record:null},{id:'deleted-package',availability:'deleted',record:null},{id:'available-package',availability:'available',record:{...record,items:mode==='numeric'?[{...record.items[0],quantity:9007199254740993}]:record.items}}]}})
+ })
+ await page.goto('/login');await signIn(page);await page.goto('/orders/fulfillment-order')
+ const region=page.getByRole('region',{name:'履约记录',exact:true})
+ await expect(region.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
+ await expect(page.getByRole('heading',{name:'Fulfillment fixture',exact:true})).toBeVisible()
+ mode='ready';await region.getByRole('button',{name:'重新连接',exact:true}).click()
+ await expect(region.getByText('包裹记录缺失',{exact:true})).toBeVisible()
+ await expect(region.getByText('包裹记录已删除',{exact:true})).toBeVisible()
+ await expect(region.getByText('9007199254740993.000000000000000001',{exact:true})).toBeVisible()
+ await expect(region.getByText('000012345678901234567890',{exact:true})).toBeVisible()
+ await expect(region.getByText('Packed <script>phone</script>',{exact:true})).toBeVisible()
+ await expect(region.getByText('地址记录缺失或已删除',{exact:true})).toBeVisible()
+ await expect(region.getByText('javascript:alert(1)',{exact:true})).toBeVisible()
+ await expect(region.getByRole('link',{name:'查看标签',exact:true})).toHaveAttribute('href','https://example.invalid/private-label')
+ await expect(region.getByRole('link',{name:'查看标签',exact:true})).toHaveAttribute('rel','noopener noreferrer')
+ expect(await region.locator('a[href^="javascript:"]').count()).toBe(0)
+ expect(requested).toEqual([])
+ mode='changed';await page.reload()
+ await expect(region.getByText('订单版本已变化，请刷新详情后重试。',{exact:true})).toBeVisible()
+ mode='numeric';await region.getByRole('button',{name:'重新连接',exact:true}).click()
+ await expect(region.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
+ await expect(region.getByText('未关联包裹',{exact:true})).toHaveCount(0)
+ mode='empty';await region.getByRole('button',{name:'重新连接',exact:true}).click()
+ await expect(region.getByText('未关联包裹',{exact:true})).toBeVisible()
+ mode='expired';await page.reload();await expect(page).toHaveURL('/login')
 })

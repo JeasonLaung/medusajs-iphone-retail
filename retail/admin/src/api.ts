@@ -185,3 +185,32 @@ export async function getOrderPayments(id:string,signal?:AbortSignal):Promise<Or
  // Explicit projection prevents unexpected private extensions entering UI state.
  return {order_id:d.order_id,version:d.version,operations_enabled:false,collections:d.collections.map(c=>({id:c.id,currency_code:c.currency_code,status:c.status,amount:c.amount,authorized_amount:c.authorized_amount,captured_amount:c.captured_amount,refunded_amount:c.refunded_amount,sessions:c.sessions.map(({id,provider_id,currency_code,amount,status,operation_hold})=>({id,provider_id,currency_code,amount,status,operation_hold})),payments:c.payments.map(p=>({id:p.id,provider_id:p.provider_id,session_id:p.session_id,currency_code:p.currency_code,amount:p.amount,captured_at:p.captured_at,canceled_at:p.canceled_at,operation_hold:p.operation_hold,captures:p.captures.map(({id,amount,created_at})=>({id,amount,created_at})),refunds:p.refunds.map(({id,amount,created_at})=>({id,amount,created_at}))}))}))}
 }
+
+
+export type FulfillmentAddress={id:string;company:string|null;first_name:string|null;last_name:string|null;address_1:string|null;address_2:string|null;city:string|null;country_code:string|null;province:string|null;postal_code:string|null;phone:string|null}
+export type FulfillmentItem={id:string;title:string;sku:string;barcode:string;quantity:string;line_item_id:string|null;inventory_item_id:string|null}
+export type FulfillmentLabel={id:string;tracking_number:string;tracking_url:string;label_url:string}
+export type FulfillmentRecord={location_id:string;provider_id:string|null;shipping_option_id:string|null;delivery_address_id:string|null;requires_shipping:boolean;created_at:string;packed_at:string|null;shipped_at:string|null;delivered_at:string|null;canceled_at:string|null;address:FulfillmentAddress|null;items:FulfillmentItem[];labels:FulfillmentLabel[]}
+export type FulfillmentLink={id:string;availability:'available'|'missing'|'deleted';record:FulfillmentRecord|null}
+export type OrderFulfillments={order_id:string;version:number;operations_enabled:false;fulfillments:FulfillmentLink[]}
+export async function getOrderFulfillments(id:string,signal?:AbortSignal):Promise<OrderFulfillments>{
+ const d=await request<OrderFulfillments>(`orders/${encodeURIComponent(id)}/fulfillments`,{signal},'/api/admin/')
+ const text=(v:unknown):v is string=>typeof v==='string'
+ const optional=(v:unknown)=>v===null||text(v)
+ const quantity=(v:unknown)=>text(v)&&/^-?(?:0|[1-9]\d{0,127})(?:\.\d{1,64})?$/.test(v)
+ const address=(a:FulfillmentAddress|null)=>a===null||!!(a&&text(a.id)&&a.id.length>0&&[a.company,a.first_name,a.last_name,a.address_1,a.address_2,a.city,a.country_code,a.province,a.postal_code,a.phone].every(optional))
+ let itemCount=0,labelCount=0
+ if(!d||d.order_id!==id||!Number.isSafeInteger(d.version)||d.version<1||d.operations_enabled!==false||!Array.isArray(d.fulfillments)||d.fulfillments.length>100||!d.fulfillments.every(f=>{
+  if(!f||!text(f.id)||f.id.length===0)return false
+  if(f.availability==='missing'||f.availability==='deleted')return f.record===null
+  const r=f.record
+  if(f.availability!=='available'||!r||!text(r.location_id)||r.location_id.length===0||![r.provider_id,r.shipping_option_id,r.delivery_address_id].every(optional)||typeof r.requires_shipping!=='boolean'||!text(r.created_at)||!Number.isFinite(Date.parse(r.created_at))||![r.packed_at,r.shipped_at,r.delivered_at,r.canceled_at].every(nullableTime)||!address(r.address)||r.address!==null&&r.address.id!==r.delivery_address_id||!Array.isArray(r.items)||!Array.isArray(r.labels))return false
+  itemCount+=r.items.length;labelCount+=r.labels.length
+  return itemCount<=1000&&labelCount<=1000&&r.items.every(i=>i&&text(i.id)&&i.id.length>0&&[i.title,i.sku,i.barcode].every(text)&&quantity(i.quantity)&&[i.line_item_id,i.inventory_item_id].every(optional))&&r.labels.every(l=>l&&text(l.id)&&l.id.length>0&&[l.tracking_number,l.tracking_url,l.label_url].every(text))
+ }))throw new APIError(0,'request.invalid_response')
+ const seen=new Set<string>();for(const f of d.fulfillments){if(seen.has(f.id))throw new APIError(0,'request.invalid_response');seen.add(f.id)}
+ return {order_id:d.order_id,version:d.version,operations_enabled:false,fulfillments:d.fulfillments.map(f=>{
+  const r=f.record,a=r?.address
+  return {id:f.id,availability:f.availability,record:r?{location_id:r.location_id,provider_id:r.provider_id,shipping_option_id:r.shipping_option_id,delivery_address_id:r.delivery_address_id,requires_shipping:r.requires_shipping,created_at:r.created_at,packed_at:r.packed_at,shipped_at:r.shipped_at,delivered_at:r.delivered_at,canceled_at:r.canceled_at,address:a?{id:a.id,company:a.company,first_name:a.first_name,last_name:a.last_name,address_1:a.address_1,address_2:a.address_2,city:a.city,country_code:a.country_code,province:a.province,postal_code:a.postal_code,phone:a.phone}:null,items:r.items.map(({id,title,sku,barcode,quantity,line_item_id,inventory_item_id})=>({id,title,sku,barcode,quantity,line_item_id,inventory_item_id})),labels:r.labels.map(({id,tracking_number,tracking_url,label_url})=>({id,tracking_number,tracking_url,label_url}))}:null}
+ })}
+}

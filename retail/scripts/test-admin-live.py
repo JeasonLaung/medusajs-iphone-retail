@@ -146,6 +146,7 @@ def main():
         files += ['retail/backend/internal/orders/payments.go','retail/backend/internal/identity/order_payments_test.go']
         files += ['retail/backend/migrations/0021_fulfillment_relational.sql','retail/backend/migrations/0022_fulfillment_import_evidence.sql','retail/scripts/generate-fulfillment-schema.py','retail/scripts/generate-fulfillment-import-plan.py','retail/backend/internal/identity/fulfillment_history_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/fulfillment').glob('*') if p.is_file()]
+        files += ['retail/backend/internal/orders/fulfillments.go','retail/backend/internal/identity/order_fulfillments_test.go']
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
                   'browser_tests_passed': 1, 'migrations_applied': 22, 'mocked_api_responses': False,
                   'reviewed_relational_schema_used': True, 'empty_draft_tables_retained_by_migration': 7,
@@ -170,7 +171,8 @@ def main():
                               'Chinese and English stock edit drawers at three viewport widths',
                               'Order list filters, current-version snapshot details and exact decimals in Chinese and English at three widths',
                               'Ant order amounts, exact taxes/discounts/shipping/credits and summary at three widths in Chinese and English; anonymous and unknown-query rejection',
-                              'Ant order payment collections, sessions, expanded captures/refunds, exact 18-digit fractional money, held/unverified indicators and private payload exclusion; Chinese/English at three widths'],
+                              'Ant order payment collections, sessions, expanded captures/refunds, exact 18-digit fractional money, held/unverified indicators and private payload exclusion; Chinese/English at three widths',
+                              'Ant order fulfillment packages, explicit missing/deleted evidence, items with exact quantity and identifiers, labels with HTTP(S) links only, nullable delivery address and private provider payload exclusion; Chinese/English at three widths'],
                   'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                              'network': 'owned bridge network; egress not restricted', 'published_ports': 'one random API port bound to 127.0.0.1 only'},
                   'real_accounts_used': False, 'application_resources_used': False, 'tls_secure_cookie_verified': False,

@@ -761,6 +761,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 	router.GET("/orders/:id", (orders.Handler{DB: gdb}).Detail)
 	router.GET("/orders/:id/amounts", (orders.Handler{DB: gdb}).Amounts)
 	router.GET("/orders/:id/payments", (orders.Handler{DB: gdb}).Payments)
+	router.GET("/orders/:id/fulfillments", (orders.Handler{DB: gdb}).Fulfillments)
 	oracleBytes, err := os.ReadFile("/tmp/order-amounts-expected.json")
 	var oracle struct {
 		SnapshotSHA string `json:"snapshot_sha256"`
@@ -812,6 +813,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 			}
 			seenOrders[summary.ID] = true
 
+			checkActualFulfillments(t, ctx, db, router, summary, counts)
 			paymentReply := httptest.NewRecorder()
 			router.ServeHTTP(paymentReply, httptest.NewRequest("GET", "/orders/"+url.PathEscape(summary.ID)+"/payments", nil))
 			var expectedCollections, availableCollections int64

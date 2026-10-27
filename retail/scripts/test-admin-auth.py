@@ -114,6 +114,9 @@ def main():
         fulfillment_markers = [line.split('FULFILLMENT_HISTORY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'FULFILLMENT_HISTORY_REHEARSAL ' in line]
         if len(fulfillment_markers)!=1:
             raise RuntimeError('Fulfillment history verification missing')
+        fulfillment_read_markers=[line.split('ORDER_FULFILLMENT_READ_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_FULFILLMENT_READ_REHEARSAL ' in line]
+        if len(fulfillment_read_markers)!=1:
+            raise RuntimeError('Order fulfillment read verification missing')
         payment_read_markers=[line.split('ORDER_PAYMENT_READ_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_PAYMENT_READ_REHEARSAL ' in line]
         if len(payment_read_markers)!=1:
             raise RuntimeError('Order payment read verification missing')
@@ -188,6 +191,7 @@ def main():
         files += ['retail/backend/internal/orders/payments.go','retail/backend/internal/identity/order_payments_test.go']
         files += ['retail/backend/migrations/0021_fulfillment_relational.sql','retail/backend/migrations/0022_fulfillment_import_evidence.sql','retail/scripts/generate-fulfillment-schema.py','retail/scripts/generate-fulfillment-import-plan.py','retail/backend/internal/identity/fulfillment_history_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('fulfillment','fulfillmentimport') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
+        files += ['retail/backend/internal/orders/fulfillments.go','retail/backend/internal/identity/order_fulfillments_test.go']
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                   'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                               'network': 'owned shared namespace with no external network', 'published_ports': 0},
@@ -206,6 +210,7 @@ def main():
                   'order_schema': json.loads(order_markers[0]),
                   'order_import': json.loads(order_import_markers[0]),
                   'customer_history': json.loads(customer_markers[0]),
+                  'order_fulfillments': json.loads(fulfillment_read_markers[0]),
                   'order_payments': json.loads(payment_read_markers[0]),
                   'order_read': json.loads(order_read_markers[0]),
                   'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
