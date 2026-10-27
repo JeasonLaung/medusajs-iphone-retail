@@ -1,0 +1,20 @@
+{
+  "format_version": 1,
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "scope": "Fixed snapshot cart classification and rule graph checks only; local session status is not provider settlement evidence; no source writes or session restoration",
+  "checks": {
+    "cart_classification": 52,
+    "shipping_rule_value_shapes": 4,
+    "tax_region_parent_rules": 7
+  },
+  "cart_classes": {
+    "completed-history": 13,
+    "incomplete-with-payment-history": 1,
+    "incomplete-without-linked-payment-collection": 38
+  },
+  "blocking_findings": {},
+  "observations": {},
+  "active_promotion_rows": 0,
+  "active_tax_rate_rows": 0,
+  "disposition": "Keep completed/incomplete payment facts and historical references; do not restore old cookies/identity or replay provider effects. Isolate processable/confirmed attempts for explicit provider reconciliation before cutover."
+}

@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle", required=True)
-    parser.add_argument("--domain", choices=["catalog", "inventory-device", "commerce"], default="catalog")
+    parser.add_argument("--domain", choices=["catalog", "inventory-device", "commerce", "checkout-rules"], default="catalog")
     args = parser.parse_args()
     bundle_path = Path(args.bundle).resolve()
     ignored = subprocess.run(["git", "check-ignore", "--quiet", str(bundle_path)], cwd=ROOT, capture_output=True)
@@ -34,7 +34,7 @@ def main():
             raise ValueError("Field mapping evidence is stale; regenerate and review before preflight")
     fields = mapping["fields"]
     source_by_target = {t["target_table"]: t["source_table"] for t in mapping["tables"]}
-    for related in ("catalog", "inventory-device"):
+    for related in ("catalog", "inventory-device", "commerce", "checkout-rules"):
         related_mapping = json.loads((ROOT / "docs/migration" / f"{related}-field-mapping.json").read_text(encoding="utf-8-sig"))
         source_by_target.update({t["target_table"]: t["source_table"] for t in related_mapping["tables"]})
     source_by_target.update({"inventory_items": "inventory_item", "inventory_locations": "stock_location",
@@ -94,7 +94,7 @@ def main():
                         raise ValueError("Submicrosecond timestamp would lose precision")
                 except (ValueError, TypeError, AttributeError):
                     fail(field, "invalid_timestamp")
-            elif transform in {"money_major_decimal", "quantity_decimal", "rate_decimal", "finite_float32_to_float64"}:
+            elif transform in {"money_major_decimal", "quantity_decimal", "rate_decimal", "finite_float32_to_float64", "legacy_float_rate_decimal", "budget_decimal", "promotion_value_decimal"}:
                 try:
                     number = Decimal(str(value))
                     if not number.is_finite():

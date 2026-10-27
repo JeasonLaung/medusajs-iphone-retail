@@ -32,6 +32,7 @@
 - [第一批字段设计](migration/catalog-field-design.md)：36表292列目标映射；当前源349条约束/759个索引/17个枚举值有元数据证据；快照151,907字段值、1,779 raw配对、36,535引用预检通过。剩余157表及MySQL验证待完成。
 - [库存/设备字段设计](migration/inventory-device-field-design.md)：第二批12表139列，累计48表431列、剩余145表。预检明确保留119条软删历史孤儿；语义审计发现1条库存预留合计差异及3条backorder观察项，尚未修复或验收。
 - [交易字段设计](migration/commerce-field-design.md)：第三批42表523列，累计90表954列、剩余103表。预检发现162行上256个未解析引用值，明确失败并保留历史；103项实收/退款/版本检查无额外失败，9个人工审计用例通过，不当作全域验收。
+- [结账规则字段设计](migration/checkout-rules-field-design.md)：第四批33表321列，累计123表1,275列，剩余70表686列。预检与63项购物车/规则检查通过；固定52购物车有1个未完带付款历史，保留对账而不恢复旧会话。既有库存/交易差异继续有效。
 - [购物车与交易计算](migration/checkout-contract.md)：18 组人工精确金额及 10 组库存准备样例已运行并固定；完整促销/税/运费引擎和 Gin 对照仍待验证。
 - [促销/税率/配送](migration/promotion-tax-shipping-contract.md)：另有 46 组规则人工样例及流程核对；记录每件额度默认值、预算提交锁、税率粒度优先级、运费 profile 替换和旧验证边界。
 - [API 通用约定](migration/api-conventions.md) 与 [后台组件承接](migration/admin-ui-contract.md)：明确错误/分页/幂等/会话边界，23 个页面文件与 6 个 widgets 有 Ant Design / ECharts 承接设计；重定向入口继续保留，不冒充独立业务页面。

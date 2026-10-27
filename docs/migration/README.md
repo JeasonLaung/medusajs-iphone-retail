@@ -14,6 +14,7 @@
 | 数据继承 | [源数据去向与转换](data-mapping.md)、[第一批36表292列设计](catalog-field-design.md)、catalog-field-mapping.json/.csv、catalog-preflight-report.json、data-table-disposition.csv、data-source-manifest.json |
 | 库存/设备数据 | [第二批12表139列设计](inventory-device-field-design.md)、inventory-device-field-mapping.json/.csv、inventory-device-preflight-report.json、[语义差异](inventory-device-semantic-report.json) |
 | 交易数据 | [第三批42表523列设计](commerce-field-design.md)、commerce-field-mapping.json/.csv、[字段差异报告](commerce-preflight-report.json)、[交易语义审计](commerce-semantic-report.json) |
+| 结账规则数据 | [第四批33表321列设计](checkout-rules-field-design.md)、checkout-rules-field-mapping.json/.csv、checkout-rules-preflight-report.json、checkout-rules-semantic-report.json |
 
 ## 本轮已运行验证
 
@@ -36,6 +37,10 @@ python retail/scripts/test-commerce-audit.py
 # 两项交易预检当前预期退出1：162条记录存在256个未解析引用值
 python retail/scripts/preflight-catalog-mapping.py --domain commerce --bundle logs/gin-migration/source-20261026.json
 python retail/scripts/audit-commerce-snapshot.py --bundle logs/gin-migration/source-20261026.json
+python retail/scripts/map-checkout-rules-fields.py --check
+python retail/scripts/preflight-catalog-mapping.py --domain checkout-rules --bundle logs/gin-migration/source-20261026.json
+python retail/scripts/audit-checkout-snapshot.py --bundle logs/gin-migration/source-20261026.json
+python retail/scripts/verify-field-mappings.py
 git diff --check
 ```
 
@@ -53,6 +58,8 @@ Python 需 3.9+；命令中的 python 替换为本机已安装运行时路径。
 
 第三批42表523列，累计90表954列。交易预检7,005字段值、428 raw配对、840引用；9类引用缺失共256值影响162行，包含未软删除行，命令明确失败。103项实收/退款/版本审计无额外金额或版本失败，9个人工审计测试通过；provider远端事实、全订单合计及MySQL仍待验，不能由子集通过推断全交易对账通过。
 
+第四批33表321列，累计123表1,275列；预检4,729字段值、106 raw配对、543引用无失败，63项购物车分类/税区/配送规则检查无失败。52购物车中13已完成、1未完成带付款历史、38无关联付款集合；本地状态不替代provider远端结算证据。促销和税率当前空表不构成引擎验收。累计完整性检查保留既有256个交易引用失败和119个设备软删历史引用，不隐藏为全绿。
+
 旧服务 `/health`、`/app` 与 `/dk-en/store` 本轮检查 HTTP 200。未变更旧业务源码/数据，未构建旧开发 checkout，未连接部署服务器。新 MySQL 导入、React Admin、Astro 和完整交易仍待实现。
 
 ## 尚未完成的阶段门槛
@@ -60,7 +67,7 @@ Python 需 3.9+；命令中的 python 替换为本机已安装运行时路径。
 - T001/T002：剩余命令/调用方、完整促销资格/预算/buy-get、税运费 provider 集成、PayPal 实际运行产物及后台内置功能；已有纯函数基线不替代集成。
 - T003：剩余页面及登录/抽屉/错误/加载/交易状态；需要隔离夹具，不在旧业务库造订单。
 - T004/T005：剩余领域授权、完整交易金额样例和状态用例运行证据。
-- T006：已设计90表954列；剩余103表字段目标、全部约束转换/语义关联、私有文件清单及密文转换演练待完成；库存预留差异、设备软删历史及交易孤儿引用另行对账，全表元数据不是全字段映射完成。
+- T006：已设计123表1,275列；剩余70表686列、全部约束转换/语义关联、私有文件清单及密文转换演练待完成；库存预留差异、设备软删历史及交易孤儿引用另行对账，全表元数据不是全字段映射完成。
 - T007：已有统一 API 约定及后台组件/页面承接草案；可验证 schemas、完整原生/自定义旧入口到新 API 的映射仍待交付。
 
 这些待办明确保留，不把未知能力当作未使用删除。后续按领域补齐后再实现及验收。
