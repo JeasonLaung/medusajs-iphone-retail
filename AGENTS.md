@@ -77,3 +77,7 @@ Use the palette below as the project theme without requesting further color conf
 - Reuse existing SVG icons and component libraries. Referencing Ant Design does not require installing `antd`, replacing Medusa UI, changing the font stack, or rewriting working components.
 - For complex components such as data tables, advanced filters, tree selectors, multi-step forms, dialogs, and drawers, consult the [Ant Design component reference](https://ant.design/components/overview-cn/) for structure, interaction, and state handling. Adapt those patterns to the existing project components and the simple, restrained style above; preserve established business behavior.
 - Support responsive layouts, keyboard navigation, visible focus, reduced motion, and both Simplified Chinese and English. Check the affected scope for readability, overflow, state clarity, and preserved interactions before completing a UI change.
+
+## New Gin / React Admin migration
+
+- In the new React Admin, prefer existing Ant Design components for controls, forms, tables, navigation, dialogs and feedback. Use ECharts for charts. Preserve established business behavior and the project theme; this does not authorize restyling the existing Medusa Admin or storefront.

@@ -126,7 +126,7 @@ def main():
                  'docs/migration/mysql-relational-review.sql']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
         files += ['retail/backend/internal/schema/run.go','retail/backend/internal/schema/plan.go','retail/backend/internal/payments/schema.go','retail/backend/internal/payments/schema_plan.json']
-        report = {'format_version': 1, 'scope': 'Actual pinned payment subgraph under all 23 formal migrations in disposable tmpfs MySQL only; no full migration or payment runtime acceptance',
+        report = {'format_version': 1, 'scope': 'Actual pinned payment subgraph under all 24 formal migrations in disposable tmpfs MySQL only; no full migration or payment runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
                   'limits': {'cpus': 1, 'memory_mib': 768, 'mysql_tmpfs_mib': 512, 'private_input_tmpfs_mib': 128, 'network': 'none', 'published_ports': 0},
                   'target_business_rows_written': True, 'target_operation_holds_written': True, 'production_target_used': False,

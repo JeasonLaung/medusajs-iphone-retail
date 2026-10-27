@@ -56,6 +56,54 @@ async function signIn(page: Page) {
   await page.getByRole('button', { name: '登录', exact: true }).click()
 }
 
+test('Ant permission role save retries the exact uncertain command and reloads on conflict',async({page})=>{
+ await fixture(page)
+ let revision='1',fail=true,conflict=false
+ const role={id:'reader',name:'Reader',enabled:true,actions:['product.read']}
+ const commands:unknown[]=[]
+ await page.route('**/api/admin/authorization**',route=>{
+  if(route.request().method()==='GET')return route.fulfill({json:{revision,actions:ACTIONS,roles:[role],members:[{user_id:user.id,name:user.name,enabled:true,kind:'employee',roles:['reader']}]}})
+  expect(route.request().headers()['x-csrf-token']).toBe(sessionCSRF)
+  const c=route.request().postDataJSON();commands.push(c)
+  if(conflict)return route.fulfill({status:409,json:{error:{code:'authorization.conflict'}}})
+  if(fail)return route.fulfill({status:503,json:{error:{code:'authorization.unavailable'}}})
+  role.name=c.role.name;revision='2';return route.fulfill({json:{revision,replayed:true}})
+ })
+ await page.goto('/account');await signIn(page);await page.getByRole('menuitem',{name:'权限管理',exact:true}).click()
+ await page.getByRole('button',{name:'Reader',exact:true}).click()
+ const drawer=page.getByRole('dialog')
+ await drawer.getByLabel('姓名',{exact:true}).fill('Reviewed role')
+ await drawer.getByRole('checkbox',{name:'查看订单',exact:true}).click()
+ await expect(drawer.getByRole('checkbox',{name:'查看订单',exact:true})).toBeChecked()
+ await drawer.getByRole('button',{name:'保存',exact:true}).click()
+ await expect(drawer.getByRole('button',{name:'重试本次保存',exact:true})).toBeVisible()
+ await expect(drawer.getByLabel('姓名',{exact:true})).toBeDisabled()
+ fail=false;await drawer.getByRole('button',{name:'重试本次保存',exact:true}).click()
+ await expect(page.getByRole('button',{name:'Reviewed role',exact:true})).toBeVisible()
+ expect(commands).toHaveLength(2);expect(commands[1]).toEqual(commands[0])
+ expect(commands[0]).toMatchObject({role:{actions:expect.arrayContaining(['order.read','product.read'])}})
+ conflict=true;await page.getByRole('button',{name:'Reviewed role',exact:true}).click()
+ await drawer.getByLabel('姓名',{exact:true}).fill('Stale role')
+ await drawer.getByRole('button',{name:'保存',exact:true}).click()
+ await expect(drawer.getByText('权限已变化，请关闭并重新加载后编辑。',{exact:true})).toBeVisible()
+ await expect(drawer.getByRole('button',{name:'重试本次保存',exact:true})).toHaveCount(0)
+ await drawer.getByRole('button',{name:'取消',exact:true}).click()
+ await expect(page.getByRole('button',{name:'Reviewed role',exact:true})).toBeVisible()
+})
+
+test('permission directory respects read-only grants and rejects a malformed action dictionary',async({page})=>{
+ await fixture(page,{permissions:['authorization.read']})
+ let invalid=false
+ await page.route('**/api/admin/authorization',route=>route.fulfill({json:{revision:'1',actions:invalid?['*']:ACTIONS,roles:[{id:'reader',name:'Reader',enabled:true,actions:['product.read']}],members:[]}}))
+ await page.goto('/account');await signIn(page);await page.goto('/authorization')
+ await expect(page.getByText('Reader',{exact:true})).toBeVisible()
+ await expect(page.getByRole('button',{name:'新建角色',exact:true})).toHaveCount(0)
+ await expect(page.getByRole('button',{name:'Reader',exact:true})).toHaveCount(0)
+ invalid=true;await page.reload()
+ await expect(page.getByRole('alert')).toBeVisible()
+ await expect(page.getByText('Reader',{exact:true})).toHaveCount(0)
+})
+
 test('order amounts retry separately and reject a different order version',async({page})=>{
  await fixture(page)
  const order={id:'artificial-order',version:2,status:'pending',currency_code:'eur',custom_display_id:'Order fixture',display_id:'1',is_draft_order:false,email:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',line_count:0}

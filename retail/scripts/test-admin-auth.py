@@ -111,6 +111,9 @@ def main():
             print(json.dumps({'test_exit_code': tested.returncode, 'mysql_oom_and_exit': state.stdout.decode().strip()}))
             raise RuntimeError('Owned MySQL/Redis authentication checks failed')
         counts = json.loads(markers[0])
+        manage_markers=[line.split('AUTHORIZATION_MANAGEMENT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'AUTHORIZATION_MANAGEMENT_REHEARSAL ' in line]
+        if len(manage_markers)!=1:
+            raise RuntimeError('Authorization management verification missing')
         authorization_markers=[line.split('AUTHORIZATION_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'AUTHORIZATION_REHEARSAL ' in line]
         if len(authorization_markers)!=1:
             raise RuntimeError('Authorization verification missing')
@@ -197,6 +200,7 @@ def main():
         files += ['retail/backend/internal/orders/fulfillments.go','retail/backend/internal/identity/order_fulfillments_test.go']
         files += ['retail/backend/internal/identity/authorization_test.go','retail/backend/migrations/0023_authorization_actions.sql']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/authorization').glob('*.go')]
+        files += ['retail/backend/internal/identity/authorization_manage_test.go','retail/backend/migrations/0024_authorization_management.sql']
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                   'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                               'network': 'owned shared namespace with no external network', 'published_ports': 0},
@@ -209,6 +213,7 @@ def main():
                   'inventory_import': json.loads(import_markers[0]),
                   'inventory_stock_edit': json.loads(stock_markers[0]),
                   'reservation_transactions': json.loads(reservation_markers[0]),
+                  'authorization_management': json.loads(manage_markers[0]),
                   'authorization': json.loads(authorization_markers[0]),
                   'fulfillment_history': json.loads(fulfillment_markers[0]),
                   'payment_import': json.loads(payment_import_markers[0]),

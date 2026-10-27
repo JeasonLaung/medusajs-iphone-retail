@@ -216,8 +216,26 @@ export async function getOrderFulfillments(id:string,signal?:AbortSignal):Promis
 }
 
 
-export const ACTIONS=['inventory.read','inventory.stock.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','product.read','product.write'] as const
+export const ACTIONS=['authorization.read','authorization.write','inventory.read','inventory.stock.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','product.read','product.write'] as const
 export type Action=typeof ACTIONS[number]
+export type ManagedRole={id:string;name:string;enabled:boolean;actions:Action[]}
+export type ManagedMember={user_id:string;name:string;enabled:boolean;kind:'employee'|'warehouse'|'supplier';roles:string[]}
+export type AuthorizationDirectory={revision:string;actions:Action[];roles:ManagedRole[];members:ManagedMember[]}
+export type AuthorizationCommand={operation_id:string;expected_revision:string;kind:'role.save';role:ManagedRole;user_id:null;roles:null}|{operation_id:string;expected_revision:string;kind:'member.roles';role:null;user_id:string;roles:string[]}
+export async function getAuthorization(signal?:AbortSignal):Promise<AuthorizationDirectory>{
+ const d=await request<AuthorizationDirectory>('authorization',{signal},'/api/admin/')
+ const strings=(v:unknown):v is string[]=>Array.isArray(v)&&v.every(s=>typeof s==='string')&&new Set(v).size===v.length
+ if(!d||typeof d.revision!=='string'||!/^[1-9]\d{0,19}$/.test(d.revision)||!strings(d.actions)||d.actions.length!==ACTIONS.length||d.actions.some(a=>!ACTIONS.includes(a))||!Array.isArray(d.roles)||d.roles.length>100||!Array.isArray(d.members)||d.members.length>1000)throw new APIError(0,'request.invalid_response')
+ if(!d.roles.every(r=>r&&typeof r.id==='string'&&r.id.length>0&&typeof r.name==='string'&&typeof r.enabled==='boolean'&&strings(r.actions)&&r.actions.length<=ACTIONS.length&&r.actions.every(a=>ACTIONS.includes(a)))||new Set(d.roles.map(r=>r.id)).size!==d.roles.length)throw new APIError(0,'request.invalid_response')
+ const ids=new Set(d.roles.map(r=>r.id))
+ if(!d.members.every(m=>m&&typeof m.user_id==='string'&&m.user_id.length>0&&typeof m.name==='string'&&typeof m.enabled==='boolean'&&['employee','warehouse','supplier'].includes(m.kind)&&strings(m.roles)&&m.roles.length<=100&&m.roles.every(id=>ids.has(id)))||new Set(d.members.map(m=>m.user_id)).size!==d.members.length)throw new APIError(0,'request.invalid_response')
+ return {revision:d.revision,actions:[...d.actions],roles:d.roles.map(({id,name,enabled,actions})=>({id,name,enabled,actions:[...actions]})),members:d.members.map(({user_id,name,enabled,kind,roles})=>({user_id,name,enabled,kind,roles:[...roles]}))}
+}
+export async function saveAuthorization(body:AuthorizationCommand):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const r=await request<{revision:string;replayed:boolean}>('authorization/commands',{method:'POST',csrf,body},'/api/admin/')
+ if(!r||typeof r.revision!=='string'||!/^[1-9]\d{0,19}$/.test(r.revision)||typeof r.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}
 export type Permissions={revision:string;scope:'none'|'employee'|'warehouse'|'supplier';actions:Action[]}
 export async function getPermissions(signal?:AbortSignal):Promise<Permissions>{
  const d=await request<Permissions>('permissions',{signal})

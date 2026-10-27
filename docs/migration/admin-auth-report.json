@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance",
   "counts": {
-    "explicit_migrations": 23,
+    "explicit_migrations": 24,
     "login_and_me": 1,
     "csrf_and_origin_rejection": 1,
     "session_rotation": 1,
@@ -43,7 +43,7 @@
     "write_enable_rejected": 1
   },
   "product_edit_transaction": {
-    "migrations": 23,
+    "migrations": 24,
     "concurrent_attempts": 8,
     "concurrent_wins": 1,
     "conflicts": 7,
@@ -59,7 +59,7 @@
     "unrelated_fields_preserved": true
   },
   "product_configured_prices": {
-    "migrations": 23,
+    "migrations": 24,
     "configured_prices": 26,
     "page_size": 20,
     "exact_decimal": true,
@@ -74,7 +74,7 @@
     "read_fingerprint_unchanged": true
   },
   "product_inventory": {
-    "migrations": 23,
+    "migrations": 24,
     "active_level_uniqueness": true,
     "physical_fk_enabled": true,
     "exact_quantity_difference": true,
@@ -98,7 +98,7 @@
     "unreviewed_release_rejected": true
   },
   "inventory_stock_edit": {
-    "migrations": 23,
+    "migrations": 24,
     "exact_decimal": true,
     "concurrent_attempts": 8,
     "concurrent_wins": 1,
@@ -117,7 +117,7 @@
     "disabled_command_rejected": true
   },
   "reservation_transactions": {
-    "migrations": 23,
+    "migrations": 24,
     "last_unit_attempts": 8,
     "last_unit_wins": 1,
     "insufficient_stock": 7,
@@ -142,9 +142,28 @@
     "http_route_exposed": false,
     "order_workflow_integrated": false
   },
+  "authorization_management": {
+    "migrations": 24,
+    "explicit_actions": 11,
+    "role_and_membership_save": true,
+    "revision_conflict": true,
+    "immutable_replay": true,
+    "concurrent_attempts": 8,
+    "single_fresh_attempt": 1,
+    "duplicate_replays": 7,
+    "input_unchanged": true,
+    "receipt_failure_atomic": true,
+    "last_manager_preserved": true,
+    "revoked_replay_denied": true,
+    "undelegated_action_denied": true,
+    "scoped_member_change_denied": true,
+    "business_lock_serialization": true,
+    "wire_duplicate_null_unknown_rejected": true,
+    "before_after_audit": true
+  },
   "authorization": {
-    "migrations": 23,
-    "explicit_actions": 9,
+    "migrations": 24,
+    "explicit_actions": 11,
     "admin_label_no_implicit_grants": true,
     "multi_role_union": true,
     "all_required_actions": true,
@@ -160,7 +179,7 @@
     "legacy_grants_imported": false
   },
   "fulfillment_history": {
-    "migrations": 23,
+    "migrations": 24,
     "tables": 7,
     "source_columns": 72,
     "rows": 9,
@@ -182,7 +201,7 @@
     "writes_enabled": false
   },
   "payment_import": {
-    "migrations": 23,
+    "migrations": 24,
     "tables": 8,
     "columns": 83,
     "rows": 9,
@@ -213,7 +232,7 @@
     "enum_json_fk_rejected": true,
     "exact_decimal": true,
     "existing_tables_preserved": true,
-    "migrations": 23,
+    "migrations": 24,
     "protected_columns_accept_ciphertext": true,
     "provider_called": false,
     "replay_unchanged": true,
@@ -229,7 +248,7 @@
     "existing_tables_preserved": true,
     "historical_subject_without_login": true,
     "invalid_enum_json_boolean_rejected": true,
-    "migrations": 23,
+    "migrations": 24,
     "orphan_references_preserved": true,
     "physical_foreign_keys_enabled": true,
     "replay_unchanged": true,
@@ -240,7 +259,7 @@
     "writes_enabled": false
   },
   "order_import": {
-    "migrations": 23,
+    "migrations": 24,
     "tables": 28,
     "columns": 378,
     "rows": 8,
@@ -263,7 +282,7 @@
     "hold_release_rejected": true
   },
   "customer_history": {
-    "migrations": 23,
+    "migrations": 24,
     "concurrent_imports": 8,
     "persisted_subjects": 1,
     "binding_exclusions": 1,
@@ -305,7 +324,7 @@
     "operations_enabled": false
   },
   "order_read": {
-    "migrations": 23,
+    "migrations": 24,
     "read_only_fingerprint": true,
     "exact_decimal_and_ids": true,
     "current_version_only": true,
@@ -321,11 +340,11 @@
     "amount_dependency_failures_rejected": true
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "d01aee23efadc76e831a04f6d4335ce1b57d4a2407f5cf9b20e0d4cd2786a331",
+    "retail/scripts/test-admin-auth.py": "9f5e4f4c5a9b6cd1f6880fd9f72660c0d886ff245f7571caa0f499a7f9b5a546",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
-    "retail/backend/internal/identity/integration_test.go": "54409e449e29aa999f2df4c969e1953c36bee4144ed13fdbf26de075470dd508",
-    "retail/backend/internal/server/router.go": "e14e9749826c802bf589ab4a799b931b2c82dfcdc191f95cf5e1d8dc4cdcc652",
+    "retail/backend/internal/identity/integration_test.go": "d4d2eda37a6f7b4afbc0394eba330b0b11aba9a39d6f64ab62e1152a4f5ffd01",
+    "retail/backend/internal/server/router.go": "ffc47261d28c7db52b90555694f87b3c2e3b091b33461fc0c29202483d8dd897",
     "retail/backend/internal/platform/http.go": "2d0725f3fa8d60f060b14de792f8d4f1aa8dda38ff8c26b4d8c2af7c137e642a",
     "retail/backend/internal/platform/request.go": "b8abeda445a6ae84c451a6ba9678308973feb5c0627fdc73dccf5de68aec648e",
     "retail/backend/cmd/api/main.go": "94bfed027ab96be185cecbad20b34bff72a86373f62bca195d186d89bd34be6f",
@@ -341,9 +360,9 @@
     "retail/backend/migrations/0011_catalog_product_edits.sql": "8006785acf8a5bf6293d8eb6bd6903e18de80bf31c4be46e61a185307a8d102b",
     "retail/backend/internal/catalog/edit.go": "a1f2b137af7b0533fd55f6b4fbccfa8e55c52d4aba2d69a82df91f280ed60bdb",
     "retail/backend/internal/catalog/edit_test.go": "6ecd4a4a68fc93c78fa223ce7005422dd035a0759a83c2cc84150a77c584c550",
-    "retail/backend/internal/identity/product_edit_test.go": "0fcaa74c20c7e729cb459bafd5b80e78e633209ecbfbdf9e1a48993048aa4706",
-    "retail/backend/internal/identity/product_prices_test.go": "8de8108f47b4fca23bd341d286746297614c13dadd27853f8c9876e544fa1a60",
-    "retail/backend/internal/identity/browser_fixture_test.go": "db4d0c83f673a00a0a3d184c0089f1f7d0c833a93075d41232d71393de033a1b",
+    "retail/backend/internal/identity/product_edit_test.go": "efa48674463ea39bfc58a6f0667b34ce3165a3eaa8d4896d36a94db8710dd66f",
+    "retail/backend/internal/identity/product_prices_test.go": "09150c4a7542ff2eb60be824e1194f27bc24166c264ce403ad9bd3b9735a4209",
+    "retail/backend/internal/identity/browser_fixture_test.go": "a62a7a31d3c7acfaf9fb3cfbaacc2e158e31b84869b1a0fef30c278e16a4ead0",
     "retail/backend/internal/catalog/admin_prices.go": "30743325e77c2b53ff91d990663a4a874ca89ee62e3dd8afaecfac9239ac795a",
     "retail/backend/internal/catalog/admin_prices_test.go": "cc11724c0df95e3897726de133929d35f87e8c874dc6aaacef32629ef990c03e",
     "retail/backend/internal/inventory/edit.go": "2d9b6f06a1b139f748d9150deb1b1f82a41942552ea6d9d320b4077a58e4809f",
@@ -356,7 +375,7 @@
     "retail/backend/internal/inventory/schema.go": "102351b240368a1b42613040bffd838c890cd507e755efa9848f58fb7cbf1b10",
     "retail/backend/internal/inventory/schema_plan.json": "5d0014c3825a5572cdc87db1632a47540f495bfe7e9e7338cb065ac1d30ab1d6",
     "retail/backend/migrations/0012_inventory_relational.sql": "8ec1442280eaf2b0b13fccaf2bccaf026ec7ff19837e5f1f33620820f03efd29",
-    "retail/backend/internal/identity/product_inventory_test.go": "9e8dc7d39a655ddfd6a7db6fec70b516e99cdb411229a5bbb0421738adcaf0f8",
+    "retail/backend/internal/identity/product_inventory_test.go": "c5cc82d67e0efc7ccc81e6a76c5381947aa4e000bf9cf7ff6f4dacb37619567a",
     "retail/scripts/generate-inventory-schema.py": "39b43f568d51b607f83f26adc7233d534173a507ec3dd89c78d9e6921687ace2",
     "retail/backend/internal/inventoryimport/holds.go": "885bc4ebdd1ca8db26c044622af565ecb21cd00de12146f431eaf2dbc8843f61",
     "retail/backend/internal/inventoryimport/import.go": "40e68f4b8e84ee304ac44a5b097a25261df0894991b416ea752c4dbb55993bce",
@@ -365,16 +384,16 @@
     "retail/backend/internal/identity/inventory_import_test.go": "8f4fbdbe34a0e9945a6bc23fa302f654b0996677ed28582c1883da5f1d1904cb",
     "retail/scripts/generate-inventory-import-plan.py": "d7c0a1fdadc297c601ad2c8fceb418c1b612e278976e91644889e06ad558c459",
     "retail/backend/migrations/0014_inventory_stock_edits.sql": "93cfeaf14749b26b181d0f5c28d71e46f7bbfdb82d3cb293ce592e1e691d6239",
-    "retail/backend/internal/identity/stock_edit_test.go": "e37a375203129bf18d33beaf7c47a75a810c9fa7f9a0586c7b8dcad87d66afcc",
+    "retail/backend/internal/identity/stock_edit_test.go": "89c3a0a08bd82c2ab1bbc485bd2be84af43784bb381b5683ffd9e18919d0cacb",
     "retail/backend/migrations/0015_inventory_reservation_operations.sql": "57b097d3e1698bf556a8903741c68d0973e3e8c342f02052347aefec8176cb45",
-    "retail/backend/internal/identity/reservation_transactions_test.go": "2540c080d6c0d58c56b4028fa8551c0389ca714006a315d57d730562e8bbd17a",
+    "retail/backend/internal/identity/reservation_transactions_test.go": "c53891b5e4202a439b5d0d686bf7390f11c7ec7158b01db60a6e903bb2be1d22",
     "retail/backend/migrations/0016_order_relational.sql": "a7f26ab595178dba744b65333f5d1e94d3871f6cfdce59338124ed769cbd4dab",
-    "retail/backend/internal/identity/order_schema_test.go": "43248f750876bf076ac12fb4937a0d9037ec03cfdb7a37b7eb79ea900b5cf166",
+    "retail/backend/internal/identity/order_schema_test.go": "14d0bc2e94f5e63f02a3f8dd537f03784641de612faf945e8058eb05c25405e4",
     "retail/backend/internal/orders/schema.go": "f309485a3e2cf97c068f0be4f814e86a0a81cc38b67587f0b5c3280db5dda3d7",
     "retail/backend/internal/orders/schema_plan.json": "cfc3afdb2a2ff3dddd80a6a3b14a9e8def92300bf615b29452342dc192a99fe1",
     "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb",
     "retail/backend/migrations/0017_order_import_evidence.sql": "1aee7e10b016ce61553f020aa5cab1f11d944df625e91c28d461f634298ca82e",
-    "retail/backend/internal/identity/order_import_test.go": "ca9cdc143e909d0c5e5f9d711d77d3b8c785e041bfb90d6dc7e8cc8f4aad1f09",
+    "retail/backend/internal/identity/order_import_test.go": "28f1d7f06ac72ddcd927553c16c78c31ffce06489a20919126946867d39dd283",
     "retail/scripts/generate-order-import-plan.py": "b11fe97550626035b5eba08ef2c8511fd9f322bc155ae9f7544974070c394a4b",
     "retail/backend/internal/orderimport/import.go": "05df4aed29989ec48d7710ed03e1c461f1471f3eb654cc29a276db3232371327",
     "retail/backend/internal/orderimport/plans.json": "3de6dd0146f5e78ecfef8b56307a03020873c3b5ef29f4ae34a0556868a3aabb",
@@ -383,10 +402,10 @@
     "retail/backend/internal/customerimport/import.go": "e567d10b95d558fe31a8b92927a99084efa8a4d6e72f5ddd0ef8a0008e7ade81",
     "retail/backend/internal/rowimport/history_customer.go": "6cd6f081d3c9256f504d0cfef91f5a34505401358f0fc5640f6920e8c41dc653",
     "retail/backend/internal/rowimport/history_customer_test.go": "b0dc705af6a464666baf79b7c4402d832d00d1045f44ac3d05a2eef75afa503d",
-    "retail/backend/internal/identity/customer_history_test.go": "c980972070a7b0fb47a48f09080d95a8c8bf682b66fd8184d96decdf448a7cf3",
+    "retail/backend/internal/identity/customer_history_test.go": "58abb1f1f64dcff52585c89b3bd78a087723ac12c75b46492fe39d525fc3f43f",
     "retail/backend/internal/rowimport/convert.go": "02faf48f76231c5637adee5edc8709ce818995ce26c6920c787bd8190438e9d7",
     "retail/backend/internal/orders/admin.go": "e5e0d75a7caec388dd830d2247a2fb33408583bd5cc9c1b4354e32ec1d47697c",
-    "retail/backend/internal/identity/order_read_test.go": "8bd593cd118b444d77157b76b04339d92e3f8feb77daecc171e51e95a33833d0",
+    "retail/backend/internal/identity/order_read_test.go": "26dd737e7973264f2a4ede02c0128ac1a62fc6d53fbeef58a8a5c679f09cf3a5",
     "retail/backend/internal/orders/amounts.go": "337df58c1b8a2482633a3799b5de3890cf9eddbc1a04e652a3043089d1c2e7df",
     "retail/backend/internal/orders/amount_json.go": "a1c9a0097e4cca8e138cd2e708ffa670b37708acda0ae51899d18401e60fb0d8",
     "retail/backend/internal/identity/order_amounts_test.go": "fc30b3050e94b326edada1f9de68c3f566555ace237df056677f95b01423029d",
@@ -394,12 +413,12 @@
     "retail/backend/internal/totals/decimal.go": "d21d4bae6b2699126b86ef54306b5716b2ecb9ee4792b5e0e431f7b2ebf1aff9",
     "retail/backend/internal/totals/parity_test.go": "83b02eb1437162c7d3a9c21bd8264126ad56622e855276358f76441792262418",
     "retail/backend/internal/totals/validation_test.go": "f9288463b8f3d242bcdadca68b1fee141378f13749671e2fe4cf59223272bc82",
-    "retail/backend/internal/identity/payment_schema_test.go": "15f8fb3ceb4694da9379b6f5d5a3588ca460b67c47cbace0a5aa2751969d4d37",
+    "retail/backend/internal/identity/payment_schema_test.go": "c4f82679bd4ca140114865806e10815cf85076526b59299a15a999c9c4abe410",
     "retail/backend/migrations/0019_payment_relational.sql": "9ee1e50acff85c9164b7572aaaebb6368521a2d56ea801b65772f1038ae75da2",
     "retail/scripts/generate-payment-schema.py": "a7f99a5e49fc07fb12305a8ddc148f8b2fbf5e25708f7f829715d1eabecbd1a6",
     "retail/backend/internal/payments/schema.go": "9394bc8f899e88dd3a5ee440171bbbe675ac43dfd4ae9a59f7b2d2df04bd02d1",
     "retail/backend/internal/payments/schema_plan.json": "16d00d1d1cb3286a3ee88d27e9211a0daa634de28b6b073a707a21b5d8f13867",
-    "retail/backend/internal/identity/payment_import_test.go": "2f40ebceaa7b2422d359034d8d4b252d76b78b3505def79cf758a059908f7560",
+    "retail/backend/internal/identity/payment_import_test.go": "5ea93eed34d2bef04d5bde02c9bfbb70e61a4de9d8946bed841623065add4542",
     "retail/backend/migrations/0020_payment_import_evidence.sql": "ba22c090bdd5acdcde1ef8ca9f8d27969d28357e9a442995e7dbe3687cd8a8b9",
     "retail/scripts/generate-payment-import-plan.py": "9900f491d7b688ac7d50853a4de6f73ccd68ff99a52eb2bd1c075f01355ce18c",
     "retail/backend/internal/holderimport/import.go": "370ac3e7ac831e678733bd61607785bf11d9ca69d2a423ce5a07d9d5bcecb85f",
@@ -413,17 +432,21 @@
     "retail/backend/migrations/0022_fulfillment_import_evidence.sql": "2781725b0e55b0ef262765661f631e92d3a95885167b8778bf8ec287ae2d6ae6",
     "retail/scripts/generate-fulfillment-schema.py": "3c1fa30b9c75cd402dc1f5d3bf160b37883a1a59b4683171435fe64c68f297fe",
     "retail/scripts/generate-fulfillment-import-plan.py": "9f9dd5e5e21ea6582349678d6b9464e20ebe8d150bf768f2d4a5398fe0836b19",
-    "retail/backend/internal/identity/fulfillment_history_test.go": "0325af1e8446a1b3ca71428acc15a9f7267c376646dc132f77a10ba786a9a709",
+    "retail/backend/internal/identity/fulfillment_history_test.go": "106a248277a4c595b1e915d2e927439998fc66e880aa477a4f32f882854bae2d",
     "retail/backend/internal/fulfillment/schema.go": "f1f9a1a89527fad333a639373c6de3d729174775f7fd0a569f53494166b469ed",
     "retail/backend/internal/fulfillment/schema_plan.json": "aa41b2a41eccd35b20128f0bf837d50b6e502f8388ff51680394e2e93ba3af4e",
     "retail/backend/internal/fulfillmentimport/import.go": "c63da65b7df56c06c6d67c665a17cd3ab608532ab561d6dc7cbea9b459cceaf9",
     "retail/backend/internal/fulfillmentimport/plans.json": "50c013413834c87fe8c3b51c107e29d0676b834e033ba64fdd7bed4e75962502",
     "retail/backend/internal/orders/fulfillments.go": "e88933730b22937f9966bfc01f599cdc598ac03f41d032485c24879d6c0dda92",
     "retail/backend/internal/identity/order_fulfillments_test.go": "e1864aa0d957a6ca8eccfdb635a6baa46fc536a02929c0c610d73cf6be3e2f17",
-    "retail/backend/internal/identity/authorization_test.go": "db439ebb8e8c021d656d184ac37c0bed3560c8ed3bbd6d4764ff20e495eaec74",
+    "retail/backend/internal/identity/authorization_test.go": "95f2bb7ff087fa3e0a699cab1e173667ca6d8b8cf89c28e09d63701dc204be21",
     "retail/backend/migrations/0023_authorization_actions.sql": "e5fb69788f3381f6684280d0c54071cb2a0e7939e845004484d0c451464b382f",
     "retail/backend/internal/authorization/access.go": "a37c638c91f20095688a022c88e0409056b62fdf3812614128d12b5548a11d2d",
-    "retail/backend/internal/authorization/model.go": "51c6413dab790d1da70e9aa5c97c032041c76d6f115fce5a9c8a691df7202a20"
+    "retail/backend/internal/authorization/manage.go": "5cc3bf166301889cac9f970169a5924d17687f9a2035c0c5c627be262bebcb3e",
+    "retail/backend/internal/authorization/manage_http.go": "c51f9db6fbdc1d768063475176f3fd15eabb1ed2d25c92c150e16a92e908d80c",
+    "retail/backend/internal/authorization/model.go": "f0f676eb4b6104b22d20943a9b898cd080d26b5ce34a00f8c37645cb3a13c004",
+    "retail/backend/internal/identity/authorization_manage_test.go": "6b3b24c023b667405e672560ab9c423051a756babdcfd6bd80608f72e706be8a",
+    "retail/backend/migrations/0024_authorization_management.sql": "48aecb0577eb3274ac4c99af1916e8ea01e777c466a8783ecaec3d697658a9cb"
   },
   "cleanup": "both owned containers and temporary runner removed"
 }
