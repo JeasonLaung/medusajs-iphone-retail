@@ -20,6 +20,6 @@
 python retail/scripts/generate-catalog-import-plan.py --check
 ```
 
-人工MySQL 8.4.11验证使用既有单核768MiB禁网临时容器，复制实际审查版tag、分类关联和price表结构（LIKE不复制外键，因此不冒充跨表验证）。覆盖长值整行/账本/唯一声明回滚、重复JSON键/大整数/词法/SQL NULL保留、精确重放、复合主键及字段改名、DECIMAL第18位变化被拒绝、来源/快照/目标冲突、完整唯一键冲突、缺目标不补写、八路同源重放、业务SQL失败回滚及未知领域拒绝。结果见 [mysql-type-fixture-report.json](mysql-type-fixture-report.json) 的TestCatalogImportMySQL。其余33表的真实SQL与完整关联尚未验证，不能把36项布局覆盖说成36表迁移验收。
+人工MySQL 8.4.11验证使用既有单核768MiB禁网临时容器，复制实际审查版tag、分类关联和price表结构（LIKE不复制外键，因此不冒充跨表验证）。覆盖长值整行/账本/唯一声明回滚、重复JSON键/大整数/词法/SQL NULL保留、精确重放、复合主键及字段改名、DECIMAL第18位变化被拒绝、来源/快照/目标冲突、完整唯一键冲突、缺目标不补写、八路同源重放、业务SQL失败回滚及未知领域拒绝。结果见 [mysql-type-fixture-report.json](mysql-type-fixture-report.json) 的TestCatalogImportMySQL。后续[真实目录子图演练](catalog-mysql-rehearsal.md)在完整审查版DDL及开启外键的条件下覆盖36目录表及9父依赖；共23,559行，含21,837条目录账本及348条完整唯一声明，整批回滚、提交和精确重放通过。九张父表只用于本次关联验证；空表仍无真实行样本，不能据此声明目录领域完成。
 
-本次新增0008使显式执行器的空库/重复测试覆盖八个迁移文件；0001仍不符合完整159表目标设计。尚缺审查版schema提升、完整目录源数据与父依赖导入、普通JSON内资料/业务语义审查、真实目录SQL演练、完整导入运行账本/恢复、旧v1命令替换及Gin/React/Astro商品闭环。375项全局引用缺口仍未验收。T018/T020/T021不因此完成。
+本次新增0008使显式执行器的空库/重复测试覆盖八个迁移文件；0001仍不符合完整159表目标设计。尚缺审查版schema提升、父领域正式导入/账本、普通JSON内资料/业务语义审查、完整导入运行账本/恢复、旧v1命令替换及Gin/React/Astro商品闭环。375项全局引用缺口仍未验收。T018/T020/T021不因此完成。
