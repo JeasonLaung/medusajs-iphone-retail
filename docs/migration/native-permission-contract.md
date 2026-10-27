@@ -34,4 +34,6 @@ node retail/scripts/capture-native-permissions.cjs --check
 
 角色授权之后继续校验仓库、供应商来源、订单/包裹/设备归属及字段DTO；具体交易还需状态、付款、库存和并发约束。Ant Design菜单、按钮、表格和抽屉使用同一权限词表供交互反馈，但每次API仍执行服务端检查。
 
-剩余：全部原生/自定义/插件路由的准确policy及authentication组合、资源字典、角色种子、真实缓存失效与会话撤权，以及Gin持久RBAC/HTTP/事务。当前32项不是全站权限验收，T004/T007不勾选完成。
+后续[路由注册静态追踪](route-policy-contract.md)已展开591条middleware注册及576个处理方法候选，记录默认身份、policy继承候选及9组覆盖。它不执行HTTP排序或角色检查。
+
+剩余：全部原生/自定义/插件路由的运行时policy及authentication组合、资源字典、角色种子、真实缓存失效与会话撤权，以及Gin持久RBAC/HTTP/事务。当前32项不是全站权限验收，T004/T007不勾选完成。

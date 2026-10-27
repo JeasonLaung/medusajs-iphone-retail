@@ -47,6 +47,7 @@
 - [仓库范围和逐对象授权](migration/warehouse-access-contract.md)：真实库函数及authorizeWarehouseCommand共72项人工端口样例，覆盖空/全范围、逐设备及包裹/订单关联。实际发现裸subtotal未裁剪、未知字段透传和Number比例尾差；新Gin需明确DTO和精确金额，原生RBAC/HTTP/SQL及全角色仍待验。
 - [供应商入口与范围](migration/supplier-access-contract.md)：真实身份、middleware、命令guard共83项人工端口样例，验证逐来源/订单、混合包裹整批拒绝、bootstrap及自改姓名；scope不代替工作流状态，supplier_assign实际工作流仍禁止，旧API key管理员scope不沿用。查询DTO/原生RBAC/SQL与Gin仍待实现。
 - [原生RBAC匹配](migration/native-permission-contract.md)：安装版hasPermission/resolvePermissions及policy wrapper共32项人工端口样例，核对角色并集、所有动作必需及通配语义。底层空角色允许与wrapper先拒绝无角色的分层已区分；真实路由policy、缓存失效、会话撤权及Gin仍待验证。
+- [路由权限注册](migration/route-policy-contract.md)：展开591条根middleware注册/356条policy声明，跟踪576个处理方法候选及542个源哈希。11个自定义方法匹配继承policy，41个自定义Admin方法未匹配资源policy；9组覆盖候选、动态/插件及HTTP顺序未验，不能据此称公开或全权限通过。8项扫描边界检查通过。
 - [供应商新接口结构](migration/supplier-account-contract.md)：独立JSON Schema及4个操作/15个错误码，27固定+10生成边界+8响应投影+12头部/ID样例通过；新建与按员工ID的版本化授权替换分离，旧接口映射增加精确契约引用。未实现Gin/SQL/权限/KDF/Ant页面，T007整体不验收。
 - [文件本机基线](migration/file-migration-baseline.md)：412公开文件/6私有文件哈希，1,342次本地引用存在，56次远端引用未抓取；6张回收照片头类型/大小与私有目录检查通过，明细在忽略目录。设备图/邮件附件空样本不验收；前台静态资源、远端和复制/授权仍待验证。
 - [商户配置离线基线](migration/protected-config-baseline.md)：四域真实加密函数、12个受保护字段设计，3个非空密文解密及临时AAD往返通过，3空值/3NULL，33个人工断言通过；不调用provider、不输出秘密。选定.env不证明部署密钥，新持久信封/轮换/导入及旧认证材料排除仍待实现。

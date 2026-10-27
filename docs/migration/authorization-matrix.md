@@ -12,6 +12,8 @@
 
 [原生RBAC执行证据](native-permission-contract.md)含安装版匹配函数及policy wrapper的32项人工端口样例：多角色并集、全部动作必需、完整通配及大小写边界。底层hasPermission对空roles/actions返回true，但非空policy的wrapper先拒绝无角色，仓库helper也预查角色；不能断章认定无角色可访问后台。真实缓存失效与路由挂载仍待核对。
 
+[路由注册追踪](route-policy-contract.md)另展开591条根middleware注册，逐代表路径匹配576个处理方法候选；11个自定义方法匹配原生/项目policy，41个自定义Admin方法未匹配资源policy声明。默认身份/guard/工作流仍独立存在，不能称后者公开；9组处理器覆盖候选及完整HTTP生效顺序仍待验。
+
 ## 身份与范围
 
 | 身份 | 旧系统识别/数据范围 | 新系统承接 |
