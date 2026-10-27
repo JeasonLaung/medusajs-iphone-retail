@@ -1,0 +1,55 @@
+{
+  "format_version": 1,
+  "scope": "Fixed DB snapshot versus current local storage; read-only, no network fetch/copy/delete/import. Counts include soft-deleted rows. Not a point-in-time filesystem snapshot or accepted migration.",
+  "source_snapshot_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "source_sha256": {
+    "medusa-store/apps/backend/medusa-config.ts": "9c18f31216407658d1cc17519283181710b2afcddfc062403ecc819e928396e9",
+    "medusa-store/apps/backend/src/workflows/device-photos.ts": "06b5b34821cd5672efff8df8a35c17d42231079fef8c38029a50b1cda2ea60dd",
+    "medusa-store/apps/backend/src/workflows/buyback.ts": "cb5bb9dc751c6879de8b7d65bd07d9d7cafcae02258c1a5e871005d91f2fc138",
+    "medusa-store/apps/backend/src/workflows/expire-buyback-photos.ts": "57615e39f58ea358f5041dd824e027adffbe0af9a61db7a78d53291f4783ae93",
+    "medusa-store/apps/backend/src/api/buyback-photo.ts": "b92a60983e84713cf49dad1bd1960d027b96a800950f66c818d16011942f99e7",
+    "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/photos/[photo_id]/route.ts": "1451f7a1397e84b2566406d1da60534cd13408432c94a5f584f59aeb0cd1175a",
+    "medusa-store/apps/backend/src/api/admin/buyback/[id]/photos/[photo_id]/route.ts": "81c8b911017af9eae613b841ad644038ed8f632df070da3376f8f3d91f676548",
+    "medusa-store/apps/backend/src/api/admin/mail/messages/[id]/attachments/[attachment_id]/route.ts": "906d0d28be7a51bf0a8f08686f3e6aebefd92046af81a79367ae5e93a94a1e94",
+    "medusa-store/apps/backend/src/modules/mail/types.ts": "21d75fcc34b6e450c6bcfffdcea830a8ab9fd472c8dbe4929a5ef408989d7988",
+    "medusa-store/node_modules/.pnpm/@medusajs+file-local@2.21.2_131e369d4736c402c6ec81bbdb5721d5/node_modules/@medusajs/file-local/dist/services/local-file.js": "3f35a30f0a022887fd5d83693e411409a6d650815573481d70d8354f30ef7a79"
+  },
+  "detailed_index_sha256": "a142fe4e70f5423213317eabf9d7ca22685595f16211220dfe813cc864b11d52",
+  "storage": {
+    "public": {
+      "files": 412,
+      "bytes": 84412810,
+      "referenced_keys": 394,
+      "not_referenced_by_audited_fields": 18
+    },
+    "private": {
+      "files": 6,
+      "bytes": 110387,
+      "referenced_keys": 6,
+      "not_referenced_by_audited_fields": 0
+    }
+  },
+  "references_by_kind": {
+    "catalog-thumbnail": 958,
+    "catalog-image": 434,
+    "device-photo": 0,
+    "buyback-photo": 6,
+    "mail-attachment": 0
+  },
+  "references_by_status": {
+    "present": 1342,
+    "remote-not-fetched": 56
+  },
+  "mail_attachment_status": {},
+  "failures": {},
+  "observations": {},
+  "remaining": [
+    "private root path must match live deployment configuration before cutover",
+    "remote URLs/provider attachments not downloaded or verified",
+    "storefront public assets/CSS/HTML and arbitrary metadata URLs require separate manifest",
+    "unreferenced files retained; no orphan deletion authorization",
+    "transaction-consistent file freeze/copy/hash and new authorized serving tests",
+    "old account exclusion means historical customer photos not assigned by email"
+  ],
+  "status": "local-files-audited-migration-not-accepted"
+}
