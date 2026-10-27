@@ -193,7 +193,7 @@ func (h Handler) UpdateProduct(c *gin.Context) {
 		Status string `json:"status" binding:"required,oneof=draft proposed published rejected"`
 	}
 	if err := c.ShouldBindJSON(&input); err != nil {
-		platform.Fail(c, 400, "invalid_product", "Title and a valid status are required")
+		platform.InvalidJSON(c, err, "invalid_product", "Title and a valid status are required")
 		return
 	}
 	input.Title = strings.TrimSpace(input.Title)

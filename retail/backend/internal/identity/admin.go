@@ -57,8 +57,8 @@ func (h *Handler) Login(c *gin.Context) {
 		Email    string `json:"email" binding:"required,email,max=254"`
 		Password string `json:"password" binding:"required,max=72"`
 	}
-	if c.ShouldBindJSON(&input) != nil {
-		platform.Fail(c, 400, "invalid_login", "Email and password are required")
+	if err := c.ShouldBindJSON(&input); err != nil {
+		platform.InvalidJSON(c, err, "invalid_login", "Email and password are required")
 		return
 	}
 	input.Email = strings.ToLower(strings.TrimSpace(input.Email))
@@ -108,7 +108,7 @@ func (h *Handler) Login(c *gin.Context) {
 	c.JSON(200, gin.H{"user": user})
 }
 func (h *Handler) Require(c *gin.Context) {
-	c.Header("Cache-Control", "no-store")
+	c.Header("Cache-Control", "private, no-store")
 	token, err := c.Cookie("retail_admin_session")
 	if err != nil || len(token) != 64 {
 		platform.Fail(c, 401, "unauthorized", "Sign in to continue")

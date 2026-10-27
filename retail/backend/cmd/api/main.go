@@ -24,7 +24,7 @@ func main() {
 	}
 	db, err := platform.Open()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Database connection unavailable; verify the dedicated MySQL configuration")
 	}
 	pool, _ := db.DB()
 	defer pool.Close()

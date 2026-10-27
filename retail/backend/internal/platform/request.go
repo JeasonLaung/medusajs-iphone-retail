@@ -1,0 +1,71 @@
+package platform
+
+import (
+	"log/slog"
+	"net/http"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+)
+
+const requestIDKey = "retail.request_id"
+const MaxJSONBodyBytes int64 = 1 << 20
+
+// RequestBoundary replaces Gin's default access/recovery loggers. Only the
+// matched route template is logged; unmatched paths, parameters, queries,
+// headers, bodies, c.Errors and panic values never reach the logger.
+// All incoming request IDs are ignored because no trusted proxy is configured.
+func RequestBoundary(logger *slog.Logger) gin.HandlerFunc {
+	if logger == nil {
+		logger = slog.Default()
+	}
+	return func(c *gin.Context) {
+		started := time.Now()
+		id, err := uuid.NewRandom()
+		if err != nil {
+			c.AbortWithStatus(http.StatusServiceUnavailable)
+			return
+		}
+		requestID := "req_" + id.String()
+		c.Set(requestIDKey, requestID)
+		c.Header("X-Request-ID", requestID)
+		c.Header("X-Content-Type-Options", "nosniff")
+		c.Header("Referrer-Policy", "strict-origin-when-cross-origin")
+		panicked := false
+		defer func() {
+			if recover() != nil {
+				panicked = true
+				if !c.Writer.Written() {
+					Fail(c, 500, "internal_error", "Unable to complete the request")
+				}
+				c.Abort()
+			}
+			route := c.FullPath()
+			if route == "" {
+				route = "unmatched"
+			}
+			method := c.Request.Method
+			switch method {
+			case "GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "CONNECT", "TRACE":
+			default:
+				method = "OTHER"
+			}
+			logger.Info("http_request", "request_id", requestID, "method", method, "route", route,
+				"status", c.Writer.Status(), "duration_ms", time.Since(started).Milliseconds(), "panic", panicked)
+		}()
+		if c.Request.ContentLength > MaxJSONBodyBytes {
+			Fail(c, http.StatusRequestEntityTooLarge, "request_too_large", "Request body is too large")
+			return
+		}
+		if c.Request.Body != nil {
+			c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, MaxJSONBodyBytes)
+		}
+		c.Next()
+	}
+}
+
+func PrivateResponse(c *gin.Context) {
+	c.Header("Cache-Control", "private, no-store")
+	c.Next()
+}

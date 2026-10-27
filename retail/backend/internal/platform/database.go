@@ -18,7 +18,9 @@ func Open() (*gorm.DB, error) {
 	if dsn == "" {
 		return nil, errors.New("MYSQL_DSN is required; use a dedicated migration database")
 	}
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: logger.Default.LogMode(logger.Warn)})
+	// GORM's default error logger interpolates bound parameters. Queries can
+	// contain password hashes, session digests and private business values.
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)})
 	if err != nil {
 		return nil, err
 	}

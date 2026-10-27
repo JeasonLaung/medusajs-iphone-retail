@@ -1,7 +1,8 @@
 package server
 
 import (
-	"net/http"
+	"context"
+	"log/slog"
 	"os"
 	"time"
 
@@ -13,22 +14,29 @@ import (
 )
 
 func Router(db *gorm.DB) *gin.Engine {
+	return router(db, slog.Default())
+}
+
+func router(db *gorm.DB, logger *slog.Logger) *gin.Engine {
 	r := gin.New()
 	_ = r.SetTrustedProxies(nil)
-	r.Use(gin.Logger(), gin.Recovery())
-	r.Use(func(c *gin.Context) {
-		c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 1<<20)
-		c.Header("X-Content-Type-Options", "nosniff")
-		c.Header("Referrer-Policy", "strict-origin-when-cross-origin")
-		c.Next()
-	})
+	r.Use(platform.RequestBoundary(logger))
+	r.HandleMethodNotAllowed = true
+	r.NoRoute(func(c *gin.Context) { platform.Fail(c, 404, "not_found", "Resource not found") })
+	r.NoMethod(func(c *gin.Context) { platform.Fail(c, 405, "method_not_allowed", "Method not allowed") })
 	r.GET("/health", func(c *gin.Context) {
+		if db == nil {
+			platform.Fail(c, 503, "dependency_unavailable", "Database unavailable")
+			return
+		}
 		pool, err := db.DB()
 		if err == nil {
-			err = pool.PingContext(c.Request.Context())
+			ctx, cancel := context.WithTimeout(c.Request.Context(), time.Second)
+			defer cancel()
+			err = pool.PingContext(ctx)
 		}
 		if err != nil {
-			c.JSON(503, gin.H{"status": "unavailable"})
+			platform.Fail(c, 503, "dependency_unavailable", "Database unavailable")
 			return
 		}
 		c.JSON(200, gin.H{"status": "ok", "backend": "gin", "time": time.Now().UTC()})
@@ -42,7 +50,7 @@ func Router(db *gorm.DB) *gin.Engine {
 	public.GET("/regions", h.Regions)
 	identity := identity.New(db)
 	admin := r.Group("/api/admin")
-	admin.Use(platform.GuardOrigin)
+	admin.Use(platform.PrivateResponse, platform.GuardOrigin)
 	admin.POST("/auth/login", identity.Login)
 	private := admin.Group("")
 	private.Use(identity.Require)
