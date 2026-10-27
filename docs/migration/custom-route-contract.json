@@ -1,0 +1,2114 @@
+{
+  "format_version": 1,
+  "scope": "All inventoried custom route methods, including native route wrappers; excludes unwrapped native/plugin APIs and is not schema or runtime acceptance",
+  "input_sha256": {
+    "source-manifest.json": "9ca7caa5e96bf42a03733897dc2841a94997a9d9a001cb931f6f68553dfaea0c",
+    "http-caller-contract.json": "21de2bdc7cd71828577a593629d536f5cb7f740477c5e7cc9e01268213c19534",
+    "capability-entrypoint-contract.json": "2ed377fa28abb2d3cdff54a0b741ea49c345bb3f9ad5e93d475037cc641b60da"
+  },
+  "source_sha256": {
+    "medusa-store/apps/backend/src/admin/components/buyback-applications.tsx": "b531b598f8022c8b4e3811527f484351ec51f0961d444a011a4b5f7ff1d966aa",
+    "medusa-store/apps/backend/src/admin/components/buyback-price-catalog.tsx": "c12638d58ade9ce234f7b5dca88d9e6df221965a88d66a3f31751a1ee6ad17c7",
+    "medusa-store/apps/backend/src/admin/components/device-details-modal.tsx": "4b8a87a20fefe08bd624a07b892514cbca974ca4d289da6956b6977d14df5fb7",
+    "medusa-store/apps/backend/src/admin/components/device-edit-drawer.tsx": "7d33d450bdee09c918a238800681d50939c6c8522db97c1471f42e65627b603d",
+    "medusa-store/apps/backend/src/admin/components/device-fulfillment.tsx": "6358f6ec00ad5a0f7fa814cbe9cad1ab138eed1ed4475be8ef05df4008501084",
+    "medusa-store/apps/backend/src/admin/components/device-lookup-table.tsx": "cf19d0d65661b17ac4ea774fe243162eb5105f526189642f00329e872efd0bc8",
+    "medusa-store/apps/backend/src/admin/components/device-photos-input.tsx": "d123fa35c0d987b842de5013f0d8580e3254eefc697d9a8e4e5242eb3bc232ee",
+    "medusa-store/apps/backend/src/admin/components/device-return-transfer.tsx": "18ee44c0745eb77f81f18cb658694ad68cc57f6e677480cad0a321ea3a36eff6",
+    "medusa-store/apps/backend/src/admin/components/device-variant-select.tsx": "30368aefcb920910ba6bc2887570c8593eda6764f8555534f8435695e379d0a6",
+    "medusa-store/apps/backend/src/admin/components/device-workbench.tsx": "e20a349387804d822aa790963b8ff04070aa01619ab11b29244fb03ae7bb2aaf",
+    "medusa-store/apps/backend/src/admin/components/dhl-official-tracking.tsx": "d427cf0d224795489d7ba68bb128303db47a5e65182f6c8b6f25dec367c7941a",
+    "medusa-store/apps/backend/src/admin/components/order-cancellation.tsx": "936be3e051a6ebacec02506c0228999839fd3c6fd32ee0f570751e7b8375aecf",
+    "medusa-store/apps/backend/src/admin/components/order-device-allocation-dialog.tsx": "05ee435bb51cc960e31da580643d87bd1acec3de87ecc378fd79574bf8b3662e",
+    "medusa-store/apps/backend/src/admin/components/order-device-allocation.tsx": "711a4d073b6419f8c3531b1ffd58c48063f91a2b1271f687e34ba7e152471d3d",
+    "medusa-store/apps/backend/src/admin/components/recycled-device-intake.tsx": "7504dd804f7e75bbfef4e8a7814efa5cb02aca7d9f1d2014f96472888e17789c",
+    "medusa-store/apps/backend/src/admin/components/returned-device-processing.tsx": "b69878b0c7a2e103b7c53769fba3f3bb2f3b936ec79f17795731b1c407a94ad7",
+    "medusa-store/apps/backend/src/admin/components/seo-reference/FilePicker.tsx": "d6f713e1370e0ae0cfab3de10fb5de356ea38524cc7bad509eb3f61f4a3988d4",
+    "medusa-store/apps/backend/src/admin/components/seo-reference/SubmissionHistory.tsx": "4615c8205352c30396159c674231bf184835363757173cc0b4ea71fdbb62ad17",
+    "medusa-store/apps/backend/src/admin/components/seo-reference/client.ts": "749d906473e4358d2aca7fd41e69c93c46175c5b3ccf94ffec850990935cd63a",
+    "medusa-store/apps/backend/src/admin/components/shipment-tracking-drawer.tsx": "d5efd23e3c949a6903ba9e7bb560313edb1f330df59b7e5dfc12f93537308f8f",
+    "medusa-store/apps/backend/src/admin/lib/mail.ts": "9979f43e21be26972a52ed77632c99f9275a0d522931624c202e1281c1abc8dc",
+    "medusa-store/apps/backend/src/admin/lib/mobile-intake.ts": "b27c129f7323859383e6105dbdccf493ca39660db0a46d09fa8bca8ae144fad2",
+    "medusa-store/apps/backend/src/admin/lib/use-warehouse-menu.ts": "251ee3143ff17e31d6ac6491a6c863ce36bf62c66359d2a62803b61789e844f4",
+    "medusa-store/apps/backend/src/admin/routes/mail/page.tsx": "aa6cf68597c33cc5bd9da50bb7aa6f0b0e279d302009407c1cbc4d2dbbf7ead3",
+    "medusa-store/apps/backend/src/admin/routes/settings/buy-policies/page.tsx": "30a469891238b5b88557f551944b8beaa6ddc183e1c81b09f5d1aec2a06ebf41",
+    "medusa-store/apps/backend/src/admin/routes/settings/customer-service/page.tsx": "48c90a2381e4912fc3f0058e77375d5fb69ea57284a2eba3a837b2b6c26a2692",
+    "medusa-store/apps/backend/src/admin/routes/settings/mollie/page.tsx": "037bc99b9fe72ced192dfb59695ef6f8526e2c8efb0658ff3c989440f7d5ef7a",
+    "medusa-store/apps/backend/src/admin/routes/settings/warehouse-access/page.tsx": "5c98e18b2a0f46e66cdede0b968da4344c4f62af78e5da9bc49923cbf37f4861",
+    "medusa-store/apps/backend/src/admin/routes/settings/webhook-notifications/page.tsx": "81bd1ac463c6670595d4edb65052a11605bcd49d1e6de095ca37decb41d7403b",
+    "medusa-store/apps/backend/src/admin/widgets/order-after-sales.tsx": "d4e457bca7a24c83e385de422194e58ef3dcd347611ac1675764d18863fded80",
+    "medusa-store/apps/backend/src/admin/widgets/order-devices.tsx": "b320998973dde145e45d3225c5b631e8889203fe70b3e3e9aa2e95ad14c67f1c",
+    "medusa-store/apps/backend/src/admin/widgets/product-reviews.tsx": "7ecea924f502279a651481c48967d4570f479fd6dea89d196e47a8b07c332b85",
+    "medusa-store/apps/backend/src/api/admin/buy-policies/route.ts": "3818673ffda0b7b1bc2855903893387ec460896dea14bc0181147f85fef7a86b",
+    "medusa-store/apps/backend/src/api/admin/buyback-catalog/route.ts": "987a76ee329d15257c349538580583051a8cf729f1523c2d3a7ee18010c9b5c2",
+    "medusa-store/apps/backend/src/api/admin/buyback-prices/route.ts": "32e1f58373c9e84d0b4e5ee6461dec2bfad7022f19b02222789af2fc9ac5ecf4",
+    "medusa-store/apps/backend/src/api/admin/buyback/[id]/photos/[photo_id]/route.ts": "81c8b911017af9eae613b841ad644038ed8f632df070da3376f8f3d91f676548",
+    "medusa-store/apps/backend/src/api/admin/buyback/[id]/route.ts": "984cb1f5bf11254360a570e30dd9b4bc911e850f080bf40cb0ca7a815bfa5e85",
+    "medusa-store/apps/backend/src/api/admin/buyback/route.ts": "0a9da29cc7c46b175342886cc54ec43d9703329ad779971b9bc37853453208e9",
+    "medusa-store/apps/backend/src/api/admin/custom/route.ts": "b91decad25963549edaf66214e2427bd67feab9fb0f45c98bdb494960851ad9b",
+    "medusa-store/apps/backend/src/api/admin/customer-service/route.ts": "e8aca5bec533d11245a61a673dab9c7551c24f73b97830b1a1fc37064445fe5b",
+    "medusa-store/apps/backend/src/api/admin/devices/import-template/route.ts": "a1885e503849e05c5e9872ba5103ea1ff105cdd6c159a750210b131e563f8e6e",
+    "medusa-store/apps/backend/src/api/admin/devices/mobile-intake/route.ts": "078f81f8f53e8ca53e4f7414404b8dfa3b7715a69470c926401cc931b7c2a724",
+    "medusa-store/apps/backend/src/api/admin/devices/photos/route.ts": "72a7804539ffdff86ff2e1c1380bef49ef88e7b5bba00a156849837ae8891ec4",
+    "medusa-store/apps/backend/src/api/admin/devices/refunds/route.ts": "24b56e854f871c52f12d1c18098fedb43c4b8959a6394c2ac9dc988c80becc3a",
+    "medusa-store/apps/backend/src/api/admin/devices/route.ts": "21edfdaf9c8b6ec4f8213620a4530120339e06cb179525a98ba0ca67d93c6828",
+    "medusa-store/apps/backend/src/api/admin/devices/supplier-accounts/route.ts": "e394ba2d5931e0fae34a0ee3a6a3fd5b75c3d315a3be0d88504c54e26648f08b",
+    "medusa-store/apps/backend/src/api/admin/devices/variants/route.ts": "a3d9d402ec29902c8bea1abf6266b5ada20835cc0322d013e21964691b57867f",
+    "medusa-store/apps/backend/src/api/admin/inventory-items/route.ts": "a1b0720579b8ac0e06723eb4566c6fa589493ffc10740ec66c60c065b1bff794",
+    "medusa-store/apps/backend/src/api/admin/mail/commands/route.ts": "0dd14a0bad8c92aab8ebc9118a1b7f5cef75f7a0bbfec04bbb43e7d37037706b",
+    "medusa-store/apps/backend/src/api/admin/mail/messages/[id]/attachments/[attachment_id]/route.ts": "906d0d28be7a51bf0a8f08686f3e6aebefd92046af81a79367ae5e93a94a1e94",
+    "medusa-store/apps/backend/src/api/admin/mail/messages/[id]/route.ts": "6c446e07fbb82afc39bd2d1856a458f3a48cd27f9e0fb357d57c4f32577838ce",
+    "medusa-store/apps/backend/src/api/admin/mail/route.ts": "1d8d2430b9ffcb419ca30a45d6e7c9f7df969d5abee2dbde9f241898b246b9b5",
+    "medusa-store/apps/backend/src/api/admin/mollie/route.ts": "aac7a59889ea8fb1d77004954e18a28fb9ade454824550885057e7356368e79b",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/after-sales/route.ts": "d91bd8056fef487020b56894e49dc543ae6a8b50eff7badb44c79cf34e5d6634",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/cancel/route.ts": "2e5fe261ccb7a46f287212729fb700a157c73f34289495e7098e610e7b44b197",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/cancel/route.ts": "47f1f9f944477caf27ef4237d6101a6c62b737155b046b76d499909941f3a75e",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/shipments/route.ts": "32edbbbd3ea2ad6bb9e049defa4781e0b577a6cb2c0d01e383ec2b9318f9483c",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/tracking/route.ts": "f0f8e94d62ff95be0df87f4e7cd10970b4a554f5116969dc9bb290dd8b1d9352",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/route.ts": "a38b97a6017f71b7b97ef3d0f67efea9cf60e1829fc83fcf03ef5a03654848f9",
+    "medusa-store/apps/backend/src/api/admin/orders/route.ts": "3757e0307d2639fe8c1705a665779aa045ea86c28da38a8b139ab00b2954477c",
+    "medusa-store/apps/backend/src/api/admin/product-reviews/[id]/route.ts": "1c1e5b803a5ba3d9c3c5ba101adf30a69216eefa72024428af9c8aaf0202e2bb",
+    "medusa-store/apps/backend/src/api/admin/product-reviews/route.ts": "910acb73e58f216c39d12fe0c26d27481b7ff32397a70f0601b1460d9562fc29",
+    "medusa-store/apps/backend/src/api/admin/seo/[resource]/route.ts": "bfe3719bdb086135923a468c7b481ac12028fdfc2dbfe1db2b7ba45a07113a62",
+    "medusa-store/apps/backend/src/api/admin/seo/commands/route.ts": "04f0063dc7f8e927849df6630e177568c901fabcf93e1857bf26695998a9608a",
+    "medusa-store/apps/backend/src/api/admin/shipping-demo/dhl/route.ts": "23197ee074b22e4702298ad32a3df36a2cc801114087ef3dc443411b1d37fc2e",
+    "medusa-store/apps/backend/src/api/admin/stock-locations/[id]/route.ts": "3ddab81b05057087561a01eb9f4fc39f398477f74aec7dc30fb921223ef46c19",
+    "medusa-store/apps/backend/src/api/admin/stock-locations/route.ts": "9cf5961e3f950edb96f6e2c9662b4fb5e1d1a89b5ecc61ba645f11dbfe04be97",
+    "medusa-store/apps/backend/src/api/admin/warehouse-access/me/route.ts": "ee6b01b1bb98362c724d78fd37dcdd118217ee56889c92b88fa8f35140624ee7",
+    "medusa-store/apps/backend/src/api/admin/warehouse-access/route.ts": "fbca39400d8da86760ef04d7a136d10e0eb2419881fda15fa162a7d2a83b33cf",
+    "medusa-store/apps/backend/src/api/admin/webhook-notifications/[id]/route.ts": "b6e995bf16de39f645384067f9f5c070c7c8dfe0804223278f855495f2971aa7",
+    "medusa-store/apps/backend/src/api/admin/webhook-notifications/[id]/test/route.ts": "c11930d3bf69e1f1b66beb3a2622bf281e64df7a647c0e0b4635339ebb8c1726",
+    "medusa-store/apps/backend/src/api/admin/webhook-notifications/route.ts": "cada89238c0b07630c62df7d9cf9169fd3faee4dd7d23d9bedc65df7f3c01549",
+    "medusa-store/apps/backend/src/api/device-access.ts": "6b9cd618f407820590749c482659d6967bd2b88ccb2a22deca5e65297ceb5dd7",
+    "medusa-store/apps/backend/src/api/device-guards.ts": "69024bd8e61f6cdedf44e00bcd13401f5312cdd786822966245249c07da52ff9",
+    "medusa-store/apps/backend/src/api/device-photo-validators.ts": "39a49398dad3ba7f8bc7a3afae2bd74a44e39c2166a9f7e78d420d5ffbf4d89f",
+    "medusa-store/apps/backend/src/api/mail/unsubscribe/[token]/route.ts": "6ebf15962af89cb328b448ef2868fa042596069cbb0c70849a86a50759cd752f",
+    "medusa-store/apps/backend/src/api/mail/webhooks/[account_id]/route.ts": "51570f6cf6d02f6bd450d495fd88f87388f3309ecffbfaf98254c44d083efab5",
+    "medusa-store/apps/backend/src/api/middlewares.ts": "380175e9894f94410d0afbf653f156fce220b1abfc9689b603879db3441262c1",
+    "medusa-store/apps/backend/src/api/mobile-intake/access.ts": "fab5adfc07c6e4e1438922122097fa57fcf5b810d302386b5843ea852e2ffed2",
+    "medusa-store/apps/backend/src/api/mobile-intake/devices/[id]/route.ts": "47e05bcd0f720764c960468ce7b558bd23c04f3267105442b8fff494f9e498cb",
+    "medusa-store/apps/backend/src/api/mobile-intake/photos/route.ts": "f0aa117e856ec6ad9c3c6bcaf8f5b634965f2f2975d35cd422f985376369a3da",
+    "medusa-store/apps/backend/src/api/mobile-intake/route.ts": "a46fbd382763bcda3ab1a137fc4703bec6a02725f437fed042a57f6a2e7af9fb",
+    "medusa-store/apps/backend/src/api/mobile-intake/validators.ts": "266f11d2e3f8479f4bd3a0bdc16283e34952220b82e59b6eadd60b5f2aa93656",
+    "medusa-store/apps/backend/src/api/mobile-intake/variants/route.ts": "2c11e971024824408c9a4780fc9587194557f67bc6dceb083849be513658d5fa",
+    "medusa-store/apps/backend/src/api/payment-guards.ts": "442e9fab990810329fb597ae334cb472179730f76fa5bc64098c0daead5ba7dc",
+    "medusa-store/apps/backend/src/api/store/buy-policies/route.ts": "d3a940f724e020fb18f37592edf693da20e2030865cabd054163306503174b81",
+    "medusa-store/apps/backend/src/api/store/buyback/estimate/route.ts": "1112e5db0fdbe33f6da72184e097adebb4a6f4aa268f63c54fd4d121781438a6",
+    "medusa-store/apps/backend/src/api/store/buyback/prices/route.ts": "ceb6084fd45771ee5d0b862eca4d1615ba8fd243507bfd909673056d4eaf185c",
+    "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/photos/[photo_id]/route.ts": "1451f7a1397e84b2566406d1da60534cd13408432c94a5f584f59aeb0cd1175a",
+    "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/photos/route.ts": "2c85a26757d6123386271b82d90481a8c2a0bb665f004ca1f1054c3e07ad9c48",
+    "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/route.ts": "f0998a70cf89cf314e714255f38d87eceb57296b7803355bdcb1c13920238c17",
+    "medusa-store/apps/backend/src/api/store/buyback/requests/route.ts": "f38209923e67277a6a77f3d184f54a196d0ceba911d0b1f869679de7f980dcd4",
+    "medusa-store/apps/backend/src/api/store/custom/route.ts": "b91decad25963549edaf66214e2427bd67feab9fb0f45c98bdb494960851ad9b",
+    "medusa-store/apps/backend/src/api/store/customer-service/route.ts": "5b306fdc9fd4c357c09721534b2033021a32943b6519063d92ac09463043080a",
+    "medusa-store/apps/backend/src/api/store/notifications/route.ts": "cba3a08dae5069715249ae2a04025b09a0bd7f36f2ac01b407ecd4cc00b47858",
+    "medusa-store/apps/backend/src/api/store/orders/[id]/after-sales/route.ts": "0dc0621a1473d0e2a3e084776b20c09c19c6dda956125929f641894e231d76b9",
+    "medusa-store/apps/backend/src/api/store/orders/[id]/devices/route.ts": "fdc7e2dcd7e52ec70e9ca02ad6a791cedc9ddd360f643e45a157850c1539ffc9",
+    "medusa-store/apps/backend/src/api/store/orders/[id]/product-reviews/route.ts": "c8290ce1921f904ba0e9b1bb11b3fb0ca71519744564dea0f17e45aef8a67424",
+    "medusa-store/apps/backend/src/api/store/orders/[id]/timeline/route.ts": "f45a91fd64dc2d92074c459e71c9164159b0788edffeb40241563704159d5d8d",
+    "medusa-store/apps/backend/src/api/store/payment-collections/[id]/payment-sessions/route.ts": "e16e4ea5c03f4e8f2f2746c3ce6ad97bf38f8a5ddc64ffc9bd1f623f5f5f7dcf",
+    "medusa-store/apps/backend/src/api/store/product-reviews/purchases/route.ts": "6929b9edd132c1e5e1a270ab143a81884af2260fb4e9362ca217680e25845f86",
+    "medusa-store/apps/backend/src/api/store/product-reviews/route.ts": "fcf0a1f9c43c8f71a3a3c85a8caf2ff10051719efc70d0cd0dbdd6411a756a0a",
+    "medusa-store/apps/backend/src/api/store/seo/pages/route.ts": "13828f2d011d92e08a5385c5a06fb6551204091affede4a0e96b8ff4d4d33615",
+    "medusa-store/apps/backend/src/api/store/seo/route.ts": "e0aa64b9fb02348211d931ef8b9732ae6cf35bd7cb2387843b4c257f5a4bdd97",
+    "medusa-store/apps/backend/src/api/store/shipping-demo/dhl/route.ts": "23197ee074b22e4702298ad32a3df36a2cc801114087ef3dc443411b1d37fc2e",
+    "medusa-store/apps/backend/src/api/store/shipping-demo/orders/[id]/route.ts": "67fb262a2635b05f9b17f3ab2d3e00adcc8e2668e4e147ebe760de87cadf30f2",
+    "medusa-store/apps/backend/src/api/warehouse-guards.ts": "bdd4557386b6a43e203862767a1ea8ba11169b74634a82f1f4ac4c0af6a5517c",
+    "medusa-store/apps/backend/src/lib/device-import-columns.ts": "8c9b9d01f6f4c63e360c4fcbd622f40a127fa28fad614313adb4fd4d9e9c56f1",
+    "medusa-store/apps/backend/src/lib/device-import-template.ts": "23fa6dea3328512b56537192b6575bb23b11e200f917db060288289f45d53a02",
+    "medusa-store/apps/backend/src/lib/device-variant-search.ts": "cd3bbe4a7caf5e5f5159b5d4182e195da4e2886f0c878a316fd2972e65b9dacf",
+    "medusa-store/apps/backend/src/lib/mobile-intake-token.ts": "5bfabf35d24bd8de53a047d84940aeb84e1b2281776753af920e9c2e0952fa8b",
+    "medusa-store/apps/backend/src/lib/warehouse-access.ts": "af0c92f4b39a8e8c3e5283261b15fb0e29d70d7a25fdbc40974741dccb736a15",
+    "medusa-store/apps/backend/src/modules/mail/security.ts": "79ba763bd84f7536be4a8fd47038b837cbf0b90a85cb847f02e2c7eba788f097",
+    "medusa-store/apps/backend/src/workflows/device-operations.ts": "d7d8bdb9371453fcb77b027d77c5fdff39c9c7993bec6c05e125dee9c55603c4",
+    "medusa-store/apps/backend/src/workflows/device-photos.ts": "06b5b34821cd5672efff8df8a35c17d42231079fef8c38029a50b1cda2ea60dd",
+    "medusa-store/apps/backend/src/workflows/mail-webhook.ts": "378eea8f6aafcb52cab75d624750a359eb9c2426b1395d7ed2c48738d528d78a",
+    "medusa-store/apps/backend/src/workflows/mobile-intake.ts": "914b00138a27953cf2293f21be3899ac7734ce685fb97b5d2abb71afd4196be4",
+    "medusa-store/apps/backend/src/workflows/resume-mollie-session.ts": "3bce033a965517a30dabdfd11b63885bb7173d1222af3b0c584e54647940a105",
+    "medusa-store/apps/backend/src/workflows/unsubscribe-mail.ts": "a4f653cefa96d04cad48737d9ee1613f5b334f03cc9f89b9f98f47fe52d53ddb",
+    "medusa-store/apps/backend/static/mobile-intake/app.js": "768ed3503ce696c2b08b64257e21e86a1e4fce1967490986c0571923fcfeeaff",
+    "medusa-store/apps/backend/static/mobile-intake/index.html": "288d5a5204f7b07ea4d72682419b35e1da206cbb75c273d2bdc0e17beeb39ab4",
+    "medusa-store/apps/backend/static/mobile-intake/locales.js": "2a7e022821e07aede888a15150eb6f35eec26321a29ce04cfadf764cf49455f4",
+    "medusa-store/apps/backend/static/mobile-intake/style.css": "d3fe693b481cfbf19400a6244ab7bf71d90df8ea5798c2e9ee3b1cc8b06f853b",
+    "medusa-store/apps/storefront/src/app/api/mollie-return/route.ts": "7b1775e2865551a4cdb2adb9eb16c70bc9902a0ca7015178383400abebb28897",
+    "medusa-store/apps/storefront/src/app/api/payment-return/route.ts": "d2655e4423d2ae48d5b6ddda53176b8d62bbe616c64f34efcbf5f07ed59c241d",
+    "medusa-store/apps/storefront/src/app/sitemap.xml/route.ts": "419de71fca63862b91674e9179f25c5c89c2784220c525164e0dbe15656c84a5",
+    "medusa-store/apps/storefront/src/lib/data/after-sales.ts": "3ff413e5718d9863dd1b5c9a9686e4cb248414fa4cfa79ff30b4c86e7ebd98e9",
+    "medusa-store/apps/storefront/src/lib/data/buy-policies.ts": "7ca9defe0e38d2a3b8a7ead2174e5567a054cef9304055b6df06752d552adc03",
+    "medusa-store/apps/storefront/src/lib/data/buyback.ts": "209aa3644696af3f3fa65a5acca5d3c7d061ab5adad1e5c06ec9ea70995ebc67",
+    "medusa-store/apps/storefront/src/lib/data/cart.ts": "ff70408f70af8d04dae8b943e4610bd709a9a339c79b704c1ac204b740532ab5",
+    "medusa-store/apps/storefront/src/lib/data/categories.ts": "ab2ab0c88a68cbdcdab533602f73adbb6da38896de11d3e50f5331f60ab97e54",
+    "medusa-store/apps/storefront/src/lib/data/collections.ts": "d7de6c35bec1e523519855f1a95ec8d258dd94189dce746631ee73ba3c18fef4",
+    "medusa-store/apps/storefront/src/lib/data/customer-service.ts": "3f3eea0f6b5cd418d76cb3bcb71caa56c236118a58f53b1ce9c63ddb0a4be7c6",
+    "medusa-store/apps/storefront/src/lib/data/customer.ts": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be",
+    "medusa-store/apps/storefront/src/lib/data/fulfillment.ts": "4b4247e0da4d66d43536bd702d0439cd9145443edd80d4b0b19afcc580b37d35",
+    "medusa-store/apps/storefront/src/lib/data/locales.ts": "910629dfb21ac4a829ab77a1dd5ea6296a8767fc0830401bcc57b706b1883264",
+    "medusa-store/apps/storefront/src/lib/data/notifications.ts": "7cd8a616c34741c794077a26d3071809ff020d6d9a29cdbc3cc65facbafbc839",
+    "medusa-store/apps/storefront/src/lib/data/orders.ts": "75b404011e8d68051810eea4cb18fd6ecfb3d00104a79d9fae53682c31c63090",
+    "medusa-store/apps/storefront/src/lib/data/payment.ts": "39235b4ba94413f36553d91ec4e8955184cb81a494e3359cece1c91e249d6c9a",
+    "medusa-store/apps/storefront/src/lib/data/product-reviews.ts": "1ce9b784b774d5d0c914fcf6376a162fc8ef3a009c3a84d1d833263eb0230a41",
+    "medusa-store/apps/storefront/src/lib/data/products.ts": "808c81cdea2b3ffd47a8b0649b034fcbb4528e025d2a56edab25c15414db2068",
+    "medusa-store/apps/storefront/src/lib/data/regions.ts": "56d70a0f97d9996c68060dd8940b8ae0f80aff9838aabaebfa179349d53e2fd6",
+    "medusa-store/apps/storefront/src/lib/data/seo.ts": "a30895638409ed90a49a7d9faa6429c59602f0ebd48be0200ad869dc3865792b",
+    "medusa-store/apps/storefront/src/lib/data/store-search.ts": "2805efe6b3c11c65f0e97f74efdac7d7c002d6c4103dcf27b97284cb9202ee28",
+    "medusa-store/apps/storefront/src/lib/data/variants.ts": "7f1baf0647b19cbd7e9d9619b716b9e0543dd94622e5c754e8e18727e420aa70",
+    "medusa-store/apps/storefront/src/middleware.ts": "0d92e3b3f567c0ad302fe08dc677ec1446a5a20376111cca581fbd96b468baa9",
+    "medusa-store/apps/storefront/src/modules/checkout/components/payment-result/index.tsx": "cfd91ecb2b8d81297ae0fe3c282a097e87e8e928586df0af5c35fe5939e02438",
+    "medusa-store/apps/storefront/src/modules/order/components/dhl-official-tracking/index.tsx": "68f0a65f327458fb41affb70ead9b1c2b82495eb0acc97af611191aec19321dd",
+    "medusa-store/apps/storefront/src/modules/store/components/refinement-list/options-picker/index.tsx": "7d8907ebbe0aed4bcf95cdda24c63b20bd87be7b02d9eb920d0222c89a6f18e0"
+  },
+  "methods": [
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/buy-policies",
+      "source": "medusa-store/apps/backend/src/api/admin/buy-policies/route.ts",
+      "line": 5,
+      "source_sha256": "3818673ffda0b7b1bc2855903893387ec460896dea14bc0181147f85fef7a86b",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 98
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/buy-policies",
+      "task": "T058",
+      "identity": "staff-content-config-permission",
+      "invariant": "Explicit validated settings schema; public DTO separate; no arbitrary metadata write",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/buy-policies",
+      "source": "medusa-store/apps/backend/src/api/admin/buy-policies/route.ts",
+      "line": 11,
+      "source_sha256": "3818673ffda0b7b1bc2855903893387ec460896dea14bc0181147f85fef7a86b",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 99
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/buy-policies",
+      "task": "T058",
+      "identity": "staff-content-config-permission",
+      "invariant": "Explicit validated settings schema; public DTO separate; no arbitrary metadata write",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/buyback/[id]/photos/[photo_id]",
+      "source": "medusa-store/apps/backend/src/api/admin/buyback/[id]/photos/[photo_id]/route.ts",
+      "line": 5,
+      "source_sha256": "81c8b911017af9eae613b841ad644038ed8f632df070da3376f8f3d91f676548",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 49
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 51
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/buyback/{}/photos/{}",
+      "task": "T052",
+      "identity": "staff-buyback-permission",
+      "invariant": "Reject warehouse/supplier; read/write distinct permissions, private photos, full state/quote/device checks and operation audit",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/buyback/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/buyback/[id]/route.ts",
+      "line": 8,
+      "source_sha256": "984cb1f5bf11254360a570e30dd9b4bc911e850f080bf40cb0ca7a815bfa5e85",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 52
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/buyback/{}",
+      "task": "T052",
+      "identity": "staff-buyback-permission",
+      "invariant": "Reject warehouse/supplier; read/write distinct permissions, private photos, full state/quote/device checks and operation audit",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/buyback/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/buyback/[id]/route.ts",
+      "line": 13,
+      "source_sha256": "984cb1f5bf11254360a570e30dd9b4bc911e850f080bf40cb0ca7a815bfa5e85",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 50
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/buyback/{}",
+      "task": "T052",
+      "identity": "staff-buyback-permission",
+      "invariant": "Reject warehouse/supplier; read/write distinct permissions, private photos, full state/quote/device checks and operation audit",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/buyback",
+      "source": "medusa-store/apps/backend/src/api/admin/buyback/route.ts",
+      "line": 6,
+      "source_sha256": "0a9da29cc7c46b175342886cc54ec43d9703329ad779971b9bc37853453208e9",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 55
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/buyback",
+      "task": "T052",
+      "identity": "staff-buyback-permission",
+      "invariant": "Reject warehouse/supplier; read/write distinct permissions, private photos, full state/quote/device checks and operation audit",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/buyback-catalog",
+      "source": "medusa-store/apps/backend/src/api/admin/buyback-catalog/route.ts",
+      "line": 7,
+      "source_sha256": "987a76ee329d15257c349538580583051a8cf729f1523c2d3a7ee18010c9b5c2",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 57
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/buyback-catalog",
+      "task": "T052",
+      "identity": "staff-buyback-permission",
+      "invariant": "Reject warehouse/supplier; read/write distinct permissions, private photos, full state/quote/device checks and operation audit",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/buyback-catalog",
+      "source": "medusa-store/apps/backend/src/api/admin/buyback-catalog/route.ts",
+      "line": 11,
+      "source_sha256": "987a76ee329d15257c349538580583051a8cf729f1523c2d3a7ee18010c9b5c2",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 56
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/buyback-catalog",
+      "task": "T052",
+      "identity": "staff-buyback-permission",
+      "invariant": "Reject warehouse/supplier; read/write distinct permissions, private photos, full state/quote/device checks and operation audit",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/buyback-prices",
+      "source": "medusa-store/apps/backend/src/api/admin/buyback-prices/route.ts",
+      "line": 8,
+      "source_sha256": "32e1f58373c9e84d0b4e5ee6461dec2bfad7022f19b02222789af2fc9ac5ecf4",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 53
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/buyback-prices",
+      "task": "T052",
+      "identity": "staff-buyback-permission",
+      "invariant": "Reject warehouse/supplier; read/write distinct permissions, private photos, full state/quote/device checks and operation audit",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/buyback-prices",
+      "source": "medusa-store/apps/backend/src/api/admin/buyback-prices/route.ts",
+      "line": 15,
+      "source_sha256": "32e1f58373c9e84d0b4e5ee6461dec2bfad7022f19b02222789af2fc9ac5ecf4",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 54
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/buyback-prices",
+      "task": "T052",
+      "identity": "staff-buyback-permission",
+      "invariant": "Reject warehouse/supplier; read/write distinct permissions, private photos, full state/quote/device checks and operation audit",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/custom",
+      "source": "medusa-store/apps/backend/src/api/admin/custom/route.ts",
+      "line": 3,
+      "source_sha256": "b91decad25963549edaf66214e2427bd67feab9fb0f45c98bdb494960851ad9b",
+      "design_references": [],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/custom",
+      "task": "T014",
+      "identity": "staff-session",
+      "invariant": "Source only sends HTTP 200, no business query or mutation. Preserve a bounded compatibility probe under staff authorization; not a health check or completed business feature.",
+      "design_kind": "explicit-supplement"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/customer-service",
+      "source": "medusa-store/apps/backend/src/api/admin/customer-service/route.ts",
+      "line": 6,
+      "source_sha256": "e8aca5bec533d11245a61a673dab9c7551c24f73b97830b1a1fc37064445fe5b",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 100
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/customer-service",
+      "task": "T058",
+      "identity": "staff-content-config-permission",
+      "invariant": "Explicit validated settings schema; public DTO separate; no arbitrary metadata write",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/customer-service",
+      "source": "medusa-store/apps/backend/src/api/admin/customer-service/route.ts",
+      "line": 11,
+      "source_sha256": "e8aca5bec533d11245a61a673dab9c7551c24f73b97830b1a1fc37064445fe5b",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 101
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/customer-service",
+      "task": "T058",
+      "identity": "staff-content-config-permission",
+      "invariant": "Explicit validated settings schema; public DTO separate; no arbitrary metadata write",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/devices/import-template",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/import-template/route.ts",
+      "line": 8,
+      "source_sha256": "a1885e503849e05c5e9872ba5103ea1ff105cdd6c159a750210b131e563f8e6e",
+      "design_references": [
+        {
+          "file": "capability-entrypoint-contract.json",
+          "collection": "entries",
+          "index": 7
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/devices/import-template",
+      "task": "T043",
+      "identity": "new-staff-template-download-permission-and-scope",
+      "invariant": "Reject supplier; warehouse action/scope guard still applies. All variant pages1000 with stable SKU/ID order; preserve EN/ZH headers, text serial/IMEI/EID/SKU and SKU selection/formula behavior. Formula cells from untrusted values must remain literal strings.",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/devices/mobile-intake",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/mobile-intake/route.ts",
+      "line": 5,
+      "source_sha256": "078f81f8f53e8ca53e4f7414404b8dfa3b7715a69470c926401cc931b7c2a724",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 93
+        },
+        {
+          "file": "capability-entrypoint-contract.json",
+          "collection": "entries",
+          "index": 1
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/devices/mobile-intake",
+      "task": "T048",
+      "identity": "new-staff-action-and-source-scope",
+      "invariant": "Issue new purpose/actor/source/category/expiry/nonce token after current permission; self source only; two hours; not old JWT key. Idempotency key binds create action; do not issue more privileged token on retry.",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/devices/photos",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/photos/route.ts",
+      "line": 6,
+      "source_sha256": "72a7804539ffdff86ff2e1c1380bef49ef88e7b5bba00a156849837ae8891ec4",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 67
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/devices/photos",
+      "task": "T040",
+      "identity": "staff-device-action-and-scope",
+      "invariant": "22 commands require per-action warehouse/source/order and every-member checks; cost redaction; supplier_assign remains explicit rejection, no silent replacement behavior",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/devices/refunds",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/refunds/route.ts",
+      "line": 8,
+      "source_sha256": "24b56e854f871c52f12d1c18098fedb43c4b8959a6394c2ac9dc988c80becc3a",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 75
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/devices/refunds",
+      "task": "T040",
+      "identity": "staff-device-action-and-scope",
+      "invariant": "22 commands require per-action warehouse/source/order and every-member checks; cost redaction; supplier_assign remains explicit rejection, no silent replacement behavior",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/devices",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/route.ts",
+      "line": 26,
+      "source_sha256": "21edfdaf9c8b6ec4f8213620a4530120339e06cb179525a98ba0ca67d93c6828",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 58
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 60
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 62
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 64
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 66
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 70
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 80
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 81
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 82
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 84
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 113
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/devices",
+      "task": "T040",
+      "identity": "staff-device-action-and-scope",
+      "invariant": "22 commands require per-action warehouse/source/order and every-member checks; cost redaction; supplier_assign remains explicit rejection, no silent replacement behavior",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/devices",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/route.ts",
+      "line": 390,
+      "source_sha256": "21edfdaf9c8b6ec4f8213620a4530120339e06cb179525a98ba0ca67d93c6828",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 59
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 61
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 63
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 65
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 68
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 73
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 83
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 85
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 114
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/devices",
+      "task": "T040",
+      "identity": "staff-device-action-and-scope",
+      "invariant": "22 commands require per-action warehouse/source/order and every-member checks; cost redaction; supplier_assign remains explicit rejection, no silent replacement behavior",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/devices/supplier-accounts",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/supplier-accounts/route.ts",
+      "line": 23,
+      "source_sha256": "e394ba2d5931e0fae34a0ee3a6a3fd5b75c3d315a3be0d88504c54e26648f08b",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 71
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/devices/supplier-accounts",
+      "task": "T040",
+      "identity": "staff-device-action-and-scope",
+      "invariant": "22 commands require per-action warehouse/source/order and every-member checks; cost redaction; supplier_assign remains explicit rejection, no silent replacement behavior",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/devices/supplier-accounts",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/supplier-accounts/route.ts",
+      "line": 44,
+      "source_sha256": "e394ba2d5931e0fae34a0ee3a6a3fd5b75c3d315a3be0d88504c54e26648f08b",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 74
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/devices/supplier-accounts",
+      "task": "T040",
+      "identity": "staff-device-action-and-scope",
+      "invariant": "22 commands require per-action warehouse/source/order and every-member checks; cost redaction; supplier_assign remains explicit rejection, no silent replacement behavior",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/devices/variants",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/variants/route.ts",
+      "line": 8,
+      "source_sha256": "a3d9d402ec29902c8bea1abf6266b5ada20835cc0322d013e21964691b57867f",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 69
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 77
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/devices/variants",
+      "task": "T040",
+      "identity": "staff-device-action-and-scope",
+      "invariant": "22 commands require per-action warehouse/source/order and every-member checks; cost redaction; supplier_assign remains explicit rejection, no silent replacement behavior",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/inventory-items",
+      "source": "medusa-store/apps/backend/src/api/admin/inventory-items/route.ts",
+      "line": 5,
+      "source_sha256": "a1b0720579b8ac0e06723eb4566c6fa589493ffc10740ec66c60c065b1bff794",
+      "design_references": [],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/inventory-items",
+      "task": "T024",
+      "identity": "staff-inventory-read",
+      "invariant": "Preserve native inventory filters/fields/pagination plus +/-reserved_quantity and +/-stocked_quantity sort. Null aggregate displays and sorts as zero, ID breaks ties. New SQL exact aggregate order before paging; count and detail use same authorized scope and filters. Generic endpoint denied to warehouse/supplier roles; product inventory nesting has separate scoped DTO.",
+      "design_kind": "explicit-supplement"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/mail/commands",
+      "source": "medusa-store/apps/backend/src/api/admin/mail/commands/route.ts",
+      "line": 8,
+      "source_sha256": "0dd14a0bad8c92aab8ebc9118a1b7f5cef75f7a0bbfec04bbb43e7d37037706b",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 92
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/mail/commands",
+      "task": "T055",
+      "identity": "staff-mail-permission",
+      "invariant": "Mailbox/message attachment membership, protected content and credentials; consent/suppression, durable send key and first attempt window; no attachment URL in logs",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/mail/messages/[id]/attachments/[attachment_id]",
+      "source": "medusa-store/apps/backend/src/api/admin/mail/messages/[id]/attachments/[attachment_id]/route.ts",
+      "line": 11,
+      "source_sha256": "906d0d28be7a51bf0a8f08686f3e6aebefd92046af81a79367ae5e93a94a1e94",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 97
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/mail/messages/{}/attachments/{}",
+      "task": "T055",
+      "identity": "staff-mail-permission",
+      "invariant": "Mailbox/message attachment membership, protected content and credentials; consent/suppression, durable send key and first attempt window; no attachment URL in logs",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/mail/messages/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/mail/messages/[id]/route.ts",
+      "line": 8,
+      "source_sha256": "6c446e07fbb82afc39bd2d1856a458f3a48cd27f9e0fb357d57c4f32577838ce",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 95
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 96
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/mail/messages/{}",
+      "task": "T055",
+      "identity": "staff-mail-permission",
+      "invariant": "Mailbox/message attachment membership, protected content and credentials; consent/suppression, durable send key and first attempt window; no attachment URL in logs",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/mail",
+      "source": "medusa-store/apps/backend/src/api/admin/mail/route.ts",
+      "line": 11,
+      "source_sha256": "1d8d2430b9ffcb419ca30a45d6e7c9f7df969d5abee2dbde9f241898b246b9b5",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 91
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/mail",
+      "task": "T055",
+      "identity": "staff-mail-permission",
+      "invariant": "Mailbox/message attachment membership, protected content and credentials; consent/suppression, durable send key and first attempt window; no attachment URL in logs",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/mollie",
+      "source": "medusa-store/apps/backend/src/api/admin/mollie/route.ts",
+      "line": 10,
+      "source_sha256": "aac7a59889ea8fb1d77004954e18a28fb9ade454824550885057e7356368e79b",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 102
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/mollie",
+      "task": "T035",
+      "identity": "staff-payment-config-permission",
+      "invariant": "Mask credential, empty edit retains original, environment validated; configure does not initiate payment or call provider",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/mollie",
+      "source": "medusa-store/apps/backend/src/api/admin/mollie/route.ts",
+      "line": 21,
+      "source_sha256": "aac7a59889ea8fb1d77004954e18a28fb9ade454824550885057e7356368e79b",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 103
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/mollie",
+      "task": "T035",
+      "identity": "staff-payment-config-permission",
+      "invariant": "Mask credential, empty edit retains original, environment validated; configure does not initiate payment or call provider",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/orders/[id]/after-sales",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/after-sales/route.ts",
+      "line": 8,
+      "source_sha256": "d91bd8056fef487020b56894e49dc543ae6a8b50eff7badb44c79cf34e5d6634",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 72
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 111
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/orders/{}/after-sales",
+      "task": "T038",
+      "identity": "staff-order-action-and-scope",
+      "invariant": "Read scope and state/command guards; restricted warehouse/supplier cannot use generic writes; aftersales nested item membership; tracking is not shipment creation",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/orders/[id]/after-sales",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/after-sales/route.ts",
+      "line": 14,
+      "source_sha256": "d91bd8056fef487020b56894e49dc543ae6a8b50eff7badb44c79cf34e5d6634",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 76
+        },
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 112
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/orders/{}/after-sales",
+      "task": "T038",
+      "identity": "staff-order-action-and-scope",
+      "invariant": "Read scope and state/command guards; restricted warehouse/supplier cannot use generic writes; aftersales nested item membership; tracking is not shipment creation",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/orders/[id]/cancel",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/cancel/route.ts",
+      "line": 6,
+      "source_sha256": "2e5fe261ccb7a46f287212729fb700a157c73f34289495e7098e610e7b44b197",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 79
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/orders/{}/cancel",
+      "task": "T038",
+      "identity": "staff-order-action-and-scope",
+      "invariant": "Read scope and state/command guards; restricted warehouse/supplier cannot use generic writes; aftersales nested item membership; tracking is not shipment creation",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/orders/[id]/fulfillments/[fulfillment_id]/cancel",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/cancel/route.ts",
+      "line": 5,
+      "source_sha256": "47f1f9f944477caf27ef4237d6101a6c62b737155b046b76d499909941f3a75e",
+      "design_references": [],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/orders/{id}/fulfillments/{fulfillment_id}/cancel",
+      "task": "T044",
+      "identity": "staff-fulfillment-cancel-and-scope",
+      "invariant": "Source dispatches cancel_fulfillment with native_cancel including order_id, no_notification and actor. Require nested fulfillment/order membership, device guard/state, every affected assignment and durable idempotency; atomic quantity/device cancellation and audited notification intent. Generic warehouse/supplier write remains denied; warehouse device commands are a separate authorization path.",
+      "design_kind": "explicit-supplement"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/orders/[id]/fulfillments/[fulfillment_id]/shipments",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/shipments/route.ts",
+      "line": 9,
+      "source_sha256": "32edbbbd3ea2ad6bb9e049defa4781e0b577a6cb2c0d01e383ec2b9318f9483c",
+      "design_references": [],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/orders/{id}/fulfillments/{fulfillment_id}/shipments",
+      "task": "T044",
+      "identity": "staff-shipment-create-and-scope",
+      "invariant": "Source selects device ship if parcel contains managed variants OR has assignments; otherwise native ordinary shipment. Preserve both paths, all labels, quantities and notification intent, not only first tracking number. Enforce nested membership, every device/assignment and stock/payment guards, current actor, durable idempotency/outbox. Generic warehouse/supplier write remains denied; tracking edits are separate.",
+      "design_kind": "explicit-supplement"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/orders/[id]/fulfillments/[fulfillment_id]/tracking",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/tracking/route.ts",
+      "line": 5,
+      "source_sha256": "f0f8e94d62ff95be0df87f4e7cd10970b4a554f5116969dc9bb290dd8b1d9352",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 90
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/orders/{}/fulfillments/{}/tracking",
+      "task": "T038",
+      "identity": "staff-order-action-and-scope",
+      "invariant": "Read scope and state/command guards; restricted warehouse/supplier cannot use generic writes; aftersales nested item membership; tracking is not shipment creation",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/orders/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/route.ts",
+      "line": 5,
+      "source_sha256": "a38b97a6017f71b7b97ef3d0f67efea9cf60e1829fc83fcf03ef5a03654848f9",
+      "design_references": [],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/orders/{id}",
+      "task": "T038",
+      "identity": "staff-order-read-and-scope",
+      "invariant": "Check order access before DTO projection. Preserve warehouse fulfillment/item/quantity and field allowlist restrictions; supplier generic order endpoint remains denied, even with a device order binding. ID knowledge and matching email confer no access.",
+      "design_kind": "explicit-supplement"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/orders",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/route.ts",
+      "line": 5,
+      "source_sha256": "3757e0307d2639fe8c1705a665779aa045ea86c28da38a8b139ab00b2954477c",
+      "design_references": [],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/orders",
+      "task": "T038",
+      "identity": "staff-order-read-and-scope",
+      "invariant": "Preserve native order filters/count/page with warehouse order-read permission and current fulfillment-location membership. Empty location scope means none, null all. Crop nested fulfillments/items/quantities/inventory and sensitive fields, not only order IDs; no hidden global totals. Supplier generic order endpoint remains denied; supplier device command bindings do not grant this API.",
+      "design_kind": "explicit-supplement"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/product-reviews/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/product-reviews/[id]/route.ts",
+      "line": 5,
+      "source_sha256": "1c1e5b803a5ba3d9c3c5ba101adf30a69216eefa72024428af9c8aaf0202e2bb",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 116
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/product-reviews/{}",
+      "task": "T054",
+      "identity": "staff-review-moderation",
+      "invariant": "Read/moderate permissions and warehouse/supplier denial; approved public aggregates recalc without revealing private subject fields",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/product-reviews",
+      "source": "medusa-store/apps/backend/src/api/admin/product-reviews/route.ts",
+      "line": 6,
+      "source_sha256": "910acb73e58f216c39d12fe0c26d27481b7ff32397a70f0601b1460d9562fc29",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 115
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/product-reviews",
+      "task": "T054",
+      "identity": "staff-review-moderation",
+      "invariant": "Read/moderate permissions and warehouse/supplier denial; approved public aggregates recalc without revealing private subject fields",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/seo/[resource]",
+      "source": "medusa-store/apps/backend/src/api/admin/seo/[resource]/route.ts",
+      "line": 7,
+      "source_sha256": "bfe3719bdb086135923a468c7b481ac12028fdfc2dbfe1db2b7ba45a07113a62",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 88
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/seo/{}",
+      "task": "T058",
+      "identity": "staff-seo-permission",
+      "invariant": "Enumerated resource/action only; secret masking/public allowlist, path/URL and external-job boundary, no public tick; ECharts gets actual job/error state",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/seo/commands",
+      "source": "medusa-store/apps/backend/src/api/admin/seo/commands/route.ts",
+      "line": 4,
+      "source_sha256": "04f0063dc7f8e927849df6630e177568c901fabcf93e1857bf26695998a9608a",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 89
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/seo/commands",
+      "task": "T058",
+      "identity": "staff-seo-permission",
+      "invariant": "Enumerated resource/action only; secret masking/public allowlist, path/URL and external-job boundary, no public tick; ECharts gets actual job/error state",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/shipping-demo/dhl",
+      "source": "medusa-store/apps/backend/src/api/admin/shipping-demo/dhl/route.ts",
+      "line": 4,
+      "source_sha256": "23197ee074b22e4702298ad32a3df36a2cc801114087ef3dc443411b1d37fc2e",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 78
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/shipping-demo/dhl",
+      "task": "T059",
+      "identity": "staff-explicit-demo",
+      "invariant": "Keep demonstration separately scoped from real fulfillment; no production carrier side effect by rendering page",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/stock-locations/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/stock-locations/[id]/route.ts",
+      "line": 5,
+      "source_sha256": "3ddab81b05057087561a01eb9f4fc39f398477f74aec7dc30fb921223ef46c19",
+      "design_references": [],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/stock-locations/{id}",
+      "task": "T025",
+      "identity": "staff-location-read-and-scope",
+      "invariant": "Require current location scope and location-read permission before fetching nested DTO. Preserve denial for out-of-scope location; list permission cannot grant arbitrary detail access.",
+      "design_kind": "explicit-supplement"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/stock-locations",
+      "source": "medusa-store/apps/backend/src/api/admin/stock-locations/route.ts",
+      "line": 5,
+      "source_sha256": "9cf5961e3f950edb96f6e2c9662b4fb5e1d1a89b5ecc61ba645f11dbfe04be97",
+      "design_references": [],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/stock-locations",
+      "task": "T025",
+      "identity": "staff-location-read-and-scope",
+      "invariant": "AND current location scope with validated native filters before pagination/count. Null means all, [] none; no sentinel ID in target storage. Supplier generic access remains denied; fields cannot traverse unrelated private data.",
+      "design_kind": "explicit-supplement"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/warehouse-access/me",
+      "source": "medusa-store/apps/backend/src/api/admin/warehouse-access/me/route.ts",
+      "line": 5,
+      "source_sha256": "ee6b01b1bb98362c724d78fd37dcdd118217ee56889c92b88fa8f35140624ee7",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 94
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/warehouse-access/me",
+      "task": "T015",
+      "identity": "staff-scope-config-or-self",
+      "invariant": "Me reports current scope only; config write separately authorized, empty bound list != all; no copied legacy user grants",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/warehouse-access",
+      "source": "medusa-store/apps/backend/src/api/admin/warehouse-access/route.ts",
+      "line": 9,
+      "source_sha256": "fbca39400d8da86760ef04d7a136d10e0eb2419881fda15fa162a7d2a83b33cf",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 104
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/warehouse-access",
+      "task": "T015",
+      "identity": "staff-scope-config-or-self",
+      "invariant": "Me reports current scope only; config write separately authorized, empty bound list != all; no copied legacy user grants",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/warehouse-access",
+      "source": "medusa-store/apps/backend/src/api/admin/warehouse-access/route.ts",
+      "line": 19,
+      "source_sha256": "fbca39400d8da86760ef04d7a136d10e0eb2419881fda15fa162a7d2a83b33cf",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 105
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/warehouse-access",
+      "task": "T015",
+      "identity": "staff-scope-config-or-self",
+      "invariant": "Me reports current scope only; config write separately authorized, empty bound list != all; no copied legacy user grants",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/webhook-notifications/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/webhook-notifications/[id]/route.ts",
+      "line": 3,
+      "source_sha256": "b6e995bf16de39f645384067f9f5c070c7c8dfe0804223278f855495f2971aa7",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 108
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/webhook-notifications/{}",
+      "task": "T057",
+      "identity": "staff-webhook-config-permission",
+      "invariant": "Protected URL/secret/token and clear semantics; test explicit durable external operation with safe target validation; no implicit send on save",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "DELETE",
+      "legacy_path": "/admin/webhook-notifications/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/webhook-notifications/[id]/route.ts",
+      "line": 7,
+      "source_sha256": "b6e995bf16de39f645384067f9f5c070c7c8dfe0804223278f855495f2971aa7",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 109
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "DELETE",
+      "new_path": "/api/admin/webhook-notifications/{}",
+      "task": "T057",
+      "identity": "staff-webhook-config-permission",
+      "invariant": "Protected URL/secret/token and clear semantics; test explicit durable external operation with safe target validation; no implicit send on save",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/webhook-notifications/[id]/test",
+      "source": "medusa-store/apps/backend/src/api/admin/webhook-notifications/[id]/test/route.ts",
+      "line": 3,
+      "source_sha256": "c11930d3bf69e1f1b66beb3a2622bf281e64df7a647c0e0b4635339ebb8c1726",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 110
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/webhook-notifications/{}/test",
+      "task": "T057",
+      "identity": "staff-webhook-config-permission",
+      "invariant": "Protected URL/secret/token and clear semantics; test explicit durable external operation with safe target validation; no implicit send on save",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/webhook-notifications",
+      "source": "medusa-store/apps/backend/src/api/admin/webhook-notifications/route.ts",
+      "line": 6,
+      "source_sha256": "cada89238c0b07630c62df7d9cf9169fd3faee4dd7d23d9bedc65df7f3c01549",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 106
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/admin/webhook-notifications",
+      "task": "T057",
+      "identity": "staff-webhook-config-permission",
+      "invariant": "Protected URL/secret/token and clear semantics; test explicit durable external operation with safe target validation; no implicit send on save",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/webhook-notifications",
+      "source": "medusa-store/apps/backend/src/api/admin/webhook-notifications/route.ts",
+      "line": 11,
+      "source_sha256": "cada89238c0b07630c62df7d9cf9169fd3faee4dd7d23d9bedc65df7f3c01549",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 107
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/admin/webhook-notifications",
+      "task": "T057",
+      "identity": "staff-webhook-config-permission",
+      "invariant": "Protected URL/secret/token and clear semantics; test explicit durable external operation with safe target validation; no implicit send on save",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/mail/unsubscribe/[token]",
+      "source": "medusa-store/apps/backend/src/api/mail/unsubscribe/[token]/route.ts",
+      "line": 4,
+      "source_sha256": "6ebf15962af89cb328b448ef2868fa042596069cbb0c70849a86a50759cd752f",
+      "design_references": [
+        {
+          "file": "capability-entrypoint-contract.json",
+          "collection": "entries",
+          "index": 8
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/mail/unsubscribe/{token}",
+      "task": "T056",
+      "identity": "business-optout-capability",
+      "invariant": "64 lowercase hex syntax; GET renders bilingual confirmation, never updates subscription. Existing optout capabilities are business consent, not excluded login credentials; provider scanners cannot unsubscribe by reading link.",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/mail/unsubscribe/[token]",
+      "source": "medusa-store/apps/backend/src/api/mail/unsubscribe/[token]/route.ts",
+      "line": 18,
+      "source_sha256": "6ebf15962af89cb328b448ef2868fa042596069cbb0c70849a86a50759cd752f",
+      "design_references": [
+        {
+          "file": "capability-entrypoint-contract.json",
+          "collection": "entries",
+          "index": 9
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/mail/unsubscribe/{token}",
+      "task": "T056",
+      "identity": "business-optout-capability",
+      "invariant": "Lookup protected token; atomically set subscribed=false without undoing suppression/consent history. Repeating valid unsubscribe returns success, invalid 404; no mail send or login required. Do not require storefront session for external email users.",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/mail/webhooks/[account_id]",
+      "source": "medusa-store/apps/backend/src/api/mail/webhooks/[account_id]/route.ts",
+      "line": 8,
+      "source_sha256": "51570f6cf6d02f6bd450d495fd88f87388f3309ecffbfaf98254c44d083efab5",
+      "design_references": [
+        {
+          "file": "capability-entrypoint-contract.json",
+          "collection": "entries",
+          "index": 10
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/mail/webhooks/{account_id}",
+      "task": "T055",
+      "identity": "resend-signed-raw-body",
+      "invariant": "Preserve exact raw body <=1mb, Svix id/timestamp/signature mapped into installed verifier. Require canonical integer timestamp and bounded skew; verify before parse/side effects. Scope dedupe account:event, persist accepted event/intent before async work and ack only durable acceptance; processing retries remain recoverable.",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "DELETE",
+      "legacy_path": "/mobile-intake/devices/[id]",
+      "source": "medusa-store/apps/backend/src/api/mobile-intake/devices/[id]/route.ts",
+      "line": 4,
+      "source_sha256": "47e05bcd0f720764c960468ce7b558bd23c04f3267105442b8fff494f9e498cb",
+      "design_references": [
+        {
+          "file": "capability-entrypoint-contract.json",
+          "collection": "entries",
+          "index": 6
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "DELETE",
+      "new_path": "/api/mobile-intake/devices/{id}",
+      "task": "T048",
+      "identity": "new-mobile-capability-and-current-actor-scope",
+      "invariant": "Only own actor intake event with same nonce/source/category, state pending/inspection/available, no sales assignment history; full current device delete guards. Nonce is not single-use; repeated HTTP delete needs durable replay while permission stays checked.",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/mobile-intake/photos",
+      "source": "medusa-store/apps/backend/src/api/mobile-intake/photos/route.ts",
+      "line": 6,
+      "source_sha256": "f0aa117e856ec6ad9c3c6bcaf8f5b634965f2f2975d35cd422f985376369a3da",
+      "design_references": [
+        {
+          "file": "capability-entrypoint-contract.json",
+          "collection": "entries",
+          "index": 5
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/mobile-intake/photos",
+      "task": "T048",
+      "identity": "new-mobile-capability-and-current-actor-scope",
+      "invariant": "1..8 files, declared base64 <=4194304 per file, actual JPEG/PNG/WebP header matches MIME and decoded<=3MiB; request cap34mb in source. Random server name; source creates public device photos, not private buyback/mail storage.",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/mobile-intake",
+      "source": "medusa-store/apps/backend/src/api/mobile-intake/route.ts",
+      "line": 6,
+      "source_sha256": "a46fbd382763bcda3ab1a137fc4703bec6a02725f437fed042a57f6a2e7af9fb",
+      "design_references": [
+        {
+          "file": "capability-entrypoint-contract.json",
+          "collection": "entries",
+          "index": 2
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/mobile-intake",
+      "task": "T048",
+      "identity": "new-mobile-capability-and-current-actor-scope",
+      "invariant": "Read X-Intake-Token only; verify purpose/length/signature/time/category; current actor enabled, source and category action rechecked every time; missing source never falls back to admin.",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/mobile-intake",
+      "source": "medusa-store/apps/backend/src/api/mobile-intake/route.ts",
+      "line": 12,
+      "source_sha256": "a46fbd382763bcda3ab1a137fc4703bec6a02725f437fed042a57f6a2e7af9fb",
+      "design_references": [
+        {
+          "file": "capability-entrypoint-contract.json",
+          "collection": "entries",
+          "index": 3
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/mobile-intake",
+      "task": "T048",
+      "identity": "new-mobile-capability-and-current-actor-scope",
+      "invariant": "Server derives source/category/actor from capability, never request override. Durable idempotency per session/command; preserve nonce in intake audit; stock quantity independent of device intake. No general device command exposure.",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/mobile-intake/variants",
+      "source": "medusa-store/apps/backend/src/api/mobile-intake/variants/route.ts",
+      "line": 7,
+      "source_sha256": "2c11e971024824408c9a4780fc9587194557f67bc6dceb083849be513658d5fa",
+      "design_references": [
+        {
+          "file": "capability-entrypoint-contract.json",
+          "collection": "entries",
+          "index": 4
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/mobile-intake/variants",
+      "task": "T048",
+      "identity": "new-mobile-capability-and-current-actor-scope",
+      "invariant": "Bounded search max200 chars/12 terms, take20 offset<=100000, stable SKU/ID order; SKU-only variants; count semantics source-before-empty-SKU-filter needs explicit new consistency test.",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/buy-policies",
+      "source": "medusa-store/apps/backend/src/api/store/buy-policies/route.ts",
+      "line": 4,
+      "source_sha256": "d3a940f724e020fb18f37592edf693da20e2030865cabd054163306503174b81",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 6
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/buy-policies",
+      "task": "T058",
+      "identity": "public-store-context",
+      "invariant": "Public setting allowlist; no credentials or private source paths; preserve SEO artifact/page overrides and current fallback behavior",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/store/buyback/estimate",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/estimate/route.ts",
+      "line": 8,
+      "source_sha256": "1112e5db0fdbe33f6da72184e097adebb4a6f4aa268f63c54fd4d121781438a6",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 14
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/store/buyback/estimate",
+      "task": "T050",
+      "identity": "public-store-context",
+      "invariant": "Reference/estimate only, not binding final quote; missing price stays NULL; partial assessment and exact decimal adapter; no private application fields",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/buyback/prices",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/prices/route.ts",
+      "line": 5,
+      "source_sha256": "ceb6084fd45771ee5d0b862eca4d1615ba8fd243507bfd909673056d4eaf185c",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 13
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/buyback/prices",
+      "task": "T050",
+      "identity": "public-store-context",
+      "invariant": "Reference/estimate only, not binding final quote; missing price stays NULL; partial assessment and exact decimal adapter; no private application fields",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/buyback/requests/[id]/photos/[photo_id]",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/photos/[photo_id]/route.ts",
+      "line": 5,
+      "source_sha256": "1451f7a1397e84b2566406d1da60534cd13408432c94a5f584f59aeb0cd1175a",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 12
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/buyback/requests/{}/photos/{}",
+      "task": "T051",
+      "identity": "new-customer-owner",
+      "invariant": "Ownership and nested photo/item membership; full state guards, submission key, private files; final offer equality; never restore old login access",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/store/buyback/requests/[id]/photos",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/photos/route.ts",
+      "line": 5,
+      "source_sha256": "2c85a26757d6123386271b82d90481a8c2a0bb665f004ca1f1054c3e07ad9c48",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 11
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/store/buyback/requests/{}/photos",
+      "task": "T051",
+      "identity": "new-customer-owner",
+      "invariant": "Ownership and nested photo/item membership; full state guards, submission key, private files; final offer equality; never restore old login access",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/buyback/requests/[id]",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/route.ts",
+      "line": 6,
+      "source_sha256": "f0998a70cf89cf314e714255f38d87eceb57296b7803355bdcb1c13920238c17",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 8
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/buyback/requests/{}",
+      "task": "T051",
+      "identity": "new-customer-owner",
+      "invariant": "Ownership and nested photo/item membership; full state guards, submission key, private files; final offer equality; never restore old login access",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/store/buyback/requests/[id]",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/route.ts",
+      "line": 10,
+      "source_sha256": "f0998a70cf89cf314e714255f38d87eceb57296b7803355bdcb1c13920238c17",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 10
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/store/buyback/requests/{}",
+      "task": "T051",
+      "identity": "new-customer-owner",
+      "invariant": "Ownership and nested photo/item membership; full state guards, submission key, private files; final offer equality; never restore old login access",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/buyback/requests",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/requests/route.ts",
+      "line": 9,
+      "source_sha256": "f38209923e67277a6a77f3d184f54a196d0ceba911d0b1f869679de7f980dcd4",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 7
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/buyback/requests",
+      "task": "T051",
+      "identity": "new-customer-owner",
+      "invariant": "Ownership and nested photo/item membership; full state guards, submission key, private files; final offer equality; never restore old login access",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/store/buyback/requests",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/requests/route.ts",
+      "line": 16,
+      "source_sha256": "f38209923e67277a6a77f3d184f54a196d0ceba911d0b1f869679de7f980dcd4",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 9
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/store/buyback/requests",
+      "task": "T051",
+      "identity": "new-customer-owner",
+      "invariant": "Ownership and nested photo/item membership; full state guards, submission key, private files; final offer equality; never restore old login access",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/custom",
+      "source": "medusa-store/apps/backend/src/api/store/custom/route.ts",
+      "line": 3,
+      "source_sha256": "b91decad25963549edaf66214e2427bd67feab9fb0f45c98bdb494960851ad9b",
+      "design_references": [],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/custom",
+      "task": "T014",
+      "identity": "public-store-context",
+      "invariant": "Source only sends HTTP 200, no business query or mutation. Preserve bounded compatibility behavior; do not infer catalog, account or checkout implementation from it.",
+      "design_kind": "explicit-supplement"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/customer-service",
+      "source": "medusa-store/apps/backend/src/api/store/customer-service/route.ts",
+      "line": 4,
+      "source_sha256": "5b306fdc9fd4c357c09721534b2033021a32943b6519063d92ac09463043080a",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 22
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/customer-service",
+      "task": "T058",
+      "identity": "public-store-context",
+      "invariant": "Public setting allowlist; no credentials or private source paths; preserve SEO artifact/page overrides and current fallback behavior",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/notifications",
+      "source": "medusa-store/apps/backend/src/api/store/notifications/route.ts",
+      "line": 7,
+      "source_sha256": "cba3a08dae5069715249ae2a04025b09a0bd7f36f2ac01b407ecd4cc00b47858",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 27
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/notifications",
+      "task": "T057",
+      "identity": "new-customer-owner",
+      "invariant": "List/read updates scoped to current new customer; no cross-user ID updates; old subject inbox not inherited",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/store/notifications",
+      "source": "medusa-store/apps/backend/src/api/store/notifications/route.ts",
+      "line": 17,
+      "source_sha256": "cba3a08dae5069715249ae2a04025b09a0bd7f36f2ac01b407ecd4cc00b47858",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 28
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/store/notifications",
+      "task": "T057",
+      "identity": "new-customer-owner",
+      "invariant": "List/read updates scoped to current new customer; no cross-user ID updates; old subject inbox not inherited",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/orders/[id]/after-sales",
+      "source": "medusa-store/apps/backend/src/api/store/orders/[id]/after-sales/route.ts",
+      "line": 9,
+      "source_sha256": "0dc0621a1473d0e2a3e084776b20c09c19c6dda956125929f641894e231d76b9",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 4
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/orders/{}/after-sales",
+      "task": "T034",
+      "identity": "new-customer-owner",
+      "invariant": "Check order ownership first, then child items/device/request membership; exact totals and public timeline fields; no historical auto-claim or internal cost/provider data",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/store/orders/[id]/after-sales",
+      "source": "medusa-store/apps/backend/src/api/store/orders/[id]/after-sales/route.ts",
+      "line": 20,
+      "source_sha256": "0dc0621a1473d0e2a3e084776b20c09c19c6dda956125929f641894e231d76b9",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 5
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/store/orders/{}/after-sales",
+      "task": "T034",
+      "identity": "new-customer-owner",
+      "invariant": "Check order ownership first, then child items/device/request membership; exact totals and public timeline fields; no historical auto-claim or internal cost/provider data",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/orders/[id]/devices",
+      "source": "medusa-store/apps/backend/src/api/store/orders/[id]/devices/route.ts",
+      "line": 6,
+      "source_sha256": "fdc7e2dcd7e52ec70e9ca02ad6a791cedc9ddd360f643e45a157850c1539ffc9",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 3
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/orders/{}/devices",
+      "task": "T034",
+      "identity": "new-customer-owner",
+      "invariant": "Check order ownership first, then child items/device/request membership; exact totals and public timeline fields; no historical auto-claim or internal cost/provider data",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/orders/[id]/product-reviews",
+      "source": "medusa-store/apps/backend/src/api/store/orders/[id]/product-reviews/route.ts",
+      "line": 6,
+      "source_sha256": "c8290ce1921f904ba0e9b1bb11b3fb0ca71519744564dea0f17e45aef8a67424",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 38
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/orders/{}/product-reviews",
+      "task": "T034",
+      "identity": "new-customer-owner",
+      "invariant": "Check order ownership first, then child items/device/request membership; exact totals and public timeline fields; no historical auto-claim or internal cost/provider data",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/orders/[id]/timeline",
+      "source": "medusa-store/apps/backend/src/api/store/orders/[id]/timeline/route.ts",
+      "line": 7,
+      "source_sha256": "f45a91fd64dc2d92074c459e71c9164159b0788edffeb40241563704159d5d8d",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 29
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/orders/{}/timeline",
+      "task": "T034",
+      "identity": "new-customer-owner",
+      "invariant": "Check order ownership first, then child items/device/request membership; exact totals and public timeline fields; no historical auto-claim or internal cost/provider data",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/store/payment-collections/[id]/payment-sessions",
+      "source": "medusa-store/apps/backend/src/api/store/payment-collections/[id]/payment-sessions/route.ts",
+      "line": 6,
+      "source_sha256": "e16e4ea5c03f4e8f2f2746c3ce6ad97bf38f8a5ddc64ffc9bd1f623f5f5f7dcf",
+      "design_references": [],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/store/carts/{cart_id}/payment-attempts",
+      "task": "T035",
+      "identity": "cart-possession-or-owner",
+      "invariant": "Replace arbitrary collection addressing with owned cart. Source resumes Mollie hosted session before creating one; preserve safe resume while binding attempt to current cart version, exact amount/currency and allowed region/provider. Reject production manual provider, whitelist provider data and browser DTO; no merchant secrets. Durable operation key, Origin/CSRF, provider reconciliation and unique active-attempt policy; old collection ID is not a bearer capability.",
+      "design_kind": "explicit-supplement"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/product-reviews/purchases",
+      "source": "medusa-store/apps/backend/src/api/store/product-reviews/purchases/route.ts",
+      "line": 14,
+      "source_sha256": "6929b9edd132c1e5e1a270ab143a81884af2260fb4e9362ca217680e25845f86",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 37
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/product-reviews/purchases",
+      "task": "T054",
+      "identity": "public-approved-or-new-customer-write",
+      "invariant": "GET approved public DTO only; purchases and POST require new customer ownership; server derives author/verified flag, active unique customer/product",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/product-reviews",
+      "source": "medusa-store/apps/backend/src/api/store/product-reviews/route.ts",
+      "line": 8,
+      "source_sha256": "fcf0a1f9c43c8f71a3a3c85a8caf2ff10051719efc70d0cd0dbdd6411a756a0a",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 35
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/product-reviews",
+      "task": "T054",
+      "identity": "public-approved-or-new-customer-write",
+      "invariant": "GET approved public DTO only; purchases and POST require new customer ownership; server derives author/verified flag, active unique customer/product",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/store/product-reviews",
+      "source": "medusa-store/apps/backend/src/api/store/product-reviews/route.ts",
+      "line": 25,
+      "source_sha256": "fcf0a1f9c43c8f71a3a3c85a8caf2ff10051719efc70d0cd0dbdd6411a756a0a",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 36
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "POST",
+      "new_path": "/api/store/product-reviews",
+      "task": "T054",
+      "identity": "public-approved-or-new-customer-write",
+      "invariant": "GET approved public DTO only; purchases and POST require new customer ownership; server derives author/verified flag, active unique customer/product",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/seo/pages",
+      "source": "medusa-store/apps/backend/src/api/store/seo/pages/route.ts",
+      "line": 3,
+      "source_sha256": "13828f2d011d92e08a5385c5a06fb6551204091affede4a0e96b8ff4d4d33615",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 2
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/seo/pages",
+      "task": "T058",
+      "identity": "public-store-context",
+      "invariant": "Public setting allowlist; no credentials or private source paths; preserve SEO artifact/page overrides and current fallback behavior",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/seo",
+      "source": "medusa-store/apps/backend/src/api/store/seo/route.ts",
+      "line": 4,
+      "source_sha256": "e0aa64b9fb02348211d931ef8b9732ae6cf35bd7cb2387843b4c257f5a4bdd97",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 42
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/seo",
+      "task": "T058",
+      "identity": "public-store-context",
+      "invariant": "Public setting allowlist; no credentials or private source paths; preserve SEO artifact/page overrides and current fallback behavior",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/shipping-demo/dhl",
+      "source": "medusa-store/apps/backend/src/api/store/shipping-demo/dhl/route.ts",
+      "line": 4,
+      "source_sha256": "23197ee074b22e4702298ad32a3df36a2cc801114087ef3dc443411b1d37fc2e",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 47
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/shipping-demo/dhl",
+      "task": "T059",
+      "identity": "explicit-demo-fixture-only",
+      "invariant": "Development fixture boundary, never anonymous arbitrary real order tracking; production behavior explicitly gated",
+      "design_kind": "linked-reviewed-design"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/store/shipping-demo/orders/[id]",
+      "source": "medusa-store/apps/backend/src/api/store/shipping-demo/orders/[id]/route.ts",
+      "line": 6,
+      "source_sha256": "67fb262a2635b05f9b17f3ab2d3e00adcc8e2668e4e147ebe760de87cadf30f2",
+      "design_references": [
+        {
+          "file": "http-caller-contract.json",
+          "collection": "calls",
+          "index": 32
+        }
+      ],
+      "status": "designed-not-implemented",
+      "remaining": "Exact new schemas/errors, action/resource discriminators, native handler internals, isolated authorization/transaction/UI tests; no runtime acceptance",
+      "new_method": "GET",
+      "new_path": "/api/store/shipping-demo/orders/{}",
+      "task": "T059",
+      "identity": "explicit-demo-fixture-only",
+      "invariant": "Development fixture boundary, never anonymous arbitrary real order tracking; production behavior explicitly gated",
+      "design_kind": "linked-reviewed-design"
+    }
+  ]
+}

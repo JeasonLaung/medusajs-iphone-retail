@@ -12,6 +12,7 @@
 | 输入验证/SDK去向 | [请求结构、精度适配与Gin草稿差距](request-validation-and-sdk-contract.md)、schemas/legacy-request-inputs.json、fixtures/legacy-request-validation.json、storefront-sdk-contract.json |
 | 直接HTTP去向 | [108个候选与动态封装](http-caller-contract.md)、http-caller-manifest.json、http-caller-contract.json |
 | 能力/下载/邮件回调 | [11个入口与签名/状态规则](capability-entrypoints.md)、capability-entrypoint-contract.json、fixtures/legacy-capability-rules.json |
+| 自定义路由逐方法 | [67文件86方法及十项补充](custom-route-contract.md)、custom-route-contract.json |
 | 自定义业务 | [设备命令及固定用例](device-commands.md)、[回收与邮件](buyback-and-mail.md)、[SEO 与引用监测](seo-contract.md) |
 | 统计 | [Analytics 实际口径](analytics-contract.md) |
 | 数据继承 | [源数据去向与转换](data-mapping.md)、[第一批36表292列设计](catalog-field-design.md)、catalog-field-mapping.json/.csv、catalog-preflight-report.json、data-table-disposition.csv、data-source-manifest.json |
@@ -37,6 +38,7 @@ node retail/scripts/inventory-http-callers.cjs --check
 python retail/scripts/map-http-caller-contract.py --check
 node retail/scripts/capture-capability-rules.cjs --check
 python retail/scripts/map-capability-entrypoints.py --check
+python retail/scripts/map-custom-route-contract.py --check
 python retail/scripts/capture-schema-constraints.py --check
 python retail/scripts/map-catalog-fields.py --check
 python retail/scripts/preflight-catalog-mapping.py --bundle logs/gin-migration/source-20261026.json
