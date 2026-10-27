@@ -1,6 +1,6 @@
 # 历史付款主体专用转换
 
-2026-10-27。`rowimport.AccountHolderHistory` 处理源 `account_holder` 到 `payment_account_holders` 的完整九列转换，结果见 [account-holder-conversion-report.json](account-holder-conversion-report.json)。当前是内存转换和读取组件，没有 SQL 导入、操作账本或运行时授权实现。
+2026-10-27。`rowimport.AccountHolderHistory` 处理源 `account_holder` 到 `payment_account_holders` 的完整九列转换，结果见 [account-holder-conversion-report.json](account-holder-conversion-report.json)。此报告只覆盖内存转换；另有[原子SQL组件](account-holder-import.md)及人工MySQL验证，真实SQL和运行时授权仍缺。
 
 本地已安装 Medusa payment 2.21.2 的 `models/account-holder.js` 定义 provider_id/external_id、可空 email、默认空 data 和可空 metadata。`providers/system.js` 的 createAccountHolder 返回旧 `input.context.customer.id` 作为 provider 主体 ID，`services/payment-module.js` 再写到 external_id 并复制旧客户 email。因此，这行外部引用可能等于旧客户 ID，保留它是历史来源证据，绝不能按该 ID 或邮箱给新登录账号恢复付款绑定。
 
@@ -20,4 +20,4 @@
 python retail/scripts/audit-account-holder.py --snapshot logs/gin-migration/source-v2-20261027-payment-rows.ndjson
 ```
 
-剩余：完整唯一登记及原子 SQL hold、真实 SQL 持久化/回滚/重放、其他 provider 非空资料审查、持久密钥管理、读取授权、正式导入组合/恢复和 worker/Gin 付款运行时。支付 context 的顶层交易主体证据与本表不是同一存储路径，不能拿一项验证替代另一项。T006/T018 仍未验收。
+完整唯一登记及原子SQL hold已有专用组件并通过人工MySQL验证。剩余：真实 SQL 持久化/回滚/重放、其他 provider 非空资料审查、持久密钥管理、读取授权、正式导入组合/恢复和 worker/Gin 付款运行时。支付 context 的顶层交易主体证据与本表不是同一存储路径，不能拿一项验证替代另一项。T006/T018 仍未验收。

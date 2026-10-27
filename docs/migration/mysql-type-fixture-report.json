@@ -350,7 +350,7 @@
     "Concurrency, failure recovery, Gin and UI behavior"
   ],
   "go_registry_fixture": {
-    "binary_sha256": "da233e29188f7a5e0efd0959db382f5a539c6bda88b58417704160f3d5803199",
+    "binary_sha256": "78e4a57457739b742ce5659da99fa3b0a128237651ffd8b124f5387343ef0cb4",
     "passed_tests": [
       "TestTupleEncoding",
       "TestRegistryMySQL",
@@ -406,6 +406,16 @@
       "TestSourcePredicateBoundaries",
       "TestTypedInputDoesNotNormalize",
       "TestHistoricalCustomerAndTaxKeys",
+      "TestHolderImportRejectsUnreviewedCalls",
+      "TestHolderImportMySQL",
+      "TestHolderImportMySQL/row_hold_and_long_identity_atomic_rollback",
+      "TestHolderImportMySQL/commit_exact_replay_rotation_and_null_provenance",
+      "TestHolderImportMySQL/eight_way_same_actor_replay",
+      "TestHolderImportMySQL/identity_conflicts_and_exact_no_pad_values",
+      "TestHolderImportMySQL/eight_way_competing_external_identity_has_one_winner",
+      "TestHolderImportMySQL/source_snapshot_ordinary_target_and_valid_reseal_conflicts",
+      "TestHolderImportMySQL/business_failure_rolls_back_identity_and_hold",
+      "TestHolderImportMySQL/missing_target_missing_hold_and_release_denied",
       "TestMerchantFixtureConversion",
       "TestMerchantImportMySQL",
       "TestMerchantImportMySQL/all_seven_row_hold_and_identity_rollback",

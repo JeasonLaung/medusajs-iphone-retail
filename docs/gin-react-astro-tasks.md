@@ -243,6 +243,8 @@
 
 2026-10-27付款主体补充：[account_holder专用转换](migration/account-holder-conversion.md)核对已安装2.21.2 system provider以旧customer.id作external_id，不按ID/邮箱恢复新客户绑定。真实1行在完整v2校验后完成九列转换、保护空JSON往返、SQL NULL及错行拒绝，专用结果要求历史操作hold；普通/商户入口拒绝绕过。原子SQL hold/唯一登记、真实持久化、provider/worker运行时仍缺。全量值报告相应更新为45行要求历史处置（与保护值计数有重叠），不验收领域。
 
+2026-10-27付款主体SQL补充：[原子入口](migration/account-holder-import.md)在调用者事务中暂存九列历史主体、固定hold及完整provider/external_id唯一声明；人工MySQL验证NULL/JSON、原密文重放、轮换读取、冲突/缺目标拒绝、业务失败回滚、八路重放及同外部身份竞争仅一胜。真实SQL、正式组合/恢复、密钥保管及worker/Gin运行时仍缺，不恢复旧账号绑定，不验收领域。
+
 当前正在执行 **T001/T002：补齐全量业务清单**，T003 页面基线随后接入；不是继续扩充框架草稿。
 
 底座完成后，先做商品闭环样板，再客户和交易，再设备售后、回收运营，最后全量对账。独立任务可以交错，但任何写操作上线前必须具备其权限、事务、幂等和迁移依赖。
