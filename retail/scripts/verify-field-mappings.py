@@ -16,7 +16,7 @@ def main():
     columns = {(t['source_table'], c['column_name']): c for t in manifest['tables'] for c in t['columns']}
     seen, tables = set(), set()
     reports = {}
-    for domain in ('catalog', 'inventory-device', 'commerce', 'checkout-rules'):
+    for domain in ('catalog', 'inventory-device', 'commerce', 'checkout-rules', 'operations'):
         path = OUT / f'{domain}-field-mapping.json'
         mapping = json.loads(path.read_text(encoding='utf-8-sig'))
         assert mapping['source_manifest_sha256'] == digest(OUT / 'data-source-manifest.json'), 'Stale source schema hash'

@@ -1,0 +1,17 @@
+{
+  "format_version": 1,
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "scope": "Custom business graph and migration hold counts only; not key decryption, file integrity, provider evidence, historical email body token removal or runtime acceptance",
+  "checks": {
+    "buyback_item_membership": 6,
+    "buyback_item_shapes": 1,
+    "mail_attempt_boundary": 2,
+    "product_review_rating": 1
+  },
+  "blocking_findings": {},
+  "migration_holds": {
+    "legacy_registration_mail_never_replay": 2,
+    "private_photo_files_require_manifest_and_checksum": 6
+  },
+  "disposition": "Preserve business and consent history. Hold imported jobs separately without rewriting source statuses; old identity mail never replays. No file reads, external requests, emails or source writes."
+}

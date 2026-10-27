@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle", required=True)
-    parser.add_argument("--domain", choices=["catalog", "inventory-device", "commerce", "checkout-rules"], default="catalog")
+    parser.add_argument("--domain", choices=["catalog", "inventory-device", "commerce", "checkout-rules", "operations"], default="catalog")
     args = parser.parse_args()
     bundle_path = Path(args.bundle).resolve()
     ignored = subprocess.run(["git", "check-ignore", "--quiet", str(bundle_path)], cwd=ROOT, capture_output=True)
@@ -34,7 +34,7 @@ def main():
             raise ValueError("Field mapping evidence is stale; regenerate and review before preflight")
     fields = mapping["fields"]
     source_by_target = {t["target_table"]: t["source_table"] for t in mapping["tables"]}
-    for related in ("catalog", "inventory-device", "commerce", "checkout-rules"):
+    for related in ("catalog", "inventory-device", "commerce", "checkout-rules", "operations"):
         related_mapping = json.loads((ROOT / "docs/migration" / f"{related}-field-mapping.json").read_text(encoding="utf-8-sig"))
         source_by_target.update({t["target_table"]: t["source_table"] for t in related_mapping["tables"]})
     source_by_target.update({"inventory_items": "inventory_item", "inventory_locations": "stock_location",
@@ -63,7 +63,7 @@ def main():
                 if not field["nullable"]:
                     fail(field, "unexpected_null")
                 continue
-            if transform in {"identity_string", "binary_text", "code_string", "utf8_text", "historical_subject_ref", "device_identity_text", "enum_text"}:
+            if transform in {"identity_string", "binary_text", "code_string", "utf8_text", "historical_subject_ref", "device_identity_text", "enum_text", "protected_string"}:
                 if not isinstance(value, str):
                     fail(field, "expected_string")
                     continue

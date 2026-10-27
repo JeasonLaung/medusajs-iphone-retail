@@ -1,0 +1,16 @@
+{
+  "format_version": 1,
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "mapping_sha256": "02e8348f1fe6101680769bbbaa516c306320d530739e24eae1c0e9e3ee5b5335",
+  "scope": "Source snapshot scalar type/length/precision/raw-pair/reference preflight only; not MySQL import, active uniqueness, semantic joins, public DTO or JSON lexical acceptance",
+  "tables": 24,
+  "fields": 308,
+  "checks": {
+    "field_values": 802,
+    "references_including_soft_deleted": 72,
+    "raw_scalar_pairs": 61
+  },
+  "failures": {},
+  "historical_unresolved_references": {},
+  "history_disposition": "Preserve raw legacy reference in history plus nullable resolved reference; no fabricated entity or new-login FK; unresolved history is not relational acceptance"
+}

@@ -22,7 +22,7 @@
 | migrate-sequence | 2 | 保留订单逻辑时钟及 ERP SKU 计数位置 |
 | review-provider-history | 1 | PayPal metrics 的用途和重报风险单独核对 |
 
-所有表已有初步分类，无默认忽略；原始元数据清单的 status 保持 mapping-pending，单独的领域字段设计才记录设计进度。[目录及配置](catalog-field-design.md)36表292列、[库存/设备/售后](inventory-device-field-design.md)12表139列、[订单/付款/履约/退回](commerce-field-design.md)42表523列、[购物车/促销/税/配送](checkout-rules-field-design.md)33表321列，累计123表1,275列，其余70表686列未展开。T006 验收还需要全域逐字段目标、约束、关系、默认值、导入顺序和对账断言，不能因分类齐全就标记完成。
+所有表已有初步分类，无默认忽略；原始元数据清单的 status 保持 mapping-pending，单独的领域字段设计才记录设计进度。[目录及配置](catalog-field-design.md)36表292列、[库存/设备/售后](inventory-device-field-design.md)12表139列、[订单/付款/履约/退回](commerce-field-design.md)42表523列、[购物车/促销/税/配送](checkout-rules-field-design.md)33表321列、[回收/邮件/SEO/通知](operations-field-design.md)24表308列，累计147表1,583列，其余46表378列未展开。T006 验收还需要全域逐字段目标、约束、关系、默认值、导入顺序和对账断言，不能因分类齐全就标记完成。
 
 ## 关键字段转换
 
@@ -69,3 +69,5 @@
 第三批commerce-field-mapping.json/.csv覆盖42表523列；commerce-preflight-report.json与commerce-semantic-report.json记录9类256个未解析引用值，影响162行且有未软删除记录，预检/审计退出1。当前103项付款实收/退款/版本检查无额外差异，9个人工审计用例通过，但全交易尚未对账。保留孤儿历史与外部引用，不假造订单或自动重放支付，详见交易字段设计。
 
 第四批checkout-rules-field-mapping.json/.csv覆盖33表321列，预检4,729字段值、106 raw配对、543引用通过。购物车分类13已完成、1未完带付款历史、38无关联付款集合；不恢复旧身份、不自动清理在途引用。verify-field-mappings.py核对各批不重叠、全列覆盖、类型/NULL及报告哈希，明确输出既有失败；该完整性命令成功不等于业务对账通过。
+
+第五批operations-field-mapping.json/.csv覆盖24表308列，累计147表1,583列，剩余46表378列。预检802字段值、61 raw配对、72引用通过，10项自定义语义检查无失败；2封旧注册验证邮件禁止重放且导入前清除旧认证capability，6张私有照片待清单/哈希验证。凭据只核对源类型，密文解密及重加密尚未演练；邮件、SEO与通知演练无外部副作用。详见[运营字段设计](operations-field-design.md)。
