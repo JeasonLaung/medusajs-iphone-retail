@@ -1,6 +1,6 @@
 # 长文本完整值唯一登记组件
 
-日期：2026-10-27。`retail/backend/internal/uniquekey` 与独立 SQL `0002_unique_key_registry.sql` 是目标 Go 组件，28项源键已固定适配计划，尚未接入生产领域命令及导入器；这些索引继续hold。它不替代数据库关系审查稿，也不说明现有0001草稿已符合全量字段设计。应用启动不建表。
+日期：2026-10-27。`retail/backend/internal/uniquekey` 与独立 SQL `0002_unique_key_registry.sql`、`0003_unique_key_secret_scopes.sql` 是目标 Go 组件，28项源键已固定适配计划，尚未接入生产领域命令及导入器；这些索引继续hold。它不替代数据库关系审查稿，也不说明现有0001草稿已符合全量字段设计。应用启动不建表。
 
 ## 源键适配
 
@@ -8,7 +8,7 @@
 
 `SourceChanges`消费内部目标行投影并一次生成该表全部登记变化，`ApplySourceRow`在调用者事务内执行。不能直接绑定公开请求；缺失key/owner/参与条件字段失败，显式NULL只按可NULL字段接受；布尔false保留为独立值，数值不自动转字符串，时间字符串须有效且不超微秒，拒绝无效UTF-8或未配对UTF-16 surrogate，避免JSON解码替换造成身份合并。空字符串/尾空格/大小写原文保留。输入全行业务验证、字段最大长度、锁和版本仍由领域命令负责。
 
-27项有普通文本/布尔适配；另1项mail_contact.unsubscribe_token是受保护信封，明确ErrProtected，不能把令牌明文写进登记表或按随机密文比较。由于一个mail_contacts行同时有email和token唯一性，该表两项整组拒绝，当前可调用的是其他26项，email适配亦不能单独绕过token。受保护完整值比较/重加密仍待实现。
+27项有普通文本/布尔适配，另1项mail_contact.unsubscribe_token通过SecretRegistry专用适配处理。普通SourceChanges/ApplySourceRow对mail_contacts仍整组返回ErrProtected，普通Apply禁止受保护scope。SecretRegistry.ApplySourceRow要求单独传入绑定business-capability/mail_contacts/unsubscribe_token/owner的业务密文，拒绝在普通行投影中传token，内部解密后将email与token两项登记一起执行。专用路径已在人工MySQL验证，未接入真实业务HTTP/导入入口；细节见[受保护索引协议](protected-unique-index.md)。
 
 历史customer键使用目标`legacy_had_account`而非新登录状态，只有历史业务身份约束，没有创建账号、授予权限或邮箱绑定行为。税区两项条件保留province=NULL与非NULL/空串区别；exclusive商品选项不参与全局标题唯一。软删除行仍要求完整投影，不以跳过缺失字段隐藏导入损坏。
 
@@ -42,4 +42,4 @@ python retail/scripts/test-mysql-types.py --registry-test-binary logs/gin-migrat
 
 ## 仍须完成
 
-受保护token完整比较方案；全部写入、软删除、恢复、并发命令与导入器在同事务调用；基于快照重建、冲突对账与不一致检测；业务版本/权限及幂等；正式迁移执行器校验和和恢复。直接SQL写源映射表不会被登记表自动拦截，必须限制写入路径并验证完整覆盖。在这些完成前，不能宣称28项源唯一约束已迁移，T006/T012/T018均未验收。
+受保护HMAC索引的独占重建/轮换及配置恢复；全部写入、软删除、恢复、并发命令与导入器在同事务调用；基于快照重建、冲突对账与不一致检测；业务版本/权限及幂等；正式迁移执行器校验和和恢复。直接SQL写源映射表不会被登记表自动拦截，必须限制写入路径并验证完整覆盖。在这些完成前，不能宣称28项源唯一约束已迁移，T006/T012/T018均未验收。

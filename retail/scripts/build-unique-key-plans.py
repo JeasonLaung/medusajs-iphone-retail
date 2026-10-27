@@ -57,7 +57,7 @@ def main():
         plans.append({'source_table': index['source_table'], 'source_index': index['index_name'],
                       'source_definition': index['definition'], 'target_table': fields[index['source_table'], 'id']['target_table'],
                       'scope': scope, 'owner': members[0], 'keys': members[1:], 'conditions': conditions,
-                      'protected': protected, 'status': 'blocked-protected-value-comparator' if protected else 'adapter-not-connected-to-domain-writers'})
+                      'protected': protected, 'status': 'requires-secret-registry-and-domain-writer-integration' if protected else 'adapter-not-connected-to-domain-writers'})
     assert len(plans) == 28 and sum(plan['protected'] for plan in plans) == 1
     assert len({plan['scope'] for plan in plans}) == len(plans)
     report = {'version': 1, 'source_hashes': {path.name: hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest() for path in paths}, 'plans': plans}
@@ -66,7 +66,7 @@ def main():
         assert OUTPUT.read_text(encoding='utf-8').replace('\r\n', '\n') == content, 'Registry adapter plans drift'
     else:
         OUTPUT.write_text(content, encoding='utf-8')
-    print('28 source plans; 27 typed adapters; 1 protected comparator blocked; no business rows read')
+    print('28 source plans; 27 ordinary adapters; 1 authenticated protected adapter; domain writers pending; no business rows read')
 
 
 if __name__ == '__main__':

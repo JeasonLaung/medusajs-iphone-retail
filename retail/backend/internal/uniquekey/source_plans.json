@@ -318,7 +318,7 @@
         }
       ],
       "protected": true,
-      "status": "blocked-protected-value-comparator"
+      "status": "requires-secret-registry-and-domain-writer-integration"
     },
     {
       "source_table": "notification",

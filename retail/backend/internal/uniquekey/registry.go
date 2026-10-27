@@ -74,6 +74,31 @@ func Apply(ctx context.Context, tx *sql.Tx, changes []Change) error {
 
 // hash is injectable internally only so tests can force actual collisions.
 func apply(ctx context.Context, tx *sql.Tx, changes []Change, hash func([]byte) [32]byte) error {
+	return applyCodec(ctx, tx, changes, plainCodec{hash})
+}
+
+type valueCodec interface {
+	prepare(context.Context, *sql.Tx, []claim) error
+	digest(string, []byte) [32]byte
+	seal(string, string, []byte) ([]byte, error)
+	open(string, string, []byte) ([]byte, error)
+}
+
+type plainCodec struct{ hash func([]byte) [32]byte }
+
+func (p plainCodec) prepare(_ context.Context, _ *sql.Tx, claims []claim) error {
+	for _, c := range claims {
+		if protectedScope(c.scope) {
+			return ErrProtected
+		}
+	}
+	return nil
+}
+func (p plainCodec) digest(_ string, value []byte) [32]byte         { return p.hash(value) }
+func (p plainCodec) seal(_, _ string, value []byte) ([]byte, error) { return value, nil }
+func (p plainCodec) open(_, _ string, value []byte) ([]byte, error) { return value, nil }
+
+func applyCodec(ctx context.Context, tx *sql.Tx, changes []Change, codec valueCodec) error {
 	if tx == nil {
 		return ErrInvalid
 	}
@@ -94,7 +119,7 @@ func apply(ctx context.Context, tx *sql.Tx, changes []Change, hash func([]byte) 
 			return err
 		}
 		if change.Active && value != nil {
-			c.value, c.digest = value, hash(value)
+			c.value, c.digest = value, codec.digest(c.scope, value)
 		}
 		claims = append(claims, c)
 	}
@@ -104,6 +129,9 @@ func apply(ctx context.Context, tx *sql.Tx, changes []Change, hash func([]byte) 
 		}
 		return claims[i].owner < claims[j].owner
 	})
+	if err := codec.prepare(ctx, tx, claims); err != nil {
+		return err
+	}
 	type bucket struct {
 		scope  string
 		digest [32]byte
@@ -163,14 +191,20 @@ func apply(ctx context.Context, tx *sql.Tx, changes []Change, hash func([]byte) 
 		if c.value == nil {
 			continue
 		}
-		rows, err := tx.QueryContext(ctx, "SELECT full_value FROM unique_key_claims WHERE scope=? AND digest=? FOR UPDATE", c.scope, c.digest[:])
+		rows, err := tx.QueryContext(ctx, "SELECT owner,full_value FROM unique_key_claims WHERE scope=? AND digest=? FOR UPDATE", c.scope, c.digest[:])
 		if err != nil {
 			return ErrStorage
 		}
 		conflict, failed := false, false
 		for rows.Next() {
 			var value []byte
-			if rows.Scan(&value) != nil {
+			var owner string
+			if rows.Scan(&owner, &value) != nil {
+				failed = true
+				break
+			}
+			value, err = codec.open(c.scope, owner, value)
+			if err != nil {
 				failed = true
 				break
 			}
@@ -190,7 +224,11 @@ func apply(ctx context.Context, tx *sql.Tx, changes []Change, hash func([]byte) 
 		if conflict {
 			return ErrConflict
 		}
-		if _, err := tx.ExecContext(ctx, "INSERT INTO unique_key_claims(scope,owner,digest,full_value) VALUES(?,?,?,?)", c.scope, c.owner, c.digest[:], c.value); err != nil {
+		stored, err := codec.seal(c.scope, c.owner, c.value)
+		if err != nil {
+			return ErrProtected
+		}
+		if _, err := tx.ExecContext(ctx, "INSERT INTO unique_key_claims(scope,owner,digest,full_value) VALUES(?,?,?,?)", c.scope, c.owner, c.digest[:], stored); err != nil {
 			return ErrStorage
 		}
 	}

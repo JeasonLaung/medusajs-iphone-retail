@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"os"
 	"strings"
@@ -52,14 +53,16 @@ func TestRegistryMySQL(t *testing.T) {
 	db.SetMaxOpenConns(12)
 	ctx, cancel := context.WithTimeout(context.Background(), 45*time.Second)
 	defer cancel()
-	ddl, err := migrations.Files.ReadFile("0002_unique_key_registry.sql")
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, stmt := range strings.Split(string(ddl), ";") {
-		if strings.TrimSpace(stmt) != "" {
-			if _, err := db.ExecContext(ctx, stmt); err != nil {
-				t.Fatal("fixture DDL failed", err)
+	for _, filename := range []string{"0002_unique_key_registry.sql", "0003_unique_key_secret_scopes.sql"} {
+		ddl, err := migrations.Files.ReadFile(filename)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, stmt := range strings.Split(string(ddl), ";") {
+			if strings.TrimSpace(stmt) != "" {
+				if _, err := db.ExecContext(ctx, stmt); err != nil {
+					t.Fatal("fixture DDL failed", err)
+				}
 			}
 		}
 	}
@@ -296,6 +299,156 @@ func TestRegistryMySQL(t *testing.T) {
 		}
 		if _, err = onlyNew.Open(binding, stored); err != protected.ErrEnvelope {
 			t.Fatal("SQL NULL treated as empty secret")
+		}
+	})
+	t.Run("protected_source_claims_hmac_envelopes_and_fail_closed", func(t *testing.T) {
+		ring, _ := protected.New("enc1", map[string][]byte{"enc1": bytes.Repeat([]byte{3}, 32)})
+		registry, _ := NewSecretRegistry(ring, "idx1", bytes.Repeat([]byte{4}, 32))
+		var document struct {
+			Plans []sourcePlan `json:"plans"`
+		}
+		if err := json.Unmarshal(sourcePlans, &document); err != nil {
+			t.Fatal(err)
+		}
+		scope := ""
+		for _, p := range document.Plans {
+			if p.Protected {
+				scope = p.Scope
+			}
+		}
+		if scope == "" {
+			t.Fatal("missing protected scope")
+		}
+		runSecret := func(s *SecretRegistry, owner, email, token string, deleted, commit bool) error {
+			tx, err := db.BeginTx(ctx, nil)
+			if err != nil {
+				return err
+			}
+			defer tx.Rollback()
+			var deletedAt any
+			if deleted {
+				deletedAt = "2026-10-27T00:00:00Z"
+			}
+			sealed, err := ring.Seal(protected.Context{Purpose: "business-capability", Table: "mail_contacts", Column: "unsubscribe_token", Row: owner}, []byte(token))
+			if err != nil {
+				return err
+			}
+			err = s.ApplySourceRow(ctx, tx, "mail_contacts", row(map[string]any{"id": owner, "email": email, "deleted_at": deletedAt}), map[string][]byte{"unsubscribe_token": sealed})
+			if err != nil {
+				return err
+			}
+			var sqlDeleted any
+			if deleted {
+				sqlDeleted = "2026-10-27 00:00:00"
+			}
+			_, err = tx.ExecContext(ctx, "INSERT INTO relational_fixture.mail_contacts(id,email,name,subscribed,consent_source,consent_at,suppressed,unsubscribe_token,created_at,updated_at,deleted_at) VALUES(?,?,'artificial',true,'fixture',NULL,false,?,'2026-10-27','2026-10-27',?) ON DUPLICATE KEY UPDATE email=?,unsubscribe_token=?,deleted_at=?", owner, email, sealed, sqlDeleted, email, sealed, sqlDeleted)
+			if err != nil {
+				return err
+			}
+			if commit {
+				return tx.Commit()
+			}
+			return nil
+		}
+		must := func(s *SecretRegistry, owner, email, token string, deleted bool) {
+			t.Helper()
+			if err := runSecret(s, owner, email, token, deleted, true); err != nil {
+				t.Fatal(err)
+			}
+		}
+		// Force HMAC collisions without exposing this switch outside the package.
+		registry.testDigest = func(string, []byte) [32]byte { return [32]byte{} }
+		must(registry, "secret-a", "a@fixture.test", "private artificial token A", false)
+		must(registry, "secret-b", "b@fixture.test", "private artificial token B", false)
+		if err := runSecret(registry, "secret-c", "c@fixture.test", "private artificial token A", false, true); err != ErrConflict {
+			t.Fatal("full secret duplicate accepted", err)
+		}
+		if err := runSecret(registry, "secret-c", "a@fixture.test", "private artificial token C", false, true); err != ErrConflict {
+			t.Fatal("email constraint skipped", err)
+		}
+		var stored []byte
+		if err := db.QueryRowContext(ctx, "SELECT full_value FROM unique_key_claims WHERE scope=? AND owner='secret-a'", scope).Scan(&stored); err != nil {
+			t.Fatal(err)
+		}
+		if bytes.Contains(stored, []byte("private artificial token")) {
+			t.Fatal("secret plaintext persisted")
+		}
+		opened, err := ring.Open(claimContext(scope, "secret-a"), stored)
+		if err != nil || !bytes.Contains(opened, []byte("private artificial token A")) {
+			t.Fatal("claim not encrypted", err)
+		}
+		wrong, _ := NewSecretRegistry(ring, "idx1", bytes.Repeat([]byte{5}, 32))
+		if err := runSecret(wrong, "secret-d", "d@fixture.test", "new-token", false, true); err != ErrProtected {
+			t.Fatal("wrong HMAC key silently changed bucket", err)
+		}
+		wrongID, _ := NewSecretRegistry(ring, "idx2", bytes.Repeat([]byte{4}, 32))
+		if err := runSecret(wrongID, "secret-d", "d@fixture.test", "new-token", false, true); err != ErrProtected {
+			t.Fatal("different HMAC ID accepted", err)
+		}
+		missingRing, _ := protected.New("enc2", map[string][]byte{"enc2": bytes.Repeat([]byte{6}, 32)})
+		missing, _ := NewSecretRegistry(missingRing, "idx1", bytes.Repeat([]byte{4}, 32))
+		if err := runSecret(missing, "secret-d", "d@fixture.test", "new-token", false, true); err != ErrProtected {
+			t.Fatal("missing envelope key accepted", err)
+		}
+		if err := runSecret(registry, "secret-d", "d@fixture.test", "rollback-token", false, false); err != nil {
+			t.Fatal(err)
+		}
+		must(registry, "secret-e", "e@fixture.test", "rollback-token", false)
+		must(registry, "secret-a", "a@fixture.test", "private artificial token A", true)
+		must(registry, "secret-c", "c@fixture.test", "private artificial token A", false)
+		if err := runSecret(registry, "secret-a", "a@fixture.test", "private artificial token A", false, true); err != ErrConflict {
+			t.Fatal("secret restore conflict escaped", err)
+		}
+		var domainToken []byte
+		if err := db.QueryRowContext(ctx, "SELECT unsubscribe_token FROM relational_fixture.mail_contacts WHERE id='secret-c'").Scan(&domainToken); err != nil {
+			t.Fatal(err)
+		}
+		plainToken, err := ring.Open(protected.Context{Purpose: "business-capability", Table: "mail_contacts", Column: "unsubscribe_token", Row: "secret-c"}, domainToken)
+		if err != nil || string(plainToken) != "private artificial token A" {
+			t.Fatal("domain secret not independently sealed", err)
+		}
+		var rolledBack int
+		if err := db.QueryRowContext(ctx, "SELECT COUNT(*) FROM relational_fixture.mail_contacts WHERE id='secret-d'").Scan(&rolledBack); err != nil || rolledBack != 0 {
+			t.Fatal("failed transaction persisted domain row")
+		}
+		var wg sync.WaitGroup
+		start := make(chan struct{})
+		outcomes := make(chan error, 8)
+		for i := 0; i < 8; i++ {
+			wg.Add(1)
+			go func(i int) {
+				defer wg.Done()
+				<-start
+				owner := "secret-race-" + string(rune('a'+i))
+				outcomes <- runSecret(registry, owner, owner+"@fixture.test", "concurrent-private-token", false, true)
+			}(i)
+		}
+		close(start)
+		wg.Wait()
+		close(outcomes)
+		winners := 0
+		for err := range outcomes {
+			if err == nil {
+				winners++
+			} else if err != ErrConflict {
+				t.Fatal("secret race failed unexpectedly", err)
+			}
+		}
+		if winners != 1 {
+			t.Fatal("secret concurrent uniqueness failed", winners)
+		}
+		// Ordinary registry calls may never write plaintext under the protected scope.
+		if err := run([]Change{change(scope, "bypass", "private")}, false, true); err != ErrProtected {
+			t.Fatal("plain bypass accepted", err)
+		}
+		// A corrupt candidate in the same bucket must fail, never skip a row.
+		corrupt := bytes.Clone(stored)
+		corrupt[len(corrupt)-1] ^= 1
+		if _, err := db.ExecContext(ctx, "UPDATE unique_key_claims SET full_value=? WHERE scope=? AND owner='secret-b'", corrupt, scope); err != nil {
+			t.Fatal(err)
+		}
+		if err := runSecret(registry, "secret-f", "f@fixture.test", "different-token", false, true); err != ErrStorage {
+			t.Fatal("corrupt candidate ignored", err)
 		}
 	})
 }

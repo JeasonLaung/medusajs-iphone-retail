@@ -121,6 +121,10 @@ func validSurrogates(raw []byte) bool {
 // persisting plaintext in the registry or comparing randomized ciphertext.
 // Historical customer predicates use legacy_had_account and grant no login.
 func SourceChanges(table string, row TargetRow) ([]Change, error) {
+	return sourceChanges(table, row, nil)
+}
+
+func sourceChanges(table string, row TargetRow, secret func(sourcePlan, string, sourceField) (*string, error)) ([]Change, error) {
 	var document struct {
 		Plans []sourcePlan `json:"plans"`
 	}
@@ -132,7 +136,7 @@ func SourceChanges(table string, row TargetRow) ([]Change, error) {
 		if plan.TargetTable != table {
 			continue
 		}
-		if plan.Protected {
+		if plan.Protected && secret == nil {
 			return nil, ErrProtected
 		}
 		owner, err := fieldValue(row, plan.Owner)
@@ -141,7 +145,12 @@ func SourceChanges(table string, row TargetRow) ([]Change, error) {
 		}
 		change := Change{Scope: plan.Scope, Owner: *owner, Active: true}
 		for _, field := range plan.Keys {
-			value, err := fieldValue(row, field)
+			var value *string
+			if plan.Protected {
+				value, err = secret(plan, *owner, field)
+			} else {
+				value, err = fieldValue(row, field)
+			}
 			if err != nil {
 				return nil, err
 			}
@@ -167,6 +176,21 @@ func SourceChanges(table string, row TargetRow) ([]Change, error) {
 		return nil, ErrInvalid
 	}
 	return changes, nil
+}
+
+func protectedScope(scope string) bool {
+	var document struct {
+		Plans []sourcePlan `json:"plans"`
+	}
+	if json.Unmarshal(sourcePlans, &document) != nil {
+		return true
+	}
+	for _, plan := range document.Plans {
+		if plan.Scope == scope {
+			return plan.Protected
+		}
+	}
+	return false
 }
 
 // ApplySourceRow joins registry changes to a caller-owned business transaction.
