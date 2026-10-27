@@ -45,4 +45,4 @@ node retail/scripts/test-paypal-secret-interop.cjs
 python retail/scripts/audit-paypal-config.py --snapshot logs/gin-migration/source-v2-20261027-payment-rows.ndjson
 ```
 
-仍缺其他设置section、商户配置hold的worker强制执行、真实配置SQL演练、密钥备份/恢复、读取权限及Gin provider运行时。固定快照没有实际非空分环境凭据，不能将人工转换验证称为真实商户验证。来源插件自动ensureSettingsDefaults、ensureWebhookRegistration等动作绝不在转换时调用。全部历史付款与原账号限制继续有效，T006/T018/T035不验收。
+新增[商户真实SQL演练](merchant-mysql-rehearsal.md)已将固定快照的两条PayPal配置与其他三条配置一起执行原子导入/hold/回滚/重放，临时库已清理。仍缺其他设置section、商户配置hold的worker强制执行、密钥备份/恢复、读取权限及Gin provider运行时。固定快照没有实际非空分环境凭据，不能将人工凭据转换验证称为真实商户凭据验证。来源插件自动ensureSettingsDefaults、ensureWebhookRegistration等动作绝不在转换时调用。全部历史付款与原账号限制继续有效，T006/T018/T035不验收。

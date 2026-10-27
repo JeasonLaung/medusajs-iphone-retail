@@ -22,4 +22,4 @@ Go 常规测试验证七表人工输入满足现有转换计划。隔离 MySQL 8
 
 运行方式沿用 `retail/scripts/test-mysql-types.py --registry-test-binary logs/gin-migration/registry.test`（先在 backend 编译 Linux `./internal/uniquekey` 测试程序）。该入口仅用人工数据、单核、768 MiB、禁网、无发布端口；按所有权标签清理临时容器。聚合结果记录于 [mysql-type-fixture-report.json](mysql-type-fixture-report.json)，不含实际业务秘密。
 
-尚缺真实商户配置 SQL 演练、其他保护 JSON 审查、可恢复密钥管理、读取授权、完整导入/恢复及 worker/Gin 运行时。既有真实离线转换证据不等于本组件已持久化真实配置。T006/T018/T035 不因此验收。
+新增[真实隔离演练](merchant-mysql-rehearsal.md)已验证固定快照的5条配置/5 hold/1邮箱唯一登记，8字段独立预期读回、3 SQL NULL、整批回滚/提交/原密文重放。临时库和新密文已清理，两个SEO表为空不算真实样本。尚缺其他保护 JSON 审查、可恢复密钥管理、读取授权、完整导入/恢复及 worker/Gin 运行时。T006/T018/T035 不因此验收。
