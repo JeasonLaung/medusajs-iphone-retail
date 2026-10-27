@@ -336,3 +336,5 @@
 2026-10-28 Astro 选择与深链补充：[原配置联动及页面数据组合](migration/astro-product-selection.md)保留选项顺序/前置约束/稳定评分、slug/v_id 优先级、图库回退及 query/hash；可售按 Gin 冻结/单仓观察处理。请求内国家归属、精确模型 handle 和组合匹配，未知组合不默认、依赖失败不伪装 404。320 组旧纯函数比较及 16 项 Astro 单元、真实源模块集成报告跟踪；实际 DOM/CSS/React 岛/History/加购仍待完成，相关任务未整体验收。
 
 2026-10-28 Astro React 选择补充：[同商品双岛状态与浏览器验证](migration/astro-selection-react.md)实现 URL/价格/图库同步、保留历史 state/长度、原生前进后退、刷新与无 slug 临时选择。独立测试根目录实际水合，不进入生产页面；16 项既有单元、类型/build、真实 Gin 串联及浏览器报告跟踪。原布局/样式/资源、实际页面挂载、数量/加购与完整交易仍待完成，T025/T026 未整体验收。后台优先 Ant Design，图表统一 ECharts。
+
+2026-10-28 Astro 商品展示组件补充：[原图库与规格迁移](migration/astro-product-presentation.md)保留原 CSS/文案/SVG，图库接入双岛状态，规格消费明确 DTO；替换 Next Image 为同布局原生 img，优化图片链路仍待完成。独立浏览器直接读取旧组件作参考，中英三宽/切图/描述及空数据共 40 对区域截图逐对一致，实际页面挂载、全局字体/布局、操作区/加购/评论推荐仍缺，T025/T026 未整体验收。

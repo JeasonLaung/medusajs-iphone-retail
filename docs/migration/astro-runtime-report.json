@@ -46,13 +46,15 @@
   "real_application_resources_used": false,
   "full_storefront_accepted": false,
   "implementation_sha256": {
-    "retail/scripts/test-storefront-runtime.py": "39cfcb64eab69e06eac0569c446d23fb186642ada7ade39274e82b2b77617e58",
+    "retail/scripts/test-storefront-runtime.py": "2bd62dc71092dd42927c8fc58419d80e2f3f765f49e5c12d4681ff8f049153bd",
     "retail/storefront/.env.example": "c5bef9c3433f84759258fb6b6fca003dedef905aee7d8522d389d49b035cc610",
     "retail/storefront/.gitignore": "853e19fb559c1d9d8df469c8dce09df4c37d495c02dc09fef40de174572a36e9",
     "retail/storefront/astro.config.mjs": "85710c96a776e6a32ca01860ff3d7c511efb736f9d685cf6ef6479b3ac03d2d5",
     "retail/storefront/package-lock.json": "971db38532f14613e861b725470049d791eb4364512444f759cb8be953d04b13",
     "retail/storefront/package.json": "8f4a7527d3336125d69c47c47c05e6a89952b2dfd8a7f2149679084e589e8f99",
     "retail/storefront/tsconfig.json": "0be126fdf4f61a27969212c2d65e8fc0147da2b5b7bf9bd552866224e8951da3",
+    "retail/storefront/tests/legacy-presentation.mjs": "5178a439190f8a7830dc1074a9fb5f5994a87f51d1547438f8d3ce095baa5ee0",
+    "retail/storefront/tests/presentation.browser.mjs": "db0caa99bd34bcc57ce06d3160b7359f51121a3b81d72ec7641d468de69f04eb",
     "retail/storefront/tests/products.test.ts": "865988bfcdf718406602c4a59b3efee3ec16fb07e798e9ec35cbe9bcea1eb0c8",
     "retail/storefront/tests/regions.test.ts": "9a6ca2429c525d7c735f7d487aea36dccd1770452c06835f27eb700aa4881df5",
     "retail/storefront/tests/runtime.integration.mjs": "1a72a7d5c982ab8088a931a092d5c9a172744ade7c5520d7487cefe2a6a5965e",
@@ -61,6 +63,12 @@
     "retail/storefront/tests/selection-fixture/src/probe.tsx": "16306ca7da76ca5097da09389169be2e42c65fd8c51e56f77f6f836c0d875215",
     "retail/storefront/tests/selection-fixture/src/product.ts": "1b8b509d76a6c89250358753d0114d8f1d014093552e29a6f1ccd8a4bf0f2131",
     "retail/storefront/tests/selection-fixture/src/pages/[...path].astro": "a31dc659c513759fe92811e499ef59303eab55bdf81ca66b4c1e365d94155d92",
+    "retail/storefront/tests/presentation-fixture/src/legacy.d.ts": "94623e114795c681792af63cfdfa81836caa61976e0c0a834024bb838b875715",
+    "retail/storefront/tests/presentation-fixture/src/navigation.tsx": "45f0b26d02198eb1b2c6c5088e0f23decbc2b30b5fab2fe12dd689cbde6eacf3",
+    "retail/storefront/tests/presentation-fixture/src/next-image.tsx": "c8ab77fbe4d7908861581e3a9788f00611e536878e1fa8cf6b26e9327613b5c7",
+    "retail/storefront/tests/presentation-fixture/src/presentation.tsx": "1cbb83761dc59432dabe907b85cd574449ff679e19a07c8809ddb4a7d0c03ea8",
+    "retail/storefront/tests/presentation-fixture/src/pages/[...path].astro": "e011fda9b4716133fb3fb08f99edbebaaf4e3b8afcbd850a4ccc23ea1f863cbe",
+    "retail/storefront/tests/presentation-fixture/src/pages/images/[name].svg.ts": "1b1f0fe51fcaace7ed5e06b57c4c664a3fe6a8778507d45d23d924a82dc1ba8b",
     "retail/storefront/src/lib/gin-public.ts": "69f332d8182769ee08d1cebfe569eaa4a41d40a1a2b5000157dae0c3511ab46f",
     "retail/storefront/src/lib/money.ts": "2758fa6be7cec7805cea2be39252dee795fa6259a095877a5bd385b6a9939e30",
     "retail/storefront/src/lib/product-display.ts": "7b90ed2cc7f5ac93c60bd0b6c6ff7169ed808abcf4bfccb84e2721b9ffe50836",
@@ -71,10 +79,272 @@
     "retail/storefront/src/lib/storefront-route.ts": "033734ef7b95d373c0925910c000cf55f0ea65857291e4b9c315e9947e6ba445",
     "retail/storefront/src/lib/use-product-selection.ts": "c97d632c94aa36e3f38c42d6ca1b753eab63cf88afdcfec072a163df64ed84bb",
     "retail/storefront/src/pages/health.ts": "d89ee8bbf213f0cd5d3ed0ba08e16fe46bd17ffa42e84caf0e4718c8bc7b96a8",
+    "retail/storefront/src/components/products/i18n.ts": "458cf54ee9608b0d15134404720f4ba090573e9da1b1a11369ca4bf7316ac018",
+    "retail/storefront/src/components/products/ICONS-LICENSE.txt": "e2058c0858b14c1813ee09ea991d97f6aa153fcd60eeb7174d736c19bbbef06d",
+    "retail/storefront/src/components/products/icons.tsx": "f2de4519be463b2482e582382ecfce5759be23dad641e24a9549180444372429",
+    "retail/storefront/src/components/products/image-gallery.tsx": "a7619c2719a04a51c259e697d25f5eb8c6bbeadcf213607fde6470bd0321d1da",
+    "retail/storefront/src/components/products/product-details.tsx": "da01eb70c358910b4711d9e1c5941e75ef1e943a3274b50c963c8bfa373364ec",
+    "retail/storefront/src/components/products/product-image.tsx": "346a32976b7525a669193b3d2b38bdd59f5ef0c57116b42a5e572b4110f20295",
+    "retail/storefront/src/components/products/styles.module.css": "29b442129c7da3bf71ce6f6553d89a0b3d47af68e386bdc17a5b411f92ab036f",
     "retail/admin/package-lock.json": "2f384487715a0528810e6db53613244310c8a37bf7510cdc094dafa241321165",
     "medusa-store/apps/storefront/src/lib/util/product-variants.ts": "72aeb47d55ecd141d672e21c8a8f89a036bf97cff1c428b370ae4ef4edc38c73",
     "medusa-store/apps/storefront/src/app/[countryCode]/(main)/products/[handle]/page.tsx": "e98a74de6834febcf3c148ec2fe9e8480f7a6f10edfbaaf2f685c1875104cd8b",
     "medusa-store/apps/storefront/src/modules/products/components/product-actions/index.tsx": "c1b6242e3fa4d04774ab63ebf0118508d29ca1e2e52c28bd22e58a5d2c86c0bf",
-    "medusa-store/apps/storefront/src/modules/products/components/image-gallery/index.tsx": "85d5841926604fa8c86c598b1bd642fe4728f456b1bda97ddfcfacfe5cd1f61f"
+    "medusa-store/apps/storefront/src/modules/products/components/image-gallery/index.tsx": "85d5841926604fa8c86c598b1bd642fe4728f456b1bda97ddfcfacfe5cd1f61f",
+    "medusa-store/apps/storefront/src/modules/products/components/product-detail/index.tsx": "8a107c88a007db5781226cb5045d3947ba7e2089ef829d387b7b97248b1ba70f",
+    "medusa-store/apps/storefront/src/modules/products/components/product-detail/styles.module.css": "877882efe7a46c4867aab45e9174a844ed336c6936c290d1db4d80a0e7cd3157",
+    "medusa-store/apps/storefront/src/modules/products/i18n.ts": "458cf54ee9608b0d15134404720f4ba090573e9da1b1a11369ca4bf7316ac018",
+    "medusa-store/pnpm-lock.yaml": "6dd5af2dc58f128244a305961c0c0389976838b359afa3c4c87662266d42b2df"
+  },
+  "presentation_browser": {
+    "scope": "isolated artificial fixture; original source oracle with Next navigation/image bridges; not full page acceptance",
+    "original_copy_and_css_preserved": true,
+    "comparisons": [
+      {
+        "case": "en-390-initial",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "c2b3f630e264e856a98ed4d9f94dea5d0492d691568507541ad64a379485cd65"
+      },
+      {
+        "case": "en-390-initial",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "25a15a33098f96f9a29b0158f3605477d8ec26fec3d93acd0800496f3f87944b"
+      },
+      {
+        "case": "en-390-image-two",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "a690176d7b44e27862bf4626df060ca5289e77b79352381d5699a309d5144fb0"
+      },
+      {
+        "case": "en-390-image-two",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "25a15a33098f96f9a29b0158f3605477d8ec26fec3d93acd0800496f3f87944b"
+      },
+      {
+        "case": "en-390-description",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "a690176d7b44e27862bf4626df060ca5289e77b79352381d5699a309d5144fb0"
+      },
+      {
+        "case": "en-390-description",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "b1d0b154953f18b51b46dee3fab3fd9d2f72cf3d555d69b34f30d3a666b3c8e4"
+      },
+      {
+        "case": "en-768-initial",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "9f8a2e76e067f93cd75762955a5a22ea91a6b96408f1125a2a452e3fb72ed8a8"
+      },
+      {
+        "case": "en-768-initial",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "58f3357af313490eedbc03713f221f171ba78b44a71749337745bcee6b721141"
+      },
+      {
+        "case": "en-768-image-two",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "e6d2f46d7e7b26ed5e394a439b50fd35b2e8be5572e27be844411dabb6d365f1"
+      },
+      {
+        "case": "en-768-image-two",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "58f3357af313490eedbc03713f221f171ba78b44a71749337745bcee6b721141"
+      },
+      {
+        "case": "en-768-description",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "e6d2f46d7e7b26ed5e394a439b50fd35b2e8be5572e27be844411dabb6d365f1"
+      },
+      {
+        "case": "en-768-description",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "94d2dd3350c36abdd9664b5b9ec8bfbf42fd4795d3670c4cc527af90acfc9381"
+      },
+      {
+        "case": "en-1440-initial",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "9f8a2e76e067f93cd75762955a5a22ea91a6b96408f1125a2a452e3fb72ed8a8"
+      },
+      {
+        "case": "en-1440-initial",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "d8ab15d03f197aa4cd6562e89592669a202433e088fbc84718009f542acb63e9"
+      },
+      {
+        "case": "en-1440-image-two",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "e6d2f46d7e7b26ed5e394a439b50fd35b2e8be5572e27be844411dabb6d365f1"
+      },
+      {
+        "case": "en-1440-image-two",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "d8ab15d03f197aa4cd6562e89592669a202433e088fbc84718009f542acb63e9"
+      },
+      {
+        "case": "en-1440-description",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "e6d2f46d7e7b26ed5e394a439b50fd35b2e8be5572e27be844411dabb6d365f1"
+      },
+      {
+        "case": "en-1440-description",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "9812220fa3d261c602fb91ee677d91661b69383ef98465036390deecb852df16"
+      },
+      {
+        "case": "zh-390-initial",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "c2b3f630e264e856a98ed4d9f94dea5d0492d691568507541ad64a379485cd65"
+      },
+      {
+        "case": "zh-390-initial",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "e2e85c4f4d9d4ae29c6baed33de506af5b527fcb2b70e8c58c485defcc8a57f8"
+      },
+      {
+        "case": "zh-390-image-two",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "a690176d7b44e27862bf4626df060ca5289e77b79352381d5699a309d5144fb0"
+      },
+      {
+        "case": "zh-390-image-two",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "e2e85c4f4d9d4ae29c6baed33de506af5b527fcb2b70e8c58c485defcc8a57f8"
+      },
+      {
+        "case": "zh-390-description",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "a690176d7b44e27862bf4626df060ca5289e77b79352381d5699a309d5144fb0"
+      },
+      {
+        "case": "zh-390-description",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "a7148e2b3767ee04f0ed722c72c59abc6ff407edf664513f92e71b7a23244586"
+      },
+      {
+        "case": "zh-768-initial",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "9f8a2e76e067f93cd75762955a5a22ea91a6b96408f1125a2a452e3fb72ed8a8"
+      },
+      {
+        "case": "zh-768-initial",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "df6f6dacab7a68cd3d03af81bc274a1a4051a3c7ee381af8e10835f130583945"
+      },
+      {
+        "case": "zh-768-image-two",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "e6d2f46d7e7b26ed5e394a439b50fd35b2e8be5572e27be844411dabb6d365f1"
+      },
+      {
+        "case": "zh-768-image-two",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "df6f6dacab7a68cd3d03af81bc274a1a4051a3c7ee381af8e10835f130583945"
+      },
+      {
+        "case": "zh-768-description",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "e6d2f46d7e7b26ed5e394a439b50fd35b2e8be5572e27be844411dabb6d365f1"
+      },
+      {
+        "case": "zh-768-description",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "26e35f0f9022b09020824747e0aff9aa88969fa92484cbc87b86dad89b1fc18f"
+      },
+      {
+        "case": "zh-1440-initial",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "9f8a2e76e067f93cd75762955a5a22ea91a6b96408f1125a2a452e3fb72ed8a8"
+      },
+      {
+        "case": "zh-1440-initial",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "7158c56c6c54a0805e96baad2fe4fa916c27f4ef9c339ec50f00dddd4051e4e3"
+      },
+      {
+        "case": "zh-1440-image-two",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "e6d2f46d7e7b26ed5e394a439b50fd35b2e8be5572e27be844411dabb6d365f1"
+      },
+      {
+        "case": "zh-1440-image-two",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "7158c56c6c54a0805e96baad2fe4fa916c27f4ef9c339ec50f00dddd4051e4e3"
+      },
+      {
+        "case": "zh-1440-description",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "e6d2f46d7e7b26ed5e394a439b50fd35b2e8be5572e27be844411dabb6d365f1"
+      },
+      {
+        "case": "zh-1440-description",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "28131287442e022d259b2eae54660f8e526625932a12e87c8cba861a5a574774"
+      },
+      {
+        "case": "empty",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "e2d87ca611b2942ed4af8c3c9eafd4266d8024d8be72c54ec4c727bda44781ac"
+      },
+      {
+        "case": "empty",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "eaf6112051b9c932689b123b753d515461b2fe0c3970e3ddc9d2e60a14ace43c"
+      },
+      {
+        "case": "unsafe",
+        "region": "gallery",
+        "identical_pixels": true,
+        "sha256": "9f8a2e76e067f93cd75762955a5a22ea91a6b96408f1125a2a452e3fb72ed8a8"
+      },
+      {
+        "case": "unsafe",
+        "region": "details",
+        "identical_pixels": true,
+        "sha256": "662af606fdc653fd3818ad61b4b68e897d75ebf8efaba81c3ee53b049d781efa"
+      }
+    ],
+    "gallery_wrap_thumbnail_and_selection_reset": true,
+    "description_and_safe_source": true,
+    "keyboard_focus": true,
+    "no_overflow": true,
+    "hydration_errors": 0
   }
 }

@@ -1,0 +1,102 @@
+.page { max-width: var(--storefront-max-width); margin: auto; padding: 28px 40px 80px; color: #1d1d1f; }
+.hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+.visual { position: sticky; top: 110px; min-width: 0; }
+.gallery { position: relative; }
+.stage { position: relative; background: #f5f5f7; border-radius: 24px; aspect-ratio: 1/1.04; display: grid; place-items: center; overflow: hidden; }
+.stage img { object-fit: contain; padding: 42px; mix-blend-mode: multiply; }
+.counter { position: absolute; right: 20px; bottom: 18px; background: #fff; border-radius: 30px; padding: 5px 12px; font-size: 12px; color: #6e6e73; }
+.galleryArrow { position: absolute; top: 48%; width: 36px; height: 36px; border-radius: 50%; background: #ffffffd9; z-index: 1; display: grid; place-items: center; }
+.galleryArrow:first-of-type { left: 12px; }
+.galleryArrow:last-of-type { right: 12px; }
+.thumbnails { display: flex; gap: 10px; justify-content: safe center; margin-top: 18px; overflow-x: auto; padding: 3px; }
+.thumbnail { position: relative; flex: 0 0 64px; height: 64px; border: 1px solid #dedee3; background: #f5f5f7; border-radius: 10px; overflow: hidden; }
+.thumbnail img { object-fit: contain; padding: 8px; }
+.thumbnail[aria-pressed="true"] { border: 2px solid #0066cc; }
+.eyebrow { font-size: 13px; color: #6e6e73; margin-bottom: 8px; }
+.title { font-size: clamp(26px, 2.5vw, 34px); line-height: 1.15; letter-spacing: -.045em; font-weight: 650; }
+.subtitle { margin-top: 12px; color: #6e6e73; font-size: 14px; }
+.actions { margin-top: 0; }
+.productHeading { display: flex; justify-content: space-between; align-items: start; gap: 20px; margin-bottom: 26px; }
+.selectionSummary { font-size: 14px; line-height: 1.6; color: #6e6e73; margin-top: 6px; }
+.headingPrice { text-align: right; flex-shrink: 0; }
+.demoPriceNote { margin: -8px 0 24px; padding: 10px 12px; border-radius: 8px; background: #fff8e6; color: #775315; font-size: 12px; line-height: 1.6; }
+.priceRow { display: flex; align-items: baseline; gap: 8px; margin-bottom: 5px; }
+.price { font-size: 28px; line-height: 1.2; font-weight: 650; letter-spacing: -.035em; color: #0066cc; }
+.muted { font-size: 12px; line-height: 1.6; color: #6e6e73; }
+.option { border: 0; border-bottom: 1px solid #dedee3; padding: 0 0 24px; margin: 0 0 24px; min-width: 0; }
+.legend { float: left; width: 100%; margin-bottom: 10px; font-size: 20px; font-weight: 650; letter-spacing: -.025em; }
+.choices { display: flex; flex-direction: column; gap: 2px; clear: both; }
+.modelInfo { margin-top: 26px; border-top: 1px solid #e8e8ed; padding-top: 22px; }
+.modelInfo summary { cursor: pointer; font-size: 14px; font-weight: 600; }
+.infoGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+.infoGrid dt { color: #6e6e73; font-size: 12px; margin-bottom: 5px; }
+.infoGrid dd { font-size: 13px; }
+.colours { display: flex; flex-wrap: wrap; gap: 10px 16px; margin-top: 14px; }
+.colour { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #6e6e73; }
+.swatch { width: 20px; height: 20px; border-radius: 50%; border: 1px solid #0002; }
+.purchase { background: #f5f5f7; border-radius: 16px; margin-top: 28px; padding: 22px; }
+.purchaseTop { display: flex; justify-content: space-between; gap: 16px; align-items: start; margin-bottom: 18px; }
+.purchaseTop strong { display: block; font-size: 14px; margin-bottom: 5px; }
+.purchasePrice { font-size: 24px; font-weight: 600; white-space: nowrap; }
+.stock { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #27734d; margin-bottom: 14px; }
+.stock::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.add { width: 100%; padding: 15px 18px; border-radius: 10px; color: #fff; background: #0066cc; font-size: 15px; font-weight: 600; min-height: 50px; }
+.add:hover:not(:disabled) { background: #0057b0; }
+.add:disabled { opacity: .45; cursor: not-allowed; }
+.feedback { font-size: 13px; margin-top: 12px; line-height: 1.6; }
+.feedback a { color: #0066cc; text-decoration: underline; }
+.error { color: #b42318; }
+.support { display: flex; gap: 12px; padding: 22px 0; font-size: 13px; border-bottom: 1px solid #e8e8ed; }
+.support svg { width: 24px; height: 24px; flex-shrink: 0; }
+.support strong { display: block; margin-bottom: 4px; }
+.support a { color: #0066cc; display: inline-block; margin-top: 8px; }
+.details { margin-top: 90px; border-top: 1px solid #e8e8ed; padding-top: 48px; }
+.sectionTitle { font-size: clamp(28px, 3vw, 38px); letter-spacing: -.035em; font-weight: 600; margin-bottom: 30px; }
+.description { color: #6e6e73; line-height: 1.8; font-size: 15px; max-width: 800px; white-space: pre-line; }
+.highlights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0; }
+.highlight { background: #f5f5f7; border-radius: 16px; padding: 24px; }
+.highlight span { display: block; color: #6e6e73; font-size: 13px; margin-bottom: 12px; }
+.highlight strong { font-size: 20px; font-weight: 600; }
+.specs { margin-top: 32px; border-top: 1px solid #e8e8ed; border-bottom: 1px solid #e8e8ed; }
+.specs summary { cursor: pointer; font-size: 18px; font-weight: 600; padding: 24px 0; }
+.specs dl { padding-bottom: 16px; }
+.specRow { display: grid; grid-template-columns: 190px 1fr; gap: 24px; border-top: 1px solid #e8e8ed; padding: 16px 0; font-size: 14px; line-height: 1.7; }
+.specRow dt { color: #6e6e73; }
+.source { display: inline-block; color: #0066cc; font-size: 13px; margin: 10px 0 24px; }
+.mobileBar { display: none; }
+.desktopBar { position: fixed; left: 0; right: 0; z-index: 45; background: #fffffff5; backdrop-filter: blur(12px); border-bottom: 1px solid #e8e8ed; box-shadow: 0 4px 16px #1d1d1f08; }
+.desktopBarInner { max-width: var(--storefront-max-width); margin: auto; padding: 18px 40px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(180px, 280px); align-items: center; gap: 8px 28px; }
+.desktopBarSelection strong { display: block; font-size: 22px; font-weight: 650; letter-spacing: -.035em; margin-bottom: 4px; }
+.desktopBarFeedback { grid-column: 1 / -1; text-align: right; }
+.desktopBarFeedback .feedback { margin-top: 0; }
+.page:has(.desktopBar) .visual { top: 210px; }
+.page button:focus-visible, .page a:focus-visible, .page summary:focus-visible { outline: 3px solid #0066cc; outline-offset: 4px; }
+@media (max-width: 767px) {
+  .desktopBar { display: none; }
+  .page { padding: 20px 20px calc(190px + env(safe-area-inset-bottom)); }
+  .hero { grid-template-columns: 1fr; gap: 28px; }
+  .visual { position: static; }
+  .stage { aspect-ratio: 1.15; border-radius: 18px; }
+  .stage img { padding: 28px; }
+  .title { font-size: 28px; }
+  .productHeading { flex-wrap: wrap; gap: 12px; }
+  .headingPrice { margin-left: auto; }
+  .details { margin-top: 48px; padding-top: 32px; }
+  .highlights { grid-template-columns: 1fr; gap: 10px; }
+  .highlight { display: flex; justify-content: space-between; gap: 20px; align-items: center; padding: 20px; }
+  .highlight span { margin: 0; }
+  .highlight strong { font-size: 17px; text-align: right; }
+  .specRow { grid-template-columns: 110px 1fr; gap: 16px; font-size: 13px; }
+  .mobileBar { display: grid; grid-template-columns: auto minmax(0, 1fr); position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; background: #fffffff5; backdrop-filter: blur(12px); border-top: 1px solid #e8e8ed; padding: 12px 20px max(12px, env(safe-area-inset-bottom)); align-items: center; gap: 8px 18px; }
+  .mobileBarSelection { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; min-width: 0; overflow-wrap: anywhere; }
+  .mobileBarThumbnail { position: relative; flex: 0 0 48px; height: 48px; background: #f5f5f7; border-radius: 8px; overflow: hidden; }
+  .mobileBarThumbnail img { object-fit: contain; padding: 4px; }
+  .mobileBarDetails { min-width: 0; }
+  .mobileBarSummary { font-size: 13px; line-height: 1.5; color: #1d1d1f; }
+  .mobileBar strong { display: block; font-size: 20px; }
+}
+
+/* Explicit equivalents of existing Tailwind utilities used by these components. */
+.icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+.descriptionBody { padding-bottom: 24px; }
+.specNote { margin-bottom: 24px; }

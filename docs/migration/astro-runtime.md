@@ -25,3 +25,5 @@
 2026-10-28 [商品选择及深链组合](astro-product-selection.md)增加纯模块和原 helper 对照，已在源模块层连接独占 Gin；未挂载 Astro 业务页面，不代表 React 岛/History/页面保真验收。
 
 2026-10-28 [React 选择补充](astro-selection-react.md)接入同商品双岛状态、保留 history.state 的 replaceState、popstate、标题与 canonical；独立人工 fixture 浏览器覆盖精确价格和图库同步。生产页面仍仅 health，实际页面布局及交易继续待办。
+
+2026-10-28 [原商品图库及规格](astro-product-presentation.md)新增真实 React 组件；presentation_browser 在独立根目录直接运行原组件作参考，中英三宽与交互/空状态共 40 对区域 PNG 一致。受控字体与人工图片不代表实际商品页保真；生产仍只有 health，原图片优化链路、全局资源与业务页仍待接入。

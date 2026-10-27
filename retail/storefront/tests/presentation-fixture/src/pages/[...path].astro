@@ -1,0 +1,17 @@
+---
+import Presentation from '../presentation'
+const segment=Astro.url.pathname.split('/')[1]
+const initialLocation=Astro.url.pathname+Astro.url.search
+---
+<html lang={segment.endsWith('-zh')?'zh-CN':'en'}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Artificial presentation comparison</title></head><body>
+ <Presentation reference={Astro.url.searchParams.get('reference')==='1'} mode={Astro.url.searchParams.get('mode')??'full'} segment={segment} initialLocation={initialLocation} client:load/>
+</body></html>
+<style is:global>
+ /* Controlled fixture environment, not the production global stylesheet. */
+ *,::before,::after{box-sizing:border-box;border-width:0;border-style:solid}
+ body{margin:0;font-family:Arial,sans-serif;font-size:16px;line-height:1.5;color:black}
+ h1,h2,h3,p,dl,dd{margin:0}button{font:inherit;color:inherit;background:transparent;padding:0;cursor:pointer}
+ svg,img{vertical-align:middle}img{display:block;max-width:100%;height:auto}a{color:inherit;text-decoration:inherit}
+ .inline-block{display:inline-block}.align-middle{vertical-align:middle}.shrink-0{flex-shrink:0}.pb-6{padding-bottom:24px}.mb-6{margin-bottom:24px}
+ :root{--storefront-max-width:1200px}
+</style>
