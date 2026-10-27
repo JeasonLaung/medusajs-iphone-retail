@@ -29,4 +29,4 @@ python retail/scripts/test-cell-record-postgres.py
 
 默认go test对实际PostgreSQLfixture子项skip，独立单元测试验证重复root/cell键、非法/多余结构、v1拒绝及NULL区分。必须运行上面隔离脚本才有真实PostgreSQL路径证据。
 
-仍须完整一致快照导出/流式校验、表级manifest与行数/hash验证、旧固定快照null歧义处置、受保护字段转换、关联/金额raw对账及正式MySQL导入执行器；不能为了推进而把歧义null默认为SQL NULL。T006/T018未验收。
+[单事务全表导出及Go流式校验](snapshot-stream-contract.md)已通过人工159表/3行路径验证，包含逐表COUNT、footer及整文件hash，未重新采集业务库。仍须可信真实运行manifest、类型/约束指纹、旧固定快照null歧义处置、受保护字段转换、关联/金额raw对账及正式MySQL导入执行器；不能为了推进而把歧义null默认为SQL NULL。T006/T018未验收。

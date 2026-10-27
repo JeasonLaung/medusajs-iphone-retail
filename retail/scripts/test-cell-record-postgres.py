@@ -89,6 +89,16 @@ INSERT INTO product_tag VALUES
                                 cwd=ROOT / 'retail/backend', env=env, capture_output=True, encoding='utf-8', timeout=90)
         if tested.returncode:
             raise AssertionError('Artificial PostgreSQL-to-Go proof failed: ' + tested.stdout + tested.stderr)
+        export_spec = importlib.util.spec_from_file_location('cell_export', Path(__file__).with_name('export-cell-snapshot.py'))
+        exporter = importlib.util.module_from_spec(export_spec)
+        export_spec.loader.exec_module(exporter)
+        stream_path = ROOT / ('logs/gin-migration/cell-stream-' + owner[:12] + '.ndjson')
+        stream_hash = exporter.export(container, 'postgres', 'cell_fixture', stream_path)
+        env['ROWIMPORT_POSTGRES_STREAM'] = str(stream_path)
+        stream_test = subprocess.run(['go', 'test', './internal/rowimport', '-run', '^TestActualPostgresSnapshotStream$', '-count=1'],
+                                    cwd=ROOT / 'retail/backend', env=env, capture_output=True, encoding='utf-8', timeout=90)
+        if stream_test.returncode:
+            raise AssertionError('Artificial full source stream failed: ' + stream_test.stdout + stream_test.stderr)
         report = {'format_version': 1, 'scope': 'Artificial PostgreSQL source SQL to v2 record decoder and mapped Go conversion; not source recapture/import acceptance',
                   'image': 'postgres:16-alpine', 'local_image_id': image.stdout.strip(),
                   'isolation': {'network': 'none', 'published_ports': 0, 'cpus': 1, 'memory_mib': 384},
@@ -96,6 +106,8 @@ INSERT INTO product_tag VALUES
                   'cases': {'sql_null_distinct': True, 'json_null_document_distinct': True, 'big_integer_and_decimal_lexemes': True,
                             'go_actual_source_records': 3, 'go_test_passed': True,
                             'other_empty_projection_sql_parsed': 158,
+                            'full_read_only_transaction_export': True,
+                            'go_159_table_stream_footer_counts_and_hash_verified': True,
                             'max_mapped_columns': max(len(p['fields']) for p in all_plans)},
                   'source_business_connection': False}
     finally:

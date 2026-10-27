@@ -88,6 +88,8 @@
 
 [逐列快照记录](migration/cell-record-contract.md)已确认旧v1快照NULL歧义，新增v2纯SQL构造及Go严格记录解码；人工PostgreSQL三行实际类型验证、全部159表投影SQL验证通过。没有重新采集业务库，完整一致导出/流式处理/真实NULL来源处置仍待完成。
 
+[单事务快照及流式验证](migration/snapshot-stream-contract.md)新增显式导出工具、逐表列集合/COUNT、footer和完整SHA256，Go有界逐行校验全部159表；人工真实PostgreSQL导出→磁盘→Go路径通过，截断/错误count/hash/顺序拒绝。真实快照、完整schema类型指纹及正式可恢复导入仍缺。
+
 | ID | 任务与交付物 | 依赖 | 验收标准 |
 | --- | --- | --- | --- |
 | T010 | 审查现有 Gin 草稿，确定目录、配置、错误处理、日志、MySQL/Redis 连接和进程停止方式 | T007 | 启动不改表；健康检查与依赖失败可诊断；日志不含密码、令牌、私有数据；不代理 Medusa 充当实现 |

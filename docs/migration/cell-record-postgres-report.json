@@ -17,6 +17,8 @@
     "go_actual_source_records": 3,
     "go_test_passed": true,
     "other_empty_projection_sql_parsed": 158,
+    "full_read_only_transaction_export": true,
+    "go_159_table_stream_footer_counts_and_hash_verified": true,
     "max_mapped_columns": 32
   },
   "source_business_connection": false,
