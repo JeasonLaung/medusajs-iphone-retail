@@ -1,0 +1,2263 @@
+{
+  "format_version": 2,
+  "scope": "static-source-evidence; not runtime verification",
+  "source_sha256": {
+    "medusa-store/apps/backend/src/admin/routes/device-scan/inspection/page.tsx": "4e15aca3212340ba26778c2e6a8b28f6c4141eaecc0b7ee245e8f0ee98e9bed5",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/intake/page.tsx": "c15541521a93c06cb0e5882e12b5cd8b45f8be1b1aa89596fe1f508503fdcd56",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/lookup/page.tsx": "aea4747edde57a472d222864fe97fe7c15105d3a0cd5eeffe8fd84e6be3b3df2",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/orders/page.tsx": "194a1d0d278842a5dbff3e4d2fa8b32b680572ad683599f279f72a3f296929cb",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/page.tsx": "9d0837fa86a998d01de71e2c29bf3ff960baf194d308502754f3754c0e9c0771",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/prices/page.tsx": "2b33d838cfafcbc31ef2d36f08e90d781aedff95093ea00c9fcbc5ef1524a5ff",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/recycled/page.tsx": "956168f755341bdcc27b4d2777ab913284f8533caaee4f40177fc5992c90f57a",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/requests/page.tsx": "e566f437f70d9eae48464aaf73abac469396bd1317345bb8775983f1f2548e1b",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/returned/page.tsx": "d773b748234df32f9e06f87b222e51217cba70118b2e3679bf7ff602c588d220",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/sources/page.tsx": "bbc8b6bff183e33c872db2849d7e29506f8790bff071f2db8a6fdc0228540c1a",
+    "medusa-store/apps/backend/src/admin/routes/mail/page.tsx": "aa6cf68597c33cc5bd9da50bb7aa6f0b0e279d302009407c1cbc4d2dbbf7ead3",
+    "medusa-store/apps/backend/src/admin/routes/seo/citation-monitor/page.tsx": "cb1c3f6537bf2d92b2d04459993d6ed6029221f62cf0f403bfd0795f44f1ee8f",
+    "medusa-store/apps/backend/src/admin/routes/seo/crawler-logs/page.tsx": "9e7e863773175e2236842dfcb16d8bd3a79d2b24212403673ff522c0b1f71c32",
+    "medusa-store/apps/backend/src/admin/routes/seo/page.tsx": "a3350c7dd6717a99437f892a31c6aaef44f0e28759321802cabffa2969508003",
+    "medusa-store/apps/backend/src/admin/routes/seo/providers/page.tsx": "1d577fffaf71a640094bd70fb5a1a31e7e44bc8366d36d0501f3917c0e1b5720",
+    "medusa-store/apps/backend/src/admin/routes/seo/traffic-sources/page.tsx": "2323e7ddeadca7f9869188d478f89bb6e5fe057d25d0dd4e74fed1722bca7312",
+    "medusa-store/apps/backend/src/admin/routes/settings/buy-policies/page.tsx": "30a469891238b5b88557f551944b8beaa6ddc183e1c81b09f5d1aec2a06ebf41",
+    "medusa-store/apps/backend/src/admin/routes/settings/customer-service/page.tsx": "48c90a2381e4912fc3f0058e77375d5fb69ea57284a2eba3a837b2b6c26a2692",
+    "medusa-store/apps/backend/src/admin/routes/settings/mailboxes/page.tsx": "d7e507ccf833e1e0cb6c43a10827851e96d7c8bd0fd2d4121acef7f479db2253",
+    "medusa-store/apps/backend/src/admin/routes/settings/mollie/page.tsx": "037bc99b9fe72ced192dfb59695ef6f8526e2c8efb0658ff3c989440f7d5ef7a",
+    "medusa-store/apps/backend/src/admin/routes/settings/warehouse-access/page.tsx": "5c98e18b2a0f46e66cdede0b968da4344c4f62af78e5da9bc49923cbf37f4861",
+    "medusa-store/apps/backend/src/admin/routes/settings/webhook-notifications/page.tsx": "81bd1ac463c6670595d4edb65052a11605bcd49d1e6de095ca37decb41d7403b",
+    "medusa-store/apps/backend/src/admin/routes/shipping-demo/page.tsx": "87802ae55ea7a27bdfb95ad74992c7c96241cb5986ae7f0f533ce2397b900821",
+    "medusa-store/apps/backend/src/admin/widgets/mail-topbar.tsx": "3b5cfa98a7d5f80ca097f247b7ad6312cdb16d348511254f69a2cb3d1bb3171e",
+    "medusa-store/apps/backend/src/admin/widgets/order-after-sales.tsx": "d4e457bca7a24c83e385de422194e58ef3dcd347611ac1675764d18863fded80",
+    "medusa-store/apps/backend/src/admin/widgets/order-devices.tsx": "b320998973dde145e45d3225c5b631e8889203fe70b3e3e9aa2e95ad14c67f1c",
+    "medusa-store/apps/backend/src/admin/widgets/order-shipping.tsx": "a1ed42a11868d96d158079610702a36cd5b0ad15aaf7aabdd981b0768a786333",
+    "medusa-store/apps/backend/src/admin/widgets/product-reviews.tsx": "7ecea924f502279a651481c48967d4570f479fd6dea89d196e47a8b07c332b85",
+    "medusa-store/apps/backend/src/admin/widgets/selectable-messages.tsx": "09cf2f58c85d5b15a1013894d1dc4649979d981ef6915087e470c24c78cc4b0f",
+    "medusa-store/apps/backend/src/api/admin/buy-policies/route.ts": "3818673ffda0b7b1bc2855903893387ec460896dea14bc0181147f85fef7a86b",
+    "medusa-store/apps/backend/src/api/admin/buyback-catalog/route.ts": "987a76ee329d15257c349538580583051a8cf729f1523c2d3a7ee18010c9b5c2",
+    "medusa-store/apps/backend/src/api/admin/buyback-prices/route.ts": "32e1f58373c9e84d0b4e5ee6461dec2bfad7022f19b02222789af2fc9ac5ecf4",
+    "medusa-store/apps/backend/src/api/admin/buyback/[id]/photos/[photo_id]/route.ts": "81c8b911017af9eae613b841ad644038ed8f632df070da3376f8f3d91f676548",
+    "medusa-store/apps/backend/src/api/admin/buyback/[id]/route.ts": "984cb1f5bf11254360a570e30dd9b4bc911e850f080bf40cb0ca7a815bfa5e85",
+    "medusa-store/apps/backend/src/api/admin/buyback/route.ts": "0a9da29cc7c46b175342886cc54ec43d9703329ad779971b9bc37853453208e9",
+    "medusa-store/apps/backend/src/api/admin/custom/route.ts": "b91decad25963549edaf66214e2427bd67feab9fb0f45c98bdb494960851ad9b",
+    "medusa-store/apps/backend/src/api/admin/customer-service/route.ts": "e8aca5bec533d11245a61a673dab9c7551c24f73b97830b1a1fc37064445fe5b",
+    "medusa-store/apps/backend/src/api/admin/devices/import-template/route.ts": "a1885e503849e05c5e9872ba5103ea1ff105cdd6c159a750210b131e563f8e6e",
+    "medusa-store/apps/backend/src/api/admin/devices/mobile-intake/route.ts": "078f81f8f53e8ca53e4f7414404b8dfa3b7715a69470c926401cc931b7c2a724",
+    "medusa-store/apps/backend/src/api/admin/devices/photos/route.ts": "72a7804539ffdff86ff2e1c1380bef49ef88e7b5bba00a156849837ae8891ec4",
+    "medusa-store/apps/backend/src/api/admin/devices/refunds/route.ts": "24b56e854f871c52f12d1c18098fedb43c4b8959a6394c2ac9dc988c80becc3a",
+    "medusa-store/apps/backend/src/api/admin/devices/route.ts": "21edfdaf9c8b6ec4f8213620a4530120339e06cb179525a98ba0ca67d93c6828",
+    "medusa-store/apps/backend/src/api/admin/devices/supplier-accounts/route.ts": "e394ba2d5931e0fae34a0ee3a6a3fd5b75c3d315a3be0d88504c54e26648f08b",
+    "medusa-store/apps/backend/src/api/admin/devices/validators.ts": "1b81d8e16d2d5d5f7201f2b52d2764d23adbfbd8dd8f8e378f71953491dc262f",
+    "medusa-store/apps/backend/src/api/admin/devices/variants/route.ts": "a3d9d402ec29902c8bea1abf6266b5ada20835cc0322d013e21964691b57867f",
+    "medusa-store/apps/backend/src/api/admin/inventory-items/route.ts": "a1b0720579b8ac0e06723eb4566c6fa589493ffc10740ec66c60c065b1bff794",
+    "medusa-store/apps/backend/src/api/admin/mail/commands/route.ts": "0dd14a0bad8c92aab8ebc9118a1b7f5cef75f7a0bbfec04bbb43e7d37037706b",
+    "medusa-store/apps/backend/src/api/admin/mail/messages/[id]/attachments/[attachment_id]/route.ts": "906d0d28be7a51bf0a8f08686f3e6aebefd92046af81a79367ae5e93a94a1e94",
+    "medusa-store/apps/backend/src/api/admin/mail/messages/[id]/route.ts": "6c446e07fbb82afc39bd2d1856a458f3a48cd27f9e0fb357d57c4f32577838ce",
+    "medusa-store/apps/backend/src/api/admin/mail/route.ts": "1d8d2430b9ffcb419ca30a45d6e7c9f7df969d5abee2dbde9f241898b246b9b5",
+    "medusa-store/apps/backend/src/api/admin/mail/validators.ts": "9274395678928b2f74d8949fd363ee51f01453f98824b797b94d36fcd3919eef",
+    "medusa-store/apps/backend/src/api/admin/mollie/route.ts": "aac7a59889ea8fb1d77004954e18a28fb9ade454824550885057e7356368e79b",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/after-sales/route.ts": "d91bd8056fef487020b56894e49dc543ae6a8b50eff7badb44c79cf34e5d6634",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/cancel/route.ts": "2e5fe261ccb7a46f287212729fb700a157c73f34289495e7098e610e7b44b197",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/cancel/route.ts": "47f1f9f944477caf27ef4237d6101a6c62b737155b046b76d499909941f3a75e",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/shipments/route.ts": "32edbbbd3ea2ad6bb9e049defa4781e0b577a6cb2c0d01e383ec2b9318f9483c",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/tracking/route.ts": "f0f8e94d62ff95be0df87f4e7cd10970b4a554f5116969dc9bb290dd8b1d9352",
+    "medusa-store/apps/backend/src/api/admin/orders/[id]/route.ts": "a38b97a6017f71b7b97ef3d0f67efea9cf60e1829fc83fcf03ef5a03654848f9",
+    "medusa-store/apps/backend/src/api/admin/orders/route.ts": "3757e0307d2639fe8c1705a665779aa045ea86c28da38a8b139ab00b2954477c",
+    "medusa-store/apps/backend/src/api/admin/product-reviews/[id]/route.ts": "1c1e5b803a5ba3d9c3c5ba101adf30a69216eefa72024428af9c8aaf0202e2bb",
+    "medusa-store/apps/backend/src/api/admin/product-reviews/route.ts": "910acb73e58f216c39d12fe0c26d27481b7ff32397a70f0601b1460d9562fc29",
+    "medusa-store/apps/backend/src/api/admin/seo/[resource]/route.ts": "bfe3719bdb086135923a468c7b481ac12028fdfc2dbfe1db2b7ba45a07113a62",
+    "medusa-store/apps/backend/src/api/admin/seo/commands/route.ts": "04f0063dc7f8e927849df6630e177568c901fabcf93e1857bf26695998a9608a",
+    "medusa-store/apps/backend/src/api/admin/shipping-demo/dhl/route.ts": "23197ee074b22e4702298ad32a3df36a2cc801114087ef3dc443411b1d37fc2e",
+    "medusa-store/apps/backend/src/api/admin/stock-locations/[id]/route.ts": "3ddab81b05057087561a01eb9f4fc39f398477f74aec7dc30fb921223ef46c19",
+    "medusa-store/apps/backend/src/api/admin/stock-locations/route.ts": "9cf5961e3f950edb96f6e2c9662b4fb5e1d1a89b5ecc61ba645f11dbfe04be97",
+    "medusa-store/apps/backend/src/api/admin/warehouse-access/me/route.ts": "ee6b01b1bb98362c724d78fd37dcdd118217ee56889c92b88fa8f35140624ee7",
+    "medusa-store/apps/backend/src/api/admin/warehouse-access/route.ts": "fbca39400d8da86760ef04d7a136d10e0eb2419881fda15fa162a7d2a83b33cf",
+    "medusa-store/apps/backend/src/api/admin/webhook-notifications/[id]/route.ts": "b6e995bf16de39f645384067f9f5c070c7c8dfe0804223278f855495f2971aa7",
+    "medusa-store/apps/backend/src/api/admin/webhook-notifications/[id]/test/route.ts": "c11930d3bf69e1f1b66beb3a2622bf281e64df7a647c0e0b4635339ebb8c1726",
+    "medusa-store/apps/backend/src/api/admin/webhook-notifications/route.ts": "cada89238c0b07630c62df7d9cf9169fd3faee4dd7d23d9bedc65df7f3c01549",
+    "medusa-store/apps/backend/src/api/buyback-pricing-validators.ts": "5ba29a5d456e9f7a4cc2b0fb53985f04f4f18007101fda2e9846c450b82083e0",
+    "medusa-store/apps/backend/src/api/buyback-validators.ts": "9a566c72c0b883489f56262f2094c34cdfe54bdd0581f1d338ad5664d8e1217d",
+    "medusa-store/apps/backend/src/api/mail/unsubscribe/[token]/route.ts": "6ebf15962af89cb328b448ef2868fa042596069cbb0c70849a86a50759cd752f",
+    "medusa-store/apps/backend/src/api/mail/webhooks/[account_id]/route.ts": "51570f6cf6d02f6bd450d495fd88f87388f3309ecffbfaf98254c44d083efab5",
+    "medusa-store/apps/backend/src/api/mobile-intake/devices/[id]/route.ts": "47e05bcd0f720764c960468ce7b558bd23c04f3267105442b8fff494f9e498cb",
+    "medusa-store/apps/backend/src/api/mobile-intake/photos/route.ts": "f0aa117e856ec6ad9c3c6bcaf8f5b634965f2f2975d35cd422f985376369a3da",
+    "medusa-store/apps/backend/src/api/mobile-intake/route.ts": "a46fbd382763bcda3ab1a137fc4703bec6a02725f437fed042a57f6a2e7af9fb",
+    "medusa-store/apps/backend/src/api/mobile-intake/variants/route.ts": "2c11e971024824408c9a4780fc9587194557f67bc6dceb083849be513658d5fa",
+    "medusa-store/apps/backend/src/api/seo-validators.ts": "7c421a2b1480db58b5c1066ec6340d2d06f3d865c9a7b1141bb1f54858ea4365",
+    "medusa-store/apps/backend/src/api/store/buy-policies/route.ts": "d3a940f724e020fb18f37592edf693da20e2030865cabd054163306503174b81",
+    "medusa-store/apps/backend/src/api/store/buyback/estimate/route.ts": "1112e5db0fdbe33f6da72184e097adebb4a6f4aa268f63c54fd4d121781438a6",
+    "medusa-store/apps/backend/src/api/store/buyback/prices/route.ts": "ceb6084fd45771ee5d0b862eca4d1615ba8fd243507bfd909673056d4eaf185c",
+    "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/photos/[photo_id]/route.ts": "1451f7a1397e84b2566406d1da60534cd13408432c94a5f584f59aeb0cd1175a",
+    "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/photos/route.ts": "2c85a26757d6123386271b82d90481a8c2a0bb665f004ca1f1054c3e07ad9c48",
+    "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/route.ts": "f0998a70cf89cf314e714255f38d87eceb57296b7803355bdcb1c13920238c17",
+    "medusa-store/apps/backend/src/api/store/buyback/requests/route.ts": "f38209923e67277a6a77f3d184f54a196d0ceba911d0b1f869679de7f980dcd4",
+    "medusa-store/apps/backend/src/api/store/custom/route.ts": "b91decad25963549edaf66214e2427bd67feab9fb0f45c98bdb494960851ad9b",
+    "medusa-store/apps/backend/src/api/store/customer-service/route.ts": "5b306fdc9fd4c357c09721534b2033021a32943b6519063d92ac09463043080a",
+    "medusa-store/apps/backend/src/api/store/notifications/route.ts": "cba3a08dae5069715249ae2a04025b09a0bd7f36f2ac01b407ecd4cc00b47858",
+    "medusa-store/apps/backend/src/api/store/orders/[id]/after-sales/route.ts": "0dc0621a1473d0e2a3e084776b20c09c19c6dda956125929f641894e231d76b9",
+    "medusa-store/apps/backend/src/api/store/orders/[id]/devices/route.ts": "fdc7e2dcd7e52ec70e9ca02ad6a791cedc9ddd360f643e45a157850c1539ffc9",
+    "medusa-store/apps/backend/src/api/store/orders/[id]/product-reviews/route.ts": "c8290ce1921f904ba0e9b1bb11b3fb0ca71519744564dea0f17e45aef8a67424",
+    "medusa-store/apps/backend/src/api/store/orders/[id]/timeline/route.ts": "f45a91fd64dc2d92074c459e71c9164159b0788edffeb40241563704159d5d8d",
+    "medusa-store/apps/backend/src/api/store/payment-collections/[id]/payment-sessions/route.ts": "e16e4ea5c03f4e8f2f2746c3ce6ad97bf38f8a5ddc64ffc9bd1f623f5f5f7dcf",
+    "medusa-store/apps/backend/src/api/store/product-reviews/purchases/route.ts": "6929b9edd132c1e5e1a270ab143a81884af2260fb4e9362ca217680e25845f86",
+    "medusa-store/apps/backend/src/api/store/product-reviews/route.ts": "fcf0a1f9c43c8f71a3a3c85a8caf2ff10051719efc70d0cd0dbdd6411a756a0a",
+    "medusa-store/apps/backend/src/api/store/seo/pages/route.ts": "13828f2d011d92e08a5385c5a06fb6551204091affede4a0e96b8ff4d4d33615",
+    "medusa-store/apps/backend/src/api/store/seo/route.ts": "e0aa64b9fb02348211d931ef8b9732ae6cf35bd7cb2387843b4c257f5a4bdd97",
+    "medusa-store/apps/backend/src/api/store/shipping-demo/dhl/route.ts": "23197ee074b22e4702298ad32a3df36a2cc801114087ef3dc443411b1d37fc2e",
+    "medusa-store/apps/backend/src/api/store/shipping-demo/orders/[id]/route.ts": "67fb262a2635b05f9b17f3ab2d3e00adcc8e2668e4e147ebe760de87cadf30f2",
+    "medusa-store/apps/backend/src/jobs/expire-buyback-photos.ts": "a799f4f8b561a023169d464a328b1a3ae1e92fdc333c889a53617f8355e2e9f8",
+    "medusa-store/apps/backend/src/jobs/process-mail-queue.ts": "a42397dab830abfba6344e07e3704438b7cd01a88ca573b1a3087c95a7b6eeeb",
+    "medusa-store/apps/backend/src/jobs/seo-monitor.ts": "31c614ad42cd84a7e5665f255ae39791c86b67bf2064b89692456af33d2ad0d6",
+    "medusa-store/apps/backend/src/modules/after-sales/index.ts": "b8ddc2d8387f9be366165fe31a514f7f54b7c7c4c75484ad73bf1b4001a69a06",
+    "medusa-store/apps/backend/src/modules/buyback/index.ts": "5b25f40d2f6084cd491227efa7ce9f7a2b4847146677b408dbe3250d24ecc1fe",
+    "medusa-store/apps/backend/src/modules/customer-notifications/index.ts": "990ddfbd2557a6ef8d6f161613ee935927fb8ec1d3701bf1732d7be097efc362",
+    "medusa-store/apps/backend/src/modules/devices/index.ts": "bd0a90d6a603dbe8bbbbab339f38d0683601b645510afa248c319227c6e2fb9c",
+    "medusa-store/apps/backend/src/modules/mail/index.ts": "932d201a43bbf3b0a82e061f4b03b894a6320159b81cae265c82099e358377c4",
+    "medusa-store/apps/backend/src/modules/mollie-settings/index.ts": "99741e5639740623a8623f88e767c3b3e649195b1546aeb09512a0acee921cf3",
+    "medusa-store/apps/backend/src/modules/mollie/index.ts": "5202e9e3a4ef7af68026d0c57550fda906c785c6763ace1b3b3bb34388de8cd0",
+    "medusa-store/apps/backend/src/modules/order-numbering/index.ts": "cc9c89d1640316f8dce2516bfc3fe3c95b6411fbcd8693bf902c2af6f34c9b63",
+    "medusa-store/apps/backend/src/modules/product-review/index.ts": "cbfd6cc5f550b10d2066ae3f759995263d8a933317f996ca8c3e89a4f6deb83a",
+    "medusa-store/apps/backend/src/modules/seo/index.ts": "72f6a5ad705e37117cbe01277aaf5eaaa51042cfb8639c9d424108715277b514",
+    "medusa-store/apps/backend/src/modules/sku-numbering/index.ts": "0e34bf702bd02e22eeb24d73c6ab307faa6d57713d848ecbedb507eaa3bc9110",
+    "medusa-store/apps/backend/src/modules/webhook-notifications/index.ts": "87946ae3d3e84dba29965ebaa3ecaff9dc77c706b0cc94c036de415c5469d74e",
+    "medusa-store/apps/backend/src/subscribers/customer-notifications.ts": "eb718eb1c429d26294725a8446421f591edc472dd327066003a195e9a6b117a9",
+    "medusa-store/apps/backend/src/subscribers/iphone-product-images.ts": "448a305668ede3dfe1328b44afc52d4ed65e3cd1734a375d185400b5041d1559",
+    "medusa-store/apps/backend/src/subscribers/registration-email.ts": "28439c9332193593134c3cd14cf065657fbeebb5854bfb64c336aade89cfa97b",
+    "medusa-store/apps/backend/src/subscribers/webhook-notifications.ts": "8cc2e82a49807f8e8ec76a36e5a9202f093a4710d4be57c9e5733e6a136d2c8d",
+    "medusa-store/apps/backend/src/workflows/buyback-catalog.ts": "e5524eec3a34a8ae4e3ae89fd6a7a7c9f7c2f2df36e89e0bb112579659dad73f",
+    "medusa-store/apps/backend/src/workflows/buyback.ts": "cb5bb9dc751c6879de8b7d65bd07d9d7cafcae02258c1a5e871005d91f2fc138",
+    "medusa-store/apps/backend/src/workflows/cancel-order-with-reason.ts": "4bf2bd0b20b7ee7b681c595cf6f561c922c0ef6994da8d837ab18efeb1448579",
+    "medusa-store/apps/backend/src/workflows/create-after-sales.ts": "d522bc85874d25c72c38c8f8e342cc0a3f37c88c845f719ac0572137db9bcaee",
+    "medusa-store/apps/backend/src/workflows/customer-notifications.ts": "863eab624e4b77d753ed21b0d4df9d697634848764a184153968dcfbf728f4f8",
+    "medusa-store/apps/backend/src/workflows/customer-service.ts": "9b6633358a954f58a60aeb7b191bdace43c2be2e0b559f2b1c4bbcbfae28bbe3",
+    "medusa-store/apps/backend/src/workflows/device-operations.ts": "d7d8bdb9371453fcb77b027d77c5fdff39c9c7993bec6c05e125dee9c55603c4",
+    "medusa-store/apps/backend/src/workflows/device-photos.ts": "06b5b34821cd5672efff8df8a35c17d42231079fef8c38029a50b1cda2ea60dd",
+    "medusa-store/apps/backend/src/workflows/device-refund.ts": "b305635ac8fe4c69ae643926202619b03e35952f6067ac336cd94c4727d0d1dd",
+    "medusa-store/apps/backend/src/workflows/device-source.ts": "f6935662e7b93f313eeee5939f5a7d1e0e25f1ac219fc56c877575f6809fa268",
+    "medusa-store/apps/backend/src/workflows/device-supplier-account.ts": "6b2678f3e3c9c06af2859ef7b851294b8fbdb70e1e92c463a6a79727283efd7a",
+    "medusa-store/apps/backend/src/workflows/enroll-all-device-stock.ts": "fcce09f2b20bdb1eeee793f7c9e3a95934614628e1fcfeba0090828b01b0e923",
+    "medusa-store/apps/backend/src/workflows/expire-buyback-photos.ts": "57615e39f58ea358f5041dd824e027adffbe0af9a61db7a78d53291f4783ae93",
+    "medusa-store/apps/backend/src/workflows/mail-command.ts": "b8adb5ee91ccba530c34158576b6cc1c976f7505bc291b976e8d477592c57e49",
+    "medusa-store/apps/backend/src/workflows/mail-webhook.ts": "378eea8f6aafcb52cab75d624750a359eb9c2426b1395d7ed2c48738d528d78a",
+    "medusa-store/apps/backend/src/workflows/mobile-intake.ts": "914b00138a27953cf2293f21be3899ac7734ce685fb97b5d2abb71afd4196be4",
+    "medusa-store/apps/backend/src/workflows/process-mail-queue.ts": "38468ec3f253420813a3e62c696275aa2d732d86622775454e2553c55e39adb3",
+    "medusa-store/apps/backend/src/workflows/product-reviews.ts": "65f8bdd4001f48351deb5761d808f7278211383ca3c80e52c5435f97c2c33922",
+    "medusa-store/apps/backend/src/workflows/reconcile-device-stock.ts": "148624162d9fff66f0fae4c104233c6ddf749d1888fa7d451888d6767b16157c",
+    "medusa-store/apps/backend/src/workflows/registration-email.ts": "e0a24989cd12ac52162974109668e0442f5caf1c3b59b77a5859d6f9ffae86b8",
+    "medusa-store/apps/backend/src/workflows/resume-mollie-session.ts": "3bce033a965517a30dabdfd11b63885bb7173d1222af3b0c584e54647940a105",
+    "medusa-store/apps/backend/src/workflows/save-buy-policies.ts": "4e7ac742c6ac09b3192a2f0f44a8366a255647e48670ea89f314c034c480037b",
+    "medusa-store/apps/backend/src/workflows/save-mollie-config.ts": "52cd92aa7a8aae80df4e5311ee8158cc2f93d32b0b479e97fb43aeeca73f67c1",
+    "medusa-store/apps/backend/src/workflows/seo-command.ts": "1a3d75eb9951f7cf68d6fd9912cde8e3dcc418223c8a107a296236c9c441bbee",
+    "medusa-store/apps/backend/src/workflows/unsubscribe-mail.ts": "a4f653cefa96d04cad48737d9ee1613f5b334f03cc9f89b9f98f47fe52d53ddb",
+    "medusa-store/apps/backend/src/workflows/update-after-sales.ts": "1e72cad6bd61700bd6e8a251e96d71a6a589de2998d6701a2b0d0c37b3d4015c",
+    "medusa-store/apps/backend/src/workflows/update-shipment-tracking.ts": "87c44a579f4b23d7048ae8d6ed5f1e2a10c02ee566e100a80b09ec9530df69d5",
+    "medusa-store/apps/backend/src/workflows/warehouse-access.ts": "184a45fdc895f96a97c45aa8fd9c0e05d76e1dc99822698bb616bbf52c5265c6",
+    "medusa-store/apps/backend/src/workflows/webhook-notifications.ts": "aa10f6ddf56a72a3100052672f7433368822ab42545e951858352657278a781e",
+    "medusa-store/apps/storefront/src/app/BingSiteAuth.xml/route.ts": "9cc665a7eb0bd0a29aa771f017c1e3136ccadae2160caf0bef7d127ef82aabe6",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(checkout)/checkout/page.tsx": "1cab8d10bdaf86409a9e9074ea10826825100ad977cfc8c4ecdbbec28c1001b4",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/about/page.tsx": "96b8b4412b06392d35c5904d88574477c0a9923a27885083603fbbd6cc27d011",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/addresses/page.tsx": "bfe67ba9b887cda3b5d71d5c3d13044c9848c2262242cde205ee8fe404a60a24",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/buyback/[id]/page.tsx": "5cb1744106c456dc56ed9e665961f517ef6cfef34e1a9e2fef0d85bac6c68ddd",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/buyback/page.tsx": "004315714799311e0f93976f93d2a654854825f3b27320f7cf9edf139e11bd79",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/orders/details/[id]/page.tsx": "d07b44eb2a646ed27cb0f6e81c3c1dc331ebb920d04dab222a8779a3d889feb8",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/orders/page.tsx": "2590cb527e2343cfe8c2ae2ab539ef0ad51320248ef94af2dffe1005a1145368",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/page.tsx": "18783a9f91c57e053efdce4f817907c60ff5a54a9dd69b5438e005dfcc381d6c",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/profile/page.tsx": "279b105048f3779ef6b7d508b2765f4e194f9c11da2609c781974404dbb44588",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/shipping-demo/page.tsx": "b46620c6110704adcd8686a27552d9c81a5afee95d4c1d226880cfa08ca74bbe",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@login/buyback/[id]/page.tsx": "7a2768a4db922b895feeef7f893adfe88c24f182afa37331c0f1dffd9b5ddbe6",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@login/buyback/page.tsx": "34272550650033575072dc9b3e6d166e19cab260e6ce0c06f3009140068e2264",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@login/page.tsx": "82844d13f1b044aa2f563b4dad7f0e8d35751db8b909ff06c17749a659a6463e",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@login/shipping-demo/page.tsx": "dca2aa6527b50eac2cd6cf0ce6e49f00ce785cd9d81b4eb43dab86d5b4244f0c",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/blog/[slug]/page.tsx": "21a51c175b4ec934c6da78926e2fa83e81db7e5139f41ea9080d2b1b9d7a6586",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/blog/page.tsx": "789ee5eb1388f5f8720a028d6a2472eb048914dd2805d0e9533ee23ec9a410d2",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/cart/page.tsx": "9afa6dfbc7e5c9bef1d9bcfe6fb4e6ddc3155a8015e1a2618f4294fd06c9dc5d",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/categories/[...category]/page.tsx": "9f8ffac81a0afb79320b74c5da7e3ad0aff12fb4c0c3338e08631babe13f5738",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/collections/[handle]/page.tsx": "7e647b4321cb1eff5593daed97f2d29b063cabd1350c4a06c51daa3665b3d27e",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/help/page.tsx": "11fd244435bca542b2ca818dd1f9cadb29e608e1a3131cdfa7201d9a202ceb36",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/order/[id]/confirmed/page.tsx": "119198f3b91d0560098835d485614dcb68aad9a3efe0f17cabe7d8f174bbcbb6",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/order/[id]/transfer/[token]/accept/page.tsx": "4ba3f4eb8ba1f10bf12d33c976262604f03a544ea19b268a03f8d3fb325eb649",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/order/[id]/transfer/[token]/decline/page.tsx": "5e74c193c6f63b6d2ed32cb01adc0a03f63156d91aeab5448e9b4035e845957d",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/order/[id]/transfer/[token]/page.tsx": "66921957d89ec46a5e321fd6d5fa76eb39dece6fd2f53d308150848aa56a7b19",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/page.tsx": "f92fc7876bc7247ac75f1b4e9239374ffacfa0f0fdf2f2090393bbc306609f86",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/products/[handle]/page.tsx": "e98a74de6834febcf3c148ec2fe9e8480f7a6f10edfbaaf2f685c1875104cd8b",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/reviews/page.tsx": "669b5f2e2b4c92e67056fef3e976a2f9961f024239934ed07c21416023bcb22d",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/sell/page.tsx": "20fdb299a946547f149de28cda2f8e9627c049cc73d2f063297f60e60be2dad4",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/sell/requests/[id]/page.tsx": "058df91f4b07604086a3da0109a370907759c7a484ea47b663a3d32cd7cef244",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/sell/requests/page.tsx": "b1b1448e6b255c57420747c96e4f54c953a709f8deb98fe41869e468a95c67de",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/shipping-demo/page.tsx": "708064b0476adf81133a0df12ecb1db9fc467107b722c6c6198294eb39f0cccb",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/store/page.tsx": "a76d05e2af8beb6cb2091cbf14e5d74c86c0a31c9577e04f07f69a643649d2a6",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/ui/page.tsx": "8c50297400fae9703aa158c49403a869e1c7d950c703f366b55c5a3f8d71d458",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/verify-account/page.tsx": "4e3edc88beb931df9c9b4d96ab6f62cacf39b51bca96f21e8fb1c15a98c0a583",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(payment)/payment-result/page.tsx": "7059b8364644d8398c61a61e6ffc9a625544f23de70a68a762a819124806c587",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(sell-flow)/sell/iphone/[...steps]/page.tsx": "57f840e572aee758e28d1b5bd7ace319cae4e7276c5ef97622b76ff22f2f18ce",
+    "medusa-store/apps/storefront/src/app/api/mollie-return/route.ts": "7b1775e2865551a4cdb2adb9eb16c70bc9902a0ca7015178383400abebb28897",
+    "medusa-store/apps/storefront/src/app/api/payment-return/route.ts": "d2655e4423d2ae48d5b6ddda53176b8d62bbe616c64f34efcbf5f07ed59c241d",
+    "medusa-store/apps/storefront/src/app/api/seo-artifacts/[key]/route.ts": "aba2cf3f17d1e327cab67acc0a6e222cb4ac7cfe61adc67b8336f2a58128a6ae",
+    "medusa-store/apps/storefront/src/app/llms.txt/route.ts": "44fb481e22cda94a2b0004a398763349d098d16332c051ff61e5bd5279c85f9f",
+    "medusa-store/apps/storefront/src/app/robots.txt/route.ts": "bca3d9c14f0947211d86b10fcebec6d036a39beb568328285f884f06f3487edb",
+    "medusa-store/apps/storefront/src/app/sitemap.xml/route.ts": "419de71fca63862b91674e9179f25c5c89c2784220c525164e0dbe15656c84a5",
+    "medusa-store/apps/storefront/src/lib/data/cart.ts": "ff70408f70af8d04dae8b943e4610bd709a9a339c79b704c1ac204b740532ab5",
+    "medusa-store/apps/storefront/src/lib/data/customer.ts": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be",
+    "medusa-store/apps/storefront/src/lib/data/locale-actions.ts": "d358c190ddf679b7d745601eaecab2d91a05798dcb56bb2a819508aee2d80d92",
+    "medusa-store/apps/storefront/src/lib/data/mollie.ts": "1c63d22d6d9209527f2f50227b54ff3e32e2268cc2d5dbe6ccc628ae1993c3db",
+    "medusa-store/apps/storefront/src/lib/data/orders.ts": "75b404011e8d68051810eea4cb18fd6ecfb3d00104a79d9fae53682c31c63090",
+    "medusa-store/apps/storefront/src/lib/data/sell-models.ts": "6595c1a824dcec9243e9b30320f37eaa0ded7de4bda2085be4f0fb79692b7114",
+    "medusa-store/apps/storefront/src/lib/data/store-search.ts": "2805efe6b3c11c65f0e97f74efdac7d7c002d6c4103dcf27b97284cb9202ee28",
+    "medusa-store/apps/storefront/src/lib/search-client.ts": "43798f0bdbff8ce19a6eae1ef97b4d3751bd734f5e33a2af9f157ce7833fd508"
+  },
+  "routes": [
+    {
+      "path": "/admin/buy-policies",
+      "source": "medusa-store/apps/backend/src/api/admin/buy-policies/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        },
+        {
+          "method": "POST",
+          "line": 11
+        }
+      ],
+      "workflow_imports": [
+        "../../../workflows/save-buy-policies"
+      ],
+      "tasks": [
+        "T058",
+        "T059"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/buyback/[id]/photos/[photo_id]",
+      "source": "medusa-store/apps/backend/src/api/admin/buyback/[id]/photos/[photo_id]/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T050",
+        "T051",
+        "T052",
+        "T053"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/buyback/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/buyback/[id]/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 8
+        },
+        {
+          "method": "POST",
+          "line": 13
+        }
+      ],
+      "workflow_imports": [
+        "../../../../workflows/buyback"
+      ],
+      "tasks": [
+        "T050",
+        "T051",
+        "T052",
+        "T053"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/buyback",
+      "source": "medusa-store/apps/backend/src/api/admin/buyback/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T050",
+        "T051",
+        "T052",
+        "T053"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/buyback-catalog",
+      "source": "medusa-store/apps/backend/src/api/admin/buyback-catalog/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 7
+        },
+        {
+          "method": "POST",
+          "line": 11
+        }
+      ],
+      "workflow_imports": [
+        "../../../workflows/buyback-catalog"
+      ],
+      "tasks": [
+        "T050",
+        "T051",
+        "T052",
+        "T053"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/buyback-prices",
+      "source": "medusa-store/apps/backend/src/api/admin/buyback-prices/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 8
+        },
+        {
+          "method": "POST",
+          "line": 15
+        }
+      ],
+      "workflow_imports": [
+        "../../../workflows/buyback"
+      ],
+      "tasks": [
+        "T050",
+        "T051",
+        "T052",
+        "T053"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/custom",
+      "source": "medusa-store/apps/backend/src/api/admin/custom/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 3
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T002"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/customer-service",
+      "source": "medusa-store/apps/backend/src/api/admin/customer-service/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        },
+        {
+          "method": "POST",
+          "line": 11
+        }
+      ],
+      "workflow_imports": [
+        "../../../workflows/customer-service"
+      ],
+      "tasks": [
+        "T058",
+        "T059"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/devices/import-template",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/import-template/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 8
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T048"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/devices/mobile-intake",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/mobile-intake/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [
+        "../../../../workflows/mobile-intake"
+      ],
+      "tasks": [
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T048"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/devices/photos",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/photos/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 6
+        }
+      ],
+      "workflow_imports": [
+        "../../../../workflows/device-photos"
+      ],
+      "tasks": [
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T048"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/devices/refunds",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/refunds/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 8
+        }
+      ],
+      "workflow_imports": [
+        "../../../../workflows/device-refund"
+      ],
+      "tasks": [
+        "T047"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/devices",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 26
+        },
+        {
+          "method": "POST",
+          "line": 390
+        }
+      ],
+      "workflow_imports": [
+        "../../../workflows/device-operations",
+        "../../../workflows/device-source"
+      ],
+      "tasks": [
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T048"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/devices/supplier-accounts",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/supplier-accounts/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 23
+        },
+        {
+          "method": "POST",
+          "line": 44
+        }
+      ],
+      "workflow_imports": [
+        "../../../../workflows/device-supplier-account"
+      ],
+      "tasks": [
+        "T014",
+        "T015",
+        "T042"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/devices/variants",
+      "source": "medusa-store/apps/backend/src/api/admin/devices/variants/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 8
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T048"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/inventory-items",
+      "source": "medusa-store/apps/backend/src/api/admin/inventory-items/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T031",
+        "T042"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/mail/commands",
+      "source": "medusa-store/apps/backend/src/api/admin/mail/commands/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 8
+        }
+      ],
+      "workflow_imports": [
+        "../../../../workflows/mail-command"
+      ],
+      "tasks": [
+        "T055",
+        "T056"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/mail/messages/[id]/attachments/[attachment_id]",
+      "source": "medusa-store/apps/backend/src/api/admin/mail/messages/[id]/attachments/[attachment_id]/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 11
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T055",
+        "T056"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/mail/messages/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/mail/messages/[id]/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 8
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T055",
+        "T056"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/mail",
+      "source": "medusa-store/apps/backend/src/api/admin/mail/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 11
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T055",
+        "T056"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/mollie",
+      "source": "medusa-store/apps/backend/src/api/admin/mollie/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 10
+        },
+        {
+          "method": "POST",
+          "line": 21
+        }
+      ],
+      "workflow_imports": [
+        "../../../workflows/save-mollie-config"
+      ],
+      "tasks": [
+        "T035",
+        "T036"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/orders/[id]/after-sales",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/after-sales/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 8
+        },
+        {
+          "method": "POST",
+          "line": 14
+        }
+      ],
+      "workflow_imports": [
+        "../../../../../workflows/update-after-sales"
+      ],
+      "tasks": [
+        "T045",
+        "T046",
+        "T047",
+        "T049"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/orders/[id]/cancel",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/cancel/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 6
+        }
+      ],
+      "workflow_imports": [
+        "../../../../../workflows/cancel-order-with-reason"
+      ],
+      "tasks": [
+        "T034",
+        "T037",
+        "T038",
+        "T039",
+        "T044"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/orders/[id]/fulfillments/[fulfillment_id]/cancel",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/cancel/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [
+        "../../../../../../../workflows/device-operations"
+      ],
+      "tasks": [
+        "T034",
+        "T037",
+        "T038",
+        "T039",
+        "T044"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/orders/[id]/fulfillments/[fulfillment_id]/shipments",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/shipments/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 9
+        }
+      ],
+      "workflow_imports": [
+        "@medusajs/medusa/core-flows",
+        "../../../../../../../workflows/device-operations"
+      ],
+      "tasks": [
+        "T034",
+        "T037",
+        "T038",
+        "T039",
+        "T044"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/orders/[id]/fulfillments/[fulfillment_id]/tracking",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/fulfillments/[fulfillment_id]/tracking/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [
+        "../../../../../../../workflows/update-shipment-tracking"
+      ],
+      "tasks": [
+        "T034",
+        "T037",
+        "T038",
+        "T039",
+        "T044"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/orders/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/[id]/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T034",
+        "T037",
+        "T038",
+        "T039",
+        "T044"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/orders",
+      "source": "medusa-store/apps/backend/src/api/admin/orders/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T034",
+        "T037",
+        "T038",
+        "T039",
+        "T044"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/product-reviews/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/product-reviews/[id]/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [
+        "../../../../workflows/product-reviews"
+      ],
+      "tasks": [
+        "T054"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/product-reviews",
+      "source": "medusa-store/apps/backend/src/api/admin/product-reviews/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T054"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/seo/[resource]",
+      "source": "medusa-store/apps/backend/src/api/admin/seo/[resource]/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 7
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T058",
+        "T059"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/seo/commands",
+      "source": "medusa-store/apps/backend/src/api/admin/seo/commands/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 4
+        }
+      ],
+      "workflow_imports": [
+        "../../../../workflows/seo-command"
+      ],
+      "tasks": [
+        "T058",
+        "T059"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/shipping-demo/dhl",
+      "source": "medusa-store/apps/backend/src/api/admin/shipping-demo/dhl/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 4
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T059"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/stock-locations/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/stock-locations/[id]/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T031",
+        "T042"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/stock-locations",
+      "source": "medusa-store/apps/backend/src/api/admin/stock-locations/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T031",
+        "T042"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/warehouse-access/me",
+      "source": "medusa-store/apps/backend/src/api/admin/warehouse-access/me/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T015",
+        "T042"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/warehouse-access",
+      "source": "medusa-store/apps/backend/src/api/admin/warehouse-access/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 9
+        },
+        {
+          "method": "POST",
+          "line": 19
+        }
+      ],
+      "workflow_imports": [
+        "../../../workflows/warehouse-access"
+      ],
+      "tasks": [
+        "T015",
+        "T042"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/webhook-notifications/[id]",
+      "source": "medusa-store/apps/backend/src/api/admin/webhook-notifications/[id]/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 3
+        },
+        {
+          "method": "DELETE",
+          "line": 7
+        }
+      ],
+      "workflow_imports": [
+        "../../../../workflows/webhook-notifications"
+      ],
+      "tasks": [
+        "T057"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/webhook-notifications/[id]/test",
+      "source": "medusa-store/apps/backend/src/api/admin/webhook-notifications/[id]/test/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 3
+        }
+      ],
+      "workflow_imports": [
+        "../../../../../workflows/webhook-notifications"
+      ],
+      "tasks": [
+        "T057"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/admin/webhook-notifications",
+      "source": "medusa-store/apps/backend/src/api/admin/webhook-notifications/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        },
+        {
+          "method": "POST",
+          "line": 11
+        }
+      ],
+      "workflow_imports": [
+        "../../../workflows/webhook-notifications"
+      ],
+      "tasks": [
+        "T057"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/mail/unsubscribe/[token]",
+      "source": "medusa-store/apps/backend/src/api/mail/unsubscribe/[token]/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 4
+        },
+        {
+          "method": "POST",
+          "line": 18
+        }
+      ],
+      "workflow_imports": [
+        "../../../../workflows/unsubscribe-mail"
+      ],
+      "tasks": [
+        "T055",
+        "T056"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/mail/webhooks/[account_id]",
+      "source": "medusa-store/apps/backend/src/api/mail/webhooks/[account_id]/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 8
+        }
+      ],
+      "workflow_imports": [
+        "../../../../workflows/mail-webhook"
+      ],
+      "tasks": [
+        "T055",
+        "T056"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/mobile-intake/devices/[id]",
+      "source": "medusa-store/apps/backend/src/api/mobile-intake/devices/[id]/route.ts",
+      "methods": [
+        {
+          "method": "DELETE",
+          "line": 4
+        }
+      ],
+      "workflow_imports": [
+        "../../../../workflows/mobile-intake"
+      ],
+      "tasks": [
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T048"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/mobile-intake/photos",
+      "source": "medusa-store/apps/backend/src/api/mobile-intake/photos/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 6
+        }
+      ],
+      "workflow_imports": [
+        "../../../workflows/device-photos"
+      ],
+      "tasks": [
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T048"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/mobile-intake",
+      "source": "medusa-store/apps/backend/src/api/mobile-intake/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        },
+        {
+          "method": "POST",
+          "line": 12
+        }
+      ],
+      "workflow_imports": [
+        "../../workflows/mobile-intake"
+      ],
+      "tasks": [
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T048"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/mobile-intake/variants",
+      "source": "medusa-store/apps/backend/src/api/mobile-intake/variants/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 7
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T048"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/buy-policies",
+      "source": "medusa-store/apps/backend/src/api/store/buy-policies/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 4
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T058",
+        "T059"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/buyback/estimate",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/estimate/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 8
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T050",
+        "T051",
+        "T052",
+        "T053"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/buyback/prices",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/prices/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T050",
+        "T051",
+        "T052",
+        "T053"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/buyback/requests/[id]/photos/[photo_id]",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/photos/[photo_id]/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T050",
+        "T051",
+        "T052",
+        "T053"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/buyback/requests/[id]/photos",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/photos/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 5
+        }
+      ],
+      "workflow_imports": [
+        "../../../../../../workflows/buyback"
+      ],
+      "tasks": [
+        "T050",
+        "T051",
+        "T052",
+        "T053"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/buyback/requests/[id]",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/requests/[id]/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        },
+        {
+          "method": "POST",
+          "line": 10
+        }
+      ],
+      "workflow_imports": [
+        "../../../../../workflows/buyback"
+      ],
+      "tasks": [
+        "T050",
+        "T051",
+        "T052",
+        "T053"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/buyback/requests",
+      "source": "medusa-store/apps/backend/src/api/store/buyback/requests/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 9
+        },
+        {
+          "method": "POST",
+          "line": 16
+        }
+      ],
+      "workflow_imports": [
+        "../../../../workflows/buyback"
+      ],
+      "tasks": [
+        "T050",
+        "T051",
+        "T052",
+        "T053"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/custom",
+      "source": "medusa-store/apps/backend/src/api/store/custom/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 3
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T002"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/customer-service",
+      "source": "medusa-store/apps/backend/src/api/store/customer-service/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 4
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T058",
+        "T059"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/notifications",
+      "source": "medusa-store/apps/backend/src/api/store/notifications/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 7
+        },
+        {
+          "method": "POST",
+          "line": 17
+        }
+      ],
+      "workflow_imports": [
+        "../../../workflows/customer-notifications"
+      ],
+      "tasks": [
+        "T057"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/orders/[id]/after-sales",
+      "source": "medusa-store/apps/backend/src/api/store/orders/[id]/after-sales/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 9
+        },
+        {
+          "method": "POST",
+          "line": 20
+        }
+      ],
+      "workflow_imports": [
+        "../../../../../workflows/create-after-sales"
+      ],
+      "tasks": [
+        "T045",
+        "T046",
+        "T047",
+        "T049"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/orders/[id]/devices",
+      "source": "medusa-store/apps/backend/src/api/store/orders/[id]/devices/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T048"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/orders/[id]/product-reviews",
+      "source": "medusa-store/apps/backend/src/api/store/orders/[id]/product-reviews/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T054"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/orders/[id]/timeline",
+      "source": "medusa-store/apps/backend/src/api/store/orders/[id]/timeline/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 7
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T034",
+        "T037",
+        "T038",
+        "T039",
+        "T044"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/payment-collections/[id]/payment-sessions",
+      "source": "medusa-store/apps/backend/src/api/store/payment-collections/[id]/payment-sessions/route.ts",
+      "methods": [
+        {
+          "method": "POST",
+          "line": 6
+        }
+      ],
+      "workflow_imports": [
+        "@medusajs/medusa/core-flows",
+        "../../../../../workflows/resume-mollie-session"
+      ],
+      "tasks": [
+        "T002"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/product-reviews/purchases",
+      "source": "medusa-store/apps/backend/src/api/store/product-reviews/purchases/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 14
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T054"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/product-reviews",
+      "source": "medusa-store/apps/backend/src/api/store/product-reviews/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 8
+        },
+        {
+          "method": "POST",
+          "line": 25
+        }
+      ],
+      "workflow_imports": [
+        "../../../workflows/product-reviews"
+      ],
+      "tasks": [
+        "T054"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/seo/pages",
+      "source": "medusa-store/apps/backend/src/api/store/seo/pages/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 3
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T058",
+        "T059"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/seo",
+      "source": "medusa-store/apps/backend/src/api/store/seo/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 4
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T058",
+        "T059"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/shipping-demo/dhl",
+      "source": "medusa-store/apps/backend/src/api/store/shipping-demo/dhl/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 4
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T059"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    },
+    {
+      "path": "/store/shipping-demo/orders/[id]",
+      "source": "medusa-store/apps/backend/src/api/store/shipping-demo/orders/[id]/route.ts",
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "workflow_imports": [],
+      "tasks": [
+        "T059"
+      ],
+      "authorization": "pending-T004",
+      "status": "source-evidence-only"
+    }
+  ],
+  "storefront_sdk_call_candidates": [
+    {
+      "expression": "sdk.store.customer.retrieve",
+      "source": "medusa-store/apps/storefront/src/app/api/mollie-return/route.ts",
+      "line": 61
+    },
+    {
+      "expression": "sdk.store.cart.complete",
+      "source": "medusa-store/apps/storefront/src/app/api/mollie-return/route.ts",
+      "line": 83
+    },
+    {
+      "expression": "sdk.store.region.list",
+      "source": "medusa-store/apps/storefront/src/app/sitemap.xml/route.ts",
+      "line": 9
+    },
+    {
+      "expression": "sdk.store.product.list",
+      "source": "medusa-store/apps/storefront/src/app/sitemap.xml/route.ts",
+      "line": 15
+    },
+    {
+      "expression": "sdk.store.collection.list",
+      "source": "medusa-store/apps/storefront/src/app/sitemap.xml/route.ts",
+      "line": 21
+    },
+    {
+      "expression": "sdk.store.cart.create",
+      "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+      "line": 83
+    },
+    {
+      "expression": "sdk.store.cart.update",
+      "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+      "line": 97
+    },
+    {
+      "expression": "sdk.store.cart.update",
+      "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+      "line": 116
+    },
+    {
+      "expression": "sdk.store.cart.createLineItem",
+      "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+      "line": 155
+    },
+    {
+      "expression": "sdk.store.cart.updateLineItem",
+      "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+      "line": 211
+    },
+    {
+      "expression": "sdk.store.cart.deleteLineItem",
+      "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+      "line": 238
+    },
+    {
+      "expression": "sdk.store.cart.addShippingMethod",
+      "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+      "line": 261
+    },
+    {
+      "expression": "sdk.store.payment.initiatePaymentSession",
+      "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+      "line": 294
+    },
+    {
+      "expression": "sdk.store.cart.update",
+      "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+      "line": 316
+    },
+    {
+      "expression": "sdk.store.cart.complete",
+      "source": "medusa-store/apps/storefront/src/lib/data/cart.ts",
+      "line": 453
+    },
+    {
+      "expression": "sdk.auth.verification.request",
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 38
+    },
+    {
+      "expression": "sdk.store.customer.update",
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 89
+    },
+    {
+      "expression": "sdk.auth.register",
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 113
+    },
+    {
+      "expression": "sdk.auth.login",
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 160
+    },
+    {
+      "expression": "sdk.store.customer.retrieve",
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 204
+    },
+    {
+      "expression": "sdk.store.customer.create",
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 214
+    },
+    {
+      "expression": "sdk.auth.login",
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 225
+    },
+    {
+      "expression": "sdk.auth.verification.confirm",
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 261
+    },
+    {
+      "expression": "sdk.auth.logout",
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 269
+    },
+    {
+      "expression": "sdk.store.cart.transferCart",
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 295
+    },
+    {
+      "expression": "sdk.store.customer.createAddress",
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 327
+    },
+    {
+      "expression": "sdk.store.customer.deleteAddress",
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 346
+    },
+    {
+      "expression": "sdk.store.customer.updateAddress",
+      "source": "medusa-store/apps/storefront/src/lib/data/customer.ts",
+      "line": 391
+    },
+    {
+      "expression": "sdk.store.cart.update",
+      "source": "medusa-store/apps/storefront/src/lib/data/locale-actions.ts",
+      "line": 52
+    },
+    {
+      "expression": "sdk.store.cart.retrieve",
+      "source": "medusa-store/apps/storefront/src/lib/data/mollie.ts",
+      "line": 17
+    },
+    {
+      "expression": "sdk.store.order.requestTransfer",
+      "source": "medusa-store/apps/storefront/src/lib/data/orders.ts",
+      "line": 90
+    },
+    {
+      "expression": "sdk.store.order.acceptTransfer",
+      "source": "medusa-store/apps/storefront/src/lib/data/orders.ts",
+      "line": 106
+    },
+    {
+      "expression": "sdk.store.order.declineTransfer",
+      "source": "medusa-store/apps/storefront/src/lib/data/orders.ts",
+      "line": 115
+    },
+    {
+      "expression": "sdk.store.product.list",
+      "source": "medusa-store/apps/storefront/src/lib/data/sell-models.ts",
+      "line": 12
+    },
+    {
+      "expression": "sdk.store.category.list",
+      "source": "medusa-store/apps/storefront/src/lib/data/store-search.ts",
+      "line": 77
+    },
+    {
+      "expression": "sdk.store.product.list",
+      "source": "medusa-store/apps/storefront/src/lib/search-client.ts",
+      "line": 77
+    }
+  ],
+  "command_validators": [
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/devices/validators.ts",
+      "actions": [
+        "activate",
+        "assign",
+        "cancel_fulfillment",
+        "create_fulfillment",
+        "delete",
+        "enroll",
+        "fulfill",
+        "inspect",
+        "intake",
+        "make_available",
+        "order_assign",
+        "receive",
+        "release",
+        "repair_ship",
+        "retire",
+        "save_allocation",
+        "ship",
+        "source",
+        "supplier_assign",
+        "supply",
+        "transfer_return",
+        "update"
+      ]
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/admin/mail/validators.ts",
+      "actions": [
+        "campaign",
+        "contacts",
+        "delete_account",
+        "delete_template",
+        "messages",
+        "save_account",
+        "save_campaign",
+        "save_draft",
+        "save_template",
+        "send",
+        "unsubscribe_contact"
+      ]
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-pricing-validators.ts",
+      "actions": [
+        "adjust",
+        "reference",
+        "save"
+      ]
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/buyback-validators.ts",
+      "actions": [
+        "accept_offer",
+        "approve_shipping",
+        "cancel",
+        "decline_offer",
+        "final_offer",
+        "link_device",
+        "mark_paid",
+        "mark_received",
+        "mark_returned",
+        "mark_returning",
+        "mark_shipped",
+        "request_return",
+        "review_photo",
+        "submit_photos"
+      ]
+    },
+    {
+      "source": "medusa-store/apps/backend/src/api/seo-validators.ts",
+      "actions": [
+        "delete",
+        "google-test",
+        "indexnow",
+        "run",
+        "save",
+        "scan"
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "name": "after-sales",
+      "source": "medusa-store/apps/backend/src/modules/after-sales/index.ts",
+      "models": [
+        "after_sales_request"
+      ]
+    },
+    {
+      "name": "buyback",
+      "source": "medusa-store/apps/backend/src/modules/buyback/index.ts",
+      "models": [
+        "buyback_request",
+        "buyback_photo",
+        "buyback_price",
+        "buyback_device_link"
+      ]
+    },
+    {
+      "name": "customer-notifications",
+      "source": "medusa-store/apps/backend/src/modules/customer-notifications/index.ts",
+      "models": [
+        "customer_notice"
+      ]
+    },
+    {
+      "name": "devices",
+      "source": "medusa-store/apps/backend/src/modules/devices/index.ts",
+      "models": [
+        "device",
+        "device_source",
+        "device_variant",
+        "device_supply",
+        "device_assignment",
+        "device_event"
+      ]
+    },
+    {
+      "name": "mail",
+      "source": "medusa-store/apps/backend/src/modules/mail/index.ts",
+      "models": [
+        "mail_account",
+        "mail_message",
+        "mail_contact",
+        "mail_campaign",
+        "mail_delivery",
+        "mail_event",
+        "mail_template"
+      ]
+    },
+    {
+      "name": "mollie",
+      "source": "medusa-store/apps/backend/src/modules/mollie/index.ts",
+      "models": []
+    },
+    {
+      "name": "mollie-settings",
+      "source": "medusa-store/apps/backend/src/modules/mollie-settings/index.ts",
+      "models": [
+        "mollie_config"
+      ]
+    },
+    {
+      "name": "order-numbering",
+      "source": "medusa-store/apps/backend/src/modules/order-numbering/index.ts",
+      "models": []
+    },
+    {
+      "name": "product-review",
+      "source": "medusa-store/apps/backend/src/modules/product-review/index.ts",
+      "models": [
+        "product_review"
+      ]
+    },
+    {
+      "name": "seo",
+      "source": "medusa-store/apps/backend/src/modules/seo/index.ts",
+      "models": [
+        "seo_setting",
+        "seo_page",
+        "seo_source",
+        "seo_crawler_visit",
+        "seo_traffic_visit",
+        "seo_provider",
+        "seo_monitor",
+        "seo_run",
+        "seo_evidence",
+        "seo_submission"
+      ]
+    },
+    {
+      "name": "sku-numbering",
+      "source": "medusa-store/apps/backend/src/modules/sku-numbering/index.ts",
+      "models": []
+    },
+    {
+      "name": "webhook-notifications",
+      "source": "medusa-store/apps/backend/src/modules/webhook-notifications/index.ts",
+      "models": [
+        "webhook_endpoint"
+      ]
+    }
+  ],
+  "storefront_page_patterns": {
+    "/[countryCode]/checkout": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(checkout)/checkout/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/about": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/about/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/account/addresses": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/addresses/page.tsx",
+        "state": "dashboard"
+      }
+    ],
+    "/[countryCode]/account/buyback/[id]": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/buyback/[id]/page.tsx",
+        "state": "dashboard"
+      },
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@login/buyback/[id]/page.tsx",
+        "state": "login"
+      }
+    ],
+    "/[countryCode]/account/buyback": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/buyback/page.tsx",
+        "state": "dashboard"
+      },
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@login/buyback/page.tsx",
+        "state": "login"
+      }
+    ],
+    "/[countryCode]/account/orders/details/[id]": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/orders/details/[id]/page.tsx",
+        "state": "dashboard"
+      }
+    ],
+    "/[countryCode]/account/orders": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/orders/page.tsx",
+        "state": "dashboard"
+      }
+    ],
+    "/[countryCode]/account": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/page.tsx",
+        "state": "dashboard"
+      },
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@login/page.tsx",
+        "state": "login"
+      }
+    ],
+    "/[countryCode]/account/profile": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/profile/page.tsx",
+        "state": "dashboard"
+      }
+    ],
+    "/[countryCode]/account/shipping-demo": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/shipping-demo/page.tsx",
+        "state": "dashboard"
+      },
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@login/shipping-demo/page.tsx",
+        "state": "login"
+      }
+    ],
+    "/[countryCode]/blog/[slug]": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/blog/[slug]/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/blog": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/blog/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/cart": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/cart/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/categories/[...category]": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/categories/[...category]/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/collections/[handle]": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/collections/[handle]/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/help": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/help/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/order/[id]/confirmed": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/order/[id]/confirmed/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/order/[id]/transfer/[token]/accept": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/order/[id]/transfer/[token]/accept/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/order/[id]/transfer/[token]/decline": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/order/[id]/transfer/[token]/decline/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/order/[id]/transfer/[token]": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/order/[id]/transfer/[token]/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/products/[handle]": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/products/[handle]/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/reviews": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/reviews/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/sell": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/sell/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/sell/requests/[id]": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/sell/requests/[id]/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/sell/requests": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/sell/requests/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/shipping-demo": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/shipping-demo/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/store": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/store/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/ui": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/ui/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/verify-account": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/verify-account/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/payment-result": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(payment)/payment-result/page.tsx",
+        "state": "page"
+      }
+    ],
+    "/[countryCode]/sell/iphone/[...steps]": [
+      {
+        "source": "medusa-store/apps/storefront/src/app/[countryCode]/(sell-flow)/sell/iphone/[...steps]/page.tsx",
+        "state": "page"
+      }
+    ]
+  },
+  "storefront_route_handlers": [
+    {
+      "path": "/api/mollie-return",
+      "source": "medusa-store/apps/storefront/src/app/api/mollie-return/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/payment-return",
+      "source": "medusa-store/apps/storefront/src/app/api/payment-return/route.ts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/seo-artifacts/[key]",
+      "source": "medusa-store/apps/storefront/src/app/api/seo-artifacts/[key]/route.ts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/BingSiteAuth.xml",
+      "source": "medusa-store/apps/storefront/src/app/BingSiteAuth.xml/route.ts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/llms.txt",
+      "source": "medusa-store/apps/storefront/src/app/llms.txt/route.ts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/robots.txt",
+      "source": "medusa-store/apps/storefront/src/app/robots.txt/route.ts",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/sitemap.xml",
+      "source": "medusa-store/apps/storefront/src/app/sitemap.xml/route.ts",
+      "methods": [
+        "GET"
+      ]
+    }
+  ],
+  "admin_pages": [
+    "medusa-store/apps/backend/src/admin/routes/device-scan/inspection/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/intake/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/lookup/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/orders/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/prices/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/recycled/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/requests/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/returned/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/device-scan/sources/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/mail/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/seo/citation-monitor/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/seo/crawler-logs/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/seo/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/seo/providers/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/seo/traffic-sources/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/settings/buy-policies/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/settings/customer-service/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/settings/mailboxes/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/settings/mollie/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/settings/warehouse-access/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/settings/webhook-notifications/page.tsx",
+    "medusa-store/apps/backend/src/admin/routes/shipping-demo/page.tsx"
+  ],
+  "widgets": [
+    "medusa-store/apps/backend/src/admin/widgets/mail-topbar.tsx",
+    "medusa-store/apps/backend/src/admin/widgets/order-after-sales.tsx",
+    "medusa-store/apps/backend/src/admin/widgets/order-devices.tsx",
+    "medusa-store/apps/backend/src/admin/widgets/order-shipping.tsx",
+    "medusa-store/apps/backend/src/admin/widgets/product-reviews.tsx",
+    "medusa-store/apps/backend/src/admin/widgets/selectable-messages.tsx"
+  ],
+  "workflows": [
+    "medusa-store/apps/backend/src/workflows/buyback-catalog.ts",
+    "medusa-store/apps/backend/src/workflows/buyback.ts",
+    "medusa-store/apps/backend/src/workflows/cancel-order-with-reason.ts",
+    "medusa-store/apps/backend/src/workflows/create-after-sales.ts",
+    "medusa-store/apps/backend/src/workflows/customer-notifications.ts",
+    "medusa-store/apps/backend/src/workflows/customer-service.ts",
+    "medusa-store/apps/backend/src/workflows/device-operations.ts",
+    "medusa-store/apps/backend/src/workflows/device-photos.ts",
+    "medusa-store/apps/backend/src/workflows/device-refund.ts",
+    "medusa-store/apps/backend/src/workflows/device-source.ts",
+    "medusa-store/apps/backend/src/workflows/device-supplier-account.ts",
+    "medusa-store/apps/backend/src/workflows/enroll-all-device-stock.ts",
+    "medusa-store/apps/backend/src/workflows/expire-buyback-photos.ts",
+    "medusa-store/apps/backend/src/workflows/mail-command.ts",
+    "medusa-store/apps/backend/src/workflows/mail-webhook.ts",
+    "medusa-store/apps/backend/src/workflows/mobile-intake.ts",
+    "medusa-store/apps/backend/src/workflows/process-mail-queue.ts",
+    "medusa-store/apps/backend/src/workflows/product-reviews.ts",
+    "medusa-store/apps/backend/src/workflows/reconcile-device-stock.ts",
+    "medusa-store/apps/backend/src/workflows/registration-email.ts",
+    "medusa-store/apps/backend/src/workflows/resume-mollie-session.ts",
+    "medusa-store/apps/backend/src/workflows/save-buy-policies.ts",
+    "medusa-store/apps/backend/src/workflows/save-mollie-config.ts",
+    "medusa-store/apps/backend/src/workflows/seo-command.ts",
+    "medusa-store/apps/backend/src/workflows/unsubscribe-mail.ts",
+    "medusa-store/apps/backend/src/workflows/update-after-sales.ts",
+    "medusa-store/apps/backend/src/workflows/update-shipment-tracking.ts",
+    "medusa-store/apps/backend/src/workflows/warehouse-access.ts",
+    "medusa-store/apps/backend/src/workflows/webhook-notifications.ts"
+  ],
+  "jobs": [
+    "medusa-store/apps/backend/src/jobs/expire-buyback-photos.ts",
+    "medusa-store/apps/backend/src/jobs/process-mail-queue.ts",
+    "medusa-store/apps/backend/src/jobs/seo-monitor.ts"
+  ],
+  "subscribers": [
+    "medusa-store/apps/backend/src/subscribers/customer-notifications.ts",
+    "medusa-store/apps/backend/src/subscribers/iphone-product-images.ts",
+    "medusa-store/apps/backend/src/subscribers/registration-email.ts",
+    "medusa-store/apps/backend/src/subscribers/webhook-notifications.ts"
+  ]
+}
