@@ -4,7 +4,7 @@
 
 沿用服务端 `STOREFRONT_STORE_ID` 明确绑定及默认销售渠道。仅公开本渠道未删除关联下的 published、未删除商品；店铺/渠道配置缺失或失效返回 503。单个商品跨渠道、草稿、删除、缺失均 404。只按商品原 ID 获取详情；handle 通过列表精确查询。
 
-公开字段仅有 id/title/handle/subtitle/description/thumbnail、仍有效的 collection_id、options、images、variants。商品及变体 metadata、导入 payload、内部状态、修订、成本、渠道及管理字段不返回。metadata 的前台展示键尚待逐键类型投影，不能恢复整包透传。
+公开字段仅有 id/title/handle/subtitle/description/thumbnail、仍有效的 collection_id、options、images、variants。商品及变体 metadata、导入 payload、内部状态、修订、成本、渠道及管理字段不返回。[展示扩展](store-display.md)已按旧页面实际消费逐键投影为 display，不能恢复整包透传。
 
 选项复用后台已验证的商品选项及值归属查询；变体按 variant_rank（null 最后）和 ID 排序，公开 SKU 保持字符串，图片按 rank/ID 排序。变体选择只能来自当前商品有效的选项和值成员关系；缺失、重复维度、外来成员导致 configuration_complete=false，外来值 ID 不公开。变体图片必须同时属于当前商品、有效图片和有效关联。空关系统一 []，不通过库存标志推算可售数量。
 

@@ -33,6 +33,7 @@ func checkActualPublicProducts(t *testing.T, ctx context.Context, db *sql.DB, ro
 			t.Fatal("actual public product page failed")
 		}
 		for _, p := range page.Products {
+			checkActualStoreDisplay(t, ctx, db, p, counts)
 			if seen[p.ID] || p.ID <= previous {
 				t.Fatal("actual public product pagination unstable")
 			}

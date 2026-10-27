@@ -28,4 +28,4 @@ calculated_price 返回 calculated_amount、nullable original_amount、currency_
 
 [固定来源报告](catalog-mysql-rehearsal-report.json) 对实际 30 个公开商品、1558 个有效变体，在 1 区域的数量 1/2 两个上下文中，比对 3056 个有效报价及 60 个不完整变体未报价结果。独立 Node 工具读取已钉住私有来源，在无 DB/网络/服务启动条件下调用安装的旧价格服务，对照原价/现价、币种、价目表及含税标记；原始输入及输出仅在独占容器 tmpfs，最终公开报告仅数量和源码哈希。固定来源无活动价目表，表类型行为由人工 SQL 和纯函数另外验证，不虚称真实样本已覆盖该情形。
 
-[真实浏览器报告](admin-live-report.json) 验证显式店铺币种的区域查询、未知区域/币种覆盖拒绝、不完整配置仍为 null，再回归 Ant 后台和 Astro SSR。选价不等于全量交易验收：地址/客户规则扩展、客户身份、交易库存预留、税/优惠/配送、购物车、checkout、逐键展示 metadata 和 Astro 实际页面仍需继续；前台尚不能使用旧 number helper 直接展示精确字符串，必须完成独立 adapter。
+[真实浏览器报告](admin-live-report.json) 验证显式店铺币种的区域查询、未知区域/币种覆盖拒绝、不完整配置仍为 null，再回归 Ant 后台和 Astro SSR。选价不等于全量交易验收：地址/客户规则扩展、客户身份、交易库存预留、税/优惠/配送、购物车、checkout、展示扩展编辑和 Astro 实际页面仍需继续；前台尚不能使用旧 number helper 直接展示精确字符串，必须完成独立 adapter。

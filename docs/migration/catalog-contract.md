@@ -92,3 +92,5 @@ C01 商品发布但渠道不匹配不返回；C02 软删 product/variant/option/
 2026-10-28 [公共商品关系读取](store-products.md)已移除上文第 1/3 项涉及的公开 payload/旧选价草稿，按正式渠道、商品、变体、选项和图片关系投影；区域/阶梯/条件选价尚未实现，明确不返回 calculated_price，capabilities 中 pricing/availability/checkout 均为 false。此阶段不支持 region_id/option_value_id[]/sort，不能把上述目标契约视为当前全部可用。逐键 metadata、可售和前台页面仍继续迁移。
 
 2026-10-28 公共选价补充：[Gin 精确区域/数量选价](store-pricing.md)增加显式地区、店铺币种、数量阶梯、规则具体度、sale/override 原价、含税偏好及有界集合读取；未知条件/不完整变体不报价。固定来源两个上下文与旧服务核对，人工 SQL 覆盖价目表及失败边界。availability/checkout 仍关闭；客户身份、完整税/优惠/配送交易、可售、metadata 和 Astro 页面继续推进，T020/T025/T026 未整体验收。
+
+2026-10-28 商品展示补充：[Gin/Astro 明确展示扩展](store-display.md)承接当前实际颜色、消费规格、来源提示、上市价与变体 slug/示例提示；私有 metadata 不透传，同一只读快照按可见 ID 先检查 64 KiB 单条/4 MiB 合并预算。人工 SQL、独立固定来源和 Astro 11 项用例跟踪；完整编辑、深链/React 选择、实际页面和交易仍待完成，相关任务未整体验收。

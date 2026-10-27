@@ -107,3 +107,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-28 可售观察补充：[Gin 渠道库存与单仓容量](../docs/migration/store-availability.md)增加精确整件数量、共同仓库约束、背单和不跟踪状态，实时核对预留并排除持久 hold；availability=true、checkout=false。人工 SQL、固定来源独立关系核验及浏览器报告跟踪。实际预留/购物车/结账、Astro 页面仍缺，相关任务未整体验收。后台优先 Ant Design，图表统一 ECharts。
 
 2026-10-28 Astro 商品适配补充：[独立 Gin 商品 DTO 与精确金额](../docs/migration/astro-products.md)承接列表/原 ID 详情、严格匿名传输、关联和库存状态校验，精确比较最低价、选中 SKU、选项差价及货币显示；缺价、未知库存和依赖失败分别处理。10 项单元、类型/build、独占真实 Gin 源模块串联及生产 SSR 报告跟踪。业务页面尚未引用商品模块，CSS/资源/slug/筛选/购物车继续待办，不代表页面保真或完整交易验收。
+
+2026-10-28 商品展示补充：[Gin/Astro 明确展示扩展](../docs/migration/store-display.md)承接当前实际颜色、消费规格、来源提示、上市价与变体 slug/示例提示；私有 metadata 不透传，同一只读快照按可见 ID 先检查 64 KiB 单条/4 MiB 合并预算。人工 SQL、独立固定来源和 Astro 11 项用例跟踪；完整编辑、深链/React 选择、实际页面和交易仍待完成，相关任务未整体验收。

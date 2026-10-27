@@ -1,5 +1,6 @@
 import {publicJSON,PUBLIC_NOT_FOUND} from './gin-public.ts'
 import {amountParts,compareAmounts,differenceAmounts,formatAmount,percentageDecrease} from './money.ts'
+import {projectProductDisplay,projectVariantDisplay,type ProductDisplay,type VariantDisplay} from './product-display.ts'
 
 export type Image = {id: string; url: string; rank: number}
 export type OptionValue = {id: string; value: string; rank: number | null}
@@ -16,10 +17,12 @@ export type Variant = {
  configuration_complete: boolean; calculated_price: Quote | null
  manage_inventory: boolean; allow_backorder: boolean; inventory_quantity: string | null
  availability: {state: 'available' | 'out_of_stock' | 'backorder' | 'unavailable' | 'incomplete' | 'untracked'; can_fulfill: boolean; max_fulfillable_quantity: string | null}
+ display: VariantDisplay
 }
 export type Product = {
  id: string; title: string; handle: string; subtitle: string | null; description: string | null
  thumbnail: string | null; collection_id: string | null; options: Option[]; images: Image[]; variants: Variant[]
+ display: ProductDisplay
 }
 export type ProductQuery = {limit?: number; offset?: number; q?: string; handle?: string; category_id?: string; collection_id?: string; region_id?: string; quantity?: string}
 export type PriceContext = Pick<ProductQuery,'region_id' | 'quantity'>
@@ -45,7 +48,7 @@ function quote(input: unknown): Quote | null {
  if (out.is_calculated_price_price_list !== (kind !== null)) throw unavailable()
  return out
 }
-function availability(input: unknown, v: Omit<Variant,'availability'>, requested: bigint): Variant['availability'] {
+function availability(input: unknown, v: Pick<Variant,'configuration_complete' | 'manage_inventory' | 'allow_backorder' | 'inventory_quantity'>, requested: bigint): Variant['availability'] {
  const data = object(input), state = text(data.state), can = bool(data.can_fulfill), max = quantity(data.max_fulfillable_quantity), pooled = v.inventory_quantity
  if ((max === null) !== (pooled === null) || max !== null && pooled !== null && BigInt(max) > BigInt(pooled)) throw unavailable()
  if (!v.configuration_complete) {
@@ -84,10 +87,10 @@ function product(input: unknown, pricing: boolean, requested: bigint, consume: (
   if (price !== null && (!pricing || !complete)) throw unavailable()
   const out = {id:id(v.id),title:text(v.title),sku:nullableText(v.sku),thumbnail:nullableText(v.thumbnail),variant_rank:rank(v.variant_rank),options:choices,images:variantImages,configuration_complete:complete,calculated_price:price,manage_inventory:bool(v.manage_inventory),allow_backorder:bool(v.allow_backorder),inventory_quantity:quantity(v.inventory_quantity)}
   consume(choices.length + variantImages.length)
-  return {...out,availability:availability(v.availability,out,requested)}
+  return {...out,display:projectVariantDisplay(v.display),availability:availability(v.availability,out,requested)}
  })
  unique(variants.map(v=>v.id)); consume(options.length + images.length + variants.length)
- return {id:id(p.id),title:text(p.title),handle:text(p.handle),subtitle:nullableText(p.subtitle),description:nullableText(p.description),thumbnail:nullableText(p.thumbnail),collection_id:p.collection_id === null ? null : id(p.collection_id),options,images,variants}
+ return {id:id(p.id),title:text(p.title),handle:text(p.handle),subtitle:nullableText(p.subtitle),description:nullableText(p.description),thumbnail:nullableText(p.thumbnail),collection_id:p.collection_id === null ? null : id(p.collection_id),options,images,variants,display:projectProductDisplay(p.display)}
 }
 function capabilities(input: unknown, pricing: boolean): ProductPage['capabilities'] {
  const v = object(input)
@@ -158,4 +161,16 @@ export function productPrice(product: Product, variantID?: string, locale = 'en-
 export function optionPriceDifference(candidate: Variant, selected: Variant): {sign: -1 | 0 | 1; amount: string} | null {
  const a = candidate.configuration_complete && candidate.calculated_price, b = selected.configuration_complete && selected.calculated_price
  return a && b && a.currency_code === b.currency_code ? differenceAmounts(a.calculated_amount,b.calculated_amount) : null
+}
+
+// Original EUR reference values and precedence from the existing storefront's
+// get-apple-launch-price.ts; this is historical copy, not live exchange pricing.
+export function appleLaunchPrice(product: Product, variant?: Variant, currency?: string): string | null {
+ const option = product.options.find(o=>/storage|capacity/i.test(o.title))
+ const storage = variant?.options.find(o=>o.option_id === option?.id)?.value
+ if (!storage || !currency) return null
+ const raw = variant?.display.apple_launch_price ?? product.display.launch_prices.find(p=>p.storage === storage)
+ if (raw && raw.currency_code === currency) return raw.amount
+ const references: Record<string,Record<string,string>> = {'iphone 13':{'128gb':'869','256gb':'979','512gb':'1189'}}
+ return currency === 'eur' ? references[product.title.toLowerCase()]?.[storage.replace(/\s/g,'').toLowerCase()] ?? null : null
 }

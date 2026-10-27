@@ -1,13 +1,13 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {loadProduct,loadProducts,optionPriceDifference,productPrice,variantPrice,type Product,type Quote,type ProductQuery} from '../src/lib/products.ts'
+import {loadProduct,loadProducts,optionPriceDifference,productPrice,variantPrice,appleLaunchPrice,type Product,type Quote,type ProductQuery} from '../src/lib/products.ts'
 import {amountParts,compareAmounts,differenceAmounts,formatAmount,percentageDecrease} from '../src/lib/money.ts'
 
 function price(amount = '49.99', original: string | null = '60', kind: 'sale' | 'override' | null = 'sale'): Quote {
  return {calculated_amount:amount,original_amount:original,currency_code:'eur',is_calculated_price_tax_inclusive:true,is_original_price_tax_inclusive:false,is_calculated_price_price_list:kind !== null,is_original_price_price_list:false,calculated_price:{price_list_type:kind}}
 }
 function fixture(): Product {
- return {id:'product-1',title:'Phone',handle:'phone',subtitle:null,description:'Original description',thumbnail:'/images/phone.webp',collection_id:null,options:[{id:'storage',title:'Storage',values:[{id:'128',value:'128 GB',rank:0}]}],images:[{id:'image-1',url:'/images/phone.webp',rank:0}],variants:[{id:'variant-1',title:'128 GB',sku:'0000123456789012345',thumbnail:null,variant_rank:0,options:[{id:'128',option_id:'storage',value:'128 GB'}],images:[{id:'image-1',url:'/images/phone.webp',rank:0}],configuration_complete:true,calculated_price:price(),manage_inventory:true,allow_backorder:false,inventory_quantity:'9007199254740993',availability:{state:'available',can_fulfill:true,max_fulfillable_quantity:'9007199254740993'}}]}
+ return {display:{colors:[],model_specs:null,launch_prices:[],source:null},id:'product-1',title:'Phone',handle:'phone',subtitle:null,description:'Original description',thumbnail:'/images/phone.webp',collection_id:null,options:[{id:'storage',title:'Storage',values:[{id:'128',value:'128 GB',rank:0}]}],images:[{id:'image-1',url:'/images/phone.webp',rank:0}],variants:[{display:{slug:null,demo_price_basis:null,apple_launch_price:null},id:'variant-1',title:'128 GB',sku:'0000123456789012345',thumbnail:null,variant_rank:0,options:[{id:'128',option_id:'storage',value:'128 GB'}],images:[{id:'image-1',url:'/images/phone.webp',rank:0}],configuration_complete:true,calculated_price:price(),manage_inventory:true,allow_backorder:false,inventory_quantity:'9007199254740993',availability:{state:'available',can_fulfill:true,max_fulfillable_quantity:'9007199254740993'}}]}
 }
 function response(p = fixture(), pricing = true) { return {products:[p],count:1,offset:0,limit:12,capabilities:{pricing,availability:true,checkout:false}} }
 async function project(p: Product) { return (await loadProducts('https://gin.example',{region_id:'region'},async()=>Response.json(response(p)))).products[0] }
@@ -97,4 +97,20 @@ test('product price adapter preserves cheapest/selected semantics and exact opti
  cheaper.calculated_price=price('0',null,null);assert.equal(variantPrice(cheaper)?.percentage_diff,null);assert.equal(variantPrice(cheaper)?.calculated_price,'€0.00')
  cheaper.calculated_price=null;assert.equal(productPrice(p).cheapestPrice,null)
  const mixed = fixture();mixed.variants.push({...structuredClone(mixed.variants[0]),id:'usd',calculated_price:{...price(),currency_code:'usd'}});assert.throws(()=>productPrice(mixed))
+})
+
+test('reviewed display preserves colors, specification strings, slug and launch-price precedence without private metadata',async()=>{
+ const p=fixture();p.title='iPhone 13'
+ p.display={colors:[{name:'Blue',hex:'#0000FF'}],model_specs:{release_year:'2021',display_size_inches:'6.1',tech_specs_url:'https://support.apple.com/specs',apple_model_numbers:['A0123']},launch_prices:[{storage:'128 GB',amount:'9007199254740993.005',currency_code:'eur'}],source:'swappie-html-snapshot'}
+ p.variants[0].display={slug:'iphone-13-128gb-blue-S85',demo_price_basis:'model-starting-price',apple_launch_price:{amount:'869.125000000000000001',currency_code:'eur'}}
+ assert.deepEqual(await project(p),p)
+ assert.equal(appleLaunchPrice(p,p.variants[0],'eur'),'869.125000000000000001')
+ p.variants[0].display.apple_launch_price=null;assert.equal(appleLaunchPrice(p,p.variants[0],'eur'),'9007199254740993.005')
+ p.variants[0].display.apple_launch_price={amount:'1000',currency_code:'usd'}
+ assert.equal(appleLaunchPrice(p,p.variants[0],'eur'),'869');assert.equal(appleLaunchPrice(p,p.variants[0],'usd'),'1000')
+ p.variants[0].display.apple_launch_price=null;p.display.launch_prices=[]
+ assert.equal(appleLaunchPrice(p,p.variants[0],'eur'),'869');assert.equal(appleLaunchPrice(p,p.variants[0],'usd'),null);assert.equal(appleLaunchPrice(p,undefined,'eur'),null)
+ const raw=JSON.parse(JSON.stringify(p));raw.display.private='secret';raw.display.model_specs.private='secret';raw.variants[0].display.private='secret'
+ assert.deepEqual(await project(raw),p)
+ for(const edit of [(p:Product)=>{p.display.colors[0].hex='url(secret)'},(p:Product)=>{p.display.model_specs!.release_year=2021 as unknown as string},(p:Product)=>{p.display.model_specs!.tech_specs_url='https://apple.com.evil.example/specs'},(p:Product)=>{p.variants[0].display.slug='iphone-13-S85?secret'},(p:Product)=>{p.display.launch_prices=[{storage:'128 GB',amount:'0',currency_code:'eur'}]},(p:Product)=>{p.display.colors=Array.from({length:65},()=>({name:'Blue',hex:'#0000FF'}))}]){const value=structuredClone(p);edit(value);await assert.rejects(project(value))}
 })

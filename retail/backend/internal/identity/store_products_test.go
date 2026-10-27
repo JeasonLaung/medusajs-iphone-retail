@@ -133,4 +133,5 @@ func checkStoreProducts(t *testing.T, db *gorm.DB, router http.Handler) {
 	}
 	t.Log(`STORE_PRODUCT_REHEARSAL {"current_channel_only":true,"published_live_only":true,"strict_query":true,"literal_search":true,"exact_detail_id":true,"configuration_membership":true,"foreign_options_and_images_hidden":true,"stable_pagination":true,"empty_arrays":true,"relation_overflow_503":true,"no_legacy_payload_or_prices":true,"unimplemented_capabilities_explicit":true,"read_fingerprint_unchanged":true}`)
 	checkStorePricing(t, db, router)
+	checkStoreDisplay(t, db, router)
 }

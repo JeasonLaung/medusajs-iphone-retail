@@ -161,6 +161,7 @@ def main():
         files += ['retail/backend/internal/catalog/store_regions.go','retail/backend/internal/catalogimport/regions_rehearsal_test.go']
         files += ['retail/backend/internal/catalog/store_taxonomy.go','retail/backend/internal/catalogimport/taxonomy_rehearsal_test.go']
         files += ['retail/backend/internal/catalog/store_products.go','retail/backend/internal/catalogimport/products_rehearsal_test.go']
+        files += ['retail/backend/internal/catalog/store_display.go','retail/backend/internal/catalog/store_display_test.go','retail/backend/internal/catalogimport/display_rehearsal_test.go']
         files += ['retail/scripts/capture-store-prices.cjs','retail/backend/internal/catalogimport/pricing_rehearsal_test.go','retail/backend/internal/catalogimport/availability_rehearsal_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/pricing').glob('*.go')]
         report = {'format_version': 1, 'scope': '36 catalog tables, nine parent dependencies, two inventory tables, 28 ordinary order tables, eight payment tables and seven fulfillment tables in disposable tmpfs MySQL; five historical customer subjects without account bindings and catalog parent rows have no ledger; no full import/runtime acceptance',

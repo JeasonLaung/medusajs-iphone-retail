@@ -100,6 +100,7 @@ type StoreProduct struct {
 	Options      []AdminOption  `json:"options" gorm:"-"`
 	Images       []AdminImage   `json:"images" gorm:"-"`
 	Variants     []StoreVariant `json:"variants" gorm:"-"`
+	Display      ProductDisplay `json:"display" gorm:"-"`
 }
 type StoreVariant struct {
 	ID                    string                 `json:"id"`
@@ -115,6 +116,7 @@ type StoreVariant struct {
 	AllowBackorder        bool                   `json:"allow_backorder"`
 	InventoryQuantity     *string                `json:"inventory_quantity" gorm:"-"`
 	Availability          inventory.Availability `json:"availability" gorm:"-"`
+	Display               VariantDisplay         `json:"display" gorm:"-"`
 }
 
 func publicProducts(tx *gorm.DB, channel string) *gorm.DB {
@@ -193,6 +195,9 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 			if e = publicProductRelations(tx, &products[i], &budget); e != nil {
 				return e
 			}
+		}
+		if e = loadStoreDisplay(tx, products); e != nil {
+			return e
 		}
 		if priceContext != nil {
 			ids := []string{}
