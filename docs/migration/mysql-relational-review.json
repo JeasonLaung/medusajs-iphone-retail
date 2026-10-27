@@ -14,7 +14,7 @@
     "operations-field-mapping.json": "02e8348f1fe6101680769bbbaa516c306320d530739e24eae1c0e9e3ee5b5335",
     "history-integration-field-mapping.json": "3490b81a95831f82a3b873d87a4c9cec2053c9d1f81494fcb0c13082fcf36f7d"
   },
-  "ddl_sha256": "b836f4097047912a3f6a764dfd088e79e54ebafe7bec4e3d05af4e306480e46a",
+  "ddl_sha256": "e5cad256d0c8976ad9eb410cfe978385041d2ac5f4e594975e99158ee4b3aa9e",
   "constraint_decisions": [
     {
       "source_table": "account_holder",
@@ -2892,8 +2892,8 @@
       "source_table": "after_sales_request",
       "index_name": "IDX_after_sales_one_open_request",
       "definition": "CREATE UNIQUE INDEX \"IDX_after_sales_one_open_request\" ON public.after_sales_request USING btree (order_id) WHERE ((status = ANY (ARRAY['pending'::text, 'processing'::text])) AND (deleted_at IS NULL))",
-      "status": "hold",
-      "reason": "Unreviewed column/expression/predicate; no automatic equivalent claimed"
+      "status": "emitted",
+      "reason": "Full-value unique with nullable generated participation flag; source NULL semantics retained"
     },
     {
       "source_table": "after_sales_request",
@@ -3557,8 +3557,8 @@
       "source_table": "credit_line",
       "index_name": "IDX_cart_credit_line_reference_reference_id",
       "definition": "CREATE INDEX \"IDX_cart_credit_line_reference_reference_id\" ON public.credit_line USING btree (reference, reference_id) WHERE (deleted_at IS NOT NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "credit_line",
@@ -3823,8 +3823,8 @@
       "source_table": "device_assignment",
       "index_name": "IDX_device_assignment_device_id_unique",
       "definition": "CREATE UNIQUE INDEX \"IDX_device_assignment_device_id_unique\" ON public.device_assignment USING btree (device_id) WHERE ((status = ANY (ARRAY['reserved'::text, 'packed'::text, 'shipped'::text])) AND (deleted_at IS NULL))",
-      "status": "hold",
-      "reason": "Unreviewed column/expression/predicate; no automatic equivalent claimed"
+      "status": "emitted",
+      "reason": "Full-value unique with nullable generated participation flag; source NULL semantics retained"
     },
     {
       "source_table": "device_assignment",
@@ -4075,15 +4075,15 @@
       "source_table": "geo_zone",
       "index_name": "IDX_geo_zone_city",
       "definition": "CREATE INDEX \"IDX_geo_zone_city\" ON public.geo_zone USING btree (city) WHERE ((deleted_at IS NULL) AND (city IS NOT NULL))",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "geo_zone",
       "index_name": "IDX_geo_zone_country_code",
       "definition": "CREATE INDEX \"IDX_geo_zone_country_code\" ON public.geo_zone USING btree (country_code) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "geo_zone",
@@ -4096,8 +4096,8 @@
       "source_table": "geo_zone",
       "index_name": "IDX_geo_zone_province_code",
       "definition": "CREATE INDEX \"IDX_geo_zone_province_code\" ON public.geo_zone USING btree (province_code) WHERE ((deleted_at IS NULL) AND (province_code IS NOT NULL))",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "geo_zone",
@@ -4145,15 +4145,15 @@
       "source_table": "image",
       "index_name": "IDX_product_image_url",
       "definition": "CREATE INDEX \"IDX_product_image_url\" ON public.image USING btree (url) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "image",
       "index_name": "IDX_product_image_url_rank_product_id",
       "definition": "CREATE INDEX \"IDX_product_image_url_rank_product_id\" ON public.image USING btree (url, rank, product_id) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "image",
@@ -4481,8 +4481,8 @@
       "source_table": "mail_delivery",
       "index_name": "IDX_mail_delivery_campaign_id_status",
       "definition": "CREATE INDEX \"IDX_mail_delivery_campaign_id_status\" ON public.mail_delivery USING btree (campaign_id, status) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "mail_delivery",
@@ -4782,8 +4782,8 @@
       "source_table": "order_change",
       "index_name": "IDX_order_change_change_type",
       "definition": "CREATE INDEX \"IDX_order_change_change_type\" ON public.order_change USING btree (change_type)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Full nonunique index; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "order_change",
@@ -5580,8 +5580,8 @@
       "source_table": "paypal_connection",
       "index_name": "idx_paypal_connection_status",
       "definition": "CREATE INDEX idx_paypal_connection_status ON public.paypal_connection USING btree (status, created_at DESC)",
-      "status": "hold",
-      "reason": "Unreviewed column/expression/predicate; no automatic equivalent claimed"
+      "status": "emitted",
+      "reason": "Full nonunique index; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "paypal_connection",
@@ -5636,8 +5636,8 @@
       "source_table": "paypal_webhook_event",
       "index_name": "idx_paypal_webhook_event_status_retry",
       "definition": "CREATE INDEX idx_paypal_webhook_event_status_retry ON public.paypal_webhook_event USING btree (status, next_retry_at) WHERE (status = 'failed'::text)",
-      "status": "hold",
-      "reason": "Unreviewed column/expression/predicate; no automatic equivalent claimed"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "paypal_webhook_event",
@@ -5650,8 +5650,8 @@
       "source_table": "paypal_webhook_event",
       "index_name": "idx_paypal_webhook_event_type",
       "definition": "CREATE INDEX idx_paypal_webhook_event_type ON public.paypal_webhook_event USING btree (event_type)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Full nonunique index; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "paypal_webhook_event",
@@ -5713,8 +5713,8 @@
       "source_table": "price_list",
       "index_name": "IDX_price_list_id_status_starts_at_ends_at",
       "definition": "CREATE INDEX \"IDX_price_list_id_status_starts_at_ends_at\" ON public.price_list USING btree (id, status, starts_at, ends_at) WHERE ((deleted_at IS NULL) AND (status = 'active'::text))",
-      "status": "hold",
-      "reason": "Unreviewed column/expression/predicate; no automatic equivalent claimed"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "price_list",
@@ -5727,8 +5727,8 @@
       "source_table": "price_list_rule",
       "index_name": "IDX_price_list_rule_attribute",
       "definition": "CREATE INDEX \"IDX_price_list_rule_attribute\" ON public.price_list_rule USING btree (attribute) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "price_list_rule",
@@ -5783,22 +5783,22 @@
       "source_table": "price_rule",
       "index_name": "IDX_price_rule_attribute",
       "definition": "CREATE INDEX \"IDX_price_rule_attribute\" ON public.price_rule USING btree (attribute) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "price_rule",
       "index_name": "IDX_price_rule_attribute_value",
       "definition": "CREATE INDEX \"IDX_price_rule_attribute_value\" ON public.price_rule USING btree (attribute, value) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "price_rule",
       "index_name": "IDX_price_rule_attribute_value_price_id",
       "definition": "CREATE INDEX \"IDX_price_rule_attribute_value_price_id\" ON public.price_rule USING btree (attribute, value, price_id) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "price_rule",
@@ -5811,15 +5811,15 @@
       "source_table": "price_rule",
       "index_name": "IDX_price_rule_operator",
       "definition": "CREATE INDEX \"IDX_price_rule_operator\" ON public.price_rule USING btree (operator)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Full nonunique index; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "price_rule",
       "index_name": "IDX_price_rule_operator_value",
       "definition": "CREATE INDEX \"IDX_price_rule_operator_value\" ON public.price_rule USING btree (operator, value) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "price_rule",
@@ -5881,8 +5881,8 @@
       "source_table": "product",
       "index_name": "IDX_product_status",
       "definition": "CREATE INDEX \"IDX_product_status\" ON public.product USING btree (status) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "product",
@@ -5916,8 +5916,8 @@
       "source_table": "product_category",
       "index_name": "IDX_product_category_path",
       "definition": "CREATE INDEX \"IDX_product_category_path\" ON public.product_category USING btree (mpath) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "product_category",
@@ -6560,22 +6560,22 @@
       "source_table": "promotion_rule",
       "index_name": "IDX_promotion_rule_attribute",
       "definition": "CREATE INDEX \"IDX_promotion_rule_attribute\" ON public.promotion_rule USING btree (attribute)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Full nonunique index; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "promotion_rule",
       "index_name": "IDX_promotion_rule_attribute_operator",
       "definition": "CREATE INDEX \"IDX_promotion_rule_attribute_operator\" ON public.promotion_rule USING btree (attribute, operator) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "promotion_rule",
       "index_name": "IDX_promotion_rule_attribute_operator_id",
       "definition": "CREATE INDEX \"IDX_promotion_rule_attribute_operator_id\" ON public.promotion_rule USING btree (operator, attribute, id) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "promotion_rule",
@@ -6616,15 +6616,15 @@
       "source_table": "promotion_rule_value",
       "index_name": "IDX_promotion_rule_value_rule_id_value",
       "definition": "CREATE INDEX \"IDX_promotion_rule_value_rule_id_value\" ON public.promotion_rule_value USING btree (promotion_rule_id, value) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "promotion_rule_value",
       "index_name": "IDX_promotion_rule_value_value",
       "definition": "CREATE INDEX \"IDX_promotion_rule_value_value\" ON public.promotion_rule_value USING btree (value) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "promotion_rule_value",
@@ -7155,8 +7155,8 @@
       "source_table": "return_reason",
       "index_name": "IDX_return_reason_value",
       "definition": "CREATE INDEX \"IDX_return_reason_value\" ON public.return_reason USING btree (value) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "return_reason",
@@ -7386,8 +7386,8 @@
       "source_table": "seo_crawler_visit",
       "index_name": "IDX_seo_crawler_visit_occurred_at_crawler_name",
       "definition": "CREATE INDEX \"IDX_seo_crawler_visit_occurred_at_crawler_name\" ON public.seo_crawler_visit USING btree (occurred_at, crawler_name) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "seo_crawler_visit",
@@ -7575,8 +7575,8 @@
       "source_table": "seo_traffic_visit",
       "index_name": "IDX_seo_traffic_visit_occurred_at_source",
       "definition": "CREATE INDEX \"IDX_seo_traffic_visit_occurred_at_source\" ON public.seo_traffic_visit USING btree (occurred_at, source) WHERE (deleted_at IS NULL)",
-      "status": "hold",
-      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+      "status": "emitted",
+      "reason": "Nonunique predicate broadened to full index; same query results, performance/selectivity differs; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs"
     },
     {
       "source_table": "seo_traffic_visit",
@@ -8186,9 +8186,10 @@
     "emitted_constraints": 293,
     "held_constraints": 3,
     "source_indexes": 759,
-    "emitted_indexes": 401,
-    "generated_index_columns": 33,
-    "held_indexes": 59
+    "emitted_indexes": 431,
+    "generated_index_columns": 35,
+    "nonunique_prefix_indexes": 28,
+    "held_indexes": 29
   },
   "remaining": [
     "Held long-text/expression indexes and long identities",

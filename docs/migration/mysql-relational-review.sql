@@ -2599,6 +2599,10 @@ CREATE TABLE `webhook_endpoints` (
 
 CREATE INDEX `idx_source_f6a03a9c77a0a750f40867b4` ON `payment_account_holders` (`deleted_at`);
 
+ALTER TABLE `after_sales_requests` ADD COLUMN `active_key_5d6020ceb086aaef0f924314` TINYINT GENERATED ALWAYS AS (IF(`status` IN ('pending','processing') AND `deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_5d6020ceb086aaef0f924314` ON `after_sales_requests` (`order_id`,`active_key_5d6020ceb086aaef0f924314`);
+
 CREATE INDEX `idx_source_5331134eceb3b5ece762ff7c` ON `after_sales_requests` (`deleted_at`);
 
 CREATE INDEX `idx_source_d646959007d5ca9c5fcba3c9` ON `after_sales_requests` (`order_id`);
@@ -2699,6 +2703,8 @@ CREATE INDEX `idx_source_cb5862298039c6122daefc06` ON `cart_shipping_tax_lines` 
 
 CREATE INDEX `idx_source_95407e89813bf58ff16da2b0` ON `cart_shipping_tax_lines` (`tax_rate_id`);
 
+CREATE INDEX `idx_source_97589992a42ab3e5ae350ccc` ON `cart_credit_lines` (`reference`(128),`reference_id`);
+
 CREATE INDEX `idx_source_f44ed5d828721b484944f221` ON `cart_credit_lines` (`cart_id`);
 
 CREATE INDEX `idx_source_6deafc7e0bad1887c5b1a5c3` ON `cart_credit_lines` (`deleted_at`);
@@ -2740,6 +2746,10 @@ CREATE UNIQUE INDEX `idx_source_c9bd86c8979d2b5914ead3fb` ON `devices` (`serial_
 CREATE INDEX `idx_source_36c763273943e92f9c9e2087` ON `devices` (`variant_id`,`location_id`,`state`);
 
 CREATE INDEX `idx_source_c35231deda3b3f9db639eb74` ON `device_assignments` (`deleted_at`);
+
+ALTER TABLE `device_assignments` ADD COLUMN `active_key_56867ee56515053f055967d0` TINYINT GENERATED ALWAYS AS (IF(`status` IN ('reserved','packed','shipped') AND `deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_56867ee56515053f055967d0` ON `device_assignments` (`device_id`,`active_key_56867ee56515053f055967d0`);
 
 CREATE INDEX `idx_source_2860aee3b5133a461b7f51e3` ON `device_assignments` (`order_id`,`item_id`);
 
@@ -2795,7 +2805,13 @@ CREATE INDEX `idx_source_b1ae793e383fd7a74bd3c754` ON `fulfillment_providers` (`
 
 CREATE INDEX `idx_source_9b6717e127c71559c2136868` ON `fulfillment_sets` (`deleted_at`);
 
+CREATE INDEX `idx_source_4c38500ba2e7b735108979b2` ON `fulfillment_geo_zones` (`city`(128));
+
+CREATE INDEX `idx_source_fe6041e287c12f7a3476a3e3` ON `fulfillment_geo_zones` (`country_code`(128));
+
 CREATE INDEX `idx_source_820404db78243e9871993a21` ON `fulfillment_geo_zones` (`deleted_at`);
+
+CREATE INDEX `idx_source_47f592bde5fc74e43d1a64e1` ON `fulfillment_geo_zones` (`province_code`(128));
 
 CREATE INDEX `idx_source_cf6da5b2732f19b0cfa0e8d9` ON `fulfillment_geo_zones` (`service_zone_id`);
 
@@ -2806,6 +2822,10 @@ CREATE INDEX `idx_source_e25f8c01a191fa1868eb692f` ON `catalog_images` (`product
 CREATE INDEX `idx_source_7dbdff864f562a575f8c2aeb` ON `catalog_images` (`rank`);
 
 CREATE INDEX `idx_source_709c498700d8717e317617f6` ON `catalog_images` (`rank`,`product_id`);
+
+CREATE INDEX `idx_source_80688e9495be62b72b91c07a` ON `catalog_images` (`url`(128));
+
+CREATE INDEX `idx_source_0fda8d102114103ade7980cc` ON `catalog_images` (`url`(128),`rank`,`product_id`);
 
 CREATE INDEX `idx_source_90baac2acc18aa3e2f64465a` ON `inventory_items` (`deleted_at`);
 
@@ -2850,6 +2870,8 @@ CREATE INDEX `idx_source_f9d68f2ed0a594c51ca98bfe` ON `mail_contacts` (`deleted_
 ALTER TABLE `mail_deliveries` ADD COLUMN `active_key_ae6e6b5750bbfbe4932c7c4e` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
 
 CREATE UNIQUE INDEX `idx_source_ae6e6b5750bbfbe4932c7c4e` ON `mail_deliveries` (`campaign_id`,`contact_id`,`active_key_ae6e6b5750bbfbe4932c7c4e`);
+
+CREATE INDEX `idx_source_95af7f3effebf45a5a046cc3` ON `mail_deliveries` (`campaign_id`,`status`(128));
 
 CREATE INDEX `idx_source_84419f419dafa5b39832bc2d` ON `mail_deliveries` (`deleted_at`);
 
@@ -2916,6 +2938,8 @@ CREATE INDEX `idx_source_a75f3f14adead4e3e8b4dc16` ON `order_carts` (`deleted_at
 CREATE INDEX `idx_source_19306507c16318ec34fbb7f8` ON `order_carts` (`id`);
 
 CREATE INDEX `idx_source_a6c2f12ea2519b42a1ce6ac9` ON `order_carts` (`order_id`);
+
+CREATE INDEX `idx_source_81ed6ce8eb2ad74c822d02a8` ON `order_changes` (`change_type`(128));
 
 CREATE INDEX `idx_source_209ff5a7ce45617391d711ef` ON `order_changes` (`claim_id`);
 
@@ -3093,13 +3117,19 @@ CREATE INDEX `idx_source_42b8abed96c928be0b8c439c` ON `payment_sessions` (`payme
 
 CREATE INDEX `idx_source_50b9b3ad657e8566b91fa848` ON `paypal_connections` (`deleted_at`);
 
+CREATE INDEX `idx_source_6be02d76fa76e7f4cf1343c0` ON `paypal_connections` (`status`(128),`created_at` DESC);
+
 CREATE INDEX `idx_source_629f30612ebda45d9a34bb35` ON `paypal_legacy_metrics` (`deleted_at`);
 
 CREATE INDEX `idx_source_4e1e4f5c6d8019bd299a5d3d` ON `paypal_settings` (`deleted_at`);
 
 CREATE INDEX `idx_source_2bc8bd63f420cbc2e5ad6042` ON `paypal_webhook_events` (`deleted_at`);
 
+CREATE INDEX `idx_source_3f7f6ab9d0ad853e1cfe5459` ON `paypal_webhook_events` (`status`(128),`next_retry_at`);
+
 CREATE INDEX `idx_source_39a55e48ec38a5627d35a96b` ON `paypal_webhook_events` (`transmission_id`);
+
+CREATE INDEX `idx_source_710eb0b533b2d8c954531278` ON `paypal_webhook_events` (`event_type`(128));
 
 CREATE UNIQUE INDEX `idx_source_c678845d185072689027e5d4` ON `paypal_webhook_events` (`event_id`);
 
@@ -3113,13 +3143,27 @@ CREATE INDEX `idx_source_30d343425aec3229c7b65345` ON `pricing_prices` (`price_s
 
 CREATE INDEX `idx_source_495d3c71dd4b7b7141cc88bd` ON `pricing_price_lists` (`deleted_at`);
 
+CREATE INDEX `idx_source_036c94a002d72bd9cb32ab85` ON `pricing_price_lists` (`id`,`status`(128),`starts_at`,`ends_at`);
+
+CREATE INDEX `idx_source_028ca9fca2914647889fbd1f` ON `pricing_price_list_rules` (`attribute`(128));
+
 CREATE INDEX `idx_source_bcc925508102918804fcc62c` ON `pricing_price_list_rules` (`deleted_at`);
 
 CREATE INDEX `idx_source_ba9d124588be74109f9971dc` ON `pricing_price_list_rules` (`price_list_id`);
 
 CREATE INDEX `idx_source_f009f582b51ab41d35decce2` ON `pricing_preferences` (`deleted_at`);
 
+CREATE INDEX `idx_source_62e605046dd32f64846503ce` ON `pricing_price_rules` (`attribute`(128));
+
+CREATE INDEX `idx_source_0f83a700ce1e2cdd25dc7b25` ON `pricing_price_rules` (`attribute`(128),`value`(128));
+
+CREATE INDEX `idx_source_a4e468e75d25befd06b65761` ON `pricing_price_rules` (`attribute`(128),`value`(128),`price_id`);
+
 CREATE INDEX `idx_source_8204550f1652a9b7c9276021` ON `pricing_price_rules` (`deleted_at`);
+
+CREATE INDEX `idx_source_ef23d63997efcfee4213030f` ON `pricing_price_rules` (`operator`(128));
+
+CREATE INDEX `idx_source_419f2c5610d5342e4e3c7d33` ON `pricing_price_rules` (`operator`(128),`value`(128));
 
 CREATE INDEX `idx_source_3447badbbcdf875789acad15` ON `pricing_price_rules` (`price_id`);
 
@@ -3133,6 +3177,8 @@ ALTER TABLE `catalog_products` ADD COLUMN `active_key_c5b6f5d7aadc0d64e1d840b3` 
 
 CREATE UNIQUE INDEX `idx_source_c5b6f5d7aadc0d64e1d840b3` ON `catalog_products` (`handle`,`active_key_c5b6f5d7aadc0d64e1d840b3`);
 
+CREATE INDEX `idx_source_565a7e7d59a30549de8f9071` ON `catalog_products` (`status`(128));
+
 CREATE INDEX `idx_source_1215bd26dc5885900e0f71ba` ON `catalog_products` (`type_id`);
 
 ALTER TABLE `catalog_categories` ADD COLUMN `active_key_6bc49d200e1ce6d594e5b3f6` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
@@ -3140,6 +3186,8 @@ ALTER TABLE `catalog_categories` ADD COLUMN `active_key_6bc49d200e1ce6d594e5b3f6
 CREATE UNIQUE INDEX `idx_source_6bc49d200e1ce6d594e5b3f6` ON `catalog_categories` (`handle`,`active_key_6bc49d200e1ce6d594e5b3f6`);
 
 CREATE INDEX `idx_source_d44736371247392131c1c215` ON `catalog_categories` (`parent_category_id`);
+
+CREATE INDEX `idx_source_08b5e5995e8117dbea0e43b6` ON `catalog_categories` (`mpath`(128));
 
 ALTER TABLE `catalog_collections` ADD COLUMN `active_key_7e77265756e2b1abab35ab89` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
 
@@ -3281,6 +3329,12 @@ CREATE INDEX `idx_source_752ebae32e07d0df1aaf88d0` ON `promotion_budget_usages` 
 
 CREATE INDEX `idx_source_44c137fb7c1651f2483ac599` ON `promotion_budget_usages` (`deleted_at`);
 
+CREATE INDEX `idx_source_83932c6857ae50df4058afc0` ON `promotion_rules` (`attribute`(128));
+
+CREATE INDEX `idx_source_94635fbdec1a841b5a0dc12c` ON `promotion_rules` (`attribute`(128),`operator`);
+
+CREATE INDEX `idx_source_929b1eb3e446067c0d202b2f` ON `promotion_rules` (`operator`,`attribute`(128),`id`);
+
 CREATE INDEX `idx_source_c8c880fcede4d02b9a7f56be` ON `promotion_rules` (`deleted_at`);
 
 CREATE INDEX `idx_source_a198d7fcb391288b3a9d28f3` ON `promotion_rules` (`operator`);
@@ -3288,6 +3342,10 @@ CREATE INDEX `idx_source_a198d7fcb391288b3a9d28f3` ON `promotion_rules` (`operat
 CREATE INDEX `idx_source_5cceb3170f3d68075aa0a097` ON `promotion_rule_values` (`deleted_at`);
 
 CREATE INDEX `idx_source_26b596736405f66f1ecf1700` ON `promotion_rule_values` (`promotion_rule_id`);
+
+CREATE INDEX `idx_source_229a59c51d0cb4ea0023eae1` ON `promotion_rule_values` (`promotion_rule_id`,`value`(128));
+
+CREATE INDEX `idx_source_65020dd956ff81a1ca48a744` ON `promotion_rule_values` (`value`(128));
 
 CREATE INDEX `idx_source_b27f0c601d1de8b6965ac1a7` ON `payment_refunds` (`deleted_at`);
 
@@ -3347,6 +3405,8 @@ CREATE INDEX `idx_source_af664a3e9825b363dea1e7a9` ON `return_items` (`return_id
 
 CREATE INDEX `idx_source_e783f2034d126e29703393dc` ON `return_reasons` (`parent_return_reason_id`);
 
+CREATE INDEX `idx_source_926cd8936a9c8282634a2a2d` ON `return_reasons` (`value`(128));
+
 CREATE INDEX `idx_source_09b96c6170a705e97717ef0c` ON `commerce_sales_channels` (`deleted_at`);
 
 CREATE INDEX `idx_source_dd9214d1d15a03092f34b031` ON `commerce_channel_locations` (`deleted_at`);
@@ -3358,6 +3418,8 @@ CREATE INDEX `idx_source_5fc2c9522b02d08c7d79b12c` ON `commerce_channel_location
 CREATE INDEX `idx_source_666e89cf505ace7e1a145d25` ON `commerce_channel_locations` (`stock_location_id`);
 
 CREATE INDEX `idx_source_e0307781c4b813551465e0fe` ON `seo_crawler_visits` (`deleted_at`);
+
+CREATE INDEX `idx_source_e9ad7343590e50e2deae150d` ON `seo_crawler_visits` (`occurred_at`,`crawler_name`(128));
 
 CREATE INDEX `idx_source_575fc8b07d7e27207a95b95b` ON `seo_crawler_visits` (`source_id`);
 
@@ -3388,6 +3450,8 @@ CREATE INDEX `idx_source_86de7730be7acc1d1e5a2404` ON `seo_submissions` (`delete
 CREATE INDEX `idx_source_68dfdd49becd981c6af4377d` ON `seo_traffic_visits` (`deleted_at`);
 
 CREATE INDEX `idx_source_15a7f483837aed76cf0520d6` ON `seo_traffic_visits` (`log_source_id`);
+
+CREATE INDEX `idx_source_125394e77909298ef8187a70` ON `seo_traffic_visits` (`occurred_at`,`source`(128));
 
 CREATE INDEX `idx_source_3973e2e36016d4a28b3c6de3` ON `fulfillment_service_zones` (`deleted_at`);
 

@@ -8,7 +8,7 @@
 python retail/scripts/test-mysql-types.py
 ```
 
-使用已存在本机mysql:8.4镜像，实际执行版本8.4.11；49项类型/条件唯一检查加5项全表结构检查，共54项结果见 `mysql-type-fixture-report.json`。临时容器network=none、不发布端口、限制1核/768MiB内存/512MiB数据tmpfs，所有表和数据均为人工；随机root密码仅用于本次初始化，未打印或写入报告。finally核对随机所有权标签后清理容器及卷；已清理。没有连接现有MySQL/PostgreSQL/Redis、源业务快照或部署服务器。
+使用已存在本机mysql:8.4镜像，实际执行版本8.4.11；65项类型/条件唯一/文本查询检查加6项全表结构检查，共71项结果见 `mysql-type-fixture-report.json`。临时容器network=none、不发布端口、限制1核/768MiB内存/512MiB数据tmpfs，所有表和数据均为人工；随机root密码仅用于本次初始化，未打印或写入报告。finally核对随机所有权标签后清理容器及卷；已清理。没有连接现有MySQL/PostgreSQL/Redis、源业务快照或部署服务器。
 
 每次SQL连接设UTC与STRICT_ALL_TABLES、NO_ZERO_DATE、NO_ZERO_IN_DATE等明确模式。除人工最小表及真实SQL约束外，另在隔离空库执行[159表审查DDL](mysql-relational-review.md)，核对表数、列数和InnoDB。审查稿有显式约束/索引hold，不是完整目标迁移；不运行新Gin、不导入真实历史数据。
 
@@ -26,6 +26,7 @@ python retail/scripts/test-mysql-types.py
 | 额外时间精度 | .1234567写入.123457，严格模式仍舍入 | 导入前明确拒绝或按源已知精度规范化；不能靠DATETIME自动处理 |
 | 会话时区 | 把session改+08后DATETIME读取仍是原墙上时间 | DATETIME本身不执行UTC instant转换；应用必须先统一UTC |
 | 活动唯一键 | 生成列IF(deleted_at IS NULL,value,NULL)阻止活动重复，软删除保留文本并允许新活动行，冲突恢复报1062 | 显式生成键/注册表设计；恢复也须冲突检查，不能删除历史值 |
+| 实际售后/配货表 | 同订单pending/processing互斥，同设备reserved/packed/shipped互斥；完成/退回可释放，历史非活动行可并存；重新激活及恢复冲突报1062 | 状态集合参与条件须完整保留，不把shipped当作已释放设备；这是数据库唯一性检查，不代表完整履约/售后命令已实现 |
 | 错误复合键方案 | UNIQUE(value,deleted_at)允许两个deleted_at=NULL的同值活动行 | 不得用该方案冒充PostgreSQL部分唯一索引 |
 | 长键上限 | 512个四字节字符的完整单值唯一索引可用；两个512字符utf8mb4字段复合唯一键报1071 | 不能用前缀索引/直接截短替代源完整唯一性；超宽身份需事务化完整值注册与碰撞复核 |
 | option条件唯一 | nonexclusive未删title全局唯一，两个exclusive同名可并存；exclusive改成shared冲突被拒绝 | 保留is_exclusive与软删除条件，不能把所有标题强制唯一 |

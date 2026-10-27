@@ -191,6 +191,14 @@ INSERT INTO participation_unique(id,parent_id,value_text,is_exclusive) VALUES(1,
         expect('participation-flag-deleted-exclusive-and-null-duplicates-allowed', 'SELECT COUNT(*) FROM participation_unique;', 8)
         denied('participation-flag-restore-conflict-denied', 'UPDATE participation_unique SET deleted_at=NULL WHERE id=1;', 1062)
         denied('participation-flag-exclusive-to-shared-conflict-denied', 'UPDATE participation_unique SET is_exclusive=false WHERE id=3;', 1062)
+        sql('''CREATE TABLE text_prefix_access (id INT PRIMARY KEY,
+value_text LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin NOT NULL,
+INDEX prefix_access(value_text(128))) ENGINE=InnoDB;''')
+        prefix = '\U0001f680' * 128
+        sql('INSERT INTO text_prefix_access VALUES (1,' + literal(prefix + 'A') + '),(2,' + literal(prefix + 'B') + '),(3,' + literal(prefix + 'A') + ');')
+        expect('nonunique-text-prefix-retains-distinct-full-values-and-duplicates', 'SELECT COUNT(*) FROM text_prefix_access;', 3)
+        expect('nonunique-text-prefix-full-value-filter-excludes-same-prefix-neighbor', 'SELECT GROUP_CONCAT(id ORDER BY id) FROM text_prefix_access FORCE INDEX(prefix_access) WHERE value_text=' + literal(prefix + 'A') + ';', '1,3')
+        expect('nonunique-text-prefix-full-value-comparison-keeps-trailing-space', 'SELECT COUNT(*) FROM text_prefix_access FORCE INDEX(prefix_access) WHERE value_text=' + literal(prefix + 'A ') + ';', 0)
         review_file = ROOT / 'docs/migration/mysql-relational-review.sql'
         review_bytes = review_file.read_bytes().replace(b'\r\n', b'\n')
         review_report = json.loads((ROOT / 'docs/migration/mysql-relational-review.json').read_text(encoding='utf-8'))
@@ -202,6 +210,28 @@ INSERT INTO participation_unique(id,parent_id,value_text,is_exclusive) VALUES(1,
         expect('all-review-generated-index-columns-created', "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='relational_fixture' AND GENERATION_EXPRESSION<>'';", review_report['counts']['generated_index_columns'])
         expect('every-review-table-innodb', "SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA='relational_fixture' AND ENGINE='InnoDB';", 159)
         expect('all-emitted-review-indexes-created', "SELECT COUNT(DISTINCT TABLE_NAME,INDEX_NAME) FROM information_schema.STATISTICS WHERE TABLE_SCHEMA='relational_fixture' AND INDEX_NAME LIKE 'idx_source_%';", review_report['counts']['emitted_indexes'])
+        expect('nonunique-review-prefix-index-count', "SELECT COUNT(DISTINCT TABLE_NAME,INDEX_NAME) FROM information_schema.STATISTICS WHERE TABLE_SCHEMA='relational_fixture' AND INDEX_NAME LIKE 'idx_source_%' AND SUB_PART=128 AND NON_UNIQUE=1;", review_report['counts']['nonunique_prefix_indexes'])
+        # Exercise the actual generated business tables/indexes, not a copied
+        # approximation of their predicates. All values below are artificial.
+        for table, active_states, inactive_state, base in (
+            ('after_sales_requests', ('pending', 'processing'), 'completed',
+             {'order_id': 'fixture-order', 'customer_id': 'fixture-subject', 'type': 'return', 'reason': 'fixture', 'items': '[]'}),
+            ('device_assignments', ('reserved', 'packed', 'shipped'), 'returned',
+             {'device_id': 'fixture-device', 'order_id': 'fixture-order', 'item_id': 'fixture-item', 'source_id': 'fixture-source'})):
+            def insert(row_id, status, deleted=False):
+                values = {'id': row_id, **base, 'status': status, 'created_at': '2026-10-27 00:00:00',
+                          'updated_at': '2026-10-27 00:00:00', 'deleted_at': '2026-10-27 00:00:00' if deleted else None}
+                return 'INSERT INTO relational_fixture.`' + table + '` (' + ','.join('`' + key + '`' for key in values) + ') VALUES (' + ','.join('NULL' if value is None else literal(value) for value in values.values()) + ');'
+
+            sql(insert('first', active_states[0]))
+            for state in active_states:
+                denied(table + '-active-' + state + '-duplicate-denied', insert('conflict', state), 1062)
+            sql(insert('inactive1', inactive_state) + insert('inactive2', inactive_state) + insert('deleted', active_states[0], True))
+            expect(table + '-inactive-and-deleted-history-retained', 'SELECT COUNT(*) FROM relational_fixture.`' + table + '`;', 4)
+            denied(table + '-inactive-to-active-conflict-denied', 'UPDATE relational_fixture.`' + table + "` SET status=" + literal(active_states[-1]) + " WHERE id='inactive1';", 1062)
+            denied(table + '-restore-active-conflict-denied', 'UPDATE relational_fixture.`' + table + "` SET deleted_at=NULL WHERE id='deleted';", 1062)
+            sql('UPDATE relational_fixture.`' + table + "` SET status=" + literal(inactive_state) + " WHERE id='first';" + insert('replacement', active_states[-1]))
+            expect(table + '-completed-or-returned-releases-active-key', 'SELECT COUNT(*) FROM relational_fixture.`' + table + '`;', 5)
         report = {'format_version': 1, 'scope': 'Actual MySQL dialect on artificial minimal DDL/data only; not full domain migrations, source import, allocator concurrency or application validation acceptance.',
                   'image': 'mysql:8.4', 'local_image_id': image.stdout.strip(), 'server_version': version,
                   'isolation': {'network': 'none', 'published_ports': 0, 'cpus': 1, 'memory_mib': 768, 'data_tmpfs_mib': 512, 'source_business_connection': False},

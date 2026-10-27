@@ -58,22 +58,92 @@ def index_width(design):
 
 
 def predicate(text, fields):
-    """Only reviewed conjunctions of NULL/boolean tests; no SQL passthrough."""
+    """Parse the reviewed NULL/boolean/text-enum conjunction grammar only.
+
+    Status literals deliberately accept only lowercase ASCII identifiers;
+    arbitrary SQL strings, casts, functions and OR expressions remain held.
+    """
     if not text:
         return None
-    pieces = re.split(r'\s+AND\s+', text)
-    output = []
-    for piece in pieces:
-        piece = piece.strip().strip('()').strip()
-        match = re.fullmatch(r'(\w+) (IS (?:NOT )?NULL|= (?:true|false))', piece)
-        if not match or match[1] not in fields:
-            raise ValueError('Unreviewed index predicate')
-        column, operation = match.groups()
-        if operation.startswith('= '):
-            assert fields[column]['target_type_design'] == 'BOOLEAN'
-            operation = '= ' + ('1' if operation == '= true' else '0')
-        output.append(ident(fields[column]['target_column']) + ' ' + operation)
-    return ' AND '.join(output)
+    tokens = []
+    rest = text.strip()
+    while rest:
+        match = re.match(r"(?:[a-zA-Z_][a-zA-Z_0-9]*|'[a-z_]+'|::|[()\[\],=])", rest)
+        if not match:
+            raise ValueError('Unreviewed index predicate token')
+        tokens.append(match[0])
+        rest = rest[match.end():].lstrip()
+    position = 0
+
+    def take(expected=None):
+        nonlocal position
+        if position >= len(tokens) or (expected is not None and tokens[position] != expected):
+            raise ValueError('Unreviewed index predicate grammar')
+        token = tokens[position]
+        position += 1
+        return token
+
+    def peek():
+        return tokens[position] if position < len(tokens) else None
+
+    def text_literal():
+        value = take()
+        if not re.fullmatch(r"'[a-z_]+'", value):
+            raise ValueError('Unreviewed status literal')
+        take('::')
+        take('text')
+        return value
+
+    def term():
+        if peek() == '(':
+            take('(')
+            output = expression()
+            take(')')
+            return output
+        column = take()
+        if column not in fields:
+            raise ValueError('Unknown predicate field')
+        field = fields[column]
+        target = ident(field['target_column'])
+        if peek() == 'IS':
+            take('IS')
+            negate = peek() == 'NOT'
+            if negate:
+                take('NOT')
+            take('NULL')
+            return target + (' IS NOT NULL' if negate else ' IS NULL')
+        take('=')
+        if peek() in ('true', 'false'):
+            if field['target_type_design'] != 'BOOLEAN':
+                raise ValueError('Boolean predicate on nonboolean field')
+            return target + (' = 1' if take() == 'true' else ' = 0')
+        if not (field['target_type_design'].startswith('VARCHAR(') or field['target_type_design'] == 'LONGTEXT'):
+            raise ValueError('Text predicate on nontext field')
+        if peek() != 'ANY':
+            return target + ' = ' + text_literal()
+        take('ANY')
+        take('(')
+        take('ARRAY')
+        take('[')
+        values = [text_literal()]
+        while peek() == ',':
+            take(',')
+            values.append(text_literal())
+        take(']')
+        take(')')
+        return target + ' IN (' + ','.join(values) + ')'
+
+    def expression():
+        terms = [term()]
+        while peek() == 'AND':
+            take('AND')
+            terms.append(term())
+        return ' AND '.join(terms)
+
+    output = expression()
+    if position != len(tokens):
+        raise ValueError('Unconsumed index predicate')
+    return output
 
 
 def index_sql(index, fields, target):
@@ -82,25 +152,36 @@ def index_sql(index, fields, target):
         return [], 'hold', 'Expression/non-btree index requires explicit conversion'
     unique, raw_keys, where = match.groups()
     try:
-        keys = names(raw_keys)
+        key_parts = [re.fullmatch(r'(?:"(\w+)"|(\w+))(?: (ASC|DESC))?', part.strip()) for part in raw_keys.split(',')]
+        if not all(key_parts):
+            raise ValueError('Unreviewed index key expression')
+        keys = [part[1] or part[2] for part in key_parts]
         assert all(key in fields for key in keys)
         condition = predicate(where, fields)
     except (ValueError, AssertionError):
         return [], 'hold', 'Unreviewed column/expression/predicate; no automatic equivalent claimed'
-    widths = [index_width(fields[key]['target_type_design']) for key in keys]
+    # A nonunique text prefix is an access-path candidate only. The stored
+    # field and SQL predicate remain full length. Never use it for uniqueness,
+    # JSON/archive payloads or encrypted fields.
+    prefixes = [not unique and fields[key]['target_type_design'] == 'LONGTEXT' for key in keys]
+    widths = [512 if prefix else index_width(fields[key]['target_type_design']) for key, prefix in zip(keys, prefixes)]
     if any(width is None for width in widths):
         return [], 'hold', 'Full text/blob identity or search index requires explicit complete-value design; no prefix substitute'
     if sum(widths) + (1 if unique and condition else 0) > 3072:
         return [], 'hold', 'Complete key exceeds 3072 byte bound; transactional identity registry/full collision verification required'
     sql = []
-    columns = [ident(fields[key]['target_column']) for key in keys]
+    columns = [ident(fields[key]['target_column']) + ('(128)' if prefix else '') + (' ' + part[3] if part[3] else '')
+               for key, prefix, part in zip(keys, prefixes, key_parts)]
     if unique and condition:
         flag = stable_name('active_key', target, index['index_name'])
         sql.append('ALTER TABLE ' + ident(target) + ' ADD COLUMN ' + ident(flag) + ' TINYINT GENERATED ALWAYS AS (IF(' + condition + ',1,NULL)) STORED;')
         columns.append(ident(flag))
     sql.append('CREATE ' + ('UNIQUE ' if unique else '') + 'INDEX ' + ident(stable_name('idx_source', target, index['index_name'])) + ' ON ' + ident(target) + ' (' + ','.join(columns) + ');')
-    return sql, 'emitted', ('Full-value unique with nullable generated participation flag; source NULL semantics retained' if unique and condition
-                            else 'Full-value unique' if unique else 'Nonunique predicate broadened to full index; same query results, performance/selectivity differs' if condition else 'Full nonunique index')
+    reason = ('Full-value unique with nullable generated participation flag; source NULL semantics retained' if unique and condition
+              else 'Full-value unique' if unique else 'Nonunique predicate broadened to full index; same query results, performance/selectivity differs' if condition else 'Full nonunique index')
+    if any(prefixes):
+        reason += '; Nonunique text prefix(128 characters) access path only; full-value SQL predicate required; ordering/covering/selectivity differs'
+    return sql, 'emitted', reason
 
 
 def translate_check(definition, fields):
@@ -248,6 +329,7 @@ def build():
                          'held_constraints': sum(d['status'] == 'hold' for d in decisions), 'source_indexes': len(index_decisions),
                          'emitted_indexes': sum(d['status'] == 'emitted' for d in index_decisions),
                          'generated_index_columns': sum(' ADD COLUMN ' in statement for statement in index_statements),
+                         'nonunique_prefix_indexes': sum(d['status'] == 'emitted' and 'Nonunique text prefix' in d['reason'] for d in index_decisions),
                          'held_indexes': sum(d['status'] == 'hold' for d in index_decisions)},
               'remaining': ['Held long-text/expression indexes and long identities', 'Command defaults, new auth/permissions, outbox and operation schemas',
                             'Complete source constraints equivalence, orphan reconciliation and full import', 'Migration executor/checksums/locking/failure recovery']}

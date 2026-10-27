@@ -236,6 +236,18 @@
       "expected_mysql_error": 1062
     },
     {
+      "name": "nonunique-text-prefix-retains-distinct-full-values-and-duplicates",
+      "passed": true
+    },
+    {
+      "name": "nonunique-text-prefix-full-value-filter-excludes-same-prefix-neighbor",
+      "passed": true
+    },
+    {
+      "name": "nonunique-text-prefix-full-value-comparison-keeps-trailing-space",
+      "passed": true
+    },
+    {
       "name": "all-review-tables-created",
       "passed": true
     },
@@ -254,9 +266,74 @@
     {
       "name": "all-emitted-review-indexes-created",
       "passed": true
+    },
+    {
+      "name": "nonunique-review-prefix-index-count",
+      "passed": true
+    },
+    {
+      "name": "after_sales_requests-active-pending-duplicate-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "after_sales_requests-active-processing-duplicate-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "after_sales_requests-inactive-and-deleted-history-retained",
+      "passed": true
+    },
+    {
+      "name": "after_sales_requests-inactive-to-active-conflict-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "after_sales_requests-restore-active-conflict-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "after_sales_requests-completed-or-returned-releases-active-key",
+      "passed": true
+    },
+    {
+      "name": "device_assignments-active-reserved-duplicate-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "device_assignments-active-packed-duplicate-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "device_assignments-active-shipped-duplicate-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "device_assignments-inactive-and-deleted-history-retained",
+      "passed": true
+    },
+    {
+      "name": "device_assignments-inactive-to-active-conflict-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "device_assignments-restore-active-conflict-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "device_assignments-completed-or-returned-releases-active-key",
+      "passed": true
     }
   ],
-  "relational_review_ddl_sha256": "b836f4097047912a3f6a764dfd088e79e54ebafe7bec4e3d05af4e306480e46a",
+  "relational_review_ddl_sha256": "e5cad256d0c8976ad9eb410cfe978385041d2ac5f4e594975e99158ee4b3aa9e",
   "required_application_checks": [
     "Reject decimal scale/integer overflow before SQL; strict mode rounds excess scale",
     "Reject excess timestamp precision or explicitly normalize with documented policy; strict mode rounds",
