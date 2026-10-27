@@ -40,6 +40,7 @@
 - [API 通用约定](migration/api-conventions.md) 与 [后台组件承接](migration/admin-ui-contract.md)：明确错误/分页/幂等/会话边界，23 个页面文件与 6 个 widgets 有 Ant Design / ECharts 承接设计；重定向入口继续保留，不冒充独立业务页面。
 - [请求验证与SDK承接](migration/request-validation-and-sdk-contract.md)：15个验证器导出34份旧输入结构，69处额外规则显式登记，22个人工用例可重现；36个SDK候选映射到27个新操作设计。直接fetch、原生后台/插件和完整新字段schemas仍待完成；Gin草稿差距已按文件登记。
 - [直接HTTP调用承接](migration/http-caller-contract.md)：58文件108个fetch候选，3个动态路径封装人工展开，共117条分支设计、88个目标方法/路径；9个扫描器反例通过。移动HTML、下载/回调和原生后台/插件仍需补齐，非全入口验收。
+- [能力入口承接](migration/capability-entrypoints.md)：移动静态页/入库凭证/照片/同nonce撤销、XLSX模板、退订及Resend回调共11个入口设计、28文件哈希；40个人工签名/状态用例可复现。新Gin与HTTP/文件/撤权并发仍待验，源码入口数量不累加为独立功能数。
 
 调用方、剩余领域授权、原生交易与支付插件契约、登录后页面及完整字段映射继续核对。源码盘点、截图成功和元数据清单都不等于业务迁移完成。
 

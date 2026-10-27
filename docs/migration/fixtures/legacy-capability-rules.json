@@ -1,0 +1,324 @@
+{
+  "format_version": 1,
+  "scope": "Artificial pure token/HMAC, extracted mail status and installed Standard Webhooks signature rules with fixed clock; framework error construction stubbed. Not live role revocation, HTTP raw-body integration, database dedupe, mailbox ownership or new Gin acceptance.",
+  "source_sha256": {
+    "medusa-store/apps/backend/src/lib/mobile-intake-token.ts": "5bfabf35d24bd8de53a047d84940aeb84e1b2281776753af920e9c2e0952fa8b",
+    "medusa-store/apps/backend/src/workflows/mail-webhook.ts": "378eea8f6aafcb52cab75d624750a359eb9c2426b1395d7ed2c48738d528d78a",
+    "medusa-store/node_modules/.pnpm/standardwebhooks@1.1.1/node_modules/standardwebhooks/dist/index.js": "7dc47b591774d44680060e16473041c449329fa1e5c7264666a37d4aea461437",
+    "medusa-store/node_modules/.pnpm/resend@6.33.0/node_modules/resend/dist/index.cjs": "6ed26a6bfd99cdf603e96b2c40fdefc0fc5c506c47bac84a9eeaf4bc46c61acf"
+  },
+  "cases": [
+    {
+      "domain": "mobile-token",
+      "name": "signed-claims",
+      "accepted": true,
+      "at": 1700000000000,
+      "expected_claims": {
+        "purpose": "mobile-device-intake",
+        "actor_id": "fixture_actor",
+        "source_id": "fixture_source",
+        "category": "sale",
+        "expires_at": 1700007200000,
+        "nonce": "fixture_nonce"
+      }
+    },
+    {
+      "domain": "mobile-token",
+      "name": "one-millisecond-before-expiry",
+      "accepted": true,
+      "at": 1700007199999,
+      "expected_claims": {
+        "purpose": "mobile-device-intake",
+        "actor_id": "fixture_actor",
+        "source_id": "fixture_source",
+        "category": "sale",
+        "expires_at": 1700007200000,
+        "nonce": "fixture_nonce"
+      }
+    },
+    {
+      "domain": "mobile-token",
+      "name": "expiry-is-exclusive",
+      "accepted": false,
+      "at": 1700007200000,
+      "expected_error": "MOBILE_INTAKE_LINK_INVALID"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "wrong-key",
+      "accepted": false,
+      "at": 1700000000000,
+      "expected_error": "MOBILE_INTAKE_LINK_INVALID"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "empty-key",
+      "accepted": false,
+      "at": 1700000000000,
+      "expected_error": "MOBILE_INTAKE_LINK_INVALID"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "empty-token",
+      "accepted": false,
+      "at": 1700000000000,
+      "expected_error": "MOBILE_INTAKE_LINK_INVALID"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "overlength",
+      "accepted": false,
+      "at": 1700000000000,
+      "expected_error": "MOBILE_INTAKE_LINK_INVALID"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "extra-segment",
+      "accepted": false,
+      "at": 1700000000000,
+      "expected_error": "MOBILE_INTAKE_LINK_INVALID"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "unsigned-source-change",
+      "accepted": false,
+      "at": 1700000000000,
+      "expected_error": "MOBILE_INTAKE_LINK_INVALID"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "bad-signature-length",
+      "accepted": false,
+      "at": 1700000000000,
+      "expected_error": "MOBILE_INTAKE_LINK_INVALID"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "wrong-purpose",
+      "accepted": false,
+      "at": 1700000000000,
+      "expected_error": "MOBILE_INTAKE_LINK_INVALID"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "missing-actor",
+      "accepted": false,
+      "at": 1700000000000,
+      "expected_error": "MOBILE_INTAKE_LINK_INVALID"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "missing-source",
+      "accepted": false,
+      "at": 1700000000000,
+      "expected_error": "MOBILE_INTAKE_LINK_INVALID"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "unsupported-category",
+      "accepted": false,
+      "at": 1700000000000,
+      "expected_error": "MOBILE_INTAKE_LINK_INVALID"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "nonnumeric-expiry",
+      "accepted": false,
+      "at": 1700000000000,
+      "expected_error": "MOBILE_INTAKE_LINK_INVALID"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "legacy-missing-category-defaults-sale",
+      "accepted": true,
+      "at": 1700000000000,
+      "expected_claims": {
+        "purpose": "mobile-device-intake",
+        "actor_id": "fixture_actor",
+        "source_id": "fixture_source",
+        "category": "sale",
+        "expires_at": 1700007200000,
+        "nonce": "fixture_nonce"
+      }
+    },
+    {
+      "domain": "mobile-token",
+      "name": "signed-category-returned",
+      "accepted": true,
+      "at": 1700000000000,
+      "expected_claims": {
+        "purpose": "mobile-device-intake",
+        "actor_id": "fixture_actor",
+        "source_id": "fixture_source",
+        "category": "returned",
+        "expires_at": 1700007200000,
+        "nonce": "fixture_nonce"
+      }
+    },
+    {
+      "domain": "mobile-token",
+      "name": "signed-category-recycled",
+      "accepted": true,
+      "at": 1700000000000,
+      "expected_claims": {
+        "purpose": "mobile-device-intake",
+        "actor_id": "fixture_actor",
+        "source_id": "fixture_source",
+        "category": "recycled",
+        "expires_at": 1700007200000,
+        "nonce": "fixture_nonce"
+      }
+    },
+    {
+      "domain": "mobile-token",
+      "name": "generated-two-hour-session-and-nonce",
+      "accepted": true,
+      "lifetime_ms": 7200000,
+      "category": "returned",
+      "nonce": "random-uuid-asserted-not-recorded"
+    },
+    {
+      "domain": "mobile-token",
+      "name": "nonce-not-consumed-by-pure-verifier",
+      "accepted": true,
+      "limitation": "Current actor/source/category permission and device deletion ownership require domain access checks"
+    },
+    {
+      "domain": "mail-delivery-status",
+      "name": "queued-then-sent",
+      "input": {
+        "current": "queued",
+        "incoming": "sent"
+      },
+      "expected": "sent"
+    },
+    {
+      "domain": "mail-delivery-status",
+      "name": "sent-then-delivered",
+      "input": {
+        "current": "sent",
+        "incoming": "delivered"
+      },
+      "expected": "delivered"
+    },
+    {
+      "domain": "mail-delivery-status",
+      "name": "delivered-then-sent",
+      "input": {
+        "current": "delivered",
+        "incoming": "sent"
+      },
+      "expected": "delivered"
+    },
+    {
+      "domain": "mail-delivery-status",
+      "name": "delivered-then-opened",
+      "input": {
+        "current": "delivered",
+        "incoming": "opened"
+      },
+      "expected": "delivered"
+    },
+    {
+      "domain": "mail-delivery-status",
+      "name": "sent-then-clicked",
+      "input": {
+        "current": "sent",
+        "incoming": "clicked"
+      },
+      "expected": "sent"
+    },
+    {
+      "domain": "mail-delivery-status",
+      "name": "delivered-then-bounced",
+      "input": {
+        "current": "delivered",
+        "incoming": "bounced"
+      },
+      "expected": "bounced"
+    },
+    {
+      "domain": "mail-delivery-status",
+      "name": "complained-then-delivered",
+      "input": {
+        "current": "complained",
+        "incoming": "delivered"
+      },
+      "expected": "complained"
+    },
+    {
+      "domain": "mail-delivery-status",
+      "name": "failed-then-sent",
+      "input": {
+        "current": "failed",
+        "incoming": "sent"
+      },
+      "expected": "failed"
+    },
+    {
+      "domain": "mail-delivery-status",
+      "name": "suppressed-then-bounced",
+      "input": {
+        "current": "suppressed",
+        "incoming": "bounced"
+      },
+      "expected": "suppressed"
+    },
+    {
+      "domain": "resend-standardwebhooks",
+      "name": "valid-raw-body",
+      "accepted": true
+    },
+    {
+      "domain": "resend-standardwebhooks",
+      "name": "changed-json-whitespace",
+      "accepted": false
+    },
+    {
+      "domain": "resend-standardwebhooks",
+      "name": "changed-event-id",
+      "accepted": false
+    },
+    {
+      "domain": "resend-standardwebhooks",
+      "name": "missing-signature",
+      "accepted": false
+    },
+    {
+      "domain": "resend-standardwebhooks",
+      "name": "unsupported-signature-version",
+      "accepted": false
+    },
+    {
+      "domain": "resend-standardwebhooks",
+      "name": "multiple-signatures-with-valid-v1",
+      "accepted": true
+    },
+    {
+      "domain": "resend-standardwebhooks",
+      "name": "old-exactly-300-seconds",
+      "accepted": true
+    },
+    {
+      "domain": "resend-standardwebhooks",
+      "name": "old-301-seconds",
+      "accepted": false
+    },
+    {
+      "domain": "resend-standardwebhooks",
+      "name": "future-exactly-300-seconds",
+      "accepted": true
+    },
+    {
+      "domain": "resend-standardwebhooks",
+      "name": "future-301-seconds",
+      "accepted": false
+    },
+    {
+      "domain": "resend-standardwebhooks",
+      "name": "legacy-parseInt-accepts-timestamp-suffix",
+      "accepted": true,
+      "new_contract": "Reject noncanonical timestamp; do not reproduce this source parsing weakness"
+    }
+  ]
+}

@@ -1,0 +1,238 @@
+{
+  "format_version": 1,
+  "scope": "Reviewed mobile, template and mail boundary designs; not all external webhooks/native/plugin API coverage or implemented Gin behavior",
+  "source_sha256": {
+    "medusa-store/apps/backend/src/admin/components/device-workbench.tsx": "e20a349387804d822aa790963b8ff04070aa01619ab11b29244fb03ae7bb2aaf",
+    "medusa-store/apps/backend/src/admin/lib/mobile-intake.ts": "b27c129f7323859383e6105dbdccf493ca39660db0a46d09fa8bca8ae144fad2",
+    "medusa-store/apps/backend/src/api/admin/devices/import-template/route.ts": "a1885e503849e05c5e9872ba5103ea1ff105cdd6c159a750210b131e563f8e6e",
+    "medusa-store/apps/backend/src/api/admin/devices/mobile-intake/route.ts": "078f81f8f53e8ca53e4f7414404b8dfa3b7715a69470c926401cc931b7c2a724",
+    "medusa-store/apps/backend/src/api/device-photo-validators.ts": "39a49398dad3ba7f8bc7a3afae2bd74a44e39c2166a9f7e78d420d5ffbf4d89f",
+    "medusa-store/apps/backend/src/api/mail/unsubscribe/[token]/route.ts": "6ebf15962af89cb328b448ef2868fa042596069cbb0c70849a86a50759cd752f",
+    "medusa-store/apps/backend/src/api/mail/webhooks/[account_id]/route.ts": "51570f6cf6d02f6bd450d495fd88f87388f3309ecffbfaf98254c44d083efab5",
+    "medusa-store/apps/backend/src/api/middlewares.ts": "380175e9894f94410d0afbf653f156fce220b1abfc9689b603879db3441262c1",
+    "medusa-store/apps/backend/src/api/mobile-intake/access.ts": "fab5adfc07c6e4e1438922122097fa57fcf5b810d302386b5843ea852e2ffed2",
+    "medusa-store/apps/backend/src/api/mobile-intake/devices/[id]/route.ts": "47e05bcd0f720764c960468ce7b558bd23c04f3267105442b8fff494f9e498cb",
+    "medusa-store/apps/backend/src/api/mobile-intake/photos/route.ts": "f0aa117e856ec6ad9c3c6bcaf8f5b634965f2f2975d35cd422f985376369a3da",
+    "medusa-store/apps/backend/src/api/mobile-intake/route.ts": "a46fbd382763bcda3ab1a137fc4703bec6a02725f437fed042a57f6a2e7af9fb",
+    "medusa-store/apps/backend/src/api/mobile-intake/validators.ts": "266f11d2e3f8479f4bd3a0bdc16283e34952220b82e59b6eadd60b5f2aa93656",
+    "medusa-store/apps/backend/src/api/mobile-intake/variants/route.ts": "2c11e971024824408c9a4780fc9587194557f67bc6dceb083849be513658d5fa",
+    "medusa-store/apps/backend/src/lib/device-import-columns.ts": "8c9b9d01f6f4c63e360c4fcbd622f40a127fa28fad614313adb4fd4d9e9c56f1",
+    "medusa-store/apps/backend/src/lib/device-import-template.ts": "23fa6dea3328512b56537192b6575bb23b11e200f917db060288289f45d53a02",
+    "medusa-store/apps/backend/src/lib/device-variant-search.ts": "cd3bbe4a7caf5e5f5159b5d4182e195da4e2886f0c878a316fd2972e65b9dacf",
+    "medusa-store/apps/backend/src/lib/mobile-intake-token.ts": "5bfabf35d24bd8de53a047d84940aeb84e1b2281776753af920e9c2e0952fa8b",
+    "medusa-store/apps/backend/src/modules/mail/security.ts": "79ba763bd84f7536be4a8fd47038b837cbf0b90a85cb847f02e2c7eba788f097",
+    "medusa-store/apps/backend/src/workflows/device-operations.ts": "d7d8bdb9371453fcb77b027d77c5fdff39c9c7993bec6c05e125dee9c55603c4",
+    "medusa-store/apps/backend/src/workflows/device-photos.ts": "06b5b34821cd5672efff8df8a35c17d42231079fef8c38029a50b1cda2ea60dd",
+    "medusa-store/apps/backend/src/workflows/mail-webhook.ts": "378eea8f6aafcb52cab75d624750a359eb9c2426b1395d7ed2c48738d528d78a",
+    "medusa-store/apps/backend/src/workflows/mobile-intake.ts": "914b00138a27953cf2293f21be3899ac7734ce685fb97b5d2abb71afd4196be4",
+    "medusa-store/apps/backend/src/workflows/unsubscribe-mail.ts": "a4f653cefa96d04cad48737d9ee1613f5b334f03cc9f89b9f98f47fe52d53ddb",
+    "medusa-store/apps/backend/static/mobile-intake/app.js": "768ed3503ce696c2b08b64257e21e86a1e4fce1967490986c0571923fcfeeaff",
+    "medusa-store/apps/backend/static/mobile-intake/index.html": "288d5a5204f7b07ea4d72682419b35e1da206cbb75c273d2bdc0e17beeb39ab4",
+    "medusa-store/apps/backend/static/mobile-intake/locales.js": "2a7e022821e07aede888a15150eb6f35eec26321a29ce04cfadf764cf49455f4",
+    "medusa-store/apps/backend/static/mobile-intake/style.css": "d3fe693b481cfbf19400a6244ab7bf71d90df8ea5798c2e9ee3b1cc8b06f853b"
+  },
+  "entries": [
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/static/mobile-intake/index.html",
+      "new_method": "GET",
+      "new_path": "/static/mobile-intake/index.html",
+      "identity": "public-static-shell",
+      "csrf_policy": "none-read-only",
+      "task": "T048",
+      "sources": [
+        "medusa-store/apps/backend/static/mobile-intake/index.html",
+        "medusa-store/apps/backend/static/mobile-intake/app.js",
+        "medusa-store/apps/backend/static/mobile-intake/locales.js",
+        "medusa-store/apps/backend/static/mobile-intake/style.css",
+        "medusa-store/apps/backend/src/admin/lib/mobile-intake.ts"
+      ],
+      "invariant": "Preserve page URL, language, scan/camera/variant/expiry/receipts/delete interactions. Fragment credential never sent as query/referrer; no old token validity. New page consumes Gin API, no Medusa or Vue runtime in final React/Astro target.",
+      "response": "HTML noindex,nofollow and no-referrer; preserve static asset provenance; token not cached or logged",
+      "status": "designed-not-implemented",
+      "remaining": "Gin schemas/handlers, isolated permission/concurrency/file/browser tests; route coverage does not prove actual runtime behavior"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/admin/devices/mobile-intake",
+      "new_method": "POST",
+      "new_path": "/api/admin/devices/mobile-intake",
+      "identity": "new-staff-action-and-source-scope",
+      "csrf_policy": "session-origin-csrf",
+      "task": "T048",
+      "sources": [
+        "medusa-store/apps/backend/src/api/admin/devices/mobile-intake/route.ts",
+        "medusa-store/apps/backend/src/workflows/mobile-intake.ts",
+        "medusa-store/apps/backend/src/lib/mobile-intake-token.ts",
+        "medusa-store/apps/backend/src/api/mobile-intake/access.ts"
+      ],
+      "invariant": "Issue new purpose/actor/source/category/expiry/nonce token after current permission; self source only; two hours; not old JWT key. Idempotency key binds create action; do not issue more privileged token on retry.",
+      "response": "Private no-store; exact expires_at in milliseconds for existing timer adapter",
+      "status": "designed-not-implemented",
+      "remaining": "Gin schemas/handlers, isolated permission/concurrency/file/browser tests; route coverage does not prove actual runtime behavior"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/mobile-intake",
+      "new_method": "GET",
+      "new_path": "/api/mobile-intake",
+      "identity": "new-mobile-capability-and-current-actor-scope",
+      "csrf_policy": "none-read-only",
+      "task": "T048",
+      "sources": [
+        "medusa-store/apps/backend/src/api/mobile-intake/route.ts",
+        "medusa-store/apps/backend/src/api/mobile-intake/access.ts",
+        "medusa-store/apps/backend/src/lib/mobile-intake-token.ts"
+      ],
+      "invariant": "Read X-Intake-Token only; verify purpose/length/signature/time/category; current actor enabled, source and category action rechecked every time; missing source never falls back to admin.",
+      "response": "category/source(id,name)/expires_at only; no-store",
+      "status": "designed-not-implemented",
+      "remaining": "Gin schemas/handlers, isolated permission/concurrency/file/browser tests; route coverage does not prove actual runtime behavior"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/mobile-intake",
+      "new_method": "POST",
+      "new_path": "/api/mobile-intake",
+      "identity": "new-mobile-capability-and-current-actor-scope",
+      "csrf_policy": "origin-and-explicit-capability-header",
+      "task": "T048",
+      "sources": [
+        "medusa-store/apps/backend/src/api/mobile-intake/route.ts",
+        "medusa-store/apps/backend/src/api/mobile-intake/validators.ts",
+        "medusa-store/apps/backend/src/workflows/mobile-intake.ts",
+        "medusa-store/apps/backend/src/workflows/device-operations.ts",
+        "medusa-store/apps/backend/static/mobile-intake/app.js"
+      ],
+      "invariant": "Server derives source/category/actor from capability, never request override. Durable idempotency per session/command; preserve nonce in intake audit; stock quantity independent of device intake. No general device command exposure.",
+      "response": "Intake receipt IDs only; private no-store; body according to MobileIntakeBody plus real domain checks",
+      "status": "designed-not-implemented",
+      "remaining": "Gin schemas/handlers, isolated permission/concurrency/file/browser tests; route coverage does not prove actual runtime behavior"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/mobile-intake/variants",
+      "new_method": "GET",
+      "new_path": "/api/mobile-intake/variants",
+      "identity": "new-mobile-capability-and-current-actor-scope",
+      "csrf_policy": "none-read-only",
+      "task": "T048",
+      "sources": [
+        "medusa-store/apps/backend/src/api/mobile-intake/variants/route.ts",
+        "medusa-store/apps/backend/src/lib/device-variant-search.ts"
+      ],
+      "invariant": "Bounded search max200 chars/12 terms, take20 offset<=100000, stable SKU/ID order; SKU-only variants; count semantics source-before-empty-SKU-filter needs explicit new consistency test.",
+      "response": "id/sku/title/requires_imei; no raw product metadata or costs; no-store",
+      "status": "designed-not-implemented",
+      "remaining": "Gin schemas/handlers, isolated permission/concurrency/file/browser tests; route coverage does not prove actual runtime behavior"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/mobile-intake/photos",
+      "new_method": "POST",
+      "new_path": "/api/mobile-intake/photos",
+      "identity": "new-mobile-capability-and-current-actor-scope",
+      "csrf_policy": "origin-and-explicit-capability-header",
+      "task": "T048",
+      "sources": [
+        "medusa-store/apps/backend/src/api/mobile-intake/photos/route.ts",
+        "medusa-store/apps/backend/src/api/device-photo-validators.ts",
+        "medusa-store/apps/backend/src/workflows/device-photos.ts",
+        "medusa-store/apps/backend/src/api/middlewares.ts"
+      ],
+      "invariant": "1..8 files, declared base64 <=4194304 per file, actual JPEG/PNG/WebP header matches MIME and decoded<=3MiB; request cap34mb in source. Random server name; source creates public device photos, not private buyback/mail storage.",
+      "response": "201 photos(id,url); public image class separately authorized and documented; no-store response",
+      "status": "designed-not-implemented",
+      "remaining": "Gin schemas/handlers, isolated permission/concurrency/file/browser tests; route coverage does not prove actual runtime behavior"
+    },
+    {
+      "legacy_method": "DELETE",
+      "legacy_path": "/mobile-intake/devices/{id}",
+      "new_method": "DELETE",
+      "new_path": "/api/mobile-intake/devices/{id}",
+      "identity": "new-mobile-capability-and-current-actor-scope",
+      "csrf_policy": "origin-and-explicit-capability-header",
+      "task": "T048",
+      "sources": [
+        "medusa-store/apps/backend/src/api/mobile-intake/devices/[id]/route.ts",
+        "medusa-store/apps/backend/src/workflows/mobile-intake.ts",
+        "medusa-store/apps/backend/src/workflows/device-operations.ts"
+      ],
+      "invariant": "Only own actor intake event with same nonce/source/category, state pending/inspection/available, no sales assignment history; full current device delete guards. Nonce is not single-use; repeated HTTP delete needs durable replay while permission stays checked.",
+      "response": "Private no-store; stable error mobile_intake.delete_denied without leaking foreign device",
+      "status": "designed-not-implemented",
+      "remaining": "Gin schemas/handlers, isolated permission/concurrency/file/browser tests; route coverage does not prove actual runtime behavior"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/admin/devices/import-template",
+      "new_method": "GET",
+      "new_path": "/api/admin/devices/import-template",
+      "identity": "new-staff-template-download-permission-and-scope",
+      "csrf_policy": "none-read-only",
+      "task": "T043",
+      "sources": [
+        "medusa-store/apps/backend/src/api/admin/devices/import-template/route.ts",
+        "medusa-store/apps/backend/src/lib/device-import-template.ts",
+        "medusa-store/apps/backend/src/lib/device-import-columns.ts",
+        "medusa-store/apps/backend/src/admin/components/device-workbench.tsx"
+      ],
+      "invariant": "Reject supplier; warehouse action/scope guard still applies. All variant pages1000 with stable SKU/ID order; preserve EN/ZH headers, text serial/IMEI/EID/SKU and SKU selection/formula behavior. Formula cells from untrusted values must remain literal strings.",
+      "response": "XLSX attachment device-import-template.xlsx, exact Office MIME, no-store; no business mutation",
+      "status": "designed-not-implemented",
+      "remaining": "Gin schemas/handlers, isolated permission/concurrency/file/browser tests; route coverage does not prove actual runtime behavior"
+    },
+    {
+      "legacy_method": "GET",
+      "legacy_path": "/mail/unsubscribe/{token}",
+      "new_method": "GET",
+      "new_path": "/mail/unsubscribe/{token}",
+      "identity": "business-optout-capability",
+      "csrf_policy": "none-read-only",
+      "task": "T056",
+      "sources": [
+        "medusa-store/apps/backend/src/api/mail/unsubscribe/[token]/route.ts"
+      ],
+      "invariant": "64 lowercase hex syntax; GET renders bilingual confirmation, never updates subscription. Existing optout capabilities are business consent, not excluded login credentials; provider scanners cannot unsubscribe by reading link.",
+      "response": "HTML with CSP default-src none/form-action self/frame-ancestors none; private,no-store; never log token path",
+      "status": "designed-not-implemented",
+      "remaining": "Gin schemas/handlers, isolated permission/concurrency/file/browser tests; route coverage does not prove actual runtime behavior"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/mail/unsubscribe/{token}",
+      "new_method": "POST",
+      "new_path": "/mail/unsubscribe/{token}",
+      "identity": "business-optout-capability",
+      "csrf_policy": "capability-form-origin-policy-not-login-csrf",
+      "task": "T056",
+      "sources": [
+        "medusa-store/apps/backend/src/api/mail/unsubscribe/[token]/route.ts",
+        "medusa-store/apps/backend/src/workflows/unsubscribe-mail.ts"
+      ],
+      "invariant": "Lookup protected token; atomically set subscribed=false without undoing suppression/consent history. Repeating valid unsubscribe returns success, invalid 404; no mail send or login required. Do not require storefront session for external email users.",
+      "response": "200 bilingual text success or404 invalid; no-store; capability route logging redacted",
+      "status": "designed-not-implemented",
+      "remaining": "Gin schemas/handlers, isolated permission/concurrency/file/browser tests; route coverage does not prove actual runtime behavior"
+    },
+    {
+      "legacy_method": "POST",
+      "legacy_path": "/mail/webhooks/{account_id}",
+      "new_method": "POST",
+      "new_path": "/mail/webhooks/{account_id}",
+      "identity": "resend-signed-raw-body",
+      "csrf_policy": "provider-signature-not-browser-csrf",
+      "task": "T055",
+      "sources": [
+        "medusa-store/apps/backend/src/api/mail/webhooks/[account_id]/route.ts",
+        "medusa-store/apps/backend/src/api/middlewares.ts",
+        "medusa-store/apps/backend/src/workflows/mail-webhook.ts",
+        "medusa-store/apps/backend/src/modules/mail/security.ts"
+      ],
+      "invariant": "Preserve exact raw body <=1mb, Svix id/timestamp/signature mapped into installed verifier. Require canonical integer timestamp and bounded skew; verify before parse/side effects. Scope dedupe account:event, persist accepted event/intent before async work and ack only durable acceptance; processing retries remain recoverable.",
+      "response": "401 invalid signature/config,204 durable acceptance; transient persistence failure non2xx; no credentials/raw payload logs",
+      "status": "designed-not-implemented",
+      "remaining": "Gin schemas/handlers, isolated permission/concurrency/file/browser tests; route coverage does not prove actual runtime behavior"
+    }
+  ]
+}
