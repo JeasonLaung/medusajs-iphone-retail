@@ -91,6 +91,9 @@ def main():
         inventory_markers = [line.split('PRODUCT_INVENTORY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'PRODUCT_INVENTORY_REHEARSAL ' in line]
         if len(inventory_markers)!=1:
             raise RuntimeError('Inventory verification missing')
+        import_markers = [line.split('INVENTORY_IMPORT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'INVENTORY_IMPORT_REHEARSAL ' in line]
+        if len(import_markers)!=1:
+            raise RuntimeError('Inventory import verification missing')
         files = ['retail/scripts/test-admin-auth.py', 'retail/backend/internal/identity/admin.go',
                  'retail/backend/internal/identity/admin_test.go', 'retail/backend/internal/identity/integration_test.go',
                  'retail/backend/internal/server/router.go', 'retail/backend/internal/platform/http.go',
@@ -106,6 +109,8 @@ def main():
                   'retail/backend/internal/catalog/admin_prices_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/inventory').glob('*') if p.is_file()]
         files += ['retail/backend/migrations/0012_inventory_relational.sql','retail/backend/internal/identity/product_inventory_test.go','retail/scripts/generate-inventory-schema.py']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/inventoryimport').glob('*') if p.is_file()]
+        files += ['retail/backend/migrations/0013_inventory_import_evidence.sql','retail/backend/internal/identity/inventory_import_test.go','retail/scripts/generate-inventory-import-plan.py']
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                   'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                               'network': 'owned shared namespace with no external network', 'published_ports': 0},
@@ -115,6 +120,7 @@ def main():
                   'product_edit_transaction': json.loads(edit_markers[0]),
                   'product_configured_prices': json.loads(price_markers[0]),
                   'product_inventory': json.loads(inventory_markers[0]),
+                  'inventory_import': json.loads(import_markers[0]),
                   'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
         password = ''

@@ -123,12 +123,13 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
         files += ['retail/backend/internal/schema/run.go','retail/backend/internal/schema/plan.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/inventory').glob('*') if p.is_file()]
-        files += ['retail/scripts/generate-inventory-schema.py']
+        files += ['retail/scripts/generate-inventory-schema.py','retail/scripts/generate-inventory-import-plan.py']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/inventoryimport').glob('*') if p.is_file()]
         report = {'format_version': 1, 'scope': '36 actual catalog tables and nine parent dependencies in disposable tmpfs MySQL only; parent rows have no formal migration ledger; no full import/runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
                   'embedded_migration_plan_used': True, 'review_ddl_injected': False,
                   'limits': {'cpus': 1, 'memory_mib': 768, 'mysql_tmpfs_mib': 512, 'private_input_tmpfs_mib': 128, 'network': 'none', 'published_ports': 0},
-                  'target_business_rows_written': True, 'target_operation_holds_written': False, 'target_full_value_claims_written': True,
+                  'target_business_rows_written': True, 'target_operation_holds_written': True, 'target_full_value_claims_written': True,
                   'production_target_used': False, 'source_database_connection': False, 'provider_called': False,
                   'new_keys_persisted': False, 'private_values_in_report': False, 'relational_acceptance': False,
                   'full_business_acceptance': False,

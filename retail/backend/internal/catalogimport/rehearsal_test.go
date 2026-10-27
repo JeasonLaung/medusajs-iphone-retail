@@ -20,6 +20,7 @@ import (
 	cataloghttp "github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/importvalue"
 	"github.com/eurorefurb/retail/internal/inventory"
+	"github.com/eurorefurb/retail/internal/inventoryimport"
 	"github.com/eurorefurb/retail/internal/rowimport"
 	"github.com/eurorefurb/retail/internal/schema"
 	"github.com/eurorefurb/retail/migrations"
@@ -240,14 +241,14 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog embedded schema plan invalid")
 	}
 	created, err := schema.Apply(ctx, db, plan)
-	if err != nil || created.Applied != 12 || schema.CheckApplied(ctx, db, plan) != nil {
+	if err != nil || created.Applied != 13 || schema.CheckApplied(ctx, db, plan) != nil {
 		t.Fatal("catalog embedded migration failed")
 	}
 	repeated, err := schema.Apply(ctx, db, plan)
-	if err != nil || repeated.Skipped != 12 {
+	if err != nil || repeated.Skipped != 13 {
 		t.Fatal("catalog embedded migration replay failed")
 	}
-	counts["explicit_schema_migrations"] = 12
+	counts["explicit_schema_migrations"] = 13
 	var enabled int
 	if db.QueryRowContext(ctx, "SELECT @@foreign_key_checks").Scan(&enabled) != nil || enabled != 1 {
 		t.Fatal("catalog physical constraints must remain enabled")
@@ -363,9 +364,8 @@ func TestActualCatalogMySQL(t *testing.T) {
 	}
 	counts["committed_provenance_rows"] = 21837
 	counts["committed_unique_claims"] = count("unique_key_claims")
-	// Read rehearsal only: use the strict converter against all source fields;
-	// these two tables do not yet have an accepted formal import ledger.
-	stageInventory := func(insert, commit bool) {
+	// Inventory rows and immutable discrepancy evidence commit together.
+	stageInventory := func(commit bool) {
 		tx, err := db.BeginTx(ctx, nil)
 		if err != nil {
 			t.Fatal("inventory rehearsal transaction failed")
@@ -373,22 +373,30 @@ func TestActualCatalogMySQL(t *testing.T) {
 		defer tx.Rollback()
 		for _, table := range []string{"inventory_level", "reservation_item"} {
 			for _, row := range inventorySelected[table] {
-				if parentSQL(tx, all[table], row, insert) != nil {
+				if inventoryimport.Import(ctx, tx, snapshotHash, table, row) != nil {
 					t.Fatal("inventory exact row staging failed")
 				}
 			}
+		}
+		if _, err := inventoryimport.PreserveHolds(ctx, tx, snapshotHash); err != nil {
+			t.Fatal("inventory discrepancy evidence failed")
 		}
 		if commit && tx.Commit() != nil {
 			t.Fatal("inventory rehearsal commit failed")
 		}
 	}
-	stageInventory(true, false)
-	if count("inventory_levels") != 0 || count("inventory_reservations") != 0 {
+	stageInventory(false)
+	if count("inventory_levels") != 0 || count("inventory_reservations") != 0 || count("migration_inventory_rows") != 0 || count("inventory_migration_holds") != 0 {
 		t.Fatal("inventory rollback left rows")
 	}
-	stageInventory(true, true)
+	stageInventory(true)
 	counts["inventory_read_rehearsal_levels"] = count("inventory_levels")
 	counts["inventory_read_rehearsal_reservations"] = count("inventory_reservations")
+	if count("migration_inventory_rows") != 1026 {
+		t.Fatal("inventory ledger count differs")
+	}
+	counts["inventory_provenance_rows"] = count("migration_inventory_rows")
+	counts["inventory_immutable_holds"] = count("inventory_migration_holds")
 	var mismatch int64
 	if db.QueryRow(`SELECT COUNT(*) FROM inventory_levels l LEFT JOIN (SELECT inventory_item_id,location_id,SUM(quantity) AS quantity FROM inventory_reservations WHERE deleted_at IS NULL GROUP BY inventory_item_id,location_id) r ON r.inventory_item_id=l.inventory_item_id AND r.location_id=l.location_id WHERE l.deleted_at IS NULL AND l.reserved_quantity<>COALESCE(r.quantity,0)`).Scan(&mismatch) != nil || mismatch != 1 {
 		t.Fatal("known inventory reservation difference changed")
@@ -399,6 +407,8 @@ func TestActualCatalogMySQL(t *testing.T) {
 		targets := map[string]string{}
 		targets["inventory_levels"] = "id"
 		targets["inventory_reservations"] = "id"
+		targets["migration_inventory_rows"] = "source_table,identity_sha256"
+		targets["inventory_migration_holds"] = "inventory_item_id,location_id,reason"
 		for _, table := range order {
 			layout := all[table]
 			var columns []string
@@ -664,7 +674,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 	}
 	counts["http_queries_preserved_full_fingerprint"] = 1
 	stage(false, true)
-	stageInventory(false, true)
+	stageInventory(true)
 	if !bytes.Equal(before, fingerprint()) {
 		t.Fatal("actual catalog replay changed evidence")
 	}

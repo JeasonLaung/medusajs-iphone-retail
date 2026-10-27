@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "tables": [
+    {
+      "source": "inventory_level",
+      "target": "inventory_levels",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "inventory_item_id",
+          "target": "inventory_item_id",
+          "decimal": false
+        },
+        {
+          "source": "location_id",
+          "target": "location_id",
+          "decimal": false
+        },
+        {
+          "source": "stocked_quantity",
+          "target": "stocked_quantity",
+          "decimal": true
+        },
+        {
+          "source": "reserved_quantity",
+          "target": "reserved_quantity",
+          "decimal": true
+        },
+        {
+          "source": "incoming_quantity",
+          "target": "incoming_quantity",
+          "decimal": true
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "raw_stocked_quantity",
+          "target": "raw_stocked_quantity",
+          "decimal": false
+        },
+        {
+          "source": "raw_reserved_quantity",
+          "target": "raw_reserved_quantity",
+          "decimal": false
+        },
+        {
+          "source": "raw_incoming_quantity",
+          "target": "raw_incoming_quantity",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    },
+    {
+      "source": "reservation_item",
+      "target": "inventory_reservations",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "line_item_id",
+          "target": "line_item_id",
+          "decimal": false
+        },
+        {
+          "source": "location_id",
+          "target": "location_id",
+          "decimal": false
+        },
+        {
+          "source": "quantity",
+          "target": "quantity",
+          "decimal": true
+        },
+        {
+          "source": "external_id",
+          "target": "external_id",
+          "decimal": false
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "decimal": false
+        },
+        {
+          "source": "created_by",
+          "target": "created_by",
+          "decimal": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false
+        },
+        {
+          "source": "inventory_item_id",
+          "target": "inventory_item_id",
+          "decimal": false
+        },
+        {
+          "source": "allow_backorder",
+          "target": "allow_backorder",
+          "decimal": false
+        },
+        {
+          "source": "raw_quantity",
+          "target": "raw_quantity",
+          "decimal": false
+        }
+      ],
+      "registry": false
+    }
+  ]
+}
