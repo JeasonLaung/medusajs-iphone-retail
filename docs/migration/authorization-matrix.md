@@ -10,6 +10,8 @@
 
 授权分四层：身份类型 → 资源动作 → 仓库/来源/对象归属 → 响应字段。菜单隐藏不代替任何服务端检查；详情、导出、附件和后台任务调用相同领域授权入口。
 
+[邮件/回收新动作设计](operations-permission-contract.md)固定45项精确选择器和权限、范围、外部副作用及版本规则，64项契约模型检查通过；读/写/发信/付款登记/私有附件拆开。该设计不导入旧个人grant，未实现Gin/SQL/worker授权。
+
 [原生RBAC执行证据](native-permission-contract.md)含安装版匹配函数及policy wrapper的32项人工端口样例：多角色并集、全部动作必需、完整通配及大小写边界。底层hasPermission对空roles/actions返回true，但非空policy的wrapper先拒绝无角色，仓库helper也预查角色；不能断章认定无角色可访问后台。真实缓存失效与路由挂载仍待核对。
 
 [路由注册追踪](route-policy-contract.md)另展开591条根middleware注册，逐代表路径匹配576个处理方法候选；11个自定义方法匹配原生/项目policy，41个自定义Admin方法未匹配资源policy声明。默认身份/guard/工作流仍独立存在，不能称后者公开；静态扫描的9组覆盖已继续隔离执行，完整真实HTTP仍待验。

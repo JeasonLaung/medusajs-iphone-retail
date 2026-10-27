@@ -19,6 +19,7 @@
 | 原生RBAC匹配 | [实际匹配/wrapper32项执行](native-permission-contract.md)、fixtures/legacy-native-permissions.json；真实路由及cache invalidation仍待验 |
 | 路由权限注册 | [591条注册/576个方法候选与继承](route-policy-contract.md)、route-policy-registrations.json；静态候选，覆盖隔离执行见下一行 |
 | 隔离路由加载 | [实际loader/sorter/finder及HTTP34项](route-loading-contract.md)、fixtures/legacy-route-loading.json；9组项目覆盖及继承policy已隔离执行，真实业务/认证仍待验 |
+| 新运营动作权限 | [邮件/回收45项分支设计](operations-permission-contract.md)、schemas/operations-permissions.json；64项契约模型检查，未实现Gin授权 |
 | 文件清单 | [公开图/私有照片/邮件附件基线](file-migration-baseline.md)、file-snapshot-report.json；明细仅在忽略目录 |
 | 密钥/商户秘密 | [四域加密与离线可读性](protected-config-baseline.md)、protected-config-report.json；无明文/密文/密钥指纹 |
 | 默认值转换 | [193表1,961列默认值去向](column-default-design.md)、source-column-defaults.json、column-default-design.json |

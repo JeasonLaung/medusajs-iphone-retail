@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "description": "Independent Gin API schema verification; no Medusa runtime dependencies",
   "scripts": {
-    "test": "node verify.cjs"
+    "test": "node verify.cjs && node verify-permissions.cjs"
   },
   "devDependencies": {
     "ajv": "8.17.1",

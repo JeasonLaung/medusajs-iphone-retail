@@ -1,0 +1,897 @@
+{
+  "format_version": 1,
+  "status": "proposed-branch-permissions-not-Gin-enforcement",
+  "identity": "new-staff-session; restricted supplier and warehouse denied for all entries",
+  "permission_semantics": "Exact named grants; no implicit prefix, admin-role-name or read-to-write expansion. This is target design, not a claim about legacy grants.",
+  "selection": "Normalize and validate route/query/body before selection; match exactly one entry; reject unknown action/resource/suboperation and repeated/conflicting selectors. No broad route-level permission fallback.",
+  "authorization_order": [
+    "current authenticated enabled staff and permission version",
+    "exact entry grant",
+    "each current object and parent relationship",
+    "version/idempotency rules inside transaction",
+    "domain state/invariants",
+    "allowlisted response"
+  ],
+  "scope_semantics": "Account/source/object action scope checked against current persistent grants; list count/filter/page after authorization. Request-provided account_id never grants access. New accounts inherit no old email ownership or personal grants.",
+  "response": "private,no-store; secrets never echoed; no raw internal payload/metadata projection; errors use stable common envelope",
+  "secret_handling": "Credential edits use protected versioned keyed request HMAC for dedupe; never log/store plain secret or unkeyed secret hash in operation/audit/request payload",
+  "entries": [
+    {
+      "id": "mail.command.save_account",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "save_account"
+      },
+      "permission": "mail.account.configure",
+      "scope": "mail-account",
+      "effect": "credential-config",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key"
+      ],
+      "version_precondition": {
+        "existing_id": "If-Match: strong current aggregate ETag",
+        "absent_id": "If-None-Match: *; reject If-Match and use canonical creation uniqueness",
+        "reject_both": true
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.delete_account",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "delete_account"
+      },
+      "permission": "mail.account.delete",
+      "scope": "mail-account",
+      "effect": "delete",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.save_draft",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "save_draft"
+      },
+      "permission": "mail.draft.write",
+      "scope": "mail-message-and-account",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key"
+      ],
+      "version_precondition": {
+        "existing_id": "If-Match: strong current aggregate ETag",
+        "absent_id": "If-None-Match: *; reject If-Match and use canonical creation uniqueness",
+        "reject_both": true
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.send",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "send"
+      },
+      "permission": "mail.message.send",
+      "scope": "mail-message-and-account",
+      "effect": "external-send",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "durable operation; execution reauthorizes and reconciles external outcome"
+    },
+    {
+      "id": "mail.command.messages.read",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "messages",
+        "operation": "read"
+      },
+      "permission": "mail.message.organize",
+      "scope": "each-mail-message-and-account",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.messages.unread",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "messages",
+        "operation": "unread"
+      },
+      "permission": "mail.message.organize",
+      "scope": "each-mail-message-and-account",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.messages.star",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "messages",
+        "operation": "star"
+      },
+      "permission": "mail.message.organize",
+      "scope": "each-mail-message-and-account",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.messages.unstar",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "messages",
+        "operation": "unstar"
+      },
+      "permission": "mail.message.organize",
+      "scope": "each-mail-message-and-account",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.messages.trash",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "messages",
+        "operation": "trash"
+      },
+      "permission": "mail.message.organize",
+      "scope": "each-mail-message-and-account",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.messages.restore",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "messages",
+        "operation": "restore"
+      },
+      "permission": "mail.message.organize",
+      "scope": "each-mail-message-and-account",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.messages.archive",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "messages",
+        "operation": "archive"
+      },
+      "permission": "mail.message.organize",
+      "scope": "each-mail-message-and-account",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.messages.delete",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "messages",
+        "operation": "delete"
+      },
+      "permission": "mail.message.delete",
+      "scope": "each-mail-message-and-account",
+      "effect": "delete",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.messages.retry",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "messages",
+        "operation": "retry"
+      },
+      "permission": "mail.message.send",
+      "scope": "each-mail-message-and-account",
+      "effect": "external-send",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "durable operation; execution reauthorizes and reconciles external outcome"
+    },
+    {
+      "id": "mail.command.contacts",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "contacts"
+      },
+      "permission": "mail.contact.write",
+      "scope": "each-mail-contact",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.unsubscribe_contact",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "unsubscribe_contact"
+      },
+      "permission": "mail.contact.unsubscribe",
+      "scope": "mail-contact",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.save_campaign",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "save_campaign"
+      },
+      "permission": "mail.campaign.write",
+      "scope": "mail-campaign-and-account",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key"
+      ],
+      "version_precondition": {
+        "existing_id": "If-Match: strong current aggregate ETag",
+        "absent_id": "If-None-Match: *; reject If-Match and use canonical creation uniqueness",
+        "reject_both": true
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.campaign.queue",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "campaign",
+        "operation": "queue"
+      },
+      "permission": "mail.campaign.send",
+      "scope": "mail-campaign-account-and-each-contact",
+      "effect": "external-send",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "durable operation; execution reauthorizes and reconciles external outcome"
+    },
+    {
+      "id": "mail.command.campaign.pause",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "campaign",
+        "operation": "pause"
+      },
+      "permission": "mail.campaign.pause",
+      "scope": "mail-campaign-and-account",
+      "effect": "stop-send",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.campaign.resume",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "campaign",
+        "operation": "resume"
+      },
+      "permission": "mail.campaign.send",
+      "scope": "mail-campaign-account-and-each-contact",
+      "effect": "external-send",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "durable operation; execution reauthorizes and reconciles external outcome"
+    },
+    {
+      "id": "mail.command.campaign.retry",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "campaign",
+        "operation": "retry"
+      },
+      "permission": "mail.campaign.send",
+      "scope": "mail-campaign-account-and-each-contact",
+      "effect": "external-send",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "durable operation; execution reauthorizes and reconciles external outcome"
+    },
+    {
+      "id": "mail.command.save_template",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "save_template"
+      },
+      "permission": "mail.template.write",
+      "scope": "mail-template",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key"
+      ],
+      "version_precondition": {
+        "existing_id": "If-Match: strong current aggregate ETag",
+        "absent_id": "If-None-Match: *; reject If-Match and use canonical creation uniqueness",
+        "reject_both": true
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.command.delete_template",
+      "method": "POST",
+      "path": "/api/admin/mail/commands",
+      "selector": {
+        "action": "delete_template"
+      },
+      "permission": "mail.template.delete",
+      "scope": "mail-template",
+      "effect": "delete",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "buyback.command.review_photo",
+      "method": "POST",
+      "path": "/api/admin/buyback/{request_id}",
+      "selector": {
+        "action": "review_photo"
+      },
+      "permission": "buyback.photo.review",
+      "scope": "buyback-request-and-photo",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "buyback.command.approve_shipping",
+      "method": "POST",
+      "path": "/api/admin/buyback/{request_id}",
+      "selector": {
+        "action": "approve_shipping"
+      },
+      "permission": "buyback.shipping.approve",
+      "scope": "buyback-request",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "buyback.command.mark_received",
+      "method": "POST",
+      "path": "/api/admin/buyback/{request_id}",
+      "selector": {
+        "action": "mark_received"
+      },
+      "permission": "buyback.receipt.confirm",
+      "scope": "buyback-request",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "buyback.command.link_device",
+      "method": "POST",
+      "path": "/api/admin/buyback/{request_id}",
+      "selector": {
+        "action": "link_device"
+      },
+      "permission": "buyback.device.link",
+      "scope": "buyback-request-item-and-device",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "buyback.command.final_offer",
+      "method": "POST",
+      "path": "/api/admin/buyback/{request_id}",
+      "selector": {
+        "action": "final_offer"
+      },
+      "permission": "buyback.offer.write",
+      "scope": "buyback-request-and-each-item",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "buyback.command.mark_paid",
+      "method": "POST",
+      "path": "/api/admin/buyback/{request_id}",
+      "selector": {
+        "action": "mark_paid"
+      },
+      "permission": "buyback.payment.record",
+      "scope": "buyback-request",
+      "effect": "payment-evidence",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "buyback.command.request_return",
+      "method": "POST",
+      "path": "/api/admin/buyback/{request_id}",
+      "selector": {
+        "action": "request_return"
+      },
+      "permission": "buyback.return.request",
+      "scope": "buyback-request",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "buyback.command.mark_returning",
+      "method": "POST",
+      "path": "/api/admin/buyback/{request_id}",
+      "selector": {
+        "action": "mark_returning"
+      },
+      "permission": "buyback.return.ship",
+      "scope": "buyback-request",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "buyback.command.mark_returned",
+      "method": "POST",
+      "path": "/api/admin/buyback/{request_id}",
+      "selector": {
+        "action": "mark_returned"
+      },
+      "permission": "buyback.return.complete",
+      "scope": "buyback-request",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "buyback.command.cancel",
+      "method": "POST",
+      "path": "/api/admin/buyback/{request_id}",
+      "selector": {
+        "action": "cancel"
+      },
+      "permission": "buyback.cancel",
+      "scope": "buyback-request",
+      "effect": "local-write",
+      "required_headers": [
+        "Origin",
+        "X-CSRF-Token",
+        "Idempotency-Key",
+        "If-Match"
+      ],
+      "version_precondition": {
+        "existing_aggregate": "If-Match: strong current aggregate ETag; bulk commands use an authorized collection revision covering every selected member"
+      },
+      "version_subject": "Locked aggregate with current object authorization; contacts bulk upsert uses collection revision; never a fake existing version",
+      "outcome": "transactional versioned result or durable operation for dependent notifications"
+    },
+    {
+      "id": "mail.list.messages",
+      "method": "GET",
+      "path": "/api/admin/mail",
+      "selector": {
+        "resource": "messages"
+      },
+      "permission": "mail.message.read",
+      "scope": "mail-message-and-account",
+      "effect": "read",
+      "default_selector": true
+    },
+    {
+      "id": "mail.list.summary",
+      "method": "GET",
+      "path": "/api/admin/mail",
+      "selector": {
+        "resource": "summary"
+      },
+      "permission": "mail.message.read",
+      "scope": "mail-account",
+      "effect": "read",
+      "default_selector": false
+    },
+    {
+      "id": "mail.list.accounts",
+      "method": "GET",
+      "path": "/api/admin/mail",
+      "selector": {
+        "resource": "accounts"
+      },
+      "permission": "mail.account.read",
+      "scope": "mail-account",
+      "effect": "read",
+      "default_selector": false
+    },
+    {
+      "id": "mail.list.contacts",
+      "method": "GET",
+      "path": "/api/admin/mail",
+      "selector": {
+        "resource": "contacts"
+      },
+      "permission": "mail.contact.read",
+      "scope": "mail-contact",
+      "effect": "read",
+      "default_selector": false
+    },
+    {
+      "id": "mail.list.campaigns",
+      "method": "GET",
+      "path": "/api/admin/mail",
+      "selector": {
+        "resource": "campaigns"
+      },
+      "permission": "mail.campaign.read",
+      "scope": "mail-campaign-and-account",
+      "effect": "read",
+      "default_selector": false
+    },
+    {
+      "id": "mail.list.deliveries",
+      "method": "GET",
+      "path": "/api/admin/mail",
+      "selector": {
+        "resource": "deliveries"
+      },
+      "permission": "mail.delivery.read",
+      "scope": "mail-delivery-campaign-and-account",
+      "effect": "read",
+      "default_selector": false
+    },
+    {
+      "id": "mail.list.templates",
+      "method": "GET",
+      "path": "/api/admin/mail",
+      "selector": {
+        "resource": "templates"
+      },
+      "permission": "mail.template.read",
+      "scope": "mail-template",
+      "effect": "read",
+      "default_selector": false
+    },
+    {
+      "id": "mail.list.events",
+      "method": "GET",
+      "path": "/api/admin/mail",
+      "selector": {
+        "resource": "events"
+      },
+      "permission": "mail.event.read",
+      "scope": "mail-event-and-account",
+      "effect": "read",
+      "default_selector": false
+    },
+    {
+      "id": "mail.message.retrieve",
+      "method": "GET",
+      "path": "/api/admin/mail/messages/{message_id}",
+      "selector": {},
+      "permission": "mail.message.read",
+      "scope": "mail-message-and-account",
+      "effect": "read"
+    },
+    {
+      "id": "mail.attachment.download",
+      "method": "GET",
+      "path": "/api/admin/mail/messages/{message_id}/attachments/{attachment_id}",
+      "selector": {},
+      "permission": "mail.attachment.download",
+      "scope": "mail-message-account-and-exact-attachment",
+      "effect": "read"
+    },
+    {
+      "id": "buyback.list",
+      "method": "GET",
+      "path": "/api/admin/buyback",
+      "selector": {},
+      "permission": "buyback.read",
+      "scope": "buyback-request",
+      "effect": "read"
+    },
+    {
+      "id": "buyback.retrieve",
+      "method": "GET",
+      "path": "/api/admin/buyback/{request_id}",
+      "selector": {},
+      "permission": "buyback.read",
+      "scope": "buyback-request",
+      "effect": "read"
+    },
+    {
+      "id": "buyback.photo.download",
+      "method": "GET",
+      "path": "/api/admin/buyback/{request_id}/photos/{photo_id}",
+      "selector": {},
+      "permission": "buyback.photo.read",
+      "scope": "buyback-request-and-photo",
+      "effect": "read"
+    }
+  ],
+  "source_sha256": {
+    "docs/migration/schemas/legacy-request-inputs.json": "20360c4f982fc976b3212f2434a30ef094bc173532c3eea4ac2920d91c435f1e",
+    "medusa-store/apps/backend/src/api/admin/mail/route.ts": "1d8d2430b9ffcb419ca30a45d6e7c9f7df969d5abee2dbde9f241898b246b9b5",
+    "medusa-store/apps/backend/src/api/admin/mail/commands/route.ts": "0dd14a0bad8c92aab8ebc9118a1b7f5cef75f7a0bbfec04bbb43e7d37037706b",
+    "medusa-store/apps/backend/src/workflows/steps/mail-command.ts": "03d6f8cfd50c71d3f320a8e67fddba91a2f991b5ede1c1ffceaf678f079331b2",
+    "medusa-store/apps/backend/src/api/admin/buyback/route.ts": "0a9da29cc7c46b175342886cc54ec43d9703329ad779971b9bc37853453208e9",
+    "medusa-store/apps/backend/src/api/admin/buyback/[id]/route.ts": "984cb1f5bf11254360a570e30dd9b4bc911e850f080bf40cb0ca7a815bfa5e85",
+    "medusa-store/apps/backend/src/workflows/buyback.ts": "cb5bb9dc751c6879de8b7d65bd07d9d7cafcae02258c1a5e871005d91f2fc138"
+  },
+  "remaining": [
+    "Exact per-command field/response schemas and absence-precondition header schema",
+    "Native and remaining custom domains, role seed choices and actor data scope storage",
+    "Gin/SQL/worker enforcement, account revocation, state and failure/concurrency tests",
+    "Ant Design views consume granted action IDs; UI hiding is not enforcement"
+  ]
+}
