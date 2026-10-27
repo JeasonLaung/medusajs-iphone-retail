@@ -1,0 +1,1572 @@
+{
+  "format_version": 1,
+  "scope": "Artificial selection/allocation fixtures only; not database qualification, budget registration/concurrency, provider execution or checkout acceptance",
+  "sources": {
+    "medusa-store/node_modules/.pnpm/@medusajs+fulfillment@2.21._56be7bb9321cd21bdb14eeb6f3acdc60/node_modules/@medusajs/fulfillment/dist/services/fulfillment-module-service.js": "99060adc1943e38501bb77fd4d340b54a38e9bf0e70be4182716587220c146ce",
+    "medusa-store/node_modules/.pnpm/@medusajs+fulfillment@2.21._56be7bb9321cd21bdb14eeb6f3acdc60/node_modules/@medusajs/fulfillment/dist/utils/utils.js": "785ea17133d8a3a4cd986ca7c7bcf57213167a129f3550187be9ac5274012a0a",
+    "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/line-items.js": "c43baa69baf44b6888bfece03aba4162c530e7739a9103c6153ddad3b887c6c3",
+    "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/shipping-methods.js": "d2f2803a44513074f633f4606695af132da520c532b5efe9856064be9dd5d405",
+    "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/sort-by-price.js": "6ccb720482eb3ff06778d955dbd8c03bbe5a997ea39a50cb9f56cc3af59ca48d",
+    "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/usage.js": "819328d0e7c3b855f95b6b9a4e640cc9fabc4572343796d63ebe34abe8506af8",
+    "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/validations/promotion-rule.js": "fd835ede4d3615d7dbc3633b4f047bbe8c63a696de4c2819fd5a712b4870770b",
+    "medusa-store/node_modules/.pnpm/@medusajs+tax@2.21.2_@medus_fe602fe876202744a316a388c055bf0f/node_modules/@medusajs/tax/dist/services/tax-module-service.js": "87858d49dca3a1a3e0c65e308fc943e4a3c0b5855842f6930e3a10b7340e2906",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/big-number.js": "4407e278ee599bd0073f5506a777ec7b79616d802e00ae2c49284a95171de07f",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/math.js": "8a51bcffcbe7293b75db5cb58ac31227f62f1315eeb7dd954c0fc3bd57edebe1",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/promotion/index.js": "04bab8320ee74f975de865550caaef7c01e7a130868e058dcf259c17d357bf8a"
+  },
+  "reviewed_sources_not_executed": {
+    "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/services/promotion-module.js": "cb1eaec98335f68e91377548998b498167652ccecf9a3874bbb0192964cb13f1",
+    "medusa-store/node_modules/.pnpm/@medusajs+tax@2.21.2_@medus_fe602fe876202744a316a388c055bf0f/node_modules/@medusajs/tax/dist/providers/system.js": "d76618ba9334defe7fabc804ead2a02488f1677bfc9a08ef9c1b98d6f8758ce8",
+    "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/workflows/list-shipping-options-for-cart.js": "f47882bd0d4e05012e252108cb26048cf58e4af29891c25299c1be4930e4c620",
+    "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/workflows/list-shipping-options-for-cart-with-pricing.js": "ae956f0b891c4b53d587cad67ff4e0d0bbbc0d1e736b346ebd3650b04e999b6b",
+    "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/workflows/add-shipping-method-to-cart.js": "37e517351491bc2bf17603e636f45aee0ecc70852eaa994a024c74b4039c6e71",
+    "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/tax/steps/get-item-tax-lines.js": "5c46c13da079791a0653d3e5f7bcb4e1273bd426f439fb4b20a45334e2e91dad"
+  },
+  "cases": [
+    {
+      "domain": "promotion-items",
+      "name": "fixed-each-default-quota-one",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "items",
+            "type": "fixed",
+            "allocation": "each",
+            "value": "10"
+          }
+        },
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "200",
+            "original_total": "200",
+            "quantity": "2",
+            "is_discountable": true
+          }
+        ],
+        "previous_discounts_exclusive": []
+      },
+      "expected": [
+        {
+          "action": "addItemAdjustment",
+          "item_id": "a",
+          "amount": "10",
+          "code": "FIXTURE",
+          "is_tax_inclusive": false
+        }
+      ]
+    },
+    {
+      "domain": "promotion-items",
+      "name": "fixed-each-explicit-quota",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "items",
+            "type": "fixed",
+            "allocation": "each",
+            "value": "10",
+            "max_quantity": 2
+          }
+        },
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "200",
+            "original_total": "200",
+            "quantity": "2",
+            "is_discountable": true
+          }
+        ],
+        "previous_discounts_exclusive": []
+      },
+      "expected": [
+        {
+          "action": "addItemAdjustment",
+          "item_id": "a",
+          "amount": "20",
+          "code": "FIXTURE",
+          "is_tax_inclusive": false
+        }
+      ]
+    },
+    {
+      "domain": "promotion-items",
+      "name": "fixed-across-proportional",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "items",
+            "type": "fixed",
+            "allocation": "across",
+            "value": "40"
+          }
+        },
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "100",
+            "original_total": "100",
+            "quantity": "1",
+            "is_discountable": true
+          },
+          {
+            "id": "b",
+            "subtotal": "300",
+            "original_total": "300",
+            "quantity": "1",
+            "is_discountable": true
+          }
+        ],
+        "previous_discounts_exclusive": []
+      },
+      "expected": [
+        {
+          "action": "addItemAdjustment",
+          "item_id": "a",
+          "amount": "10",
+          "code": "FIXTURE",
+          "is_tax_inclusive": false
+        },
+        {
+          "action": "addItemAdjustment",
+          "item_id": "b",
+          "amount": "30",
+          "code": "FIXTURE",
+          "is_tax_inclusive": false
+        }
+      ]
+    },
+    {
+      "domain": "promotion-items",
+      "name": "percentage-each-default-quota-one",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "items",
+            "type": "percentage",
+            "allocation": "each",
+            "value": "10"
+          }
+        },
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "200",
+            "original_total": "200",
+            "quantity": "2",
+            "is_discountable": true
+          }
+        ],
+        "previous_discounts_exclusive": []
+      },
+      "expected": [
+        {
+          "action": "addItemAdjustment",
+          "item_id": "a",
+          "amount": "10",
+          "code": "FIXTURE",
+          "is_tax_inclusive": false
+        }
+      ]
+    },
+    {
+      "domain": "promotion-items",
+      "name": "once-cheapest-first",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "items",
+            "type": "fixed",
+            "allocation": "once",
+            "value": "10",
+            "max_quantity": 1
+          }
+        },
+        "items": [
+          {
+            "id": "b",
+            "subtotal": "100",
+            "original_total": "100",
+            "quantity": "1",
+            "is_discountable": true
+          },
+          {
+            "id": "a",
+            "subtotal": "40",
+            "original_total": "40",
+            "quantity": "1",
+            "is_discountable": true
+          }
+        ],
+        "previous_discounts_exclusive": []
+      },
+      "expected": [
+        {
+          "action": "addItemAdjustment",
+          "item_id": "a",
+          "amount": "10",
+          "code": "FIXTURE",
+          "is_tax_inclusive": false
+        }
+      ]
+    },
+    {
+      "domain": "promotion-items",
+      "name": "once-without-quota",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "items",
+            "type": "fixed",
+            "allocation": "once",
+            "value": "10"
+          }
+        },
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "40",
+            "original_total": "40",
+            "quantity": "1",
+            "is_discountable": true
+          }
+        ],
+        "previous_discounts_exclusive": []
+      },
+      "expected": []
+    },
+    {
+      "domain": "promotion-items",
+      "name": "discount-capped-at-remaining",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "items",
+            "type": "fixed",
+            "allocation": "each",
+            "value": "20"
+          }
+        },
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "original_total": "10",
+            "quantity": "1",
+            "is_discountable": true
+          }
+        ],
+        "previous_discounts_exclusive": [
+          [
+            "a",
+            "7"
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "action": "addItemAdjustment",
+          "item_id": "a",
+          "amount": "3",
+          "code": "FIXTURE",
+          "is_tax_inclusive": false
+        }
+      ]
+    },
+    {
+      "domain": "promotion-items",
+      "name": "not-discountable",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "items",
+            "type": "fixed",
+            "allocation": "each",
+            "value": "10"
+          }
+        },
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "100",
+            "original_total": "100",
+            "quantity": "1",
+            "is_discountable": false
+          }
+        ],
+        "previous_discounts_exclusive": []
+      },
+      "expected": []
+    },
+    {
+      "domain": "promotion-items",
+      "name": "zero-subtotal",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "items",
+            "type": "fixed",
+            "allocation": "each",
+            "value": "10"
+          }
+        },
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "0",
+            "original_total": "0",
+            "quantity": "1",
+            "is_discountable": true
+          }
+        ],
+        "previous_discounts_exclusive": []
+      },
+      "expected": []
+    },
+    {
+      "domain": "promotion-items",
+      "name": "inclusive-with-existing-exclusive-discount",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": true,
+          "application_method": {
+            "target_type": "items",
+            "type": "fixed",
+            "allocation": "each",
+            "value": "25"
+          }
+        },
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "100",
+            "original_total": "125",
+            "quantity": "1",
+            "is_discountable": true
+          }
+        ],
+        "previous_discounts_exclusive": [
+          [
+            "a",
+            "90"
+          ]
+        ]
+      },
+      "expected": [
+        {
+          "action": "addItemAdjustment",
+          "item_id": "a",
+          "amount": "12.5",
+          "code": "FIXTURE",
+          "is_tax_inclusive": true
+        }
+      ]
+    },
+    {
+      "domain": "promotion-items",
+      "name": "spend-budget-exceeded",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "items",
+            "type": "fixed",
+            "allocation": "each",
+            "value": "10"
+          },
+          "campaign": {
+            "budget": {
+              "type": "spend",
+              "used": "95",
+              "limit": "100"
+            }
+          }
+        },
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "100",
+            "original_total": "100",
+            "quantity": "1",
+            "is_discountable": true
+          }
+        ],
+        "previous_discounts_exclusive": []
+      },
+      "expected": [
+        {
+          "action": "campaignBudgetExceeded",
+          "code": "FIXTURE"
+        }
+      ]
+    },
+    {
+      "domain": "promotion-items",
+      "name": "spend-budget-exact-boundary",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "items",
+            "type": "fixed",
+            "allocation": "each",
+            "value": "10"
+          },
+          "campaign": {
+            "budget": {
+              "type": "spend",
+              "used": "90",
+              "limit": "100"
+            }
+          }
+        },
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "100",
+            "original_total": "100",
+            "quantity": "1",
+            "is_discountable": true
+          }
+        ],
+        "previous_discounts_exclusive": []
+      },
+      "expected": [
+        {
+          "action": "addItemAdjustment",
+          "item_id": "a",
+          "amount": "10",
+          "code": "FIXTURE",
+          "is_tax_inclusive": false
+        }
+      ]
+    },
+    {
+      "domain": "promotion-shipping",
+      "name": "fixed-across",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "shipping_methods",
+            "type": "fixed",
+            "allocation": "across",
+            "value": "8"
+          }
+        },
+        "shipping_methods": [
+          {
+            "id": "a",
+            "subtotal": "10"
+          },
+          {
+            "id": "b",
+            "subtotal": "30"
+          }
+        ]
+      },
+      "expected": [
+        {
+          "action": "addShippingMethodAdjustment",
+          "shipping_method_id": "a",
+          "amount": "2",
+          "code": "FIXTURE"
+        },
+        {
+          "action": "addShippingMethodAdjustment",
+          "shipping_method_id": "b",
+          "amount": "6",
+          "code": "FIXTURE"
+        }
+      ]
+    },
+    {
+      "domain": "promotion-shipping",
+      "name": "once-cheapest",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "shipping_methods",
+            "type": "fixed",
+            "allocation": "once",
+            "value": "5",
+            "max_quantity": 1
+          }
+        },
+        "shipping_methods": [
+          {
+            "id": "b",
+            "subtotal": "20"
+          },
+          {
+            "id": "a",
+            "subtotal": "10"
+          }
+        ]
+      },
+      "expected": [
+        {
+          "action": "addShippingMethodAdjustment",
+          "shipping_method_id": "a",
+          "amount": "5",
+          "code": "FIXTURE"
+        }
+      ]
+    },
+    {
+      "domain": "promotion-shipping",
+      "name": "percentage",
+      "input": {
+        "promotion": {
+          "code": "FIXTURE",
+          "type": "standard",
+          "is_tax_inclusive": false,
+          "application_method": {
+            "target_type": "shipping_methods",
+            "type": "percentage",
+            "allocation": "each",
+            "value": "50"
+          }
+        },
+        "shipping_methods": [
+          {
+            "id": "a",
+            "subtotal": "10"
+          }
+        ]
+      },
+      "expected": [
+        {
+          "action": "addShippingMethodAdjustment",
+          "shipping_method_id": "a",
+          "amount": "5",
+          "code": "FIXTURE"
+        }
+      ]
+    },
+    {
+      "domain": "promotion-rules",
+      "name": "eq-requires-every-value",
+      "input": {
+        "rules": [
+          {
+            "attribute": "items.category",
+            "operator": "eq",
+            "values": [
+              {
+                "value": "a"
+              }
+            ]
+          }
+        ],
+        "context": {
+          "category": [
+            "a",
+            "b"
+          ]
+        },
+        "scope": "items"
+      },
+      "expected": false
+    },
+    {
+      "domain": "promotion-rules",
+      "name": "in-any-value",
+      "input": {
+        "rules": [
+          {
+            "attribute": "items.category",
+            "operator": "in",
+            "values": [
+              {
+                "value": "a"
+              }
+            ]
+          }
+        ],
+        "context": {
+          "category": [
+            "a",
+            "b"
+          ]
+        },
+        "scope": "items"
+      },
+      "expected": true
+    },
+    {
+      "domain": "promotion-rules",
+      "name": "ne-all-excluded",
+      "input": {
+        "rules": [
+          {
+            "attribute": "items.category",
+            "operator": "ne",
+            "values": [
+              {
+                "value": "a"
+              }
+            ]
+          }
+        ],
+        "context": {
+          "category": [
+            "b",
+            "c"
+          ]
+        },
+        "scope": "items"
+      },
+      "expected": true
+    },
+    {
+      "domain": "promotion-rules",
+      "name": "decimal-threshold",
+      "input": {
+        "rules": [
+          {
+            "attribute": "items.category",
+            "operator": "gte",
+            "values": [
+              {
+                "value": "99.95"
+              }
+            ]
+          }
+        ],
+        "context": {
+          "category": "99.95"
+        },
+        "scope": "items"
+      },
+      "expected": true
+    },
+    {
+      "domain": "promotion-rules",
+      "name": "missing-positive-attribute",
+      "input": {
+        "rules": [
+          {
+            "attribute": "items.category",
+            "operator": "eq",
+            "values": [
+              {
+                "value": "a"
+              }
+            ]
+          }
+        ],
+        "context": {},
+        "scope": "items"
+      },
+      "expected": false
+    },
+    {
+      "domain": "tax-selection",
+      "name": "granularity-priority",
+      "input": {
+        "item": {
+          "id": "fixture-item",
+          "product_id": "fixture-product",
+          "product_type_id": "fixture-type"
+        },
+        "rates": [
+          {
+            "id": "country-default",
+            "rate": "25",
+            "tax_region_id": "country",
+            "tax_region": {
+              "id": "country",
+              "province_code": null,
+              "parent_id": null
+            },
+            "is_default": true,
+            "is_combinable": false,
+            "rules": []
+          },
+          {
+            "id": "country-type",
+            "rate": "25",
+            "tax_region_id": "country",
+            "tax_region": {
+              "id": "country",
+              "province_code": null,
+              "parent_id": null
+            },
+            "is_default": false,
+            "is_combinable": false,
+            "rules": [
+              {
+                "reference": "product_type",
+                "reference_id": "fixture-type"
+              }
+            ]
+          },
+          {
+            "id": "country-product",
+            "rate": "25",
+            "tax_region_id": "country",
+            "tax_region": {
+              "id": "country",
+              "province_code": null,
+              "parent_id": null
+            },
+            "is_default": false,
+            "is_combinable": false,
+            "rules": [
+              {
+                "reference": "product",
+                "reference_id": "fixture-product"
+              }
+            ]
+          },
+          {
+            "id": "province-default",
+            "rate": "25",
+            "tax_region_id": "province",
+            "tax_region": {
+              "id": "province",
+              "province_code": "fixture",
+              "parent_id": "country"
+            },
+            "is_default": true,
+            "is_combinable": false,
+            "rules": []
+          },
+          {
+            "id": "province-type",
+            "rate": "25",
+            "tax_region_id": "province",
+            "tax_region": {
+              "id": "province",
+              "province_code": "fixture",
+              "parent_id": "country"
+            },
+            "is_default": false,
+            "is_combinable": false,
+            "rules": [
+              {
+                "reference": "product_type",
+                "reference_id": "fixture-type"
+              }
+            ]
+          },
+          {
+            "id": "province-product",
+            "rate": "25",
+            "tax_region_id": "province",
+            "tax_region": {
+              "id": "province",
+              "province_code": "fixture",
+              "parent_id": "country"
+            },
+            "is_default": false,
+            "is_combinable": false,
+            "rules": [
+              {
+                "reference": "product",
+                "reference_id": "fixture-product"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": [
+        "province-product"
+      ]
+    },
+    {
+      "domain": "tax-selection",
+      "name": "province-default-before-country-product",
+      "input": {
+        "item": {
+          "id": "fixture-item",
+          "product_id": "fixture-product",
+          "product_type_id": "fixture-type"
+        },
+        "rates": [
+          {
+            "id": "country-product",
+            "rate": "25",
+            "tax_region_id": "country",
+            "tax_region": {
+              "id": "country",
+              "province_code": null,
+              "parent_id": null
+            },
+            "is_default": false,
+            "is_combinable": false,
+            "rules": [
+              {
+                "reference": "product",
+                "reference_id": "fixture-product"
+              }
+            ]
+          },
+          {
+            "id": "province-default",
+            "rate": "25",
+            "tax_region_id": "province",
+            "tax_region": {
+              "id": "province",
+              "province_code": "fixture",
+              "parent_id": "country"
+            },
+            "is_default": true,
+            "is_combinable": false,
+            "rules": []
+          }
+        ]
+      },
+      "expected": [
+        "province-default"
+      ]
+    },
+    {
+      "domain": "tax-selection",
+      "name": "combinable-adds-most-specific-parent",
+      "input": {
+        "item": {
+          "id": "fixture-item",
+          "product_id": "fixture-product",
+          "product_type_id": "fixture-type"
+        },
+        "rates": [
+          {
+            "id": "country-default",
+            "rate": "25",
+            "tax_region_id": "country",
+            "tax_region": {
+              "id": "country",
+              "province_code": null,
+              "parent_id": null
+            },
+            "is_default": true,
+            "is_combinable": false,
+            "rules": []
+          },
+          {
+            "id": "country-type",
+            "rate": "25",
+            "tax_region_id": "country",
+            "tax_region": {
+              "id": "country",
+              "province_code": null,
+              "parent_id": null
+            },
+            "is_default": false,
+            "is_combinable": false,
+            "rules": [
+              {
+                "reference": "product_type",
+                "reference_id": "fixture-type"
+              }
+            ]
+          },
+          {
+            "id": "country-product",
+            "rate": "25",
+            "tax_region_id": "country",
+            "tax_region": {
+              "id": "country",
+              "province_code": null,
+              "parent_id": null
+            },
+            "is_default": false,
+            "is_combinable": false,
+            "rules": [
+              {
+                "reference": "product",
+                "reference_id": "fixture-product"
+              }
+            ]
+          },
+          {
+            "id": "province-product",
+            "rate": "25",
+            "tax_region_id": "province",
+            "tax_region": {
+              "id": "province",
+              "province_code": "fixture",
+              "parent_id": "country"
+            },
+            "is_default": false,
+            "is_combinable": true,
+            "rules": [
+              {
+                "reference": "product",
+                "reference_id": "fixture-product"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": [
+        "province-product",
+        "country-product"
+      ]
+    },
+    {
+      "domain": "tax-selection",
+      "name": "missing-parent-does-not-invent-rate",
+      "input": {
+        "item": {
+          "id": "fixture-item",
+          "product_id": "fixture-product",
+          "product_type_id": "fixture-type"
+        },
+        "rates": [
+          {
+            "id": "province-product",
+            "rate": "25",
+            "tax_region_id": "province",
+            "tax_region": {
+              "id": "province",
+              "province_code": "fixture",
+              "parent_id": "country"
+            },
+            "is_default": false,
+            "is_combinable": true,
+            "rules": [
+              {
+                "reference": "product",
+                "reference_id": "fixture-product"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": [
+        "province-product"
+      ]
+    },
+    {
+      "domain": "tax-selection",
+      "name": "no-candidates",
+      "input": {
+        "item": {
+          "id": "fixture-item",
+          "product_id": "fixture-product",
+          "product_type_id": "fixture-type"
+        },
+        "rates": []
+      },
+      "expected": []
+    },
+    {
+      "domain": "tax-selection",
+      "name": "shipping-specific-before-country-default",
+      "input": {
+        "item": {
+          "id": "ship",
+          "shipping_option_id": "fixture-option"
+        },
+        "rates": [
+          {
+            "id": "country-default",
+            "rate": "25",
+            "tax_region_id": "country",
+            "tax_region": {
+              "id": "country",
+              "province_code": null,
+              "parent_id": null
+            },
+            "is_default": true,
+            "is_combinable": false,
+            "rules": []
+          },
+          {
+            "id": "ship-rate",
+            "rate": "25",
+            "tax_region_id": "country",
+            "tax_region": {
+              "id": "country",
+              "province_code": null,
+              "parent_id": null
+            },
+            "is_default": false,
+            "is_combinable": false,
+            "rules": [
+              {
+                "reference": "shipping_option",
+                "reference_id": "fixture-option"
+              }
+            ]
+          }
+        ]
+      },
+      "expected": [
+        "ship-rate"
+      ]
+    },
+    {
+      "domain": "tax-selection",
+      "name": "equal-priority-keeps-input-order",
+      "input": {
+        "item": {
+          "id": "fixture-item",
+          "product_id": "fixture-product",
+          "product_type_id": "fixture-type"
+        },
+        "rates": [
+          {
+            "id": "first",
+            "rate": "25",
+            "tax_region_id": "country",
+            "tax_region": {
+              "id": "country",
+              "province_code": null,
+              "parent_id": null
+            },
+            "is_default": true,
+            "is_combinable": false,
+            "rules": []
+          },
+          {
+            "id": "second",
+            "rate": "25",
+            "tax_region_id": "country",
+            "tax_region": {
+              "id": "country",
+              "province_code": null,
+              "parent_id": null
+            },
+            "is_default": true,
+            "is_combinable": false,
+            "rules": []
+          }
+        ]
+      },
+      "expected": [
+        "first"
+      ]
+    },
+    {
+      "domain": "tax-query",
+      "name": "wrong-region",
+      "input": {
+        "rate": {
+          "id": "foreign",
+          "rate": "25",
+          "tax_region_id": "foreign",
+          "tax_region": {
+            "id": "foreign",
+            "province_code": "fixture",
+            "parent_id": "country"
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        "query": {
+          "$and": [
+            {
+              "tax_region_id": [
+                "country",
+                "province"
+              ]
+            },
+            {
+              "$or": [
+                {
+                  "is_default": true
+                },
+                {
+                  "rules": {
+                    "$or": [
+                      {
+                        "reference": "product",
+                        "reference_id": "fixture-product"
+                      },
+                      {
+                        "reference": "product_type",
+                        "reference_id": "fixture-type"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expected": false
+    },
+    {
+      "domain": "tax-query",
+      "name": "matching-product",
+      "input": {
+        "rate": {
+          "id": "country-product",
+          "rate": "25",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "fixture-product"
+            }
+          ]
+        },
+        "query": {
+          "$and": [
+            {
+              "tax_region_id": [
+                "country",
+                "province"
+              ]
+            },
+            {
+              "$or": [
+                {
+                  "is_default": true
+                },
+                {
+                  "rules": {
+                    "$or": [
+                      {
+                        "reference": "product",
+                        "reference_id": "fixture-product"
+                      },
+                      {
+                        "reference": "product_type",
+                        "reference_id": "fixture-type"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expected": true
+    },
+    {
+      "domain": "tax-query",
+      "name": "different-product",
+      "input": {
+        "rate": {
+          "id": "other-product",
+          "rate": "25",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "other"
+            }
+          ]
+        },
+        "query": {
+          "$and": [
+            {
+              "tax_region_id": [
+                "country",
+                "province"
+              ]
+            },
+            {
+              "$or": [
+                {
+                  "is_default": true
+                },
+                {
+                  "rules": {
+                    "$or": [
+                      {
+                        "reference": "product",
+                        "reference_id": "fixture-product"
+                      },
+                      {
+                        "reference": "product_type",
+                        "reference_id": "fixture-type"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expected": false
+    },
+    {
+      "domain": "shipping-rules",
+      "name": "empty-rules",
+      "input": {
+        "context": {},
+        "rules": [],
+        "normalized_rules": []
+      },
+      "expected": true
+    },
+    {
+      "domain": "shipping-rules",
+      "name": "boolean-normalized",
+      "input": {
+        "context": {
+          "enabled": true
+        },
+        "rules": [
+          {
+            "attribute": "enabled",
+            "operator": "eq",
+            "value": true
+          }
+        ],
+        "normalized_rules": [
+          {
+            "attribute": "enabled",
+            "operator": "eq",
+            "value": "true"
+          }
+        ]
+      },
+      "expected": true
+    },
+    {
+      "domain": "shipping-rules",
+      "name": "nested-country-in",
+      "input": {
+        "context": {
+          "address": {
+            "country_code": "dk"
+          }
+        },
+        "rules": [
+          {
+            "attribute": "address.country_code",
+            "operator": "in",
+            "value": [
+              "dk",
+              "de"
+            ]
+          }
+        ],
+        "normalized_rules": [
+          {
+            "attribute": "address.country_code",
+            "operator": "in",
+            "value": [
+              "dk",
+              "de"
+            ]
+          }
+        ]
+      },
+      "expected": true
+    },
+    {
+      "domain": "shipping-rules",
+      "name": "country-denied",
+      "input": {
+        "context": {
+          "address": {
+            "country_code": "fr"
+          }
+        },
+        "rules": [
+          {
+            "attribute": "address.country_code",
+            "operator": "in",
+            "value": [
+              "dk",
+              "de"
+            ]
+          }
+        ],
+        "normalized_rules": [
+          {
+            "attribute": "address.country_code",
+            "operator": "in",
+            "value": [
+              "dk",
+              "de"
+            ]
+          }
+        ]
+      },
+      "expected": false
+    },
+    {
+      "domain": "shipping-rules",
+      "name": "all-rules-required",
+      "input": {
+        "context": {
+          "enabled": true,
+          "total": "99"
+        },
+        "rules": [
+          {
+            "attribute": "enabled",
+            "operator": "eq",
+            "value": true
+          },
+          {
+            "attribute": "total",
+            "operator": "gte",
+            "value": "100"
+          }
+        ],
+        "normalized_rules": [
+          {
+            "attribute": "enabled",
+            "operator": "eq",
+            "value": "true"
+          },
+          {
+            "attribute": "total",
+            "operator": "gte",
+            "value": "100"
+          }
+        ]
+      },
+      "expected": false
+    },
+    {
+      "domain": "shipping-rules",
+      "name": "decimal-threshold",
+      "input": {
+        "context": {
+          "total": "100.25"
+        },
+        "rules": [
+          {
+            "attribute": "total",
+            "operator": "gte",
+            "value": "100.25"
+          }
+        ],
+        "normalized_rules": [
+          {
+            "attribute": "total",
+            "operator": "gte",
+            "value": "100.25"
+          }
+        ]
+      },
+      "expected": true
+    },
+    {
+      "domain": "shipping-rules",
+      "name": "date-threshold",
+      "input": {
+        "context": {
+          "date": "2026-10-27T00:00:00Z"
+        },
+        "rules": [
+          {
+            "attribute": "date",
+            "operator": "gt",
+            "value": "2026-10-26T00:00:00Z"
+          }
+        ],
+        "normalized_rules": [
+          {
+            "attribute": "date",
+            "operator": "gt",
+            "value": "2026-10-26T00:00:00Z"
+          }
+        ]
+      },
+      "expected": true
+    },
+    {
+      "domain": "shipping-rules",
+      "name": "missing-positive-attribute",
+      "input": {
+        "context": {},
+        "rules": [
+          {
+            "attribute": "enabled",
+            "operator": "eq",
+            "value": true
+          }
+        ],
+        "normalized_rules": [
+          {
+            "attribute": "enabled",
+            "operator": "eq",
+            "value": "true"
+          }
+        ]
+      },
+      "expected": false
+    },
+    {
+      "domain": "shipping-geo-query",
+      "name": "empty-address",
+      "input": {
+        "address": {}
+      },
+      "expected": []
+    },
+    {
+      "domain": "shipping-geo-query",
+      "name": "country-only",
+      "input": {
+        "address": {
+          "country_code": "dk"
+        }
+      },
+      "expected": [
+        {
+          "type": "country",
+          "country_code": "dk"
+        }
+      ]
+    },
+    {
+      "domain": "shipping-geo-query",
+      "name": "country-and-province",
+      "input": {
+        "address": {
+          "country_code": "dk",
+          "province_code": "fixture"
+        }
+      },
+      "expected": [
+        {
+          "type": "province",
+          "country_code": "dk",
+          "province_code": "fixture"
+        },
+        {
+          "type": "country",
+          "country_code": "dk"
+        }
+      ]
+    },
+    {
+      "domain": "shipping-geo-query",
+      "name": "postal-without-province",
+      "input": {
+        "address": {
+          "country_code": "dk",
+          "postal_expression": "1234"
+        }
+      },
+      "expected": [
+        {
+          "type": "zip",
+          "country_code": "dk",
+          "postal_expression": "1234"
+        },
+        {
+          "type": "country",
+          "country_code": "dk"
+        }
+      ]
+    },
+    {
+      "domain": "shipping-geo-query",
+      "name": "city-falls-back-to-country",
+      "input": {
+        "address": {
+          "country_code": "dk",
+          "city": "fixture-city"
+        }
+      },
+      "expected": [
+        {
+          "type": "city",
+          "country_code": "dk",
+          "city": "fixture-city"
+        },
+        {
+          "type": "country",
+          "country_code": "dk"
+        }
+      ]
+    },
+    {
+      "domain": "shipping-rule-validation",
+      "name": "boolean-false-rejected-before-normalization",
+      "input": {
+        "rule": {
+          "attribute": "enabled",
+          "operator": "eq",
+          "value": false
+        }
+      },
+      "expected": "Rule must have an attribute, an operator and a value"
+    },
+    {
+      "domain": "shipping-rule-validation",
+      "name": "numeric-zero-rejected-before-normalization",
+      "input": {
+        "rule": {
+          "attribute": "total",
+          "operator": "gte",
+          "value": 0
+        }
+      },
+      "expected": "Rule must have an attribute, an operator and a value"
+    },
+    {
+      "domain": "shipping-rule-validation",
+      "name": "in-requires-array",
+      "input": {
+        "rule": {
+          "attribute": "country",
+          "operator": "in",
+          "value": "dk"
+        }
+      },
+      "expected": "Rule value must be an array for in/nin operators"
+    }
+  ]
+}

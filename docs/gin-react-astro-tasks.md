@@ -30,6 +30,7 @@
 - [商品契约](migration/catalog-contract.md)、[搜索契约](migration/search-contract.md) 和 [支付基线](migration/payment-contract.md)：固定实际消费、数据关系、兼容链接与草稿缺口；属于 T007 领域草案，整体 API 契约仍待完成。
 - [数据去向与转换](migration/data-mapping.md)：193 张表、1,961 列结构元数据及 27,779 行只读快照计数；逐表有处置类别，逐字段业务映射仍待完善。
 - [购物车与交易计算](migration/checkout-contract.md)：18 组人工精确金额及 10 组库存准备样例已运行并固定；完整促销/税/运费引擎和 Gin 对照仍待验证。
+- [促销/税率/配送](migration/promotion-tax-shipping-contract.md)：另有 46 组规则人工样例及流程核对；记录每件额度默认值、预算提交锁、税率粒度优先级、运费 profile 替换和旧验证边界。
 - [API 通用约定](migration/api-conventions.md) 与 [后台组件承接](migration/admin-ui-contract.md)：明确错误/分页/幂等/会话边界，23 个页面文件与 6 个 widgets 有 Ant Design / ECharts 承接设计；重定向入口继续保留，不冒充独立业务页面。
 
 调用方、剩余领域授权、原生交易与支付插件契约、登录后页面及完整字段映射继续核对。源码盘点、截图成功和元数据清单都不等于业务迁移完成。

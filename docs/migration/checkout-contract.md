@@ -78,7 +78,7 @@ prepareConfirmInventoryInput **只是准备数据**，库存不足仍可能返�
 
 已确认前台查 `/store/shipping-options?cart_id`，计算型 option 另 POST calculate，加入所选 option 后刷新购物车。complete 时需要配送的行必须有 shipping method，且商品 shipping profile 被所选 options 覆盖。DHL shipping-demo 保留演示边界。
 
-还需审查：service zone/国家/邮编规则、flat/calculated 运价、税 provider/优先级与地区继承、promotion 资格/堆叠/预算/usage 和金额分配；样例中的 adjustment 不是已完成促销规则引擎。历史成交税/折扣/运费快照必须原样继承，不以现规则覆盖。
+已继续提取 [促销、税率与配送规则](promotion-tax-shipping-contract.md)，含 46 组人工纯函数样例、flat/calculated 流程和配置/预算边界。还需补 buy-get、完整预算注册与补偿、provider、数据库地理匹配和隔离集成；样例中的 adjustment 不是已完成促销规则引擎。历史成交税/折扣/运费快照必须原样继承，不以现规则覆盖。
 
 ## 新 API 与验收规格（待统一 schemas）
 
