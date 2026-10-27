@@ -43,15 +43,20 @@ def main():
     if tested.returncode or len(markers)!=1:
         (ROOT/'logs/gin-migration/astro-runtime-result.log').write_bytes(tested.stdout+tested.stderr)
         raise RuntimeError('Astro owned runtime check failed; inspect ignored output')
+    browser=subprocess.run([str(node),'tests/selection.browser.mjs'],cwd=APP,env=env,capture_output=True,timeout=90)
+    browser_markers=[line.split('ASTRO_SELECTION_BROWSER ',1)[1] for line in browser.stdout.decode('utf-8').splitlines() if line.startswith('ASTRO_SELECTION_BROWSER ')]
+    if browser.returncode or len(browser_markers)!=1:
+        (ROOT/'logs/gin-migration/astro-selection-browser-result.log').write_bytes(browser.stdout+browser.stderr)
+        raise RuntimeError('Astro isolated selection browser check failed; inspect ignored output')
     audit=subprocess.run([npm,'audit','--json'],cwd=APP,env=env,capture_output=True,timeout=60)
     counts=json.loads(audit.stdout)['metadata']['vulnerabilities']
     if counts.get('total')!=0:raise RuntimeError('New Astro dependencies have unresolved audit advisories')
     files=['retail/scripts/test-storefront-runtime.py']+[str(p.relative_to(ROOT)).replace('\\','/') for p in APP.rglob('*') if p.is_file() and not any(part in ('node_modules','dist','.astro') for part in p.relative_to(APP).parts)]
-    files+=['medusa-store/apps/storefront/src/lib/util/product-variants.ts',
+    files+=['retail/admin/package-lock.json','medusa-store/apps/storefront/src/lib/util/product-variants.ts',
             'medusa-store/apps/storefront/src/app/[countryCode]/(main)/products/[handle]/page.tsx',
             'medusa-store/apps/storefront/src/modules/products/components/product-actions/index.tsx',
             'medusa-store/apps/storefront/src/modules/products/components/image-gallery/index.tsx']
-    report={'format_version':1,'scope':'Astro Node SSR regions foundation and source-level product/price adapter to owned Gin; no business page acceptance','node_version':version,'unit_tests_passed':observed['pass'],'type_check_passed':True,'production_build_passed':True,'runtime':json.loads(markers[0]),'audit_vulnerabilities':counts,'real_application_resources_used':False,'full_storefront_accepted':False,'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
+    report={'format_version':1,'scope':'Astro Node SSR regions foundation, source-level product adapter to owned Gin, and selection browser check in a separate artificial test root; no business page acceptance','node_version':version,'unit_tests_passed':observed['pass'],'type_check_passed':True,'production_build_passed':True,'runtime':json.loads(markers[0]),'selection_browser':json.loads(browser_markers[0]),'audit_vulnerabilities':counts,'real_application_resources_used':False,'full_storefront_accepted':False,'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
     (ROOT/'docs/migration/astro-runtime-report.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'astro_runtime':'passed','unit_tests':observed['pass'],'audit_vulnerabilities':0}))
 

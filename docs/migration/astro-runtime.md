@@ -20,6 +20,8 @@
 
 [运行报告](astro-runtime-report.json) 记录类型/build、16 组单元测试（原底座 3 组、商品/金额 7 组、展示扩展 1 组及选择/深链 5 组）、当前 0 项依赖审计及生产 Node 进程到独占 Gin/MySQL/Redis fixture 的验证。fixture 有 1 个区域/2 个国家；生产 SSR 健康响应与缺少配置时的 503、无会话 cookie、no-store 和未迁移业务页 404 均验证，两个自有 Astro 子进程退出。商品读取额外在源模块层连接同一 Gin，不冒充生产商品页面验证。
 
-执行入口是 `test-admin-live.py`，由它创建并持有独占 Gin/MySQL/Redis，再调用 `test-storefront-runtime.py`；不接受业务库连接。兼容 Node 若不在 PATH，可将 STOREFRONT_TEST_NODE 设置为对应可执行文件；Windows 浏览器沿用 ADMIN_TEST_BROWSER。原 Ant 全量浏览器用例继续执行；外层 finally 清理独占资源。这里的浏览器证据属于后台，新 Astro 业务页面尚无浏览器验收。
+执行入口是 `test-admin-live.py`，由它创建并持有独占 Gin/MySQL/Redis，再调用 `test-storefront-runtime.py`；不接受业务库连接。兼容 Node 若不在 PATH，可将 STOREFRONT_TEST_NODE 设置为对应可执行文件；Windows 浏览器沿用 ADMIN_TEST_BROWSER。原 Ant 全量浏览器用例继续执行；外层 finally 清理独占资源。报告另有 selection_browser：独立测试根目录中的两个真实 React 岛验证配置切换、History、刷新及水合；测试探针不是生产页面，新 Astro 业务页面尚无完整浏览器验收。
 
 2026-10-28 [商品选择及深链组合](astro-product-selection.md)增加纯模块和原 helper 对照，已在源模块层连接独占 Gin；未挂载 Astro 业务页面，不代表 React 岛/History/页面保真验收。
+
+2026-10-28 [React 选择补充](astro-selection-react.md)接入同商品双岛状态、保留 history.state 的 replaceState、popstate、标题与 canonical；独立人工 fixture 浏览器覆盖精确价格和图库同步。生产页面仍仅 health，实际页面布局及交易继续待办。

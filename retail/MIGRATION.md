@@ -111,3 +111,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-28 商品展示补充：[Gin/Astro 明确展示扩展](../docs/migration/store-display.md)承接当前实际颜色、消费规格、来源提示、上市价与变体 slug/示例提示；私有 metadata 不透传，同一只读快照按可见 ID 先检查 64 KiB 单条/4 MiB 合并预算。人工 SQL、独立固定来源和 Astro 11 项用例跟踪；完整编辑、深链/React 选择、实际页面和交易仍待完成，相关任务未整体验收。
 
 2026-10-28 Astro 选择与深链补充：[原配置联动及页面数据组合](../docs/migration/astro-product-selection.md)保留选项顺序/前置约束/稳定评分、slug/v_id 优先级、图库回退及 query/hash；可售按 Gin 冻结/单仓观察处理。请求内国家归属、精确模型 handle 和组合匹配，未知组合不默认、依赖失败不伪装 404。320 组旧纯函数比较及 16 项 Astro 单元、真实源模块集成报告跟踪；实际 DOM/CSS/React 岛/History/加购仍待完成，相关任务未整体验收。
+
+2026-10-28 Astro React 选择补充：[同商品双岛状态与浏览器验证](../docs/migration/astro-selection-react.md)实现 URL/价格/图库同步、保留历史 state/长度、原生前进后退、刷新与无 slug 临时选择。独立测试根目录实际水合，不进入生产页面；16 项既有单元、类型/build、真实 Gin 串联及浏览器报告跟踪。原布局/样式/资源、实际页面挂载、数量/加购与完整交易仍待完成，T025/T026 未整体验收。后台优先 Ant Design，图表统一 ECharts。

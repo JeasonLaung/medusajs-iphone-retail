@@ -1,0 +1,11 @@
+---
+// Separate test root, never a page in the production storefront.
+import SelectionProbe from '../probe.tsx'
+import {product} from '../product.ts'
+const initialLocation = Astro.url.pathname + Astro.url.search
+---
+<html lang="en"><head><meta charset="utf-8" /><title>Selection test fixture</title><link rel="canonical" href={`https://shop.example${Astro.url.pathname}`} /></head><body>
+ <p>Artificial selection test fixture; no commerce or production page.</p>
+ <SelectionProbe product={product} segment="dk-en" initialLocation={initialLocation} kind="actions" client:load />
+ <SelectionProbe product={product} segment="dk-en" initialLocation={initialLocation} kind="gallery" updateMetadata={false} client:load />
+</body></html>

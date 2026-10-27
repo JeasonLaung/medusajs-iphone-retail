@@ -10,7 +10,7 @@
 
 原选择优先级保持：路径 slug（不区分大小写匹配）→ v_id → 初始 ID → 默认。选项值定位要求全部维度和值精确相等。图库与购买默认分别解析：明确定位变体且有变体图时按原变体图片顺序，否则使用模型图片，不因默认购买选择而悄然替换初始模型图；过滤无 URL 的图片。
 
-selectionURL 保留原 slug 或 v_id 更新方式：有 slug 时删掉全部 v_id，使用该 slug 路径；无 slug 时保持当前 pathname 并写入原变体 ID，保留其余重复 query 及 hash。selectionMetadata 提供原切换后的标题及 canonical 路径，仅有 slug 时更新。模块只返回目标数据，尚未调用 history.replaceState、注册 popstate 或修改 document，因此相关实际浏览器行为仍待 React 岛接入验证。
+selectionURL 保留原 slug 或 v_id 更新方式：有 slug 时删掉全部 v_id，使用该 slug 路径；无 slug 时保持当前 pathname 并写入原变体 ID，保留其余重复 query 及 hash。selectionMetadata 提供原切换后的标题及 canonical 路径，仅有 slug 时更新。模块只返回目标数据，尚未调用 history.replaceState、注册 popstate 或修改 document，其浏览器接入现见 [React 岛补充](astro-selection-react.md)，独立测试根目录已验证真实 History/水合；实际业务页面尚未挂载。
 
 ## 服务端页面数据组合
 
@@ -26,4 +26,4 @@ loadProductPage 在本次请求内读取当前区域，按国家语言段取真�
 
 独占真实 Gin/MySQL/Redis 串联额外验证按 dk-zh + fixture-b 的国家/handle 数据组合、未知国家/商品及全不完整变体无默认；这是源模块集成，生产 Astro 构建仍只有 health。完整配置和 slug 的人工行为覆盖不冒充真实浏览器商品页验收。原后台浏览器链路继续回归。
 
-原页面 DOM/CSS/资源/字体、React 岛和 History/后退、cart 数量上限/加购、评论/关联商品、搜索筛选排序和完整交易仍待迁移。Ant Design/ECharts 仍仅是后台选型，不替换前台样式。
+原页面 DOM/CSS/资源/字体、React 岛在实际页面的挂载、cart 数量上限/加购、评论/关联商品、搜索筛选排序和完整交易仍待迁移。Ant Design/ECharts 仍仅是后台选型，不替换前台样式。
