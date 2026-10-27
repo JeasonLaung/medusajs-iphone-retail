@@ -757,6 +757,9 @@ func TestActualCatalogMySQL(t *testing.T) {
 	}
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
+	router.GET("/regions", (cataloghttp.Handler{DB: gdb}).Regions)
+	router.GET("/regions/:id", (cataloghttp.Handler{DB: gdb}).StoreRegion)
+	checkActualRegions(t, ctx, db, router, counts)
 	router.GET("/orders", (orders.Handler{DB: gdb}).List)
 	router.GET("/orders/:id", (orders.Handler{DB: gdb}).Detail)
 	router.GET("/orders/:id/amounts", (orders.Handler{DB: gdb}).Amounts)

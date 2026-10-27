@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import secrets
 import subprocess
+import sys
 import time
 import urllib.request
 import uuid
@@ -125,6 +126,12 @@ def main():
         if tested.returncode or result['stats']['expected'] != 1 or any(result['stats'][k] for k in ['unexpected', 'skipped', 'flaky']):
             (ROOT / 'logs/gin-migration/admin-live-result.json').write_bytes(tested.stdout)
             raise RuntimeError('Live browser checks failed; inspect ignored local result')
+        astro_env=os.environ.copy()
+        astro_env['STOREFRONT_TEST_GIN']=target
+        astro=subprocess.run([sys.executable,str(ROOT/'retail/scripts/test-storefront-runtime.py')],cwd=ROOT,env=astro_env,capture_output=True,timeout=240)
+        if astro.returncode:
+            (ROOT/'logs/gin-migration/astro-owner-result.log').write_bytes(astro.stdout+astro.stderr)
+            raise RuntimeError('Owned Astro-to-Gin checks failed; inspect ignored output')
         files = ['retail/scripts/test-admin-live.py', 'retail/backend/cmd/api/main.go',
                  'retail/backend/internal/identity/browser_fixture_test.go', 'retail/backend/internal/identity/admin.go',
                  'retail/backend/internal/platform/database.go', 'retail/backend/internal/platform/request.go',
@@ -153,7 +160,7 @@ def main():
                   'reviewed_relational_schema_used': True, 'empty_draft_tables_retained_by_migration': 7,
                   'explicit_catalog_read_schema_migration_used': True, 'test_only_schema_rewrite': False,
                   'browser_executable_override_used': bool(os.environ.get('ADMIN_TEST_BROWSER')),
-                  'checked': ['explicit new-account action grants and current permission snapshot; unknown query and anonymous rejection', 'Ant role create and persisted current directory; employee role assignment; Chinese/English role drawer at three widths', 'wrong password then retry', 'real login and reload', 'HttpOnly and SameSite cookies',
+                  'checked': ['public Gin region directory and production Astro SSR health on owned nonempty routing data; no Next/Medusa runtime; missing configuration 503','explicit new-account action grants and current permission snapshot; unknown query and anonymous rejection', 'Ant role create and persisted current directory; employee role assignment; Chinese/English role drawer at three widths', 'wrong password then retry', 'real login and reload', 'HttpOnly and SameSite cookies',
                               'no credentials in browser storage', 'private response cache and request ID',
                               'missing CSRF and foreign Origin rejected', 'logout and old-cookie replay rejected',
                               'explicit product list projection and literal wildcard filtering', 'Ant product table search reload reset and empty state',

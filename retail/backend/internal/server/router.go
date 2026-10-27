@@ -86,6 +86,7 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	public.GET("/product-categories", h.Categories)
 	public.GET("/collections", h.Collections)
 	public.GET("/regions", h.Regions)
+	public.GET("/regions/:id", h.StoreRegion)
 	admin := r.Group("/api/admin")
 	admin.Use(platform.PrivateResponse, platform.GuardOrigin)
 	admin.POST("/auth/challenge", auth.Challenge)

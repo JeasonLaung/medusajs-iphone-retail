@@ -318,3 +318,5 @@
 2026-10-28 权限运行时补充：[0023 持久动作与 Ant 权限入口](migration/authorization-runtime.md)在已有接口落实 9 项精确动作、多角色并集和全要求校验；新账号显式角色/动作/审计同事务初始化，admin 标签不隐含授权，旧账号/grant 不导入。商品和库存写入在业务及幂等前以当前锁读重查，撤权重放拒绝；warehouse/supplier 不进入全店接口。菜单、按钮、直达路由和权限依赖重试使用同一清单；完整角色管理、仓库/供应商范围及其余领域仍缺，T015/T023 未整体验收。
 
 2026-10-28 权限管理补充：[0024 角色及成员授权](migration/authorization-management.md)新增 authorization.read/write 精确动作、全局修订锁和独立 before/after 审计回执。角色新增/修改/停用与员工角色分配统一事务，当前授权先于幂等重放检查，禁止越权授予并保留最后一名有效权限管理员；Ant Table/Drawer/Form/Checkbox/Select 处理只读、并发冲突及原请求不确定重试。仓库/供应商对象范围、账号生命周期、其余领域及 Astro 仍缺，整体迁移继续进行。
+
+2026-10-28 公共区域及 Astro 补充：[Gin 公共区域](migration/store-regions.md)以明确关系 DTO 承接区域详情、国家归属、币种和税设置；独占 SQL 边界及固定来源 1 区域/7 已分配国家核对通过。[独立 Astro SSR](migration/astro-runtime.md)新增生产 Node adapter、React integration、原国家/语言工具和仅连接 Gin 的有界区域读取，类型/build、单元及生产进程串联验证见报告。无旧账号恢复，原前台未改；公开商品/价格/搜索、实际页面/CSS/字体与交互尚缺，T020/T021/T025/T026 未整体验收。

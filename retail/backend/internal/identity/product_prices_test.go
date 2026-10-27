@@ -184,6 +184,7 @@ func TestOwnedProductPrices(t *testing.T) {
 	if err != nil {
 		t.Fatal("guarded price router unavailable")
 	}
+	checkStoreRegions(t, db, guarded)
 	w := httptest.NewRecorder()
 	guarded.ServeHTTP(w, httptest.NewRequest("GET", "https://admin.example/api/admin"+root, nil))
 	if w.Code != 401 {

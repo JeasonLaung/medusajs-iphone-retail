@@ -168,15 +168,3 @@ func (h Handler) Collections(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{"collections": out, "count": len(out)})
 }
-func (h Handler) Regions(c *gin.Context) {
-	var rows []Region
-	if err := h.DB.Where("deleted_at IS NULL").Order("id").Find(&rows).Error; err != nil {
-		platform.DBError(c, err)
-		return
-	}
-	out := []Object{}
-	for _, r := range rows {
-		out = append(out, Decode(r.Payload))
-	}
-	c.JSON(200, gin.H{"regions": out, "count": len(out)})
-}

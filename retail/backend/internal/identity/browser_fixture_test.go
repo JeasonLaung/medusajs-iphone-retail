@@ -90,6 +90,9 @@ func TestPrepareReviewedCatalogFixture(t *testing.T) {
 	defer pool.Close()
 	seedReviewedCatalogFixture(t, db)
 	seedOrderReadFixture(t, db)
+	if db.Exec(`INSERT INTO commerce_regions(id,name,currency_code,automatic_taxes,metadata,created_at,updated_at) VALUES('fixture-region','Europe','eur',TRUE,'{"private":"must-not-escape"}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`).Error != nil || db.Exec(`INSERT INTO commerce_countries(iso_2,iso_3,num_code,name,display_name,region_id,created_at,updated_at) VALUES('dk','DNK','208','DENMARK','Denmark','fixture-region',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('de','DEU','276','GERMANY','Germany','fixture-region',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`).Error != nil {
+		t.Fatal("public routing fixture failed")
+	}
 }
 
 func seedReviewedCatalogFixture(t *testing.T, db *gorm.DB) {

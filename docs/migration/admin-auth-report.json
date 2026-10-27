@@ -1,6 +1,21 @@
 {
   "format_version": 1,
   "scope": "New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance",
+  "store_regions": {
+    "migrations": 24,
+    "anonymous_cookie_independent": true,
+    "explicit_projection": true,
+    "list_detail_equal": true,
+    "soft_deleted_and_unassigned_excluded": true,
+    "empty_arrays": true,
+    "string_country_codes": true,
+    "strict_query": true,
+    "invalid_routing_values_rejected": true,
+    "directory_limits": true,
+    "schema_failure_closed": true,
+    "public_revalidation": true,
+    "read_fingerprint_unchanged": true
+  },
   "counts": {
     "explicit_migrations": 24,
     "login_and_me": 1,
@@ -340,11 +355,11 @@
     "amount_dependency_failures_rejected": true
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "9f5e4f4c5a9b6cd1f6880fd9f72660c0d886ff245f7571caa0f499a7f9b5a546",
+    "retail/scripts/test-admin-auth.py": "b4ea9740f4974aa983764d73d5c04ad4f352c0e3620e035b5ec433fdb511c0c9",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "d4d2eda37a6f7b4afbc0394eba330b0b11aba9a39d6f64ab62e1152a4f5ffd01",
-    "retail/backend/internal/server/router.go": "ffc47261d28c7db52b90555694f87b3c2e3b091b33461fc0c29202483d8dd897",
+    "retail/backend/internal/server/router.go": "5488a02eedcd55ec474b2c9a2461e6f9b87ce99788cd5ca236a736384a64a9d4",
     "retail/backend/internal/platform/http.go": "2d0725f3fa8d60f060b14de792f8d4f1aa8dda38ff8c26b4d8c2af7c137e642a",
     "retail/backend/internal/platform/request.go": "b8abeda445a6ae84c451a6ba9678308973feb5c0627fdc73dccf5de68aec648e",
     "retail/backend/cmd/api/main.go": "94bfed027ab96be185cecbad20b34bff72a86373f62bca195d186d89bd34be6f",
@@ -361,8 +376,8 @@
     "retail/backend/internal/catalog/edit.go": "a1f2b137af7b0533fd55f6b4fbccfa8e55c52d4aba2d69a82df91f280ed60bdb",
     "retail/backend/internal/catalog/edit_test.go": "6ecd4a4a68fc93c78fa223ce7005422dd035a0759a83c2cc84150a77c584c550",
     "retail/backend/internal/identity/product_edit_test.go": "efa48674463ea39bfc58a6f0667b34ce3165a3eaa8d4896d36a94db8710dd66f",
-    "retail/backend/internal/identity/product_prices_test.go": "09150c4a7542ff2eb60be824e1194f27bc24166c264ce403ad9bd3b9735a4209",
-    "retail/backend/internal/identity/browser_fixture_test.go": "a62a7a31d3c7acfaf9fb3cfbaacc2e158e31b84869b1a0fef30c278e16a4ead0",
+    "retail/backend/internal/identity/product_prices_test.go": "6cef92fe182a89bf02aff37a4cdd0749458ecd7fcbc17300af786cb2b663fd28",
+    "retail/backend/internal/identity/browser_fixture_test.go": "057fe0df7c4d38859c0598b13fcbe118cc6ace99e51fdf80f9b6db124a277a3a",
     "retail/backend/internal/catalog/admin_prices.go": "30743325e77c2b53ff91d990663a4a874ca89ee62e3dd8afaecfac9239ac795a",
     "retail/backend/internal/catalog/admin_prices_test.go": "cc11724c0df95e3897726de133929d35f87e8c874dc6aaacef32629ef990c03e",
     "retail/backend/internal/inventory/edit.go": "2d9b6f06a1b139f748d9150deb1b1f82a41942552ea6d9d320b4077a58e4809f",
@@ -446,7 +461,10 @@
     "retail/backend/internal/authorization/manage_http.go": "c51f9db6fbdc1d768063475176f3fd15eabb1ed2d25c92c150e16a92e908d80c",
     "retail/backend/internal/authorization/model.go": "f0f676eb4b6104b22d20943a9b898cd080d26b5ce34a00f8c37645cb3a13c004",
     "retail/backend/internal/identity/authorization_manage_test.go": "6b3b24c023b667405e672560ab9c423051a756babdcfd6bd80608f72e706be8a",
-    "retail/backend/migrations/0024_authorization_management.sql": "48aecb0577eb3274ac4c99af1916e8ea01e777c466a8783ecaec3d697658a9cb"
+    "retail/backend/migrations/0024_authorization_management.sql": "48aecb0577eb3274ac4c99af1916e8ea01e777c466a8783ecaec3d697658a9cb",
+    "retail/backend/internal/catalog/store_regions.go": "6c93beeaf807d3b40330649e6d7ad4202714fd82dd945bf53d65d3fbcb0d36aa",
+    "retail/backend/internal/catalog/http.go": "0f54191835761bc644cfd7b596fe96acd77033864b3d98b1bf0280e260cf49ca",
+    "retail/backend/internal/identity/store_regions_test.go": "6ff606929b1ad4752e3160a2639dc26f6638ccedbddaab705046e605012bb9c4"
   },
   "cleanup": "both owned containers and temporary runner removed"
 }
