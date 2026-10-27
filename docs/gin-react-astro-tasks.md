@@ -217,6 +217,8 @@
 
 ## 执行顺序与“完成”的定义
 
+2026-10-27支付data补充：[provider历史data](migration/payment-data-review.md)提供手动/Mollie专用审查及provider/表/列/行绑定密封；真实42对象往返、16个Mollie精确金额/引用匹配、42次错行拒绝。其他保护JSON、完整行/SQL、远端对账及运行时仍缺，不启用旧支付能力。
+
 2026-10-27支付身份补充：[context投影](migration/payment-context-review.md)显式剥离嵌入旧地址簿/客户付款账号绑定和默认地址标记，保留历史交易账单/联系/provider主体；未知字段和非空metadata拒绝。21个真实context通过临时新信封往返（9个剥离），人工LONGTEXT存储验证通过；全部支付行/其他保护JSON、真实SQL和归属/在途恢复仍缺。
 
 2026-10-27认证材料补充：[旧注册邮件转换](migration/history-mail-conversion.md)为mail_message提供专用入口，清理已知注册验证正文/error/附件载荷并返回永久投递抑制处置，普通Convert/商户入口禁止绕过。真实固定快照2行/8清理字段验证通过；新增SQL处置账本和同事务写入组件，人工MySQL验证重放/回滚/冲突/8路并发，原历史状态不改。真实行导入、worker执行及其他认证内容审查仍缺。

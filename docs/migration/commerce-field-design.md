@@ -40,6 +40,8 @@ payment_session.data/context/metadata、payment.data/metadata、account_holder.d
 
 实现补充：[payment_session.context审查](payment-context-review.md)现显式移除嵌入旧客户地址簿/账号绑定及默认地址标记，保留经核对的历史联系、交易账单地址和provider付款主体；这是“不迁移旧账号”排除规则对JSON嵌入资料的延伸，不能整段原文复制。真实21个context临时信封往返通过（9个含排除资料），人工LONGTEXT持久化验证通过。原始来源证据保留在受限旧快照；目标是投影后的值。其他保护JSON仍hold，未接入完整支付行转换或实际运行。
 
+后续实现：[payment_session/payment.data专用审查](payment-data-review.md)覆盖42个真实对象，手动仅空对象、Mollie逐层允许字段并精确比对行金额/币种/session和metadata引用；临时新信封往返及42次错行拒绝通过。其他保护JSON和完整行入口继续hold；不调用provider，不恢复扣款/退款或生产手动付款。
+
 不迁移旧登录账号不等于删除付款商户account_holder或provider session事实；这些事实仍支撑退款与对账。在途支付切换另有决策与验收，当前既不调用provider，也不恢复旧session向外扣款。导入不能触发通知、退款、发货或旧事件重放。
 
 ## 真实快照差异

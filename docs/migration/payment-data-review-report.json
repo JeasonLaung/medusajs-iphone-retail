@@ -1,0 +1,24 @@
+{
+  "format_version": 1,
+  "scope": "Pinned payment_session/payment data provider shape, exact row amount/currency/session references and ephemeral sealing only; not full row/SQL import, provider reconciliation or new-account ownership",
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "counts": {
+    "payment.manual_empty": 13,
+    "payment.mollie_exact_amount_and_references": 8,
+    "payment.reviewed": 21,
+    "payment_session.manual_empty": 13,
+    "payment_session.mollie_exact_amount_and_references": 8,
+    "payment_session.reviewed": 21,
+    "wrong_row_rejections": 42
+  },
+  "implementation_sha256": {
+    "retail/backend/internal/rowimport/payment_data.go": "f6a7475403b8a31c1cd346eb40f82e8e91297cd1e18361adc0104443432929ff",
+    "retail/backend/internal/rowimport/payment_data_test.go": "89e4c8b6c5ed548788b051445de65698d38989295e639c8878c424b8881aa07b",
+    "retail/backend/internal/rowimport/payment_data_snapshot_test.go": "a2f6ec5f50e8670fddc606e380b3d12e2027b58a778e811679c12a20ba2d65ef",
+    "retail/scripts/audit-payment-data.py": "2591808d2bac75a881c0230f7321b51c103ed52fd036ac3afda99e213201375e"
+  },
+  "source_database_connection": false,
+  "provider_called": false,
+  "target_keys_or_envelopes_persisted": false,
+  "private_values_in_report": false
+}
