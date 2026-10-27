@@ -12,6 +12,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/eurorefurb/retail/internal/importvalue"
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/migrations"
 	"github.com/go-sql-driver/mysql"
@@ -449,6 +450,34 @@ func TestRegistryMySQL(t *testing.T) {
 		}
 		if err := runSecret(registry, "secret-f", "f@fixture.test", "different-token", false, true); err != ErrStorage {
 			t.Fatal("corrupt candidate ignored", err)
+		}
+	})
+	t.Run("strict_import_values_survive_actual_sql_without_coercion", func(t *testing.T) {
+		amount, err := importvalue.Decimal38_18(json.RawMessage(`"99999999999999999999.123456789012345678"`))
+		if err != nil {
+			t.Fatal(err)
+		}
+		instant, err := importvalue.Instant(json.RawMessage(`"2026-10-27T08:00:00.123456+08:00"`))
+		if err != nil {
+			t.Fatal(err)
+		}
+		document := json.RawMessage(` {"n":9007199254740993,"scale":1.2300,"n":2} `)
+		original, err := importvalue.JSONText(document)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, err = db.ExecContext(ctx, "CREATE TABLE strict_import_value_fixture(id INT PRIMARY KEY,amount DECIMAL(38,18) NOT NULL,instant DATETIME(6) NOT NULL,raw_json LONGTEXT CHECK(JSON_VALID(raw_json))) ENGINE=InnoDB"); err != nil {
+			t.Fatal(err)
+		}
+		if _, err = db.ExecContext(ctx, "INSERT INTO strict_import_value_fixture VALUES(1,?,?,?)", amount, instant.Format("2006-01-02 15:04:05.000000"), original); err != nil {
+			t.Fatal(err)
+		}
+		var gotAmount, gotInstant, gotJSON string
+		if err = db.QueryRowContext(ctx, "SELECT CAST(amount AS CHAR),DATE_FORMAT(instant,'%Y-%m-%d %H:%i:%s.%f'),raw_json FROM strict_import_value_fixture WHERE id=1").Scan(&gotAmount, &gotInstant, &gotJSON); err != nil {
+			t.Fatal(err)
+		}
+		if gotAmount != amount || gotInstant != "2026-10-27 00:00:00.123456" || gotJSON != original {
+			t.Fatal("strict importer SQL values changed")
 		}
 	})
 }

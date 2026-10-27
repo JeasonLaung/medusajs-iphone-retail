@@ -8,8 +8,8 @@ import (
 	"encoding/json"
 	"errors"
 	"strconv"
-	"time"
-	"unicode/utf8"
+
+	"github.com/eurorefurb/retail/internal/importvalue"
 )
 
 //go:embed source_plans.json
@@ -53,67 +53,25 @@ func fieldValue(row TargetRow, f sourceField) (*string, error) {
 		return nil, nil
 	}
 	if f.Kind == "bool" {
-		var value bool
-		if json.Unmarshal(raw, &value) != nil {
+		value, err := importvalue.Boolean(raw)
+		if err != nil {
 			return nil, ErrInvalid
 		}
 		text := strconv.FormatBool(value)
 		return &text, nil
 	}
-	var value string
-	// encoding/json replaces invalid UTF-8; reject before decoding.
-	if !utf8.Valid(raw) || !validSurrogates(raw) || json.Unmarshal(raw, &value) != nil {
+	value, err := importvalue.Text(raw, 0)
+	if err != nil {
 		return nil, ErrInvalid
 	}
 	if f.Kind == "time" {
-		parsed, err := time.Parse(time.RFC3339Nano, value)
-		if err != nil || parsed.Nanosecond()%1000 != 0 {
+		if _, err := importvalue.Instant(raw); err != nil {
 			return nil, ErrInvalid
 		}
 	} else if f.Kind != "text" {
 		return nil, ErrInvalid
 	}
 	return &value, nil
-}
-
-// JSON decoding replaces unpaired UTF-16 surrogate escapes with U+FFFD. Reject
-// those inputs instead of collapsing distinct malformed source identities.
-func validSurrogates(raw []byte) bool {
-	for i := 0; i < len(raw); i++ {
-		if raw[i] != '\\' {
-			continue
-		}
-		i++
-		if i >= len(raw) {
-			return false
-		}
-		if raw[i] != 'u' {
-			continue
-		}
-		if i+4 >= len(raw) {
-			return false
-		}
-		code, err := strconv.ParseUint(string(raw[i+1:i+5]), 16, 16)
-		if err != nil {
-			return false
-		}
-		i += 4
-		if code >= 0xDC00 && code <= 0xDFFF {
-			return false
-		}
-		if code < 0xD800 || code > 0xDBFF {
-			continue
-		}
-		if i+6 >= len(raw) || raw[i+1] != '\\' || raw[i+2] != 'u' {
-			return false
-		}
-		low, err := strconv.ParseUint(string(raw[i+3:i+7]), 16, 16)
-		if err != nil || low < 0xDC00 || low > 0xDFFF {
-			return false
-		}
-		i += 6
-	}
-	return true
 }
 
 // SourceChanges builds all registry claims for a mapped target row. Unknown
