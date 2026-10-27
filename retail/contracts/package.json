@@ -1,0 +1,13 @@
+{
+  "name": "@eurorefurb/api-contracts",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Independent Gin API schema verification; no Medusa runtime dependencies",
+  "scripts": {
+    "test": "node verify.cjs"
+  },
+  "devDependencies": {
+    "ajv": "8.17.1",
+    "ajv-formats": "3.0.1"
+  }
+}

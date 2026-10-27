@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eurorefurb:api:common",
+  "title": "Gin shared wire types, designed contract only",
+  "$defs": {
+    "ID": { "type": "string", "minLength": 1, "maxLength": 191, "pattern": "^\\S+$", "not": { "pattern": "[\\s\\u0000-\\u001f\\u007f]" } },
+    "Revision": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$", "not": { "pattern": "\\s" }, "description": "Positive signed BIGINT decimal text. Runtime also rejects values above 9223372036854775807." },
+    "EntityTag": { "type": "string", "pattern": "^\"[1-9][0-9]{0,18}\"$", "not": { "pattern": "\\s" }, "description": "Strong quoted revision. No wildcard or weak tag accepted for writes." },
+    "RequestID": { "type": "string", "minLength": 1, "maxLength": 80, "pattern": "^[A-Za-z0-9_-]+$", "not": { "pattern": "\\s" } },
+    "OperationKey": { "type": "string", "minLength": 16, "maxLength": 128, "pattern": "^[A-Za-z0-9_-]+$", "not": { "pattern": "\\s" } },
+    "CSRFToken": { "type": "string", "minLength": 32, "maxLength": 128, "pattern": "^[A-Za-z0-9_-]+$", "not": { "pattern": "\\s" } },
+    "UTCDateTime": { "type": "string", "format": "date-time", "pattern": "Z$" },
+    "OperationPending": {
+      "type": "object", "additionalProperties": false, "required": ["operation_id", "status", "poll_url", "request_id"],
+      "properties": {
+        "operation_id": { "$ref": "#/$defs/ID" },
+        "status": { "type": "string", "const": "processing" },
+        "poll_url": { "type": "string", "maxLength": 300, "pattern": "^/api/admin/operations/[^/?#\\s]+$" },
+        "request_id": { "$ref": "#/$defs/RequestID" }
+      }
+    },
+    "ErrorField": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "code"],
+      "properties": {
+        "path": { "type": "string", "maxLength": 200 },
+        "code": { "type": "string", "pattern": "^[a-z][a-z0-9_.]*$", "maxLength": 80 }
+      }
+    },
+    "Error": {
+      "type": "object", "additionalProperties": false, "required": ["error"],
+      "properties": {
+        "error": {
+          "type": "object", "additionalProperties": false,
+          "required": ["code", "message", "request_id"],
+          "properties": {
+            "code": { "type": "string", "pattern": "^[a-z][a-z0-9_.]*$", "maxLength": 100 },
+            "message": { "type": "string", "minLength": 1, "maxLength": 500 },
+            "request_id": { "$ref": "#/$defs/RequestID" },
+            "fields": { "type": "array", "maxItems": 200, "items": { "$ref": "#/$defs/ErrorField" } }
+          }
+        }
+      }
+    }
+  }
+}

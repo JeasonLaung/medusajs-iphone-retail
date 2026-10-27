@@ -66,6 +66,15 @@ def build():
     source, source_hash = read_contract('source-manifest.json')
     http, http_hash = read_contract('http-caller-contract.json')
     capability, capability_hash = read_contract('capability-entrypoint-contract.json')
+    supplier, supplier_hash = read_contract('schemas/supplier-account-operations.json')
+    supplier_operations = {operation['id']: operation for operation in supplier['operations']}
+    refinements = {
+        ('GET', '/admin/devices/supplier-accounts'): ['supplierAccounts.list'],
+        ('POST', '/admin/devices/supplier-accounts'): ['supplierAccounts.create', 'supplierAccounts.replaceBinding'],
+    }
+    for ids in refinements.values():
+        if not set(ids).issubset(supplier_operations):
+            raise ValueError('Supplier operation refinement disappeared')
     indexed = {}
     for file, collection, old_path in [
         ('http-caller-contract.json', http['calls'], 'legacy_pattern_normalized'),
@@ -121,6 +130,11 @@ def build():
                            identity=identity, invariant=invariant, design_kind='linked-reviewed-design')
             else:
                 raise ValueError('Custom method has no reviewed migration design: ' + str(key))
+            if key in refinements:
+                row['operation_refinements'] = {
+                    'file': 'schemas/supplier-account-operations.json', 'ids': refinements[key],
+                    'precedence': 'Exact operation contracts refine this coarse path. Legacy POST splits into create and versioned binding replacement; no password-presence dispatch in Gin.',
+                }
             rows.append(row)
     if used_extra != set(EXTRA):
         raise ValueError('Supplemented method disappeared; review before changing coverage')
@@ -131,7 +145,8 @@ def build():
         'format_version': 1,
         'scope': 'All inventoried custom route methods, including native route wrappers; excludes unwrapped native/plugin APIs and is not schema or runtime acceptance',
         'input_sha256': {'source-manifest.json': source_hash, 'http-caller-contract.json': http_hash,
-                         'capability-entrypoint-contract.json': capability_hash},
+                         'capability-entrypoint-contract.json': capability_hash,
+                         'schemas/supplier-account-operations.json': supplier_hash},
         'source_sha256': dict(sorted(hashes.items())), 'methods': rows,
     }
 

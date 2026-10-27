@@ -1,0 +1,84 @@
+{
+  "format_version": 1,
+  "status": "designed-and-wire-schema-checked-not-implemented",
+  "schema": "supplier-accounts.schema.json",
+  "identity": "new-staff-session",
+  "namespace": "staff; never customer identity and never legacy login import",
+  "error_schema": "urn:eurorefurb:api:common#/$defs/Error",
+  "request_header_schemas": {
+    "X-CSRF-Token": "urn:eurorefurb:api:common#/$defs/CSRFToken",
+    "Idempotency-Key": "urn:eurorefurb:api:common#/$defs/OperationKey",
+    "If-Match": "urn:eurorefurb:api:common#/$defs/EntityTag"
+  },
+  "operations": [
+    {
+      "id": "supplierAccounts.list", "method": "GET", "path": "/api/admin/devices/supplier-accounts",
+      "permission": "supplier_account.read", "query_schema": "#/$defs/ListQuery",
+      "response_schema": "#/$defs/ListResponse", "success_status": 200,
+      "scope": "authorized current staff records in supplier mode; source/keyword/enabled filters before count and paging; restricted warehouse/supplier identities denied",
+      "order": "created_at DESC default, staff_id ASC final tie break; exact SQL order allowlist",
+      "cache": "private,no-store"
+    },
+    {
+      "id": "supplierAccounts.retrieve", "method": "GET", "path": "/api/admin/devices/supplier-accounts/{staff_id}",
+      "permission": "supplier_account.read", "response_schema": "#/$defs/DetailResponse", "success_status": 200,
+      "path_parameters": { "staff_id": "urn:eurorefurb:api:common#/$defs/ID" },
+      "response_headers": { "ETag": "urn:eurorefurb:api:common#/$defs/EntityTag" },
+      "scope": "new staff ID and authorized supplier-mode record; no email-based historical lookup; 404 if absent/invisible",
+      "cache": "private,no-store"
+    },
+    {
+      "id": "supplierAccounts.create", "method": "POST", "path": "/api/admin/devices/supplier-accounts",
+      "permission": "supplier_account.create", "body_schema": "#/$defs/CreateRequest",
+      "required_headers": ["Origin", "X-CSRF-Token", "Idempotency-Key"],
+      "response_schema": "#/$defs/DetailResponse", "success_status": 201,
+      "pending_status": 202, "pending_response_schema": "urn:eurorefurb:api:common#/$defs/OperationPending",
+      "pending_headers": ["Location", "Retry-After"],
+      "response_headers": { "ETag": "urn:eurorefurb:api:common#/$defs/EntityTag", "Location": "detail path for created staff ID" },
+      "invariant": "one MySQL transaction for fresh staff/password credential/supplier mode/source/order grants/audit/idempotent result; supplier restrictions before login eligibility; reject duplicate canonical staff email; never reset existing password; source supplier type and every order checked",
+      "secret_handling": "password only in bounded request memory and secure KDF input; never persisted in request JSON/log/audit/error/idempotency result. Canonical body dedupe uses a domain-separated keyed HMAC with versioned protected server key, not unkeyed password SHA. KDF/HMAC execution and rotation remain implementation work.",
+      "cache": "private,no-store"
+    },
+    {
+      "id": "supplierAccounts.replaceBinding", "method": "PUT", "path": "/api/admin/devices/supplier-accounts/{staff_id}/binding",
+      "permission": "supplier_account.bind", "additional_permission": "staff.access.replace if converting non-supplier staff",
+      "body_schema": "#/$defs/BindingRequest", "required_headers": ["Origin", "X-CSRF-Token", "If-Match", "Idempotency-Key"],
+      "path_parameters": { "staff_id": "urn:eurorefurb:api:common#/$defs/ID" },
+      "response_schema": "#/$defs/DetailResponse", "success_status": 200,
+      "pending_status": 202, "pending_response_schema": "urn:eurorefurb:api:common#/$defs/OperationPending",
+      "pending_headers": ["Location", "Retry-After"],
+      "response_headers": { "ETag": "urn:eurorefurb:api:common#/$defs/EntityTag" },
+      "invariant": "path identifies current new-system staff; forbid binding self; validate supplier source and every order, normalize order IDs; lock target and permissions in transaction, compare version, replace rather than add supplier restrictions, increment entity and permission versions, audit, persist operation result. An existing account is required; no identity creation or password change here. Runtime mode invariant denies generic staff/admin grants while supplier mode applies.",
+      "replay": "same operation key and canonical body/precondition returns original result only after current actor/target authorization; dedupe before rejecting the replay's old If-Match; new key with stale version conflicts. Changed body or precondition with same key conflicts.",
+      "cache": "private,no-store"
+    }
+  ],
+  "errors": [
+    {"status":400,"code":"request.invalid","fields":"exact invalid paths; no raw values or passwords"},
+    {"status":400,"code":"supplier_account.source_invalid","fields":"source_id; missing, deleted or not supplier type"},
+    {"status":400,"code":"supplier_account.orders_invalid","fields":"order_ids or authorized individual indexes; do not reveal foreign orders"},
+    {"status":401,"code":"auth.required"},
+    {"status":403,"code":"auth.forbidden"},
+    {"status":403,"code":"auth.csrf_invalid"},
+    {"status":403,"code":"supplier_account.self_binding_denied"},
+    {"status":404,"code":"supplier_account.not_found"},
+    {"status":409,"code":"supplier_account.email_exists","fields":"email; only authorized manager can receive duplicate staff information"},
+    {"status":409,"code":"resource.version_conflict"},
+    {"status":409,"code":"operation.key_conflict"},
+    {"status":428,"code":"request.precondition_required","fields":"If-Match required for binding replacement"},
+    {"status":429,"code":"request.rate_limited"},
+    {"status":503,"code":"dependency.unavailable"},
+    {"status":500,"code":"internal.error"}
+  ],
+  "normalization_and_parsing": [
+    "HTTP JSON rejects duplicate keys, invalid UTF-8, extra documents and unknown fields; schema does not enforce raw-byte parsing",
+    "Email UI trims prior to submit; server accepts only bounded ASCII email without whitespace. Preserve display case, use separate ASCII-lower canonical email unique within new staff identity namespace; same customer email remains independent, no historical ownership matching",
+    "Passwords stay byte-exact UTF-8; length in Unicode code points 12..128, no trim/casefold/truncation. Old bcrypt max72 draft cannot satisfy this contract",
+    "IDs preserve exact case; no whitespace or scalar-to-string coercion; validate actual source/order existence and permission under locks",
+    "Order ID duplicates normalize to unique binary-sorted IDs before authorization/hash/storage; [] no order grants",
+    "GET query decoder accepts one occurrence per known key, canonical nonnegative decimal limit/offset strings and true/false booleans; parse to typed ListQuery without JS floating-point coercion. Defaults applied explicitly. Reject unknown/repeated keys, signs, decimals and scientific notation",
+    "Positive revisions are text and strong quoted ETags; also bound to signed BIGINT <=9223372036854775807 at runtime. No weak/wildcard If-Match; absent 428, malformed 400, mismatched 409",
+    "Response exposes no password/hash/auth_identity/session/raw metadata; operation replay uses same projection and current authorization"
+  ],
+  "remaining": ["Gin handlers and raw HTTP decoder", "full staff selector and permissions contracts", "KDF and protected HMAC key implementation", "MySQL unique/transaction/concurrency proof", "Redis session revocation and permission checks", "Ant Design UI and full workflow verification"]
+}

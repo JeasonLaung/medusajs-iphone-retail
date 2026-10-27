@@ -1,0 +1,33 @@
+{
+  "format_version": 1,
+  "scope": "Artificial new wire-shape expectations. IDs and passwords are synthetic. No authorization, source existence, SQL concurrency, HTTP parsing or handler execution.",
+  "cases": [
+    {"name":"create-minimal", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/CreateRequest", "input":{"email":"supplier@example.invalid","password":"fixture-only-password","source_id":"source-fixture","order_ids":[]},"accepted":true},
+    {"name":"create-password-required", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/CreateRequest", "input":{"email":"supplier@example.invalid","source_id":"source-fixture","order_ids":[]},"accepted":false},
+    {"name":"create-empty-password-rejected", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/CreateRequest", "input":{"email":"supplier@example.invalid","password":"","source_id":"source-fixture","order_ids":[]},"accepted":false},
+    {"name":"create-extra-role-rejected", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/CreateRequest", "input":{"email":"supplier@example.invalid","password":"fixture-only-password","source_id":"source-fixture","order_ids":[],"role":"admin"},"accepted":false},
+    {"name":"create-email-whitespace-rejected", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/CreateRequest", "input":{"email":" supplier@example.invalid ","password":"fixture-only-password","source_id":"source-fixture","order_ids":[]},"accepted":false},
+    {"name":"create-source-whitespace-rejected", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/CreateRequest", "input":{"email":"supplier@example.invalid","password":"fixture-only-password","source_id":" source-fixture ","order_ids":[]},"accepted":false},
+    {"name":"create-duplicate-order-input-accepted-for-normalization", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/CreateRequest", "input":{"email":"supplier@example.invalid","password":"fixture-only-password","source_id":"source-fixture","order_ids":["o","o"]},"accepted":true},
+    {"name":"binding-explicit-supplier-mode", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/BindingRequest", "input":{"source_id":"source-fixture","order_ids":[],"access_mode":"supplier"},"accepted":true},
+    {"name":"binding-does-not-create-password", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/BindingRequest", "input":{"source_id":"source-fixture","order_ids":[],"access_mode":"supplier","password":"fixture-only-password"},"accepted":false},
+    {"name":"binding-email-not-target-selector", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/BindingRequest", "input":{"source_id":"source-fixture","order_ids":[],"access_mode":"supplier","email":"supplier@example.invalid"},"accepted":false},
+    {"name":"binding-admin-mode-rejected", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/BindingRequest", "input":{"source_id":"source-fixture","order_ids":[],"access_mode":"admin"},"accepted":false},
+    {"name":"binding-empty-order-array-not-null", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/BindingRequest", "input":{"source_id":"source-fixture","order_ids":null,"access_mode":"supplier"},"accepted":false},
+    {"name":"list-defaults-are-explicit-handler-work", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/ListQuery", "input":{},"accepted":true},
+    {"name":"list-parsed-query", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/ListQuery", "input":{"limit":100,"offset":0,"enabled":true,"order":"email"},"accepted":true},
+    {"name":"list-string-limit-not-coerced-by-schema", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/ListQuery", "input":{"limit":"20"},"accepted":false},
+    {"name":"list-excess-limit", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/ListQuery", "input":{"limit":101},"accepted":false},
+    {"name":"list-negative-offset", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/ListQuery", "input":{"offset":-1},"accepted":false},
+    {"name":"list-unknown-sort", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/ListQuery", "input":{"order":"password_hash"},"accepted":false},
+    {"name":"list-unknown-filter", "schema":"urn:eurorefurb:api:supplier-accounts#/$defs/ListQuery", "input":{"fields":"*"},"accepted":false},
+    {"name":"revision-numeric-text", "schema":"urn:eurorefurb:api:common#/$defs/Revision", "input":"9007199254740993","accepted":true},
+    {"name":"revision-number-rejected", "schema":"urn:eurorefurb:api:common#/$defs/Revision", "input":1,"accepted":false},
+    {"name":"revision-leading-zero-rejected", "schema":"urn:eurorefurb:api:common#/$defs/Revision", "input":"01","accepted":false},
+    {"name":"etag-strong-quoted", "schema":"urn:eurorefurb:api:common#/$defs/EntityTag", "input":"\"1\"","accepted":true},
+    {"name":"etag-weak-rejected", "schema":"urn:eurorefurb:api:common#/$defs/EntityTag", "input":"W/\"1\"","accepted":false},
+    {"name":"etag-wildcard-rejected", "schema":"urn:eurorefurb:api:common#/$defs/EntityTag", "input":"*","accepted":false},
+    {"name":"error-envelope", "schema":"urn:eurorefurb:api:common#/$defs/Error", "input":{"error":{"code":"supplier_account.source_invalid","message":"Select a supplier source.","request_id":"req_fixture","fields":[{"path":"source_id","code":"invalid_source"}]}},"accepted":true},
+    {"name":"error-debug-payload-rejected", "schema":"urn:eurorefurb:api:common#/$defs/Error", "input":{"error":{"code":"internal.error","message":"Try again.","request_id":"req_fixture","sql":"secret"}},"accepted":false}
+  ]
+}

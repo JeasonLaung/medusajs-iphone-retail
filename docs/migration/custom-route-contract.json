@@ -4,7 +4,8 @@
   "input_sha256": {
     "source-manifest.json": "9ca7caa5e96bf42a03733897dc2841a94997a9d9a001cb931f6f68553dfaea0c",
     "http-caller-contract.json": "21de2bdc7cd71828577a593629d536f5cb7f740477c5e7cc9e01268213c19534",
-    "capability-entrypoint-contract.json": "2ed377fa28abb2d3cdff54a0b741ea49c345bb3f9ad5e93d475037cc641b60da"
+    "capability-entrypoint-contract.json": "2ed377fa28abb2d3cdff54a0b741ea49c345bb3f9ad5e93d475037cc641b60da",
+    "schemas/supplier-account-operations.json": "c2e3e0c090988bcce3f39ba0fbc76819b93ac1f589d03b2b608a1ae810725b24"
   },
   "source_sha256": {
     "medusa-store/apps/backend/src/admin/components/buyback-applications.tsx": "b531b598f8022c8b4e3811527f484351ec51f0961d444a011a4b5f7ff1d966aa",
@@ -690,7 +691,14 @@
       "task": "T040",
       "identity": "staff-device-action-and-scope",
       "invariant": "22 commands require per-action warehouse/source/order and every-member checks; cost redaction; supplier_assign remains explicit rejection, no silent replacement behavior",
-      "design_kind": "linked-reviewed-design"
+      "design_kind": "linked-reviewed-design",
+      "operation_refinements": {
+        "file": "schemas/supplier-account-operations.json",
+        "ids": [
+          "supplierAccounts.list"
+        ],
+        "precedence": "Exact operation contracts refine this coarse path. Legacy POST splits into create and versioned binding replacement; no password-presence dispatch in Gin."
+      }
     },
     {
       "legacy_method": "POST",
@@ -712,7 +720,15 @@
       "task": "T040",
       "identity": "staff-device-action-and-scope",
       "invariant": "22 commands require per-action warehouse/source/order and every-member checks; cost redaction; supplier_assign remains explicit rejection, no silent replacement behavior",
-      "design_kind": "linked-reviewed-design"
+      "design_kind": "linked-reviewed-design",
+      "operation_refinements": {
+        "file": "schemas/supplier-account-operations.json",
+        "ids": [
+          "supplierAccounts.create",
+          "supplierAccounts.replaceBinding"
+        ],
+        "precedence": "Exact operation contracts refine this coarse path. Legacy POST splits into create and versioned binding replacement; no password-presence dispatch in Gin."
+      }
     },
     {
       "legacy_method": "GET",
