@@ -1,32 +1,13 @@
+// The v1 draft cannot preserve source NULLs or complete business facts.
+// Fail before opening a file, loading dotenv or connecting to any database.
 package main
 
 import (
-	"encoding/json"
-	"flag"
-	"log"
+	"fmt"
 	"os"
-
-	"github.com/eurorefurb/retail/internal/importer"
-	"github.com/eurorefurb/retail/internal/platform"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	bundle := flag.String("bundle", "", "path to a private source snapshot")
-	flag.Parse()
-	if *bundle == "" {
-		log.Fatal("--bundle is required")
-	}
-	_ = godotenv.Load()
-	db, err := platform.Open()
-	if err != nil {
-		log.Fatal(err)
-	}
-	pool, _ := db.DB()
-	defer pool.Close()
-	counts, err := importer.ImportCatalog(db, *bundle)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_ = json.NewEncoder(os.Stdout).Encode(counts)
+	fmt.Fprintln(os.Stderr, "Legacy v1 import disabled. Use cmd/check-snapshot for v2 read-only diagnostics; the complete v2 write coordinator is not available yet.")
+	os.Exit(1)
 }

@@ -1,0 +1,42 @@
+{
+  "format_version": 1,
+  "scope": "Offline diagnostic CLI and disabled v1 write entry only; not complete migration acceptance",
+  "snapshot_sha256": "b58a26812eeea8e75c6bd3e4ec4635b6260d8e704bc9a63fd095f0e7d9f13985",
+  "counts": {
+    "tables": 159,
+    "rows": 27140,
+    "fields": 220235,
+    "sql_null_fields": 73405,
+    "ordinary_convertible_rows": 27090,
+    "protected_rows": 48,
+    "history_policy_rows": 45,
+    "invalid_rows": 0
+  },
+  "unresolved_references": 375,
+  "diagnostic_exit_code": 2,
+  "invalid_input_exit_code": 1,
+  "retired_writer_exit_code": 1,
+  "writes_enabled": false,
+  "complete_import_accepted": false,
+  "private_values_in_report": false,
+  "source_database_connection": false,
+  "target_database_connection": false,
+  "implementation_sha256": {
+    "retail/scripts/audit-v2-preflight.py": "0acdbb2325cf92687dcec9ac96d8b9dad37ec35b47eae8772ce1d55de972648f",
+    "retail/backend/cmd/check-snapshot/main.go": "a4378888423664c12056d9e1aee1483627297fbef4a7370967bd38d7733fe10f",
+    "retail/backend/cmd/check-snapshot/main_test.go": "c546eaef1c794b5bf99371faace06e48e07e406b8c2f6f839769412994b094df",
+    "retail/backend/cmd/import-medusa/main.go": "2c39c1495875ff0f3f71ff295fc0a15232d3df2a02015e8d1e7e3edfe8d02929",
+    "retail/backend/internal/importer/catalog.go": "0e198cf31c30cf7b42ba3aeb30d7e69d53201499c0727039ec0d9f1ecc9bd891",
+    "retail/backend/internal/snapshotcheck/check.go": "1753369447e9156f3557f021fbdfbdbe2ba1f42b2a495e5cd8d0c8cb3d884890",
+    "retail/backend/internal/snapshotcheck/check_test.go": "3402e66bb903cea00b60015f756893b48e81aac998ada2d0aec5bff1c77c390d",
+    "retail/backend/internal/rowimport/inspect.go": "f295d6312bb852da0ba25fdbd6cac6a4cf42c7cd482ae79a1771122f91c2d63a",
+    "retail/backend/internal/rowimport/convert.go": "bd96b9020318079476ac9172d38cb13fd162da4e29d065cb1f64977b4d4ba182",
+    "retail/backend/internal/rowimport/stream.go": "3c650e235ee516443b53b639efa67645b17a755691bd0e342df7f64ddf65a946",
+    "retail/backend/internal/rowimport/record.go": "9da4ad1becb6c0ab0c20d147c1a71fb6a1fa44f317fca6cee7c4b0f2aa6c3cc8",
+    "retail/backend/internal/rowimport/relationships.go": "0ede1ef7c9a558a3df815fdbec4e25948237a14c1a2f74d4f04d237e1461c755",
+    "retail/backend/internal/rowimport/field_plans.json": "d3bff5f26b890e19f7424888430a638d4e45f6b46766e3643913e6eb670c5b77",
+    "retail/backend/internal/rowimport/number_pair.go": "0612f273dac1fa2ee35a8ddc687bc25ba5286f2079e4176f15f65a286673b91f",
+    "retail/backend/internal/rowimport/source_check.go": "3b57f147055ed362d823d648159fcb18704fd741955f751f25fae94062d7d48e"
+  },
+  "temporary_executables_removed": true
+}
