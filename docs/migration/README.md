@@ -123,3 +123,5 @@ Python 需 3.9+；命令中的 python 替换为本机已安装运行时路径。
 这些待办明确保留，不把未知能力当作未使用删除。后续按领域补齐后再实现及验收。
 
 商品基础信息编辑、冲突/重放及事务审计见[Ant/Gin商品编辑](admin-product-edit.md)。
+
+变体价格配置查询与精确金额展示见[Ant/Gin价格抽屉](admin-variant-prices.md)。

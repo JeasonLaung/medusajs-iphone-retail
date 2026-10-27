@@ -26,6 +26,7 @@ html, body, #root { min-width: 320px; min-height: 100%; margin: 0; }
 .product-detail .ant-space-item { max-width: 100%; }
 .product-description { white-space: pre-wrap; overflow-wrap: anywhere; }
 .identifier { overflow-wrap: anywhere; }
+.price-rule-value { white-space: pre-wrap; overflow-wrap: anywhere; }
 .unavailable-image { display: flex; align-items: center; justify-content: center; background: var(--canvas); }
 .mobile-nav { display: none; }
 .ant-descriptions-item-content { overflow-wrap: anywhere; }

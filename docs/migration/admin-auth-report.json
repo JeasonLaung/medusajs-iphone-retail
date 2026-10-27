@@ -56,12 +56,27 @@
     "disabled_command_rejected": true,
     "unrelated_fields_preserved": true
   },
+  "product_configured_prices": {
+    "migrations": 11,
+    "configured_prices": 26,
+    "page_size": 20,
+    "exact_decimal": true,
+    "shared_sets": true,
+    "soft_delete_filters": true,
+    "future_and_draft_lists_retained": true,
+    "unavailable_list_reference_retained": true,
+    "unknown_rule_retained": true,
+    "cross_product_rejected": true,
+    "anonymous_rejected": true,
+    "rule_limit_503": true,
+    "read_fingerprint_unchanged": true
+  },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "6050d5c394ae1acfa5181c0f85cb0b387b6ba869e4a16669945b5ea0f9b2fee1",
+    "retail/scripts/test-admin-auth.py": "f3b1233dfdc99efe905fe68f485c3cc2be46d88103fe4647dbb9ed6f00a6ab7b",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "643b54c04df8a5cb2958e899f59ff1be89ef8599595d6df07ef189781d599dfa",
-    "retail/backend/internal/server/router.go": "ce01ef933096f08439708e112ffde4a1ba362d0d6bc4c0cdb9db938b7c60cc75",
+    "retail/backend/internal/server/router.go": "f165ef5829e0b7660c3fb57dbdebe74e92926c2e8b16af7899e0977104dd61f5",
     "retail/backend/internal/platform/http.go": "2d0725f3fa8d60f060b14de792f8d4f1aa8dda38ff8c26b4d8c2af7c137e642a",
     "retail/backend/internal/platform/request.go": "b8abeda445a6ae84c451a6ba9678308973feb5c0627fdc73dccf5de68aec648e",
     "retail/backend/cmd/api/main.go": "3dbb4b166159b1acb9965e6881c3179d350937891f4fddf47f11abd749aae0f1",
@@ -77,7 +92,11 @@
     "retail/backend/migrations/0011_catalog_product_edits.sql": "8006785acf8a5bf6293d8eb6bd6903e18de80bf31c4be46e61a185307a8d102b",
     "retail/backend/internal/catalog/edit.go": "7d2681bd72433d43e6ae51a0f50d38be4cf95b115b1a362696af28c1175a0621",
     "retail/backend/internal/catalog/edit_test.go": "6ecd4a4a68fc93c78fa223ce7005422dd035a0759a83c2cc84150a77c584c550",
-    "retail/backend/internal/identity/product_edit_test.go": "d8d45f44886a458e1351837bd2a621cd2f0f9dd4b07ad8d4743538713b80b2a3"
+    "retail/backend/internal/identity/product_edit_test.go": "d8d45f44886a458e1351837bd2a621cd2f0f9dd4b07ad8d4743538713b80b2a3",
+    "retail/backend/internal/identity/product_prices_test.go": "e5686e15c619f5c4d711ef125b6063e6a73ca71bd63f9e93b9e396a46a8a9e09",
+    "retail/backend/internal/identity/browser_fixture_test.go": "08bf83be1b0dd942b04d143e1e0a3970b9eba131dcac0e38f80e4bb09f73254a",
+    "retail/backend/internal/catalog/admin_prices.go": "30743325e77c2b53ff91d990663a4a874ca89ee62e3dd8afaecfac9239ac795a",
+    "retail/backend/internal/catalog/admin_prices_test.go": "cc11724c0df95e3897726de133929d35f87e8c874dc6aaacef32629ef990c03e"
   },
   "cleanup": "both owned containers and temporary runner removed"
 }

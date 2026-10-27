@@ -62,6 +62,27 @@ export async function editProduct(id:string,body:ProductEdit):Promise<void> {
 }
 export type VariantDetail = {id:string;product_id:string;title:string;sku:string|null;thumbnail:string|null;variant_rank:number|null;manage_inventory:boolean;allow_backorder:boolean;options:{id:string;option_id:string;value:string}[];unassigned_option_value_ids:string[];configuration_complete:boolean;images:ProductImage[]}
 export type VariantList = {variants:VariantDetail[];count:number;limit:number;offset:number}
+export type PriceRule={id:string;attribute:string;operator:string;value:string;priority:number}
+export type PriceListRule={id:string;attribute:string;value:string|null}
+export type PriceList={id:string;title:string;status:'active'|'draft';type:'sale'|'override';starts_at:string|null;ends_at:string|null;rules_count:number|null;rules:PriceListRule[]}
+export type ConfiguredPrice={id:string;price_set_id:string;currency_code:string;amount:string;min_quantity:string|null;max_quantity:string|null;rules_count:number|null;price_list_id:string|null;price_list:PriceList|null;rules:PriceRule[]}
+export type VariantPrices={product_id:string;variant_id:string;price_set_ids:string[];prices:ConfiguredPrice[];count:number;limit:number;offset:number}
+const decimalText=(value:unknown):value is string=>typeof value==='string'&&/^-?(?:0|[1-9]\d{0,19})(?:\.\d{1,18})?$/.test(value)
+const nullableDecimal=(value:unknown)=>value===null||decimalText(value)
+const nullableCount=(value:unknown)=>value===null||(typeof value==='number'&&Number.isSafeInteger(value)&&value>=0)
+const nullableTime=(value:unknown)=>value===null||(typeof value==='string'&&Number.isFinite(Date.parse(value)))
+export async function variantPrices(productID:string,variantID:string,limit:number,offset:number,signal:AbortSignal):Promise<VariantPrices>{
+  const d=await request<VariantPrices>(`products/${encodeURIComponent(productID)}/variants/${encodeURIComponent(variantID)}/prices?limit=${limit}&offset=${offset}`,{signal},'/api/admin/')
+  if(!d||d.product_id!==productID||d.variant_id!==variantID||d.limit!==limit||d.offset!==offset||!Number.isSafeInteger(d.count)||d.count<0||!Array.isArray(d.price_set_ids)||d.price_set_ids.length>1000||!d.price_set_ids.every(s=>typeof s==='string')||new Set(d.price_set_ids).size!==d.price_set_ids.length||!Array.isArray(d.prices)||d.prices.length>limit)throw new APIError(0,'request.invalid_response')
+  const sets=new Set(d.price_set_ids)
+  const prices=d.prices.map(p=>{
+    if(!p||typeof p.id!=='string'||!sets.has(p.price_set_id)||typeof p.currency_code!=='string'||!decimalText(p.amount)||!nullableDecimal(p.min_quantity)||!nullableDecimal(p.max_quantity)||!nullableCount(p.rules_count)||!nullableText(p.price_list_id)||!Array.isArray(p.rules)||p.rules.length>10000||!p.rules.every(r=>r&&typeof r.id==='string'&&typeof r.attribute==='string'&&['gte','lte','gt','lt','eq'].includes(r.operator)&&typeof r.value==='string'&&Number.isSafeInteger(r.priority)))throw new APIError(0,'request.invalid_response')
+    const l=p.price_list
+    if(l!==null&&(!l||l.id!==p.price_list_id||typeof l.title!=='string'||!['active','draft'].includes(l.status)||!['sale','override'].includes(l.type)||!nullableTime(l.starts_at)||!nullableTime(l.ends_at)||!nullableCount(l.rules_count)||!Array.isArray(l.rules)||l.rules.length>10000||!l.rules.every(r=>r&&typeof r.id==='string'&&typeof r.attribute==='string'&&nullableText(r.value))))throw new APIError(0,'request.invalid_response')
+    return {id:p.id,price_set_id:p.price_set_id,currency_code:p.currency_code,amount:p.amount,min_quantity:p.min_quantity,max_quantity:p.max_quantity,rules_count:p.rules_count,price_list_id:p.price_list_id,rules:p.rules.map(({id,attribute,operator,value,priority})=>({id,attribute,operator,value,priority})),price_list:l===null?null:{id:l.id,title:l.title,status:l.status,type:l.type,starts_at:l.starts_at,ends_at:l.ends_at,rules_count:l.rules_count,rules:l.rules.map(({id,attribute,value})=>({id,attribute,value}))}}
+  })
+  return {product_id:d.product_id,variant_id:d.variant_id,price_set_ids:[...d.price_set_ids],prices,count:d.count,limit:d.limit,offset:d.offset}
+}
 const nullableText=(value:unknown)=>value===null||typeof value==='string'
 const imagesValid=(images:ProductImage[])=>Array.isArray(images)&&images.every(i=>i&&typeof i.id==='string'&&typeof i.url==='string'&&Number.isSafeInteger(i.rank))
 const projectImages=(images:ProductImage[])=>images.map(({id,url,rank})=>({id,url,rank}))

@@ -2,6 +2,7 @@ package identity_test
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"testing"
 	"time"
@@ -83,6 +84,11 @@ func TestPrepareReviewedCatalogFixture(t *testing.T) {
 		t.Fatal("reviewed fixture pool unavailable")
 	}
 	defer pool.Close()
+	seedReviewedCatalogFixture(t, db)
+}
+
+func seedReviewedCatalogFixture(t *testing.T, db *gorm.DB) {
+	t.Helper()
 	statements := []string{
 		`INSERT INTO catalog_products(id,title,handle,is_giftcard,status,discountable,created_at,updated_at,metadata) VALUES
    ('fixture-a','Phone 50%_!','fixture-a',0,'draft',1,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),'{"private":"must-not-escape"}'),
@@ -108,6 +114,21 @@ func TestPrepareReviewedCatalogFixture(t *testing.T) {
    ('fixture-removed-image','/removed.svg',1,'fixture-a',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
 		`UPDATE catalog_images SET deleted_at=UTC_TIMESTAMP(6) WHERE id='fixture-removed-image'`,
 		`INSERT INTO catalog_variant_images(id,variant_id,image_id,created_at,updated_at) VALUES ('fixture-image-link','fixture-v','fixture-image',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO pricing_price_sets(id,created_at,updated_at) VALUES ('fixture-set',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-set-unlinked',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-set-deleted',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`UPDATE pricing_price_sets SET deleted_at=UTC_TIMESTAMP(6) WHERE id='fixture-set-deleted'`,
+		`INSERT INTO catalog_variant_price_sets(variant_id,price_set_id,id,created_at,updated_at) VALUES ('fixture-v','fixture-set','fixture-price-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-incomplete','fixture-set','fixture-shared-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-v','fixture-set-unlinked','fixture-deleted-price-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-v','fixture-set-deleted','fixture-deleted-set-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`UPDATE catalog_variant_price_sets SET deleted_at=UTC_TIMESTAMP(6) WHERE id='fixture-deleted-price-link'`,
+		`INSERT INTO pricing_price_lists(id,status,title,description,type,rules_count,starts_at,ends_at,created_at,updated_at,metadata) VALUES ('fixture-list','active','Future sale','Artificial','sale',1,'2030-01-01','2030-02-01',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),'{"private":"list-secret"}'),('fixture-list-draft','draft','Draft offer','Artificial','override',0,NULL,NULL,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),NULL),('fixture-list-deleted','active','Deleted offer','Artificial','sale',0,NULL,NULL,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),NULL)`,
+		`UPDATE pricing_price_lists SET deleted_at=UTC_TIMESTAMP(6) WHERE id='fixture-list-deleted'`,
+		`INSERT INTO pricing_prices(id,price_set_id,currency_code,amount,raw_amount,rules_count,min_quantity,max_quantity,price_list_id,created_at,updated_at) VALUES ('fixture-price-00','fixture-set','eur',12345678901234567890.123456789012345678,'{"value":"must-not-escape-raw"}',2,1,10,'fixture-list',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-price-01','fixture-set','eur',0,'{}',0,NULL,NULL,NULL,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-price-02','fixture-set','eur',9,'{}',0,1.5,2.5,'fixture-list-draft',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-price-03','fixture-set','eur',17,'{}',0,NULL,NULL,'fixture-list-deleted',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-price-usd','fixture-set','usd',123.45,'{}',0,NULL,NULL,NULL,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-price-deleted','fixture-set','eur',999,'{}',0,NULL,NULL,NULL,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-price-unlinked','fixture-set-unlinked','eur',888,'{}',0,NULL,NULL,NULL,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-price-deleted-set','fixture-set-deleted','eur',777,'{}',0,NULL,NULL,NULL,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`UPDATE pricing_prices SET deleted_at=UTC_TIMESTAMP(6) WHERE id='fixture-price-deleted'`,
+		`INSERT INTO pricing_price_rules(id,price_id,attribute,operator,value,priority,created_at,updated_at) VALUES ('fixture-rule','fixture-price-00','region_id','eq','region-fixture',10,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-rule-unknown','fixture-price-00','custom_condition','eq','0000123456789012345',0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-rule-deleted','fixture-price-00','hidden','eq','must-not-escape-rule',20,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`UPDATE pricing_price_rules SET deleted_at=UTC_TIMESTAMP(6) WHERE id='fixture-rule-deleted'`,
+		`INSERT INTO pricing_price_list_rules(id,price_list_id,attribute,value,created_at,updated_at) VALUES ('fixture-list-rule','fixture-list','customer.groups','["0000123456789012345"]',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-list-rule-deleted','fixture-list','hidden','"must-not-escape-list-rule"',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`UPDATE pricing_price_list_rules SET deleted_at=UTC_TIMESTAMP(6) WHERE id='fixture-list-rule-deleted'`,
+	}
+	for i := 4; i < 25; i++ {
+		statements = append(statements, fmt.Sprintf("INSERT INTO pricing_prices(id,price_set_id,currency_code,amount,raw_amount,rules_count,created_at,updated_at) VALUES ('fixture-price-%02d','fixture-set','eur',%d,'{}',0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", i, i))
 	}
 	for _, statement := range statements {
 		if db.Exec(statement).Error != nil {

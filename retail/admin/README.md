@@ -61,6 +61,10 @@ Product basics editing uses an Ant Drawer/Form and the Gin PATCH command with
 revision conflicts, durable operation replay and transactional audit. See
 `../../docs/migration/admin-product-edit.md`; other catalog writes remain pending.
 
+Variant rows also open a paginated Ant configured-price drawer. Exact decimal
+strings, shared sets and price/list rules remain intact; this is not a checkout
+quote. See `../../docs/migration/admin-variant-prices.md`.
+
 The lazy-loaded `/products` page reads the Gin admin product-list endpoint using
 Ant forms, filters, table, pagination and empty/error feedback. Filters persist
 in the URL. Product title links open `/products/:id` with Ant descriptions,

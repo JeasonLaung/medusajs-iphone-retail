@@ -6,6 +6,7 @@ import { APIError, productDetail, productVariants } from './api'
 import type { ProductDetail as Product, VariantDetail, VariantList } from './api'
 import type { Copy } from './i18n'
 import ProductEdit from './ProductEdit'
+import VariantPrices from './VariantPrices'
 
 // Render text from the database as text; do not inject description HTML.
 function imageURL(value:string){try{const url=new URL(value,location.origin);return ['http:','https:'].includes(url.protocol)&&!url.username&&!url.password?url.href:undefined}catch{return undefined}}
@@ -21,6 +22,7 @@ export default function ProductDetail({copy,onExpired}:{copy:Copy;onExpired():vo
   const query=params.toString()
   const [attempt,setAttempt]=useState(0)
   const [editing,setEditing]=useState(false)
+  const [priceVariant,setPriceVariant]=useState<VariantDetail>()
   const [state,setState]=useState<{loading:boolean;product?:Product;variants?:VariantList;error?:unknown}>({loading:true})
   useEffect(()=>{
     const controller=new AbortController();setState({loading:true})
@@ -55,8 +57,10 @@ export default function ProductDetail({copy,onExpired}:{copy:Copy;onExpired():vo
           {title:copy.configuration,dataIndex:'configuration_complete',render:(complete:boolean)=>complete?<Tag color="success">{copy.complete}</Tag>:<Tag color="warning">{copy.incomplete}</Tag>},
           {title:copy.manageInventory,dataIndex:'manage_inventory',render:(enabled:boolean)=>enabled?copy.yes:copy.no},
           {title:copy.allowBackorder,dataIndex:'allow_backorder',render:(enabled:boolean)=>enabled?copy.yes:copy.no},
+          {title:copy.configuredPrices,key:'prices',render:(_,variant)=><Button onClick={()=>setPriceVariant(variant)}>{copy.viewPrices}</Button>},
         ]} pagination={{current:Math.floor(v.offset/v.limit)+1,pageSize:v.limit,total:v.count,showSizeChanger:true,pageSizeOptions:[20,50,100],onChange:(page,size)=>{const next=new URLSearchParams();next.set('limit',String(size));next.set('offset',String((page-1)*size));setParams(next)}}}/></div>
       </Space>}
     {editing&&p&&<ProductEdit key={p.id} product={p} copy={copy} onExpired={onExpired} onClose={()=>{setEditing(false);setAttempt(n=>n+1)}} onSaved={()=>{setEditing(false);setAttempt(n=>n+1)}}/>}
+    {priceVariant&&<VariantPrices key={`${id}:${priceVariant.id}`} productID={id} variant={priceVariant} copy={copy} onClose={()=>setPriceVariant(undefined)} onExpired={onExpired}/>}
   </section>
 }

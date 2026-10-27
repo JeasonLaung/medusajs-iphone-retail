@@ -134,6 +134,43 @@ test('uncertain product save keeps one immutable attempt until explicit retry',a
   expect(attempts).toHaveLength(2)
 })
 
+test('price drawer retries, preserves exact strings and distinguishes empty and malformed data',async({page})=>{
+  await fixture(page)
+  const product={id:'price-product',revision:'a'.repeat(64),title:'Price fixture',handle:'price-product',status:'draft',thumbnail:null,collection_id:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',variant_count:2,subtitle:null,description:null,options:[],images:[]}
+  const variants=['priced','empty'].map(id=>({id,product_id:product.id,title:id,sku:id,thumbnail:null,variant_rank:0,manage_inventory:true,allow_backorder:false,configuration_complete:true,options:[],images:[],unassigned_option_value_ids:[]}))
+  let mode:'failed'|'ready'|'numeric'='failed'
+  const rule='<img src=x onerror=window.priceInjected=true>'
+  await page.route('**/api/admin/products/price-product**',route=>{
+    const path=new URL(route.request().url()).pathname
+    if(path.endsWith('/prices')){
+      if(mode==='failed')return route.fulfill({status:503,json:{error:{code:'catalog.unavailable'}}})
+      const prices=path.includes('/empty/')?[]:[{id:'price-exact',price_set_id:'set',currency_code:'eur',amount:mode==='numeric'?1:'9007199254740993.000000000000000001',min_quantity:null,max_quantity:null,rules_count:1,price_list_id:null,price_list:null,rules:[{id:'rule',attribute:'unknown',operator:'eq',value:rule,priority:0}]}]
+      return route.fulfill({json:{product_id:product.id,variant_id:path.includes('/empty/')?'empty':'priced',price_set_ids:['set'],prices,count:prices.length,limit:20,offset:0}})
+    }
+    return route.fulfill({json:path.endsWith('/variants')?{variants,count:2,limit:20,offset:0}:{product}})
+  })
+  await page.goto('/account');await signIn(page);await page.goto('/products/price-product')
+  const row=(name:string)=>page.getByRole('row').filter({has:page.getByRole('cell',{name,exact:true}).first()})
+  await row('priced').getByRole('button',{name:'查看价格',exact:true}).click()
+  const drawer=page.getByRole('dialog',{name:'价格配置',exact:true})
+  await expect(drawer.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
+  await expect(drawer.getByText('暂无已配置价格',{exact:true})).toHaveCount(0)
+  mode='ready';await drawer.getByRole('button',{name:'重新连接',exact:true}).click()
+  await expect(drawer.getByRole('cell',{name:'9007199254740993.000000000000000001',exact:true})).toBeVisible()
+  await drawer.locator('button.ant-table-row-expand-icon').click()
+  await expect(drawer.getByText(rule,{exact:true})).toBeVisible()
+  expect(await page.evaluate(()=>Object.hasOwn(window,'priceInjected'))).toBe(false)
+  await drawer.getByRole('button',{name:'取消',exact:true}).click()
+  await expect(drawer).toHaveCount(0)
+  await row('empty').getByRole('button',{name:'查看价格',exact:true}).click()
+  await expect(drawer.getByText('暂无已配置价格',{exact:true})).toBeVisible()
+  await drawer.getByRole('button',{name:'取消',exact:true}).click()
+  await expect(drawer).toHaveCount(0)
+  mode='numeric';await row('priced').getByRole('button',{name:'查看价格',exact:true}).click()
+  await expect(drawer.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
+  await expect(drawer.getByRole('cell',{name:'1',exact:true})).toHaveCount(0)
+})
+
 test('Ant form signs in, reloads account, and signs out without storing capabilities', async ({ page }) => {
   const calls = await fixture(page)
   await page.goto('/account')

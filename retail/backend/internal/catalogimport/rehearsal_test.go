@@ -433,6 +433,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 	router.GET("/products", (cataloghttp.Handler{DB: gdb}).AdminProducts)
 	router.GET("/products/:id", (cataloghttp.Handler{DB: gdb}).AdminProduct)
 	router.GET("/products/:id/variants", (cataloghttp.Handler{DB: gdb}).AdminVariants)
+	router.GET("/products/:id/variants/:variant_id/prices", (cataloghttp.Handler{DB: gdb}).AdminVariantPrices)
 	var expected int64
 	if db.QueryRow("SELECT COUNT(*) FROM catalog_products WHERE deleted_at IS NULL").Scan(&expected) != nil {
 		t.Fatal("catalog HTTP expected count unavailable")
@@ -523,6 +524,41 @@ func TestActualCatalogMySQL(t *testing.T) {
 					t.Fatal("actual catalog variant projection failed")
 				}
 				variantIDs[v.ID] = true
+				for priceOffset := 0; ; priceOffset += 100 {
+					w := httptest.NewRecorder()
+					router.ServeHTTP(w, httptest.NewRequest("GET", "/products/"+url.PathEscape(id)+"/variants/"+url.PathEscape(v.ID)+"/prices?limit=100&offset="+strconv.Itoa(priceOffset), nil))
+					var prices struct {
+						Prices      []cataloghttp.AdminConfiguredPrice
+						Count       int64
+						PriceSetIDs []string `json:"price_set_ids"`
+					}
+					if w.Code != 200 || json.Unmarshal(w.Body.Bytes(), &prices) != nil || prices.PriceSetIDs == nil || prices.Prices == nil {
+						t.Fatal("actual configured price HTTP failed")
+					}
+					var expectedPrices int64
+					if db.QueryRow(`SELECT COUNT(*) FROM pricing_prices p WHERE p.deleted_at IS NULL AND p.price_set_id IN (SELECT vp.price_set_id FROM catalog_variant_price_sets vp JOIN pricing_price_sets s ON s.id=vp.price_set_id AND s.deleted_at IS NULL WHERE vp.variant_id=? AND vp.deleted_at IS NULL)`, v.ID).Scan(&expectedPrices) != nil || expectedPrices != prices.Count {
+						t.Fatal("actual price membership count differs")
+					}
+					for _, p := range prices.Prices {
+						var amount, currency, set string
+						var min, max, list sql.NullString
+						if db.QueryRow("SELECT amount,currency_code,price_set_id,min_quantity,max_quantity,price_list_id FROM pricing_prices WHERE id=? AND deleted_at IS NULL", p.ID).Scan(&amount, &currency, &set, &min, &max, &list) != nil || amount != p.Amount || currency != p.CurrencyCode || set != p.PriceSetID || min.Valid != (p.MinQuantity != nil) || max.Valid != (p.MaxQuantity != nil) || list.Valid != (p.PriceListID != nil) || (min.Valid && min.String != *p.MinQuantity) || (max.Valid && max.String != *p.MaxQuantity) || (list.Valid && list.String != *p.PriceListID) {
+							t.Fatal("actual exact price SQL differs")
+						}
+						var rules int
+						if db.QueryRow("SELECT COUNT(*) FROM pricing_price_rules WHERE price_id=? AND deleted_at IS NULL", p.ID).Scan(&rules) != nil || rules != len(p.Rules) {
+							t.Fatal("actual price rule count differs")
+						}
+						counts["http_projected_actual_price_memberships"]++
+					}
+					if int64(priceOffset+len(prices.Prices)) >= prices.Count {
+						break
+					}
+					if len(prices.Prices) == 0 {
+						t.Fatal("actual price pagination stopped early")
+					}
+				}
+				counts["http_priced_actual_variants"]++
 				var title string
 				var sku sql.NullString
 				if db.QueryRow("SELECT title,sku FROM catalog_variants WHERE id=? AND product_id=? AND deleted_at IS NULL", v.ID, id).Scan(&title, &sku) != nil || title != v.Title || (sku.Valid != (v.SKU != nil)) || (sku.Valid && sku.String != *v.SKU) {

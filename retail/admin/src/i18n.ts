@@ -1,5 +1,6 @@
 export type Language = 'zh-CN' | 'en'
 const zh = {
+  configuredPrices:'价格配置',viewPrices:'查看价格',configuredPricesInfo:'此处显示已配置金额与适用规则。结算价需结合地区、数量、客户、时间和税务计算。',loadingPrices:'正在加载价格',variantNotFound:'商品变体不存在或已删除',noPrices:'暂无已配置价格',currency:'币种',amount:'金额',minQuantity:'最小数量',maxQuantity:'最大数量',priceList:'价目表',basePrice:'基础价格',active:'启用',priceListUnavailable:'价目表不可用',priceRules:'价格规则',noRules:'暂无规则',priceID:'价格 ID',priceSet:'价格集合',priceSets:'关联价格集合',recordedRules:'记录的规则数量',ruleCountMismatch:'规则数量与当前可见规则不一致，需要核对。',ruleAttribute:'条件',ruleOperator:'运算符',ruleValue:'条件值',rulePriority:'优先级',priceListType:'价目表类型',sale:'促销',override:'覆盖',startsAt:'开始时间（UTC）',endsAt:'结束时间（UTC）',
   editInvalid:'内容无效，请检查文本长度、特殊字符和商品状态后重试。',
   editProduct:'编辑基本信息',description:'商品描述',save:'保存',cancel:'取消',retrySave:'重试本次保存',editTooLong:'内容超过长度限制',saveUncertain:'暂未确认保存结果。可重试本次保存；重试期间保持原提交内容。关闭后将重新读取商品。',editConflict:'商品已被其他操作修改，请重新加载并核对后再编辑。',editForbidden:'无法保存，请关闭后重新读取商品或重新登录。',
   imageUnavailable:'图片无法加载',
@@ -18,6 +19,7 @@ const zh = {
 }
 export type Copy = typeof zh
 const en: Copy = {
+  configuredPrices:'Configured prices',viewPrices:'View prices',configuredPricesInfo:'Configured amounts and conditions. Checkout pricing also depends on region, quantity, customer, time and tax.',loadingPrices:'Loading prices',variantNotFound:'Product variant not found or deleted',noPrices:'No configured prices',currency:'Currency',amount:'Amount',minQuantity:'Minimum quantity',maxQuantity:'Maximum quantity',priceList:'Price list',basePrice:'Base price',active:'Active',priceListUnavailable:'Price list unavailable',priceRules:'Price rules',noRules:'No rules',priceID:'Price ID',priceSet:'Price set',priceSets:'Linked price sets',recordedRules:'Recorded rule count',ruleCountMismatch:'The recorded count differs from currently visible rules. Review is required.',ruleAttribute:'Condition',ruleOperator:'Operator',ruleValue:'Value',rulePriority:'Priority',priceListType:'Price list type',sale:'Sale',override:'Override',startsAt:'Starts at (UTC)',endsAt:'Ends at (UTC)',
   editInvalid:'Invalid contents. Check text lengths, special characters and product status, then retry.',
   editProduct:'Edit basic information',description:'Description',save:'Save',cancel:'Cancel',retrySave:'Retry this save',editTooLong:'Content exceeds the length limit',saveUncertain:'Save result is unconfirmed. Retry the same save with its original contents, or close to reload the product.',editConflict:'The product changed. Reload and review before editing again.',editForbidden:'Unable to save. Close to reload the product or sign in again.',
   imageUnavailable:'Image unavailable',
