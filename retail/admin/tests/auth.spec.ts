@@ -57,7 +57,7 @@ async function signIn(page: Page) {
 test('detail dependency failure retries and a missing product stays distinct',async({page})=>{
   await fixture(page)
   let mode:'failed'|'ready'|'missing'='failed'
-  const product={id:'artificial-product',title:'Text <img src=x onerror=alert(1)>',handle:'artificial-product',status:'draft',thumbnail:null,collection_id:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',variant_count:0,subtitle:null,description:'<script>window.unwanted=true</script>',options:[],images:[]}
+  const product={id:'artificial-product',revision:'a'.repeat(64),title:'Text <img src=x onerror=alert(1)>',handle:'artificial-product',status:'draft',thumbnail:null,collection_id:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',variant_count:0,subtitle:null,description:'<script>window.unwanted=true</script>',options:[],images:[]}
   await page.route('**/api/admin/products/artificial-product**',route=>{
     if(mode==='failed')return route.fulfill({status:503,json:{error:{code:'catalog.unavailable'}}})
     if(mode==='missing')return route.fulfill({status:404,json:{error:{code:'catalog.not_found'}}})
@@ -99,6 +99,39 @@ test('product dependency failure is distinct from empty state and supports retry
   await page.getByRole('button',{name:'搜索',exact:true}).click()
   await expect(page).toHaveURL('/login')
   await expect(page.getByText('登录已过期，请重新登录。',{exact:true})).toBeVisible()
+})
+
+test('uncertain product save keeps one immutable attempt until explicit retry',async({page})=>{
+  await fixture(page)
+  const product={id:'edit-product',revision:'a'.repeat(64),title:'Original',handle:'edit-product',status:'draft',thumbnail:null,collection_id:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',variant_count:0,subtitle:'',description:null,options:[],images:[]}
+  const attempts:unknown[]=[]
+  await page.route('**/api/admin/products/edit-product**',route=>{
+    const req=route.request()
+    if(req.method()==='PATCH'){
+      expect(req.headers()['x-csrf-token']).toBe(sessionCSRF)
+      const body=req.postDataJSON();attempts.push(body)
+      if(attempts.length===1)return route.fulfill({status:503,json:{error:{code:'catalog.unavailable'}}})
+      expect(body).toEqual(attempts[0])
+      expect(body.subtitle).toBe('')
+      expect(body.description).toBe(null)
+      product.title=body.title;product.revision='b'.repeat(64)
+      return route.fulfill({json:{revision:product.revision,replayed:true}})
+    }
+    return route.fulfill({json:new URL(req.url()).pathname.endsWith('/variants')?{variants:[],count:0,limit:20,offset:0}:{product}})
+  })
+  await page.goto('/account');await signIn(page)
+  await page.goto('/products/edit-product')
+  await page.getByRole('button',{name:'编辑基本信息',exact:true}).click()
+  const drawer=page.getByRole('dialog')
+  await drawer.getByLabel('商品名称',{exact:true}).fill('Updated')
+  await drawer.getByRole('button',{name:'保存',exact:true}).click()
+  await expect(drawer.getByText(/暂未确认保存结果/)).toBeVisible()
+  await expect(drawer.getByLabel('商品名称',{exact:true})).toBeDisabled()
+  expect(attempts).toHaveLength(1)
+  await drawer.getByRole('button',{name:'重试本次保存',exact:true}).click()
+  await expect(drawer).toHaveCount(0)
+  await expect(page.getByRole('heading',{name:'Updated',exact:true})).toBeVisible()
+  expect(attempts).toHaveLength(2)
 })
 
 test('Ant form signs in, reloads account, and signs out without storing capabilities', async ({ page }) => {

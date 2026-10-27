@@ -33,6 +33,7 @@
 | PayPal商户配置 | [专用转换](../docs/migration/paypal-config-conversion.md)补明文/v1/v2及live/sandbox嵌套秘密解密投影、别名/活动镜像冲突拒绝；原TS/安装JS/Go互操作9样本/27字段含18嵌套秘密，人工MySQL整行回滚/读取通过；真实v2两配置内存及临时SQL验证通过 | 其他设置section/JSON、key恢复和Gin provider尚缺；快照无真实非空凭据 |
 | 商户配置原子导入 | [专用组件](../docs/migration/merchant-config-import.md)把七表配置、固定操作hold账本和邮箱/SEO key完整唯一登记纳入同一调用者事务；人工MySQL验证回滚、重放、轮换读取、冲突及八路并发；[真实隔离演练](../docs/migration/merchant-mysql-rehearsal.md)验证5配置/5 hold/1唯一登记及8字段独立预期读回、3 SQL NULL | 完整导入组合/恢复、持久密钥与读取授权、worker强制执行hold和Gin配置接口尚缺；临时库已清理，两个SEO表无真实样本 |
 | React Admin | [Ant登录/账号页面](../docs/migration/admin-login-ui.md)新增独立React应用，Form/Layout/Menu/Drawer/Descriptions，直连Gin协议；类型及build通过，7项人工HTTP浏览器测试及9张中英三宽截图；23页面/6widgets仍仅承接设计，图表固定ECharts | 真实浏览器到Gin/MySQL/Redis串联、完整外壳/页签及权限、全部业务页和图表仍缺；bundle体积待拆分 |
+| 商品基础信息编辑 | [Ant抽屉与Gin命令](../docs/migration/admin-product-edit.md)：0011专用能力、版本冲突、操作重放及同事务审计；实际MySQL八路并发/故障回滚与实际浏览器持久化、中英三宽验证 | 创建、选项/变体/关联、完整价格库存、完整RBAC/对象范围及Astro仍缺；通用目录写入保持关闭 |
 | 生产替换 | 未进行 | 全量对账、回归及未来切换计划 |
 
 当前没有任何业务域可据此声明已完成迁移。草稿不能连接旧系统数据库作为新后端，也不能代理 Medusa 冒充迁移实现。

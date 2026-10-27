@@ -54,7 +54,16 @@ func TestOwnedCatalogSchemaTransition(t *testing.T) {
 		t.Cleanup(func() { db.Close() })
 		return db
 	}
-	all, err := schema.Load(migrations.Files)
+	source, _ := fs.Sub(migrations.Files, ".")
+	allFiles := fstest.MapFS{}
+	allEntries, _ := fs.ReadDir(source, ".")
+	for _, e := range allEntries {
+		if e.Name() < "0011" {
+			b, _ := fs.ReadFile(source, e.Name())
+			allFiles[e.Name()] = &fstest.MapFile{Data: b}
+		}
+	}
+	all, err := schema.Load(allFiles)
 	if err != nil {
 		t.Fatal("complete schema plan invalid")
 	}

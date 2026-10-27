@@ -5,6 +5,7 @@ import { PictureOutlined } from '@ant-design/icons'
 import { APIError, productDetail, productVariants } from './api'
 import type { ProductDetail as Product, VariantDetail, VariantList } from './api'
 import type { Copy } from './i18n'
+import ProductEdit from './ProductEdit'
 
 // Render text from the database as text; do not inject description HTML.
 function imageURL(value:string){try{const url=new URL(value,location.origin);return ['http:','https:'].includes(url.protocol)&&!url.username&&!url.password?url.href:undefined}catch{return undefined}}
@@ -19,6 +20,7 @@ export default function ProductDetail({copy,onExpired}:{copy:Copy;onExpired():vo
   const [params,setParams]=useSearchParams()
   const query=params.toString()
   const [attempt,setAttempt]=useState(0)
+  const [editing,setEditing]=useState(false)
   const [state,setState]=useState<{loading:boolean;product?:Product;variants?:VariantList;error?:unknown}>({loading:true})
   useEffect(()=>{
     const controller=new AbortController();setState({loading:true})
@@ -38,7 +40,7 @@ export default function ProductDetail({copy,onExpired}:{copy:Copy;onExpired():vo
     {state.loading?<Spin aria-label={copy.loadingProduct}/>:state.error!==undefined?
       state.error instanceof APIError&&state.error.status===404?<Result status="404" title={copy.productNotFound}/>:<Space direction="vertical"><Alert type="error" showIcon message={state.error instanceof APIError&&state.error.status===400?copy.invalidFilters:copy.unavailable}/><Space><Button onClick={()=>setAttempt(n=>n+1)}>{copy.retry}</Button><Button onClick={()=>setParams(new URLSearchParams())}>{copy.reset}</Button></Space></Space>:
       p&&v&&<Space direction="vertical" size={32} className="full-width">
-        <div><Typography.Title level={3}>{p.title}</Typography.Title><Descriptions column={{xs:1,sm:2}} items={[
+        <div><Space wrap><Typography.Title level={3}>{p.title}</Typography.Title><Button onClick={()=>setEditing(true)}>{copy.editProduct}</Button></Space><Descriptions column={{xs:1,sm:2}} items={[
           {key:'id',label:'ID',children:p.id},{key:'handle',label:'Handle',children:p.handle},
           {key:'status',label:copy.status,children:<Tag color={p.status==='published'?'success':p.status==='rejected'?'error':undefined}>{statuses[p.status]}</Tag>},
           {key:'count',label:copy.variants,children:p.variant_count},
@@ -55,5 +57,6 @@ export default function ProductDetail({copy,onExpired}:{copy:Copy;onExpired():vo
           {title:copy.allowBackorder,dataIndex:'allow_backorder',render:(enabled:boolean)=>enabled?copy.yes:copy.no},
         ]} pagination={{current:Math.floor(v.offset/v.limit)+1,pageSize:v.limit,total:v.count,showSizeChanger:true,pageSizeOptions:[20,50,100],onChange:(page,size)=>{const next=new URLSearchParams();next.set('limit',String(size));next.set('offset',String((page-1)*size));setParams(next)}}}/></div>
       </Space>}
+    {editing&&p&&<ProductEdit key={p.id} product={p} copy={copy} onExpired={onExpired} onClose={()=>{setEditing(false);setAttempt(n=>n+1)}} onSaved={()=>{setEditing(false);setAttempt(n=>n+1)}}/>}
   </section>
 }

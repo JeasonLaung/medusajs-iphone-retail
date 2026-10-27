@@ -117,7 +117,7 @@ def main():
                  'retail/backend/internal/uniquekey/source.go', 'retail/backend/internal/uniquekey/source_plans.json',
                  'retail/backend/migrations/0002_unique_key_registry.sql', 'retail/backend/migrations/0003_unique_key_secret_scopes.sql',
                  'retail/backend/migrations/0008_migration_catalog_rows.sql', 'docs/migration/mysql-relational-review.sql']
-        files += ['retail/backend/internal/catalog/admin_list.go','retail/backend/internal/catalog/admin_detail.go']
+        files += ['retail/backend/internal/catalog/admin_list.go','retail/backend/internal/catalog/admin_detail.go','retail/backend/internal/catalog/edit.go']
         files += ['retail/backend/migrations/0010_catalog_relational.sql','retail/backend/internal/catalog/schema.go',
                   'retail/backend/internal/catalog/schema_plan.json','retail/backend/internal/schema/ready.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/migrations').glob('*.sql')]

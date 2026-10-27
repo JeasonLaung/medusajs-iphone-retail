@@ -180,9 +180,3 @@ func (h Handler) Regions(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{"regions": out, "count": len(out)})
 }
-
-// Product commands require explicit concurrency, audit and registry handling.
-// The old payload-schema writer was never an accepted implementation.
-func (h Handler) UpdateProduct(c *gin.Context) {
-	platform.Fail(c, 503, "catalog.write_unavailable", "Product editing is not available")
-}

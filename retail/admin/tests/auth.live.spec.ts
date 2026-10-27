@@ -5,7 +5,7 @@ import path from 'node:path'
 // No route interception or mocked API responses in this file.
 test('real browser cookie, Origin and CSRF flow through Vite to Gin and Redis', async ({ page, context }) => {
   // One owned account exercises login, catalog and nine viewport screenshots.
-  test.setTimeout(60_000)
+  test.setTimeout(90_000)
   const failures:string[]=[]
   page.on('pageerror',error=>failures.push(error.name))
   const signIn=async(password:string)=>{
@@ -132,6 +132,63 @@ test('real browser cookie, Origin and CSRF flow through Vite to Gin and Redis', 
   await expect(page.getByText('商品不存在或已删除',{exact:true})).toBeVisible()
   await page.getByRole('link',{name:'返回商品列表',exact:true}).click()
   await expect(page).toHaveURL('/products')
+  // Writes affect artificial fixtures only; the real cmd/api owns all responses.
+  await page.goto('/products/fixture-a')
+  await page.getByRole('button',{name:'编辑基本信息',exact:true}).click()
+  const drawer=page.getByRole('dialog')
+  await expect(drawer).toBeVisible()
+  for(const width of [390,768,1440]) {
+    await page.setViewportSize({width,height:900})
+    await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true)
+    await expect(drawer.getByRole('button',{name:'保存',exact:true})).toBeInViewport()
+    await page.screenshot({path:path.resolve(`../../logs/gin-migration/admin-live/product-edit-zh-${width}.png`),fullPage:true,animations:'disabled'})
+  }
+  await drawer.getByLabel('商品名称',{exact:true}).fill('Edited phone 中文')
+  await drawer.getByLabel('副标题',{exact:true}).fill('Artificial subtitle')
+  await drawer.getByLabel('商品描述',{exact:true}).fill('<script>plain description</script>')
+  await drawer.getByRole('button',{name:'保存',exact:true}).click()
+  await expect(drawer).toHaveCount(0)
+  await expect(page.getByRole('heading',{name:'Edited phone 中文',exact:true})).toBeVisible()
+  await expect(page.getByText('<script>plain description</script>',{exact:true})).toBeVisible()
+  await page.reload()
+  await expect(page.getByRole('heading',{name:'Edited phone 中文',exact:true})).toBeVisible()
+  const latest=(await (await context.request.get('/api/admin/products/fixture-a')).json()).product
+  expect(latest.revision).toMatch(/^[a-f0-9]{64}$/)
+  expect(latest.revision).not.toBe(product.revision)
+  const write={operation_id:await page.evaluate(()=>crypto.randomUUID()),expected_revision:latest.revision,title:'Second edit',subtitle:null,description:null,status:'draft'}
+  const headers={Origin:'http://127.0.0.1:19200','X-CSRF-Token':csrf!.value}
+  expect((await context.request.patch('/api/admin/products/fixture-a',{headers:{Origin:headers.Origin},data:write})).status()).toBe(403)
+  expect((await context.request.patch('/api/admin/products/fixture-a',{headers:{...headers,Origin:'https://evil.example'},data:write})).status()).toBe(403)
+  const saved=await context.request.patch('/api/admin/products/fixture-a',{headers,data:write})
+  expect(saved.status()).toBe(200)
+  expect((await saved.json()).replayed).toBe(false)
+  const savedAgain=await context.request.patch('/api/admin/products/fixture-a',{headers,data:write})
+  expect(savedAgain.status()).toBe(200)
+  expect((await savedAgain.json()).replayed).toBe(true)
+  expect((await context.request.patch('/api/admin/products/fixture-a',{headers,data:{...write,operation_id:await page.evaluate(()=>crypto.randomUUID())}})).status()).toBe(409)
+  expect((await context.request.patch('/api/admin/products/fixture-a',{headers,data:{...write,title:'Different payload'}})).status()).toBe(409)
+  // The drawer opened on an older revision must show a conflict and never overwrite.
+  await page.getByRole('button',{name:'编辑基本信息',exact:true}).click()
+  await drawer.getByLabel('商品名称',{exact:true}).fill('Must not overwrite')
+  await drawer.getByRole('button',{name:'保存',exact:true}).click()
+  await expect(drawer.getByText('商品已被其他操作修改，请重新加载并核对后再编辑。',{exact:true})).toBeVisible()
+  await drawer.getByRole('button',{name:'重新加载',exact:true}).click()
+  await expect(page.getByRole('heading',{name:'Second edit',exact:true})).toBeVisible()
+  await page.getByRole('combobox',{name:'语言',exact:true}).focus()
+  await page.getByRole('combobox',{name:'语言',exact:true}).press('Enter')
+  await page.getByRole('option',{name:'English',exact:true}).click()
+  await page.getByRole('button',{name:'Edit basic information',exact:true}).click()
+  for(const width of [390,768,1440]) {
+    await page.setViewportSize({width,height:900})
+    await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true)
+    await expect(drawer.getByRole('button',{name:'Save',exact:true})).toBeInViewport()
+    await page.screenshot({path:path.resolve(`../../logs/gin-migration/admin-live/product-edit-en-${width}.png`),fullPage:true,animations:'disabled'})
+  }
+  await drawer.getByRole('button',{name:'Cancel',exact:true}).click()
+  await expect(drawer).toHaveCount(0)
+  await page.getByRole('combobox',{name:'Language',exact:true}).focus()
+  await page.getByRole('combobox',{name:'Language',exact:true}).press('Enter')
+  await page.getByRole('option',{name:'简体中文',exact:true}).click()
   const noCSRF=await context.request.post('/api/admin/auth/logout',{headers:{Origin:'http://127.0.0.1:19200'}})
   expect(noCSRF.status()).toBe(403)
   const wrongOrigin=await context.request.post('/api/admin/auth/logout',{headers:{Origin:'https://evil.example','X-CSRF-Token':csrf!.value}})

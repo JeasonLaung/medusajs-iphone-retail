@@ -1,5 +1,7 @@
 export type Language = 'zh-CN' | 'en'
 const zh = {
+  editInvalid:'内容无效，请检查文本长度、特殊字符和商品状态后重试。',
+  editProduct:'编辑基本信息',description:'商品描述',save:'保存',cancel:'取消',retrySave:'重试本次保存',editTooLong:'内容超过长度限制',saveUncertain:'暂未确认保存结果。可重试本次保存；重试期间保持原提交内容。关闭后将重新读取商品。',editConflict:'商品已被其他操作修改，请重新加载并核对后再编辑。',editForbidden:'无法保存，请关闭后重新读取商品或重新登录。',
   imageUnavailable:'图片无法加载',
   unassignedOptions:'以下选项值不属于当前商品的有效配置',
   backProducts:'返回商品列表',loadingProduct:'正在加载商品',productNotFound:'商品不存在或已删除',subtitle:'副标题',images:'商品图片',noImages:'暂无图片',options:'选项',noOptions:'暂无选项',variantDetails:'商品变体',noVariants:'暂无变体',configuration:'配置',complete:'配置完整',incomplete:'配置待补全',manageInventory:'管理库存',allowBackorder:'允许缺货订购',yes:'是',no:'否',
@@ -16,6 +18,8 @@ const zh = {
 }
 export type Copy = typeof zh
 const en: Copy = {
+  editInvalid:'Invalid contents. Check text lengths, special characters and product status, then retry.',
+  editProduct:'Edit basic information',description:'Description',save:'Save',cancel:'Cancel',retrySave:'Retry this save',editTooLong:'Content exceeds the length limit',saveUncertain:'Save result is unconfirmed. Retry the same save with its original contents, or close to reload the product.',editConflict:'The product changed. Reload and review before editing again.',editForbidden:'Unable to save. Close to reload the product or sign in again.',
   imageUnavailable:'Image unavailable',
   unassignedOptions:'These option values are not assigned to this product',
   backProducts:'Back to products',loadingProduct:'Loading product',productNotFound:'Product not found or deleted',subtitle:'Subtitle',images:'Product images',noImages:'No images',options:'Options',noOptions:'No options',variantDetails:'Product variants',noVariants:'No variants',configuration:'Configuration',complete:'Complete',incomplete:'Incomplete',manageInventory:'Manage inventory',allowBackorder:'Allow backorders',yes:'Yes',no:'No',

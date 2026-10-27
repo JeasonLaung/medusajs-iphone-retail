@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Ant login/account and product list/detail UI with artificial HTTP responses only; not real browser-to-Gin/MySQL/Redis acceptance",
   "counts": {
-    "browser_tests_passed": 9,
+    "browser_tests_passed": 10,
     "widths": [
       390,
       768,
@@ -23,34 +23,35 @@
   "full_admin_accepted": false,
   "capabilities_in_browser_storage": false,
   "screenshot_sha256": {
-    "account-en-1440.png": "f77ff9e9f3aab262223f508a363fb465ff2beb36dcef0b873054bc9695930953",
+    "account-en-1440.png": "bf8276e80c2a12c146f77ff8535a7f1ab509aba9812aec0a0a62be1c5ae40c1b",
     "account-en-390.png": "d362b3e4ce6424a54e40303527aced6ee7d537f43b00bdab304be0b1ce528d9d",
     "account-en-768.png": "302e0bf8e46aedb05721605e4dacb64e6fa0b2a16bae32fd1492141dbb2c248f",
-    "login-en-1440.png": "86634a38e3a922f9b72ce044c6a985c09c71fecb09b5f2e870e42ff998fe1c3b",
-    "login-en-390.png": "7a8dcba7af08b0e6fc9606cd733315bd3d8509b19bb83bbc5af3884b2a15f93b",
-    "login-en-768.png": "d013dbde4b12ee71e4c9e7d8b67427c85a6a53712a7e78158c3c7762680755b0",
+    "login-en-1440.png": "771c8b5906ee17c294f799650b8c9efd1d818d89a34d2d69ecb2b259fb5a6675",
+    "login-en-390.png": "f7617cebfd2465b6cf4e93b3e1de32d74e6c17eddb278168ead522384fc4fc47",
+    "login-en-768.png": "51b6b583086334968ba620001254edb6dcf38a918375f98cf32f9100fa6edadc",
     "login-zh-1440.png": "c3b631ad7db6211389a7bad37f7d355a3e75fe1c80a435752471432864c91126",
     "login-zh-390.png": "16de0f33403ed4e1bad0b27dfe421b60b72ac838bcb8ec2d7f67a9ef104cfa7f",
-    "login-zh-768.png": "829ada9819dcdd749e3aa644a1c6ea7a0e15a179226f32251735ffd5479b23f9"
+    "login-zh-768.png": "f63935d2532f9dbe1c05211e030fd899b1ceffadd1fe491c879091e9e3502857"
   },
   "implementation_sha256": {
-    "retail/admin/README.md": "8b2fedd79e6f83f309141ccd9b7b999167a51fe48050eb1b39090c66f77fd86f",
+    "retail/admin/README.md": "13d9ba4f63ecfcad90a2aa0270485dcecfa73f340c942a272ccc0b5e97adb5c4",
     "retail/admin/index.html": "3b404b4603410a0335cee226286468d41422d2822b816770e527152e4923c771",
     "retail/admin/package-lock.json": "2f384487715a0528810e6db53613244310c8a37bf7510cdc094dafa241321165",
     "retail/admin/package.json": "fba3a9e39aab49b3edf5e59b4a3d83cee658931b0ee8596a1ffb83d0c0c93b76",
     "retail/admin/playwright.config.ts": "d5079532fde48472f7d8b6fe7dba4b12d0a2b22121e25a72f094db31721ad543",
     "retail/admin/playwright.live.config.ts": "e87682decce2a6528da34d1300dc891155d10309e1b36550a8919236b21eaf0b",
     "retail/admin/src/App.tsx": "702b87feb691a1192bab20e4efefc696f33f09f52465911bf50b5239dad6053a",
-    "retail/admin/src/ProductDetail.tsx": "277f8c40b4818a2ff75a1bde3c526dbb0d834892d0cd80bba0cfa8d7adab6ab0",
+    "retail/admin/src/ProductDetail.tsx": "743cd608f3e1fb54127c3d5667779cebbbba273f0432493abc43280f0790cec0",
+    "retail/admin/src/ProductEdit.tsx": "0309361b16330358111ebd79d69240c37200d22a90c4535ff84a1d289eacddc1",
     "retail/admin/src/Products.tsx": "11fbaa8decdd667c44c4e6f9092581580755ddcf9198ee0e638ed82dc811534b",
-    "retail/admin/src/api.ts": "aefc9111e43d753d43b215096eeee7e8dfa8ba2cc75e1e10fb08b79a850eaa57",
-    "retail/admin/src/i18n.ts": "6c905812f70e2aac1c3f255488cc5e8c27a3ec33051f39ec3d249c69ffadc37c",
+    "retail/admin/src/api.ts": "4b738593c91c2445dbadc75f904d263436607589583b8b94610927b61b10f274",
+    "retail/admin/src/i18n.ts": "b8e8db6921dfc0b2509bdfd0e172e63bcc3cc72648d33dddcaa713d76860f5c2",
     "retail/admin/src/main.tsx": "a114e06b121c44c091c06bae73b1f2fc5a17a919e38cee9d71531f3929566a62",
     "retail/admin/src/style.css": "af3ce1eec710121d8a2ab132a75dfa8a89b4a8717f7aa8e6237a8257aadb6556",
-    "retail/admin/tests/auth.live.spec.ts": "e64c0fc2b747c384c6939e760f330d1fbd3c9afc42325da722d8380982726b00",
-    "retail/admin/tests/auth.spec.ts": "30da0cf8f1cee044f81649149eae2985d6e35c92028035f0c801d109a43c8fc2",
+    "retail/admin/tests/auth.live.spec.ts": "78fbf4dfdb7bcd29ec8139c18d85b82102062baa1c281a1c8dce25267bc95eec",
+    "retail/admin/tests/auth.spec.ts": "df97234fb66f5150d57bdd2b63b337adf4c53173712aba49b53d9f536b427233",
     "retail/admin/tsconfig.json": "c4769ad8ef4c9dfac534234e5679e8b9bdc702a978793eb6f3b893e4c02fd3d7",
     "retail/admin/vite.config.ts": "9f665557c617064816daa9a9b8cfbe746073d93cec4be2d2ef897dae85d9eb54",
-    "retail/scripts/test-admin-ui.py": "1aa967bdd5d2749726176d0a0c6a5bb110fbd7bc355679ca65649dbae2527f64"
+    "retail/scripts/test-admin-ui.py": "b866f236feb6f94f83bbbf24c3162e154b96426aaa92019628022d2b27821730"
   }
 }

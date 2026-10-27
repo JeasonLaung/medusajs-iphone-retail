@@ -57,6 +57,10 @@ Ant Design 5 is pinned to the inspected reference generation. React 19 uses
 Ant Design's official compatibility patch. There are no charts yet; all future
 Admin charts must use Apache ECharts. Do not add fabricated statistics.
 
+Product basics editing uses an Ant Drawer/Form and the Gin PATCH command with
+revision conflicts, durable operation replay and transactional audit. See
+`../../docs/migration/admin-product-edit.md`; other catalog writes remain pending.
+
 The lazy-loaded `/products` page reads the Gin admin product-list endpoint using
 Ant forms, filters, table, pagination and empty/error feedback. Filters persist
 in the URL. Product title links open `/products/:id` with Ant descriptions,

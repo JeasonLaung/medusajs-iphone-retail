@@ -19,9 +19,10 @@ def main():
     tested = subprocess.run([npm, 'exec', 'playwright', 'test', '--', '--reporter=json'],
                             cwd=APP, capture_output=True, timeout=180)
     if tested.returncode:
+        (ROOT / 'logs/gin-migration/admin-ui-result.json').write_bytes(tested.stdout)
         raise RuntimeError('Artificial admin browser checks failed; inspect ignored test output')
     result = json.loads(tested.stdout)
-    if result['stats']['expected'] != 9 or result['stats']['unexpected'] or result['stats']['skipped'] or result['stats']['flaky']:
+    if result['stats']['expected'] != 10 or result['stats']['unexpected'] or result['stats']['skipped'] or result['stats']['flaky']:
         raise RuntimeError('Browser test coverage differs')
     files = ['retail/scripts/test-admin-ui.py'] + [str(p.relative_to(ROOT)).replace('\\', '/')
              for p in APP.rglob('*') if p.is_file() and not any(part in ('node_modules', 'dist') for part in p.relative_to(APP).parts)]
@@ -29,7 +30,7 @@ def main():
     if len(screenshots) != 9:
         raise RuntimeError('Expected three widths and nine language/state screenshots')
     report = {'format_version': 1, 'scope': 'Ant login/account and product list/detail UI with artificial HTTP responses only; not real browser-to-Gin/MySQL/Redis acceptance',
-              'counts': {'browser_tests_passed': 9, 'widths': [390, 768, 1440], 'screenshots': 9},
+              'counts': {'browser_tests_passed': 10, 'widths': [390, 768, 1440], 'screenshots': 9},
               'languages': ['zh-CN', 'en'], 'browser_executable_override_used': bool(os.environ.get('ADMIN_TEST_BROWSER')),
               'type_check_passed': True, 'production_build_passed': True,
               'initial_bundle_size_warning': b'500 kB' in built.stderr or b'500 kB' in built.stdout,
@@ -38,7 +39,7 @@ def main():
               'screenshot_sha256': {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in screenshots},
               'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in sorted(files)}}
     (ROOT / 'docs/migration/admin-ui-report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'tests': 9, 'screenshots': 9, 'type_check': 'passed', 'build': 'passed', 'real_backend_used': False}))
+    print(json.dumps({'tests': 10, 'screenshots': 9, 'type_check': 'passed', 'build': 'passed', 'real_backend_used': False}))
 
 
 if __name__ == '__main__':

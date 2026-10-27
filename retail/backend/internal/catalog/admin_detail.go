@@ -30,6 +30,7 @@ type AdminProductDetail struct {
 	AdminProductSummary
 	Subtitle    *string       `json:"subtitle"`
 	Description *string       `json:"description"`
+	Revision    string        `json:"revision" gorm:"-"`
 	Options     []AdminOption `json:"options" gorm:"-"`
 	Images      []AdminImage  `json:"images" gorm:"-"`
 }
@@ -71,6 +72,9 @@ func containsControl(s string) bool {
 func detailBase(tx *gorm.DB, id string) (AdminProductDetail, error) {
 	p := AdminProductDetail{Options: []AdminOption{}, Images: []AdminImage{}}
 	err := tx.Table("catalog_products AS p").Select("p.id,p.title,p.handle,p.status,p.thumbnail,p.collection_id,p.created_at,p.updated_at,p.subtitle,p.description,(SELECT COUNT(*) FROM catalog_variants v WHERE v.product_id=p.id AND v.deleted_at IS NULL) AS variant_count").Where("p.id=? AND p.deleted_at IS NULL", id).Take(&p).Error
+	if err == nil {
+		p.Revision = editRevision(EditableProduct{Title: p.Title, Subtitle: p.Subtitle, Description: p.Description, Status: p.Status, UpdatedAt: p.UpdatedAt})
+	}
 	return p, err
 }
 

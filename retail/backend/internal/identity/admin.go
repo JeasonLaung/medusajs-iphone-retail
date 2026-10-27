@@ -75,6 +75,11 @@ func (s sqlAccounts) ByID(ctx context.Context, id string) (User, error) {
 
 var errDependency = errors.New("account dependency unavailable")
 
+// SameAuthority reuses the full session generation comparison inside commands.
+func SameAuthority(current, expected User) bool {
+	return current.ID == expected.ID && current.Enabled && current.Role == "admin" && current.AuthVersion > 0 && subtle.ConstantTimeCompare([]byte(authVersion(current)), []byte(authVersion(expected))) == 1
+}
+
 type Options struct {
 	Sessions Sessions
 	Origin   string

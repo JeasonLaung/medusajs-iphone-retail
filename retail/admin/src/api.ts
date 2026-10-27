@@ -18,7 +18,7 @@ function csrfCookie() {
   return ''
 }
 
-async function request<T>(path: string, options: { method?: 'GET' | 'POST'; body?: unknown; csrf?: string; signal?: AbortSignal } = {}, base = '/api/admin/auth/'): Promise<T> {
+async function request<T>(path: string, options: { method?: 'GET' | 'POST' | 'PATCH'; body?: unknown; csrf?: string; signal?: AbortSignal } = {}, base = '/api/admin/auth/'): Promise<T> {
   const controller = new AbortController()
   const abort = () => controller.abort()
   options.signal?.addEventListener('abort', abort, { once: true })
@@ -52,7 +52,14 @@ export type ProductSummary = { id: string; title: string; handle: string; status
 export type ProductList = { products: ProductSummary[]; count: number; limit: number; offset: number }
 export type ProductImage = {id:string;url:string;rank:number}
 export type ProductOption = {id:string;title:string;values:{id:string;value:string;rank:number|null}[]}
-export type ProductDetail = ProductSummary & {subtitle:string|null;description:string|null;options:ProductOption[];images:ProductImage[]}
+export type ProductDetail = ProductSummary & {revision:string;subtitle:string|null;description:string|null;options:ProductOption[];images:ProductImage[]}
+export type ProductEdit = {operation_id:string;expected_revision:string;title:string;subtitle:string|null;description:string|null;status:ProductSummary['status']}
+export async function editProduct(id:string,body:ProductEdit):Promise<void> {
+  const csrf=csrfCookie()
+  if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+  const result=await request<{revision:string;replayed:boolean}>(`products/${encodeURIComponent(id)}`,{method:'PATCH',csrf,body},'/api/admin/')
+  if(!result||typeof result.revision!=='string'||!/^[a-f0-9]{64}$/.test(result.revision)||typeof result.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}
 export type VariantDetail = {id:string;product_id:string;title:string;sku:string|null;thumbnail:string|null;variant_rank:number|null;manage_inventory:boolean;allow_backorder:boolean;options:{id:string;option_id:string;value:string}[];unassigned_option_value_ids:string[];configuration_complete:boolean;images:ProductImage[]}
 export type VariantList = {variants:VariantDetail[];count:number;limit:number;offset:number}
 const nullableText=(value:unknown)=>value===null||typeof value==='string'
@@ -61,8 +68,9 @@ const projectImages=(images:ProductImage[])=>images.map(({id,url,rank})=>({id,ur
 export async function productDetail(id:string,signal:AbortSignal):Promise<ProductDetail> {
   const data=await request<{product:ProductDetail}>(`products/${encodeURIComponent(id)}`,{signal},'/api/admin/')
   const p=data?.product
+  if(typeof p?.revision!=='string'||!/^[a-f0-9]{64}$/.test(p.revision))throw new APIError(0,'request.invalid_response')
   if(!p||p.id!==id||typeof p.title!=='string'||typeof p.handle!=='string'||!['draft','proposed','published','rejected'].includes(p.status)||!nullableText(p.subtitle)||!nullableText(p.description)||!nullableText(p.thumbnail)||!nullableText(p.collection_id)||typeof p.created_at!=='string'||typeof p.updated_at!=='string'||!Number.isFinite(Date.parse(p.created_at))||!Number.isFinite(Date.parse(p.updated_at))||!Number.isSafeInteger(p.variant_count)||p.variant_count<0||!Array.isArray(p.options)||!imagesValid(p.images)||!p.options.every(o=>o&&typeof o.id==='string'&&typeof o.title==='string'&&Array.isArray(o.values)&&o.values.every(v=>v&&typeof v.id==='string'&&typeof v.value==='string'&&(v.rank===null||Number.isSafeInteger(v.rank)))))throw new APIError(0,'request.invalid_response')
-  return {id:p.id,title:p.title,handle:p.handle,status:p.status,thumbnail:p.thumbnail,collection_id:p.collection_id,created_at:p.created_at,updated_at:p.updated_at,variant_count:p.variant_count,subtitle:p.subtitle,description:p.description,images:projectImages(p.images),options:p.options.map(({id,title,values})=>({id,title,values:values.map(({id,value,rank})=>({id,value,rank}))}))}
+  return {id:p.id,title:p.title,handle:p.handle,status:p.status,thumbnail:p.thumbnail,collection_id:p.collection_id,created_at:p.created_at,updated_at:p.updated_at,variant_count:p.variant_count,revision:p.revision,subtitle:p.subtitle,description:p.description,images:projectImages(p.images),options:p.options.map(({id,title,values})=>({id,title,values:values.map(({id,value,rank})=>({id,value,rank}))}))}
 }
 export async function productVariants(id:string,query:URLSearchParams,signal:AbortSignal):Promise<VariantList>{
   const data=await request<VariantList>(`products/${encodeURIComponent(id)}/variants?${query}`,{signal},'/api/admin/')
