@@ -179,6 +179,18 @@ INSERT INTO singleton_counter VALUES(true,0);''')
         denied('singleton-second-true-key-denied', 'INSERT INTO singleton_counter VALUES(true,1);', 1062)
         denied('singleton-negative-value-denied', 'UPDATE singleton_counter SET last_id=-1 WHERE id=true;', 3819)
         expect('counter-transaction-rollback', 'START TRANSACTION; UPDATE singleton_counter SET last_id=1 WHERE id=true; ROLLBACK; SELECT last_id FROM singleton_counter;', 0)
+        sql('''CREATE TABLE participation_unique (
+id INT PRIMARY KEY,parent_id VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin,
+value_text VARCHAR(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin,
+deleted_at DATETIME(6),is_exclusive BOOLEAN NOT NULL CHECK(is_exclusive IN(0,1)),
+active_flag TINYINT GENERATED ALWAYS AS(IF(deleted_at IS NULL AND is_exclusive=0,1,NULL)) STORED,
+UNIQUE KEY exact_values(parent_id,value_text,active_flag)) ENGINE=InnoDB;
+INSERT INTO participation_unique(id,parent_id,value_text,is_exclusive) VALUES(1,'parent','value',false);''')
+        denied('participation-flag-full-composite-active-duplicate-denied', "INSERT INTO participation_unique(id,parent_id,value_text,is_exclusive) VALUES(2,'parent','value',false);", 1062)
+        sql("UPDATE participation_unique SET deleted_at='2026-10-27' WHERE id=1; INSERT INTO participation_unique(id,parent_id,value_text,is_exclusive) VALUES(2,'parent','value',false),(3,'parent','value',true),(4,'parent','value',true),(5,NULL,'value',false),(6,NULL,'value',false),(7,'parent',NULL,false),(8,'parent',NULL,false);")
+        expect('participation-flag-deleted-exclusive-and-null-duplicates-allowed', 'SELECT COUNT(*) FROM participation_unique;', 8)
+        denied('participation-flag-restore-conflict-denied', 'UPDATE participation_unique SET deleted_at=NULL WHERE id=1;', 1062)
+        denied('participation-flag-exclusive-to-shared-conflict-denied', 'UPDATE participation_unique SET is_exclusive=false WHERE id=3;', 1062)
         review_file = ROOT / 'docs/migration/mysql-relational-review.sql'
         review_bytes = review_file.read_bytes().replace(b'\r\n', b'\n')
         review_report = json.loads((ROOT / 'docs/migration/mysql-relational-review.json').read_text(encoding='utf-8'))
@@ -186,8 +198,10 @@ INSERT INTO singleton_counter VALUES(true,0);''')
             raise AssertionError('Review DDL checksum mismatch')
         sql('CREATE DATABASE relational_fixture CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin; USE relational_fixture;\n' + review_bytes.decode())
         expect('all-review-tables-created', "SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA='relational_fixture';", 159)
-        expect('all-review-source-columns-created', "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='relational_fixture';", 1691)
+        expect('all-review-source-columns-created', "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='relational_fixture' AND GENERATION_EXPRESSION='';", 1691)
+        expect('all-review-generated-index-columns-created', "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='relational_fixture' AND GENERATION_EXPRESSION<>'';", review_report['counts']['generated_index_columns'])
         expect('every-review-table-innodb', "SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA='relational_fixture' AND ENGINE='InnoDB';", 159)
+        expect('all-emitted-review-indexes-created', "SELECT COUNT(DISTINCT TABLE_NAME,INDEX_NAME) FROM information_schema.STATISTICS WHERE TABLE_SCHEMA='relational_fixture' AND INDEX_NAME LIKE 'idx_source_%';", review_report['counts']['emitted_indexes'])
         report = {'format_version': 1, 'scope': 'Actual MySQL dialect on artificial minimal DDL/data only; not full domain migrations, source import, allocator concurrency or application validation acceptance.',
                   'image': 'mysql:8.4', 'local_image_id': image.stdout.strip(), 'server_version': version,
                   'isolation': {'network': 'none', 'published_ports': 0, 'cpus': 1, 'memory_mib': 768, 'data_tmpfs_mib': 512, 'source_business_connection': False},
@@ -197,7 +211,7 @@ INSERT INTO singleton_counter VALUES(true,0);''')
                       'Reject excess timestamp precision or explicitly normalize with documented policy; strict mode rounds',
                       'Convert source instants to UTC before DATETIME(6), configure every connection UTC',
                       'Composite long-text identity needs full-value transactional registry/collision verification, never prefix uniqueness'],
-                  'remaining': ['Full 159-table target DDL and complete source constraints', 'Exact JSON/number/time importer validation and real data reconciliation', 'Concurrency, failure recovery, Gin and UI behavior']}
+                  'remaining': ['Remaining held source constraints/indexes and formal domain migrations', 'Exact JSON/number/time importer validation and real data reconciliation', 'Concurrency, failure recovery, Gin and UI behavior']}
     finally:
         password = ''
         if container:

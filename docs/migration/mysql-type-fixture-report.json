@@ -217,6 +217,25 @@
       "passed": true
     },
     {
+      "name": "participation-flag-full-composite-active-duplicate-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "participation-flag-deleted-exclusive-and-null-duplicates-allowed",
+      "passed": true
+    },
+    {
+      "name": "participation-flag-restore-conflict-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "participation-flag-exclusive-to-shared-conflict-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
       "name": "all-review-tables-created",
       "passed": true
     },
@@ -225,11 +244,19 @@
       "passed": true
     },
     {
+      "name": "all-review-generated-index-columns-created",
+      "passed": true
+    },
+    {
       "name": "every-review-table-innodb",
+      "passed": true
+    },
+    {
+      "name": "all-emitted-review-indexes-created",
       "passed": true
     }
   ],
-  "relational_review_ddl_sha256": "4f54bb27c9beff49eb168a08733fffa8989271e0da2dea4bc99455062ed762c7",
+  "relational_review_ddl_sha256": "b836f4097047912a3f6a764dfd088e79e54ebafe7bec4e3d05af4e306480e46a",
   "required_application_checks": [
     "Reject decimal scale/integer overflow before SQL; strict mode rounds excess scale",
     "Reject excess timestamp precision or explicitly normalize with documented policy; strict mode rounds",
@@ -237,7 +264,7 @@
     "Composite long-text identity needs full-value transactional registry/collision verification, never prefix uniqueness"
   ],
   "remaining": [
-    "Full 159-table target DDL and complete source constraints",
+    "Remaining held source constraints/indexes and formal domain migrations",
     "Exact JSON/number/time importer validation and real data reconciliation",
     "Concurrency, failure recovery, Gin and UI behavior"
   ],

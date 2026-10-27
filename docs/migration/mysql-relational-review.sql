@@ -2597,6 +2597,874 @@ CREATE TABLE `webhook_endpoints` (
   CONSTRAINT `ck_source_3050abe7d5a5f12382774b6f` CHECK (`provider` IN ('feishu','wecom','dingtalk','slack','mattermost','generic'))
 ) ENGINE=InnoDB ROW_FORMAT=DYNAMIC DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin;
 
+CREATE INDEX `idx_source_f6a03a9c77a0a750f40867b4` ON `payment_account_holders` (`deleted_at`);
+
+CREATE INDEX `idx_source_5331134eceb3b5ece762ff7c` ON `after_sales_requests` (`deleted_at`);
+
+CREATE INDEX `idx_source_d646959007d5ca9c5fcba3c9` ON `after_sales_requests` (`order_id`);
+
+CREATE INDEX `idx_source_03d849d3a36aafe7997a9ba3` ON `buyback_device_links` (`deleted_at`);
+
+ALTER TABLE `buyback_device_links` ADD COLUMN `active_key_a992cbf854fabeef9a0641cd` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_a992cbf854fabeef9a0641cd` ON `buyback_device_links` (`device_id`,`active_key_a992cbf854fabeef9a0641cd`);
+
+ALTER TABLE `buyback_device_links` ADD COLUMN `active_key_ddc9e6d8547e79f2f412ce3a` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_ddc9e6d8547e79f2f412ce3a` ON `buyback_device_links` (`item_id`,`active_key_ddc9e6d8547e79f2f412ce3a`);
+
+CREATE INDEX `idx_source_2a4debcc1bb4a084b22ee36f` ON `buyback_photos` (`deleted_at`);
+
+CREATE INDEX `idx_source_d276e5fc9d112f56bd7b38a4` ON `buyback_photos` (`request_id`,`item_id`);
+
+CREATE INDEX `idx_source_d18a2f41c60fa4b0721fd63a` ON `buyback_prices` (`deleted_at`);
+
+CREATE INDEX `idx_source_983d457b432e7cfa9b9cdd95` ON `buyback_requests` (`customer_id`,`created_at`);
+
+CREATE INDEX `idx_source_89b5283d68a444023776cf7f` ON `buyback_requests` (`deleted_at`);
+
+CREATE INDEX `idx_source_f72dc889790cd323b3b0866b` ON `buyback_requests` (`status`,`created_at`);
+
+CREATE INDEX `idx_source_cc67305c791f4262650bfe94` ON `payment_captures` (`deleted_at`);
+
+CREATE INDEX `idx_source_52b7020667a98d464a344fe8` ON `payment_captures` (`payment_id`);
+
+CREATE INDEX `idx_source_afe30d8df4d4783030ef3227` ON `carts` (`billing_address_id`);
+
+CREATE INDEX `idx_source_cc2d5fa6f9f0fbf6ef27e343` ON `carts` (`currency_code`);
+
+CREATE INDEX `idx_source_e37988ad00abfb338e3bbd45` ON `carts` (`customer_id`);
+
+CREATE INDEX `idx_source_7c32e671380db62a0efcc203` ON `carts` (`deleted_at`);
+
+CREATE INDEX `idx_source_9820892ef7845e43c4389c30` ON `carts` (`region_id`);
+
+CREATE INDEX `idx_source_a31f158bf9b3b15a7ca65bc0` ON `carts` (`sales_channel_id`);
+
+CREATE INDEX `idx_source_fa4e32ebb18bf36a98960d53` ON `carts` (`shipping_address_id`);
+
+CREATE INDEX `idx_source_69f4323efa5a2f54960ef933` ON `cart_addresses` (`deleted_at`);
+
+CREATE INDEX `idx_source_315bb559911a147cb8ad9608` ON `cart_line_items` (`cart_id`);
+
+CREATE INDEX `idx_source_6073f516948b2dcbb8035974` ON `cart_line_items` (`deleted_at`);
+
+CREATE INDEX `idx_source_13ef1cd397d9edb91e4f318f` ON `cart_line_items` (`product_id`);
+
+CREATE INDEX `idx_source_0f85549db9ae740d4c87f2d1` ON `cart_line_items` (`variant_id`);
+
+CREATE INDEX `idx_source_2857b95b80ca4a668f83c5b2` ON `cart_line_adjustments` (`deleted_at`);
+
+CREATE INDEX `idx_source_205ed0b29f1bd44948096349` ON `cart_line_adjustments` (`item_id`);
+
+CREATE INDEX `idx_source_36d43f548f98e42e456e5988` ON `cart_line_adjustments` (`promotion_id`);
+
+CREATE INDEX `idx_source_a40c10f643a554dc5420506b` ON `cart_line_tax_lines` (`deleted_at`);
+
+CREATE INDEX `idx_source_fbb6729b786caf5e08df64ee` ON `cart_line_tax_lines` (`item_id`);
+
+CREATE INDEX `idx_source_9dedf1990433945f5377b689` ON `cart_line_tax_lines` (`tax_rate_id`);
+
+CREATE INDEX `idx_source_04c652218f508db5e0c70b4a` ON `cart_payment_collections` (`cart_id`);
+
+CREATE INDEX `idx_source_6c7bf287c7c89e60e453d306` ON `cart_payment_collections` (`deleted_at`);
+
+CREATE INDEX `idx_source_4359f0c4d286fcf1319fcf12` ON `cart_payment_collections` (`id`);
+
+CREATE INDEX `idx_source_0e13994b0cf843d5fb9b779c` ON `cart_payment_collections` (`payment_collection_id`);
+
+CREATE INDEX `idx_source_7e6313c1a3046494f80e6a52` ON `cart_promotions` (`cart_id`);
+
+CREATE INDEX `idx_source_36065e50b67e6549cc8906f7` ON `cart_promotions` (`deleted_at`);
+
+CREATE INDEX `idx_source_82386a9a8af3f019981311db` ON `cart_promotions` (`id`);
+
+CREATE INDEX `idx_source_93fc35b323456e5087c5947b` ON `cart_promotions` (`promotion_id`);
+
+CREATE INDEX `idx_source_6e6c25279f48f0eddb142e47` ON `cart_shipping_methods` (`cart_id`);
+
+CREATE INDEX `idx_source_d05d9b04feb00e5328bec7b1` ON `cart_shipping_methods` (`deleted_at`);
+
+CREATE INDEX `idx_source_14c04b9a5bc2b21d9b10670f` ON `cart_shipping_methods` (`shipping_option_id`);
+
+CREATE INDEX `idx_source_2fad0350c183274f4df1708f` ON `cart_shipping_adjustments` (`deleted_at`);
+
+CREATE INDEX `idx_source_f6c72851105278a01b0b894b` ON `cart_shipping_adjustments` (`shipping_method_id`);
+
+CREATE INDEX `idx_source_3e79869f6a87bc981ad0cb7b` ON `cart_shipping_adjustments` (`promotion_id`);
+
+CREATE INDEX `idx_source_087dd7c70c9e46388f85f282` ON `cart_shipping_tax_lines` (`deleted_at`);
+
+CREATE INDEX `idx_source_cb5862298039c6122daefc06` ON `cart_shipping_tax_lines` (`shipping_method_id`);
+
+CREATE INDEX `idx_source_95407e89813bf58ff16da2b0` ON `cart_shipping_tax_lines` (`tax_rate_id`);
+
+CREATE INDEX `idx_source_f44ed5d828721b484944f221` ON `cart_credit_lines` (`cart_id`);
+
+CREATE INDEX `idx_source_6deafc7e0bad1887c5b1a5c3` ON `cart_credit_lines` (`deleted_at`);
+
+CREATE INDEX `idx_source_57fd489466a8ccdb6bb6df87` ON `historical_customer_subjects` (`deleted_at`);
+
+CREATE INDEX `idx_source_fd061842f7cf4ff812f71d62` ON `historical_customer_groups` (`deleted_at`);
+
+CREATE INDEX `idx_source_8cfe8ea5bf4aa7164d1ecfd9` ON `historical_customer_memberships` (`customer_group_id`);
+
+CREATE INDEX `idx_source_cfe7f43b4fa11b9a288893ba` ON `historical_customer_memberships` (`customer_id`);
+
+CREATE INDEX `idx_source_ea456e9934b5a20127243e09` ON `historical_customer_memberships` (`deleted_at`);
+
+CREATE INDEX `idx_source_b2e27da801f4718598de81df` ON `customer_notices` (`customer_id`,`created_at`);
+
+CREATE INDEX `idx_source_edcf2ebea54c5d10288cbc49` ON `customer_notices` (`customer_id`,`read_at`);
+
+CREATE INDEX `idx_source_527f67713fa82fab1460519c` ON `customer_notices` (`deleted_at`);
+
+CREATE INDEX `idx_source_61687548440acfb87a201cf2` ON `devices` (`deleted_at`);
+
+ALTER TABLE `devices` ADD COLUMN `active_key_fe4207e0a763f39cc5e0b1e9` TINYINT GENERATED ALWAYS AS (IF(`eid` IS NOT NULL AND `deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_fe4207e0a763f39cc5e0b1e9` ON `devices` (`eid`,`active_key_fe4207e0a763f39cc5e0b1e9`);
+
+ALTER TABLE `devices` ADD COLUMN `active_key_1ce9e7a2e7d84c2896b77595` TINYINT GENERATED ALWAYS AS (IF(`imei2` IS NOT NULL AND `deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_1ce9e7a2e7d84c2896b77595` ON `devices` (`imei2`,`active_key_1ce9e7a2e7d84c2896b77595`);
+
+ALTER TABLE `devices` ADD COLUMN `active_key_6d51059f132f40a249dd515c` TINYINT GENERATED ALWAYS AS (IF(`imei` IS NOT NULL AND `deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_6d51059f132f40a249dd515c` ON `devices` (`imei`,`active_key_6d51059f132f40a249dd515c`);
+
+ALTER TABLE `devices` ADD COLUMN `active_key_c9bd86c8979d2b5914ead3fb` TINYINT GENERATED ALWAYS AS (IF(`serial_number` IS NOT NULL AND `deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_c9bd86c8979d2b5914ead3fb` ON `devices` (`serial_number`,`active_key_c9bd86c8979d2b5914ead3fb`);
+
+CREATE INDEX `idx_source_36c763273943e92f9c9e2087` ON `devices` (`variant_id`,`location_id`,`state`);
+
+CREATE INDEX `idx_source_c35231deda3b3f9db639eb74` ON `device_assignments` (`deleted_at`);
+
+CREATE INDEX `idx_source_2860aee3b5133a461b7f51e3` ON `device_assignments` (`order_id`,`item_id`);
+
+CREATE INDEX `idx_source_c9729e4880fff943b5261f10` ON `device_events` (`deleted_at`);
+
+CREATE INDEX `idx_source_83925f6769ec1b1425101390` ON `device_events` (`device_id`);
+
+CREATE INDEX `idx_source_b822b869d3b5728e0883a7f5` ON `device_events` (`order_id`);
+
+CREATE INDEX `idx_source_11a22feb957cfb1827e03295` ON `device_sources` (`deleted_at`);
+
+ALTER TABLE `device_sources` ADD COLUMN `active_key_2a35c787dd96c557d1f04c69` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_2a35c787dd96c557d1f04c69` ON `device_sources` (`location_id`,`active_key_2a35c787dd96c557d1f04c69`);
+
+CREATE INDEX `idx_source_24272aa06f8ae38879e405e9` ON `device_supply_commitments` (`deleted_at`);
+
+ALTER TABLE `device_supply_commitments` ADD COLUMN `active_key_e2cf5fe6d73c0bdc0d27fd7a` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_e2cf5fe6d73c0bdc0d27fd7a` ON `device_supply_commitments` (`source_id`,`variant_id`,`active_key_e2cf5fe6d73c0bdc0d27fd7a`);
+
+CREATE INDEX `idx_source_c4cf9027f05700df0c5976fd` ON `device_variant_tracking` (`deleted_at`);
+
+ALTER TABLE `device_variant_tracking` ADD COLUMN `active_key_1199e512038860d7890f97f3` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_1199e512038860d7890f97f3` ON `device_variant_tracking` (`inventory_item_id`,`active_key_1199e512038860d7890f97f3`);
+
+ALTER TABLE `device_variant_tracking` ADD COLUMN `active_key_f4148bdf63c7b8312af8efa9` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_f4148bdf63c7b8312af8efa9` ON `device_variant_tracking` (`variant_id`,`active_key_f4148bdf63c7b8312af8efa9`);
+
+CREATE INDEX `idx_source_6756012390d64a32a448b003` ON `fulfillments` (`deleted_at`);
+
+CREATE INDEX `idx_source_b5f9ec200932f70954872bb2` ON `fulfillments` (`location_id`);
+
+CREATE INDEX `idx_source_7a9794bfd95daee6778e41b7` ON `fulfillments` (`shipping_option_id`);
+
+CREATE INDEX `idx_source_f3e0988b3e6158c3802cc2f4` ON `fulfillment_addresses` (`deleted_at`);
+
+CREATE INDEX `idx_source_1851017eeb0966bddbfa8bca` ON `fulfillment_items` (`deleted_at`);
+
+CREATE INDEX `idx_source_d9fc401b6e96618395b58b76` ON `fulfillment_items` (`fulfillment_id`);
+
+CREATE INDEX `idx_source_ee34b9aa8280ffcd0717b9ba` ON `fulfillment_items` (`inventory_item_id`);
+
+CREATE INDEX `idx_source_86cc5d425824b45bce99433b` ON `fulfillment_items` (`line_item_id`);
+
+CREATE INDEX `idx_source_51df855af91be622ec152b43` ON `fulfillment_labels` (`deleted_at`);
+
+CREATE INDEX `idx_source_4d1a5b8bd191a728960899a4` ON `fulfillment_labels` (`fulfillment_id`);
+
+CREATE INDEX `idx_source_b1ae793e383fd7a74bd3c754` ON `fulfillment_providers` (`deleted_at`);
+
+CREATE INDEX `idx_source_9b6717e127c71559c2136868` ON `fulfillment_sets` (`deleted_at`);
+
+CREATE INDEX `idx_source_820404db78243e9871993a21` ON `fulfillment_geo_zones` (`deleted_at`);
+
+CREATE INDEX `idx_source_cf6da5b2732f19b0cfa0e8d9` ON `fulfillment_geo_zones` (`service_zone_id`);
+
+CREATE INDEX `idx_source_2f79595ddad9cdaffaea865b` ON `catalog_images` (`deleted_at`);
+
+CREATE INDEX `idx_source_e25f8c01a191fa1868eb692f` ON `catalog_images` (`product_id`);
+
+CREATE INDEX `idx_source_7dbdff864f562a575f8c2aeb` ON `catalog_images` (`rank`);
+
+CREATE INDEX `idx_source_709c498700d8717e317617f6` ON `catalog_images` (`rank`,`product_id`);
+
+CREATE INDEX `idx_source_90baac2acc18aa3e2f64465a` ON `inventory_items` (`deleted_at`);
+
+ALTER TABLE `inventory_items` ADD COLUMN `active_key_64bad780756ba441a34edf3c` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_64bad780756ba441a34edf3c` ON `inventory_items` (`sku`,`active_key_64bad780756ba441a34edf3c`);
+
+CREATE INDEX `idx_source_decec4b6666d9efa414db8cd` ON `inventory_levels` (`deleted_at`);
+
+CREATE INDEX `idx_source_b29251b9282c08ffde6f89b7` ON `inventory_levels` (`inventory_item_id`);
+
+CREATE INDEX `idx_source_f66e66fd62c4e815c3b26fc0` ON `inventory_levels` (`location_id`);
+
+ALTER TABLE `inventory_levels` ADD COLUMN `active_key_7a2a13286c517dcb0d8626a9` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_7a2a13286c517dcb0d8626a9` ON `inventory_levels` (`inventory_item_id`,`location_id`,`active_key_7a2a13286c517dcb0d8626a9`);
+
+CREATE INDEX `idx_source_e5bd10a9f46db3af28eef16a` ON `fulfillment_location_providers` (`deleted_at`);
+
+CREATE INDEX `idx_source_76e5897994bd6c48b9513e77` ON `fulfillment_location_providers` (`fulfillment_provider_id`);
+
+CREATE INDEX `idx_source_763b60d4ec12957662e8a833` ON `fulfillment_location_providers` (`id`);
+
+CREATE INDEX `idx_source_a3bf07573c3e494227e8b1b7` ON `fulfillment_location_providers` (`stock_location_id`);
+
+CREATE INDEX `idx_source_8650b5a9a55ee8bd3a0f6c37` ON `fulfillment_location_sets` (`deleted_at`);
+
+CREATE INDEX `idx_source_2e8845a9dd9ec2ddf25e1589` ON `fulfillment_location_sets` (`fulfillment_set_id`);
+
+CREATE INDEX `idx_source_537c3f536cfee5fa4504eea2` ON `fulfillment_location_sets` (`id`);
+
+CREATE INDEX `idx_source_64776c239c0964f93f85b47e` ON `fulfillment_location_sets` (`stock_location_id`);
+
+CREATE INDEX `idx_source_a0e2f55b0f9c49abc2a431a5` ON `mail_accounts` (`deleted_at`);
+
+CREATE INDEX `idx_source_ed2e5cbf4bc0f95b411d3c88` ON `mail_campaigns` (`deleted_at`);
+
+CREATE INDEX `idx_source_279e7222be1a8ed5e54d754d` ON `mail_campaigns` (`status`);
+
+CREATE INDEX `idx_source_f9d68f2ed0a594c51ca98bfe` ON `mail_contacts` (`deleted_at`);
+
+ALTER TABLE `mail_deliveries` ADD COLUMN `active_key_ae6e6b5750bbfbe4932c7c4e` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_ae6e6b5750bbfbe4932c7c4e` ON `mail_deliveries` (`campaign_id`,`contact_id`,`active_key_ae6e6b5750bbfbe4932c7c4e`);
+
+CREATE INDEX `idx_source_84419f419dafa5b39832bc2d` ON `mail_deliveries` (`deleted_at`);
+
+CREATE INDEX `idx_source_c2562e832d573debd9fa7c94` ON `mail_deliveries` (`provider_id`);
+
+CREATE INDEX `idx_source_48d052f964dbaa0316e07fe7` ON `mail_events` (`deleted_at`);
+
+ALTER TABLE `mail_events` ADD COLUMN `active_key_a06087372caafa5bee6bad48` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_a06087372caafa5bee6bad48` ON `mail_events` (`event_id`,`active_key_a06087372caafa5bee6bad48`);
+
+CREATE INDEX `idx_source_af0760ed437beeb611843907` ON `mail_messages` (`account_id`,`folder`);
+
+ALTER TABLE `mail_messages` ADD COLUMN `active_key_83fb94f85745e2f97aeda1c0` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_83fb94f85745e2f97aeda1c0` ON `mail_messages` (`account_id`,`provider_id`,`active_key_83fb94f85745e2f97aeda1c0`);
+
+CREATE INDEX `idx_source_eae9e438d7e6d2d77e5c1e1c` ON `mail_messages` (`deleted_at`);
+
+CREATE INDEX `idx_source_c6ee1472f30dd9981b0a3060` ON `mail_messages` (`folder`,`read`);
+
+CREATE INDEX `idx_source_0a0529ef4fcd22f939a898a1` ON `mail_templates` (`deleted_at`);
+
+CREATE INDEX `idx_source_6c4f2c2e197290ef859d71ad` ON `mollie_configs` (`deleted_at`);
+
+CREATE INDEX `idx_source_7ec792fff1a2299f87efb4ff` ON `historical_notifications` (`deleted_at`);
+
+CREATE INDEX `idx_source_7b12bb3434af92a30b7d730e` ON `historical_notifications` (`provider_id`);
+
+CREATE INDEX `idx_source_315ca286758b958d955dd5cf` ON `historical_notifications` (`receiver_id`);
+
+CREATE INDEX `idx_source_5e564279b91f5aafb084798b` ON `notification_providers` (`deleted_at`);
+
+CREATE INDEX `idx_source_4b3b70978cecc008cb75854d` ON `orders` (`billing_address_id`);
+
+CREATE INDEX `idx_source_28f36cf3495859bfb06ba3d7` ON `orders` (`currency_code`);
+
+ALTER TABLE `orders` ADD COLUMN `active_key_7e690e4a573d7580a53b3b47` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_7e690e4a573d7580a53b3b47` ON `orders` (`custom_display_id`,`active_key_7e690e4a573d7580a53b3b47`);
+
+CREATE INDEX `idx_source_3b07293ac2e02971e20403e4` ON `orders` (`customer_id`);
+
+CREATE INDEX `idx_source_fe53abc99a007f9fa136cf33` ON `orders` (`deleted_at`);
+
+CREATE INDEX `idx_source_f2e7642a47d96c5098efef59` ON `orders` (`display_id`);
+
+CREATE INDEX `idx_source_c6a06021e62c5368dd026bb7` ON `orders` (`is_draft_order`);
+
+CREATE INDEX `idx_source_f49ed93fbd74addbc0e6a0ff` ON `orders` (`region_id`);
+
+CREATE INDEX `idx_source_44368dbfab2a42dabf8d07c1` ON `orders` (`sales_channel_id`);
+
+CREATE INDEX `idx_source_20458946502264a94477f517` ON `orders` (`shipping_address_id`);
+
+CREATE INDEX `idx_source_885e719ebbcdc38371618e2a` ON `order_addresses` (`customer_id`);
+
+CREATE INDEX `idx_source_7db3419be6a4ca55cf35dfc3` ON `order_addresses` (`deleted_at`);
+
+CREATE INDEX `idx_source_4ce612ded5ce3e17cdae6c32` ON `order_carts` (`cart_id`);
+
+CREATE INDEX `idx_source_a75f3f14adead4e3e8b4dc16` ON `order_carts` (`deleted_at`);
+
+CREATE INDEX `idx_source_19306507c16318ec34fbb7f8` ON `order_carts` (`id`);
+
+CREATE INDEX `idx_source_a6c2f12ea2519b42a1ce6ac9` ON `order_carts` (`order_id`);
+
+CREATE INDEX `idx_source_209ff5a7ce45617391d711ef` ON `order_changes` (`claim_id`);
+
+CREATE INDEX `idx_source_21b4d6ec452dbc8fbbbf5ba1` ON `order_changes` (`deleted_at`);
+
+CREATE INDEX `idx_source_8c2fecae5b71a7c00eaaf49e` ON `order_changes` (`exchange_id`);
+
+CREATE INDEX `idx_source_5e49344085955fc2cbe39ca4` ON `order_changes` (`order_id`);
+
+CREATE INDEX `idx_source_fdab94548bfb0a158fce0a62` ON `order_changes` (`order_id`,`version`);
+
+CREATE INDEX `idx_source_9bdecb1054c7f84440969b62` ON `order_changes` (`return_id`);
+
+CREATE INDEX `idx_source_6922ec84be0dc754bdcc41a3` ON `order_changes` (`status`);
+
+CREATE INDEX `idx_source_617704637b21ccfacc5811c4` ON `order_changes` (`order_id`,`version`);
+
+CREATE INDEX `idx_source_e9ee2b8b988b31d26ec1c0fb` ON `order_change_actions` (`claim_id`);
+
+CREATE INDEX `idx_source_8390fb1009b7038173296186` ON `order_change_actions` (`deleted_at`);
+
+CREATE INDEX `idx_source_9c2a85e307c115120ebdef31` ON `order_change_actions` (`exchange_id`);
+
+CREATE INDEX `idx_source_c913e826616edae0cd3c2899` ON `order_change_actions` (`order_change_id`);
+
+CREATE INDEX `idx_source_11fc737da18cb246244029a8` ON `order_change_actions` (`order_id`);
+
+CREATE INDEX `idx_source_ae065333f73d4a4b952b8edb` ON `order_change_actions` (`ordering`);
+
+CREATE INDEX `idx_source_32068d12deeb9cdfb92b8e10` ON `order_change_actions` (`return_id`);
+
+CREATE INDEX `idx_source_b936db4de10bf5e9ecc7ecd0` ON `order_claims` (`deleted_at`);
+
+CREATE INDEX `idx_source_4bc6bc2dc3f2d56bb3957163` ON `order_claims` (`display_id`);
+
+CREATE INDEX `idx_source_d2da32a710adda21dff2d920` ON `order_claims` (`order_id`);
+
+CREATE INDEX `idx_source_a10a8338919a9ede9047bd01` ON `order_claims` (`return_id`);
+
+CREATE INDEX `idx_source_e859302a24b5c2f50109b635` ON `order_claim_items` (`claim_id`);
+
+CREATE INDEX `idx_source_f6a5a1fa2f5675e841f13a42` ON `order_claim_items` (`deleted_at`);
+
+CREATE INDEX `idx_source_2d6c1e955107b76860fd31e3` ON `order_claim_items` (`item_id`);
+
+CREATE INDEX `idx_source_f923890cc576e91aa29c7a83` ON `order_claim_item_images` (`claim_item_id`);
+
+CREATE INDEX `idx_source_fdc6541175c239860f437f3d` ON `order_claim_item_images` (`deleted_at`);
+
+CREATE INDEX `idx_source_089a377ef28ce85b70b5e5f1` ON `order_credit_lines` (`deleted_at`);
+
+CREATE INDEX `idx_source_a2716537254ec8d713c75c8c` ON `order_credit_lines` (`order_id`);
+
+CREATE INDEX `idx_source_6f3380b4fe166615c86c49ab` ON `order_credit_lines` (`order_id`,`version`);
+
+CREATE INDEX `idx_source_5580491d5fa59464cd3699ef` ON `order_exchanges` (`deleted_at`);
+
+CREATE INDEX `idx_source_97634f6672872a67c41a5cbc` ON `order_exchanges` (`display_id`);
+
+CREATE INDEX `idx_source_3e097433610a739b4f1afad0` ON `order_exchanges` (`order_id`);
+
+CREATE INDEX `idx_source_bb9743890fdd715e6a125c8e` ON `order_exchanges` (`return_id`);
+
+CREATE INDEX `idx_source_649415d4edf010de1e744028` ON `order_exchange_items` (`deleted_at`);
+
+CREATE INDEX `idx_source_4652b189bfff42ec9b391d85` ON `order_exchange_items` (`exchange_id`);
+
+CREATE INDEX `idx_source_74dd784a1567f82d5d3a5e4e` ON `order_exchange_items` (`item_id`);
+
+CREATE INDEX `idx_source_e7094b1f67ff836e04878a7e` ON `order_fulfillments` (`deleted_at`);
+
+CREATE INDEX `idx_source_e532ef33e7364379e791e9ba` ON `order_fulfillments` (`fulfillment_id`);
+
+CREATE INDEX `idx_source_33dee520443c73cba25c9ebb` ON `order_fulfillments` (`id`);
+
+CREATE INDEX `idx_source_213c36c0127498c5c0010982` ON `order_fulfillments` (`order_id`);
+
+CREATE INDEX `idx_source_8b195e1e617e7541439b4d73` ON `order_items` (`deleted_at`);
+
+CREATE INDEX `idx_source_94d791cb986be412fcbc52fb` ON `order_items` (`item_id`);
+
+CREATE INDEX `idx_source_bb5f9b9d98296292b1a5acd0` ON `order_items` (`order_id`);
+
+CREATE INDEX `idx_source_dcf3f4d73e9efd5bbb9ed892` ON `order_items` (`order_id`,`version`);
+
+CREATE INDEX `idx_source_90c6c41801700bba0dad833a` ON `order_line_items` (`product_type_id`);
+
+CREATE INDEX `idx_source_f2b3c07fb2ce0b290353fcf9` ON `order_line_items` (`product_id`);
+
+CREATE INDEX `idx_source_fff9df4af2b01edc1acc4b66` ON `order_line_items` (`variant_id`);
+
+CREATE INDEX `idx_source_08554fbfe2809a43b476dc16` ON `order_line_adjustments` (`item_id`);
+
+CREATE INDEX `idx_source_278802566c131523725ad39c` ON `order_line_tax_lines` (`item_id`);
+
+CREATE INDEX `idx_source_86334025c09219f8fe4d0b69` ON `order_payment_collections` (`deleted_at`);
+
+CREATE INDEX `idx_source_2562a349f4f7f4cd781c514d` ON `order_payment_collections` (`id`);
+
+CREATE INDEX `idx_source_42959d37033eb33403f5a83e` ON `order_payment_collections` (`order_id`);
+
+CREATE INDEX `idx_source_93ac3f2c33af75c7da1ac8e9` ON `order_payment_collections` (`payment_collection_id`);
+
+CREATE INDEX `idx_source_71e41aa27ba36a79f813a4be` ON `order_promotions` (`deleted_at`);
+
+CREATE INDEX `idx_source_64ba9ef88e0f5d4217973d1f` ON `order_promotions` (`id`);
+
+CREATE INDEX `idx_source_18248320e40e1bd80953713b` ON `order_promotions` (`order_id`);
+
+CREATE INDEX `idx_source_4c5a778a8383ec67d4c870f7` ON `order_promotions` (`promotion_id`);
+
+CREATE INDEX `idx_source_91e062c819fef96503d01c85` ON `order_shipping_versions` (`claim_id`);
+
+CREATE INDEX `idx_source_3a40ba41d70a443eb41b99ee` ON `order_shipping_versions` (`deleted_at`);
+
+CREATE INDEX `idx_source_8807b09de9ead7e749827cde` ON `order_shipping_versions` (`exchange_id`);
+
+CREATE INDEX `idx_source_05e699ad2e690528a9d0fef8` ON `order_shipping_versions` (`shipping_method_id`);
+
+CREATE INDEX `idx_source_d351c62423baaba8ef2dee4f` ON `order_shipping_versions` (`order_id`);
+
+CREATE INDEX `idx_source_977b7399774182c79990b137` ON `order_shipping_versions` (`order_id`,`version`);
+
+CREATE INDEX `idx_source_ee68dfd229956ae14ac2fa66` ON `order_shipping_versions` (`return_id`);
+
+CREATE INDEX `idx_source_662ee35bbbae28fdbe6abec7` ON `order_shipping_versions` (`shipping_method_id`);
+
+CREATE INDEX `idx_source_89bf19b3d5be38a3fabb6846` ON `order_shipping_methods` (`shipping_option_id`);
+
+CREATE INDEX `idx_source_e3a68c70310fab54d71bbeb8` ON `order_shipping_adjustments` (`shipping_method_id`);
+
+ALTER TABLE `order_shipping_adjustments` ADD COLUMN `active_key_ea58f9d7444a63c8765037c7` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_ea58f9d7444a63c8765037c7` ON `order_shipping_adjustments` (`version`,`shipping_method_id`,`active_key_ea58f9d7444a63c8765037c7`);
+
+CREATE INDEX `idx_source_ea8e6fb0ed8bd736952ede12` ON `order_shipping_tax_lines` (`shipping_method_id`);
+
+CREATE INDEX `idx_source_5afa06bf1680a01a1ae3bf5e` ON `order_summaries` (`deleted_at`);
+
+CREATE INDEX `idx_source_9612efb7adab55453e0b8d2b` ON `order_summaries` (`order_id`,`version`);
+
+CREATE INDEX `idx_source_ab4a75ea890c617753c2d7a2` ON `order_transactions` (`claim_id`);
+
+CREATE INDEX `idx_source_404eced94a07409c9acef226` ON `order_transactions` (`currency_code`);
+
+CREATE INDEX `idx_source_9f01b7471fa241e359d53ce0` ON `order_transactions` (`exchange_id`);
+
+CREATE INDEX `idx_source_cf53d0985d193a0dc1acff44` ON `order_transactions` (`order_id`);
+
+CREATE INDEX `idx_source_9c14b44add3ce7be09534902` ON `order_transactions` (`order_id`,`version`);
+
+CREATE INDEX `idx_source_1b71b0a2b53cea79d88a8d2b` ON `order_transactions` (`reference_id`);
+
+CREATE INDEX `idx_source_6d95b40971b673f40fdd0e20` ON `order_transactions` (`return_id`);
+
+CREATE INDEX `idx_source_b711b1af669676f5db0c04c5` ON `payments` (`deleted_at`);
+
+CREATE INDEX `idx_source_bc086049f3f2d3050171d353` ON `payments` (`payment_collection_id`);
+
+CREATE INDEX `idx_source_b787c6d7b956f8db4578fd64` ON `payments` (`payment_session_id`);
+
+ALTER TABLE `payments` ADD COLUMN `active_key_ab1b6a4ef5fc2e255bd0cdb4` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_ab1b6a4ef5fc2e255bd0cdb4` ON `payments` (`payment_session_id`,`active_key_ab1b6a4ef5fc2e255bd0cdb4`);
+
+CREATE INDEX `idx_source_c7bd078f9d675258c1a376c6` ON `payments` (`provider_id`);
+
+CREATE INDEX `idx_source_a14fe382d304c17e31c2d0fb` ON `payment_collections` (`deleted_at`);
+
+CREATE INDEX `idx_source_72bd56ea6b19f1483ae5c109` ON `payment_providers` (`deleted_at`);
+
+CREATE INDEX `idx_source_b9248659997fb45196ae7980` ON `payment_sessions` (`deleted_at`);
+
+CREATE INDEX `idx_source_42b8abed96c928be0b8c439c` ON `payment_sessions` (`payment_collection_id`);
+
+CREATE INDEX `idx_source_50b9b3ad657e8566b91fa848` ON `paypal_connections` (`deleted_at`);
+
+CREATE INDEX `idx_source_629f30612ebda45d9a34bb35` ON `paypal_legacy_metrics` (`deleted_at`);
+
+CREATE INDEX `idx_source_4e1e4f5c6d8019bd299a5d3d` ON `paypal_settings` (`deleted_at`);
+
+CREATE INDEX `idx_source_2bc8bd63f420cbc2e5ad6042` ON `paypal_webhook_events` (`deleted_at`);
+
+CREATE INDEX `idx_source_39a55e48ec38a5627d35a96b` ON `paypal_webhook_events` (`transmission_id`);
+
+CREATE UNIQUE INDEX `idx_source_c678845d185072689027e5d4` ON `paypal_webhook_events` (`event_id`);
+
+CREATE INDEX `idx_source_7e5f619702be034a691c96c5` ON `pricing_prices` (`currency_code`);
+
+CREATE INDEX `idx_source_4d3970d44764243c44d8a6cf` ON `pricing_prices` (`deleted_at`);
+
+CREATE INDEX `idx_source_dba160da1bd09f780ccb6e8d` ON `pricing_prices` (`price_list_id`);
+
+CREATE INDEX `idx_source_30d343425aec3229c7b65345` ON `pricing_prices` (`price_set_id`);
+
+CREATE INDEX `idx_source_495d3c71dd4b7b7141cc88bd` ON `pricing_price_lists` (`deleted_at`);
+
+CREATE INDEX `idx_source_bcc925508102918804fcc62c` ON `pricing_price_list_rules` (`deleted_at`);
+
+CREATE INDEX `idx_source_ba9d124588be74109f9971dc` ON `pricing_price_list_rules` (`price_list_id`);
+
+CREATE INDEX `idx_source_f009f582b51ab41d35decce2` ON `pricing_preferences` (`deleted_at`);
+
+CREATE INDEX `idx_source_8204550f1652a9b7c9276021` ON `pricing_price_rules` (`deleted_at`);
+
+CREATE INDEX `idx_source_3447badbbcdf875789acad15` ON `pricing_price_rules` (`price_id`);
+
+CREATE INDEX `idx_source_1be06040047ea66981663063` ON `pricing_price_sets` (`deleted_at`);
+
+CREATE INDEX `idx_source_d3595294fb22aeb39d9473b6` ON `catalog_products` (`collection_id`);
+
+CREATE INDEX `idx_source_864b2b372ae80a23e9d660bc` ON `catalog_products` (`deleted_at`);
+
+ALTER TABLE `catalog_products` ADD COLUMN `active_key_c5b6f5d7aadc0d64e1d840b3` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_c5b6f5d7aadc0d64e1d840b3` ON `catalog_products` (`handle`,`active_key_c5b6f5d7aadc0d64e1d840b3`);
+
+CREATE INDEX `idx_source_1215bd26dc5885900e0f71ba` ON `catalog_products` (`type_id`);
+
+ALTER TABLE `catalog_categories` ADD COLUMN `active_key_6bc49d200e1ce6d594e5b3f6` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_6bc49d200e1ce6d594e5b3f6` ON `catalog_categories` (`handle`,`active_key_6bc49d200e1ce6d594e5b3f6`);
+
+CREATE INDEX `idx_source_d44736371247392131c1c215` ON `catalog_categories` (`parent_category_id`);
+
+ALTER TABLE `catalog_collections` ADD COLUMN `active_key_7e77265756e2b1abab35ab89` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_7e77265756e2b1abab35ab89` ON `catalog_collections` (`handle`,`active_key_7e77265756e2b1abab35ab89`);
+
+CREATE INDEX `idx_source_2daaa595567b834ef3afe502` ON `catalog_collections` (`deleted_at`);
+
+CREATE INDEX `idx_source_627384cac94c85fbfeabed65` ON `catalog_options` (`deleted_at`);
+
+CREATE INDEX `idx_source_22ee406b2e2c36553c119466` ON `catalog_option_values` (`deleted_at`);
+
+CREATE INDEX `idx_source_081769f4809e40724b2af870` ON `catalog_option_values` (`option_id`);
+
+CREATE INDEX `idx_source_90ef6c37842d835341441e79` ON `catalog_product_options` (`deleted_at`);
+
+CREATE INDEX `idx_source_e81e52edc1e2fda492f583ec` ON `catalog_product_options` (`product_id`);
+
+CREATE INDEX `idx_source_09b4f8baee880e8704f828ec` ON `catalog_product_options` (`product_option_id`);
+
+CREATE INDEX `idx_source_c543899cd7fa30a464a307cb` ON `catalog_product_option_values` (`deleted_at`);
+
+CREATE INDEX `idx_source_5572a9d81da90af85587053c` ON `catalog_product_option_values` (`product_option_value_id`);
+
+CREATE INDEX `idx_source_8d949b0f8bd2484c3cec033e` ON `catalog_product_option_values` (`product_product_option_id`);
+
+CREATE INDEX `idx_source_052b87de3935c4a829d7d424` ON `catalog_product_option_values` (`product_product_option_id`);
+
+CREATE INDEX `idx_source_11ee50a12924c33ec5b4eef8` ON `product_reviews` (`deleted_at`);
+
+ALTER TABLE `product_reviews` ADD COLUMN `active_key_0051152aec00a03646fa6536` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_0051152aec00a03646fa6536` ON `product_reviews` (`product_id`,`customer_id`,`active_key_0051152aec00a03646fa6536`);
+
+CREATE INDEX `idx_source_733fc2bc65c8b55f0e3973a8` ON `product_reviews` (`product_id`,`status`);
+
+CREATE INDEX `idx_source_417b8e7513bf89fce6ea4b02` ON `catalog_product_channels` (`deleted_at`);
+
+CREATE INDEX `idx_source_8c730d2f9f0c7a968fd7712a` ON `catalog_product_channels` (`id`);
+
+CREATE INDEX `idx_source_86f891abe960ce460cf04f11` ON `catalog_product_channels` (`product_id`);
+
+CREATE INDEX `idx_source_269c56bb7abd1fad87fe8a1f` ON `catalog_product_channels` (`sales_channel_id`);
+
+CREATE INDEX `idx_source_4a852d7fff4019f7f8b3d014` ON `catalog_product_shipping_profiles` (`deleted_at`);
+
+CREATE INDEX `idx_source_f20efc074bef535e385031bc` ON `catalog_product_shipping_profiles` (`id`);
+
+CREATE INDEX `idx_source_1fa6b294f0ac3b98bb530b2f` ON `catalog_product_shipping_profiles` (`product_id`);
+
+CREATE INDEX `idx_source_fff35697b8f0811b99544227` ON `catalog_product_shipping_profiles` (`shipping_profile_id`);
+
+CREATE INDEX `idx_source_e9db27988e0c7b7b54ee5167` ON `catalog_tags` (`deleted_at`);
+
+CREATE INDEX `idx_source_2545dd9fc1c013ea5d4a6b31` ON `catalog_product_types` (`deleted_at`);
+
+ALTER TABLE `catalog_variants` ADD COLUMN `active_key_e6afc5865574fa33281e3560` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_e6afc5865574fa33281e3560` ON `catalog_variants` (`barcode`,`active_key_e6afc5865574fa33281e3560`);
+
+CREATE INDEX `idx_source_bfb2c123c6a94a97e40ba4bd` ON `catalog_variants` (`deleted_at`);
+
+ALTER TABLE `catalog_variants` ADD COLUMN `active_key_901e2edf61a83a9712c90da7` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_901e2edf61a83a9712c90da7` ON `catalog_variants` (`ean`,`active_key_901e2edf61a83a9712c90da7`);
+
+CREATE INDEX `idx_source_4906a3e5235e5222684ba99c` ON `catalog_variants` (`id`,`product_id`);
+
+CREATE INDEX `idx_source_d39157f815f76605e998abc6` ON `catalog_variants` (`product_id`);
+
+ALTER TABLE `catalog_variants` ADD COLUMN `active_key_788f5109fe1a6aa9abda8005` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_788f5109fe1a6aa9abda8005` ON `catalog_variants` (`sku`,`active_key_788f5109fe1a6aa9abda8005`);
+
+ALTER TABLE `catalog_variants` ADD COLUMN `active_key_1a3e447f2483af18a126c893` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_1a3e447f2483af18a126c893` ON `catalog_variants` (`upc`,`active_key_1a3e447f2483af18a126c893`);
+
+CREATE INDEX `idx_source_1b537cce47764766a1218a01` ON `catalog_variant_inventory_items` (`deleted_at`);
+
+CREATE INDEX `idx_source_7d919ed3cf027765d5ecf771` ON `catalog_variant_inventory_items` (`id`);
+
+CREATE INDEX `idx_source_1db3495633784d7b747901bd` ON `catalog_variant_inventory_items` (`inventory_item_id`);
+
+CREATE INDEX `idx_source_4ef7197036d4ace8bf1437f7` ON `catalog_variant_inventory_items` (`variant_id`);
+
+CREATE INDEX `idx_source_4cefb5473d5ad9aac7ddf2a4` ON `catalog_variant_price_sets` (`deleted_at`);
+
+CREATE INDEX `idx_source_e0d31354f6ebcdb7c87f196e` ON `catalog_variant_price_sets` (`id`);
+
+CREATE INDEX `idx_source_2a9accebea2fc760e0dc92e9` ON `catalog_variant_price_sets` (`price_set_id`);
+
+CREATE INDEX `idx_source_0bb7b731932dde8b58a08225` ON `catalog_variant_price_sets` (`variant_id`);
+
+CREATE INDEX `idx_source_9dffa4a6678797e66718304b` ON `catalog_variant_images` (`deleted_at`);
+
+CREATE INDEX `idx_source_2ad06a6c4a286f403ead4fb7` ON `catalog_variant_images` (`image_id`);
+
+CREATE INDEX `idx_source_1ffa2807f73458a9b517aaec` ON `catalog_variant_images` (`variant_id`);
+
+CREATE INDEX `idx_source_74e94709f5aef4856f89471f` ON `promotions` (`campaign_id`);
+
+CREATE INDEX `idx_source_5da613a7788b030dbcda3ad1` ON `promotions` (`deleted_at`);
+
+CREATE INDEX `idx_source_dbaf6c1a7f1c57ffa9f57098` ON `promotions` (`is_automatic`);
+
+CREATE INDEX `idx_source_03ccaa41f0002cdab5f5c3ef` ON `promotions` (`status`);
+
+CREATE INDEX `idx_source_c3026adad0deafa6b2e927a6` ON `promotions` (`type`);
+
+ALTER TABLE `promotions` ADD COLUMN `active_key_0bc19fab3bb61a71a0331b56` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_0bc19fab3bb61a71a0331b56` ON `promotions` (`code`,`active_key_0bc19fab3bb61a71a0331b56`);
+
+CREATE INDEX `idx_source_dde02f54c962ecbf66ee71d4` ON `promotion_application_methods` (`allocation`);
+
+CREATE INDEX `idx_source_f0fd140d63e41313e792a3b6` ON `promotion_application_methods` (`target_type`);
+
+CREATE INDEX `idx_source_8bce2e1ad57848c685a2ee62` ON `promotion_application_methods` (`type`);
+
+CREATE INDEX `idx_source_b7d33e7369f37566600fb62a` ON `promotion_application_methods` (`currency_code`);
+
+CREATE INDEX `idx_source_39767a9f6f0c5445235a3fcd` ON `promotion_application_methods` (`deleted_at`);
+
+ALTER TABLE `promotion_application_methods` ADD COLUMN `active_key_462610d215f3536cd30e9074` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_462610d215f3536cd30e9074` ON `promotion_application_methods` (`promotion_id`,`active_key_462610d215f3536cd30e9074`);
+
+CREATE INDEX `idx_source_19b09683012df8c4a17b7262` ON `promotion_campaigns` (`deleted_at`);
+
+CREATE INDEX `idx_source_33bcae8db336bcf21581b93a` ON `promotion_campaign_budgets` (`type`);
+
+ALTER TABLE `promotion_campaign_budgets` ADD COLUMN `active_key_2e1931f175c6ed5fe8571305` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_2e1931f175c6ed5fe8571305` ON `promotion_campaign_budgets` (`campaign_id`,`active_key_2e1931f175c6ed5fe8571305`);
+
+CREATE INDEX `idx_source_695750a8a8ce46206f052356` ON `promotion_campaign_budgets` (`deleted_at`);
+
+CREATE INDEX `idx_source_752ebae32e07d0df1aaf88d0` ON `promotion_budget_usages` (`budget_id`);
+
+CREATE INDEX `idx_source_44c137fb7c1651f2483ac599` ON `promotion_budget_usages` (`deleted_at`);
+
+CREATE INDEX `idx_source_c8c880fcede4d02b9a7f56be` ON `promotion_rules` (`deleted_at`);
+
+CREATE INDEX `idx_source_a198d7fcb391288b3a9d28f3` ON `promotion_rules` (`operator`);
+
+CREATE INDEX `idx_source_5cceb3170f3d68075aa0a097` ON `promotion_rule_values` (`deleted_at`);
+
+CREATE INDEX `idx_source_26b596736405f66f1ecf1700` ON `promotion_rule_values` (`promotion_rule_id`);
+
+CREATE INDEX `idx_source_b27f0c601d1de8b6965ac1a7` ON `payment_refunds` (`deleted_at`);
+
+CREATE INDEX `idx_source_0f620d75004790db3ca9ec8a` ON `payment_refunds` (`payment_id`);
+
+CREATE INDEX `idx_source_499252ef124ea789379c85b5` ON `payment_refunds` (`refund_reason_id`);
+
+CREATE INDEX `idx_source_fc74b4959361109633a9b78d` ON `payment_refund_reasons` (`deleted_at`);
+
+CREATE INDEX `idx_source_69c907f08cafde8ea39357e7` ON `commerce_regions` (`deleted_at`);
+
+CREATE INDEX `idx_source_910f7b721be25210ed3460f5` ON `commerce_countries` (`deleted_at`);
+
+CREATE INDEX `idx_source_6e31dce258c02e3afb91a51e` ON `commerce_countries` (`region_id`);
+
+CREATE UNIQUE INDEX `idx_source_87f6ec973e5899911b745351` ON `commerce_countries` (`region_id`,`iso_2`);
+
+CREATE INDEX `idx_source_89adbaf0bd564b891f763e42` ON `commerce_region_payment_providers` (`deleted_at`);
+
+CREATE INDEX `idx_source_b576bbd8709286c1b4260e90` ON `commerce_region_payment_providers` (`id`);
+
+CREATE INDEX `idx_source_9423a567d8b5625d65bd8124` ON `commerce_region_payment_providers` (`payment_provider_id`);
+
+CREATE INDEX `idx_source_f888006a65f5df8fe891cd18` ON `commerce_region_payment_providers` (`region_id`);
+
+CREATE INDEX `idx_source_8661bc1788d7eeb6e3bea518` ON `inventory_reservations` (`deleted_at`);
+
+CREATE INDEX `idx_source_69cce2620646ac4c90c7124b` ON `inventory_reservations` (`inventory_item_id`);
+
+CREATE INDEX `idx_source_9464fdef706dccf46f71e671` ON `inventory_reservations` (`line_item_id`);
+
+CREATE INDEX `idx_source_59a4b87863074548ac6b1543` ON `inventory_reservations` (`location_id`);
+
+CREATE INDEX `idx_source_342f51001b1baf3eac3fe084` ON `returns` (`claim_id`);
+
+CREATE INDEX `idx_source_bfa2fa499f5affaa5b6fe36f` ON `returns` (`display_id`);
+
+CREATE INDEX `idx_source_0b8b3bffabe3457646ee2f8b` ON `returns` (`exchange_id`);
+
+CREATE INDEX `idx_source_300b7f3d4f0516ed68ea60b7` ON `returns` (`order_id`);
+
+CREATE INDEX `idx_source_6adc2807e4ef7030d709371a` ON `return_fulfillments` (`deleted_at`);
+
+CREATE INDEX `idx_source_c1419bf3e2075ad653c401cf` ON `return_fulfillments` (`fulfillment_id`);
+
+CREATE INDEX `idx_source_d8a26f861295e16692d99066` ON `return_fulfillments` (`id`);
+
+CREATE INDEX `idx_source_65557b7bc9ca8ae016981749` ON `return_fulfillments` (`return_id`);
+
+CREATE INDEX `idx_source_728adba2252bb444cc67dc6a` ON `return_items` (`deleted_at`);
+
+CREATE INDEX `idx_source_902951ebbca54c7013882dad` ON `return_items` (`item_id`);
+
+CREATE INDEX `idx_source_edd91060708a960bd10c5990` ON `return_items` (`reason_id`);
+
+CREATE INDEX `idx_source_af664a3e9825b363dea1e7a9` ON `return_items` (`return_id`);
+
+CREATE INDEX `idx_source_e783f2034d126e29703393dc` ON `return_reasons` (`parent_return_reason_id`);
+
+CREATE INDEX `idx_source_09b96c6170a705e97717ef0c` ON `commerce_sales_channels` (`deleted_at`);
+
+CREATE INDEX `idx_source_dd9214d1d15a03092f34b031` ON `commerce_channel_locations` (`deleted_at`);
+
+CREATE INDEX `idx_source_0180848ce31babf95d45edcf` ON `commerce_channel_locations` (`id`);
+
+CREATE INDEX `idx_source_5fc2c9522b02d08c7d79b12c` ON `commerce_channel_locations` (`sales_channel_id`);
+
+CREATE INDEX `idx_source_666e89cf505ace7e1a145d25` ON `commerce_channel_locations` (`stock_location_id`);
+
+CREATE INDEX `idx_source_e0307781c4b813551465e0fe` ON `seo_crawler_visits` (`deleted_at`);
+
+CREATE INDEX `idx_source_575fc8b07d7e27207a95b95b` ON `seo_crawler_visits` (`source_id`);
+
+CREATE INDEX `idx_source_734aa2be4bcbe8070dcff523` ON `seo_evidence` (`deleted_at`);
+
+CREATE INDEX `idx_source_8812f2950cb1c9637a785097` ON `seo_evidence` (`run_id`);
+
+CREATE INDEX `idx_source_29b318a4f6e2bc8a489555c8` ON `seo_monitors` (`deleted_at`);
+
+CREATE INDEX `idx_source_47fcc2790d4c95c701b2c4f8` ON `seo_pages` (`deleted_at`);
+
+CREATE INDEX `idx_source_08d457710155dc9c67d715b9` ON `seo_providers` (`deleted_at`);
+
+ALTER TABLE `seo_providers` ADD COLUMN `active_key_ae04d64f6013518b4c6b694d` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_ae04d64f6013518b4c6b694d` ON `seo_providers` (`provider`,`active_key_ae04d64f6013518b4c6b694d`);
+
+CREATE INDEX `idx_source_5bd2b32d2c5b5a7e517638de` ON `seo_runs` (`deleted_at`);
+
+CREATE INDEX `idx_source_4c75d45d5e58cc7fd8839155` ON `seo_runs` (`monitor_id`,`started_at`);
+
+CREATE INDEX `idx_source_a488ecd5b37b7e9a7792c138` ON `seo_settings` (`deleted_at`);
+
+CREATE INDEX `idx_source_aa65d3485a4967681f700d60` ON `seo_sources` (`deleted_at`);
+
+CREATE INDEX `idx_source_86de7730be7acc1d1e5a2404` ON `seo_submissions` (`deleted_at`);
+
+CREATE INDEX `idx_source_68dfdd49becd981c6af4377d` ON `seo_traffic_visits` (`deleted_at`);
+
+CREATE INDEX `idx_source_15a7f483837aed76cf0520d6` ON `seo_traffic_visits` (`log_source_id`);
+
+CREATE INDEX `idx_source_3973e2e36016d4a28b3c6de3` ON `fulfillment_service_zones` (`deleted_at`);
+
+CREATE INDEX `idx_source_464c04176c3c2a1ccb0988e3` ON `fulfillment_service_zones` (`fulfillment_set_id`);
+
+CREATE INDEX `idx_source_874da305825f601e7a6b6335` ON `fulfillment_shipping_options` (`deleted_at`);
+
+CREATE INDEX `idx_source_05038cdf3462a562c3ab2198` ON `fulfillment_shipping_options` (`provider_id`);
+
+CREATE INDEX `idx_source_85b99497a107c9b43bec55dd` ON `fulfillment_shipping_options` (`service_zone_id`);
+
+CREATE INDEX `idx_source_5b94669b9ec10811a85e4bc8` ON `fulfillment_shipping_options` (`shipping_option_type_id`);
+
+CREATE INDEX `idx_source_178812f75a6b8b400550c699` ON `fulfillment_shipping_options` (`shipping_profile_id`);
+
+CREATE INDEX `idx_source_f99ed1a1b2f0990c5a5a2c66` ON `fulfillment_option_price_sets` (`deleted_at`);
+
+CREATE INDEX `idx_source_d5f7be081856ab3ace4e2fad` ON `fulfillment_option_price_sets` (`id`);
+
+CREATE INDEX `idx_source_01936f64920a8650b05447ad` ON `fulfillment_option_price_sets` (`price_set_id`);
+
+CREATE INDEX `idx_source_111fde5db9e1116cbb81fbf3` ON `fulfillment_option_price_sets` (`shipping_option_id`);
+
+CREATE INDEX `idx_source_be0a7e0eb08b154bc718e5a7` ON `fulfillment_option_rules` (`deleted_at`);
+
+CREATE INDEX `idx_source_3c1ace3e5b0a159d6dabffd0` ON `fulfillment_option_rules` (`shipping_option_id`);
+
+CREATE INDEX `idx_source_e048e4d16a50602fe1b704ec` ON `fulfillment_option_types` (`deleted_at`);
+
+CREATE INDEX `idx_source_17dba00a2216ad90bc5292ce` ON `fulfillment_shipping_profiles` (`deleted_at`);
+
+ALTER TABLE `inventory_locations` ADD COLUMN `active_key_bef42b8230bd7fee3111608f` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_bef42b8230bd7fee3111608f` ON `inventory_locations` (`address_id`,`active_key_bef42b8230bd7fee3111608f`);
+
+CREATE INDEX `idx_source_98c23c985874c7a4aa9c32c1` ON `inventory_locations` (`deleted_at`);
+
+CREATE INDEX `idx_source_f447aa67274c51e7f77f2bfd` ON `inventory_location_addresses` (`deleted_at`);
+
+CREATE INDEX `idx_source_d6d224b4e6f1cb0f952d675d` ON `commerce_stores` (`deleted_at`);
+
+CREATE INDEX `idx_source_9382f8392acea3dd9be75a49` ON `commerce_store_currencies` (`deleted_at`);
+
+CREATE INDEX `idx_source_b60851e363642766d95fe0bb` ON `commerce_store_currencies` (`store_id`);
+
+CREATE INDEX `idx_source_c0bf2d85f14c8ed004a2275b` ON `commerce_store_locales` (`deleted_at`);
+
+CREATE INDEX `idx_source_9d5e220a8ac99d43306ea24a` ON `commerce_store_locales` (`store_id`);
+
+CREATE INDEX `idx_source_90ac1a3a9c5c2e76ea4cf41e` ON `tax_providers` (`deleted_at`);
+
+ALTER TABLE `tax_rates` ADD COLUMN `active_key_51b5544850cd23fdae1d46d5` TINYINT GENERATED ALWAYS AS (IF(`is_default` = 1 AND `deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_51b5544850cd23fdae1d46d5` ON `tax_rates` (`tax_region_id`,`active_key_51b5544850cd23fdae1d46d5`);
+
+CREATE INDEX `idx_source_f89fbb975d3b318610173f27` ON `tax_rates` (`deleted_at`);
+
+CREATE INDEX `idx_source_735e531d1f524439119d56ed` ON `tax_rates` (`tax_region_id`);
+
+CREATE INDEX `idx_source_be4b95d01edeca3ebf5ac6f3` ON `tax_rate_rules` (`deleted_at`);
+
+CREATE INDEX `idx_source_dc1f83af5987b708edcda54f` ON `tax_rate_rules` (`reference_id`);
+
+CREATE INDEX `idx_source_d55dde23e4fb85e593318b8b` ON `tax_rate_rules` (`tax_rate_id`);
+
+ALTER TABLE `tax_rate_rules` ADD COLUMN `active_key_d1071cb51d39ddcaae642afb` TINYINT GENERATED ALWAYS AS (IF(`deleted_at` IS NULL,1,NULL)) STORED;
+
+CREATE UNIQUE INDEX `idx_source_d1071cb51d39ddcaae642afb` ON `tax_rate_rules` (`tax_rate_id`,`reference_id`,`active_key_d1071cb51d39ddcaae642afb`);
+
+CREATE INDEX `idx_source_c24632082c487992a1f5dde5` ON `tax_regions` (`deleted_at`);
+
+CREATE INDEX `idx_source_92fadb6a27196758b2da3ed2` ON `tax_regions` (`parent_id`);
+
+CREATE INDEX `idx_source_047a333acb077b372702c521` ON `tax_regions` (`provider_id`);
+
+CREATE INDEX `idx_source_de1416bfe7db4ecf1fe57f18` ON `webhook_endpoints` (`deleted_at`);
+
 ALTER TABLE `promotion_buy_rules` ADD CONSTRAINT `fk_source_91b67b4a892e981ffd3b34a2` FOREIGN KEY (`application_method_id`) REFERENCES `promotion_application_methods` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE `promotion_buy_rules` ADD CONSTRAINT `fk_source_1869c84d42d520bc6e069101` FOREIGN KEY (`promotion_rule_id`) REFERENCES `promotion_rules` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;

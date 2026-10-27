@@ -49,6 +49,60 @@ def names(text):
     return result
 
 
+def index_width(design):
+    match = re.match(r'VARCHAR\((\d+)\)', design)
+    if match:
+        return int(match[1]) * 4
+    return {'INT': 4, 'BIGINT': 8, 'BOOLEAN': 1, 'DATETIME(6)': 8,
+            'DOUBLE': 8, 'DECIMAL(38,18)': 18}.get(design)
+
+
+def predicate(text, fields):
+    """Only reviewed conjunctions of NULL/boolean tests; no SQL passthrough."""
+    if not text:
+        return None
+    pieces = re.split(r'\s+AND\s+', text)
+    output = []
+    for piece in pieces:
+        piece = piece.strip().strip('()').strip()
+        match = re.fullmatch(r'(\w+) (IS (?:NOT )?NULL|= (?:true|false))', piece)
+        if not match or match[1] not in fields:
+            raise ValueError('Unreviewed index predicate')
+        column, operation = match.groups()
+        if operation.startswith('= '):
+            assert fields[column]['target_type_design'] == 'BOOLEAN'
+            operation = '= ' + ('1' if operation == '= true' else '0')
+        output.append(ident(fields[column]['target_column']) + ' ' + operation)
+    return ' AND '.join(output)
+
+
+def index_sql(index, fields, target):
+    match = re.fullmatch(r'CREATE (UNIQUE )?INDEX (?:"[^"]+"|\w+) ON public\.(?:"\w+"|\w+) USING btree \(([^()]+)\)(?: WHERE (.*))?', index['definition'])
+    if not match:
+        return [], 'hold', 'Expression/non-btree index requires explicit conversion'
+    unique, raw_keys, where = match.groups()
+    try:
+        keys = names(raw_keys)
+        assert all(key in fields for key in keys)
+        condition = predicate(where, fields)
+    except (ValueError, AssertionError):
+        return [], 'hold', 'Unreviewed column/expression/predicate; no automatic equivalent claimed'
+    widths = [index_width(fields[key]['target_type_design']) for key in keys]
+    if any(width is None for width in widths):
+        return [], 'hold', 'Full text/blob identity or search index requires explicit complete-value design; no prefix substitute'
+    if sum(widths) + (1 if unique and condition else 0) > 3072:
+        return [], 'hold', 'Complete key exceeds 3072 byte bound; transactional identity registry/full collision verification required'
+    sql = []
+    columns = [ident(fields[key]['target_column']) for key in keys]
+    if unique and condition:
+        flag = stable_name('active_key', target, index['index_name'])
+        sql.append('ALTER TABLE ' + ident(target) + ' ADD COLUMN ' + ident(flag) + ' TINYINT GENERATED ALWAYS AS (IF(' + condition + ',1,NULL)) STORED;')
+        columns.append(ident(flag))
+    sql.append('CREATE ' + ('UNIQUE ' if unique else '') + 'INDEX ' + ident(stable_name('idx_source', target, index['index_name'])) + ' ON ' + ident(target) + ' (' + ','.join(columns) + ');')
+    return sql, 'emitted', ('Full-value unique with nullable generated participation flag; source NULL semantics retained' if unique and condition
+                            else 'Full-value unique' if unique else 'Nonunique predicate broadened to full index; same query results, performance/selectivity differs' if condition else 'Full nonunique index')
+
+
 def translate_check(definition, fields):
     enum = re.fullmatch(r"CHECK \((\w+) = ANY \(ARRAY\[(.*)\]\)\)", definition)
     if enum:
@@ -161,15 +215,22 @@ def build():
                 raise ValueError('Unknown constraint kind')
             decisions.append(decision)
         statements.append('CREATE TABLE ' + ident(target) + ' (\n  ' + ',\n  '.join(parts) + '\n) ENGINE=InnoDB ROW_FORMAT=DYNAMIC DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_bin;')
-    index_decisions = []
+    index_decisions, index_statements = [], []
     for index in schema['indexes']:
         if index['source_table'] in excluded:
             status, reason = 'excluded-source-table', 'Legacy table is not imported; see nonimport field disposition'
         elif any(c['constraint_name'] == index['index_name'] and c['constraint_type'] == 'p' for c in constraints[index['source_table']]):
             status, reason = 'covered-primary-key', 'Mapped source primary key emitted'
         else:
-            status, reason = 'hold', 'Index predicate/expression/full-value width and unique identity conversion not yet emitted; no implicit prefix/hash-only substitute'
+            emitted, status, reason = index_sql(index, fields[index['source_table']], tables[index['source_table']])
+            index_statements.extend(emitted)
         index_decisions.append({**index, 'status': status, 'reason': reason})
+    by_index = {(entry['source_table'], entry['index_name']): entry for entry in index_decisions}
+    for decision in decisions:
+        if decision['kind'] == 'u' and decision['status'] == 'hold':
+            index = by_index[(decision['source_table'], decision['source_constraint'])]
+            if index['status'] == 'emitted':
+                decision.update(status='emitted-via-unique-index', reason='Exact full-value unique index emitted')
     for constraint in schema['constraints']:
         if constraint['source_table'] in excluded:
             decisions.append({**constraint, 'status': 'excluded-source-table', 'reason': 'Legacy table not imported; no automatic new auth/grant restoration'})
@@ -178,16 +239,18 @@ def build():
            '-- No IF NOT EXISTS: a pre-existing table must not hide incompatible schema.\n'
            '-- All imported fields are explicit; importer must supply required values; no source nextval/trigger/default runs.\n'
            "SET SESSION sql_mode='STRICT_ALL_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';\n"
-           "SET SESSION time_zone='+00:00';\n\n" + '\n\n'.join(statements + deferred_fks) + '\n')
+           "SET SESSION time_zone='+00:00';\n\n" + '\n\n'.join(statements + index_statements + deferred_fks) + '\n')
     report = {'format_version': 1, 'status': 'review-ddl-with-explicit-holds-not-production-migration',
               'tables': len(tables), 'source_columns': sum(len(group) for group in fields.values()),
               'source_sha256': hashes, 'ddl_sha256': hashlib.sha256(sql.encode()).hexdigest(),
               'constraint_decisions': decisions, 'index_decisions': index_decisions,
               'counts': {'source_constraints': len(decisions), 'emitted_constraints': sum(d['status'].startswith('emitted') for d in decisions),
                          'held_constraints': sum(d['status'] == 'hold' for d in decisions), 'source_indexes': len(index_decisions),
+                         'emitted_indexes': sum(d['status'] == 'emitted' for d in index_decisions),
+                         'generated_index_columns': sum(' ADD COLUMN ' in statement for statement in index_statements),
                          'held_indexes': sum(d['status'] == 'hold' for d in index_decisions)},
-              'remaining': ['All unique/conditional/expression indexes and long identities', 'Command defaults, new auth/permissions, outbox and operation schemas',
-                            'Actual MySQL all-table DDL test, source constraints equivalence, orphan reconciliation and full import', 'Migration executor/checksums/locking/failure recovery']}
+              'remaining': ['Held long-text/expression indexes and long identities', 'Command defaults, new auth/permissions, outbox and operation schemas',
+                            'Complete source constraints equivalence, orphan reconciliation and full import', 'Migration executor/checksums/locking/failure recovery']}
     return sql, report
 
 
