@@ -1,0 +1,26 @@
+{
+  "format_version": 1,
+  "scope": "Pinned payment_session.context projection and ephemeral sealing only; not other payment JSON, source replay, SQL import, provider reconciliation or new-account ownership",
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "counts": {
+    "contexts_with_excluded_profile": 9,
+    "ephemeral_envelope_roundtrips": 21,
+    "removed_fields": {
+      "customer.account_holders": 9,
+      "customer.addresses": 9,
+      "customer.billing_address.is_default_billing": 8,
+      "customer.billing_address.is_default_shipping": 8
+    },
+    "source_contexts": 21
+  },
+  "implementation_sha256": {
+    "retail/backend/internal/rowimport/payment_context.go": "9919774fb15a6673930c2df41bc2baaf5552247a5041d5aa465d00653925840e",
+    "retail/backend/internal/rowimport/payment_context_envelope.go": "ba83f4e187876823bcf49499bc5f71e3c024252ec24ccb10b668368071c1163f",
+    "retail/backend/internal/rowimport/payment_context_snapshot_test.go": "94407d5c6a40893e430b839f5a96c29c6d75db9fed3f6d3b6778ccefe9cbcd37",
+    "retail/scripts/audit-payment-context.py": "9c29303b09fdf47d036f32f0b3fb733e0f82a1c3ad263b86db880ff179b1f938"
+  },
+  "source_database_connection": false,
+  "provider_called": false,
+  "target_keys_or_envelopes_persisted": false,
+  "private_values_in_report": false
+}

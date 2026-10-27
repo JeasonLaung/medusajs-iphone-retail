@@ -38,6 +38,8 @@ order.customer_id/order_address.customer_id保留历史客户主体，匹配的�
 
 payment_session.data/context/metadata、payment.data/metadata、account_holder.data/metadata可能同时含恢复所需外部引用和秘密。目标使用加密迁移封装保留精确JSON；稳定provider/payment/order/capture/refund引用另按白名单提取并保留来源。未核对字段不公开、不记录日志、不自动删除。与普通JSON_VALID文本不同，加密封装不能直接SQL JSON查询；明文校验在加密前进行，封装版本/密钥管理和MySQL演练仍待T016/T018/T035实现。
 
+实现补充：[payment_session.context审查](payment-context-review.md)现显式移除嵌入旧客户地址簿/账号绑定及默认地址标记，保留经核对的历史联系、交易账单地址和provider付款主体；这是“不迁移旧账号”排除规则对JSON嵌入资料的延伸，不能整段原文复制。真实21个context临时信封往返通过（9个含排除资料），人工LONGTEXT持久化验证通过。原始来源证据保留在受限旧快照；目标是投影后的值。其他保护JSON仍hold，未接入完整支付行转换或实际运行。
+
 不迁移旧登录账号不等于删除付款商户account_holder或provider session事实；这些事实仍支撑退款与对账。在途支付切换另有决策与验收，当前既不调用provider，也不恢复旧session向外扣款。导入不能触发通知、退款、发货或旧事件重放。
 
 ## 真实快照差异

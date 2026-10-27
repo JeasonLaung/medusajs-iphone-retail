@@ -350,7 +350,7 @@
     "Concurrency, failure recovery, Gin and UI behavior"
   ],
   "go_registry_fixture": {
-    "binary_sha256": "623ec5a98351d3f44450d02af2cdf8297b15865d95a4e95814b418cc1e244d41",
+    "binary_sha256": "9b109075a3e230e1b9d5eed8dbee528c2b0ebeecbbb5e3284a2076b4ab669c2e",
     "passed_tests": [
       "TestTupleEncoding",
       "TestRegistryMySQL",
@@ -369,6 +369,7 @@
       "TestRegistryMySQL/mapped_source_row_bound_sql_and_unique_claim_same_transaction",
       "TestRegistryMySQL/mapped_merchant_cipher_to_new_binary_sql_envelope",
       "TestRegistryMySQL/historical_mail_and_disposition_atomic_replay_and_conflict",
+      "TestRegistryMySQL/reviewed_payment_context_ascii_envelope_sql_roundtrip",
       "TestSecretIndexConfigurationAndDomainSeparation",
       "TestAllSourcePlans",
       "TestAllSourcePlans/source_uk_81dae4f5552d02c1dcaedcd4",

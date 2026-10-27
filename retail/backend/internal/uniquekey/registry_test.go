@@ -538,4 +538,5 @@ func TestRegistryMySQL(t *testing.T) {
 	})
 	t.Run("mapped_merchant_cipher_to_new_binary_sql_envelope", func(t *testing.T) { testMappedMerchantConfig(t, db, ctx) })
 	t.Run("historical_mail_and_disposition_atomic_replay_and_conflict", func(t *testing.T) { testHistoricalMailSQL(t, ctx) })
+	t.Run("reviewed_payment_context_ascii_envelope_sql_roundtrip", func(t *testing.T) { testPaymentContextSQL(t, db, ctx) })
 }
