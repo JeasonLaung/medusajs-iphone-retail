@@ -1,0 +1,24 @@
+{
+  "format_version": 1,
+  "scope": "Artificial PostgreSQL source SQL to v2 record decoder and mapped Go conversion; not source recapture/import acceptance",
+  "image": "postgres:16-alpine",
+  "local_image_id": "sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+  "isolation": {
+    "network": "none",
+    "published_ports": 0,
+    "cpus": 1,
+    "memory_mib": 384
+  },
+  "query_builder_sha256": "6fb078ff1471874e8a7cd9faad5199b562f0855f65f41e48bb440c9d9b4fe21b",
+  "cases": {
+    "sql_null_distinct": true,
+    "json_null_document_distinct": true,
+    "big_integer_and_decimal_lexemes": true,
+    "go_actual_source_records": 3,
+    "go_test_passed": true,
+    "other_empty_projection_sql_parsed": 158,
+    "max_mapped_columns": 32
+  },
+  "source_business_connection": false,
+  "cleanup": "owned artificial container removed after label verification"
+}
