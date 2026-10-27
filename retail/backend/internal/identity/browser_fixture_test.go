@@ -93,6 +93,19 @@ func TestPrepareReviewedCatalogFixture(t *testing.T) {
 	if db.Exec(`INSERT INTO commerce_regions(id,name,currency_code,automatic_taxes,metadata,created_at,updated_at) VALUES('fixture-region','Europe','eur',TRUE,'{"private":"must-not-escape"}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`).Error != nil || db.Exec(`INSERT INTO commerce_countries(iso_2,iso_3,num_code,name,display_name,region_id,created_at,updated_at) VALUES('dk','DNK','208','DENMARK','Denmark','fixture-region',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('de','DEU','276','GERMANY','Germany','fixture-region',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`).Error != nil {
 		t.Fatal("public routing fixture failed")
 	}
+	for _, statement := range []string{
+		`INSERT INTO commerce_sales_channels(id,name,is_disabled,created_at,updated_at) VALUES('fixture-channel','Public',FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO commerce_stores(id,name,default_sales_channel_id,created_at,updated_at) VALUES('fixture-store','Shop','fixture-channel',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO catalog_product_channels(product_id,sales_channel_id,id,created_at,updated_at) VALUES('fixture-b','fixture-channel','fixture-channel-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO catalog_collections(id,title,handle,created_at,updated_at) VALUES('fixture-collection','Public collection','public-collection',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`UPDATE catalog_products SET collection_id='fixture-collection' WHERE id='fixture-b'`,
+		`INSERT INTO catalog_categories(id,name,description,handle,mpath,is_active,is_internal,` + "`rank`" + `,created_at,updated_at) VALUES('fixture-category','Phones','','phones','fixture-category',TRUE,FALSE,0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO catalog_category_products(product_id,category_id) VALUES('fixture-b','fixture-category')`,
+	} {
+		if db.Exec(statement).Error != nil {
+			t.Fatal("public taxonomy browser fixture failed")
+		}
+	}
 }
 
 func seedReviewedCatalogFixture(t *testing.T, db *gorm.DB) {

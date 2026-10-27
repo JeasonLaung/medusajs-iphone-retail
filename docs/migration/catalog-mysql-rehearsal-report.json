@@ -101,8 +101,11 @@
     "http_projected_actual_products": 30,
     "http_projected_actual_variants": 1558,
     "http_projected_inventory_level_memberships": 849,
+    "http_public_actual_categories": 10,
+    "http_public_actual_collections": 0,
     "http_public_actual_countries": 7,
     "http_public_actual_regions": 1,
+    "http_public_category_product_memberships": 60,
     "http_queries_preserved_full_fingerprint": 1,
     "inventory_immutable_holds": 4,
     "inventory_provenance_rows": 1026,
@@ -158,9 +161,9 @@
   "relational_acceptance": false,
   "full_business_acceptance": false,
   "implementation_sha256": {
-    "retail/scripts/rehearse-catalog.py": "a882382d0c3a06015d1b07eb8c107be125206225bcb5b0893b7c4063ecc5fc36",
+    "retail/scripts/rehearse-catalog.py": "97d19267a420c0af05b7aed25110cf45fe5e298c7873e510647e6cce98603831",
     "retail/backend/internal/catalogimport/import.go": "51835174a7264397177318dc184d0769fce7565de737cd1522ab6d703ca20570",
-    "retail/backend/internal/catalogimport/rehearsal_test.go": "57a510f1a956fbb67aeac3e84572a6f19d41ab04bc199e84309934b2cf1a2390",
+    "retail/backend/internal/catalogimport/rehearsal_test.go": "d16e81702f7a8ff6d16abb3523ed138ce971a15fa5ec8756ecf17548f25ae024",
     "retail/backend/internal/catalogimport/plans.json": "65ef08d81fb47a476c47387fd99da67a34e3002d190069e2fd3b64adc666bf59",
     "retail/backend/internal/rowimport/convert.go": "02faf48f76231c5637adee5edc8709ce818995ce26c6920c787bd8190438e9d7",
     "retail/backend/internal/rowimport/record.go": "9da4ad1becb6c0ab0c20d147c1a71fb6a1fa44f317fca6cee7c4b0f2aa6c3cc8",
@@ -260,7 +263,9 @@
     "retail/backend/internal/authorization/manage_http.go": "c51f9db6fbdc1d768063475176f3fd15eabb1ed2d25c92c150e16a92e908d80c",
     "retail/backend/internal/authorization/model.go": "f0f676eb4b6104b22d20943a9b898cd080d26b5ce34a00f8c37645cb3a13c004",
     "retail/backend/internal/catalog/store_regions.go": "6c93beeaf807d3b40330649e6d7ad4202714fd82dd945bf53d65d3fbcb0d36aa",
-    "retail/backend/internal/catalogimport/regions_rehearsal_test.go": "b37bbb8e71b5fa441951fb8008a3ba2f77c4902436b37a7169236cf73459f4ea"
+    "retail/backend/internal/catalogimport/regions_rehearsal_test.go": "b37bbb8e71b5fa441951fb8008a3ba2f77c4902436b37a7169236cf73459f4ea",
+    "retail/backend/internal/catalog/store_taxonomy.go": "90ea7c6edb6261b9bf182ecb779fd4fe6863d91e466f46b0a8fee8769dcb6e2e",
+    "retail/backend/internal/catalogimport/taxonomy_rehearsal_test.go": "c3b8a0f39cba45721feb76a7319d7f4c7f700f804f39c7a23d40c5397874357a"
   },
   "cleanup": "owned container removed after label verification; tmpfs source/target copies and temporary runner removed"
 }

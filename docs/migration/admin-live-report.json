@@ -10,6 +10,7 @@
   "test_only_schema_rewrite": false,
   "browser_executable_override_used": true,
   "checked": [
+    "public categories and collections with configured server store/channel, exact projected fields and scoped product counts before login",
     "public Gin region directory and production Astro SSR health on owned nonempty routing data; no Next/Medusa runtime; missing configuration 503",
     "explicit new-account action grants and current permission snapshot; unknown query and anonymous rejection",
     "Ant role create and persisted current directory; employee role assignment; Chinese/English role drawer at three widths",
@@ -83,7 +84,7 @@
     "retail/admin/src/i18n.ts": "1ea95420fbd7eda9602d60e828f71ec61274d452d7a8ac9cd04c69149e248e1c",
     "retail/admin/src/main.tsx": "a114e06b121c44c091c06bae73b1f2fc5a17a919e38cee9d71531f3929566a62",
     "retail/admin/src/style.css": "26d97ab31d413ea26b8d64a8331fb2e756804c4e1b5798a440313f96c12f3d92",
-    "retail/admin/tests/auth.live.spec.ts": "051460feb4a97cd7fc81f9da54747eae07f8cbd0cbd661fbc521a59e48966e6f",
+    "retail/admin/tests/auth.live.spec.ts": "9d9688a811df5ec0c86434fb926128225b5d70c7105f2182e2c1f2c34ac38061",
     "retail/admin/tests/auth.spec.ts": "60df03c1a20cb537c48ca25a901434f28bd85d09aad99db0fb5867e4c4a924f9",
     "retail/admin/tsconfig.json": "c4769ad8ef4c9dfac534234e5679e8b9bdc702a978793eb6f3b893e4c02fd3d7",
     "retail/admin/vite.config.ts": "9f665557c617064816daa9a9b8cfbe746073d93cec4be2d2ef897dae85d9eb54",
@@ -100,14 +101,16 @@
     "retail/backend/internal/catalog/admin_prices_test.go": "cc11724c0df95e3897726de133929d35f87e8c874dc6aaacef32629ef990c03e",
     "retail/backend/internal/catalog/edit.go": "a1f2b137af7b0533fd55f6b4fbccfa8e55c52d4aba2d69a82df91f280ed60bdb",
     "retail/backend/internal/catalog/edit_test.go": "6ecd4a4a68fc93c78fa223ce7005422dd035a0759a83c2cc84150a77c584c550",
-    "retail/backend/internal/catalog/http.go": "0f54191835761bc644cfd7b596fe96acd77033864b3d98b1bf0280e260cf49ca",
+    "retail/backend/internal/catalog/http.go": "5e85d2f8df3ab35db0c18fb7872a055d9e3ec0c5b286336ced02c0e91b03f2a6",
     "retail/backend/internal/catalog/models.go": "212e73fdbf318abf0d8252ee0a3139a249856dbdab58d80cd8cabc5fa11fe97c",
     "retail/backend/internal/catalog/schema.go": "aadd8fc2d82c87d9a8467ae60c232cd300081f6a3880ee22a1a73666511e04ab",
     "retail/backend/internal/catalog/store_regions.go": "6c93beeaf807d3b40330649e6d7ad4202714fd82dd945bf53d65d3fbcb0d36aa",
+    "retail/backend/internal/catalog/store_taxonomy.go": "90ea7c6edb6261b9bf182ecb779fd4fe6863d91e466f46b0a8fee8769dcb6e2e",
+    "retail/backend/internal/catalog/store_taxonomy_test.go": "accebd5a69ebd60034fd49a65a725bd9c5ce379741ad01608e3bc4864602740b",
     "retail/backend/internal/fulfillment/schema.go": "f1f9a1a89527fad333a639373c6de3d729174775f7fd0a569f53494166b469ed",
     "retail/backend/internal/fulfillment/schema_plan.json": "aa41b2a41eccd35b20128f0bf837d50b6e502f8388ff51680394e2e93ba3af4e",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
-    "retail/backend/internal/identity/browser_fixture_test.go": "057fe0df7c4d38859c0598b13fcbe118cc6ace99e51fdf80f9b6db124a277a3a",
+    "retail/backend/internal/identity/browser_fixture_test.go": "dfb2c38f2ee8636c2e5b061f5bb1694062f0b2594e7c25e93fa6fe4944d00412",
     "retail/backend/internal/identity/fulfillment_history_test.go": "106a248277a4c595b1e915d2e927439998fc66e880aa477a4f32f882854bae2d",
     "retail/backend/internal/identity/order_amounts_test.go": "fc30b3050e94b326edada1f9de68c3f566555ace237df056677f95b01423029d",
     "retail/backend/internal/identity/order_fulfillments_test.go": "e1864aa0d957a6ca8eccfdb635a6baa46fc536a02929c0c610d73cf6be3e2f17",
@@ -136,7 +139,7 @@
     "retail/backend/internal/schema/plan.go": "57e554e749ef6d75c12ca6cbb20f71b8ced1e29b39b49b15e5cb8d9a4c98de56",
     "retail/backend/internal/schema/ready.go": "136238fca088d5594ae5ddc8af5954f090aab286f8dedcf17f90ad42c6a5a5ad",
     "retail/backend/internal/schema/run.go": "56f369159ab7cee4fc51694ba6dc0cbd58daff7656fd02e4205350c1b1d9f8b3",
-    "retail/backend/internal/server/router.go": "5488a02eedcd55ec474b2c9a2461e6f9b87ce99788cd5ca236a736384a64a9d4",
+    "retail/backend/internal/server/router.go": "d65f663916cde4de94d8bcbc25605a5af53d10e406e4134735241e07ee751d14",
     "retail/backend/internal/sessionstore/config.go": "3a06b19b9f71032d4243cc9266499d7eb7cf6a8e7facfcfac3ae63ac1a339440",
     "retail/backend/internal/sessionstore/store.go": "1474b97c45baebfbc00de252da3b77b3dfa4a7749e9cf2cf894d697f508f83aa",
     "retail/backend/internal/totals/calculate.go": "9f6779d9901e8c256bd60a56be26a91557c6eb3d68c6db2bb3e504955d7bfc41",
@@ -170,7 +173,7 @@
     "retail/scripts/generate-fulfillment-import-plan.py": "9f9dd5e5e21ea6582349678d6b9464e20ebe8d150bf768f2d4a5398fe0836b19",
     "retail/scripts/generate-fulfillment-schema.py": "3c1fa30b9c75cd402dc1f5d3bf160b37883a1a59b4683171435fe64c68f297fe",
     "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb",
-    "retail/scripts/test-admin-live.py": "441be8e938faa1214e96637809d6d32c90968179140cd876021f016eb92ed951"
+    "retail/scripts/test-admin-live.py": "57403add4802b5288edce385e24164c59b538a6780dad8dbfafd520cab860963"
   },
   "cleanup": "both owned containers, bridge network and temporary binaries removed"
 }

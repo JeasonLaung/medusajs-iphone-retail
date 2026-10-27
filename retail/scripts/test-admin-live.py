@@ -91,7 +91,7 @@ def main():
                           '/opt/prep.test','-test.v','-test.run','^TestPrepareReviewedCatalogFixture$','-test.timeout','40s')
         if prepared.returncode or b'OWNED_REVIEWED_CATALOG_READY' not in prepared.stdout:
             raise RuntimeError('Reviewed artificial catalog preparation failed')
-        app_env = {'GIN_MODE': 'release', 'APP_BIND': '0.0.0.0', 'APP_PORT': '9100', 'APP_ENV': 'development',
+        app_env = {'STOREFRONT_STORE_ID':'fixture-store','GIN_MODE': 'release', 'APP_BIND': '0.0.0.0', 'APP_PORT': '9100', 'APP_ENV': 'development',
                    'MYSQL_DSN': 'root:' + password + '@unix(/var/run/mysqld/mysqld.sock)/browser_identity?parseTime=true&loc=UTC',
                    'SESSION_REDIS_URL': 'redis://127.0.0.1:6379/0', 'SESSION_REDIS_PREFIX': 'eurorefurb:browser_fixture:v1:',
                    'ADMIN_ORIGIN': 'http://127.0.0.1:19200', 'SESSION_SECURE': 'false'}
@@ -160,7 +160,7 @@ def main():
                   'reviewed_relational_schema_used': True, 'empty_draft_tables_retained_by_migration': 7,
                   'explicit_catalog_read_schema_migration_used': True, 'test_only_schema_rewrite': False,
                   'browser_executable_override_used': bool(os.environ.get('ADMIN_TEST_BROWSER')),
-                  'checked': ['public Gin region directory and production Astro SSR health on owned nonempty routing data; no Next/Medusa runtime; missing configuration 503','explicit new-account action grants and current permission snapshot; unknown query and anonymous rejection', 'Ant role create and persisted current directory; employee role assignment; Chinese/English role drawer at three widths', 'wrong password then retry', 'real login and reload', 'HttpOnly and SameSite cookies',
+                  'checked': ['public categories and collections with configured server store/channel, exact projected fields and scoped product counts before login','public Gin region directory and production Astro SSR health on owned nonempty routing data; no Next/Medusa runtime; missing configuration 503','explicit new-account action grants and current permission snapshot; unknown query and anonymous rejection', 'Ant role create and persisted current directory; employee role assignment; Chinese/English role drawer at three widths', 'wrong password then retry', 'real login and reload', 'HttpOnly and SameSite cookies',
                               'no credentials in browser storage', 'private response cache and request ID',
                               'missing CSRF and foreign Origin rejected', 'logout and old-cookie replay rejected',
                               'explicit product list projection and literal wildcard filtering', 'Ant product table search reload reset and empty state',

@@ -144,27 +144,3 @@ func (h Handler) product(c *gin.Context, p Product, admin bool) (Object, error) 
 	out["variants"] = variants
 	return out, nil
 }
-func (h Handler) Categories(c *gin.Context) {
-	var rows []Category
-	if err := h.DB.Where("deleted_at IS NULL AND is_active=? AND is_internal=?", true, false).Order("id").Find(&rows).Error; err != nil {
-		platform.DBError(c, err)
-		return
-	}
-	out := []Object{}
-	for _, r := range rows {
-		out = append(out, Decode(r.Payload))
-	}
-	c.JSON(200, gin.H{"product_categories": out, "count": len(out)})
-}
-func (h Handler) Collections(c *gin.Context) {
-	var rows []Collection
-	if err := h.DB.Where("deleted_at IS NULL").Order("id").Find(&rows).Error; err != nil {
-		platform.DBError(c, err)
-		return
-	}
-	out := []Object{}
-	for _, r := range rows {
-		out = append(out, Decode(r.Payload))
-	}
-	c.JSON(200, gin.H{"collections": out, "count": len(out)})
-}

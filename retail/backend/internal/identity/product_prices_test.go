@@ -180,11 +180,13 @@ func TestOwnedProductPrices(t *testing.T) {
 		t.Fatal("fixture Redis unavailable")
 	}
 	defer redis.Close()
+	t.Setenv("STOREFRONT_STORE_ID", "public-shop")
 	guarded, err := server.RouterWithAuth(db, identity.Options{Sessions: sessions, Origin: "https://admin.example", Secure: true})
 	if err != nil {
 		t.Fatal("guarded price router unavailable")
 	}
 	checkStoreRegions(t, db, guarded)
+	checkStoreTaxonomy(t, db, guarded)
 	w := httptest.NewRecorder()
 	guarded.ServeHTTP(w, httptest.NewRequest("GET", "https://admin.example/api/admin"+root, nil))
 	if w.Code != 401 {
