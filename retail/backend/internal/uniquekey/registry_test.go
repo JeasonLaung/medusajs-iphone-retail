@@ -11,6 +11,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/migrations"
 	"github.com/go-sql-driver/mysql"
 )
@@ -224,6 +225,77 @@ func TestRegistryMySQL(t *testing.T) {
 		var count int
 		if err := db.QueryRowContext(ctx, "SELECT COUNT(*) FROM relational_fixture.catalog_options WHERE id IN ('option-a','option-b','option-c','option-d','option-e')").Scan(&count); err != nil || count != 3 {
 			t.Fatal("business rows mismatch", count, err)
+		}
+	})
+	t.Run("protected_envelope_binary_sql_roundtrip_and_rotation", func(t *testing.T) {
+		keys := map[string][]byte{"key1": bytes.Repeat([]byte{1}, 32), "key2": bytes.Repeat([]byte{2}, 32)}
+		old, err := protected.New("key1", keys)
+		if err != nil {
+			t.Fatal(err)
+		}
+		next, err := protected.New("key2", keys)
+		if err != nil {
+			t.Fatal(err)
+		}
+		binding := protected.Context{Purpose: "merchant-config", Table: "mail_accounts", Column: "api_key", Row: "artificial-row"}
+		plain := []byte("人工 configuration \x00\xff ")
+		sealed, err := old.Seal(binding, plain)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, err := db.ExecContext(ctx, "CREATE TABLE protected_envelope_fixture(id INT PRIMARY KEY, value_bytes LONGBLOB NULL) ENGINE=InnoDB"); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := db.ExecContext(ctx, "INSERT INTO protected_envelope_fixture VALUES(1,?),(2,NULL)", sealed); err != nil {
+			t.Fatal("binary persistence failed")
+		}
+		var stored []byte
+		if err := db.QueryRowContext(ctx, "SELECT value_bytes FROM protected_envelope_fixture WHERE id=1").Scan(&stored); err != nil {
+			t.Fatal(err)
+		}
+		opened, err := next.Open(binding, stored)
+		if err != nil || !bytes.Equal(opened, plain) {
+			t.Fatal("persisted value changed", err)
+		}
+		wrong := binding
+		wrong.Row = "different-row"
+		if _, err := next.Open(wrong, stored); err != protected.ErrEnvelope {
+			t.Fatal("SQL row substitution accepted")
+		}
+		rotated, err := next.Seal(binding, opened)
+		if err != nil {
+			t.Fatal(err)
+		}
+		tx, err := db.BeginTx(ctx, nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, err = tx.ExecContext(ctx, "UPDATE protected_envelope_fixture SET value_bytes=? WHERE id=1", rotated); err != nil {
+			tx.Rollback()
+			t.Fatal(err)
+		}
+		if err = tx.Rollback(); err != nil {
+			t.Fatal(err)
+		}
+		if err = db.QueryRowContext(ctx, "SELECT value_bytes FROM protected_envelope_fixture WHERE id=1").Scan(&stored); err != nil || !bytes.Equal(stored, sealed) {
+			t.Fatal("rotation rollback changed ciphertext")
+		}
+		if _, err = db.ExecContext(ctx, "UPDATE protected_envelope_fixture SET value_bytes=? WHERE id=1", rotated); err != nil {
+			t.Fatal(err)
+		}
+		if err = db.QueryRowContext(ctx, "SELECT value_bytes FROM protected_envelope_fixture WHERE id=1").Scan(&stored); err != nil {
+			t.Fatal(err)
+		}
+		onlyNew, _ := protected.New("key2", map[string][]byte{"key2": keys["key2"]})
+		opened, err = onlyNew.Open(binding, stored)
+		if err != nil || !bytes.Equal(opened, plain) {
+			t.Fatal("rotation failed", err)
+		}
+		if err = db.QueryRowContext(ctx, "SELECT value_bytes FROM protected_envelope_fixture WHERE id=2").Scan(&stored); err != nil || stored != nil {
+			t.Fatal("SQL NULL changed")
+		}
+		if _, err = onlyNew.Open(binding, stored); err != protected.ErrEnvelope {
+			t.Fatal("SQL NULL treated as empty secret")
 		}
 	})
 }
