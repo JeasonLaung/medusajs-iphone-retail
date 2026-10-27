@@ -17,3 +17,10 @@ python retail/scripts/rehearse-catalog.py --snapshot logs/gin-migration/source-v
 ```
 
 脚本结束按独占标签验证后删除临时容器和临时可执行文件；快照原件保留在Git忽略目录。执行证据将保存至 `catalog-mysql-rehearsal-report.json`，仅该报告成功存在并与实现摘要一致时才能引用通过结果。
+# 2026-10-28 商品HTTP读取补充
+
+演练现额外分发实际Gin后台商品列表handler，覆盖审查版表上全部30个未删商品，
+分页、权威字段和变体计数逐项与SQL复核，真实handle/status筛选通过。读取前后
+完整45业务表/5辅助表指纹相同，原回滚/提交/重放检查继续通过。该隔离分发不带
+认证中间件和浏览器；人工账号的浏览器证据另见[商品列表](admin-product-list.md)。
+不改变原有全域引用差异和未验收边界。

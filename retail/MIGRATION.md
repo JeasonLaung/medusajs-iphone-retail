@@ -48,3 +48,7 @@
 [实证](../docs/migration/admin-live-browser.md)。开发HTTP下的Cookie、Origin/CSRF、
 刷新及退出/旧会话拒绝已覆盖。生产TLS、客户权限和完整业务仍未验收。
 后台优先Ant Design组件，全部图表使用ECharts；不制作虚构业务统计。
+
+2026-10-28：[商品列表](../docs/migration/admin-product-list.md)接入Ant筛选/表格和
+Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离有人工浏览器证据。
+详情写入、完整结构提升、权限、价格库存和Astro仍待完成。

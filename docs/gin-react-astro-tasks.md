@@ -272,3 +272,5 @@
 2026-10-28后台UI补充：[Ant登录与账号](migration/admin-login-ui.md)新增独立React应用及锁定依赖，Ant Form/Layout/Menu/Drawer/Descriptions直接调用Gin协议；不存储凭据/账号资料，挑战每次重取、错误/过期/退出失败分别处理。类型/build及7项浏览器人工HTTP测试、9张中英三宽截图通过；默认浏览器由本机Edge显式覆盖。真实浏览器到Gin/MySQL/Redis、完整外壳/权限/全部业务页和图表仍缺，bundle大包告警保留；T014/T023/T024未验收。
 
 2026-10-28真实浏览器补充：[Gin端到端链路](migration/admin-live-browser.md)实际cmd/api、独占MySQL/Redis与Vite代理通过本机Edge验证，未拦截响应。九文件迁移及人工新账号，覆盖失败重试、刷新、Cookie/CSRF/Origin、正常退出与旧会话重放拒绝；自有临时资源清理完成。此证据补齐上条回环HTTP串联缺口；生产HTTPS/Secure、客户、完整权限及业务页仍缺，T014/T023/T024未验收。后台优先使用Ant组件，图表统一ECharts。
+
+2026-10-28商品列表补充：[Ant/Gin列表](migration/admin-product-list.md)替换后台原payload返回，明确九字段投影、只读一致事务、文字通配搜索、稳定排序、过滤及分页边界。React按需路由提供Ant表格/筛选和URL状态，真实人工MySQL浏览器验证软删、私密字段不外泄、搜索刷新重置/空态与三宽无页面溢出。另在完整审查版DDL及真实目录子图导入后直接分发Gin列表，全部30个未删商品投影/分页/实际筛选与SQL一致，读取不改整库指纹；该证据不带认证和浏览器。公开接口、详情编辑、价格库存、权限对象范围及Astro继续待办，T020/T021/T023未验收。

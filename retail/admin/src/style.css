@@ -18,6 +18,9 @@ html, body, #root { min-width: 320px; min-height: 100%; margin: 0; }
 .account-panel { padding: 32px; background: var(--surface); max-width: 960px; }
 .full-width { width: 100%; }
 .request-error { margin-bottom: 24px; }
+.product-filters { gap: 16px; margin-bottom: 24px; }
+.product-filters .ant-form-item { margin: 0; max-width: 100%; }
+.product-filters .ant-form-item-control { min-width: 0; }
 .mobile-nav { display: none; }
 .ant-descriptions-item-content { overflow-wrap: anywhere; }
 :focus-visible { outline: 2px solid var(--brand-strong); outline-offset: 3px; }

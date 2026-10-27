@@ -8,15 +8,23 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"encoding/json"
+	"net/http/httptest"
+	"net/url"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
 
+	cataloghttp "github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/importvalue"
 	"github.com/eurorefurb/retail/internal/rowimport"
+	"github.com/gin-gonic/gin"
 	"github.com/go-sql-driver/mysql"
+	gormmysql "gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type rehearsalLayout struct {
@@ -212,6 +220,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 	defer cancel()
 	cfg := mysql.NewConfig()
 	cfg.User, cfg.Passwd, cfg.Net, cfg.Addr, cfg.DBName = "root", os.Getenv("MYSQL_PWD"), "unix", "/var/run/mysqld/mysqld.sock", "catalog_rehearsal"
+	cfg.ParseTime, cfg.Loc = true, time.UTC
 	cfg.Params = map[string]string{"time_zone": "'+00:00'", "sql_mode": "'STRICT_ALL_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'"}
 	db, err := sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {
@@ -395,6 +404,69 @@ func TestActualCatalogMySQL(t *testing.T) {
 		return h.Sum(nil)
 	}
 	before := fingerprint()
+	// Exercise the actual HTTP projection against all imported real products in
+	// the reviewed schema. Responses remain inside this isolated test process.
+	gdb, err := gorm.Open(gormmysql.New(gormmysql.Config{Conn: db, SkipInitializeWithVersion: true}), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent), DisableAutomaticPing: true})
+	if err != nil {
+		t.Fatal("catalog HTTP connection unavailable")
+	}
+	gin.SetMode(gin.TestMode)
+	router := gin.New()
+	router.GET("/products", (cataloghttp.Handler{DB: gdb}).AdminProducts)
+	var expected int64
+	if db.QueryRow("SELECT COUNT(*) FROM catalog_products WHERE deleted_at IS NULL").Scan(&expected) != nil {
+		t.Fatal("catalog HTTP expected count unavailable")
+	}
+	seen := map[string]bool{}
+	var first *cataloghttp.AdminProductSummary
+	for offset := 0; int64(offset) < expected; offset += 20 {
+		reply := httptest.NewRecorder()
+		router.ServeHTTP(reply, httptest.NewRequest("GET", "/products?limit=20&offset="+strconv.Itoa(offset), nil))
+		var response struct {
+			Products []cataloghttp.AdminProductSummary `json:"products"`
+			Count    int64                             `json:"count"`
+		}
+		if reply.Code != 200 || json.Unmarshal(reply.Body.Bytes(), &response) != nil || response.Count != expected || len(response.Products) == 0 {
+			t.Fatal("reviewed catalog HTTP list failed")
+		}
+		for _, p := range response.Products {
+			if seen[p.ID] {
+				t.Fatal("catalog HTTP unstable pagination")
+			}
+			seen[p.ID] = true
+			if first == nil {
+				copy := p
+				first = &copy
+			}
+			var title, handle, status string
+			var variants int64
+			if db.QueryRow("SELECT title,handle,status,(SELECT COUNT(*) FROM catalog_variants v WHERE v.product_id=p.id AND v.deleted_at IS NULL) FROM catalog_products p WHERE id=? AND deleted_at IS NULL", p.ID).Scan(&title, &handle, &status, &variants) != nil || p.Title != title || p.Handle != handle || p.Status != status || p.VariantCount != variants || p.CreatedAt.IsZero() || p.UpdatedAt.IsZero() {
+				t.Fatal("catalog HTTP projection differs from real SQL")
+			}
+		}
+	}
+	if int64(len(seen)) != expected || first == nil {
+		t.Fatal("catalog HTTP did not cover actual products")
+	}
+	reply := httptest.NewRecorder()
+	router.ServeHTTP(reply, httptest.NewRequest("GET", "/products?q="+url.QueryEscape(first.Handle)+"&status="+url.QueryEscape(first.Status), nil))
+	var filtered struct {
+		Products []cataloghttp.AdminProductSummary `json:"products"`
+	}
+	if reply.Code != 200 || json.Unmarshal(reply.Body.Bytes(), &filtered) != nil {
+		t.Fatal("catalog HTTP actual filters failed")
+	}
+	found := false
+	for _, p := range filtered.Products {
+		if p.ID == first.ID {
+			found = true
+		}
+	}
+	if !found || !bytes.Equal(before, fingerprint()) {
+		t.Fatal("catalog HTTP query changed data or lost filter match")
+	}
+	counts["http_projected_actual_products"] = expected
+	counts["http_queries_preserved_full_fingerprint"] = 1
 	stage(false, true)
 	if !bytes.Equal(before, fingerprint()) {
 		t.Fatal("actual catalog replay changed evidence")

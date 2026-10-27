@@ -54,6 +54,31 @@ async function signIn(page: Page) {
   await page.getByRole('button', { name: '登录', exact: true }).click()
 }
 
+test('product dependency failure is distinct from empty state and supports retry and expiry', async ({page})=>{
+  await fixture(page)
+  let mode:'failed'|'ready'|'expired'='failed'
+  await page.route('**/api/admin/products?*',route=>{
+    if(mode==='failed')return route.fulfill({status:503,json:{error:{code:'catalog.unavailable'}}})
+    if(mode==='expired')return route.fulfill({status:401,json:{error:{code:'auth.unauthorized'}}})
+    return route.fulfill({json:{products:[],count:0,limit:20,offset:0}})
+  })
+  await page.goto('/account')
+  await signIn(page)
+  await page.getByRole('menuitem',{name:'商品',exact:true}).click()
+  await expect(page.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
+  await expect(page.getByText('没有符合条件的商品',{exact:true})).toHaveCount(0)
+  mode='ready'
+  await page.getByRole('button',{name:'重新连接',exact:true}).click()
+  await expect(page.getByText('没有符合条件的商品',{exact:true})).toBeVisible()
+  mode='expired'
+  await page.getByRole('button',{name:'重置',exact:true}).click()
+  // Change a filter to issue a new request if reset leaves the same URL.
+  await page.getByRole('textbox',{name:/^搜索/}).fill('expired')
+  await page.getByRole('button',{name:'搜索',exact:true}).click()
+  await expect(page).toHaveURL('/login')
+  await expect(page.getByText('登录已过期，请重新登录。',{exact:true})).toBeVisible()
+})
+
 test('Ant form signs in, reloads account, and signs out without storing capabilities', async ({ page }) => {
   const calls = await fixture(page)
   await page.goto('/account')

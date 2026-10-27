@@ -1,5 +1,6 @@
 export type Language = 'zh-CN' | 'en'
 const zh = {
+  products:'商品',search:'搜索',status:'状态',sort:'排序',reset:'重置',draft:'草稿',proposed:'待审核',published:'已发布',rejected:'已拒绝',newest:'创建时间从新到旧',oldest:'创建时间从旧到新',titleAsc:'标题升序',titleDesc:'标题降序',invalidFilters:'筛选参数无效，请重置后重试。',noProducts:'没有符合条件的商品',productTitle:'商品名称',variants:'变体数量',createdAt:'创建时间',
   admin: '管理后台', login: '登录', email: '邮箱', password: '密码', required: '请填写此项', emailInvalid: '请输入有效邮箱',
   loginTitle: '登录管理后台', loginDescription: '使用新系统的员工账号登录。', account: '我的账号', logout: '退出登录',
   retry: '重新连接', checking: '正在确认登录状态', unavailable: '暂时无法连接服务，请稍后重试。',
@@ -12,6 +13,7 @@ const zh = {
 }
 export type Copy = typeof zh
 const en: Copy = {
+  products:'Products',search:'Search',status:'Status',sort:'Sort',reset:'Reset',draft:'Draft',proposed:'Proposed',published:'Published',rejected:'Rejected',newest:'Newest first',oldest:'Oldest first',titleAsc:'Title ascending',titleDesc:'Title descending',invalidFilters:'Invalid filters. Reset and try again.',noProducts:'No matching products',productTitle:'Product',variants:'Variants',createdAt:'Created',
   admin: 'Administration', login: 'Sign in', email: 'Email', password: 'Password', required: 'This field is required', emailInvalid: 'Enter a valid email',
   loginTitle: 'Sign in to administration', loginDescription: 'Use your staff account for the new system.', account: 'My account', logout: 'Sign out',
   retry: 'Reconnect', checking: 'Checking your session', unavailable: 'Unable to connect. Please try again later.',

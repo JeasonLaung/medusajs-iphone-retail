@@ -33,8 +33,7 @@ func paging(c *gin.Context) (int, int) {
 	return limit, offset
 }
 
-func (h Handler) Products(c *gin.Context)      { h.products(c, false) }
-func (h Handler) AdminProducts(c *gin.Context) { h.products(c, true) }
+func (h Handler) Products(c *gin.Context) { h.products(c, false) }
 func (h Handler) products(c *gin.Context, admin bool) {
 	limit, offset := paging(c)
 	q := h.DB.Model(&Product{}).Where("deleted_at IS NULL")

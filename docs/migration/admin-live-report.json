@@ -12,7 +12,9 @@
     "no credentials in browser storage",
     "private response cache and request ID",
     "missing CSRF and foreign Origin rejected",
-    "logout and old-cookie replay rejected"
+    "logout and old-cookie replay rejected",
+    "explicit product list projection and literal wildcard filtering",
+    "Ant product table search reload reset and empty state"
   ],
   "limits": {
     "mysql_cpus": 1,
@@ -28,24 +30,29 @@
   "full_authentication_accepted": false,
   "full_admin_accepted": false,
   "implementation_sha256": {
-    "retail/admin/README.md": "79522b82e1116f68d1c287382d9eeba25456866ff2fd972abc1f373f4c4264a3",
+    "retail/admin/README.md": "8155afa85f7fb6f94661f48affa1ca61ecf5c2f299771386f4b7cfa4a6ce09f6",
     "retail/admin/index.html": "3b404b4603410a0335cee226286468d41422d2822b816770e527152e4923c771",
     "retail/admin/package-lock.json": "2f384487715a0528810e6db53613244310c8a37bf7510cdc094dafa241321165",
     "retail/admin/package.json": "fba3a9e39aab49b3edf5e59b4a3d83cee658931b0ee8596a1ffb83d0c0c93b76",
     "retail/admin/playwright.config.ts": "d5079532fde48472f7d8b6fe7dba4b12d0a2b22121e25a72f094db31721ad543",
     "retail/admin/playwright.live.config.ts": "e87682decce2a6528da34d1300dc891155d10309e1b36550a8919236b21eaf0b",
-    "retail/admin/src/App.tsx": "5f692ec9e2a06b4ec1253eeca6f482066d5ccbd5147ea17bc780d5869098530c",
-    "retail/admin/src/api.ts": "acb4a19415b566dc1d943637898ee6ef6adcdd720612c6a84d63c307dfffab49",
-    "retail/admin/src/i18n.ts": "caee8a771e120bba8d27f7871665c6517d1f7492ff61f2c5a5a2b858f437c879",
+    "retail/admin/src/App.tsx": "bde90575da8013c2169e63a467b1670de4fac5544eb1c3e615325101735734cb",
+    "retail/admin/src/Products.tsx": "0f77258c66017ba5ccdf14b49f631019990e9be7bb5b9a998b196571ff141d78",
+    "retail/admin/src/api.ts": "418e0ad2e815f87f9b90ed8540b17f6482d2532f5f92f7ee02650919a10f6123",
+    "retail/admin/src/i18n.ts": "26e3d3eadf624eedd7a1e25d3c83d5ba5bb2a89a00bfc8eb96e51e1d114aeda6",
     "retail/admin/src/main.tsx": "a114e06b121c44c091c06bae73b1f2fc5a17a919e38cee9d71531f3929566a62",
-    "retail/admin/src/style.css": "6526cfc0da86b5c01b673acf892e33fe4a8d9c7616d04cc862e0f584d7ca5b90",
-    "retail/admin/tests/auth.live.spec.ts": "42b80a15b4a16a4cda265d784afd85bbca000ec2c5d09ae97fcedb735f4556ae",
-    "retail/admin/tests/auth.spec.ts": "ed5503866bf9f250d437b69db66278548e08f57c26db094257120a7e5b7a059e",
+    "retail/admin/src/style.css": "e7632668d918dcc5c931f10db4ccbc4e64f0a861b7e3cff2d1f97bb1dbb84ea6",
+    "retail/admin/tests/auth.live.spec.ts": "92ff8815dec127e2939eeafda8bbbcdfffa9e9c2e68cf63d002b7b6c33f40a85",
+    "retail/admin/tests/auth.spec.ts": "d68157aea409d223cdafdd181e49ebe6f9cf3bd5ba7fcd9811042e914cae4d5f",
     "retail/admin/tsconfig.json": "c4769ad8ef4c9dfac534234e5679e8b9bdc702a978793eb6f3b893e4c02fd3d7",
     "retail/admin/vite.config.ts": "9f665557c617064816daa9a9b8cfbe746073d93cec4be2d2ef897dae85d9eb54",
     "retail/backend/cmd/api/main.go": "d8ad7c2fd35e6050d6423d591a9d36dd18802c499f5e6087fcacbb71c84eec7f",
+    "retail/backend/internal/catalog/admin_list.go": "0059d5ac8130c5b866fd0d3e559d50763923921478efa756ae3f66b75964d400",
+    "retail/backend/internal/catalog/admin_list_test.go": "ff14e9153cdae07fd2c63706cecb5161899f72165b00e184d39ee819fd46212d",
+    "retail/backend/internal/catalog/http.go": "e417ce100747ff765ca0c5676b0c74877c02a5228889187a14f4c52814f8a136",
+    "retail/backend/internal/catalog/models.go": "212e73fdbf318abf0d8252ee0a3139a249856dbdab58d80cd8cabc5fa11fe97c",
     "retail/backend/internal/identity/admin.go": "122cd19c9ae0daffa7514ff2dc5500c8d414a5dff5877ec3eacfd4de67fdac29",
-    "retail/backend/internal/identity/browser_fixture_test.go": "f86baa9ea4d7782f413119f5175c02e9e0e6f8bd75deb956e0eaa4e3de262dac",
+    "retail/backend/internal/identity/browser_fixture_test.go": "32dc7f176dd7359b5ef080eeb1410eefb4b963d83b4b40f4279c00cdff2535bf",
     "retail/backend/internal/platform/database.go": "0426e6ac869492e0edc4153f1226e7a6e527e47e50db6ac00637756806120e86",
     "retail/backend/internal/platform/request.go": "b8abeda445a6ae84c451a6ba9678308973feb5c0627fdc73dccf5de68aec648e",
     "retail/backend/internal/server/router.go": "c65b4169a9ade0a3215fe2099974551cd7227878b098b41fae09bf87eba99a55",
@@ -60,7 +67,7 @@
     "retail/backend/migrations/0007_migration_holder_dispositions.sql": "eab26ae96e2ca872405ea323f3e0a8f26a75afa44759d5a859cebd85e6c34b1f",
     "retail/backend/migrations/0008_migration_catalog_rows.sql": "2ff0e3138514c8aeb7fac4a131eae6e805d624dd8f4107c3f6e84d20bc9cc7d7",
     "retail/backend/migrations/0009_admin_auth_version.sql": "059b9f79fd7ec2f7ebbd8030d5f010c258c1fe14262c4fd86103ea19b178fa33",
-    "retail/scripts/test-admin-live.py": "6e5ffd4e1c4c628c693606c9586f7b64d83d179847461f43cadf0a704ed3e759"
+    "retail/scripts/test-admin-live.py": "7b2475bd7bd5adde8d079ff8a0cea6cb9aa34f9cff6ca8d652ad7934da551f30"
   },
   "cleanup": "both owned containers, bridge network and temporary binaries removed"
 }

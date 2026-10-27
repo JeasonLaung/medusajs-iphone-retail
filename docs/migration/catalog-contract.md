@@ -72,7 +72,7 @@
 
 ## 已发现的后端草稿缺口
 
-1. `internal/catalog/http.go` 当前直接 Decode 原 payload 并返回，未实现公开字段白名单或渠道过滤；不可作为正式公开 API。
+1. `internal/catalog/http.go` 公开/详情路径仍直接 Decode 原 payload，未实现公开字段白名单或渠道过滤；不可作为正式公开 API。2026-10-28后台列表已由[独立投影](admin-product-list.md)替换；详情/更新不据此完成。
 2. 导入器未检查 product_product_option_value 关联、图片软删除/排序及 SKU 图片关联；部分分类/集合/地区关系缺失。
 3. 当前 calculated_price 仅尝试无价目表/阶梯的基本价，不构成完整价格引擎；草稿字符串不能直接传给要求 number 的旧 helper。
 4. UpdateProduct 在 GORM Updates 后读取 p 作为 before，可能已被 GORM 更新；需加行锁或版本控制，提前保存 before 后再审计。

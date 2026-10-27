@@ -18,14 +18,14 @@ function csrfCookie() {
   return ''
 }
 
-async function request<T>(path: string, options: { method?: 'GET' | 'POST'; body?: unknown; csrf?: string; signal?: AbortSignal } = {}): Promise<T> {
+async function request<T>(path: string, options: { method?: 'GET' | 'POST'; body?: unknown; csrf?: string; signal?: AbortSignal } = {}, base = '/api/admin/auth/'): Promise<T> {
   const controller = new AbortController()
   const abort = () => controller.abort()
   options.signal?.addEventListener('abort', abort, { once: true })
   if (options.signal?.aborted) controller.abort()
   const timer = window.setTimeout(abort, 10_000)
   try {
-    const response = await fetch(`/api/admin/auth/${path}`, {
+    const response = await fetch(`${base}${path}`, {
       method: options.method ?? 'GET', credentials: 'same-origin', cache: 'no-store',
       redirect: 'error', signal: controller.signal,
       headers: { 'Content-Type': 'application/json', ...(options.csrf ? { 'X-CSRF-Token': options.csrf } : {}) },
@@ -46,6 +46,18 @@ async function request<T>(path: string, options: { method?: 'GET' | 'POST'; body
     window.clearTimeout(timer)
     options.signal?.removeEventListener('abort', abort)
   }
+}
+
+export type ProductSummary = { id: string; title: string; handle: string; status: 'draft' | 'proposed' | 'published' | 'rejected'; thumbnail: string | null; collection_id: string | null; created_at: string; updated_at: string; variant_count: number }
+export type ProductList = { products: ProductSummary[]; count: number; limit: number; offset: number }
+export async function listProducts(query: URLSearchParams, signal: AbortSignal): Promise<ProductList> {
+  const data = await request<ProductList>(`products?${query}`, { signal }, '/api/admin/')
+  if (!data || !Number.isSafeInteger(data.count) || data.count < 0 || !Number.isSafeInteger(data.limit) || data.limit < 1 || data.limit > 100 || !Number.isSafeInteger(data.offset) || data.offset < 0 || !Array.isArray(data.products) || data.products.length > data.limit) throw new APIError(0, 'request.invalid_response')
+  const products = data.products.map(p => {
+    if (!p || typeof p.id !== 'string' || !p.id || typeof p.title !== 'string' || typeof p.handle !== 'string' || !['draft','proposed','published','rejected'].includes(p.status) || !Number.isSafeInteger(p.variant_count) || p.variant_count < 0 || typeof p.created_at !== 'string' || typeof p.updated_at !== 'string' || !Number.isFinite(Date.parse(p.created_at)) || !Number.isFinite(Date.parse(p.updated_at)) || (p.thumbnail !== null && typeof p.thumbnail !== 'string') || (p.collection_id !== null && typeof p.collection_id !== 'string')) throw new APIError(0, 'request.invalid_response')
+    return { id:p.id,title:p.title,handle:p.handle,status:p.status,thumbnail:p.thumbnail,collection_id:p.collection_id,created_at:p.created_at,updated_at:p.updated_at,variant_count:p.variant_count }
+  })
+  return { products, count:data.count,limit:data.limit,offset:data.offset }
 }
 
 function account(data: unknown): User {

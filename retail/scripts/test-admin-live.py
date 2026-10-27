@@ -122,6 +122,7 @@ def main():
                  'retail/backend/internal/platform/database.go', 'retail/backend/internal/platform/request.go',
                  'retail/backend/internal/server/router.go', 'retail/backend/internal/sessionstore/store.go',
                  'retail/backend/internal/sessionstore/config.go']
+        files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/backend/internal/catalog').glob('*.go')]
         files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/backend/migrations').glob('*.sql')]
         files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/admin').rglob('*')
                   if p.is_file() and not any(part in ('node_modules', 'dist') for part in p.relative_to(ROOT / 'retail/admin').parts)]
@@ -130,7 +131,8 @@ def main():
                   'browser_executable_override_used': bool(os.environ.get('ADMIN_TEST_BROWSER')),
                   'checked': ['wrong password then retry', 'real login and reload', 'HttpOnly and SameSite cookies',
                               'no credentials in browser storage', 'private response cache and request ID',
-                              'missing CSRF and foreign Origin rejected', 'logout and old-cookie replay rejected'],
+                              'missing CSRF and foreign Origin rejected', 'logout and old-cookie replay rejected',
+                              'explicit product list projection and literal wildcard filtering', 'Ant product table search reload reset and empty state'],
                   'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                              'network': 'owned bridge network; egress not restricted', 'published_ports': 'one random API port bound to 127.0.0.1 only'},
                   'real_accounts_used': False, 'application_resources_used': False, 'tls_secure_cookie_verified': False,
