@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "scope": "36 actual catalog tables and nine parent dependencies in disposable tmpfs MySQL only; parent rows have no formal migration ledger; no full import/runtime acceptance",
+  "scope": "36 catalog tables, nine parent dependencies, two inventory tables and 28 ordinary order tables in disposable tmpfs MySQL; protected customer excluded and catalog parent rows have no ledger; no full import/runtime acceptance",
   "snapshot_sha256": "b58a26812eeea8e75c6bd3e4ec4635b6260d8e704bc9a63fd095f0e7d9f13985",
   "mysql_version": "8.4.11",
   "counts": {
@@ -58,7 +58,8 @@
     "dependency_tables": 9,
     "exact_replay_catalog_rows": 21837,
     "exact_replay_dependency_rows": 1722,
-    "explicit_schema_migrations": 16,
+    "exact_replay_ordinary_order_rows": 336,
+    "explicit_schema_migrations": 17,
     "http_complete_actual_variants": 1528,
     "http_detailed_actual_products": 30,
     "http_incomplete_actual_variants": 30,
@@ -73,8 +74,14 @@
     "inventory_provenance_rows": 1026,
     "inventory_read_rehearsal_levels": 927,
     "inventory_read_rehearsal_reservations": 99,
+    "order_import_rollback_rows": 336,
+    "order_provenance_rows": 336,
+    "order_reference_holds": 306,
+    "ordinary_order_rows": 336,
+    "ordinary_order_tables": 28,
     "physical_foreign_key_checks_enabled": 1,
     "preserved_inventory_reservation_mismatches": 1,
+    "protected_customer_rows_not_imported": 5,
     "rollback_business_rows": 23559,
     "rollback_provenance_rows": 21837,
     "source_verified_rows": 27140,
@@ -102,9 +109,9 @@
   "relational_acceptance": false,
   "full_business_acceptance": false,
   "implementation_sha256": {
-    "retail/scripts/rehearse-catalog.py": "a4d2f783e71c570789f4a20f8ba406c80d44575ad9d2bc7bda00f1c8f2e76199",
+    "retail/scripts/rehearse-catalog.py": "b008fab547cbb511bf0310bbc8277660e2eb081a0ed0ebe839630263c61d7c19",
     "retail/backend/internal/catalogimport/import.go": "51835174a7264397177318dc184d0769fce7565de737cd1522ab6d703ca20570",
-    "retail/backend/internal/catalogimport/rehearsal_test.go": "89e8ef4e4df397c670557c5222f62268b13257824208060537319f90cbb39933",
+    "retail/backend/internal/catalogimport/rehearsal_test.go": "974df78e6b2b7d6c88cb00af3d1530893dcbbd1e0f9dd0b6d1dcde4373c47dac",
     "retail/backend/internal/catalogimport/plans.json": "65ef08d81fb47a476c47387fd99da67a34e3002d190069e2fd3b64adc666bf59",
     "retail/backend/internal/rowimport/convert.go": "bd96b9020318079476ac9172d38cb13fd162da4e29d065cb1f64977b4d4ba182",
     "retail/backend/internal/rowimport/record.go": "9da4ad1becb6c0ab0c20d147c1a71fb6a1fa44f317fca6cee7c4b0f2aa6c3cc8",
@@ -138,6 +145,7 @@
     "retail/backend/migrations/0014_inventory_stock_edits.sql": "93cfeaf14749b26b181d0f5c28d71e46f7bbfdb82d3cb293ce592e1e691d6239",
     "retail/backend/migrations/0015_inventory_reservation_operations.sql": "57b097d3e1698bf556a8903741c68d0973e3e8c342f02052347aefec8176cb45",
     "retail/backend/migrations/0016_order_relational.sql": "a7f26ab595178dba744b65333f5d1e94d3871f6cfdce59338124ed769cbd4dab",
+    "retail/backend/migrations/0017_order_import_evidence.sql": "1aee7e10b016ce61553f020aa5cab1f11d944df625e91c28d461f634298ca82e",
     "retail/backend/internal/schema/run.go": "56f369159ab7cee4fc51694ba6dc0cbd58daff7656fd02e4205350c1b1d9f8b3",
     "retail/backend/internal/schema/plan.go": "57e554e749ef6d75c12ca6cbb20f71b8ced1e29b39b49b15e5cb8d9a4c98de56",
     "retail/backend/internal/inventory/edit.go": "99763329e4ccfa401acdd5bf4b823e0db87e90d25b2b278496693070941ff8e1",
@@ -156,7 +164,11 @@
     "retail/backend/internal/inventoryimport/plans.json": "0b734a46ac265e65df08f31f284c876fdfc520e31b81a922318fd63f620fc712",
     "retail/backend/internal/orders/schema.go": "f309485a3e2cf97c068f0be4f814e86a0a81cc38b67587f0b5c3280db5dda3d7",
     "retail/backend/internal/orders/schema_plan.json": "cfc3afdb2a2ff3dddd80a6a3b14a9e8def92300bf615b29452342dc192a99fe1",
-    "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb"
+    "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb",
+    "retail/backend/internal/orderimport/import.go": "05df4aed29989ec48d7710ed03e1c461f1471f3eb654cc29a276db3232371327",
+    "retail/backend/internal/orderimport/plans.json": "3de6dd0146f5e78ecfef8b56307a03020873c3b5ef29f4ae34a0556868a3aabb",
+    "retail/backend/internal/orderimport/plan_test.go": "2ecbba70f9d70a7fd0e2c64752c43eea6244fa15ed1d7e41beae1ff1b380c5b6",
+    "retail/scripts/generate-order-import-plan.py": "b11fe97550626035b5eba08ef2c8511fd9f322bc155ae9f7544974070c394a4b"
   },
   "cleanup": "owned container removed after label verification; tmpfs source/target copies and temporary runner removed"
 }

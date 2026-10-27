@@ -72,7 +72,7 @@ def main():
         if copied.returncode or docker('exec', mysql_id, 'chmod', '700', '/opt/identity.test').returncode:
             raise RuntimeError('Identity runner transfer failed')
         tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1', mysql_id,
-                        '/opt/identity.test', '-test.v', '-test.run', '^TestOwned(AdminAuthentication|CatalogSchemaTransition|ProductEdits|ProductPrices|ProductInventory|InventoryStockEdits|ReservationTransactions|OrderSchema)$', '-test.timeout', '240s', timeout=270)
+                        '/opt/identity.test', '-test.v', '-test.run', '^TestOwned(AdminAuthentication|CatalogSchemaTransition|ProductEdits|ProductPrices|ProductInventory|InventoryStockEdits|ReservationTransactions|OrderSchema|OrderImport)$', '-test.timeout', '240s', timeout=270)
         markers = [line.split('IDENTITY_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'IDENTITY_REHEARSAL ' in line]
         if tested.returncode or len(markers) != 1:
             # All inputs and failure messages in this binary are artificial.
@@ -103,6 +103,9 @@ def main():
         order_markers = [line.split('ORDER_SCHEMA_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_SCHEMA_REHEARSAL ' in line]
         if len(order_markers)!=1:
             raise RuntimeError('Order schema verification missing')
+        order_import_markers = [line.split('ORDER_IMPORT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_IMPORT_REHEARSAL ' in line]
+        if len(order_import_markers)!=1:
+            raise RuntimeError('Order import verification missing')
         files = ['retail/scripts/test-admin-auth.py', 'retail/backend/internal/identity/admin.go',
                  'retail/backend/internal/identity/admin_test.go', 'retail/backend/internal/identity/integration_test.go',
                  'retail/backend/internal/server/router.go', 'retail/backend/internal/platform/http.go',
@@ -123,6 +126,8 @@ def main():
         files += ['retail/backend/migrations/0014_inventory_stock_edits.sql','retail/backend/internal/identity/stock_edit_test.go']
         files += ['retail/backend/migrations/0015_inventory_reservation_operations.sql','retail/backend/internal/identity/reservation_transactions_test.go']
         files += ['retail/backend/migrations/0016_order_relational.sql','retail/backend/internal/identity/order_schema_test.go','retail/backend/internal/orders/schema.go','retail/backend/internal/orders/schema_plan.json','retail/scripts/generate-order-schema.py']
+        files += ['retail/backend/migrations/0017_order_import_evidence.sql','retail/backend/internal/identity/order_import_test.go','retail/scripts/generate-order-import-plan.py']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/orderimport').glob('*') if p.is_file()]
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                   'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                               'network': 'owned shared namespace with no external network', 'published_ports': 0},
@@ -136,6 +141,7 @@ def main():
                   'inventory_stock_edit': json.loads(stock_markers[0]),
                   'reservation_transactions': json.loads(reservation_markers[0]),
                   'order_schema': json.loads(order_markers[0]),
+                  'order_import': json.loads(order_import_markers[0]),
                   'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
         password = ''

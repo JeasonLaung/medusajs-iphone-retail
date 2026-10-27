@@ -21,6 +21,7 @@ import (
 	"github.com/eurorefurb/retail/internal/importvalue"
 	"github.com/eurorefurb/retail/internal/inventory"
 	"github.com/eurorefurb/retail/internal/inventoryimport"
+	"github.com/eurorefurb/retail/internal/orderimport"
 	"github.com/eurorefurb/retail/internal/rowimport"
 	"github.com/eurorefurb/retail/internal/schema"
 	"github.com/eurorefurb/retail/migrations"
@@ -102,12 +103,23 @@ func TestActualCatalogMySQL(t *testing.T) {
 	}
 	selected := map[string][]rowimport.SourceRow{}
 	inventorySelected := map[string][]rowimport.SourceRow{}
+	orderTables, err := orderimport.SourceTables()
+	if err != nil || len(orderTables) != 28 {
+		t.Fatal("ordinary order import scope unavailable")
+	}
+	orderSelected := map[string][]rowimport.SourceRow{}
+	for _, name := range orderTables {
+		orderSelected[name] = nil
+	}
 	file, err := os.Open("/tmp/catalog-source.ndjson")
 	if err != nil {
 		t.Fatal("private catalog snapshot unavailable")
 	}
 	defer file.Close()
 	verified, err := rowimport.VerifyStream(file, snapshotHash, func(table string, row rowimport.SourceRow) error {
+		if _, ok := orderSelected[table]; ok {
+			orderSelected[table] = append(orderSelected[table], row)
+		}
 		if table == "inventory_level" || table == "reservation_item" {
 			inventorySelected[table] = append(inventorySelected[table], row)
 		}
@@ -241,14 +253,14 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog embedded schema plan invalid")
 	}
 	created, err := schema.Apply(ctx, db, plan)
-	if err != nil || created.Applied != 16 || schema.CheckApplied(ctx, db, plan) != nil {
+	if err != nil || created.Applied != 17 || schema.CheckApplied(ctx, db, plan) != nil {
 		t.Fatal("catalog embedded migration failed")
 	}
 	repeated, err := schema.Apply(ctx, db, plan)
-	if err != nil || repeated.Skipped != 16 {
+	if err != nil || repeated.Skipped != 17 {
 		t.Fatal("catalog embedded migration replay failed")
 	}
-	counts["explicit_schema_migrations"] = 16
+	counts["explicit_schema_migrations"] = 17
 	var enabled int
 	if db.QueryRowContext(ctx, "SELECT @@foreign_key_checks").Scan(&enabled) != nil || enabled != 1 {
 		t.Fatal("catalog physical constraints must remain enabled")
@@ -402,9 +414,65 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("known inventory reservation difference changed")
 	}
 	counts["preserved_inventory_reservation_mismatches"] = mismatch
+	stageOrders := func(commit bool) orderimport.Result {
+		tx, err := db.BeginTx(ctx, nil)
+		if err != nil {
+			t.Fatal("order rehearsal transaction unavailable")
+		}
+		defer tx.Rollback()
+		result, err := orderimport.Import(ctx, tx, snapshotHash, orderSelected)
+		if err != nil {
+			t.Fatal("actual ordinary order staging failed")
+		}
+		if commit && tx.Commit() != nil {
+			t.Fatal("actual ordinary order commit failed")
+		}
+		return result
+	}
+	rolledOrders := stageOrders(false)
+	if rolledOrders.Rows != 336 {
+		t.Fatal("ordinary order source scope differs")
+	}
+	for _, name := range orderTables {
+		if count(all[name].Target) != 0 {
+			t.Fatal("order rollback left business rows")
+		}
+	}
+	if count("migration_order_rows") != 0 || count("order_migration_reference_holds") != 0 {
+		t.Fatal("order rollback left evidence")
+	}
+	committedOrders := stageOrders(true)
+	for _, name := range orderTables {
+		if count(all[name].Target) != int64(len(orderSelected[name])) {
+			t.Fatal("order committed row count differs")
+		}
+	}
+	if committedOrders.Rows != 336 || count("migration_order_rows") != 336 || count("historical_customer_subjects") != 0 {
+		t.Fatal("order provenance or excluded customer count differs")
+	}
+	counts["ordinary_order_tables"] = 28
+	counts["ordinary_order_rows"] = 336
+	counts["order_provenance_rows"] = count("migration_order_rows")
+	counts["order_reference_holds"] = count("order_migration_reference_holds")
+	counts["order_import_rollback_rows"] = 336
+	counts["protected_customer_rows_not_imported"] = verified.Tables["customer"].Rows
 	fingerprint := func() []byte {
 		h := sha256.New()
 		targets := map[string]string{}
+		targets["migration_order_rows"] = "source_table,identity_sha256"
+		targets["order_migration_reference_holds"] = "source_table,identity_sha256,column_name"
+		for _, name := range orderTables {
+			layout := all[name]
+			var primary []string
+			for _, key := range layout.Primary {
+				for _, f := range layout.Fields {
+					if f.Source == key {
+						primary = append(primary, "`"+f.Target+"`")
+					}
+				}
+			}
+			targets[layout.Target] = strings.Join(primary, ",")
+		}
 		targets["inventory_levels"] = "id"
 		targets["inventory_reservations"] = "id"
 		targets["migration_inventory_rows"] = "source_table,identity_sha256"
@@ -677,6 +745,11 @@ func TestActualCatalogMySQL(t *testing.T) {
 	counts["http_queries_preserved_full_fingerprint"] = 1
 	stage(false, true)
 	stageInventory(true)
+	replayedOrders := stageOrders(true)
+	if replayedOrders.ReplayedRows != 336 {
+		t.Fatal("ordinary order replay duplicated facts")
+	}
+	counts["exact_replay_ordinary_order_rows"] = 336
 	if !bytes.Equal(before, fingerprint()) {
 		t.Fatal("actual catalog replay changed evidence")
 	}

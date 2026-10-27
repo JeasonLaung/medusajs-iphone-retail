@@ -43,7 +43,7 @@ Ant Drawer / Form / Input / Button / Alert / Descriptions 承担编辑和反馈�
 同一操作。冲突、缺失、权限变化、对账限制分别提示；401 返回登录。
 库存明细展示持久历史差异的仓库及原因，不回传原始证据 JSON、快照或账号引用。
 
-[MySQL 联合报告](admin-auth-report.json) 包含 16 迁移、8 路不同操作一胜七冲突、
+[MySQL 联合报告](admin-auth-report.json) 包含 17 迁移、8 路不同操作一胜七冲突、
 8 路相同操作七次重放、一条审计、审计失败回滚、精度/原字段保留、历史 hold、
 实时预留差异、软删父对象和撤权/关闭命令拒绝。
 [浏览器报告](admin-live-report.json) 通过真实 Gin/MySQL/Redis 验证精确在途量持久化、

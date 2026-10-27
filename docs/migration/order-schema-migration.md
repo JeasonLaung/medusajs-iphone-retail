@@ -49,7 +49,7 @@ order_carts、order_payment_collections、order_fulfillments 和 return_fulfillm
 
 ## 验证与后续
 
-[实际 MySQL 联合报告](admin-auth-report.json) 的 order_schema 覆盖完整 16 文件计划、
+[实际 MySQL 联合报告](admin-auth-report.json) 的 order_schema 覆盖完整 17 文件计划、
 29 表/390 列、重复应用、两版本与 nullable 循环外键、精确金额/19 位字符串、
 无效枚举/JSON/布尔和缺失地址外键拒绝、历史主体不创建登录账号、孤儿引用原样保留、
 同名原型表保护与模型漂移拒绝。均为人工数据，独占临时 MySQL，不连接旧库或服务器。

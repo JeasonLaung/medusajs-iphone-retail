@@ -140,7 +140,7 @@ def main():
                   if p.is_file() and not any(part in ('node_modules', 'dist') for part in p.relative_to(ROOT / 'retail/admin').parts)]
         files += ['retail/backend/internal/orders/schema.go','retail/backend/internal/orders/schema_plan.json','retail/scripts/generate-order-schema.py']
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
-                  'browser_tests_passed': 1, 'migrations_applied': 16, 'mocked_api_responses': False,
+                  'browser_tests_passed': 1, 'migrations_applied': 17, 'mocked_api_responses': False,
                   'reviewed_relational_schema_used': True, 'empty_draft_tables_retained_by_migration': 7,
                   'explicit_catalog_read_schema_migration_used': True, 'test_only_schema_rewrite': False,
                   'browser_executable_override_used': bool(os.environ.get('ADMIN_TEST_BROWSER')),

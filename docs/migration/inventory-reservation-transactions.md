@@ -52,7 +52,7 @@ allow_backorder 可以绕过现货覆盖，但仍需有效库存层。其 ensure
 ## 实际证据与尚缺
 
 [MySQL 联合报告](admin-auth-report.json) 的 reservation_transactions 使用人工数据和实际
-16 文件 schema，验证最后一件 8 路仅一胜、共享库存项多行合计、8 路同操作一次写入、
+17 文件 schema，验证最后一件 8 路仅一胜、共享库存项多行合计、8 路同操作一次写入、
 旧 RR 快照重放、相反输入顺序的双位置竞争、组件回滚、回执失败回滚、后续 owner 步骤
 失败回滚、末位精度/backorder、hold 新建拒绝但释放保留、重复/跨行释放拒绝、NULL
 backorder 审计、标识冲突、溢出与模型漂移拒绝。默认关闭能力也实际验证。

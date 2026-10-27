@@ -1,0 +1,3062 @@
+{
+  "version": 1,
+  "model_sha256": "3d27cb6968888bfaef5c87426fed1a9c7a1b8ac0005e9e614cec8d9d6ff74272",
+  "tables": [
+    {
+      "source": "order_address",
+      "target": "order_addresses",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "customer_id",
+          "target": "customer_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "company",
+          "target": "company",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "first_name",
+          "target": "first_name",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "last_name",
+          "target": "last_name",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "address_1",
+          "target": "address_1",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "address_2",
+          "target": "address_2",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "city",
+          "target": "city",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "country_code",
+          "target": "country_code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "province",
+          "target": "province",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "postal_code",
+          "target": "postal_code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "phone",
+          "target": "phone",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "customer_id",
+          "parent": "historical_customer_subjects",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_cart",
+      "target": "order_carts",
+      "columns": [
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "cart_id",
+          "target": "cart_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "cart_id",
+          "target": "cart_id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        },
+        {
+          "column": "cart_id",
+          "parent": "carts",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_claim",
+      "target": "order_claims",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "return_id",
+          "target": "return_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_version",
+          "target": "order_version",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "display_id",
+          "target": "display_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "type",
+          "target": "type",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "no_notification",
+          "target": "no_notification",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "refund_amount",
+          "target": "refund_amount",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_refund_amount",
+          "target": "raw_refund_amount",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "canceled_at",
+          "target": "canceled_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_by",
+          "target": "created_by",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        },
+        {
+          "column": "return_id",
+          "parent": "returns",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_claim_item",
+      "target": "order_claim_items",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "claim_id",
+          "target": "claim_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "item_id",
+          "target": "item_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "is_additional_item",
+          "target": "is_additional_item",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "reason",
+          "target": "reason",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "quantity",
+          "target": "quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_quantity",
+          "target": "raw_quantity",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "note",
+          "target": "note",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "claim_id",
+          "parent": "order_claims",
+          "parent_column": "id"
+        },
+        {
+          "column": "item_id",
+          "parent": "order_line_items",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_claim_item_image",
+      "target": "order_claim_item_images",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "claim_item_id",
+          "target": "claim_item_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "url",
+          "target": "url",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "claim_item_id",
+          "parent": "order_claim_items",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_exchange",
+      "target": "order_exchanges",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "return_id",
+          "target": "return_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_version",
+          "target": "order_version",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "display_id",
+          "target": "display_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "no_notification",
+          "target": "no_notification",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "allow_backorder",
+          "target": "allow_backorder",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "difference_due",
+          "target": "difference_due",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_difference_due",
+          "target": "raw_difference_due",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "canceled_at",
+          "target": "canceled_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_by",
+          "target": "created_by",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        },
+        {
+          "column": "return_id",
+          "parent": "returns",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_exchange_item",
+      "target": "order_exchange_items",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "exchange_id",
+          "target": "exchange_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "item_id",
+          "target": "item_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "quantity",
+          "target": "quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_quantity",
+          "target": "raw_quantity",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "note",
+          "target": "note",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "exchange_id",
+          "parent": "order_exchanges",
+          "parent_column": "id"
+        },
+        {
+          "column": "item_id",
+          "parent": "order_line_items",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_fulfillment",
+      "target": "order_fulfillments",
+      "columns": [
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "fulfillment_id",
+          "target": "fulfillment_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "fulfillment_id",
+          "target": "fulfillment_id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        },
+        {
+          "column": "fulfillment_id",
+          "parent": "fulfillments",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_line_item",
+      "target": "order_line_items",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "totals_id",
+          "target": "totals_id",
+          "decimal": false,
+          "deferred": true
+        },
+        {
+          "source": "title",
+          "target": "title",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "subtitle",
+          "target": "subtitle",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "thumbnail",
+          "target": "thumbnail",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "variant_id",
+          "target": "variant_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "product_id",
+          "target": "product_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "product_title",
+          "target": "product_title",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "product_description",
+          "target": "product_description",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "product_subtitle",
+          "target": "product_subtitle",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "product_type",
+          "target": "product_type",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "product_collection",
+          "target": "product_collection",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "product_handle",
+          "target": "product_handle",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "variant_sku",
+          "target": "variant_sku",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "variant_barcode",
+          "target": "variant_barcode",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "variant_title",
+          "target": "variant_title",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "variant_option_values",
+          "target": "variant_option_values",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "requires_shipping",
+          "target": "requires_shipping",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "is_discountable",
+          "target": "is_discountable",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "is_tax_inclusive",
+          "target": "is_tax_inclusive",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "compare_at_unit_price",
+          "target": "compare_at_unit_price",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_compare_at_unit_price",
+          "target": "raw_compare_at_unit_price",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "unit_price",
+          "target": "unit_price",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_unit_price",
+          "target": "raw_unit_price",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "is_custom_price",
+          "target": "is_custom_price",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "product_type_id",
+          "target": "product_type_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "is_giftcard",
+          "target": "is_giftcard",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "totals_id",
+          "parent": "order_items",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_payment_collection",
+      "target": "order_payment_collections",
+      "columns": [
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "payment_collection_id",
+          "target": "payment_collection_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "payment_collection_id",
+          "target": "payment_collection_id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        },
+        {
+          "column": "payment_collection_id",
+          "parent": "payment_collections",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_promotion",
+      "target": "order_promotions",
+      "columns": [
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "promotion_id",
+          "target": "promotion_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "promotion_id",
+          "target": "promotion_id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_shipping_method",
+      "target": "order_shipping_methods",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "name",
+          "target": "name",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "amount",
+          "target": "amount",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_amount",
+          "target": "raw_amount",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "is_tax_inclusive",
+          "target": "is_tax_inclusive",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "shipping_option_id",
+          "target": "shipping_option_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "data",
+          "target": "data",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "is_custom_amount",
+          "target": "is_custom_amount",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "shipping_option_id",
+          "parent": "fulfillment_shipping_options",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "return",
+      "target": "returns",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "claim_id",
+          "target": "claim_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "exchange_id",
+          "target": "exchange_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_version",
+          "target": "order_version",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "display_id",
+          "target": "display_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "status",
+          "target": "status",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "no_notification",
+          "target": "no_notification",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "refund_amount",
+          "target": "refund_amount",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_refund_amount",
+          "target": "raw_refund_amount",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "received_at",
+          "target": "received_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "canceled_at",
+          "target": "canceled_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "location_id",
+          "target": "location_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "requested_at",
+          "target": "requested_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_by",
+          "target": "created_by",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        },
+        {
+          "column": "claim_id",
+          "parent": "order_claims",
+          "parent_column": "id"
+        },
+        {
+          "column": "exchange_id",
+          "parent": "order_exchanges",
+          "parent_column": "id"
+        },
+        {
+          "column": "location_id",
+          "parent": "inventory_locations",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "return_fulfillment",
+      "target": "return_fulfillments",
+      "columns": [
+        {
+          "source": "return_id",
+          "target": "return_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "fulfillment_id",
+          "target": "fulfillment_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "return_id",
+          "target": "return_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "fulfillment_id",
+          "target": "fulfillment_id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "return_id",
+          "parent": "returns",
+          "parent_column": "id"
+        },
+        {
+          "column": "fulfillment_id",
+          "parent": "fulfillments",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "return_item",
+      "target": "return_items",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "return_id",
+          "target": "return_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "reason_id",
+          "target": "reason_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "item_id",
+          "target": "item_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "quantity",
+          "target": "quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_quantity",
+          "target": "raw_quantity",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "received_quantity",
+          "target": "received_quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_received_quantity",
+          "target": "raw_received_quantity",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "note",
+          "target": "note",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "damaged_quantity",
+          "target": "damaged_quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_damaged_quantity",
+          "target": "raw_damaged_quantity",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "return_id",
+          "parent": "returns",
+          "parent_column": "id"
+        },
+        {
+          "column": "reason_id",
+          "parent": "return_reasons",
+          "parent_column": "id"
+        },
+        {
+          "column": "item_id",
+          "parent": "order_line_items",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "return_reason",
+      "target": "return_reasons",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "value",
+          "target": "value",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "label",
+          "target": "label",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "parent_return_reason_id",
+          "target": "parent_return_reason_id",
+          "decimal": false,
+          "deferred": true
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "parent_return_reason_id",
+          "parent": "return_reasons",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order",
+      "target": "orders",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "region_id",
+          "target": "region_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "display_id",
+          "target": "display_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "customer_id",
+          "target": "customer_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "version",
+          "target": "version",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "sales_channel_id",
+          "target": "sales_channel_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "status",
+          "target": "status",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "is_draft_order",
+          "target": "is_draft_order",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "email",
+          "target": "email",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "currency_code",
+          "target": "currency_code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "shipping_address_id",
+          "target": "shipping_address_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "billing_address_id",
+          "target": "billing_address_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "no_notification",
+          "target": "no_notification",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "canceled_at",
+          "target": "canceled_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "custom_display_id",
+          "target": "custom_display_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "locale",
+          "target": "locale",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "region_id",
+          "parent": "commerce_regions",
+          "parent_column": "id"
+        },
+        {
+          "column": "customer_id",
+          "parent": "historical_customer_subjects",
+          "parent_column": "id"
+        },
+        {
+          "column": "sales_channel_id",
+          "parent": "commerce_sales_channels",
+          "parent_column": "id"
+        },
+        {
+          "column": "currency_code",
+          "parent": "commerce_currencies",
+          "parent_column": "code"
+        },
+        {
+          "column": "shipping_address_id",
+          "parent": "order_addresses",
+          "parent_column": "id"
+        },
+        {
+          "column": "billing_address_id",
+          "parent": "order_addresses",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_line_item_adjustment",
+      "target": "order_line_adjustments",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "promotion_id",
+          "target": "promotion_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "code",
+          "target": "code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "amount",
+          "target": "amount",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_amount",
+          "target": "raw_amount",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "provider_id",
+          "target": "provider_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "item_id",
+          "target": "item_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "is_tax_inclusive",
+          "target": "is_tax_inclusive",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "version",
+          "target": "version",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "item_id",
+          "parent": "order_line_items",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_line_item_tax_line",
+      "target": "order_line_tax_lines",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "tax_rate_id",
+          "target": "tax_rate_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "code",
+          "target": "code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "rate",
+          "target": "rate",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_rate",
+          "target": "raw_rate",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "provider_id",
+          "target": "provider_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "item_id",
+          "target": "item_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "data",
+          "target": "data",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "item_id",
+          "parent": "order_line_items",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_shipping_method_adjustment",
+      "target": "order_shipping_adjustments",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "promotion_id",
+          "target": "promotion_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "code",
+          "target": "code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "amount",
+          "target": "amount",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_amount",
+          "target": "raw_amount",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "provider_id",
+          "target": "provider_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "shipping_method_id",
+          "target": "shipping_method_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "version",
+          "target": "version",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "shipping_method_id",
+          "parent": "order_shipping_methods",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_shipping_method_tax_line",
+      "target": "order_shipping_tax_lines",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "tax_rate_id",
+          "target": "tax_rate_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "code",
+          "target": "code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "rate",
+          "target": "rate",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_rate",
+          "target": "raw_rate",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "provider_id",
+          "target": "provider_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "shipping_method_id",
+          "target": "shipping_method_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "data",
+          "target": "data",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "shipping_method_id",
+          "parent": "order_shipping_methods",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_change",
+      "target": "order_changes",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "version",
+          "target": "version",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "description",
+          "target": "description",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "status",
+          "target": "status",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "internal_note",
+          "target": "internal_note",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_by",
+          "target": "created_by",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "requested_by",
+          "target": "requested_by",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "requested_at",
+          "target": "requested_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "confirmed_by",
+          "target": "confirmed_by",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "confirmed_at",
+          "target": "confirmed_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "declined_by",
+          "target": "declined_by",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "declined_reason",
+          "target": "declined_reason",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "declined_at",
+          "target": "declined_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "canceled_by",
+          "target": "canceled_by",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "canceled_at",
+          "target": "canceled_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "change_type",
+          "target": "change_type",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "return_id",
+          "target": "return_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "claim_id",
+          "target": "claim_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "exchange_id",
+          "target": "exchange_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "carry_over_promotions",
+          "target": "carry_over_promotions",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "no_notification",
+          "target": "no_notification",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        },
+        {
+          "column": "return_id",
+          "parent": "returns",
+          "parent_column": "id"
+        },
+        {
+          "column": "claim_id",
+          "parent": "order_claims",
+          "parent_column": "id"
+        },
+        {
+          "column": "exchange_id",
+          "parent": "order_exchanges",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_credit_line",
+      "target": "order_credit_lines",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "reference",
+          "target": "reference",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "reference_id",
+          "target": "reference_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "amount",
+          "target": "amount",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_amount",
+          "target": "raw_amount",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "version",
+          "target": "version",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_item",
+      "target": "order_items",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "version",
+          "target": "version",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "item_id",
+          "target": "item_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "quantity",
+          "target": "quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_quantity",
+          "target": "raw_quantity",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "fulfilled_quantity",
+          "target": "fulfilled_quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_fulfilled_quantity",
+          "target": "raw_fulfilled_quantity",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "shipped_quantity",
+          "target": "shipped_quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_shipped_quantity",
+          "target": "raw_shipped_quantity",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "return_requested_quantity",
+          "target": "return_requested_quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_return_requested_quantity",
+          "target": "raw_return_requested_quantity",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "return_received_quantity",
+          "target": "return_received_quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_return_received_quantity",
+          "target": "raw_return_received_quantity",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "return_dismissed_quantity",
+          "target": "return_dismissed_quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_return_dismissed_quantity",
+          "target": "raw_return_dismissed_quantity",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "written_off_quantity",
+          "target": "written_off_quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_written_off_quantity",
+          "target": "raw_written_off_quantity",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "delivered_quantity",
+          "target": "delivered_quantity",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_delivered_quantity",
+          "target": "raw_delivered_quantity",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "unit_price",
+          "target": "unit_price",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_unit_price",
+          "target": "raw_unit_price",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "compare_at_unit_price",
+          "target": "compare_at_unit_price",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_compare_at_unit_price",
+          "target": "raw_compare_at_unit_price",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        },
+        {
+          "column": "item_id",
+          "parent": "order_line_items",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_shipping",
+      "target": "order_shipping_versions",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "version",
+          "target": "version",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "shipping_method_id",
+          "target": "shipping_method_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "return_id",
+          "target": "return_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "claim_id",
+          "target": "claim_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "exchange_id",
+          "target": "exchange_id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        },
+        {
+          "column": "shipping_method_id",
+          "parent": "order_shipping_methods",
+          "parent_column": "id"
+        },
+        {
+          "column": "return_id",
+          "parent": "returns",
+          "parent_column": "id"
+        },
+        {
+          "column": "claim_id",
+          "parent": "order_claims",
+          "parent_column": "id"
+        },
+        {
+          "column": "exchange_id",
+          "parent": "order_exchanges",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_summary",
+      "target": "order_summaries",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "version",
+          "target": "version",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "totals",
+          "target": "totals",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_transaction",
+      "target": "order_transactions",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "version",
+          "target": "version",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "amount",
+          "target": "amount",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_amount",
+          "target": "raw_amount",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "currency_code",
+          "target": "currency_code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "reference",
+          "target": "reference",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "reference_id",
+          "target": "reference_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "return_id",
+          "target": "return_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "claim_id",
+          "target": "claim_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "exchange_id",
+          "target": "exchange_id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        },
+        {
+          "column": "currency_code",
+          "parent": "commerce_currencies",
+          "parent_column": "code"
+        },
+        {
+          "column": "return_id",
+          "parent": "returns",
+          "parent_column": "id"
+        },
+        {
+          "column": "claim_id",
+          "parent": "order_claims",
+          "parent_column": "id"
+        },
+        {
+          "column": "exchange_id",
+          "parent": "order_exchanges",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "order_change_action",
+      "target": "order_change_actions",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_id",
+          "target": "order_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "version",
+          "target": "version",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "ordering",
+          "target": "ordering",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "order_change_id",
+          "target": "order_change_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "reference",
+          "target": "reference",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "reference_id",
+          "target": "reference_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "action",
+          "target": "action",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "details",
+          "target": "details",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "amount",
+          "target": "amount",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "raw_amount",
+          "target": "raw_amount",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "internal_note",
+          "target": "internal_note",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "applied",
+          "target": "applied",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "return_id",
+          "target": "return_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "claim_id",
+          "target": "claim_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "exchange_id",
+          "target": "exchange_id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "order_id",
+          "parent": "orders",
+          "parent_column": "id"
+        },
+        {
+          "column": "order_change_id",
+          "parent": "order_changes",
+          "parent_column": "id"
+        },
+        {
+          "column": "return_id",
+          "parent": "returns",
+          "parent_column": "id"
+        },
+        {
+          "column": "claim_id",
+          "parent": "order_claims",
+          "parent_column": "id"
+        },
+        {
+          "column": "exchange_id",
+          "parent": "order_exchanges",
+          "parent_column": "id"
+        }
+      ]
+    }
+  ]
+}
