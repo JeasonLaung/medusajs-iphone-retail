@@ -217,6 +217,8 @@
 
 ## 执行顺序与“完成”的定义
 
+2026-10-27嵌套凭据补充：[PayPal分环境投影](migration/paypal-config-conversion.md)逐项允许实际读取别名、认证解密live/sandbox秘密，并校验别名及活动镜像一致；未知/冲突hold。9人工值/27目标字段含18嵌套秘密互操作、人工完整MySQL回滚/读取通过；固定快照两行仍通过但无真实非空凭据。操作hold、真实SQL和provider运行时仍缺。
+
 2026-10-27 PayPal补充：[商户配置转换](migration/paypal-config-conversion.md)修正旧密文不能当普通明文再次包裹，新增显式v1 SHA256/v2 scrypt读取；9个人工值经原TS/安装JS/Go互操作及18字段密封通过。实际v2两行配置/两个JSON临时信封与三秘密SQL NULL通过；非空分环境credentials仍hold，未实现provider或SQL持久化，T006/T018不验收。
 
 2026-10-27真实支付MySQL补充：[独立演练](migration/payment-mysql-rehearsal.md)使用已验证v2流，在禁网/单核/768MiB临时库中完成23付款集合、42支付行、42操作hold的整批回滚/提交/原密文重放及私有字段读取，结束清理。金额比较新增显式DECIMAL CAST及末位篡改反例；375项全域引用缺失仍失败，不作为全域导入或运行时验收。

@@ -350,7 +350,7 @@
     "Concurrency, failure recovery, Gin and UI behavior"
   ],
   "go_registry_fixture": {
-    "binary_sha256": "ab4971497bfc9c7f80296994dbfe75cfd6d4ad5e60ad39e1bc389980697b3e93",
+    "binary_sha256": "1a00f8e64c9652a5d7b13b6551352aa924396fe4225196c756084be2c7e120e5",
     "passed_tests": [
       "TestTupleEncoding",
       "TestRegistryMySQL",
@@ -368,6 +368,7 @@
       "TestRegistryMySQL/strict_import_values_survive_actual_sql_without_coercion",
       "TestRegistryMySQL/mapped_source_row_bound_sql_and_unique_claim_same_transaction",
       "TestRegistryMySQL/mapped_merchant_cipher_to_new_binary_sql_envelope",
+      "TestRegistryMySQL/nested_paypal_credential_projection_sql_roundtrip_and_rollback",
       "TestRegistryMySQL/historical_mail_and_disposition_atomic_replay_and_conflict",
       "TestRegistryMySQL/reviewed_payment_context_ascii_envelope_sql_roundtrip",
       "TestRegistryMySQL/complete_payment_history_rows_sql_rollback_and_roundtrip",

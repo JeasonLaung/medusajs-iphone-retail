@@ -23,7 +23,7 @@
 | 支付context历史资料 | 显式投影移除旧客户地址簿/账号绑定及默认标记，保留经核对的交易历史；21个真实context临时信封往返、人工LONGTEXT存储通过；完整行组合见下行 | 真实持久化、provider对账和新账号归属/在途恢复未实现 |
 | 支付provider历史data | [专用Go组件](../docs/migration/payment-data-review.md)逐层审查手动/Mollie载荷，42个真实对象临时密封往返、16个Mollie精确金额/引用匹配、42次错行拒绝；完整行组合见下行 | 正式SQL导入、远端对账及支付运行时尚缺；不启用生产手动付款 |
 | 支付历史完整行 | [专用入口](../docs/migration/payment-history-conversion.md)组合data/context/metadata与强制操作hold；[同事务SQL组件](../docs/migration/payment-history-import.md)在人工MySQL验证原密文重放、轮换读取、冲突、回滚和8路并发；[真实隔离演练](../docs/migration/payment-mysql-rehearsal.md)完成23集合/42支付/42hold的回滚、提交、重放及加密读取，临时库已清理 | worker执行、正式全域导入/恢复、持久密钥管理、远端对账及读取授权仍缺 |
-| PayPal商户配置 | [专用转换](../docs/migration/paypal-config-conversion.md)补明文/v1/v2解密，原TS及已安装JS与Go互操作9样本/18字段；真实v2两条配置整行/两个JSON临时密封往返，三个秘密SQL NULL通过 | 非空分环境credentials、其他设置section/JSON、配置副作用hold、真实SQL、key恢复和Gin provider尚缺 |
+| PayPal商户配置 | [专用转换](../docs/migration/paypal-config-conversion.md)补明文/v1/v2及live/sandbox嵌套秘密解密投影、别名/活动镜像冲突拒绝；原TS/安装JS/Go互操作9样本/27字段含18嵌套秘密，人工MySQL整行回滚/读取通过；真实v2两配置内存转换通过 | 其他设置section/JSON、配置副作用hold、真实SQL、key恢复和Gin provider尚缺；快照无真实非空凭据 |
 | React Admin | Ant Design / ECharts 组件及 23 个页面文件、6 个 widgets 承接有设计 | 外壳、权限及业务页面均未实现 |
 | 生产替换 | 未进行 | 全量对账、回归及未来切换计划 |
 

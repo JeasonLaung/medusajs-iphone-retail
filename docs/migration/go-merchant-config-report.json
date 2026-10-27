@@ -26,7 +26,7 @@
     "medusa-store/apps/backend/src/lib/seo/core.ts": "ea1e6b8ccfcb5f9ff7b0e0559164fa25db2a84d314eb7f8f6c6bc60e5b6f532f",
     "medusa-store/apps/backend/src/modules/webhook-notifications/security.ts": "9bddbe6b4e520968958c1c92c0c89d07771eae17d9e5b93a639939197a4c2f5d",
     "medusa-store/apps/backend/src/modules/mollie-settings/security.ts": "f01bf930bd3a1714f40b2ed78e9c6be2cd9b20d7006d3cab71672d17bba32b31",
-    "retail/backend/internal/rowimport/config_secret.go": "0dca7240f0131cdc5c7bb24590bd723ccd79c0e3cd40dd913615d9021896841f",
+    "retail/backend/internal/rowimport/config_secret.go": "03bc34206980f32633b57728ece0f8a8171da9aff2406c6a543e52a804956be0",
     "retail/backend/internal/rowimport/config_secret_offline_test.go": "d5c20d567dc964dbc38ab096d2bf868b2703f1e3e3d05db87b20897dcea53aa8",
     "retail/backend/internal/rowimport/convert.go": "0ee089835b499ad48fc44f8b2d7c18ab1d1ef7a6b7b991b0d8f5546db13b70a1",
     "retail/scripts/audit-protected-config.cjs": "610b0fb6b17ea2de653c335232c1129bb7a77c9e157c516b4d8360bdfe4c5778",

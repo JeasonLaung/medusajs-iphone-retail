@@ -16,7 +16,7 @@
 
 `NewConfigSecretsWithPayPal(target, fourDomainKeys, paypalReader)` 对 `seller_client_secret`、`app_access_token` 使用该专用读取器，再以 merchant-config / paypal_connections / 精确字段 / 源ID 的新信封密封。`auth_code` 的源代码直接保存 onboarding code，继续按商户字符串密封，不误用 token 加密格式。普通 `NewConfigSecrets` 保持旧明文可用，但遇到带前缀的上述两个加密字段会拒绝；修正此前将原 PayPal 密文再次当普通字符串包裹的草稿行为。
 
-互操作证据见 [paypal-secret-interop-report.json](paypal-secret-interop-report.json)：9个虚构明文/v1/v2样本经原 TypeScript 和已安装 JS 双向解密校验，再交给 Go 解密并完整行密封18个目标字段，目标解密后等于原明文；缺旧 key 拒绝返回半行。测试文件独占创建在 Git 忽略目录，结束删除，不含真实凭据。
+互操作证据见 [paypal-secret-interop-report.json](paypal-secret-interop-report.json)：9个虚构明文/v1/v2样本经原 TypeScript 和已安装 JS 双向解密校验，再交给 Go 解密并完整行密封27个目标字段（18个字符串列加9个metadata），其中18个分环境秘密也先解密后封入新metadata；目标解密后等于原明文，缺旧key拒绝半行。测试文件独占创建在Git忽略目录，结束删除，不含真实凭据。
 
 ## 嵌套 JSON 的明确范围
 
@@ -26,7 +26,17 @@
 - settings.data.api_details：大写三字符 currency_code，可选结构合法的 storefront_url。
 - settings.data.onboarding_config：bn_code、backend_url、seller_nonce、partner_js_url、partner_service_url、partner_merchant_id_live/sandbox，均按原文商户设置保存。URL/nonce 不被执行或用于换取凭据。
 
-SQL NULL 与 JSON `null` 分开；未知字段、重复键、非法 Unicode、类型不符一律拒绝。**非空 credentials.<environment> 仍不支持**：其中 client_secret 可能是旧 v1/v2，需另行逐字段解密投影，不能整体封装旧密文假装完成。其他后台可配置 section、metrics/webhook JSON 也未因此开放。
+SQL NULL 与 JSON `null` 分开；未知字段、重复键、非法Unicode、类型不符一律拒绝。纯`ReviewPayPalConfigJSON`继续只审查无非空credentials的基线；完整`ConfigSecrets.Convert`现在通过独立的`convertPayPalMetadata`承接下述非空分环境投影。其他后台可配置section、metrics/webhook JSON未因此开放。
+
+## 分环境凭据投影
+
+`credentials`只允许live/sandbox对象，保存两种环境而不交换、刷新或自动选择商户。插件实际读取的别名逐项允许：client_id/clientId、client_secret/clientSecret、seller_merchant_id/sellerMerchantId/payer_id/merchant_id/merchantId、seller_email/sellerEmail。每个非NULL别名必须为字符串；同组非NULL别名的值必须逐字节一致，秘密组在认证解密后比较，不以随机旧密文是否相等判断。冲突直接hold，不沿用JavaScript的优先级静默丢弃另一值。
+
+所有client_secret/clientSecret（含非活动环境）均使用显式PayPal源读取器处理，JSON字符串重新编码后进入新加密metadata；不会把旧enc:v1/v2当作新provider秘密。其余已审查字段保留原JSON值token和NULL，外层字段按固定排序输出，故非空凭据metadata属于明确投影，不保证整段原始格式字节不变。原文仍在受限来源快照。
+
+存在非空credentials映射时必须提供active_environment，且与行environment一致；活动环境的client ID、解密后的secret、merchant ID和email需与四个seller_*镜像列一致，不能偷偷修复。缺/NULL/空业务值按无非空凭据处理，不制造新值；非NULL别名冲突仍拒绝。允许只有inactive环境凭据，但活动镜像必须空/NULL，不因此启用另一环境或登录账号。旧个人密码/权限等额外字段及未知环境/对象类型/重复键均hold。
+
+人工完整MySQL用不同nonce密封相同活动秘密，在metadata双别名和镜像列中分别认证解密后匹配；另保留不同sandbox秘密。实际审查表的整行插入、事务回滚、提交读取、三个嵌套秘密投影、SQL NULL及错行AAD拒绝通过；目标metadata解密后不再含旧enc:v1前缀。结果见mysql-type-fixture-report.json的`nested_paypal_credential_projection_sql_roundtrip_and_rollback`。不含真实PayPal凭据、不启动provider，商户配置操作hold/正式导入仍待实现。
 
 真实 v2 离线验证见 [paypal-config-v2-report.json](paypal-config-v2-report.json)：完整159表流校验后，1条connection和1条settings转换成功，两个JSON临时信封往返及错行AAD拒绝通过，3个秘密字段明确SQL NULL。快照没有实际非空 PayPal 凭据，人工互操作不能当作真实凭据验证；未将真实新密文或 key 持久化。
 
@@ -35,4 +45,4 @@ node retail/scripts/test-paypal-secret-interop.cjs
 python retail/scripts/audit-paypal-config.py --snapshot logs/gin-migration/source-v2-20261027-payment-rows.ndjson
 ```
 
-仍缺非空嵌套凭据/其他设置 section、merchant配置的持久化副作用hold、真实SQL演练、密钥备份/恢复、读取权限及Gin provider运行时。来源插件自动 ensureSettingsDefaults、ensureWebhookRegistration 等动作绝不在转换时调用。全部历史付款与原账号限制继续有效，T006/T018/T035不验收。
+仍缺其他设置section、merchant配置的持久化副作用hold、真实配置SQL演练、密钥备份/恢复、读取权限及Gin provider运行时。固定快照没有实际非空分环境凭据，不能将人工转换验证称为真实商户验证。来源插件自动ensureSettingsDefaults、ensureWebhookRegistration等动作绝不在转换时调用。全部历史付款与原账号限制继续有效，T006/T018/T035不验收。

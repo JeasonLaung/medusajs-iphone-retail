@@ -35,6 +35,13 @@ func TestPayPalActualNodeRowConversion(t *testing.T) {
 			}
 		}
 		relationText(source, "id", "paypal-merchant")
+		relationText(source, "environment", "live")
+		relationText(source, "seller_client_id", "live-client")
+		nested, _ := json.Marshal(map[string]any{"active_environment": "live", "credentials": map[string]any{
+			"live":    map[string]any{"client_id": "live-client", "client_secret": fixture.Stored},
+			"sandbox": map[string]any{"clientId": "sandbox-client", "clientSecret": fixture.Stored},
+		}})
+		source["metadata"] = Cell{Raw: nested}
 		for _, field := range []string{"seller_client_secret", "app_access_token"} {
 			relationText(source, field, fixture.Stored)
 		}
@@ -45,11 +52,24 @@ func TestPayPalActualNodeRowConversion(t *testing.T) {
 			t.Fatal("actual PayPal row conversion failed")
 		}
 		for i, column := range bound.Columns {
-			if column != "seller_client_secret" && column != "app_access_token" {
+			if column != "seller_client_secret" && column != "app_access_token" && column != "metadata" {
 				continue
 			}
 			plain, err := ring.Open(protected.Context{Purpose: "merchant-config", Table: "paypal_connections", Column: column, Row: "paypal-merchant"}, bound.Values[i].([]byte))
-			if err != nil || string(plain) != fixture.Plaintext {
+			if err != nil {
+				t.Fatal("target PayPal field could not be authenticated")
+			}
+			if column == "metadata" {
+				var projected struct {
+					Credentials map[string]map[string]string `json:"credentials"`
+				}
+				if json.Unmarshal(plain, &projected) != nil || projected.Credentials["live"]["client_secret"] != fixture.Plaintext || projected.Credentials["sandbox"]["clientSecret"] != fixture.Plaintext {
+					t.Fatal("nested merchant ciphertext was rewrapped instead of decrypted")
+				}
+				clear(plain)
+				continue
+			}
+			if string(plain) != fixture.Plaintext {
 				t.Fatal("target contains old PayPal ciphertext instead of usable secret")
 			}
 		}

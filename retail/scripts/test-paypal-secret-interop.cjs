@@ -45,13 +45,14 @@ function main() {
     assert.equal(tested.status, 0)
     const files = [relative, compiledRelative, 'retail/backend/internal/legacysecret/paypal.go',
       'retail/backend/internal/rowimport/config_secret.go', 'retail/backend/internal/rowimport/paypal_secret_test.go',
+      'retail/backend/internal/rowimport/paypal_credentials.go',
       'retail/backend/internal/legacysecret/paypal_test.go', 'retail/scripts/test-paypal-secret-interop.cjs']
     const report = { format_version: 1, scope: 'Artificial plaintext/v1/v2 PayPal source and installed runtime to Go decryption and target row sealing only',
-      artificial_values: 9, target_sealed_fields: 18, source_and_compiled_runtime_checked: true,
+      artificial_values: 9, target_sealed_fields: 27, nested_environment_secrets_converted: 18, source_and_compiled_runtime_checked: true,
       actual_credentials_checked: false, provider_called: false, source_database_connection: false,
       source_sha256: Object.fromEntries(files.map(f => [f, crypto.createHash('sha256').update(fs.readFileSync(path.join(root, f)).toString('utf8').replaceAll('\r\n', '\n')).digest('hex')])) }
     fs.writeFileSync(path.join(root, 'docs/migration/paypal-secret-interop-report.json'), JSON.stringify(report, null, 2) + '\n')
-    console.log(JSON.stringify({ artificial_values: 9, target_sealed_fields: 18, source_and_compiled_runtime_checked: true }))
+    console.log(JSON.stringify({ artificial_values: 9, target_sealed_fields: 27, nested_environment_secrets_converted: 18, source_and_compiled_runtime_checked: true }))
   } finally { if (owned) fs.unlinkSync(fixture) }
 }
 try { main() } catch { console.error('PayPal secret interop failed; private details suppressed'); process.exitCode = 1 }

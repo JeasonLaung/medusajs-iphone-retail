@@ -84,7 +84,12 @@ func (c *ConfigSecrets) Convert(table string, row SourceRow) (BoundRow, error) {
 			return nil, ErrProtection
 		}
 		if f.Transform == "protected_exact_json" {
-			reviewed, err := ReviewPayPalConfigJSON(table, f.Source, raw)
+			var reviewed json.RawMessage
+			if table == "paypal_connection" && f.Source == "metadata" {
+				reviewed, err = c.convertPayPalMetadata(raw, row)
+			} else {
+				reviewed, err = ReviewPayPalConfigJSON(table, f.Source, raw)
+			}
 			if err != nil {
 				return nil, ErrProtection
 			}

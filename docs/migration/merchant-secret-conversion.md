@@ -25,7 +25,7 @@
 
 新AAD绑定精确目标表、目标列和保留的源ID，purpose与现有protected/uniquekey组件一致。返回参数为二进制信封，匹配这12字段的LONGBLOB设计；SEO非secret设置的原文存于信封内，不能直接把源文本写入该列。空字符串生成有效的空明文信封；可NULL字段的SQL NULL继续绑定nil，不混同空信封。任一字段失败返回空BoundRow/固定ErrProtection，不返回部分密封结果或底层带值错误。
 
-普通Convert仍对非NULL保护字段拒绝，历史邮件/支付还要求专用处置。新入口不会密封未知protected_string；后续仅显式开放[PayPal已审查配置JSON](paypal-config-conversion.md)，其中非空分环境credentials及其他保护JSON继续hold，不能借此绕过旧身份清理或载荷审查。旧认证账号/密码/会话/验证令牌仍排除。入口无数据库、环境、HTTP或日志副作用，未接入旧目录导入草稿。
+普通Convert仍对非NULL保护字段拒绝，历史邮件/支付还要求专用处置。新入口不会密封未知protected_string；仅显式开放[PayPal已审查配置JSON及分环境凭据投影](paypal-config-conversion.md)，后者对每个秘密先认证解密并与活动镜像校验。未知字段/冲突及其他保护JSON继续hold，不能绕过旧身份清理。旧认证账号/密码/会话/验证令牌仍排除。入口无数据库、环境、HTTP或日志副作用，未接入旧目录导入草稿。
 
 新Ring由调用方提供，组件不写密钥文件或生成无法恢复的生产密钥。暂时明文字节缓冲使用后clear，但Go字符串、源JSON和密码学内部副本不保证物理内存擦除，不能声称已完成内存销毁。调用方不得打印SourceRow、BoundRow、密钥或密文；正式导入还须密钥备份/丢失策略、唯一登记、事务、恢复和读取授权。
 

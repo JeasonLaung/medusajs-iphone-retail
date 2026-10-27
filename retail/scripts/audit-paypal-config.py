@@ -27,6 +27,7 @@ def main():
     if result.returncode or len(markers) != 1:
         raise RuntimeError('PayPal configuration conversion failed; private output suppressed')
     files = ['retail/backend/internal/rowimport/config_secret.go', 'retail/backend/internal/rowimport/paypal_config_json.go',
+             'retail/backend/internal/rowimport/paypal_credentials.go',
              'retail/backend/internal/rowimport/paypal_config_json_test.go', 'retail/scripts/audit-paypal-config.py']
     paypal = 'medusa-store/apps/backend/node_modules/@easypayment/medusa-payment-paypal/'
     files += [paypal + name for name in ['src/modules/paypal/service.ts', 'src/modules/paypal/models/paypal_connection.ts',
@@ -36,7 +37,7 @@ def main():
     report = {'format_version': 1, 'scope': 'Actual two PayPal rows with empty credentials metadata and reviewed onboarding/API settings only; encrypted actual merchant credentials absent',
               'snapshot_sha256': PINNED_SHA, 'counts': counts, 'source_database_connection': False, 'provider_called': False,
               'new_keys_or_envelopes_persisted': False, 'private_values_in_report': False,
-              'nonempty_nested_credentials_supported': False,
+              'nonempty_nested_credentials_supported': True, 'actual_nonempty_nested_credentials_in_snapshot': False,
               'implementation_sha256': {f: hashlib.sha256((ROOT / f).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for f in files}}
     (ROOT / 'docs/migration/paypal-config-v2-report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(counts))
