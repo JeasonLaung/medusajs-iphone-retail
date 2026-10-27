@@ -1,0 +1,43 @@
+{
+  "format_version": 1,
+  "scope": "Actual pinned merchant string conversion with independent Node plaintext expectation; ephemeral target envelopes only, no SQL, provider or full snapshot acceptance",
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "tables_in_scope": {
+    "mail_account": 1,
+    "seo_provider": 0,
+    "seo_setting": 0,
+    "webhook_endpoint": 1,
+    "mollie_config": 1
+  },
+  "counts": {
+    "empty": 3,
+    "nonempty": 3,
+    "rows_by_table": {
+      "mail_account": 1,
+      "mollie_config": 1,
+      "webhook_endpoint": 1
+    },
+    "sealed_fields": 6,
+    "wrong_row_rejected": 6
+  },
+  "implementation_sha256": {
+    "medusa-store/node_modules/.pnpm/dotenv@16.6.1/node_modules/dotenv/lib/main.js": "3381601545980775b6ecd2bf078ce369a3b24316e10a3182ab78811f01dc83b5",
+    "medusa-store/apps/backend/src/modules/mail/security.ts": "79ba763bd84f7536be4a8fd47038b837cbf0b90a85cb847f02e2c7eba788f097",
+    "medusa-store/apps/backend/src/lib/seo/core.ts": "ea1e6b8ccfcb5f9ff7b0e0559164fa25db2a84d314eb7f8f6c6bc60e5b6f532f",
+    "medusa-store/apps/backend/src/modules/webhook-notifications/security.ts": "9bddbe6b4e520968958c1c92c0c89d07771eae17d9e5b93a639939197a4c2f5d",
+    "medusa-store/apps/backend/src/modules/mollie-settings/security.ts": "f01bf930bd3a1714f40b2ed78e9c6be2cd9b20d7006d3cab71672d17bba32b31",
+    "retail/backend/internal/rowimport/config_secret.go": "403bc0c101347dc011610c52d7f85504621cd772358d1b37d24086b039da0bb0",
+    "retail/backend/internal/rowimport/config_secret_offline_test.go": "d5c20d567dc964dbc38ab096d2bf868b2703f1e3e3d05db87b20897dcea53aa8",
+    "retail/backend/internal/rowimport/convert.go": "f6de45bf1d5c2de4b7011dd6480d94ea556a93ab2a531e6e69b835f69ea2b465",
+    "retail/scripts/audit-protected-config.cjs": "610b0fb6b17ea2de653c335232c1129bb7a77c9e157c516b4d8360bdfe4c5778",
+    "retail/backend/internal/legacysecret/decrypt.go": "3ea4f60b9e9fe32a8d1b390113912b4b03bcedc5b17056a931442887f3ce9a06",
+    "retail/backend/internal/protected/envelope.go": "4a27c708e7e5f4f630783b025a1cfb7b431a7bb27d1a5e53e6cc20cb67a6e2a4",
+    "retail/backend/internal/rowimport/field_plans.json": "d3bff5f26b890e19f7424888430a638d4e45f6b46766e3643913e6eb670c5b77",
+    "retail/scripts/audit-go-merchant-config.cjs": "fa35c3513d6e8fc87e34a68a5573c6cd2aecfe35fe6843e5f70ca85de9992774"
+  },
+  "private_stdin_only": true,
+  "new_key_or_envelopes_persisted": false,
+  "source_database_connection": false,
+  "selected_env_proves_live_runtime_keys": false,
+  "empty_tables_not_accepted_as_real_samples": true
+}

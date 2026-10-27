@@ -35,9 +35,20 @@
 - 人工MySQL `TestRegistryMySQL/mapped_merchant_cipher_to_new_binary_sql_envelope`在实际mollie_configs审查表用完整转换结果绑定写入；先回滚证明不留行，再提交/读回LONGBLOB并认证原文，验证enabled=false和错列AAD拒绝。未启动Mollie、Gin、worker或调用支付。记录见mysql-type-fixture-report.json；72表示71项SQL检查加1个Go测试套件，不是72条真实数据迁移。
 - 原有真实离线可读性审计再次通过：3个非空旧密文、3个空字符串、3个NULL及33人工断言不变。该脚本仍是Node基线；没有宣称3个真实值已走本次Go转换或已写入MySQL。SEO/退订等空表无真实样本。
 
+### 真实配置的Go内存转换补充
+
+`audit-go-merchant-config.cjs`现另行读取固定hash的Git忽略快照和显式忽略.env，选取mail_account/seo_provider/seo_setting/webhook_endpoint/mollie_config五种配置表。源字段必须与显式计划完全一致；拒绝扩展到含金额/整数/浮点的表，避免Node JSON.parse作为通用数值快照适配器。旧v1中JSON列出现null直接拒绝，不能猜SQL NULL类别；非JSON标量的null可以作为SQL NULL。它不生成v2快照、不导入数据库或触发provider。
+
+每个实际字符串由既有受限VM中的真实旧TypeScript函数独立解密，随后将显式选择的源域密钥、配置行和期望原文通过匿名stdin管道送入Go测试程序。私有材料不放命令行参数、环境变量、临时文件或报告。由于go test命令不转发stdin，脚本先在Git忽略目录编译唯一随机名的测试可执行文件，再直接运行，结束删除；二进制本身不包含真实秘密。Go临时随机生成新32字节Ring，仅在内存执行完整ConfigSecrets.Convert，对每个信封按目标表/列/原ID解密并与Node预期逐字节相等，另验证错误行AAD全部拒绝。
+
+结果见[go-merchant-config-report.json](go-merchant-config-report.json)：3条真实配置行、6字段（3非空/3空）、6次错行拒绝通过；SEO provider/setting源表为空，不能算真实样本。相比前一节Node基线，现已证明这3个真实旧密文走过Go整行转换；**仍没有真实新密文持久化、MySQL真实行导入或可恢复生产密钥**。既有PayPal三个NULL不在这个五表入口的真实演练内，仍由独立原基线计量。
+
+报告只保存计数、表名、固定快照hash和实现hash，不保存源ID、原文/密文、.env hash或密钥指纹。失败仅返回固定阶段和固定白名单原因，不转发子进程输出。可清零的输入字节和临时密钥尽量clear，但JS/Go字符串及进程内部复制不能保证物理擦除。子进程超时/失败不等于成功，脚本在finally清理可执行文件；没有后台进程或定时任务。
+
 ```powershell
 node retail/scripts/test-legacy-secret-interop.cjs
 node retail/scripts/audit-protected-config.cjs --bundle logs/gin-migration/source-20261026.json --env medusa-store/apps/backend/.env --check
+node retail/scripts/audit-go-merchant-config.cjs --bundle logs/gin-migration/source-20261026.json --env medusa-store/apps/backend/.env
 ```
 
-实际MySQL测试沿用[唯一登记隔离流程](mysql-unique-key-registry.md)编译测试二进制并执行test-mysql-types.py；单核、768MiB、禁网、无发布端口，结束核对所有权删除容器。真实一致v2快照、真实秘密重新密封演练、受保护JSON转换、可恢复密钥配置和生产读取权限仍缺，T006/T018不验收。
+实际MySQL测试沿用[唯一登记隔离流程](mysql-unique-key-registry.md)编译测试二进制并执行test-mysql-types.py；单核、768MiB、禁网、无发布端口，结束核对所有权删除容器。真实一致v2快照、真实新信封持久化演练、受保护JSON转换、可恢复密钥配置和生产读取权限仍缺，T006/T018不验收。
