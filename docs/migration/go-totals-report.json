@@ -1,0 +1,36 @@
+{
+  "format_version": 1,
+  "scope": "Standalone Go arithmetic parity against installed legacy utilities; artificial inputs only",
+  "counts": {
+    "original_cases": 18,
+    "additional_boundary_cases": 29,
+    "exact_decimal_fields": 1644,
+    "invalid_cases_rejected_atomically": 29,
+    "parallel_workers": 8,
+    "calculations_per_worker": 25
+  },
+  "division_decimal_places": 20,
+  "division_rounding": "half_up_away_from_zero",
+  "addition_multiplication_exact": true,
+  "input_unchanged": true,
+  "partial_results_on_error": false,
+  "vet_passed": true,
+  "runtime_medusa_dependency": false,
+  "floating_point_used": false,
+  "database_or_server_used": false,
+  "historical_business_rows_tested": false,
+  "http_or_ui_integration_accepted": false,
+  "checkout_accepted": false,
+  "provider_settlement_rounding_accepted": false,
+  "implementation_sha256": {
+    "docs/migration/fixtures/legacy-totals-boundaries.json": "280ba2934876858d5f718fbae96e82280a63bb8f8995f8bb3f238835fba5d2a6",
+    "docs/migration/fixtures/legacy-totals.json": "5d5fc4947d6c0886e9e7b86cd0b7ce5e4ffddd362b2cb4aea5af15ed9e45e35f",
+    "retail/backend/internal/totals/calculate.go": "9f6779d9901e8c256bd60a56be26a91557c6eb3d68c6db2bb3e504955d7bfc41",
+    "retail/backend/internal/totals/decimal.go": "15b39f020bdab9450ccacabe7bf3326c0455d9c76e4242f98d7801484de38665",
+    "retail/backend/internal/totals/parity_test.go": "83b02eb1437162c7d3a9c21bd8264126ad56622e855276358f76441792262418",
+    "retail/backend/internal/totals/validation_test.go": "f9288463b8f3d242bcdadca68b1fee141378f13749671e2fe4cf59223272bc82",
+    "retail/scripts/capture-totals-boundaries.cjs": "f4136cded71f17a889ca28e81d997e49d8dad1a996d9594d70b4da14bd7d6aa5",
+    "retail/scripts/capture-totals.cjs": "6fbf02a84bbd2506ca07a7c4b33a225f3e771f08753766ae314a70a22e1d2f44",
+    "retail/scripts/test-totals.py": "319d83527f265aed3ec4deae4e56c5bfa970ec3e250b78886aee436a134d65b9"
+  }
+}

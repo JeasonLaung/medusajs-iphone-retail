@@ -40,7 +40,7 @@ node retail/scripts/capture-inventory.cjs --check
 | 可退款数量 | 另扣 return_requested、received、dismissed；refundable_total_per_unit 是可退款口径，与已请求退回之前的 total 不相同 |
 | 运费 | 含税/税行/adjustments 独立计算；不直接把 shipping.amount 当未税显示 |
 | cart.subtotal | item_subtotal + shipping_subtotal（未扣折扣、未加税） |
-| cart.total | subtotal + tax_total - discount_subtotal - credit_line_total |
+| cart.total | subtotal + tax_total - discount_subtotal - credit_line_total；tax_total 已按折后税基计算 |
 | credit lines | 当前 cart 使用税率 0 的 credit 口径；与 gift card 占位不同，历史存在不能丢弃 |
 | 原金额 | original_* 为未折扣口径；不是重新查现价，也不是 Apple 上市参考价 |
 | 展示 | Intl 按币种格式化，计算中间结果不统一先 round(2)；外部 provider 的最终货币最小单位与订单舍入需独立明确 |
@@ -91,3 +91,5 @@ CT01 已完成购物车不复用；CT02 region 改变重算价格/税/配送；C
 2026-10-28 结构补充：[0016 订单正式 schema](order-schema-migration.md)已提供版本与成交快照的物理表基础及五项枚举约束。它未建立 cart 单一成单约束、订单归属授权或购物车/付款/预留事务协调，不能据此验收 CT01—CT12。
 
 2026-10-28 历史导入补充：[0017 订单普通行](order-row-import.md)提供完整复合主键、循环关联与来源/目标回执及持久缺引用记录；没有赋予旧订单的新账号归属，也没有实现新的成单或付款/库存协调。
+
+2026-10-28 金额核心补充：[独立 Go 精确计算](go-totals.md)承接已审查的商品/运费、混合税标记折扣、退回/可退款数量、credit 与 pending_difference 算法。固定旧 18 组加 29 组边界，共 47 组/1,644 字段逐位一致；29 种非法输入整体拒绝。此组件没有数据库或 HTTP，尚需订单/购物车可信数据装配与实际历史合计核对，不因此验收 CT01—CT12。
