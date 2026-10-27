@@ -217,6 +217,8 @@
 
 ## 执行顺序与“完成”的定义
 
+2026-10-27支付持久化补充：[同事务导入](migration/payment-history-import.md)新增0005操作hold账本与Go写入，人工MySQL验证原密文精确重放、active key轮换读取、来源/目标冲突、回滚和八路并发。普通入口继续要求历史处置；尚未写入真实支付行，正式导入组合/worker和远端对账仍缺。
+
 2026-10-27完整支付行补充：[支付历史转换](migration/payment-history-conversion.md)组合14列/data/context/metadata和强制操作hold；首次实际只读v2导出159表/27,140行并通过Go完整流及关系校验，375项历史缺失继续保留失败。42个真实支付整行转换、23个明确SQL NULL、19个空metadata对象验证通过，人工MySQL完整collection/session/payment事务回滚/读取通过。正式导入、持久化操作hold/worker及其他保护域尚缺。
 
 2026-10-27支付data补充：[provider历史data](migration/payment-data-review.md)提供手动/Mollie专用审查及provider/表/列/行绑定密封；真实42对象往返、16个Mollie精确金额/引用匹配、42次错行拒绝。其他保护JSON、完整行/SQL、远端对账及运行时仍缺，不启用旧支付能力。

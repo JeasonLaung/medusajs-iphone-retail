@@ -8,7 +8,7 @@
 
 受保护内容按专用转换处理：data 继承 [provider 审查](payment-data-review.md)；context 继承 [旧身份资料投影](payment-context-review.md)；metadata 仅接受已审查的空对象或 JSON `null`，其他内容拒绝。非 NULL 值均使用独立业务密钥密封，metadata 的 AAD 绑定 provider/表/列/行，不能与 data/context 互换。SQL NULL 保持 SQL NULL，JSON `null` 是有内容的信封。
 
-入口同时返回 `payment-operations / hold / legacy-payment-reconciliation` 处置。普通 `Convert` 和商户配置入口禁止转换这两张表，即使所有保护列都是 SQL NULL，也不能绕过历史处置。未来 SQL 导入器必须将行和处置原子持久化并由 worker 强制执行；本轮只完成转换组件和人工 SQL 验证，尚无可靠操作账本/worker。不得把返回的行直接接入扣款、退款、付款恢复或新客户归属。
+入口同时返回 `payment-operations / hold / legacy-payment-reconciliation` 处置。普通 `Convert` 和商户配置入口禁止转换这两张表，即使所有保护列都是 SQL NULL，也不能绕过历史处置。后续[同事务导入组件](payment-history-import.md)已补显式账本与写入/精确重放，人工 MySQL 验证通过；正式全域导入及 worker 强制执行仍缺。不得把返回的行直接接入扣款、退款、付款恢复或新客户归属。
 
 ## 实际来源与验证
 
@@ -36,4 +36,4 @@ go test ./...
 go vet ./...
 ```
 
-仍缺全域 v2 值转换与正式导入组合、加密字段重放/恢复及处置账本、其他保护 JSON、历史缺失关系处置、远端付款/退款对账、读取权限和在途恢复。下一步先补持久化的支付历史导入/操作 hold，再接入正式导入执行器；服务器与旧业务库继续保持不变。
+后续已补支付历史同事务导入、持久化 hold 和保留原密文的重放组件，人工验证并发/冲突/回滚及 active key 切换。仍缺全域 v2 值转换与正式导入组合、真实支付行隔离持久化演练、其他保护 JSON、历史缺失关系处置、远端付款/退款对账、读取权限和在途恢复；服务器与旧业务库继续保持不变。

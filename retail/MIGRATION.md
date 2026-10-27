@@ -22,7 +22,7 @@
 | 购物车与合计 | 18 组人工金额、10 组库存准备及 46 组促销/税率/配送规则样例可重现，原生成单顺序有记录 | 完整促销/税/运费引擎、Gin 实现及并发恢复验证 |
 | 支付context历史资料 | 显式投影移除旧客户地址簿/账号绑定及默认标记，保留经核对的交易历史；21个真实context临时信封往返、人工LONGTEXT存储通过；完整行组合见下行 | 真实持久化、provider对账和新账号归属/在途恢复未实现 |
 | 支付provider历史data | [专用Go组件](../docs/migration/payment-data-review.md)逐层审查手动/Mollie载荷，42个真实对象临时密封往返、16个Mollie精确金额/引用匹配、42次错行拒绝；完整行组合见下行 | 正式SQL导入、远端对账及支付运行时尚缺；不启用生产手动付款 |
-| 支付历史完整行 | [专用入口](../docs/migration/payment-history-conversion.md)组合data/context/metadata与强制操作hold，真实v2支付42行通过；metadata23个SQL NULL/19个空对象已明确；人工完整MySQL三行事务回滚/读取通过 | 持久化处置账本/worker、正式全域导入、实际新密文落库、远端对账及读取授权仍缺 |
+| 支付历史完整行 | [专用入口](../docs/migration/payment-history-conversion.md)组合data/context/metadata与强制操作hold，真实v2支付42行通过；metadata23个SQL NULL/19个空对象已明确；[同事务SQL组件](../docs/migration/payment-history-import.md)与显式账本在人工MySQL验证原密文重放、轮换读取、冲突、回滚和8路并发 | worker执行、正式全域导入、实际行隔离持久化、远端对账及读取授权仍缺 |
 | React Admin | Ant Design / ECharts 组件及 23 个页面文件、6 个 widgets 承接有设计 | 外壳、权限及业务页面均未实现 |
 | 生产替换 | 未进行 | 全量对账、回归及未来切换计划 |
 
