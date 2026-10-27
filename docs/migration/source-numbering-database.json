@@ -1,0 +1,157 @@
+{
+  "format_version": 1,
+  "source_commit": "4bddaf503cd1e363ca0f6f69f01e57dcf128de1d",
+  "scope": "Current noninternal public triggers and their function bodies plus sequence metadata; no business row or secret values; does not execute functions or allocate numbers",
+  "triggers": [
+    {
+      "source_table": "order",
+      "trigger_name": "order_timestamp_number",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER order_timestamp_number BEFORE INSERT ON \"order\" FOR EACH ROW EXECUTE FUNCTION assign_timestamp_order_number()",
+      "function_schema": "public",
+      "function_name": "assign_timestamp_order_number",
+      "function_arguments": "",
+      "function_definition": "CREATE OR REPLACE FUNCTION public.assign_timestamp_order_number()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$\n      DECLARE\n        tick bigint;\n      BEGIN\n        UPDATE \"order_number_clock\"\n        SET last_tick = GREATEST(\n          last_tick + 1,\n          floor(extract(epoch FROM clock_timestamp()) * 100000)::bigint\n        )\n        WHERE id = true\n        RETURNING last_tick INTO STRICT tick;\n\n        NEW.custom_display_id :=\n          to_char(to_timestamp((tick / 100000)::double precision)\n            AT TIME ZONE 'Asia/Shanghai', 'YYYYMMDDHH24MISS')\n          || lpad((tick % 100000)::text, 5, '0');\n        RETURN NEW;\n      END;\n      $function$\n"
+    },
+    {
+      "source_table": "product_variant",
+      "trigger_name": "product_variant_erp_sku",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER product_variant_erp_sku BEFORE INSERT OR UPDATE OF sku ON product_variant FOR EACH ROW EXECUTE FUNCTION assign_erp_variant_sku()",
+      "function_schema": "public",
+      "function_name": "assign_erp_variant_sku",
+      "function_arguments": "",
+      "function_definition": "CREATE OR REPLACE FUNCTION public.assign_erp_variant_sku()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$\n      DECLARE\n        sequence_id bigint;\n      BEGIN\n        IF NEW.sku IS NULL OR NEW.sku ~ '^[[:space:]]*$' THEN\n          -- Clearing an existing generated SKU retains its identity.\n          IF TG_OP = 'UPDATE' AND OLD.sku ~ '^ERP[0-9]{5,18}$'\n            AND substring(OLD.sku FROM 4)::bigint > 10000 THEN\n            NEW.sku := OLD.sku;\n            RETURN NEW;\n          END IF;\n          -- The persistent row lock serializes concurrent writers.\n          UPDATE \"sku_number_counter\" SET last_id = last_id + 1\n            WHERE id = true RETURNING last_id INTO STRICT sequence_id;\n          NEW.sku := 'ERP' || (sequence_id + 10000)::text;\n        ELSIF NEW.sku ~ '^ERP[0-9]{5,18}$'\n          AND substring(NEW.sku FROM 4)::bigint > 10000 THEN\n          -- Explicit ERP codes reserve their number for future allocation.\n          UPDATE \"sku_number_counter\"\n            SET last_id = GREATEST(last_id, substring(NEW.sku FROM 4)::bigint - 10000)\n            WHERE id = true;\n        END IF;\n        RETURN NEW;\n      END;\n      $function$\n"
+    }
+  ],
+  "sequences": [
+    {
+      "sequence_name": "link_module_migrations_id_seq",
+      "data_type": "integer",
+      "start_value": "1",
+      "increment_by": "1",
+      "min_value": "1",
+      "max_value": "2147483647",
+      "cache_size": "1",
+      "cycles": false,
+      "owned_columns": [
+        {
+          "table": "link_module_migrations",
+          "column": "id"
+        }
+      ]
+    },
+    {
+      "sequence_name": "mikro_orm_migrations_id_seq",
+      "data_type": "integer",
+      "start_value": "1",
+      "increment_by": "1",
+      "min_value": "1",
+      "max_value": "2147483647",
+      "cache_size": "1",
+      "cycles": false,
+      "owned_columns": [
+        {
+          "table": "mikro_orm_migrations",
+          "column": "id"
+        }
+      ]
+    },
+    {
+      "sequence_name": "order_change_action_ordering_seq",
+      "data_type": "bigint",
+      "start_value": "1",
+      "increment_by": "1",
+      "min_value": "1",
+      "max_value": "9223372036854775807",
+      "cache_size": "1",
+      "cycles": false,
+      "owned_columns": [
+        {
+          "table": "order_change_action",
+          "column": "ordering"
+        }
+      ]
+    },
+    {
+      "sequence_name": "order_claim_display_id_seq",
+      "data_type": "integer",
+      "start_value": "1",
+      "increment_by": "1",
+      "min_value": "1",
+      "max_value": "2147483647",
+      "cache_size": "1",
+      "cycles": false,
+      "owned_columns": [
+        {
+          "table": "order_claim",
+          "column": "display_id"
+        }
+      ]
+    },
+    {
+      "sequence_name": "order_display_id_seq",
+      "data_type": "integer",
+      "start_value": "1",
+      "increment_by": "1",
+      "min_value": "1",
+      "max_value": "2147483647",
+      "cache_size": "1",
+      "cycles": false,
+      "owned_columns": [
+        {
+          "table": "order",
+          "column": "display_id"
+        }
+      ]
+    },
+    {
+      "sequence_name": "order_exchange_display_id_seq",
+      "data_type": "integer",
+      "start_value": "1",
+      "increment_by": "1",
+      "min_value": "1",
+      "max_value": "2147483647",
+      "cache_size": "1",
+      "cycles": false,
+      "owned_columns": [
+        {
+          "table": "order_exchange",
+          "column": "display_id"
+        }
+      ]
+    },
+    {
+      "sequence_name": "return_display_id_seq",
+      "data_type": "integer",
+      "start_value": "1",
+      "increment_by": "1",
+      "min_value": "1",
+      "max_value": "2147483647",
+      "cache_size": "1",
+      "cycles": false,
+      "owned_columns": [
+        {
+          "table": "return",
+          "column": "display_id"
+        }
+      ]
+    },
+    {
+      "sequence_name": "script_migrations_id_seq",
+      "data_type": "integer",
+      "start_value": "1",
+      "increment_by": "1",
+      "min_value": "1",
+      "max_value": "2147483647",
+      "cache_size": "1",
+      "cycles": false,
+      "owned_columns": [
+        {
+          "table": "script_migrations",
+          "column": "id"
+        }
+      ]
+    }
+  ]
+}

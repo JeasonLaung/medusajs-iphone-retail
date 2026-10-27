@@ -1,0 +1,23 @@
+{
+  "format_version": 1,
+  "source_snapshot_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "source_schema_sha256": "4222a1590a9eedd28ea084304514fbb29239a267186ee849909f969779dcca66",
+  "scope": "Live private sequence/counter observations compared to older fixed snapshot; actual order format SELECT expressions with artificial tick inputs only. No trigger execution, nextval/setval, counter mutation or MySQL/concurrency acceptance.",
+  "checks": {
+    "artificial_actual_sql_order_expression": 10,
+    "artificial_sequence_is_called": 4,
+    "counter_observation_not_below_fixed_snapshot": 2,
+    "sequence_definition": 8,
+    "sequence_next_after_fixed_snapshot_maximum": 5
+  },
+  "blocking_findings": {},
+  "migration_holds": {
+    "legacy_migration_sequence_not_imported": 3
+  },
+  "remaining": [
+    "Reobserve under final source write freeze; live sequence reads are nontransactional",
+    "Execute full SKU and order trigger behavior in isolated database, including overflow/rollback/concurrency",
+    "Implement MySQL persistent allocator and import seed policy without replaying old migration sequences"
+  ],
+  "status": "read-only-numbering-evidence-not-accepted"
+}

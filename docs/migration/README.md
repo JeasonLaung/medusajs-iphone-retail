@@ -18,6 +18,7 @@
 | 文件清单 | [公开图/私有照片/邮件附件基线](file-migration-baseline.md)、file-snapshot-report.json；明细仅在忽略目录 |
 | 密钥/商户秘密 | [四域加密与离线可读性](protected-config-baseline.md)、protected-config-report.json；无明文/密文/密钥指纹 |
 | 默认值转换 | [193表1,961列默认值去向](column-default-design.md)、source-column-defaults.json、column-default-design.json |
+| 编号数据库规则 | [2触发器/8序列/接续种子](numbering-database-contract.md)、source-numbering-database.json、numbering-database-report.json；当前位置仅在忽略目录 |
 | 自定义业务 | [设备命令及固定用例](device-commands.md)、[回收与邮件](buyback-and-mail.md)、[SEO 与引用监测](seo-contract.md) |
 | 统计 | [Analytics 实际口径](analytics-contract.md) |
 | 数据继承 | [源数据去向与转换](data-mapping.md)、[第一批36表292列设计](catalog-field-design.md)、catalog-field-mapping.json/.csv、catalog-preflight-report.json、data-table-disposition.csv、data-source-manifest.json |
@@ -54,6 +55,8 @@ python retail/scripts/capture-schema-constraints.py --check
 python retail/scripts/capture-column-defaults.py --check
 python retail/scripts/map-column-defaults.py --check
 python retail/scripts/test-column-defaults.py
+python retail/scripts/capture-numbering-database.py --positions logs/gin-migration/numbering-positions.json --check
+python retail/scripts/audit-numbering-state.py --bundle logs/gin-migration/source-20261026.json --positions logs/gin-migration/numbering-positions.json
 python retail/scripts/map-catalog-fields.py --check
 python retail/scripts/preflight-catalog-mapping.py --bundle logs/gin-migration/source-20261026.json
 python retail/scripts/map-inventory-device-fields.py --check
