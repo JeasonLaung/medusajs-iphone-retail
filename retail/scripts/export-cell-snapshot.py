@@ -15,6 +15,9 @@ ROOT = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location('cell_sql', Path(__file__).with_name('cell-record-sql.py'))
 builder = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(builder)
+shape_spec = importlib.util.spec_from_file_location('source_shape', Path(__file__).with_name('source-shape-sql.py'))
+shape = importlib.util.module_from_spec(shape_spec)
+shape_spec.loader.exec_module(shape)
 
 
 def program_sql():
@@ -24,6 +27,8 @@ def program_sql():
     statements = ['BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY;',
                   "SET LOCAL TIME ZONE 'UTC'; SET LOCAL statement_timeout='120s'; SET LOCAL lock_timeout='5s';",
                   'LOCK TABLE ' + ','.join('public.' + builder.quote(p['source']) for p in plans) + ' IN ACCESS SHARE MODE;']
+    # Validate every source shape before emitting ANY business record.
+    statements.extend(shape.guard(plan['source']) for plan in plans)
 
     def emit(record):
         # Constant protocol metadata only, no business values interpolated.
@@ -33,10 +38,6 @@ def program_sql():
     emit({'kind': 'snapshot', 'format_version': 2, 'plan_sha256': digest})
     for plan in plans:
         table = plan['source']
-        # Exact source column membership; types still require separate schema
-        # evidence and field conversion, not implied by this membership check.
-        expected = ','.join("'" + f['source'] + "'" for f in sorted(plan['fields'], key=lambda f: f['source']))
-        statements.append("DO $$ BEGIN IF (SELECT array_agg(column_name::text ORDER BY column_name COLLATE \"C\") FROM information_schema.columns WHERE table_schema='public' AND table_name='" + table + "') IS DISTINCT FROM ARRAY[" + expected + "]::text[] THEN RAISE EXCEPTION 'source column set changed'; END IF; END $$;")
         emit({'kind': 'table_begin', 'table': table})
         statements.append(builder.query_for(plan))
         statements.append("SELECT json_build_object('kind','table_end','table','" + table + "','rows',count(*))::text FROM public." + builder.quote(table) + ';')

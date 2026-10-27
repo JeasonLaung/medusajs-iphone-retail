@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "source_columns_sha256": "7e9bc4be4f59ca941327e787694911332937a36d9d803589162f354450ae29c6",
   "input_sha256": {
     "catalog-field-mapping.json": "e760f3ea032fa7fd09119fe017bb9c634cbade3b08648a47cfc1c3481cc2255b",
     "inventory-device-field-mapping.json": "28e6e3d3200ff7de6f28cb8eb1abfcbfb9b0c9c265d636bc9f70bb9da2561b23",

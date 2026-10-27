@@ -88,7 +88,7 @@
 
 [逐列快照记录](migration/cell-record-contract.md)已确认旧v1快照NULL歧义，新增v2纯SQL构造及Go严格记录解码；人工PostgreSQL三行实际类型验证、全部159表投影SQL验证通过。没有重新采集业务库，完整一致导出/流式处理/真实NULL来源处置仍待完成。
 
-[单事务快照及流式验证](migration/snapshot-stream-contract.md)新增显式导出工具、逐表列集合/COUNT、footer和完整SHA256，Go有界逐行校验全部159表；人工真实PostgreSQL导出→磁盘→Go路径通过，截断/错误count/hash/顺序拒绝。真实快照、完整schema类型指纹及正式可恢复导入仍缺。
+[单事务快照及流式验证](migration/snapshot-stream-contract.md)新增显式导出工具、逐表列集合/COUNT、footer和完整SHA256，Go有界逐行校验全部159表；人工真实PostgreSQL导出→磁盘→Go路径通过，截断/错误count/hash/顺序拒绝。新增固定源字段hash及全表类型/nullable/ordinal/字符和数值/时间精度守卫，人工五类结构漂移在任何记录前拒绝。真实快照、完整schema约束/默认/索引/枚举指纹及正式可恢复导入仍缺。
 
 | ID | 任务与交付物 | 依赖 | 验收标准 |
 | --- | --- | --- | --- |

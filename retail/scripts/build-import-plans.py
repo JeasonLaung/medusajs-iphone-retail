@@ -18,10 +18,13 @@ def main():
     args = parser.parse_args()
     inputs = {}
     plans = []
+    manifest_path = DOC / 'data-source-manifest.json'
+    manifest_sha = hashlib.sha256(manifest_path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
     for domain in DOMAINS:
         path = DOC / (domain + '-field-mapping.json')
         inputs[path.name] = hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
         mapping = json.loads(path.read_text(encoding='utf-8'))
+        assert mapping['source_manifest_sha256'] == manifest_sha, 'Source column manifest drift'
         for table in mapping['tables']:
             fields = []
             for field in mapping['fields']:
@@ -44,7 +47,7 @@ def main():
             plans.append({'source': table['source_table'], 'target': table['target_table'], 'fields': fields})
     assert len(plans) == 159 and sum(len(p['fields']) for p in plans) == 1691
     assert len({p['source'] for p in plans}) == len(plans)
-    content = json.dumps({'version': 1, 'input_sha256': inputs, 'tables': plans}, ensure_ascii=False, indent=2) + '\n'
+    content = json.dumps({'version': 1, 'source_columns_sha256': manifest_sha, 'input_sha256': inputs, 'tables': plans}, ensure_ascii=False, indent=2) + '\n'
     if args.check:
         assert OUT.read_text(encoding='utf-8').replace('\r\n', '\n') == content, 'Import field program drift'
     else:

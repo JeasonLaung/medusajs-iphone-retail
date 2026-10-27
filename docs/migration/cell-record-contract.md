@@ -21,7 +21,7 @@ DecodeRecord接收最多16MiB的单条记录，验证完整JSON、有效UTF-8/UT
 
 ## 实际证据与复现
 
-`test-cell-record-postgres.py`使用已有本机postgres:16-alpine，禁网、无发布端口、1核/384MiB、临时数据盘。创建实际text/jsonb/timestamptz人工product_tag三行，执行真实构造器查询，再调用Go TestActualPostgresCellRecords→DecodeRecord→Convert；验证SQL NULL、JSON null、大整数9007199254740993、小数1.2300、UTC微秒及空串。另158张人工空表执行对应查询，覆盖宽表语法；空表字段使用text替身，只证明SQL结构，不能算逐类型真实行验证。报告cell-record-postgres-report.json仅计数/哈希/镜像ID，容器结束核对所有权删除；记录内容只保存在Git忽略的人工fixture文件。
+`test-cell-record-postgres.py`使用已有本机postgres:16-alpine，禁网、无发布端口、1核/384MiB、临时数据盘。创建实际text/jsonb/timestamptz人工product_tag三行，执行真实构造器查询，再调用Go TestActualPostgresCellRecords→DecodeRecord→Convert；验证SQL NULL、JSON null、大整数9007199254740993、小数1.2300、UTC微秒及空串。另158张人工空表按固定源类型/nullable及ordinal空位执行对应查询并通过shape校验，覆盖宽表语法及结构；未导入真实行，不能算逐类型真实业务值验证。报告cell-record-postgres-report.json仅计数/哈希/镜像ID，容器结束核对所有权删除；记录内容只保存在Git忽略的人工fixture文件。
 
 ```powershell
 python retail/scripts/test-cell-record-postgres.py

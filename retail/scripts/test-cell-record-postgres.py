@@ -68,15 +68,38 @@ INSERT INTO product_tag VALUES
         assert records[1]['cells']['metadata'] == {'sql_null': False, 'value_json': 'null'}
         assert records[2]['cells']['metadata']['value_json'] == '{"big": 9007199254740993, "amount": 1.2300}'
         # Parse/execute every generated projection, including the widest tables,
-        # against empty artificial source tables. Text stand-ins prove identifier
-        # and SQL structure only; typed value proof above uses actual jsonb/time.
+        # against empty artificial source tables with exact pinned column shape.
+        # Dropped-column ordinal gaps are recreated as well, never normalized.
         all_plans = builder.plans()
+        shape_spec = importlib.util.spec_from_file_location('source_shape_fixture', Path(__file__).with_name('source-shape-sql.py'))
+        shape = importlib.util.module_from_spec(shape_spec)
+        shape_spec.loader.exec_module(shape)
+        source_columns = shape.columns()
+        enum_rows = json.loads((ROOT / 'docs/migration/source-schema-constraints.json').read_text(encoding='utf-8'))['enums']
+        enum_types = {}
+        for enum in enum_rows:
+            enum_types.setdefault(enum['type_name'], []).append(enum['label'])
         statements = []
+        for name, labels in enum_types.items():
+            statements.append('CREATE TYPE ' + builder.quote(name) + ' AS ENUM (' + ','.join(shape.literal(label) for label in labels) + ');')
         for source_plan in all_plans:
             if source_plan['source'] == 'product_tag':
                 continue
-            columns = ','.join(builder.quote(f['source']) + ' text' for f in source_plan['fields'])
+            members = {f['ordinal_position']: f for f in source_columns[source_plan['source']]}
+            definitions = []
+            dropped = []
+            for ordinal in range(1, max(members) + 1):
+                if ordinal in members:
+                    field = members[ordinal]
+                    definitions.append(builder.quote(field['column_name']) + ' ' + shape.fixture_column(field))
+                else:
+                    placeholder = 'fixture_dropped_' + str(ordinal)
+                    definitions.append(builder.quote(placeholder) + ' int')
+                    dropped.append(placeholder)
+            columns = ','.join(definitions)
             statements.append('CREATE TABLE public.' + builder.quote(source_plan['source']) + '(' + columns + ');')
+            for placeholder in dropped:
+                statements.append('ALTER TABLE public.' + builder.quote(source_plan['source']) + ' DROP COLUMN ' + builder.quote(placeholder) + ';')
             statements.append('SELECT count(*) FROM (' + builder.query_for(source_plan).removesuffix(';') + ') artificial_empty;')
         empty_results = sql('\n'.join(statements)).splitlines()
         assert len(empty_results) == 158 and set(empty_results) == {'0'}
@@ -99,15 +122,38 @@ INSERT INTO product_tag VALUES
                                     cwd=ROOT / 'retail/backend', env=env, capture_output=True, encoding='utf-8', timeout=90)
         if stream_test.returncode:
             raise AssertionError('Artificial full source stream failed: ' + stream_test.stdout + stream_test.stderr)
+        # Same column names, changed shape must fail BEFORE any table_begin.
+        drift_cases = [
+            ('type', 'ALTER TABLE product_tag ALTER COLUMN metadata TYPE json USING metadata::json;', 'ALTER TABLE product_tag ALTER COLUMN metadata TYPE jsonb USING metadata::jsonb;'),
+            ('nullable', 'ALTER TABLE product_tag ALTER COLUMN value DROP NOT NULL;', 'ALTER TABLE product_tag ALTER COLUMN value SET NOT NULL;'),
+            ('time_precision', 'ALTER TABLE product_tag ALTER COLUMN created_at TYPE timestamptz(3);', 'ALTER TABLE product_tag ALTER COLUMN created_at TYPE timestamptz(6);'),
+            ('varchar_length', 'ALTER TABLE cart_payment_collection ALTER COLUMN cart_id TYPE varchar(254);', 'ALTER TABLE cart_payment_collection ALTER COLUMN cart_id TYPE varchar(255);'),
+            ('numeric_precision', 'ALTER TABLE price ALTER COLUMN amount TYPE numeric(38,18);', 'ALTER TABLE price ALTER COLUMN amount TYPE numeric;'),
+        ]
+        for label, mutate, restore in drift_cases:
+            sql(mutate)
+            rejected = ROOT / ('logs/gin-migration/cell-drift-' + owner[:12] + '-' + label + '.ndjson')
+            try:
+                exporter.export(container, 'postgres', 'cell_fixture', rejected)
+            except RuntimeError:
+                assert not Path(str(rejected) + '.sha256').exists()
+                assert rejected.read_bytes() == b''
+            else:
+                raise AssertionError('Source schema drift was silently accepted: ' + label)
+            sql(restore)
         report = {'format_version': 1, 'scope': 'Artificial PostgreSQL source SQL to v2 record decoder and mapped Go conversion; not source recapture/import acceptance',
                   'image': 'postgres:16-alpine', 'local_image_id': image.stdout.strip(),
                   'isolation': {'network': 'none', 'published_ports': 0, 'cpus': 1, 'memory_mib': 384},
                   'query_builder_sha256': hashlib.sha256(Path(__file__).with_name('cell-record-sql.py').read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
+                  'exporter_sha256': hashlib.sha256(Path(__file__).with_name('export-cell-snapshot.py').read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
+                  'source_shape_guard_sha256': hashlib.sha256(Path(__file__).with_name('source-shape-sql.py').read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
                   'cases': {'sql_null_distinct': True, 'json_null_document_distinct': True, 'big_integer_and_decimal_lexemes': True,
                             'go_actual_source_records': 3, 'go_test_passed': True,
                             'other_empty_projection_sql_parsed': 158,
                             'full_read_only_transaction_export': True,
                             'go_159_table_stream_footer_counts_and_hash_verified': True,
+                            'all_tables_use_pinned_source_types_and_nullability': True,
+                            'source_shape_drift_refused': [case[0] for case in drift_cases],
                             'max_mapped_columns': max(len(p['fields']) for p in all_plans)},
                   'source_business_connection': False}
     finally:

@@ -10,6 +10,8 @@
     "memory_mib": 384
   },
   "query_builder_sha256": "6fb078ff1471874e8a7cd9faad5199b562f0855f65f41e48bb440c9d9b4fe21b",
+  "exporter_sha256": "bf2d41998c00894b1af14b144318e59905c24a8e5bc26474535f30f3e9901550",
+  "source_shape_guard_sha256": "53ddc06083ae30986eca24d269fcb2541e04365a989303e1125aba575d8ddd1d",
   "cases": {
     "sql_null_distinct": true,
     "json_null_document_distinct": true,
@@ -19,6 +21,14 @@
     "other_empty_projection_sql_parsed": 158,
     "full_read_only_transaction_export": true,
     "go_159_table_stream_footer_counts_and_hash_verified": true,
+    "all_tables_use_pinned_source_types_and_nullability": true,
+    "source_shape_drift_refused": [
+      "type",
+      "nullable",
+      "time_precision",
+      "varchar_length",
+      "numeric_precision"
+    ],
     "max_mapped_columns": 32
   },
   "source_business_connection": false,
