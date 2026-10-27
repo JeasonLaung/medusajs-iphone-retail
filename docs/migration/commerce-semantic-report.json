@@ -1,0 +1,101 @@
+{
+  "format_version": 1,
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "mapping_sha256": "7c9526d97ed3612245202c2bde253311de3e488c9c75d741f0aa3ec2bc48d7d0",
+  "scope": "Fixed snapshot transaction-reference and active capture/refund/version audit only; no provider call, no repair, no MySQL or full historical totals acceptance",
+  "checks": {
+    "capture_amounts": 18,
+    "order_current_version_membership": 13,
+    "order_item_version_keys": 20,
+    "payment_capture_refund_balances": 21,
+    "payment_collection_captured_refunded_aggregates": 23,
+    "refund_amounts": 8
+  },
+  "unresolved_references": [
+    {
+      "source_table": "order_payment_collection",
+      "source_column": "order_id",
+      "referenced_table": "order",
+      "unresolved_values": 18,
+      "soft_deleted_rows": 6,
+      "not_soft_deleted_rows": 12
+    },
+    {
+      "source_table": "order_payment_collection",
+      "source_column": "payment_collection_id",
+      "referenced_table": "payment_collection",
+      "unresolved_values": 9,
+      "soft_deleted_rows": 6,
+      "not_soft_deleted_rows": 3
+    },
+    {
+      "source_table": "order_fulfillment",
+      "source_column": "order_id",
+      "referenced_table": "order",
+      "unresolved_values": 85,
+      "soft_deleted_rows": 0,
+      "not_soft_deleted_rows": 85
+    },
+    {
+      "source_table": "order_fulfillment",
+      "source_column": "fulfillment_id",
+      "referenced_table": "fulfillment",
+      "unresolved_values": 85,
+      "soft_deleted_rows": 0,
+      "not_soft_deleted_rows": 85
+    },
+    {
+      "source_table": "order_exchange",
+      "source_column": "order_id",
+      "referenced_table": "order",
+      "unresolved_values": 10,
+      "soft_deleted_rows": 0,
+      "not_soft_deleted_rows": 10
+    },
+    {
+      "source_table": "order_exchange_item",
+      "source_column": "item_id",
+      "referenced_table": "order_line_item",
+      "unresolved_values": 10,
+      "soft_deleted_rows": 0,
+      "not_soft_deleted_rows": 10
+    },
+    {
+      "source_table": "return",
+      "source_column": "order_id",
+      "referenced_table": "order",
+      "unresolved_values": 19,
+      "soft_deleted_rows": 0,
+      "not_soft_deleted_rows": 19
+    },
+    {
+      "source_table": "return_item",
+      "source_column": "item_id",
+      "referenced_table": "order_line_item",
+      "unresolved_values": 19,
+      "soft_deleted_rows": 0,
+      "not_soft_deleted_rows": 19
+    },
+    {
+      "source_table": "fulfillment_item",
+      "source_column": "line_item_id",
+      "referenced_table": "order_line_item",
+      "unresolved_values": 1,
+      "soft_deleted_rows": 0,
+      "not_soft_deleted_rows": 1
+    }
+  ],
+  "distinct_rows_with_unresolved_references": {
+    "fulfillment_item": 1,
+    "order_exchange": 10,
+    "order_exchange_item": 10,
+    "order_fulfillment": 85,
+    "order_payment_collection": 18,
+    "return": 19,
+    "return_item": 19
+  },
+  "financial_or_version_findings": {},
+  "observations": {},
+  "source_repair_performed": false,
+  "disposition": "Preserve all original rows/references in restricted migration history; unresolved/financially inconsistent aggregates remain read-only and require reconciliation; never invent transactions or drop rows to satisfy foreign keys"
+}

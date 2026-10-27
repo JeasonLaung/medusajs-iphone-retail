@@ -1,0 +1,26 @@
+{
+  "format_version": 1,
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "mapping_sha256": "7c9526d97ed3612245202c2bde253311de3e488c9c75d741f0aa3ec2bc48d7d0",
+  "scope": "Source snapshot scalar type/length/precision/raw-pair/reference preflight only; not MySQL import, active uniqueness, semantic joins, public DTO or JSON lexical acceptance",
+  "tables": 42,
+  "fields": 523,
+  "checks": {
+    "field_values": 7005,
+    "references_including_soft_deleted": 840,
+    "raw_scalar_pairs": 428
+  },
+  "failures": {
+    "fulfillment_item.line_item_id:missing_reference": 1,
+    "order_exchange.order_id:missing_reference": 10,
+    "order_exchange_item.item_id:missing_reference": 10,
+    "order_fulfillment.fulfillment_id:missing_reference": 85,
+    "order_fulfillment.order_id:missing_reference": 85,
+    "order_payment_collection.order_id:missing_reference": 18,
+    "order_payment_collection.payment_collection_id:missing_reference": 9,
+    "return.order_id:missing_reference": 19,
+    "return_item.item_id:missing_reference": 19
+  },
+  "historical_unresolved_references": {},
+  "history_disposition": "Preserve raw legacy reference in history plus nullable resolved reference; no fabricated entity or new-login FK; unresolved history is not relational acceptance"
+}

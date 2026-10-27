@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle", required=True)
-    parser.add_argument("--domain", choices=["catalog", "inventory-device"], default="catalog")
+    parser.add_argument("--domain", choices=["catalog", "inventory-device", "commerce"], default="catalog")
     args = parser.parse_args()
     bundle_path = Path(args.bundle).resolve()
     ignored = subprocess.run(["git", "check-ignore", "--quiet", str(bundle_path)], cwd=ROOT, capture_output=True)
@@ -34,10 +34,14 @@ def main():
             raise ValueError("Field mapping evidence is stale; regenerate and review before preflight")
     fields = mapping["fields"]
     source_by_target = {t["target_table"]: t["source_table"] for t in mapping["tables"]}
+    for related in ("catalog", "inventory-device"):
+        related_mapping = json.loads((ROOT / "docs/migration" / f"{related}-field-mapping.json").read_text(encoding="utf-8-sig"))
+        source_by_target.update({t["target_table"]: t["source_table"] for t in related_mapping["tables"]})
     source_by_target.update({"inventory_items": "inventory_item", "inventory_locations": "stock_location",
                              "payment_providers": "payment_provider", "fulfillment_shipping_options": "shipping_option",
                              "catalog_variants": "product_variant", "commerce_currencies": "currency",
-                             "orders": "order", "order_line_items": "order_line_item", "fulfillments": "fulfillment", "returns": "return"})
+                             "orders": "order", "order_line_items": "order_line_item", "fulfillments": "fulfillment", "returns": "return",
+                             "historical_customer_subjects": "customer", "carts": "cart"})
     rename = {(f["target_table"], f["target_column"]): f["source_column"] for f in fields}
     failures = Counter()
     historical_unresolved = Counter()
@@ -76,9 +80,10 @@ def main():
             elif transform == "strict_boolean":
                 if not isinstance(value, bool):
                     fail(field, "expected_boolean")
-            elif transform in {"checked_int32", "minor_unit_integer"}:
-                if isinstance(value, bool) or not isinstance(value, int) or not -(2**31) <= value < 2**31:
-                    fail(field, "expected_int32")
+            elif transform in {"checked_int32", "minor_unit_integer", "checked_int64"}:
+                bits = 64 if transform == "checked_int64" else 32
+                if isinstance(value, bool) or not isinstance(value, int) or not -(2**(bits-1)) <= value < 2**(bits-1):
+                    fail(field, f"expected_int{bits}")
             elif transform == "utc_datetime6":
                 try:
                     parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
@@ -89,7 +94,7 @@ def main():
                         raise ValueError("Submicrosecond timestamp would lose precision")
                 except (ValueError, TypeError, AttributeError):
                     fail(field, "invalid_timestamp")
-            elif transform in {"money_major_decimal", "quantity_decimal", "finite_float32_to_float64"}:
+            elif transform in {"money_major_decimal", "quantity_decimal", "rate_decimal", "finite_float32_to_float64"}:
                 try:
                     number = Decimal(str(value))
                     if not number.is_finite():
@@ -105,7 +110,7 @@ def main():
                             fail(field, "decimal_precision_overflow")
                 except (ValueError, ArithmeticError):
                     fail(field, "invalid_numeric")
-            elif transform == "exact_json_text":
+            elif transform in {"exact_json_text", "protected_exact_json"}:
                 # Already decoded with Decimal; lexical round-trip still needs importer/MySQL tests.
                 if name.startswith("raw_"):
                     scalar = name.removeprefix("raw_")
