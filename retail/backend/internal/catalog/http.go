@@ -1,15 +1,11 @@
 package catalog
 
 import (
-	"encoding/json"
-	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -185,34 +181,8 @@ func (h Handler) Regions(c *gin.Context) {
 	c.JSON(200, gin.H{"regions": out, "count": len(out)})
 }
 
+// Product commands require explicit concurrency, audit and registry handling.
+// The old payload-schema writer was never an accepted implementation.
 func (h Handler) UpdateProduct(c *gin.Context) {
-	var input struct {
-		Title  string `json:"title" binding:"required,max=500"`
-		Status string `json:"status" binding:"required,oneof=draft proposed published rejected"`
-	}
-	if err := c.ShouldBindJSON(&input); err != nil {
-		platform.InvalidJSON(c, err, "invalid_product", "Title and a valid status are required")
-		return
-	}
-	input.Title = strings.TrimSpace(input.Title)
-	if input.Title == "" {
-		platform.Fail(c, 400, "invalid_product", "Title is required")
-		return
-	}
-	err := h.DB.Transaction(func(tx *gorm.DB) error {
-		var p Product
-		if err := tx.Where("id=? AND deleted_at IS NULL", c.Param("id")).First(&p).Error; err != nil {
-			return err
-		}
-		if err := tx.Model(&p).Updates(map[string]any{"title": input.Title, "status": input.Status, "updated_at": time.Now().UTC()}).Error; err != nil {
-			return err
-		}
-		data, _ := json.Marshal(map[string]any{"before": map[string]string{"title": p.Title, "status": p.Status}, "after": input})
-		return tx.Table("audit_events").Create(map[string]any{"id": "audit_" + uuid.NewString(), "actor_id": c.GetString("admin_id"), "action": "catalog.product.update", "resource_id": p.ID, "data": json.RawMessage(data), "created_at": time.Now().UTC()}).Error
-	})
-	if err != nil {
-		platform.DBError(c, err)
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"success": true})
+	platform.Fail(c, 503, "catalog.write_unavailable", "Product editing is not available")
 }

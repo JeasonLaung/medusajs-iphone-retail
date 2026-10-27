@@ -11,10 +11,13 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/platform"
+	"github.com/eurorefurb/retail/internal/schema"
 	"github.com/eurorefurb/retail/internal/server"
 	"github.com/eurorefurb/retail/internal/sessionstore"
+	"github.com/eurorefurb/retail/migrations"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -34,9 +37,18 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	// Readiness requires an explicitly migrated schema; never mutate it here.
-	var count int64
-	if err = db.Table("schema_migrations").Count(&count).Error; err != nil || count == 0 {
-		log.Fatal("Database schema is missing; run go run ./cmd/migrate first")
+	plan, err := schema.Load(migrations.Files)
+	if err != nil {
+		log.Fatal("Compiled database migration plan invalid")
+	}
+	verifyCtx, cancelVerify := context.WithTimeout(context.Background(), 5*time.Second)
+	err = schema.CheckApplied(verifyCtx, pool, plan)
+	if err == nil {
+		err = catalog.Ready(verifyCtx, db)
+	}
+	cancelVerify()
+	if err != nil {
+		log.Fatal("Complete database migration plan and catalog read schema required; run explicit migrations")
 	}
 	bind := os.Getenv("APP_BIND")
 	if bind == "" {

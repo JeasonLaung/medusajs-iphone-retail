@@ -47,7 +47,7 @@ func TestPrepareOwnedBrowserAPI(t *testing.T) {
 		t.Fatal("fixture plan invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 9 {
+	if err != nil || result.Applied != 10 {
 		t.Fatal("fixture migrations failed")
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte("artificial-browser-password"), bcrypt.DefaultCost)
@@ -57,20 +57,6 @@ func TestPrepareOwnedBrowserAPI(t *testing.T) {
 	u := identity.User{ID: "new-browser-fixture", Email: "browser@example.invalid", Name: "Browser Fixture", Role: "admin", Enabled: true, AuthVersion: 1, PasswordHash: string(hash), CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()}
 	if db.Create(&u).Error != nil {
 		t.Fatal("fixture new account failed")
-	}
-	// Draft payload is deliberately private. The list must use column projection.
-	if db.Exec(`INSERT INTO catalog_products (id,handle,title,status,payload,created_at,updated_at) VALUES
-	 ('fixture-a','fixture-a','Phone 50%_!','draft','{"private":"must-not-escape","title":"stale-title"}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),
-	 ('fixture-b','fixture-b','Phone other','published','{}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),
-	 ('fixture-deleted','fixture-deleted','Removed','draft','{}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`).Error != nil {
-		t.Fatal("fixture products failed")
-	}
-	if db.Exec(`UPDATE catalog_products SET deleted_at=UTC_TIMESTAMP(6) WHERE id='fixture-deleted'`).Error != nil {
-		t.Fatal("fixture soft deletion failed")
-	}
-	if db.Exec(`INSERT INTO catalog_variants (id,product_id,title,payload,created_at,updated_at) VALUES
-	 ('fixture-v','fixture-a','Variant','{"private":"variant-secret"}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`).Error != nil {
-		t.Fatal("fixture variant failed")
 	}
 	t.Log("OWNED_BROWSER_FIXTURE_READY")
 }

@@ -86,17 +86,6 @@ def main():
                           '/opt/prep.test', '-test.v', '-test.run', '^TestPrepareOwnedBrowserAPI$', '-test.timeout', '40s')
         if prepared.returncode or b'OWNED_BROWSER_FIXTURE_READY' not in prepared.stdout:
             raise RuntimeError('Owned browser schema/account preparation failed')
-        # This is a throwaway rehearsal, not a formal schema upgrade. Retain
-        # the seven empty/artificial draft domain tables under explicit names;
-        # the complete reviewed relational schema then owns the runtime names.
-        draft_tables = ['catalog_products', 'catalog_variants', 'catalog_prices', 'catalog_categories',
-                        'catalog_category_products', 'catalog_collections', 'commerce_regions']
-        rename = 'RENAME TABLE ' + ','.join('`' + name + '` TO `draft_' + name + '`' for name in draft_tables) + ';\n'
-        reviewed = subprocess.run(['docker','exec','-i','-e','MYSQL_PWD=' + password,mysql_id,
-                                   'mysql','-uroot','--protocol=socket','--default-character-set=utf8mb4','browser_identity'],
-                                  input=(rename + ddl.read_text(encoding='utf-8')).encode('utf-8'),capture_output=True,timeout=60)
-        if reviewed.returncode:
-            raise RuntimeError('Owned reviewed schema preparation failed; private output suppressed')
         prepared = docker('exec','-e','MYSQL_PWD=' + password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,
                           '/opt/prep.test','-test.v','-test.run','^TestPrepareReviewedCatalogFixture$','-test.timeout','40s')
         if prepared.returncode or b'OWNED_REVIEWED_CATALOG_READY' not in prepared.stdout:
@@ -144,12 +133,14 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/backend/internal/catalog').glob('*.go')]
         files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/backend/migrations').glob('*.sql')]
         files += ['docs/migration/mysql-relational-review.sql']
+        files += ['retail/backend/internal/schema/ready.go','retail/backend/internal/schema/run.go',
+                  'retail/backend/internal/schema/plan.go']
         files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/admin').rglob('*')
                   if p.is_file() and not any(part in ('node_modules', 'dist') for part in p.relative_to(ROOT / 'retail/admin').parts)]
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
-                  'browser_tests_passed': 1, 'migrations_applied': 9, 'mocked_api_responses': False,
-                  'reviewed_relational_schema_used': True, 'draft_domain_tables_retained_under_test_names': 7,
-                  'formal_schema_upgrade_accepted': False,
+                  'browser_tests_passed': 1, 'migrations_applied': 10, 'mocked_api_responses': False,
+                  'reviewed_relational_schema_used': True, 'empty_draft_tables_retained_by_migration': 7,
+                  'explicit_catalog_read_schema_migration_used': True, 'test_only_schema_rewrite': False,
                   'browser_executable_override_used': bool(os.environ.get('ADMIN_TEST_BROWSER')),
                   'checked': ['wrong password then retry', 'real login and reload', 'HttpOnly and SameSite cookies',
                               'no credentials in browser storage', 'private response cache and request ID',

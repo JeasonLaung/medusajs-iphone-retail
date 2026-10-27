@@ -87,11 +87,8 @@ def main():
         else:
             raise RuntimeError('Isolated catalog MySQL did not become ready')
         version = sql('SELECT VERSION();')
-        sql(ddl.read_text(encoding='utf-8'))
-        if sql("SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA='catalog_rehearsal';") != '159':
-            raise RuntimeError('Complete catalog review schema not created')
-        for name in ['0002_unique_key_registry.sql', '0003_unique_key_secret_scopes.sql', '0008_migration_catalog_rows.sql']:
-            sql((ROOT / 'retail/backend/migrations' / name).read_text(encoding='utf-8'))
+        # The test binary applies the exact embedded migration plan. No direct
+        # review DDL injection or ad hoc schema preparation is performed here.
         # Private input is streamed into the live tmpfs mount. The non-private
         # executable uses /opt because tmpfs has noexec on this Docker host.
         for local, remote in [(executable, '/opt/catalog-rehearsal.test'), (snapshot, '/tmp/catalog-source.ndjson'), (ROOT / 'retail/backend/internal/rowimport/field_plans.json', '/tmp/field-plans.json')]:
@@ -121,8 +118,13 @@ def main():
                  'retail/backend/migrations/0002_unique_key_registry.sql', 'retail/backend/migrations/0003_unique_key_secret_scopes.sql',
                  'retail/backend/migrations/0008_migration_catalog_rows.sql', 'docs/migration/mysql-relational-review.sql']
         files += ['retail/backend/internal/catalog/admin_list.go','retail/backend/internal/catalog/admin_detail.go']
+        files += ['retail/backend/migrations/0010_catalog_relational.sql','retail/backend/internal/catalog/schema.go',
+                  'retail/backend/internal/catalog/schema_plan.json','retail/backend/internal/schema/ready.go']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
+        files += ['retail/backend/internal/schema/run.go','retail/backend/internal/schema/plan.go']
         report = {'format_version': 1, 'scope': '36 actual catalog tables and nine parent dependencies in disposable tmpfs MySQL only; parent rows have no formal migration ledger; no full import/runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
+                  'embedded_migration_plan_used': True, 'review_ddl_injected': False,
                   'limits': {'cpus': 1, 'memory_mib': 768, 'mysql_tmpfs_mib': 512, 'private_input_tmpfs_mib': 128, 'network': 'none', 'published_ports': 0},
                   'target_business_rows_written': True, 'target_operation_holds_written': False, 'target_full_value_claims_written': True,
                   'production_target_used': False, 'source_database_connection': False, 'provider_called': False,

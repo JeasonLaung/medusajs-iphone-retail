@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance",
   "counts": {
-    "explicit_migrations": 9,
+    "explicit_migrations": 10,
     "login_and_me": 1,
     "csrf_and_origin_rejection": 1,
     "session_rotation": 1,
@@ -29,19 +29,36 @@
   "application_resources_used": false,
   "private_values_in_report": false,
   "full_authentication_accepted": false,
+  "catalog_schema_transition": {
+    "catalog_tables": 45,
+    "empty_draft_upgrade_preserved_new_account": 1,
+    "explicit_migrations": 10,
+    "failed_precondition_preserved_tables": 3,
+    "fresh_and_replay": 1,
+    "nonempty_draft_refusals": 2,
+    "readiness_rejections": 6,
+    "source_columns": 374,
+    "target_collision_refusals": 1,
+    "write_enable_rejected": 1
+  },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "7c49cafabc5a7fd9bcf0bf6b50c7d10187037651b871a2ae15df334f0fb1080e",
+    "retail/scripts/test-admin-auth.py": "3c537a196a1cb57952ad8e1e2e7963c4a416198e7b1ca57fc1d60563bff1a87e",
     "retail/backend/internal/identity/admin.go": "122cd19c9ae0daffa7514ff2dc5500c8d414a5dff5877ec3eacfd4de67fdac29",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
-    "retail/backend/internal/identity/integration_test.go": "367fce81db21f1bb1c8edb1c2cf1f690574bbffeb99888ffec6b2be87706ba02",
-    "retail/backend/internal/server/router.go": "fdb9e668c9de36d2818364b1ffebee6bdb0c11de688204378f0733577141a87b",
+    "retail/backend/internal/identity/integration_test.go": "20db9879a7a9cb96c398220f9139b5f0de74c3af46352e586e4b1dbe855ebb22",
+    "retail/backend/internal/server/router.go": "ce01ef933096f08439708e112ffde4a1ba362d0d6bc4c0cdb9db938b7c60cc75",
     "retail/backend/internal/platform/http.go": "2d0725f3fa8d60f060b14de792f8d4f1aa8dda38ff8c26b4d8c2af7c137e642a",
     "retail/backend/internal/platform/request.go": "b8abeda445a6ae84c451a6ba9678308973feb5c0627fdc73dccf5de68aec648e",
-    "retail/backend/cmd/api/main.go": "d8ad7c2fd35e6050d6423d591a9d36dd18802c499f5e6087fcacbb71c84eec7f",
+    "retail/backend/cmd/api/main.go": "3dbb4b166159b1acb9965e6881c3179d350937891f4fddf47f11abd749aae0f1",
     "retail/backend/cmd/create-admin/main.go": "5e2cfe648a2df017e8a7c32efa6160055f09fa29cafc2a29657a9f585f366acd",
     "retail/backend/migrations/0009_admin_auth_version.sql": "059b9f79fd7ec2f7ebbd8030d5f010c258c1fe14262c4fd86103ea19b178fa33",
     "retail/backend/internal/sessionstore/store.go": "1474b97c45baebfbc00de252da3b77b3dfa4a7749e9cf2cf894d697f508f83aa",
-    "retail/backend/internal/sessionstore/config.go": "3a06b19b9f71032d4243cc9266499d7eb7cf6a8e7facfcfac3ae63ac1a339440"
+    "retail/backend/internal/sessionstore/config.go": "3a06b19b9f71032d4243cc9266499d7eb7cf6a8e7facfcfac3ae63ac1a339440",
+    "retail/backend/internal/identity/catalog_schema_test.go": "6fb3cec8e3505ac0ea3a61c5aa3563f3d99dcc9ff74a1e17867ccb51fdc1b763",
+    "retail/backend/internal/schema/ready.go": "136238fca088d5594ae5ddc8af5954f090aab286f8dedcf17f90ad42c6a5a5ad",
+    "retail/backend/internal/catalog/schema.go": "aadd8fc2d82c87d9a8467ae60c232cd300081f6a3880ee22a1a73666511e04ab",
+    "retail/backend/internal/catalog/schema_plan.json": "3cdd7053d3fa87a4da1b5847fc966f1ee0582d50916b65d2005fb8e93ec22dd9",
+    "retail/backend/migrations/0010_catalog_relational.sql": "49dbba8222f0a1a0153ea442297e321740d4d2c924d64218e31b208338090ea2"
   },
   "cleanup": "both owned containers and temporary runner removed"
 }

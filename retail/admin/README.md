@@ -40,7 +40,7 @@ login against Gin/MySQL/Redis.
 
 For that separate live check, run `python retail/scripts/test-admin-live.py`
 from the repository root with the same optional browser override. It builds the
-actual Gin executable and uses owned disposable MySQL/Redis containers, nine
+actual Gin executable and uses owned disposable MySQL/Redis containers, ten
 schema migrations and one artificial new account. No intercepted API responses
 are used. It requires the existing `mysql:8.4` and `redis:7-alpine` images and
 never pulls images. Only a randomly allocated API port is published on host
@@ -62,6 +62,8 @@ Ant forms, filters, table, pagination and empty/error feedback. Filters persist
 in the URL. Product title links open `/products/:id` with Ant descriptions,
 images, options and paginated variants. The new detail requires the reviewed
 relational schema; it cannot read the older draft payload schema. The live
-runner prepares that schema only in its disposable fixture database; this is
-not a formal schema-upgrade tool. Product editing is still an unaccepted draft.
+runner applies the embedded migrations, including the explicit catalog schema
+transition, in its disposable database. Existing nonempty draft catalog tables
+are rejected before renaming. Product editing returns an explicit unavailable
+response until concurrency, audit and permissions are implemented.
 See `docs/migration/admin-product-list.md` and `admin-product-detail.md` for scope.

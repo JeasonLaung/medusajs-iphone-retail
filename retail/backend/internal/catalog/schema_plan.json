@@ -1,0 +1,146 @@
+{
+  "format_version": 1,
+  "schema_version": 1,
+  "model_sha256": "35c4fcfc359b01eb553f41ac7a3aa184c87f9c86216639dfb9e495c482d3d76d",
+  "migration": "0010_catalog_relational.sql",
+  "tables": [
+    "catalog_categories",
+    "catalog_category_products",
+    "catalog_collections",
+    "catalog_images",
+    "catalog_option_values",
+    "catalog_options",
+    "catalog_product_channels",
+    "catalog_product_option_values",
+    "catalog_product_options",
+    "catalog_product_shipping_profiles",
+    "catalog_product_tags",
+    "catalog_product_types",
+    "catalog_products",
+    "catalog_tags",
+    "catalog_variant_images",
+    "catalog_variant_inventory_items",
+    "catalog_variant_options",
+    "catalog_variant_price_sets",
+    "catalog_variants",
+    "commerce_channel_locations",
+    "commerce_countries",
+    "commerce_currencies",
+    "commerce_region_payment_providers",
+    "commerce_regions",
+    "commerce_sales_channels",
+    "commerce_store_currencies",
+    "commerce_store_locales",
+    "commerce_stores",
+    "fulfillment_option_price_sets",
+    "fulfillment_option_types",
+    "fulfillment_providers",
+    "fulfillment_service_zones",
+    "fulfillment_sets",
+    "fulfillment_shipping_options",
+    "fulfillment_shipping_profiles",
+    "inventory_items",
+    "inventory_location_addresses",
+    "inventory_locations",
+    "payment_providers",
+    "pricing_preferences",
+    "pricing_price_list_rules",
+    "pricing_price_lists",
+    "pricing_price_rules",
+    "pricing_price_sets",
+    "pricing_prices"
+  ],
+  "source_columns": 374,
+  "empty_draft_tables_retained": {
+    "catalog_products": "legacy_0001_catalog_products",
+    "catalog_variants": "legacy_0001_catalog_variants",
+    "catalog_prices": "legacy_0001_catalog_prices",
+    "catalog_categories": "legacy_0001_catalog_categories",
+    "catalog_category_products": "legacy_0001_catalog_category_products",
+    "catalog_collections": "legacy_0001_catalog_collections",
+    "commerce_regions": "legacy_0001_commerce_regions"
+  },
+  "reads_enabled": true,
+  "writes_enabled": false,
+  "full_business_accepted": false,
+  "unresolved_source_indexes": [
+    {
+      "source_table": "fulfillment_set",
+      "index_name": "IDX_fulfillment_set_name_unique",
+      "definition": "CREATE UNIQUE INDEX \"IDX_fulfillment_set_name_unique\" ON public.fulfillment_set USING btree (name) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    },
+    {
+      "source_table": "price_list_rule",
+      "index_name": "IDX_price_list_rule_value",
+      "definition": "CREATE INDEX \"IDX_price_list_rule_value\" ON public.price_list_rule USING gin (value) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Expression/non-btree index requires explicit conversion"
+    },
+    {
+      "source_table": "price_preference",
+      "index_name": "IDX_price_preference_attribute_value",
+      "definition": "CREATE UNIQUE INDEX \"IDX_price_preference_attribute_value\" ON public.price_preference USING btree (attribute, value) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    },
+    {
+      "source_table": "price_rule",
+      "index_name": "IDX_price_rule_price_id_attribute_operator_unique",
+      "definition": "CREATE UNIQUE INDEX \"IDX_price_rule_price_id_attribute_operator_unique\" ON public.price_rule USING btree (price_id, attribute, operator) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    },
+    {
+      "source_table": "product_option",
+      "index_name": "IDX_product_option_global_title_unique",
+      "definition": "CREATE UNIQUE INDEX \"IDX_product_option_global_title_unique\" ON public.product_option USING btree (title) WHERE ((deleted_at IS NULL) AND (is_exclusive = false))",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    },
+    {
+      "source_table": "product_option_value",
+      "index_name": "IDX_option_value_option_id_unique",
+      "definition": "CREATE UNIQUE INDEX \"IDX_option_value_option_id_unique\" ON public.product_option_value USING btree (option_id, value) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    },
+    {
+      "source_table": "product_tag",
+      "index_name": "IDX_tag_value_unique",
+      "definition": "CREATE UNIQUE INDEX \"IDX_tag_value_unique\" ON public.product_tag USING btree (value) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    },
+    {
+      "source_table": "product_type",
+      "index_name": "IDX_type_value_unique",
+      "definition": "CREATE UNIQUE INDEX \"IDX_type_value_unique\" ON public.product_type USING btree (value) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    },
+    {
+      "source_table": "service_zone",
+      "index_name": "IDX_service_zone_name_unique",
+      "definition": "CREATE UNIQUE INDEX \"IDX_service_zone_name_unique\" ON public.service_zone USING btree (name) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    },
+    {
+      "source_table": "shipping_profile",
+      "index_name": "IDX_shipping_profile_name_unique",
+      "definition": "CREATE UNIQUE INDEX \"IDX_shipping_profile_name_unique\" ON public.shipping_profile USING btree (name) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    }
+  ],
+  "input_sha256": {
+    "retail/scripts/generate-catalog-schema.py": "c1f521dd9b4c5b0705d4247e017d86de90039271a822a22bb0a442dfb007d6af",
+    "retail/scripts/build-mysql-ddl.py": "c21d26642b2942e4d8167207577361e7691e85dc797aef1960dce6bc4c168065",
+    "retail/backend/internal/catalogimport/plans.json": "65ef08d81fb47a476c47387fd99da67a34e3002d190069e2fd3b64adc666bf59",
+    "retail/backend/internal/rowimport/field_plans.json": "d3bff5f26b890e19f7424888430a638d4e45f6b46766e3643913e6eb670c5b77",
+    "docs/migration/mysql-relational-review.sql": "e5cad256d0c8976ad9eb410cfe978385041d2ac5f4e594975e99158ee4b3aa9e"
+  },
+  "migration_sha256_lf": "49dbba8222f0a1a0153ea442297e321740d4d2c924d64218e31b208338090ea2"
+}

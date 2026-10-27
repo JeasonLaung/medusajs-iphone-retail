@@ -20,6 +20,8 @@ import (
 	cataloghttp "github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/importvalue"
 	"github.com/eurorefurb/retail/internal/rowimport"
+	"github.com/eurorefurb/retail/internal/schema"
+	"github.com/eurorefurb/retail/migrations"
 	"github.com/gin-gonic/gin"
 	"github.com/go-sql-driver/mysql"
 	gormmysql "gorm.io/driver/mysql"
@@ -228,6 +230,19 @@ func TestActualCatalogMySQL(t *testing.T) {
 	}
 	defer db.Close()
 	db.SetMaxOpenConns(2)
+	plan, err := schema.Load(migrations.Files)
+	if err != nil {
+		t.Fatal("catalog embedded schema plan invalid")
+	}
+	created, err := schema.Apply(ctx, db, plan)
+	if err != nil || created.Applied != 10 || schema.CheckApplied(ctx, db, plan) != nil {
+		t.Fatal("catalog embedded migration failed")
+	}
+	repeated, err := schema.Apply(ctx, db, plan)
+	if err != nil || repeated.Skipped != 10 {
+		t.Fatal("catalog embedded migration replay failed")
+	}
+	counts["explicit_schema_migrations"] = 10
 	var enabled int
 	if db.QueryRowContext(ctx, "SELECT @@foreign_key_checks").Scan(&enabled) != nil || enabled != 1 {
 		t.Fatal("catalog physical constraints must remain enabled")
@@ -409,6 +424,9 @@ func TestActualCatalogMySQL(t *testing.T) {
 	gdb, err := gorm.Open(gormmysql.New(gormmysql.Config{Conn: db, SkipInitializeWithVersion: true}), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent), DisableAutomaticPing: true})
 	if err != nil {
 		t.Fatal("catalog HTTP connection unavailable")
+	}
+	if cataloghttp.Ready(ctx, gdb) != nil {
+		t.Fatal("catalog read schema readiness failed")
 	}
 	gin.SetMode(gin.TestMode)
 	router := gin.New()

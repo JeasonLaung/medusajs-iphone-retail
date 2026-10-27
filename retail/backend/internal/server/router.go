@@ -50,6 +50,9 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 		if err == nil {
 			err = auth.Dependency(ctx)
 		}
+		if err == nil {
+			err = catalog.Ready(ctx, db)
+		}
 		if err != nil {
 			platform.Fail(c, 503, "dependency_unavailable", "Application dependency unavailable")
 			return

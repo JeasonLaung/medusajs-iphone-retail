@@ -72,24 +72,31 @@ def main():
         if copied.returncode or docker('exec', mysql_id, 'chmod', '700', '/opt/identity.test').returncode:
             raise RuntimeError('Identity runner transfer failed')
         tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1', mysql_id,
-                        '/opt/identity.test', '-test.v', '-test.run', '^TestOwnedAdminAuthentication$', '-test.timeout', '75s')
+                        '/opt/identity.test', '-test.v', '-test.run', '^TestOwned(AdminAuthentication|CatalogSchemaTransition)$', '-test.timeout', '150s', timeout=180)
         markers = [line.split('IDENTITY_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'IDENTITY_REHEARSAL ' in line]
         if tested.returncode or len(markers) != 1:
             # All inputs and failure messages in this binary are artificial.
             print(tested.stdout.decode(errors='replace'))
             raise RuntimeError('Owned MySQL/Redis authentication checks failed')
         counts = json.loads(markers[0])
+        schema_markers = [line.split('CATALOG_SCHEMA_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CATALOG_SCHEMA_REHEARSAL ' in line]
+        if len(schema_markers)!=1:
+            raise RuntimeError('Catalog schema verification missing')
         files = ['retail/scripts/test-admin-auth.py', 'retail/backend/internal/identity/admin.go',
                  'retail/backend/internal/identity/admin_test.go', 'retail/backend/internal/identity/integration_test.go',
                  'retail/backend/internal/server/router.go', 'retail/backend/internal/platform/http.go',
                  'retail/backend/internal/platform/request.go', 'retail/backend/cmd/api/main.go',
                  'retail/backend/cmd/create-admin/main.go', 'retail/backend/migrations/0009_admin_auth_version.sql',
                  'retail/backend/internal/sessionstore/store.go', 'retail/backend/internal/sessionstore/config.go']
+        files += ['retail/backend/internal/identity/catalog_schema_test.go','retail/backend/internal/schema/ready.go',
+                  'retail/backend/internal/catalog/schema.go','retail/backend/internal/catalog/schema_plan.json',
+                  'retail/backend/migrations/0010_catalog_relational.sql']
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                   'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                               'network': 'owned shared namespace with no external network', 'published_ports': 0},
                   'real_accounts_used': False, 'application_resources_used': False, 'private_values_in_report': False,
                   'full_authentication_accepted': False,
+                  'catalog_schema_transition': json.loads(schema_markers[0]),
                   'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
         password = ''
