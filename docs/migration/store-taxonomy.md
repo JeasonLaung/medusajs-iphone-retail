@@ -24,4 +24,4 @@ Category 明确公开 id/name/description/handle/rank/parent_category_id/product
 
 [固定数据整合报告](catalog-mysql-rehearsal-report.json) 比较全部实际公开分类字段、当前渠道商品计数和集合数量；测试 owner 显式使用固定快照内已验证的单个店铺，不根据请求推断店铺。[真实 Gin/browser 报告](admin-live-report.json) 在登录前校验完整公开 DTO，并回归既有后台及 Astro SSR。旧开发服务及真实数据未改。
 
-公共商品/变体/图片、逐键 metadata、区域/数量选价、数量可售、搜索 facets、Astro 页面/CSS/字体/交互及分类/集合后台编辑仍待实现。当前公共商品草稿不因本次渠道组件完成而变成合格实现，不能据此切流。
+后续已增加[公开商品关系读取](store-products.md)，覆盖本店渠道商品、变体、选项和图片。逐键 metadata、区域/数量选价、数量可售、搜索 facets、Astro 页面/CSS/字体/交互及分类/集合后台编辑仍待实现，不能据此切流。

@@ -112,8 +112,10 @@ def main():
         markers = [line.split('CATALOG_MYSQL_REHEARSAL ', 1)[1]
                    for line in tested.stdout.decode('utf-8').splitlines() if 'CATALOG_MYSQL_REHEARSAL ' in line]
         if tested.returncode or len(markers) != 1:
-            reasons = re.findall(r't\.Fatal\("([^"\n]+)"\)',
-                                 (ROOT / 'retail/backend/internal/catalogimport/rehearsal_test.go').read_text(encoding='utf-8'))
+            # Match only hardcoded failure literals in owned tests. Never emit
+            # private SQL output, source rows, interpolated IDs or DTO bodies.
+            reasons = [message for test in (ROOT / 'retail/backend/internal/catalogimport').glob('*test.go')
+                       for message in re.findall(r't\.Fatal\("([^"\n]+)"\)', test.read_text(encoding='utf-8'))]
             reason = next((item for item in reasons if item.encode() in tested.stdout), None)
             raise RuntimeError('Actual catalog rehearsal failed: ' + (reason or 'unclassified runner failure') + '; private output suppressed')
         counts = json.loads(markers[0])
@@ -150,6 +152,7 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/authorization').glob('*.go')]
         files += ['retail/backend/internal/catalog/store_regions.go','retail/backend/internal/catalogimport/regions_rehearsal_test.go']
         files += ['retail/backend/internal/catalog/store_taxonomy.go','retail/backend/internal/catalogimport/taxonomy_rehearsal_test.go']
+        files += ['retail/backend/internal/catalog/store_products.go','retail/backend/internal/catalogimport/products_rehearsal_test.go']
         report = {'format_version': 1, 'scope': '36 catalog tables, nine parent dependencies, two inventory tables, 28 ordinary order tables, eight payment tables and seven fulfillment tables in disposable tmpfs MySQL; five historical customer subjects without account bindings and catalog parent rows have no ledger; no full import/runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
                   'embedded_migration_plan_used': True, 'review_ddl_injected': False,

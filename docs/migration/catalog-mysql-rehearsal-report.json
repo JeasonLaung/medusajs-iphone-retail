@@ -104,7 +104,11 @@
     "http_public_actual_categories": 10,
     "http_public_actual_collections": 0,
     "http_public_actual_countries": 7,
+    "http_public_actual_images": 424,
+    "http_public_actual_products": 30,
     "http_public_actual_regions": 1,
+    "http_public_actual_variant_choices": 6142,
+    "http_public_actual_variants": 1558,
     "http_public_category_product_memberships": 60,
     "http_queries_preserved_full_fingerprint": 1,
     "inventory_immutable_holds": 4,
@@ -161,7 +165,7 @@
   "relational_acceptance": false,
   "full_business_acceptance": false,
   "implementation_sha256": {
-    "retail/scripts/rehearse-catalog.py": "97d19267a420c0af05b7aed25110cf45fe5e298c7873e510647e6cce98603831",
+    "retail/scripts/rehearse-catalog.py": "673fdecd1aa9e32f194991d93f424f3785e5075d26a569b3b621238159a2463e",
     "retail/backend/internal/catalogimport/import.go": "51835174a7264397177318dc184d0769fce7565de737cd1522ab6d703ca20570",
     "retail/backend/internal/catalogimport/rehearsal_test.go": "d16e81702f7a8ff6d16abb3523ed138ce971a15fa5ec8756ecf17548f25ae024",
     "retail/backend/internal/catalogimport/plans.json": "65ef08d81fb47a476c47387fd99da67a34e3002d190069e2fd3b64adc666bf59",
@@ -265,7 +269,9 @@
     "retail/backend/internal/catalog/store_regions.go": "6c93beeaf807d3b40330649e6d7ad4202714fd82dd945bf53d65d3fbcb0d36aa",
     "retail/backend/internal/catalogimport/regions_rehearsal_test.go": "b37bbb8e71b5fa441951fb8008a3ba2f77c4902436b37a7169236cf73459f4ea",
     "retail/backend/internal/catalog/store_taxonomy.go": "90ea7c6edb6261b9bf182ecb779fd4fe6863d91e466f46b0a8fee8769dcb6e2e",
-    "retail/backend/internal/catalogimport/taxonomy_rehearsal_test.go": "c3b8a0f39cba45721feb76a7319d7f4c7f700f804f39c7a23d40c5397874357a"
+    "retail/backend/internal/catalogimport/taxonomy_rehearsal_test.go": "82e8a7bb6ebcaf546ecd1638d535d4472d581ab06e253ff7f43a878c04d315d0",
+    "retail/backend/internal/catalog/store_products.go": "537eddc708ef0cc60ff2c3e5109e58204fdc94f849c413d45c8006c1be9958c1",
+    "retail/backend/internal/catalogimport/products_rehearsal_test.go": "94238f8fae135fe7e7319675624a8559e0617084be608df1e2a81b0f258a9d6d"
   },
   "cleanup": "owned container removed after label verification; tmpfs source/target copies and temporary runner removed"
 }

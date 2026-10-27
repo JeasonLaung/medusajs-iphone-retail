@@ -88,3 +88,5 @@ C01 商品发布但渠道不匹配不返回；C02 软删 product/variant/option/
 2026-10-28 区域接口已由[公共关系 DTO](store-regions.md)替换 payload 并补单条详情；固定 1 区域/7 国家核对与 Astro SSR 串联通过。公共商品、分类、集合、渠道、价格和页面仍按上述完整契约推进。
 
 2026-10-28 [公共分类/集合及当前店铺渠道](store-taxonomy.md)已替换对应草稿，公开 DTO 使用 product_count 承接数量消费；商品页/卡片仍待公共商品及选价实现。
+
+2026-10-28 [公共商品关系读取](store-products.md)已移除上文第 1/3 项涉及的公开 payload/旧选价草稿，按正式渠道、商品、变体、选项和图片关系投影；区域/阶梯/条件选价尚未实现，明确不返回 calculated_price，capabilities 中 pricing/availability/checkout 均为 false。此阶段不支持 region_id/option_value_id[]/sort，不能把上述目标契约视为当前全部可用。逐键 metadata、可售和前台页面仍继续迁移。

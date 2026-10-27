@@ -81,9 +81,9 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	})
 	h := catalog.Handler{DB: db}
 	public := r.Group("/api/store")
-	public.GET("/products", h.Products)
-	public.GET("/products/:id", h.Product)
 	store := catalog.StoreHandler{DB: db, StoreID: os.Getenv("STOREFRONT_STORE_ID")}
+	public.GET("/products", store.Products)
+	public.GET("/products/:id", store.Product)
 	public.GET("/product-categories", store.Categories)
 	public.GET("/product-categories/:id", store.Category)
 	public.GET("/collections", store.Collections)

@@ -111,6 +111,9 @@ def main():
             print(json.dumps({'test_exit_code': tested.returncode, 'mysql_oom_and_exit': state.stdout.decode().strip()}))
             raise RuntimeError('Owned MySQL/Redis authentication checks failed')
         counts = json.loads(markers[0])
+        product_markers=[line.split('STORE_PRODUCT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_PRODUCT_REHEARSAL ' in line]
+        if len(product_markers)!=1:
+            raise RuntimeError('Store product verification missing')
         taxonomy_markers=[line.split('STORE_TAXONOMY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_TAXONOMY_REHEARSAL ' in line]
         if len(taxonomy_markers)!=1:
             raise RuntimeError('Store taxonomy verification missing')
@@ -209,7 +212,9 @@ def main():
         files += ['retail/backend/internal/identity/authorization_manage_test.go','retail/backend/migrations/0024_authorization_management.sql']
         files += ['retail/backend/internal/catalog/store_regions.go','retail/backend/internal/catalog/http.go','retail/backend/internal/identity/store_regions_test.go']
         files += ['retail/backend/internal/catalog/store_taxonomy.go','retail/backend/internal/catalog/store_taxonomy_test.go','retail/backend/internal/identity/store_taxonomy_test.go']
+        files += ['retail/backend/internal/catalog/store_products.go','retail/backend/internal/catalog/store_products_test.go','retail/backend/internal/identity/store_products_test.go']
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
+                  'store_products': json.loads(product_markers[0]),
                   'store_taxonomy': json.loads(taxonomy_markers[0]),
                   'store_regions': json.loads(region_markers[0]),
                   'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,

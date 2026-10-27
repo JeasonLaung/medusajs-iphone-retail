@@ -21,6 +21,7 @@ func checkActualTaxonomy(t *testing.T, ctx context.Context, db *sql.DB, gdb *gor
 	}
 	// Binding comes from the verified fixture owner, not from request parameters.
 	h := cataloghttp.StoreHandler{DB: gdb, StoreID: storeID}
+	checkActualPublicProducts(t, ctx, db, router, h, channel, counts)
 	router.GET("/categories", h.Categories)
 	router.GET("/categories/:id", h.Category)
 	router.GET("/collections", h.Collections)

@@ -1,6 +1,21 @@
 {
   "format_version": 1,
   "scope": "New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance",
+  "store_products": {
+    "current_channel_only": true,
+    "published_live_only": true,
+    "strict_query": true,
+    "literal_search": true,
+    "exact_detail_id": true,
+    "configuration_membership": true,
+    "foreign_options_and_images_hidden": true,
+    "stable_pagination": true,
+    "empty_arrays": true,
+    "relation_overflow_503": true,
+    "no_legacy_payload_or_prices": true,
+    "unimplemented_capabilities_explicit": true,
+    "read_fingerprint_unchanged": true
+  },
   "store_taxonomy": {
     "explicit_store_binding": true,
     "unconfigured_store_503": true,
@@ -373,11 +388,11 @@
     "amount_dependency_failures_rejected": true
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "a0e7503b12f38f7f7394e8805573bdd6783ea7a8e8e0a41946062ea4405cf1d8",
+    "retail/scripts/test-admin-auth.py": "8fbd1ede988f7a18c355beb42fe63013f44200f9ae0d47e917efeb63d73a3f5e",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "d4d2eda37a6f7b4afbc0394eba330b0b11aba9a39d6f64ab62e1152a4f5ffd01",
-    "retail/backend/internal/server/router.go": "d65f663916cde4de94d8bcbc25605a5af53d10e406e4134735241e07ee751d14",
+    "retail/backend/internal/server/router.go": "c9a976bed8848f7cdf5bfab99ccd74e2f1a0a7930d2239b7a8715ba7c235feb7",
     "retail/backend/internal/platform/http.go": "2d0725f3fa8d60f060b14de792f8d4f1aa8dda38ff8c26b4d8c2af7c137e642a",
     "retail/backend/internal/platform/request.go": "b8abeda445a6ae84c451a6ba9678308973feb5c0627fdc73dccf5de68aec648e",
     "retail/backend/cmd/api/main.go": "94bfed027ab96be185cecbad20b34bff72a86373f62bca195d186d89bd34be6f",
@@ -481,11 +496,14 @@
     "retail/backend/internal/identity/authorization_manage_test.go": "6b3b24c023b667405e672560ab9c423051a756babdcfd6bd80608f72e706be8a",
     "retail/backend/migrations/0024_authorization_management.sql": "48aecb0577eb3274ac4c99af1916e8ea01e777c466a8783ecaec3d697658a9cb",
     "retail/backend/internal/catalog/store_regions.go": "6c93beeaf807d3b40330649e6d7ad4202714fd82dd945bf53d65d3fbcb0d36aa",
-    "retail/backend/internal/catalog/http.go": "5e85d2f8df3ab35db0c18fb7872a055d9e3ec0c5b286336ced02c0e91b03f2a6",
+    "retail/backend/internal/catalog/http.go": "3ae7817a6f1434d9e5aa0d63198f71c2ef3ed7bb67277b0a35262465ce679696",
     "retail/backend/internal/identity/store_regions_test.go": "6ff606929b1ad4752e3160a2639dc26f6638ccedbddaab705046e605012bb9c4",
     "retail/backend/internal/catalog/store_taxonomy.go": "90ea7c6edb6261b9bf182ecb779fd4fe6863d91e466f46b0a8fee8769dcb6e2e",
     "retail/backend/internal/catalog/store_taxonomy_test.go": "accebd5a69ebd60034fd49a65a725bd9c5ce379741ad01608e3bc4864602740b",
-    "retail/backend/internal/identity/store_taxonomy_test.go": "ff8c11d99c245699573f6859ff0409d4dbb16ab6d418eb2a297b7de509908e68"
+    "retail/backend/internal/identity/store_taxonomy_test.go": "bc266a98e0c639139982277037531f489d70f019218a846c03a3cca77dc86561",
+    "retail/backend/internal/catalog/store_products.go": "537eddc708ef0cc60ff2c3e5109e58204fdc94f849c413d45c8006c1be9958c1",
+    "retail/backend/internal/catalog/store_products_test.go": "601f7afb1bc2237ccf6579e16c720f2755e44c8374c8483245ff6706f4337168",
+    "retail/backend/internal/identity/store_products_test.go": "96f0e2de54237dfbbfc79b927f2a1a548ff73d23655877effa2a84f2f70aa7e3"
   },
   "cleanup": "both owned containers and temporary runner removed"
 }

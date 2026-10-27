@@ -99,3 +99,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-28 公共区域及 Astro 补充：[Gin 公共区域](../docs/migration/store-regions.md)以明确关系 DTO 承接区域详情、国家归属、币种和税设置；独占 SQL 边界及固定来源 1 区域/7 已分配国家核对通过。[独立 Astro SSR](../docs/migration/astro-runtime.md)新增生产 Node adapter、React integration、原国家/语言工具和仅连接 Gin 的有界区域读取，类型/build、单元及生产进程串联验证见报告。无旧账号恢复，原前台未改；公开商品/价格/搜索、实际页面/CSS/字体与交互尚缺，T020/T021/T025/T026 未整体验收。
 
 2026-10-28 公共分类与集合补充：[服务端店铺及渠道绑定](../docs/migration/store-taxonomy.md)替换旧 payload 分类/集合，增加原 ID 详情、公开祖先与直接子级、斜杠 handle 和稳定分页；商品计数仅本店渠道已发布有效商品，集合无可见商品时不公开。独占 SQL/固定来源及真实进程报告跟踪配置缺失、隐藏父级、循环/深度/尺寸、查询拒绝和指纹不变。公共商品/价格/搜索及 Astro 实际页面仍缺，T020/T025/T026 未整体验收。
+
+2026-10-28 公开商品关系补充：[Gin 正式商品/变体/选项/图片读取](../docs/migration/store-products.md)替换旧 payload 与旧选价草稿，沿用服务端店铺渠道，严格处理成员归属、文字搜索、原 ID 详情、分页及有界完整关系。人工 SQL、固定来源和真实进程回归跟踪，区域选价/可售/checkout 明确尚不可用；逐键 metadata、交易与 Astro 实际页面仍缺，T020/T025/T026 未整体验收。后台继续优先 Ant Design，后续图表统一 ECharts。

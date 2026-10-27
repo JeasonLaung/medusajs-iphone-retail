@@ -63,6 +63,7 @@ func checkStoreTaxonomy(t *testing.T, db *gorm.DB, router http.Handler) {
 		b, _ := json.Marshal(out)
 		return b
 	}
+	checkStoreProducts(t, db, router)
 	before := fingerprint()
 	for _, binding := range []string{"", "missing-shop"} {
 		isolated := gin.New()
