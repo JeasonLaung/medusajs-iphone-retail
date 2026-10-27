@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Astro Node SSR regions foundation and source-level product/price adapter to owned Gin; no business page acceptance",
   "node_version": "v22.23.4",
-  "unit_tests_passed": 11,
+  "unit_tests_passed": 16,
   "type_check_passed": true,
   "production_build_passed": true,
   "runtime": {
@@ -10,6 +10,7 @@
     "real_gin_regions": true,
     "source_adapter_real_gin_products": true,
     "source_adapter_region_quantity": true,
+    "source_product_page_country_handle_composition": true,
     "incomplete_variant_no_quote": true,
     "detail_404_and_dependency_error_distinct": true,
     "missing_configuration_503": true,
@@ -29,7 +30,7 @@
   "real_application_resources_used": false,
   "full_storefront_accepted": false,
   "implementation_sha256": {
-    "retail/scripts/test-storefront-runtime.py": "024d80d837e377bdbe496b3a139045068113c224fb716a9171731b5ba156c683",
+    "retail/scripts/test-storefront-runtime.py": "22c78beeab4959fa3c5fed2e358e98819d169277f88d7fccc5bd0521eb7b0d04",
     "retail/storefront/.env.example": "c5bef9c3433f84759258fb6b6fca003dedef905aee7d8522d389d49b035cc610",
     "retail/storefront/.gitignore": "853e19fb559c1d9d8df469c8dce09df4c37d495c02dc09fef40de174572a36e9",
     "retail/storefront/astro.config.mjs": "85710c96a776e6a32ca01860ff3d7c511efb736f9d685cf6ef6479b3ac03d2d5",
@@ -38,13 +39,20 @@
     "retail/storefront/tsconfig.json": "0be126fdf4f61a27969212c2d65e8fc0147da2b5b7bf9bd552866224e8951da3",
     "retail/storefront/tests/products.test.ts": "865988bfcdf718406602c4a59b3efee3ec16fb07e798e9ec35cbe9bcea1eb0c8",
     "retail/storefront/tests/regions.test.ts": "9a6ca2429c525d7c735f7d487aea36dccd1770452c06835f27eb700aa4881df5",
-    "retail/storefront/tests/runtime.integration.mjs": "38324457d458017ee6a8061c4a6365471f383963016d62274e74380a27b0a9f0",
+    "retail/storefront/tests/runtime.integration.mjs": "1a72a7d5c982ab8088a931a092d5c9a172744ade7c5520d7487cefe2a6a5965e",
+    "retail/storefront/tests/variants.test.ts": "79115a60001c7ff17e4fd15ca6b1250d1ee065dc7de8fece184ff099eae96045",
     "retail/storefront/src/lib/gin-public.ts": "69f332d8182769ee08d1cebfe569eaa4a41d40a1a2b5000157dae0c3511ab46f",
     "retail/storefront/src/lib/money.ts": "2758fa6be7cec7805cea2be39252dee795fa6259a095877a5bd385b6a9939e30",
     "retail/storefront/src/lib/product-display.ts": "7b90ed2cc7f5ac93c60bd0b6c6ff7169ed808abcf4bfccb84e2721b9ffe50836",
+    "retail/storefront/src/lib/product-page.ts": "7ad812e057a41ddc7330e95b9e888549f542d836df29a9b6782b2b24a52f6abd",
+    "retail/storefront/src/lib/product-variants.ts": "3cb25bc14d3e5387a7e47946cd17587e6fd5b57af6eff185b9f0a33baca72e91",
     "retail/storefront/src/lib/products.ts": "1670a865e16cbe730faf4eb071b6ab43a7a41c7f1adc8ca339f780b9aeb50a2c",
     "retail/storefront/src/lib/regions.ts": "27a03eda2e61b9e9f4674349758876ef6a35efbf2f8e81485c6c9e9d31b8366c",
     "retail/storefront/src/lib/storefront-route.ts": "033734ef7b95d373c0925910c000cf55f0ea65857291e4b9c315e9947e6ba445",
-    "retail/storefront/src/pages/health.ts": "d89ee8bbf213f0cd5d3ed0ba08e16fe46bd17ffa42e84caf0e4718c8bc7b96a8"
+    "retail/storefront/src/pages/health.ts": "d89ee8bbf213f0cd5d3ed0ba08e16fe46bd17ffa42e84caf0e4718c8bc7b96a8",
+    "medusa-store/apps/storefront/src/lib/util/product-variants.ts": "72aeb47d55ecd141d672e21c8a8f89a036bf97cff1c428b370ae4ef4edc38c73",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/products/[handle]/page.tsx": "e98a74de6834febcf3c148ec2fe9e8480f7a6f10edfbaaf2f685c1875104cd8b",
+    "medusa-store/apps/storefront/src/modules/products/components/product-actions/index.tsx": "c1b6242e3fa4d04774ab63ebf0118508d29ca1e2e52c28bd22e58a5d2c86c0bf",
+    "medusa-store/apps/storefront/src/modules/products/components/image-gallery/index.tsx": "85d5841926604fa8c86c598b1bd642fe4728f456b1bda97ddfcfacfe5cd1f61f"
   }
 }

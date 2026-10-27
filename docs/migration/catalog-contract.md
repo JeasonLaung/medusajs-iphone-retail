@@ -94,3 +94,5 @@ C01 商品发布但渠道不匹配不返回；C02 软删 product/variant/option/
 2026-10-28 公共选价补充：[Gin 精确区域/数量选价](store-pricing.md)增加显式地区、店铺币种、数量阶梯、规则具体度、sale/override 原价、含税偏好及有界集合读取；未知条件/不完整变体不报价。固定来源两个上下文与旧服务核对，人工 SQL 覆盖价目表及失败边界。availability/checkout 仍关闭；客户身份、完整税/优惠/配送交易、可售、metadata 和 Astro 页面继续推进，T020/T025/T026 未整体验收。
 
 2026-10-28 商品展示补充：[Gin/Astro 明确展示扩展](store-display.md)承接当前实际颜色、消费规格、来源提示、上市价与变体 slug/示例提示；私有 metadata 不透传，同一只读快照按可见 ID 先检查 64 KiB 单条/4 MiB 合并预算。人工 SQL、独立固定来源和 Astro 11 项用例跟踪；完整编辑、深链/React 选择、实际页面和交易仍待完成，相关任务未整体验收。
+
+2026-10-28 Astro 选择与深链补充：[原配置联动及页面数据组合](astro-product-selection.md)保留选项顺序/前置约束/稳定评分、slug/v_id 优先级、图库回退及 query/hash；可售按 Gin 冻结/单仓观察处理。请求内国家归属、精确模型 handle 和组合匹配，未知组合不默认、依赖失败不伪装 404。320 组旧纯函数比较及 16 项 Astro 单元、真实源模块集成报告跟踪；实际 DOM/CSS/React 岛/History/加购仍待完成，相关任务未整体验收。

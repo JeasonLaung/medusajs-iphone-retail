@@ -3,6 +3,7 @@ import {spawn} from 'node:child_process'
 import {once} from 'node:events'
 import {createServer} from 'node:net'
 import {loadProduct,loadProducts,productPrice} from '../src/lib/products.ts'
+import {loadProductPage} from '../src/lib/product-page.ts'
 
 // The Python owner supplies its disposable Gin listener, never an application
 // backend, Medusa address or deployment server.
@@ -30,6 +31,11 @@ assert.equal(await loadProduct(target.origin,'missing'),null)
 assert.deepEqual((await loadProducts(target.origin,{q:'does-not-exist'})).products,[])
 await assert.rejects(loadProducts(target.origin,{region_id:'missing'}),/Store products unavailable/)
 await assert.rejects(loadProducts(undefined),/Store products unavailable/)
+const pageData=await loadProductPage(target.origin,'dk-zh','fixture-b')
+assert.ok(pageData);assert.equal(pageData.region.id,'fixture-region');assert.equal(pageData.product.id,'fixture-b')
+assert.equal(pageData.initialVariant,undefined);assert.equal(pageData.metadata.canonicalPath,'/dk-zh/products/fixture-b')
+assert.equal(await loadProductPage(target.origin,'dk-en','missing'),null)
+assert.equal(await loadProductPage(target.origin,'zz-en','fixture-b'),null)
 async function check(origin,expected){
  const probe=createServer();probe.listen(0,'127.0.0.1');await once(probe,'listening')
  const port=probe.address().port;await new Promise((resolve,reject)=>probe.close(error=>error?reject(error):resolve()))
@@ -57,4 +63,4 @@ async function check(origin,expected){
 }
 await check(target.origin,200)
 await check(undefined,503)
-console.log('ASTRO_RUNTIME_REHEARSAL '+JSON.stringify({production_node_adapter:true,real_gin_regions:true,source_adapter_real_gin_products:true,source_adapter_region_quantity:true,incomplete_variant_no_quote:true,detail_404_and_dependency_error_distinct:true,missing_configuration_503:true,response_no_store:true,no_session_cookie:true,unported_business_page_404:true,owned_processes_stopped:true}))
+console.log('ASTRO_RUNTIME_REHEARSAL '+JSON.stringify({production_node_adapter:true,real_gin_regions:true,source_adapter_real_gin_products:true,source_adapter_region_quantity:true,source_product_page_country_handle_composition:true,incomplete_variant_no_quote:true,detail_404_and_dependency_error_distinct:true,missing_configuration_503:true,response_no_store:true,no_session_cookie:true,unported_business_page_404:true,owned_processes_stopped:true}))
