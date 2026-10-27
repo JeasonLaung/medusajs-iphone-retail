@@ -331,6 +331,10 @@
     {
       "name": "device_assignments-completed-or-returned-releases-active-key",
       "passed": true
+    },
+    {
+      "name": "go-full-value-registry-collision-lifecycle-rollback-eight-way-concurrency",
+      "passed": true
     }
   ],
   "relational_review_ddl_sha256": "e5cad256d0c8976ad9eb410cfe978385041d2ac5f4e594975e99158ee4b3aa9e",

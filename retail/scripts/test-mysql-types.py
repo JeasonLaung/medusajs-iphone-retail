@@ -1,4 +1,5 @@
 """Artificial-only MySQL 8.4 dialect checks in a bounded disposable container."""
+import argparse
 import json
 import hashlib
 from pathlib import Path
@@ -21,6 +22,9 @@ def literal(value):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--registry-test-binary', type=Path)
+    args = parser.parse_args()
     image = docker('image', 'inspect', 'mysql:8.4', '--format', '{{.Id}}')
     if image.returncode:
         raise RuntimeError('Existing local mysql:8.4 image required; no pull performed')
@@ -232,6 +236,17 @@ INDEX prefix_access(value_text(128))) ENGINE=InnoDB;''')
             denied(table + '-restore-active-conflict-denied', 'UPDATE relational_fixture.`' + table + "` SET deleted_at=NULL WHERE id='deleted';", 1062)
             sql('UPDATE relational_fixture.`' + table + "` SET status=" + literal(inactive_state) + " WHERE id='first';" + insert('replacement', active_states[-1]))
             expect(table + '-completed-or-returned-releases-active-key', 'SELECT COUNT(*) FROM relational_fixture.`' + table + '`;', 5)
+        if args.registry_test_binary:
+            if not args.registry_test_binary.is_file():
+                raise RuntimeError('Compiled Linux registry test binary required')
+            copied = docker('cp', str(args.registry_test_binary.resolve()), container + ':/tmp/registry.test')
+            if copied.returncode:
+                raise RuntimeError('Could not copy isolated registry tests')
+            tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'UNIQUEKEY_TEST=1', container,
+                            '/tmp/registry.test', '-test.v', '-test.timeout=60s', timeout=75)
+            if tested.returncode:
+                raise AssertionError('Artificial Go registry tests failed: ' + tested.stdout + tested.stderr)
+            cases.append({'name': 'go-full-value-registry-collision-lifecycle-rollback-eight-way-concurrency', 'passed': True})
         report = {'format_version': 1, 'scope': 'Actual MySQL dialect on artificial minimal DDL/data only; not full domain migrations, source import, allocator concurrency or application validation acceptance.',
                   'image': 'mysql:8.4', 'local_image_id': image.stdout.strip(), 'server_version': version,
                   'isolation': {'network': 'none', 'published_ports': 0, 'cpus': 1, 'memory_mib': 768, 'data_tmpfs_mib': 512, 'source_business_connection': False},
