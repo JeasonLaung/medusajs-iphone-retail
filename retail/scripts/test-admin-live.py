@@ -139,6 +139,7 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/admin').rglob('*')
                   if p.is_file() and not any(part in ('node_modules', 'dist') for part in p.relative_to(ROOT / 'retail/admin').parts)]
         files += ['retail/backend/internal/orders/schema.go','retail/backend/internal/orders/schema_plan.json','retail/scripts/generate-order-schema.py']
+        files += ['retail/backend/internal/orders/admin.go','retail/backend/internal/identity/order_read_test.go']
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
                   'browser_tests_passed': 1, 'migrations_applied': 18, 'mocked_api_responses': False,
                   'reviewed_relational_schema_used': True, 'empty_draft_tables_retained_by_migration': 7,
@@ -160,7 +161,8 @@ def main():
                               'Chinese and English inventory drawer at three viewport widths',
                               'Ant stock edit persists exact incoming quantity through Gin and MySQL',
                               'stock version conflict and live reservation mismatch reject consumption',
-                              'Chinese and English stock edit drawers at three viewport widths'],
+                              'Chinese and English stock edit drawers at three viewport widths',
+                              'Order list filters, current-version snapshot details and exact decimals in Chinese and English at three widths'],
                   'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                              'network': 'owned bridge network; egress not restricted', 'published_ports': 'one random API port bound to 127.0.0.1 only'},
                   'real_accounts_used': False, 'application_resources_used': False, 'tls_secure_cookie_verified': False,

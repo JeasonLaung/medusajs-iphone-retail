@@ -24,6 +24,7 @@ import (
 	"github.com/eurorefurb/retail/internal/inventory"
 	"github.com/eurorefurb/retail/internal/inventoryimport"
 	"github.com/eurorefurb/retail/internal/orderimport"
+	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/rowimport"
 	"github.com/eurorefurb/retail/internal/schema"
@@ -598,6 +599,69 @@ func TestActualCatalogMySQL(t *testing.T) {
 	}
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
+	router.GET("/orders", (orders.Handler{DB: gdb}).List)
+	router.GET("/orders/:id", (orders.Handler{DB: gdb}).Detail)
+	var expectedOrders int64
+	if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM orders WHERE deleted_at IS NULL").Scan(&expectedOrders) != nil {
+		t.Fatal("actual order count unavailable")
+	}
+	seenOrders := map[string]bool{}
+	for offset := 0; int64(offset) < expectedOrders; offset += 5 {
+		reply := httptest.NewRecorder()
+		router.ServeHTTP(reply, httptest.NewRequest("GET", "/orders?limit=5&offset="+strconv.Itoa(offset), nil))
+		var response struct {
+			Orders []orders.Summary
+			Count  int64
+		}
+		if reply.Code != 200 || json.Unmarshal(reply.Body.Bytes(), &response) != nil || response.Count != expectedOrders {
+			t.Fatal("actual order list projection differs")
+		}
+		for _, summary := range response.Orders {
+			if seenOrders[summary.ID] {
+				t.Fatal("actual order pagination duplicate")
+			}
+			seenOrders[summary.ID] = true
+			var expectedLines, availableLines int64
+			if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM order_items WHERE order_id=? AND version=? AND deleted_at IS NULL", summary.ID, summary.Version).Scan(&expectedLines) != nil || expectedLines != summary.LineCount {
+				t.Fatal("actual current order line count differs")
+			}
+			if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM order_items i JOIN order_line_items l ON l.id=i.item_id AND l.deleted_at IS NULL WHERE i.order_id=? AND i.version=? AND i.deleted_at IS NULL", summary.ID, summary.Version).Scan(&availableLines) != nil {
+				t.Fatal("actual order snapshot count unavailable")
+			}
+			detailReply := httptest.NewRecorder()
+			router.ServeHTTP(detailReply, httptest.NewRequest("GET", "/orders/"+url.PathEscape(summary.ID), nil))
+			if availableLines != expectedLines || expectedLines > 1000 {
+				if detailReply.Code != 503 {
+					t.Fatal("actual incomplete order snapshot not rejected")
+				}
+				counts["http_incomplete_actual_orders"]++
+				continue
+			}
+			var detail struct {
+				Order orders.Summary
+				Lines []orders.Line
+			}
+			if detailReply.Code != 200 || json.Unmarshal(detailReply.Body.Bytes(), &detail) != nil || int64(len(detail.Lines)) != expectedLines {
+				t.Fatal("actual order snapshot detail differs")
+			}
+			for _, line := range detail.Lines {
+				var itemID, title, quantity, price, fulfilled, shipped, requested, received, dismissed string
+				var sku sql.NullString
+				if db.QueryRowContext(ctx, `SELECT i.item_id,l.title,l.variant_sku,CAST(i.quantity AS CHAR),CAST(COALESCE(i.unit_price,l.unit_price) AS CHAR),CAST(i.fulfilled_quantity AS CHAR),CAST(i.shipped_quantity AS CHAR),CAST(i.return_requested_quantity AS CHAR),CAST(i.return_received_quantity AS CHAR),CAST(i.return_dismissed_quantity AS CHAR) FROM order_items i JOIN order_line_items l ON l.id=i.item_id WHERE i.id=? AND i.order_id=? AND i.version=?`, line.ID, summary.ID, summary.Version).Scan(&itemID, &title, &sku, &quantity, &price, &fulfilled, &shipped, &requested, &received, &dismissed) != nil {
+					t.Fatal("actual order line expectation unavailable")
+				}
+				if line.ItemID != itemID || line.Title != title || line.Quantity != quantity || line.UnitPrice != price || line.FulfilledQuantity != fulfilled || line.ShippedQuantity != shipped || line.ReturnRequested != requested || line.ReturnReceived != received || line.ReturnDismissed != dismissed || (line.VariantSKU == nil) != (!sku.Valid) || sku.Valid && *line.VariantSKU != sku.String {
+					t.Fatal("actual order line exact projection differs")
+				}
+				counts["http_projected_actual_order_lines"]++
+			}
+			counts["http_detailed_actual_orders"]++
+		}
+	}
+	if int64(len(seenOrders)) != expectedOrders {
+		t.Fatal("actual order pagination incomplete")
+	}
+	counts["http_projected_actual_orders"] = expectedOrders
 	router.GET("/products", (cataloghttp.Handler{DB: gdb}).AdminProducts)
 	router.GET("/products/:id", (cataloghttp.Handler{DB: gdb}).AdminProduct)
 	router.GET("/products/:id/variants", (cataloghttp.Handler{DB: gdb}).AdminVariants)

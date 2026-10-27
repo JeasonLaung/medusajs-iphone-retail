@@ -8,6 +8,8 @@ import { APIError, auth } from './api'
 import type { User } from './api'
 import { copies } from './i18n'
 import type { Copy, Language } from './i18n'
+const Orders = lazy(() => import('./Orders'))
+const OrderDetail = lazy(() => import('./OrderDetail'))
 const Products = lazy(() => import('./Products'))
 const ProductDetail = lazy(() => import('./ProductDetail'))
 
@@ -57,6 +59,7 @@ function Workspace({ copy, session, onSession }: { copy: Copy; session: Extract<
   const navigate = useNavigate()
   const location = useLocation()
   const onExpired = useCallback(() => onSession({ status:'anonymous',expired:true }),[onSession])
+  const orderPage = location.pathname === '/orders' || location.pathname.startsWith('/orders/')
   const productPage = location.pathname === '/products' || location.pathname.startsWith('/products/')
   const [drawer, setDrawer] = useState(false)
   const [pending, setPending] = useState(false)
@@ -85,14 +88,16 @@ function Workspace({ copy, session, onSession }: { copy: Copy; session: Extract<
       else setError(error)
     } finally { busy.current = false; setPending(false) }
   }
-  const menu = <Menu selectedKeys={[productPage?'products':'account']} items={[{ key:'products',label:copy.products },{ key: 'account', icon: <UserOutlined />, label: copy.account }]} onClick={({key}) => { navigate(`/${key}`); setDrawer(false) }} />
+  const menu = <Menu selectedKeys={[orderPage?'orders':productPage?'products':'account']} items={[{key:'orders',label:copy.orders},{ key:'products',label:copy.products },{ key: 'account', icon: <UserOutlined />, label: copy.account }]} onClick={({key}) => { navigate(`/${key}`); setDrawer(false) }} />
   return <Layout className="workspace">
     <Layout.Sider className="desktop-nav" width={208} theme="light"><nav aria-label={copy.admin}>{menu}</nav></Layout.Sider>
     <Drawer open={drawer} onClose={() => setDrawer(false)} title={copy.admin} placement="left" width={256}>{menu}</Drawer>
     <Layout.Content className="workspace-content">
-      <div className="page-toolbar"><Button className="mobile-nav" icon={<MenuOutlined />} aria-label={copy.navigation} onClick={() => setDrawer(true)} /><Typography.Title level={2}>{productPage?copy.products:copy.account}</Typography.Title><Button aria-label={copy.logout} disabled={pending} loading={pending} onClick={logout}>{copy.logout}</Button></div>
+      <div className="page-toolbar"><Button className="mobile-nav" icon={<MenuOutlined />} aria-label={copy.navigation} onClick={() => setDrawer(true)} /><Typography.Title level={2}>{orderPage?copy.orders:productPage?copy.products:copy.account}</Typography.Title><Button aria-label={copy.logout} disabled={pending} loading={pending} onClick={logout}>{copy.logout}</Button></div>
       {error !== undefined && <div className="request-error"><ErrorNotice error={error} copy={copy} /></div>}
       <Routes>
+        <Route path="/orders" element={<Suspense fallback={<Spin />}><Orders copy={copy} onExpired={onExpired} /></Suspense>} />
+        <Route path="/orders/:id" element={<Suspense fallback={<Spin />}><OrderDetail copy={copy} onExpired={onExpired} /></Suspense>} />
         <Route path="/products" element={<Suspense fallback={<Spin />}><Products copy={copy} onExpired={onExpired} /></Suspense>} />
         <Route path="/products/:id" element={<Suspense fallback={<Spin />}><ProductDetail copy={copy} onExpired={onExpired} /></Suspense>} />
         <Route path="/account" element={<section className="account-panel"><Space direction="vertical" size={24} className="full-width">

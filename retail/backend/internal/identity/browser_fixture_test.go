@@ -85,6 +85,7 @@ func TestPrepareReviewedCatalogFixture(t *testing.T) {
 	}
 	defer pool.Close()
 	seedReviewedCatalogFixture(t, db)
+	seedOrderReadFixture(t, db)
 }
 
 func seedReviewedCatalogFixture(t *testing.T, db *gorm.DB) {

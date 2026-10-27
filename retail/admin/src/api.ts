@@ -160,3 +160,10 @@ export async function editStock(levelID:string,body:StockEdit):Promise<{revision
   if(!result||typeof result.revision!=='string'||!/^[a-f0-9]{64}$/.test(result.revision)||typeof result.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
   return {revision:result.revision,replayed:result.replayed}
 }
+
+export type OrderSummary = {id:string;display_id:string|null;custom_display_id:string|null;version:number;status:string;is_draft_order:boolean;email:string|null;currency_code:string;created_at:string;updated_at:string;line_count:number}
+export type OrderList = {orders:OrderSummary[];count:number;limit:number;offset:number}
+export type OrderLine = {id:string;item_id:string;title:string;variant_sku:string|null;quantity:string;unit_price:string;is_tax_inclusive:boolean;fulfilled_quantity:string;shipped_quantity:string;return_requested_quantity:string;return_received_quantity:string;return_dismissed_quantity:string}
+export type OrderDetail = {order:OrderSummary;lines:OrderLine[]}
+export function listOrders(params:URLSearchParams,signal?:AbortSignal):Promise<OrderList> {return request(`orders?${params}`,{signal},'/api/admin/')}
+export function getOrder(id:string,signal?:AbortSignal):Promise<OrderDetail> {return request(`orders/${encodeURIComponent(id)}`,{signal},'/api/admin/')}

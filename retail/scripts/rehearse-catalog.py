@@ -129,6 +129,7 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/orderimport').glob('*') if p.is_file()]
         files += ['retail/scripts/generate-order-import-plan.py']
         files += ['retail/backend/internal/customerimport/import.go','retail/backend/internal/rowimport/history_customer.go']
+        files += ['retail/backend/internal/orders/admin.go']
         report = {'format_version': 1, 'scope': '36 catalog tables, nine parent dependencies, two inventory tables and 28 ordinary order tables in disposable tmpfs MySQL; five historical customer subjects without account bindings and catalog parent rows have no ledger; no full import/runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
                   'embedded_migration_plan_used': True, 'review_ddl_injected': False,
