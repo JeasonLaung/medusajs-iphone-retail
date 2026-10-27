@@ -1,0 +1,151 @@
+{
+  "format_version": 1,
+  "installed_framework_version": "2.21.2",
+  "scope": "Actual installed hasPermission/resolvePermissions and policy handler wrapper with artificial feature/query/cache ports; no live database, token validation, real cache invalidation, route policy mount or Gin acceptance.",
+  "source_sha256": {
+    "medusa-store/apps/backend/node_modules/@medusajs/framework/dist/policies/has-permission.js": "02c7828709e5d31ed459171b5eedcdd2a1d41f7643ece37d43f50688c877a9a1",
+    "medusa-store/apps/backend/node_modules/@medusajs/framework/dist/http/middlewares/check-permissions.js": "be2af0aeb00643329dc365762d15e9f5d6057af48d400a2aee658c5f3e922745",
+    "medusa-store/apps/backend/node_modules/@medusajs/framework/package.json": "ba61422d76f6ae88107e8e3b0a7532a0ddd2e0bbd1d25f5d34e7930c906e323e"
+  },
+  "cases": [
+    {
+      "name": "no-policy-denied",
+      "passed": true
+    },
+    {
+      "name": "exact-resource-operation-allowed",
+      "passed": true
+    },
+    {
+      "name": "wrong-operation-denied",
+      "passed": true
+    },
+    {
+      "name": "wrong-resource-denied",
+      "passed": true
+    },
+    {
+      "name": "resource-wildcard-allowed",
+      "passed": true
+    },
+    {
+      "name": "operation-wildcard-allowed",
+      "passed": true
+    },
+    {
+      "name": "double-wildcard-allowed",
+      "passed": true
+    },
+    {
+      "name": "partial-wildcard-not-pattern-matching",
+      "passed": true
+    },
+    {
+      "name": "resource-case-sensitive",
+      "passed": true
+    },
+    {
+      "name": "operation-case-sensitive",
+      "passed": true
+    },
+    {
+      "name": "roles-union-grants",
+      "passed": true
+    },
+    {
+      "name": "all-operations-must-be-granted-across-roles",
+      "passed": true
+    },
+    {
+      "name": "missing-one-operation-denies-whole-command",
+      "passed": true
+    },
+    {
+      "name": "all-actions-required-not-any",
+      "passed": true
+    },
+    {
+      "name": "role-single-string-supported",
+      "passed": true
+    },
+    {
+      "name": "legacy-empty-roles-hasPermission-returns-true",
+      "passed": true
+    },
+    {
+      "name": "legacy-empty-actions-returns-true",
+      "passed": true
+    },
+    {
+      "name": "legacy-feature-disabled-allows",
+      "passed": true
+    },
+    {
+      "name": "resolve-expands-wildcards-only-within-universe",
+      "passed": true
+    },
+    {
+      "name": "resolve-empty-roles-returns-empty-unlike-hasPermission",
+      "passed": true
+    },
+    {
+      "name": "resolve-disabled-returns-universe",
+      "passed": true
+    },
+    {
+      "name": "cache-options-seven-days-memory-not-revocation-proof",
+      "passed": true
+    },
+    {
+      "name": "failQuery-propagates-not-allow",
+      "passed": true
+    },
+    {
+      "name": "failCache-propagates-not-allow",
+      "passed": true
+    },
+    {
+      "name": "wrapper-no-auth-denied",
+      "passed": true
+    },
+    {
+      "name": "wrapper-no-roles-denied-even-engine-empty-roles-allows",
+      "passed": true
+    },
+    {
+      "name": "wrapper-no-grant-denied",
+      "passed": true
+    },
+    {
+      "name": "wrapper-grant-invokes-handler",
+      "passed": true
+    },
+    {
+      "name": "wrapper-empty-policy-list-needs-other-auth",
+      "passed": true
+    },
+    {
+      "name": "wrapper-feature-disabled-with-roles-allowed",
+      "passed": true
+    },
+    {
+      "name": "wrapper-feature-disabled-without-roles-still-denied",
+      "passed": true
+    },
+    {
+      "name": "wrapper-query-failure-forwarded-handler-not-called",
+      "passed": true
+    }
+  ],
+  "target_requirements": [
+    "Missing identity/roles and empty or unknown action declarations fail closed in Gin",
+    "Explicit resource/operation matching; grants compose across roles but every requested action is required",
+    "Scope, fields and business state are additional checks; a role grant alone is insufficient",
+    "Immediate disable/revocation and policy version checks cannot rely on long lived process caches or JWT roles alone"
+  ],
+  "remaining": [
+    "Native/custom/plugin route policy inventory",
+    "Real cache invalidation and session/current-role behavior",
+    "Gin persistent grants, scoped DTOs and concurrency integration"
+  ]
+}

@@ -1,0 +1,354 @@
+{
+  "format_version": 1,
+  "scope": "Actual legacy deviceAccess, authorizeDeviceCommand and guardSupplierAdmin with artificial objects/ports; not authentication, native RBAC, SQL, device workflows or Gin acceptance.",
+  "source_sha256": {
+    "medusa-store/apps/backend/src/api/device-access.ts": "6b9cd618f407820590749c482659d6967bd2b88ccb2a22deca5e65297ceb5dd7"
+  },
+  "cases": [
+    {
+      "name": "supplier-identity-requires-typed-source-and-explicit-orders",
+      "passed": true
+    },
+    {
+      "name": "identity-missing-source-denied",
+      "passed": true
+    },
+    {
+      "name": "identity-empty-source-denied",
+      "passed": true
+    },
+    {
+      "name": "identity-numeric-source-denied",
+      "passed": true
+    },
+    {
+      "name": "identity-source-no-longer-valid-denied",
+      "passed": true
+    },
+    {
+      "name": "identity-no-account-or-secret-key-denied",
+      "passed": true
+    },
+    {
+      "name": "identity-old-secret-key-is-admin-observation",
+      "passed": true
+    },
+    {
+      "name": "identity-ordinary-staff-is-admin-scope-not-rbac-proof",
+      "passed": true
+    },
+    {
+      "name": "identity-legacy-order-filter-retains-duplicates-empty-strings",
+      "passed": true
+    },
+    {
+      "name": "identity-user-port-failure-not-swallowed",
+      "passed": true
+    },
+    {
+      "name": "supply-own-source-allowed",
+      "passed": true
+    },
+    {
+      "name": "supply-other-source-denied",
+      "passed": true
+    },
+    {
+      "name": "supplier-assign-guard-allows-own-not-workflow-acceptance",
+      "passed": true
+    },
+    {
+      "name": "supplier-assign-other-order-denied",
+      "passed": true
+    },
+    {
+      "name": "supplier-assign-other-source-denied",
+      "passed": true
+    },
+    {
+      "name": "supplier-assign-replacement-denied",
+      "passed": true
+    },
+    {
+      "name": "assign-existing-own-source-location-order",
+      "passed": true
+    },
+    {
+      "name": "assign-device-other-source-denied",
+      "passed": true
+    },
+    {
+      "name": "assign-device-other-location-denied",
+      "passed": true
+    },
+    {
+      "name": "assign-order-not-granted-denied",
+      "passed": true
+    },
+    {
+      "name": "assign-replacement-denied",
+      "passed": true
+    },
+    {
+      "name": "assign-empty-grant-denied",
+      "passed": true
+    },
+    {
+      "name": "release-own-assignment-allowed",
+      "passed": true
+    },
+    {
+      "name": "release-other-source_id-denied",
+      "passed": true
+    },
+    {
+      "name": "release-other-order_id-denied",
+      "passed": true
+    },
+    {
+      "name": "fulfill-own-assignments-allowed",
+      "passed": true
+    },
+    {
+      "name": "fulfill-missing-assignment-denied",
+      "passed": true
+    },
+    {
+      "name": "fulfill-duplicate-request-ids-count-mismatch-denied",
+      "passed": true
+    },
+    {
+      "name": "fulfill-scope-relies-on-query-id-filter-not-identity-recheck",
+      "passed": true
+    },
+    {
+      "name": "fulfill-scope-allows-two-granted-orders-workflow-must-separate",
+      "passed": true
+    },
+    {
+      "name": "fulfill-second-cross-source_id-denied",
+      "passed": true
+    },
+    {
+      "name": "fulfill-second-cross-order_id-denied",
+      "passed": true
+    },
+    {
+      "name": "ship-own-assignments-allowed",
+      "passed": true
+    },
+    {
+      "name": "ship-empty-parcel-denied",
+      "passed": true
+    },
+    {
+      "name": "ship-mixed-source-parcel-denied",
+      "passed": true
+    },
+    {
+      "name": "cancel_fulfillment-own-assignments-allowed",
+      "passed": true
+    },
+    {
+      "name": "cancel_fulfillment-empty-parcel-denied",
+      "passed": true
+    },
+    {
+      "name": "cancel_fulfillment-mixed-source-parcel-denied",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-source",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-enroll",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-intake",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-update",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-activate",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-delete",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-retire",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-make_available",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-transfer_return",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-save_allocation",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-order_assign",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-receive",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-inspect",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-repair_ship",
+      "passed": true
+    },
+    {
+      "name": "supplier-default-deny-unknown",
+      "passed": true
+    },
+    {
+      "name": "non-supplier-command-bypasses-scope-not-action-auth",
+      "passed": true
+    },
+    {
+      "name": "allowlist-GET-/admin/devices",
+      "passed": true
+    },
+    {
+      "name": "allowlist-POST-/admin/devices",
+      "passed": true
+    },
+    {
+      "name": "allowlist-GET-/admin/devices/variants",
+      "passed": true
+    },
+    {
+      "name": "allowlist-GET-/admin/warehouse-access/me",
+      "passed": true
+    },
+    {
+      "name": "allowlist-GET-/admin/feature-flags",
+      "passed": true
+    },
+    {
+      "name": "allowlist-GET-/admin/plugins",
+      "passed": true
+    },
+    {
+      "name": "allowlist-GET-/admin/layouts/orders",
+      "passed": true
+    },
+    {
+      "name": "allowlist-GET-/admin/devices/?limit=20",
+      "passed": true
+    },
+    {
+      "name": "denylist-GET-/admin/orders",
+      "passed": true
+    },
+    {
+      "name": "denylist-GET-/admin/customers",
+      "passed": true
+    },
+    {
+      "name": "denylist-GET-/admin/products",
+      "passed": true
+    },
+    {
+      "name": "denylist-GET-/admin/devices/photos",
+      "passed": true
+    },
+    {
+      "name": "denylist-POST-/admin/devices/photos",
+      "passed": true
+    },
+    {
+      "name": "denylist-POST-/admin/devices/variants",
+      "passed": true
+    },
+    {
+      "name": "denylist-GET-/admin/devices/supplier-accounts",
+      "passed": true
+    },
+    {
+      "name": "denylist-GET-/admin/rbac/roles",
+      "passed": true
+    },
+    {
+      "name": "denylist-GET-/admin/mail",
+      "passed": true
+    },
+    {
+      "name": "denylist-POST-/admin/stores",
+      "passed": true
+    },
+    {
+      "name": "denylist-GET-/admin/devices-other",
+      "passed": true
+    },
+    {
+      "name": "own-name-only-update-allowed",
+      "passed": true
+    },
+    {
+      "name": "own-name-and-metadata-update-denied",
+      "passed": true
+    },
+    {
+      "name": "other-staff-name-update-denied",
+      "passed": true
+    },
+    {
+      "name": "bootstrap-me-no-password-projection",
+      "passed": true
+    },
+    {
+      "name": "bootstrap-permissions-empty",
+      "passed": true
+    },
+    {
+      "name": "bootstrap-notifications-empty",
+      "passed": true
+    },
+    {
+      "name": "bootstrap-store-only-id-name",
+      "passed": true
+    },
+    {
+      "name": "missing-actor-delegates-not-authenticated-proof",
+      "passed": true
+    },
+    {
+      "name": "api-key-delegates-not-new-admin-contract",
+      "passed": true
+    },
+    {
+      "name": "ordinary-staff-delegates-to-other-auth",
+      "passed": true
+    }
+  ],
+  "observations": [
+    "Old secret keys and ordinary staff get admin scope, which is not proof of action permissions",
+    "Missing actor/API-key middleware branches delegate and depend on later authentication",
+    "supplier_assign passes scope checks but its actual workflow still rejects DEVICE_INTAKE_REQUIRED",
+    "fulfill checks result count and every source/order, relying on service filter for exact assignment identity",
+    "Supplier metadata order list retains duplicate/empty strings; target binding rejects invalid identities",
+    "Own user bootstrap projects metadata; target requires a dedicated minimal DTO and explicit new bindings"
+  ],
+  "remaining": [
+    "Supplier query/field projections and workflow state/transaction validation",
+    "Gin permissions with no inherited old credentials/grants",
+    "Native RBAC and HTTP/SQL integration"
+  ]
+}

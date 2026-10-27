@@ -14,7 +14,9 @@
 | 能力/下载/邮件回调 | [11个入口与签名/状态规则](capability-entrypoints.md)、capability-entrypoint-contract.json、fixtures/legacy-capability-rules.json |
 | 自定义路由逐方法 | [67文件86方法及十项补充](custom-route-contract.md)、custom-route-contract.json |
 | 供应商账号与绑定 | [创建/编辑/范围及失败清理](supplier-account-contract.md)、fixtures/legacy-supplier-account-rules.json、schemas/supplier-accounts.schema.json、schemas/supplier-account-operations.json |
+| 供应商入口与对象范围 | [身份/middleware/命令83项执行](supplier-access-contract.md)、fixtures/legacy-supplier-access.json |
 | 原生入口项目保护 | [设备/数量库存/生产付款保护](native-guard-contract.md)、fixtures/legacy-native-guards.json |
+| 原生RBAC匹配 | [实际匹配/wrapper32项执行](native-permission-contract.md)、fixtures/legacy-native-permissions.json；真实路由及cache invalidation仍待验 |
 | 文件清单 | [公开图/私有照片/邮件附件基线](file-migration-baseline.md)、file-snapshot-report.json；明细仅在忽略目录 |
 | 密钥/商户秘密 | [四域加密与离线可读性](protected-config-baseline.md)、protected-config-report.json；无明文/密文/密钥指纹 |
 | 默认值转换 | [193表1,961列默认值去向](column-default-design.md)、source-column-defaults.json、column-default-design.json |

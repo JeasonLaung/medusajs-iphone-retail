@@ -10,6 +10,8 @@
 
 授权分四层：身份类型 → 资源动作 → 仓库/来源/对象归属 → 响应字段。菜单隐藏不代替任何服务端检查；详情、导出、附件和后台任务调用相同领域授权入口。
 
+[原生RBAC执行证据](native-permission-contract.md)含安装版匹配函数及policy wrapper的32项人工端口样例：多角色并集、全部动作必需、完整通配及大小写边界。底层hasPermission对空roles/actions返回true，但非空policy的wrapper先拒绝无角色，仓库helper也预查角色；不能断章认定无角色可访问后台。真实缓存失效与路由挂载仍待核对。
+
 ## 身份与范围
 
 | 身份 | 旧系统识别/数据范围 | 新系统承接 |
@@ -58,6 +60,8 @@
 ## 注册与文件凭证
 
 供应商账号的创建/编辑分支、[] 无订单授权、自绑定拒绝及失败清理证据见 [账号与绑定契约](supplier-account-contract.md)。作用域绑定不授予通用订单 API；旧登录身份和旧个人授权不导入，新系统显式重建。
+
+[供应商权限执行证据](supplier-access-contract.md)另含真实身份、middleware和命令guard的83项人工端口用例，验证混合来源/未授权订单及数组第二项拒绝、bootstrap投影和姓名修改。scope通过仍需完整状态工作流；API key/无actor的next分支不是鉴权成功，新Gin不能照搬为放行。
 
 - 客户验证邮件只能发往当前 emailpass 身份的邮箱；entity_type 必须 email；重复请求间隔至少 60 秒。客户资料创建前必须邮箱已验证且 body.email 相同。
 - 入库令牌使用 purpose、actor_id、source_id、category、expires_at、nonce；长度上限 2048，签名恒定时间比较，默认两小时；旧 nonce 并非一次性消费账本，不应误写成旧流程每链接只用一次。
