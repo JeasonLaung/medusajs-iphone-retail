@@ -122,6 +122,8 @@ def main():
                   'retail/backend/internal/catalog/schema_plan.json','retail/backend/internal/schema/ready.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
         files += ['retail/backend/internal/schema/run.go','retail/backend/internal/schema/plan.go']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/inventory').glob('*') if p.is_file()]
+        files += ['retail/scripts/generate-inventory-schema.py']
         report = {'format_version': 1, 'scope': '36 actual catalog tables and nine parent dependencies in disposable tmpfs MySQL only; parent rows have no formal migration ledger; no full import/runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
                   'embedded_migration_plan_used': True, 'review_ddl_injected': False,

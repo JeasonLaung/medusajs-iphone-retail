@@ -1,0 +1,19 @@
+{
+  "format_version": 1,
+  "schema_version": 1,
+  "model_sha256": "14ef63b2931c9fb1dfa69c930d052c0707273c52729a3ae69186406d63dbd493",
+  "migration": "0012_inventory_relational.sql",
+  "tables": [
+    "inventory_levels",
+    "inventory_reservations"
+  ],
+  "source_columns": 27,
+  "reads_enabled": true,
+  "writes_enabled": false,
+  "full_business_accepted": false,
+  "unresolved_semantic_dependencies": [
+    "reservation_item.line_item_id: historical soft-deleted orphan evidence and order domain resolution remain required",
+    "reservation_item.location_id: semantic location relation is checked by reads; reviewed physical DDL has no FK"
+  ],
+  "migration_sha256_lf": "8ec1442280eaf2b0b13fccaf2bccaf026ec7ff19837e5f1f33620820f03efd29"
+}

@@ -171,6 +171,33 @@ test('price drawer retries, preserves exact strings and distinguishes empty and 
   await expect(drawer.getByRole('cell',{name:'1',exact:true})).toHaveCount(0)
 })
 
+test('inventory drawer separates outage and empty state and rejects numeric quantities',async({page})=>{
+  await fixture(page)
+  const product={id:'stock-product',revision:'a'.repeat(64),title:'Stock fixture',handle:'stock-product',status:'draft',thumbnail:null,collection_id:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',variant_count:1,subtitle:null,description:null,options:[],images:[]}
+  const variant={id:'stock-variant',product_id:product.id,title:'Stock variant',sku:null,thumbnail:null,variant_rank:0,manage_inventory:true,allow_backorder:false,configuration_complete:true,options:[],images:[],unassigned_option_value_ids:[]}
+  let mode:'failed'|'empty'|'numeric'='failed'
+  await page.route('**/api/admin/products/stock-product**',route=>{
+    const path=new URL(route.request().url()).pathname
+    if(path.endsWith('/inventory')){
+      if(mode==='failed')return route.fulfill({status:503,json:{error:{code:'inventory.unavailable'}}})
+      const items=mode==='empty'?[]:[{inventory_item_id:'item',required_quantity:1,sku:null,title:null,item_available:true,levels:[],unmatched_reservations:[]}]
+      return route.fulfill({json:{product_id:product.id,variant_id:variant.id,manage_inventory:true,allow_backorder:false,writes_enabled:false,items}})
+    }
+    return route.fulfill({json:path.endsWith('/variants')?{variants:[variant],count:1,limit:20,offset:0}:{product}})
+  })
+  await page.goto('/account');await signIn(page);await page.goto('/products/stock-product')
+  await page.getByRole('button',{name:'查看库存',exact:true}).click()
+  const drawer=page.getByRole('dialog',{name:'库存明细',exact:true})
+  await expect(drawer.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
+  await expect(drawer.getByText('未关联库存项',{exact:true})).toHaveCount(0)
+  mode='empty';await drawer.getByRole('button',{name:'重新连接',exact:true}).click()
+  await expect(drawer.getByText('未关联库存项',{exact:true})).toBeVisible()
+  await drawer.getByRole('button',{name:'取消',exact:true}).click();await expect(drawer).toHaveCount(0)
+  mode='numeric';await page.getByRole('button',{name:'查看库存',exact:true}).click()
+  await expect(drawer.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
+  await expect(drawer.getByText('未关联库存项',{exact:true})).toHaveCount(0)
+})
+
 test('Ant form signs in, reloads account, and signs out without storing capabilities', async ({ page }) => {
   const calls = await fixture(page)
   await page.goto('/account')

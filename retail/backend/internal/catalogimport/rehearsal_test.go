@@ -19,6 +19,7 @@ import (
 
 	cataloghttp "github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/importvalue"
+	"github.com/eurorefurb/retail/internal/inventory"
 	"github.com/eurorefurb/retail/internal/rowimport"
 	"github.com/eurorefurb/retail/internal/schema"
 	"github.com/eurorefurb/retail/migrations"
@@ -99,12 +100,16 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog parent closure differs")
 	}
 	selected := map[string][]rowimport.SourceRow{}
+	inventorySelected := map[string][]rowimport.SourceRow{}
 	file, err := os.Open("/tmp/catalog-source.ndjson")
 	if err != nil {
 		t.Fatal("private catalog snapshot unavailable")
 	}
 	defer file.Close()
 	verified, err := rowimport.VerifyStream(file, snapshotHash, func(table string, row rowimport.SourceRow) error {
+		if table == "inventory_level" || table == "reservation_item" {
+			inventorySelected[table] = append(inventorySelected[table], row)
+		}
 		if scope[table] {
 			selected[table] = append(selected[table], row)
 		}
@@ -235,14 +240,14 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog embedded schema plan invalid")
 	}
 	created, err := schema.Apply(ctx, db, plan)
-	if err != nil || created.Applied != 11 || schema.CheckApplied(ctx, db, plan) != nil {
+	if err != nil || created.Applied != 12 || schema.CheckApplied(ctx, db, plan) != nil {
 		t.Fatal("catalog embedded migration failed")
 	}
 	repeated, err := schema.Apply(ctx, db, plan)
-	if err != nil || repeated.Skipped != 11 {
+	if err != nil || repeated.Skipped != 12 {
 		t.Fatal("catalog embedded migration replay failed")
 	}
-	counts["explicit_schema_migrations"] = 11
+	counts["explicit_schema_migrations"] = 12
 	var enabled int
 	if db.QueryRowContext(ctx, "SELECT @@foreign_key_checks").Scan(&enabled) != nil || enabled != 1 {
 		t.Fatal("catalog physical constraints must remain enabled")
@@ -358,9 +363,42 @@ func TestActualCatalogMySQL(t *testing.T) {
 	}
 	counts["committed_provenance_rows"] = 21837
 	counts["committed_unique_claims"] = count("unique_key_claims")
+	// Read rehearsal only: use the strict converter against all source fields;
+	// these two tables do not yet have an accepted formal import ledger.
+	stageInventory := func(insert, commit bool) {
+		tx, err := db.BeginTx(ctx, nil)
+		if err != nil {
+			t.Fatal("inventory rehearsal transaction failed")
+		}
+		defer tx.Rollback()
+		for _, table := range []string{"inventory_level", "reservation_item"} {
+			for _, row := range inventorySelected[table] {
+				if parentSQL(tx, all[table], row, insert) != nil {
+					t.Fatal("inventory exact row staging failed")
+				}
+			}
+		}
+		if commit && tx.Commit() != nil {
+			t.Fatal("inventory rehearsal commit failed")
+		}
+	}
+	stageInventory(true, false)
+	if count("inventory_levels") != 0 || count("inventory_reservations") != 0 {
+		t.Fatal("inventory rollback left rows")
+	}
+	stageInventory(true, true)
+	counts["inventory_read_rehearsal_levels"] = count("inventory_levels")
+	counts["inventory_read_rehearsal_reservations"] = count("inventory_reservations")
+	var mismatch int64
+	if db.QueryRow(`SELECT COUNT(*) FROM inventory_levels l LEFT JOIN (SELECT inventory_item_id,location_id,SUM(quantity) AS quantity FROM inventory_reservations WHERE deleted_at IS NULL GROUP BY inventory_item_id,location_id) r ON r.inventory_item_id=l.inventory_item_id AND r.location_id=l.location_id WHERE l.deleted_at IS NULL AND l.reserved_quantity<>COALESCE(r.quantity,0)`).Scan(&mismatch) != nil || mismatch != 1 {
+		t.Fatal("known inventory reservation difference changed")
+	}
+	counts["preserved_inventory_reservation_mismatches"] = mismatch
 	fingerprint := func() []byte {
 		h := sha256.New()
 		targets := map[string]string{}
+		targets["inventory_levels"] = "id"
+		targets["inventory_reservations"] = "id"
 		for _, table := range order {
 			layout := all[table]
 			var columns []string
@@ -434,6 +472,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 	router.GET("/products/:id", (cataloghttp.Handler{DB: gdb}).AdminProduct)
 	router.GET("/products/:id/variants", (cataloghttp.Handler{DB: gdb}).AdminVariants)
 	router.GET("/products/:id/variants/:variant_id/prices", (cataloghttp.Handler{DB: gdb}).AdminVariantPrices)
+	router.GET("/products/:id/variants/:variant_id/inventory", (inventory.Handler{DB: gdb}).AdminVariant)
 	var expected int64
 	if db.QueryRow("SELECT COUNT(*) FROM catalog_products WHERE deleted_at IS NULL").Scan(&expected) != nil {
 		t.Fatal("catalog HTTP expected count unavailable")
@@ -524,6 +563,49 @@ func TestActualCatalogMySQL(t *testing.T) {
 					t.Fatal("actual catalog variant projection failed")
 				}
 				variantIDs[v.ID] = true
+				wInventory := httptest.NewRecorder()
+				router.ServeHTTP(wInventory, httptest.NewRequest("GET", "/products/"+url.PathEscape(id)+"/variants/"+url.PathEscape(v.ID)+"/inventory", nil))
+				var inventoryResponse struct {
+					Items         []inventory.Item
+					WritesEnabled bool `json:"writes_enabled"`
+				}
+				if wInventory.Code != 200 || json.Unmarshal(wInventory.Body.Bytes(), &inventoryResponse) != nil || inventoryResponse.Items == nil || inventoryResponse.WritesEnabled {
+					t.Fatal("actual inventory HTTP failed")
+				}
+				var itemCount int
+				if db.QueryRow("SELECT COUNT(*) FROM catalog_variant_inventory_items WHERE variant_id=? AND deleted_at IS NULL", v.ID).Scan(&itemCount) != nil || itemCount != len(inventoryResponse.Items) {
+					t.Fatal("actual inventory item membership differs")
+				}
+				for _, item := range inventoryResponse.Items {
+					var required string
+					if db.QueryRow("SELECT required_quantity FROM catalog_variant_inventory_items WHERE variant_id=? AND inventory_item_id=? AND deleted_at IS NULL", v.ID, item.InventoryItemID).Scan(&required) != nil || required != item.RequiredQuantity {
+						t.Fatal("actual inventory required quantity differs")
+					}
+					var levelCount int
+					if db.QueryRow("SELECT COUNT(*) FROM inventory_levels WHERE inventory_item_id=? AND deleted_at IS NULL", item.InventoryItemID).Scan(&levelCount) != nil || levelCount != len(item.Levels) {
+						t.Fatal("actual inventory level count differs")
+					}
+					for _, level := range item.Levels {
+						var stocked, reserved, incoming, total string
+						var n int64
+						if db.QueryRow("SELECT stocked_quantity,reserved_quantity,incoming_quantity FROM inventory_levels WHERE id=? AND inventory_item_id=? AND deleted_at IS NULL", level.ID, item.InventoryItemID).Scan(&stocked, &reserved, &incoming) != nil || stocked != level.StockedQuantity || reserved != level.ReservedQuantity || incoming != level.IncomingQuantity {
+							t.Fatal("actual inventory quantity differs")
+						}
+						if db.QueryRow("SELECT COALESCE(SUM(quantity),0),COUNT(*) FROM inventory_reservations WHERE inventory_item_id=? AND location_id=? AND deleted_at IS NULL", item.InventoryItemID, level.LocationID).Scan(&total, &n) != nil || n != level.ReservationCount {
+							t.Fatal("actual reservation count differs")
+						}
+						equal, e := inventory.Equal(total, level.ReservationQuantity)
+						if e != nil || !equal {
+							t.Fatal("actual exact reservation total differs")
+						}
+						equal, e = inventory.Equal(reserved, total)
+						if e != nil || equal != level.Reconciled {
+							t.Fatal("actual inventory difference hidden")
+						}
+						counts["http_projected_inventory_level_memberships"]++
+					}
+				}
+				counts["http_inventory_actual_variants"]++
 				for priceOffset := 0; ; priceOffset += 100 {
 					w := httptest.NewRecorder()
 					router.ServeHTTP(w, httptest.NewRequest("GET", "/products/"+url.PathEscape(id)+"/variants/"+url.PathEscape(v.ID)+"/prices?limit=100&offset="+strconv.Itoa(priceOffset), nil))
@@ -582,6 +664,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 	}
 	counts["http_queries_preserved_full_fingerprint"] = 1
 	stage(false, true)
+	stageInventory(false, true)
 	if !bytes.Equal(before, fingerprint()) {
 		t.Fatal("actual catalog replay changed evidence")
 	}

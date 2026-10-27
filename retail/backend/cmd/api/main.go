@@ -13,6 +13,7 @@ import (
 
 	"github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/identity"
+	"github.com/eurorefurb/retail/internal/inventory"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/eurorefurb/retail/internal/schema"
 	"github.com/eurorefurb/retail/internal/server"
@@ -45,6 +46,9 @@ func main() {
 	err = schema.CheckApplied(verifyCtx, pool, plan)
 	if err == nil {
 		err = catalog.Ready(verifyCtx, db)
+	}
+	if err == nil {
+		err = inventory.Ready(verifyCtx, db)
 	}
 	cancelVerify()
 	if err != nil {

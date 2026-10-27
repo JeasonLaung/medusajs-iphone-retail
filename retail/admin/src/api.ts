@@ -62,6 +62,20 @@ export async function editProduct(id:string,body:ProductEdit):Promise<void> {
 }
 export type VariantDetail = {id:string;product_id:string;title:string;sku:string|null;thumbnail:string|null;variant_rank:number|null;manage_inventory:boolean;allow_backorder:boolean;options:{id:string;option_id:string;value:string}[];unassigned_option_value_ids:string[];configuration_complete:boolean;images:ProductImage[]}
 export type VariantList = {variants:VariantDetail[];count:number;limit:number;offset:number}
+export type InventoryLevel={id:string;location_id:string;location_name:string|null;stocked_quantity:string;reserved_quantity:string;incoming_quantity:string;available_quantity:string;reservation_quantity:string;reservation_count:number;reconciled:boolean}
+export type InventoryItem={inventory_item_id:string;required_quantity:string;sku:string|null;title:string|null;item_available:boolean;levels:InventoryLevel[];unmatched_reservations:{location_id:string;quantity:string;count:number}[]}
+export type VariantInventory={product_id:string;variant_id:string;manage_inventory:boolean;allow_backorder:boolean;writes_enabled:false;items:InventoryItem[]}
+const inventoryDecimal=(v:unknown):v is string=>typeof v==='string'&&/^-?(?:0|[1-9]\d{0,46})(?:\.\d{1,18})?$/.test(v)
+const safeCount=(v:unknown):v is number=>typeof v==='number'&&Number.isSafeInteger(v)&&v>=0
+export async function variantInventory(productID:string,variantID:string,signal:AbortSignal):Promise<VariantInventory>{
+  const d=await request<VariantInventory>(`products/${encodeURIComponent(productID)}/variants/${encodeURIComponent(variantID)}/inventory`,{signal},'/api/admin/')
+  if(!d||d.product_id!==productID||d.variant_id!==variantID||typeof d.manage_inventory!=='boolean'||typeof d.allow_backorder!=='boolean'||d.writes_enabled!==false||!Array.isArray(d.items)||d.items.length>1000)throw new APIError(0,'request.invalid_response')
+  const items=d.items.map(i=>{
+    if(!i||typeof i.inventory_item_id!=='string'||!inventoryDecimal(i.required_quantity)||!nullableText(i.sku)||!nullableText(i.title)||typeof i.item_available!=='boolean'||!Array.isArray(i.levels)||i.levels.length>10000||!Array.isArray(i.unmatched_reservations)||i.unmatched_reservations.length>10000||!i.levels.every(l=>l&&typeof l.id==='string'&&typeof l.location_id==='string'&&nullableText(l.location_name)&&[l.stocked_quantity,l.reserved_quantity,l.incoming_quantity,l.available_quantity,l.reservation_quantity].every(inventoryDecimal)&&safeCount(l.reservation_count)&&typeof l.reconciled==='boolean')||!i.unmatched_reservations.every(r=>r&&typeof r.location_id==='string'&&inventoryDecimal(r.quantity)&&safeCount(r.count)))throw new APIError(0,'request.invalid_response')
+    return {inventory_item_id:i.inventory_item_id,required_quantity:i.required_quantity,sku:i.sku,title:i.title,item_available:i.item_available,levels:i.levels.map(({id,location_id,location_name,stocked_quantity,reserved_quantity,incoming_quantity,available_quantity,reservation_quantity,reservation_count,reconciled})=>({id,location_id,location_name,stocked_quantity,reserved_quantity,incoming_quantity,available_quantity,reservation_quantity,reservation_count,reconciled})),unmatched_reservations:i.unmatched_reservations.map(({location_id,quantity,count})=>({location_id,quantity,count}))}
+  })
+  return {product_id:d.product_id,variant_id:d.variant_id,manage_inventory:d.manage_inventory,allow_backorder:d.allow_backorder,writes_enabled:false,items}
+}
 export type PriceRule={id:string;attribute:string;operator:string;value:string;priority:number}
 export type PriceListRule={id:string;attribute:string;value:string|null}
 export type PriceList={id:string;title:string;status:'active'|'draft';type:'sale'|'override';starts_at:string|null;ends_at:string|null;rules_count:number|null;rules:PriceListRule[]}

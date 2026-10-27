@@ -48,7 +48,7 @@ func TestPrepareOwnedBrowserAPI(t *testing.T) {
 		t.Fatal("fixture plan invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 11 {
+	if err != nil || result.Applied != 12 {
 		t.Fatal("fixture migrations failed")
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte("artificial-browser-password"), bcrypt.DefaultCost)
@@ -126,6 +126,16 @@ func seedReviewedCatalogFixture(t *testing.T, db *gorm.DB) {
 		`UPDATE pricing_price_rules SET deleted_at=UTC_TIMESTAMP(6) WHERE id='fixture-rule-deleted'`,
 		`INSERT INTO pricing_price_list_rules(id,price_list_id,attribute,value,created_at,updated_at) VALUES ('fixture-list-rule','fixture-list','customer.groups','["0000123456789012345"]',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-list-rule-deleted','fixture-list','hidden','"must-not-escape-list-rule"',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
 		`UPDATE pricing_price_list_rules SET deleted_at=UTC_TIMESTAMP(6) WHERE id='fixture-list-rule-deleted'`,
+		`INSERT INTO inventory_items(id,sku,title,requires_shipping,created_at,updated_at,metadata) VALUES ('fixture-stock','0000123456789012345','Tracked item',1,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),'{"private":"inventory-secret"}'),('fixture-stock-retired','retired','Retired item',1,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),NULL),('fixture-stock-unlinked','unlinked','Unlinked item',1,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),NULL)`,
+		`UPDATE inventory_items SET deleted_at=UTC_TIMESTAMP(6) WHERE id='fixture-stock-retired'`,
+		`INSERT INTO inventory_locations(id,name,created_at,updated_at,metadata) VALUES ('fixture-location','Fixture warehouse',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),'{"private":"warehouse-secret"}'),('fixture-location-retired','Removed warehouse',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),NULL)`,
+		`UPDATE inventory_locations SET deleted_at=UTC_TIMESTAMP(6) WHERE id='fixture-location-retired'`,
+		`INSERT INTO catalog_variant_inventory_items(id,variant_id,inventory_item_id,required_quantity,created_at,updated_at) VALUES ('fixture-stock-link','fixture-v','fixture-stock',2.5,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-stock-shared','fixture-incomplete','fixture-stock',1,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-stock-retired-link','fixture-v','fixture-stock-retired',1,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('fixture-stock-deleted-link','fixture-v','fixture-stock-unlinked',1,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`UPDATE catalog_variant_inventory_items SET deleted_at=UTC_TIMESTAMP(6) WHERE id='fixture-stock-deleted-link'`,
+		`INSERT INTO inventory_levels(id,inventory_item_id,location_id,stocked_quantity,reserved_quantity,incoming_quantity,created_at,updated_at,metadata) VALUES ('fixture-level','fixture-stock','fixture-location',9007199254740993.000000000000000001,9007199254740993,0.25,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),'{"private":"level-secret"}'),('fixture-level-retired-location','fixture-stock','fixture-location-retired',2,3,0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),NULL)`,
+		`INSERT INTO inventory_levels(id,inventory_item_id,location_id,stocked_quantity,reserved_quantity,incoming_quantity,created_at,updated_at,deleted_at) VALUES ('fixture-level-deleted','fixture-stock','fixture-location',999,0,0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO inventory_reservations(id,inventory_item_id,location_id,quantity,created_at,updated_at,metadata) VALUES ('fixture-reservation','fixture-stock','fixture-location',9007199254740992,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),'{"private":"reservation-secret"}'),('fixture-reservation-retired-location','fixture-stock','fixture-location-retired',3,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),NULL),('fixture-reservation-no-level','fixture-stock','fixture-location-missing',0.5,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),NULL)`,
+		`INSERT INTO inventory_reservations(id,inventory_item_id,location_id,quantity,created_at,updated_at,deleted_at) VALUES ('fixture-reservation-deleted','fixture-stock','fixture-location',999,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
 	}
 	for i := 4; i < 25; i++ {
 		statements = append(statements, fmt.Sprintf("INSERT INTO pricing_prices(id,price_set_id,currency_code,amount,raw_amount,rules_count,created_at,updated_at) VALUES ('fixture-price-%02d','fixture-set','eur',%d,'{}',0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", i, i))

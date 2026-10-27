@@ -65,6 +65,10 @@ Variant rows also open a paginated Ant configured-price drawer. Exact decimal
 strings, shared sets and price/list rules remain intact; this is not a checkout
 quote. See `../../docs/migration/admin-variant-prices.md`.
 
+Variant inventory uses an Ant Drawer/Collapse/Table. Exact stock-level balances
+and reservation totals remain separate with reconciliation feedback; inventory
+writes stay disabled. See `../../docs/migration/admin-variant-inventory.md`.
+
 The lazy-loaded `/products` page reads the Gin admin product-list endpoint using
 Ant forms, filters, table, pagination and empty/error feedback. Filters persist
 in the URL. Product title links open `/products/:id` with Ant descriptions,

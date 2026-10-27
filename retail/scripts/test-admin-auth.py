@@ -72,7 +72,7 @@ def main():
         if copied.returncode or docker('exec', mysql_id, 'chmod', '700', '/opt/identity.test').returncode:
             raise RuntimeError('Identity runner transfer failed')
         tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1', mysql_id,
-                        '/opt/identity.test', '-test.v', '-test.run', '^TestOwned(AdminAuthentication|CatalogSchemaTransition|ProductEdits|ProductPrices)$', '-test.timeout', '150s', timeout=180)
+                        '/opt/identity.test', '-test.v', '-test.run', '^TestOwned(AdminAuthentication|CatalogSchemaTransition|ProductEdits|ProductPrices|ProductInventory)$', '-test.timeout', '150s', timeout=180)
         markers = [line.split('IDENTITY_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'IDENTITY_REHEARSAL ' in line]
         if tested.returncode or len(markers) != 1:
             # All inputs and failure messages in this binary are artificial.
@@ -88,6 +88,9 @@ def main():
         price_markers = [line.split('PRODUCT_PRICE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'PRODUCT_PRICE_REHEARSAL ' in line]
         if len(price_markers)!=1:
             raise RuntimeError('Product price verification missing')
+        inventory_markers = [line.split('PRODUCT_INVENTORY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'PRODUCT_INVENTORY_REHEARSAL ' in line]
+        if len(inventory_markers)!=1:
+            raise RuntimeError('Inventory verification missing')
         files = ['retail/scripts/test-admin-auth.py', 'retail/backend/internal/identity/admin.go',
                  'retail/backend/internal/identity/admin_test.go', 'retail/backend/internal/identity/integration_test.go',
                  'retail/backend/internal/server/router.go', 'retail/backend/internal/platform/http.go',
@@ -101,6 +104,8 @@ def main():
                   'retail/backend/internal/identity/product_edit_test.go','retail/backend/internal/identity/product_prices_test.go',
                   'retail/backend/internal/identity/browser_fixture_test.go','retail/backend/internal/catalog/admin_prices.go',
                   'retail/backend/internal/catalog/admin_prices_test.go']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/inventory').glob('*') if p.is_file()]
+        files += ['retail/backend/migrations/0012_inventory_relational.sql','retail/backend/internal/identity/product_inventory_test.go','retail/scripts/generate-inventory-schema.py']
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                   'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                               'network': 'owned shared namespace with no external network', 'published_ports': 0},
@@ -109,6 +114,7 @@ def main():
                   'catalog_schema_transition': json.loads(schema_markers[0]),
                   'product_edit_transaction': json.loads(edit_markers[0]),
                   'product_configured_prices': json.loads(price_markers[0]),
+                  'product_inventory': json.loads(inventory_markers[0]),
                   'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
         password = ''

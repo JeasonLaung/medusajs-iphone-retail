@@ -8,6 +8,7 @@ import (
 
 	"github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/identity"
+	"github.com/eurorefurb/retail/internal/inventory"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -53,6 +54,9 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 		if err == nil {
 			err = catalog.Ready(ctx, db)
 		}
+		if err == nil {
+			err = inventory.Ready(ctx, db)
+		}
 		if err != nil {
 			platform.Fail(c, 503, "dependency_unavailable", "Application dependency unavailable")
 			return
@@ -78,6 +82,7 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	private.GET("/products/:id", h.AdminProduct)
 	private.GET("/products/:id/variants", h.AdminVariants)
 	private.GET("/products/:id/variants/:variant_id/prices", h.AdminVariantPrices)
+	private.GET("/products/:id/variants/:variant_id/inventory", (inventory.Handler{DB: db}).AdminVariant)
 	private.PATCH("/products/:id", h.UpdateProduct)
 	if root := os.Getenv("PUBLIC_ASSET_ROOT"); root != "" {
 		r.Static("/assets", root)
