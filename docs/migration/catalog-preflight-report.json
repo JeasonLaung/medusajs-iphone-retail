@@ -1,0 +1,14 @@
+{
+  "format_version": 1,
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "mapping_sha256": "e760f3ea032fa7fd09119fe017bb9c634cbade3b08648a47cfc1c3481cc2255b",
+  "scope": "Source snapshot scalar type/length/precision/raw-pair/reference preflight only; not MySQL import, active uniqueness, semantic joins, public DTO or JSON lexical acceptance",
+  "tables": 36,
+  "fields": 292,
+  "checks": {
+    "field_values": 151907,
+    "raw_scalar_pairs": 1779,
+    "references_including_soft_deleted": 36535
+  },
+  "failures": {}
+}

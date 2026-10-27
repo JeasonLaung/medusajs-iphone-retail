@@ -11,7 +11,7 @@
 | API 与后台组件 | [API 通用约定](api-conventions.md)、[Ant Design / ECharts 及 23 页承接](admin-ui-contract.md) |
 | 自定义业务 | [设备命令及固定用例](device-commands.md)、[回收与邮件](buyback-and-mail.md)、[SEO 与引用监测](seo-contract.md) |
 | 统计 | [Analytics 实际口径](analytics-contract.md) |
-| 数据继承 | [源数据去向与转换](data-mapping.md)、data-table-disposition.csv、data-source-manifest.json |
+| 数据继承 | [源数据去向与转换](data-mapping.md)、[第一批36表292列设计](catalog-field-design.md)、catalog-field-mapping.json/.csv、catalog-preflight-report.json、data-table-disposition.csv、data-source-manifest.json |
 
 ## 本轮已运行验证
 
@@ -22,6 +22,9 @@ node --check retail/scripts/capture-storefront.cjs
 node retail/scripts/capture-totals.cjs --check
 node retail/scripts/capture-inventory.cjs --check
 node retail/scripts/capture-commerce-rules.cjs --check
+python retail/scripts/capture-schema-constraints.py --check
+python retail/scripts/map-catalog-fields.py --check
+python retail/scripts/preflight-catalog-mapping.py --bundle logs/gin-migration/source-20261026.json
 git diff --check
 ```
 
@@ -33,6 +36,8 @@ Python 需 3.9+；命令中的 python 替换为本机已安装运行时路径。
 
 促销/税率/配送另有 46 组人工规则样例，覆盖分配、额度边界、税率优先级、地理查询和规则验证；均有独立预期且重复核对通过。完整预算事务、buy-get、provider 和结账集成尚待运行。
 
+数据设计新增36表292列映射、349条约束/759个索引/17个枚举值；快照预检151,907个字段值、1,779个raw配对、36,535个引用通过。只有聚合结果入Git，不输出业务行；尚无MySQL导入或完整语义验证。
+
 旧服务 `/health`、`/app` 与 `/dk-en/store` 本轮检查 HTTP 200。未变更旧业务源码/数据，未构建旧开发 checkout，未连接部署服务器。新 MySQL 导入、React Admin、Astro 和完整交易仍待实现。
 
 ## 尚未完成的阶段门槛
@@ -40,7 +45,7 @@ Python 需 3.9+；命令中的 python 替换为本机已安装运行时路径。
 - T001/T002：剩余命令/调用方、完整促销资格/预算/buy-get、税运费 provider 集成、PayPal 实际运行产物及后台内置功能；已有纯函数基线不替代集成。
 - T003：剩余页面及登录/抽屉/错误/加载/交易状态；需要隔离夹具，不在旧业务库造订单。
 - T004/T005：剩余领域授权、完整交易金额样例和状态用例运行证据。
-- T006：逐字段目标模型与关联、私有文件清单及密文转换演练；现有全表元数据不是全字段映射完成。
+- T006：已设计36表292列；剩余157表字段目标、全部约束转换/语义关联、私有文件清单及密文转换演练待完成；全表元数据不是全字段映射完成。
 - T007：已有统一 API 约定及后台组件/页面承接草案；可验证 schemas、完整原生/自定义旧入口到新 API 的映射仍待交付。
 
 这些待办明确保留，不把未知能力当作未使用删除。后续按领域补齐后再实现及验收。

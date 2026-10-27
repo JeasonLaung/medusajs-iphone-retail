@@ -29,6 +29,7 @@
 - [前台采集基线](migration/frontend-baseline.md)：14 个公开或未登录状态，中英及三个宽度共 84 张截图；[路由模式表](migration/frontend-routes.md) 已确认 32 种页面 URL 与 7 个非页面 handler，不能代替全部状态验收。
 - [商品契约](migration/catalog-contract.md)、[搜索契约](migration/search-contract.md) 和 [支付基线](migration/payment-contract.md)：固定实际消费、数据关系、兼容链接与草稿缺口；属于 T007 领域草案，整体 API 契约仍待完成。
 - [数据去向与转换](migration/data-mapping.md)：193 张表、1,961 列结构元数据及 27,779 行只读快照计数；逐表有处置类别，逐字段业务映射仍待完善。
+- [第一批字段设计](migration/catalog-field-design.md)：36表292列目标映射；当前源349条约束/759个索引/17个枚举值有元数据证据；快照151,907字段值、1,779 raw配对、36,535引用预检通过。剩余157表及MySQL验证待完成。
 - [购物车与交易计算](migration/checkout-contract.md)：18 组人工精确金额及 10 组库存准备样例已运行并固定；完整促销/税/运费引擎和 Gin 对照仍待验证。
 - [促销/税率/配送](migration/promotion-tax-shipping-contract.md)：另有 46 组规则人工样例及流程核对；记录每件额度默认值、预算提交锁、税率粒度优先级、运费 profile 替换和旧验证边界。
 - [API 通用约定](migration/api-conventions.md) 与 [后台组件承接](migration/admin-ui-contract.md)：明确错误/分页/幂等/会话边界，23 个页面文件与 6 个 widgets 有 Ant Design / ECharts 承接设计；重定向入口继续保留，不冒充独立业务页面。
