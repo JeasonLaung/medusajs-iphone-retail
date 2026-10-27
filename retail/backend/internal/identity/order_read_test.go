@@ -50,6 +50,7 @@ func seedOrderReadFixture(t *testing.T, db *gorm.DB) {
 		t.Fatal("artificial order cycle seed failed")
 	}
 	seedOrderAmountFixture(t, db)
+	seedOrderPaymentFixture(t, db)
 }
 
 func TestOwnedOrderRead(t *testing.T) {
@@ -92,6 +93,7 @@ func TestOwnedOrderRead(t *testing.T) {
 	router.GET("/orders", h.List)
 	router.GET("/orders/:id", h.Detail)
 	router.GET("/orders/:id/amounts", h.Amounts)
+	router.GET("/orders/:id/payments", h.Payments)
 	call := func(path string, status int) []byte {
 		t.Helper()
 		w := httptest.NewRecorder()
@@ -106,9 +108,16 @@ func TestOwnedOrderRead(t *testing.T) {
 	}
 	fingerprint := func() [32]byte {
 		var evidence []json.RawMessage
-		for _, table := range []string{"orders", "order_line_items", "order_items", "order_line_tax_lines", "order_line_adjustments", "order_shipping_methods", "order_shipping_versions", "order_shipping_tax_lines", "order_shipping_adjustments", "order_credit_lines", "order_summaries"} {
+		for _, table := range []string{"orders", "order_line_items", "order_items", "order_line_tax_lines", "order_line_adjustments", "order_shipping_methods", "order_shipping_versions", "order_shipping_tax_lines", "order_shipping_adjustments", "order_credit_lines", "order_summaries", "order_payment_collections", "payment_collections", "payment_sessions", "payments", "payment_captures", "payment_refunds", "migration_payment_dispositions"} {
 			var rows []map[string]any
-			if db.Table(table).Order("id ASC").Find(&rows).Error != nil {
+			sort := "id ASC"
+			if table == "order_payment_collections" {
+				sort = "order_id,payment_collection_id"
+			}
+			if table == "migration_payment_dispositions" {
+				sort = "source_table,source_id"
+			}
+			if db.Table(table).Order(sort).Find(&rows).Error != nil {
 				t.Fatal("order fingerprint failed")
 			}
 			b, _ := json.Marshal(rows)
@@ -148,6 +157,7 @@ func TestOwnedOrderRead(t *testing.T) {
 	call("/orders/missing", 404)
 	call("/orders/read-order?fields=*", 400)
 	checkOrderAmounts(t, call)
+	checkOrderPayments(t, db, call)
 	if before != fingerprint() {
 		t.Fatal("order queries mutated history")
 	}

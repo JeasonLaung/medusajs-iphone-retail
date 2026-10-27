@@ -688,6 +688,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 	router.GET("/orders", (orders.Handler{DB: gdb}).List)
 	router.GET("/orders/:id", (orders.Handler{DB: gdb}).Detail)
 	router.GET("/orders/:id/amounts", (orders.Handler{DB: gdb}).Amounts)
+	router.GET("/orders/:id/payments", (orders.Handler{DB: gdb}).Payments)
 	oracleBytes, err := os.ReadFile("/tmp/order-amounts-expected.json")
 	var oracle struct {
 		SnapshotSHA string `json:"snapshot_sha256"`
@@ -738,6 +739,63 @@ func TestActualCatalogMySQL(t *testing.T) {
 				t.Fatal("actual order pagination duplicate")
 			}
 			seenOrders[summary.ID] = true
+
+			paymentReply := httptest.NewRecorder()
+			router.ServeHTTP(paymentReply, httptest.NewRequest("GET", "/orders/"+url.PathEscape(summary.ID)+"/payments", nil))
+			var expectedCollections, availableCollections int64
+			if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM order_payment_collections WHERE order_id=? AND deleted_at IS NULL", summary.ID).Scan(&expectedCollections) != nil || db.QueryRowContext(ctx, "SELECT COUNT(*) FROM order_payment_collections l JOIN payment_collections c ON c.id=l.payment_collection_id AND c.deleted_at IS NULL WHERE l.order_id=? AND l.deleted_at IS NULL", summary.ID).Scan(&availableCollections) != nil {
+				t.Fatal("actual order payment relation check failed")
+			}
+			if expectedCollections != availableCollections {
+				if paymentReply.Code != 503 {
+					t.Fatal("actual missing payment collection not rejected")
+				}
+				counts["http_incomplete_actual_order_payments"]++
+			} else {
+				var evidence orders.PaymentEvidence
+				if paymentReply.Code != 200 || json.Unmarshal(paymentReply.Body.Bytes(), &evidence) != nil || evidence.OrderID != summary.ID || evidence.Version != summary.Version || evidence.OperationsEnabled || int64(len(evidence.Collections)) != expectedCollections {
+					t.Fatal("actual order payment projection failed")
+				}
+				for _, collection := range evidence.Collections {
+					var currency, status, amount string
+					if db.QueryRowContext(ctx, "SELECT currency_code,status,CAST(amount AS CHAR) FROM payment_collections WHERE id=? AND deleted_at IS NULL", collection.ID).Scan(&currency, &status, &amount) != nil || currency != collection.CurrencyCode || status != collection.Status || strings.TrimRight(strings.TrimRight(amount, "0"), ".") != collection.Amount {
+						t.Fatal("actual payment collection facts differ")
+					}
+					var payments, sessions int64
+					if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM payments WHERE payment_collection_id=? AND deleted_at IS NULL", collection.ID).Scan(&payments) != nil || db.QueryRowContext(ctx, "SELECT COUNT(*) FROM payment_sessions WHERE payment_collection_id=? AND deleted_at IS NULL", collection.ID).Scan(&sessions) != nil || payments != int64(len(collection.Payments)) || sessions != int64(len(collection.Sessions)) {
+						t.Fatal("actual payment child scope differs")
+					}
+					for _, payment := range collection.Payments {
+						var provider, session, paymentCurrency, paymentAmount string
+						if db.QueryRowContext(ctx, "SELECT provider_id,payment_session_id,currency_code,CAST(amount AS CHAR) FROM payments WHERE id=? AND payment_collection_id=? AND deleted_at IS NULL", payment.ID, collection.ID).Scan(&provider, &session, &paymentCurrency, &paymentAmount) != nil || provider != payment.ProviderID || session != payment.SessionID || paymentCurrency != payment.CurrencyCode || strings.TrimRight(strings.TrimRight(paymentAmount, "0"), ".") != payment.Amount || payment.OperationHold != "held" {
+							t.Fatal("actual payment record facts differ")
+						}
+						for table, movements := range map[string][]orders.PaymentMovement{"payment_captures": payment.Captures, "payment_refunds": payment.Refunds} {
+							var expected int64
+							if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM `"+table+"` WHERE payment_id=? AND deleted_at IS NULL", payment.ID).Scan(&expected) != nil || expected != int64(len(movements)) {
+								t.Fatal("actual payment movement scope differs")
+							}
+							for _, movement := range movements {
+								var amount string
+								var created time.Time
+								if db.QueryRowContext(ctx, "SELECT CAST(amount AS CHAR),created_at FROM `"+table+"` WHERE id=? AND payment_id=? AND deleted_at IS NULL", movement.ID, payment.ID).Scan(&amount, &created) != nil || strings.TrimRight(strings.TrimRight(amount, "0"), ".") != movement.Amount || !created.Equal(movement.CreatedAt) {
+									t.Fatal("actual payment movement facts differ")
+								}
+								counts["http_actual_"+table+"_verified"]++
+							}
+						}
+						counts["http_actual_payments_verified"]++
+					}
+					for _, session := range collection.Sessions {
+						if session.OperationHold != "held" {
+							t.Fatal("actual session hold absent")
+						}
+						counts["http_actual_payment_sessions_verified"]++
+					}
+				}
+				counts["http_actual_order_payments_verified"]++
+			}
+
 			var expectedLines, availableLines int64
 			if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM order_items WHERE order_id=? AND version=? AND deleted_at IS NULL", summary.ID, summary.Version).Scan(&expectedLines) != nil || expectedLines != summary.LineCount {
 				t.Fatal("actual current order line count differs")

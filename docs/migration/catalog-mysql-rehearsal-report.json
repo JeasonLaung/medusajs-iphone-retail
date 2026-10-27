@@ -68,6 +68,10 @@
     "historical_holder_operation_holds": 1,
     "http_actual_order_amount_fields": 771,
     "http_actual_order_amounts_verified": 13,
+    "http_actual_order_payments_verified": 13,
+    "http_actual_payment_captures_verified": 10,
+    "http_actual_payment_sessions_verified": 13,
+    "http_actual_payments_verified": 13,
     "http_complete_actual_variants": 1528,
     "http_detailed_actual_orders": 13,
     "http_detailed_actual_products": 30,
@@ -135,9 +139,9 @@
   "relational_acceptance": false,
   "full_business_acceptance": false,
   "implementation_sha256": {
-    "retail/scripts/rehearse-catalog.py": "0fd01b7119b25737712be5739dd3c6f52444d41b9595a95daf375e5879197edf",
+    "retail/scripts/rehearse-catalog.py": "c964e673a30d98457bc97e2da149cbbb4848110602912b7b224a5a1091c7d8c6",
     "retail/backend/internal/catalogimport/import.go": "51835174a7264397177318dc184d0769fce7565de737cd1522ab6d703ca20570",
-    "retail/backend/internal/catalogimport/rehearsal_test.go": "b1f40e98ae6cff58ccdbdf15511f66086f210d8ac72a880f26e8bb37b682a79d",
+    "retail/backend/internal/catalogimport/rehearsal_test.go": "f5284cd850a165629a3ddaecbd7b747584d1397e93b8d17b1d823edc0342d013",
     "retail/backend/internal/catalogimport/plans.json": "65ef08d81fb47a476c47387fd99da67a34e3002d190069e2fd3b64adc666bf59",
     "retail/backend/internal/rowimport/convert.go": "02faf48f76231c5637adee5edc8709ce818995ce26c6920c787bd8190438e9d7",
     "retail/backend/internal/rowimport/record.go": "9da4ad1becb6c0ab0c20d147c1a71fb6a1fa44f317fca6cee7c4b0f2aa6c3cc8",
@@ -216,7 +220,9 @@
     "retail/backend/internal/rowimport/history_payment_sql.go": "cc82944f26ffc83e287ffabe5166557dad58e46a756bdd361f44ea1185adb5d4",
     "retail/backend/internal/rowimport/history_account_holder.go": "4923ea8b65b12065b3c753efa4c3f1c0e67ee3e045dbab8515c9c1946d88dc19",
     "retail/backend/internal/paymentimport/import.go": "43057056b924074363956f204ac6888f8a84b16af2e32475a02f2306f91eef8f",
-    "retail/backend/internal/paymentimport/plans.json": "160ac50d2a62a89eab7915f7a4f9523b4c1e7d0ea4ac5dc2736cd220adcde127"
+    "retail/backend/internal/paymentimport/plans.json": "160ac50d2a62a89eab7915f7a4f9523b4c1e7d0ea4ac5dc2736cd220adcde127",
+    "retail/backend/internal/orders/payments.go": "0bf0cdff6629efe94cd31a4568a8c92f391448977b2e1f7cc85ff809b112d96a",
+    "retail/backend/internal/identity/order_payments_test.go": "b627b1a86a5e3b643002af821dc155f5f05030fc6bd836f746c60b3c33728cb4"
   },
   "cleanup": "owned container removed after label verification; tmpfs source/target copies and temporary runner removed"
 }

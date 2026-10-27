@@ -5,7 +5,8 @@ import path from 'node:path'
 // No route interception or mocked API responses in this file.
 test('real browser cookie, Origin and CSRF flow through Vite to Gin and Redis', async ({ page, context }) => {
   // One owned account exercises login, catalog and nine viewport screenshots.
-  test.setTimeout(90_000)
+  test.setTimeout(120_000)
+  page.setDefaultTimeout(10_000)
   const failures:string[]=[]
   page.on('pageerror',error=>failures.push(error.name))
   const signIn=async(password:string)=>{
@@ -313,16 +314,27 @@ test('real browser cookie, Origin and CSRF flow through Vite to Gin and Redis', 
   await page.getByRole('option',{name:'简体中文',exact:true}).click()
   expect((await context.request.get('/api/admin/orders?fields=*')).status()).toBe(400)
   expect((await context.request.get('/api/admin/orders/read-order/amounts?fields=*')).status()).toBe(400)
+  expect((await context.request.get('/api/admin/orders/read-order/payments?fields=*')).status()).toBe(400)
   await page.goto('/orders')
   await expect(page.getByRole('link',{name:'9007199254740993123',exact:true})).toBeVisible()
   await page.getByRole('link',{name:'9007199254740993123',exact:true}).click()
   await expect(page.getByRole('heading',{name:'9007199254740993123',exact:true})).toBeVisible()
   await expect(page.getByText('Original historical phone',{exact:true})).toBeVisible()
-  await expect(page.getByText('9007199254740993.000000000000000001 eur',{exact:true})).toBeVisible()
+  await expect(page.getByText('9007199254740993.000000000000000001 eur',{exact:true}).first()).toBeVisible()
   await expect(page.getByText('0000123456789012345',{exact:true})).toBeVisible()
   await expect(page.getByRole('region',{name:'订单金额',exact:true})).toBeVisible()
   await expect(page.getByText('22517998136852477.0000000000000000025 eur',{exact:true})).toBeVisible()
   await expect(page.getByText('Historical delivery',{exact:true})).toBeVisible()
+  const paymentRegion=page.getByRole('region',{name:'支付记录',exact:true})
+  await expect(paymentRegion.getByText('read-payment',{exact:true})).toBeVisible()
+  await expect(paymentRegion.getByText('历史支付冻结',{exact:true})).toBeVisible()
+  await expect(paymentRegion.getByText('操作资格未核对',{exact:true})).toBeVisible()
+  await paymentRegion.getByRole('button',{name:'查看付款明细',exact:true}).click()
+  await expect(paymentRegion.getByText('read-capture',{exact:true})).toBeVisible()
+  await expect(paymentRegion.getByText('read-refund',{exact:true})).toBeVisible()
+  await expect(paymentRegion.getByText('0.000000000000000001 eur',{exact:true})).toBeVisible()
+  expect((await context.request.get('/api/admin/orders/read-order/payments')).status()).toBe(200)
+  expect(await (await context.request.get('/api/admin/orders/read-order/payments')).text()).not.toContain('must-not-escape')
   for(const width of [390,768,1440]) {
     await page.setViewportSize({width,height:900})
     await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true)
@@ -364,6 +376,7 @@ test('real browser cookie, Origin and CSRF flow through Vite to Gin and Redis', 
   expect(replay.status()).toBe(401)
   expect((await context.request.get('/api/admin/orders')).status()).toBe(401)
   expect((await context.request.get('/api/admin/orders/read-order/amounts')).status()).toBe(401)
+  expect((await context.request.get('/api/admin/orders/read-order/payments')).status()).toBe(401)
   await page.reload()
   await expect(page.getByRole('heading',{name:'登录管理后台'})).toBeVisible()
   expect(failures).toEqual([])

@@ -59,6 +59,7 @@ test('order amounts retry separately and reject a different order version',async
  const order={id:'artificial-order',version:2,status:'pending',currency_code:'eur',custom_display_id:'Order fixture',display_id:'1',is_draft_order:false,email:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',line_count:0}
  let mode:'failed'|'ready'|'changed'='failed'
  await page.route('**/api/admin/orders/artificial-order**',route=>{
+  if(new URL(route.request().url()).pathname.endsWith('/payments'))return route.fulfill({json:{order_id:order.id,version:2,operations_enabled:false,collections:[]}})
   if(!new URL(route.request().url()).pathname.endsWith('/amounts'))return route.fulfill({json:{order,lines:[]}})
   if(mode==='failed')return route.fulfill({status:503,json:{error:{code:'orders.amounts_unavailable'}}})
   return route.fulfill({json:{order_id:order.id,version:mode==='changed'?3:2,currency_code:'eur',totals:{item_subtotal:'0',shipping_subtotal:'0',discount_subtotal:'0',tax_total:'0',credit_line_total:'0',total:'0'},lines:[],shipping_methods:[],summary:null}})
@@ -349,3 +350,28 @@ for (const width of [390, 768, 1440]) {
     await page.screenshot({ path: `../../logs/gin-migration/admin-ui/login-en-${width}.png` })
   })
 }
+
+
+test('payment evidence retry, malformed amounts and mixed versions stay separate from order details',async({page})=>{
+ await fixture(page)
+ const order={id:'payment-order',version:2,status:'pending',currency_code:'eur',custom_display_id:'Payment fixture',display_id:'1',is_draft_order:false,email:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',line_count:0}
+ let mode:'failed'|'ready'|'changed'|'numeric'='failed'
+ await page.route('**/api/admin/orders/payment-order**',route=>{
+  const path=new URL(route.request().url()).pathname
+  if(path.endsWith('/amounts'))return route.fulfill({json:{order_id:order.id,version:2,currency_code:'eur',totals:{item_subtotal:'0',shipping_subtotal:'0',discount_subtotal:'0',tax_total:'0',credit_line_total:'0',total:'0'},lines:[],shipping_methods:[],summary:null}})
+  if(!path.endsWith('/payments'))return route.fulfill({json:{order,lines:[]}})
+  if(mode==='failed')return route.fulfill({status:503,json:{error:{code:'orders.payments_unavailable'}}})
+  return route.fulfill({json:{order_id:order.id,version:mode==='changed'?3:2,operations_enabled:false,collections:mode==='numeric'?[{id:'collection',currency_code:'eur',status:'completed',amount:9007199254740993,authorized_amount:null,captured_amount:null,refunded_amount:null,payments:[],sessions:[]}]:[]}})
+ })
+ await page.goto('/login');await signIn(page);await page.goto('/orders/payment-order')
+ const region=page.getByRole('region',{name:'支付记录',exact:true})
+ await expect(region.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
+ await expect(page.getByRole('heading',{name:'Payment fixture',exact:true})).toBeVisible()
+ mode='ready';await region.getByRole('button',{name:'重新连接',exact:true}).click()
+ await expect(region.getByText('未关联付款集合',{exact:true})).toBeVisible()
+ mode='changed';await page.reload()
+ await expect(region.getByText('订单版本已变化，请刷新详情后重试。',{exact:true})).toBeVisible()
+ mode='numeric';await region.getByRole('button',{name:'重新连接',exact:true}).click()
+ await expect(region.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
+ await expect(region.getByText('未关联付款集合',{exact:true})).toHaveCount(0)
+})

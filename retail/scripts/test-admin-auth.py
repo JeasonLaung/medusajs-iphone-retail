@@ -111,6 +111,9 @@ def main():
             print(json.dumps({'test_exit_code': tested.returncode, 'mysql_oom_and_exit': state.stdout.decode().strip()}))
             raise RuntimeError('Owned MySQL/Redis authentication checks failed')
         counts = json.loads(markers[0])
+        payment_read_markers=[line.split('ORDER_PAYMENT_READ_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_PAYMENT_READ_REHEARSAL ' in line]
+        if len(payment_read_markers)!=1:
+            raise RuntimeError('Order payment read verification missing')
         payment_import_markers = [line.split('PAYMENT_IMPORT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'PAYMENT_IMPORT_REHEARSAL ' in line]
         if len(payment_import_markers)!=1:
             raise RuntimeError('Payment import verification missing')
@@ -179,6 +182,7 @@ def main():
         files += ['retail/backend/internal/identity/payment_schema_test.go','retail/backend/migrations/0019_payment_relational.sql','retail/scripts/generate-payment-schema.py','retail/backend/internal/payments/schema.go','retail/backend/internal/payments/schema_plan.json']
         files += ['retail/backend/internal/identity/payment_import_test.go','retail/backend/migrations/0020_payment_import_evidence.sql','retail/scripts/generate-payment-import-plan.py','retail/backend/internal/holderimport/import.go','retail/backend/internal/rowimport/history_payment_sql.go','retail/backend/internal/rowimport/history_account_holder.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/paymentimport').glob('*') if p.is_file()]
+        files += ['retail/backend/internal/orders/payments.go','retail/backend/internal/identity/order_payments_test.go']
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                   'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                               'network': 'owned shared namespace with no external network', 'published_ports': 0},
@@ -196,6 +200,7 @@ def main():
                   'order_schema': json.loads(order_markers[0]),
                   'order_import': json.loads(order_import_markers[0]),
                   'customer_history': json.loads(customer_markers[0]),
+                  'order_payments': json.loads(payment_read_markers[0]),
                   'order_read': json.loads(order_read_markers[0]),
                   'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
