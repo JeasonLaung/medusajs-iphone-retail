@@ -350,7 +350,7 @@
     "Concurrency, failure recovery, Gin and UI behavior"
   ],
   "go_registry_fixture": {
-    "binary_sha256": "115f3e68329b6345a767a65c3d449667f4250b7eb6c1b25d0342b1f0004e73e0",
+    "binary_sha256": "0e9488b08a61eed15cbb178167061e92f54361602cd31f9e5b3ecdf85b4b1828",
     "passed_tests": [
       "TestTupleEncoding",
       "TestRegistryMySQL",
@@ -428,7 +428,8 @@
       "TestSchemaRunnerMySQL",
       "TestSchemaRunnerMySQL/all_embedded_migrations_repeat_and_checksum_rejection",
       "TestSchemaRunnerMySQL/implicit_ddl_failure_blocks_replay_and_explicit_reconciliation",
-      "TestSchemaRunnerMySQL/cross_connection_named_lock_and_release_after_cancel"
+      "TestSchemaRunnerMySQL/cross_connection_named_lock_and_release_after_cancel",
+      "TestSchemaRunnerMySQL/killed_process_during_ddl_keeps_uncertain_journal"
     ],
     "scope": "Artificial rows only, including actual source adapter and domain row transaction; no HTTP/importer integration acceptance"
   },

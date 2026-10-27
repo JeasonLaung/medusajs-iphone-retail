@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"os"
+	"os/exec"
 	"testing"
 	"testing/fstest"
 	"time"
@@ -176,4 +177,118 @@ func TestSchemaRunnerMySQL(t *testing.T) {
 			t.Fatal("fixture final lock release failed")
 		}
 	})
+	t.Run("killed_process_during_ddl_keeps_uncertain_journal", func(t *testing.T) {
+		db := open("schema_crash_fixture")
+		if _, err := db.ExecContext(ctx, "CREATE TABLE ddl_gate(id INT PRIMARY KEY)"); err != nil {
+			t.Fatal("crash fixture gate unavailable")
+		}
+		if _, err := db.ExecContext(ctx, "INSERT INTO ddl_gate VALUES(1)"); err != nil {
+			t.Fatal("crash fixture gate row unavailable")
+		}
+		// A live transaction holds metadata use of ddl_gate. The child ALTER
+		// reaches MySQL and waits for an exclusive metadata lock, making the
+		// kill point observable without production fault hooks or timed guesses.
+		blocker, err := db.BeginTx(ctx, nil)
+		if err != nil {
+			t.Fatal("crash fixture blocker unavailable")
+		}
+		defer blocker.Rollback()
+		var id int
+		if blocker.QueryRowContext(ctx, "SELECT id FROM ddl_gate WHERE id=1 FOR UPDATE").Scan(&id) != nil {
+			t.Fatal("crash fixture gate lock unavailable")
+		}
+		executable, err := os.Executable()
+		if err != nil {
+			t.Fatal("crash fixture child runner unavailable")
+		}
+		child := exec.CommandContext(ctx, executable, "-test.run=^TestSchemaRunnerCrashChild$", "-test.timeout=20s")
+		child.Env = append(os.Environ(), "SCHEMA_CRASH_CHILD=1")
+		// Output is discarded. No SQL text, driver output or connection material
+		// is forwarded from the child, including failures.
+		if err := child.Start(); err != nil {
+			t.Fatal("crash fixture child failed to start")
+		}
+		waited := false
+		defer func() {
+			if !waited {
+				_ = child.Process.Kill()
+				_ = child.Wait()
+			}
+		}()
+		observed := false
+		deadline := time.Now().Add(8 * time.Second)
+		for time.Now().Before(deadline) {
+			var n int
+			if db.QueryRowContext(ctx, `SELECT COUNT(*) FROM information_schema.PROCESSLIST WHERE DB='schema_crash_fixture'
+			 AND STATE='Waiting for table metadata lock' AND INFO='ALTER TABLE ddl_gate ADD COLUMN reviewed_value INT NULL'`).Scan(&n) == nil && n == 1 {
+				observed = true
+				break
+			}
+			time.Sleep(50 * time.Millisecond)
+		}
+		if !observed {
+			t.Fatal("child DDL was not observed waiting in MySQL")
+		}
+		count(db, "SELECT COUNT(*) FROM schema_migration_steps WHERE version='0001_crash.sql' AND next_statement=1 AND inflight=TRUE AND status='running'", 1)
+		if err := child.Process.Kill(); err != nil {
+			t.Fatal("live child process could not be terminated")
+		}
+		waitErr := child.Wait()
+		waited = true
+		if waitErr == nil {
+			t.Fatal("terminated migration child reported success")
+		}
+		if err := blocker.Rollback(); err != nil {
+			t.Fatal("crash fixture metadata blocker release failed")
+		}
+		p, err := schemaCrashPlan()
+		if err != nil {
+			t.Fatal("crash fixture plan invalid")
+		}
+		// Closing the dead client's socket can take a short time to reach the
+		// server. Reobserve the SAME journal, never restart the killed child.
+		deadline = time.Now().Add(8 * time.Second)
+		for {
+			_, err = schema.Apply(ctx, db, p)
+			if !errors.Is(err, schema.ErrLocked) || time.Now().After(deadline) {
+				break
+			}
+			time.Sleep(50 * time.Millisecond)
+		}
+		if !errors.Is(err, schema.ErrUncertain) {
+			t.Fatal("killed in-flight DDL was replayed or its lock remained stranded", err)
+		}
+		count(db, "SELECT COUNT(*) FROM schema_migrations", 0)
+		count(db, "SELECT COUNT(*) FROM schema_migration_steps WHERE next_statement=1 AND inflight=TRUE AND status='running'", 1)
+		count(db, "SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA='schema_crash_fixture' AND TABLE_NAME='must_not_follow_crash'", 0)
+		count(db, "SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA='schema_crash_fixture' AND TABLE_NAME='acknowledged_before_crash'", 1)
+		// The ALTER might have completed after socket loss or been aborted.
+		// Either outcome requires explicit reconciliation; no expectation here
+		// turns that database-specific race into a silent resume policy.
+	})
+}
+
+func schemaCrashPlan() (*schema.Plan, error) {
+	return schema.Load(fstest.MapFS{"0001_crash.sql": {Data: []byte("CREATE TABLE acknowledged_before_crash(id INT); ALTER TABLE ddl_gate ADD COLUMN reviewed_value INT NULL; CREATE TABLE must_not_follow_crash(id INT);")}})
+}
+
+func TestSchemaRunnerCrashChild(t *testing.T) {
+	if os.Getenv("UNIQUEKEY_TEST") != "1" || os.Getenv("SCHEMA_CRASH_CHILD") != "1" {
+		t.Skip("only the isolated crash parent starts this child")
+	}
+	cfg := mysql.NewConfig()
+	cfg.User, cfg.Passwd, cfg.Net, cfg.Addr, cfg.DBName = "root", os.Getenv("MYSQL_PWD"), "unix", "/var/run/mysqld/mysqld.sock", "schema_crash_fixture"
+	db, err := sql.Open("mysql", cfg.FormatDSN())
+	if err != nil {
+		t.Fatal("crash child connection invalid")
+	}
+	defer db.Close()
+	p, err := schemaCrashPlan()
+	if err != nil {
+		t.Fatal("crash child plan invalid")
+	}
+	if _, err := schema.Apply(t.Context(), db, p); err != nil {
+		t.Fatal("crash child runner stopped")
+	}
+	t.Fatal("crash child unexpectedly finished before parent termination")
 }
