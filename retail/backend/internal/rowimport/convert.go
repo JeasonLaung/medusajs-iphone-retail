@@ -85,6 +85,10 @@ var compiledPlans = sync.OnceValues(func() (map[string]tablePlan, error) {
 // claims or domain states. Protected non-NULL fields deliberately fail closed
 // until their source-specific authenticated conversion is provided.
 func Convert(sourceTable string, row SourceRow) (BoundRow, error) {
+	return convertRow(sourceTable, row, nil)
+}
+
+func convertRow(sourceTable string, row SourceRow, protect func(field, json.RawMessage) (any, error)) (BoundRow, error) {
 	plans, err := compiledPlans()
 	if err != nil {
 		return BoundRow{}, ErrRow
@@ -110,6 +114,9 @@ func Convert(sourceTable string, row SourceRow) (BoundRow, error) {
 		} else {
 			var err error
 			value, err = convertValue(f, cell.Raw)
+			if err == ErrProtection && protect != nil {
+				value, err = protect(f, cell.Raw)
+			}
 			if err != nil {
 				return BoundRow{}, err
 			}

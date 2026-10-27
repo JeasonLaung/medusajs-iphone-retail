@@ -536,4 +536,5 @@ func TestRegistryMySQL(t *testing.T) {
 			t.Fatal("JSON null collapsed to SQL NULL")
 		}
 	})
+	t.Run("mapped_merchant_cipher_to_new_binary_sql_envelope", func(t *testing.T) { testMappedMerchantConfig(t, db, ctx) })
 }

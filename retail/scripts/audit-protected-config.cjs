@@ -163,4 +163,7 @@ function main() {
   if (Object.keys(failures).length) process.exitCode = 1
 }
 // Never forward errors from crypto/parse/runtime: they may embed protected data.
-try { main() } catch { console.error('Protected configuration audit failed; inspect inputs privately. No secret error details emitted.'); process.exitCode = 1 }
+module.exports = { loadDomain }
+if (require.main === module) {
+  try { main() } catch { console.error('Protected configuration audit failed; inspect inputs privately. No secret error details emitted.'); process.exitCode = 1 }
+}

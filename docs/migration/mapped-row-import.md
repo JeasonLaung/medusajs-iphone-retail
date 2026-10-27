@@ -20,7 +20,7 @@ Cell显式包含SQLNull和Raw：SQLNull=true时Raw必须为空且列可NULL；SQ
 
 人工测试覆盖59组计划、超JS安全整数的一位差异、38位数、负零、指数、小数尾零、微小不相等、NULL组合及非法对象。含必填受保护字段的行仍返回ErrProtection，该类表的配对测试只验证独立配对组件，不计作已解密或已导入。非受保护行验证不一致时返回空BoundRow。真实历史数值与业务单位对账仍须完成；此处不是业务计算引擎。
 
-受保护非NULL字符串/JSON返回ErrProtection，必须后续逐域解密/密封再绑定，不可写原文或绕过；可NULL字段的SQL NULL可以保留而无需解密。JSON字段合法性与原文保留不意味着其provider token已获准公开。错误固定且不包含业务值、行ID、密文或源payload。
+普通Convert对受保护非NULL字符串/JSON返回ErrProtection；可NULL字段的SQL NULL可以保留而无需解密。新[ConfigSecrets入口](merchant-secret-conversion.md)仅为12个明确商户字符串字段提供旧认证解密/明文分流及目标AAD密封，复用全部整行检查；未知保护字符串和全部非NULL保护JSON继续hold。JSON字段合法性与原文保留不意味着其provider token已获准公开。错误固定且不包含业务值、行ID、密文或源payload。
 
 ### 源CHECK约束
 
