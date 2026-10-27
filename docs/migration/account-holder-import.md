@@ -18,4 +18,4 @@
 
 结果见 [mysql-type-fixture-report.json](mysql-type-fixture-report.json) 的 TestHolderImportMySQL。顶层72项仍为71项SQL检查加一个Go套件，不是72个业务场景。结束按所有权删除临时容器。
 
-仍缺真实主体 SQL 演练、正式全域导入组合及恢复、持久密钥/读取授权、其他 provider 资料和 Gin/worker 运行时。原有375项历史引用缺口保持未验收，不恢复旧客户付款绑定。T006/T018 不因此验收。
+新增[真实SQL演练](account-holder-mysql-rehearsal.md)已将1主体/1实际provider/1 hold/1唯一登记在临时MySQL执行回滚、提交、精确重放和保护读取，临时库清理完成，没有恢复客户绑定。仍缺正式全域导入组合及恢复、持久密钥/读取授权、其他 provider 资料和 Gin/worker 运行时。原有375项历史引用缺口保持未验收。T006/T018 不因此验收。
