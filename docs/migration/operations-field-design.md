@@ -23,7 +23,7 @@
 
 ## 密钥、旧身份邮件及任务
 
-源码依据：`modules/mail/security.ts`、`lib/seo/core.ts`、`modules/webhook-notifications/security.ts`（均在旧 backend/src 下）。三域都使用 AES-256-GCM，以各域环境密钥或 COOKIE_SECRET 派生；必须按各自配置识别，不能互换。SEO setting 只有 is_secret 的源值需旧解密，普通值保持明文语义；新库统一密封存放，公开读取仍按白名单。字段预检仅核对源类型，**尚未证明密文可解密或新信封可往返**。
+源码依据：`modules/mail/security.ts`、`lib/seo/core.ts`、`modules/webhook-notifications/security.ts`（均在旧 backend/src 下）。三域都使用 AES-256-GCM，以各域环境密钥或 COOKIE_SECRET 派生；必须按各自配置识别，不能假定可互换。SEO setting 只有 is_secret 的源值需旧解密，普通值保持明文语义；新库统一密封存放，公开读取仍按白名单。字段预检仅核对源类型；后续[离线密钥核对](protected-config-baseline.md)已验证固定快照邮件/通知非空值和Mollie共3项解密及临时AAD往返，尚无持久新信封/轮换/SQL导入证明，SEO空表不算真实域验收。
 
 旧注册验证邮件由 `created_by=registration-verification` 标识，队列源码还关联 auth verification、15 分钟有效期和 token hash。源正文可能包含旧登录链接：新库导入应移除旧认证 capability，保留必要投递历史/脱敏正文；这些邮件永不重放，也不导入旧 auth 数据以恢复它们。当前聚合审计只计数，不声称已扫描或清理正文里的全部旧 token。
 

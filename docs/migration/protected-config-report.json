@@ -1,0 +1,127 @@
+{
+  "format_version": 1,
+  "scope": "Fixed ignored snapshot with explicitly selected ignored .env; source crypto callbacks only, no app/provider/DB writes. No plaintext/ciphertext/key fingerprints or private row IDs in report. Not production key availability or accepted importer proof.",
+  "source_snapshot_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "source_sha256": {
+    "medusa-store/node_modules/.pnpm/dotenv@16.6.1/node_modules/dotenv/lib/main.js": "3381601545980775b6ecd2bf078ce369a3b24316e10a3182ab78811f01dc83b5",
+    "medusa-store/apps/backend/src/modules/mail/security.ts": "79ba763bd84f7536be4a8fd47038b837cbf0b90a85cb847f02e2c7eba788f097",
+    "medusa-store/apps/backend/src/lib/seo/core.ts": "ea1e6b8ccfcb5f9ff7b0e0559164fa25db2a84d314eb7f8f6c6bc60e5b6f532f",
+    "medusa-store/apps/backend/src/modules/webhook-notifications/security.ts": "d6513fdc3e1aedfa79bf41ec1b186a2cdc4b9f4c5f0ce749fceb062b26bfba07",
+    "medusa-store/apps/backend/src/modules/mollie-settings/security.ts": "f01bf930bd3a1714f40b2ed78e9c6be2cd9b20d7006d3cab71672d17bba32b31"
+  },
+  "protected_fields": {
+    "mail_account.api_key": {
+      "rows": 1,
+      "encrypted_readable": 1,
+      "plaintext_protected": 0,
+      "empty": 0,
+      "null": 0,
+      "failures": 0
+    },
+    "mail_account.webhook_secret": {
+      "rows": 1,
+      "encrypted_readable": 0,
+      "plaintext_protected": 0,
+      "empty": 1,
+      "null": 0,
+      "failures": 0
+    },
+    "seo_provider.api_key": {
+      "rows": 0,
+      "encrypted_readable": 0,
+      "plaintext_protected": 0,
+      "empty": 0,
+      "null": 0,
+      "failures": 0
+    },
+    "seo_setting.value": {
+      "rows": 0,
+      "encrypted_readable": 0,
+      "plaintext_protected": 0,
+      "empty": 0,
+      "null": 0,
+      "failures": 0
+    },
+    "webhook_endpoint.url": {
+      "rows": 1,
+      "encrypted_readable": 1,
+      "plaintext_protected": 0,
+      "empty": 0,
+      "null": 0,
+      "failures": 0
+    },
+    "webhook_endpoint.secret": {
+      "rows": 1,
+      "encrypted_readable": 0,
+      "plaintext_protected": 0,
+      "empty": 1,
+      "null": 0,
+      "failures": 0
+    },
+    "webhook_endpoint.token": {
+      "rows": 1,
+      "encrypted_readable": 0,
+      "plaintext_protected": 0,
+      "empty": 1,
+      "null": 0,
+      "failures": 0
+    },
+    "mollie_config.api_key": {
+      "rows": 1,
+      "encrypted_readable": 1,
+      "plaintext_protected": 0,
+      "empty": 0,
+      "null": 0,
+      "failures": 0
+    },
+    "mail_contact.unsubscribe_token": {
+      "rows": 0,
+      "encrypted_readable": 0,
+      "plaintext_protected": 0,
+      "empty": 0,
+      "null": 0,
+      "failures": 0
+    },
+    "paypal_connection.auth_code": {
+      "rows": 1,
+      "encrypted_readable": 0,
+      "plaintext_protected": 0,
+      "empty": 0,
+      "null": 1,
+      "failures": 0
+    },
+    "paypal_connection.seller_client_secret": {
+      "rows": 1,
+      "encrypted_readable": 0,
+      "plaintext_protected": 0,
+      "empty": 0,
+      "null": 1,
+      "failures": 0
+    },
+    "paypal_connection.app_access_token": {
+      "rows": 1,
+      "encrypted_readable": 0,
+      "plaintext_protected": 0,
+      "empty": 0,
+      "null": 1,
+      "failures": 0
+    }
+  },
+  "totals": {
+    "encrypted_readable": 3,
+    "plaintext_protected": 0,
+    "ephemeral_authenticated_roundtrips": 3,
+    "empty": 3,
+    "null": 3
+  },
+  "artificial_cases": 33,
+  "failures": {},
+  "remaining": [
+    "Selected .env is not proof of live process/deployment key configuration",
+    "No provider authentication/refresh/email/payment/webhook call",
+    "Ephemeral key/ciphertexts not persisted; buffer clearing is not proof of physical memory erasure; no persistent Gin envelope, key rotation or SQL import implemented",
+    "Empty tables/config values do not validate future populated rows",
+    "Legacy login/session/reset/verification credentials excluded entirely; merchant secrets and opt-out capability handled separately"
+  ],
+  "status": "offline-readability-checked-import-not-accepted"
+}

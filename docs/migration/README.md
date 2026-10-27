@@ -16,6 +16,7 @@
 | 供应商账号与绑定 | [创建/编辑/范围及失败清理](supplier-account-contract.md)、fixtures/legacy-supplier-account-rules.json、schemas/supplier-accounts.schema.json、schemas/supplier-account-operations.json |
 | 原生入口项目保护 | [设备/数量库存/生产付款保护](native-guard-contract.md)、fixtures/legacy-native-guards.json |
 | 文件清单 | [公开图/私有照片/邮件附件基线](file-migration-baseline.md)、file-snapshot-report.json；明细仅在忽略目录 |
+| 密钥/商户秘密 | [四域加密与离线可读性](protected-config-baseline.md)、protected-config-report.json；无明文/密文/密钥指纹 |
 | 自定义业务 | [设备命令及固定用例](device-commands.md)、[回收与邮件](buyback-and-mail.md)、[SEO 与引用监测](seo-contract.md) |
 | 统计 | [Analytics 实际口径](analytics-contract.md) |
 | 数据继承 | [源数据去向与转换](data-mapping.md)、[第一批36表292列设计](catalog-field-design.md)、catalog-field-mapping.json/.csv、catalog-preflight-report.json、data-table-disposition.csv、data-source-manifest.json |
@@ -45,6 +46,7 @@ python retail/scripts/map-custom-route-contract.py --check
 node retail/scripts/capture-supplier-account-rules.cjs --check
 node retail/scripts/capture-native-guards.cjs --check
 npm test --prefix retail/contracts
+node retail/scripts/audit-protected-config.cjs --bundle logs/gin-migration/source-20261026.json --env medusa-store/apps/backend/.env --check
 python retail/scripts/test-file-audit.py
 python retail/scripts/audit-file-snapshot.py --bundle logs/gin-migration/source-20261026.json --public-root medusa-store/apps/backend/static --private-root medusa-store/apps/backend/.private-files --private-index logs/gin-migration/file-index.json --check
 python retail/scripts/capture-schema-constraints.py --check
