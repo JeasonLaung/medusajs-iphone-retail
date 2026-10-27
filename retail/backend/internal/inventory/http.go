@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"strings"
+	"time"
 	"unicode/utf8"
 
 	"github.com/eurorefurb/retail/internal/platform"
@@ -13,23 +14,30 @@ import (
 
 type Handler struct{ DB *gorm.DB }
 type Level struct {
-	ID                  string  `json:"id"`
-	LocationID          string  `json:"location_id"`
-	LocationName        *string `json:"location_name"`
-	StockedQuantity     string  `json:"stocked_quantity"`
-	ReservedQuantity    string  `json:"reserved_quantity"`
-	IncomingQuantity    string  `json:"incoming_quantity"`
-	AvailableQuantity   string  `json:"available_quantity" gorm:"-"`
-	ReservationQuantity string  `json:"reservation_quantity" gorm:"-"`
-	ReservationCount    int64   `json:"reservation_count" gorm:"-"`
-	Reconciled          bool    `json:"reconciled" gorm:"-"`
+	Revision            string    `json:"revision" gorm:"-"`
+	UpdatedAt           time.Time `json:"-"`
+	ID                  string    `json:"id"`
+	LocationID          string    `json:"location_id"`
+	LocationName        *string   `json:"location_name"`
+	StockedQuantity     string    `json:"stocked_quantity"`
+	ReservedQuantity    string    `json:"reserved_quantity"`
+	IncomingQuantity    string    `json:"incoming_quantity"`
+	AvailableQuantity   string    `json:"available_quantity" gorm:"-"`
+	ReservationQuantity string    `json:"reservation_quantity" gorm:"-"`
+	ReservationCount    int64     `json:"reservation_count" gorm:"-"`
+	Reconciled          bool      `json:"reconciled" gorm:"-"`
 }
 type UnmatchedReservation struct {
 	LocationID string `json:"location_id"`
 	Quantity   string `json:"quantity"`
 	Count      int64  `json:"count"`
 }
+type MigrationHold struct {
+	LocationID string `json:"location_id"`
+	Reason     string `json:"reason"`
+}
 type Item struct {
+	MigrationHolds        []MigrationHold        `json:"migration_holds" gorm:"-"`
 	InventoryItemID       string                 `json:"inventory_item_id"`
 	RequiredQuantity      string                 `json:"required_quantity"`
 	SKU                   *string                `json:"sku"`
@@ -56,12 +64,24 @@ func (h Handler) AdminVariant(c *gin.Context) {
 		return
 	}
 	items := make([]Item, 0)
+	stockEditEnabled := false
 	var variant struct {
 		ID              string
 		ManageInventory bool
 		AllowBackorder  bool
 	}
 	err := h.DB.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
+		var capability struct {
+			Version int
+			Enabled bool
+		}
+		if err := tx.Table("inventory_command_capabilities").Where("command=?", "inventory.edit_stock").Take(&capability).Error; err != nil {
+			return ErrSchema
+		}
+		if capability.Version != 1 {
+			return ErrSchema
+		}
+		stockEditEnabled = capability.Enabled
 		if err := tx.Table("catalog_variants v").Select("v.id,v.manage_inventory,v.allow_backorder").Joins("JOIN catalog_products p ON p.id=v.product_id AND p.deleted_at IS NULL").Where("v.id=? AND v.product_id=? AND v.deleted_at IS NULL", variantID, productID).Take(&variant).Error; err != nil {
 			return err
 		}
@@ -78,15 +98,29 @@ func (h Handler) AdminVariant(c *gin.Context) {
 		positions := map[string]int{}
 		for i := range items {
 			items[i].Levels = []Level{}
+			items[i].MigrationHolds = []MigrationHold{}
 			items[i].UnmatchedReservations = []UnmatchedReservation{}
 			ids = append(ids, items[i].InventoryItemID)
 			positions[items[i].InventoryItemID] = i
+		}
+		var holds []struct {
+			MigrationHold
+			InventoryItemID string
+		}
+		if err := tx.Table("inventory_migration_holds").Select("inventory_item_id,location_id,reason").Where("inventory_item_id IN ?", ids).Order("inventory_item_id,location_id,reason").Limit(30001).Scan(&holds).Error; err != nil {
+			return err
+		}
+		if len(holds) > 30000 {
+			return errLimit
+		}
+		for _, hold := range holds {
+			items[positions[hold.InventoryItemID]].MigrationHolds = append(items[positions[hold.InventoryItemID]].MigrationHolds, hold.MigrationHold)
 		}
 		var levels []struct {
 			Level
 			InventoryItemID string
 		}
-		if err := tx.Table("inventory_levels l").Select("l.id,l.inventory_item_id,l.location_id,l.stocked_quantity,l.reserved_quantity,l.incoming_quantity,s.name AS location_name").Joins("LEFT JOIN inventory_locations s ON s.id=l.location_id AND s.deleted_at IS NULL").Where("l.inventory_item_id IN ? AND l.deleted_at IS NULL", ids).Order("l.inventory_item_id,l.location_id,l.id").Limit(10001).Scan(&levels).Error; err != nil {
+		if err := tx.Table("inventory_levels l").Select("l.id,l.inventory_item_id,l.location_id,l.stocked_quantity,l.reserved_quantity,l.incoming_quantity,l.updated_at,s.name AS location_name").Joins("LEFT JOIN inventory_locations s ON s.id=l.location_id AND s.deleted_at IS NULL").Where("l.inventory_item_id IN ? AND l.deleted_at IS NULL", ids).Order("l.inventory_item_id,l.location_id,l.id").Limit(10001).Scan(&levels).Error; err != nil {
 			return err
 		}
 		if len(levels) > 10000 {
@@ -118,6 +152,7 @@ func (h Handler) AdminVariant(c *gin.Context) {
 				matched[k] = true
 			}
 			var err error
+			l.Revision = stockRevision(stockState{ID: l.ID, InventoryItemID: row.InventoryItemID, LocationID: l.LocationID, StockedQuantity: l.StockedQuantity, ReservedQuantity: l.ReservedQuantity, IncomingQuantity: l.IncomingQuantity, UpdatedAt: l.UpdatedAt})
 			l.AvailableQuantity, err = Difference(l.StockedQuantity, l.ReservedQuantity)
 			if err != nil {
 				return err
@@ -145,5 +180,5 @@ func (h Handler) AdminVariant(c *gin.Context) {
 		platform.Fail(c, 503, "inventory.unavailable", "Inventory unavailable")
 		return
 	}
-	c.JSON(200, gin.H{"product_id": productID, "variant_id": variantID, "manage_inventory": variant.ManageInventory, "allow_backorder": variant.AllowBackorder, "items": items, "writes_enabled": false})
+	c.JSON(200, gin.H{"product_id": productID, "variant_id": variantID, "manage_inventory": variant.ManageInventory, "allow_backorder": variant.AllowBackorder, "items": items, "writes_enabled": false, "stock_edit_enabled": stockEditEnabled})
 }

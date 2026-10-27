@@ -350,7 +350,7 @@
     "Concurrency, failure recovery, Gin and UI behavior"
   ],
   "go_registry_fixture": {
-    "binary_sha256": "bc9543ee8b3b3f49b0b0f1f203713a1774ec4a0f0a468c62ce5895052074129b",
+    "binary_sha256": "70325d11fb4c9f3df9d52f151e587f28fe18275154f19b82f930ed37ab3421a5",
     "passed_tests": [
       "TestTupleEncoding",
       "TestRegistryMySQL",

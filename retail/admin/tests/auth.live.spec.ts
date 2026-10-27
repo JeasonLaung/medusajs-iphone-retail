@@ -171,6 +171,27 @@ test('real browser cookie, Origin and CSRF flow through Vite to Gin and Redis', 
     await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true)
     await page.screenshot({path:path.resolve(`../../logs/gin-migration/admin-live/variant-inventory-zh-${width}.png`),fullPage:true,animations:'disabled'})
   }
+  await inventoryDrawer.getByRole('button',{name:'修改库存 fixture-location',exact:true}).click()
+  const stockEdit=page.getByRole('dialog',{name:'修改库存',exact:true})
+  for(const width of [390,768,1440]) {
+    await page.setViewportSize({width,height:900})
+    await expect(stockEdit.getByRole('button',{name:'保存',exact:true})).toBeInViewport()
+    await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true)
+    await page.screenshot({path:path.resolve(`../../logs/gin-migration/admin-live/stock-edit-zh-${width}.png`),fullPage:true,animations:'disabled'})
+  }
+  await stockEdit.getByRole('textbox',{name:'在途数量',exact:true}).fill('0.500000000000000001')
+  await stockEdit.getByRole('button',{name:'保存',exact:true}).click()
+  await expect(stockEdit).toHaveCount(0)
+  const afterStock=await (await context.request.get('/api/admin/products/fixture-a/variants/fixture-v/inventory')).json()
+  expect(afterStock.items[0].levels[0].incoming_quantity).toBe('0.500000000000000001')
+  expect(afterStock.items[0].levels[0].stocked_quantity).toBe(stock.items[0].levels[0].stocked_quantity)
+  expect(afterStock.items[0].levels[0].reserved_quantity).toBe(stock.items[0].levels[0].reserved_quantity)
+  const csrfToken=(await context.cookies()).find(c=>c.name==='retail_admin_csrf')!.value
+  const editAttempt={operation_id:crypto.randomUUID(),expected_revision:stock.items[0].levels[0].revision,stocked_quantity:stock.items[0].levels[0].stocked_quantity,incoming_quantity:'0.250000000000000000'}
+  expect((await context.request.post('/api/admin/inventory-levels/fixture-level/stock',{headers:{Origin:'http://127.0.0.1:19200','X-CSRF-Token':csrfToken},data:editAttempt})).status()).toBe(409)
+  editAttempt.operation_id=crypto.randomUUID();editAttempt.expected_revision=afterStock.items[0].levels[0].revision;editAttempt.stocked_quantity='9007199254740992.000000000000000001'
+  const held=await context.request.post('/api/admin/inventory-levels/fixture-level/stock',{headers:{Origin:'http://127.0.0.1:19200','X-CSRF-Token':csrfToken},data:editAttempt})
+  expect(held.status()).toBe(409);expect((await held.json()).error.code).toBe('inventory.reconciliation_required')
   await inventoryDrawer.getByRole('button',{name:'取消',exact:true}).click()
   await expect(inventoryDrawer).toHaveCount(0)
   for(const width of [390,768,1440]) {
@@ -205,6 +226,16 @@ test('real browser cookie, Origin and CSRF flow through Vite to Gin and Redis', 
     await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true)
     await page.screenshot({path:path.resolve(`../../logs/gin-migration/admin-live/variant-inventory-en-${width}.png`),fullPage:true,animations:'disabled'})
   }
+  await enInventory.getByRole('button',{name:'Edit stock fixture-location',exact:true}).click()
+  const enStockEdit=page.getByRole('dialog',{name:'Edit stock',exact:true})
+  for(const width of [390,768,1440]) {
+    await page.setViewportSize({width,height:900})
+    await expect(enStockEdit.getByRole('button',{name:'Save',exact:true})).toBeInViewport()
+    await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true)
+    await page.screenshot({path:path.resolve(`../../logs/gin-migration/admin-live/stock-edit-en-${width}.png`),fullPage:true,animations:'disabled'})
+  }
+  await enStockEdit.getByRole('button',{name:'Cancel',exact:true}).click()
+  await expect(enStockEdit).toHaveCount(0)
   await enInventory.getByRole('button',{name:'Cancel',exact:true}).click()
   await expect(enInventory).toHaveCount(0)
   for(const width of [390,768,1440]) {

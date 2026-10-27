@@ -35,7 +35,7 @@
 | React Admin | [Ant登录/账号页面](../docs/migration/admin-login-ui.md)新增独立React应用，Form/Layout/Menu/Drawer/Descriptions，直连Gin协议；类型及build通过，7项人工HTTP浏览器测试及9张中英三宽截图；23页面/6widgets仍仅承接设计，图表固定ECharts | 真实浏览器到Gin/MySQL/Redis串联、完整外壳/页签及权限、全部业务页和图表仍缺；bundle体积待拆分 |
 | 商品基础信息编辑 | [Ant抽屉与Gin命令](../docs/migration/admin-product-edit.md)：0011专用能力、版本冲突、操作重放及同事务审计；实际MySQL八路并发/故障回滚与实际浏览器持久化、中英三宽验证 | 创建、选项/变体/关联、完整价格库存、完整RBAC/对象范围及Astro仍缺；通用目录写入保持关闭 |
 | 变体价格配置 | [Ant/Gin查询](../docs/migration/admin-variant-prices.md)：共享集合、十进制字符串、阶梯数量、规则与价目表；人工MySQL边界及真实1558变体价格与SQL逐项验证，实际浏览器抽屉分页/中英三宽 | 配置展示不等于结算引擎；含税偏好、完整条件选价、价格写命令和库存仍缺 |
-| 变体库存与预留明细 | [0012/Ant/Gin](../docs/migration/admin-variant-inventory.md)：2表27列、模型校验、精确库存余额及预留差异；固定样本927库存层/99预留及1558变体查询、实际MySQL/浏览器验证 | [0013逐行账本与4项差异证据](../docs/migration/inventory-row-import.md)已补充；全域导入协调器、订单解析/孤儿问题账本、命令级hold与预留/扣减/履约、完整仓库权限仍缺；写入关闭 |
+| 变体库存与预留明细 | [0012/Ant/Gin](../docs/migration/admin-variant-inventory.md)：2表27列、模型校验、精确库存余额及预留差异；固定样本927库存层/99预留及1558变体查询、实际MySQL/浏览器验证 | [0013逐行账本与4项差异证据](../docs/migration/inventory-row-import.md)已补充；[0014专用库存量编辑](../docs/migration/admin-stock-edit.md)已补充；全域导入协调器、订单解析/孤儿问题账本、预留/扣减/履约、完整仓库权限仍缺；通用写入关闭 |
 | 生产替换 | 未进行 | 全量对账、回归及未来切换计划 |
 
 当前没有任何业务域可据此声明已完成迁移。草稿不能连接旧系统数据库作为新后端，也不能代理 Medusa 冒充迁移实现。
@@ -65,3 +65,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 启动校验完整10文件账本及目录模型，未实现的编辑入口明确503；全量仍未验收。
 
 2026-10-28 库存导入补充：0013 与 inventoryimport 为 2 表 27 列增加逐行来源/目标账本；固定快照 927 库存层、99 预留共 1026 行的回滚/提交/精确重放通过，4 条不可自动释放的差异记录保留原事实。见[边界与证据](../docs/migration/inventory-row-import.md)。全域协调器、历史订单关联、库存写入与 hold 执行仍未完成。
+
+2026-10-28 库存量编辑补充：[0014 与 Ant/Gin 专用命令](../docs/migration/admin-stock-edit.md)设置库存/在途的精确绝对数量；预留与设备独立保留。版本、持久操作重放、同事务审计和当前员工/能力复核；减少库存时拒绝历史 hold、实时预留合计差异或原负余额，补充库存不清除 hold。实际 MySQL 并发及回滚、真实浏览器和中英三宽验证见独立报告。尚缺完整库存写流程、权限/仓库范围、对账处置和 Astro，整个领域未验收。

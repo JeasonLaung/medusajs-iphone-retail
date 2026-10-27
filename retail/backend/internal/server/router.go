@@ -83,6 +83,7 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	private.GET("/products/:id/variants", h.AdminVariants)
 	private.GET("/products/:id/variants/:variant_id/prices", h.AdminVariantPrices)
 	private.GET("/products/:id/variants/:variant_id/inventory", (inventory.Handler{DB: db}).AdminVariant)
+	private.POST("/inventory-levels/:id/stock", (inventory.Handler{DB: db}).UpdateStock)
 	private.PATCH("/products/:id", h.UpdateProduct)
 	if root := os.Getenv("PUBLIC_ASSET_ROOT"); root != "" {
 		r.Static("/assets", root)

@@ -171,6 +171,49 @@ test('price drawer retries, preserves exact strings and distinguishes empty and 
   await expect(drawer.getByRole('cell',{name:'1',exact:true})).toHaveCount(0)
 })
 
+test('stock save preserves exact attempt on uncertainty and stops for reconciliation',async({page})=>{
+  await fixture(page)
+  const product={id:'stock-edit-product',revision:'a'.repeat(64),title:'Stock fixture',handle:'stock-edit-product',status:'draft',thumbnail:null,collection_id:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',variant_count:1,subtitle:null,description:null,options:[],images:[]}
+  const variant={id:'stock-edit-variant',product_id:product.id,title:'Stock variant',sku:null,thumbnail:null,variant_rank:0,manage_inventory:true,allow_backorder:false,configuration_complete:true,options:[],images:[],unassigned_option_value_ids:[]}
+  const attempts:unknown[]=[]
+  await page.route('**/api/admin/inventory-levels/test-level/stock',route=>{
+    attempts.push(route.request().postDataJSON())
+    expect(route.request().method()).toBe('POST')
+    expect(route.request().headers()['x-csrf-token']).toBe(sessionCSRF)
+    if(attempts.length===1)return route.fulfill({status:503,json:{error:{code:'inventory.unavailable'}}})
+    return route.fulfill({status:409,json:{error:{code:'inventory.reconciliation_required'}}})
+  })
+  await page.route('**/api/admin/products**',route=>{
+    const path=new URL(route.request().url()).pathname
+    if(path.endsWith('/inventory'))return route.fulfill({json:{product_id:product.id,variant_id:variant.id,manage_inventory:true,allow_backorder:false,writes_enabled:false,stock_edit_enabled:true,items:[{inventory_item_id:'test-item',required_quantity:'1',sku:null,title:'Stock item',item_available:true,migration_holds:[{location_id:'test-location',reason:'reservation_mismatch'}],unmatched_reservations:[],levels:[{id:'test-level',revision:'b'.repeat(64),location_id:'test-location',location_name:'Test location',stocked_quantity:'9007199254740993.000000000000000001',reserved_quantity:'1.000000000000000000',incoming_quantity:'0.000000000000000000',available_quantity:'9007199254740992.000000000000000001',reservation_quantity:'0.000000000000000000',reservation_count:0,reconciled:false}]}]}})
+    if(path.endsWith('/variants'))return route.fulfill({json:{variants:[variant],count:1,limit:20,offset:0}})
+    if(path.endsWith('/stock-edit-product'))return route.fulfill({json:{product}})
+    return route.fulfill({json:{products:[product],count:1,limit:20,offset:0}})
+  })
+  await page.goto('/login')
+  await signIn(page)
+  await page.goto('/products/stock-edit-product')
+  await page.getByRole('button',{name:'查看库存',exact:true}).click()
+  const inventory=page.getByRole('dialog',{name:'库存明细',exact:true})
+  await inventory.getByRole('button',{name:/Stock item/}).click()
+  await expect(inventory.getByText('历史差异尚未完成对账，补充库存不会自动解除限制。',{exact:true})).toBeVisible()
+  await inventory.getByRole('button',{name:'修改库存 test-location',exact:true}).click()
+  const edit=page.getByRole('dialog',{name:'修改库存',exact:true})
+  await edit.getByRole('textbox',{name:'库存数量',exact:true}).fill('9007199254740992.000000000000000001')
+  await edit.getByRole('button',{name:'保存',exact:true}).click()
+  await expect(edit.getByText('保存结果尚未确认。可以重试同一次保存，或关闭后重新读取库存。',{exact:true})).toBeVisible()
+  await expect(edit.getByRole('textbox',{name:'库存数量',exact:true})).toBeDisabled()
+  expect(attempts).toHaveLength(1)
+  await edit.getByRole('button',{name:'重试本次保存',exact:true}).click()
+  expect(attempts).toHaveLength(2)
+  expect(attempts[0]).toEqual(attempts[1])
+  expect(attempts[0]).toMatchObject({expected_revision:'b'.repeat(64),stocked_quantity:'9007199254740992.000000000000000001',incoming_quantity:'0.000000000000000000'})
+  await expect(edit.getByText('此仓库的库存存在待核对差异，暂不能减少库存。',{exact:true})).toBeVisible()
+  await expect(edit.getByRole('button',{name:'保存',exact:true})).toBeDisabled()
+  await edit.getByRole('button',{name:'取消',exact:true}).click()
+  await expect(edit).toHaveCount(0)
+})
+
 test('inventory drawer separates outage and empty state and rejects numeric quantities',async({page})=>{
   await fixture(page)
   const product={id:'stock-product',revision:'a'.repeat(64),title:'Stock fixture',handle:'stock-product',status:'draft',thumbnail:null,collection_id:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',variant_count:1,subtitle:null,description:null,options:[],images:[]}
@@ -180,8 +223,8 @@ test('inventory drawer separates outage and empty state and rejects numeric quan
     const path=new URL(route.request().url()).pathname
     if(path.endsWith('/inventory')){
       if(mode==='failed')return route.fulfill({status:503,json:{error:{code:'inventory.unavailable'}}})
-      const items=mode==='empty'?[]:[{inventory_item_id:'item',required_quantity:1,sku:null,title:null,item_available:true,levels:[],unmatched_reservations:[]}]
-      return route.fulfill({json:{product_id:product.id,variant_id:variant.id,manage_inventory:true,allow_backorder:false,writes_enabled:false,items}})
+      const items=mode==='empty'?[]:[{inventory_item_id:'item',required_quantity:1,sku:null,title:null,item_available:true,migration_holds:[],levels:[],unmatched_reservations:[]}]
+      return route.fulfill({json:{product_id:product.id,variant_id:variant.id,manage_inventory:true,allow_backorder:false,writes_enabled:false,stock_edit_enabled:true,items}})
     }
     return route.fulfill({json:path.endsWith('/variants')?{variants:[variant],count:1,limit:20,offset:0}:{product}})
   })

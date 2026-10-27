@@ -72,7 +72,7 @@ def main():
         if copied.returncode or docker('exec', mysql_id, 'chmod', '700', '/opt/identity.test').returncode:
             raise RuntimeError('Identity runner transfer failed')
         tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1', mysql_id,
-                        '/opt/identity.test', '-test.v', '-test.run', '^TestOwned(AdminAuthentication|CatalogSchemaTransition|ProductEdits|ProductPrices|ProductInventory)$', '-test.timeout', '150s', timeout=180)
+                        '/opt/identity.test', '-test.v', '-test.run', '^TestOwned(AdminAuthentication|CatalogSchemaTransition|ProductEdits|ProductPrices|ProductInventory|InventoryStockEdits)$', '-test.timeout', '150s', timeout=180)
         markers = [line.split('IDENTITY_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'IDENTITY_REHEARSAL ' in line]
         if tested.returncode or len(markers) != 1:
             # All inputs and failure messages in this binary are artificial.
@@ -94,6 +94,9 @@ def main():
         import_markers = [line.split('INVENTORY_IMPORT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'INVENTORY_IMPORT_REHEARSAL ' in line]
         if len(import_markers)!=1:
             raise RuntimeError('Inventory import verification missing')
+        stock_markers = [line.split('STOCK_EDIT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STOCK_EDIT_REHEARSAL ' in line]
+        if len(stock_markers)!=1:
+            raise RuntimeError('Stock edit verification missing')
         files = ['retail/scripts/test-admin-auth.py', 'retail/backend/internal/identity/admin.go',
                  'retail/backend/internal/identity/admin_test.go', 'retail/backend/internal/identity/integration_test.go',
                  'retail/backend/internal/server/router.go', 'retail/backend/internal/platform/http.go',
@@ -111,6 +114,7 @@ def main():
         files += ['retail/backend/migrations/0012_inventory_relational.sql','retail/backend/internal/identity/product_inventory_test.go','retail/scripts/generate-inventory-schema.py']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/inventoryimport').glob('*') if p.is_file()]
         files += ['retail/backend/migrations/0013_inventory_import_evidence.sql','retail/backend/internal/identity/inventory_import_test.go','retail/scripts/generate-inventory-import-plan.py']
+        files += ['retail/backend/migrations/0014_inventory_stock_edits.sql','retail/backend/internal/identity/stock_edit_test.go']
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                   'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                               'network': 'owned shared namespace with no external network', 'published_ports': 0},
@@ -121,6 +125,7 @@ def main():
                   'product_configured_prices': json.loads(price_markers[0]),
                   'product_inventory': json.loads(inventory_markers[0]),
                   'inventory_import': json.loads(import_markers[0]),
+                  'inventory_stock_edit': json.loads(stock_markers[0]),
                   'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
         password = ''

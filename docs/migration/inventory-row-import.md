@@ -1,7 +1,7 @@
 # 库存逐行导入账本与差异证据
 
 2026-10-28。0013 增加 `migration_inventory_rows` 与
-`inventory_migration_holds`。库存业务写入仍关闭，未开放扣减、预留、履约接口。
+`inventory_migration_holds`。[0014 专用库存量编辑](admin-stock-edit.md)已单独接入；扣减、预留、履约接口尚未实现。
 
 `inventoryimport.Import` 仅接受 inventory_level / reservation_item，完整执行
 27 列严格转换，保留 SQL NULL、JSON 文本、时间、软删和 DECIMAL(38,18)。
@@ -11,11 +11,11 @@
 调用者必须对任何错误回滚，并在完整输入、父依赖与领域检查通过后才提交。
 
 `PreserveHolds` 必须在同一事务、完整导入后执行。目标只能是独立迁移库，
-须先由显式 schema 执行器核对完整 13 文件计划，不能与旧应用 worker 共用。
+须先由显式 schema 执行器核对完整 14 文件计划，不能与旧应用 worker 共用。
 组件锁定关闭写能力的库存 marker 及库存/预留行，再分别计算预留合计差异、
 负余额、无有效库存层的预留。保存固定快照及精确 JSON 证据；重复证据须完全一致。
 不修复数量、不删除历史记录、不自动释放旧记录。数据库 CHECK 拒绝 released=TRUE。
-这不是库存命令级 hold 执行器；后续所有库存命令还须校验这些记录与仓库授权。
+专用库存量编辑已检查这些记录；后续预留、履约命令还须统一检查这些记录与仓库授权。
 
 证据见 [固定快照 MySQL 演练](catalog-mysql-rehearsal-report.json) 与
 [人工 MySQL 事务验证](admin-auth-report.json)。固定样本 927 库存层、99 预留

@@ -139,7 +139,7 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\', '/') for p in (ROOT / 'retail/admin').rglob('*')
                   if p.is_file() and not any(part in ('node_modules', 'dist') for part in p.relative_to(ROOT / 'retail/admin').parts)]
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
-                  'browser_tests_passed': 1, 'migrations_applied': 13, 'mocked_api_responses': False,
+                  'browser_tests_passed': 1, 'migrations_applied': 14, 'mocked_api_responses': False,
                   'reviewed_relational_schema_used': True, 'empty_draft_tables_retained_by_migration': 7,
                   'explicit_catalog_read_schema_migration_used': True, 'test_only_schema_rewrite': False,
                   'browser_executable_override_used': bool(os.environ.get('ADMIN_TEST_BROWSER')),
@@ -156,7 +156,10 @@ def main():
                               'Chinese and English price drawers at three viewport widths',
                               'exact inventory level balances and reservation mismatch evidence',
                               'unmatched reservations, deleted item/location and shared requirements retained',
-                              'Chinese and English inventory drawer at three viewport widths'],
+                              'Chinese and English inventory drawer at three viewport widths',
+                              'Ant stock edit persists exact incoming quantity through Gin and MySQL',
+                              'stock version conflict and live reservation mismatch reject consumption',
+                              'Chinese and English stock edit drawers at three viewport widths'],
                   'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                              'network': 'owned bridge network; egress not restricted', 'published_ports': 'one random API port bound to 127.0.0.1 only'},
                   'real_accounts_used': False, 'application_resources_used': False, 'tls_secure_cookie_verified': False,
