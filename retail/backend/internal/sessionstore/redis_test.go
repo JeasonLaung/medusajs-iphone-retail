@@ -30,6 +30,9 @@ func TestOwnedRedisSessions(t *testing.T) {
 	}
 	other, _ := New(client, "eurorefurb:other:v1:")
 	p := Principal{UserID: "artificial-user", Version: strings.Repeat("a", 64)}
+	if s.Ping(ctx) != nil {
+		t.Fatal("session dependency ping failed")
+	}
 	issued, err := s.Issue(ctx, Admin, p)
 	if err != nil {
 		t.Fatal("session not issued")
@@ -187,6 +190,9 @@ func TestOwnedRedisSessions(t *testing.T) {
 	}
 	// Closed connection models a failed dependency: no fallback memory/SQL.
 	_ = client.Close()
+	if s.Ping(ctx) != ErrUnavailable {
+		t.Fatal("dependency ping ignored outage")
+	}
 	if _, err := s.Resolve(ctx, Admin, survivor.Token); err != ErrUnavailable {
 		t.Fatal("outage accepted session")
 	}

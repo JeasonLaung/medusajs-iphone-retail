@@ -18,6 +18,18 @@ func Router(db *gorm.DB) *gin.Engine {
 }
 
 func router(db *gorm.DB, logger *slog.Logger) *gin.Engine {
+	return routerWithIdentity(db, logger, identity.New(db))
+}
+
+func RouterWithAuth(db *gorm.DB, options identity.Options) (*gin.Engine, error) {
+	h, err := identity.NewWithOptions(db, options)
+	if err != nil {
+		return nil, err
+	}
+	return routerWithIdentity(db, slog.Default(), h), nil
+}
+
+func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler) *gin.Engine {
 	r := gin.New()
 	_ = r.SetTrustedProxies(nil)
 	r.Use(platform.RequestBoundary(logger))
@@ -30,13 +42,16 @@ func router(db *gorm.DB, logger *slog.Logger) *gin.Engine {
 			return
 		}
 		pool, err := db.DB()
+		ctx, cancel := context.WithTimeout(c.Request.Context(), time.Second)
+		defer cancel()
 		if err == nil {
-			ctx, cancel := context.WithTimeout(c.Request.Context(), time.Second)
-			defer cancel()
 			err = pool.PingContext(ctx)
 		}
+		if err == nil {
+			err = auth.Dependency(ctx)
+		}
 		if err != nil {
-			platform.Fail(c, 503, "dependency_unavailable", "Database unavailable")
+			platform.Fail(c, 503, "dependency_unavailable", "Application dependency unavailable")
 			return
 		}
 		c.JSON(200, gin.H{"status": "ok", "backend": "gin", "time": time.Now().UTC()})
@@ -48,14 +63,14 @@ func router(db *gorm.DB, logger *slog.Logger) *gin.Engine {
 	public.GET("/product-categories", h.Categories)
 	public.GET("/collections", h.Collections)
 	public.GET("/regions", h.Regions)
-	identity := identity.New(db)
 	admin := r.Group("/api/admin")
 	admin.Use(platform.PrivateResponse, platform.GuardOrigin)
-	admin.POST("/auth/login", identity.Login)
+	admin.POST("/auth/challenge", auth.Challenge)
+	admin.POST("/auth/login", auth.Login)
 	private := admin.Group("")
-	private.Use(identity.Require)
-	private.GET("/auth/me", identity.Me)
-	private.POST("/auth/logout", identity.Logout)
+	private.Use(auth.Require)
+	private.GET("/auth/me", auth.Me)
+	private.POST("/auth/logout", auth.Logout)
 	private.GET("/products", h.AdminProducts)
 	private.GET("/products/:id", h.AdminProduct)
 	private.PATCH("/products/:id", h.UpdateProduct)

@@ -43,6 +43,14 @@ type Issued struct {
 	ExpiresAt   time.Time
 }
 type Principal struct{ UserID, Version string }
+
+func (s *Store) Ping(ctx context.Context) error {
+	if s.client.Ping(ctx).Err() != nil {
+		return ErrUnavailable
+	}
+	return nil
+}
+
 type record struct {
 	Format   int    `json:"format"`
 	Realm    Realm  `json:"realm"`

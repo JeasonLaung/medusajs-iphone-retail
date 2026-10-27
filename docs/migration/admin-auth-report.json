@@ -1,0 +1,47 @@
+{
+  "format_version": 1,
+  "scope": "New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance",
+  "counts": {
+    "explicit_migrations": 9,
+    "login_and_me": 1,
+    "csrf_and_origin_rejection": 1,
+    "session_rotation": 1,
+    "logout_revocation": 1,
+    "disable_reenable_revocation": 1,
+    "role_restore_revocation": 1,
+    "password_restore_revocation": 1,
+    "invalid_credentials_rejection": 1,
+    "login_rate_limit": 1,
+    "generation_revocation": 1,
+    "legacy_and_customer_rejection": 1,
+    "redis_failure_rejection": 1,
+    "mysql_failure_rejection": 1
+  },
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "network": "owned shared namespace with no external network",
+    "published_ports": 0
+  },
+  "real_accounts_used": false,
+  "application_resources_used": false,
+  "private_values_in_report": false,
+  "full_authentication_accepted": false,
+  "implementation_sha256": {
+    "retail/scripts/test-admin-auth.py": "7c49cafabc5a7fd9bcf0bf6b50c7d10187037651b871a2ae15df334f0fb1080e",
+    "retail/backend/internal/identity/admin.go": "122cd19c9ae0daffa7514ff2dc5500c8d414a5dff5877ec3eacfd4de67fdac29",
+    "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
+    "retail/backend/internal/identity/integration_test.go": "367fce81db21f1bb1c8edb1c2cf1f690574bbffeb99888ffec6b2be87706ba02",
+    "retail/backend/internal/server/router.go": "c65b4169a9ade0a3215fe2099974551cd7227878b098b41fae09bf87eba99a55",
+    "retail/backend/internal/platform/http.go": "2d0725f3fa8d60f060b14de792f8d4f1aa8dda38ff8c26b4d8c2af7c137e642a",
+    "retail/backend/internal/platform/request.go": "b8abeda445a6ae84c451a6ba9678308973feb5c0627fdc73dccf5de68aec648e",
+    "retail/backend/cmd/api/main.go": "d8ad7c2fd35e6050d6423d591a9d36dd18802c499f5e6087fcacbb71c84eec7f",
+    "retail/backend/cmd/create-admin/main.go": "5e2cfe648a2df017e8a7c32efa6160055f09fa29cafc2a29657a9f585f366acd",
+    "retail/backend/migrations/0009_admin_auth_version.sql": "059b9f79fd7ec2f7ebbd8030d5f010c258c1fe14262c4fd86103ea19b178fa33",
+    "retail/backend/internal/sessionstore/store.go": "1474b97c45baebfbc00de252da3b77b3dfa4a7749e9cf2cf894d697f508f83aa",
+    "retail/backend/internal/sessionstore/config.go": "3a06b19b9f71032d4243cc9266499d7eb7cf6a8e7facfcfac3ae63ac1a339440"
+  },
+  "cleanup": "both owned containers and temporary runner removed"
+}

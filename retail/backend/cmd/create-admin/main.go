@@ -30,7 +30,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	user := identity.User{ID: "usr_" + uuid.NewString(), Email: email, PasswordHash: string(encoded), Name: "Administrator", Role: "admin", Enabled: true, CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()}
+	user := identity.User{ID: "usr_" + uuid.NewString(), Email: email, PasswordHash: string(encoded), Name: "Administrator", Role: "admin", Enabled: true, AuthVersion: 1, CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()}
 	if err = db.Create(&user).Error; err != nil {
 		log.Fatal("Unable to create account (it may already exist)")
 	}
