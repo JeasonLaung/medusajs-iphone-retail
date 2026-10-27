@@ -85,3 +85,5 @@ prepareConfirmInventoryInput **只是准备数据**，库存不足仍可能返�
 新 `/api/store/carts`、cart detail/update、items create/update/delete、shipping-options/calculate/select、promotion apply/remove、payment-attempt/create/resume、complete；所有写操作验证会话/匿名 possession、Origin/CSRF 与幂等。公共 ID 不能单独授予私有 cart 权限；购物车合计由 Gin 计算，不信浏览器 subtotal/discount/tax。
 
 CT01 已完成购物车不复用；CT02 region 改变重算价格/税/配送；CT03 登录转移不窃取其他客户购物车；CT04 加购不预留、下单并发不超卖；CT05 18 组精确金额及10组库存准备和拒绝边界；CT06 促销预算并发/过期不误用；CT07 shipping profile 覆盖与无配送选项拒绝；CT08 支付版本/金额/币种不匹配拒绝；CT09 同 cart 唯一成单、崩溃恢复和补偿；CT10 全退/申请退回/部分退款区分；CT11 零元/credit 边界显式结果；CT12 不按同邮箱赋予旧客户业务。新实现仍待验证。
+
+2026-10-28 实现补充：[预留/释放事务参与组件](inventory-reservation-transactions.md)已在独占人工 MySQL 验证固定锁序、共享库存合计、末位精度、重放与回滚。它不拥有订单授权或提交权，能力默认关闭；本契约的 checkout、选仓、付款绑定、履约/取消恢复和完整领域验收仍未完成。

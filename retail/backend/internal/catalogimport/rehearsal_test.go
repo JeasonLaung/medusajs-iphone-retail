@@ -241,14 +241,14 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog embedded schema plan invalid")
 	}
 	created, err := schema.Apply(ctx, db, plan)
-	if err != nil || created.Applied != 14 || schema.CheckApplied(ctx, db, plan) != nil {
+	if err != nil || created.Applied != 15 || schema.CheckApplied(ctx, db, plan) != nil {
 		t.Fatal("catalog embedded migration failed")
 	}
 	repeated, err := schema.Apply(ctx, db, plan)
-	if err != nil || repeated.Skipped != 14 {
+	if err != nil || repeated.Skipped != 15 {
 		t.Fatal("catalog embedded migration replay failed")
 	}
-	counts["explicit_schema_migrations"] = 14
+	counts["explicit_schema_migrations"] = 15
 	var enabled int
 	if db.QueryRowContext(ctx, "SELECT @@foreign_key_checks").Scan(&enabled) != nil || enabled != 1 {
 		t.Fatal("catalog physical constraints must remain enabled")
@@ -410,6 +410,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 		targets["migration_inventory_rows"] = "source_table,identity_sha256"
 		targets["inventory_migration_holds"] = "inventory_item_id,location_id,reason"
 		targets["inventory_stock_edits"] = "operation_id"
+		targets["inventory_reservation_operations"] = "operation_id"
 		for _, table := range order {
 			layout := all[table]
 			var columns []string

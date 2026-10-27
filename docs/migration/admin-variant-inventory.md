@@ -5,7 +5,7 @@ inventory_reservations，共 27 个来源字段；原 JSON、时间、软删及�
 保留库存层活动 item/location 唯一生成键及审查版物理外键，未虚构订单关系。
 生成器 `retail/scripts/generate-inventory-schema.py --check` 校验产物。
 inventory_runtime_schema 固定读模型校验和及关闭的写能力；应用启动和 health 要求
-此模型及全部 14 文件执行记录。启动不创建或修改表。
+此模型及全部 15 文件执行记录。启动不创建或修改表。
 
 Gin GET `/api/admin/products/{id}/variants/{variant_id}/inventory` 要求现行新员工会话，
 先核对未删商品/变体归属，再按未删关联读取库存项及每变体 required_quantity。
@@ -27,7 +27,7 @@ React 采用 Ant Drawer、Collapse、Descriptions、Table、Tag、Alert、Empty�
 
 证据：
 
-- [实际 MySQL 报告](admin-auth-report.json)：14 文件及重复执行，活动唯一/FK，
+- [实际 MySQL 报告](admin-auth-report.json)：15 文件及重复执行，活动唯一/FK，
   超过 JS 整数精度的小数差、负余额、共享库存项与不同 required_quantity、软删关系、
   未对应库存层预留、读模型漂移/禁用拒绝和读取指纹不变。
 - [固定样本演练](catalog-mysql-rehearsal-report.json)：927 库存层与 99 预留的全字段
@@ -40,3 +40,5 @@ React 采用 Ant Drawer、Collapse、Descriptions、Table、Tag、Alert、Empty�
 并发预留/扣减/履约、完整 RBAC/仓库范围及 Astro 继续待办。此查询仅对当前 admin 开放，
 不把供应商/仓库角色的范围授权视为已完成。T011/T012/T018/T020/T021/T023 未验收。
 没有操作原开发数据或服务器，原服务继续运行。
+
+后续补充：[0015 预留/释放事务参与组件](inventory-reservation-transactions.md)已通过独占人工 MySQL 验证；默认关闭能力、没有外部路由，订单及履约领域仍待接入。

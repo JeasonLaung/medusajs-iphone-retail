@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only",
   "browser_tests_passed": 1,
-  "migrations_applied": 14,
+  "migrations_applied": 15,
   "mocked_api_responses": false,
   "reviewed_relational_schema_used": true,
   "empty_draft_tables_retained_by_migration": 7,
@@ -86,12 +86,14 @@
     "retail/backend/internal/catalog/models.go": "212e73fdbf318abf0d8252ee0a3139a249856dbdab58d80cd8cabc5fa11fe97c",
     "retail/backend/internal/catalog/schema.go": "aadd8fc2d82c87d9a8467ae60c232cd300081f6a3880ee22a1a73666511e04ab",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
-    "retail/backend/internal/identity/browser_fixture_test.go": "5351aeb3c9886578bc595155f51bb744260572dcb5b28df57d338fae954e1f1f",
+    "retail/backend/internal/identity/browser_fixture_test.go": "7e68be421f2f4ba3233b082af7faa75f496e21c47b0540213c84829398587dee",
     "retail/backend/internal/inventory/edit.go": "99763329e4ccfa401acdd5bf4b823e0db87e90d25b2b278496693070941ff8e1",
     "retail/backend/internal/inventory/edit_test.go": "d422fda3dc223157be967f3927ed019b296c9836960ab1a83bd0efd7d459d047",
     "retail/backend/internal/inventory/http.go": "7ea9031ec1388ccfe36cf87029c54f52c092004a753f8d18464909785c66a4df",
     "retail/backend/internal/inventory/quantity.go": "1a01bc23d66b96932c4ac9cc9a4dd0e936da10314097b1eb5c32790fc99d4932",
     "retail/backend/internal/inventory/quantity_test.go": "f6e64e3714fcc60f4742e8e68530adcd135c138a81a3b83085d008cd79f82831",
+    "retail/backend/internal/inventory/reservations.go": "76b5d852fb3e6355f041ccea9e3fb841c738f7548e79e4b99336815c1be4379f",
+    "retail/backend/internal/inventory/reservations_test.go": "774f2d91e1df9ad8a8a554baf9007a51d3ba285eed656296e3119319daed2fef",
     "retail/backend/internal/inventory/schema.go": "102351b240368a1b42613040bffd838c890cd507e755efa9848f58fb7cbf1b10",
     "retail/backend/internal/inventory/schema_plan.json": "5d0014c3825a5572cdc87db1632a47540f495bfe7e9e7338cb065ac1d30ab1d6",
     "retail/backend/internal/platform/database.go": "0426e6ac869492e0edc4153f1226e7a6e527e47e50db6ac00637756806120e86",
@@ -116,7 +118,8 @@
     "retail/backend/migrations/0012_inventory_relational.sql": "8ec1442280eaf2b0b13fccaf2bccaf026ec7ff19837e5f1f33620820f03efd29",
     "retail/backend/migrations/0013_inventory_import_evidence.sql": "2c9755f4285d823a1ba1d6200f288a3ea003991a8c33159b370a3165a8c22eb0",
     "retail/backend/migrations/0014_inventory_stock_edits.sql": "93cfeaf14749b26b181d0f5c28d71e46f7bbfdb82d3cb293ce592e1e691d6239",
-    "retail/scripts/test-admin-live.py": "8bc230e6382decd8599eb79f1c871b3bff54c55cb92842d6b177817201e70d61"
+    "retail/backend/migrations/0015_inventory_reservation_operations.sql": "57b097d3e1698bf556a8903741c68d0973e3e8c342f02052347aefec8176cb45",
+    "retail/scripts/test-admin-live.py": "1bb110c0022910c0e429e43f99ce2271d010c4acba78aa4baf8e78c4d8322bec"
   },
   "cleanup": "both owned containers, bridge network and temporary binaries removed"
 }
