@@ -1,0 +1,24 @@
+{
+  "format_version": 1,
+  "scope": "Pinned known registration mail removal and mandatory effect disposition only; not general secret scanning, SQL import or worker suppression enforcement",
+  "bundle_sha256": "aa18ee30d5a7dcb11efe20a5c8785abfdbe561c362db4503160b262df6a2f132",
+  "counts": {
+    "held_business_mail": 0,
+    "permanent_suppressions": 2,
+    "redacted_fields": 8,
+    "rows": 2,
+    "source_verification_link_bodies": 4
+  },
+  "implementation_sha256": {
+    "retail/backend/internal/rowimport/history_mail.go": "7730288eabb5483c7452d40a9dd2ea8730fb0ec6d71764ffe33a35066af35d8b",
+    "retail/backend/internal/rowimport/history_mail_snapshot_test.go": "9cd43592e8720542ae109404ded34a663c765e02ba603525992e46b680aa68cb",
+    "retail/backend/internal/rowimport/convert.go": "622d07c76fff89edcdc323c6f6b0cb2822c3c5744c280176a7db651bb3271b31",
+    "medusa-store/apps/backend/src/lib/registration-email.ts": "2111782b09aacf6157ba992078572dada595d9d94fb28103ec608ce3c697972f",
+    "medusa-store/apps/backend/src/workflows/registration-email.ts": "e0a24989cd12ac52162974109668e0442f5caf1c3b59b77a5859d6f9ffae86b8",
+    "retail/scripts/audit-history-mail.py": "73f2d4ef66a246028da840c95d69dd2586cd1e47062fbd65f7d935e3fc7e0d36"
+  },
+  "source_database_connection": false,
+  "mail_delivery_attempted": false,
+  "redacted_rows_persisted": false,
+  "private_values_in_report": false
+}

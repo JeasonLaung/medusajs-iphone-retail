@@ -19,8 +19,9 @@ import (
 var fieldPlans []byte
 
 var (
-	ErrRow        = errors.New("source row does not match explicit field program")
-	ErrProtection = errors.New("source field requires protected transformation")
+	ErrRow           = errors.New("source row does not match explicit field program")
+	ErrProtection    = errors.New("source field requires protected transformation")
+	ErrHistoryPolicy = errors.New("source row requires explicit history disposition")
 )
 
 type field struct {
@@ -85,10 +86,13 @@ var compiledPlans = sync.OnceValues(func() (map[string]tablePlan, error) {
 // claims or domain states. Protected non-NULL fields deliberately fail closed
 // until their source-specific authenticated conversion is provided.
 func Convert(sourceTable string, row SourceRow) (BoundRow, error) {
-	return convertRow(sourceTable, row, nil)
+	return convertRow(sourceTable, row, nil, false)
 }
 
-func convertRow(sourceTable string, row SourceRow, protect func(field, json.RawMessage) (any, error)) (BoundRow, error) {
+func convertRow(sourceTable string, row SourceRow, protect func(field, json.RawMessage) (any, error), historicalMail bool) (BoundRow, error) {
+	if sourceTable == "mail_message" && !historicalMail {
+		return BoundRow{}, ErrHistoryPolicy
+	}
 	plans, err := compiledPlans()
 	if err != nil {
 		return BoundRow{}, ErrRow

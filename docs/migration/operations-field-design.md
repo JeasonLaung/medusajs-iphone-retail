@@ -25,7 +25,7 @@
 
 源码依据：`modules/mail/security.ts`、`lib/seo/core.ts`、`modules/webhook-notifications/security.ts`（均在旧 backend/src 下）。三域都使用 AES-256-GCM，以各域环境密钥或 COOKIE_SECRET 派生；必须按各自配置识别，不能假定可互换。SEO setting 只有 is_secret 的源值需旧解密，普通值保持明文语义；新库统一密封存放，公开读取仍按白名单。字段预检仅核对源类型；后续[离线密钥核对](protected-config-baseline.md)已验证固定快照邮件/通知非空值和Mollie共3项解密及临时AAD往返，尚无持久新信封/轮换/SQL导入证明，SEO空表不算真实域验收。
 
-旧注册验证邮件由 `created_by=registration-verification` 标识，队列源码还关联 auth verification、15 分钟有效期和 token hash。源正文可能包含旧登录链接：新库导入应移除旧认证 capability，保留必要投递历史/脱敏正文；这些邮件永不重放，也不导入旧 auth 数据以恢复它们。当前聚合审计只计数，不声称已扫描或清理正文里的全部旧 token。
+旧注册验证邮件由 `created_by=registration-verification` 标识，队列源码还关联 auth verification、15 分钟有效期和 token hash。新[历史邮件入口](history-mail-conversion.md)已将固定快照2行的认证正文/error/附件载荷移除并返回永久禁重放处置，普通Go整行/商户入口拒绝绕过；原status和投递时间保留。未持久化转换行或禁令，也未实现worker执行；不是所有任意正文/附件的认证能力扫描。旧auth数据仍不恢复。
 
 其他 queued/sending/paused 邮件、SEO 日志源/监测和外部通知均由独立 migration hold 阻止演练副作用；保留原 enabled/status 供审计。邮件首试时间和 provider 幂等窗口不得重新计时。文件清单还需验证存在、大小、SHA-256、私有存储及权限，不用数据库 storage_key 存在代替文件验收。
 

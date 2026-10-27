@@ -79,6 +79,12 @@ func TestAllPinnedFields(t *testing.T) {
 			}
 			satisfyFixtureChecks(plan, row)
 			bound, err := Convert(plan.Source, row)
+			if plan.Source == "mail_message" {
+				if err != ErrHistoryPolicy || len(bound.Values) != 0 {
+					t.Fatal("mail history policy bypassed")
+				}
+				return
+			}
 			if blocked {
 				if err != ErrProtection {
 					t.Fatal("protected row partially returned", err)
