@@ -80,13 +80,13 @@ def main():
 
         for _ in range(100):
             ready = docker('exec', '-e', 'MYSQL_PWD=' + password, container, 'mysql', '-uroot', '--protocol=socket',
-                           '--batch', '--skip-column-names', '-e', 'SELECT 1', timeout=10)
+                           '--batch', '--skip-column-names', '-e', 'SELECT VERSION()', 'catalog_rehearsal', timeout=10)
             if ready.returncode == 0:
+                version = ready.stdout.decode('utf-8').strip()
                 break
             time.sleep(0.5)
         else:
             raise RuntimeError('Isolated catalog MySQL did not become ready')
-        version = sql('SELECT VERSION();')
         # The test binary applies the exact embedded migration plan. No direct
         # review DDL injection or ad hoc schema preparation is performed here.
         # Private input is streamed into the live tmpfs mount. The non-private
@@ -125,6 +125,7 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/inventory').glob('*') if p.is_file()]
         files += ['retail/scripts/generate-inventory-schema.py','retail/scripts/generate-inventory-import-plan.py']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/inventoryimport').glob('*') if p.is_file()]
+        files += ['retail/backend/internal/orders/schema.go','retail/backend/internal/orders/schema_plan.json','retail/scripts/generate-order-schema.py']
         report = {'format_version': 1, 'scope': '36 actual catalog tables and nine parent dependencies in disposable tmpfs MySQL only; parent rows have no formal migration ledger; no full import/runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
                   'embedded_migration_plan_used': True, 'review_ddl_injected': False,

@@ -53,10 +53,10 @@ func TestPlanChecksAllFilesBeforeExecution(t *testing.T) {
 
 func TestEmbeddedMigrationPlanParses(t *testing.T) {
 	plan, err := Load(migrations.Files)
-	if err != nil || len(plan.files) != 15 {
+	if err != nil || len(plan.files) != 16 {
 		t.Fatal("explicit embedded migration plan invalid")
 	}
-	if !strings.HasPrefix(plan.files[0].name, "0001_") || !strings.HasPrefix(plan.files[14].name, "0015_") {
+	if !strings.HasPrefix(plan.files[0].name, "0001_") || !strings.HasPrefix(plan.files[15].name, "0016_") {
 		t.Fatal("embedded version boundaries differ")
 	}
 }

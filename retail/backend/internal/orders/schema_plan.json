@@ -1,0 +1,163 @@
+{
+  "format_version": 1,
+  "schema_version": 1,
+  "model_sha256": "3d27cb6968888bfaef5c87426fed1a9c7a1b8ac0005e9e614cec8d9d6ff74272",
+  "migration": "0016_order_relational.sql",
+  "tables": [
+    "historical_customer_subjects",
+    "order_addresses",
+    "order_carts",
+    "order_change_actions",
+    "order_changes",
+    "order_claim_item_images",
+    "order_claim_items",
+    "order_claims",
+    "order_credit_lines",
+    "order_exchange_items",
+    "order_exchanges",
+    "order_fulfillments",
+    "order_items",
+    "order_line_adjustments",
+    "order_line_items",
+    "order_line_tax_lines",
+    "order_payment_collections",
+    "order_promotions",
+    "order_shipping_adjustments",
+    "order_shipping_methods",
+    "order_shipping_tax_lines",
+    "order_shipping_versions",
+    "order_summaries",
+    "order_transactions",
+    "orders",
+    "return_fulfillments",
+    "return_items",
+    "return_reasons",
+    "returns"
+  ],
+  "source_tables": [
+    "customer",
+    "order",
+    "order_address",
+    "order_cart",
+    "order_change",
+    "order_change_action",
+    "order_claim",
+    "order_claim_item",
+    "order_claim_item_image",
+    "order_credit_line",
+    "order_exchange",
+    "order_exchange_item",
+    "order_fulfillment",
+    "order_item",
+    "order_line_item",
+    "order_line_item_adjustment",
+    "order_line_item_tax_line",
+    "order_payment_collection",
+    "order_promotion",
+    "order_shipping",
+    "order_shipping_method",
+    "order_shipping_method_adjustment",
+    "order_shipping_method_tax_line",
+    "order_summary",
+    "order_transaction",
+    "return",
+    "return_fulfillment",
+    "return_item",
+    "return_reason"
+  ],
+  "source_columns": 390,
+  "reads_enabled": true,
+  "writes_enabled": false,
+  "full_business_accepted": false,
+  "historical_accounts_restored": false,
+  "explicit_enum_constraints": [
+    {
+      "table": "orders",
+      "column": "status",
+      "allowed": [
+        "pending",
+        "completed",
+        "draft",
+        "archived",
+        "canceled",
+        "requires_action"
+      ]
+    },
+    {
+      "table": "order_changes",
+      "column": "status",
+      "allowed": [
+        "confirmed",
+        "declined",
+        "requested",
+        "pending",
+        "canceled"
+      ]
+    },
+    {
+      "table": "order_claims",
+      "column": "type",
+      "allowed": [
+        "refund",
+        "replace"
+      ]
+    },
+    {
+      "table": "order_claim_items",
+      "column": "reason",
+      "allowed": [
+        "missing_item",
+        "wrong_item",
+        "production_failure",
+        "other"
+      ]
+    },
+    {
+      "table": "returns",
+      "column": "status",
+      "allowed": [
+        "open",
+        "requested",
+        "received",
+        "partially_received",
+        "canceled"
+      ]
+    }
+  ],
+  "unresolved_semantic_dependencies": [
+    {
+      "source": "order_cart",
+      "column": "cart_id",
+      "parent": "cart",
+      "policy": "preserve-reference-no-fabrication-no-ownership-grant"
+    },
+    {
+      "source": "order_fulfillment",
+      "column": "fulfillment_id",
+      "parent": "fulfillment",
+      "policy": "preserve-reference-no-fabrication-no-ownership-grant"
+    },
+    {
+      "source": "order_payment_collection",
+      "column": "payment_collection_id",
+      "parent": "payment_collection",
+      "policy": "preserve-reference-no-fabrication-no-ownership-grant"
+    },
+    {
+      "source": "return_fulfillment",
+      "column": "fulfillment_id",
+      "parent": "fulfillment",
+      "policy": "preserve-reference-no-fabrication-no-ownership-grant"
+    }
+  ],
+  "unresolved_source_indexes": [
+    {
+      "source_table": "customer",
+      "index_name": "IDX_customer_email_has_account_unique",
+      "definition": "CREATE UNIQUE INDEX \"IDX_customer_email_has_account_unique\" ON public.customer USING btree (email, has_account) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    }
+  ],
+  "migration_sha256_lf": "a7f26ab595178dba744b65333f5d1e94d3871f6cfdce59338124ed769cbd4dab"
+}

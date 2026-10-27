@@ -14,6 +14,7 @@ import (
 	"github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/inventory"
+	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/eurorefurb/retail/internal/schema"
 	"github.com/eurorefurb/retail/internal/server"
@@ -50,9 +51,12 @@ func main() {
 	if err == nil {
 		err = inventory.Ready(verifyCtx, db)
 	}
+	if err == nil {
+		err = orders.Ready(verifyCtx, db)
+	}
 	cancelVerify()
 	if err != nil {
-		log.Fatal("Complete database migration plan and catalog read schema required; run explicit migrations")
+		log.Fatal("Complete database migration plan and domain read schemas required; run explicit migrations")
 	}
 	bind := os.Getenv("APP_BIND")
 	if bind == "" {
