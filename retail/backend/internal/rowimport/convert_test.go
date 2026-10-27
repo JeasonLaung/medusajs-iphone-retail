@@ -79,9 +79,9 @@ func TestAllPinnedFields(t *testing.T) {
 			}
 			satisfyFixtureChecks(plan, row)
 			bound, err := Convert(plan.Source, row)
-			if plan.Source == "mail_message" {
+			if plan.Source == "mail_message" || plan.Source == "payment_session" || plan.Source == "payment" {
 				if err != ErrHistoryPolicy || len(bound.Values) != 0 {
-					t.Fatal("mail history policy bypassed")
+					t.Fatal("mandatory history policy bypassed")
 				}
 				return
 			}

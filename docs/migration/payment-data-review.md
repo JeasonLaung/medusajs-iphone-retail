@@ -18,4 +18,4 @@
 
 运行：`python retail/scripts/audit-payment-data.py --bundle logs/gin-migration/source-20261026.json`，另运行 `go test ./...` 和 `go vet ./...`。人工测试不使用真实支付服务。
 
-仍缺：metadata 等其他保护 JSON、完整行/SQL 接入、真实 v2 导入及付款/退款/在途恢复。普通 `Convert` 与商户配置转换入口继续拒绝非 NULL 保护 JSON，不能绕过本组件或宣称全域迁移完成。
+后续已提供[完整支付行专用转换](payment-history-conversion.md)，组合 metadata/context，在真实 v2 流验证42行，并以人工行验证完整 MySQL 结构写入/回滚。普通 `Convert` 与商户配置入口对支付表强制要求历史处置，即使保护列都是 SQL NULL 也不能绕过。正式导入/持久化操作 hold、真实密文落库、付款/退款/在途恢复仍缺，不能据此宣称全域迁移完成。

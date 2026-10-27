@@ -41,4 +41,4 @@
 python retail/scripts/audit-payment-context.py --bundle logs/gin-migration/source-20261026.json
 ```
 
-仍需支付data/metadata、PayPal嵌套商户配置、历史通知/客户metadata的逐域内容审查；所有provider事实/支付金额/引用及历史孤儿对账继续有效。T006/T018/T035不验收。
+后续[完整支付行转换](payment-history-conversion.md)已组合审查后的data/context/metadata，真实v2支付42行及人工完整MySQL行写入/回滚通过；持久化操作hold/正式导入、PayPal嵌套商户配置、历史通知/客户metadata及其他内容仍待承接。所有provider事实/金额/引用及历史孤儿对账继续有效，T006/T018/T035不验收。

@@ -72,6 +72,16 @@ func TestEveryMappedPairAndProtectedBoundary(t *testing.T) {
 			if err := checkNumberPairs(plan.RawPairs, row); err != nil {
 				t.Fatal("valid pair rejected", err)
 			}
+			if plan.Source == "payment_session" || plan.Source == "payment" {
+				if _, err := Convert(plan.Source, row); err != ErrHistoryPolicy {
+					t.Fatal("payment history disposition bypassed")
+				}
+				row[pair.Raw] = Cell{Raw: json.RawMessage(`{"value":"1.2300000000000000001","precision":20}`)}
+				if err := checkNumberPairs(plan.RawPairs, row); err != ErrRow {
+					t.Fatal("payment raw pair mismatch accepted")
+				}
+				continue
+			}
 			if blocked {
 				if _, err := Convert(plan.Source, row); err != ErrProtection {
 					t.Fatal("protected row not held")

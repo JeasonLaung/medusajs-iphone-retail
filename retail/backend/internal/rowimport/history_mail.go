@@ -28,7 +28,7 @@ var verificationMailID = regexp.MustCompile(`^mail_verify_[0-9a-f]{64}$`)
 
 func ConvertHistoricalMail(row SourceRow) (HistoricalMail, error) {
 	// Validate the complete source before any redaction can hide corrupt input.
-	if _, err := convertRow("mail_message", row, nil, true); err != nil {
+	if _, err := convertRow("mail_message", row, nil, "mail-history"); err != nil {
 		return HistoricalMail{}, err
 	}
 	id, err := importvalue.Text(row["id"].Raw, 191)
@@ -68,7 +68,7 @@ func ConvertHistoricalMail(row SourceRow) (HistoricalMail, error) {
 		disposition.Disposition = "suppress-permanently"
 		disposition.Reason = "excluded-legacy-registration-capability"
 	}
-	bound, err := convertRow("mail_message", copyRow, nil, true)
+	bound, err := convertRow("mail_message", copyRow, nil, "mail-history")
 	if err != nil {
 		return HistoricalMail{}, err
 	}

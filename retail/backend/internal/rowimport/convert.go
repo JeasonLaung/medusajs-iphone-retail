@@ -86,11 +86,14 @@ var compiledPlans = sync.OnceValues(func() (map[string]tablePlan, error) {
 // claims or domain states. Protected non-NULL fields deliberately fail closed
 // until their source-specific authenticated conversion is provided.
 func Convert(sourceTable string, row SourceRow) (BoundRow, error) {
-	return convertRow(sourceTable, row, nil, false)
+	return convertRow(sourceTable, row, nil, "")
 }
 
-func convertRow(sourceTable string, row SourceRow, protect func(field, json.RawMessage) (any, error), historicalMail bool) (BoundRow, error) {
-	if sourceTable == "mail_message" && !historicalMail {
+func convertRow(sourceTable string, row SourceRow, protect func(field, json.RawMessage) (any, error), historyPolicy string) (BoundRow, error) {
+	if sourceTable == "mail_message" && historyPolicy != "mail-history" {
+		return BoundRow{}, ErrHistoryPolicy
+	}
+	if (sourceTable == "payment_session" || sourceTable == "payment") && historyPolicy != "payment-history" {
 		return BoundRow{}, ErrHistoryPolicy
 	}
 	plans, err := compiledPlans()

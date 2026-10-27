@@ -98,5 +98,5 @@ func (c *ConfigSecrets) Convert(table string, row SourceRow) (BoundRow, error) {
 			return nil, ErrProtection
 		}
 		return envelope, nil
-	}, false)
+	}, "")
 }
