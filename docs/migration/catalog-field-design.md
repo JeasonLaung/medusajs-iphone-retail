@@ -28,7 +28,7 @@ python retail/scripts/map-catalog-fields.py --check
 
 product_option.title 只有“未删且 is_exclusive=false”时全局唯一；exclusive 的同名选项可并存。option_value 的 `(option_id,value)` 仅活动唯一，option_id 为 NULL 时保留源 NULL 唯一性语义，不用空字符串替代。price_rule 的 `(price_id,attribute,operator)` 活动唯一；price_preference 的 `(attribute,value)` 活动唯一且 value 可 NULL。
 
-这些源字段是无界 text；目标最长键及复合键总长度要在 T012 的实际 MySQL/InnoDB 上核对。LONGTEXT 上不能直接照搬全值 UNIQUE；不能用前缀唯一索引替代精确唯一性。需要先预检实际最大长度，超目标限制则调整设计；长文本必要时使用锁定唯一注册命令并做完整值碰撞核验，不能直接信哈希相等。
+这些源字段是无界 text；LONGTEXT 上不能直接照搬全值 UNIQUE，不能用前缀唯一索引替代精确唯一性。[MySQL隔离类型验证](mysql-type-contract.md)已实际确认512字符utf8mb4单值唯一键可建、两个512字符复合键超限报1071、191字符父ID+512字符value完整索引可建。仍需逐个真实目标键核对；先预检实际最大长度，超目标限制则调整设计，长文本必要时使用锁定唯一注册命令并做完整值碰撞核验，不能直接信哈希相等。
 
 以下关联的主键是业务对，而非名为 id 的字段：product_sales_channel、product_shipping_profile、product_variant_inventory_item、product_variant_price_set、region_payment_provider、sales_channel_stock_location；源 id 另保留，不能假设其独立唯一并用它覆盖业务对。category_product、product_tags、variant_option 同样保留复合主键。其余带 id 的成员关系各按源主键审查，不因字段类似就统一去重。
 

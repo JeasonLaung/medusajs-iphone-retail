@@ -1,0 +1,232 @@
+{
+  "format_version": 1,
+  "scope": "Actual MySQL dialect on artificial minimal DDL/data only; not full domain migrations, source import, allocator concurrency or application validation acceptance.",
+  "image": "mysql:8.4",
+  "local_image_id": "sha256:6ea90827b1100f8f2ae306a539f86d2c264a26ed435a2a9f75551dd5c3aeb242",
+  "server_version": "8.4.11",
+  "isolation": {
+    "network": "none",
+    "published_ports": 0,
+    "cpus": 1,
+    "memory_mib": 768,
+    "data_tmpfs_mib": 512,
+    "source_business_connection": false
+  },
+  "session_sql_mode": "STRICT_ALL_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION",
+  "session_timezone": "+00:00",
+  "cases": [
+    {
+      "name": "0900-binary-no-pad-collation",
+      "passed": true
+    },
+    {
+      "name": "38-digit-decimal-exact-roundtrip",
+      "passed": true
+    },
+    {
+      "name": "json-raw-bytes-large-number-scale-duplicate-keys-retained",
+      "passed": true
+    },
+    {
+      "name": "datetime-six-fractional-digits-retained",
+      "passed": true
+    },
+    {
+      "name": "boolean-false-not-missing",
+      "passed": true
+    },
+    {
+      "name": "case-and-trailing-space-identities-distinct",
+      "passed": true
+    },
+    {
+      "name": "json-null-not-sql-null",
+      "passed": true
+    },
+    {
+      "name": "sql-null-not-json-null",
+      "passed": true
+    },
+    {
+      "name": "duplicate-identical-id-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "unicode-id-not-ascii-loss",
+      "passed": true
+    },
+    {
+      "name": "id-over-191-characters-denied",
+      "passed": true,
+      "expected_mysql_error": 1406
+    },
+    {
+      "name": "decimal-integer-overflow-denied",
+      "passed": true,
+      "expected_mysql_error": 1264
+    },
+    {
+      "name": "negative-small-decimal-exact",
+      "passed": true
+    },
+    {
+      "name": "invalid-json-check-enforced",
+      "passed": true,
+      "expected_mysql_error": 3819
+    },
+    {
+      "name": "boolean-outside-zero-one-check-enforced",
+      "passed": true,
+      "expected_mysql_error": 3819
+    },
+    {
+      "name": "zero-date-denied",
+      "passed": true,
+      "expected_mysql_error": 1292
+    },
+    {
+      "name": "invalid-calendar-date-denied",
+      "passed": true,
+      "expected_mysql_error": 1292
+    },
+    {
+      "name": "required-time-null-denied",
+      "passed": true,
+      "expected_mysql_error": 1048
+    },
+    {
+      "name": "strict-mode-still-rounds-excess-decimal-scale",
+      "passed": true
+    },
+    {
+      "name": "strict-mode-still-rounds-excess-time-precision",
+      "passed": true
+    },
+    {
+      "name": "datetime-session-zone-does-not-convert-stored-instant",
+      "passed": true
+    },
+    {
+      "name": "native-json-does-not-preserve-original-text",
+      "passed": true
+    },
+    {
+      "name": "native-json-large-integer-becomes-double",
+      "passed": true
+    },
+    {
+      "name": "native-json-normalizes-scale-and-duplicate-key",
+      "passed": true
+    },
+    {
+      "name": "active-generated-key-rejects-duplicate",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "soft-deleted-text-retained-and-active-reuse-supported",
+      "passed": true
+    },
+    {
+      "name": "restoring-deleted-conflicting-identity-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "active-case-space-and-null-uniqueness-source-semantics",
+      "passed": true
+    },
+    {
+      "name": "512-four-byte-handle-full-unique-index-fits",
+      "passed": true
+    },
+    {
+      "name": "full-composite-512-utf8-keys-exceed-innodb-limit",
+      "passed": true,
+      "expected_mysql_error": 1071
+    },
+    {
+      "name": "value-deleted-at-null-pair-is-not-active-unique",
+      "passed": true
+    },
+    {
+      "name": "exclusive-option-same-title-allowed-alongside-shared",
+      "passed": true
+    },
+    {
+      "name": "nonexclusive-active-title-global-duplicate-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "exclusive-to-shared-conflict-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "null-parent-composite-unique-retains-source-null-semantics",
+      "passed": true
+    },
+    {
+      "name": "nonnull-parent-active-value-duplicate-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "soft-deleted-composite-value-can-be-reused",
+      "passed": true
+    },
+    {
+      "name": "composite-value-restore-conflict-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "orphan-parent-foreign-key-denied",
+      "passed": true,
+      "expected_mysql_error": 1452
+    },
+    {
+      "name": "foreign-key-parent-id-case-sensitive",
+      "passed": true,
+      "expected_mysql_error": 1452
+    },
+    {
+      "name": "referenced-parent-delete-restricted",
+      "passed": true,
+      "expected_mysql_error": 1451
+    },
+    {
+      "name": "singleton-false-key-denied",
+      "passed": true,
+      "expected_mysql_error": 3819
+    },
+    {
+      "name": "singleton-second-true-key-denied",
+      "passed": true,
+      "expected_mysql_error": 1062
+    },
+    {
+      "name": "singleton-negative-value-denied",
+      "passed": true,
+      "expected_mysql_error": 3819
+    },
+    {
+      "name": "counter-transaction-rollback",
+      "passed": true
+    }
+  ],
+  "required_application_checks": [
+    "Reject decimal scale/integer overflow before SQL; strict mode rounds excess scale",
+    "Reject excess timestamp precision or explicitly normalize with documented policy; strict mode rounds",
+    "Convert source instants to UTC before DATETIME(6), configure every connection UTC",
+    "Composite long-text identity needs full-value transactional registry/collision verification, never prefix uniqueness"
+  ],
+  "remaining": [
+    "Full 159-table target DDL and complete source constraints",
+    "Exact JSON/number/time importer validation and real data reconciliation",
+    "Concurrency, failure recovery, Gin and UI behavior"
+  ],
+  "cleanup": "owned temporary fixture removed after label verification"
+}
