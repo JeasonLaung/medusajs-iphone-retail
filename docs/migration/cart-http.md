@@ -41,3 +41,5 @@
 Docker Desktop 日志在 2026-10-28 00:49:29 UTC 显示 engine running→stopping，随后 Docker API/inspect 超时。当时数据库/浏览器联合回归未完成。用户授权后重启 Docker Desktop 恢复引擎；按精确所有权标签清除遗留4容器、1网络和3个runner，忽略文件 `logs/gin-migration/pending-docker-cleanup.json` 已记录完成。数据库专项及全套回归已重跑；浏览器当前证据见下方独立记录。当前代码仍默认关闭购物车命令，功能不作整体验收。
 
 后续客户端补充：[Astro私有传输](astro-cart-client.md)已对人工HTTPfixture验证浏览器cookie与稳定操作键，不含实际页面挂载或真实Gin/MySQL/Redis端到端验收；Docker已恢复并完成旧资源清理，真实浏览器补充见 [客户端联调记录](cart-live-browser.md)。
+
+2026-10-28 后续：[购物车持久金额](cart-amounts.md)新增受当前持有凭证保护的amounts查询及Astro字符串DTO，保存税/折扣/配送参与精确计算。不是当前选价重算，checkout仍关闭，完整加购/交易及原页面未完成。

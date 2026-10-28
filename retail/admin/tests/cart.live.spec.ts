@@ -61,6 +61,10 @@ test('storefront cart client through the real browser, Gin, MySQL and Redis', as
  const visibleNames = await page.evaluate(() => document.cookie.split(';').map(value => value.trim().split('=')[0]).sort())
  expect(visibleNames).toEqual(['retail_cart_csrf', 'retail_cart_scope_csrf'])
  expect(await page.evaluate(id => window.ownedCartClient.retrieve(id), id)).toEqual(created.cart)
+ const persisted = await page.evaluate(id => window.ownedCartClient.retrieveAmounts(id), id)
+ expect(persisted).toMatchObject({cart_id:id,version:'1',currency_code:'eur',lines:[],shipping_methods:[],pricing_recalculated:false,checkout:false})
+ expect(persisted?.totals.total).toBe('0')
+ expect(Object.values(persisted!.totals).every(value => typeof value === 'string')).toBe(true)
 
  // Same scope + operation across concurrent real requests is one SQL receipt.
  const replays = await page.evaluate(async operationID => Promise.all(Array.from({length:4}, () => window.ownedCartClient.create({operationID, regionID:'fixture-region', locale:'en'}, window.ownedCartScope))), operationID)
@@ -87,10 +91,12 @@ test('storefront cart client through the real browser, Gin, MySQL and Redis', as
   const strangerPage = await stranger.newPage()
   await install(strangerPage)
   expect(await strangerPage.evaluate(id => window.ownedCartClient.retrieve(id), id)).toBeNull()
+  expect(await strangerPage.evaluate(id => window.ownedCartClient.retrieveAmounts(id), id)).toBeNull()
  } finally { await stranger.close() }
 
  await context.clearCookies({name:'retail_cart_possession'})
  expect(await page.evaluate(id => window.ownedCartClient.retrieve(id), id)).toBeNull()
+ expect(await page.evaluate(id => window.ownedCartClient.retrieveAmounts(id), id)).toBeNull()
  await page.evaluate(async () => { window.ownedCartScope = await window.ownedCartClient.openScope() })
  const recovered = await create()
  expect(recovered.replayed).toBe(true); expect(recovered.cart.id).toBe(id)

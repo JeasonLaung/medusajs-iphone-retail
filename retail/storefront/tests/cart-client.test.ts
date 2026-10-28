@@ -146,3 +146,56 @@ test('invalid caller input fails before fetch and does not issue a scope automat
  await error(c.retrieve('/other'),'input',null,false)
  assert.equal(calls,0)
 })
+
+function amountFixture() {
+ const base = {subtotal:'200',total:'225',tax_total:'45',original_subtotal:'200',original_total:'250',original_tax_total:'50',discount_subtotal:'20',discount_tax_total:'5',discount_total:'25'}
+ return {cart_id:cart.id,version:cart.version,currency_code:'eur',pricing_recalculated:false,checkout:false,
+  totals:{...base,item_total:'225',item_subtotal:'200',item_tax_total:'45',item_discount_total:'25',original_item_total:'250',original_item_subtotal:'200',original_item_tax_total:'50',shipping_total:'0',shipping_subtotal:'0',shipping_tax_total:'0',shipping_discount_total:'0',original_shipping_total:'0',original_shipping_subtotal:'0',original_shipping_tax_total:'0',credit_line_total:'0',credit_line_subtotal:'0',credit_line_tax_total:'0'},
+  lines:[{id:'line_new',variant_id:'variant_retired',quantity:'2',unit_price:'9007199254740993.000000000000000000001',is_tax_inclusive:false,totals:{...base}}],
+  shipping_methods:[{id:'shipping_saved',name:'Saved delivery',amount:'12.5',is_tax_inclusive:true,totals:{...base}}]}
+}
+
+test('persisted amounts retain exact strings without enabling pricing or checkout', async () => {
+ const fixture = amountFixture()
+ const seen: {url:string;init:RequestInit}[] = []
+ const c = client(async (url,init) => {seen.push({url:String(url),init:init!});return reply(fixture)})
+ const result = await c.retrieveAmounts(cart.id)
+ assert.deepEqual(result,fixture)
+ assert.equal(result!.lines[0].unit_price,'9007199254740993.000000000000000000001')
+ assert.equal(result!.version,'9007199254740993123')
+ assert.equal(seen[0].url,'/api/store/carts/cart_new/amounts')
+ assert.equal(seen[0].init.credentials,'same-origin');assert.equal(seen[0].init.cache,'no-store')
+ for (const status of [401,404]) assert.equal(await client(async()=>reply({},status)).retrieveAmounts(cart.id),null)
+ await error(client(async()=>reply({},503)).retrieveAmounts(cart.id),'unavailable',503,false)
+ await error(c.retrieveAmounts('../other'),'input',null,false)
+ // The amounts route has its own larger bounded body budget. Ordinary cart
+ // creation and details keep their original 64 KiB limit.
+ const larger = amountFixture();larger.shipping_methods[0].name='x'.repeat(9000)
+ larger.lines=Array.from({length:200},(_,i)=>({...larger.lines[0],id:`line_${i}`}))
+ assert.ok(JSON.stringify(larger).length>65536)
+ assert.equal((await client(async()=>reply(larger)).retrieveAmounts(cart.id))!.lines.length,200)
+})
+
+test('malformed persisted amounts never become a partial or payable cart', async () => {
+ for (const edit of [
+  (v:ReturnType<typeof amountFixture>)=>{v.cart_id='other'},
+  (v:ReturnType<typeof amountFixture>)=>{v.version='18446744073709551616'},
+  (v:ReturnType<typeof amountFixture>)=>{v.version='1\n'},
+  (v:ReturnType<typeof amountFixture>)=>{v.checkout=true},
+  (v:ReturnType<typeof amountFixture>)=>{v.pricing_recalculated=true},
+  (v:ReturnType<typeof amountFixture>)=>{v.totals.total='1\n'},
+  (v:ReturnType<typeof amountFixture>)=>{v.lines[0].unit_price='-1'},
+  (v:ReturnType<typeof amountFixture>)=>{v.lines[0].quantity='0'},
+  (v:ReturnType<typeof amountFixture>)=>{v.lines[0].quantity='1000000001'},
+  (v:ReturnType<typeof amountFixture>)=>{v.lines.push(v.lines[0])},
+  (v:ReturnType<typeof amountFixture>)=>{v.shipping_methods.push(v.shipping_methods[0])},
+  (v:ReturnType<typeof amountFixture>)=>{Object.assign(v.lines[0],{metadata:{private:'secret'}})},
+  (v:ReturnType<typeof amountFixture>)=>{Object.assign(v.totals,{private:'secret'})},
+  (v:ReturnType<typeof amountFixture>)=>{Object.assign(v.lines[0],{quantity:2})},
+  (v:ReturnType<typeof amountFixture>)=>{Object.assign(v.totals,{total:225})},
+ ]) {
+  const value=amountFixture();edit(value)
+  await error(client(async()=>reply(value)).retrieveAmounts(cart.id),'protocol',null,false)
+ }
+ await error(client(async()=>new Response('x'.repeat(4*1024*1024+1),{headers:{'Content-Type':'application/json','Cache-Control':'private, no-store'}})).retrieveAmounts(cart.id),'protocol',null,false)
+})

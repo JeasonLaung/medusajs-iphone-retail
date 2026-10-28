@@ -7,6 +7,12 @@ export type CartSnapshot = {
 export type CartScope = {csrfToken: string}
 export type CartCreation = {operationID: string; regionID: string; locale?: string}
 export type CartCreated = {cart: CartSnapshot; csrfToken: string; expiresAt: string; replayed: boolean}
+export type CartAmounts = {
+ cart_id: string; version: string; currency_code: string; totals: Record<string,string>
+ lines: {id:string;variant_id:string|null;unit_price:string;quantity:string;is_tax_inclusive:boolean;totals:Record<string,string>}[]
+ shipping_methods: {id:string;name:string;amount:string;is_tax_inclusive:boolean;totals:Record<string,string>}[]
+ pricing_recalculated: false; checkout: false
+}
 export type CartErrorKind = 'input' | 'session' | 'csrf' | 'conflict' | 'region' | 'rate_limit' | 'unavailable' | 'protocol'
 
 export class CartError extends Error {
@@ -29,6 +35,9 @@ const tokenPattern = /^[0-9a-f]{64}$/
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
 const versionPattern = /^[1-9][0-9]{0,19}$/
 const localePattern = /^[A-Za-z]{2,8}(-[A-Za-z0-9]{1,8})*$/
+const amountPattern = /^-?(0|[1-9][0-9]{0,191})(\.[0-9]{1,128})?$/
+const rowTotals = ['subtotal','total','tax_total','original_subtotal','original_total','original_tax_total','discount_subtotal','discount_tax_total','discount_total']
+const cartTotals = [...rowTotals,'item_total','item_subtotal','item_tax_total','item_discount_total','original_item_total','original_item_subtotal','original_item_tax_total','shipping_total','shipping_subtotal','shipping_tax_total','shipping_discount_total','original_shipping_total','original_shipping_subtotal','original_shipping_tax_total','credit_line_total','credit_line_subtotal','credit_line_tax_total']
 const protocol = () => new CartError('protocol')
 // JavaScript $ also matches before a final newline; API strings are canonical.
 function matches(value: unknown, pattern: RegExp): value is string {
@@ -64,6 +73,38 @@ function capabilities(value: unknown) {
  if (v.items !== false || v.checkout !== false) throw protocol()
 }
 
+function amount(value: unknown, positive = false): string {
+ const v = text(value,amountPattern)
+ if (positive && v.startsWith('-')) throw protocol()
+ return v
+}
+function amountMap(value: unknown, fields: string[]): Record<string,string> {
+ const v = record(value); keys(v,fields)
+ return Object.fromEntries(fields.map(key => [key,amount(v[key])]))
+}
+function amounts(value: unknown, id: string): CartAmounts {
+ const v = record(value)
+ keys(v,['cart_id','version','currency_code','totals','lines','shipping_methods','pricing_recalculated','checkout'])
+ const version = text(v.version,versionPattern)
+ if (v.cart_id !== id || BigInt(version) > 18446744073709551615n || v.pricing_recalculated !== false || v.checkout !== false || !Array.isArray(v.lines) || v.lines.length > 1000 || !Array.isArray(v.shipping_methods) || v.shipping_methods.length > 100) throw protocol()
+ const lineIDs = new Set<string>(), shippingIDs = new Set<string>()
+ const lines = v.lines.map(value => {
+  const row = record(value); keys(row,['id','variant_id','unit_price','quantity','is_tax_inclusive','totals'])
+  const id = text(row.id,idPattern), quantity = text(row.quantity,/^[1-9][0-9]{0,9}$/)
+  if (lineIDs.has(id) || BigInt(quantity) > 1000000000n || typeof row.is_tax_inclusive !== 'boolean') throw protocol()
+  lineIDs.add(id)
+  return {id,variant_id:row.variant_id === null ? null : text(row.variant_id,idPattern),unit_price:amount(row.unit_price,true),quantity,is_tax_inclusive:row.is_tax_inclusive,totals:amountMap(row.totals,rowTotals)}
+ })
+ const shipping = v.shipping_methods.map(value => {
+  const row = record(value); keys(row,['id','name','amount','is_tax_inclusive','totals'])
+  const id = text(row.id,idPattern)
+  if (shippingIDs.has(id) || typeof row.name !== 'string' || row.name.length > 10000 || typeof row.is_tax_inclusive !== 'boolean') throw protocol()
+  shippingIDs.add(id)
+  return {id,name:row.name,amount:amount(row.amount,true),is_tax_inclusive:row.is_tax_inclusive,totals:amountMap(row.totals,rowTotals)}
+ })
+ return {cart_id:id,version,currency_code:text(v.currency_code,/^[a-z]{3}$/),totals:amountMap(v.totals,cartTotals),lines,shipping_methods:shipping,pricing_recalculated:false,checkout:false}
+}
+
 // Reads only the non-HttpOnly CSRF cookie. Never extracts/forwards the bearer
 // possession/scope cookie, stores credentials in localStorage or accepts an
 // alternate backend origin. Duplicate cookie names are ambiguous and rejected.
@@ -82,7 +123,7 @@ export class CartClient {
   this.fetcher = options.fetcher; this.readScopeCSRF = options.readScopeCSRF
  }
 
- private async request(path: string, method: 'GET' | 'POST', body?: string, headers: Record<string,string> = {}): Promise<{status: number; value: unknown}> {
+ private async request(path: string, method: 'GET' | 'POST', body?: string, headers: Record<string,string> = {}, maxBytes = 65536): Promise<{status: number; value: unknown}> {
   const controller = new AbortController(), timer = setTimeout(() => controller.abort(),12000)
   const write = method === 'POST'
   try {
@@ -104,7 +145,7 @@ export class CartClient {
      const {done,value} = await reader.read()
      if (done) break
      size += value.byteLength
-     if (size > 65536) throw protocol()
+     if (size > maxBytes) throw protocol()
      chunks.push(value)
     }
    } finally { await reader.cancel().catch(()=>{}); reader.releaseLock() }
@@ -167,6 +208,17 @@ export class CartClient {
   const cart = snapshot(v.cart)
   if (response.status !== 200 || cart.id !== id) throw protocol()
   return cart
+ }
+
+ // Persisted exact totals only. This never authorizes payment or claims that
+ // current catalog prices/tax/shipping/promotion selection has been rerun.
+ async retrieveAmounts(id: string): Promise<CartAmounts | null> {
+  if (!matches(id,idPattern)) throw new CartError('input')
+  let response: {status: number; value: unknown}
+  try { response = await this.request(`/api/store/carts/${encodeURIComponent(id)}/amounts`,'GET',undefined,{},4*1024*1024) }
+  catch (err) { if (err instanceof CartError && (err.status === 401 || err.status === 404)) return null; throw err }
+  if (response.status !== 200) throw protocol()
+  return amounts(response.value,id)
  }
 }
 

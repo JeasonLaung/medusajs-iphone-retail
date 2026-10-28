@@ -177,6 +177,7 @@ def main():
                                    'stranger_and_admin_realm_denied': True, 'lost_possession_same_operation_recovered': True,
                                    'durable_carts': 1, 'durable_ownerships': 1, 'durable_receipts': 1,
                                    'customer_accounts_bound': 0, 'line_items': 0,
+                                   'persisted_amounts_client': True, 'empty_exact_totals': True,
                                    'production_page_mounted': False, 'tls_secure_cookie_verified': False},
                   'reviewed_relational_schema_used': True, 'empty_draft_tables_retained_by_migration': 7,
                   'explicit_catalog_read_schema_migration_used': True, 'test_only_schema_rewrite': False,

@@ -60,6 +60,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/cart-sessions", h.Scope)
 	private.POST("/carts", h.Create)
 	private.GET("/carts/:id", h.Detail)
+	private.GET("/carts/:id/amounts", h.Amounts)
 }
 
 func (h *HTTPHandler) ready(c *gin.Context) bool {
@@ -329,6 +330,14 @@ func (h *HTTPHandler) Create(c *gin.Context) {
 }
 
 func (h *HTTPHandler) Detail(c *gin.Context) {
+	h.detail(c, false)
+}
+
+func (h *HTTPHandler) Amounts(c *gin.Context) {
+	h.detail(c, true)
+}
+
+func (h *HTTPHandler) detail(c *gin.Context, amounts bool) {
 	if c.Request.URL.RawQuery != "" || !idPattern.MatchString(c.Param("id")) {
 		cartHTTPError(c, ErrInput)
 		return
@@ -350,6 +359,15 @@ func (h *HTTPHandler) Detail(c *gin.Context) {
 	}
 	if ref.StoreID != h.store || ref.CartID != c.Param("id") {
 		cartHTTPError(c, ErrDenied)
+		return
+	}
+	if amounts {
+		result, err := ReadAmounts(ctx, h.db, h.store, ref)
+		if err != nil {
+			cartHTTPError(c, err)
+			return
+		}
+		c.JSON(200, result)
 		return
 	}
 	snapshot, err := Inspect(ctx, h.db, h.store, ref)

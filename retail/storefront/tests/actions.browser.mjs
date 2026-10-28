@@ -12,8 +12,16 @@ const output=new URL('../../../logs/gin-migration/astro-actions/',import.meta.ur
 let server,browser
 try {
  server=await dev({root:new URL('./actions-fixture/',import.meta.url),publicDir:fileURLToPath(new URL('../public/',import.meta.url)),configFile:false,output:'server',integrations:[react()],vite:{plugins:[legacyPresentation()],resolve:{dedupe:['react','react-dom']}},devToolbar:{enabled:false},server:{host:'127.0.0.1',port:0},logLevel:'error'})
+ const origin=`http://127.0.0.1:${server.address.port}`,setupStarted=performance.now()
+ // dev() has bound the socket but has not compiled the SSR route. Complete
+ // bounded fixture setup separately; browser navigation still has its 15s limit.
+ const compiled=await fetch(origin+'/dk-en/products/swappie-iphone-13',{signal:AbortSignal.timeout(60000)})
+ assert.equal(compiled.status,200,'fixture SSR setup status')
+ assert.match(await compiled.text(),/<title>Artificial actions fixture<\/title>/,'fixture SSR setup document')
+ const fixtureSSRSetupMs=Math.round(performance.now()-setupStarted)
+ console.error('Fixture SSR setup ms',fixtureSSRSetupMs)
  browser=await chromium.launch({headless:true,args:['--disable-lcd-text'],...(process.env.ADMIN_TEST_BROWSER?{executablePath:process.env.ADMIN_TEST_BROWSER}:{})})
- const origin=`http://127.0.0.1:${server.address.port}`,context=await browser.newContext({reducedMotion:'reduce'}),errors=[],comparisons=[]
+ const context=await browser.newContext({reducedMotion:'reduce'}),errors=[],comparisons=[]
  context.setDefaultTimeout(15000)
  const pending=new WeakMap()
  const fresh=async()=>{
@@ -117,5 +125,5 @@ try {
   await page.unroute('**/test-cart')
  }
  await page.close();assert.deepEqual(errors,[]);await context.close()
- console.log('ASTRO_ACTIONS_BROWSER '+JSON.stringify({scope:'artificial isolated adapter and old source comparison; no live cart acceptance',comparisons,ant_grade_guide:true,sticky_and_mobile_bars:true,exact_price_and_delta:true,cart_capacity_single_location:true,checkout_false_disabled:true,test_adapter_loading_error_inventory_success:true,hydration_errors:0}))
+ console.log('ASTRO_ACTIONS_BROWSER '+JSON.stringify({scope:'artificial isolated adapter and old source comparison; no live cart acceptance',fixture_ssr_setup_ms:fixtureSSRSetupMs,browser_navigation_timeout_ms:15000,comparisons,ant_grade_guide:true,sticky_and_mobile_bars:true,exact_price_and_delta:true,cart_capacity_single_location:true,checkout_false_disabled:true,test_adapter_loading_error_inventory_success:true,hydration_errors:0}))
 }finally{if(browser)await browser.close();if(server)await server.stop()}
