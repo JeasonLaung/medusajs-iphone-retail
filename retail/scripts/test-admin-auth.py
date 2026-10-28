@@ -85,7 +85,7 @@ def main():
         # Each suite owns artificial databases in this uniquely labelled,
         # disconnected server. Release their tmpfs tables before the next suite;
         # otherwise cumulative DDL consumes the bounded fixture memory.
-        suites = ['CartTaxRefresh','TaxImport','TaxSchema','AdminAuthentication','CatalogSchemaTransition','ProductEdits','ProductPrices',
+        suites = ['CartPriceRefresh','CartTaxRefresh','TaxImport','TaxSchema','AdminAuthentication','CatalogSchemaTransition','ProductEdits','ProductPrices',
                   'ProductInventory','InventoryStockEdits','ReservationTransactions','OrderSchema',
                   'OrderImport','CustomerHistory','OrderRead','PaymentSchema','PaymentImport','FulfillmentHistory','CartSchema','CartRuntime']
         if cart_only:
@@ -243,6 +243,10 @@ def main():
             tax_import_markers = [line.split('TAX_IMPORT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'TAX_IMPORT_REHEARSAL ' in line]
             if len(tax_import_markers) != 1:
                 raise RuntimeError('Tax import evidence missing')
+            price_refresh_markers = [line.split('CART_PRICE_REFRESH_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_PRICE_REFRESH_REHEARSAL ' in line]
+            if len(price_refresh_markers) != 1:
+                raise RuntimeError('Cart price refresh evidence missing')
+            files += ['retail/backend/internal/identity/cart_price_refresh_test.go']
             tax_refresh_markers = [line.split('CART_TAX_REFRESH_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_TAX_REFRESH_REHEARSAL ' in line]
             if len(tax_refresh_markers) != 1:
                 raise RuntimeError('Cart tax refresh evidence missing')
@@ -335,6 +339,7 @@ def main():
                       'tax_schema_and_read': json.loads(tax_markers[0]),
                       'tax_import': json.loads(tax_import_markers[0]),
                       'cart_tax_refresh': json.loads(tax_refresh_markers[0]),
+                      'cart_price_refresh': json.loads(price_refresh_markers[0]),
                       'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
         password = ''
