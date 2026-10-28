@@ -14,9 +14,11 @@
     "start": "node dist/server/entry.mjs"
   },
   "dependencies": {
-    "astro": "7.4.2",
+    "@ant-design/v5-patch-for-react-19": "1.0.3",
     "@astrojs/node": "11.1.9",
     "@astrojs/react": "7.1.1",
+    "antd": "5.29.3",
+    "astro": "7.4.2",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },

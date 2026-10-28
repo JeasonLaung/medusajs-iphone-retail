@@ -100,3 +100,5 @@
 .icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
 .descriptionBody { padding-bottom: 24px; }
 .specNote { margin-bottom: 24px; }
+
+.mt4 { margin-top: 16px; }

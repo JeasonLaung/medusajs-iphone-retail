@@ -183,7 +183,7 @@
     "retail/scripts/generate-fulfillment-import-plan.py": "9f9dd5e5e21ea6582349678d6b9464e20ebe8d150bf768f2d4a5398fe0836b19",
     "retail/scripts/generate-fulfillment-schema.py": "3c1fa30b9c75cd402dc1f5d3bf160b37883a1a59b4683171435fe64c68f297fe",
     "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb",
-    "retail/scripts/test-admin-live.py": "4669ea8eecdc2c482f19313e5c42756cfd309de448e68351fb6d29cd66ae07dc"
+    "retail/scripts/test-admin-live.py": "05caa992f1352e8d33b4869cecc19007b0f40aa562f19d799c8e06a221887210"
   },
   "cleanup": "both owned containers, bridge network and temporary binaries removed"
 }

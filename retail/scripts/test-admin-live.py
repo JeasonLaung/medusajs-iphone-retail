@@ -128,7 +128,7 @@ def main():
             raise RuntimeError('Live browser checks failed; inspect ignored local result')
         astro_env=os.environ.copy()
         astro_env['STOREFRONT_TEST_GIN']=target
-        astro=subprocess.run([sys.executable,str(ROOT/'retail/scripts/test-storefront-runtime.py')],cwd=ROOT,env=astro_env,capture_output=True,timeout=240)
+        astro=subprocess.run([sys.executable,str(ROOT/'retail/scripts/test-storefront-runtime.py')],cwd=ROOT,env=astro_env,capture_output=True,timeout=480)
         if astro.returncode:
             (ROOT/'logs/gin-migration/astro-owner-result.log').write_bytes(astro.stdout+astro.stderr)
             raise RuntimeError('Owned Astro-to-Gin checks failed; inspect ignored output')

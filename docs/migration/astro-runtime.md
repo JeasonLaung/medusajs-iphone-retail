@@ -27,3 +27,5 @@
 2026-10-28 [React 选择补充](astro-selection-react.md)接入同商品双岛状态、保留 history.state 的 replaceState、popstate、标题与 canonical；独立人工 fixture 浏览器覆盖精确价格和图库同步。生产页面仍仅 health，实际页面布局及交易继续待办。
 
 2026-10-28 [原商品图库及规格](astro-product-presentation.md)新增真实 React 组件；presentation_browser 在独立根目录直接运行原组件作参考，中英三宽与交互/空状态共 40 对区域 PNG 一致。受控字体与人工图片不代表实际商品页保真；生产仍只有 health，原图片优化链路、全局资源与业务页仍待接入。
+
+2026-10-28 [商品操作区](astro-product-actions.md)新增原 Ant 等级弹窗/选项行、固定栏与 80 个原资源；累计 19 项单元，actions_browser 另记录人工适配器及 24 对旧组件区域对照，RGB 每通道最多 1 的舍入容差。原图库/规格 40 对仍严格一致。生产尚无商品路由或真实加购，不能将探针作为页面/交易验收。
