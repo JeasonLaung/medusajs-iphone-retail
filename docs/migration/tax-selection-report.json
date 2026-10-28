@@ -1,0 +1,33 @@
+{
+  "format_version": 1,
+  "scope": "Pure Go candidate filtering/selection and built-in system provider projection against actual original methods; not SQL or checkout acceptance",
+  "original": {
+    "tax_selection_cases": 24,
+    "system_provider_cases": 6,
+    "source_files": 2,
+    "external_resources_used": false
+  },
+  "go_top_level_tests": 3,
+  "go_oracle_subtests": 30,
+  "go_vet_and_build": true,
+  "concurrent_workers": 32,
+  "iterations_per_worker": 20,
+  "input_unchanged_and_output_unaliased": true,
+  "invalid_duplicate_oversize_rejected": true,
+  "db_or_external_provider_used": false,
+  "cart_transaction_integrated": false,
+  "tax_domain_accepted": false,
+  "implementation_sha256": {
+    "docs/migration/fixtures/legacy-tax-selection.json": "33b3df25d90614f108fa6f1a81e554bf800d0e2627b6ab39e17fce4c9d38d882",
+    "retail/backend/internal/tax/selection.go": "7fa5d40cf51298bd2bf4b37ede379bc89198b6f227f6f8703909f63b8b644b1b",
+    "retail/backend/internal/tax/selection_test.go": "dd12c094536e0e561bfe73ddff7cbbe46d687424744e82384ccd9b9e03a5d26b",
+    "retail/backend/internal/totals/calculate.go": "9f6779d9901e8c256bd60a56be26a91557c6eb3d68c6db2bb3e504955d7bfc41",
+    "retail/backend/internal/totals/decimal.go": "d21d4bae6b2699126b86ef54306b5716b2ecb9ee4792b5e0e431f7b2ebf1aff9",
+    "retail/backend/internal/totals/parity_test.go": "83b02eb1437162c7d3a9c21bd8264126ad56622e855276358f76441792262418",
+    "retail/backend/internal/totals/stored.go": "fc041ec6de9d634f67827663cda5b319b07fa7affc6ba5829daf086ceff8b948",
+    "retail/backend/internal/totals/stored_test.go": "e79599f2ce4d16f8c076316c6053cf7a566042c3c64f0d85100a9db00f01102d",
+    "retail/backend/internal/totals/validation_test.go": "f9288463b8f3d242bcdadca68b1fee141378f13749671e2fe4cf59223272bc82",
+    "retail/scripts/capture-tax-selection.cjs": "e763568136b4a1fb665b547a68c943bdcbd82c3c4608d158ba63086680e9da60",
+    "retail/scripts/test-tax-selection.py": "daf19ac2c0a82a2f4aaf438e5d1f5c3e26082a3e286212ab399f0ecd1ad17805"
+  }
+}

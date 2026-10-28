@@ -1,0 +1,1499 @@
+{
+  "format_version": 1,
+  "scope": "Original pure tax candidate query, stable selection and built-in system provider; artificial data, no DB/provider network/cart transaction",
+  "sources": {
+    "medusa-store/node_modules/.pnpm/@medusajs+tax@2.21.2_@medus_fe602fe876202744a316a388c055bf0f/node_modules/@medusajs/tax/dist/services/tax-module-service.js": "87858d49dca3a1a3e0c65e308fc943e4a3c0b5855842f6930e3a10b7340e2906",
+    "medusa-store/node_modules/.pnpm/@medusajs+tax@2.21.2_@medus_fe602fe876202744a316a388c055bf0f/node_modules/@medusajs/tax/dist/providers/system.js": "d76618ba9334defe7fabc804ead2a02488f1677bfc9a08ef9c1b98d6f8758ce8"
+  },
+  "cases": [
+    {
+      "name": "all-priorities",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "country",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        {
+          "id": "country-type",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product_type",
+              "reference_id": "type"
+            }
+          ]
+        },
+        {
+          "id": "country-product",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "product"
+            }
+          ]
+        },
+        {
+          "id": "province",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        {
+          "id": "province-type",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product_type",
+              "reference_id": "type"
+            }
+          ]
+        },
+        {
+          "id": "province-product",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "product"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "province-product"
+      ]
+    },
+    {
+      "name": "province-type-before-country-product",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "country-product",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "product"
+            }
+          ]
+        },
+        {
+          "id": "province-type",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product_type",
+              "reference_id": "type"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "province-type"
+      ]
+    },
+    {
+      "name": "province-default-before-country-product",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "country-product",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "product"
+            }
+          ]
+        },
+        {
+          "id": "province",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "province"
+      ]
+    },
+    {
+      "name": "country-type-before-default",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "country",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        {
+          "id": "country-type",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product_type",
+              "reference_id": "type"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "country-type"
+      ]
+    },
+    {
+      "name": "parent-most-specific",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "country",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        {
+          "id": "country-type",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product_type",
+              "reference_id": "type"
+            }
+          ]
+        },
+        {
+          "id": "country-product",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "product"
+            }
+          ]
+        },
+        {
+          "id": "province-product",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": false,
+          "is_combinable": true,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "product"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "province-product",
+        "country-product"
+      ]
+    },
+    {
+      "name": "noncombinable-no-parent",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "country",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        {
+          "id": "province-product",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "product"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "province-product"
+      ]
+    },
+    {
+      "name": "missing-parent",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "province-product",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": false,
+          "is_combinable": true,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "product"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "province-product"
+      ]
+    },
+    {
+      "name": "parent-not-recursive",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "province",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": true,
+          "is_combinable": true,
+          "rules": []
+        },
+        {
+          "id": "country",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": "ancestor"
+          },
+          "is_default": true,
+          "is_combinable": true,
+          "rules": []
+        },
+        {
+          "id": "ancestor",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "ancestor",
+          "tax_region": {
+            "id": "ancestor",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province",
+        "ancestor"
+      ],
+      "expected": [
+        "province",
+        "country"
+      ]
+    },
+    {
+      "name": "stable-tie",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "first",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        {
+          "id": "second",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "first"
+      ]
+    },
+    {
+      "name": "stable-tie-reversed",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "second",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        {
+          "id": "first",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "second"
+      ]
+    },
+    {
+      "name": "foreign-region",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "foreign",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "foreign",
+          "tax_region": {
+            "id": "foreign",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": []
+    },
+    {
+      "name": "unmatched-rule",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "other",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "other"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": []
+    },
+    {
+      "name": "unknown-reference",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "other",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "future",
+              "reference_id": "product"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": []
+    },
+    {
+      "name": "default-with-unmatched-rule",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "default",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "other"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "default"
+      ]
+    },
+    {
+      "name": "shipping-own-rule",
+      "item": {
+        "id": "shipping",
+        "shipping_option_id": "option"
+      },
+      "rates": [
+        {
+          "id": "default",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        {
+          "id": "shipping",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "shipping_option",
+              "reference_id": "option"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "shipping"
+      ]
+    },
+    {
+      "name": "shipping-ignores-product",
+      "item": {
+        "id": "shipping",
+        "shipping_option_id": "option"
+      },
+      "rates": [
+        {
+          "id": "country-product",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "product"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": []
+    },
+    {
+      "name": "product-ignores-shipping",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "shipping",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "shipping_option",
+              "reference_id": "option"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": []
+    },
+    {
+      "name": "no-type-reference",
+      "item": {
+        "id": "item",
+        "product_id": "product"
+      },
+      "rates": [
+        {
+          "id": "country-type",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product_type",
+              "reference_id": "type"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": []
+    },
+    {
+      "name": "empty-candidates",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": []
+    },
+    {
+      "name": "empty-region-directory",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "country",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        {
+          "id": "country-type",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product_type",
+              "reference_id": "type"
+            }
+          ]
+        },
+        {
+          "id": "country-product",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "product"
+            }
+          ]
+        },
+        {
+          "id": "province",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        {
+          "id": "province-type",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product_type",
+              "reference_id": "type"
+            }
+          ]
+        },
+        {
+          "id": "province-product",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "product"
+            }
+          ]
+        }
+      ],
+      "region_ids": [],
+      "expected": []
+    },
+    {
+      "name": "empty-province-is-province",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "country",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        {
+          "id": "empty",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "",
+            "parent_id": "country"
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "empty"
+      ]
+    },
+    {
+      "name": "multiple-rules-one-match",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "multi",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "other"
+            },
+            {
+              "reference": "product_type",
+              "reference_id": "type"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "multi"
+      ]
+    },
+    {
+      "name": "parent-rule-must-match",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "child",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": true,
+          "is_combinable": true,
+          "rules": []
+        },
+        {
+          "id": "parent",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": false,
+          "is_combinable": false,
+          "rules": [
+            {
+              "reference": "product",
+              "reference_id": "other"
+            }
+          ]
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "child"
+      ]
+    },
+    {
+      "name": "same-parent-region-first",
+      "item": {
+        "id": "item",
+        "product_id": "product",
+        "product_type_id": "type"
+      },
+      "rates": [
+        {
+          "id": "first",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        {
+          "id": "second",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "country",
+          "tax_region": {
+            "id": "country",
+            "province_code": null,
+            "parent_id": null
+          },
+          "is_default": true,
+          "is_combinable": false,
+          "rules": []
+        },
+        {
+          "id": "child",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "tax_region_id": "province",
+          "tax_region": {
+            "id": "province",
+            "province_code": "sample",
+            "parent_id": "country"
+          },
+          "is_default": true,
+          "is_combinable": true,
+          "rules": []
+        }
+      ],
+      "region_ids": [
+        "country",
+        "province"
+      ],
+      "expected": [
+        "child",
+        "first"
+      ]
+    }
+  ],
+  "provider_cases": [
+    {
+      "name": "empty",
+      "groups": [],
+      "expected": []
+    },
+    {
+      "name": "null-rate",
+      "groups": [
+        {
+          "item": {
+            "id": "item",
+            "product_id": "product",
+            "product_type_id": "type"
+          },
+          "rates": [
+            {
+              "id": "zero",
+              "rate": null,
+              "name": "Sample tax",
+              "code": "SAMPLE",
+              "tax_region_id": "country",
+              "tax_region": {
+                "id": "country",
+                "province_code": null,
+                "parent_id": null
+              },
+              "is_default": true,
+              "is_combinable": false,
+              "rules": []
+            }
+          ]
+        }
+      ],
+      "expected": [
+        {
+          "rate_id": "zero",
+          "rate": "0",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "line_item_id": "item",
+          "provider_id": "system"
+        }
+      ]
+    },
+    {
+      "name": "exact-decimal",
+      "groups": [
+        {
+          "item": {
+            "id": "item",
+            "product_id": "product",
+            "product_type_id": "type"
+          },
+          "rates": [
+            {
+              "id": "exact",
+              "rate": "25.00000000000000000001",
+              "name": "Sample tax",
+              "code": "SAMPLE",
+              "tax_region_id": "country",
+              "tax_region": {
+                "id": "country",
+                "province_code": null,
+                "parent_id": null
+              },
+              "is_default": true,
+              "is_combinable": false,
+              "rules": []
+            }
+          ]
+        }
+      ],
+      "expected": [
+        {
+          "rate_id": "exact",
+          "rate": "25.00000000000000000001",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "line_item_id": "item",
+          "provider_id": "system"
+        }
+      ]
+    },
+    {
+      "name": "zero-rate",
+      "groups": [
+        {
+          "item": {
+            "id": "item",
+            "product_id": "product",
+            "product_type_id": "type"
+          },
+          "rates": [
+            {
+              "id": "zero",
+              "rate": "0",
+              "name": "Sample tax",
+              "code": "SAMPLE",
+              "tax_region_id": "country",
+              "tax_region": {
+                "id": "country",
+                "province_code": null,
+                "parent_id": null
+              },
+              "is_default": true,
+              "is_combinable": false,
+              "rules": []
+            }
+          ]
+        }
+      ],
+      "expected": [
+        {
+          "rate_id": "zero",
+          "rate": "0",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "line_item_id": "item",
+          "provider_id": "system"
+        }
+      ]
+    },
+    {
+      "name": "items-before-shipping",
+      "groups": [
+        {
+          "item": {
+            "id": "shipping",
+            "shipping_option_id": "option"
+          },
+          "rates": [
+            {
+              "id": "shipping",
+              "rate": "25",
+              "name": "Sample tax",
+              "code": "SAMPLE",
+              "tax_region_id": "country",
+              "tax_region": {
+                "id": "country",
+                "province_code": null,
+                "parent_id": null
+              },
+              "is_default": true,
+              "is_combinable": false,
+              "rules": []
+            }
+          ]
+        },
+        {
+          "item": {
+            "id": "item",
+            "product_id": "product",
+            "product_type_id": "type"
+          },
+          "rates": [
+            {
+              "id": "first",
+              "rate": "25",
+              "name": "Sample tax",
+              "code": "SAMPLE",
+              "tax_region_id": "country",
+              "tax_region": {
+                "id": "country",
+                "province_code": null,
+                "parent_id": null
+              },
+              "is_default": true,
+              "is_combinable": false,
+              "rules": []
+            },
+            {
+              "id": "second",
+              "rate": "25",
+              "name": "Sample tax",
+              "code": "SAMPLE",
+              "tax_region_id": "province",
+              "tax_region": {
+                "id": "province",
+                "province_code": "sample",
+                "parent_id": "country"
+              },
+              "is_default": true,
+              "is_combinable": false,
+              "rules": []
+            }
+          ]
+        }
+      ],
+      "expected": [
+        {
+          "rate_id": "first",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "line_item_id": "item",
+          "provider_id": "system"
+        },
+        {
+          "rate_id": "second",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "line_item_id": "item",
+          "provider_id": "system"
+        },
+        {
+          "rate_id": "shipping",
+          "rate": "25",
+          "name": "Sample tax",
+          "code": "SAMPLE",
+          "shipping_line_id": "shipping",
+          "provider_id": "system"
+        }
+      ]
+    },
+    {
+      "name": "no-selected-rates",
+      "groups": [
+        {
+          "item": {
+            "id": "item",
+            "product_id": "product",
+            "product_type_id": "type"
+          },
+          "rates": []
+        }
+      ],
+      "expected": []
+    }
+  ]
+}
