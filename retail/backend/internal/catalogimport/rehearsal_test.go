@@ -30,6 +30,7 @@ import (
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/rowimport"
 	"github.com/eurorefurb/retail/internal/schema"
+	"github.com/eurorefurb/retail/internal/taximport"
 	"github.com/eurorefurb/retail/migrations"
 	"github.com/gin-gonic/gin"
 	"github.com/go-sql-driver/mysql"
@@ -129,6 +130,14 @@ func TestActualCatalogMySQL(t *testing.T) {
 	for _, name := range fulfillmentTables {
 		fulfillmentSelected[name] = nil
 	}
+	taxTables, err := taximport.SourceTables()
+	if err != nil || len(taxTables) != 4 {
+		t.Fatal("tax import scope unavailable")
+	}
+	taxSelected := map[string][]rowimport.SourceRow{}
+	for _, name := range taxTables {
+		taxSelected[name] = nil
+	}
 	var customerSelected []rowimport.SourceRow
 	orderSelected := map[string][]rowimport.SourceRow{}
 	for _, name := range orderTables {
@@ -140,6 +149,9 @@ func TestActualCatalogMySQL(t *testing.T) {
 	}
 	defer file.Close()
 	verified, err := rowimport.VerifyStream(file, snapshotHash, func(table string, row rowimport.SourceRow) error {
+		if _, ok := taxSelected[table]; ok {
+			taxSelected[table] = append(taxSelected[table], row)
+		}
 		if _, ok := paymentSelected[table]; ok {
 			paymentSelected[table] = append(paymentSelected[table], row)
 		}
@@ -285,11 +297,11 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog embedded schema plan invalid")
 	}
 	created, err := schema.Apply(ctx, db, plan)
-	if err != nil || created.Applied != 24 || schema.CheckApplied(ctx, db, plan) != nil {
+	if err != nil || created.Applied != 29 || schema.CheckApplied(ctx, db, plan) != nil {
 		t.Fatal("catalog embedded migration failed")
 	}
 	repeated, err := schema.Apply(ctx, db, plan)
-	if err != nil || repeated.Skipped != 24 {
+	if err != nil || repeated.Skipped != 29 {
 		t.Fatal("catalog embedded migration replay failed")
 	}
 	counts["explicit_schema_migrations"] = int64(created.Applied)
@@ -631,9 +643,53 @@ func TestActualCatalogMySQL(t *testing.T) {
 	counts["fulfillment_batch_rows"] = int64(fulfillmentRows)
 	counts["fulfillment_batch_rollback_rows"] = int64(rolledFulfillments.Rows)
 	counts["fulfillment_reference_holds"] = count("fulfillment_migration_reference_holds")
+	stageTaxes := func(commit bool) taximport.Result {
+		tx, err := db.BeginTx(ctx, nil)
+		if err != nil {
+			t.Fatal("tax rehearsal transaction unavailable")
+		}
+		defer tx.Rollback()
+		result, err := taximport.Import(ctx, tx, snapshotHash, taxSelected)
+		if err != nil {
+			t.Fatal("actual tax batch staging failed")
+		}
+		if commit && tx.Commit() != nil {
+			t.Fatal("actual tax batch commit failed")
+		}
+		return result
+	}
+	if rolled := stageTaxes(false); rolled.Rows != 8 || rolled.ObservedMissingReferences != 0 {
+		t.Fatal("actual tax rollback scope differs")
+	}
+	for _, name := range taxTables {
+		if count(all[name].Target) != 0 {
+			t.Fatal("tax rollback left business rows")
+		}
+	}
+	if count("migration_tax_rows") != 0 {
+		t.Fatal("tax rollback left receipts")
+	}
+	if committed := stageTaxes(true); committed.Rows != 8 || committed.ObservedMissingReferences != 0 {
+		t.Fatal("actual tax committed scope differs")
+	}
+	for _, name := range taxTables {
+		if count(all[name].Target) != int64(len(taxSelected[name])) {
+			t.Fatal("tax table count differs")
+		}
+		counts["tax_import_"+name+"_rows"] = int64(len(taxSelected[name]))
+	}
+	counts["tax_batch_rows"] = 8
+	counts["tax_batch_source_columns"] = 36
+	counts["tax_provenance_rows"] = count("migration_tax_rows")
+	counts["tax_reference_holds"] = count("tax_migration_reference_holds")
 	fingerprint := func() []byte {
 		h := sha256.New()
 		targets := map[string]string{}
+		for _, name := range taxTables {
+			targets[all[name].Target] = "id"
+		}
+		targets["migration_tax_rows"] = "source_table,identity_sha256"
+		targets["tax_migration_reference_holds"] = "source_table,identity_sha256,column_name"
 		targets["historical_customer_subjects"] = "id"
 		targets["migration_customer_dispositions"] = "source_id"
 		targets["migration_payment_rows"] = "source_table,identity_sha256"
@@ -1117,6 +1173,10 @@ func TestActualCatalogMySQL(t *testing.T) {
 	if replayedPayments.ReplayedRows != paymentRows {
 		t.Fatal("actual payment replay duplicated or changed facts")
 	}
+	if replayed := stageTaxes(true); replayed.ReplayedRows != 8 {
+		t.Fatal("actual tax replay changed evidence")
+	}
+	counts["exact_replay_tax_rows"] = 8
 	counts["exact_replay_payment_batch_rows"] = int64(paymentRows)
 	replayedOrders := stageOrders(true)
 	if replayedOrders.ReplayedRows != 336 {

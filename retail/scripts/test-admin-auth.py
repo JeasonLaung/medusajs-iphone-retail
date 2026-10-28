@@ -85,7 +85,7 @@ def main():
         # Each suite owns artificial databases in this uniquely labelled,
         # disconnected server. Release their tmpfs tables before the next suite;
         # otherwise cumulative DDL consumes the bounded fixture memory.
-        suites = ['TaxSchema','AdminAuthentication','CatalogSchemaTransition','ProductEdits','ProductPrices',
+        suites = ['TaxImport','TaxSchema','AdminAuthentication','CatalogSchemaTransition','ProductEdits','ProductPrices',
                   'ProductInventory','InventoryStockEdits','ReservationTransactions','OrderSchema',
                   'OrderImport','CustomerHistory','OrderRead','PaymentSchema','PaymentImport','FulfillmentHistory','CartSchema','CartRuntime']
         if cart_only:
@@ -240,6 +240,11 @@ def main():
             tax_markers = [line.split('TAX_SCHEMA_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'TAX_SCHEMA_REHEARSAL ' in line]
             if len(tax_markers) != 1:
                 raise RuntimeError('Tax schema and actual selection evidence missing')
+            tax_import_markers = [line.split('TAX_IMPORT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'TAX_IMPORT_REHEARSAL ' in line]
+            if len(tax_import_markers) != 1:
+                raise RuntimeError('Tax import evidence missing')
+            files += ['retail/backend/migrations/0029_tax_import_evidence.sql','retail/scripts/generate-tax-import-plan.py','retail/backend/internal/identity/tax_import_test.go']
+            files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/taximport').glob('*') if p.is_file()]
             files += ['retail/backend/migrations/0028_tax_relational.sql','retail/scripts/generate-tax-schema.py','retail/backend/internal/identity/tax_schema_test.go']
             files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/tax').glob('*') if p.is_file()]
             files += ['retail/backend/internal/identity/catalog_schema_test.go','retail/backend/internal/schema/ready.go',
@@ -324,6 +329,7 @@ def main():
                       'order_payments': json.loads(payment_read_markers[0]),
                       'order_read': json.loads(order_read_markers[0]),
                       'tax_schema_and_read': json.loads(tax_markers[0]),
+                      'tax_import': json.loads(tax_import_markers[0]),
                       'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
         password = ''

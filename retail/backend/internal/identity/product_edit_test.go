@@ -59,7 +59,7 @@ func TestOwnedProductEdits(t *testing.T) {
 		t.Fatal("fixture plan failed")
 	}
 	applied, err := schema.Apply(ctx, pool, plan)
-	if err != nil || applied.Applied != 28 {
+	if err != nil || applied.Applied != 29 {
 		t.Fatal("eleven migrations failed")
 	}
 	user := identity.User{ID: "edit-fixture-admin", Email: "edit@example.invalid", Name: "Edit", Role: "admin", Enabled: true, AuthVersion: 1, PasswordHash: "artificial-hash", CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()}
@@ -240,5 +240,5 @@ func TestOwnedProductEdits(t *testing.T) {
 	if json.Unmarshal([]byte(audit.BeforeJSON), &a) != nil || json.Unmarshal([]byte(audit.AfterJSON), &b) != nil || a.Title != "Original" || b.Title != in.Title || b.Status != "published" || b.Subtitle != nil || b.Description != nil {
 		t.Fatal("audit evidence incorrect")
 	}
-	t.Log(`PRODUCT_EDIT_REHEARSAL {"migrations":28,"concurrent_attempts":8,"concurrent_wins":1,"conflicts":7,"concurrent_duplicate_attempts":8,"concurrent_duplicate_commits":1,"audit_rows":3,"replay_single_commit":true,"audit_failure_rollback":true,"stale_authority_rejected":true,"revoked_action_replay_denied":true,"disabled_actor_rejected":true,"disabled_command_rejected":true,"unrelated_fields_preserved":true}`)
+	t.Log(`PRODUCT_EDIT_REHEARSAL {"migrations":29,"concurrent_attempts":8,"concurrent_wins":1,"conflicts":7,"concurrent_duplicate_attempts":8,"concurrent_duplicate_commits":1,"audit_rows":3,"replay_single_commit":true,"audit_failure_rollback":true,"stale_authority_rejected":true,"revoked_action_replay_denied":true,"disabled_actor_rejected":true,"disabled_command_rejected":true,"unrelated_fields_preserved":true}`)
 }

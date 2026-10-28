@@ -1,0 +1,305 @@
+{
+  "version": 1,
+  "model_sha256": "0a0c4ecd7dc58dcff6d60e8a1d35a7a1bf74c759664ab2c7b07fc9e455a241bf",
+  "tables": [
+    {
+      "source": "tax_provider",
+      "target": "tax_providers",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "is_enabled",
+          "target": "is_enabled",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": []
+    },
+    {
+      "source": "tax_region",
+      "target": "tax_regions",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "provider_id",
+          "target": "provider_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "country_code",
+          "target": "country_code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "province_code",
+          "target": "province_code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "parent_id",
+          "target": "parent_id",
+          "decimal": false,
+          "deferred": true
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_by",
+          "target": "created_by",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "provider_id",
+          "parent": "tax_providers",
+          "parent_column": "id"
+        },
+        {
+          "column": "parent_id",
+          "parent": "tax_regions",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "tax_rate",
+      "target": "tax_rates",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "rate",
+          "target": "rate",
+          "decimal": true,
+          "deferred": false
+        },
+        {
+          "source": "code",
+          "target": "code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "name",
+          "target": "name",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "is_default",
+          "target": "is_default",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "is_combinable",
+          "target": "is_combinable",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "tax_region_id",
+          "target": "tax_region_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_by",
+          "target": "created_by",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "tax_region_id",
+          "parent": "tax_regions",
+          "parent_column": "id"
+        }
+      ]
+    },
+    {
+      "source": "tax_rate_rule",
+      "target": "tax_rate_rules",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "tax_rate_id",
+          "target": "tax_rate_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "reference_id",
+          "target": "reference_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "reference",
+          "target": "reference",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_by",
+          "target": "created_by",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "tax_rate_id",
+          "parent": "tax_rates",
+          "parent_column": "id"
+        }
+      ]
+    }
+  ]
+}

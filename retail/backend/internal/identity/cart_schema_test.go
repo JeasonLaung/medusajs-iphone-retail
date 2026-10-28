@@ -58,11 +58,11 @@ func TestOwnedCartSchema(t *testing.T) {
 	}
 	db, gdb := open("cart_schema_fresh")
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 28 || schema.CheckApplied(ctx, db, plan) != nil || cart.Ready(ctx, gdb) != nil {
+	if err != nil || r.Applied != 29 || schema.CheckApplied(ctx, db, plan) != nil || cart.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh cart schema failed")
 	}
 	r, err = schema.Apply(ctx, db, plan)
-	if err != nil || r.Skipped != 28 {
+	if err != nil || r.Skipped != 29 {
 		t.Fatal("cart schema replay changed facts")
 	}
 	ddl, err := migrations.Files.ReadFile("0025_cart_relational.sql")
@@ -188,7 +188,7 @@ func TestOwnedCartSchema(t *testing.T) {
 	if blocked.QueryRowContext(ctx, "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name IN ('cart_line_items','cart_runtime_schema')").Scan(&kept) != nil || kept != 0 {
 		t.Fatal("cart guard created partial domain")
 	}
-	result := map[string]any{"migrations": 28, "tables": 10, "source_columns": 136, "exact_money_tax_and_string_ids": true, "json_numeric_lexeme_preserved": true, "physical_fk_cascade_and_set_null": true, "invalid_boolean_json_negative_amount_rejected": true, "composite_identity_preserved": true, "unresolved_semantic_references_preserved": true, "existing_tables_preserved": true, "replay_unchanged": true, "schema_drift_rejected": true, "writes_enabled": false, "possession_restored": false, "checkout_integrated": false}
+	result := map[string]any{"migrations": 29, "tables": 10, "source_columns": 136, "exact_money_tax_and_string_ids": true, "json_numeric_lexeme_preserved": true, "physical_fk_cascade_and_set_null": true, "invalid_boolean_json_negative_amount_rejected": true, "composite_identity_preserved": true, "unresolved_semantic_references_preserved": true, "existing_tables_preserved": true, "replay_unchanged": true, "schema_drift_rejected": true, "writes_enabled": false, "possession_restored": false, "checkout_integrated": false}
 	b, _ := json.Marshal(result)
 	t.Log("CART_SCHEMA_REHEARSAL " + string(b))
 }

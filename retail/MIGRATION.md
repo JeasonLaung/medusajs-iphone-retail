@@ -169,3 +169,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-28 税率引擎补充：[独立Go候选选择与system税行](../docs/migration/go-tax-selection.md)保留商品/类型/运费匹配、省/国家稳定优先级、单父税区组合和精确税率；24组选择及6组实际原provider对照、边界/输出隔离和32并发worker验证通过。税区SQL结构/导入读取、自动与强制计算上下文、provider配置、Ant页面和购物车重算事务仍缺，T025/T032/T033未验收。
 
 2026-10-28 税区SQL补充：[0028四表与事务内配置读取](../docs/migration/tax-schema-read.md)承接4表/36来源字段，保留父外键与完整文本唯一性4项审查hold，通用写能力关闭；Gin启动/健康检查核对编译模型，ReadSystem承接自动/强制地址门槛、礼品卡过滤和启用system provider。独占SQL结果以最新admin-auth-report中tax_schema_and_read及源码SHA为准；专用配置导入、Ant管理、完整换区重算仍缺，T020/T032/T033未验收。
+
+2026-10-28 税务配置导入补充：[0029回执与四表事务导入](../docs/migration/tax-import.md)完成完整值唯一性、父区延后恢复、精确回执及不可释放引用hold；独占SQL验证并发/回滚/漂移，固定快照1个provider及7个税区完成回滚、提交、精确重放。未迁移旧登录账号；Ant管理、完整重算及正式页面仍待完成，相关任务未整体验收。

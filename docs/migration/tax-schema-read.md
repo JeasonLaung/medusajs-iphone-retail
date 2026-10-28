@@ -25,3 +25,5 @@ python retail/scripts/test-admin-auth.py
 本批完整独占SQL回归已通过：28迁移执行/重放、税区专项及既有16组领域测试，admin-auth-report记录170项源码SHA，逐项核对无漂移；测试自有容器和二进制已清理。Go全包测试与tax/schema/server静态检查通过。真实进程及浏览器的联合报告另行验证，不以本SQL报告替代。
 
 最终补充：实际安装的providers loader按tp_<identifier>注册，已固定loader源码SHA并修正数据库ID为tp_system，税行输出仍为system。修正后完整SQL回归重跑通过，另验证税区模型停用/恢复使健康检查503/200。真实Gin/MySQL/Redis下后台3项浏览器、商品加购/购物车恢复和Astro全部组件对照通过，自有容器/网络/程序清理完成；admin-live、astro-runtime及tax-selection报告源码SHA无漂移。服务检查9001 health/app、8000商品/购物车和9300预览均200，既有错误日志长度/时间未新增。配置导入和完整换区事务继续待办。
+
+后续更新：专用配置导入已由[税务事务导入](tax-import.md)实现并验证，迁移总数为29。固定快照8行的回滚、提交及精确重放通过，完整值唯一性账本已接入导入事务。以上28迁移浏览器结论为当时历史记录，不能当作29迁移后的重新浏览器验证；当前SQL/固定快照结果以最新报告及源码摘要为准。后台配置写入及完整换区仍待完成。
