@@ -24,6 +24,7 @@ test('actual storefront client adds and merges draft items through browser cooki
   },source)
  }
  await install()
+ expect(await page.evaluate(()=>window.itemClient.current())).toBeNull()
  const storage=await page.evaluate(()=>({local:Object.entries(localStorage),session:Object.entries(sessionStorage)}))
  const created=await page.evaluate(async operationID=>{
   const scope=await window.itemClient.openScope()
@@ -56,7 +57,13 @@ test('actual storefront client adds and merges draft items through browser cooki
   expect(failed).toEqual({kind,status,uncertain:false})
  }
  await install()
- const saved=await page.evaluate(id=>window.itemClient.retrieveAmounts(id),id)
+ // Resolve only from the HttpOnly cookie after module reload, not a saved ID.
+ const restored=await page.evaluate(()=>window.itemClient.current())
+ expect(restored).toMatchObject({id,version:'3',region_id:'fixture-region'})
+ const saved=await page.evaluate(async()=>{
+  const cart=await window.itemClient.current()
+  return cart ? window.itemClient.retrieveAmounts(cart.id) : null
+ })
  expect(saved).toMatchObject({cart_id:id,version:'3',pricing_recalculated:false,checkout:false,lines:[{id:merged.line_id,quantity:'2',unit_price:'80.000000000000000000001'}]})
  expect(saved?.totals.total).toBe('160.000000000000000000002')
  expect(saved?.lines).toHaveLength(1)
@@ -68,5 +75,7 @@ test('actual storefront client adds and merges draft items through browser cooki
   const denied=await stranger.request.post(`http://127.0.0.1:19200/api/store/carts/${id}/line-items`,{headers:{Origin:'http://127.0.0.1:19200','Idempotency-Key':randomUUID()},data:{version:'3',variant_id:'browser-add-v',quantity:'1'}})
   expect(denied.status()).toBe(401)
  } finally {await stranger.close()}
+ await context.clearCookies({name:'retail_cart_possession'})
+ expect(await page.evaluate(()=>window.itemClient.current())).toBeNull()
  expect(errors).toEqual([])
 })

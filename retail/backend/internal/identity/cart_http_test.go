@@ -139,6 +139,17 @@ func checkCartHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions *ses
 			t.Fatal("private cart data escaped projection")
 		}
 	}
+	current := request(router, "GET", "/api/store/cart", "", possession, "", "")
+	status(current, 200)
+	if current.Body.String() != w.Body.String() || current.Header().Get("Set-Cookie") != "" {
+		t.Fatal("current cart did not resolve the same private snapshot without renewal")
+	}
+	status(request(router, "GET", "/api/store/cart", "", nil, "", ""), 401)
+	status(request(router, "GET", "/api/store/cart", "", scopeCookies, "", ""), 401)
+	status(request(router, "GET", "/api/store/cart", "", append(possession, possession[0]), "", ""), 401)
+	status(request(router, "GET", "/api/store/cart?id=legacy-cart", "", possession, "", ""), 400)
+	status(request(router, "GET", "/api/store/cart", "", possession, "", "", func(r *http.Request) { r.Header.Set("Origin", "https://unrelated.example") }), 403)
+	status(request(router, "GET", "/api/store/cart", "", possession, "", "", func(r *http.Request) { r.Header.Set("Sec-Fetch-Site", "cross-site") }), 403)
 	w = request(router, "POST", "/api/store/carts", body, scopeCookies, scopeCSRF, operation)
 	status(w, 200)
 	var replay struct {
@@ -215,6 +226,7 @@ func checkCartHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions *ses
 		t.Fatal("HTTP revocation fixture failed")
 	}
 	status(request(router, "GET", path, "", possession, "", ""), 404)
+	status(request(router, "GET", "/api/store/cart", "", possession, "", ""), 404)
 	status(request(router, "POST", "/api/store/carts", body, scopeCookies, scopeCSRF, operation), 404)
 
 	closedClient := redis.NewClient(&redis.Options{Addr: "127.0.0.1:6379"})
@@ -233,6 +245,7 @@ func checkCartHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions *ses
 	}
 	status(request(brokenRouter, "POST", "/api/store/carts", body, scopeCookies, scopeCSRF, uuid.NewString()), 503)
 	status(request(brokenRouter, "GET", "/api/store/carts/"+replay.Cart.ID, "", recoveredCookies, "", ""), 503)
+	status(request(brokenRouter, "GET", "/api/store/cart", "", recoveredCookies, "", ""), 503)
 	// Scope eviction loses its retry identity; it never grants old cart access.
 	hash := sha256.Sum256([]byte(scopeToken))
 	scopeKey := "eurorefurb:cart-runtime:v1:cart:creation-scope:" + hex.EncodeToString(hash[:])
@@ -269,5 +282,6 @@ func checkCartHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions *ses
 	}
 	status(request(disabled, "POST", "/api/store/cart-sessions", `{}`, nil, "", ""), 503)
 	status(request(disabled, "GET", path, "", possession, "", ""), 503)
-	t.Log(`CART_HTTP_REHEARSAL {"real_gin_mysql_redis":true,"scope_cookie_csrf":true,"possession_http_only":true,"strict_origin_and_headers":true,"strict_json_and_size":true,"private_projection":true,"id_alone_denied":true,"scoped_creation_replay":true,"issuance_failure_recovered":true,"revoked_replay_denied":true,"redis_failure_closed":true,"scope_eviction_closed":true,"secure_cookie_configuration":true,"unconfigured_routes_closed":true,"browser_verified":false,"checkout_integrated":false}`)
+	status(request(disabled, "GET", "/api/store/cart", "", possession, "", ""), 503)
+	t.Log(`CART_HTTP_REHEARSAL {"real_gin_mysql_redis":true,"scope_cookie_csrf":true,"possession_http_only":true,"strict_origin_and_headers":true,"strict_json_and_size":true,"private_projection":true,"id_alone_denied":true,"scoped_creation_replay":true,"issuance_failure_recovered":true,"revoked_replay_denied":true,"redis_failure_closed":true,"scope_eviction_closed":true,"secure_cookie_configuration":true,"unconfigured_routes_closed":true,"current_possession_lookup":true,"browser_verified":false,"checkout_integrated":false}`)
 }

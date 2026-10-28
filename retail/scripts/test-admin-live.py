@@ -196,7 +196,7 @@ def main():
                   'cart_items_browser': {'actual_storefront_client': True, 'real_gin_mysql_redis': True,
                                          'concurrent_same_key_requests': 4, 'same_sku_merged': True,
                                          'quantity_tier_price': True, 'exact_raw_amount': True,
-                                         'reload_readback': True, 'immutable_old_receipt': True,
+                                         'reload_readback': True, 'current_possession_lookup': True, 'immutable_old_receipt': True,
                                          'version_and_stock_rejection': True, 'cookie_ttl_unchanged': True,
                                          'line_items': 1, 'operation_receipts': 2, 'inventory_reserved': False,
                                          'production_page_mounted': False, 'full_cart_accepted': False},

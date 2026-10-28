@@ -54,12 +54,13 @@ func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
 }
 
 // An unconfigured handler keeps these routes closed. Public catalog capability
-// checkout remains false; no item/payment route is registered by this phase.
+// checkout remains false; draft item commands do not authorize payment.
 func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private := group.Group("")
 	private.Use(platform.PrivateResponse)
 	private.POST("/cart-sessions", h.Scope)
 	private.POST("/carts", h.Create)
+	private.GET("/cart", h.Current)
 	private.GET("/carts/:id", h.Detail)
 	private.GET("/carts/:id/amounts", h.Amounts)
 	private.POST("/carts/:id/line-items", h.AddItem)
@@ -336,15 +337,21 @@ func (h *HTTPHandler) Create(c *gin.Context) {
 }
 
 func (h *HTTPHandler) Detail(c *gin.Context) {
-	h.detail(c, false)
+	h.detail(c, false, false)
+}
+
+// Current derives the ID from server-resolved possession and still verifies
+// current SQL ownership. No readable cart ID cookie or browser storage needed.
+func (h *HTTPHandler) Current(c *gin.Context) {
+	h.detail(c, false, true)
 }
 
 func (h *HTTPHandler) Amounts(c *gin.Context) {
-	h.detail(c, true)
+	h.detail(c, true, false)
 }
 
-func (h *HTTPHandler) detail(c *gin.Context, amounts bool) {
-	if c.Request.URL.RawQuery != "" || !idPattern.MatchString(c.Param("id")) {
+func (h *HTTPHandler) detail(c *gin.Context, amounts, current bool) {
+	if c.Request.URL.RawQuery != "" || !current && !idPattern.MatchString(c.Param("id")) {
 		cartHTTPError(c, ErrInput)
 		return
 	}
@@ -363,7 +370,7 @@ func (h *HTTPHandler) detail(c *gin.Context, amounts bool) {
 		cartHTTPError(c, err)
 		return
 	}
-	if ref.StoreID != h.store || ref.CartID != c.Param("id") {
+	if ref.StoreID != h.store || !current && ref.CartID != c.Param("id") {
 		cartHTTPError(c, ErrDenied)
 		return
 	}

@@ -225,13 +225,23 @@ export class CartClient {
  // network, timeout and malformed responses remain errors, never empty carts.
  async retrieve(id: string): Promise<CartSnapshot | null> {
   if (!matches(id,idPattern)) throw new CartError('input')
+  return this.readSnapshot(`/api/store/carts/${encodeURIComponent(id)}`,id)
+ }
+
+ // Restore from HttpOnly possession without a saved/URL-selected cart ID.
+ // No creation, scope issuance or TTL refresh occurs on this read.
+ async current():Promise<CartSnapshot|null> {
+  return this.readSnapshot('/api/store/cart')
+ }
+
+ private async readSnapshot(path:string, expectedID?:string):Promise<CartSnapshot|null> {
   let response: {status: number; value: unknown}
-  try { response = await this.request(`/api/store/carts/${encodeURIComponent(id)}`,'GET') }
+  try { response = await this.request(path,'GET') }
   catch (err) { if (err instanceof CartError && (err.status === 401 || err.status === 404)) return null; throw err }
   const v = record(response.value)
   keys(v,['cart','capabilities']); capabilities(v.capabilities)
   const cart = snapshot(v.cart)
-  if (response.status !== 200 || cart.id !== id) throw protocol()
+  if (response.status !== 200 || expectedID !== undefined && cart.id !== expectedID) throw protocol()
   return cart
  }
 

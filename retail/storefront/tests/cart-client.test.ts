@@ -238,3 +238,17 @@ test('draft item input and receipt bounds reject ambiguity; failures retain orig
  const result=await client(async()=>reply({...itemReceipt,version:'9007199254740993124'})).addItem(cart.id,large,{csrfToken:nextCSRF})
  assert.equal(result.version,'9007199254740993124')
 })
+
+test('current cart restoration uses possession only, keeps dependency errors distinct, validates full snapshot',async()=>{
+ let calls=0
+ const c=client(async(url,init)=>{
+  calls++;assert.equal(url,'/api/store/cart');assert.equal(init!.method,'GET');assert.equal(init!.body,undefined)
+  assert.equal(init!.credentials,'same-origin');assert.equal(new Headers(init!.headers).get('X-CSRF-Token'),null)
+  return reply({cart,capabilities})
+ })
+ assert.deepEqual(await c.current(),cart);assert.equal(calls,1)
+ for(const status of [401,404])assert.equal(await client(async()=>reply({},status)).current(),null)
+ await error(client(async()=>reply({},503)).current(),'unavailable',503,false)
+ await error(client(async()=>{throw Error('offline')}).current(),'unavailable',null,false)
+ for(const v of [{cart:{...cart,id:'../bad'},capabilities},{cart:{...cart,version:'18446744073709551616'},capabilities},{cart,capabilities:{items:true,checkout:false}},{cart:{...cart,customer_id:'private'},capabilities}])await error(client(async()=>reply(v)).current(),'protocol',null,false)
+})
