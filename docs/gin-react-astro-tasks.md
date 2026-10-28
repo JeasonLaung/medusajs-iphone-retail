@@ -414,3 +414,5 @@
 2026-10-28 固定运价数量补充：[原缺省数量分支](migration/flat-shipping-prices.md)已承接min<=1或null且不检查max，显式数量与商品入口仍严格校验。3组实际原SQL构造分支证据固定，Go边界与人工SQL结果以最新报告SHA为准。总额等上下文、配送资格、provider和完整交易继续待办，相关任务未整体验收。
 
 2026-10-28 配送规则补充：[独立Go匹配与原纯函数对照](migration/shipping-rule-matching.md)承接八种运算符、嵌套数组/标量、严格相等与布尔规范化；45组原样例、精确金额及非法配置边界通过。ISO日期保留毫秒精度，其余Date.parse形式仍待扩展核验。持久规则/地址渠道资格、provider、保存及完整重算仍缺，T032/T033未整体验收。
+
+2026-10-28 配送地理结构补充：[0030与geo_zone正式关系](migration/fulfillment-geo-schema.md)补齐1表11字段，保留JSON文本/空值、枚举、区域父外键及同名表保护；Gin启动/health增加编译模型校验。独占SQL结果以admin-auth-report.geo_schema与源码SHA为准。固定来源7行尚未专用导入，邮编条件实际匹配、地址渠道资格、provider与完整交易仍缺，T032/T033未整体验收。

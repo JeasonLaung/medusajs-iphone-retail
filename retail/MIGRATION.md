@@ -185,3 +185,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 ## 配送规则匹配补充（2026-10-28）
 
 新增独立 `fulfillment.MatchRules`，45组实际旧纯函数人工证据与Go对照，承接八种运算符、嵌套/数组字符串化和严格类型；金额比较精确，接受合法false/0。仅支持明确ISO日期，其余日期文本仍待核验扩展。见[契约与验证](../docs/migration/shipping-rule-matching.md)。尚未接入持久配送资格或完整购物车重算，不代表配送/checkout可用。
+
+2026-10-28 配送地理结构补充：[0030与geo_zone正式关系](../docs/migration/fulfillment-geo-schema.md)补齐1表11字段，保留JSON文本/空值、枚举、区域父外键及同名表保护；Gin启动/health增加编译模型校验。独占SQL结果以admin-auth-report.geo_schema与源码SHA为准。固定来源7行尚未专用导入，邮编条件实际匹配、地址渠道资格、provider与完整交易仍缺，T032/T033未整体验收。

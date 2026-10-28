@@ -83,6 +83,9 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 			err = fulfillment.Ready(ctx, db)
 		}
 		if err == nil {
+			err = fulfillment.GeoReady(ctx, db)
+		}
+		if err == nil {
 			err = authorization.Ready(ctx, db)
 		}
 		if err == nil {

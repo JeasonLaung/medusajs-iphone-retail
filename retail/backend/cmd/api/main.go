@@ -66,6 +66,9 @@ func main() {
 		err = fulfillment.Ready(verifyCtx, db)
 	}
 	if err == nil {
+		err = fulfillment.GeoReady(verifyCtx, db)
+	}
+	if err == nil {
 		err = authorization.Ready(verifyCtx, db)
 	}
 	if err == nil {

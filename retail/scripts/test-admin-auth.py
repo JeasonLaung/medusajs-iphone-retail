@@ -85,7 +85,7 @@ def main():
         # Each suite owns artificial databases in this uniquely labelled,
         # disconnected server. Release their tmpfs tables before the next suite;
         # otherwise cumulative DDL consumes the bounded fixture memory.
-        suites = ['CartPriceRefresh','CartTaxRefresh','TaxImport','TaxSchema','AdminAuthentication','CatalogSchemaTransition','ProductEdits','ProductPrices',
+        suites = ['GeoSchema','CartPriceRefresh','CartTaxRefresh','TaxImport','TaxSchema','AdminAuthentication','CatalogSchemaTransition','ProductEdits','ProductPrices',
                   'ProductInventory','InventoryStockEdits','ReservationTransactions','OrderSchema',
                   'OrderImport','CustomerHistory','OrderRead','PaymentSchema','PaymentImport','FulfillmentHistory','CartSchema','CartRuntime']
         if cart_only:
@@ -112,6 +112,9 @@ def main():
             if docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket','-e',cleanup).returncode:
                 raise RuntimeError('Owned artificial database cleanup failed')
         tested = subprocess.CompletedProcess([], tested.returncode, output, errors)
+        geo_markers = [line.split('GEO_SCHEMA_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'GEO_SCHEMA_REHEARSAL ' in line]
+        if tested.returncode == 0 and not cart_only and len(geo_markers) != 1:
+            raise RuntimeError('Geo schema evidence missing')
         amount_markers = [line.split('CART_AMOUNTS_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_AMOUNTS_REHEARSAL ' in line]
         if tested.returncode == 0 and len(amount_markers) != 1:
             raise RuntimeError('Cart amount evidence missing')
@@ -246,7 +249,7 @@ def main():
             flat_markers = [line.split('FLAT_SHIPPING_PRICE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'FLAT_SHIPPING_PRICE_REHEARSAL ' in line]
             if len(flat_markers) != 1:
                 raise RuntimeError('Flat shipping price evidence missing')
-            files += ['retail/backend/internal/identity/flat_shipping_prices_test.go']
+            files += ['retail/backend/internal/identity/flat_shipping_prices_test.go','retail/backend/internal/identity/geo_schema_test.go','retail/backend/migrations/0030_fulfillment_geo_relational.sql','retail/scripts/generate-geo-schema.py']
             snapshot_markers = [line.split('CART_ITEM_SNAPSHOT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_ITEM_SNAPSHOT_REHEARSAL ' in line]
             if len(snapshot_markers) != 1:
                 raise RuntimeError('Cart item snapshot evidence missing')
@@ -350,6 +353,7 @@ def main():
                       'cart_price_refresh': json.loads(price_refresh_markers[0]),
                       'cart_item_snapshots': json.loads(snapshot_markers[0]),
                       'flat_shipping_prices': json.loads(flat_markers[0]),
+                      'geo_schema': json.loads(geo_markers[0]),
                       'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
         password = ''

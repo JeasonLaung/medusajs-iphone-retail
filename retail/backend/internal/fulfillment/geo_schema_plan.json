@@ -1,0 +1,32 @@
+{
+  "format_version": 1,
+  "schema_version": 1,
+  "model_sha256": "8675db551f62aeb156895c2cc0386857f48a9c153d09877d64ce456b7ccd38d9",
+  "migration": "0030_fulfillment_geo_relational.sql",
+  "tables": [
+    "fulfillment_geo_zones"
+  ],
+  "source_tables": [
+    "geo_zone"
+  ],
+  "source_columns": 11,
+  "reads_enabled": true,
+  "writes_enabled": false,
+  "full_business_accepted": false,
+  "historical_accounts_restored": false,
+  "explicit_enum_constraints": [
+    {
+      "table": "fulfillment_geo_zones",
+      "column": "type",
+      "allowed": [
+        "country",
+        "province",
+        "city",
+        "zip"
+      ]
+    }
+  ],
+  "unresolved_semantic_dependencies": [],
+  "unresolved_source_indexes": [],
+  "migration_sha256_lf": "8bd16ec3d59376ea1b0d43a29cf761af6621a48daf7cb25b68d32c730abdb729"
+}
