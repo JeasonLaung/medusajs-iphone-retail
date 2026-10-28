@@ -188,6 +188,7 @@
     "retail/backend/internal/catalog/schema.go": "aadd8fc2d82c87d9a8467ae60c232cd300081f6a3880ee22a1a73666511e04ab",
     "retail/backend/internal/catalog/store_display.go": "3936c1b53fff54a91e0b2daec9d0e3df1913643a241466a95b1c66443fd3eec1",
     "retail/backend/internal/catalog/store_display_test.go": "f7e031aac6706b4711ce5844a3417193da4be48e5a88669acbaf67f91a8d88b7",
+    "retail/backend/internal/catalog/store_locales.go": "6a1f11b7a318f68006214d1ecd832a3142f54e21c0ef688021754b380921496d",
     "retail/backend/internal/catalog/store_products.go": "5ea3c252ff61ae5b27d33138d11e24044adbe6a954ec26122a86b36b3fac42e4",
     "retail/backend/internal/catalog/store_products_test.go": "840e06fb71ab1dd5bee45ac4de634272c874d46ff9e233c4ad56c4ffecd567d1",
     "retail/backend/internal/catalog/store_regions.go": "6c93beeaf807d3b40330649e6d7ad4202714fd82dd945bf53d65d3fbcb0d36aa",
@@ -233,7 +234,7 @@
     "retail/backend/internal/schema/plan.go": "57e554e749ef6d75c12ca6cbb20f71b8ced1e29b39b49b15e5cb8d9a4c98de56",
     "retail/backend/internal/schema/ready.go": "136238fca088d5594ae5ddc8af5954f090aab286f8dedcf17f90ad42c6a5a5ad",
     "retail/backend/internal/schema/run.go": "56f369159ab7cee4fc51694ba6dc0cbd58daff7656fd02e4205350c1b1d9f8b3",
-    "retail/backend/internal/server/router.go": "9ce9c74d059c01b81c2a6b668741e44a019866dba3bebb13188fde08e98e493c",
+    "retail/backend/internal/server/router.go": "8ad0fcb8b3a64ef4baff7f90649f195aca9a82ab7f1094cfa192978bc384093a",
     "retail/backend/internal/sessionstore/cart.go": "08a33b38b47c0ea3d077735239594044a7fbbb1013f6f5f176e53354c41cc4d0",
     "retail/backend/internal/sessionstore/cart_scope.go": "db6c0953c9abc475cc93839322941f5cb179da7c2a20c79eabbbed23611a8503",
     "retail/backend/internal/sessionstore/cart_test.go": "dd4113af47a4c56acac505b2116cc8e0f0dfa637495cc5c9f239670fd473fd6e",
@@ -277,7 +278,7 @@
     "retail/scripts/generate-fulfillment-import-plan.py": "9f9dd5e5e21ea6582349678d6b9464e20ebe8d150bf768f2d4a5398fe0836b19",
     "retail/scripts/generate-fulfillment-schema.py": "3c1fa30b9c75cd402dc1f5d3bf160b37883a1a59b4683171435fe64c68f297fe",
     "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb",
-    "retail/scripts/test-admin-live.py": "d9a4fdd6c4e17b7c18a5cd0fbe0e86cacfd3324a839b4462fb18ad241b0c27f1",
+    "retail/scripts/test-admin-live.py": "0aeb85feb78ef43c374cb8b033a3d7332451fc411dfc1eb3d228a9b5b78a66a8",
     "retail/storefront/src/components/cart/gin-cart.tsx": "08ec1dbc350b3a1cc06cb389e1153e07d69c4536ff0e94885c11ece4bbf4a37f",
     "retail/storefront/src/components/products/ICONS-LICENSE.txt": "e2058c0858b14c1813ee09ea991d97f6aa153fcd60eeb7174d736c19bbbef06d",
     "retail/storefront/src/components/products/gin-product-actions.tsx": "403c3f556ab12522757a0887244cc34f2d44dc5059baee49eedb785023aa6e61",
@@ -305,6 +306,7 @@
     "retail/storefront/src/lib/cart-variants.ts": "1cbc98473bdc0bee3069af8aed74ac3a05f93f280e79aeb440c67ffdfd84dd37",
     "retail/storefront/src/lib/footer-data.ts": "a5739f70040eae65ccc0b190dace275dbc5707c31ccb37563669ea94cf9c2975",
     "retail/storefront/src/lib/gin-public.ts": "69f332d8182769ee08d1cebfe569eaa4a41d40a1a2b5000157dae0c3511ab46f",
+    "retail/storefront/src/lib/locales.ts": "31fb560e8a32f29346064a1870bded81af843db81126c19bb66b74264cb7fc1c",
     "retail/storefront/src/lib/money.ts": "2758fa6be7cec7805cea2be39252dee795fa6259a095877a5bd385b6a9939e30",
     "retail/storefront/src/lib/product-display.ts": "7b90ed2cc7f5ac93c60bd0b6c6ff7169ed808abcf4bfccb84e2721b9ffe50836",
     "retail/storefront/src/lib/products.ts": "1670a865e16cbe730faf4eb071b6ab43a7a41c7f1adc8ca339f780b9aeb50a2c",
@@ -312,7 +314,7 @@
     "retail/storefront/tests/cart-variants.test.ts": "23c571e408764988afd698d5ca83559e1bbcf46322c9664ff4c4674ba53ee2b5",
     "retail/storefront/tests/commerce-fixture/src/pages/[...path].astro": "6af7976a8c01e9d9ad5afcd45ddd0283ba35bd688fd0edb921db2af56d69e656",
     "retail/storefront/tests/commerce.browser.mjs": "6ac7e7021d92e761792ea25d993bb145d0c4d3bd0ad8945546a567ddfff5c89f",
-    "retail/storefront/tests/runtime.integration.mjs": "3f599c396e8e12a15ee9f772f6afc2465accb4cfae42cd64eb1081812e2ad7e9"
+    "retail/storefront/tests/runtime.integration.mjs": "165905346a9be33ceed1f3c198794489292cb4f2e4a606ae0ac4fae7610f7309"
   },
   "cleanup": "both owned containers, bridge network and temporary binaries removed"
 }

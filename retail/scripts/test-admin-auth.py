@@ -171,6 +171,9 @@ def main():
             taxonomy_markers=[line.split('STORE_TAXONOMY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_TAXONOMY_REHEARSAL ' in line]
             if len(taxonomy_markers)!=1:
                 raise RuntimeError('Store taxonomy verification missing')
+            locale_markers=[line.split('STORE_LOCALE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_LOCALE_REHEARSAL ' in line]
+            if len(locale_markers)!=1:
+                raise RuntimeError('Store locale verification missing')
             region_markers=[line.split('STORE_REGION_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_REGION_REHEARSAL ' in line]
             if len(region_markers)!=1:
                 raise RuntimeError('Store region verification missing')
@@ -264,6 +267,7 @@ def main():
             files += ['retail/backend/internal/identity/authorization_test.go','retail/backend/migrations/0023_authorization_actions.sql']
             files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/authorization').glob('*.go')]
             files += ['retail/backend/internal/identity/authorization_manage_test.go','retail/backend/migrations/0024_authorization_management.sql']
+            files += ['retail/backend/internal/catalog/store_locales.go','retail/backend/internal/catalog/default_locales.json','retail/backend/internal/identity/store_locales_test.go']
             files += ['retail/backend/internal/catalog/store_regions.go','retail/backend/internal/catalog/http.go','retail/backend/internal/identity/store_regions_test.go']
             files += ['retail/backend/internal/catalog/store_taxonomy.go','retail/backend/internal/catalog/store_taxonomy_test.go','retail/backend/internal/identity/store_taxonomy_test.go']
             files += ['retail/backend/internal/catalog/store_products.go','retail/backend/internal/catalog/store_products_test.go','retail/backend/internal/identity/store_products_test.go']
@@ -291,6 +295,7 @@ def main():
                       'store_display': json.loads(display_markers[0]),
                       'store_taxonomy': json.loads(taxonomy_markers[0]),
                       'store_regions': json.loads(region_markers[0]),
+                      'store_locales': json.loads(locale_markers[0]),
                       'counts': counts, 'limits': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                                   'network': 'owned shared namespace with no external network', 'published_ports': 0},
                       'real_accounts_used': False, 'application_resources_used': False, 'private_values_in_report': False, 'temporary_databases_cleared_between_suites': True,

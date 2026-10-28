@@ -30,6 +30,7 @@ def main():
     npm=str(node.parent/('npm.cmd' if os.name=='nt' else 'npm'))
     if not Path(npm).is_file():npm=shutil.which('npm.cmd' if os.name=='nt' else 'npm',path=env['PATH'])
     subprocess.run([str(node),str(ROOT/'retail/scripts/generate-storefront-styles.mjs'),'--check'],cwd=ROOT,env=env,capture_output=True,timeout=60,check=True)
+    subprocess.run([str(node),str(ROOT/'retail/scripts/capture-store-locales.cjs'),'--check'],cwd=ROOT,env=env,capture_output=True,timeout=30,check=True)
     for command in [[npm,'run','build'],[npm,'test']]:
         checked=subprocess.run(command,cwd=APP,env=env,capture_output=True,timeout=120)
         if checked.returncode:
@@ -37,7 +38,7 @@ def main():
             raise RuntimeError('Astro build or unit checks failed; inspect ignored output')
     tap=checked.stdout.decode('utf-8')
     observed={key:int(value) for key,value in re.findall(r'^# (tests|pass|fail|cancelled|skipped|todo) (\d+)\s*$',tap,re.M)}
-    if observed!={'tests':59,'pass':59,'fail':0,'cancelled':0,'skipped':0,'todo':0}:
+    if observed!={'tests':61,'pass':61,'fail':0,'cancelled':0,'skipped':0,'todo':0}:
         raise RuntimeError('Astro unit coverage differs; no partial success report written')
     tested=subprocess.run([str(node),'tests/runtime.integration.mjs'],cwd=APP,env=env,capture_output=True,timeout=90)
     markers=[line.split('ASTRO_RUNTIME_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if line.startswith('ASTRO_RUNTIME_REHEARSAL ')]
@@ -91,6 +92,7 @@ def main():
             'medusa-store/apps/storefront/src/modules/products/components/product-detail/styles.module.css',
             'medusa-store/apps/storefront/src/modules/products/i18n.ts',
             'medusa-store/pnpm-lock.yaml']
+    files += ['retail/scripts/capture-store-locales.cjs','docs/migration/fixtures/legacy-store-locales.json','retail/backend/internal/catalog/default_locales.json']
     files += ['retail/scripts/generate-storefront-styles.mjs','docs/migration/storefront-styles.json']
     files += ['medusa-store/apps/storefront/'+name for name in ['tailwind.config.js','src/styles/globals.css','src/modules/layout/i18n.ts','src/modules/layout/templates/footer/index.tsx','src/modules/layout/templates/footer/styles.module.css','src/modules/common/components/brand-logo/index.tsx','src/modules/common/components/ui/index.tsx','src/lib/util/store-series-url.ts']]
     source_root=ROOT/'medusa-store/apps/storefront/src'

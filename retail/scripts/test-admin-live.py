@@ -209,7 +209,7 @@ def main():
                   'retail/storefront/src/lib/cart-variants.ts','retail/storefront/tests/cart-variants.test.ts',
                   'retail/storefront/src/lib/products.ts','retail/storefront/src/lib/gin-public.ts',
                   'retail/storefront/src/lib/product-display.ts','retail/storefront/src/lib/money.ts',
-                  'retail/storefront/src/lib/footer-data.ts','retail/storefront/tests/runtime.integration.mjs']
+                  'retail/storefront/src/lib/locales.ts','retail/storefront/src/lib/footer-data.ts','retail/storefront/tests/runtime.integration.mjs']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/storefront/src/components/products').rglob('*') if p.is_file()]
         files += ['retail/storefront/tests/commerce.browser.mjs','retail/storefront/tests/commerce-fixture/src/pages/[...path].astro']
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',

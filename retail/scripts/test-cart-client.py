@@ -28,7 +28,7 @@ def main():
     npm = shutil.which('npm.cmd' if os.name == 'nt' else 'npm', path=env['PATH'])
     checked = subprocess.run([npm, 'test'], cwd=APP, env=env, capture_output=True, timeout=60)
     observed = {key: int(value) for key, value in re.findall(r'^# (tests|pass|fail|cancelled|skipped|todo) (\d+)\s*$', checked.stdout.decode('utf-8'), re.M)}
-    if checked.returncode or observed != {'tests': 59, 'pass': 59, 'fail': 0, 'cancelled': 0, 'skipped': 0, 'todo': 0}:
+    if checked.returncode or observed != {'tests': 61, 'pass': 61, 'fail': 0, 'cancelled': 0, 'skipped': 0, 'todo': 0}:
         raise RuntimeError('Cart transport unit checks failed')
     built = subprocess.run([npm, 'run', 'build'], cwd=APP, env=env, capture_output=True, timeout=150)
     if built.returncode:
@@ -49,13 +49,13 @@ def main():
               'retail/storefront/src/lib/product-display.ts','retail/storefront/src/lib/money.ts',
               'retail/storefront/src/components/cart/gin-cart.tsx']
     report = {'format_version': 1, 'scope': 'Private browser transport against artificial HTTP API only; not Gin/MySQL/Redis or production cart acceptance',
-              'node_version': version, 'unit_tests_passed': 59, 'type_check_and_build_passed': True,
+              'node_version': version, 'unit_tests_passed': 61, 'type_check_and_build_passed': True,
               'browser': json.loads(markers[0]), 'application_resources_used': False,
               'existing_services_started_stopped_or_built': False,
               'cleanup': 'browser context, browser and owned loopback listener closed',
               'implementation_sha256': {name: hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     (ROOT/'docs/migration/cart-client-report.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
-    print(json.dumps({'cart_client': 'passed', 'unit_tests': 59, 'real_browser': True, 'fixture_api': True, 'real_gin': False}))
+    print(json.dumps({'cart_client': 'passed', 'unit_tests': 61, 'real_browser': True, 'fixture_api': True, 'real_gin': False}))
 
 
 if __name__ == '__main__':

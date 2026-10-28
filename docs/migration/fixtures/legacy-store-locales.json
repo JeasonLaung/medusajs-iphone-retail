@@ -1,0 +1,53 @@
+{
+  "format_version": 1,
+  "scope": "Artificial original GET projection and 51 default names only; translation feature flag, custom locale persistence and live legacy store are not exercised",
+  "source_sha256": {
+    "@medusajs/translation/dist/loaders/defaults.js": "3efe964885636db96ffb77dc1a3efe9e4671c9dd8d5304acbc19d04eaa2c9a46",
+    "@medusajs/medusa/dist/api/store/locales/route.js": "0318418907f27f9307ed2226686ec2ddc37eef7d57cf91946c2f857315775fb8"
+  },
+  "default_names": 51,
+  "cases": [
+    {
+      "codes": [],
+      "output": {
+        "locales": []
+      }
+    },
+    {
+      "codes": [
+        "en-GB",
+        "zh-CN"
+      ],
+      "output": {
+        "locales": [
+          {
+            "code": "en-GB",
+            "name": "English (United Kingdom)"
+          },
+          {
+            "code": "zh-CN",
+            "name": "Chinese Simplified (China)"
+          }
+        ]
+      }
+    },
+    {
+      "codes": [
+        "de-DE",
+        "da-DK"
+      ],
+      "output": {
+        "locales": [
+          {
+            "code": "de-DE",
+            "name": "German (Germany)"
+          },
+          {
+            "code": "da-DK",
+            "name": "Danish (Denmark)"
+          }
+        ]
+      }
+    }
+  ]
+}
