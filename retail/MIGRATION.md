@@ -141,3 +141,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-28 Astro加购补充：[私有命令与真实浏览器](../docs/migration/astro-cart-add-items.md)增加严格字符串加购方法、独立购物车CSRF与不可隐式重试的回执处理。真实浏览器/SQL结果以联合报告源码SHA为准；生产页面挂载、会话协调与完整规则/结账仍待完成。
 
 2026-10-28 购物车恢复补充：[当前持有凭证查询](../docs/migration/cart-current-session.md)新增无浏览器ID存储的current接口及Astro方法，复用SQL当前授权、私有错误和不续TTL语义。原商品操作区命令协调、地区/客户合并、完整规则与生产页面仍待完成。
+
+2026-10-28 商品加购协调补充：[真实协议协调与意图恢复](../docs/migration/cart-commerce-coordinator.md)将ProductCommerce边界接到CartClient，增加明确建车、Web Lock、非凭证意图、同键恢复及成功后数量读取。原商品页/按钮DOM挂载、换区/客户合并及完整交易仍待验收。

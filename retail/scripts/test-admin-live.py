@@ -158,13 +158,13 @@ def main():
             raise RuntimeError('Live cart item browser checks failed; inspect ignored result')
         item_durable = docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket',
                               '--database=browser_identity','--batch','--skip-column-names','-e',
-                              "SELECT (SELECT COUNT(*) FROM carts),(SELECT COUNT(*) FROM cart_ownership WHERE active=TRUE AND version=3),"
-                              "(SELECT COUNT(*) FROM cart_line_items WHERE variant_id='browser-add-v' AND quantity=2),"
+                              "SELECT (SELECT COUNT(*) FROM carts),(SELECT COUNT(*) FROM cart_ownership WHERE active=TRUE AND version=4),"
+                              "(SELECT COUNT(*) FROM cart_line_items WHERE variant_id='browser-add-v' AND quantity=3),"
                               "(SELECT COUNT(*) FROM cart_item_operations),"
                               "(SELECT JSON_UNQUOTE(JSON_EXTRACT(raw_unit_price,'$.value')) FROM cart_line_items WHERE variant_id='browser-add-v'),"
                               "(SELECT reserved_quantity=0 FROM inventory_levels WHERE id='browser-add-level'),"
                               "(SELECT COUNT(*) FROM inventory_reservations WHERE inventory_item_id='browser-add-item')")
-        if item_durable.returncode or item_durable.stdout.decode().strip() != '2\t1\t1\t2\t80.000000000000000000001\t1\t0':
+        if item_durable.returncode or item_durable.stdout.decode().strip() != '2\t1\t1\t3\t80.000000000000000000001\t1\t0':
             raise RuntimeError('Browser item durable state differs; no successful report written')
         files = ['retail/scripts/test-admin-live.py', 'retail/backend/cmd/api/main.go',
                  'retail/backend/internal/identity/browser_fixture_test.go', 'retail/backend/internal/identity/admin.go',
@@ -190,7 +190,7 @@ def main():
         files += ['retail/backend/internal/orders/fulfillments.go','retail/backend/internal/identity/order_fulfillments_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/authorization').glob('*.go')]
         files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','sessionstore') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
-        files += ['retail/storefront/src/lib/cart-client.ts']
+        files += ['retail/storefront/src/lib/cart-client.ts','retail/storefront/src/lib/cart-commerce.ts','retail/storefront/src/lib/cart-quantities.ts']
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
                   'browser_tests_passed': 3, 'migrations_applied': 27, 'mocked_api_responses': False,
                   'cart_items_browser': {'actual_storefront_client': True, 'real_gin_mysql_redis': True,
@@ -198,7 +198,9 @@ def main():
                                          'quantity_tier_price': True, 'exact_raw_amount': True,
                                          'reload_readback': True, 'current_possession_lookup': True, 'immutable_old_receipt': True,
                                          'version_and_stock_rejection': True, 'cookie_ttl_unchanged': True,
-                                         'line_items': 1, 'operation_receipts': 2, 'inventory_reserved': False,
+                                         'line_items': 1, 'operation_receipts': 3,
+                                         'coordinator_lost_committed_response_reload': True,
+                                         'coordinator_noncredential_intent_cleared': True, 'inventory_reserved': False,
                                          'production_page_mounted': False, 'full_cart_accepted': False},
                   'cart_browser': {'actual_storefront_client': True, 'real_gin_mysql_redis': True,
                                    'real_browser_cookie_origin_csrf': True, 'concurrent_replays': 4,

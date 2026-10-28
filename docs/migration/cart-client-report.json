@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Private browser transport against artificial HTTP API only; not Gin/MySQL/Redis or production cart acceptance",
   "node_version": "v22.23.4",
-  "unit_tests_passed": 33,
+  "unit_tests_passed": 38,
   "type_check_and_build_passed": true,
   "browser": {
     "actual_browser_http": true,
@@ -22,7 +22,10 @@
   "existing_services_started_stopped_or_built": false,
   "cleanup": "browser context, browser and owned loopback listener closed",
   "implementation_sha256": {
-    "retail/scripts/test-cart-client.py": "bfafa57dfaad8da24cacf6ee72ceea3ac42b3f979e2f9048d52c380226454cc4",
+    "retail/storefront/src/lib/cart-commerce.ts": "fd0ef5f9ae8e37353ceb6032b260c3d698810ccfac4207d170244aa2406a544a",
+    "retail/storefront/tests/cart-commerce.test.ts": "93c718a2a8aab4f317a922cda8c163f5e2e794b462ea92be2aafc4331e0dc8ea",
+    "retail/storefront/src/lib/cart-quantities.ts": "b54d1211513f0f5ee04e521463718e8b37fba1b9d3b5484a0ac511c203371384",
+    "retail/scripts/test-cart-client.py": "1e41676bd1d27b5bc278e65130ae66c991b612708ca3d791e1d8e7e71aed2479",
     "retail/storefront/src/lib/cart-client.ts": "8bd1ce93111bcb83214b3a3d2c142936aadde7541af3e5fe0c4ef4cfff4788ba",
     "retail/storefront/tests/cart-client.test.ts": "8e538f5b8f8dd4e8afec7aaedc4af5e30434c8cb9ffa335c025a8483d76f161d",
     "retail/storefront/tests/cart-client.browser.mjs": "1cf33376ffa8a314446bcee0820ee5e468192cad3683371c4fe79829f52e623d",

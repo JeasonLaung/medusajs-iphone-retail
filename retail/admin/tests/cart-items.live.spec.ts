@@ -3,8 +3,11 @@ import {readFileSync} from 'node:fs'
 import {stripTypeScriptTypes} from 'node:module'
 import {randomUUID} from 'node:crypto'
 import type {CartClient} from '../../storefront/src/lib/cart-client'
+type ItemCommerce={enabled:false}|{enabled:true;addToCart:(input:{variantId:string;quantity:'1';countryCode:string})=>Promise<{ok:true;quantities:Record<string,string>}|{ok:false;error:'inventory'|'error'}>}
 
-declare global {interface Window {itemClient:CartClient;itemCSRF:()=>string|undefined}}
+declare global {interface Window {itemClient:CartClient;itemCSRF:()=>string|undefined;itemCommerce:ItemCommerce}}
+const commerceSource=stripTypeScriptTypes(readFileSync(new URL('../../storefront/src/lib/cart-commerce.ts',import.meta.url),'utf8'))
+const quantitiesSource=stripTypeScriptTypes(readFileSync(new URL('../../storefront/src/lib/cart-quantities.ts',import.meta.url),'utf8'))
 const source=stripTypeScriptTypes(readFileSync(new URL('../../storefront/src/lib/cart-client.ts',import.meta.url),'utf8'))
 
 test('actual storefront client adds and merges draft items through browser cookies and Gin',async({page,context,browser})=>{
@@ -22,6 +25,25 @@ test('actual storefront client adds and merges draft items through browser cooki
     window.itemCSRF=()=>module.cartCSRFFromCookies(document.cookie,location.protocol==='https:')
    } finally {URL.revokeObjectURL(url)}
   },source)
+ }
+ async function installCommerce(loseResponse=false){
+  await page.evaluate(async({clientSource,commerceSource,quantitiesSource,loseResponse})=>{
+   const urls:string[]=[]
+   const blob=(text:string)=>{const url=URL.createObjectURL(new Blob([text],{type:'text/javascript'}));urls.push(url);return url}
+   let drop=loseResponse
+   const fetcher=window.fetch.bind(window)
+   window.fetch=async(...args)=>{
+    const response=await fetcher(...args)
+    if(drop&&String(args[0]).endsWith('/line-items')){drop=false;await response.arrayBuffer();throw Error('injected lost committed response')}
+    return response
+   }
+   try{
+    const clientURL=blob(clientSource),quantitiesURL=blob(quantitiesSource)
+    const url=blob(commerceSource.replace("'./cart-client.ts'",JSON.stringify(clientURL)).replace("'./cart-quantities.ts'",JSON.stringify(quantitiesURL)))
+    const {browserCartCommerce}=await import(/* @vite-ignore */ url)
+    window.itemCommerce=browserCartCommerce({enabled:true,regionID:'fixture-region',currency:'eur',segment:'dk-en'})
+   }finally{urls.forEach(url=>URL.revokeObjectURL(url))}
+  },{clientSource:source,commerceSource,quantitiesSource,loseResponse})
  }
  await install()
  expect(await page.evaluate(()=>window.itemClient.current())).toBeNull()
@@ -69,6 +91,20 @@ test('actual storefront client adds and merges draft items through browser cooki
  expect(saved?.lines).toHaveLength(1)
  const currentCookies=await context.cookies()
  expect(currentCookies).toEqual(cookies)
+ expect(await page.evaluate(()=>({local:Object.entries(localStorage),session:Object.entries(sessionStorage)}))).toEqual(storage)
+ // Inject a transport failure only AFTER a real Gin addition responded.
+ // Reload then reconstruct the coordinator from its noncredential journal.
+ await installCommerce(true)
+ expect(await page.evaluate(async()=>{if(!window.itemCommerce.enabled)throw Error('Commerce must be enabled');return window.itemCommerce.addToCart({variantId:'browser-add-v',quantity:'1',countryCode:'dk-en'})})).toEqual({ok:false,error:'error'})
+ const pending=await page.evaluate(()=>JSON.parse(localStorage.getItem('retail.cart.intent.v1')!))
+ expect(pending).toMatchObject({kind:'add',cartID:id,version:'3',variantID:'browser-add-v'})
+ expect(Object.keys(pending).sort()).toEqual(['cartID','format','kind','operationID','quantity','regionID','segment','variantID','version'])
+ await install()
+ await installCommerce()
+ const recovered=await page.evaluate(async()=>{if(!window.itemCommerce.enabled)throw Error('Commerce must be enabled');return window.itemCommerce.addToCart({variantId:'browser-add-v',quantity:'1',countryCode:'dk-en'})})
+ expect(recovered).toEqual({ok:true,quantities:{'browser-add-v':'3'}})
+ expect(await page.evaluate(()=>window.itemClient.current())).toMatchObject({id,version:'4'})
+ expect(await page.evaluate(()=>localStorage.getItem('retail.cart.intent.v1'))).toBeNull()
  expect(await page.evaluate(()=>({local:Object.entries(localStorage),session:Object.entries(sessionStorage)}))).toEqual(storage)
  const stranger=await browser.newContext()
  try {

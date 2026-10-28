@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Astro Node SSR regions foundation, source-level product adapter to owned Gin, and selection browser check in a separate artificial test root; no business page acceptance",
   "node_version": "v22.23.4",
-  "unit_tests_passed": 33,
+  "unit_tests_passed": 38,
   "type_check_passed": true,
   "production_build_passed": true,
   "runtime": {
@@ -46,7 +46,7 @@
   "real_application_resources_used": false,
   "full_storefront_accepted": false,
   "implementation_sha256": {
-    "retail/scripts/test-storefront-runtime.py": "75e3799a74e8623a47f4834d2fae96ea2f71115502cb64197636c3a364eb00b1",
+    "retail/scripts/test-storefront-runtime.py": "3703ef3a7ce79ea3b961ff210502da4f17323815db33c7ffc617c72b9be48f85",
     "retail/storefront/.env.example": "c5bef9c3433f84759258fb6b6fca003dedef905aee7d8522d389d49b035cc610",
     "retail/storefront/.gitignore": "853e19fb559c1d9d8df469c8dce09df4c37d495c02dc09fef40de174572a36e9",
     "retail/storefront/astro.config.mjs": "85710c96a776e6a32ca01860ff3d7c511efb736f9d685cf6ef6479b3ac03d2d5",
@@ -56,6 +56,7 @@
     "retail/storefront/tests/actions.browser.mjs": "dddab104fd325e1a7783176bf1875eab8596162425f30297322e6f260f708fee",
     "retail/storefront/tests/cart-client.browser.mjs": "1cf33376ffa8a314446bcee0820ee5e468192cad3683371c4fe79829f52e623d",
     "retail/storefront/tests/cart-client.test.ts": "8e538f5b8f8dd4e8afec7aaedc4af5e30434c8cb9ffa335c025a8483d76f161d",
+    "retail/storefront/tests/cart-commerce.test.ts": "93c718a2a8aab4f317a922cda8c163f5e2e794b462ea92be2aafc4331e0dc8ea",
     "retail/storefront/tests/cart-quantities.test.ts": "9e8be4949311c3e0a3d81aa597236708549bc62ba56748abe957c7988e3359bf",
     "retail/storefront/tests/compare-actions-images.py": "e5bacdc3aa063e39f5c47d84405d334299f5244ff2bcbf1c370d4932afb6e213",
     "retail/storefront/tests/legacy-presentation.mjs": "e727f06f6b94769ced41791f5cf535a36f69a042c75cfe62279281fb65179d2c",
@@ -80,6 +81,7 @@
     "retail/storefront/tests/actions-fixture/src/pages/[...path].astro": "9ae3f4775e581d624c4ebd70791cb32d88267ea1de26b1946f7c2803f985bef1",
     "retail/storefront/tests/actions-fixture/src/pages/images/[name].svg.ts": "ede87a30c0fcc9c9550be5753935fca16d9c94a79c7709f93d598fbbe1e9b4a6",
     "retail/storefront/src/lib/cart-client.ts": "8bd1ce93111bcb83214b3a3d2c142936aadde7541af3e5fe0c4ef4cfff4788ba",
+    "retail/storefront/src/lib/cart-commerce.ts": "fd0ef5f9ae8e37353ceb6032b260c3d698810ccfac4207d170244aa2406a544a",
     "retail/storefront/src/lib/cart-quantities.ts": "b54d1211513f0f5ee04e521463718e8b37fba1b9d3b5484a0ac511c203371384",
     "retail/storefront/src/lib/gin-public.ts": "69f332d8182769ee08d1cebfe569eaa4a41d40a1a2b5000157dae0c3511ab46f",
     "retail/storefront/src/lib/money.ts": "2758fa6be7cec7805cea2be39252dee795fa6259a095877a5bd385b6a9939e30",
@@ -470,7 +472,7 @@
   },
   "actions_browser": {
     "scope": "artificial isolated adapter and old source comparison; no live cart acceptance",
-    "fixture_ssr_setup_ms": 5408,
+    "fixture_ssr_setup_ms": 5114,
     "browser_navigation_timeout_ms": 15000,
     "comparisons": [
       {

@@ -17,7 +17,9 @@
     "version_and_stock_rejection": true,
     "cookie_ttl_unchanged": true,
     "line_items": 1,
-    "operation_receipts": 2,
+    "operation_receipts": 3,
+    "coordinator_lost_committed_response_reload": true,
+    "coordinator_noncredential_intent_cleared": true,
     "inventory_reserved": false,
     "production_page_mounted": false,
     "full_cart_accepted": false
@@ -126,7 +128,7 @@
     "retail/admin/src/style.css": "26d97ab31d413ea26b8d64a8331fb2e756804c4e1b5798a440313f96c12f3d92",
     "retail/admin/tests/auth.live.spec.ts": "778526631375a1fafd70f9725603933fb5baa93d497006afed245f525edfcc38",
     "retail/admin/tests/auth.spec.ts": "60df03c1a20cb537c48ca25a901434f28bd85d09aad99db0fb5867e4c4a924f9",
-    "retail/admin/tests/cart-items.live.spec.ts": "6f8fe14dfd52641308f3408d9972578b17cb47a992cd66e2db2daa18719f27bb",
+    "retail/admin/tests/cart-items.live.spec.ts": "5bfbd3ae2ef0861aa7017b2b2da536bdefe489f92ebcc7de0e19e4c318fb8fbe",
     "retail/admin/tests/cart.live.spec.ts": "4f6749083c30935184482869e2cea99e2968c379a8f972f4be4897e387e9cf35",
     "retail/admin/tsconfig.json": "c4769ad8ef4c9dfac534234e5679e8b9bdc702a978793eb6f3b893e4c02fd3d7",
     "retail/admin/vite.config.ts": "9f665557c617064816daa9a9b8cfbe746073d93cec4be2d2ef897dae85d9eb54",
@@ -248,8 +250,10 @@
     "retail/scripts/generate-fulfillment-import-plan.py": "9f9dd5e5e21ea6582349678d6b9464e20ebe8d150bf768f2d4a5398fe0836b19",
     "retail/scripts/generate-fulfillment-schema.py": "3c1fa30b9c75cd402dc1f5d3bf160b37883a1a59b4683171435fe64c68f297fe",
     "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb",
-    "retail/scripts/test-admin-live.py": "6e888ed493a60ed44ef308b36be42eb5796bd158c7459657727c0090c761a851",
-    "retail/storefront/src/lib/cart-client.ts": "8bd1ce93111bcb83214b3a3d2c142936aadde7541af3e5fe0c4ef4cfff4788ba"
+    "retail/scripts/test-admin-live.py": "c291fa15bd6c2a2f9a13a89577484434cbe5f2eb1a4475cf0ed20ffc59ebe85c",
+    "retail/storefront/src/lib/cart-client.ts": "8bd1ce93111bcb83214b3a3d2c142936aadde7541af3e5fe0c4ef4cfff4788ba",
+    "retail/storefront/src/lib/cart-commerce.ts": "fd0ef5f9ae8e37353ceb6032b260c3d698810ccfac4207d170244aa2406a544a",
+    "retail/storefront/src/lib/cart-quantities.ts": "b54d1211513f0f5ee04e521463718e8b37fba1b9d3b5484a0ac511c203371384"
   },
   "cleanup": "both owned containers, bridge network and temporary binaries removed"
 }
