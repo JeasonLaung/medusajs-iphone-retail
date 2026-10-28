@@ -52,6 +52,8 @@
 刷新及退出/旧会话拒绝已覆盖。生产TLS、客户权限和完整业务仍未验收。
 后台优先Ant Design组件，全部图表使用ECharts；不制作虚构业务统计。
 
+2026-10-28 购物车凭证补充：[匿名持有凭证组件](../docs/migration/cart-possession.md)使用独立 Redis 域、CSRF、12 小时绝对过期与不延期原子换发；禁网真实 Redis 验证 16 路单赢家、撤销/过期/重放及故障拒绝，原登录组件回归通过。它只返回内部 cart/store/generation 引用，持久授权代数、购物车创建事务和 HTTP 尚未接入，不代表已完成加购或结账。
+
 2026-10-28：[商品列表](../docs/migration/admin-product-list.md)接入Ant筛选/表格和
 Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离有人工浏览器证据。
 详情写入、完整结构提升、权限、价格库存和Astro仍待完成。

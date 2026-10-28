@@ -11,6 +11,22 @@
     "realms": 2,
     "ttl_expiry": 1
   },
+  "cart_possession": {
+    "realm_namespace_isolation": true,
+    "id_is_not_authority": true,
+    "hashed_credentials": true,
+    "csrf_required": true,
+    "rotation_contenders": 16,
+    "rotation_winners": 1,
+    "rotation_no_ttl_extension": true,
+    "replay_rejected": true,
+    "revoke_cas_rejected": true,
+    "absolute_and_redis_expiry": true,
+    "corrupt_records_rejected": true,
+    "eviction_and_outage_closed": true,
+    "durable_binding_integrated": false,
+    "http_integrated": false
+  },
   "limits": {
     "cpus": 1,
     "memory_mib": 128,
@@ -23,10 +39,12 @@
   "private_values_in_report": false,
   "runtime_login_accepted": false,
   "implementation_sha256": {
-    "retail/scripts/test-redis-sessions.py": "bcd072a36ce84a9c1f1e707c1f9afc4007d475cfd547b4df50945bdf21f51a7c",
+    "retail/scripts/test-redis-sessions.py": "e0325dea37ed4c3ff542e38d2b7d9fac2cd9d50a659c1db7eee5ce33d924f155",
     "retail/backend/internal/sessionstore/store.go": "1474b97c45baebfbc00de252da3b77b3dfa4a7749e9cf2cf894d697f508f83aa",
     "retail/backend/internal/sessionstore/config.go": "3a06b19b9f71032d4243cc9266499d7eb7cf6a8e7facfcfac3ae63ac1a339440",
     "retail/backend/internal/sessionstore/config_test.go": "a2422d5f82bd9e9173e9efe0983193f3cbdf650c5822b12ed7df857dddd537f2",
+    "retail/backend/internal/sessionstore/cart.go": "08a33b38b47c0ea3d077735239594044a7fbbb1013f6f5f176e53354c41cc4d0",
+    "retail/backend/internal/sessionstore/cart_test.go": "a55a0d9505280ce25fd4751f0813d252e4bfd2db5d466ed84c53e4ebf6376ef3",
     "retail/backend/internal/sessionstore/redis_test.go": "46ccb5f4fd57ae32ef2375b810ad33013b974a148940bca09b701dd99c829163",
     "retail/backend/go.mod": "d172f1878274b95de97d1db201834cff727c7e6a7371b2b5ca2c0fbc21f3e4b2",
     "retail/backend/go.sum": "cab27e69f0740d100e5fdf9b57bd677eb7262fe95adb5a65ec40c344e9881582"

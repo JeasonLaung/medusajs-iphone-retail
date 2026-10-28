@@ -53,9 +53,10 @@ def main():
         if copied.returncode or docker('exec', container, 'chmod', '700', '/opt/session.test').returncode:
             raise RuntimeError('Session runner transfer failed')
         tested = docker('exec', '-e', 'SESSION_REDIS_REHEARSAL=1', container, '/opt/session.test',
-                        '-test.v', '-test.run', '^TestOwnedRedisSessions$', '-test.timeout', '40s')
+                        '-test.v', '-test.run', '^TestOwnedRedis(Sessions|CartPossession)$', '-test.timeout', '60s')
         markers = [line.split('SESSION_REDIS_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'SESSION_REDIS_REHEARSAL ' in line]
-        if tested.returncode or len(markers) != 1:
+        cart_markers = [line.split('CART_POSSESSION_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'CART_POSSESSION_REHEARSAL ' in line]
+        if tested.returncode or len(markers) != 1 or len(cart_markers) != 1:
             # Test strings are artificial and fixed; no source snapshots or
             # real tokens/values are ever passed to this test binary.
             print(tested.stdout.decode(errors='replace'))
@@ -63,9 +64,11 @@ def main():
         counts = json.loads(markers[0])
         files = ['retail/scripts/test-redis-sessions.py', 'retail/backend/internal/sessionstore/store.go',
                  'retail/backend/internal/sessionstore/config.go', 'retail/backend/internal/sessionstore/config_test.go',
+                 'retail/backend/internal/sessionstore/cart.go', 'retail/backend/internal/sessionstore/cart_test.go',
                  'retail/backend/internal/sessionstore/redis_test.go', 'retail/backend/go.mod', 'retail/backend/go.sum']
         report = {'format_version': 1, 'scope': 'Artificial actual Redis component test only; HTTP/MySQL/role revocation/login not accepted',
-                  'counts': counts, 'limits': {'cpus': 1, 'memory_mib': 128, 'network': 'none', 'published_ports': 0},
+                  'counts': counts, 'cart_possession': json.loads(cart_markers[0]),
+                  'limits': {'cpus': 1, 'memory_mib': 128, 'network': 'none', 'published_ports': 0},
                   'real_accounts_used': False, 'application_redis_used': False, 'source_database_connection': False,
                   'private_values_in_report': False, 'runtime_login_accepted': False,
                   'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
