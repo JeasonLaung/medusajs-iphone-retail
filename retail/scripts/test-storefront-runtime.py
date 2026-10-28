@@ -36,7 +36,7 @@ def main():
             raise RuntimeError('Astro build or unit checks failed; inspect ignored output')
     tap=checked.stdout.decode('utf-8')
     observed={key:int(value) for key,value in re.findall(r'^# (tests|pass|fail|cancelled|skipped|todo) (\d+)\s*$',tap,re.M)}
-    if observed!={'tests':43,'pass':43,'fail':0,'cancelled':0,'skipped':0,'todo':0}:
+    if observed!={'tests':49,'pass':49,'fail':0,'cancelled':0,'skipped':0,'todo':0}:
         raise RuntimeError('Astro unit coverage differs; no partial success report written')
     tested=subprocess.run([str(node),'tests/runtime.integration.mjs'],cwd=APP,env=env,capture_output=True,timeout=90)
     markers=[line.split('ASTRO_RUNTIME_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if line.startswith('ASTRO_RUNTIME_REHEARSAL ')]

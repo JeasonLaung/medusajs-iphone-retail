@@ -1,6 +1,6 @@
 # 迁移实现状态
 
-更新：2026-10-27。正式任务与验收要求见 [任务清单](../docs/gin-react-astro-tasks.md)。
+更新：2026-10-28。正式任务与验收要求见 [任务清单](../docs/gin-react-astro-tasks.md)。
 
 ## 已确认
 
@@ -12,9 +12,9 @@
 | --- | --- | --- |
 | 源码及数据盘点 | 67 路由文件 / 86 方法；193表1,961列均有处置设计：159表1,691列映射、34表270列排除/重建；快照预检/语义差异有报告 | 全部约束/默认值落地、1条预留合计差异、119条设备/预留软删引用及交易162行256孤儿引用对账、MySQL验证、原生及插件契约、剩余权限与副作用 |
 | 设备 / 回收 / 邮件 | 已提取动作、状态与固定用例规格 | 新系统实现及行为验证 |
-| 前台 | 32 种页面 URL + 7 个 handler 有源码清单；14 个公开/未登录状态，84 张本机截图 | 全部路由状态和交互；Astro 尚未实现 |
-| Gin / SQL / 导入器 | 先前写入的未验收草稿；Go 包编译通过 | 隔离 MySQL 演练、事务及并发测试、DTO/授权审查、完整业务 |
-| 新后台登录 | [Gin/MySQL/Redis联合路径](../docs/migration/admin-auth-runtime.md)：一次性挑战、精确Origin、CSRF、双维限流、会话轮换/退出；新账号非零撤销代数逐请求复核；独占临时库验证停用/角色/密码恢复后旧会话不复活、旧/客户cookie拒绝、依赖关闭503及九文件schema执行/重复 | 客户认证、Ant页面、完整权限/范围、账号编辑及撤销事务、真实浏览器/TLS/服务崩溃仍缺；不能用于生产 |
+| 前台 | 独立 Astro SSR/React 已有区域、商品选价/库存与深链适配；原图库/规格、购买区及购物车组件已迁移并有局部浏览器对照，32 种 URL 与原页面基线保留 | 正式业务路由尚未挂载；全局布局/字体/导航、剩余页面及完整登录/交易交互未完成；局部截图不能代表全站 |
+| Gin / SQL / 导入器 | 27 个显式迁移；已接入正式商品、价格/库存、订单/付款/履约历史查询及匿名购物车部分命令；自有 MySQL/Redis 的事务、并发、故障回滚与浏览器报告见下方各批记录 | 全域导入协调器/恢复、完整约束与所有业务写命令、全量验收仍缺；部分通用草稿入口保持关闭 |
+| 新后台登录 | [Gin/MySQL/Redis 联合路径](../docs/migration/admin-auth-runtime.md)承接挑战、Origin/CSRF、限流、会话轮换/退出与持久撤销代数；Ant 登录与真实浏览器已接入，旧账号不导入 | 客户认证、账号完整生命周期、仓库/供应商对象范围、TLS/进程崩溃及整体生产验收仍缺 |
 | Redis会话组件 | [独立组件](../docs/migration/redis-session-store.md)：后台/客户及应用namespace隔离、12小时绝对会话、10分钟一次性CSRF登录挑战、15分钟8次原子限流；独占禁网临时Redis验证16路消费仅1次、24路限流仅8次及过期/撤销/坏记录/连接关闭拒绝 | 随后已接入[后台联合路径](../docs/migration/admin-auth-runtime.md)；客户认证、完整权限、浏览器、真实宕机/TLS/进程生命周期仍缺 |
 | Gin HTTP边界 | [请求追踪与私有诊断](../docs/migration/gin-http-boundary.md)：替换默认URL/panic/SQL日志，服务端请求ID、统一错误、404/405、1MiB与分块413、后台禁止缓存；真实Gin路由人工请求验证通过 | 真实数据库HTTP、完整错误表、CSRF/Redis会话、权限、依赖配置和领域DTO仍缺，现有payload目录草稿尚不兼容159表 |
 | 显式schema执行器 | [独立组件](../docs/migration/schema-migration-runner.md)替换按分号切分草稿，逐语句inflight/完成记录、全计划校验和/顺序核对、专用连接互斥及失败拒绝盲重试；九文件空库/重复联合演练通过，前述八文件人工MySQL执行/重复/失败对账恢复/锁通过；实际DDL等待中终止子进程后重试拒绝不确定记录，后续语句不执行 | 0001仍为未验收草稿，159表正式迁移、断电/MySQL崩溃/真实恢复、结构差异比对和对账工具仍缺 |
@@ -25,14 +25,14 @@
 | 旧注册邮件历史 | 专用Go入口清理已知认证载荷；真实2行/8字段离线通过；新增SQL处置账本及同事务写入/精确重放检查，人工MySQL回滚、冲突、8路并发通过；普通业务邮件hold | 真实行持久化、完整导入组合、worker执行、其他来源认证能力审查尚缺 |
 | 长文本完整唯一登记 | 新Go组件及独立SQL在人工MySQL验证碰撞、回滚、8路并发及源商品选项同事务写入；28源键固定适配计划（27普通、1受保护专用比较）；见[执行证据](../docs/migration/mysql-unique-key-registry.md) | 受保护HMAC重建/轮换及全部领域写入/导入接入仍缺，普通联系人入口拒绝；源索引继续hold |
 | 业务秘密信封 | Go AES-256-GCM版本/key ID/精确上下文绑定组件，人工SQL持久化及轮换回滚通过；12商户字符串转换入口与四域真实旧函数的16个人工样本互操作、人工MySQL整行密封/回滚通过；3条真实配置/6字段在私有stdin路径由Go转换并与Node预期相等，仅临时信封 | 受保护唯一比较已人工验证；真实新密文持久化、保护JSON审查、密钥保管/恢复、读取授权尚缺 |
-| 购物车与合计 | 18 组人工金额、10 组库存准备及 46 组促销/税率/配送规则样例可重现，原生成单顺序有记录 | 完整促销/税/运费引擎、Gin 实现及并发恢复验证 |
+| 购物车与合计 | 正式私有 current/view/amounts 与建车、加购、绝对数量/移除；MySQL 当前授权/版本/幂等回执、共享库存检查及精确金额，Astro 原组件和恢复协调正在联合验收 | 地址/地区/客户合并、完整促销/税/运费重算、预留/成单/支付及正式页面仍缺；checkout=false |
 | 历史付款主体 | [专用转换](../docs/migration/account-holder-conversion.md)保留system provider空资料及历史外部引用；[原子SQL组件](../docs/migration/account-holder-import.md)人工并发/冲突通过；[真实SQL演练](../docs/migration/account-holder-mysql-rehearsal.md)验证1主体/1实际provider/1 hold/1唯一声明回滚、提交、重放及读取，临时库已清理，不恢复旧客户绑定 | 正式全域组合/恢复、持久密钥、其他provider载荷、读取授权及worker执行仍缺 |
 | 支付context历史资料 | 显式投影移除旧客户地址簿/账号绑定及默认标记，保留经核对的交易历史；21个真实context临时信封往返、人工LONGTEXT存储通过；完整行组合见下行 | 真实持久化、provider对账和新账号归属/在途恢复未实现 |
 | 支付provider历史data | [专用Go组件](../docs/migration/payment-data-review.md)逐层审查手动/Mollie载荷，42个真实对象临时密封往返、16个Mollie精确金额/引用匹配、42次错行拒绝；完整行组合见下行 | 正式SQL导入、远端对账及支付运行时尚缺；不启用生产手动付款 |
 | 支付历史完整行 | [专用入口](../docs/migration/payment-history-conversion.md)组合data/context/metadata与强制操作hold；[同事务SQL组件](../docs/migration/payment-history-import.md)在人工MySQL验证原密文重放、轮换读取、冲突、回滚和8路并发；[真实隔离演练](../docs/migration/payment-mysql-rehearsal.md)完成23集合/42支付/42hold的回滚、提交、重放及加密读取，临时库已清理 | worker执行、正式全域导入/恢复、持久密钥管理、远端对账及读取授权仍缺 |
 | PayPal商户配置 | [专用转换](../docs/migration/paypal-config-conversion.md)补明文/v1/v2及live/sandbox嵌套秘密解密投影、别名/活动镜像冲突拒绝；原TS/安装JS/Go互操作9样本/27字段含18嵌套秘密，人工MySQL整行回滚/读取通过；真实v2两配置内存及临时SQL验证通过 | 其他设置section/JSON、key恢复和Gin provider尚缺；快照无真实非空凭据 |
 | 商户配置原子导入 | [专用组件](../docs/migration/merchant-config-import.md)把七表配置、固定操作hold账本和邮箱/SEO key完整唯一登记纳入同一调用者事务；人工MySQL验证回滚、重放、轮换读取、冲突及八路并发；[真实隔离演练](../docs/migration/merchant-mysql-rehearsal.md)验证5配置/5 hold/1唯一登记及8字段独立预期读回、3 SQL NULL | 完整导入组合/恢复、持久密钥与读取授权、worker强制执行hold和Gin配置接口尚缺；临时库已清理，两个SEO表无真实样本 |
-| React Admin | [Ant登录/账号页面](../docs/migration/admin-login-ui.md)新增独立React应用，Form/Layout/Menu/Drawer/Descriptions，直连Gin协议；类型及build通过，7项人工HTTP浏览器测试及9张中英三宽截图；23页面/6widgets仍仅承接设计，图表固定ECharts | 真实浏览器到Gin/MySQL/Redis串联、完整外壳/页签及权限、全部业务页和图表仍缺；bundle体积待拆分 |
+| React Admin | 独立 Ant 登录/外壳、商品与部分编辑、价格/库存、订单/支付/履约详情及权限角色管理已有实现和真实联合浏览器记录；图表统一 ECharts | 全部既有业务页面/命令、账号生命周期、完整对象范围、设备/回收/邮件及图表仍缺；bundle 拆分待做 |
 | 商品基础信息编辑 | [Ant抽屉与Gin命令](../docs/migration/admin-product-edit.md)：0011专用能力、版本冲突、操作重放及同事务审计；实际MySQL八路并发/故障回滚与实际浏览器持久化、中英三宽验证 | 创建、选项/变体/关联、完整价格库存、完整RBAC/对象范围及Astro仍缺；通用目录写入保持关闭 |
 | 变体价格配置 | [Ant/Gin查询](../docs/migration/admin-variant-prices.md)：共享集合、十进制字符串、阶梯数量、规则与价目表；人工MySQL边界及真实1558变体价格与SQL逐项验证，实际浏览器抽屉分页/中英三宽 | 配置展示不等于结算引擎；含税偏好、完整条件选价、价格写命令和库存仍缺 |
 | 变体库存与预留明细 | [0012/Ant/Gin](../docs/migration/admin-variant-inventory.md)：2表27列、模型校验、精确库存余额及预留差异；固定样本927库存层/99预留及1558变体查询、实际MySQL/浏览器验证 | [0013逐行账本与4项差异证据](../docs/migration/inventory-row-import.md)已补充；[0014专用库存量编辑](../docs/migration/admin-stock-edit.md)已补充；全域导入协调器、订单解析/孤儿问题账本、预留/扣减/履约、完整仓库权限仍缺；通用写入关闭 |
@@ -151,3 +151,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-28 购物车展示补充：[保存快照与精确金额联合投影](../docs/migration/cart-view.md)增加同一只读事务内的名称、图片、配置及金额，保留已下架SKU并限制显式字段/大小，既有amounts契约不变。真实SQL验证并发提交不混合展示快照；Astro严格私有方法及真实浏览器证据见联合报告。原购物车页面/交互、完整规则及结账继续待完成。
 
 2026-10-28 原购物车组件补充：[CartTemplate/CartLine/Summary迁移](../docs/migration/astro-cart-presentation.md)复用完整原CSS/中英文和DOM，精确字符串金额、数量输入与全车busy、移除/空车、库存观察及摘要进入独立React边界。局部中英三宽原源码浏览器对照见astro-runtime-report.cart_browser；命令/结账默认关闭。生产业务路由、持久修改意图协调、当前变体加载、布局导航及完整规则仍待接入，不据局部对照整体验收。
+
+2026-10-28 原购物车命令接入补充：[数量、移除及明确恢复](../docs/migration/cart-item-recovery.md)以同一 Web Lock/意图键串联原 CartTemplate 与 Gin 私有协议；保留用户所见版本、绝对数量、原操作键及刷新阶段，未知响应不自动重试或丢弃。真实 commerce fixture 已挂载 GinCart，联合结果以报告源码 SHA 为准；正式页面、当前变体加载、地区/客户合并及完整交易仍待完成，T032/T039 未整体验收。

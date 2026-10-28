@@ -125,7 +125,11 @@ def main():
         tested = subprocess.run([npm, 'exec', 'playwright', 'test', '--', '--config', 'playwright.live.config.ts', '--reporter=json'],
                                 cwd=ROOT / 'retail/admin', env=browser_env, capture_output=True, timeout=180)
         # Private browser cookies or server state never enter a committed report.
-        result = json.loads(tested.stdout)
+        try:
+            result = json.loads(tested.stdout)
+        except (ValueError,TypeError):
+            (ROOT/'logs/gin-migration/admin-live-runner.log').write_bytes(tested.stdout+tested.stderr)
+            raise RuntimeError('Live browser runner returned no JSON report; inspect ignored output') from None
         if tested.returncode or result['stats']['expected'] != 2 or any(result['stats'][k] for k in ['unexpected', 'skipped', 'flaky']):
             (ROOT / 'logs/gin-migration/admin-live-result.json').write_bytes(tested.stdout)
             raise RuntimeError('Live browser checks failed; inspect ignored local result')
@@ -171,8 +175,9 @@ def main():
                               "(SELECT COUNT(*) FROM cart_item_operations),"
                               "(SELECT JSON_UNQUOTE(JSON_EXTRACT(raw_unit_price,'$.value')) FROM cart_line_items WHERE variant_id='browser-add-v' AND quantity=1 AND deleted_at IS NOT NULL),"
                               "(SELECT reserved_quantity=0 FROM inventory_levels WHERE id='browser-add-level'),"
-                              "(SELECT COUNT(*) FROM inventory_reservations WHERE inventory_item_id='browser-add-item')")
-        if item_durable.returncode or item_durable.stdout.decode().strip() != '3\t1\t1\t7\t100.000000000000000000001\t1\t0':
+                              "(SELECT COUNT(*) FROM inventory_reservations WHERE inventory_item_id='browser-add-item'),"
+                              "(SELECT COUNT(*) FROM cart_line_items WHERE variant_id='browser-add-v' AND quantity=4 AND deleted_at IS NOT NULL)")
+        if item_durable.returncode or item_durable.stdout.decode().strip() != '3\t2\t1\t10\t100.000000000000000000001\t1\t0\t1':
             raise RuntimeError('Browser item durable state differs; no successful report written')
         files = ['retail/scripts/test-admin-live.py', 'retail/backend/cmd/api/main.go',
                  'retail/backend/internal/identity/browser_fixture_test.go', 'retail/backend/internal/identity/admin.go',
@@ -198,7 +203,9 @@ def main():
         files += ['retail/backend/internal/orders/fulfillments.go','retail/backend/internal/identity/order_fulfillments_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/authorization').glob('*.go')]
         files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','sessionstore') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
-        files += ['retail/storefront/src/lib/cart-client.ts','retail/storefront/src/lib/cart-commerce.ts','retail/storefront/src/lib/cart-quantities.ts']
+        files += ['retail/storefront/src/lib/cart-client.ts','retail/storefront/src/lib/cart-commerce.ts','retail/storefront/src/lib/cart-quantities.ts',
+                  'retail/storefront/src/lib/cart-item-commands.ts','retail/storefront/src/components/cart/gin-cart.tsx',
+                  'retail/storefront/tests/cart-item-commands.test.ts']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/storefront/src/components/products').rglob('*') if p.is_file()]
         files += ['retail/storefront/tests/commerce.browser.mjs','retail/storefront/tests/commerce-fixture/src/pages/[...path].astro']
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',

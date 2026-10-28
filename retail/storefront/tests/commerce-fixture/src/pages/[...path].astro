@@ -1,4 +1,5 @@
 ---
+import GinCart from '../../../../src/components/cart/gin-cart'
 import GinProductActions from '../../../../src/components/products/gin-product-actions'
 import {loadProduct} from '../../../../src/lib/products'
 import styles from '../../../../src/components/products/styles.module.css'
@@ -8,7 +9,7 @@ if(!cart&&!product)throw Error('Owned product unavailable')
 Astro.response.headers.set('Cache-Control','private, no-store')
 ---
 <!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Owned commerce fixture</title><link rel="icon" href="data:,"/></head><body>
-{cart?<main><h1>Owned cart destination</h1></main>:product&&<main class={styles.page}><section style="max-width:520px" data-testid="real-product-actions"><GinProductActions product={product} segment="dk-en" initialLocation={Astro.url.pathname+Astro.url.search} initialVariantID="browser-add-v" regionID="fixture-region" currency="eur" commerceEnabled={!Astro.url.searchParams.has('closed')} client:load/></section></main>}
+{cart?<GinCart regionID="fixture-region" currency="eur" segment="dk-en" commerceEnabled={!Astro.url.searchParams.has('closed')} client:load/>:product&&<main class={styles.page}><section style="max-width:520px" data-testid="real-product-actions"><GinProductActions product={product} segment="dk-en" initialLocation={Astro.url.pathname+Astro.url.search} initialVariantID="browser-add-v" regionID="fixture-region" currency="eur" commerceEnabled={!Astro.url.searchParams.has('closed')} client:load/></section></main>}
 </body></html>
 <style is:global>
  *,::before,::after{box-sizing:border-box;border-width:0;border-style:solid}body{margin:0;font-family:Arial,sans-serif;font-size:16px;line-height:1.5;color:black}

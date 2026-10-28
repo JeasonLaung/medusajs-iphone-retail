@@ -8,11 +8,12 @@ import react from '@astrojs/react'
 const adminRequire=createRequire(new URL('../../admin/package.json',import.meta.url))
 const {chromium,expect}=adminRequire('@playwright/test')
 let server,browser
+const errors=[]
 try {
  server=await dev({root:new URL('./selection-fixture/',import.meta.url),configFile:false,output:'server',integrations:[react()],devToolbar:{enabled:false},server:{host:'127.0.0.1',port:0},logLevel:'error'})
  const origin=`http://127.0.0.1:${server.address.port}`
  browser=await chromium.launch({headless:true,...(process.env.ADMIN_TEST_BROWSER?{executablePath:process.env.ADMIN_TEST_BROWSER}:{})})
- const context=await browser.newContext(),page=await context.newPage(),errors=[],documentRequests=[]
+ const context=await browser.newContext(),page=await context.newPage(),documentRequests=[]
  page.on('pageerror',error=>errors.push(error.message))
  page.on('console',message=>{if(message.type()==='error')errors.push(message.text())})
  page.on('request',request=>{if(request.resourceType()==='document')documentRequests.push(request.url())})
@@ -67,6 +68,7 @@ try {
  await context.close()
  console.log('ASTRO_SELECTION_BROWSER '+JSON.stringify({test_root_separate:true,two_hydrated_islands:true,exact_currency_in_browser:true,selection_replace_state_no_document_request:true,history_state_and_length_preserved:true,query_and_hash_preserved:true,title_and_canonical_synchronized:true,gallery_synchronized:true,native_back_forward:true,reload_and_deep_link:true,no_slug_v_id:true,unavailable_candidate_unchanged:true,unknown_v_id_default:true,hydration_errors:0}))
 } finally {
+ if(errors.length)console.error('Selection browser diagnostics',JSON.stringify(errors))
  if(browser)await browser.close()
  if(server)await server.stop()
 }

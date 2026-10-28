@@ -3,7 +3,7 @@ import {cartVariantQuantities} from './cart-quantities.ts'
 import type {ProductCommerce,CartAddResult} from '../components/products/product-actions.tsx'
 
 export const cartIntentKey='retail.cart.intent.v1'
-const lockName='retail.cart.commerce.v1'
+export const cartLockName='retail.cart.commerce.v1'
 type Base={format:1;regionID:string;segment:string;variantID:string;quantity:'1'}
 type Intent=Base & ({kind:'create';operationID:string;scopeBinding:string}|{kind:'add';cartID:string;operationID:string;version:string}|{kind:'refresh';cartID:string;version:string})
 type Options={
@@ -118,6 +118,6 @@ export function browserCartCommerce(context:{enabled:boolean;regionID:string;cur
    readCSRF:()=>cartCSRFFromCookies(document.cookie,location.protocol==='https:'),
    readScopeCSRF:()=>scopeCSRFFromCookies(document.cookie,location.protocol==='https:'),
    uuid:()=>crypto.randomUUID(),bindScope:async csrf=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(csrf))),b=>b.toString(16).padStart(2,'0')).join(''),
-   exclusive:action=>navigator.locks.request(lockName,{mode:'exclusive'},action)})
+   exclusive:action=>navigator.locks.request(cartLockName,{mode:'exclusive'},action)})
  }catch{return {enabled:false}}
 }
