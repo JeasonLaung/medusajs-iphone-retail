@@ -1,0 +1,60 @@
+{
+  "format_version": 1,
+  "schema_version": 1,
+  "model_sha256": "0a0c4ecd7dc58dcff6d60e8a1d35a7a1bf74c759664ab2c7b07fc9e455a241bf",
+  "migration": "0028_tax_relational.sql",
+  "tables": [
+    "tax_providers",
+    "tax_rate_rules",
+    "tax_rates",
+    "tax_regions"
+  ],
+  "source_tables": [
+    "tax_provider",
+    "tax_rate",
+    "tax_rate_rule",
+    "tax_region"
+  ],
+  "source_columns": 36,
+  "reads_enabled": true,
+  "writes_enabled": false,
+  "full_business_accepted": false,
+  "historical_accounts_restored": false,
+  "explicit_enum_constraints": [],
+  "unresolved_semantic_dependencies": [],
+  "unresolved_source_indexes": [
+    {
+      "source_table": "tax_region",
+      "target_table": "tax_regions",
+      "source_constraint": "FK_tax_region_parent_id",
+      "kind": "f",
+      "source_definition": "FOREIGN KEY (parent_id) REFERENCES tax_region(id) ON DELETE CASCADE",
+      "status": "hold",
+      "reason": "MySQL CHECK column cannot also have cascading/SET NULL FK action (3823); preserve CHECK and require explicit parent mutation transaction/constraint redesign"
+    },
+    {
+      "source_table": "tax_region",
+      "target_table": "tax_regions",
+      "source_constraint": "FK_tax_region_provider_id",
+      "kind": "f",
+      "source_definition": "FOREIGN KEY (provider_id) REFERENCES tax_provider(id) ON DELETE SET NULL",
+      "status": "hold",
+      "reason": "MySQL CHECK column cannot also have cascading/SET NULL FK action (3823); preserve CHECK and require explicit parent mutation transaction/constraint redesign"
+    },
+    {
+      "source_table": "tax_region",
+      "index_name": "IDX_tax_region_unique_country_nullable_province",
+      "definition": "CREATE UNIQUE INDEX \"IDX_tax_region_unique_country_nullable_province\" ON public.tax_region USING btree (country_code) WHERE ((province_code IS NULL) AND (deleted_at IS NULL))",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    },
+    {
+      "source_table": "tax_region",
+      "index_name": "IDX_tax_region_unique_country_province",
+      "definition": "CREATE UNIQUE INDEX \"IDX_tax_region_unique_country_province\" ON public.tax_region USING btree (country_code, province_code) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    }
+  ],
+  "migration_sha256_lf": "d2e5804563804918595cb21985d782c2f3e047455edc5d123c465558c4ba2b84"
+}

@@ -63,11 +63,11 @@ func TestOwnedPaymentSchema(t *testing.T) {
 	}
 	db, gdb := open("payment_schema_fresh")
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 27 || schema.CheckApplied(ctx, db, plan) != nil || payments.Ready(ctx, gdb) != nil {
+	if err != nil || r.Applied != 28 || schema.CheckApplied(ctx, db, plan) != nil || payments.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh payment schema failed")
 	}
 	r, err = schema.Apply(ctx, db, plan)
-	if err != nil || r.Skipped != 27 {
+	if err != nil || r.Skipped != 28 {
 		t.Fatal("payment schema replay changed facts")
 	}
 
@@ -182,7 +182,7 @@ func TestOwnedPaymentSchema(t *testing.T) {
 	if blocked.QueryRowContext(ctx, "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name IN ('payment_sessions','payment_runtime_schema')").Scan(&created) != nil || created != 0 {
 		t.Fatal("guard partially created payment tables")
 	}
-	result := map[string]any{"migrations": 27, "tables": 8, "source_columns": 83, "exact_decimal": true, "enum_json_fk_rejected": true, "active_session_unique": true, "soft_deleted_session_reusable": true, "protected_columns_accept_ciphertext": true, "existing_tables_preserved": true, "replay_unchanged": true, "schema_drift_rejected": true, "writes_enabled": false, "provider_called": false}
+	result := map[string]any{"migrations": 28, "tables": 8, "source_columns": 83, "exact_decimal": true, "enum_json_fk_rejected": true, "active_session_unique": true, "soft_deleted_session_reusable": true, "protected_columns_accept_ciphertext": true, "existing_tables_preserved": true, "replay_unchanged": true, "schema_drift_rejected": true, "writes_enabled": false, "provider_called": false}
 	b, _ := json.Marshal(result)
 	t.Log("PAYMENT_SCHEMA_REHEARSAL " + string(b))
 }

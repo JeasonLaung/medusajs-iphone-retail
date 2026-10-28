@@ -85,7 +85,7 @@ def main():
         # Each suite owns artificial databases in this uniquely labelled,
         # disconnected server. Release their tmpfs tables before the next suite;
         # otherwise cumulative DDL consumes the bounded fixture memory.
-        suites = ['AdminAuthentication','CatalogSchemaTransition','ProductEdits','ProductPrices',
+        suites = ['TaxSchema','AdminAuthentication','CatalogSchemaTransition','ProductEdits','ProductPrices',
                   'ProductInventory','InventoryStockEdits','ReservationTransactions','OrderSchema',
                   'OrderImport','CustomerHistory','OrderRead','PaymentSchema','PaymentImport','FulfillmentHistory','CartSchema','CartRuntime']
         if cart_only:
@@ -237,6 +237,11 @@ def main():
                      'retail/backend/internal/platform/request.go', 'retail/backend/cmd/api/main.go',
                      'retail/backend/cmd/create-admin/main.go', 'retail/backend/migrations/0009_admin_auth_version.sql',
                      'retail/backend/internal/sessionstore/store.go', 'retail/backend/internal/sessionstore/config.go']
+            tax_markers = [line.split('TAX_SCHEMA_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'TAX_SCHEMA_REHEARSAL ' in line]
+            if len(tax_markers) != 1:
+                raise RuntimeError('Tax schema and actual selection evidence missing')
+            files += ['retail/backend/migrations/0028_tax_relational.sql','retail/scripts/generate-tax-schema.py','retail/backend/internal/identity/tax_schema_test.go']
+            files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/tax').glob('*') if p.is_file()]
             files += ['retail/backend/internal/identity/catalog_schema_test.go','retail/backend/internal/schema/ready.go',
                       'retail/backend/internal/catalog/schema.go','retail/backend/internal/catalog/schema_plan.json',
                       'retail/backend/migrations/0010_catalog_relational.sql', 'retail/backend/migrations/0011_catalog_product_edits.sql',
@@ -318,6 +323,7 @@ def main():
                       'order_fulfillments': json.loads(fulfillment_read_markers[0]),
                       'order_payments': json.loads(payment_read_markers[0]),
                       'order_read': json.loads(order_read_markers[0]),
+                      'tax_schema_and_read': json.loads(tax_markers[0]),
                       'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
         password = ''

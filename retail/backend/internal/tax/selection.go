@@ -35,14 +35,14 @@ type Rule struct {
 
 type Rate struct {
 	ID           string  `json:"id"`
-	RegionID     string  `json:"tax_region_id"`
-	Region       Region  `json:"tax_region"`
+	RegionID     string  `json:"tax_region_id" gorm:"column:tax_region_id"`
+	Region       Region  `json:"tax_region" gorm:"-"`
 	Rate         *string `json:"rate"`
 	Name         string  `json:"name"`
 	Code         string  `json:"code"`
 	IsDefault    bool    `json:"is_default"`
 	IsCombinable bool    `json:"is_combinable"`
-	Rules        []Rule  `json:"rules"`
+	Rules        []Rule  `json:"rules" gorm:"-"`
 }
 
 func bounded(s string, limit int) bool { return len(s) <= limit && utf8.ValidString(s) }

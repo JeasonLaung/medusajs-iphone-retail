@@ -23,6 +23,7 @@ import (
 	"github.com/eurorefurb/retail/internal/schema"
 	"github.com/eurorefurb/retail/internal/server"
 	"github.com/eurorefurb/retail/internal/sessionstore"
+	"github.com/eurorefurb/retail/internal/tax"
 	"github.com/eurorefurb/retail/migrations"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -69,6 +70,9 @@ func main() {
 	}
 	if err == nil {
 		err = cart.Ready(verifyCtx, db)
+	}
+	if err == nil {
+		err = tax.Ready(verifyCtx, db)
 	}
 	cancelVerify()
 	if err != nil {

@@ -66,7 +66,10 @@ selection('same-parent-region-first',product,[rate('first'),rate('second'),rate(
  assert.equal(providerCases[4].expected[0].line_item_id,'item')
  const sources={}
  for(const file of [serviceFile,providerFile])sources[path.relative(root,file).replaceAll(path.sep,'/')]=crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')
- const output=JSON.stringify({format_version:1,scope:'Original pure tax candidate query, stable selection and built-in system provider; artificial data, no DB/provider network/cart transaction',sources,cases,provider_cases:providerCases},null,2)+'\n'
+ const loaderFile=path.join(packageRoot,'loaders/providers.js'),loader=fs.readFileSync(loaderFile,'utf8')
+ assert.ok(loader.includes('`tp_${klass.identifier}${pluginOptions.id ? `_${pluginOptions.id}` : ""}`'),'Original provider registration key changed')
+ const reviewed_sources_not_executed={[path.relative(root,loaderFile).replaceAll(path.sep,'/')]:crypto.createHash('sha256').update(fs.readFileSync(loaderFile)).digest('hex')}
+ const output=JSON.stringify({format_version:1,scope:'Original pure tax candidate query, stable selection and built-in system provider; artificial data, no DB/provider network/cart transaction',sources,reviewed_sources_not_executed,cases,provider_cases:providerCases},null,2)+'\n'
  const target=path.join(root,'docs/migration/fixtures/legacy-tax-selection.json')
  if(process.argv.includes('--check'))assert.equal(fs.readFileSync(target,'utf8').replaceAll('\r\n','\n'),output)
  else fs.writeFileSync(target,output)

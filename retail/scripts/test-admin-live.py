@@ -202,7 +202,7 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/fulfillment').glob('*') if p.is_file()]
         files += ['retail/backend/internal/orders/fulfillments.go','retail/backend/internal/identity/order_fulfillments_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/authorization').glob('*.go')]
-        files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','sessionstore') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','sessionstore','tax') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
         files += ['retail/storefront/src/lib/cart-client.ts','retail/storefront/src/lib/cart-commerce.ts','retail/storefront/src/lib/cart-quantities.ts',
                   'retail/storefront/src/lib/cart-item-commands.ts','retail/storefront/src/components/cart/gin-cart.tsx',
                   'retail/storefront/tests/cart-item-commands.test.ts',
@@ -213,7 +213,7 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/storefront/src/components/products').rglob('*') if p.is_file()]
         files += ['retail/storefront/tests/commerce.browser.mjs','retail/storefront/tests/commerce-fixture/src/pages/[...path].astro']
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
-                  'browser_tests_passed': 3, 'migrations_applied': 27, 'mocked_api_responses': False,
+                  'browser_tests_passed': 3, 'migrations_applied': 28, 'mocked_api_responses': False,
                   'cart_commerce_button_browser': json.loads(button_markers[0]),
                   'cart_items_browser': {'actual_storefront_client': True, 'real_gin_mysql_redis': True,
                                          'concurrent_same_key_requests': 4, 'same_sku_merged': True,

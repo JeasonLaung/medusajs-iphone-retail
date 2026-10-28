@@ -56,11 +56,11 @@ func TestOwnedAdminAuthentication(t *testing.T) {
 		t.Fatal("embedded schema invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 27 {
+	if err != nil || result.Applied != 28 {
 		t.Fatal("ten explicit migrations not applied")
 	}
 	result, err = schema.Apply(ctx, pool, plan)
-	if err != nil || result.Skipped != 27 {
+	if err != nil || result.Skipped != 28 {
 		t.Fatal("ten migrations not repeatable")
 	}
 	sessions, client, err := sessionstore.Open(ctx, "redis://127.0.0.1:6379/0", "eurorefurb:identity_fixture:v1:")
@@ -164,6 +164,14 @@ func TestOwnedAdminAuthentication(t *testing.T) {
 	call("POST", "/api/admin/auth/challenge", "", "", "", nil, 403)
 	call("POST", "/api/admin/auth/challenge", "", "https://evil.example", "", nil, 403)
 	call("GET", "/api/admin/auth/me", "", origin, "", nil, 401)
+	call("GET", "/health", "", origin, "", nil, 200)
+	if db.Exec("UPDATE tax_runtime_schema SET reads_enabled=FALSE WHERE id=1").Error != nil {
+		t.Fatal("artificial tax readiness setup failed")
+	}
+	call("GET", "/health", "", origin, "", nil, 503)
+	if db.Exec("UPDATE tax_runtime_schema SET reads_enabled=TRUE WHERE id=1").Error != nil {
+		t.Fatal("artificial tax readiness restore failed")
+	}
 	call("GET", "/health", "", origin, "", nil, 200)
 	call("POST", "/api/admin/auth/login", loginBody, origin, "", nil, 403)
 	call("POST", "/api/admin/auth/login", `{"email":"a","email":"b","password":"x"}`, origin, "", nil, 400)
@@ -281,5 +289,5 @@ func TestOwnedAdminAuthentication(t *testing.T) {
 	}
 	_ = pool.Close()
 	call("GET", "/api/admin/auth/me", "", origin, "", []*http.Cookie{active}, 503)
-	t.Log("IDENTITY_REHEARSAL " + `{"explicit_migrations":27,"login_and_me":1,"csrf_and_origin_rejection":1,"session_rotation":1,"logout_revocation":1,"disable_reenable_revocation":1,"role_restore_revocation":1,"password_restore_revocation":1,"invalid_credentials_rejection":1,"login_rate_limit":1,"generation_revocation":1,"legacy_and_customer_rejection":1,"redis_failure_rejection":1,"mysql_failure_rejection":1}`)
+	t.Log("IDENTITY_REHEARSAL " + `{"explicit_migrations":28,"login_and_me":1,"csrf_and_origin_rejection":1,"session_rotation":1,"logout_revocation":1,"disable_reenable_revocation":1,"role_restore_revocation":1,"password_restore_revocation":1,"invalid_credentials_rejection":1,"login_rate_limit":1,"generation_revocation":1,"legacy_and_customer_rejection":1,"redis_failure_rejection":1,"mysql_failure_rejection":1}`)
 }

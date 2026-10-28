@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Owned artificial MySQL/Redis cart runtime and HTTP dispatch; browser and checkout not accepted",
   "cart_runtime": {
-    "migrations": 27,
+    "migrations": 28,
     "atomic_cart_authority_receipt": true,
     "anonymous_only": true,
     "real_redis_to_mysql_binding": true,
@@ -27,7 +27,7 @@
   },
   "cart_items": {
     "real_mysql_redis": true,
-    "explicit_migrations": 27,
+    "explicit_migrations": 28,
     "concurrent_attempts": 8,
     "single_fresh_add": 1,
     "merge_quantity_price_tier": true,
@@ -100,13 +100,13 @@
   "application_resources_used": false,
   "real_accounts_used": false,
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "1088c65de3370b4bd1152bf43a2265f017e43310a89ebac25fe75d878d23a1fe",
-    "retail/backend/internal/identity/cart_runtime_test.go": "996809b695866a9bf1bfa3f1303e4253a026c4ab0d2d567965ef042af643afb4",
+    "retail/scripts/test-admin-auth.py": "e75a2721eac1a04d85edc668aac7a99e10bb7e4743760747ee2c0ab00b903101",
+    "retail/backend/internal/identity/cart_runtime_test.go": "928389ab2b2d83aa0969f99a4bb87fac1a29247dadf02a409b717a61c6d03c28",
     "retail/backend/internal/identity/cart_http_test.go": "f779a67658e3f5fcef850548abd27d2b929424152cab547f52fe85876086365c",
     "retail/backend/internal/identity/cart_amounts_test.go": "17cf6a9317de63d97918a78372ee49d3410e95c171b282196c53d6280562183d",
-    "retail/backend/internal/identity/cart_items_test.go": "09043ebe7fda51230b6eda5beb08ba8cebaabc78b4ca6b5970c3e0ac53f2d412",
+    "retail/backend/internal/identity/cart_items_test.go": "503bb52b1b7599b53f9326898fa39c11b182f3fdc4ff58a499e4ec63b704eb35",
     "retail/backend/internal/identity/cart_items_http_test.go": "24272a0cfb71c8f26308b0bd47db754a5c1f6fccd1498622062125b438c98222",
-    "retail/backend/internal/server/router.go": "8ad0fcb8b3a64ef4baff7f90649f195aca9a82ab7f1094cfa192978bc384093a",
+    "retail/backend/internal/server/router.go": "fbf7bdc1fb93fd212a959964657e757d569c1b279aa25ad12e8b64234a9c02a0",
     "retail/backend/internal/platform/request.go": "b45b789ca81e4ebcc02709ea1a6975f3d5ac695fa7c8481e16aecb23ed54f97d",
     "retail/backend/internal/platform/http.go": "2d0725f3fa8d60f060b14de792f8d4f1aa8dda38ff8c26b4d8c2af7c137e642a",
     "retail/backend/internal/catalog/schema.go": "aadd8fc2d82c87d9a8467ae60c232cd300081f6a3880ee22a1a73666511e04ab",
@@ -125,7 +125,7 @@
     "retail/backend/internal/cart/schema_plan.json": "ff6c97e42e5aab9a5d107b7cfe36b8b8531ae9254299e94e35c15727c263272b",
     "retail/backend/internal/cart/view.go": "5e686159c803532a481e9d017ee5a2948506a9f653e6ab4617120edca481519e",
     "retail/backend/internal/schema/plan.go": "57e554e749ef6d75c12ca6cbb20f71b8ced1e29b39b49b15e5cb8d9a4c98de56",
-    "retail/backend/internal/schema/plan_test.go": "ce9067708a8073697089a3d16da5d2157bb438b2e2adccb419be8a7695482479",
+    "retail/backend/internal/schema/plan_test.go": "36753b1ca537db0075759d361aca6d5e94b296643fd3407ae50f52dabaac6dec",
     "retail/backend/internal/schema/ready.go": "136238fca088d5594ae5ddc8af5954f090aab286f8dedcf17f90ad42c6a5a5ad",
     "retail/backend/internal/schema/run.go": "56f369159ab7cee4fc51694ba6dc0cbd58daff7656fd02e4205350c1b1d9f8b3",
     "retail/backend/internal/sessionstore/cart.go": "08a33b38b47c0ea3d077735239594044a7fbbb1013f6f5f176e53354c41cc4d0",
@@ -204,7 +204,8 @@
     "retail/backend/migrations/0024_authorization_management.sql": "48aecb0577eb3274ac4c99af1916e8ea01e777c466a8783ecaec3d697658a9cb",
     "retail/backend/migrations/0025_cart_relational.sql": "d5acdb1a055c1f34e1bff35461e95990975a2a42cf8735451b9c8e459bff7fc9",
     "retail/backend/migrations/0026_cart_runtime_authority.sql": "70cff0b541fa6cfd845644b494142df473ec5bd4f191039a923ad6e5c399caec",
-    "retail/backend/migrations/0027_cart_item_operations.sql": "a9c50b5f04cd670e45007d705b2293dc631ecc1585eb58fd51a29722003a5f50"
+    "retail/backend/migrations/0027_cart_item_operations.sql": "a9c50b5f04cd670e45007d705b2293dc631ecc1585eb58fd51a29722003a5f50",
+    "retail/backend/migrations/0028_tax_relational.sql": "d2e5804563804918595cb21985d782c2f3e047455edc5d123c465558c4ba2b84"
   },
   "cleanup": "both owned containers and temporary runner removed"
 }
