@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "scope": "Owned artificial MySQL/Redis cart runtime component; HTTP and checkout not accepted",
+  "scope": "Owned artificial MySQL/Redis cart runtime and HTTP dispatch; browser and checkout not accepted",
   "cart_runtime": {
     "migrations": 26,
     "atomic_cart_authority_receipt": true,
@@ -46,10 +46,12 @@
   "application_resources_used": false,
   "real_accounts_used": false,
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "ca9ee62e0c06205c8c5b15ce6038e7ca4901a539c4572b742064fac0b9a8bdd1",
+    "retail/scripts/test-admin-auth.py": "d3d193e59c670136aca8117de4e4ca4250e0d25322529c25b7c1c3dba9af32ff",
     "retail/backend/internal/identity/cart_runtime_test.go": "26191e2e53e656e617b7b58c98a765dd742afdee1f84baa4f17aa4b2169ffde2",
-    "retail/backend/internal/identity/cart_http_test.go": "53e60e4fe3cf30a24ba1143746c7c99d193fdf753e1e10d28294597f55f308bf",
+    "retail/backend/internal/identity/cart_http_test.go": "c5f9820bdce2922005e919903441605000869bcb090520a5dd3dffbd7c347b2f",
     "retail/backend/internal/server/router.go": "9ce9c74d059c01b81c2a6b668741e44a019866dba3bebb13188fde08e98e493c",
+    "retail/backend/internal/platform/request.go": "c55327ca9276f3df722f9bfd88dd0026ec12d40d81c2e768e951c2d6c9dda3db",
+    "retail/backend/internal/platform/http.go": "2d0725f3fa8d60f060b14de792f8d4f1aa8dda38ff8c26b4d8c2af7c137e642a",
     "retail/backend/internal/catalog/schema.go": "aadd8fc2d82c87d9a8467ae60c232cd300081f6a3880ee22a1a73666511e04ab",
     "retail/backend/internal/catalog/schema_plan.json": "3cdd7053d3fa87a4da1b5847fc966f1ee0582d50916b65d2005fb8e93ec22dd9",
     "retail/backend/internal/cart/http.go": "890e81740c2b2eba55614bfa06d531cb55133992079be71e41bdd001acd0ced5",
@@ -64,7 +66,7 @@
     "retail/backend/internal/schema/run.go": "56f369159ab7cee4fc51694ba6dc0cbd58daff7656fd02e4205350c1b1d9f8b3",
     "retail/backend/internal/sessionstore/cart.go": "08a33b38b47c0ea3d077735239594044a7fbbb1013f6f5f176e53354c41cc4d0",
     "retail/backend/internal/sessionstore/cart_scope.go": "8e2df72d27a7cfd787a88d6d4cba66da1d31e048475fff7d7fa218196f1ae88b",
-    "retail/backend/internal/sessionstore/cart_test.go": "a55a0d9505280ce25fd4751f0813d252e4bfd2db5d466ed84c53e4ebf6376ef3",
+    "retail/backend/internal/sessionstore/cart_test.go": "dd4113af47a4c56acac505b2116cc8e0f0dfa637495cc5c9f239670fd473fd6e",
     "retail/backend/internal/sessionstore/config.go": "3a06b19b9f71032d4243cc9266499d7eb7cf6a8e7facfcfac3ae63ac1a339440",
     "retail/backend/internal/sessionstore/config_test.go": "a2422d5f82bd9e9173e9efe0983193f3cbdf650c5822b12ed7df857dddd537f2",
     "retail/backend/internal/sessionstore/redis_test.go": "46ccb5f4fd57ae32ef2375b810ad33013b974a148940bca09b701dd99c829163",

@@ -97,7 +97,7 @@ def main():
         app_env = {'STOREFRONT_STORE_ID':'fixture-store','GIN_MODE': 'release', 'APP_BIND': '0.0.0.0', 'APP_PORT': '9100', 'APP_ENV': 'development',
                    'MYSQL_DSN': 'root:' + password + '@unix(/var/run/mysqld/mysqld.sock)/browser_identity?parseTime=true&loc=UTC',
                    'SESSION_REDIS_URL': 'redis://127.0.0.1:6379/0', 'SESSION_REDIS_PREFIX': 'eurorefurb:browser_fixture:v1:',
-                   'ADMIN_ORIGIN': 'http://127.0.0.1:19200', 'SESSION_SECURE': 'false'}
+                   'ADMIN_ORIGIN': 'http://127.0.0.1:19200', 'STOREFRONT_ORIGIN': 'http://127.0.0.1:19200', 'SESSION_SECURE': 'false'}
         args = ['exec', '-d', '-w', '/opt']
         for key, value in app_env.items():
             args.extend(['-e', key + '=' + value])
@@ -126,9 +126,17 @@ def main():
                                 cwd=ROOT / 'retail/admin', env=browser_env, capture_output=True, timeout=180)
         # Private browser cookies or server state never enter a committed report.
         result = json.loads(tested.stdout)
-        if tested.returncode or result['stats']['expected'] != 1 or any(result['stats'][k] for k in ['unexpected', 'skipped', 'flaky']):
+        if tested.returncode or result['stats']['expected'] != 2 or any(result['stats'][k] for k in ['unexpected', 'skipped', 'flaky']):
             (ROOT / 'logs/gin-migration/admin-live-result.json').write_bytes(tested.stdout)
             raise RuntimeError('Live browser checks failed; inspect ignored local result')
+        # Read back actual durable state, without exporting IDs or credentials.
+        durable = docker('exec', '-e', 'MYSQL_PWD=' + password, mysql_id, 'mysql', '-uroot',
+                         '--protocol=socket', '--database=browser_identity', '--batch', '--skip-column-names', '-e',
+                         "SELECT (SELECT COUNT(*) FROM carts),(SELECT COUNT(*) FROM cart_ownership WHERE active=TRUE AND version=1),"
+                         "(SELECT COUNT(*) FROM cart_creation_operations),(SELECT COUNT(*) FROM cart_creation_scopes),"
+                         "(SELECT COUNT(*) FROM carts WHERE customer_id IS NOT NULL),(SELECT COUNT(*) FROM cart_line_items)")
+        if durable.returncode or durable.stdout.decode().strip() != '1\t1\t1\t1\t0\t0':
+            raise RuntimeError('Browser cart durable state differs; no successful report written')
         astro_env=os.environ.copy()
         astro_env['STOREFRONT_TEST_GIN']=target
         astro=subprocess.run([sys.executable,str(ROOT/'retail/scripts/test-storefront-runtime.py')],cwd=ROOT,env=astro_env,capture_output=True,timeout=480)
@@ -158,8 +166,18 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/fulfillment').glob('*') if p.is_file()]
         files += ['retail/backend/internal/orders/fulfillments.go','retail/backend/internal/identity/order_fulfillments_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/authorization').glob('*.go')]
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','sessionstore') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
+        files += ['retail/storefront/src/lib/cart-client.ts']
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
-                  'browser_tests_passed': 1, 'migrations_applied': 26, 'mocked_api_responses': False,
+                  'browser_tests_passed': 2, 'migrations_applied': 26, 'mocked_api_responses': False,
+                  'cart_browser': {'actual_storefront_client': True, 'real_gin_mysql_redis': True,
+                                   'real_browser_cookie_origin_csrf': True, 'concurrent_replays': 4,
+                                   'changed_request_conflict': True, 'scope_reuse_no_ttl_extension': True,
+                                   'reload_with_http_only_possession': True, 'no_new_browser_storage': True,
+                                   'stranger_and_admin_realm_denied': True, 'lost_possession_same_operation_recovered': True,
+                                   'durable_carts': 1, 'durable_ownerships': 1, 'durable_receipts': 1,
+                                   'customer_accounts_bound': 0, 'line_items': 0,
+                                   'production_page_mounted': False, 'tls_secure_cookie_verified': False},
                   'reviewed_relational_schema_used': True, 'empty_draft_tables_retained_by_migration': 7,
                   'explicit_catalog_read_schema_migration_used': True, 'test_only_schema_rewrite': False,
                   'browser_executable_override_used': bool(os.environ.get('ADMIN_TEST_BROWSER')),
@@ -208,7 +226,7 @@ def main():
                 binary.unlink()
     report['cleanup'] = 'both owned containers, bridge network and temporary binaries removed'
     (ROOT / 'docs/migration/admin-live-report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'browser_tests': 1, 'real_api': True, 'real_mysql_redis': True, 'cleanup': 'complete'}))
+    print(json.dumps({'browser_tests': 2, 'real_api': True, 'real_mysql_redis': True, 'cart_browser': True, 'cleanup': 'complete'}))
 
 
 if __name__ == '__main__':

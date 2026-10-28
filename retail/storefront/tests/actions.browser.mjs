@@ -15,8 +15,21 @@ try {
  browser=await chromium.launch({headless:true,args:['--disable-lcd-text'],...(process.env.ADMIN_TEST_BROWSER?{executablePath:process.env.ADMIN_TEST_BROWSER}:{})})
  const origin=`http://127.0.0.1:${server.address.port}`,context=await browser.newContext({reducedMotion:'reduce'}),errors=[],comparisons=[]
  context.setDefaultTimeout(15000)
- const fresh=async()=>{const p=await context.newPage();p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>{if(m.type()==='error')errors.push(m.text())});p.on('response',r=>{if(r.status()>=400)console.error('Fixture HTTP',r.status(),r.url())});return p}
- const ready=async(p,path)=>{await p.goto(origin+path);await expect(p.locator('main')).toHaveAttribute('data-ready','true');await p.locator('img').evaluateAll(async images=>{await Promise.race([Promise.all(images.filter(im=>{const r=im.getBoundingClientRect();return r.width>0&&r.height>0&&r.top<innerHeight&&r.bottom>0}).map(im=>im.decode())),new Promise((_,reject)=>setTimeout(()=>reject(new Error('Visible fixture image decode timeout')),5000))])});assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false)}
+ const pending=new WeakMap()
+ const fresh=async()=>{
+  const p=await context.newPage(),active=new Set();pending.set(p,active)
+  p.on('request',request=>active.add(request.url()))
+  p.on('requestfinished',request=>active.delete(request.url()))
+  p.on('requestfailed',request=>active.delete(request.url()))
+  p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>{if(m.type()==='error')errors.push(m.text())});p.on('response',r=>{if(r.status()>=400)console.error('Fixture HTTP',r.status(),r.url())});return p
+ }
+ const ready=async(p,path)=>{
+  try {await p.goto(origin+path)}
+  catch(error){console.error('Fixture navigation pending',JSON.stringify([...pending.get(p)]));throw error}
+  await expect(p.locator('main')).toHaveAttribute('data-ready','true')
+  await p.locator('img').evaluateAll(async images=>{await Promise.race([Promise.all(images.filter(im=>{const r=im.getBoundingClientRect();return r.width>0&&r.height>0&&r.top<innerHeight&&r.bottom>0}).map(im=>im.decode())),new Promise((_,reject)=>setTimeout(()=>reject(new Error('Visible fixture image decode timeout')),5000))])})
+  assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false)
+ }
  const compare=async(a,b,label,selector='[data-testid="actions-region"]')=>{
   const viewport=a.viewportSize()
   if(selector==='[data-testid="actions-region"]')for(const p of [a,b]){await p.setViewportSize({width:viewport.width,height:2200});await p.evaluate(()=>scrollTo(0,0))}

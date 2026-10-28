@@ -30,14 +30,14 @@
 
 人工请求覆盖 cookie 属性、创建和重放、仅ID/错车/重复cookie拒绝、Origin/CSRF/幂等头、严格JSON和两类413、保护投影、真实持久撤销、Redis连接关闭/逐键丢失；单次签发错误注入仅用于验证 SQL 已提交后的恢复，其余正常路径使用真实依赖。独立 Redis 测试另核对作用域与持有/登录域隔离、哈希、不续期、过期/丢失和两个限流上限。Go 单元测试验证 JSON 边界。
 
-后续工作：购物车真实浏览器 cookie 路径、行项目和可信价格/共享库存检查、区域更新及税/促销/配送重算、完整DTO/金额、客户注册/转移、付款与成单，并接回保持原页面样式的 Astro 前台。T032/T033 和全部交易仍未完成。
+后续工作：行项目和可信价格/共享库存检查、区域更新及税/促销/配送重算、完整DTO/金额、客户注册/转移、付款与成单，并接回保持原页面样式的 Astro 前台。T032/T033 和全部交易仍未完成。
 
-## 本批验证限制
+## 验证中断与恢复记录
 
-专项真实 Gin/MySQL/Redis 首次运行通过并生成 `cart_http` 证据，随后补充了 Redis 关闭时 GET 503 的断言、源文件哈希范围及磁盘预检。当前全量 Go 测试与 vet 已通过；Redis 单组件含新创建作用域测试已通过。专项报告保留首次实际运行时的文件 SHA，不手改成最新校验值，最新增补仍需重跑。
+专项真实 Gin/MySQL/Redis 首次运行通过并生成 `cart_http` 证据，随后补充了 Redis 关闭时 GET 503 的断言、源文件哈希范围及磁盘预检。当前全量 Go 测试与 vet 已通过；Redis 单组件含新创建作用域测试已通过。恢复 Docker 后已重跑专项和数据库联合套件，专项报告现含最新断言及匹配的源文件 SHA。
 
 联合回归期间本机 C 盘耗尽，旧 Next 前台短暂返回 ENOSPC/500。清除可重新生成的 Go 编译缓存释放约2.6 GiB，前台恢复200，未重启或清除 Next/Medusa 输出；后续本轮 Go 临时目录及缓存显式放在 D 盘任务目录。测试入口增加 workspace 至少2 GiB 空余检查。
 
-Docker Desktop 日志在 2026-10-28 00:49:29 UTC 显示 engine running→stopping，随后 Docker API/inspect 超时。最新数据库/浏览器联合回归未完成，不能引用前一批绿色报告宣称本批全量通过。自有临时容器及runner未完成清理，准确所有权与路径登记在忽略文件 `logs/gin-migration/pending-docker-cleanup.json`；引擎恢复后按label核对清理，重跑专项/联合回归更新报告。当前代码仍默认关闭购物车命令，功能不作整体验收。
+Docker Desktop 日志在 2026-10-28 00:49:29 UTC 显示 engine running→stopping，随后 Docker API/inspect 超时。当时数据库/浏览器联合回归未完成。用户授权后重启 Docker Desktop 恢复引擎；按精确所有权标签清除遗留4容器、1网络和3个runner，忽略文件 `logs/gin-migration/pending-docker-cleanup.json` 已记录完成。数据库专项及全套回归已重跑；浏览器当前证据见下方独立记录。当前代码仍默认关闭购物车命令，功能不作整体验收。
 
-后续客户端补充：[Astro私有传输](astro-cart-client.md)已对人工HTTPfixture验证浏览器cookie与稳定操作键，不含实际页面挂载或真实Gin/MySQL/Redis端到端验收；上述Docker重跑与清理仍待完成。
+后续客户端补充：[Astro私有传输](astro-cart-client.md)已对人工HTTPfixture验证浏览器cookie与稳定操作键，不含实际页面挂载或真实Gin/MySQL/Redis端到端验收；Docker已恢复并完成旧资源清理，真实浏览器补充见 [客户端联调记录](cart-live-browser.md)。

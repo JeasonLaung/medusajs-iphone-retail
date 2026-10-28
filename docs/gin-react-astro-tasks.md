@@ -350,3 +350,7 @@
 2026-10-28 购物车 HTTP 补充：[匿名创建会话与受保护详情](migration/cart-http.md)接入实际Gin路由及显式店铺Origin配置；独立scope/possession cookie、CSRF、作用域幂等、严格请求与private响应。真实MySQL/Redis HTTP人工请求核对创建重试、签发失败恢复、持久撤销、重复头/字段/超限及故障拒绝。未配置和默认能力继续关闭；items/checkout=false，购物车浏览器、行项目/合计/交易及Astro接入仍缺，T032/T033未验收。
 
 2026-10-28 Astro 私有购物车协议补充：[Gin客户端](migration/astro-cart-client.md)明确同源cookie/CSRF、创建作用域和稳定幂等键、精简详情及错误分类；网络/503不当空车，应用不隐式换作用域/重试。28项单元、类型/build及真实Edge对人工HTTP协议fixture验证cookie/Origin/同键恢复，未宣称Gin/MySQL/Redis串联。生产页面、行项目/合计、真实联合回归及完整交易仍缺，T025/T026/T032/T033未验收。
+
+2026-10-28 Docker恢复与购物车联调补充：[真实浏览器协议](migration/cart-live-browser.md)加载实际Astro客户端经正式Gin读取自有MySQL/Redis；同键并发重放、刷新/丢失凭证恢复及陌生会话拒绝，SQL各1车/归属/回执。数据库专项及联合套件已重跑；完整浏览器入口结果以报告SHA为准。生产页面、加购/合计/结账仍缺，T032/T033未整体验收。
+
+2026-10-28 本批最终整组回归通过：2项真实浏览器、SQL回查、28项Astro单元及构建、40对展示与24对操作区截图。报告SHA匹配，自有测试资源清理完毕；生产加购/结账继续关闭，完整迁移仍进行中。

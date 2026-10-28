@@ -29,3 +29,5 @@
 浏览器使用自有随机回环端口的人工 API fixture，实际加载客户端模块、由浏览器处理 cookie/Origin，验证 HttpOnly scope/possession 不出现在 document.cookie、可读 CSRF、创建和重放、读取、响应中途断开后的不确定错误/同键重试、依赖503不为空及凭证丢失。测试不拦截 fetch，但 API 是人工协议实现，**不是 Gin/MySQL/Redis 端到端证据**；不替代尚待恢复的 Docker 联合回归。浏览器、context和回环监听器在 finally 中关闭。
 
 本次没有改变原页面布局、组件样式、图片或购买交互，也没有把人工 API 放入生产构建。下一步仍需真实 Gin 浏览器串联、行项目/完整可信合计、数量修改及地区变化、原页面挂载和完整交易。T025/T026/T032/T033 不作整体验收。
+
+2026-10-28 后续：[购物车真实浏览器联调](cart-live-browser.md)新增实际客户端→Gin→MySQL/Redis验证，包含四路同键重放及SQL计数；其范围与原人工协议fixture独立，生产页面、行项目和结账仍未完成。
