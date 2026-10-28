@@ -169,7 +169,7 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','sessionstore') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
         files += ['retail/storefront/src/lib/cart-client.ts']
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
-                  'browser_tests_passed': 2, 'migrations_applied': 26, 'mocked_api_responses': False,
+                  'browser_tests_passed': 2, 'migrations_applied': 27, 'mocked_api_responses': False,
                   'cart_browser': {'actual_storefront_client': True, 'real_gin_mysql_redis': True,
                                    'real_browser_cookie_origin_csrf': True, 'concurrent_replays': 4,
                                    'changed_request_conflict': True, 'scope_reuse_no_ttl_extension': True,

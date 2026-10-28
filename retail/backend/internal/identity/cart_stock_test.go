@@ -66,6 +66,18 @@ func checkWholeCartStock(t *testing.T, db *gorm.DB) {
 	if len(out.Assignments) != 2 || out.Assignments[0].LocationID == out.Assignments[1].LocationID {
 		t.Fatal("real shared stock not spread across line warehouses")
 	}
+	// Component one exists only at a, component two only at b. One bundle may
+	// use those two component warehouses; no component's quantity is split.
+	savedLines := append([]inventory.CartStockLine(nil), lines...)
+	variants = append(variants, inventory.AvailableVariant{ID: "public-bundle", ManageInventory: true, Complete: true})
+	exec(`UPDATE inventory_levels SET deleted_at=UTC_TIMESTAMP(6) WHERE id IN ('availability-level-b','availability-second-a')`)
+	lines = []inventory.CartStockLine{{ID: "bundle-line", VariantID: "public-bundle", Quantity: "1"}}
+	bundle := call("available", true)
+	if len(bundle.Assignments) != 2 || bundle.Assignments[0].LocationID == bundle.Assignments[1].LocationID {
+		t.Fatal("bundle components wrongly required one warehouse")
+	}
+	exec(`UPDATE inventory_levels SET deleted_at=NULL WHERE id IN ('availability-level-b','availability-second-a')`)
+	lines = savedLines
 	// Each line individually fits at a. The whole cart needs twice its capacity.
 	exec(`UPDATE commerce_channel_locations SET deleted_at=UTC_TIMESTAMP(6) WHERE id='availability-channel-b'`)
 	call("out_of_stock", false)
@@ -96,5 +108,5 @@ func checkWholeCartStock(t *testing.T, db *gorm.DB) {
 	if _, err := inventory.ReadCartStock(db, variants, lines, "public-main"); err != inventory.ErrCartStockInput {
 		t.Fatal("autocommit stock check accepted")
 	}
-	t.Log(`CART_STOCK_REHEARSAL {"real_mysql":true,"whole_cart_shared_capacity":true,"separate_line_warehouses":true,"exact_scale18":true,"foreign_and_incoming_excluded":true,"holds_and_live_mismatch":true,"backorder_separate":true,"no_inventory_mutation":true,"checkout_integrated":false}`)
+	t.Log(`CART_STOCK_REHEARSAL {"real_mysql":true,"whole_cart_shared_capacity":true,"separate_line_warehouses":true,"separate_component_warehouses":true,"exact_scale18":true,"foreign_and_incoming_excluded":true,"holds_and_live_mismatch":true,"backorder_separate":true,"no_inventory_mutation":true,"checkout_integrated":false}`)
 }

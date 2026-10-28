@@ -49,24 +49,24 @@ func TestAvailabilityObservations(t *testing.T) {
 	r[0].ItemAvailable = false
 	assert(variant, r, locations, safe, 1, "unavailable", "", "", false)
 }
-func TestBundleRequiresCommonWarehouse(t *testing.T) {
+func TestBundleComponentsMayUseSeparateWarehouses(t *testing.T) {
 	v := AvailableVariant{ID: "v", ManageInventory: true, Complete: true}
 	r := []availabilityRequirement{{InventoryItemID: "one", RequiredQuantity: "1", ItemAvailable: true}, {InventoryItemID: "two", RequiredQuantity: "1", ItemAvailable: true}}
 	a, _ := scaled("10")
 	zero := new(big.Int)
 	levels := map[availabilityPair]*big.Int{{"one", "a"}: a, {"two", "b"}: a}
 	result := observedAvailability(v, r, []string{"a", "b"}, levels, big.NewInt(1))
-	if result.Quantity == nil || *result.Quantity != "10" || result.CanFulfill || result.State != "unavailable" {
-		t.Fatal("cross-warehouse component stock incorrectly fulfilled a bundle")
+	if result.Quantity == nil || *result.Quantity != "10" || !result.CanFulfill || result.State != "available" || result.MaxFulfillableQuantity == nil || *result.MaxFulfillableQuantity != "10" {
+		t.Fatal("independently stocked components rejected")
 	}
 	levels[availabilityPair{"two", "a"}] = zero
 	levels[availabilityPair{"one", "b"}] = zero
 	result = observedAvailability(v, r, []string{"a", "b"}, levels, big.NewInt(1))
-	if result.State != "out_of_stock" || result.CanFulfill || result.MaxFulfillableQuantity == nil || *result.MaxFulfillableQuantity != "0" {
-		t.Fatal("zero component at common warehouse fulfilled bundle")
+	if result.State != "available" || !result.CanFulfill || result.MaxFulfillableQuantity == nil || *result.MaxFulfillableQuantity != "10" {
+		t.Fatal("zero local component hid a different stocked warehouse")
 	}
 	v.AllowBackorder = true
-	result = observedAvailability(v, r, []string{"a", "b"}, levels, big.NewInt(1))
+	result = observedAvailability(v, r, []string{"a", "b"}, levels, big.NewInt(11))
 	if !result.CanFulfill || result.State != "backorder" {
 		t.Fatal("valid common backorder levels rejected")
 	}

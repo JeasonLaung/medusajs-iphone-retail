@@ -470,7 +470,7 @@
   },
   "actions_browser": {
     "scope": "artificial isolated adapter and old source comparison; no live cart acceptance",
-    "fixture_ssr_setup_ms": 5048,
+    "fixture_ssr_setup_ms": 5037,
     "browser_navigation_timeout_ms": 15000,
     "comparisons": [
       {

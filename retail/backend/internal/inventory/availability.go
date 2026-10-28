@@ -46,45 +46,43 @@ func observedAvailability(v AvailableVariant, requirements []availabilityRequire
 	if len(requirements) == 0 || len(locations) == 0 {
 		return out
 	}
-	var pooled *big.Int
-	common := map[string]*big.Int{}
-	for index, r := range requirements {
+	var pooled, maximum *big.Int
+	allComponents := true
+	for _, r := range requirements {
 		required, err := scaled(r.RequiredQuantity)
 		if err != nil || required.Sign() <= 0 || !r.ItemAvailable {
 			return out
 		}
-		total := new(big.Int)
+		total, best := new(big.Int), new(big.Int)
+		hasLevel := false
 		for _, location := range locations {
 			amount, ok := safe[availabilityPair{r.InventoryItemID, location}]
 			if !ok {
-				delete(common, location)
 				continue
 			}
+			hasLevel = true
 			total.Add(total, amount)
 			units := new(big.Int).Quo(amount, required)
-			if index == 0 {
-				common[location] = units
-			} else if current, ok := common[location]; ok && units.Cmp(current) < 0 {
-				common[location] = units
+			if units.Cmp(best) > 0 {
+				best.Set(units)
 			}
 		}
+		allComponents = allComponents && hasLevel
 		units := new(big.Int).Quo(total, required)
 		if pooled == nil || units.Cmp(pooled) < 0 {
 			pooled = units
 		}
-	}
-	max := new(big.Int)
-	for _, units := range common {
-		if units.Cmp(max) > 0 {
-			max.Set(units)
+		if maximum == nil || best.Cmp(maximum) < 0 {
+			maximum = best
 		}
 	}
-	quantity, maximum := pooled.String(), max.String()
+	quantity, limit := pooled.String(), maximum.String()
 	out.Quantity = &quantity
-	out.MaxFulfillableQuantity = &maximum
-	if len(common) == 0 {
+	out.MaxFulfillableQuantity = &limit
+	if !allComponents {
 		return out
 	}
+	max := maximum
 	out.CanFulfill = max.Cmp(requested) >= 0
 	if out.CanFulfill {
 		out.State = "available"

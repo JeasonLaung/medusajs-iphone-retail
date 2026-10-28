@@ -89,8 +89,8 @@ func TestCartStockBacktracksAndMatchesExhaustiveAssignments(t *testing.T) {
 	if err != nil || !result.CanFulfill {
 		t.Fatal("feasible non-greedy cart rejected")
 	}
-	// Independent exhaustive integer oracle enumerates all 3^5 assignments,
-	// with shared component demands and indivisible line/warehouse placement.
+	// Independent exhaustive integer oracle enumerates all component/warehouse assignments,
+	// with shared component demands and indivisible component/warehouse placement.
 	rng := rand.New(rand.NewPCG(17, 41))
 	for sample := 0; sample < 250; sample++ {
 		capacities := [3][2]int{}
@@ -119,14 +119,14 @@ func TestCartStockBacktracksAndMatchesExhaustiveAssignments(t *testing.T) {
 		}
 		var exhaustive func(int, [3][2]int) bool
 		exhaustive = func(index int, left [3][2]int) bool {
-			if index == len(needs) {
+			if index == len(needs)*2 {
 				return true
 			}
+			line, item := index/2, index%2
 			for l := range left {
-				if left[l][0] >= needs[index][0] && left[l][1] >= needs[index][1] {
+				if left[l][item] >= needs[line][item] {
 					next := left
-					next[l][0] -= needs[index][0]
-					next[l][1] -= needs[index][1]
+					next[l][item] -= needs[line][item]
 					if exhaustive(index+1, next) {
 						return true
 					}

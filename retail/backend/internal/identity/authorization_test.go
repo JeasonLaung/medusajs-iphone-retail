@@ -142,5 +142,5 @@ func checkAuthorization(t *testing.T, db *gorm.DB, user identity.User, get func(
 	if len(view().Actions) != 11 {
 		t.Fatal("authorization restoration failed")
 	}
-	t.Log(`AUTHORIZATION_REHEARSAL {"migrations":26,"explicit_actions":11,"admin_label_no_implicit_grants":true,"multi_role_union":true,"all_required_actions":true,"warehouse_supplier_full_store_denied":true,"disabled_role_denied":true,"unknown_wildcard_case_denied":true,"old_snapshot_revocation":true,"command_lock_blocks_permission_writer":true,"disabled_schema_rejected":true,"autocommit_rejected":true,"existing_principal_bootstrap_rejected":true,"revision_changes":true,"legacy_grants_imported":false}`)
+	t.Log(`AUTHORIZATION_REHEARSAL {"migrations":27,"explicit_actions":11,"admin_label_no_implicit_grants":true,"multi_role_union":true,"all_required_actions":true,"warehouse_supplier_full_store_denied":true,"disabled_role_denied":true,"unknown_wildcard_case_denied":true,"old_snapshot_revocation":true,"command_lock_blocks_permission_writer":true,"disabled_schema_rejected":true,"autocommit_rejected":true,"existing_principal_bootstrap_rejected":true,"revision_changes":true,"legacy_grants_imported":false}`)
 }

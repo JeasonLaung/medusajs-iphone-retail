@@ -86,6 +86,8 @@ func (s *Store) AllowCartRequest(ctx context.Context, kind, identity string) (bo
 		limit = 8
 	case "create-scope":
 		limit = 32
+	case "item-possession":
+		limit = 128
 	}
 	if limit == 0 || len(identity) == 0 || len(identity) > 1024 {
 		return false, ErrInvalid

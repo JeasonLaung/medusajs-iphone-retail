@@ -24,6 +24,7 @@ type HTTPSessions interface {
 	AllowCartRequest(context.Context, string, string) (bool, error)
 	IssueCart(context.Context, sessionstore.CartReference) (sessionstore.Issued, error)
 	ResolveCart(context.Context, string) (sessionstore.CartReference, error)
+	AuthorizeCartWrite(context.Context, string, string) (sessionstore.CartReference, error)
 }
 
 type HTTPOptions struct {
@@ -61,6 +62,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/carts", h.Create)
 	private.GET("/carts/:id", h.Detail)
 	private.GET("/carts/:id/amounts", h.Amounts)
+	private.POST("/carts/:id/line-items", h.AddItem)
 }
 
 func (h *HTTPHandler) ready(c *gin.Context) bool {
@@ -205,6 +207,10 @@ func cartHTTPError(c *gin.Context, err error) {
 		platform.Fail(c, 400, "cart.invalid_input", "Invalid cart request")
 	case errors.Is(err, ErrRegion):
 		platform.Fail(c, 422, "cart.region_unavailable", "Cart region unavailable")
+	case errors.Is(err, ErrItemUnavailable):
+		platform.Fail(c, 422, "cart.item_unavailable", "Cart item unavailable")
+	case errors.Is(err, ErrItemStock):
+		platform.Fail(c, 422, "cart.stock_unavailable", "Insufficient inventory")
 	default:
 		platform.Fail(c, 503, "cart.unavailable", "Cart unavailable")
 	}

@@ -169,5 +169,5 @@ func checkStoreAvailability(t *testing.T, db *gorm.DB, router http.Handler) {
 	call("", 503)
 	exec(`DELETE FROM inventory_reservations WHERE id LIKE 'availability-overflow-%'`)
 	checkWholeCartStock(t, db)
-	t.Log(`STORE_AVAILABILITY_REHEARSAL {"current_channel_only":true,"required_quantity_exact":true,"shared_inventory":true,"single_warehouse_limit":true,"bundle_common_warehouse":true,"untracked_and_backorder":true,"incomplete_and_missing_links":true,"soft_delete_filters":true,"persistent_holds":true,"live_reservation_mismatch":true,"negative_reservation_rejected":true,"per_pair_reservation_limit":true,"relation_limit_503":true,"disabled_model_503":true,"private_fields_excluded":true,"read_fingerprint_unchanged":true}`)
+	t.Log(`STORE_AVAILABILITY_REHEARSAL {"current_channel_only":true,"required_quantity_exact":true,"shared_inventory":true,"single_warehouse_limit":true,"bundle_component_warehouses":true,"untracked_and_backorder":true,"incomplete_and_missing_links":true,"soft_delete_filters":true,"persistent_holds":true,"live_reservation_mismatch":true,"negative_reservation_rejected":true,"per_pair_reservation_limit":true,"relation_limit_503":true,"disabled_model_503":true,"private_fields_excluded":true,"read_fingerprint_unchanged":true}`)
 }

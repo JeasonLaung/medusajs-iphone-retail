@@ -34,6 +34,7 @@ type CartStockAssignment struct {
 
 type cartStockDemand struct {
 	id        string
+	component string
 	backorder bool
 	items     map[string]*big.Int
 	locations []string
@@ -91,9 +92,10 @@ func stockLines(variants []AvailableVariant, lines []CartStockLine) ([]Available
 	return selected, nil
 }
 
-// ReadCartStock uses ONE caller-owned repeatable-read snapshot. Every line must
-// fit at one healthy channel-linked location; different lines may use different
-// locations. Shared item/location capacity is consumed only once across lines.
+// ReadCartStock uses ONE caller-owned repeatable-read snapshot. Each inventory
+// component must fit at one healthy channel-linked location, as in Medusa's
+// per-inventory-item preparation/reservation. Components may use different
+// locations. Shared item/location capacity is counted across all cart lines.
 // No serial-device count, incoming stock or foreign-channel stock is included.
 func ReadCartStock(tx *gorm.DB, variants []AvailableVariant, lines []CartStockLine, channel string) (CartStockPlan, error) {
 	selected, err := stockLines(variants, lines)
@@ -133,64 +135,66 @@ func planCartStock(ctx context.Context, variants []AvailableVariant, lines []Car
 		if !v.ManageInventory {
 			continue
 		}
-		d := cartStockDemand{id: line.ID, backorder: v.AllowBackorder, items: map[string]*big.Int{}}
+		seenItems := map[string]bool{}
 		if len(facts.requirements[v.ID]) == 0 {
 			return denied, nil
 		}
 		for _, r := range facts.requirements[v.ID] {
+			d := cartStockDemand{id: line.ID, component: r.InventoryItemID, backorder: v.AllowBackorder, items: map[string]*big.Int{}}
 			if !r.ItemAvailable || !validID(r.InventoryItemID) {
 				return denied, nil
 			}
-			if _, duplicate := d.items[r.InventoryItemID]; duplicate {
+			if seenItems[r.InventoryItemID] {
 				return CartStockPlan{}, ErrSchema
 			}
 			amount, err := RequiredInventoryQuantity(line.Quantity, r.RequiredQuantity)
 			if err != nil {
 				return CartStockPlan{}, ErrQuantity
 			}
+			seenItems[r.InventoryItemID] = true
 			d.items[r.InventoryItemID], _ = scaled(amount)
-		}
-		for _, location := range facts.locations {
-			healthy, fits := true, true
-			for item, need := range d.items {
-				if err := search.step(); err != nil {
-					return CartStockPlan{}, err
+			for _, location := range facts.locations {
+				healthy, fits := true, true
+				for item, need := range d.items {
+					if err := search.step(); err != nil {
+						return CartStockPlan{}, err
+					}
+					available, ok := facts.safe[availabilityPair{item, location}]
+					if !ok {
+						healthy = false
+						break
+					}
+					if available.Cmp(need) < 0 {
+						fits = false
+					}
 				}
-				available, ok := facts.safe[availabilityPair{item, location}]
-				if !ok {
-					healthy = false
-					break
-				}
-				if available.Cmp(need) < 0 {
-					fits = false
+				if healthy && (d.backorder || fits) {
+					d.locations = append(d.locations, location)
 				}
 			}
-			if healthy && (d.backorder || fits) {
-				d.locations = append(d.locations, location)
-			}
-		}
-		if len(d.locations) == 0 {
-			// Missing/held/mismatched levels are unavailable, even for backorders.
-			// A healthy but insufficient level is a normal stock rejection.
-			if !d.backorder {
-				for _, location := range facts.locations {
-					healthy := true
-					for item := range d.items {
-						if _, ok := facts.safe[availabilityPair{item, location}]; !ok {
-							healthy = false
+			if len(d.locations) == 0 {
+				// Missing/held/mismatched levels are unavailable, even for backorders.
+				// A healthy but insufficient level is a normal stock rejection.
+				if !d.backorder {
+					for _, location := range facts.locations {
+						healthy := true
+						for item := range d.items {
+							if _, ok := facts.safe[availabilityPair{item, location}]; !ok {
+								healthy = false
+								break
+							}
+						}
+						if healthy {
+							denied.State = "out_of_stock"
 							break
 						}
 					}
-					if healthy {
-						denied.State = "out_of_stock"
-						break
-					}
 				}
+				return denied, nil
 			}
-			return denied, nil
+			sort.Strings(d.locations)
+			demands = append(demands, d)
 		}
-		sort.Strings(d.locations)
-		demands = append(demands, d)
 	}
 	// Backorders do not consume the finite-stock entitlement of normal lines.
 	// This matches ApplyReservations' sum of non-backorder demand per level.
@@ -201,7 +205,10 @@ func planCartStock(ctx context.Context, variants []AvailableVariant, lines []Car
 		if len(demands[i].locations) != len(demands[j].locations) {
 			return len(demands[i].locations) < len(demands[j].locations)
 		}
-		return demands[i].id < demands[j].id
+		if demands[i].id != demands[j].id {
+			return demands[i].id < demands[j].id
+		}
+		return demands[i].component < demands[j].component
 	})
 	used := map[availabilityPair]*big.Int{}
 	chosen := make([]string, len(demands))
