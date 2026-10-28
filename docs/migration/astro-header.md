@@ -12,7 +12,7 @@
 
 9300 本地预览已加入原页头、菜单和地区选择器。预览使用人工地区，切换国家/语言重新加载测试页，内存购物车重置；真实后台和生产购物车不受影响。移动浏览器已验证抽屉切换至 de-en、加购和购物车徽标。预览导航/横幅保留明确说明，不冒充完整业务站点。
 
-后续换区基线补充：`node retail/scripts/capture-cart-region.cjs --check` 只执行安装的原 `prepareCartToUpdateStep` 纯回调片段，用人工数据验证7种输入，记录完整 workflow 源码 SHA。包含原地区/语言、去除 promo/additional_data 字段、换单国地区重置国家、换多国地区清空未明确提供的地址、合法地址和异国地址拒绝。`fixtures/legacy-cart-region.json` 不含真实业务数据。其余 workflow 会在 region_id 存在或 locale 改变时强制 refresh、换地区删除 custom-price 行；该采集不执行这些步骤，不代表完整换区事务验收。
+后续换区基线补充：`node retail/scripts/capture-cart-region.cjs --check` 只执行安装的原 `prepareCartToUpdateStep` 纯回调片段，用人工数据验证12种准备输入和16组实际workflow transform判定，记录完整 workflow 源码 SHA。包含原地区/语言、去除 promo/additional_data 字段、换单国地区重置国家、换多国地区清空未明确提供的地址、合法地址和异国地址拒绝。`fixtures/legacy-cart-region.json` 不含真实业务数据。其余 workflow 会在 region_id 存在或 locale 改变时强制 refresh、换地区删除 custom-price 行；该采集执行纯判定但不执行refresh或删除步骤，不代表完整换区事务验收。Go准备规则及后续事务边界见[换区准备](cart-context-plan.md)。
 
 当前生产页头数据组装、实时购物车计数、locale目录、账号/通知、换区事务/幂等恢复、全部页面和完整交易仍待完成。本批不开放生产换区或 checkout，不操作部署服务器。
 
