@@ -1,0 +1,46 @@
+{
+  "format_version": 1,
+  "schema_version": 1,
+  "model_sha256": "3556094145ffea41094586104e679857c9c3d7167237795fa36bfbbf2b4d54d0",
+  "migration": "0025_cart_relational.sql",
+  "tables": [
+    "cart_addresses",
+    "cart_line_adjustments",
+    "cart_line_items",
+    "cart_line_tax_lines",
+    "cart_payment_collections",
+    "cart_promotions",
+    "cart_shipping_adjustments",
+    "cart_shipping_methods",
+    "cart_shipping_tax_lines",
+    "carts"
+  ],
+  "source_tables": [
+    "cart",
+    "cart_address",
+    "cart_line_item",
+    "cart_line_item_adjustment",
+    "cart_line_item_tax_line",
+    "cart_payment_collection",
+    "cart_promotion",
+    "cart_shipping_method",
+    "cart_shipping_method_adjustment",
+    "cart_shipping_method_tax_line"
+  ],
+  "source_columns": 136,
+  "reads_enabled": true,
+  "writes_enabled": false,
+  "full_business_accepted": false,
+  "historical_accounts_restored": false,
+  "explicit_enum_constraints": [],
+  "unresolved_semantic_dependencies": [
+    {
+      "source": "cart_promotion",
+      "column": "promotion_id",
+      "parent": "promotion",
+      "policy": "preserve-reference-no-fabrication-no-ownership-grant"
+    }
+  ],
+  "unresolved_source_indexes": [],
+  "migration_sha256_lf": "d5acdb1a055c1f34e1bff35461e95990975a2a42cf8735451b9c8e459bff7fc9"
+}

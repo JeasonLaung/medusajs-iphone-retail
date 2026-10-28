@@ -80,7 +80,7 @@ def main():
         # otherwise cumulative DDL consumes the bounded fixture memory.
         suites = ['AdminAuthentication','CatalogSchemaTransition','ProductEdits','ProductPrices',
                   'ProductInventory','InventoryStockEdits','ReservationTransactions','OrderSchema',
-                  'OrderImport','CustomerHistory','OrderRead','PaymentSchema','PaymentImport','FulfillmentHistory']
+                  'OrderImport','CustomerHistory','OrderRead','PaymentSchema','PaymentImport','FulfillmentHistory','CartSchema']
         output, errors = b'', b''
         for suite in suites:
             tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1', mysql_id,
@@ -111,6 +111,9 @@ def main():
             print(json.dumps({'test_exit_code': tested.returncode, 'mysql_oom_and_exit': state.stdout.decode().strip()}))
             raise RuntimeError('Owned MySQL/Redis authentication checks failed')
         counts = json.loads(markers[0])
+        cart_markers=[line.split('CART_SCHEMA_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_SCHEMA_REHEARSAL ' in line]
+        if len(cart_markers)!=1:
+            raise RuntimeError('Cart schema verification missing')
         product_markers=[line.split('STORE_PRODUCT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_PRODUCT_REHEARSAL ' in line]
         availability_markers=[line.split('STORE_AVAILABILITY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_AVAILABILITY_REHEARSAL ' in line]
         display_markers=[line.split('STORE_DISPLAY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_DISPLAY_REHEARSAL ' in line]
@@ -226,7 +229,10 @@ def main():
         files += ['retail/backend/internal/identity/store_availability_test.go']
         files += ['retail/backend/internal/catalog/store_display.go','retail/backend/internal/catalog/store_display_test.go','retail/backend/internal/identity/store_display_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/pricing').glob('*.go')]
+        files += ['retail/scripts/generate-cart-schema.py','retail/backend/migrations/0025_cart_relational.sql','retail/backend/internal/identity/cart_schema_test.go']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/cart').glob('*') if p.is_file()]
         report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
+                  'cart_schema':json.loads(cart_markers[0]),
                   'store_products': json.loads(product_markers[0]),
                   'store_pricing': json.loads(pricing_markers[0]),
                   'store_availability': json.loads(availability_markers[0]),

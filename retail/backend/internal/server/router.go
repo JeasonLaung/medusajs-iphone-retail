@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/eurorefurb/retail/internal/authorization"
+	"github.com/eurorefurb/retail/internal/cart"
 	"github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/fulfillment"
 	"github.com/eurorefurb/retail/internal/identity"
@@ -72,6 +73,9 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 		}
 		if err == nil {
 			err = authorization.Ready(ctx, db)
+		}
+		if err == nil {
+			err = cart.Ready(ctx, db)
 		}
 		if err != nil {
 			platform.Fail(c, 503, "dependency_unavailable", "Application dependency unavailable")
