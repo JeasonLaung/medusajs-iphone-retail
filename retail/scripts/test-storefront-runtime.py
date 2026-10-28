@@ -59,8 +59,13 @@ def main():
         (ROOT/'logs/gin-migration/astro-actions-browser-result.log').write_bytes(actions.stdout+actions.stderr)
         raise RuntimeError('Astro product actions browser comparison failed; inspect ignored output')
     audit=subprocess.run([npm,'audit','--json'],cwd=APP,env=env,capture_output=True,timeout=60)
-    counts=json.loads(audit.stdout)['metadata']['vulnerabilities']
-    if counts.get('total')!=0:raise RuntimeError('New Astro dependencies have unresolved audit advisories')
+    try:
+        counts=json.loads(audit.stdout)['metadata']['vulnerabilities']
+    except (ValueError,KeyError,TypeError):
+        (ROOT/'logs/gin-migration/astro-audit-result.log').write_bytes(audit.stdout+audit.stderr)
+        raise RuntimeError('Dependency audit returned no complete report; no success recorded') from None
+    if audit.returncode or not isinstance(counts,dict) or any(type(counts.get(key)) is not int or counts[key]!=0 for key in ('info','low','moderate','high','critical','total')):
+        raise RuntimeError('New Astro dependencies have unresolved or incomplete audit evidence')
     files=['retail/scripts/test-storefront-runtime.py']+[str(p.relative_to(ROOT)).replace('\\','/') for p in APP.rglob('*') if p.is_file() and not any(part in ('node_modules','dist','.astro') for part in p.relative_to(APP).parts)]
     files+=['retail/admin/package-lock.json','medusa-store/apps/storefront/src/lib/util/product-variants.ts',
             'medusa-store/apps/storefront/src/app/[countryCode]/(main)/products/[handle]/page.tsx',

@@ -4,6 +4,22 @@
   "browser_tests_passed": 3,
   "migrations_applied": 27,
   "mocked_api_responses": false,
+  "cart_commerce_button_browser": {
+    "actual_astro_react_button": true,
+    "actual_gin_mysql_redis": true,
+    "initialization_failure_disabled": true,
+    "explicit_closed_disabled": true,
+    "viewports": [
+      390,
+      1440
+    ],
+    "loading_state": true,
+    "real_navigation": true,
+    "reload_merge_tier_price": true,
+    "noncredential_intent_cleared": true,
+    "production_page_mounted": false,
+    "full_cart_accepted": false
+  },
   "cart_items_browser": {
     "actual_storefront_client": true,
     "real_gin_mysql_redis": true,
@@ -250,10 +266,31 @@
     "retail/scripts/generate-fulfillment-import-plan.py": "9f9dd5e5e21ea6582349678d6b9464e20ebe8d150bf768f2d4a5398fe0836b19",
     "retail/scripts/generate-fulfillment-schema.py": "3c1fa30b9c75cd402dc1f5d3bf160b37883a1a59b4683171435fe64c68f297fe",
     "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb",
-    "retail/scripts/test-admin-live.py": "c291fa15bd6c2a2f9a13a89577484434cbe5f2eb1a4475cf0ed20ffc59ebe85c",
+    "retail/scripts/test-admin-live.py": "9d6b2f598a274371b1c9acbb062aec4e063eb2a4a88fdbb71cea4bef437d9dbe",
+    "retail/storefront/src/components/products/ICONS-LICENSE.txt": "e2058c0858b14c1813ee09ea991d97f6aa153fcd60eeb7174d736c19bbbef06d",
+    "retail/storefront/src/components/products/gin-product-actions.tsx": "403c3f556ab12522757a0887244cc34f2d44dc5059baee49eedb785023aa6e61",
+    "retail/storefront/src/components/products/grade-badge/index.tsx": "eed04f912adf525813ae6354f23fcf34b65fe0eedc485eb98afc3f5cda1f2e71",
+    "retail/storefront/src/components/products/grade-badge/styles.module.css": "5afe48b2b8d1b28b94af767aa42587b93166b3316f5f7af255d6469f78e83178",
+    "retail/storefront/src/components/products/grade-guide/index.tsx": "a18f79547a30d5e0149a6b5cfe6b8d51c62f04f8e8d4c8c83b20078413140bbf",
+    "retail/storefront/src/components/products/grade-guide/styles.module.css": "9f92bb87b00bca1e6f02da8eb43be512c37c4e4309f83abbe1403cb057f0b4c0",
+    "retail/storefront/src/components/products/i18n.ts": "458cf54ee9608b0d15134404720f4ba090573e9da1b1a11369ca4bf7316ac018",
+    "retail/storefront/src/components/products/icons.tsx": "f2de4519be463b2482e582382ecfce5759be23dad641e24a9549180444372429",
+    "retail/storefront/src/components/products/image-gallery.tsx": "a7619c2719a04a51c259e697d25f5eb8c6bbeadcf213607fde6470bd0321d1da",
+    "retail/storefront/src/components/products/iphone-thumbnails.json": "38e291c0b2010730baac8f8e6fe2c22265089564084e002efb128fff06ce6e0f",
+    "retail/storefront/src/components/products/localized-link.tsx": "2161ae04064dfe7c915a63c804208481dc0718cc2fc95335f2ccbdc88fd17196",
+    "retail/storefront/src/components/products/product-actions.tsx": "3d59e570a4774bb00c301b839f710c84a82f4febc7e7301ccd99dde8ebb6784f",
+    "retail/storefront/src/components/products/product-details.tsx": "da01eb70c358910b4711d9e1c5941e75ef1e943a3274b50c963c8bfa373364ec",
+    "retail/storefront/src/components/products/product-image.tsx": "41c238ff798e606e9525b1f3fa7026efa38b0a22b97eab30cc8d1503c703d56d",
+    "retail/storefront/src/components/products/selection-row/index.tsx": "9ff8b072b781f0f91ae5214542daeba18874ca7976091d972a684b5930f3e7c8",
+    "retail/storefront/src/components/products/selection-row/styles.module.css": "970f04413a24236c9b3b24a26cb7ba64254f4c31d46645a74a7abf3d8f4ca5f9",
+    "retail/storefront/src/components/products/sticky-purchase-bar/index.tsx": "b950c894f281378ec82a10f3c8ec3912ba4b938e28254e9a410b9d59a1249ea6",
+    "retail/storefront/src/components/products/storefront-theme/index.tsx": "253f5aa5506abdc9cb57ec288735efe4076c19a37789650b39e3cc0c5c03c4df",
+    "retail/storefront/src/components/products/styles.module.css": "0423a65e37f949b9d530ab72fcaf0e059acd46f60cd0b55913d23165b801cd36",
     "retail/storefront/src/lib/cart-client.ts": "8bd1ce93111bcb83214b3a3d2c142936aadde7541af3e5fe0c4ef4cfff4788ba",
     "retail/storefront/src/lib/cart-commerce.ts": "fd0ef5f9ae8e37353ceb6032b260c3d698810ccfac4207d170244aa2406a544a",
-    "retail/storefront/src/lib/cart-quantities.ts": "b54d1211513f0f5ee04e521463718e8b37fba1b9d3b5484a0ac511c203371384"
+    "retail/storefront/src/lib/cart-quantities.ts": "b54d1211513f0f5ee04e521463718e8b37fba1b9d3b5484a0ac511c203371384",
+    "retail/storefront/tests/commerce-fixture/src/pages/[...path].astro": "67bd3c85f49c063d26fdbb5661f7b073f060aad67c53cbbe84e8785c59b466e5",
+    "retail/storefront/tests/commerce.browser.mjs": "a375c62bcee5de28fc6b797eee03d89f71944ab3e6d155eba2564f9b9d4b1ade"
   },
   "cleanup": "both owned containers, bridge network and temporary binaries removed"
 }

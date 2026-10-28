@@ -21,14 +21,14 @@ export type CartAddResult = {ok:true;quantities:CartQuantities} | {ok:false;erro
 // Required boundary: a caller must explicitly supply a real commerce adapter.
 // Existing Gin catalog checkout=false must be passed as enabled:false.
 export type ProductCommerce = {enabled:false} | {enabled:true;addToCart:(input:{variantId:string;quantity:'1';countryCode:string})=>Promise<CartAddResult>;navigate?:(path:string)=>void}
-export type ProductActionsProps = ProductSelectionProps & {disabled?:boolean;cartQuantities:CartQuantities;commerce:ProductCommerce}
+export type ProductActionsProps = ProductSelectionProps & {disabled?:boolean;cartError?:boolean;cartQuantities:CartQuantities;commerce:ProductCommerce}
 
 export default function ProductActions(props:ProductActionsProps) {
  return <StorefrontTheme locale={props.segment.endsWith('-zh')?'zh-CN':'en'}><Actions {...props}/></StorefrontTheme>
 }
 
 function Actions(props:ProductActionsProps) {
-  const {product,disabled,cartQuantities,commerce,segment:countryCode}=props
+  const {product,disabled,cartError=false,cartQuantities,commerce,segment:countryCode}=props
   const copy=getProductCopy(countryCode)
   const {variant:selectedVariant,options,purchaseOptions:productOptions,selectOption:choose}=useProductSelection(props)
   const variants=completeVariants(product)
@@ -82,7 +82,7 @@ function Actions(props:ProductActionsProps) {
     }
   }
 
-  const feedbackContent = feedback === "error" ? copy.error : feedback === "inventory" ? <>{copy.inventoryError} · <LocalizedClientLink segment={countryCode} href="/cart">{copy.viewCart}</LocalizedClientLink></> : atCartLimit ? <>{copy.cartLimitMessage} · <LocalizedClientLink segment={countryCode} href="/cart">{copy.viewCart}</LocalizedClientLink></> : feedback === "added" ? <>{copy.added} · <LocalizedClientLink segment={countryCode} href="/cart">{copy.viewCart}</LocalizedClientLink></> : null
+  const feedbackContent = feedback === "error" ? copy.error : feedback === "inventory" ? <>{copy.inventoryError} · <LocalizedClientLink segment={countryCode} href="/cart">{copy.viewCart}</LocalizedClientLink></> : atCartLimit ? <>{copy.cartLimitMessage} · <LocalizedClientLink segment={countryCode} href="/cart">{copy.viewCart}</LocalizedClientLink></> : feedback === "added" ? <>{copy.added} · <LocalizedClientLink segment={countryCode} href="/cart">{copy.viewCart}</LocalizedClientLink></> : cartError ? copy.error : null
 
   return <div className={styles.actions}>
     <div className={styles.productHeading} ref={priceRef}>

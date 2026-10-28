@@ -156,15 +156,23 @@ def main():
         if item_browser.returncode or item_result['stats']['expected'] != 1 or any(item_result['stats'][k] for k in ['unexpected','skipped','flaky']):
             (ROOT/'logs/gin-migration/cart-items-live-result.json').write_bytes(item_browser.stdout)
             raise RuntimeError('Live cart item browser checks failed; inspect ignored result')
+        button_env = os.environ.copy()
+        button_env['STOREFRONT_TEST_GIN'] = target
+        button_node = button_env.get('STOREFRONT_TEST_NODE') or shutil.which('node')
+        button_test = subprocess.run([button_node,'tests/commerce.browser.mjs'],cwd=ROOT/'retail/storefront',env=button_env,capture_output=True,timeout=150)
+        button_markers = [line.split('CART_COMMERCE_BUTTON_BROWSER ',1)[1] for line in button_test.stdout.decode('utf-8').splitlines() if line.startswith('CART_COMMERCE_BUTTON_BROWSER ')]
+        if button_test.returncode or len(button_markers)!=1:
+            (ROOT/'logs/gin-migration/cart-commerce-button-browser.log').write_bytes(button_test.stdout+button_test.stderr)
+            raise RuntimeError('Actual Astro cart button browser failed; inspect ignored output')
         item_durable = docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket',
                               '--database=browser_identity','--batch','--skip-column-names','-e',
                               "SELECT (SELECT COUNT(*) FROM carts),(SELECT COUNT(*) FROM cart_ownership WHERE active=TRUE AND version=4),"
                               "(SELECT COUNT(*) FROM cart_line_items WHERE variant_id='browser-add-v' AND quantity=3),"
                               "(SELECT COUNT(*) FROM cart_item_operations),"
-                              "(SELECT JSON_UNQUOTE(JSON_EXTRACT(raw_unit_price,'$.value')) FROM cart_line_items WHERE variant_id='browser-add-v'),"
+                              "(SELECT JSON_UNQUOTE(JSON_EXTRACT(raw_unit_price,'$.value')) FROM cart_line_items WHERE variant_id='browser-add-v' AND quantity=3),"
                               "(SELECT reserved_quantity=0 FROM inventory_levels WHERE id='browser-add-level'),"
                               "(SELECT COUNT(*) FROM inventory_reservations WHERE inventory_item_id='browser-add-item')")
-        if item_durable.returncode or item_durable.stdout.decode().strip() != '2\t1\t1\t3\t80.000000000000000000001\t1\t0':
+        if item_durable.returncode or item_durable.stdout.decode().strip() != '3\t1\t1\t5\t80.000000000000000000001\t1\t0':
             raise RuntimeError('Browser item durable state differs; no successful report written')
         files = ['retail/scripts/test-admin-live.py', 'retail/backend/cmd/api/main.go',
                  'retail/backend/internal/identity/browser_fixture_test.go', 'retail/backend/internal/identity/admin.go',
@@ -191,8 +199,11 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/authorization').glob('*.go')]
         files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','sessionstore') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
         files += ['retail/storefront/src/lib/cart-client.ts','retail/storefront/src/lib/cart-commerce.ts','retail/storefront/src/lib/cart-quantities.ts']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/storefront/src/components/products').rglob('*') if p.is_file()]
+        files += ['retail/storefront/tests/commerce.browser.mjs','retail/storefront/tests/commerce-fixture/src/pages/[...path].astro']
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
                   'browser_tests_passed': 3, 'migrations_applied': 27, 'mocked_api_responses': False,
+                  'cart_commerce_button_browser': json.loads(button_markers[0]),
                   'cart_items_browser': {'actual_storefront_client': True, 'real_gin_mysql_redis': True,
                                          'concurrent_same_key_requests': 4, 'same_sku_merged': True,
                                          'quantity_tier_price': True, 'exact_raw_amount': True,
