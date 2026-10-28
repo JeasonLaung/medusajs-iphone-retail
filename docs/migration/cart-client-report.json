@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Private browser transport against artificial HTTP API only; not Gin/MySQL/Redis or production cart acceptance",
   "node_version": "v22.23.4",
-  "unit_tests_passed": 40,
+  "unit_tests_passed": 43,
   "type_check_and_build_passed": true,
   "browser": {
     "actual_browser_http": true,
@@ -25,13 +25,15 @@
     "retail/storefront/src/lib/cart-commerce.ts": "fd0ef5f9ae8e37353ceb6032b260c3d698810ccfac4207d170244aa2406a544a",
     "retail/storefront/tests/cart-commerce.test.ts": "93c718a2a8aab4f317a922cda8c163f5e2e794b462ea92be2aafc4331e0dc8ea",
     "retail/storefront/src/lib/cart-quantities.ts": "b54d1211513f0f5ee04e521463718e8b37fba1b9d3b5484a0ac511c203371384",
-    "retail/scripts/test-cart-client.py": "1fcb9fa6dae962811dab679c57b68be8f59003513f9e47792cb782a7798b12ac",
+    "retail/scripts/test-cart-client.py": "8dbd183eff964330ea3f66061fed2e0c07802e68b6ba180d18acb6d1c6d41833",
     "retail/storefront/src/lib/cart-client.ts": "3980a24123717b71d5b4eecd20df73ab2a29eff52509d43f58b936d72b324bcb",
     "retail/storefront/tests/cart-client.test.ts": "7c93d6416ea3166fe2becc7804a0d5cd7cd389d2a3dc48810c7fb19fae1242ba",
     "retail/storefront/tests/cart-client.browser.mjs": "1cf33376ffa8a314446bcee0820ee5e468192cad3683371c4fe79829f52e623d",
     "retail/storefront/package.json": "e805cf1d51a7cd8b6b17834c97c9479dc69789003d8616318d9e00db63ef2f05",
     "retail/storefront/package-lock.json": "0907e4f629a274f781577528600f35318e9695745a17f206c2e314e9a4fca8f0",
     "retail/storefront/astro.config.mjs": "85710c96a776e6a32ca01860ff3d7c511efb736f9d685cf6ef6479b3ac03d2d5",
-    "retail/storefront/tsconfig.json": "0be126fdf4f61a27969212c2d65e8fc0147da2b5b7bf9bd552866224e8951da3"
+    "retail/storefront/tsconfig.json": "0be126fdf4f61a27969212c2d65e8fc0147da2b5b7bf9bd552866224e8951da3",
+    "retail/storefront/src/components/cart/types.ts": "3924e5830c4bc05f6ee977c1f06ce2dd84bce6c8d3a0ef95616b533c7eb3dcbc",
+    "retail/storefront/tests/cart-display.test.ts": "ffa7ecca4dd762383c4a5e90932045184c1a0bcf17fcf4422f8b4d5bcbfc99d0"
   }
 }

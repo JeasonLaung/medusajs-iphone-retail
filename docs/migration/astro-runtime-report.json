@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Astro Node SSR regions foundation, source-level product adapter to owned Gin, and selection browser check in a separate artificial test root; no business page acceptance",
   "node_version": "v22.23.4",
-  "unit_tests_passed": 40,
+  "unit_tests_passed": 43,
   "type_check_passed": true,
   "production_build_passed": true,
   "runtime": {
@@ -46,7 +46,7 @@
   "real_application_resources_used": false,
   "full_storefront_accepted": false,
   "implementation_sha256": {
-    "retail/scripts/test-storefront-runtime.py": "e436f166252a0fe2744b977dc1b7bccdd0cf5949446cc09c77fd6f97545a0bea",
+    "retail/scripts/test-storefront-runtime.py": "15dc276681f842274cd01e2487cd719e6b53a26a4b825a51272bd0b87ac094af",
     "retail/storefront/.env.example": "c5bef9c3433f84759258fb6b6fca003dedef905aee7d8522d389d49b035cc610",
     "retail/storefront/.gitignore": "853e19fb559c1d9d8df469c8dce09df4c37d495c02dc09fef40de174572a36e9",
     "retail/storefront/astro.config.mjs": "85710c96a776e6a32ca01860ff3d7c511efb736f9d685cf6ef6479b3ac03d2d5",
@@ -57,9 +57,12 @@
     "retail/storefront/tests/cart-client.browser.mjs": "1cf33376ffa8a314446bcee0820ee5e468192cad3683371c4fe79829f52e623d",
     "retail/storefront/tests/cart-client.test.ts": "7c93d6416ea3166fe2becc7804a0d5cd7cd389d2a3dc48810c7fb19fae1242ba",
     "retail/storefront/tests/cart-commerce.test.ts": "93c718a2a8aab4f317a922cda8c163f5e2e794b462ea92be2aafc4331e0dc8ea",
+    "retail/storefront/tests/cart-display.test.ts": "ffa7ecca4dd762383c4a5e90932045184c1a0bcf17fcf4422f8b4d5bcbfc99d0",
     "retail/storefront/tests/cart-quantities.test.ts": "9e8be4949311c3e0a3d81aa597236708549bc62ba56748abe957c7988e3359bf",
+    "retail/storefront/tests/cart.browser.mjs": "52dfae2a3e33f20935be417a36e09d828ad10845db053f1d7331bd107c3535ff",
     "retail/storefront/tests/commerce.browser.mjs": "a375c62bcee5de28fc6b797eee03d89f71944ab3e6d155eba2564f9b9d4b1ade",
     "retail/storefront/tests/compare-actions-images.py": "e5bacdc3aa063e39f5c47d84405d334299f5244ff2bcbf1c370d4932afb6e213",
+    "retail/storefront/tests/legacy-cart.mjs": "0b273c648c4df64fbeff997384afc044016051cdc0168d0d3601da4411533fcd",
     "retail/storefront/tests/legacy-presentation.mjs": "e727f06f6b94769ced41791f5cf535a36f69a042c75cfe62279281fb65179d2c",
     "retail/storefront/tests/presentation.browser.mjs": "db0caa99bd34bcc57ce06d3160b7359f51121a3b81d72ec7641d468de69f04eb",
     "retail/storefront/tests/products.test.ts": "865988bfcdf718406602c4a59b3efee3ec16fb07e798e9ec35cbe9bcea1eb0c8",
@@ -79,6 +82,12 @@
     "retail/storefront/tests/presentation-fixture/src/pages/[...path].astro": "e011fda9b4716133fb3fb08f99edbebaaf4e3b8afcbd850a4ccc23ea1f863cbe",
     "retail/storefront/tests/presentation-fixture/src/pages/images/[name].svg.ts": "1b1f0fe51fcaace7ed5e06b57c4c664a3fe6a8778507d45d23d924a82dc1ba8b",
     "retail/storefront/tests/commerce-fixture/src/pages/[...path].astro": "67bd3c85f49c063d26fdbb5661f7b073f060aad67c53cbbe84e8785c59b466e5",
+    "retail/storefront/tests/cart-fixture/src/checkout.ts": "607e8f009efb4c6cc2d83a0e9616f7f9fbcb193422cfe93ef66d206ecd9f3ec3",
+    "retail/storefront/tests/cart-fixture/src/commands.ts": "190f5c93887b9f617c30d87a8053243d38fc3b91049a4473734744b1979499a6",
+    "retail/storefront/tests/cart-fixture/src/legacy.d.ts": "82f3b784c52b538c574463aa0d6440ee5db196ea2833ff766b00e52db8e3ccf0",
+    "retail/storefront/tests/cart-fixture/src/probe.tsx": "581e007085d3955f9b1bc2ce1d5cd27532449d10a4c4f401a15665ac4c04683f",
+    "retail/storefront/tests/cart-fixture/src/pages/[...path].astro": "93b0db22e4a23108c25142ba3755dd23a0d9c68d5e33c002295a069a30166a31",
+    "retail/storefront/tests/cart-fixture/src/pages/images/[name].svg.ts": "ede87a30c0fcc9c9550be5753935fca16d9c94a79c7709f93d598fbbe1e9b4a6",
     "retail/storefront/tests/actions-fixture/src/actions.tsx": "aed4fc4d0d97d410f0d0a3f0e7532a1ee6250e0213714b8aa81386882333f73c",
     "retail/storefront/tests/actions-fixture/src/pages/[...path].astro": "9ae3f4775e581d624c4ebd70791cb32d88267ea1de26b1946f7c2803f985bef1",
     "retail/storefront/tests/actions-fixture/src/pages/images/[name].svg.ts": "ede87a30c0fcc9c9550be5753935fca16d9c94a79c7709f93d598fbbe1e9b4a6",
@@ -96,6 +105,15 @@
     "retail/storefront/src/lib/use-in-view.tsx": "f0c18ef3575118dbddb63c5370c2cc67cc5c93f3d5781b983c2d7cb19d035a69",
     "retail/storefront/src/lib/use-product-selection.ts": "c97d632c94aa36e3f38c42d6ca1b753eab63cf88afdcfec072a163df64ed84bb",
     "retail/storefront/src/pages/health.ts": "d89ee8bbf213f0cd5d3ed0ba08e16fe46bd17ffa42e84caf0e4718c8bc7b96a8",
+    "retail/storefront/src/components/cart/i18n.ts": "d136ac7662563627094be7443389072dc69dd72c9b558a3f6c220b4db9eacfa7",
+    "retail/storefront/src/components/cart/icons.tsx": "c7e2d0aa63a5eff91960f21545ebc62cda52097ef93a9a276b80279c90732e25",
+    "retail/storefront/src/components/cart/index.tsx": "d33cd77a045f10225c2a593fcf6b899232a4ba65fd96a8e47584acf11ec3f6b3",
+    "retail/storefront/src/components/cart/interactions.tsx": "546277233fbd76252bf16fe88e4d43c23a5be2d698e028892b09a5b741d7c678",
+    "retail/storefront/src/components/cart/line.tsx": "91c99a0f1283ed4e5d7750d0cfc8bf3f768d5582ea838de6d9009dc1d64dcbed",
+    "retail/storefront/src/components/cart/page-entry-scroll.tsx": "bd2691efecf6e93ad7bdd886055c5e8fdab69e960c1c6aede24e039e26379e6f",
+    "retail/storefront/src/components/cart/styles.module.css": "9f88ea5177bf145e015c32c2d48efe8cecc5396bd915ec8fc782b308178e69b5",
+    "retail/storefront/src/components/cart/summary.tsx": "ac857baec2f68ebc6abd400c1d4cd2d986d7c687296ea23a35131bd6315f4b0e",
+    "retail/storefront/src/components/cart/types.ts": "3924e5830c4bc05f6ee977c1f06ce2dd84bce6c8d3a0ef95616b533c7eb3dcbc",
     "retail/storefront/src/components/products/gin-product-actions.tsx": "403c3f556ab12522757a0887244cc34f2d44dc5059baee49eedb785023aa6e61",
     "retail/storefront/src/components/products/i18n.ts": "458cf54ee9608b0d15134404720f4ba090573e9da1b1a11369ca4bf7316ac018",
     "retail/storefront/src/components/products/ICONS-LICENSE.txt": "e2058c0858b14c1813ee09ea991d97f6aa153fcd60eeb7174d736c19bbbef06d",
@@ -220,7 +238,20 @@
     "medusa-store/apps/storefront/src/lib/util/money.ts": "0e40c7d3cc46d2141cc25da5e0a242f734df06d5e5a49dd06e010376cfa3da86",
     "medusa-store/apps/storefront/src/lib/util/isEmpty.ts": "0283cdf60e1f63c825a1adb9ee7f1420fa837e4466cead18df1ff3a295ccf157",
     "medusa-store/apps/storefront/src/lib/util/cart-inventory.ts": "f03d7de910666cbae2fa43384b475b8e37ebaa09436becbfe7efd9a611115144",
-    "medusa-store/apps/storefront/src/modules/products/components/color-swatches/index.tsx": "49cbc6a2444a7c093e3bd31abcdf2c0b30aa05ae66dd8eac59f9432357bda654"
+    "medusa-store/apps/storefront/src/modules/products/components/color-swatches/index.tsx": "49cbc6a2444a7c093e3bd31abcdf2c0b30aa05ae66dd8eac59f9432357bda654",
+    "medusa-store/apps/storefront/src/modules/cart/i18n.ts": "d136ac7662563627094be7443389072dc69dd72c9b558a3f6c220b4db9eacfa7",
+    "medusa-store/apps/storefront/src/modules/cart/styles.module.css": "9f88ea5177bf145e015c32c2d48efe8cecc5396bd915ec8fc782b308178e69b5",
+    "medusa-store/apps/storefront/src/modules/cart/templates/index.tsx": "89fa3137360b0bd066904c3a6da67949f521260d1d37166c213c5b9e99f89616",
+    "medusa-store/apps/storefront/src/modules/cart/templates/items.tsx": "fb56a6fc939b7b52453ca7d07817874f3820fa74e848c6047419e0efee9e781d",
+    "medusa-store/apps/storefront/src/modules/cart/templates/preview.tsx": "fcec831670342dd0c7b197ad61e9992b6a9298763becec810aa19fa51f5290f0",
+    "medusa-store/apps/storefront/src/modules/cart/templates/summary.tsx": "890d3aed728917e8492984c726296d26e6b83b809156117db2f5defef3981097",
+    "medusa-store/apps/storefront/src/modules/cart/components/cart-interactions/index.tsx": "512578495ca5b9bb61108939d4cbbf515a680434469cf34206e1d6aab8b413b6",
+    "medusa-store/apps/storefront/src/modules/cart/components/cart-item-select/index.tsx": "2725531feb11325e3585bf8e4bac2e2c176eb8e99068cd19ab0d9d4be07ae896",
+    "medusa-store/apps/storefront/src/modules/cart/components/cart-line/index.tsx": "bf67534d421efb71bd0cef6e75e113a1d18f5485126961a47019ad857a65ab81",
+    "medusa-store/apps/storefront/src/modules/cart/components/empty-cart-message/index.tsx": "76144210d8cb63456a11fc8ccb63ae01377af3edf27e3bbc879d9176eef9f420",
+    "medusa-store/apps/storefront/src/modules/cart/components/item/index.tsx": "f27a75af887c5398f95092943a93c1864f3b8a692d336507033af58bc6ab9549",
+    "medusa-store/apps/storefront/src/modules/cart/components/sign-in-prompt/index.tsx": "25c1b40350fb4c8c5df30d3f1ed4b2a389fe4a1c3273e0277c3eda5b74d03e2d",
+    "medusa-store/apps/storefront/src/modules/common/components/page-entry-scroll/index.tsx": "bd2691efecf6e93ad7bdd886055c5e8fdab69e960c1c6aede24e039e26379e6f"
   },
   "presentation_browser": {
     "scope": "isolated artificial fixture; original source oracle with Next navigation/image bridges; not full page acceptance",
@@ -475,7 +506,7 @@
   },
   "actions_browser": {
     "scope": "artificial isolated adapter and old source comparison; no live cart acceptance",
-    "fixture_ssr_setup_ms": 5075,
+    "fixture_ssr_setup_ms": 22536,
     "browser_navigation_timeout_ms": 15000,
     "comparisons": [
       {
@@ -677,6 +708,440 @@
     "cart_capacity_single_location": true,
     "checkout_false_disabled": true,
     "test_adapter_loading_error_inventory_success": true,
+    "hydration_errors": 0
+  },
+  "cart_browser": {
+    "scope": "isolated original CartTemplate/CartLine/Summary oracle; artificial command boundary, no Gin or full page acceptance",
+    "original_copy_and_css_preserved": true,
+    "comparisons": [
+      {
+        "case": "en-390-initial",
+        "identical_pixels": true,
+        "sha256": "3eb1c6613ef31b2682db1f495f6311359667d1ef845a1562f9467b2e875dab62"
+      },
+      {
+        "case": "en-390-pending",
+        "identical_pixels": true,
+        "sha256": "49fdeca0329a1f1f382551105cd3b143a79006de5df91680e2bf33b595b83a92"
+      },
+      {
+        "case": "en-390-quantity",
+        "identical_pixels": true,
+        "sha256": "64bb0264c9999dde1ddcdc83c2b60ec033e5ed79f52c6ff261f4b0bdc9fc5594"
+      },
+      {
+        "case": "en-390-update-error",
+        "identical_pixels": true,
+        "sha256": "dfe44512567a8965b128c6f310c34342b30f5fbb960d5fe46b5e11bc548c1313"
+      },
+      {
+        "case": "en-390-remove-error",
+        "identical_pixels": true,
+        "sha256": "43d8f66cfa368f32e47d6fa3e3313dc806475e1cefa3616f9dff64919897b99e"
+      },
+      {
+        "case": "en-390-invalid-input",
+        "identical_pixels": true,
+        "sha256": "f7e235bd6903d561e49f9705dea8eeca17e115e49df9ec6ccde82cf0adec40bd"
+      },
+      {
+        "case": "en-390-maximum",
+        "identical_pixels": true,
+        "sha256": "315fbb177ef01794f495b83a6dc3ca430e41f6ee1aa2c32ac84a84273c68ca25"
+      },
+      {
+        "case": "en-390-remove-pending",
+        "identical_pixels": true,
+        "sha256": "c3fc60700e708a1d3f98559392503ff01bb08032dc7b1342c76410697e12ea1c"
+      },
+      {
+        "case": "en-390-removed-empty",
+        "identical_pixels": true,
+        "sha256": "558faa9f65b31f2575203e207604fa8f45fc7641727df0be03cdb8a776aba7b7"
+      },
+      {
+        "case": "en-390-unavailable",
+        "identical_pixels": true,
+        "sha256": "5c350e726c6d482775b2d0730d121f95dfb52a91f1c0d7ac93ec764c9556aec9"
+      },
+      {
+        "case": "en-390-missing",
+        "identical_pixels": true,
+        "sha256": "4c98badb99083d1ae2f072cbdd987864fb329452db9160ad5c211753a6ba8bc8"
+      },
+      {
+        "case": "en-390-demo",
+        "identical_pixels": true,
+        "sha256": "3c1ee5cb72afc28cf142d6ca55d56540f5442db2f5e923a74135fd1c5fa854f1"
+      },
+      {
+        "case": "en-390-empty",
+        "identical_pixels": true,
+        "sha256": "558faa9f65b31f2575203e207604fa8f45fc7641727df0be03cdb8a776aba7b7"
+      },
+      {
+        "case": "en-390-totals",
+        "identical_pixels": true,
+        "sha256": "d3ed13aefe94f9bd7b3e9227cb1b997d264b2a6bf510e5482845f908e7426eb9"
+      },
+      {
+        "case": "en-768-initial",
+        "identical_pixels": true,
+        "sha256": "b15b7f7c3fa86c805d2884bd629ddd5e0831b98422d27622d27f38a8bbffcf90"
+      },
+      {
+        "case": "en-768-pending",
+        "identical_pixels": true,
+        "sha256": "dbfa0bd807e083c6ac5d5b32c6beb8c7a77f5498c98c835c9ffc5836eb7b544a"
+      },
+      {
+        "case": "en-768-quantity",
+        "identical_pixels": true,
+        "sha256": "520e6c13249213ca63dfdaf2a2832eeea65fcfc1162fd8ccb44c5e4a8ae177cf"
+      },
+      {
+        "case": "en-768-update-error",
+        "identical_pixels": true,
+        "sha256": "9e085d8f52fbbe0405665e8fd7b33c77e990db1e4ab00c6dbed2c5a3bc6b2be6"
+      },
+      {
+        "case": "en-768-remove-error",
+        "identical_pixels": true,
+        "sha256": "741b4205160f5f6f3943a1ec130e9a0a171b6419975e130b38012d560c54fa0a"
+      },
+      {
+        "case": "en-768-invalid-input",
+        "identical_pixels": true,
+        "sha256": "da6d8b038b328eaa6f53ef00f94a862696c7e5d42794d8661a6d320f8b4041ea"
+      },
+      {
+        "case": "en-768-maximum",
+        "identical_pixels": true,
+        "sha256": "1850466f31361929211bddf303394faaa4bb9aecc8a2040190bd4540dc7f63b2"
+      },
+      {
+        "case": "en-768-remove-pending",
+        "identical_pixels": true,
+        "sha256": "629e833a5a1997eb361c6dc1f111e9167776e9f9febf2bcab627743a27afafb7"
+      },
+      {
+        "case": "en-768-removed-empty",
+        "identical_pixels": true,
+        "sha256": "d825604311d5a83b20711fa4168831a7c2c47e9fc8cdd9f8686d46382578cdbd"
+      },
+      {
+        "case": "en-768-unavailable",
+        "identical_pixels": true,
+        "sha256": "f9eec5f97362ac0290d8aa506927315825240aa192099d9b350ef47bb3702431"
+      },
+      {
+        "case": "en-768-missing",
+        "identical_pixels": true,
+        "sha256": "09c40b1cbc90dcd617570fad0920d7f8ae8f72f117d982b6fe9133d1570d3de3"
+      },
+      {
+        "case": "en-768-demo",
+        "identical_pixels": true,
+        "sha256": "76a938712a3684a5cef49d6c0e727cd85c79e5c71cfeac56529bc0f631125039"
+      },
+      {
+        "case": "en-768-empty",
+        "identical_pixels": true,
+        "sha256": "d825604311d5a83b20711fa4168831a7c2c47e9fc8cdd9f8686d46382578cdbd"
+      },
+      {
+        "case": "en-768-totals",
+        "identical_pixels": true,
+        "sha256": "42f92f96895cfaf8fd4a52ecbdf8de9a786b82e345586bc731318fbb91e0575d"
+      },
+      {
+        "case": "en-1440-initial",
+        "identical_pixels": true,
+        "sha256": "7a20578b62755ddda0551d903abe0d0dee2ec673ff0e8e50397d7ef034bb0619"
+      },
+      {
+        "case": "en-1440-pending",
+        "identical_pixels": true,
+        "sha256": "a9669c2ebe91a28e96fb421686270039a702105deee419d503570cad41718855"
+      },
+      {
+        "case": "en-1440-quantity",
+        "identical_pixels": true,
+        "sha256": "8c0e580cdf852158bee9470c5c84a78c8bbf2b63ceea21f7fd4db8e4c3a4ca82"
+      },
+      {
+        "case": "en-1440-update-error",
+        "identical_pixels": true,
+        "sha256": "1318bf97cdf8a16e0d8e5a2cb5c57c4786a5d85269748e12bf5fa875b2601530"
+      },
+      {
+        "case": "en-1440-remove-error",
+        "identical_pixels": true,
+        "sha256": "10ae28e385bdd673084268370bb86618260e4f85c26c55adc3d0e55f4d50fd3a"
+      },
+      {
+        "case": "en-1440-invalid-input",
+        "identical_pixels": true,
+        "sha256": "42b9640da0cd758f1a2053a0c840d959c4aab68bc768b74c953e412f0027fda8"
+      },
+      {
+        "case": "en-1440-maximum",
+        "identical_pixels": true,
+        "sha256": "58e2ec9ea91274822166d25419e50684b8a5f4c344a62f46e090e65717d8208e"
+      },
+      {
+        "case": "en-1440-remove-pending",
+        "identical_pixels": true,
+        "sha256": "f9a4781d414b177473b4ddf298ba7249cac8c646fb47dee3d70e74243358e80f"
+      },
+      {
+        "case": "en-1440-removed-empty",
+        "identical_pixels": true,
+        "sha256": "4c675897b5a7363527dc53e252211c35b2aaa7e4406b4da95df4cadb5277a5b7"
+      },
+      {
+        "case": "en-1440-unavailable",
+        "identical_pixels": true,
+        "sha256": "6af294757252365b0c5ae3e8ef44afccd2b985cf21642ea04f4d54e548f412cc"
+      },
+      {
+        "case": "en-1440-missing",
+        "identical_pixels": true,
+        "sha256": "db846f3ee2e2e336d4fc88c8364aac7febadaa54edefefa88c16b6af96bcb1ce"
+      },
+      {
+        "case": "en-1440-demo",
+        "identical_pixels": true,
+        "sha256": "e88acf868664ba9c2e66621a7adb165ef83840f175e2275a5afe17b76b6b3183"
+      },
+      {
+        "case": "en-1440-empty",
+        "identical_pixels": true,
+        "sha256": "4c675897b5a7363527dc53e252211c35b2aaa7e4406b4da95df4cadb5277a5b7"
+      },
+      {
+        "case": "en-1440-totals",
+        "identical_pixels": true,
+        "sha256": "3aca2cd2537d586eadc85b3db13613cfcde0cab6523870633c5b515bff5f9832"
+      },
+      {
+        "case": "zh-390-initial",
+        "identical_pixels": true,
+        "sha256": "c09309b4cf6dd627facb9059fabec04ee5c445f7dd9b100a2ff86c24af166ab2"
+      },
+      {
+        "case": "zh-390-pending",
+        "identical_pixels": true,
+        "sha256": "f3662a1b1040694cc60d3c6b83459a4a93e770608d1b489037110f703dbf68d4"
+      },
+      {
+        "case": "zh-390-quantity",
+        "identical_pixels": true,
+        "sha256": "394d865835fee1d8ff3b289df95ffea55c557530767601fe8c71531bf97e814e"
+      },
+      {
+        "case": "zh-390-update-error",
+        "identical_pixels": true,
+        "sha256": "443f9eba733a9a809d27b09aea648803213cc66be94a75871e3169a6d99b2af8"
+      },
+      {
+        "case": "zh-390-remove-error",
+        "identical_pixels": true,
+        "sha256": "56a0e6e0827d334a0c31de7d53867f5e06d2f1b6ada5a2e9f52a97310be7a174"
+      },
+      {
+        "case": "zh-390-invalid-input",
+        "identical_pixels": true,
+        "sha256": "01d0c634b5f867843f1b9e8cff2f6767484a21255419797c2ebe7e28ec775eae"
+      },
+      {
+        "case": "zh-390-maximum",
+        "identical_pixels": true,
+        "sha256": "ee7249412bc2093984614b1c06787a4e7fc44f897039f0d557ed453c15232664"
+      },
+      {
+        "case": "zh-390-remove-pending",
+        "identical_pixels": true,
+        "sha256": "df72a74948fe2b83d706785736cdfd56f2973aba83bebe3f2406af66b09f1f05"
+      },
+      {
+        "case": "zh-390-removed-empty",
+        "identical_pixels": true,
+        "sha256": "fc20584be9ffa8c40c45a9717812c07d102ab912818c7a03f0536e003b746602"
+      },
+      {
+        "case": "zh-390-unavailable",
+        "identical_pixels": true,
+        "sha256": "87ed6d5efdd9270e99cdc6f8c338314debcd436cd98542553c5b885a66efe742"
+      },
+      {
+        "case": "zh-390-missing",
+        "identical_pixels": true,
+        "sha256": "cdb791b6454887720013d410b3025841a18aac76e8bd8f247d2a5a98c61f2e43"
+      },
+      {
+        "case": "zh-390-demo",
+        "identical_pixels": true,
+        "sha256": "876f9a26d770f10305c67bf2b98faa3c113aa07747ece3f29080a9bea1357daf"
+      },
+      {
+        "case": "zh-390-empty",
+        "identical_pixels": true,
+        "sha256": "fc20584be9ffa8c40c45a9717812c07d102ab912818c7a03f0536e003b746602"
+      },
+      {
+        "case": "zh-390-totals",
+        "identical_pixels": true,
+        "sha256": "d9e55df04dd7703165fa2f6c7e8e9deb9762bfbfc860f9eef4a76b2263af7f7d"
+      },
+      {
+        "case": "zh-768-initial",
+        "identical_pixels": true,
+        "sha256": "4a201b320626b1c1223ff703fbc06b1131955e7e0d0ddd7703c53041802940bd"
+      },
+      {
+        "case": "zh-768-pending",
+        "identical_pixels": true,
+        "sha256": "4f3686f1eb8e4ba0f65e46b97b88833b6f9a85c35bd4130b6a0931c22a69893b"
+      },
+      {
+        "case": "zh-768-quantity",
+        "identical_pixels": true,
+        "sha256": "fcef1b4f3616f7a6a49b1dd61b8a5c1db2c9d25a29819ec73e10f26272f5778b"
+      },
+      {
+        "case": "zh-768-update-error",
+        "identical_pixels": true,
+        "sha256": "2f0bfcf45732d950630b7d145b6175496590d23a1fbe184b35a3ee8bf5538668"
+      },
+      {
+        "case": "zh-768-remove-error",
+        "identical_pixels": true,
+        "sha256": "f91526e120732e80cbb3bf17a875000dd5c600dbebead6d9cd883cb87b9149f4"
+      },
+      {
+        "case": "zh-768-invalid-input",
+        "identical_pixels": true,
+        "sha256": "635cfc0227d51650eef75bc852d453deb845296ff13198cbc55ad3045bac9c71"
+      },
+      {
+        "case": "zh-768-maximum",
+        "identical_pixels": true,
+        "sha256": "6b90a14feeb8fadf5334aed7bc0cf0561a9de35a0c4293deaf42c9b53d4404d7"
+      },
+      {
+        "case": "zh-768-remove-pending",
+        "identical_pixels": true,
+        "sha256": "41c5a769aaffe14cade6e001fe1e09ad4b5fdb1e6a9c3c64038083b310a2923d"
+      },
+      {
+        "case": "zh-768-removed-empty",
+        "identical_pixels": true,
+        "sha256": "ba398a40fce3f43cf021ca47285aea1c8a45742f12f90e92083f538248444643"
+      },
+      {
+        "case": "zh-768-unavailable",
+        "identical_pixels": true,
+        "sha256": "739d7f0f1100d5f1d78e0dca08398b0ae1716884705c2dfd5ebde64cf5e99343"
+      },
+      {
+        "case": "zh-768-missing",
+        "identical_pixels": true,
+        "sha256": "718707d4eb1206c82cfc935f448992546b40457e3189125c2f621350435e6998"
+      },
+      {
+        "case": "zh-768-demo",
+        "identical_pixels": true,
+        "sha256": "bad44dbb75361217982551eda7e1c43b8b5702c2e825b510da871ba26d250e18"
+      },
+      {
+        "case": "zh-768-empty",
+        "identical_pixels": true,
+        "sha256": "ba398a40fce3f43cf021ca47285aea1c8a45742f12f90e92083f538248444643"
+      },
+      {
+        "case": "zh-768-totals",
+        "identical_pixels": true,
+        "sha256": "189e1a5f9ad84b5e4be33ed3671f7e5a9d3fd926e5ee3a6e42093ac6d54eaf28"
+      },
+      {
+        "case": "zh-1440-initial",
+        "identical_pixels": true,
+        "sha256": "e1ab84f58f74b89cdc10a1eb5c8a51ec1a3d45bd7d9d38118a17630b803b3604"
+      },
+      {
+        "case": "zh-1440-pending",
+        "identical_pixels": true,
+        "sha256": "20f8faeac36a8251d27d11dcfa9fc57bb838b5999afb348e9b388864da4b5332"
+      },
+      {
+        "case": "zh-1440-quantity",
+        "identical_pixels": true,
+        "sha256": "c3b338ea73469f2c8b7be7d77ec0d70c2c2ec90e5fa16db026043c0666ca91c9"
+      },
+      {
+        "case": "zh-1440-update-error",
+        "identical_pixels": true,
+        "sha256": "1db15b4b7955c12c2ed39f17f05328af7bc4373881d8793b8ad58f389bcab8fd"
+      },
+      {
+        "case": "zh-1440-remove-error",
+        "identical_pixels": true,
+        "sha256": "34fa5b9be4091ec4839229d2ff35c94487d6317ec525cf5ce13f4c654f7ee75f"
+      },
+      {
+        "case": "zh-1440-invalid-input",
+        "identical_pixels": true,
+        "sha256": "43efd9538ab24a03c0f07873becd75414748f5e920231658d7300b9cc2feb0f3"
+      },
+      {
+        "case": "zh-1440-maximum",
+        "identical_pixels": true,
+        "sha256": "965e59338590707aa72b2e1832a42976fc26c98a67f57f11009b37f344fdd05d"
+      },
+      {
+        "case": "zh-1440-remove-pending",
+        "identical_pixels": true,
+        "sha256": "e6b07265a9cb61dba548b1980f5ffd578702b446dcecfe2d1efa242b06c8ecff"
+      },
+      {
+        "case": "zh-1440-removed-empty",
+        "identical_pixels": true,
+        "sha256": "0c08b7db6fd8419be20a229fca0c374cf74ca3f0ca31e34e5c4484ee47d17247"
+      },
+      {
+        "case": "zh-1440-unavailable",
+        "identical_pixels": true,
+        "sha256": "9f84fded4aa15650a44bfd9fcc402ada575c5d9dc34bfe43a3bd2424406c7d14"
+      },
+      {
+        "case": "zh-1440-missing",
+        "identical_pixels": true,
+        "sha256": "60e6c28990b20c5b8f9b1a7c39be7dd51da25eb6191046a8b2d6cea93c31a0e2"
+      },
+      {
+        "case": "zh-1440-demo",
+        "identical_pixels": true,
+        "sha256": "d3b41b3764ed2ccf78e9014bbf128abedfa42120911faea5db6e25518c739099"
+      },
+      {
+        "case": "zh-1440-empty",
+        "identical_pixels": true,
+        "sha256": "0c08b7db6fd8419be20a229fca0c374cf74ca3f0ca31e34e5c4484ee47d17247"
+      },
+      {
+        "case": "zh-1440-totals",
+        "identical_pixels": true,
+        "sha256": "c73ff993748a931a3fb2010b93ae770a3bf6b82c7646f2788ebe17542949a196"
+      }
+    ],
+    "quantity_pending_and_failure": true,
+    "enter_input_and_maximum": true,
+    "remove_pending_failure_and_empty": true,
+    "saved_shipping_discount_and_signed_in_layout": true,
+    "closed_checkout": true,
+    "readonly_controls": true,
+    "exact_large_amount": true,
     "hydration_errors": 0
   },
   "public_assets_equal_to_original_sha256": {

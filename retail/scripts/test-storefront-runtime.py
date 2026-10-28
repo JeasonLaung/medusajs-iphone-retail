@@ -36,7 +36,7 @@ def main():
             raise RuntimeError('Astro build or unit checks failed; inspect ignored output')
     tap=checked.stdout.decode('utf-8')
     observed={key:int(value) for key,value in re.findall(r'^# (tests|pass|fail|cancelled|skipped|todo) (\d+)\s*$',tap,re.M)}
-    if observed!={'tests':40,'pass':40,'fail':0,'cancelled':0,'skipped':0,'todo':0}:
+    if observed!={'tests':43,'pass':43,'fail':0,'cancelled':0,'skipped':0,'todo':0}:
         raise RuntimeError('Astro unit coverage differs; no partial success report written')
     tested=subprocess.run([str(node),'tests/runtime.integration.mjs'],cwd=APP,env=env,capture_output=True,timeout=90)
     markers=[line.split('ASTRO_RUNTIME_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if line.startswith('ASTRO_RUNTIME_REHEARSAL ')]
@@ -58,6 +58,11 @@ def main():
     if actions.returncode or len(actions_markers)!=1:
         (ROOT/'logs/gin-migration/astro-actions-browser-result.log').write_bytes(actions.stdout+actions.stderr)
         raise RuntimeError('Astro product actions browser comparison failed; inspect ignored output')
+    cart=subprocess.run([str(node),'tests/cart.browser.mjs'],cwd=APP,env=env,capture_output=True,timeout=420)
+    cart_markers=[line.split('ASTRO_CART_BROWSER ',1)[1] for line in cart.stdout.decode('utf-8').splitlines() if line.startswith('ASTRO_CART_BROWSER ')]
+    if cart.returncode or len(cart_markers)!=1:
+        (ROOT/'logs/gin-migration/astro-cart-browser-result.log').write_bytes(cart.stdout+cart.stderr)
+        raise RuntimeError('Astro original cart browser comparison failed; inspect ignored output')
     audit=subprocess.run([npm,'audit','--json'],cwd=APP,env=env,capture_output=True,timeout=60)
     try:
         counts=json.loads(audit.stdout)['metadata']['vulnerabilities']
@@ -84,6 +89,8 @@ def main():
         'lib/hooks/use-in-view.tsx','lib/util/iphone-thumbnails.json','lib/util/get-product-price.ts',
         'lib/util/get-apple-launch-price.ts','lib/util/get-percentage-diff.ts','lib/util/money.ts',
         'lib/util/isEmpty.ts','lib/util/cart-inventory.ts','modules/products/components/color-swatches/index.tsx']]
+    files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (source_root/'modules/cart').rglob('*') if p.is_file()]
+    files += ['medusa-store/apps/storefront/src/modules/common/components/page-entry-scroll/index.tsx']
     public_assets={}
     for path in (APP/'public').rglob('*'):
         if not path.is_file():continue
@@ -95,6 +102,7 @@ def main():
     report={'format_version':1,'scope':'Astro Node SSR regions foundation, source-level product adapter to owned Gin, and selection browser check in a separate artificial test root; no business page acceptance','node_version':version,'unit_tests_passed':observed['pass'],'type_check_passed':True,'production_build_passed':True,'runtime':json.loads(markers[0]),'selection_browser':json.loads(browser_markers[0]),'audit_vulnerabilities':counts,'real_application_resources_used':False,'full_storefront_accepted':False,'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
     report['presentation_browser']=json.loads(presentation_markers[0])
     report['actions_browser']=json.loads(actions_markers[0])
+    report['cart_browser']=json.loads(cart_markers[0])
     report['public_assets_equal_to_original_sha256']=public_assets
     (ROOT/'docs/migration/astro-runtime-report.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'astro_runtime':'passed','unit_tests':observed['pass'],'audit_vulnerabilities':0}))
