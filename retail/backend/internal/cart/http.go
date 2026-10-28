@@ -63,6 +63,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/cart", h.Current)
 	private.GET("/carts/:id", h.Detail)
 	private.GET("/carts/:id/amounts", h.Amounts)
+	private.GET("/carts/:id/view", h.View)
 	private.POST("/carts/:id/line-items", h.AddItem)
 	private.POST("/carts/:id/line-items/:line", h.SetItem)
 }
@@ -338,20 +339,24 @@ func (h *HTTPHandler) Create(c *gin.Context) {
 }
 
 func (h *HTTPHandler) Detail(c *gin.Context) {
-	h.detail(c, false, false)
+	h.detail(c, "detail", false)
 }
 
 // Current derives the ID from server-resolved possession and still verifies
 // current SQL ownership. No readable cart ID cookie or browser storage needed.
 func (h *HTTPHandler) Current(c *gin.Context) {
-	h.detail(c, false, true)
+	h.detail(c, "detail", true)
 }
 
 func (h *HTTPHandler) Amounts(c *gin.Context) {
-	h.detail(c, true, false)
+	h.detail(c, "amounts", false)
 }
 
-func (h *HTTPHandler) detail(c *gin.Context, amounts, current bool) {
+func (h *HTTPHandler) View(c *gin.Context) {
+	h.detail(c, "view", false)
+}
+
+func (h *HTTPHandler) detail(c *gin.Context, mode string, current bool) {
 	if c.Request.URL.RawQuery != "" || !current && !idPattern.MatchString(c.Param("id")) {
 		cartHTTPError(c, ErrInput)
 		return
@@ -375,7 +380,16 @@ func (h *HTTPHandler) detail(c *gin.Context, amounts, current bool) {
 		cartHTTPError(c, ErrDenied)
 		return
 	}
-	if amounts {
+	if mode != "detail" {
+		if mode == "view" {
+			result, err := ReadView(ctx, h.db, h.store, ref)
+			if err != nil {
+				cartHTTPError(c, err)
+				return
+			}
+			c.JSON(200, result)
+			return
+		}
 		result, err := ReadAmounts(ctx, h.db, h.store, ref)
 		if err != nil {
 			cartHTTPError(c, err)

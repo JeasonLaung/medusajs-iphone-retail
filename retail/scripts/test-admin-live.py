@@ -211,6 +211,7 @@ def main():
                                          'version_and_stock_rejection': True, 'cookie_ttl_unchanged': True,
                                          'line_items': 0, 'saved_deleted_lines': 1, 'operation_receipts': 5,
                                          'absolute_quantity_and_removal': True,
+                                         'private_saved_presentation': True,
                                          'coordinator_lost_committed_response_reload': True,
                                          'coordinator_noncredential_intent_cleared': True, 'inventory_reserved': False,
                                          'production_page_mounted': False, 'full_cart_accepted': False},

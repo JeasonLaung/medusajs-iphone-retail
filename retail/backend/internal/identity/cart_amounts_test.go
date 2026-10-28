@@ -102,6 +102,40 @@ func checkCartAmounts(t *testing.T, ctx context.Context, db *gorm.DB, sessions *
 	if len(r.Lines) != 1 || r.Lines[0].Quantity != "2" || r.Lines[0].UnitPrice != "100" || r.Lines[0].VariantID == nil || *r.Lines[0].VariantID != "retired-sku" || r.Lines[0].Totals["total"] != "225" || len(r.ShippingMethods) != 1 || r.ShippingMethods[0].Totals["total"] != "10" {
 		t.Fatal("persisted line, tax or shipping semantics differ")
 	}
+	viewPath := "/api/store/carts/" + ref.CartID + "/view"
+	exec(`UPDATE cart_line_items SET product_title='Saved product',product_handle='saved-handle',thumbnail='https://example.com/saved.webp',variant_title='128 GB / S',variant_option_values='{"Storage":"128 GB","Grade":"S"}' WHERE id='amount-cart-line'`)
+	var view cart.View
+	if json.Unmarshal(call(viewPath, 200, true), &view) != nil || len(view.Items) != 1 || view.Items[0].ID != "amount-cart-line" || view.Items[0].Title != "Saved title" || view.Items[0].ProductTitle == nil || *view.Items[0].ProductTitle != "Saved product" || view.Items[0].OptionValues["Grade"] != "S" || view.Amounts.Totals["total"] != "235" || view.Amounts.Version != "1" {
+		t.Fatal("private saved cart presentation differs")
+	}
+	call(viewPath, 401, false)
+	call(viewPath+"?fields=*", 400, true)
+	call("/api/store/carts/legacy-cart/view", 404, true)
+	// A committed change between the amount read and display read must not
+	// mix old amounts and new presentation in the same response.
+	displayChanged := false
+	if db.Callback().Row().After("gorm:row").Register("owned.cart-view-snapshot", func(query *gorm.DB) {
+		if query.Statement.Table == "cart_line_items" && !displayChanged {
+			displayChanged = true
+			exec(`UPDATE cart_line_items SET title='Changed title' WHERE id='amount-cart-line'`)
+		}
+	}) != nil {
+		t.Fatal("cart view snapshot observer unavailable")
+	}
+	inFlightView, viewErr := cart.ReadView(ctx, db, "shop", ref)
+	if db.Callback().Row().Remove("owned.cart-view-snapshot") != nil {
+		t.Fatal("cart view snapshot observer cleanup failed")
+	}
+	if viewErr != nil || !displayChanged || len(inFlightView.Items) != 1 || inFlightView.Items[0].Title != "Saved title" {
+		t.Fatal("cart view mixed concurrent display snapshot")
+	}
+	exec(`UPDATE cart_line_items SET title='Saved title',variant_option_values='[]' WHERE id='amount-cart-line'`)
+	call(viewPath, 503, true)
+	exec(`UPDATE cart_line_items SET variant_option_values=NULL WHERE id='amount-cart-line'`)
+	view = cart.View{}
+	if json.Unmarshal(call(viewPath, 200, true), &view) != nil || view.Items[0].OptionValues == nil || len(view.Items[0].OptionValues) != 0 {
+		t.Fatal("nullable saved options not preserved")
+	}
 	// Raw values outrun DECIMAL(38,18); do not silently quantize to SQL scale.
 	exec(`UPDATE cart_line_items SET unit_price=9007199254740993,raw_unit_price='{"value":"9007199254740993.000000000000000000001","precision":38}' WHERE id='amount-cart-line'`)
 	check("22517998136852467.5000000000000000000025")
@@ -161,8 +195,9 @@ func checkCartAmounts(t *testing.T, ctx context.Context, db *gorm.DB, sessions *
 	call("/api/store/carts/legacy-cart/amounts", 404, true)
 	exec(`UPDATE cart_ownership SET generation=REPEAT('d',64) WHERE cart_id=?`, ref.CartID)
 	call(path, 404, true)
+	call(viewPath, 404, true)
 	if sessions.RevokeCart(ctx, issued.Token) != nil {
 		t.Fatal("owned amount credential cleanup failed")
 	}
-	t.Log(`CART_AMOUNTS_REHEARSAL {"real_gin_mysql_redis":true,"empty_and_persisted_snapshots":true,"exact_raw_beyond_sql_scale":true,"tax_discount_shipping":true,"deleted_relations_filtered":true,"missing_catalog_variant_retained":true,"malformed_raw_and_currency_failure_closed":true,"line_and_relation_limits_reject_whole_result":true,"concurrent_tax_snapshot_consistent":true,"read_only_fingerprints":true,"current_authority":true,"private_projection":true,"pricing_recalculated":false,"checkout_integrated":false}`)
+	t.Log(`CART_AMOUNTS_REHEARSAL {"real_gin_mysql_redis":true,"empty_and_persisted_snapshots":true,"exact_raw_beyond_sql_scale":true,"tax_discount_shipping":true,"deleted_relations_filtered":true,"missing_catalog_variant_retained":true,"malformed_raw_and_currency_failure_closed":true,"line_and_relation_limits_reject_whole_result":true,"concurrent_tax_snapshot_consistent":true,"read_only_fingerprints":true,"current_authority":true,"private_projection":true,"saved_presentation_snapshot":true,"concurrent_presentation_snapshot":true,"pricing_recalculated":false,"checkout_integrated":false}`)
 }

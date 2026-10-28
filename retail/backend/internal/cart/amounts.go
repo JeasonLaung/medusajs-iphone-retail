@@ -44,13 +44,25 @@ type AmountDetail struct {
 // single snapshot. Callers must resolve the possession cookie with Redis first.
 // Historical source IDs/customer references do not confer this authority.
 func ReadAmounts(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference) (AmountDetail, error) {
+	var result AmountDetail
+	err := readCartSnapshot(ctx, db, store, ref, func(tx *gorm.DB, cart Snapshot) error {
+		var err error
+		result, err = assembleAmounts(tx, cart)
+		return err
+	})
+	if err != nil {
+		return AmountDetail{}, err
+	}
+	return result, nil
+}
+
+func readCartSnapshot(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, read func(*gorm.DB, Snapshot) error) error {
 	if db == nil || db.Statement == nil || !refOK(store, ref) {
-		return AmountDetail{}, ErrDenied
+		return ErrDenied
 	}
 	if _, nested := db.Statement.ConnPool.(gorm.TxCommitter); nested {
-		return AmountDetail{}, ErrInput
+		return ErrInput
 	}
-	var result AmountDetail
 	err := db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		if err := commandReady(ctx, tx, "cart.access"); err != nil {
 			return err
@@ -63,13 +75,12 @@ func ReadAmounts(ctx context.Context, db *gorm.DB, store string, ref sessionstor
 		if err != nil {
 			return err
 		}
-		result, err = assembleAmounts(tx, cart)
-		return err
+		return read(tx, cart)
 	}, &sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true})
 	if err != nil {
-		return AmountDetail{}, sanitize(err)
+		return sanitize(err)
 	}
-	return result, nil
+	return nil
 }
 
 // The caller owns the transaction and current cart authorization. All SQL

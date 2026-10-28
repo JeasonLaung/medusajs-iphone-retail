@@ -270,3 +270,22 @@ test('absolute item quantity and zero removal use strict receipts and never acce
  await error(client(async()=>reply({},409)).setItem(cart.id,'line_one',command,{csrfToken:nextCSRF}),'conflict',409,false)
  await error(client(async()=>{throw Error('offline')}).setItem(cart.id,'line_one',command,{csrfToken:nextCSRF}),'unavailable',null,true)
 })
+
+test('saved cart presentation is private and complete, paired with one exact amount snapshot',async()=>{
+ const item={id:'line_new',title:'Saved title',product_title:'Saved product',product_handle:'iphone-retired',thumbnail:null,variant_title:null,option_values:{Storage:'128 GB',Grade:'S'}}
+ const body={amounts:amountFixture(),items:[item]}
+ const c=client(async(url,init)=>{
+  assert.equal(url,'/api/store/carts/cart_new/view');assert.equal(init!.method,'GET');assert.equal(init!.credentials,'same-origin')
+  return reply(body)
+ })
+ assert.deepEqual(await c.retrieveView(cart.id),body)
+ for(const status of [401,404])assert.equal(await client(async()=>reply({},status)).retrieveView(cart.id),null)
+ await error(client(async()=>reply({},503)).retrieveView(cart.id),'unavailable',503,false)
+ for(const invalid of [
+  {...body,metadata:{}},{...body,items:[]},{...body,items:[item,item]},
+  {...body,items:[{...item,id:'other'}]},{...body,items:[{...item,customer_id:'private'}]},
+  {...body,items:[{...item,title:'bad\nlabel'}]},{...body,items:[{...item,option_values:[]}]},
+  {...body,items:[{...item,option_values:{Grade:2}}]},
+  {...body,amounts:{...body.amounts,checkout:true}},
+ ])await error(client(async()=>reply(invalid)).retrieveView(cart.id),'protocol',null,false)
+})

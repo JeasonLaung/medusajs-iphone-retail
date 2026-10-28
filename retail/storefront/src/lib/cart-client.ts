@@ -15,6 +15,8 @@ export type CartAmounts = {
  shipping_methods: {id:string;name:string;amount:string;is_tax_inclusive:boolean;totals:Record<string,string>}[]
  pricing_recalculated: false; checkout: false
 }
+export type CartViewItem = {id:string;title:string;product_title:string|null;product_handle:string|null;thumbnail:string|null;variant_title:string|null;option_values:Record<string,string>}
+export type CartView = {amounts:CartAmounts;items:CartViewItem[]}
 export type CartErrorKind = 'input' | 'session' | 'csrf' | 'conflict' | 'region' | 'item' | 'rate_limit' | 'unavailable' | 'protocol'
 
 export class CartError extends Error {
@@ -267,6 +269,32 @@ export class CartClient {
   catch (err) { if (err instanceof CartError && (err.status === 401 || err.status === 404)) return null; throw err }
   if (response.status !== 200) throw protocol()
   return amounts(response.value,id)
+ }
+
+ async retrieveView(id:string):Promise<CartView|null> {
+  if(!matches(id,idPattern))throw new CartError('input')
+  let response:{status:number;value:unknown}
+  try{response=await this.request(`/api/store/carts/${encodeURIComponent(id)}/view`,'GET',undefined,{},4*1024*1024)}
+  catch(err){if(err instanceof CartError&&(err.status===401||err.status===404))return null;throw err}
+  const root=record(response.value);keys(root,['amounts','items'])
+  const detail=amounts(root.amounts,id)
+  if(response.status!==200||!Array.isArray(root.items)||root.items.length!==detail.lines.length)throw protocol()
+  const wanted=new Set(detail.lines.map(line=>line.id))
+  const savedText=(v:unknown):string=>{
+   if(typeof v!=='string'||new TextEncoder().encode(v).length>4096||/[\x00-\x1f\x7f]/.test(v))throw protocol()
+   return v
+  }
+  const nullable=(v:unknown)=>v===null?null:savedText(v)
+  const items=root.items.map(value=>{
+   const row=record(value);keys(row,['id','title','product_title','product_handle','thumbnail','variant_title','option_values'])
+   const lineID=text(row.id,idPattern)
+   if(!wanted.delete(lineID))throw protocol()
+   const options=record(row.option_values)
+   if(Object.keys(options).length>64)throw protocol()
+   const option_values=Object.fromEntries(Object.entries(options).map(([k,v])=>[savedText(k),savedText(v)]))
+   return {id:lineID,title:savedText(row.title),product_title:nullable(row.product_title),product_handle:nullable(row.product_handle),thumbnail:nullable(row.thumbnail),variant_title:nullable(row.variant_title),option_values}
+  })
+  return {amounts:detail,items}
  }
 }
 
