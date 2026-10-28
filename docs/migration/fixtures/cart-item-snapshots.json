@@ -1,0 +1,303 @@
+{
+  "format_version": 1,
+  "scope": "Artificial pure original item preparation; not SQL or full refresh acceptance",
+  "source_file": "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/utils/prepare-line-item-data.js",
+  "source_sha256": "d5355936173ca503e98abdf383e2428162d7743a83a663b80ba13dd8b75c8b94",
+  "cases": [
+    {
+      "name": "null-fallback",
+      "input": {
+        "item": {
+          "quantity": 1,
+          "title": "Saved title",
+          "requires_shipping": true,
+          "is_discountable": false,
+          "variant_option_values": {
+            "Saved": "Option"
+          },
+          "product_id": "old-product",
+          "product_title": null,
+          "product_description": null,
+          "product_subtitle": "",
+          "thumbnail": "",
+          "variant_title": null,
+          "variant_sku": null,
+          "variant_barcode": "",
+          "metadata": null
+        },
+        "variant": {
+          "id": "v",
+          "title": "Current variant",
+          "sku": "000123",
+          "barcode": "000456",
+          "product": {
+            "id": "product",
+            "title": "Current title",
+            "subtitle": "Current subtitle",
+            "description": "Current description",
+            "handle": "current-handle",
+            "thumbnail": "current-image",
+            "is_giftcard": true,
+            "discountable": true
+          }
+        }
+      },
+      "output": {
+        "quantity": 1,
+        "title": "Saved title",
+        "subtitle": "Current variant",
+        "thumbnail": "",
+        "product_id": "product",
+        "product_title": "Current title",
+        "product_description": "Current description",
+        "product_subtitle": "",
+        "product_type": null,
+        "product_type_id": null,
+        "product_collection": null,
+        "product_handle": "current-handle",
+        "variant_id": "v",
+        "variant_sku": "000123",
+        "variant_barcode": "",
+        "variant_title": "Current variant",
+        "variant_option_values": {
+          "Saved": "Option"
+        },
+        "is_discountable": false,
+        "is_giftcard": true,
+        "requires_shipping": true,
+        "is_tax_inclusive": false,
+        "metadata": {}
+      }
+    },
+    {
+      "name": "saved-fields",
+      "input": {
+        "item": {
+          "quantity": 1,
+          "title": "Saved title",
+          "requires_shipping": true,
+          "is_discountable": false,
+          "variant_option_values": {
+            "Saved": "Option"
+          },
+          "product_title": "Historical title",
+          "product_description": "Historical description",
+          "product_handle": "historical-handle",
+          "metadata": {
+            "saved": true
+          }
+        },
+        "variant": {
+          "id": "v",
+          "title": "Current variant",
+          "sku": "000123",
+          "barcode": "000456",
+          "product": {
+            "id": "product",
+            "title": "Current title",
+            "subtitle": "Current subtitle",
+            "description": "Current description",
+            "handle": "current-handle",
+            "thumbnail": "current-image",
+            "is_giftcard": true,
+            "discountable": true
+          }
+        }
+      },
+      "output": {
+        "quantity": 1,
+        "title": "Saved title",
+        "subtitle": "Current variant",
+        "thumbnail": "current-image",
+        "product_id": "product",
+        "product_title": "Historical title",
+        "product_description": "Historical description",
+        "product_subtitle": "Current subtitle",
+        "product_type": null,
+        "product_type_id": null,
+        "product_collection": null,
+        "product_handle": "historical-handle",
+        "variant_id": "v",
+        "variant_sku": "000123",
+        "variant_barcode": "000456",
+        "variant_title": "Current variant",
+        "variant_option_values": {
+          "Saved": "Option"
+        },
+        "is_discountable": false,
+        "is_giftcard": true,
+        "requires_shipping": true,
+        "is_tax_inclusive": false,
+        "metadata": {
+          "saved": true
+        }
+      }
+    },
+    {
+      "name": "manual",
+      "input": {
+        "item": {
+          "quantity": 1,
+          "title": "Saved title",
+          "requires_shipping": true,
+          "is_discountable": false,
+          "variant_option_values": {
+            "Saved": "Option"
+          },
+          "is_giftcard": true,
+          "product_id": "historical-product",
+          "metadata": {
+            "manual": true
+          }
+        }
+      },
+      "output": {
+        "quantity": 1,
+        "title": "Saved title",
+        "product_id": "historical-product",
+        "product_type": null,
+        "product_type_id": null,
+        "product_collection": null,
+        "variant_option_values": {
+          "Saved": "Option"
+        },
+        "is_discountable": false,
+        "is_giftcard": false,
+        "requires_shipping": true,
+        "is_tax_inclusive": false,
+        "metadata": {
+          "manual": true
+        }
+      }
+    },
+    {
+      "name": "zero-compare",
+      "input": {
+        "item": {
+          "quantity": 1,
+          "title": "Saved title",
+          "requires_shipping": true,
+          "is_discountable": false,
+          "variant_option_values": {
+            "Saved": "Option"
+          },
+          "compare_at_unit_price": 0
+        },
+        "variant": {
+          "id": "v",
+          "title": "Current variant",
+          "sku": "000123",
+          "barcode": "000456",
+          "product": {
+            "id": "product",
+            "title": "Current title",
+            "subtitle": "Current subtitle",
+            "description": "Current description",
+            "handle": "current-handle",
+            "thumbnail": "current-image",
+            "is_giftcard": true,
+            "discountable": true
+          },
+          "calculated_price": {
+            "calculated_amount": 60,
+            "original_amount": 100,
+            "calculated_price": {
+              "price_list_type": "sale"
+            }
+          }
+        }
+      },
+      "output": {
+        "quantity": 1,
+        "title": "Saved title",
+        "subtitle": "Current variant",
+        "thumbnail": "current-image",
+        "product_id": "product",
+        "product_title": "Current title",
+        "product_description": "Current description",
+        "product_subtitle": "Current subtitle",
+        "product_type": null,
+        "product_type_id": null,
+        "product_collection": null,
+        "product_handle": "current-handle",
+        "variant_id": "v",
+        "variant_sku": "000123",
+        "variant_barcode": "000456",
+        "variant_title": "Current variant",
+        "variant_option_values": {
+          "Saved": "Option"
+        },
+        "is_discountable": false,
+        "is_giftcard": true,
+        "requires_shipping": true,
+        "compare_at_unit_price": 0,
+        "is_tax_inclusive": false,
+        "metadata": {}
+      }
+    },
+    {
+      "name": "sale-fallback",
+      "input": {
+        "item": {
+          "quantity": 1,
+          "title": "Saved title",
+          "requires_shipping": true,
+          "is_discountable": false,
+          "variant_option_values": {
+            "Saved": "Option"
+          }
+        },
+        "variant": {
+          "id": "v",
+          "title": "Current variant",
+          "sku": "000123",
+          "barcode": "000456",
+          "product": {
+            "id": "product",
+            "title": "Current title",
+            "subtitle": "Current subtitle",
+            "description": "Current description",
+            "handle": "current-handle",
+            "thumbnail": "current-image",
+            "is_giftcard": true,
+            "discountable": true
+          },
+          "calculated_price": {
+            "calculated_amount": 60,
+            "original_amount": 100,
+            "calculated_price": {
+              "price_list_type": "sale"
+            }
+          }
+        }
+      },
+      "output": {
+        "quantity": 1,
+        "title": "Saved title",
+        "subtitle": "Current variant",
+        "thumbnail": "current-image",
+        "product_id": "product",
+        "product_title": "Current title",
+        "product_description": "Current description",
+        "product_subtitle": "Current subtitle",
+        "product_type": null,
+        "product_type_id": null,
+        "product_collection": null,
+        "product_handle": "current-handle",
+        "variant_id": "v",
+        "variant_sku": "000123",
+        "variant_barcode": "000456",
+        "variant_title": "Current variant",
+        "variant_option_values": {
+          "Saved": "Option"
+        },
+        "is_discountable": false,
+        "is_giftcard": true,
+        "requires_shipping": true,
+        "compare_at_unit_price": 100,
+        "is_tax_inclusive": false,
+        "metadata": {}
+      }
+    }
+  ]
+}

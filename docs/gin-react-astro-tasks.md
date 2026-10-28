@@ -406,3 +406,5 @@
 2026-10-28 购物车税行补充：[持有者与版本锁内的system税行替换](migration/cart-tax-refresh.md)将已保存地区/地址/商品/配送输入接到税率读取，保留整车软删除替换、精确小数及空结果清理。组件参与调用者事务，版本/幂等及完整价格/促销/配送编排仍待完成，不开放独立HTTP或checkout；实库证据以最新admin-auth-report的cart_tax_refresh及源码SHA为准，T032/T033未整体验收。
 
 2026-10-28 购物车价格刷新补充：[当前行数量与保存上下文的精确重选价](migration/cart-price-refresh.md)按行数量分组处理同SKU阶梯价，保留自定义/手工单价、已有划线价和超18位raw，缺失划线价只在sale时补原价。持有者/版本锁内参与事务；真实SQL结果以最新admin-auth-report的cart_price_refresh及源码SHA为准。完整上下文、商品快照、促销/配送/支付编排与正式页面仍待完成，T032/T033未整体验收。
+
+2026-10-28 购物车快照准备补充：[空值补全与当前商品关联](migration/cart-item-snapshots.md)在持有者/版本锁内保留历史文案、显式空值、选项及精确价格，按原逻辑更新当前product_id/礼品卡并归一null metadata。5组原纯函数证据固定；SQL结果以最新admin-auth-report的cart_item_snapshots及源码SHA为准。完整促销/配送/支付编排、翻译及生产页面仍待完成，T032/T033未整体验收。
