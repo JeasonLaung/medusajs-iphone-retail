@@ -243,6 +243,10 @@ def main():
             tax_import_markers = [line.split('TAX_IMPORT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'TAX_IMPORT_REHEARSAL ' in line]
             if len(tax_import_markers) != 1:
                 raise RuntimeError('Tax import evidence missing')
+            flat_markers = [line.split('FLAT_SHIPPING_PRICE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'FLAT_SHIPPING_PRICE_REHEARSAL ' in line]
+            if len(flat_markers) != 1:
+                raise RuntimeError('Flat shipping price evidence missing')
+            files += ['retail/backend/internal/identity/flat_shipping_prices_test.go']
             snapshot_markers = [line.split('CART_ITEM_SNAPSHOT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_ITEM_SNAPSHOT_REHEARSAL ' in line]
             if len(snapshot_markers) != 1:
                 raise RuntimeError('Cart item snapshot evidence missing')
@@ -345,6 +349,7 @@ def main():
                       'cart_tax_refresh': json.loads(tax_refresh_markers[0]),
                       'cart_price_refresh': json.loads(price_refresh_markers[0]),
                       'cart_item_snapshots': json.loads(snapshot_markers[0]),
+                      'flat_shipping_prices': json.loads(flat_markers[0]),
                       'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
         password = ''

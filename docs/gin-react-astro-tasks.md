@@ -408,3 +408,5 @@
 2026-10-28 购物车价格刷新补充：[当前行数量与保存上下文的精确重选价](migration/cart-price-refresh.md)按行数量分组处理同SKU阶梯价，保留自定义/手工单价、已有划线价和超18位raw，缺失划线价只在sale时补原价。持有者/版本锁内参与事务；真实SQL结果以最新admin-auth-report的cart_price_refresh及源码SHA为准。完整上下文、商品快照、促销/配送/支付编排与正式页面仍待完成，T032/T033未整体验收。
 
 2026-10-28 购物车快照准备补充：[空值补全与当前商品关联](migration/cart-item-snapshots.md)在持有者/版本锁内保留历史文案、显式空值、选项及精确价格，按原逻辑更新当前product_id/礼品卡并归一null metadata。5组原纯函数证据固定；SQL结果以最新admin-auth-report的cart_item_snapshots及源码SHA为准。完整促销/配送/支付编排、翻译及生产页面仍待完成，T032/T033未整体验收。
+
+2026-10-28 固定运价补充：[共享价格集合与flat选项关系读取](migration/flat-shipping-prices.md)抽出同一精确ReadSets供商品及配送复用；显式上下文、共享集合/多集合歧义、缺价及软删除由人工SQL验证。结果以最新admin-auth-report.flat_shipping_prices及源码SHA为准。运价不等于配送资格；地址/渠道/规则、缺省数量及额外上下文、provider和运费保存继续待办，T032/T033未整体验收。

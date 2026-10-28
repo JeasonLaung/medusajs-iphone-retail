@@ -292,6 +292,7 @@
     "retail/scripts/generate-fulfillment-import-plan.py": "9f9dd5e5e21ea6582349678d6b9464e20ebe8d150bf768f2d4a5398fe0836b19",
     "retail/scripts/generate-tax-import-plan.py": "ed0233f135d29404cd425878110909b97e1d916d2ca914d18dea49f0b18b944e",
     "retail/scripts/generate-tax-schema.py": "ed6dbdd0f3ffea95aa9c7e85121e6e3d0fbb81483e5389c69841fa991e71afe0",
+    "retail/backend/internal/fulfillment/flat_prices.go": "7921ad69aad97eb2e8b754702464965ec3f4f69f9fe08ea405b08c028988ad86",
     "retail/backend/internal/fulfillment/schema.go": "f1f9a1a89527fad333a639373c6de3d729174775f7fd0a569f53494166b469ed",
     "retail/backend/internal/fulfillment/schema_plan.json": "aa41b2a41eccd35b20128f0bf837d50b6e502f8388ff51680394e2e93ba3af4e",
     "retail/backend/internal/fulfillmentimport/import.go": "c63da65b7df56c06c6d67c665a17cd3ab608532ab561d6dc7cbea9b459cceaf9",
@@ -323,7 +324,7 @@
     "retail/backend/internal/catalogimport/pricing_rehearsal_test.go": "081fe52f6b90d1ee9253c7bfcc0f6562f8a23d953436969cae79342a1d12ee4a",
     "retail/backend/internal/catalogimport/availability_rehearsal_test.go": "2ffb0ac6cfb4bf9f0cab1f1224aea3b322cb84067fe010a7b8014145adb189a8",
     "retail/backend/internal/pricing/number.go": "cea262e800a6b5fd479e602c31d606a48fb2c4113c20e6f0c9b404d6f253e476",
-    "retail/backend/internal/pricing/read.go": "cf2473f88ac89ab415bd448b876176a4a66f5fb786d8761b337b4d125f43e284",
+    "retail/backend/internal/pricing/read.go": "3113ebd3d92e8f6b64081aa50680d5b0fd969b862dd337cfc8b59ad7aa6a475e",
     "retail/backend/internal/pricing/select.go": "d3a33c44caf074592ce4c51627ee651c9a2a125c380d3c1e83bae44af1215998",
     "retail/backend/internal/pricing/select_test.go": "9db9fb4959d9878faee473ff8c0c4ef8e82ca1fae570f3a8ab050c18c131493b"
   },

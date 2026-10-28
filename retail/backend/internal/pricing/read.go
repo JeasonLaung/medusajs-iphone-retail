@@ -42,6 +42,42 @@ func Read(tx *gorm.DB, variants []string, c Context, now time.Time) (map[string]
 		setIDs = append(setIDs, id)
 	}
 	sort.Strings(setIDs)
+	selected, err := ReadSets(tx, setIDs, c, now)
+	if err != nil {
+		return nil, err
+	}
+	for id, set := range variantSets {
+		quotes[id] = selected[set]
+	}
+	return quotes, nil
+}
+
+// ReadSets selects prices for trusted server-resolved price sets. It grants no
+// product or shipping eligibility. Caller owns the consistent SQL snapshot.
+// Missing/deleted sets produce no quote, never a fabricated zero amount.
+func ReadSets(tx *gorm.DB, setIDs []string, c Context, now time.Time) (map[string]*Quote, error) {
+	quotes := map[string]*Quote{}
+	if tx == nil || len(setIDs) > 10000 || now.IsZero() {
+		return nil, ErrInput
+	}
+	seen := map[string]bool{}
+	for _, id := range setIDs {
+		if id == "" || len(id) > 191 || seen[id] {
+			return nil, ErrInput
+		}
+		seen[id] = true
+	}
+	if len(setIDs) == 0 {
+		return quotes, nil
+	}
+	var active []string
+	if tx.Table("pricing_price_sets").Select("id").Where("id IN ? AND deleted_at IS NULL", setIDs).Order("id").Limit(10001).Scan(&active).Error != nil || len(active) > 10000 {
+		return nil, ErrInput
+	}
+	setIDs = active
+	if len(setIDs) == 0 {
+		return quotes, nil
+	}
 	var rows []struct {
 		ID, PriceSetID, CurrencyCode, Amount, RawAmount                       string
 		MinQuantity, MaxQuantity, RawMinQuantity, RawMaxQuantity, PriceListID *string
@@ -168,8 +204,5 @@ func Read(tx *gorm.DB, variants []string, c Context, now time.Time) (map[string]
 		}
 		selected[id] = q
 	}
-	for id, set := range variantSets {
-		quotes[id] = selected[set]
-	}
-	return quotes, nil
+	return selected, nil
 }
