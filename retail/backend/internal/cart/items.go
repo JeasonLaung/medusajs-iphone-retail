@@ -65,16 +65,35 @@ func sqlAmount(value string) (string, string, error) {
 // payment, event, worker or provider call occurs here. Tax/promo/shipping rule
 // selection and payable checkout remain separate, unaccepted capabilities.
 func AddItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, in AddItemCommand) (AddItemResult, error) {
+	return mutateItem(ctx, db, store, ref, in, "add", "")
+}
+
+// SetItem replaces the absolute quantity; zero is an explicit removal. The
+// immutable receipt namespace is shared with AddItem, with a distinct digest.
+func SetItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, lineID string, in AddItemCommand) (AddItemResult, error) {
+	if !idPattern.MatchString(lineID) || in.VariantID != "" {
+		return AddItemResult{}, ErrInput
+	}
+	return mutateItem(ctx, db, store, ref, in, "set", lineID)
+}
+
+func mutateItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, in AddItemCommand, mode, target string) (AddItemResult, error) {
 	id, err := uuid.Parse(in.OperationID)
 	version, e := strconv.ParseUint(in.Version, 10, 64)
 	quantity, f := strconv.ParseInt(in.Quantity, 10, 64)
-	if err != nil || id.Version() != 4 || id.String() != in.OperationID || e != nil || version == 0 || strconv.FormatUint(version, 10) != in.Version || f != nil || quantity < 1 || quantity > 1000000000 || strconv.FormatInt(quantity, 10) != in.Quantity || !idPattern.MatchString(in.VariantID) || !refOK(store, ref) || db == nil || db.Statement == nil {
+	if err != nil || id.Version() != 4 || id.String() != in.OperationID || e != nil || version == 0 || strconv.FormatUint(version, 10) != in.Version || f != nil || (quantity < 1 && !(mode == "set" && quantity == 0)) || quantity > 1000000000 || strconv.FormatInt(quantity, 10) != in.Quantity || (mode == "add" && !idPattern.MatchString(in.VariantID)) || !refOK(store, ref) || db == nil || db.Statement == nil {
 		return AddItemResult{}, ErrInput
 	}
 	if _, nested := db.Statement.ConnPool.(gorm.TxCommitter); nested {
 		return AddItemResult{}, ErrInput
 	}
 	request, _ := json.Marshal(in)
+	if mode == "set" {
+		request, _ = json.Marshal(struct {
+			Mode, LineID string
+			Command      AddItemCommand
+		}{mode, target, in})
+	}
 	digest := sha256.Sum256(request)
 	var result AddItemResult
 	err = db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -112,7 +131,10 @@ func AddItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.Ca
 			savedVersion, ve := strconv.ParseUint(result.Version, 10, 64)
 			currentVersion, ce := strconv.ParseUint(cart.Version, 10, 64)
 			savedQuantity, qe := strconv.ParseInt(result.Quantity, 10, 64)
-			if result.CartID != ref.CartID || !idPattern.MatchString(result.LineID) || ve != nil || ce != nil || savedVersion < 2 || savedVersion > currentVersion || strconv.FormatUint(savedVersion, 10) != result.Version || qe != nil || savedQuantity < 1 || savedQuantity > 1000000000 || strconv.FormatInt(savedQuantity, 10) != result.Quantity || result.Replayed {
+			if result.CartID != ref.CartID || !idPattern.MatchString(result.LineID) || ve != nil || ce != nil || savedVersion < 2 || savedVersion > currentVersion || strconv.FormatUint(savedVersion, 10) != result.Version || qe != nil || (savedQuantity < 1 && !(mode == "set" && savedQuantity == 0)) || savedQuantity > 1000000000 || strconv.FormatInt(savedQuantity, 10) != result.Quantity || result.Replayed {
+				return ErrStorage
+			}
+			if mode == "set" && (result.LineID != target || result.Quantity != in.Quantity) {
 				return ErrStorage
 			}
 			result.Replayed = true
@@ -130,12 +152,35 @@ func AddItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.Ca
 		if tx.Table("cart_line_items").Select("id,variant_id,quantity,is_custom_price").Where("cart_id=? AND deleted_at IS NULL", cart.ID).Order("id").Limit(1001).Clauses(clause.Locking{Strength: "UPDATE"}).Scan(&lines).Error != nil || len(lines) > 1000 {
 			return ErrSchema
 		}
+		if mode == "set" {
+			found := false
+			for _, line := range lines {
+				if line.ID == target {
+					found = true
+					if quantity > 0 {
+						if line.VariantID == nil || line.IsCustomPrice {
+							return ErrItemUnavailable
+						}
+						in.VariantID = *line.VariantID
+					}
+				}
+			}
+			if !found {
+				return ErrDenied
+			}
+		}
 		lineID := ""
 		total := quantity
 		ids := []string{}
 		seen := map[string]bool{}
 		stockLines := make([]inventory.CartStockLine, 0, len(lines)+1)
 		for _, line := range lines {
+			if mode == "set" && quantity == 0 {
+				if line.ID == target {
+					lineID = target
+				}
+				continue
+			}
 			if line.VariantID == nil || line.IsCustomPrice || line.Quantity < 1 || line.Quantity > 1000000000 || !idPattern.MatchString(line.ID) {
 				return ErrItemUnavailable
 			}
@@ -145,12 +190,14 @@ func AddItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.Ca
 				seen[v] = true
 			}
 			q := line.Quantity
-			if v == in.VariantID {
+			if (mode == "add" && v == in.VariantID) || (mode == "set" && line.ID == target) {
 				if lineID != "" {
 					return ErrConflict
 				}
 				lineID = line.ID
-				total += q
+				if mode == "add" {
+					total += q
+				}
 				if total > 1000000000 {
 					return ErrInput
 				}
@@ -166,7 +213,7 @@ func AddItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.Ca
 			lineID = "cali_" + uuid.NewString()
 			stockLines = append(stockLines, inventory.CartStockLine{ID: lineID, VariantID: in.VariantID, Quantity: in.Quantity})
 		}
-		if !seen[in.VariantID] {
+		if !(mode == "set" && quantity == 0) && !seen[in.VariantID] {
 			ids = append(ids, in.VariantID)
 		}
 		variants, err := catalog.ReadCartVariants(tx, ids, channel)
@@ -185,33 +232,44 @@ func AddItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.Ca
 		if !stock.CanFulfill {
 			return ErrItemStock
 		}
-		quotes, err := pricing.Read(tx, []string{in.VariantID}, pricing.Context{Region: cart.RegionID, Currency: cart.CurrencyCode, Channel: channel, Quantity: strconv.FormatInt(total, 10)}, time.Now().UTC())
-		if err != nil || quotes[in.VariantID] == nil {
-			return ErrItemUnavailable
-		}
-		quote := quotes[in.VariantID]
-		scalar, raw, err := sqlAmount(quote.Amount)
-		if err != nil {
-			return err
-		}
-		var compareScalar, compareRaw *string
-		if quote.CalculatedKind.Type != nil && *quote.CalculatedKind.Type == "sale" && quote.OriginalAmount != nil && *quote.OriginalAmount != quote.Amount {
-			a, b, err := sqlAmount(*quote.OriginalAmount)
+		evidencePrice, evidenceSet := "", ""
+		if mode == "set" && quantity == 0 {
+			r := tx.Exec("UPDATE cart_line_items SET deleted_at=UTC_TIMESTAMP(6),updated_at=UTC_TIMESTAMP(6) WHERE id=? AND cart_id=? AND deleted_at IS NULL", target, cart.ID)
+			if r.Error != nil || r.RowsAffected != 1 {
+				return ErrStorage
+			}
+			// Preserve saved tax/adjustment history. The removed parent is
+			// excluded from amount reads; no orphan relation is reattached.
+		} else {
+			quotes, err := pricing.Read(tx, []string{in.VariantID}, pricing.Context{Region: cart.RegionID, Currency: cart.CurrencyCode, Channel: channel, Quantity: strconv.FormatInt(total, 10)}, time.Now().UTC())
+			if err != nil || quotes[in.VariantID] == nil {
+				return ErrItemUnavailable
+			}
+			quote := quotes[in.VariantID]
+			scalar, raw, err := sqlAmount(quote.Amount)
 			if err != nil {
 				return err
 			}
-			compareScalar, compareRaw = &a, &b
-		}
-		v := variants[in.VariantID]
-		if fresh {
-			if tx.Exec(`INSERT INTO cart_line_items(id,cart_id,title,subtitle,thumbnail,quantity,variant_id,product_id,product_title,product_description,product_subtitle,product_type,product_collection,product_handle,variant_sku,variant_barcode,variant_title,variant_option_values,requires_shipping,is_discountable,is_tax_inclusive,compare_at_unit_price,raw_compare_at_unit_price,unit_price,raw_unit_price,metadata,created_at,updated_at,product_type_id,is_custom_price,is_giftcard)
-    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'{}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),?,FALSE,?)`, lineID, cart.ID, v.ProductTitle, v.Title, v.Thumbnail, total, v.ID, v.ProductID, v.ProductTitle, v.ProductDescription, v.ProductSubtitle, v.ProductType, v.ProductCollection, v.ProductHandle, v.SKU, v.Barcode, v.Title, v.OptionValues, v.RequiresShipping, v.Discountable, quote.CalculatedTaxInclusive, compareScalar, compareRaw, scalar, raw, v.ProductTypeID, v.IsGiftcard).Error != nil {
-				return ErrStorage
+			var compareScalar, compareRaw *string
+			if quote.CalculatedKind.Type != nil && *quote.CalculatedKind.Type == "sale" && quote.OriginalAmount != nil && *quote.OriginalAmount != quote.Amount {
+				a, b, err := sqlAmount(*quote.OriginalAmount)
+				if err != nil {
+					return err
+				}
+				compareScalar, compareRaw = &a, &b
 			}
-		} else {
-			r := tx.Exec(`UPDATE cart_line_items SET quantity=?,unit_price=?,raw_unit_price=?,is_tax_inclusive=?,compare_at_unit_price=?,raw_compare_at_unit_price=?,updated_at=UTC_TIMESTAMP(6) WHERE id=? AND cart_id=? AND deleted_at IS NULL`, total, scalar, raw, quote.CalculatedTaxInclusive, compareScalar, compareRaw, lineID, cart.ID)
-			if r.Error != nil || r.RowsAffected != 1 {
-				return ErrStorage
+			evidencePrice, evidenceSet = quote.PriceID, quote.SetID
+			v := variants[in.VariantID]
+			if fresh {
+				if tx.Exec(`INSERT INTO cart_line_items(id,cart_id,title,subtitle,thumbnail,quantity,variant_id,product_id,product_title,product_description,product_subtitle,product_type,product_collection,product_handle,variant_sku,variant_barcode,variant_title,variant_option_values,requires_shipping,is_discountable,is_tax_inclusive,compare_at_unit_price,raw_compare_at_unit_price,unit_price,raw_unit_price,metadata,created_at,updated_at,product_type_id,is_custom_price,is_giftcard)
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'{}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),?,FALSE,?)`, lineID, cart.ID, v.ProductTitle, v.Title, v.Thumbnail, total, v.ID, v.ProductID, v.ProductTitle, v.ProductDescription, v.ProductSubtitle, v.ProductType, v.ProductCollection, v.ProductHandle, v.SKU, v.Barcode, v.Title, v.OptionValues, v.RequiresShipping, v.Discountable, quote.CalculatedTaxInclusive, compareScalar, compareRaw, scalar, raw, v.ProductTypeID, v.IsGiftcard).Error != nil {
+					return ErrStorage
+				}
+			} else {
+				r := tx.Exec(`UPDATE cart_line_items SET quantity=?,unit_price=?,raw_unit_price=?,is_tax_inclusive=?,compare_at_unit_price=?,raw_compare_at_unit_price=?,updated_at=UTC_TIMESTAMP(6) WHERE id=? AND cart_id=? AND deleted_at IS NULL`, total, scalar, raw, quote.CalculatedTaxInclusive, compareScalar, compareRaw, lineID, cart.ID)
+				if r.Error != nil || r.RowsAffected != 1 {
+					return ErrStorage
+				}
 			}
 		}
 		next := strconv.FormatUint(version+1, 10)
@@ -226,7 +284,7 @@ func AddItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.Ca
 		if err != nil {
 			return ErrStorage
 		}
-		if tx.Exec("INSERT INTO cart_item_operations(cart_id,operation_id,generation,request_sha256,price_id,price_set_id,result_json,created_at) VALUES(?,?,?,UNHEX(?),?,?,?,UTC_TIMESTAMP(6))", cart.ID, in.OperationID, ref.Generation, hex.EncodeToString(digest[:]), quote.PriceID, quote.SetID, string(encoded)).Error != nil {
+		if tx.Exec("INSERT INTO cart_item_operations(cart_id,operation_id,generation,request_sha256,price_id,price_set_id,result_json,created_at) VALUES(?,?,?,UNHEX(?),?,?,?,UTC_TIMESTAMP(6))", cart.ID, in.OperationID, ref.Generation, hex.EncodeToString(digest[:]), evidencePrice, evidenceSet, string(encoded)).Error != nil {
 			return ErrStorage
 		}
 		return nil

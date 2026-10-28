@@ -252,3 +252,21 @@ test('current cart restoration uses possession only, keeps dependency errors dis
  await error(client(async()=>{throw Error('offline')}).current(),'unavailable',null,false)
  for(const v of [{cart:{...cart,id:'../bad'},capabilities},{cart:{...cart,version:'18446744073709551616'},capabilities},{cart,capabilities:{items:true,checkout:false}},{cart:{...cart,customer_id:'private'},capabilities}])await error(client(async()=>reply(v)).current(),'protocol',null,false)
 })
+
+test('absolute item quantity and zero removal use strict receipts and never accept injected fields',async()=>{
+ const command={operationID,version:'3',quantity:'0',unit_price:'0'}
+ let calls=0
+ const c=client(async(url,init)=>{
+  calls++;assert.equal(url,`/api/store/carts/${cart.id}/line-items/line_one`)
+  assert.deepEqual(JSON.parse(String(init!.body)),{version:'3',quantity:'0'})
+  assert.equal(new Headers(init!.headers).get('Idempotency-Key'),operationID)
+  return reply({cart_id:cart.id,line_id:'line_one',version:'4',quantity:'0',replayed:true})
+ })
+ assert.deepEqual(await c.setItem(cart.id,'line_one',command,{csrfToken:nextCSRF}),{cart_id:cart.id,line_id:'line_one',version:'4',quantity:'0',replayed:true})
+ await error(c.setItem(cart.id,'../line',command,{csrfToken:nextCSRF}),'input',null,false)
+ await error(c.setItem(cart.id,'line_one',{...command,quantity:'00'},{csrfToken:nextCSRF}),'input',null,false)
+ assert.equal(calls,1)
+ for(const patch of [{quantity:'1'},{version:'5'},{line_id:'foreign'},{metadata:{}}])await error(client(async()=>reply({cart_id:cart.id,line_id:'line_one',version:'4',quantity:'0',replayed:false,...patch})).setItem(cart.id,'line_one',command,{csrfToken:nextCSRF}),'protocol',200,true)
+ await error(client(async()=>reply({},409)).setItem(cart.id,'line_one',command,{csrfToken:nextCSRF}),'conflict',409,false)
+ await error(client(async()=>{throw Error('offline')}).setItem(cart.id,'line_one',command,{csrfToken:nextCSRF}),'unavailable',null,true)
+})

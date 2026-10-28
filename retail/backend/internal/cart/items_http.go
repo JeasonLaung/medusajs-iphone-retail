@@ -15,6 +15,10 @@ import (
 // Item fields are strict canonical strings. Never decode price, flags,
 // metadata, customer/store, line IDs or origin from a browser-selected object.
 func decodeItem(reader io.Reader) (AddItemCommand, error) {
+	return decodeItemFields(reader, false)
+}
+
+func decodeItemFields(reader io.Reader, set bool) (AddItemCommand, error) {
 	d := json.NewDecoder(reader)
 	var command AddItemCommand
 	token, err := d.Token()
@@ -31,7 +35,7 @@ func decodeItem(reader io.Reader) (AddItemCommand, error) {
 			return command, err
 		}
 		name, ok := key.(string)
-		if !ok || (name != "version" && name != "variant_id" && name != "quantity") {
+		if !ok || (name != "version" && name != "quantity" && (set || name != "variant_id")) {
 			return command, ErrInput
 		}
 		if _, exists := fields[name]; exists {
@@ -50,7 +54,11 @@ func decodeItem(reader io.Reader) (AddItemCommand, error) {
 	if err != nil {
 		return command, err
 	}
-	if token != json.Delim('}') || len(fields) != 3 {
+	expected := 3
+	if set {
+		expected = 2
+	}
+	if token != json.Delim('}') || len(fields) != expected {
 		return command, ErrInput
 	}
 	if err := d.Decode(new(any)); err != io.EOF {
@@ -64,6 +72,15 @@ func decodeItem(reader io.Reader) (AddItemCommand, error) {
 }
 
 func (h *HTTPHandler) AddItem(c *gin.Context) {
+	h.item(c, false)
+}
+
+func (h *HTTPHandler) SetItem(c *gin.Context) { h.item(c, true) }
+func (h *HTTPHandler) item(c *gin.Context, set bool) {
+	if set && !idPattern.MatchString(c.Param("line")) {
+		cartHTTPError(c, ErrInput)
+		return
+	}
 	if c.Request.URL.RawQuery != "" || !idPattern.MatchString(c.Param("id")) {
 		cartHTTPError(c, ErrInput)
 		return
@@ -73,7 +90,7 @@ func (h *HTTPHandler) AddItem(c *gin.Context) {
 		platform.Fail(c, 415, "cart.content_type", "JSON required")
 		return
 	}
-	command, err := decodeItem(c.Request.Body)
+	command, err := decodeItemFields(c.Request.Body, set)
 	if err != nil {
 		platform.InvalidJSON(c, err, "cart.invalid_input", "Invalid cart request")
 		return
@@ -106,7 +123,12 @@ func (h *HTTPHandler) AddItem(c *gin.Context) {
 	if !h.allow(c, ctx, "item-possession", token) {
 		return
 	}
-	result, err := AddItem(ctx, h.db, h.store, ref, command)
+	var result AddItemResult
+	if set {
+		result, err = SetItem(ctx, h.db, h.store, ref, c.Param("line"), command)
+	} else {
+		result, err = AddItem(ctx, h.db, h.store, ref, command)
+	}
 	if err != nil {
 		cartHTTPError(c, err)
 		return

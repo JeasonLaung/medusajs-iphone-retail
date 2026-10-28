@@ -221,6 +221,19 @@ export class CartClient {
   } catch { throw new CartError('protocol',status,true) }
  }
 
+ // Absolute quantity, including explicit zero removal. This shares the same
+ // operation namespace and uncertainty contract as addition, never retries.
+ async setItem(id:string,lineID:string,input:{operationID:string;version:string;quantity:string},authorization:{csrfToken:string}):Promise<CartItemReceipt>{
+  const {operationID,version,quantity}=input,{csrfToken}=authorization
+  if(!matches(id,idPattern)||!matches(lineID,idPattern)||!matches(operationID,uuidPattern)||!matches(version,versionPattern)||BigInt(version)>=18446744073709551615n||!matches(quantity,/^(0|[1-9][0-9]{0,9})$/)||BigInt(quantity)>1000000000n||!matches(csrfToken,tokenPattern))throw new CartError('input')
+  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/line-items/${encodeURIComponent(lineID)}`,'POST',JSON.stringify({version,quantity}),{'X-CSRF-Token':csrfToken,'Idempotency-Key':operationID},65536,'item')
+  try{
+   const v=record(value);keys(v,['cart_id','version','line_id','quantity','replayed'])
+   if(status!==200||v.cart_id!==id||v.line_id!==lineID||v.quantity!==quantity||typeof v.replayed!=='boolean'||!matches(v.version,versionPattern)||BigInt(v.version)!==BigInt(version)+1n)throw protocol()
+   return {cart_id:id,line_id:lineID,quantity,version:v.version,replayed:v.replayed}
+  }catch{throw new CartError('protocol',status,true)}
+ }
+
  // Only explicit 401/404 means the ID is no longer accessible. Dependency,
  // network, timeout and malformed responses remain errors, never empty carts.
  async retrieve(id: string): Promise<CartSnapshot | null> {

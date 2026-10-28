@@ -106,6 +106,19 @@ test('actual storefront client adds and merges draft items through browser cooki
  expect(await page.evaluate(()=>window.itemClient.current())).toMatchObject({id,version:'4'})
  expect(await page.evaluate(()=>localStorage.getItem('retail.cart.intent.v1'))).toBeNull()
  expect(await page.evaluate(()=>({local:Object.entries(localStorage),session:Object.entries(sessionStorage)}))).toEqual(storage)
+ const setKey=randomUUID()
+ const changed=await page.evaluate(async({id,lineID,operationID})=>window.itemClient.setItem(id,lineID,{operationID,version:'4',quantity:'1'},{csrfToken:window.itemCSRF()!}),{id,lineID:merged.line_id,operationID:setKey})
+ expect(changed).toMatchObject({cart_id:id,line_id:merged.line_id,version:'5',quantity:'1',replayed:false})
+ const repriced=await page.evaluate(id=>window.itemClient.retrieveAmounts(id),id)
+ expect(repriced?.totals.total).toBe('100.000000000000000000001')
+ const removeKey=randomUUID()
+ for(const replayed of [false,true]){
+  const removed=await page.evaluate(async({id,lineID,operationID})=>window.itemClient.setItem(id,lineID,{operationID,version:'5',quantity:'0'},{csrfToken:window.itemCSRF()!}),{id,lineID:merged.line_id,operationID:removeKey})
+  expect(removed).toMatchObject({cart_id:id,line_id:merged.line_id,version:'6',quantity:'0',replayed})
+ }
+ const emptyCart=await page.evaluate(id=>window.itemClient.retrieveAmounts(id),id)
+ expect(emptyCart).toMatchObject({version:'6',lines:[]})
+ expect(emptyCart?.totals.total).toBe('0')
  const stranger=await browser.newContext()
  try {
   const denied=await stranger.request.post(`http://127.0.0.1:19200/api/store/carts/${id}/line-items`,{headers:{Origin:'http://127.0.0.1:19200','Idempotency-Key':randomUUID()},data:{version:'3',variant_id:'browser-add-v',quantity:'1'}})

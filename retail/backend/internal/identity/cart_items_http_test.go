@@ -86,9 +86,38 @@ func checkCartItemsHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions
 	call(path, body, uuid.NewString(), origin, issued.CSRF, true, 409)
 	call(path, `{"version":"2","variant_id":"add-v","quantity":"5"}`, uuid.NewString(), origin, issued.CSRF, true, 422)
 	call(path, `{"version":"2","variant_id":"absent","quantity":"1"}`, uuid.NewString(), origin, issued.CSRF, true, 422)
+	linePath := path + "/" + a.LineID
+	setBody := `{"version":"2","quantity":"2"}`
+	call(linePath, setBody, uuid.NewString(), origin, issued.CSRF, false, 401)
+	call(linePath, setBody, uuid.NewString(), origin, "", true, 403)
+	for _, bad := range []string{`{"version":"2","quantity":2}`, `{"version":"2","quantity":"2","variant_id":"add-v"}`, `{"version":"2","quantity":"2","quantity":"3"}`} {
+		call(linePath, bad, uuid.NewString(), origin, issued.CSRF, true, 400)
+	}
+	setKey := uuid.NewString()
+	setReply := call(linePath, setBody, setKey, origin, issued.CSRF, true, 200)
+	var updated cart.AddItemResult
+	if json.Unmarshal(setReply.Body.Bytes(), &updated) != nil || updated.Quantity != "2" || updated.Version != "3" || updated.LineID != a.LineID {
+		t.Fatal("HTTP absolute quantity failed")
+	}
+	call(linePath, setBody, setKey, origin, issued.CSRF, true, 200)
+	call(linePath, `{"version":"3","quantity":"3"}`, setKey, origin, issued.CSRF, true, 409)
+	call(path+"/foreign-line", `{"version":"3","quantity":"1"}`, uuid.NewString(), origin, issued.CSRF, true, 404)
+	call(linePath, `{"version":"3","quantity":"5"}`, uuid.NewString(), origin, issued.CSRF, true, 422)
+	removeKey := uuid.NewString()
+	removed := call(linePath, `{"version":"3","quantity":"0"}`, removeKey, origin, issued.CSRF, true, 200)
+	var removal cart.AddItemResult
+	if json.Unmarshal(removed.Body.Bytes(), &removal) != nil || removal.Quantity != "0" || removal.Version != "4" {
+		t.Fatal("HTTP removal failed")
+	}
+	call(linePath, `{"version":"3","quantity":"0"}`, removeKey, origin, issued.CSRF, true, 200)
+	call(linePath, `{"version":"4","quantity":"1"}`, uuid.NewString(), origin, issued.CSRF, true, 404)
+	empty, err := cart.ReadAmounts(ctx, db, "shop", created.Reference)
+	if err != nil || len(empty.Lines) != 0 || empty.Totals["total"] != "0" {
+		t.Fatal("removed line still contributed amounts")
+	}
 	if sessions.RevokeCart(ctx, issued.Token) != nil {
 		t.Fatal("item HTTP session cleanup failed")
 	}
 	call(path, body, key, origin, issued.CSRF, true, 401)
-	t.Log(`CART_ITEMS_HTTP_REHEARSAL {"real_gin_mysql_redis":true,"possession_csrf_origin":true,"strict_string_input":true,"private_no_store":true,"no_cookie_refresh":true,"size_limit":true,"price_injection_rejected":true,"durable_replay":true,"version_and_stock_errors":true,"revoked_cookie_rejected":true,"production_page_mounted":false}`)
+	t.Log(`CART_ITEMS_HTTP_REHEARSAL {"real_gin_mysql_redis":true,"possession_csrf_origin":true,"strict_string_input":true,"private_no_store":true,"no_cookie_refresh":true,"size_limit":true,"price_injection_rejected":true,"absolute_quantity_and_removal":true,"durable_replay":true,"version_and_stock_errors":true,"revoked_cookie_rejected":true,"production_page_mounted":false}`)
 }

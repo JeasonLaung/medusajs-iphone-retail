@@ -64,6 +64,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/carts/:id", h.Detail)
 	private.GET("/carts/:id/amounts", h.Amounts)
 	private.POST("/carts/:id/line-items", h.AddItem)
+	private.POST("/carts/:id/line-items/:line", h.SetItem)
 }
 
 func (h *HTTPHandler) ready(c *gin.Context) bool {

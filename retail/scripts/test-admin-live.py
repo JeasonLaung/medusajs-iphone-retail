@@ -166,13 +166,13 @@ def main():
             raise RuntimeError('Actual Astro cart button browser failed; inspect ignored output')
         item_durable = docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket',
                               '--database=browser_identity','--batch','--skip-column-names','-e',
-                              "SELECT (SELECT COUNT(*) FROM carts),(SELECT COUNT(*) FROM cart_ownership WHERE active=TRUE AND version=4),"
-                              "(SELECT COUNT(*) FROM cart_line_items WHERE variant_id='browser-add-v' AND quantity=3),"
+                              "SELECT (SELECT COUNT(*) FROM carts),(SELECT COUNT(*) FROM cart_ownership WHERE active=TRUE AND version=6),"
+                              "(SELECT COUNT(*) FROM cart_line_items WHERE variant_id='browser-add-v' AND quantity=1 AND deleted_at IS NOT NULL),"
                               "(SELECT COUNT(*) FROM cart_item_operations),"
-                              "(SELECT JSON_UNQUOTE(JSON_EXTRACT(raw_unit_price,'$.value')) FROM cart_line_items WHERE variant_id='browser-add-v' AND quantity=3),"
+                              "(SELECT JSON_UNQUOTE(JSON_EXTRACT(raw_unit_price,'$.value')) FROM cart_line_items WHERE variant_id='browser-add-v' AND quantity=1 AND deleted_at IS NOT NULL),"
                               "(SELECT reserved_quantity=0 FROM inventory_levels WHERE id='browser-add-level'),"
                               "(SELECT COUNT(*) FROM inventory_reservations WHERE inventory_item_id='browser-add-item')")
-        if item_durable.returncode or item_durable.stdout.decode().strip() != '3\t1\t1\t5\t80.000000000000000000001\t1\t0':
+        if item_durable.returncode or item_durable.stdout.decode().strip() != '3\t1\t1\t7\t100.000000000000000000001\t1\t0':
             raise RuntimeError('Browser item durable state differs; no successful report written')
         files = ['retail/scripts/test-admin-live.py', 'retail/backend/cmd/api/main.go',
                  'retail/backend/internal/identity/browser_fixture_test.go', 'retail/backend/internal/identity/admin.go',
@@ -209,7 +209,8 @@ def main():
                                          'quantity_tier_price': True, 'exact_raw_amount': True,
                                          'reload_readback': True, 'current_possession_lookup': True, 'immutable_old_receipt': True,
                                          'version_and_stock_rejection': True, 'cookie_ttl_unchanged': True,
-                                         'line_items': 1, 'operation_receipts': 3,
+                                         'line_items': 0, 'saved_deleted_lines': 1, 'operation_receipts': 5,
+                                         'absolute_quantity_and_removal': True,
                                          'coordinator_lost_committed_response_reload': True,
                                          'coordinator_noncredential_intent_cleared': True, 'inventory_reserved': False,
                                          'production_page_mounted': False, 'full_cart_accepted': False},

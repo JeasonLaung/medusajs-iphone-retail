@@ -164,6 +164,7 @@ func checkCartItems(t *testing.T, ctx context.Context, db *gorm.DB, sessions *se
 		t.Fatal("owned add cookie cleanup failed")
 	}
 	checkCartItemsHTTP(t, ctx, db, sessions)
+	checkCartSetTransactions(t, ctx, db, sessions)
 	exec(`UPDATE cart_item_runtime SET enabled=FALSE WHERE id=1`)
 	var reserved string
 	if db.Raw(`SELECT CAST(reserved_quantity AS CHAR) FROM inventory_levels WHERE id='add-level'`).Scan(&reserved).Error != nil || reserved != "0.000000000000000000" {
@@ -173,5 +174,79 @@ func checkCartItems(t *testing.T, ctx context.Context, db *gorm.DB, sessions *se
 	if db.Table("inventory_reservations").Where("inventory_item_id='add-item'").Count(&reservations).Error != nil || reservations != 0 {
 		t.Fatal("add wrote inventory reservations")
 	}
-	t.Log(`CART_ITEMS_REHEARSAL {"real_mysql_redis":true,"explicit_migrations":27,"concurrent_attempts":8,"single_fresh_add":1,"merge_quantity_price_tier":true,"exact_raw_beyond_sql_scale":true,"whole_cart_shared_stock":true,"late_receipt_failure_atomic":true,"version_conflict_unchanged":true,"different_operation_race_single_winner":true,"current_catalog_and_authority":true,"no_inventory_reservation":true,"http_integrated":false,"rules_recalculated":false,"checkout_integrated":false}`)
+	t.Log(`CART_ITEMS_REHEARSAL {"real_mysql_redis":true,"explicit_migrations":27,"concurrent_attempts":8,"single_fresh_add":1,"merge_quantity_price_tier":true,"exact_raw_beyond_sql_scale":true,"whole_cart_shared_stock":true,"late_receipt_failure_atomic":true,"version_conflict_unchanged":true,"different_operation_race_single_winner":true,"current_catalog_and_authority":true,"no_inventory_reservation":true,"absolute_quantity_and_removal":true,"set_concurrent_replay":true,"delete_late_failure_atomic":true,"delete_draft_product":true,"http_integrated":false,"rules_recalculated":false,"checkout_integrated":false}`)
+}
+
+func checkCartSetTransactions(t *testing.T, ctx context.Context, db *gorm.DB, sessions *sessionstore.Store) {
+	t.Helper()
+	created, err := cart.Create(ctx, db, cart.CreateCommand{OperationID: uuid.NewString(), ScopeHash: sha256.Sum256([]byte("owned set transactions")), StoreID: "shop", RegionID: "region", Locale: "en"})
+	if err != nil {
+		t.Fatal("set cart setup failed")
+	}
+	ref := created.Reference
+	added, err := cart.AddItem(ctx, db, "shop", ref, cart.AddItemCommand{OperationID: uuid.NewString(), Version: "1", VariantID: "add-v", Quantity: "1"})
+	if err != nil {
+		t.Fatal("set line setup failed")
+	}
+	command := cart.AddItemCommand{OperationID: uuid.NewString(), Version: "2", Quantity: "2"}
+	results := make([]cart.AddItemResult, 8)
+	errors := make([]error, 8)
+	var wg sync.WaitGroup
+	for i := range results {
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			results[i], errors[i] = cart.SetItem(ctx, db, "shop", ref, added.LineID, command)
+		}(i)
+	}
+	wg.Wait()
+	fresh := 0
+	for i, r := range results {
+		if errors[i] != nil || r.Version != "3" || r.Quantity != "2" {
+			t.Fatal("set concurrent receipt failed")
+		}
+		if !r.Replayed {
+			fresh++
+		}
+	}
+	if fresh != 1 {
+		t.Fatal("set applied repeatedly")
+	}
+	fault := "20000000-0000-4000-8000-000000000099"
+	if db.Exec("ALTER TABLE cart_item_operations ADD CONSTRAINT owned_set_failure CHECK(operation_id<>'"+fault+"')").Error != nil {
+		t.Fatal("set fault setup failed")
+	}
+	_, err = cart.SetItem(ctx, db, "shop", ref, added.LineID, cart.AddItemCommand{OperationID: fault, Version: "3", Quantity: "0"})
+	if db.Exec("ALTER TABLE cart_item_operations DROP CHECK owned_set_failure").Error != nil {
+		t.Fatal("set fault cleanup failed")
+	}
+	amounts, readErr := cart.ReadAmounts(ctx, db, "shop", ref)
+	if err != cart.ErrStorage || readErr != nil || amounts.Version != "3" || len(amounts.Lines) != 1 || amounts.Lines[0].Quantity != "2" {
+		t.Fatal("failed removal did not roll back")
+	}
+	// Removal must work after the product disappears and preserve its row.
+	if db.Exec("UPDATE catalog_products SET status='draft' WHERE id='add-product'").Error != nil {
+		t.Fatal("set product fault failed")
+	}
+	remove := cart.AddItemCommand{OperationID: uuid.NewString(), Version: "3", Quantity: "0"}
+	r, err := cart.SetItem(ctx, db, "shop", ref, added.LineID, remove)
+	if db.Exec("UPDATE catalog_products SET status='published' WHERE id='add-product'").Error != nil {
+		t.Fatal("set product restore failed")
+	}
+	if err != nil || r.Quantity != "0" || r.Version != "4" {
+		t.Fatal("draft product removal failed")
+	}
+	replay, err := cart.SetItem(ctx, db, "shop", ref, added.LineID, remove)
+	if err != nil || !replay.Replayed || replay.Version != "4" {
+		t.Fatal("removal replay failed")
+	}
+	var n int64
+	if db.Table("cart_line_items").Where("id=? AND deleted_at IS NOT NULL", added.LineID).Count(&n).Error != nil || n != 1 {
+		t.Fatal("removal destroyed saved row")
+	}
+	// Add and set share the key namespace but cannot replay each other's digest.
+	_, err = cart.AddItem(ctx, db, "shop", ref, cart.AddItemCommand{OperationID: remove.OperationID, Version: "3", VariantID: "add-v", Quantity: "1"})
+	if err != cart.ErrConflict {
+		t.Fatal("operation kind confused by same key")
+	}
 }
