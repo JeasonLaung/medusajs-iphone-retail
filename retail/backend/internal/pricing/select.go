@@ -19,6 +19,10 @@ var ErrInput = errors.New("pricing configuration unavailable")
 type Context struct {
 	Currency, Region, Channel, Quantity string
 	CustomerGroups                      []string
+	// QuantityOmitted models the original shipping cart context without a
+	// quantity property. It requires Quantity to be empty; product callers
+	// continue to require an explicit positive integral quantity.
+	QuantityOmitted bool
 }
 type Rule struct{ Attribute, Operator, Value string }
 type ListRule struct {
@@ -168,8 +172,19 @@ func taxInclusive(p Price, c Context, prefs []Preference) (bool, error) {
 // and service's override/sale/reference semantics. Exact ties use source ID.
 // A true zero base is compared numerically rather than JS truthiness.
 func Select(prices []Price, prefs []Preference, c Context, now time.Time) (*Quote, error) {
-	_, qty, err := number(totals.Number{Decimal: c.Quantity})
-	if err != nil || qty.Sign() <= 0 || !qty.IsInt() || c.Currency == "" || c.Region == "" {
+	var qty *big.Rat
+	var err error
+	if c.QuantityOmitted {
+		if c.Quantity != "" {
+			return nil, ErrInput
+		}
+	} else {
+		_, qty, err = number(totals.Number{Decimal: c.Quantity})
+		if err != nil || qty.Sign() <= 0 || !qty.IsInt() {
+			return nil, ErrInput
+		}
+	}
+	if c.Currency == "" || c.Region == "" {
 		return nil, ErrInput
 	}
 	rows := []eligible{}
@@ -196,8 +211,16 @@ func Select(prices []Price, prefs []Preference, c Context, now time.Time) (*Quot
 		if min != nil && max != nil && min.Cmp(max) > 0 {
 			return nil, ErrInput
 		}
-		if min != nil && qty.Cmp(min) < 0 || max != nil && qty.Cmp(max) > 0 {
-			continue
+		if c.QuantityOmitted {
+			// The installed repository's undefined branch tests only the
+			// minimum against one. It intentionally does not test maximum.
+			if min != nil && min.Cmp(big.NewRat(1, 1)) > 0 {
+				continue
+			}
+		} else {
+			if min != nil && qty.Cmp(min) < 0 || max != nil && qty.Cmp(max) > 0 {
+				continue
+			}
 		}
 		amount, value, e := number(p.Amount)
 		if e != nil {

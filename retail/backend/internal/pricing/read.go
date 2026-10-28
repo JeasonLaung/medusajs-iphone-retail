@@ -11,6 +11,9 @@ import (
 // Read uses the caller's repeatable-read transaction. Both shared price sets and
 // all applicable rules/lists are loaded before selection, never page-truncated.
 func Read(tx *gorm.DB, variants []string, c Context, now time.Time) (map[string]*Quote, error) {
+	if c.QuantityOmitted {
+		return nil, ErrInput
+	}
 	quotes := map[string]*Quote{}
 	if len(variants) > 10000 {
 		return nil, ErrInput

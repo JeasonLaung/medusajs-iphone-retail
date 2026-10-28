@@ -179,3 +179,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-28 购物车快照准备补充：[空值补全与当前商品关联](../docs/migration/cart-item-snapshots.md)在持有者/版本锁内保留历史文案、显式空值、选项及精确价格，按原逻辑更新当前product_id/礼品卡并归一null metadata。5组原纯函数证据固定；SQL结果以最新admin-auth-report的cart_item_snapshots及源码SHA为准。完整促销/配送/支付编排、翻译及生产页面仍待完成，T032/T033未整体验收。
 
 2026-10-28 固定运价补充：[共享价格集合与flat选项关系读取](../docs/migration/flat-shipping-prices.md)抽出同一精确ReadSets供商品及配送复用；显式上下文、共享集合/多集合歧义、缺价及软删除由人工SQL验证。结果以最新admin-auth-report.flat_shipping_prices及源码SHA为准。运价不等于配送资格；地址/渠道/规则、缺省数量及额外上下文、provider和运费保存继续待办，T032/T033未整体验收。
+
+2026-10-28 固定运价数量补充：[原缺省数量分支](../docs/migration/flat-shipping-prices.md)已承接min<=1或null且不检查max，显式数量与商品入口仍严格校验。3组实际原SQL构造分支证据固定，Go边界与人工SQL结果以最新报告SHA为准。总额等上下文、配送资格、provider和完整交易继续待办，相关任务未整体验收。

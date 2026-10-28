@@ -15,6 +15,11 @@ import (
 // no missing price becomes zero. Calculated, missing and deleted options have
 // no quote. Multiple active price-set links are ambiguous and reject the batch.
 func ReadFlatPrices(tx *gorm.DB, optionIDs []string, context pricing.Context, at time.Time) (map[string]*pricing.Quote, error) {
+	// A cart has no item quantity when the original flat shipping resolver
+	// receives its context. Preserve omission instead of synthesizing one.
+	if context.Quantity == "" {
+		context.QuantityOmitted = true
+	}
 	if tx == nil || tx.Statement == nil || len(optionIDs) > 1000 || at.IsZero() {
 		return nil, pricing.ErrInput
 	}

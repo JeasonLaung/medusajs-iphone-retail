@@ -8,6 +8,33 @@ import (
 )
 
 func ptr[T any](v T) *T { return &v }
+
+func TestOmittedShippingQuantity(t *testing.T) {
+	now := time.Date(2026, 10, 28, 0, 0, 0, 0, time.UTC)
+	base := testPrice("base", "100")
+	smallMax := testPrice("small-max", "30")
+	smallMax.Max = ptr(totals.Number{Decimal: "0.5"})
+	largeMin := testPrice("large-min", "1")
+	largeMin.Min = ptr(totals.Number{Decimal: "1.000000000000000001"})
+	c := Context{Region: "europe", Currency: "eur", QuantityOmitted: true}
+	q, err := Select([]Price{base, smallMax, largeMin}, nil, c, now)
+	if err != nil || q == nil || q.Amount != "30" {
+		t.Fatal("omitted quantity filter differs")
+	}
+	c.QuantityOmitted, c.Quantity = false, "1"
+	q, err = Select([]Price{base, smallMax, largeMin}, nil, c, now)
+	if err != nil || q == nil || q.Amount != "100" {
+		t.Fatal("explicit quantity one changed")
+	}
+	c.Quantity = ""
+	if _, err := Select([]Price{base}, nil, c, now); err != ErrInput {
+		t.Fatal("missing product quantity accepted")
+	}
+	c.QuantityOmitted, c.Quantity = true, "1"
+	if _, err := Select([]Price{base}, nil, c, now); err != ErrInput {
+		t.Fatal("contradictory quantity accepted")
+	}
+}
 func testPrice(id, amount string) Price {
 	return Price{ID: id, SetID: "set", Currency: "eur", Amount: totals.Number{Decimal: amount}, RulesCount: ptr(0)}
 }

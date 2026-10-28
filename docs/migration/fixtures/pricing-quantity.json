@@ -1,0 +1,143 @@
+{
+  "format_version": 1,
+  "scope": "Actual original SQL-builder quantity branch only; not a database or full shipping acceptance",
+  "source_file": "medusa-store/node_modules/.pnpm/@medusajs+pricing@2.21.2_@m_4e1a6dc826a0056314f98a5f7178c0ab/node_modules/@medusajs/pricing/dist/repositories/pricing.js",
+  "source_sha256": "4397e89a7612f231c8f7b30d14c65d918114e37cf74c26775e86594438b2b37d",
+  "cases": [
+    {
+      "name": "omitted",
+      "calls": [
+        [
+          "and-group"
+        ],
+        [
+          "where",
+          "price.min_quantity",
+          "<=",
+          1
+        ],
+        [
+          "orWhereNull",
+          "price.min_quantity"
+        ],
+        [
+          "end-group"
+        ]
+      ]
+    },
+    {
+      "name": "one",
+      "calls": [
+        [
+          "and-group"
+        ],
+        [
+          "or-group"
+        ],
+        [
+          "where",
+          "price.min_quantity",
+          "<=",
+          1
+        ],
+        [
+          "andWhere",
+          "price.max_quantity",
+          ">=",
+          1
+        ],
+        [
+          "orWhere",
+          "price.min_quantity",
+          "<=",
+          1
+        ],
+        [
+          "whereNull",
+          "price.max_quantity"
+        ],
+        [
+          "orWhereNull",
+          "price.min_quantity"
+        ],
+        [
+          "whereNull",
+          "price.max_quantity"
+        ],
+        [
+          "orWhereNull",
+          "price.min_quantity"
+        ],
+        [
+          "andWhere",
+          "price.max_quantity",
+          ">=",
+          1
+        ],
+        [
+          "end-group"
+        ],
+        [
+          "end-group"
+        ]
+      ]
+    },
+    {
+      "name": "two",
+      "calls": [
+        [
+          "and-group"
+        ],
+        [
+          "or-group"
+        ],
+        [
+          "where",
+          "price.min_quantity",
+          "<=",
+          2
+        ],
+        [
+          "andWhere",
+          "price.max_quantity",
+          ">=",
+          2
+        ],
+        [
+          "orWhere",
+          "price.min_quantity",
+          "<=",
+          2
+        ],
+        [
+          "whereNull",
+          "price.max_quantity"
+        ],
+        [
+          "orWhereNull",
+          "price.min_quantity"
+        ],
+        [
+          "whereNull",
+          "price.max_quantity"
+        ],
+        [
+          "orWhereNull",
+          "price.min_quantity"
+        ],
+        [
+          "andWhere",
+          "price.max_quantity",
+          ">=",
+          2
+        ],
+        [
+          "end-group"
+        ],
+        [
+          "end-group"
+        ]
+      ]
+    }
+  ]
+}

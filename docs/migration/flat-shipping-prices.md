@@ -20,3 +20,7 @@ go vet ./internal/pricing ./internal/fulfillment
 本批没有新SQL迁移、启用能力、HTTP、外部调用、持久写或前台样式变化。运费保存与失效配送方法移除、税行/促销及支付重算、正式页面和checkout仍需后续完成。
 
 本批结果：完整隔离SQL及Go全包/静态检查通过；固定快照159表/27140行复核通过，30个公开商品、1558变体、两个报价上下文与原服务对照，查询指纹不变。报告源码SHA逐项核对；测试资源清理完成。进一步审查原pricing/repositories/pricing.js确认：quantity为undefined时仅要求min_quantity<=1或为null，不检查max_quantity，直接填1会改变边界。当前入口仍要求显式正整数quantity，这项原缺省语义继续待实现，不以此批测试宣称覆盖。
+
+后续更新：缺省数量语义已实现。pricing.Context.QuantityOmitted 明确标记原上下文没有 quantity 字段，且拒绝与非空 Quantity 同时使用。ReadFlatPrices 在空 Quantity 时采用该分支；原商品 pricing.Read 拒绝此标记，商品调用仍要求显式正整数。缺省时只筛 min<=1 或 null，不用 max 限制；显式数量继续同时筛 min/max。配置中无效的数值和颠倒区间仍沿用现有拒绝策略。
+
+`capture-pricing-quantity.cjs --check` 从实际安装的 pricing/repositories/pricing.js 提取并执行数量条件分支，捕获原查询构造调用，固定缺省、1、2三组及完整来源SHA（fixtures/pricing-quantity.json）。只执行该分支，不构造服务或访问数据库。Go专项独立验证缺省忽略max、小数min>1排除、显式1行为和矛盾输入拒绝。实际SQL专项增加 max=0.5 的人工价格，核对缺省时入选；显式数量排除小于1的max另由Go专项覆盖。实际结果以最新 admin-auth-report.flat_shipping_prices.omitted_quantity_ignores_maximum 及源码摘要为准。先前“缺省数量待实现”的段落是当时历史记录；总额等其他上下文、配送资格及provider继续待完成。

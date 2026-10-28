@@ -68,6 +68,15 @@ func checkFlatShippingPrices(t *testing.T, ctx context.Context, db *gorm.DB) {
 		t.Fatal("shared flat price exactness or scope differs")
 	}
 	c.Quantity = "2"
+	// Missing quantity differs from quantity=1: the original ignores maximum.
+	exec(`INSERT INTO pricing_prices(id,price_set_id,currency_code,amount,raw_amount,rules_count,max_quantity,raw_max_quantity,created_at,updated_at) VALUES('flat-small-max','set','eur',4,'{"value":"4","precision":38}',0,0.5,'{"value":"0.5","precision":38}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+	omitted := c
+	omitted.Quantity = ""
+	quotes, err = read(ids, omitted)
+	if err != nil || quotes["flat-a"] == nil || quotes["flat-a"].Amount != "4" {
+		t.Fatal("omitted flat quantity treated as one")
+	}
+	exec(`UPDATE pricing_prices SET deleted_at=UTC_TIMESTAMP(6) WHERE id='flat-small-max'`)
 	quotes, err = read(ids, c)
 	if err != nil || quotes["flat-a"].Amount != "80.000000000000000000001" {
 		t.Fatal("trusted flat quantity context ignored")
@@ -108,5 +117,5 @@ func checkFlatShippingPrices(t *testing.T, ctx context.Context, db *gorm.DB) {
 		t.Fatal("disabled fulfillment schema priced")
 	}
 	exec(`UPDATE fulfillment_runtime_schema SET reads_enabled=TRUE WHERE id=1`)
-	t.Log(`FLAT_SHIPPING_PRICE_REHEARSAL {"shared_set":true,"exact_raw":true,"trusted_region_quantity_currency":true,"tax_inclusive_preference":true,"missing_not_zero":true,"calculated_excluded":true,"soft_deleted_option_link_set_excluded":true,"ambiguous_links_rejected":true,"readonly_fingerprint":true,"autocommit_rejected":true,"schema_disabled_rejected":true,"eligibility_checked":false,"provider_called":false,"checkout":false}`)
+	t.Log(`FLAT_SHIPPING_PRICE_REHEARSAL {"shared_set":true,"omitted_quantity_ignores_maximum":true,"exact_raw":true,"trusted_region_quantity_currency":true,"tax_inclusive_preference":true,"missing_not_zero":true,"calculated_excluded":true,"soft_deleted_option_link_set_excluded":true,"ambiguous_links_rejected":true,"readonly_fingerprint":true,"autocommit_rejected":true,"schema_disabled_rejected":true,"eligibility_checked":false,"provider_called":false,"checkout":false}`)
 }
