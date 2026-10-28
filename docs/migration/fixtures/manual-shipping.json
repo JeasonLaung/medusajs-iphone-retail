@@ -1,0 +1,42 @@
+{
+  "format_version": 1,
+  "scope": "Artificial installed manual provider validation and capability only; no fulfillment/payment/order created",
+  "source_file": "medusa-store/node_modules/.pnpm/@medusajs+fulfillment-manua_4219737fa221e442a19f101e9e788aa0/node_modules/@medusajs/fulfillment-manual/dist/services/manual-fulfillment.js",
+  "source_sha256": "b0884bee63304b2b099526fb2b6cc7dc0d553150c968b1133f914276049071ba",
+  "identifier": "manual",
+  "options": [
+    {
+      "id": "manual-fulfillment"
+    },
+    {
+      "id": "manual-fulfillment-return",
+      "is_return": true
+    }
+  ],
+  "cases": [
+    {
+      "input": {},
+      "result": {}
+    },
+    {
+      "input": {
+        "tracking": "000123",
+        "nested": {
+          "label": "人工样例"
+        }
+      },
+      "result": {
+        "tracking": "000123",
+        "nested": {
+          "label": "人工样例"
+        }
+      }
+    },
+    {
+      "input": null,
+      "result": null
+    }
+  ],
+  "can_calculate": false,
+  "calculation_error": "Manual fulfillment does not support price calculation"
+}

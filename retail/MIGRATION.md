@@ -191,3 +191,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-28 地理配置导入补充：[复用履约回执与8表事务](../docs/migration/fulfillment-row-import.md)纳入geo_zone后共8表83字段，履约/地理双模型在写入和重放前按固定顺序核对；物理父区域缺失整批回滚。人工11行/8并发/旧RR与JSON空值、来源目标漂移和模型禁用边界通过，真实7条地理配置的77字段独立核对、174条履约地理数据的回滚/提交/重放以最新固定快照报告SHA为准。地址邮编执行、配送资格、provider及完整交易仍待完成。
 
 2026-10-28 配送候选查询补充：[渠道仓库区域与地址规则](../docs/migration/shipping-candidates.md)承接有效关系、多仓库、地址粒度OR、邮编JSON字符串精确相等及当前规则；5组原离线SQL构造固定，人工MySQL范围以admin-auth-report.shipping_candidates与源码SHA为准。候选仍需provider/仓库配置、商品profile、库存、运价和持有者版本协调，不提供HTTP或checkout，T032/T033未整体验收。
+
+2026-10-28 手工配送运价补充：[有效provider/分组/仓库与精确flat价格](../docs/migration/manual-shipping-quotes.md)按可信manual注册名单组合候选、配送分组、启用状态和仓库关联；保留含税及零运费，缺价/停用/动态运价不伪造。3组原provider纯验证与能力证据固定，人工SQL以admin-auth-report.manual_shipping_quotes与SHA为准。当前购物车profile解析、provider配置、库存、保存及完整交易继续待办，T032/T033未整体验收。
