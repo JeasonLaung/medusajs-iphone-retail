@@ -1,6 +1,7 @@
 {
   "version": 1,
   "model_sha256": "6736df15d94a4ed483777d5a757fff05cdf3c7ca44d619c9da2398841b192de6",
+  "geo_model_sha256": "8675db551f62aeb156895c2cc0386857f48a9c153d09877d64ce456b7ccd38d9",
   "tables": [
     {
       "source": "fulfillment_address",
@@ -106,6 +107,93 @@
         }
       ],
       "references": []
+    },
+    {
+      "source": "geo_zone",
+      "target": "fulfillment_geo_zones",
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "type",
+          "target": "type",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "country_code",
+          "target": "country_code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "province_code",
+          "target": "province_code",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "city",
+          "target": "city",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "service_zone_id",
+          "target": "service_zone_id",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "postal_expression",
+          "target": "postal_expression",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "metadata",
+          "target": "metadata",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false,
+          "deferred": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "primary": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false,
+          "deferred": false
+        }
+      ],
+      "references": [
+        {
+          "column": "service_zone_id",
+          "parent": "fulfillment_service_zones",
+          "parent_column": "id"
+        }
+      ]
     },
     {
       "source": "location_fulfillment_provider",

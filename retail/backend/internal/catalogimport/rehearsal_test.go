@@ -123,7 +123,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 		paymentSelected[name] = nil
 	}
 	fulfillmentTables, err := fulfillmentimport.SourceTables()
-	if err != nil || len(fulfillmentTables) != 7 {
+	if err != nil || len(fulfillmentTables) != 8 {
 		t.Fatal("fulfillment import scope unavailable")
 	}
 	fulfillmentSelected := map[string][]rowimport.SourceRow{}
@@ -297,11 +297,11 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog embedded schema plan invalid")
 	}
 	created, err := schema.Apply(ctx, db, plan)
-	if err != nil || created.Applied != 29 || schema.CheckApplied(ctx, db, plan) != nil {
+	if err != nil || created.Applied != 30 || schema.CheckApplied(ctx, db, plan) != nil {
 		t.Fatal("catalog embedded migration failed")
 	}
 	repeated, err := schema.Apply(ctx, db, plan)
-	if err != nil || repeated.Skipped != 29 {
+	if err != nil || repeated.Skipped != 30 {
 		t.Fatal("catalog embedded migration replay failed")
 	}
 	counts["explicit_schema_migrations"] = int64(created.Applied)
@@ -638,8 +638,9 @@ func TestActualCatalogMySQL(t *testing.T) {
 		}
 		counts["fulfillment_import_"+name+"_rows"] = int64(len(fulfillmentSelected[name]))
 	}
-	counts["fulfillment_batch_source_tables"] = 7
-	counts["fulfillment_batch_source_columns"] = 72
+	counts["fulfillment_batch_source_tables"] = 8
+	counts["fulfillment_batch_source_columns"] = 83
+	checkActualGeoRows(t, ctx, db, fulfillmentSelected["geo_zone"], counts)
 	counts["fulfillment_batch_rows"] = int64(fulfillmentRows)
 	counts["fulfillment_batch_rollback_rows"] = int64(rolledFulfillments.Rows)
 	counts["fulfillment_reference_holds"] = count("fulfillment_migration_reference_holds")

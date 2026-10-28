@@ -149,7 +149,14 @@ func TestOwnedFulfillmentHistory(t *testing.T) {
 		v["stock_location_id"], v["fulfillment_set_id"] = text("retired-location"), text("retired-set-"+id)
 		sets = append(sets, v)
 	}
-	batch := map[string][]rowimport.SourceRow{"fulfillment_address": {address}, "fulfillment": {shipment}, "fulfillment_item": {item}, "fulfillment_label": {label}, "shipping_option_rule": {rule}, "location_fulfillment_provider": providers, "location_fulfillment_set": sets}
+	geoFields := "id type country_code province_code city service_zone_id postal_expression metadata created_at updated_at deleted_at"
+	geo := row(geoFields, "geo")
+	geo["type"], geo["country_code"], geo["province_code"], geo["city"], geo["service_zone_id"] = text("zip"), text("DK"), text("01"), text("Århus"), text("zone")
+	geo["postal_expression"] = raw(`{ "eq" : ["00123"], "amount":9007199254740993 }`)
+	geo["metadata"] = raw(`{"label":"区域", "label":"original duplicate"}`)
+	geoNull := row(geoFields, "geo-null")
+	geoNull["type"], geoNull["country_code"], geoNull["service_zone_id"], geoNull["metadata"] = text("country"), text("dk"), text("zone"), raw(`null`)
+	batch := map[string][]rowimport.SourceRow{"fulfillment_address": {address}, "fulfillment": {shipment}, "fulfillment_item": {item}, "fulfillment_label": {label}, "shipping_option_rule": {rule}, "location_fulfillment_provider": providers, "location_fulfillment_set": sets, "geo_zone": {geo, geoNull}}
 	const snapshot = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 	run := func(commit bool) (fulfillmentimport.Result, error) {
 		tx, err := db.BeginTx(ctx, nil)
@@ -167,6 +174,7 @@ func TestOwnedFulfillmentHistory(t *testing.T) {
 		return r, err
 	}
 	empty := func() {
+		count("fulfillment_geo_zones", 0)
 		for _, m := range matches {
 			count(string(m[1]), 0)
 		}
@@ -174,10 +182,17 @@ func TestOwnedFulfillmentHistory(t *testing.T) {
 		count("fulfillment_migration_reference_holds", 0)
 	}
 	staged, err := run(false)
-	if err != nil || staged.Rows != 9 || staged.ObservedMissingReferences != 11 {
+	if err != nil || staged.Rows != 11 || staged.ObservedMissingReferences != 11 {
 		t.Fatal("fulfillment rollback staging failed")
 	}
 	empty()
+	// A missing physical parent must roll back receipts and all earlier tables.
+	geo["service_zone_id"] = text("missing-zone")
+	if _, err := run(true); err != fulfillmentimport.ErrStorage {
+		t.Fatal("geo missing parent accepted")
+	}
+	empty()
+	geo["service_zone_id"] = text("zone")
 	exec(`CREATE TRIGGER reject_fulfillment_hold BEFORE INSERT ON fulfillment_migration_reference_holds FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='artificial hold failure'`)
 	if r, err := run(true); !errors.Is(err, fulfillmentimport.ErrStorage) || r != (fulfillmentimport.Result{}) {
 		t.Fatal("fulfillment late failure not atomic")
@@ -215,12 +230,12 @@ func TestOwnedFulfillmentHistory(t *testing.T) {
 	}
 	fresh, replays := 0, 0
 	for v := range results {
-		if v.Rows != 9 || v.ObservedMissingReferences != 11 {
+		if v.Rows != 11 || v.ObservedMissingReferences != 11 {
 			t.Fatal("fulfillment concurrent counts differ")
 		}
 		if v.ReplayedRows == 0 {
 			fresh++
-		} else if v.ReplayedRows == 9 {
+		} else if v.ReplayedRows == 11 {
 			replays++
 		}
 	}
@@ -228,14 +243,54 @@ func TestOwnedFulfillmentHistory(t *testing.T) {
 		t.Fatal("fulfillment duplicate batch committed")
 	}
 	v, err := fulfillmentimport.Import(ctx, oldTx, snapshot, batch)
-	if err != nil || v.ReplayedRows != 9 || oldTx.Commit() != nil {
+	if err != nil || v.ReplayedRows != 11 || oldTx.Commit() != nil {
 		t.Fatal("fulfillment old snapshot hid receipts")
 	}
-	count("migration_fulfillment_rows", 9)
+	count("migration_fulfillment_rows", 11)
+	count("fulfillment_geo_zones", 2)
 	count("fulfillment_migration_reference_holds", 11)
 	count("admin_users", 0)
 	count("inventory_levels", 0)
 	count("inventory_reservations", 0)
+	var postal, metadata, country, province string
+	if db.QueryRowContext(ctx, `SELECT postal_expression,metadata,country_code,province_code FROM fulfillment_geo_zones WHERE id='geo'`).Scan(&postal, &metadata, &country, &province) != nil || postal != string(geo["postal_expression"].Raw) || metadata != string(geo["metadata"].Raw) || country != "DK" || province != "01" {
+		t.Fatal("geo exact JSON/text changed")
+	}
+	var nulls bool
+	if db.QueryRowContext(ctx, `SELECT postal_expression IS NULL AND province_code IS NULL AND city IS NULL AND metadata='null' AND metadata IS NOT NULL FROM fulfillment_geo_zones WHERE id='geo-null'`).Scan(&nulls) != nil || !nulls {
+		t.Fatal("geo SQL null/JSON null changed")
+	}
+	exec(`UPDATE fulfillment_geo_zones SET country_code='de' WHERE id='geo'`)
+	if _, err := run(true); err != fulfillmentimport.ErrConflict {
+		t.Fatal("geo target drift overwritten")
+	}
+	exec(`UPDATE fulfillment_geo_zones SET country_code='DK' WHERE id='geo'`)
+	geo["country_code"] = text("de")
+	if _, err := run(true); err != fulfillmentimport.ErrConflict {
+		t.Fatal("geo source drift accepted")
+	}
+	geo["country_code"] = text("DK")
+	delete(batch, "geo_zone")
+	if _, err := run(true); err != fulfillmentimport.ErrPolicy {
+		t.Fatal("missing geo table key accepted")
+	}
+	batch["geo_zone"] = []rowimport.SourceRow{geo, geoNull}
+	exec(`UPDATE geo_runtime_schema SET reads_enabled=FALSE`)
+	if _, err := run(true); err != fulfillmentimport.ErrPolicy {
+		t.Fatal("disabled geo model accepted on replay")
+	}
+	exec(`UPDATE geo_runtime_schema SET reads_enabled=TRUE`)
+	var geoModel string
+	if db.QueryRowContext(ctx, `SELECT model_sha256 FROM geo_runtime_schema WHERE id=1`).Scan(&geoModel) != nil {
+		t.Fatal("geo model unavailable")
+	}
+	exec(`UPDATE geo_runtime_schema SET model_sha256=REPEAT('0',64)`)
+	if _, err := run(true); err != fulfillmentimport.ErrPolicy {
+		t.Fatal("geo model drift accepted on replay")
+	}
+	if _, err := db.ExecContext(ctx, `UPDATE geo_runtime_schema SET model_sha256=?`, geoModel); err != nil {
+		t.Fatal("geo model restore failed")
+	}
 	var quantity, sku, tracking string
 	if db.QueryRowContext(ctx, "SELECT CAST(quantity AS CHAR),sku FROM fulfillment_items WHERE id='item'").Scan(&quantity, &sku) != nil || quantity != "9007199254740993.000000000000000001" || sku != "0000123456789012345" {
 		t.Fatal("fulfillment precision lost")
@@ -296,5 +351,5 @@ func TestOwnedFulfillmentHistory(t *testing.T) {
 	if blocked.QueryRowContext(ctx, "SELECT id FROM fulfillments").Scan(&kept) != nil || kept != 17 {
 		t.Fatal("existing fulfillment row lost")
 	}
-	t.Log(`FULFILLMENT_HISTORY_REHEARSAL {"migrations":30,"tables":7,"source_columns":72,"rows":9,"reference_holds":11,"concurrent_batches":8,"single_fresh_batch":1,"replayed_batches":7,"old_snapshot_replay":true,"rollback_atomic":true,"late_failure_rollback":true,"exact_quantity_and_identifiers":true,"composite_identity_preserved":true,"physical_fk_json_boolean_enum_rejected":true,"target_drift_rejected":true,"disabled_schema_rejected":true,"existing_tables_preserved":true,"inventory_not_modified":true,"provider_called":false,"writes_enabled":false}`)
+	t.Log(`FULFILLMENT_HISTORY_REHEARSAL {"migrations":30,"tables":8,"source_columns":83,"rows":11,"reference_holds":11,"concurrent_batches":8,"single_fresh_batch":1,"replayed_batches":7,"old_snapshot_replay":true,"rollback_atomic":true,"late_failure_rollback":true,"exact_quantity_and_identifiers":true,"composite_identity_preserved":true,"physical_fk_json_boolean_enum_rejected":true,"target_drift_rejected":true,"disabled_schema_rejected":true,"existing_tables_preserved":true,"inventory_not_modified":true,"geo_exact_json_text_and_nulls":true,"geo_missing_parent_atomic":true,"geo_source_target_drift_rejected":true,"geo_required_table_key":true,"geo_model_checked_on_replay":true,"provider_called":false,"writes_enabled":false}`)
 }

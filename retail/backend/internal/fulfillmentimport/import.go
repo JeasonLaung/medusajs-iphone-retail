@@ -47,14 +47,15 @@ type table struct {
 	References []reference `json:"references"`
 }
 type plan struct {
-	Version  int     `json:"version"`
-	ModelSHA string  `json:"model_sha256"`
-	Tables   []table `json:"tables"`
+	Version     int     `json:"version"`
+	ModelSHA    string  `json:"model_sha256"`
+	GeoModelSHA string  `json:"geo_model_sha256"`
+	Tables      []table `json:"tables"`
 }
 
 var plans = sync.OnceValues(func() (plan, error) {
 	var p plan
-	if json.Unmarshal(program, &p) != nil || p.Version != 1 || len(p.Tables) != 7 || len(p.ModelSHA) != 64 {
+	if json.Unmarshal(program, &p) != nil || p.Version != 1 || len(p.Tables) != 8 || len(p.ModelSHA) != 64 || len(p.GeoModelSHA) != 64 {
 		return p, ErrPolicy
 	}
 	seen := map[string]bool{}
@@ -126,7 +127,7 @@ func sourceHash(row rowimport.SourceRow) []byte {
 	return h[:]
 }
 
-// Import stages one batch with all seven ordinary table keys (including empty
+// Import stages one batch with all eight ordinary table keys (including empty
 // slices). Caller verifies the complete snapshot, schema, counts and source
 // relationships, and MUST roll back on ANY error or subsequent domain failure.
 // No success grants shipping, cancellation, provider or inventory authority.
@@ -193,6 +194,11 @@ func Import(ctx context.Context, tx *sql.Tx, snapshotSHA string, input map[strin
 	var model string
 	var reads, writes bool
 	if tx.QueryRowContext(ctx, `SELECT schema_version,model_sha256,reads_enabled,writes_enabled FROM fulfillment_runtime_schema WHERE id=1 FOR UPDATE`).Scan(&version, &model, &reads, &writes) != nil || version != 1 || model != p.ModelSHA || !reads || writes {
+		return Result{}, ErrPolicy
+	}
+	// Keep one fixed lock order across both declared models. Do not accept an
+	// empty geo batch as permission to bypass schema readiness on replay.
+	if tx.QueryRowContext(ctx, `SELECT schema_version,model_sha256,reads_enabled,writes_enabled FROM geo_runtime_schema WHERE id=1 FOR UPDATE`).Scan(&version, &model, &reads, &writes) != nil || version != 1 || model != p.GeoModelSHA || !reads || writes {
 		return Result{}, ErrPolicy
 	}
 	for _, row := range rows {
