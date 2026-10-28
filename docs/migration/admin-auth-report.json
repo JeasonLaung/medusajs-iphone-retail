@@ -174,6 +174,17 @@
     "no_inventory_mutation": true,
     "checkout_integrated": false
   },
+  "cart_shipping_stock": {
+    "per_line_warehouse_restrictions": true,
+    "shared_capacity_across_groups": true,
+    "foreign_and_empty_denied": true,
+    "assignment_cannot_escape": true,
+    "readonly_fingerprint": true,
+    "autocommit_rejected": true,
+    "inventory_reserved": false,
+    "cart_shipping_integrated": false,
+    "checkout": false
+  },
   "store_display": {
     "reviewed_fields_only": true,
     "exact_launch_prices": true,
@@ -753,7 +764,7 @@
     "checkout": false
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "b2b51b600947c7069f11da8542748e1dc7561c7cc57b51a0a6333fb872264952",
+    "retail/scripts/test-admin-auth.py": "b27c47ae9d68558d3bbb62dcd01ffa6cd9191b503619a505bd3abd21bd640faa",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "e4720341ea9d54c79f162058eb507a2af641cc21eeeea7c3945b1fd044919ca3",
@@ -804,7 +815,9 @@
     "retail/backend/internal/catalog/admin_prices_test.go": "cc11724c0df95e3897726de133929d35f87e8c874dc6aaacef32629ef990c03e",
     "retail/backend/internal/inventory/availability.go": "5d327d805338c4749251224b820131c55535334bf542e9c99ff028e91f9d52e5",
     "retail/backend/internal/inventory/availability_test.go": "65b49a07cdb31e8b4c85798e7182fee14a21f08d2a4d7c2317e490056106c41a",
-    "retail/backend/internal/inventory/cart_stock.go": "76efad04832e3b764dbe5dcf751bb2d9d7c96a6d0424fee99a2e2399e6d7e3bd",
+    "retail/backend/internal/inventory/cart_shipping_stock.go": "417a38292284b7fc591b0105848316a90b26438c71e05e76cfec6f505c1cc556",
+    "retail/backend/internal/inventory/cart_shipping_stock_test.go": "853ee098534e4df63dfc5b5cbc2e41546894145d7cd5d5e1841abdf6f4433eda",
+    "retail/backend/internal/inventory/cart_stock.go": "7476e966d17cfb35748b7a84fee57fd64259d581944c0c1fd2cda5255de7c4f9",
     "retail/backend/internal/inventory/cart_stock_test.go": "ed6732b07c11e1b27f7f1fbddbc0fee1db81195c4bfef295a3596f3732f9df64",
     "retail/backend/internal/inventory/edit.go": "2d9b6f06a1b139f748d9150deb1b1f82a41942552ea6d9d320b4077a58e4809f",
     "retail/backend/internal/inventory/edit_test.go": "d422fda3dc223157be967f3927ed019b296c9836960ab1a83bd0efd7d459d047",
@@ -911,7 +924,8 @@
     "retail/backend/internal/identity/store_products_test.go": "a5fccef440e350c410434362036a50fa970056848b6610966c5883ed1053105b",
     "retail/backend/internal/identity/store_pricing_test.go": "501b73f56f1d6c8958b2b1f99304b31ae6423455efd50826948518e74ec261f7",
     "retail/backend/internal/identity/store_availability_test.go": "b3de089d7d0d6a3c5e6789276abeede927233fd053ac0200bc5c2ed92f4a4f9b",
-    "retail/backend/internal/identity/cart_stock_test.go": "469cdadbd1bee911cc59723d03f70ff4748130cf17a7f59675634aca83f083d6",
+    "retail/backend/internal/identity/cart_stock_test.go": "69b8d2f2c7a4a41659e0b0042e83c7a352015fc5826adf643abd2ff210cadc0e",
+    "retail/backend/internal/identity/cart_shipping_stock_test.go": "14dbe7d2fb98395b393acd24c344d6b7d68503639e71182959d2d84a5386640d",
     "retail/backend/internal/catalog/store_display.go": "3936c1b53fff54a91e0b2daec9d0e3df1913643a241466a95b1c66443fd3eec1",
     "retail/backend/internal/catalog/store_display_test.go": "f7e031aac6706b4711ce5844a3417193da4be48e5a88669acbaf67f91a8d88b7",
     "retail/backend/internal/identity/store_display_test.go": "0f0db844763799731787dbff3da9f7878c504770187e98ab73ace82e9f9574ea",

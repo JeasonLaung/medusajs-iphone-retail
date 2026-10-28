@@ -116,6 +116,10 @@ func ReadCartStock(tx *gorm.DB, variants []AvailableVariant, lines []CartStockLi
 }
 
 func planCartStock(ctx context.Context, variants []AvailableVariant, lines []CartStockLine, facts *availabilityFacts, budget int) (CartStockPlan, error) {
+	return planCartStockAtLocations(ctx, variants, lines, facts, nil, budget)
+}
+
+func planCartStockAtLocations(ctx context.Context, variants []AvailableVariant, lines []CartStockLine, facts *availabilityFacts, allowed map[string]map[string]bool, budget int) (CartStockPlan, error) {
 	denied := CartStockPlan{State: "unavailable", Assignments: []CartStockAssignment{}}
 	search := &stockSearch{ctx: ctx, remaining: budget}
 	byID := map[string]AvailableVariant{}
@@ -128,6 +132,18 @@ func planCartStock(ctx context.Context, variants []AvailableVariant, lines []Car
 			return CartStockPlan{}, err
 		}
 		v := byID[line.VariantID]
+		locations := facts.locations
+		if allowed != nil {
+			locations = []string{}
+			for _, location := range facts.locations {
+				if allowed[line.ID][location] {
+					locations = append(locations, location)
+				}
+			}
+			if len(locations) == 0 {
+				return denied, nil
+			}
+		}
 		if !v.Complete {
 			denied.State = "incomplete"
 			return denied, nil
@@ -153,7 +169,7 @@ func planCartStock(ctx context.Context, variants []AvailableVariant, lines []Car
 			}
 			seenItems[r.InventoryItemID] = true
 			d.items[r.InventoryItemID], _ = scaled(amount)
-			for _, location := range facts.locations {
+			for _, location := range locations {
 				healthy, fits := true, true
 				for item, need := range d.items {
 					if err := search.step(); err != nil {
@@ -176,7 +192,7 @@ func planCartStock(ctx context.Context, variants []AvailableVariant, lines []Car
 				// Missing/held/mismatched levels are unavailable, even for backorders.
 				// A healthy but insufficient level is a normal stock rejection.
 				if !d.backorder {
-					for _, location := range facts.locations {
+					for _, location := range locations {
 						healthy := true
 						for item := range d.items {
 							if _, ok := facts.safe[availabilityPair{item, location}]; !ok {

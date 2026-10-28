@@ -426,3 +426,5 @@
 2026-10-28 购物车配送分组补充：[当前变体关系与完整覆盖](migration/cart-shipping-profiles.md)按当前变体/商品解析有效profile，校验持有者与版本，拒绝未覆盖配送行与歧义，保留原非配送标记和数量。6组原纯过滤固定；人工SQL通过范围以最新admin-auth-report.cart_shipping_profiles与SHA为准。完整报价/库存/保存/checkout继续待办，T032/T033未整体验收。
 
 2026-10-28 购物车运费上下文补充：[保存地址与地区币种绑定](migration/cart-shipping-quotes.md)在当前持有者/版本锁内组合配送分组及manual固定运价，保留缺价分组，不伪造自定义规则hook。地址删除/超限、未注册provider、过期版本及autocommit拒绝；人工SQL通过范围以admin-auth-report.cart_shipping_quotes与实现SHA为准。按配送仓库库存、完整上下文/provider配置、运费保存/重算及正式交互继续待办，T032/T033未验收。
+
+2026-10-28 配送仓库库存补充：[每行仓库与整车共享容量](migration/cart-shipping-stock.md)复用规划器增加显式每行仓库限制，空列表不回退，外渠道不扩大范围，backorder和非库存管理也受仓库约束；原加购库存观察不变。人工SQL通过范围以admin-auth-report.cart_shipping_stock与SHA为准。选中方法的购物车组装、非配送行、共享预留/保存及完整交易继续待办，T032/T033未验收。

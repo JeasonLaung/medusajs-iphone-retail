@@ -316,7 +316,10 @@ def main():
             files += ['retail/backend/internal/catalog/store_taxonomy.go','retail/backend/internal/catalog/store_taxonomy_test.go','retail/backend/internal/identity/store_taxonomy_test.go']
             files += ['retail/backend/internal/catalog/store_products.go','retail/backend/internal/catalog/store_products_test.go','retail/backend/internal/identity/store_products_test.go']
             files += ['retail/backend/internal/identity/store_pricing_test.go']
-            files += ['retail/backend/internal/identity/store_availability_test.go','retail/backend/internal/identity/cart_stock_test.go']
+            shipping_stock_markers = [line.split('CART_SHIPPING_STOCK_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_SHIPPING_STOCK_REHEARSAL ' in line]
+            if len(shipping_stock_markers) != 1:
+                raise RuntimeError('Cart shipping stock evidence missing')
+            files += ['retail/backend/internal/identity/store_availability_test.go','retail/backend/internal/identity/cart_stock_test.go','retail/backend/internal/identity/cart_shipping_stock_test.go']
             files += ['retail/backend/internal/catalog/store_display.go','retail/backend/internal/catalog/store_display_test.go','retail/backend/internal/identity/store_display_test.go']
             files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/pricing').glob('*.go')]
             files += ['retail/scripts/generate-cart-schema.py','retail/backend/migrations/0025_cart_relational.sql','retail/backend/internal/identity/cart_schema_test.go']
@@ -336,6 +339,7 @@ def main():
                       'store_pricing': json.loads(pricing_markers[0]),
                       'store_availability': json.loads(availability_markers[0]),
                       'cart_stock': json.loads(cart_stock_markers[0]),
+                      'cart_shipping_stock': json.loads(shipping_stock_markers[0]),
                       'store_display': json.loads(display_markers[0]),
                       'store_taxonomy': json.loads(taxonomy_markers[0]),
                       'store_regions': json.loads(region_markers[0]),

@@ -66,6 +66,7 @@ func checkWholeCartStock(t *testing.T, db *gorm.DB) {
 	if len(out.Assignments) != 2 || out.Assignments[0].LocationID == out.Assignments[1].LocationID {
 		t.Fatal("real shared stock not spread across line warehouses")
 	}
+	checkShippingStockScopes(t, db, variants, lines, fingerprint)
 	// Component one exists only at a, component two only at b. One bundle may
 	// use those two component warehouses; no component's quantity is split.
 	savedLines := append([]inventory.CartStockLine(nil), lines...)
