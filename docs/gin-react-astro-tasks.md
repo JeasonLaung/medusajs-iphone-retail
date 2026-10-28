@@ -402,3 +402,5 @@
 2026-10-28 税区SQL补充：[0028四表与事务内配置读取](migration/tax-schema-read.md)承接4表/36来源字段，保留父外键与完整文本唯一性4项审查hold，通用写能力关闭；Gin启动/健康检查核对编译模型，ReadSystem承接自动/强制地址门槛、礼品卡过滤和启用system provider。独占SQL结果以最新admin-auth-report中tax_schema_and_read及源码SHA为准；专用配置导入、Ant管理、完整换区重算仍缺，T020/T032/T033未验收。
 
 2026-10-28 税务配置导入补充：[0029回执与四表事务导入](migration/tax-import.md)完成完整值唯一性、父区延后恢复、精确回执及不可释放引用hold；独占SQL验证并发/回滚/漂移，固定快照1个provider及7个税区完成回滚、提交、精确重放。未迁移旧登录账号；Ant管理、完整重算及正式页面仍待完成，相关任务未整体验收。
+
+2026-10-28 购物车税行补充：[持有者与版本锁内的system税行替换](migration/cart-tax-refresh.md)将已保存地区/地址/商品/配送输入接到税率读取，保留整车软删除替换、精确小数及空结果清理。组件参与调用者事务，版本/幂等及完整价格/促销/配送编排仍待完成，不开放独立HTTP或checkout；实库证据以最新admin-auth-report的cart_tax_refresh及源码SHA为准，T032/T033未整体验收。
