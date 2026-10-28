@@ -412,3 +412,5 @@
 2026-10-28 固定运价补充：[共享价格集合与flat选项关系读取](migration/flat-shipping-prices.md)抽出同一精确ReadSets供商品及配送复用；显式上下文、共享集合/多集合歧义、缺价及软删除由人工SQL验证。结果以最新admin-auth-report.flat_shipping_prices及源码SHA为准。运价不等于配送资格；地址/渠道/规则、缺省数量及额外上下文、provider和运费保存继续待办，T032/T033未整体验收。
 
 2026-10-28 固定运价数量补充：[原缺省数量分支](migration/flat-shipping-prices.md)已承接min<=1或null且不检查max，显式数量与商品入口仍严格校验。3组实际原SQL构造分支证据固定，Go边界与人工SQL结果以最新报告SHA为准。总额等上下文、配送资格、provider和完整交易继续待办，相关任务未整体验收。
+
+2026-10-28 配送规则补充：[独立Go匹配与原纯函数对照](migration/shipping-rule-matching.md)承接八种运算符、嵌套数组/标量、严格相等与布尔规范化；45组原样例、精确金额及非法配置边界通过。ISO日期保留毫秒精度，其余Date.parse形式仍待扩展核验。持久规则/地址渠道资格、provider、保存及完整重算仍缺，T032/T033未整体验收。

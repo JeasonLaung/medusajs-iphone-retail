@@ -1,0 +1,714 @@
+{
+  "format_version": 1,
+  "scope": "Artificial pure shipping predicate evidence; not SQL/address/provider or cart transaction acceptance",
+  "sources": {
+    "medusa-store/node_modules/.pnpm/@medusajs+fulfillment@2.21._56be7bb9321cd21bdb14eeb6f3acdc60/node_modules/@medusajs/fulfillment/dist/utils/utils.js": "785ea17133d8a3a4cd986ca7c7bcf57213167a129f3550187be9ac5274012a0a",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/common/pick-value-from-object.js": "5d85367dca4c2a39457aacb9f5e63c45e95dacb6f71f3d989591898261326572",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/common/is-defined.js": "660628d8ae2a329234028561e3a21fe7d75c6f3a5f2ad6d223fbb78d7b24f9eb",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/common/is-object.js": "9829afa97f4ddb231607007ae4bd86666cf2371ab7e092407994d23b694017dc"
+  },
+  "cases": [
+    {
+      "name": "empty-and",
+      "context": {},
+      "rules": [],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "empty-or",
+      "context": {},
+      "rules": [],
+      "some": true,
+      "expected": false
+    },
+    {
+      "name": "boolean",
+      "context": {
+        "enabled": true
+      },
+      "rules": [
+        {
+          "attribute": "enabled",
+          "operator": "eq",
+          "value": true
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "false-string",
+      "context": {
+        "enabled": false
+      },
+      "rules": [
+        {
+          "attribute": "enabled",
+          "operator": "eq",
+          "value": "false"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "numeric-eq-is-strict",
+      "context": {
+        "total": 5
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "eq",
+          "value": 5
+        }
+      ],
+      "some": false,
+      "expected": false
+    },
+    {
+      "name": "numeric-ne-is-strict",
+      "context": {
+        "total": 5
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "ne",
+          "value": 5
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "numeric-context-to-string",
+      "context": {
+        "total": 5
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "eq",
+          "value": "5"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "number-exponent-context",
+      "context": {
+        "total": 1e+21
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "eq",
+          "value": "1e+21"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "in-string",
+      "context": {
+        "country": "dk"
+      },
+      "rules": [
+        {
+          "attribute": "country",
+          "operator": "in",
+          "value": [
+            "de",
+            "dk"
+          ]
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "in-does-not-normalize-elements",
+      "context": {
+        "enabled": true
+      },
+      "rules": [
+        {
+          "attribute": "enabled",
+          "operator": "in",
+          "value": [
+            true
+          ]
+        }
+      ],
+      "some": false,
+      "expected": false
+    },
+    {
+      "name": "nin-does-not-coerce-numbers",
+      "context": {
+        "total": 5
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "nin",
+          "value": [
+            5
+          ]
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "missing-eq",
+      "context": {},
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "value": "true"
+        }
+      ],
+      "some": false,
+      "expected": false
+    },
+    {
+      "name": "missing-ne",
+      "context": {},
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "ne",
+          "value": "true"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "missing-nin",
+      "context": {},
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "nin",
+          "value": [
+            "true"
+          ]
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "missing-undefined-literal",
+      "context": {},
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "value": "undefined"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "null-literal",
+      "context": {
+        "x": null
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "value": "null"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "null-stops-path",
+      "context": {
+        "x": null
+      },
+      "rules": [
+        {
+          "attribute": "x.a",
+          "operator": "eq",
+          "value": "null"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "scalar-stops-path",
+      "context": {
+        "x": "dk"
+      },
+      "rules": [
+        {
+          "attribute": "x.a",
+          "operator": "eq",
+          "value": "dk"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "nested",
+      "context": {
+        "address": {
+          "country": "dk"
+        }
+      },
+      "rules": [
+        {
+          "attribute": "address.country",
+          "operator": "eq",
+          "value": "dk"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "array-joined",
+      "context": {
+        "items": [
+          {
+            "country": "dk"
+          },
+          {
+            "country": "de"
+          }
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "items.country",
+          "operator": "eq",
+          "value": "dk,de"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "array-not-membership",
+      "context": {
+        "items": [
+          "dk",
+          "de"
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "items",
+          "operator": "in",
+          "value": [
+            "dk",
+            "de"
+          ]
+        }
+      ],
+      "some": false,
+      "expected": false
+    },
+    {
+      "name": "array-null-and-missing",
+      "context": {
+        "items": [
+          {
+            "country": null
+          },
+          {}
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "items.country",
+          "operator": "eq",
+          "value": ","
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "array-flatten",
+      "context": {
+        "items": [
+          {
+            "country": [
+              "dk",
+              "de"
+            ]
+          },
+          {
+            "country": [
+              "fr"
+            ]
+          }
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "items.country",
+          "operator": "eq",
+          "value": "dk,de,fr"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "object-text",
+      "context": {
+        "x": {}
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "value": "[object Object]"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "gte-decimal",
+      "context": {
+        "total": "100.25"
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "gte",
+          "value": "100.25"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "gt-number",
+      "context": {
+        "total": "100.25"
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "gt",
+          "value": 100
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "lt-number",
+      "context": {
+        "total": "99"
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "lt",
+          "value": "100"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "lte-boundary",
+      "context": {
+        "total": "100"
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "lte",
+          "value": "100"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "empty-is-zero",
+      "context": {
+        "total": ""
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "gte",
+          "value": "0"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "whitespace-number",
+      "context": {
+        "total": " 100 "
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "gte",
+          "value": "100"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "plus-number",
+      "context": {
+        "total": "+100"
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "gte",
+          "value": "100"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "leading-zeros",
+      "context": {
+        "total": "00100."
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "gte",
+          "value": "100"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "leading-dot",
+      "context": {
+        "total": ".5"
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "lt",
+          "value": "1"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "hex-number",
+      "context": {
+        "total": "0x10"
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "gte",
+          "value": "16"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "binary-number",
+      "context": {
+        "total": "0b11"
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "gt",
+          "value": "2"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "octal-number",
+      "context": {
+        "total": "0o10"
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "lte",
+          "value": "8"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "signed-hex-is-invalid",
+      "context": {
+        "total": "-0x10"
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "lt",
+          "value": "0"
+        }
+      ],
+      "some": false,
+      "expected": false
+    },
+    {
+      "name": "nonnumeric",
+      "context": {
+        "total": "oops"
+      },
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "lt",
+          "value": "100"
+        }
+      ],
+      "some": false,
+      "expected": false
+    },
+    {
+      "name": "missing-comparison",
+      "context": {},
+      "rules": [
+        {
+          "attribute": "total",
+          "operator": "gt",
+          "value": "0"
+        }
+      ],
+      "some": false,
+      "expected": false
+    },
+    {
+      "name": "date-zone",
+      "context": {
+        "date": "2026-10-28T01:00:00+01:00"
+      },
+      "rules": [
+        {
+          "attribute": "date",
+          "operator": "gte",
+          "value": "2026-10-28T00:00:00Z"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "date-only",
+      "context": {
+        "date": "2026-10-28"
+      },
+      "rules": [
+        {
+          "attribute": "date",
+          "operator": "gt",
+          "value": "2026-10-27"
+        }
+      ],
+      "some": false,
+      "expected": true
+    },
+    {
+      "name": "date-milliseconds",
+      "context": {
+        "date": "2026-10-28T00:00:00.123999Z"
+      },
+      "rules": [
+        {
+          "attribute": "date",
+          "operator": "gt",
+          "value": "2026-10-28T00:00:00.123Z"
+        }
+      ],
+      "some": false,
+      "expected": false
+    },
+    {
+      "name": "date-mixed-number",
+      "context": {
+        "date": "2026-10-28"
+      },
+      "rules": [
+        {
+          "attribute": "date",
+          "operator": "gt",
+          "value": "1"
+        }
+      ],
+      "some": false,
+      "expected": false
+    },
+    {
+      "name": "and-rules",
+      "context": {
+        "enabled": true,
+        "total": "99"
+      },
+      "rules": [
+        {
+          "attribute": "enabled",
+          "operator": "eq",
+          "value": "true"
+        },
+        {
+          "attribute": "total",
+          "operator": "gte",
+          "value": "100"
+        }
+      ],
+      "some": false,
+      "expected": false
+    },
+    {
+      "name": "or-rules",
+      "context": {
+        "enabled": true,
+        "total": "99"
+      },
+      "rules": [
+        {
+          "attribute": "enabled",
+          "operator": "eq",
+          "value": "true"
+        },
+        {
+          "attribute": "total",
+          "operator": "gte",
+          "value": "100"
+        }
+      ],
+      "some": true,
+      "expected": true
+    }
+  ]
+}
