@@ -105,25 +105,45 @@ func ReadAvailability(tx *gorm.DB, variants []AvailableVariant, channel, quantit
 	if err != nil {
 		return nil, err
 	}
+	facts, err := readAvailabilityFacts(tx, variants, channel)
+	if err != nil {
+		return nil, err
+	}
+	out := map[string]Availability{}
+	for _, v := range variants {
+		out[v.ID] = observedAvailability(v, facts.requirements[v.ID], facts.locations, facts.safe, requested)
+	}
+	return out, nil
+}
+
+type availabilityFacts struct {
+	locations    []string
+	requirements map[string][]availabilityRequirement
+	safe         map[availabilityPair]*big.Int
+}
+
+func readAvailabilityFacts(tx *gorm.DB, variants []AvailableVariant, channel string) (*availabilityFacts, error) {
+	var err error
 	if tx == nil || tx.Statement == nil || !validID(channel) || len(variants) > 10000 || Ready(tx.Statement.Context, tx) != nil {
 		return nil, ErrSchema
 	}
-	out := map[string]Availability{}
+	facts := &availabilityFacts{requirements: map[string][]availabilityRequirement{}, safe: map[availabilityPair]*big.Int{}}
 	tracked := []string{}
+	seenVariants := map[string]bool{}
 	for _, v := range variants {
 		if !validID(v.ID) {
 			return nil, ErrSchema
 		}
-		if _, ok := out[v.ID]; ok {
+		if seenVariants[v.ID] {
 			return nil, ErrSchema
 		}
-		out[v.ID] = observedAvailability(v, nil, nil, nil, requested)
+		seenVariants[v.ID] = true
 		if v.Complete && v.ManageInventory {
 			tracked = append(tracked, v.ID)
 		}
 	}
 	if len(tracked) == 0 {
-		return out, nil
+		return facts, nil
 	}
 	locations := []string{}
 	if err = tx.Table("inventory_locations l").Select("l.id").Joins("JOIN commerce_channel_locations cl ON cl.stock_location_id=l.id AND cl.deleted_at IS NULL").Where("cl.sales_channel_id=? AND l.deleted_at IS NULL", channel).Order("l.id").Limit(1001).Scan(&locations).Error; err != nil {
@@ -132,8 +152,9 @@ func ReadAvailability(tx *gorm.DB, variants []AvailableVariant, channel, quantit
 	if len(locations) > 1000 {
 		return nil, errLimit
 	}
+	facts.locations = locations
 	if len(locations) == 0 {
-		return out, nil
+		return facts, nil
 	}
 	budget := 20000 - len(locations)
 	var requirements []availabilityRequirement
@@ -154,8 +175,9 @@ func ReadAvailability(tx *gorm.DB, variants []AvailableVariant, channel, quantit
 			seen[r.InventoryItemID] = true
 		}
 	}
+	facts.requirements = byVariant
 	if len(items) == 0 {
-		return out, nil
+		return facts, nil
 	}
 	var levels []struct{ InventoryItemID, LocationID, StockedQuantity, ReservedQuantity string }
 	if err = tx.Table("inventory_levels").Select("inventory_item_id,location_id,stocked_quantity,reserved_quantity").Where("inventory_item_id IN ? AND location_id IN ? AND deleted_at IS NULL", items, locations).Order("inventory_item_id,location_id,id").Limit(budget + 1).Scan(&levels).Error; err != nil {
@@ -227,10 +249,6 @@ func ReadAvailability(tx *gorm.DB, variants []AvailableVariant, channel, quantit
 		}
 		safe[key] = available
 	}
-	for _, v := range variants {
-		if v.Complete && v.ManageInventory {
-			out[v.ID] = observedAvailability(v, byVariant[v.ID], locations, safe, requested)
-		}
-	}
-	return out, nil
+	facts.safe = safe
+	return facts, nil
 }

@@ -62,7 +62,7 @@
   "application_resources_used": false,
   "real_accounts_used": false,
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "312e4d515f6162cbe929bea331311289cbcef1a8c7dcdc2adc3a0dbf820bd414",
+    "retail/scripts/test-admin-auth.py": "c89a312073749aabce40a295e9cc0e88849d96bab240e07a000a8f84159707b2",
     "retail/backend/internal/identity/cart_runtime_test.go": "3d63d64e19d099028b92fe5102f7b1060e8de4dd674a7ef90c875168af6bf8f4",
     "retail/backend/internal/identity/cart_http_test.go": "c5f9820bdce2922005e919903441605000869bcb090520a5dd3dffbd7c347b2f",
     "retail/backend/internal/identity/cart_amounts_test.go": "fa19341fcdbe3c4c1e283afc8513dee56e447cbcf15d2911906e9c74688e2cbb",

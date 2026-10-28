@@ -149,6 +149,9 @@ def main():
                 raise RuntimeError('Cart runtime verification missing')
             product_markers=[line.split('STORE_PRODUCT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_PRODUCT_REHEARSAL ' in line]
             availability_markers=[line.split('STORE_AVAILABILITY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_AVAILABILITY_REHEARSAL ' in line]
+            cart_stock_markers=[line.split('CART_STOCK_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_STOCK_REHEARSAL ' in line]
+            if len(cart_stock_markers)!=1:
+                raise RuntimeError('Whole-cart stock evidence missing')
             display_markers=[line.split('STORE_DISPLAY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_DISPLAY_REHEARSAL ' in line]
             if len(display_markers)!=1:
                 raise RuntimeError('Store display verification missing')
@@ -259,7 +262,7 @@ def main():
             files += ['retail/backend/internal/catalog/store_taxonomy.go','retail/backend/internal/catalog/store_taxonomy_test.go','retail/backend/internal/identity/store_taxonomy_test.go']
             files += ['retail/backend/internal/catalog/store_products.go','retail/backend/internal/catalog/store_products_test.go','retail/backend/internal/identity/store_products_test.go']
             files += ['retail/backend/internal/identity/store_pricing_test.go']
-            files += ['retail/backend/internal/identity/store_availability_test.go']
+            files += ['retail/backend/internal/identity/store_availability_test.go','retail/backend/internal/identity/cart_stock_test.go']
             files += ['retail/backend/internal/catalog/store_display.go','retail/backend/internal/catalog/store_display_test.go','retail/backend/internal/identity/store_display_test.go']
             files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/pricing').glob('*.go')]
             files += ['retail/scripts/generate-cart-schema.py','retail/backend/migrations/0025_cart_relational.sql','retail/backend/internal/identity/cart_schema_test.go']
@@ -277,6 +280,7 @@ def main():
                       'store_products': json.loads(product_markers[0]),
                       'store_pricing': json.loads(pricing_markers[0]),
                       'store_availability': json.loads(availability_markers[0]),
+                      'cart_stock': json.loads(cart_stock_markers[0]),
                       'store_display': json.loads(display_markers[0]),
                       'store_taxonomy': json.loads(taxonomy_markers[0]),
                       'store_regions': json.loads(region_markers[0]),
