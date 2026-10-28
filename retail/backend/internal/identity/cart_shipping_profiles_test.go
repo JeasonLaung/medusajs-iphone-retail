@@ -90,6 +90,7 @@ func checkCartShippingProfiles(t *testing.T, ctx context.Context, db *gorm.DB, r
 	if _, err := read("1"); err != nil || fingerprint != before() {
 		t.Fatal("group read changed saved lines")
 	}
+	checkCartShippingQuotes(t, ctx, db, ref)
 	exec(`UPDATE cart_line_items SET requires_shipping=FALSE WHERE cart_id=?`, ref.CartID)
 	if out, err := read("1"); err != nil || len(out) != 0 {
 		t.Fatal("nonshipping cart invented a profile")

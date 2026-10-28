@@ -424,3 +424,5 @@
 2026-10-28 手工配送运价补充：[有效provider/分组/仓库与精确flat价格](migration/manual-shipping-quotes.md)按可信manual注册名单组合候选、配送分组、启用状态和仓库关联；保留含税及零运费，缺价/停用/动态运价不伪造。3组原provider纯验证与能力证据固定，人工SQL以admin-auth-report.manual_shipping_quotes与SHA为准。当前购物车profile解析、provider配置、库存、保存及完整交易继续待办，T032/T033未整体验收。
 
 2026-10-28 购物车配送分组补充：[当前变体关系与完整覆盖](migration/cart-shipping-profiles.md)按当前变体/商品解析有效profile，校验持有者与版本，拒绝未覆盖配送行与歧义，保留原非配送标记和数量。6组原纯过滤固定；人工SQL通过范围以最新admin-auth-report.cart_shipping_profiles与SHA为准。完整报价/库存/保存/checkout继续待办，T032/T033未整体验收。
+
+2026-10-28 购物车运费上下文补充：[保存地址与地区币种绑定](migration/cart-shipping-quotes.md)在当前持有者/版本锁内组合配送分组及manual固定运价，保留缺价分组，不伪造自定义规则hook。地址删除/超限、未注册provider、过期版本及autocommit拒绝；人工SQL通过范围以admin-auth-report.cart_shipping_quotes与实现SHA为准。按配送仓库库存、完整上下文/provider配置、运费保存/重算及正式交互继续待办，T032/T033未验收。
