@@ -156,7 +156,7 @@ def main():
         files += ['retail/backend/internal/orders/fulfillments.go','retail/backend/internal/identity/order_fulfillments_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/authorization').glob('*.go')]
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
-                  'browser_tests_passed': 1, 'migrations_applied': 25, 'mocked_api_responses': False,
+                  'browser_tests_passed': 1, 'migrations_applied': 26, 'mocked_api_responses': False,
                   'reviewed_relational_schema_used': True, 'empty_draft_tables_retained_by_migration': 7,
                   'explicit_catalog_read_schema_migration_used': True, 'test_only_schema_rewrite': False,
                   'browser_executable_override_used': bool(os.environ.get('ADMIN_TEST_BROWSER')),

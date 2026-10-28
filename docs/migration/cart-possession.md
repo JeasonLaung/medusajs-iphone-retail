@@ -24,3 +24,5 @@
 已验证引用与 token 拒绝边界、登录/namespace 隔离、哈希存储、CSRF、16 路换发单赢家、不延长 TTL、旧凭证重放、先撤销后 CAS 不复活、绝对及 Redis 过期、坏记录、逐键丢失和断开连接。没有连接应用 Redis、读取旧账号或访问来源数据库。Go 单元测试还验证非法引用在访问依赖前拒绝。
 
 下一步需要持久授权代数/新购物车创建事务、事务内实时授权复核、同源 HttpOnly cookie 与可恢复 CSRF 交付、严格请求结构和幂等，再接入创建/详情/行项目及原前台。当前 `durable_binding_integrated=false`、`http_integrated=false`；T014/T019/T032 继续进行，不能据此验收完整购物车。
+
+后续补充：[MySQL 创建与授权组件](cart-runtime.md)已将新车、代数和作用域幂等回执放入同一事务；专项真实 Redis/MySQL 验证旧代数拒绝。上述 Redis 单组件报告的范围和字段保持原义；新的联合证据单独记录，HTTP/cookie 与完整购物车仍未实现。

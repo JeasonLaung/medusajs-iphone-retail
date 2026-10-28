@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only",
   "browser_tests_passed": 1,
-  "migrations_applied": 25,
+  "migrations_applied": 26,
   "mocked_api_responses": false,
   "reviewed_relational_schema_used": true,
   "empty_draft_tables_retained_by_migration": 7,
@@ -114,12 +114,12 @@
     "retail/backend/internal/fulfillment/schema.go": "f1f9a1a89527fad333a639373c6de3d729174775f7fd0a569f53494166b469ed",
     "retail/backend/internal/fulfillment/schema_plan.json": "aa41b2a41eccd35b20128f0bf837d50b6e502f8388ff51680394e2e93ba3af4e",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
-    "retail/backend/internal/identity/browser_fixture_test.go": "e55f61ff7bdd8a16932e0aeb4a526e556da16166bbe1c9ac3be4375ff6f1a126",
-    "retail/backend/internal/identity/fulfillment_history_test.go": "8fb8192a9de4068a8cd1590dc60ea0610df942cc30bc3aab3ee879f382b38251",
+    "retail/backend/internal/identity/browser_fixture_test.go": "dd7ec26b4e835092bd5c9a906b97edcd65f23e1cd9ff068d2e3b229c9a5cc72b",
+    "retail/backend/internal/identity/fulfillment_history_test.go": "8c8b5c635815712a863f603324342b526d64d8a3db01fc33f2e8d735fae46eb4",
     "retail/backend/internal/identity/order_amounts_test.go": "fc30b3050e94b326edada1f9de68c3f566555ace237df056677f95b01423029d",
     "retail/backend/internal/identity/order_fulfillments_test.go": "e1864aa0d957a6ca8eccfdb635a6baa46fc536a02929c0c610d73cf6be3e2f17",
     "retail/backend/internal/identity/order_payments_test.go": "b627b1a86a5e3b643002af821dc155f5f05030fc6bd836f746c60b3c33728cb4",
-    "retail/backend/internal/identity/order_read_test.go": "c73f8aeb1188ff1f349233f84fd2bb7878a2af0c48653200ba0c1fa368a1e9cf",
+    "retail/backend/internal/identity/order_read_test.go": "6561b9f4f0cfd8ef2b5e7dc0845c4307dad4c7744ff5589672390f3319c1bd92",
     "retail/backend/internal/inventory/availability.go": "0bdc5b97711a9b51cac6f0181d5b85f46d111efa6e632a8b4ec218c89b343ddf",
     "retail/backend/internal/inventory/availability_test.go": "d03e1ebde664ce9edb404bdfd9ceda5044308c72acd2e61de37edfca4a126c2f",
     "retail/backend/internal/inventory/edit.go": "2d9b6f06a1b139f748d9150deb1b1f82a41942552ea6d9d320b4077a58e4809f",
@@ -181,10 +181,11 @@
     "retail/backend/migrations/0023_authorization_actions.sql": "e5fb69788f3381f6684280d0c54071cb2a0e7939e845004484d0c451464b382f",
     "retail/backend/migrations/0024_authorization_management.sql": "48aecb0577eb3274ac4c99af1916e8ea01e777c466a8783ecaec3d697658a9cb",
     "retail/backend/migrations/0025_cart_relational.sql": "d5acdb1a055c1f34e1bff35461e95990975a2a42cf8735451b9c8e459bff7fc9",
+    "retail/backend/migrations/0026_cart_runtime_authority.sql": "70cff0b541fa6cfd845644b494142df473ec5bd4f191039a923ad6e5c399caec",
     "retail/scripts/generate-fulfillment-import-plan.py": "9f9dd5e5e21ea6582349678d6b9464e20ebe8d150bf768f2d4a5398fe0836b19",
     "retail/scripts/generate-fulfillment-schema.py": "3c1fa30b9c75cd402dc1f5d3bf160b37883a1a59b4683171435fe64c68f297fe",
     "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb",
-    "retail/scripts/test-admin-live.py": "b5b3c1fdbb5b831b17bc52bb610e4dc36ab1b789cadaedd3eecf6e8c50a709b4"
+    "retail/scripts/test-admin-live.py": "eb1431fc218238cd0f550ef9b77969c323f7e52b5873bcf51e752b55752a8ece"
   },
   "cleanup": "both owned containers, bridge network and temporary binaries removed"
 }
