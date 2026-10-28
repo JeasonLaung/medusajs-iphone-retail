@@ -153,3 +153,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-28 原购物车组件补充：[CartTemplate/CartLine/Summary迁移](../docs/migration/astro-cart-presentation.md)复用完整原CSS/中英文和DOM，精确字符串金额、数量输入与全车busy、移除/空车、库存观察及摘要进入独立React边界。局部中英三宽原源码浏览器对照见astro-runtime-report.cart_browser；命令/结账默认关闭。生产业务路由、持久修改意图协调、当前变体加载、布局导航及完整规则仍待接入，不据局部对照整体验收。
 
 2026-10-28 原购物车命令接入补充：[数量、移除及明确恢复](../docs/migration/cart-item-recovery.md)以同一 Web Lock/意图键串联原 CartTemplate 与 Gin 私有协议；保留用户所见版本、绝对数量、原操作键及刷新阶段，未知响应不自动重试或丢弃。真实 commerce fixture 已挂载 GinCart，联合结果以报告源码 SHA 为准；正式页面、当前变体加载、地区/客户合并及完整交易仍待完成，T032/T039 未整体验收。
+
+2026-10-28 购物车当前变体补充：[Gin 目录观察与原控件](../docs/migration/cart-current-variants.md)在保存快照外以保存商品 ID 去重/四路并发读取当前配置及可售上限；旧请求取消且与快照绑定，目录失败保留原金额、行和删除能力。未用实时目录价覆盖保存成交证据，写入仍由 Gin 校验整车库存。已增加私有 nullable product_id 精确关联；正式路由、地区/客户合并和完整交易仍待完成，T032/T039 未整体验收。

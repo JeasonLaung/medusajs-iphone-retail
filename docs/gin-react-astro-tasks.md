@@ -386,3 +386,5 @@
 2026-10-28 原购买按钮补充：[Gin React岛包装](migration/astro-cart-button.md)在原ProductActions上接入私有current/数量初始化及真实协调器，依赖故障复用原错误态；独立Astro浏览器与SQL验证结果以报告为准。实际生产商品/购物车页与完整规则交易仍未验收。
 
 2026-10-28 原购物车命令接入补充：[数量、移除及明确恢复](migration/cart-item-recovery.md)以同一 Web Lock/意图键串联原 CartTemplate 与 Gin 私有协议；保留用户所见版本、绝对数量、原操作键及刷新阶段，未知响应不自动重试或丢弃。真实 commerce fixture 已挂载 GinCart，联合结果以报告源码 SHA 为准；正式页面、当前变体加载、地区/客户合并及完整交易仍待完成，T032/T039 未整体验收。
+
+2026-10-28 购物车当前变体补充：[Gin 目录观察与原控件](migration/cart-current-variants.md)在保存快照外以保存商品 ID 去重/四路并发读取当前配置及可售上限；旧请求取消且与快照绑定，目录失败保留原金额、行和删除能力。未用实时目录价覆盖保存成交证据，写入仍由 Gin 校验整车库存。已增加私有 nullable product_id 精确关联；正式路由、地区/客户合并和完整交易仍待完成，T032/T039 未整体验收。

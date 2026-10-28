@@ -15,6 +15,7 @@ import (
 type ViewItem struct {
 	ID            string            `json:"id"`
 	Title         string            `json:"title"`
+	ProductID     *string           `json:"product_id"`
 	ProductTitle  *string           `json:"product_title"`
 	ProductHandle *string           `json:"product_handle"`
 	Thumbnail     *string           `json:"thumbnail"`
@@ -45,7 +46,7 @@ func ReadView(ctx context.Context, db *gorm.DB, store string, ref sessionstore.C
 			ViewItem
 			VariantOptionValues *string
 		}
-		if tx.Table("cart_line_items").Select("id,title,product_title,product_handle,thumbnail,variant_title,variant_option_values").Where("cart_id=? AND deleted_at IS NULL", cart.ID).Order("created_at DESC,id ASC").Limit(1001).Scan(&rows).Error != nil || len(rows) != len(result.Amounts.Lines) {
+		if tx.Table("cart_line_items").Select("id,title,product_id,product_title,product_handle,thumbnail,variant_title,variant_option_values").Where("cart_id=? AND deleted_at IS NULL", cart.ID).Order("created_at DESC,id ASC").Limit(1001).Scan(&rows).Error != nil || len(rows) != len(result.Amounts.Lines) {
 			return ErrSchema
 		}
 		wanted := map[string]bool{}
@@ -58,6 +59,9 @@ func ReadView(ctx context.Context, db *gorm.DB, store string, ref sessionstore.C
 				return ErrSchema
 			}
 			delete(wanted, row.ID)
+			if row.ProductID != nil && !idPattern.MatchString(*row.ProductID) {
+				return ErrSchema
+			}
 			for _, s := range []*string{row.ProductTitle, row.ProductHandle, row.Thumbnail, row.VariantTitle} {
 				if s != nil && !viewText(*s) {
 					return ErrSchema

@@ -205,7 +205,10 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','sessionstore') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
         files += ['retail/storefront/src/lib/cart-client.ts','retail/storefront/src/lib/cart-commerce.ts','retail/storefront/src/lib/cart-quantities.ts',
                   'retail/storefront/src/lib/cart-item-commands.ts','retail/storefront/src/components/cart/gin-cart.tsx',
-                  'retail/storefront/tests/cart-item-commands.test.ts']
+                  'retail/storefront/tests/cart-item-commands.test.ts',
+                  'retail/storefront/src/lib/cart-variants.ts','retail/storefront/tests/cart-variants.test.ts',
+                  'retail/storefront/src/lib/products.ts','retail/storefront/src/lib/gin-public.ts',
+                  'retail/storefront/src/lib/product-display.ts','retail/storefront/src/lib/money.ts']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/storefront/src/components/products').rglob('*') if p.is_file()]
         files += ['retail/storefront/tests/commerce.browser.mjs','retail/storefront/tests/commerce-fixture/src/pages/[...path].astro']
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',

@@ -5,7 +5,7 @@ import type {CartView} from '../src/lib/cart-client.ts'
 import type {Variant} from '../src/lib/products.ts'
 
 function fixture():CartView{
- return {amounts:{cart_id:'cart',version:'2',currency_code:'eur',pricing_recalculated:false,checkout:false,totals:{total:'9007199254740993.005',shipping_subtotal:'0',discount_total:'0',tax_total:'0'},shipping_methods:[],lines:[{id:'older',variant_id:null,quantity:'1',unit_price:'1',is_tax_inclusive:false,totals:{subtotal:'1'}},{id:'newer',variant_id:'retired',quantity:'1000000000',unit_price:'0.1',is_tax_inclusive:false,totals:{subtotal:'99999999.999999999999999999'}}]},items:['newer','older'].map(id=>({id,title:id,product_title:null,product_handle:null,variant_title:null,thumbnail:null,option_values:{}}))}
+ return {amounts:{cart_id:'cart',version:'2',currency_code:'eur',pricing_recalculated:false,checkout:false,totals:{total:'9007199254740993.005',shipping_subtotal:'0',discount_total:'0',tax_total:'0'},shipping_methods:[],lines:[{id:'older',variant_id:null,quantity:'1',unit_price:'1',is_tax_inclusive:false,totals:{subtotal:'1'}},{id:'newer',variant_id:'retired',quantity:'1000000000',unit_price:'0.1',is_tax_inclusive:false,totals:{subtotal:'99999999.999999999999999999'}}]},items:['newer','older'].map(id=>({id,title:id,product_id:null,product_title:null,product_handle:null,variant_title:null,thumbnail:null,option_values:{}}))}
 }
 test('cart display joins exact amounts by ID and preserves saved order and retired lines',()=>{
  const input=fixture(),before=structuredClone(input),view=cartDisplay(input)

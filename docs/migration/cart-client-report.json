@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Private browser transport against artificial HTTP API only; not Gin/MySQL/Redis or production cart acceptance",
   "node_version": "v22.23.4",
-  "unit_tests_passed": 49,
+  "unit_tests_passed": 53,
   "type_check_and_build_passed": true,
   "browser": {
     "actual_browser_http": true,
@@ -25,9 +25,9 @@
     "retail/storefront/src/lib/cart-commerce.ts": "c11ee49aa5c48789370b5eddb7a7e1853c5f511e2a1d0b083008930d6750b3f9",
     "retail/storefront/tests/cart-commerce.test.ts": "93c718a2a8aab4f317a922cda8c163f5e2e794b462ea92be2aafc4331e0dc8ea",
     "retail/storefront/src/lib/cart-quantities.ts": "b54d1211513f0f5ee04e521463718e8b37fba1b9d3b5484a0ac511c203371384",
-    "retail/scripts/test-cart-client.py": "3e849e4d19be2d020a300dfe45fcea0cfe12f64be1f0e1f01f61d2e9e717c7dc",
-    "retail/storefront/src/lib/cart-client.ts": "3980a24123717b71d5b4eecd20df73ab2a29eff52509d43f58b936d72b324bcb",
-    "retail/storefront/tests/cart-client.test.ts": "7c93d6416ea3166fe2becc7804a0d5cd7cd389d2a3dc48810c7fb19fae1242ba",
+    "retail/scripts/test-cart-client.py": "65b7531d4d0a28195bfa5e6767671f3cbdc79ee4e673674a4ab2ecd47c7d3511",
+    "retail/storefront/src/lib/cart-client.ts": "0f490fd41cb8d30e7b6a3937f93c0e82b46e25fdf74137832423b59b74968a31",
+    "retail/storefront/tests/cart-client.test.ts": "fad77698d4240a2ae5ee48def841fecc496d1bd0eb80c3f542009e0fdd91399e",
     "retail/storefront/tests/cart-client.browser.mjs": "1cf33376ffa8a314446bcee0820ee5e468192cad3683371c4fe79829f52e623d",
     "retail/storefront/package.json": "e805cf1d51a7cd8b6b17834c97c9479dc69789003d8616318d9e00db63ef2f05",
     "retail/storefront/package-lock.json": "0907e4f629a274f781577528600f35318e9695745a17f206c2e314e9a4fca8f0",
@@ -36,6 +36,13 @@
     "retail/storefront/src/lib/cart-item-commands.ts": "222d8ccba3df3311625b4a24e59a29170299272e2d23d816b85d16a13c591d91",
     "retail/storefront/tests/cart-item-commands.test.ts": "326bcdb3430bab4cad549faf57348b0acafe904141e09391219e884bd27b3657",
     "retail/storefront/src/components/cart/types.ts": "3924e5830c4bc05f6ee977c1f06ce2dd84bce6c8d3a0ef95616b533c7eb3dcbc",
-    "retail/storefront/tests/cart-display.test.ts": "ffa7ecca4dd762383c4a5e90932045184c1a0bcf17fcf4422f8b4d5bcbfc99d0"
+    "retail/storefront/tests/cart-display.test.ts": "837a7d8eb7a33aef2cb365867675e9258125e65f392f94a1e8d30239a4f000cb",
+    "retail/storefront/src/lib/cart-variants.ts": "1cbc98473bdc0bee3069af8aed74ac3a05f93f280e79aeb440c67ffdfd84dd37",
+    "retail/storefront/tests/cart-variants.test.ts": "23c571e408764988afd698d5ca83559e1bbcf46322c9664ff4c4674ba53ee2b5",
+    "retail/storefront/src/lib/products.ts": "1670a865e16cbe730faf4eb071b6ab43a7a41c7f1adc8ca339f780b9aeb50a2c",
+    "retail/storefront/src/lib/gin-public.ts": "69f332d8182769ee08d1cebfe569eaa4a41d40a1a2b5000157dae0c3511ab46f",
+    "retail/storefront/src/lib/product-display.ts": "7b90ed2cc7f5ac93c60bd0b6c6ff7169ed808abcf4bfccb84e2721b9ffe50836",
+    "retail/storefront/src/lib/money.ts": "2758fa6be7cec7805cea2be39252dee795fa6259a095877a5bd385b6a9939e30",
+    "retail/storefront/src/components/cart/gin-cart.tsx": "08ec1dbc350b3a1cc06cb389e1153e07d69c4536ff0e94885c11ece4bbf4a37f"
   }
 }

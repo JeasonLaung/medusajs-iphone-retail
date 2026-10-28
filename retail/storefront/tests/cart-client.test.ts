@@ -272,7 +272,7 @@ test('absolute item quantity and zero removal use strict receipts and never acce
 })
 
 test('saved cart presentation is private and complete, paired with one exact amount snapshot',async()=>{
- const item={id:'line_new',title:'Saved title',product_title:'Saved product',product_handle:'iphone-retired',thumbnail:null,variant_title:null,option_values:{Storage:'128 GB',Grade:'S'}}
+ const item={id:'line_new',title:'Saved title',product_id:'retired-product',product_title:'Saved product',product_handle:'iphone-retired',thumbnail:null,variant_title:null,option_values:{Storage:'128 GB',Grade:'S'}}
  const body={amounts:amountFixture(),items:[item]}
  const c=client(async(url,init)=>{
   assert.equal(url,'/api/store/carts/cart_new/view');assert.equal(init!.method,'GET');assert.equal(init!.credentials,'same-origin')
@@ -285,6 +285,7 @@ test('saved cart presentation is private and complete, paired with one exact amo
   {...body,metadata:{}},{...body,items:[]},{...body,items:[item,item]},
   {...body,items:[{...item,id:'other'}]},{...body,items:[{...item,customer_id:'private'}]},
   {...body,items:[{...item,title:'bad\nlabel'}]},{...body,items:[{...item,option_values:[]}]},
+  {...body,items:[{...item,product_id:'../invalid'}]},{...body,items:[{...item,product_id:23}]},
   {...body,items:[{...item,option_values:{Grade:2}}]},
   {...body,amounts:{...body.amounts,checkout:true}},
  ])await error(client(async()=>reply(invalid)).retrieveView(cart.id),'protocol',null,false)

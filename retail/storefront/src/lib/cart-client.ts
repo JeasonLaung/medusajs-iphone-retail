@@ -15,7 +15,7 @@ export type CartAmounts = {
  shipping_methods: {id:string;name:string;amount:string;is_tax_inclusive:boolean;totals:Record<string,string>}[]
  pricing_recalculated: false; checkout: false
 }
-export type CartViewItem = {id:string;title:string;product_title:string|null;product_handle:string|null;thumbnail:string|null;variant_title:string|null;option_values:Record<string,string>}
+export type CartViewItem = {id:string;title:string;product_id:string|null;product_title:string|null;product_handle:string|null;thumbnail:string|null;variant_title:string|null;option_values:Record<string,string>}
 export type CartView = {amounts:CartAmounts;items:CartViewItem[]}
 export type CartErrorKind = 'input' | 'session' | 'csrf' | 'conflict' | 'region' | 'item' | 'rate_limit' | 'unavailable' | 'protocol'
 
@@ -286,13 +286,13 @@ export class CartClient {
   }
   const nullable=(v:unknown)=>v===null?null:savedText(v)
   const items=root.items.map(value=>{
-   const row=record(value);keys(row,['id','title','product_title','product_handle','thumbnail','variant_title','option_values'])
+   const row=record(value);keys(row,['id','title','product_id','product_title','product_handle','thumbnail','variant_title','option_values'])
    const lineID=text(row.id,idPattern)
    if(!wanted.delete(lineID))throw protocol()
    const options=record(row.option_values)
    if(Object.keys(options).length>64)throw protocol()
    const option_values=Object.fromEntries(Object.entries(options).map(([k,v])=>[savedText(k),savedText(v)]))
-   return {id:lineID,title:savedText(row.title),product_title:nullable(row.product_title),product_handle:nullable(row.product_handle),thumbnail:nullable(row.thumbnail),variant_title:nullable(row.variant_title),option_values}
+   return {id:lineID,title:savedText(row.title),product_id:row.product_id===null?null:text(row.product_id,idPattern),product_title:nullable(row.product_title),product_handle:nullable(row.product_handle),thumbnail:nullable(row.thumbnail),variant_title:nullable(row.variant_title),option_values}
   })
   return {amounts:detail,items}
  }

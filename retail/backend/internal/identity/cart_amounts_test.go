@@ -103,14 +103,21 @@ func checkCartAmounts(t *testing.T, ctx context.Context, db *gorm.DB, sessions *
 		t.Fatal("persisted line, tax or shipping semantics differ")
 	}
 	viewPath := "/api/store/carts/" + ref.CartID + "/view"
-	exec(`UPDATE cart_line_items SET product_title='Saved product',product_handle='saved-handle',thumbnail='https://example.com/saved.webp',variant_title='128 GB / S',variant_option_values='{"Storage":"128 GB","Grade":"S"}' WHERE id='amount-cart-line'`)
+	exec(`UPDATE cart_line_items SET product_id='retired-product',product_title='Saved product',product_handle='saved-handle',thumbnail='https://example.com/saved.webp',variant_title='128 GB / S',variant_option_values='{"Storage":"128 GB","Grade":"S"}' WHERE id='amount-cart-line'`)
 	var view cart.View
-	if json.Unmarshal(call(viewPath, 200, true), &view) != nil || len(view.Items) != 1 || view.Items[0].ID != "amount-cart-line" || view.Items[0].Title != "Saved title" || view.Items[0].ProductTitle == nil || *view.Items[0].ProductTitle != "Saved product" || view.Items[0].OptionValues["Grade"] != "S" || view.Amounts.Totals["total"] != "235" || view.Amounts.Version != "1" {
+	if json.Unmarshal(call(viewPath, 200, true), &view) != nil || len(view.Items) != 1 || view.Items[0].ID != "amount-cart-line" || view.Items[0].Title != "Saved title" || view.Items[0].ProductID == nil || *view.Items[0].ProductID != "retired-product" || view.Items[0].ProductTitle == nil || *view.Items[0].ProductTitle != "Saved product" || view.Items[0].OptionValues["Grade"] != "S" || view.Amounts.Totals["total"] != "235" || view.Amounts.Version != "1" {
 		t.Fatal("private saved cart presentation differs")
 	}
 	call(viewPath, 401, false)
 	call(viewPath+"?fields=*", 400, true)
 	call("/api/store/carts/legacy-cart/view", 404, true)
+	exec(`UPDATE cart_line_items SET product_id=NULL WHERE id='amount-cart-line'`)
+	if json.Unmarshal(call(viewPath, 200, true), &view) != nil || view.Items[0].ProductID != nil {
+		t.Fatal("nullable saved cart product ID differs")
+	}
+	exec(`UPDATE cart_line_items SET product_id='../invalid' WHERE id='amount-cart-line'`)
+	call(viewPath, 503, true)
+	exec(`UPDATE cart_line_items SET product_id='retired-product' WHERE id='amount-cart-line'`)
 	// A committed change between the amount read and display read must not
 	// mix old amounts and new presentation in the same response.
 	displayChanged := false

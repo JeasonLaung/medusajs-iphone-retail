@@ -32,3 +32,5 @@ Astro客户端增加一项严格 DTO 正反例，单元总数40；真实浏览�
 - 摘要保留商品小计、未选择配送时的结账计算提示、折扣、税费和总额。金额显示使用现有精确字符串格式工具，不能用浮点乘数量重造行小计。结账链接待完整能力可用后接入原 checkoutStep 地址/配送/支付分支。
 - 原公共 main layout 还包含 Nav、Footer、FloatingActions、客户/购物车地区不符提示及免邮提示；它们和根字体/SEO必须另行承接，局部 CartTemplate 对照不证明整页完成。
 - 保留 PageEntryScroll 的内容挂载后无 hash 才滚顶行为。独立比较需覆盖中英、390/768/1440、空/多行、原输入/忙碌/失败/缺货与移除后空车，再用真实 Astro→Gin→MySQL/Redis 验证成功链路与恢复。
+
+2026-10-28 当前变体观察需要补充 nullable product_id：在相同只读快照中从保存行显式投影源 ID，保留已删除商品及 null，不通过目录 join 丢行；非法 ID 拒绝整个响应。客户端将字段加入严格私有 DTO，并使用原 ID 读取 Gin 公共商品详情，见[购物车当前变体](cart-current-variants.md)。

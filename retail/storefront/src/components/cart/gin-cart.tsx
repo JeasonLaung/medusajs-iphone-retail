@@ -6,6 +6,8 @@ import styles from './styles.module.css'
 import {browserCartClient,type CartView} from '../../lib/cart-client.ts'
 import {browserCartItemCommands} from '../../lib/cart-item-commands.ts'
 import {cartIntentKey} from '../../lib/cart-commerce.ts'
+import {loadCartVariants} from '../../lib/cart-variants.ts'
+import type {Variant} from '../../lib/products.ts'
 
 type Props={regionID:string;currency:string;segment:string;commerceEnabled?:boolean}
 type Controller=Extract<ReturnType<typeof browserCartItemCommands>,{enabled:true}>
@@ -44,6 +46,16 @@ export default function GinCart({regionID,currency,segment,commerceEnabled=false
   return()=>{disposed=true;live.current='';window.removeEventListener('storage',changed)}
  },[context,regionID,currency,segment,commerceEnabled])
  const current=state?.context===context?state:null
+ const [observation,setObservation]=useState<{view:CartView;context:string;variants:Record<string,Variant>}|null>(null)
+ useEffect(()=>{
+  if(!current?.view||!commerceEnabled)return
+  const view=current.view,abort=new AbortController()
+  void loadCartVariants(view,location.origin,regionID,currency,fetch,abort.signal).then(variants=>{
+   if(!abort.signal.aborted)setObservation({view,context,variants})
+  }).catch(()=>{/* Saved cart and removal remain available when observation fails. */})
+  return()=>abort.abort()
+ },[current?.view,context,regionID,currency,commerceEnabled])
+ const variants=observation?.view===current?.view&&observation?.context===context?observation.variants:{}
  const change=async(lineID:string,quantity:string)=>{
   if(!current?.view||current.pending||current.failed||changing.current||live.current!==context)throw Error('Cart unavailable')
   changing.current=true;const request=++run.current
@@ -74,6 +86,6 @@ export default function GinCart({regionID,currency,segment,commerceEnabled=false
  if(!current)return <div className={styles.page}><div className={styles.container}><p role={error?'alert':'status'} className={error?styles.error:styles.muted}>{!commerceEnabled?copy.unavailable:error?copy.updateError:copy.updating}</p>{commerceEnabled&&error&&<button type="button" className={styles.primary} style={{width:'auto',marginTop:8}} onClick={()=>window.location.reload()}>{retryLabel}</button>}</div></div>
  return <>
   {(current.pending||current.failed)&&<div className={styles.page} style={{minHeight:0,paddingBottom:0}}><div className={styles.container}><p role="alert" className={styles.error}>{copy.updateError}</p><button type="button" className={styles.primary} style={{width:'auto',marginTop:8}} disabled={recovering} onClick={()=>void recover()} data-testid="cart-recover-button">{recovering?copy.updating:retryLabel}</button></div></div>}
-  <CartTemplate locale={segment} customer={false} cart={current.view?cartDisplay(current.view):null} commands={{enabled:!current.pending&&!current.failed&&!recovering,updateLineItem:({lineId,quantity})=>change(lineId,String(quantity)),deleteLineItem:lineID=>change(lineID,'0')}}/>
+  <CartTemplate locale={segment} customer={false} cart={current.view?cartDisplay(current.view):null} variants={variants} commands={{enabled:!current.pending&&!current.failed&&!recovering,updateLineItem:({lineId,quantity})=>change(lineId,String(quantity)),deleteLineItem:lineID=>change(lineID,'0')}}/>
  </>
 }
