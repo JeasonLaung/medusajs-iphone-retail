@@ -1,0 +1,29 @@
+{
+  "format_version": 1,
+  "scope": "Original global CSS and utility output only; no full-page or remote-font acceptance",
+  "primary_source_sha256": {
+    "medusa-store/apps/storefront/src/styles/globals.css": "962255d1e18a97f1b66333685fb9937f2f1403b5ad6d4a5e80e1a5a50e25dcbe",
+    "medusa-store/apps/storefront/tailwind.config.js": "2c37d73922e09faca93d97207ebcf75480abc3927a3e686f3669389962d2cf68",
+    "medusa-store/pnpm-lock.yaml": "6dd5af2dc58f128244a305961c0c0389976838b359afa3c4c87662266d42b2df"
+  },
+  "content_scan": {
+    "patterns": [
+      "src/app/**/*.{js,ts,jsx,tsx}",
+      "src/pages/**/*.{js,ts,jsx,tsx}",
+      "src/components/**/*.{js,ts,jsx,tsx}",
+      "src/lib/**/*.{js,ts,jsx,tsx}",
+      "src/modules/**/*.{js,ts,jsx,tsx}"
+    ],
+    "files": 344,
+    "sorted_path_and_normalized_sha256": "6e53974cc0ed842cc55282464db4e0738a5c6caa22b3e38412e5c23b2d6f8a02"
+  },
+  "compiler_versions": {
+    "postcss": "8.5.26",
+    "tailwindcss": "3.4.19",
+    "autoprefixer": "10.5.4",
+    "@medusajs/ui-preset": "2.21.2"
+  },
+  "output": "retail/storefront/src/styles/original.css",
+  "output_normalized_sha256": "e63059db9d6abae2203ddf85b37010213389d8a098de8000e99db8ef94da7d71",
+  "runtime_dependencies_on_legacy_app": false
+}

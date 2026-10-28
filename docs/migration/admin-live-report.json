@@ -277,7 +277,7 @@
     "retail/scripts/generate-fulfillment-import-plan.py": "9f9dd5e5e21ea6582349678d6b9464e20ebe8d150bf768f2d4a5398fe0836b19",
     "retail/scripts/generate-fulfillment-schema.py": "3c1fa30b9c75cd402dc1f5d3bf160b37883a1a59b4683171435fe64c68f297fe",
     "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb",
-    "retail/scripts/test-admin-live.py": "192a7d9b0d9a52c23113552e0b836b1d969e1ac2d28dae6faf96a41e06bd6050",
+    "retail/scripts/test-admin-live.py": "024248d32723ee73ffdd670cdb47cf71b61da9ff5fe5af3278005c6f5a26b105",
     "retail/storefront/src/components/cart/gin-cart.tsx": "08ec1dbc350b3a1cc06cb389e1153e07d69c4536ff0e94885c11ece4bbf4a37f",
     "retail/storefront/src/components/products/ICONS-LICENSE.txt": "e2058c0858b14c1813ee09ea991d97f6aa153fcd60eeb7174d736c19bbbef06d",
     "retail/storefront/src/components/products/gin-product-actions.tsx": "403c3f556ab12522757a0887244cc34f2d44dc5059baee49eedb785023aa6e61",
@@ -303,6 +303,7 @@
     "retail/storefront/src/lib/cart-item-commands.ts": "222d8ccba3df3311625b4a24e59a29170299272e2d23d816b85d16a13c591d91",
     "retail/storefront/src/lib/cart-quantities.ts": "b54d1211513f0f5ee04e521463718e8b37fba1b9d3b5484a0ac511c203371384",
     "retail/storefront/src/lib/cart-variants.ts": "1cbc98473bdc0bee3069af8aed74ac3a05f93f280e79aeb440c67ffdfd84dd37",
+    "retail/storefront/src/lib/footer-data.ts": "a5739f70040eae65ccc0b190dace275dbc5707c31ccb37563669ea94cf9c2975",
     "retail/storefront/src/lib/gin-public.ts": "69f332d8182769ee08d1cebfe569eaa4a41d40a1a2b5000157dae0c3511ab46f",
     "retail/storefront/src/lib/money.ts": "2758fa6be7cec7805cea2be39252dee795fa6259a095877a5bd385b6a9939e30",
     "retail/storefront/src/lib/product-display.ts": "7b90ed2cc7f5ac93c60bd0b6c6ff7169ed808abcf4bfccb84e2721b9ffe50836",
@@ -310,7 +311,8 @@
     "retail/storefront/tests/cart-item-commands.test.ts": "326bcdb3430bab4cad549faf57348b0acafe904141e09391219e884bd27b3657",
     "retail/storefront/tests/cart-variants.test.ts": "23c571e408764988afd698d5ca83559e1bbcf46322c9664ff4c4674ba53ee2b5",
     "retail/storefront/tests/commerce-fixture/src/pages/[...path].astro": "6af7976a8c01e9d9ad5afcd45ddd0283ba35bd688fd0edb921db2af56d69e656",
-    "retail/storefront/tests/commerce.browser.mjs": "6ac7e7021d92e761792ea25d993bb145d0c4d3bd0ad8945546a567ddfff5c89f"
+    "retail/storefront/tests/commerce.browser.mjs": "6ac7e7021d92e761792ea25d993bb145d0c4d3bd0ad8945546a567ddfff5c89f",
+    "retail/storefront/tests/runtime.integration.mjs": "3f599c396e8e12a15ee9f772f6afc2465accb4cfae42cd64eb1081812e2ad7e9"
   },
   "cleanup": "both owned containers, bridge network and temporary binaries removed"
 }

@@ -4,6 +4,7 @@ import {once} from 'node:events'
 import {createServer} from 'node:net'
 import {loadProduct,loadProducts,productPrice} from '../src/lib/products.ts'
 import {loadProductPage} from '../src/lib/product-page.ts'
+import {loadFooterData} from '../src/lib/footer-data.ts'
 
 // The Python owner supplies its disposable Gin listener, never an application
 // backend, Medusa address or deployment server.
@@ -14,6 +15,10 @@ const regionReply=await fetch(new URL('/api/store/regions',target))
 assert.equal(regionReply.status,200)
 const publicRegions=await regionReply.json()
 assert.equal(publicRegions.count,1);assert.equal(publicRegions.regions[0].countries.length,2)
+// The owned fixture's root is "phones", so the exact iPhone query is empty;
+// its visible collection must still reach the original footer projection.
+assert.deepEqual(await loadFooterData(target.origin),{iphoneCategory:null,collections:[{id:'fixture-collection',title:'Public collection',handle:'public-collection'}]})
+await assert.rejects(loadFooterData(undefined))
 // Source-level adapter integration with the actual isolated Gin process. The
 // production Astro page currently exercises regions only; no product page claim.
 const catalog = await loadProducts(target.origin)
@@ -63,4 +68,4 @@ async function check(origin,expected){
 }
 await check(target.origin,200)
 await check(undefined,503)
-console.log('ASTRO_RUNTIME_REHEARSAL '+JSON.stringify({production_node_adapter:true,real_gin_regions:true,source_adapter_real_gin_products:true,source_adapter_region_quantity:true,source_product_page_country_handle_composition:true,incomplete_variant_no_quote:true,detail_404_and_dependency_error_distinct:true,missing_configuration_503:true,response_no_store:true,no_session_cookie:true,unported_business_page_404:true,owned_processes_stopped:true}))
+console.log('ASTRO_RUNTIME_REHEARSAL '+JSON.stringify({production_node_adapter:true,real_gin_regions:true,source_adapter_real_gin_footer:true,source_adapter_real_gin_products:true,source_adapter_region_quantity:true,source_product_page_country_handle_composition:true,incomplete_variant_no_quote:true,detail_404_and_dependency_error_distinct:true,missing_configuration_503:true,response_no_store:true,no_session_cookie:true,unported_business_page_404:true,owned_processes_stopped:true}))

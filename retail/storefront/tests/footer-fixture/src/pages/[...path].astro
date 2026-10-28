@@ -1,0 +1,10 @@
+---
+import Footer from '../../../../src/components/layout/footer'
+import OriginalFooter from 'footer-oracle:footer'
+import '../../../../src/styles/original.css'
+const segment=Astro.url.pathname.split('/')[1]
+const mode=Astro.url.searchParams.get('mode')
+const data={iphoneCategory:mode==='empty'?null:{id:'iphone',name:'iPhone',handle:'iphone',category_children:[{id:'13',name:'iPhone 13 & Pro',handle:'iphone/13'},{id:'14',name:'iPhone 14',handle:'iphone/14'}]},collections:mode==='empty'?[]:Array.from({length:mode==='short'?2:6},(_,i)=>({id:'c'+i,title:'Collection '+i,handle:'collection-'+i}))}
+const Component=Astro.url.searchParams.has('reference')?OriginalFooter:Footer
+---
+<!doctype html><html lang={segment.endsWith('-zh')?'zh-CN':'en'}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Original footer comparison</title><link rel="icon" href="data:,"/></head><body><Component data={data} segment={segment} year={2026}/></body></html>

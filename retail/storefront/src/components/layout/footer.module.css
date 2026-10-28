@@ -1,0 +1,42 @@
+.main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 48px;
+}
+
+.brand {
+  max-width: 320px;
+}
+
+.description {
+  margin-top: 24px;
+  line-height: 1.75;
+}
+
+.links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 24px;
+}
+
+.main a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.links a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (min-width: 900px) {
+  .main {
+    grid-template-columns: minmax(240px, 1fr) minmax(0, 2fr);
+    gap: 64px;
+  }
+
+  .links {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

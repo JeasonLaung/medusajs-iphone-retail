@@ -143,7 +143,7 @@ def main():
             raise RuntimeError('Browser cart durable state differs; no successful report written')
         astro_env=os.environ.copy()
         astro_env['STOREFRONT_TEST_GIN']=target
-        astro=subprocess.run([sys.executable,str(ROOT/'retail/scripts/test-storefront-runtime.py')],cwd=ROOT,env=astro_env,capture_output=True,timeout=780)
+        astro=subprocess.run([sys.executable,str(ROOT/'retail/scripts/test-storefront-runtime.py')],cwd=ROOT,env=astro_env,capture_output=True,timeout=960)
         if astro.returncode:
             (ROOT/'logs/gin-migration/astro-owner-result.log').write_bytes(astro.stdout+astro.stderr)
             raise RuntimeError('Owned Astro-to-Gin checks failed; inspect ignored output')
@@ -208,7 +208,8 @@ def main():
                   'retail/storefront/tests/cart-item-commands.test.ts',
                   'retail/storefront/src/lib/cart-variants.ts','retail/storefront/tests/cart-variants.test.ts',
                   'retail/storefront/src/lib/products.ts','retail/storefront/src/lib/gin-public.ts',
-                  'retail/storefront/src/lib/product-display.ts','retail/storefront/src/lib/money.ts']
+                  'retail/storefront/src/lib/product-display.ts','retail/storefront/src/lib/money.ts',
+                  'retail/storefront/src/lib/footer-data.ts','retail/storefront/tests/runtime.integration.mjs']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/storefront/src/components/products').rglob('*') if p.is_file()]
         files += ['retail/storefront/tests/commerce.browser.mjs','retail/storefront/tests/commerce-fixture/src/pages/[...path].astro']
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
