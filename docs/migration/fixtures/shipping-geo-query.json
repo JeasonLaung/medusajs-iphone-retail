@@ -1,0 +1,147 @@
+{
+  "format_version": 1,
+  "scope": "Original offline SQL construction only; no PostgreSQL execution, MySQL qualification, inventory or provider acceptance",
+  "sources": {
+    "medusa-store/node_modules/.pnpm/@medusajs+fulfillment@2.21._56be7bb9321cd21bdb14eeb6f3acdc60/node_modules/@medusajs/fulfillment/dist/services/fulfillment-module-service.js": "99060adc1943e38501bb77fd4d340b54a38e9bf0e70be4182716587220c146ce",
+    "medusa-store/node_modules/.pnpm/@medusajs+fulfillment@2.21._56be7bb9321cd21bdb14eeb6f3acdc60/node_modules/@medusajs/fulfillment/dist/models/geo-zone.js": "d142aa03534f7fb90a4b92f4d6007440f527362234df0341807aea8a978220c0",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/modules-sdk/build-query.js": "2d37912c520cc8572f9a78c32a19f977ad87e4ff03bf58424d56bd7f3eb9dc5b",
+    "medusa-store/node_modules/.pnpm/@mikro-orm+knex@6.6.14_@mikro-orm+core@6.6.14_pg@8.23.0/node_modules/@mikro-orm/knex/query/QueryBuilderHelper.js": "02471333e480e84cfe421e3a3ef396ea0dd4868c154c73a74d0d309738948b72",
+    "medusa-store/node_modules/.pnpm/@mikro-orm+knex@6.6.14_@mikro-orm+core@6.6.14_pg@8.23.0/node_modules/@mikro-orm/knex/query/ScalarCriteriaNode.js": "2718a5635d0fbd03d873f6c41a379820c9c0d106bdb91b7495c4cca5075189c1",
+    "medusa-store/node_modules/.pnpm/@mikro-orm+core@6.6.14/node_modules/@mikro-orm/core/utils/QueryHelper.js": "b531c5afd16cd9f2584de5e3e9f414199cf18db666cd1f6c48f4bdc6552d8278",
+    "medusa-store/node_modules/.pnpm/@mikro-orm+postgresql@6.6.14_@mikro-orm+core@6.6.14/node_modules/@mikro-orm/postgresql/PostgreSqlPlatform.js": "877357fa60ac7271479593d255d28d08101c43b45ba37a499af4b8bb0c5e5732"
+  },
+  "cases": [
+    {
+      "name": "empty",
+      "address": {},
+      "constraints": [],
+      "sql": "select \"s0\".\"id\" from \"shipping_option\" as \"s0\" inner join \"service_zone\" as \"s1\" on \"s0\".\"service_zone_id\" = \"s1\".\"id\" where \"s1\".\"fulfillment_set_id\" in ($1)",
+      "params": [
+        "artificial-set"
+      ]
+    },
+    {
+      "name": "country",
+      "address": {
+        "country_code": "dk"
+      },
+      "constraints": [
+        {
+          "type": "country",
+          "country_code": "dk"
+        }
+      ],
+      "sql": "select \"s0\".\"id\" from \"shipping_option\" as \"s0\" inner join \"service_zone\" as \"s1\" on \"s0\".\"service_zone_id\" = \"s1\".\"id\" left join \"geo_zone\" as \"g2\" on \"s1\".\"id\" = \"g2\".\"service_zone_id\" where \"s1\".\"fulfillment_set_id\" in ($1) and \"g2\".\"type\" = $2 and \"g2\".\"country_code\" = $3",
+      "params": [
+        "artificial-set",
+        "country",
+        "dk"
+      ]
+    },
+    {
+      "name": "postal-without-ancestors",
+      "address": {
+        "country_code": "dk",
+        "postal_expression": "00123"
+      },
+      "constraints": [
+        {
+          "type": "zip",
+          "country_code": "dk",
+          "postal_expression": "00123"
+        },
+        {
+          "type": "country",
+          "country_code": "dk"
+        }
+      ],
+      "sql": "select \"s0\".\"id\" from \"shipping_option\" as \"s0\" inner join \"service_zone\" as \"s1\" on \"s0\".\"service_zone_id\" = \"s1\".\"id\" left join \"geo_zone\" as \"g2\" on \"s1\".\"id\" = \"g2\".\"service_zone_id\" where \"s1\".\"fulfillment_set_id\" in ($1) and ((\"g2\".\"type\" = $2 and \"g2\".\"country_code\" = $3 and \"g2\".\"postal_expression\" = $4) or (\"g2\".\"type\" = $5 and \"g2\".\"country_code\" = $6))",
+      "params": [
+        "artificial-set",
+        "zip",
+        "dk",
+        "\"00123\"",
+        "country",
+        "dk"
+      ]
+    },
+    {
+      "name": "full-address",
+      "address": {
+        "country_code": "dk",
+        "province_code": "01",
+        "city": "Århus",
+        "postal_expression": "00123"
+      },
+      "constraints": [
+        {
+          "type": "zip",
+          "country_code": "dk",
+          "province_code": "01",
+          "city": "Århus",
+          "postal_expression": "00123"
+        },
+        {
+          "type": "city",
+          "country_code": "dk",
+          "province_code": "01",
+          "city": "Århus"
+        },
+        {
+          "type": "province",
+          "country_code": "dk",
+          "province_code": "01"
+        },
+        {
+          "type": "country",
+          "country_code": "dk"
+        }
+      ],
+      "sql": "select \"s0\".\"id\" from \"shipping_option\" as \"s0\" inner join \"service_zone\" as \"s1\" on \"s0\".\"service_zone_id\" = \"s1\".\"id\" left join \"geo_zone\" as \"g2\" on \"s1\".\"id\" = \"g2\".\"service_zone_id\" where \"s1\".\"fulfillment_set_id\" in ($1) and ((\"g2\".\"type\" = $2 and \"g2\".\"country_code\" = $3 and \"g2\".\"province_code\" = $4 and \"g2\".\"city\" = $5 and \"g2\".\"postal_expression\" = $6) or (\"g2\".\"type\" = $7 and \"g2\".\"country_code\" = $8 and \"g2\".\"province_code\" = $9 and \"g2\".\"city\" = $10) or (\"g2\".\"type\" = $11 and \"g2\".\"country_code\" = $12 and \"g2\".\"province_code\" = $13) or (\"g2\".\"type\" = $14 and \"g2\".\"country_code\" = $15))",
+      "params": [
+        "artificial-set",
+        "zip",
+        "dk",
+        "01",
+        "Århus",
+        "\"00123\"",
+        "city",
+        "dk",
+        "01",
+        "Århus",
+        "province",
+        "dk",
+        "01",
+        "country",
+        "dk"
+      ]
+    },
+    {
+      "name": "case-preserved",
+      "address": {
+        "country_code": "DK",
+        "postal_expression": "Ab 00123"
+      },
+      "constraints": [
+        {
+          "type": "zip",
+          "country_code": "DK",
+          "postal_expression": "Ab 00123"
+        },
+        {
+          "type": "country",
+          "country_code": "DK"
+        }
+      ],
+      "sql": "select \"s0\".\"id\" from \"shipping_option\" as \"s0\" inner join \"service_zone\" as \"s1\" on \"s0\".\"service_zone_id\" = \"s1\".\"id\" left join \"geo_zone\" as \"g2\" on \"s1\".\"id\" = \"g2\".\"service_zone_id\" where \"s1\".\"fulfillment_set_id\" in ($1) and ((\"g2\".\"type\" = $2 and \"g2\".\"country_code\" = $3 and \"g2\".\"postal_expression\" = $4) or (\"g2\".\"type\" = $5 and \"g2\".\"country_code\" = $6))",
+      "params": [
+        "artificial-set",
+        "zip",
+        "DK",
+        "\"Ab 00123\"",
+        "country",
+        "DK"
+      ]
+    }
+  ]
+}
