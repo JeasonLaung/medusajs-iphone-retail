@@ -39,3 +39,5 @@
 联合回归期间本机 C 盘耗尽，旧 Next 前台短暂返回 ENOSPC/500。清除可重新生成的 Go 编译缓存释放约2.6 GiB，前台恢复200，未重启或清除 Next/Medusa 输出；后续本轮 Go 临时目录及缓存显式放在 D 盘任务目录。测试入口增加 workspace 至少2 GiB 空余检查。
 
 Docker Desktop 日志在 2026-10-28 00:49:29 UTC 显示 engine running→stopping，随后 Docker API/inspect 超时。最新数据库/浏览器联合回归未完成，不能引用前一批绿色报告宣称本批全量通过。自有临时容器及runner未完成清理，准确所有权与路径登记在忽略文件 `logs/gin-migration/pending-docker-cleanup.json`；引擎恢复后按label核对清理，重跑专项/联合回归更新报告。当前代码仍默认关闭购物车命令，功能不作整体验收。
+
+后续客户端补充：[Astro私有传输](astro-cart-client.md)已对人工HTTPfixture验证浏览器cookie与稳定操作键，不含实际页面挂载或真实Gin/MySQL/Redis端到端验收；上述Docker重跑与清理仍待完成。

@@ -1,0 +1,34 @@
+{
+  "format_version": 1,
+  "scope": "Private browser transport against artificial HTTP API only; not Gin/MySQL/Redis or production cart acceptance",
+  "node_version": "v22.23.4",
+  "unit_tests_passed": 28,
+  "type_check_and_build_passed": true,
+  "browser": {
+    "actual_browser_http": true,
+    "fixture_api": true,
+    "real_gin": false,
+    "real_mysql_redis": false,
+    "http_only_scope_and_possession": true,
+    "readable_csrf_only": true,
+    "browser_origin": true,
+    "explicit_operation_replay": true,
+    "no_automatic_retry": true,
+    "dependency_not_empty": true,
+    "exact_version": true,
+    "production_page_mounted": false
+  },
+  "application_resources_used": false,
+  "existing_services_started_stopped_or_built": false,
+  "cleanup": "browser context, browser and owned loopback listener closed",
+  "implementation_sha256": {
+    "retail/scripts/test-cart-client.py": "e0b90002c870234f09e86e1bbdbda68da0741444e5e4f4a64a036786bcb8cf20",
+    "retail/storefront/src/lib/cart-client.ts": "babfe1cff2b7ecd920da04abe2b281586c4dea059a212a8a2babfac82f27c5c9",
+    "retail/storefront/tests/cart-client.test.ts": "7a9d547500ab4736d8cc40252635e3c6284708ba499c3f0641ce68abb187117d",
+    "retail/storefront/tests/cart-client.browser.mjs": "1cf33376ffa8a314446bcee0820ee5e468192cad3683371c4fe79829f52e623d",
+    "retail/storefront/package.json": "e805cf1d51a7cd8b6b17834c97c9479dc69789003d8616318d9e00db63ef2f05",
+    "retail/storefront/package-lock.json": "0907e4f629a274f781577528600f35318e9695745a17f206c2e314e9a4fca8f0",
+    "retail/storefront/astro.config.mjs": "85710c96a776e6a32ca01860ff3d7c511efb736f9d685cf6ef6479b3ac03d2d5",
+    "retail/storefront/tsconfig.json": "0be126fdf4f61a27969212c2d65e8fc0147da2b5b7bf9bd552866224e8951da3"
+  }
+}
