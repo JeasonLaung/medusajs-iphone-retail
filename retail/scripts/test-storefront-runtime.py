@@ -37,7 +37,7 @@ def main():
             raise RuntimeError('Astro build or unit checks failed; inspect ignored output')
     tap=checked.stdout.decode('utf-8')
     observed={key:int(value) for key,value in re.findall(r'^# (tests|pass|fail|cancelled|skipped|todo) (\d+)\s*$',tap,re.M)}
-    if observed!={'tests':56,'pass':56,'fail':0,'cancelled':0,'skipped':0,'todo':0}:
+    if observed!={'tests':59,'pass':59,'fail':0,'cancelled':0,'skipped':0,'todo':0}:
         raise RuntimeError('Astro unit coverage differs; no partial success report written')
     tested=subprocess.run([str(node),'tests/runtime.integration.mjs'],cwd=APP,env=env,capture_output=True,timeout=90)
     markers=[line.split('ASTRO_RUNTIME_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if line.startswith('ASTRO_RUNTIME_REHEARSAL ')]
@@ -69,6 +69,11 @@ def main():
     if footer.returncode or len(footer_markers)!=1:
         (ROOT/'logs/gin-migration/astro-footer-browser-result.log').write_bytes(footer.stdout+footer.stderr)
         raise RuntimeError('Astro original footer browser comparison failed; inspect ignored output')
+    header=subprocess.run([str(node),'tests/header.browser.mjs'],cwd=APP,env=env,capture_output=True,timeout=180)
+    header_markers=[line.split('ASTRO_HEADER_BROWSER ',1)[1] for line in header.stdout.decode('utf-8').splitlines() if line.startswith('ASTRO_HEADER_BROWSER ')]
+    if header.returncode or len(header_markers)!=1:
+        (ROOT/'logs/gin-migration/astro-header-browser-result.log').write_bytes(header.stdout+header.stderr)
+        raise RuntimeError('Astro original header browser comparison failed; inspect ignored output')
     audit=subprocess.run([npm,'audit','--json'],cwd=APP,env=env,capture_output=True,timeout=60)
     try:
         counts=json.loads(audit.stdout)['metadata']['vulnerabilities']
@@ -99,6 +104,8 @@ def main():
         'lib/util/isEmpty.ts','lib/util/cart-inventory.ts','modules/products/components/color-swatches/index.tsx']]
     files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (source_root/'modules/cart').rglob('*') if p.is_file()]
     files += ['medusa-store/apps/storefront/src/modules/common/components/page-entry-scroll/index.tsx']
+    files += ['medusa-store/apps/storefront/src/modules/layout/components/'+folder+'/'+name for folder in ['store-header','region-language'] for name in ['index.tsx','styles.module.css']]
+    files += ['medusa-store/apps/storefront/node_modules/@medusajs/icons/dist/esm/'+name+'.js' for name in ['chevron-down','x-mark']]
     public_assets={}
     for path in (APP/'public').rglob('*'):
         if not path.is_file():continue
@@ -110,6 +117,7 @@ def main():
     report={'format_version':1,'scope':'Astro Node SSR regions foundation, source-level product adapter to owned Gin, and selection browser check in a separate artificial test root; no business page acceptance','node_version':version,'unit_tests_passed':observed['pass'],'type_check_passed':True,'production_build_passed':True,'runtime':json.loads(markers[0]),'selection_browser':json.loads(browser_markers[0]),'audit_vulnerabilities':counts,'real_application_resources_used':False,'full_storefront_accepted':False,'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
     report['presentation_browser']=json.loads(presentation_markers[0])
     report['actions_browser']=json.loads(actions_markers[0])
+    report['header_browser']=json.loads(header_markers[0])
     report['footer_browser']=json.loads(footer_markers[0])
     report['original_styles_provenance_verified']=True
     report['cart_browser']=json.loads(cart_markers[0])

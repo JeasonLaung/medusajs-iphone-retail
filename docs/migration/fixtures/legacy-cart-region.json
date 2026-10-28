@@ -1,0 +1,319 @@
+{
+  "format_version": 1,
+  "scope": "Pure original prepare-cart-to-update callback only; not refresh, tax, shipping, promo or a committed transaction",
+  "source_sha256": "0ef55de144310e118474e3d19e7da15471445a77995547051441044d7b4f105f",
+  "source": "@medusajs/core-flows/dist/cart/workflows/update-cart.js",
+  "cases": [
+    {
+      "name": "same-region-locale",
+      "input": {
+        "input": {
+          "id": "cart-test",
+          "locale": "zh-CN"
+        },
+        "region": {
+          "id": "region-eu",
+          "name": "Europe",
+          "currency_code": "eur",
+          "countries": [
+            {
+              "iso_2": "dk"
+            },
+            {
+              "iso_2": "de"
+            }
+          ]
+        },
+        "cartToUpdate": {
+          "region": {
+            "id": "region-eu",
+            "name": "Europe",
+            "currency_code": "eur",
+            "countries": [
+              {
+                "iso_2": "dk"
+              },
+              {
+                "iso_2": "de"
+              }
+            ]
+          }
+        }
+      },
+      "output": {
+        "id": "cart-test",
+        "locale": "zh-CN",
+        "currency_code": "eur",
+        "region_id": "region-eu"
+      }
+    },
+    {
+      "name": "same-region-with-promo",
+      "input": {
+        "input": {
+          "id": "cart-test",
+          "region_id": "region-eu",
+          "promo_codes": [
+            "TEST"
+          ],
+          "additional_data": {
+            "private": "sample"
+          }
+        },
+        "region": {
+          "id": "region-eu",
+          "name": "Europe",
+          "currency_code": "eur",
+          "countries": [
+            {
+              "iso_2": "dk"
+            },
+            {
+              "iso_2": "de"
+            }
+          ]
+        },
+        "cartToUpdate": {
+          "region": {
+            "id": "region-eu",
+            "name": "Europe",
+            "currency_code": "eur",
+            "countries": [
+              {
+                "iso_2": "dk"
+              },
+              {
+                "iso_2": "de"
+              }
+            ]
+          }
+        }
+      },
+      "output": {
+        "id": "cart-test",
+        "region_id": "region-eu",
+        "currency_code": "eur"
+      }
+    },
+    {
+      "name": "new-single-country",
+      "input": {
+        "input": {
+          "id": "cart-test",
+          "region_id": "region-gb"
+        },
+        "region": {
+          "id": "region-gb",
+          "name": "UK",
+          "currency_code": "gbp",
+          "countries": [
+            {
+              "iso_2": "gb"
+            }
+          ]
+        },
+        "cartToUpdate": {
+          "region": {
+            "id": "region-eu",
+            "name": "Europe",
+            "currency_code": "eur",
+            "countries": [
+              {
+                "iso_2": "dk"
+              },
+              {
+                "iso_2": "de"
+              }
+            ]
+          },
+          "shipping_address": {
+            "country_code": "dk",
+            "address_1": "sample"
+          }
+        }
+      },
+      "output": {
+        "id": "cart-test",
+        "region_id": "region-gb",
+        "currency_code": "gbp",
+        "shipping_address": {
+          "country_code": "gb"
+        }
+      }
+    },
+    {
+      "name": "new-multiple-countries",
+      "input": {
+        "input": {
+          "id": "cart-test",
+          "region_id": "region-eu"
+        },
+        "region": {
+          "id": "region-eu",
+          "name": "Europe",
+          "currency_code": "eur",
+          "countries": [
+            {
+              "iso_2": "dk"
+            },
+            {
+              "iso_2": "de"
+            }
+          ]
+        },
+        "cartToUpdate": {
+          "region": {
+            "id": "region-gb",
+            "name": "UK",
+            "currency_code": "gbp",
+            "countries": [
+              {
+                "iso_2": "gb"
+              }
+            ]
+          },
+          "shipping_address": {
+            "country_code": "gb"
+          }
+        }
+      },
+      "output": {
+        "id": "cart-test",
+        "region_id": "region-eu",
+        "currency_code": "eur",
+        "shipping_address": null
+      }
+    },
+    {
+      "name": "new-valid-explicit-address",
+      "input": {
+        "input": {
+          "id": "cart-test",
+          "region_id": "region-eu",
+          "shipping_address": {
+            "country_code": "de",
+            "city": "sample"
+          }
+        },
+        "region": {
+          "id": "region-eu",
+          "name": "Europe",
+          "currency_code": "eur",
+          "countries": [
+            {
+              "iso_2": "dk"
+            },
+            {
+              "iso_2": "de"
+            }
+          ]
+        },
+        "cartToUpdate": {
+          "region": {
+            "id": "region-gb",
+            "name": "UK",
+            "currency_code": "gbp",
+            "countries": [
+              {
+                "iso_2": "gb"
+              }
+            ]
+          }
+        }
+      },
+      "output": {
+        "id": "cart-test",
+        "region_id": "region-eu",
+        "shipping_address": {
+          "country_code": "de",
+          "city": "sample"
+        },
+        "currency_code": "eur"
+      }
+    },
+    {
+      "name": "foreign-address",
+      "input": {
+        "input": {
+          "id": "cart-test",
+          "region_id": "region-gb",
+          "shipping_address": {
+            "country_code": "dk"
+          }
+        },
+        "region": {
+          "id": "region-gb",
+          "name": "UK",
+          "currency_code": "gbp",
+          "countries": [
+            {
+              "iso_2": "gb"
+            }
+          ]
+        },
+        "cartToUpdate": {
+          "region": {
+            "id": "region-eu",
+            "name": "Europe",
+            "currency_code": "eur",
+            "countries": [
+              {
+                "iso_2": "dk"
+              },
+              {
+                "iso_2": "de"
+              }
+            ]
+          }
+        }
+      },
+      "error": {
+        "type": "invalid_data",
+        "message": "Country with code dk is not within region UK"
+      }
+    },
+    {
+      "name": "same-region-invalid-address",
+      "input": {
+        "input": {
+          "id": "cart-test",
+          "shipping_address": {
+            "country_code": "gb"
+          }
+        },
+        "region": {
+          "id": "region-eu",
+          "name": "Europe",
+          "currency_code": "eur",
+          "countries": [
+            {
+              "iso_2": "dk"
+            },
+            {
+              "iso_2": "de"
+            }
+          ]
+        },
+        "cartToUpdate": {
+          "region": {
+            "id": "region-eu",
+            "name": "Europe",
+            "currency_code": "eur",
+            "countries": [
+              {
+                "iso_2": "dk"
+              },
+              {
+                "iso_2": "de"
+              }
+            ]
+          }
+        }
+      },
+      "error": {
+        "type": "invalid_data",
+        "message": "Country with code gb is not within region Europe"
+      }
+    }
+  ]
+}

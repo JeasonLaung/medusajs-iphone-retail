@@ -1,0 +1,20 @@
+.trigger { display: flex; align-items: center; gap: 12px; min-height: 44px; padding-left: 8px; font-size: 12px; text-transform: uppercase; white-space: nowrap; }
+.dialog { position: fixed; inset: 0; z-index: 100; color: #1d1d1f; }
+.backdrop { position: fixed; inset: 0; background: #0003; }
+.drawer { position: fixed; right: 0; top: 0; bottom: 0; width: 360px; max-width: 100%; background: #fff; overflow-y: auto; overscroll-behavior: contain; padding: 0 14px max(16px, env(safe-area-inset-bottom)); box-shadow: -4px 0 24px #0000000d; }
+.heading { position: sticky; top: 0; z-index: 1; background: #fff; display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 53px; border-bottom: 1px solid #e1e1e4; }
+.heading h2 { font-size: 14px; font-weight: 600; padding: 12px 30px 12px 0; }
+.heading button { position: absolute; right: -4px; width: 40px; height: 44px; font-size: 24px; font-weight: 300; }
+.row { display: flex; align-items: center; min-height: 53px; gap: 14px; border-bottom: 1px solid #e1e1e4; }
+.row img { flex-shrink: 0; object-fit: cover; border-radius: 2px; box-shadow: 0 1px 6px #0002; }
+.country { flex: 1; font-size: 14px; font-weight: 600; line-height: 1.35; padding: 14px 0; }
+.languages { display: flex; align-items: center; gap: 0; flex-shrink: 0; }
+.languages button { display: grid; place-items: center; min-width: 30px; height: 44px; color: #1741cb; font-size: 12px; position: relative; }
+.languages button[aria-pressed="true"]::after { content: ""; position: absolute; width: 28px; height: 28px; border: 1px solid currentColor; border-radius: 50%; }
+.languages button:hover { color: #002394; text-decoration: underline; }
+.languages button:disabled { opacity: .5; cursor: wait; }
+.error { padding: 16px 0; font-size: 13px; }
+.dialog button:focus-visible, .trigger:focus-visible { outline: 2px solid #0066cc; outline-offset: 1px; }
+@media (max-width: 1050px) { .trigger span { display: none; } }
+@media (max-width: 799px) { .trigger { padding: 0 8px; } }
+@media (max-width: 359px) { .trigger { padding: 0 5px; } .row { gap: 10px; } .country { font-size: 13px; } }

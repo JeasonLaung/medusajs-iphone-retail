@@ -2,7 +2,8 @@
 import Preview from '../preview'
 import Footer from '../../../src/components/layout/footer'
 import '../../../src/styles/original.css'
-const segment=Astro.url.pathname.startsWith('/dk-en')?'dk-en':'dk-zh'
+const candidate=Astro.url.pathname.split('/')[1]
+const segment=/^[a-z]{2}-(en|zh)$/.test(candidate)?candidate:'dk-zh'
 const data={iphoneCategory:{id:'iphone',name:'iPhone',handle:'iphone',category_children:[{id:'14',name:'iPhone 14',handle:'iphone-14'}]},collections:[]}
 ---
 <!doctype html><html lang={segment.endsWith('-zh')?'zh-CN':'en'}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>EuroRefurb · 迁移组件预览</title><link rel="icon" href="data:,"/></head><body><Preview segment={segment} initialLocation={Astro.url.pathname+Astro.url.search} client:load/><Footer data={data} segment={segment}/></body></html>

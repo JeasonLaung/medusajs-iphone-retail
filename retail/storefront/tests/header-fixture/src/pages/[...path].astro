@@ -1,0 +1,6 @@
+---
+import Probe from '../probe'
+import '../../../../src/styles/original.css'
+const segment=Astro.url.pathname.split('/')[1]
+---
+<!doctype html><html lang={segment.endsWith('-zh')?'zh-CN':'en'}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Artificial header fixture</title><link rel="icon" href="data:,"/></head><body><Probe reference={Astro.url.searchParams.has('reference')} segment={segment} pathname={Astro.url.pathname} mode={Astro.url.searchParams.get('mode')??'full'} client:load/></body></html>

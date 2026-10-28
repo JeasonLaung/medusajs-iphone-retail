@@ -4,7 +4,8 @@ import ProductActions from '../../src/components/products/product-actions'
 import ImageGallery from '../../src/components/products/image-gallery'
 import ProductDetails from '../../src/components/products/product-details'
 import CartTemplate from '../../src/components/cart'
-import BrandLogo from '../../src/components/layout/brand-logo'
+import Header from '../../src/components/layout/header'
+import type {Region} from '../../src/lib/regions'
 import type {Product} from '../../src/lib/products'
 import type {CartDisplay} from '../../src/components/cart/types'
 import {product as base} from '../../tests/selection-fixture/src/product'
@@ -28,6 +29,7 @@ function sample():Product{
 }
 export default function Preview({segment,initialLocation}:{segment:string;initialLocation:string}){
  const product=useMemo(sample,[]),zh=segment.endsWith('-zh')
+ const regions:Region[]=[{id:'preview-region',name:'Preview',currency_code:'eur',automatic_taxes:false,countries:['dk','fr','de','it','es','se','gb'].map(code=>({iso_2:code,iso_3:code,num_code:'1',name:code,display_name:code,region_id:'preview-region'}))}]
  const [view,setView]=useState('product'),[ready,setReady]=useState(false)
  const [quantities,setQuantities]=useState<Record<string,string>>({[product.variants[0].id]:'1'})
  useEffect(()=>{const update=()=>setView(location.hash==='#cart'?'cart':'product');update();setReady(true);addEventListener('hashchange',update);return()=>removeEventListener('hashchange',update)},[])
@@ -36,7 +38,8 @@ export default function Preview({segment,initialLocation}:{segment:string;initia
  const cart:CartDisplay={currency_code:'eur',items,shipping_methods:[],shipping_subtotal:'0',discount_total:'0',tax_total:'0',total:items.reduce((n,i)=>n+Number(i.subtotal),0).toString()}
  return <div data-preview-ready={ready}>
   <aside className="preview-notice">迁移组件预览 · 测试数据 · 操作仅在本页内存生效，刷新重置 · 结账未开放</aside>
-  <nav className="preview-nav" aria-label="Preview navigation"><a href="#product"><BrandLogo/></a><div><a href="#product">{zh?'商品配置':'Product'}</a><a href="#cart">{zh?'购物车':'Cart'} ({items.reduce((n,i)=>n+i.quantity,0)})</a><a href={zh?'/dk-en/preview':'/dk-zh/preview'}>{zh?'English':'中文'}</a></div></nav>
+  <div onClickCapture={event=>{const target=event.target instanceof Element?event.target.closest('a'):null;if(target?.getAttribute('data-testid')==='nav-cart-link'){event.preventDefault();location.hash='cart'}}}><Header regions={regions} locales={[]} locale={zh?'zh-CN':'en'} cartCount={items.reduce((n,i)=>n+BigInt(i.quantity),0n).toString()} segment={segment} pathname={initialLocation.split('?')[0]} isLoggedIn={false} onSelect={async target=>{window.location.assign(target.location)}}/></div>
+  <nav className="preview-nav" aria-label="Preview navigation"><span>{zh?'预览操作':'Preview controls'}</span><div><a href="#product">{zh?'商品配置':'Product'}</a><a href="#cart">{zh?'购物车':'Cart'} ({items.reduce((n,i)=>n+i.quantity,0)})</a><a href={`/${segment.slice(0,2)}-${zh?'en':'zh'}/preview`}>{zh?'English':'中文'}</a></div></nav>
   {view==='cart'?<main><CartTemplate cart={cart} customer={false} locale={segment} variants={variants} checkoutHref={null} commands={{enabled:true,updateLineItem:async({lineId,quantity})=>{setQuantities(q=>({...q,[lineId]:String(quantity)}))},deleteLineItem:async(id)=>{setQuantities(q=>{const next={...q};delete next[id];return next})}}}/></main>:<main className={styles.page}>
    <div className={styles.hero}><div className={styles.visual}><ImageGallery product={product} segment={segment} initialLocation={initialLocation}/></div><ProductActions product={product} segment={segment} initialLocation={initialLocation} cartQuantities={quantities} commerce={{enabled:true,addToCart:async({variantId})=>{const next={...quantities,[variantId]:String(Number(quantities[variantId]??0)+1)};setQuantities(next);return {ok:true,quantities:next}},navigate:()=>{location.hash='cart'}}}/></div>
    <ProductDetails product={product} locale={segment}/>

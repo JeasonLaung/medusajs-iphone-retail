@@ -277,7 +277,7 @@
     "retail/scripts/generate-fulfillment-import-plan.py": "9f9dd5e5e21ea6582349678d6b9464e20ebe8d150bf768f2d4a5398fe0836b19",
     "retail/scripts/generate-fulfillment-schema.py": "3c1fa30b9c75cd402dc1f5d3bf160b37883a1a59b4683171435fe64c68f297fe",
     "retail/scripts/generate-order-schema.py": "31bc4a64bce1488ea43acd147cec7ec902f384aab9298a490bb740d00bd27eeb",
-    "retail/scripts/test-admin-live.py": "024248d32723ee73ffdd670cdb47cf71b61da9ff5fe5af3278005c6f5a26b105",
+    "retail/scripts/test-admin-live.py": "d9a4fdd6c4e17b7c18a5cd0fbe0e86cacfd3324a839b4462fb18ad241b0c27f1",
     "retail/storefront/src/components/cart/gin-cart.tsx": "08ec1dbc350b3a1cc06cb389e1153e07d69c4536ff0e94885c11ece4bbf4a37f",
     "retail/storefront/src/components/products/ICONS-LICENSE.txt": "e2058c0858b14c1813ee09ea991d97f6aa153fcd60eeb7174d736c19bbbef06d",
     "retail/storefront/src/components/products/gin-product-actions.tsx": "403c3f556ab12522757a0887244cc34f2d44dc5059baee49eedb785023aa6e61",
