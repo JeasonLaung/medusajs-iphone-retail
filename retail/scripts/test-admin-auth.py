@@ -250,6 +250,10 @@ def main():
             if len(flat_markers) != 1:
                 raise RuntimeError('Flat shipping price evidence missing')
             files += ['retail/backend/internal/identity/flat_shipping_prices_test.go','retail/backend/internal/identity/geo_schema_test.go','retail/backend/migrations/0030_fulfillment_geo_relational.sql','retail/scripts/generate-geo-schema.py']
+            profile_markers = [line.split('CART_SHIPPING_PROFILES_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_SHIPPING_PROFILES_REHEARSAL ' in line]
+            if len(profile_markers) != 1:
+                raise RuntimeError('Cart shipping profile evidence missing')
+            files += ['retail/backend/internal/identity/cart_shipping_profiles_test.go']
             manual_markers = [line.split('MANUAL_SHIPPING_QUOTES_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'MANUAL_SHIPPING_QUOTES_REHEARSAL ' in line]
             if len(manual_markers) != 1:
                 raise RuntimeError('Manual shipping quote evidence missing')
@@ -364,6 +368,7 @@ def main():
                       'geo_schema': json.loads(geo_markers[0]),
                       'shipping_candidates': json.loads(candidate_markers[0]),
                       'manual_shipping_quotes': json.loads(manual_markers[0]),
+                      'cart_shipping_profiles': json.loads(profile_markers[0]),
                       'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
         password = ''

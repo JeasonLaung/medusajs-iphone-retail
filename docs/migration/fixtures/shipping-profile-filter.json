@@ -1,0 +1,229 @@
+{
+  "format_version": 1,
+  "scope": "Original pure profile projection only; not cart authority, SQL profile uniqueness or shipping coverage acceptance",
+  "source_file": "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/utils/filter-items-by-shipping-profile.js",
+  "source_sha256": "5407e26d4954b73022c2e121523925412b9c529752467a771b58c315cc7dd295",
+  "cases": [
+    {
+      "name": "first",
+      "items": [
+        {
+          "id": "a",
+          "quantity": 2,
+          "product_id": "stale",
+          "variant": {
+            "product": {
+              "shipping_profile": {
+                "id": "one"
+              }
+            }
+          }
+        },
+        {
+          "id": "b",
+          "quantity": 3,
+          "variant": {
+            "product": {
+              "shipping_profile": {
+                "id": "two"
+              }
+            }
+          }
+        },
+        {
+          "id": "c",
+          "variant": {
+            "product": {}
+          }
+        },
+        {
+          "id": "manual",
+          "product_id": "a"
+        },
+        {
+          "id": "d",
+          "quantity": 1,
+          "variant": {
+            "product": {
+              "shipping_profile": {
+                "id": "one"
+              }
+            }
+          }
+        }
+      ],
+      "profile": "one",
+      "expected_ids": [
+        "a",
+        "d"
+      ]
+    },
+    {
+      "name": "second",
+      "items": [
+        {
+          "id": "a",
+          "quantity": 2,
+          "product_id": "stale",
+          "variant": {
+            "product": {
+              "shipping_profile": {
+                "id": "one"
+              }
+            }
+          }
+        },
+        {
+          "id": "b",
+          "quantity": 3,
+          "variant": {
+            "product": {
+              "shipping_profile": {
+                "id": "two"
+              }
+            }
+          }
+        },
+        {
+          "id": "c",
+          "variant": {
+            "product": {}
+          }
+        },
+        {
+          "id": "manual",
+          "product_id": "a"
+        },
+        {
+          "id": "d",
+          "quantity": 1,
+          "variant": {
+            "product": {
+              "shipping_profile": {
+                "id": "one"
+              }
+            }
+          }
+        }
+      ],
+      "profile": "two",
+      "expected_ids": [
+        "b"
+      ]
+    },
+    {
+      "name": "unknown",
+      "items": [
+        {
+          "id": "a",
+          "quantity": 2,
+          "product_id": "stale",
+          "variant": {
+            "product": {
+              "shipping_profile": {
+                "id": "one"
+              }
+            }
+          }
+        },
+        {
+          "id": "b",
+          "quantity": 3,
+          "variant": {
+            "product": {
+              "shipping_profile": {
+                "id": "two"
+              }
+            }
+          }
+        },
+        {
+          "id": "c",
+          "variant": {
+            "product": {}
+          }
+        },
+        {
+          "id": "manual",
+          "product_id": "a"
+        },
+        {
+          "id": "d",
+          "quantity": 1,
+          "variant": {
+            "product": {
+              "shipping_profile": {
+                "id": "one"
+              }
+            }
+          }
+        }
+      ],
+      "profile": "unknown",
+      "expected_ids": []
+    },
+    {
+      "name": "missing-profile",
+      "items": [
+        {
+          "id": "a",
+          "quantity": 2,
+          "product_id": "stale",
+          "variant": {
+            "product": {
+              "shipping_profile": {
+                "id": "one"
+              }
+            }
+          }
+        },
+        {
+          "id": "b",
+          "quantity": 3,
+          "variant": {
+            "product": {
+              "shipping_profile": {
+                "id": "two"
+              }
+            }
+          }
+        },
+        {
+          "id": "c",
+          "variant": {
+            "product": {}
+          }
+        },
+        {
+          "id": "manual",
+          "product_id": "a"
+        },
+        {
+          "id": "d",
+          "quantity": 1,
+          "variant": {
+            "product": {
+              "shipping_profile": {
+                "id": "one"
+              }
+            }
+          }
+        }
+      ],
+      "profile": null,
+      "expected_ids": []
+    },
+    {
+      "name": "empty-items",
+      "items": [],
+      "profile": "one",
+      "expected_ids": []
+    },
+    {
+      "name": "missing-items",
+      "items": null,
+      "profile": "one",
+      "expected_ids": []
+    }
+  ]
+}

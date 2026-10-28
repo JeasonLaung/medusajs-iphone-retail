@@ -422,3 +422,5 @@
 2026-10-28 配送候选查询补充：[渠道仓库区域与地址规则](migration/shipping-candidates.md)承接有效关系、多仓库、地址粒度OR、邮编JSON字符串精确相等及当前规则；5组原离线SQL构造固定，人工MySQL范围以admin-auth-report.shipping_candidates与源码SHA为准。候选仍需provider/仓库配置、商品profile、库存、运价和持有者版本协调，不提供HTTP或checkout，T032/T033未整体验收。
 
 2026-10-28 手工配送运价补充：[有效provider/分组/仓库与精确flat价格](migration/manual-shipping-quotes.md)按可信manual注册名单组合候选、配送分组、启用状态和仓库关联；保留含税及零运费，缺价/停用/动态运价不伪造。3组原provider纯验证与能力证据固定，人工SQL以admin-auth-report.manual_shipping_quotes与SHA为准。当前购物车profile解析、provider配置、库存、保存及完整交易继续待办，T032/T033未整体验收。
+
+2026-10-28 购物车配送分组补充：[当前变体关系与完整覆盖](migration/cart-shipping-profiles.md)按当前变体/商品解析有效profile，校验持有者与版本，拒绝未覆盖配送行与歧义，保留原非配送标记和数量。6组原纯过滤固定；人工SQL通过范围以最新admin-auth-report.cart_shipping_profiles与SHA为准。完整报价/库存/保存/checkout继续待办，T032/T033未整体验收。
