@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import re
 import secrets
+import shutil
 import subprocess
 import sys
 import time
@@ -20,6 +21,8 @@ def docker(*args, timeout=90):
 
 
 def main():
+    if shutil.disk_usage(ROOT).free < 2 * (1 << 30):
+        raise RuntimeError('At least 2 GiB free workspace disk required to preserve development services')
     for image in ['mysql:8.4', 'redis:7-alpine']:
         if docker('image', 'inspect', image).returncode:
             raise RuntimeError('Existing fixture images required; no pull performed')

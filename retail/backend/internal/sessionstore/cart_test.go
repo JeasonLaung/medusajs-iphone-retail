@@ -224,7 +224,61 @@ func TestOwnedRedisCartPossession(t *testing.T) {
 		t.Fatal("cache loss restored cart authority")
 	}
 	outage := issue()
+	scopeIssued, err := s.IssueCartScope(ctx, ref.StoreID)
+	if err != nil {
+		t.Fatal("cart creation scope unavailable")
+	}
+	scope, err := s.ResolveCartScope(ctx, scopeIssued.Token, scopeIssued.CSRF)
+	if err != nil || scope.StoreID != ref.StoreID || scope.Hash == ([32]byte{}) {
+		t.Fatal("cart creation scope not resolved")
+	}
+	if _, err := s.ResolveCartScope(ctx, scopeIssued.Token, i.CSRF); err != ErrCSRF {
+		t.Fatal("scope CSRF bypassed")
+	}
+	if _, err := s.ResolveCart(ctx, scopeIssued.Token); err != ErrMissing {
+		t.Fatal("creation scope granted cart possession")
+	}
+	if _, err := s.ResolveCartScope(ctx, outage.Token, outage.CSRF); err != ErrMissing {
+		t.Fatal("possession became creation scope")
+	}
+	if _, err := other.ResolveCartScope(ctx, scopeIssued.Token, scopeIssued.CSRF); err != ErrMissing {
+		t.Fatal("scope namespace crossed")
+	}
+	scopeKey := s.key(cartRealm, "creation-scope", scopeIssued.Token)
+	scopeRaw, err := client.Get(ctx, scopeKey).Result()
+	if err != nil || strings.Contains(scopeKey, scopeIssued.Token) || strings.Contains(scopeRaw, scopeIssued.Token) || strings.Contains(scopeRaw, scopeIssued.CSRF) {
+		t.Fatal("raw scope credentials persisted")
+	}
+	s.now = func() time.Time { return time.Now().Add(CartScopeTTL + time.Minute) }
+	if _, err := s.ResolveCartScope(ctx, scopeIssued.Token, scopeIssued.CSRF); err != ErrMissing {
+		t.Fatal("absolute scope expiry ignored")
+	}
+	s.now = time.Now
+	if client.Del(ctx, scopeKey).Err() != nil {
+		t.Fatal("owned scope eviction failed")
+	}
+	if _, err := s.ResolveCartScope(ctx, scopeIssued.Token, scopeIssued.CSRF); err != ErrMissing {
+		t.Fatal("scope eviction restored identity")
+	}
+	for j := 0; j < 10; j++ {
+		allowed, err := s.AllowCartRequest(ctx, "scope-ip", "artificial-ip")
+		if err != nil || allowed != (j < 8) {
+			t.Fatal("cart allocation limiter failed")
+		}
+	}
+	for j := 0; j < 34; j++ {
+		allowed, err := s.AllowCartRequest(ctx, "create-scope", scopeIssued.Token)
+		if err != nil || allowed != (j < 32) {
+			t.Fatal("cart creation limiter failed")
+		}
+	}
 	_ = client.Close()
+	if _, err := s.IssueCartScope(ctx, ref.StoreID); err != ErrUnavailable {
+		t.Fatal("outage issued creation identity")
+	}
+	if _, err := s.ResolveCartScope(ctx, scopeIssued.Token, scopeIssued.CSRF); err != ErrUnavailable {
+		t.Fatal("outage resolved scope identity")
+	}
 	if r, err := s.ResolveCart(ctx, outage.Token); err != ErrUnavailable || r != (CartReference{}) {
 		t.Fatal("outage resolved cart")
 	}

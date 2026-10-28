@@ -32,6 +32,11 @@ func RequestBoundary(logger *slog.Logger) gin.HandlerFunc {
 		c.Header("X-Request-ID", requestID)
 		c.Header("X-Content-Type-Options", "nosniff")
 		c.Header("Referrer-Policy", "strict-origin-when-cross-origin")
+		switch c.FullPath() {
+		case "/api/store/cart-sessions", "/api/store/carts", "/api/store/carts/:id":
+			// Also applies to the body-size rejection before route middleware.
+			c.Header("Cache-Control", "private, no-store")
+		}
 		panicked := false
 		defer func() {
 			if recover() != nil {

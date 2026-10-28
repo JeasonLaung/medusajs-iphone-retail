@@ -39,12 +39,13 @@
   "private_values_in_report": false,
   "runtime_login_accepted": false,
   "implementation_sha256": {
-    "retail/scripts/test-redis-sessions.py": "e0325dea37ed4c3ff542e38d2b7d9fac2cd9d50a659c1db7eee5ce33d924f155",
+    "retail/scripts/test-redis-sessions.py": "06fdfb74e3d440af0071c6b7d91b48c5e298c80cf2766fa7cd109983b2573857",
     "retail/backend/internal/sessionstore/store.go": "1474b97c45baebfbc00de252da3b77b3dfa4a7749e9cf2cf894d697f508f83aa",
     "retail/backend/internal/sessionstore/config.go": "3a06b19b9f71032d4243cc9266499d7eb7cf6a8e7facfcfac3ae63ac1a339440",
     "retail/backend/internal/sessionstore/config_test.go": "a2422d5f82bd9e9173e9efe0983193f3cbdf650c5822b12ed7df857dddd537f2",
     "retail/backend/internal/sessionstore/cart.go": "08a33b38b47c0ea3d077735239594044a7fbbb1013f6f5f176e53354c41cc4d0",
-    "retail/backend/internal/sessionstore/cart_test.go": "a55a0d9505280ce25fd4751f0813d252e4bfd2db5d466ed84c53e4ebf6376ef3",
+    "retail/backend/internal/sessionstore/cart_test.go": "dd4113af47a4c56acac505b2116cc8e0f0dfa637495cc5c9f239670fd473fd6e",
+    "retail/backend/internal/sessionstore/cart_scope.go": "8e2df72d27a7cfd787a88d6d4cba66da1d31e048475fff7d7fa218196f1ae88b",
     "retail/backend/internal/sessionstore/redis_test.go": "46ccb5f4fd57ae32ef2375b810ad33013b974a148940bca09b701dd99c829163",
     "retail/backend/go.mod": "d172f1878274b95de97d1db201834cff727c7e6a7371b2b5ca2c0fbc21f3e4b2",
     "retail/backend/go.sum": "cab27e69f0740d100e5fdf9b57bd677eb7262fe95adb5a65ec40c344e9881582"

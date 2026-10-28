@@ -318,6 +318,7 @@ func TestOwnedCartRuntime(t *testing.T) {
 	if sessions.RevokeCart(ctx, issued.Token) != nil {
 		t.Fatal("owned cart session cleanup failed")
 	}
+	checkCartHTTP(t, ctx, gdb, sessions, redisClient)
 	exec(`UPDATE cart_command_capabilities SET enabled=FALSE WHERE command='cart.access'`)
 	if _, err := cart.Inspect(ctx, gdb, "shop", separate.Reference); err != cart.ErrSchema {
 		t.Fatal("disabled access capability accepted")

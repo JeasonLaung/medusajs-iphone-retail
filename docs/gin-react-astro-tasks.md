@@ -346,3 +346,5 @@
 2026-10-28 匿名购物车授权组件补充：[独立持有凭证](migration/cart-possession.md)完成 Redis 域隔离、CSRF、绝对过期、幂等撤销及保留原 TTL 的原子换发。禁网自有 Redis 实测 16 路换发仅一个赢家，旧 token/CSRF、先撤销后 CAS、逐键丢失与依赖断开均拒绝；原登录组件回归通过。持久代数、创建事务、HTTP/cookie、实际加购与结账尚待接入，T014/T019/T032 未整体验收。
 
 2026-10-28 购物车持久事务补充：[创建与当前授权](migration/cart-runtime.md)新增0026运行时表；新车、代数和作用域幂等回执同事务提交，重试核对当前权限，写参与组件在锁内核对版本。独占MySQL/Redis验证8路创建单次、回执失败整体回滚、真实锁等待后旧版本拒绝、历史ID/跨店铺/旧代数拒绝。能力默认关闭；HTTP/cookie、行项目、重算及完整交易尚未完成，T032未整体验收。
+
+2026-10-28 购物车 HTTP 补充：[匿名创建会话与受保护详情](migration/cart-http.md)接入实际Gin路由及显式店铺Origin配置；独立scope/possession cookie、CSRF、作用域幂等、严格请求与private响应。真实MySQL/Redis HTTP人工请求核对创建重试、签发失败恢复、持久撤销、重复头/字段/超限及故障拒绝。未配置和默认能力继续关闭；items/checkout=false，购物车浏览器、行项目/合计/交易及Astro接入仍缺，T032/T033未验收。

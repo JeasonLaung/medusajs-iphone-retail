@@ -5,6 +5,7 @@ import os
 import re
 from pathlib import Path
 import secrets
+import shutil
 import subprocess
 import sys
 import time
@@ -25,6 +26,8 @@ def main():
     if sys.argv[1:] not in ([], ['--cart-runtime-only']):
         raise RuntimeError('Unknown rehearsal option')
     cart_only = bool(sys.argv[1:])
+    if shutil.disk_usage(ROOT).free < 2 * (1 << 30):
+        raise RuntimeError('At least 2 GiB free workspace disk required to preserve development services')
     for image in ['mysql:8.4', 'redis:7-alpine']:
         if docker('image', 'inspect', image).returncode:
             raise RuntimeError('Existing MySQL/Redis fixture images required; no pull performed')
@@ -115,12 +118,16 @@ def main():
                 print(tested.stdout.decode(errors='replace'))
                 raise RuntimeError('Owned cart runtime checks failed')
             counts = json.loads(markers[0])
-            files = ['retail/scripts/test-admin-auth.py','retail/backend/internal/identity/cart_runtime_test.go',
+            http_markers = [line.split('CART_HTTP_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_HTTP_REHEARSAL ' in line]
+            if len(http_markers) != 1:
+                raise RuntimeError('Cart HTTP evidence missing')
+            files = ['retail/scripts/test-admin-auth.py','retail/backend/internal/identity/cart_runtime_test.go','retail/backend/internal/identity/cart_http_test.go',
+                     'retail/backend/internal/server/router.go','retail/backend/internal/platform/request.go','retail/backend/internal/platform/http.go',
                      'retail/backend/internal/catalog/schema.go','retail/backend/internal/catalog/schema_plan.json']
             files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','schema','sessionstore') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
             files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
-            report = {'format_version':1,'scope':'Owned artificial MySQL/Redis cart runtime component; HTTP and checkout not accepted',
-                      'cart_runtime':counts,'application_resources_used':False,'real_accounts_used':False,
+            report = {'format_version':1,'scope':'Owned artificial MySQL/Redis cart runtime and HTTP dispatch; browser and checkout not accepted',
+                      'cart_runtime':counts,'cart_http':json.loads(http_markers[0]),'application_resources_used':False,'real_accounts_used':False,
                       'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
         else:
             markers = [line.split('IDENTITY_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'IDENTITY_REHEARSAL ' in line]
@@ -253,11 +260,16 @@ def main():
             files += ['retail/backend/internal/catalog/store_display.go','retail/backend/internal/catalog/store_display_test.go','retail/backend/internal/identity/store_display_test.go']
             files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/pricing').glob('*.go')]
             files += ['retail/scripts/generate-cart-schema.py','retail/backend/migrations/0025_cart_relational.sql','retail/backend/internal/identity/cart_schema_test.go']
-            files += ['retail/backend/migrations/0026_cart_runtime_authority.sql','retail/backend/internal/identity/cart_runtime_test.go']
+            files += ['retail/backend/migrations/0026_cart_runtime_authority.sql','retail/backend/internal/identity/cart_runtime_test.go','retail/backend/internal/identity/cart_http_test.go']
             files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/cart').glob('*') if p.is_file()]
+            files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/sessionstore').glob('*.go')]
+            http_markers = [line.split('CART_HTTP_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_HTTP_REHEARSAL ' in line]
+            if len(http_markers) != 1:
+                raise RuntimeError('Cart HTTP evidence missing')
             report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                       'cart_schema':json.loads(cart_markers[0]),
                       'cart_runtime':json.loads(cart_runtime_markers[0]),
+                      'cart_http':json.loads(http_markers[0]),
                       'store_products': json.loads(product_markers[0]),
                       'store_pricing': json.loads(pricing_markers[0]),
                       'store_availability': json.loads(availability_markers[0]),

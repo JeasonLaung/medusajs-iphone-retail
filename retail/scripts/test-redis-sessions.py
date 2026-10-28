@@ -65,6 +65,7 @@ def main():
         files = ['retail/scripts/test-redis-sessions.py', 'retail/backend/internal/sessionstore/store.go',
                  'retail/backend/internal/sessionstore/config.go', 'retail/backend/internal/sessionstore/config_test.go',
                  'retail/backend/internal/sessionstore/cart.go', 'retail/backend/internal/sessionstore/cart_test.go',
+                 'retail/backend/internal/sessionstore/cart_scope.go',
                  'retail/backend/internal/sessionstore/redis_test.go', 'retail/backend/go.mod', 'retail/backend/go.sum']
         report = {'format_version': 1, 'scope': 'Artificial actual Redis component test only; HTTP/MySQL/role revocation/login not accepted',
                   'counts': counts, 'cart_possession': json.loads(cart_markers[0]),

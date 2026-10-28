@@ -89,9 +89,13 @@ func main() {
 		log.Fatal("Dedicated session Redis unavailable or configuration invalid")
 	}
 	defer redisClient.Close()
-	router, err := server.RouterWithAuth(db, identity.Options{Sessions: sessions, Origin: os.Getenv("ADMIN_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true"})
+	var cartOptions []cart.HTTPOptions
+	if origin := os.Getenv("STOREFRONT_ORIGIN"); origin != "" {
+		cartOptions = append(cartOptions, cart.HTTPOptions{Sessions: sessions, Origin: origin, StoreID: os.Getenv("STOREFRONT_STORE_ID"), Secure: os.Getenv("SESSION_SECURE") == "true"})
+	}
+	router, err := server.RouterWithAuth(db, identity.Options{Sessions: sessions, Origin: os.Getenv("ADMIN_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true"}, cartOptions...)
 	if err != nil {
-		log.Fatal("Explicit ADMIN_ORIGIN and matching secure cookie configuration required")
+		log.Fatal("Explicit application origins, shop binding and matching secure cookie configuration required")
 	}
 	srv := &http.Server{Addr: net.JoinHostPort(bind, port), Handler: router, ReadHeaderTimeout: 10 * time.Second, ReadTimeout: 30 * time.Second, WriteTimeout: 30 * time.Second, IdleTimeout: 60 * time.Second}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)

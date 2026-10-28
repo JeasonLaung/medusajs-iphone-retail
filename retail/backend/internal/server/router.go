@@ -27,15 +27,25 @@ func router(db *gorm.DB, logger *slog.Logger) *gin.Engine {
 	return routerWithIdentity(db, logger, identity.New(db))
 }
 
-func RouterWithAuth(db *gorm.DB, options identity.Options) (*gin.Engine, error) {
+func RouterWithAuth(db *gorm.DB, options identity.Options, cartOptions ...cart.HTTPOptions) (*gin.Engine, error) {
 	h, err := identity.NewWithOptions(db, options)
 	if err != nil {
 		return nil, err
 	}
-	return routerWithIdentity(db, slog.Default(), h), nil
+	shop := &cart.HTTPHandler{}
+	if len(cartOptions) > 1 {
+		return nil, cart.ErrConfiguration
+	}
+	if len(cartOptions) == 1 {
+		shop, err = cart.NewHTTP(db, cartOptions[0])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return routerWithIdentity(db, slog.Default(), h, shop), nil
 }
 
-func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler) *gin.Engine {
+func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler, shops ...*cart.HTTPHandler) *gin.Engine {
 	r := gin.New()
 	_ = r.SetTrustedProxies(nil)
 	r.Use(platform.RequestBoundary(logger))
@@ -85,6 +95,11 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	})
 	h := catalog.Handler{DB: db}
 	public := r.Group("/api/store")
+	shop := &cart.HTTPHandler{}
+	if len(shops) == 1 && shops[0] != nil {
+		shop = shops[0]
+	}
+	shop.Register(public)
 	store := catalog.StoreHandler{DB: db, StoreID: os.Getenv("STOREFRONT_STORE_ID")}
 	public.GET("/products", store.Products)
 	public.GET("/products/:id", store.Product)
