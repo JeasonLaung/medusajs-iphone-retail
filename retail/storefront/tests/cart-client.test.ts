@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {CartClient,CartError,browserCartClient,scopeCSRFFromCookies,type CartCreation} from '../src/lib/cart-client.ts'
+import {CartClient,CartError,browserCartClient,scopeCSRFFromCookies,cartCSRFFromCookies,type CartCreation} from '../src/lib/cart-client.ts'
 
 const csrf = 'a'.repeat(64), nextCSRF = 'b'.repeat(64)
 const operationID = 'f8230181-a32c-4127-838b-92b7c033ef01'
@@ -198,4 +198,43 @@ test('malformed persisted amounts never become a partial or payable cart', async
   await error(client(async()=>reply(value)).retrieveAmounts(cart.id),'protocol',null,false)
  }
  await error(client(async()=>new Response('x'.repeat(4*1024*1024+1),{headers:{'Content-Type':'application/json','Cache-Control':'private, no-store'}})).retrieveAmounts(cart.id),'protocol',null,false)
+})
+
+const addition = {operationID,version:'1',variantID:'variant_one',quantity:'1'}
+const itemReceipt = {cart_id:cart.id,version:'2',line_id:'line_one',quantity:'2',replayed:false}
+test('draft item addition sends only server command fields with possession CSRF and exact receipt', async () => {
+ const original={...addition,unit_price:'0',store_id:'foreign'}, before=structuredClone({...addition,unit_price:'0',store_id:'foreign'})
+ let calls=0
+ const c=client(async (url,init)=>{
+  calls++; assert.equal(url,`/api/store/carts/${cart.id}/line-items`)
+  assert.equal(init!.method,'POST');assert.equal(init!.credentials,'same-origin')
+  assert.deepEqual(JSON.parse(String(init!.body)),{version:'1',variant_id:'variant_one',quantity:'1'})
+  const headers=new Headers(init!.headers)
+  assert.equal(headers.get('X-CSRF-Token'),nextCSRF);assert.equal(headers.get('Idempotency-Key'),operationID)
+  assert.equal(headers.get('Authorization'),null);assert.equal(headers.get('Cookie'),null)
+  return reply(itemReceipt)
+ })
+ assert.deepEqual(await c.addItem(cart.id,original,{csrfToken:nextCSRF}),itemReceipt)
+ assert.equal(calls,1);assert.deepEqual(original,before)
+ assert.equal(cartCSRFFromCookies(`retail_cart_scope_csrf=${csrf}; retail_cart_csrf=${nextCSRF}`,false),nextCSRF)
+ assert.equal(cartCSRFFromCookies(`retail_cart_csrf=${csrf}; __Host-retail_cart_csrf=${nextCSRF}`,true),nextCSRF)
+ assert.throws(()=>cartCSRFFromCookies(`retail_cart_csrf=${csrf}; retail_cart_csrf=${csrf}`,false))
+ assert.equal(cartCSRFFromCookies(`retail_cart_possession=secret`,false),undefined)
+})
+test('draft item input and receipt bounds reject ambiguity; failures retain original operation', async () => {
+ let calls=0
+ const invalid=client(async()=>{calls++;return reply(itemReceipt)})
+ for(const change of [{version:'0'},{version:'01'},{version:'18446744073709551615'},{quantity:'1000000001'},{quantity:'1.0'},{quantity:'1\n'},{variantID:'../v'},{operationID:operationID.toUpperCase()}]) await error(invalid.addItem(cart.id,{...addition,...change},{csrfToken:nextCSRF}),'input',null,false)
+ assert.equal(calls,0)
+ for(const patch of [{version:'3'},{version:2},{quantity:'0'},{quantity:'1000000001'},{cart_id:'foreign'},{line_id:'../line'},{replayed:'true'},{metadata:{secret:true}}]) await error(client(async()=>reply({...itemReceipt,...patch})).addItem(cart.id,addition,{csrfToken:nextCSRF}),'protocol',200,true)
+ for(const [status,kind] of [[422,'item'],[409,'conflict'],[403,'csrf'],[503,'unavailable']] as const) await error(client(async()=>reply({},status)).addItem(cart.id,addition,{csrfToken:nextCSRF}),kind,status,status===503)
+ const seen:string[]=[]
+ const uncertain=client(async (_url,init)=>{seen.push(String(init!.body)+new Headers(init!.headers).get('Idempotency-Key'));if(seen.length===1)throw Error('lost response');return reply({...itemReceipt,replayed:true})})
+ await error(uncertain.addItem(cart.id,addition,{csrfToken:nextCSRF}),'unavailable',null,true)
+ assert.equal(seen.length,1)
+ assert.equal((await uncertain.addItem(cart.id,addition,{csrfToken:nextCSRF})).replayed,true)
+ assert.equal(seen[0],seen[1])
+ const large={...addition,version:'9007199254740993123'}
+ const result=await client(async()=>reply({...itemReceipt,version:'9007199254740993124'})).addItem(cart.id,large,{csrfToken:nextCSRF})
+ assert.equal(result.version,'9007199254740993124')
 })

@@ -7,13 +7,15 @@ export type CartSnapshot = {
 export type CartScope = {csrfToken: string}
 export type CartCreation = {operationID: string; regionID: string; locale?: string}
 export type CartCreated = {cart: CartSnapshot; csrfToken: string; expiresAt: string; replayed: boolean}
+export type CartItemAddition = {operationID:string; version:string; variantID:string; quantity:string}
+export type CartItemReceipt = {cart_id:string; version:string; line_id:string; quantity:string; replayed:boolean}
 export type CartAmounts = {
  cart_id: string; version: string; currency_code: string; totals: Record<string,string>
  lines: {id:string;variant_id:string|null;unit_price:string;quantity:string;is_tax_inclusive:boolean;totals:Record<string,string>}[]
  shipping_methods: {id:string;name:string;amount:string;is_tax_inclusive:boolean;totals:Record<string,string>}[]
  pricing_recalculated: false; checkout: false
 }
-export type CartErrorKind = 'input' | 'session' | 'csrf' | 'conflict' | 'region' | 'rate_limit' | 'unavailable' | 'protocol'
+export type CartErrorKind = 'input' | 'session' | 'csrf' | 'conflict' | 'region' | 'item' | 'rate_limit' | 'unavailable' | 'protocol'
 
 export class CartError extends Error {
  readonly kind: CartErrorKind
@@ -68,8 +70,8 @@ function snapshot(value: unknown): CartSnapshot {
 function capabilities(value: unknown) {
  const v = record(value)
  keys(v,['items','checkout'])
- // This phase has no line/totals adapter. Never accidentally enable purchasing
- // just because a future or malformed response changes a capability flag.
+ // A draft mutation/amount snapshot does not make the complete page or
+ // checkout ready. Never enable purchasing from an unknown capability flag.
  if (v.items !== false || v.checkout !== false) throw protocol()
 }
 
@@ -108,12 +110,19 @@ function amounts(value: unknown, id: string): CartAmounts {
 // Reads only the non-HttpOnly CSRF cookie. Never extracts/forwards the bearer
 // possession/scope cookie, stores credentials in localStorage or accepts an
 // alternate backend origin. Duplicate cookie names are ambiguous and rejected.
-export function scopeCSRFFromCookies(cookieHeader: string, secure: boolean): string | undefined {
- const name = `${secure ? '__Host-' : ''}retail_cart_scope_csrf`
+function csrfCookie(cookieHeader: string, secure: boolean, realm:'scope'|'possession'): string | undefined {
+ const name = `${secure ? '__Host-' : ''}retail_cart_${realm === 'scope' ? 'scope_csrf' : 'csrf'}`
  const values = cookieHeader.split(';').map(v => v.trim()).filter(v => v.startsWith(name+'=')).map(v => v.slice(name.length+1))
  if (values.length === 0) return undefined
  if (values.length !== 1 || !matches(values[0],tokenPattern)) throw new CartError('session')
  return values[0]
+}
+
+export function scopeCSRFFromCookies(cookieHeader: string, secure: boolean): string | undefined {
+ return csrfCookie(cookieHeader,secure,'scope')
+}
+export function cartCSRFFromCookies(cookieHeader: string, secure: boolean): string | undefined {
+ return csrfCookie(cookieHeader,secure,'possession')
 }
 
 export class CartClient {
@@ -123,7 +132,7 @@ export class CartClient {
   this.fetcher = options.fetcher; this.readScopeCSRF = options.readScopeCSRF
  }
 
- private async request(path: string, method: 'GET' | 'POST', body?: string, headers: Record<string,string> = {}, maxBytes = 65536): Promise<{status: number; value: unknown}> {
+ private async request(path: string, method: 'GET' | 'POST', body?: string, headers: Record<string,string> = {}, maxBytes = 65536, unprocessable:'region'|'item'='region'): Promise<{status: number; value: unknown}> {
   const controller = new AbortController(), timer = setTimeout(() => controller.abort(),12000)
   const write = method === 'POST'
   try {
@@ -131,7 +140,7 @@ export class CartClient {
    const status = response.status
    if (status !== 200 && status !== 201) {
     await response.body?.cancel().catch(()=>{})
-    const kind: CartErrorKind = status === 401 || status === 404 ? 'session' : status === 403 ? 'csrf' : status === 409 ? 'conflict' : status === 422 ? 'region' : status === 429 ? 'rate_limit' : status === 400 || status === 413 || status === 415 ? 'input' : 'unavailable'
+    const kind: CartErrorKind = status === 401 || status === 404 ? 'session' : status === 403 ? 'csrf' : status === 409 ? 'conflict' : status === 422 ? unprocessable : status === 429 ? 'rate_limit' : status === 400 || status === 413 || status === 415 ? 'input' : 'unavailable'
     const requestID = response.headers.get('X-Request-ID'), retry = response.headers.get('Retry-After')
     throw new CartError(kind,status,write && kind === 'unavailable',requestID && /^req_[0-9a-f-]{36}$/.test(requestID) ? requestID : null,retry && /^(0|[1-9][0-9]{0,5})$/.test(retry) ? Number(retry) : null)
    }
@@ -193,6 +202,22 @@ export class CartClient {
    const cart = snapshot(v.cart)
    if (cart.region_id !== regionID || cart.locale !== (locale ?? '')) throw protocol()
    return {cart,csrfToken:text(v.csrf_token,tokenPattern),expiresAt:expiry(v.expires_at),replayed:v.replayed}
+  } catch { throw new CartError('protocol',status,true) }
+ }
+
+ // The caller retains the operation and expected version on uncertainty.
+ // A receipt is immutable historical evidence; retrieve current state before
+ // a subsequent new operation. This method never retries or creates a cart.
+ async addItem(id:string, input:CartItemAddition, authorization:{csrfToken:string}):Promise<CartItemReceipt> {
+  const {operationID,version,variantID,quantity}=input, {csrfToken}=authorization
+  if (!matches(id,idPattern) || !matches(operationID,uuidPattern) || !matches(version,versionPattern) || BigInt(version)>=18446744073709551615n || !matches(variantID,idPattern) || !matches(quantity,/^[1-9][0-9]{0,9}$/) || BigInt(quantity)>1000000000n || !matches(csrfToken,tokenPattern)) throw new CartError('input')
+  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/line-items`,'POST',JSON.stringify({version,variant_id:variantID,quantity}),{'X-CSRF-Token':csrfToken,'Idempotency-Key':operationID},65536,'item')
+  try {
+   const v=record(value)
+   keys(v,['cart_id','version','line_id','quantity','replayed'])
+   const next=text(v.version,versionPattern), merged=text(v.quantity,/^[1-9][0-9]{0,9}$/)
+   if (status!==200 || v.cart_id!==id || BigInt(next)!==BigInt(version)+1n || BigInt(merged)<BigInt(quantity) || BigInt(merged)>1000000000n || typeof v.replayed!=='boolean') throw protocol()
+   return {cart_id:id,version:next,line_id:text(v.line_id,idPattern),quantity:merged,replayed:v.replayed}
   } catch { throw new CartError('protocol',status,true) }
  }
 

@@ -570,7 +570,7 @@
     "retail/backend/internal/catalog/edit_test.go": "6ecd4a4a68fc93c78fa223ce7005422dd035a0759a83c2cc84150a77c584c550",
     "retail/backend/internal/identity/product_edit_test.go": "6ab30dc0a937cad2e3300a4cc248bbb2e4534f6bba85f7c4654cc0855d354663",
     "retail/backend/internal/identity/product_prices_test.go": "9315e996845ea4499ce87ec6b7c56b6b820e5fd09c2b0e17a47edac8088b0730",
-    "retail/backend/internal/identity/browser_fixture_test.go": "dedded73e0ba122071de9ade0018ba74d305ec3d8a77efbff678d15fe83e55ea",
+    "retail/backend/internal/identity/browser_fixture_test.go": "1a8e82bf69db02480d2f33d05163973e18828476ea6a4f772967d996996bbca2",
     "retail/backend/internal/catalog/admin_prices.go": "30743325e77c2b53ff91d990663a4a874ca89ee62e3dd8afaecfac9239ac795a",
     "retail/backend/internal/catalog/admin_prices_test.go": "cc11724c0df95e3897726de133929d35f87e8c874dc6aaacef32629ef990c03e",
     "retail/backend/internal/inventory/availability.go": "5d327d805338c4749251224b820131c55535334bf542e9c99ff028e91f9d52e5",

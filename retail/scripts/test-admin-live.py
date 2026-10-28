@@ -143,6 +143,29 @@ def main():
         if astro.returncode:
             (ROOT/'logs/gin-migration/astro-owner-result.log').write_bytes(astro.stdout+astro.stderr)
             raise RuntimeError('Owned Astro-to-Gin checks failed; inspect ignored output')
+        # Prepare the purchasable fixture only after existing catalog/Astro
+        # assertions, so their incomplete-variant checks keep their coverage.
+        prepared = docker('exec','-e','MYSQL_PWD=' + password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,
+                          '/opt/prep.test','-test.v','-test.run','^TestPrepareCartItemBrowserFixture$','-test.timeout','40s')
+        if prepared.returncode or b'OWNED_CART_ITEMS_BROWSER_READY' not in prepared.stdout:
+            (ROOT/'logs/gin-migration/cart-items-browser-prep.log').write_bytes(prepared.stdout+prepared.stderr)
+            raise RuntimeError('Owned cart item browser preparation failed')
+        item_browser = subprocess.run([npm,'exec','playwright','test','--','--config','playwright.cart-items.config.ts','--reporter=json'],
+                                      cwd=ROOT/'retail/admin',env=browser_env,capture_output=True,timeout=120)
+        item_result = json.loads(item_browser.stdout)
+        if item_browser.returncode or item_result['stats']['expected'] != 1 or any(item_result['stats'][k] for k in ['unexpected','skipped','flaky']):
+            (ROOT/'logs/gin-migration/cart-items-live-result.json').write_bytes(item_browser.stdout)
+            raise RuntimeError('Live cart item browser checks failed; inspect ignored result')
+        item_durable = docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket',
+                              '--database=browser_identity','--batch','--skip-column-names','-e',
+                              "SELECT (SELECT COUNT(*) FROM carts),(SELECT COUNT(*) FROM cart_ownership WHERE active=TRUE AND version=3),"
+                              "(SELECT COUNT(*) FROM cart_line_items WHERE variant_id='browser-add-v' AND quantity=2),"
+                              "(SELECT COUNT(*) FROM cart_item_operations),"
+                              "(SELECT JSON_UNQUOTE(JSON_EXTRACT(raw_unit_price,'$.value')) FROM cart_line_items WHERE variant_id='browser-add-v'),"
+                              "(SELECT reserved_quantity=0 FROM inventory_levels WHERE id='browser-add-level'),"
+                              "(SELECT COUNT(*) FROM inventory_reservations WHERE inventory_item_id='browser-add-item')")
+        if item_durable.returncode or item_durable.stdout.decode().strip() != '2\t1\t1\t2\t80.000000000000000000001\t1\t0':
+            raise RuntimeError('Browser item durable state differs; no successful report written')
         files = ['retail/scripts/test-admin-live.py', 'retail/backend/cmd/api/main.go',
                  'retail/backend/internal/identity/browser_fixture_test.go', 'retail/backend/internal/identity/admin.go',
                  'retail/backend/internal/platform/database.go', 'retail/backend/internal/platform/request.go',
@@ -169,7 +192,14 @@ def main():
         files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','sessionstore') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
         files += ['retail/storefront/src/lib/cart-client.ts']
         report = {'format_version': 1, 'scope': 'Real browser through Vite to actual cmd/api, owned MySQL and Redis; artificial account only',
-                  'browser_tests_passed': 2, 'migrations_applied': 27, 'mocked_api_responses': False,
+                  'browser_tests_passed': 3, 'migrations_applied': 27, 'mocked_api_responses': False,
+                  'cart_items_browser': {'actual_storefront_client': True, 'real_gin_mysql_redis': True,
+                                         'concurrent_same_key_requests': 4, 'same_sku_merged': True,
+                                         'quantity_tier_price': True, 'exact_raw_amount': True,
+                                         'reload_readback': True, 'immutable_old_receipt': True,
+                                         'version_and_stock_rejection': True, 'cookie_ttl_unchanged': True,
+                                         'line_items': 1, 'operation_receipts': 2, 'inventory_reserved': False,
+                                         'production_page_mounted': False, 'full_cart_accepted': False},
                   'cart_browser': {'actual_storefront_client': True, 'real_gin_mysql_redis': True,
                                    'real_browser_cookie_origin_csrf': True, 'concurrent_replays': 4,
                                    'changed_request_conflict': True, 'scope_reuse_no_ttl_extension': True,
@@ -227,7 +257,7 @@ def main():
                 binary.unlink()
     report['cleanup'] = 'both owned containers, bridge network and temporary binaries removed'
     (ROOT / 'docs/migration/admin-live-report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'browser_tests': 2, 'real_api': True, 'real_mysql_redis': True, 'cart_browser': True, 'cleanup': 'complete'}))
+    print(json.dumps({'browser_tests': 3, 'real_api': True, 'real_mysql_redis': True, 'cart_browser': True, 'cleanup': 'complete'}))
 
 
 if __name__ == '__main__':

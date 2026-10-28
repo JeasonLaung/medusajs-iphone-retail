@@ -172,3 +172,42 @@ func seedReviewedCatalogFixture(t *testing.T, db *gorm.DB) {
 	}
 	t.Log("OWNED_REVIEWED_CATALOG_READY")
 }
+
+// Runs after the existing catalog/Admin/Astro assertions, preserving their
+// incomplete-variant fixture. It grants no capability in application startup.
+func TestPrepareCartItemBrowserFixture(t *testing.T) {
+	if os.Getenv("BROWSER_IDENTITY_FIXTURE") != "1" {
+		t.Skip("owned browser database required")
+	}
+	cfg := driver.NewConfig()
+	cfg.User, cfg.Passwd, cfg.Net, cfg.Addr, cfg.DBName = "root", os.Getenv("MYSQL_PWD"), "unix", "/var/run/mysqld/mysqld.sock", "browser_identity"
+	cfg.ParseTime, cfg.Loc = true, time.UTC
+	db, err := gorm.Open(mysql.Open(cfg.FormatDSN()), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)})
+	if err != nil {
+		t.Fatal("owned item browser SQL unavailable")
+	}
+	pool, err := db.DB()
+	if err != nil {
+		t.Fatal("owned item browser pool unavailable")
+	}
+	defer pool.Close()
+	for _, statement := range []string{
+		`UPDATE cart_item_runtime SET enabled=TRUE WHERE id=1`,
+		`INSERT INTO catalog_products(id,title,handle,is_giftcard,status,discountable,created_at,updated_at,metadata) VALUES('browser-add-product','Browser phone','browser-add-product',FALSE,'published',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),'{"private":"must-not-escape"}')`,
+		`INSERT INTO catalog_product_channels(product_id,sales_channel_id,id,created_at,updated_at) VALUES('browser-add-product','fixture-channel','browser-add-channel',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO catalog_variants(id,product_id,title,sku,manage_inventory,allow_backorder,created_at,updated_at) VALUES('browser-add-v','browser-add-product','128 GB','0000999999999999999',TRUE,FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO inventory_items(id,title,requires_shipping,created_at,updated_at) VALUES('browser-add-item','Tracked item',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO inventory_locations(id,name,created_at,updated_at) VALUES('browser-add-location','Warehouse',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO commerce_channel_locations(sales_channel_id,stock_location_id,id,created_at,updated_at) VALUES('fixture-channel','browser-add-location','browser-add-location-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO catalog_variant_inventory_items(variant_id,inventory_item_id,required_quantity,id,created_at,updated_at) VALUES('browser-add-v','browser-add-item',2.5,'browser-add-component',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO inventory_levels(id,inventory_item_id,location_id,stocked_quantity,reserved_quantity,incoming_quantity,created_at,updated_at) VALUES('browser-add-level','browser-add-item','browser-add-location',10,0,999,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO pricing_price_sets(id,created_at,updated_at) VALUES('browser-add-set',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO catalog_variant_price_sets(variant_id,price_set_id,id,created_at,updated_at) VALUES('browser-add-v','browser-add-set','browser-add-price-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO pricing_prices(id,price_set_id,currency_code,amount,raw_amount,rules_count,min_quantity,max_quantity,created_at,updated_at) VALUES('browser-add-single','browser-add-set','eur',100,'{"value":"100.000000000000000000001","precision":38}',0,NULL,1,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('browser-add-bulk','browser-add-set','eur',80,'{"value":"80.000000000000000000001","precision":38}',0,2,NULL,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+	} {
+		if db.Exec(statement).Error != nil {
+			t.Fatal("owned item browser fixture failed")
+		}
+	}
+	t.Log("OWNED_CART_ITEMS_BROWSER_READY")
+}
