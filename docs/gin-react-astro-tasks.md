@@ -490,3 +490,5 @@
 2026-10-29 支付补偿补充：[持久重建计划/加密创建结果/本地原子恢复](migration/cart-payment-refresh.md)增加0036，只重建确认已删session，未知删除先核实，稳定新ID和幂等键，补偿期间禁止原删除/正常完成，完整结果认证后替换/版本/解除冻结原子完成；已付创建结果不激活、原集合及未删session保持。人工MySQL覆盖阶段/最终写故障回滚和零效果取消；create执行器、真实provider/worker/HTTP与checkout仍未完成。
 
 2026-10-29 补偿创建执行补充：[提交后创建调用/加密结果/原子激活](migration/cart-payment-refresh.md)接上内部create执行器，事务外有界调用、稳定幂等ID、取消后保存、错误未知处理、写故障不重复创建；人工adapter到补偿完成链验证通过。真实provider/worker/HTTP、自动恢复和完整checkout尚未验收。
+
+2026-10-29 Mollie 渠道删除补充：[固定渠道 HTTP、当前状态保护与精确响应绑定](migration/cart-payment-refresh.md)实现显式配置的原生 Go 适配器，模拟 HTTP 验证取消/拒绝/竞态/未知结果；尚未注册或调用真实渠道。渠道创建、webhook/对账、worker/HTTP 和 checkout 仍待完成。

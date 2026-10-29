@@ -99,3 +99,13 @@ Stage 相同输入重放，变更摘要拒绝。Claim 在 MySQL 行锁内一次�
 本轮无新增SQL迁移，沿用36迁移。未注册真实支付provider、未接入worker/HTTP或完整购物车命令；真实沙箱/对账、自动恢复授权及业务回滚协调仍缺，T032/T033和checkout未验收。
 
 本轮执行器验收：`go test ./...`、购物车专项与隔离MySQL/Redis完整23组回归通过，36迁移验证成功；完整报告290项/专项187项实现SHA匹配。旧health/Admin/商品/购物车页面均HTTP 200，近期日志无新增错误，仅既有PayPal nonce提示。上述均为人工适配器验证，真实渠道与完整checkout继续待办。
+
+## Mollie 删除渠道适配器（显式配置，尚未注册）
+
+新增 `payments.NewMollieDeleteAdapter`，读取当前渠道状态后再决定是否取消。业务参考 `medusa-store/apps/backend/src/modules/mollie/service.ts` 的 `cancelPayment`；HTTP 合同核对 [Get payment](https://docs.mollie.com/reference/get-payment) 与 [Cancel payment](https://docs.mollie.com/reference/cancel-payment)。原生 Go HTTP 请求固定 `https://api.mollie.com/v2/payments/{id}`，只接收服务端显式 provider ID 和 API key，不读取浏览器、导入配置或环境凭证；禁止重定向，单请求 8 秒、整个读取/取消 15 秒，响应上限 1 MiB，拒绝重复 JSON key。
+
+每次 GET/DELETE 响应都验证远端 ID、本地 session metadata、保存的 cart metadata（存在时）、币种和精确金额，不经 float64。paid/authorized 在 GET 后明确拒绝且不发 DELETE；canceled/expired/failed 已是终态，直接确认。保留原项目 open 且明确 isCancelable=false 的本地丢弃规则，这不代表远端取消成功；启用前仍必须实现旧渠道引用的 webhook/订单核实。pending 不可取消时保留本地会话，缺少 isCancelable 也不猜测。GET 与 DELETE 间付款、DELETE 返回非终态/422/404、限流、网络错误、超时、身份或金额不匹配均进入 uncertain，不自动重试。
+
+模拟 RoundTripper 覆盖正常取消、已付保护、原本地丢弃、处理中会话保护、终态重放、付款竞态、两次响应的五种绑定不匹配，以及重定向/404/429/500/错误/超时/超长/非法/重复 JSON。模拟请求核验固定 origin、鉴权头和硬超时；错误输出保持通用，无真实 Mollie 调用。该适配器尚未注册到应用或 HTTP/worker，也未完成创建渠道、webhook、对账或真实沙箱验收，0035 能力继续默认关闭。
+
+Mollie 删除适配器验证：`go test ./...`、`go vet ./internal/payments` 和隔离购物车专项回归通过；专项报告189项实现SHA匹配（含渠道代码和模拟测试），仍为36迁移。完整23组回归在前一补偿执行器提交1c05471通过，其290项报告保留为该阶段证据；本次不将模拟 HTTP 视为真实支付沙箱验收。

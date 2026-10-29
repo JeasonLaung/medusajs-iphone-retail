@@ -403,6 +403,8 @@
     "retail/backend/internal/payments/delete_adapter.go": "5c47fce282fb2bdfa872658c65bbd3bd8abacb783e1ed9d1bba8833b2f700b9a",
     "retail/backend/internal/payments/delete_adapter_test.go": "77f7f0a2c58f13bd566b86a1fe449baf5a4f536d4bfbd3d4322c3cd126e80a27",
     "retail/backend/internal/payments/effects.go": "ff00477461b6f6cf2de29400443c0bc57d4c614052fb03c9d82ba6474084c228",
+    "retail/backend/internal/payments/mollie_delete.go": "f2b481c2f7a2e94f79ae923dbcef2325fd7222015defc1a8c1be49845d2959ae",
+    "retail/backend/internal/payments/mollie_delete_test.go": "93c38d5aea29b62c813ad7f5a686236ff078ab44b9de63e52ad8b434157b6d46",
     "retail/backend/internal/payments/requests.go": "4965c60ee8833e31fc4d2b9446582b8d455ef4d2a32786d939a195d4d6694ecf",
     "retail/backend/internal/payments/requests_test.go": "4a9c3cf1840ec54426abb0d2d410292454f6724d66fda5ee7d36a53c7526f5d8",
     "retail/backend/internal/payments/schema.go": "9394bc8f899e88dd3a5ee440171bbbe675ac43dfd4ae9a59f7b2d2df04bd02d1",
