@@ -1,0 +1,962 @@
+{
+  "format_version": 1,
+  "scope": "Original promotion predicate only, not allocation/budget/SQL or checkout",
+  "source_file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/validations/promotion-rule.js",
+  "source_sha256": "fd835ede4d3615d7dbc3633b4f047bbe8c63a696de4c2819fd5a712b4870770b",
+  "cases": [
+    {
+      "name": "no-rules",
+      "context": {},
+      "rules": [],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "eq-scalar",
+      "context": {
+        "x": "a"
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "eq-all",
+      "context": {
+        "x": [
+          "a",
+          "b"
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "eq-partial",
+      "context": {
+        "x": [
+          "a",
+          "c"
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": false
+    },
+    {
+      "name": "in-any",
+      "context": {
+        "x": [
+          "a",
+          "c"
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "in",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "in-none",
+      "context": {
+        "x": [
+          "c"
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "in",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": false
+    },
+    {
+      "name": "ne-all",
+      "context": {
+        "x": [
+          "c",
+          "d"
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "ne",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "ne-overlap",
+      "context": {
+        "x": [
+          "c",
+          "a"
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "ne",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": false
+    },
+    {
+      "name": "empty-eq",
+      "context": {
+        "x": []
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": false
+    },
+    {
+      "name": "empty-in",
+      "context": {
+        "x": []
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "in",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": false
+    },
+    {
+      "name": "empty-ne",
+      "context": {
+        "x": []
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "ne",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "number-string",
+      "context": {
+        "x": 1
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "bool-string",
+      "context": {
+        "x": false
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "null-string",
+      "context": {
+        "x": null
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "nested-array",
+      "context": {
+        "x": [
+          [
+            "a",
+            "b"
+          ]
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "object-string",
+      "context": {
+        "x": {}
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "a"
+            },
+            {
+              "value": "b"
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": "false"
+            },
+            {
+              "value": "null"
+            },
+            {
+              "value": "a,b"
+            },
+            {
+              "value": "[object Object]"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "missing-eq",
+      "context": {},
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "a"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": false
+    },
+    {
+      "name": "missing-ne",
+      "context": {},
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "ne",
+          "values": [
+            {
+              "value": "a"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "missing-literal",
+      "context": {},
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "undefined"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "item-prefix",
+      "context": {
+        "product": {
+          "id": "p"
+        }
+      },
+      "rules": [
+        {
+          "attribute": "items.product.id",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "p"
+            }
+          ]
+        }
+      ],
+      "scope": "items",
+      "expected": true
+    },
+    {
+      "name": "shipping-prefix",
+      "context": {
+        "type": "express"
+      },
+      "rules": [
+        {
+          "attribute": "shipping_methods.type",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "express"
+            }
+          ]
+        }
+      ],
+      "scope": "shipping_methods",
+      "expected": true
+    },
+    {
+      "name": "array-path",
+      "context": {
+        "items": [
+          {
+            "product": {
+              "id": "p"
+            }
+          },
+          {
+            "product": {
+              "id": "q"
+            }
+          }
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "items.product.id",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "p"
+            },
+            {
+              "value": "q"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "scalar-path",
+      "context": {
+        "x": "a"
+      },
+      "rules": [
+        {
+          "attribute": "x.remaining.path",
+          "operator": "eq",
+          "values": [
+            {
+              "value": "a"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "mixed-values",
+      "context": {
+        "x": "a"
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "values": [
+            {
+              "value": 1
+            },
+            {
+              "value": null
+            },
+            {
+              "value": false
+            },
+            {
+              "value": "a"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "empty-string",
+      "context": {
+        "x": ""
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "eq",
+          "values": [
+            {
+              "value": ""
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "range-gt-25",
+      "context": {
+        "x": "10.000000000000000000001"
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "gt",
+          "values": [
+            {
+              "value": "10"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "range-gte-26",
+      "context": {
+        "x": "10"
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "gte",
+          "values": [
+            {
+              "value": "10"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "range-lt-27",
+      "context": {
+        "x": "9.9"
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "lt",
+          "values": [
+            {
+              "value": "10"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "range-lte-28",
+      "context": {
+        "x": "10"
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "lte",
+          "values": [
+            {
+              "value": "10"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "range-gt-29",
+      "context": {
+        "x": "10"
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "gt",
+          "values": [
+            {
+              "value": "10"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": false
+    },
+    {
+      "name": "range-gt-30",
+      "context": {
+        "x": [
+          "11",
+          "9"
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "gt",
+          "values": [
+            {
+              "value": "10"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": false
+    },
+    {
+      "name": "range-gt-31",
+      "context": {
+        "x": [
+          "11",
+          "12"
+        ]
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "gt",
+          "values": [
+            {
+              "value": "10"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "range-any-threshold",
+      "context": {
+        "x": "15"
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "gt",
+          "values": [
+            {
+              "value": "10"
+            },
+            {
+              "value": "20"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    },
+    {
+      "name": "large-exact",
+      "context": {
+        "x": "9007199254740993"
+      },
+      "rules": [
+        {
+          "attribute": "x",
+          "operator": "gt",
+          "values": [
+            {
+              "value": "9007199254740992"
+            }
+          ]
+        }
+      ],
+      "scope": "",
+      "expected": true
+    }
+  ]
+}
