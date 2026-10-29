@@ -1,0 +1,63 @@
+{
+  "scope": "Formal Astro original payment result page and stable callback, synthetic API; not real payment/order acceptance",
+  "unit_tests": 116,
+  "build": true,
+  "browser": {
+    "formal_astro": true,
+    "synthetic_api": true,
+    "real_gin_mysql": false,
+    "original_css_and_address_markup": true,
+    "private_values_absent_from_ssr": true,
+    "no_cart_404": true,
+    "empty_cart_307": true,
+    "private_read_failure_503": true,
+    "saved_address_copy": true,
+    "email_confirmation_before_transport": true,
+    "separate_billing": true,
+    "leading_postal_zero": true,
+    "lost_response_same_operation_after_reload": true,
+    "rehydrated_contact_values": true,
+    "acknowledged_step_delivery": true,
+    "private_journal_descriptor": true,
+    "acknowledged_read_failure_read_only_recovery": true,
+    "same_billing_copy": true,
+    "exact_summary": true,
+    "edit_and_back_links": true,
+    "en_zh": true,
+    "widths": [
+      390,
+      1440
+    ],
+    "overflow": false,
+    "browser_errors": 0,
+    "payment_or_order_complete": false,
+    "delivery_selection": true,
+    "delivery_lost_response_same_operation": true,
+    "delivery_acknowledged_read_only_recovery": true,
+    "unavailable_inventory_disabled": true,
+    "payment_still_closed": true,
+    "source_pixel_comparison": false,
+    "payment_result_page": true,
+    "paid_waits_for_order": true,
+    "authorized_not_paid": true,
+    "failed_return": true,
+    "foreign_cart_no_provider_poll": true,
+    "stable_return_callback": true
+  },
+  "implementation_sha256": {
+    "retail/storefront/src/lib/cart-client.ts": "82f28bce97079bbedb56387d411d18d903d5d89b7f45325c40f329a19e4ebe6b",
+    "retail/storefront/src/lib/cart-bridge.ts": "7b5892e5c4163546b563744de989c818034fd9c25ab6fde2c9683a16b7383778",
+    "retail/storefront/src/pages/api/mollie-return.ts": "3b37faf1990f82a551bcf2a436a31610a982d34a72a69336637a463386d6d176",
+    "retail/storefront/src/pages/[countryCode]/payment-result.astro": "1d876a0b19f9ad0e27a22d82b89224664817301a483a7d16d462010b398473c4",
+    "retail/storefront/src/components/checkout/payment-result/index.tsx": "934d2acb2697c4207e1e97b86982217123057b02350d15180b74eb8c33e475f0",
+    "retail/storefront/src/components/checkout/payment-result/styles.module.css": "6761ab98d6be1a0d0f49090263deeee142eba93d0eafd18c4527fc54f7607a54",
+    "retail/storefront/tests/payment-result.test.ts": "4b78af9c59b164d5d0b03b2887dfef6a081fd8f758caaef4979dc866474cc6ab",
+    "retail/storefront/tests/checkout.browser.mjs": "6f84bbad432eb043805855d702d42a475faa29f657622277dd8e1706c5c37f8e"
+  },
+  "astro_check": {
+    "files": 285,
+    "errors": 0,
+    "warnings": 0,
+    "existing_hints": 2
+  }
+}

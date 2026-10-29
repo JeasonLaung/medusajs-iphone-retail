@@ -13,7 +13,7 @@ const cartKeys=[...rowKeys,'item_total','item_subtotal','item_tax_total','item_d
 const address={first_name:'Saved',last_name:'Customer',company:'',address_1:'Saved street',address_2:'',city:'Copenhagen',country_code:'dk',province:'',postal_code:'0012',phone:'+45 111'}
 const saved={...address,id:'addr_12345678-1234-4234-8234-123456789012',is_default_billing:false,is_default_shipping:true,created_at:'2026-10-29T00:00:00Z',updated_at:'2026-10-29T00:00:00Z'}
 let version='2',contacts={email:'',shipping_address:null,billing_address:null},child,browser,failed=false,readFailure=false,loseResponse=false,empty=false
-const receipts=new Map(),posts=[],errors=[],shippingPosts=[],shippingReceipts=new Map();let selected=null,loseShippingResponse=false,shippingReadFailure=false
+let paymentState='pending',paymentStatusPosts=0;const receipts=new Map(),posts=[],errors=[],shippingPosts=[],shippingReceipts=new Map();let selected=null,loseShippingResponse=false,shippingReadFailure=false
 const totals=Object.fromEntries(cartKeys.map(k=>[k,['total','original_total','item_total','original_item_total'].includes(k)?'150':['tax_total','original_tax_total','item_tax_total','original_item_tax_total'].includes(k)?'30':k.includes('subtotal')&&!k.includes('shipping')&&!k.includes('discount')&&!k.includes('credit')?'120':'0']))
 const lineTotals=Object.fromEntries(rowKeys.map(k=>[k,totals[k]]))
 const delivery=()=>({cart_id:'cart',version,currency_code:'eur',options:[{id:'standard',profile_id:'profile',name:'Home delivery',description:'Tracked delivery',kind:'shipping',amount:'7',is_tax_inclusive:false,insufficient_inventory:false},{id:'pickup',profile_id:'profile',name:'Store pickup',description:'Collect in store',kind:'pickup',amount:'0',is_tax_inclusive:false,insufficient_inventory:false},{id:'unavailable',profile_id:'profile',name:'Unavailable',description:'',kind:'shipping',amount:'10',is_tax_inclusive:false,insufficient_inventory:true}],selected_option_ids:selected?[selected]:[],complete:!!selected})
@@ -32,6 +32,9 @@ const api=createServer(async(req,res)=>{
  case '/api/store/cart':if(!req.headers.cookie?.includes('retail_cart_possession=')){status=401;break}body={cart:{id:'cart',region_id:'region',sales_channel_id:'channel',currency_code:'eur',locale:'en',version},capabilities:{items:false,checkout:false}};break
  case '/api/store/carts/cart/view':if(readFailure){status=503;break}body=view();break
  case '/api/store/carts/cart/delivery-options':if(shippingReadFailure){status=503;break}body=delivery();break
+ case '/api/store/carts/cart/payment-status':{
+  assert.equal(req.method,'POST');assert.equal(req.headers.origin,shop);assert.equal(req.headers['x-csrf-token'],'a'.repeat(64));let raw='';for await(const chunk of req)raw+=chunk;assert.equal(raw,'{}');paymentStatusPosts++;body={cart_id:'cart',version,state:paymentState};break
+ }
  case '/api/store/carts/cart/shipping-methods':{
   assert.equal(req.headers.origin,shop);assert.equal(req.headers['x-csrf-token'],'a'.repeat(64))
   let raw='';for await(const chunk of req)raw+=chunk;const input=JSON.parse(raw),key=req.headers['idempotency-key'];shippingPosts.push({key,input})
@@ -102,6 +105,16 @@ try{
 
   await page.getByRole('link',{name:language==='zh'?'修改':'Edit',exact:true}).click();await expect(page.getByTestId('shipping-first-name-input')).toHaveValue('Saved')
   await expect(page.getByTestId('back-to-cart-link')).toHaveAttribute('href',`/dk-${language}/cart`)
+  paymentState='paid_pending_order';await page.goto(shop+'/api/mollie-return?cart_id=cart');await expect(page).toHaveURL(new RegExp('/dk-en/payment-result'))
+  await expect(page.getByTestId('payment-result')).toHaveAttribute('data-status','pending');await expect(page.getByTestId('payment-result')).not.toHaveAttribute('data-status','confirmed')
+  for(const [state,expected] of [['authorized','pending'],['failed','failed'],['requires_review','pending']]){
+   paymentState=state;await page.goto(shop+`/dk-${language}/payment-result?cart_id=cart`);await expect(page.getByTestId('payment-result')).toHaveAttribute('data-status',expected)
+  }
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
+  await page.screenshot({path:fileURLToPath(new URL(`../../../logs/gin-migration/payment-result-${language}-${width}.png`,import.meta.url)),fullPage:true})
+  const before=paymentStatusPosts;await page.goto(shop+`/dk-${language}/payment-result?cart_id=foreign-cart`);await expect(page.getByTestId('payment-result')).toHaveAttribute('data-status','invalid');assert.equal(paymentStatusPosts,before)
+  assert.equal((await fetch(shop+'/api/mollie-return?cart_id=foreign-cart',{headers:{Cookie:`retail_cart_possession=${'b'.repeat(64)}`}})).status,404)
+
   await context.close()
  }
  const context=await browser.newContext(),page=await context.newPage();page.on('pageerror',e=>errors.push(e.message))
@@ -116,7 +129,7 @@ try{
  await expect(page).toHaveURL(/step=delivery/);await expect(page.getByTestId('contact-recover')).toHaveCount(0);assert.equal(posts.length,1)
  await context.close()
  assert.deepEqual(errors,[])
- console.log('ASTRO_CHECKOUT_CONTACT_BROWSER '+JSON.stringify({formal_astro:true,synthetic_api:true,real_gin_mysql:false,original_css_and_address_markup:true,private_values_absent_from_ssr:true,no_cart_404:true,empty_cart_307:true,private_read_failure_503:true,saved_address_copy:true,email_confirmation_before_transport:true,separate_billing:true,leading_postal_zero:true,lost_response_same_operation_after_reload:true,rehydrated_contact_values:true,acknowledged_step_delivery:true,private_journal_descriptor:true,acknowledged_read_failure_read_only_recovery:true,same_billing_copy:true,exact_summary:true,edit_and_back_links:true,en_zh:true,widths:[390,1440],overflow:false,browser_errors:0,payment_or_order_complete:false,delivery_selection:true,delivery_lost_response_same_operation:true,delivery_acknowledged_read_only_recovery:true,unavailable_inventory_disabled:true,payment_still_closed:true,source_pixel_comparison:false}))
+ console.log('ASTRO_CHECKOUT_CONTACT_BROWSER '+JSON.stringify({formal_astro:true,synthetic_api:true,real_gin_mysql:false,original_css_and_address_markup:true,private_values_absent_from_ssr:true,no_cart_404:true,empty_cart_307:true,private_read_failure_503:true,saved_address_copy:true,email_confirmation_before_transport:true,separate_billing:true,leading_postal_zero:true,lost_response_same_operation_after_reload:true,rehydrated_contact_values:true,acknowledged_step_delivery:true,private_journal_descriptor:true,acknowledged_read_failure_read_only_recovery:true,same_billing_copy:true,exact_summary:true,edit_and_back_links:true,en_zh:true,widths:[390,1440],overflow:false,browser_errors:0,payment_or_order_complete:false,delivery_selection:true,delivery_lost_response_same_operation:true,delivery_acknowledged_read_only_recovery:true,unavailable_inventory_disabled:true,payment_still_closed:true,source_pixel_comparison:false,payment_result_page:true,paid_waits_for_order:true,authorized_not_paid:true,failed_return:true,foreign_cart_no_provider_poll:true,stable_return_callback:true}))
 }finally{
  if(browser)await browser.close();if(child&&child.exitCode===null){child.kill();await once(child,'exit')};await new Promise(resolve=>api.close(resolve))
 }

@@ -1,0 +1,16 @@
+---
+import {GIN_API_ORIGIN} from 'astro:env/server'
+import {loadRegions} from '../../lib/regions'
+import {localeFromSegment} from '../../lib/storefront-route'
+import PaymentResult from '../../components/checkout/payment-result'
+import {getCheckoutCopy} from '../../components/checkout/i18n'
+import '../../styles/original.css'
+const segment=(Astro.params.countryCode??'').toLowerCase(),copy=getCheckoutCopy(segment)
+let available=false,failed=false
+try{available=/^[a-z]{2}-(en|zh)$/.test(segment)&&(await loadRegions(GIN_API_ORIGIN)).some(r=>r.countries.some(c=>c.iso_2===segment.slice(0,2)))}catch{failed=true}
+Astro.response.status=failed?503:available?200:404
+Astro.response.headers.set('Cache-Control','private, no-store')
+Astro.response.headers.set('Referrer-Policy','no-referrer')
+const ids=Astro.url.searchParams.getAll('cart_id'),cartId=ids.length===1&&/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(ids[0])&&!/[\r\n]/.test(ids[0])?ids[0]:ids.length?'invalid':undefined
+---
+<!doctype html><html lang={localeFromSegment(segment)}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex,nofollow"/><title>{copy.paymentResultTitle}</title></head><body>{available&&!failed?<PaymentResult countryCode={segment} cartId={cartId} client:load/>:<main><h1>{failed?copy.paymentCheckErrorTitle:'Page not found'}</h1></main>}</body></html>

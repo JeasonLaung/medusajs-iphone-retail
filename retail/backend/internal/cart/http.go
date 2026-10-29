@@ -90,6 +90,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/carts/:id/delivery-options", h.Delivery)
 	private.POST("/carts/:id/shipping-methods", h.Shipping)
 	private.POST("/carts/:id/payment-attempts", h.InitialPayment)
+	private.POST("/carts/:id/payment-status", h.PaymentStatus)
 	private.GET("/carts/:id/contacts", h.ContactDetail)
 	private.POST("/carts/:id/contacts", h.Contacts)
 	private.POST("/carts/:id/line-items", h.AddItem)

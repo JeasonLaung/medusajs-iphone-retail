@@ -37,6 +37,19 @@ func TestMollieAuthoritativeObservation(t *testing.T) {
 			if err != nil || calls != 1 || observed.PaymentID != "tr_owned" || observed.ProviderStatus != status || observed.Action != action || observed.Amount != "9007199254740993.01" || observed.Currency != "eur" {
 				t.Fatal("authoritative fact/status/amount lost")
 			}
+			if ValidateMollieObservation(mollieCreateRequest(), "tr_owned", observed) != nil {
+				t.Fatal("valid observation refused")
+			}
+			altered := observed
+			altered.Amount = "0"
+			if ValidateMollieObservation(mollieCreateRequest(), "tr_owned", altered) == nil {
+				t.Fatal("altered amount accepted")
+			}
+			altered = observed
+			altered.Action = "successful"
+			if status != "paid" && ValidateMollieObservation(mollieCreateRequest(), "tr_owned", altered) == nil {
+				t.Fatal("altered action accepted")
+			}
 			if !strings.Contains(string(observed.Session.Data), "9007199254740993.000000000000000000001") {
 				t.Fatal("observation rounded provider JSON")
 			}

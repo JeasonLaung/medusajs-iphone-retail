@@ -286,3 +286,15 @@ func TestMollieExactSettlement(t *testing.T) {
 		}
 	}
 }
+
+func TestMollieCreateAcceptsNewCartUUID(t *testing.T) {
+	a, err := NewMollieCreateAdapter(mollieCreateConfig())
+	if err != nil {
+		t.Fatal(err)
+	}
+	request := mollieCreateRequest()
+	request.Data = json.RawMessage(`{"cart_id":"cart_12345678-1234-4234-8234-123456789012","redirect_url":"https://shop.example/api/mollie-return?cart_id=cart_12345678-1234-4234-8234-123456789012"}`)
+	if _, _, _, err = a.createBody(request); err != nil {
+		t.Fatal("new runtime cart UUID rejected")
+	}
+}

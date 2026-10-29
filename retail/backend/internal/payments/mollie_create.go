@@ -25,7 +25,7 @@ var mollieMethods = map[string]string{
 	"pp_mollie-apple-pay_mollie": "applepay",
 }
 
-var mollieCartID = regexp.MustCompile(`^cart_[A-Za-z0-9_]{1,120}$`)
+var mollieCartID = regexp.MustCompile(`^cart_[A-Za-z0-9_-]{1,120}$`)
 
 type MollieCreateConfig struct {
 	ProviderID    string

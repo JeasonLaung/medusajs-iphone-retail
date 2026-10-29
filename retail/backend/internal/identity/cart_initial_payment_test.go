@@ -180,6 +180,7 @@ func checkInitialPayments(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	}
 	httpRef, httpIn := makeCart()
 	checkInitialPaymentHTTP(t, ctx, db, sessions, httpRef, httpIn, options)
+	checkPaymentObservations(t, ctx, db, sessions, httpRef, options)
 	unknownRef, unknownIn := makeCart()
 	uncertain.Store(true)
 	result, err = cart.StartInitialPayment(ctx, db, "shop", unknownRef, unknownIn, options)

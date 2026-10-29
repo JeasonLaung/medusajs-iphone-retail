@@ -35,6 +35,8 @@ type InitialPaymentCommand struct {
 }
 type initialAttempt struct {
 	Activated                                                           bool
+	ObservedStatus                                                      *string
+	NeedsReview                                                         bool
 	Generation                                                          string
 	InputVersion, CartVersion                                           uint64
 	CollectionID, SessionID, CartAmount, SettlementAmount, CurrencyCode string

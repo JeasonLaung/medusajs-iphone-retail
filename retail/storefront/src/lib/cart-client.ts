@@ -25,6 +25,7 @@ export type DeliveryOption={id:string;profile_id:string;name:string;description:
 export type DeliveryOptions={cart_id:string;version:string;currency_code:string;options:DeliveryOption[];selected_option_ids:string[];complete:boolean}
 export type ShippingInput={operationID:string;version:string;optionID:string}
 export type ShippingReceipt={cart_id:string;version:string;option_id:string;replayed:boolean}
+export type PaymentStatus={cart_id:string;version:string;state:'pending'|'authorized'|'paid_pending_order'|'failed'|'requires_review'}
 const contactLimits={first_name:160,last_name:160,company:160,address_1:512,address_2:512,city:160,country_code:2,province:191,postal_code:64,phone:64} as const
 export function contactAddress(value:unknown):ContactAddress {
  const v=record(value),out:Record<string,string>={}
@@ -257,6 +258,15 @@ export class CartClient {
    if(status!==200||v.cart_id!==id||v.line_id!==lineID||v.quantity!==quantity||typeof v.replayed!=='boolean'||!matches(v.version,versionPattern)||BigInt(v.version)!==BigInt(version)+1n)throw protocol()
    return {cart_id:id,line_id:lineID,quantity,version:v.version,replayed:v.replayed}
   }catch{throw new CartError('protocol',status,true)}
+ }
+
+ async paymentStatus(id:string,authorization:{csrfToken:string}):Promise<PaymentStatus>{
+  const {csrfToken}=authorization
+  if(!matches(id,idPattern)||!matches(csrfToken,tokenPattern))throw new CartError('input')
+  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/payment-status`,'POST','{}',{'X-CSRF-Token':csrfToken})
+  const v=record(value);keys(v,['cart_id','version','state'])
+  if(status!==200||v.cart_id!==id||!matches(v.version,versionPattern)||BigInt(v.version)>18446744073709551615n||!['pending','authorized','paid_pending_order','failed','requires_review'].includes(String(v.state)))throw protocol()
+  return {cart_id:id,version:v.version,state:v.state as PaymentStatus['state']}
  }
 
  async saveShipping(id:string,input:ShippingInput,authorization:{csrfToken:string}):Promise<ShippingReceipt>{
