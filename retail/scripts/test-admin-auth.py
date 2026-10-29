@@ -141,6 +141,9 @@ def main():
             usage_markers = [line.split('PROMOTION_USAGE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'PROMOTION_USAGE_REHEARSAL ' in line]
             if tested.returncode == 0 and not cart_only and len(usage_markers) != 1:
                 raise RuntimeError('Promotion usage evidence missing')
+            read_markers = [line.split('PROMOTION_READ_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'PROMOTION_READ_REHEARSAL ' in line]
+            if tested.returncode == 0 and not cart_only and len(read_markers) != 1:
+                raise RuntimeError('Promotion read evidence missing')
             amount_markers = [line.split('CART_AMOUNTS_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_AMOUNTS_REHEARSAL ' in line]
             if tested.returncode == 0 and len(amount_markers) != 1:
                 raise RuntimeError('Cart amount evidence missing')
@@ -314,7 +317,7 @@ def main():
                 files += ['retail/backend/internal/identity/cart_tax_refresh_test.go']
                 files += ['retail/backend/migrations/0029_tax_import_evidence.sql','retail/scripts/generate-tax-import-plan.py','retail/backend/internal/identity/tax_import_test.go']
                 files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/taximport').glob('*') if p.is_file()]
-                files += ['retail/backend/migrations/0032_promotion_usage_receipts.sql','retail/backend/migrations/0031_promotion_relational.sql','retail/scripts/generate-promotion-schema.py','retail/backend/internal/identity/promotion_schema_test.go','retail/backend/internal/identity/promotion_usage_test.go']
+                files += ['retail/backend/migrations/0032_promotion_usage_receipts.sql','retail/backend/migrations/0031_promotion_relational.sql','retail/scripts/generate-promotion-schema.py','retail/backend/internal/identity/promotion_schema_test.go','retail/backend/internal/identity/promotion_read_test.go','retail/backend/internal/identity/promotion_usage_test.go']
                 files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/promotion').glob('*') if p.is_file()]
                 files += ['retail/backend/migrations/0028_tax_relational.sql','retail/scripts/generate-tax-schema.py','retail/backend/internal/identity/tax_schema_test.go']
                 files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/tax').glob('*') if p.is_file()]
@@ -410,6 +413,7 @@ def main():
                           'cart_item_snapshots': json.loads(snapshot_markers[0]),
                           'flat_shipping_prices': json.loads(flat_markers[0]),
                           'promotion_usage': json.loads(usage_markers[0]),
+                          'promotion_read': json.loads(read_markers[0]),
                           'promotion_schema': json.loads(promotion_markers[0]),
                           'geo_schema': json.loads(geo_markers[0]),
                           'shipping_candidates': json.loads(candidate_markers[0]),

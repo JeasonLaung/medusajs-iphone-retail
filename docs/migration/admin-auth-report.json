@@ -725,6 +725,24 @@
     "receipt_shared_attribute_preserves_other_operation": true,
     "checkout_authorization_integrated": false
   },
+  "promotion_read": {
+    "migrations": 32,
+    "actual_sql_configuration": true,
+    "manual_automatic_merge": true,
+    "case_sensitive_codes": true,
+    "active_campaign_time_and_soft_delete": true,
+    "raw_precision_and_nullable_limit": true,
+    "three_rule_scopes": true,
+    "scope_rule_copy_isolation": true,
+    "missing_methods_not_fabricated": true,
+    "deleted_restriction_and_empty_values_rejected": true,
+    "invalid_range_raw_quantity_rejected": true,
+    "unsupported_budget_preserved_not_activated": true,
+    "relation_overflow_rejected": true,
+    "caller_snapshot_preserved": true,
+    "schema_gate_and_autocommit_rejected": true,
+    "qualification_allocation_or_checkout_integrated": false
+  },
   "promotion_schema": {
     "migrations": 32,
     "tables": 10,
@@ -866,7 +884,7 @@
     "checkout": false
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "54a6b1efc2f5accac2a0e9ca6dbf14f68eb473e4b684827255f3e21bcab9efdf",
+    "retail/scripts/test-admin-auth.py": "f09e53ceae9e8343ae3017f3a8f4d639c721f419a80e11854756aa7db0524ee9",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "a0171978adfb9a70fc1426eb3ae6b1eae92cd7c2decfd6b09eedfcbe83c71e0d",
@@ -900,8 +918,10 @@
     "retail/backend/migrations/0032_promotion_usage_receipts.sql": "2663d45329b300b6d8ac6321c6727cf7cd29b60ff60963ac3c95d92132febda8",
     "retail/backend/migrations/0031_promotion_relational.sql": "8af5fcccd85e12a2e30a207bff267a905551eb6b76a81b66bf9c82cc4578dd0c",
     "retail/scripts/generate-promotion-schema.py": "f123c9756708271a12ac6c6c6c5de45a0f551ee67d506cc5877ddd37df074fa5",
-    "retail/backend/internal/identity/promotion_schema_test.go": "d3745cf51f5e9aea2b74be66791ca337659176f79a8a2943075c28c4b1c15cc9",
+    "retail/backend/internal/identity/promotion_schema_test.go": "b20b6bb53a2bcbce5433c23c9b14070a7003f15d3a778596226555eb2dbb24b5",
+    "retail/backend/internal/identity/promotion_read_test.go": "218d93d255bc6ecb88289c25c6cd651e6d9d54ba98525b5d87642e2c67376e79",
     "retail/backend/internal/identity/promotion_usage_test.go": "5da7f62983c418a00dff54678bea3044d38754aa3188fc0480e6dc6c080bce5b",
+    "retail/backend/internal/promotion/read.go": "6e9d1e6f438b7fb1c672cd322cf8f25ec86b55fbaea76b022e2d921c0857e9bb",
     "retail/backend/internal/promotion/receipts.go": "a50b752775e7c86a5b5caa750484a1c659c1753b2cd854ce0526b78e09038ce1",
     "retail/backend/internal/promotion/rules.go": "034504bd7220f943876fd8c9d1d322be793e4393083189ad8270444057c37038",
     "retail/backend/internal/promotion/rules_test.go": "5f6cbe7054e608eb8515d6f1b83779873226a15d438b6cc3e45a6205bc52a83c",

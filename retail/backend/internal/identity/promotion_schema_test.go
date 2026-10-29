@@ -98,6 +98,7 @@ func TestOwnedPromotionSchema(t *testing.T) {
 	if db.QueryRowContext(ctx, "SELECT value FROM promotion_rule_values WHERE id='value'").Scan(&ruleValue) != nil || ruleValue != "00123" {
 		t.Fatal("rule value coerced")
 	}
+	verifyPromotionActiveRead(t, ctx, gdb)
 	reject(`UPDATE promotions SET type='unknown'`)
 	reject(`UPDATE promotions SET status='unknown'`)
 	reject(`UPDATE promotions SET is_automatic=2`)

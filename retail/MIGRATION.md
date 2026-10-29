@@ -223,3 +223,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-29 预算撤销补充：[与登记共锁的逆向阶段](../docs/migration/promotion-usage-reversal.md)承接金额/次数/属性扣减与零封底、属性历史软删/重建和精确raw；16并发登记撤销、当前锁读及失败回滚范围以admin-auth-report.promotion_usage和SHA为准。阶段不独立幂等，活动到期后的历史释放、一次撤销回执与完整结账继续待办，相关任务未验收。
 
 2026-10-29 预算回执补充：[0032持久delta与一次登记/撤销](../docs/migration/promotion-usage-receipts.md)以scope+UUID和规范请求SHA绑定计数，活动失效/软删/改挂后按原目标释放，拒绝下溢和物理缺失；8并发首次/7重放及故障回滚、共享属性保护以最新promotion_usage报告与SHA为准。正式checkout权限、库存支付与前台尚未接入，相关任务未验收。
+
+2026-10-29 当前促销读取补充：[事务内配置和三类规则装配](../docs/migration/promotion-active-read.md)承接自动/手动合并、有效活动时间与软删、raw精确金额、空方法/预算和前导零规则值；失效限制整体拒绝，人工MySQL范围以admin-auth-report.promotion_read及SHA为准。资格组装/预算反馈、调整项保存和完整购物车命令仍缺，T032/T033未验收。
