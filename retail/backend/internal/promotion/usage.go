@@ -105,6 +105,31 @@ func usageSQL(r *big.Rat) (string, string, error) {
 // invoke it when merely previewing/recalculating a draft shopping cart.
 // It rechecks active configuration and serialized limits, not qualification.
 func RegisterUsage(ctx context.Context, tx *gorm.DB, actions []UsageAction, in UsageRegistration) (UsageResult, error) {
+	return changeUsage(ctx, tx, actions, in, false)
+}
+
+// RevertUsage is the inverse arithmetic PHASE for trusted, previously registered
+// actions. Caller must bind reversal to the original operation receipt and
+// prevent duplicate reversal. It does not commit or provide idempotency.
+// Like the original path it requires currently active promotion/campaign data;
+// historical reversal after expiry/configuration changes needs a saved ledger.
+// All errors require rolling back the caller's entire transaction.
+func RevertUsage(ctx context.Context, tx *gorm.DB, actions []UsageAction, in UsageRegistration) (UsageResult, error) {
+	return changeUsage(ctx, tx, actions, in, true)
+}
+
+func changedUsage(current, delta *big.Rat, revert bool) *big.Rat {
+	if !revert {
+		return new(big.Rat).Add(current, delta)
+	}
+	value := new(big.Rat).Sub(current, delta)
+	if value.Sign() < 0 {
+		return new(big.Rat)
+	}
+	return value
+}
+
+func changeUsage(ctx context.Context, tx *gorm.DB, actions []UsageAction, in UsageRegistration, revert bool) (UsageResult, error) {
 	empty := UsageResult{}
 	if tx == nil || tx.Statement == nil || len(actions) > 1000 || in.At.IsZero() || !usageCurrency.MatchString(in.Currency) || len(in.Attributes) > 100 {
 		return empty, ErrUsageInput
@@ -153,7 +178,10 @@ func RegisterUsage(ctx context.Context, tx *gorm.DB, actions []UsageAction, in U
 		if tx.Clauses(clause.Locking{Strength: "UPDATE"}).Table("promotions").Select("id,status,campaign_id,`limit`,used,deleted_at").Where("id=?", id).Take(&p).Error != nil {
 			return empty, ErrUsageUnavailable
 		}
-		if p.DeletedAt != nil || p.Status != "active" || p.Used < 0 || p.Limit != nil && (*p.Limit < 0 || p.Used >= *p.Limit) {
+		if p.DeletedAt != nil || p.Status != "active" || p.Used < 0 || p.Limit != nil && *p.Limit < 0 {
+			return empty, ErrUsageUnavailable
+		}
+		if !revert && p.Limit != nil && p.Used >= *p.Limit {
 			return empty, ErrUsageLimit
 		}
 		promotions = append(promotions, p)
@@ -260,13 +288,13 @@ func RegisterUsage(ctx context.Context, tx *gorm.DB, actions []UsageAction, in U
 		table, id, scalar, raw string
 		budgetID               string
 		attribute              string
-		fresh                  bool
+		fresh, remove          bool
 	}
 	writes := []write{}
 	for _, id := range budgetOrder {
 		u := changes[id]
-		next := new(big.Rat).Add(u.used, u.increment)
-		if u.budget.Type != "use_by_attribute" && u.limit != nil && next.Cmp(u.limit) > 0 {
+		next := changedUsage(u.used, u.increment, revert)
+		if !revert && u.budget.Type != "use_by_attribute" && u.limit != nil && next.Cmp(u.limit) > 0 {
 			return empty, ErrUsageLimit
 		}
 		if u.budget.Type == "use_by_attribute" {
@@ -287,15 +315,17 @@ func RegisterUsage(ctx context.Context, tx *gorm.DB, actions []UsageAction, in U
 					return empty, ErrUsageUnavailable
 				}
 			}
-			attributeNext := new(big.Rat).Add(used, big.NewRat(u.codes, 1))
-			if u.limit != nil && attributeNext.Cmp(u.limit) > 0 {
+			attributeNext := changedUsage(used, big.NewRat(u.codes, 1), revert)
+			if !revert && u.limit != nil && attributeNext.Cmp(u.limit) > 0 {
 				return empty, ErrUsageLimit
 			}
 			scalar, raw, err := usageSQL(attributeNext)
 			if err != nil {
 				return empty, err
 			}
-			writes = append(writes, write{table: "promotion_budget_usages", id: usageID, scalar: scalar, raw: raw, attribute: u.attribute, fresh: len(rows) == 0, budgetID: id})
+			if !revert || len(rows) > 0 {
+				writes = append(writes, write{table: "promotion_budget_usages", id: usageID, scalar: scalar, raw: raw, attribute: u.attribute, fresh: len(rows) == 0, budgetID: id, remove: revert && attributeNext.Sign() == 0})
+			}
 		}
 		scalar, raw, err := usageSQL(next)
 		if err != nil {
@@ -308,12 +338,24 @@ func RegisterUsage(ctx context.Context, tx *gorm.DB, actions []UsageAction, in U
 		if p.Limit == nil {
 			continue
 		}
-		r := tx.Exec("UPDATE promotions SET used=used+1,updated_at=UTC_TIMESTAMP(6) WHERE id=? AND used=? AND deleted_at IS NULL", p.ID, p.Used)
+		next := p.Used + 1
+		if revert {
+			next = max(p.Used-1, 0)
+		}
+		r := tx.Exec("UPDATE promotions SET used=?,updated_at=UTC_TIMESTAMP(6) WHERE id=? AND used=? AND deleted_at IS NULL", next, p.ID, p.Used)
 		if r.Error != nil || r.RowsAffected != 1 {
 			return empty, ErrUsageStorage
 		}
 	}
 	for _, w := range writes {
+		if w.remove {
+			r := tx.Table(w.table).Where("id=? AND deleted_at IS NULL", w.id).Updates(map[string]any{"deleted_at": gorm.Expr("UTC_TIMESTAMP(6)"), "updated_at": gorm.Expr("UTC_TIMESTAMP(6)")})
+			if r.Error != nil || r.RowsAffected != 1 {
+				return empty, ErrUsageStorage
+			}
+			result.AttributeUsages++
+			continue
+		}
 		if w.fresh {
 			if tx.Exec("INSERT INTO promotion_budget_usages(id,attribute_value,used,budget_id,raw_used,created_at,updated_at) VALUES(?,?,?,?,?,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", w.id, w.attribute, w.scalar, w.budgetID, w.raw).Error != nil {
 				return empty, ErrUsageStorage

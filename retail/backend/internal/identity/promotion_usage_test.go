@@ -254,5 +254,133 @@ func TestOwnedPromotionUsage(t *testing.T) {
 	if err := call([]promotion.UsageAction{{PromotionID: "p_attribute", Amount: "1"}}, map[string]string{"customer_id": attribute}); err != promotion.ErrUsageUnavailable {
 		t.Fatal("ambiguous attribute used")
 	}
-	t.Log(`PROMOTION_USAGE_REHEARSAL {"migrations":31,"concurrent_attempts":8,"spend_wins":1,"attribute_first_create_wins":1,"current_locking_read_after_old_snapshot":true,"duplicate_actions_once_per_promotion":true,"shared_budget_counts_distinct_promotions":true,"complete_attribute_case_and_trailing_space":true,"missing_attribute_rejected":true,"unsupported_budget_rejected":true,"exact_raw_beyond_scale18":true,"late_failure_rollback":true,"write_fault_rollback":true,"campaign_start_inclusive_end_exclusive":true,"currency_mismatch_rejected":true,"autocommit_rejected":true,"budget_revert_integrated":false,"durable_idempotency_integrated":false}`)
+
+	revert := func(actions []promotion.UsageAction, attributes map[string]string) error {
+		return gdb.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+			_, e := promotion.RevertUsage(ctx, tx, actions, promotion.UsageRegistration{Currency: "eur", Attributes: attributes, At: now})
+			return e
+		}, &sql.TxOptions{Isolation: sql.LevelRepeatableRead})
+	}
+	setup("revert", "spend", "100", "20")
+	exec("UPDATE promotions SET `limit`=1,used=1 WHERE id='p_revert'")
+	if err := revert([]promotion.UsageAction{{PromotionID: "p_revert", Amount: "3"}, {PromotionID: "p_revert", Amount: "4"}}, nil); err != nil || used("promotion_campaign_budgets", "b_revert") != "13" {
+		t.Fatal("revert duplicate actions did not aggregate spend")
+	}
+	if db.QueryRowContext(ctx, "SELECT used FROM promotions WHERE id='p_revert'").Scan(&count) != nil || count != 0 {
+		t.Fatal("at-limit promotion could not be reversed once")
+	}
+	if err := revert([]promotion.UsageAction{{PromotionID: "p_revert", Amount: "20"}}, nil); err != nil || used("promotion_campaign_budgets", "b_revert") != "0" {
+		t.Fatal("revert did not clamp at zero")
+	}
+	// Distinct promotion codes on one activity release distinct usage counts.
+	setup("reverseusage", "usage", "10", "3")
+	exec("INSERT INTO promotions(id,code,campaign_id,is_automatic,type,status,is_tax_inclusive,used,created_at,updated_at) VALUES('p_reverseother','REVERSEOTHER','c_reverseusage',FALSE,'standard','active',FALSE,0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
+	if err := revert([]promotion.UsageAction{{PromotionID: "p_reverseusage", Amount: "1"}, {PromotionID: "p_reverseother", Amount: "2"}}, nil); err != nil || used("promotion_campaign_budgets", "b_reverseusage") != "1" {
+		t.Fatal("shared usage reversal lost a code")
+	}
+	// Register and reverse contend on the same parent locks, with no lost update.
+	setup("mix", "spend", "1000", "100")
+	start = make(chan struct{})
+	results = make(chan error, 16)
+	for i := 0; i < 16; i++ {
+		wg.Add(1)
+		go func(index int) {
+			defer wg.Done()
+			<-start
+			actions := []promotion.UsageAction{{PromotionID: "p_mix", Amount: "10"}}
+			if index%2 == 0 {
+				results <- call(actions, nil)
+			} else {
+				results <- revert(actions, nil)
+			}
+		}(i)
+	}
+	close(start)
+	wg.Wait()
+	close(results)
+	for err := range results {
+		if err != nil {
+			t.Fatalf("mixed register/reverse: %v", err)
+		}
+	}
+	if used("promotion_campaign_budgets", "b_mix") != "100" {
+		t.Fatal("mixed registration and reversal lost a committed delta")
+	}
+	// Attribute exhaustion preserves old evidence by soft deletion; recreation
+	// uses a fresh row, and an older RR snapshot must see the active successor.
+	setup("reverseattr", "use_by_attribute", "2", "0")
+	attr := map[string]string{"customer_id": "reverse-fixture"}
+	attrActions := []promotion.UsageAction{{PromotionID: "p_reverseattr", Amount: "1"}}
+	if err := call(attrActions, attr); err != nil {
+		t.Fatal(err)
+	}
+	if err := call(attrActions, attr); err != nil {
+		t.Fatal(err)
+	}
+	var originalUsage string
+	if db.QueryRowContext(ctx, "SELECT id FROM promotion_budget_usages WHERE budget_id='b_reverseattr' AND deleted_at IS NULL").Scan(&originalUsage) != nil {
+		t.Fatal("attribute evidence missing")
+	}
+	if err := revert(attrActions, attr); err != nil || used("promotion_budget_usages", originalUsage) != "1" {
+		t.Fatal("attribute decrement failed")
+	}
+	if err := revert(attrActions, attr); err != nil {
+		t.Fatal(err)
+	}
+	var deleted bool
+	if db.QueryRowContext(ctx, "SELECT deleted_at IS NOT NULL FROM promotion_budget_usages WHERE id=?", originalUsage).Scan(&deleted) != nil || !deleted {
+		t.Fatal("attribute history erased or still active")
+	}
+	if err := revert(attrActions, attr); err != nil || used("promotion_campaign_budgets", "b_reverseattr") != "0" {
+		t.Fatal("missing attribute reversal created usage")
+	}
+	if err := call(attrActions, attr); err != nil {
+		t.Fatal(err)
+	}
+	var successor string
+	if db.QueryRowContext(ctx, "SELECT id FROM promotion_budget_usages WHERE budget_id='b_reverseattr' AND deleted_at IS NULL").Scan(&successor) != nil || successor == originalUsage {
+		t.Fatal("deleted attribute history reused")
+	}
+	stale = gdb.WithContext(ctx).Begin(&sql.TxOptions{Isolation: sql.LevelRepeatableRead})
+	if stale.Raw("SELECT CAST(used AS CHAR) FROM promotion_budget_usages WHERE id=?", successor).Scan(&n).Error != nil {
+		t.Fatal("attribute snapshot read failed")
+	}
+	if err := call(attrActions, attr); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := promotion.RevertUsage(ctx, stale, attrActions, promotion.UsageRegistration{Currency: "eur", Attributes: attr, At: now}); err != nil {
+		stale.Rollback()
+		t.Fatal(err)
+	}
+	if stale.Commit().Error != nil || used("promotion_budget_usages", successor) != "1" {
+		t.Fatal("attribute reverse used stale RR snapshot")
+	}
+	// Precision remains exact in both directions.
+	setup("reverseexact", "spend", "1", "0.123456789012345678")
+	exec(`UPDATE promotion_campaign_budgets SET raw_used='{"value":"0.123456789012345678902","precision":100}' WHERE id='b_reverseexact'`)
+	if err := revert([]promotion.UsageAction{{PromotionID: "p_reverseexact", Amount: "0.000000000000000000001"}}, nil); err != nil || used("promotion_campaign_budgets", "b_reverseexact") != "0.123456789012345678901" {
+		t.Fatal("reversal rounded exact raw")
+	}
+	// Caller failure after reversal restores both history and counters.
+	err = gdb.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		if _, e := promotion.RevertUsage(ctx, tx, attrActions, promotion.UsageRegistration{Currency: "eur", Attributes: attr, At: now}); e != nil {
+			return e
+		}
+		return late
+	})
+	if err != late || used("promotion_campaign_budgets", "b_reverseattr") != "1" || used("promotion_budget_usages", successor) != "1" {
+		t.Fatal("late reversal failure was not atomic")
+	}
+	exec("CREATE TRIGGER fixture_reverse_failure BEFORE UPDATE ON promotion_campaign_budgets FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='reverse failure'")
+	if err := revert(attrActions, attr); err != promotion.ErrUsageStorage {
+		t.Fatal("reverse write fault not surfaced")
+	}
+	exec("DROP TRIGGER fixture_reverse_failure")
+	if db.QueryRowContext(ctx, "SELECT deleted_at IS NOT NULL FROM promotion_budget_usages WHERE id=?", successor).Scan(&deleted) != nil || deleted || used("promotion_campaign_budgets", "b_reverseattr") != "1" {
+		t.Fatal("reverse fault left soft delete committed")
+	}
+	if _, err := promotion.RevertUsage(ctx, gdb, attrActions, promotion.UsageRegistration{Currency: "eur", Attributes: attr, At: now}); err != promotion.ErrUsageInput {
+		t.Fatal("autocommit reversal accepted")
+	}
+	t.Log(`PROMOTION_USAGE_REHEARSAL {"migrations":31,"concurrent_attempts":8,"spend_wins":1,"attribute_first_create_wins":1,"current_locking_read_after_old_snapshot":true,"duplicate_actions_once_per_promotion":true,"shared_budget_counts_distinct_promotions":true,"complete_attribute_case_and_trailing_space":true,"missing_attribute_rejected":true,"unsupported_budget_rejected":true,"exact_raw_beyond_scale18":true,"late_failure_rollback":true,"write_fault_rollback":true,"campaign_start_inclusive_end_exclusive":true,"currency_mismatch_rejected":true,"autocommit_rejected":true,"revert_phase_integrated":true,"revert_shared_budget_and_clamp":true,"mixed_register_revert_concurrent":16,"attribute_soft_delete_recreate_history":true,"attribute_revert_current_read":true,"revert_precise_raw":true,"revert_late_and_write_fault_rollback":true,"expired_reversal_requires_saved_ledger":true,"durable_idempotency_integrated":false}`)
 }
