@@ -122,6 +122,21 @@ func StageEffect(ctx context.Context, tx *gorm.DB, key EffectKey) (EffectReceipt
 	return effectReceipt(row), nil
 }
 
+// InspectEffect locks and validates an existing private receipt without
+// inserting it or granting dispatch. Scope authorization remains the caller's.
+func InspectEffect(ctx context.Context, tx *gorm.DB, key EffectKey) (EffectReceipt, error) {
+	q, cancel, err := effectTx(ctx, tx, key)
+	if err != nil {
+		return EffectReceipt{}, err
+	}
+	defer cancel()
+	row, err := lockEffect(q, key)
+	if err != nil {
+		return EffectReceipt{}, err
+	}
+	return effectReceipt(row), nil
+}
+
 // ClaimEffect serializes dispatch. Call the provider only AFTER committing the
 // returned Dispatch=true claim, outside the DB transaction. Expiry transitions
 // inflight to uncertain: it NEVER authorizes a second dispatch. Commit that

@@ -202,12 +202,17 @@ func Create(ctx context.Context, db *gorm.DB, in CreateCommand) (CreateResult, e
 }
 
 func lockCurrent(ctx context.Context, tx *gorm.DB, store, channel string, ref sessionstore.CartReference, strength string) (Snapshot, error) {
+	return lockCurrentPaymentOperation(ctx, tx, store, channel, ref, strength, "")
+}
+
+func lockCurrentPaymentOperation(ctx context.Context, tx *gorm.DB, store, channel string, ref sessionstore.CartReference, strength, operation string) (Snapshot, error) {
 	var owner struct {
-		StoreID, Generation string
-		Version             uint64
-		Active              bool
+		StoreID, Generation       string
+		Version                   uint64
+		Active                    bool
+		PaymentRefreshOperationID *string
 	}
-	r := tx.WithContext(ctx).Table("cart_ownership").Select("store_id,generation,version,active").Where("cart_id=?", ref.CartID).Clauses(clause.Locking{Strength: strength}).Take(&owner)
+	r := tx.WithContext(ctx).Table("cart_ownership").Select("store_id,generation,version,active,payment_refresh_operation_id").Where("cart_id=?", ref.CartID).Clauses(clause.Locking{Strength: strength}).Take(&owner)
 	if errors.Is(r.Error, gorm.ErrRecordNotFound) {
 		return Snapshot{}, ErrDenied
 	}
@@ -216,6 +221,9 @@ func lockCurrent(ctx context.Context, tx *gorm.DB, store, channel string, ref se
 	}
 	if !owner.Active || owner.Version == 0 || owner.StoreID != store || subtle.ConstantTimeCompare([]byte(owner.Generation), []byte(ref.Generation)) != 1 {
 		return Snapshot{}, ErrDenied
+	}
+	if strength == "UPDATE" && owner.PaymentRefreshOperationID != nil && *owner.PaymentRefreshOperationID != operation {
+		return Snapshot{}, ErrConflict
 	}
 	var row struct {
 		ID, RegionID, SalesChannelID, CurrencyCode string
@@ -277,6 +285,10 @@ func Inspect(ctx context.Context, db *gorm.DB, store string, ref sessionstore.Ca
 // still enforce CSRF/Origin/idempotency, cart-specific business rules, update
 // the version and roll back the WHOLE transaction after any later failure.
 func LockForWrite(ctx context.Context, tx *gorm.DB, store string, ref sessionstore.CartReference, version string) (Snapshot, error) {
+	return lockForPaymentOperation(ctx, tx, store, ref, version, "")
+}
+
+func lockForPaymentOperation(ctx context.Context, tx *gorm.DB, store string, ref sessionstore.CartReference, version, operation string) (Snapshot, error) {
 	n, err := strconv.ParseUint(version, 10, 64)
 	if err != nil || n == 0 || strconv.FormatUint(n, 10) != version || !refOK(store, ref) {
 		return Snapshot{}, ErrInput
@@ -288,7 +300,7 @@ func LockForWrite(ctx context.Context, tx *gorm.DB, store string, ref sessionsto
 	if err != nil {
 		return Snapshot{}, err
 	}
-	result, err := lockCurrent(ctx, tx, store, channel, ref, "UPDATE")
+	result, err := lockCurrentPaymentOperation(ctx, tx, store, channel, ref, "UPDATE", operation)
 	if err != nil {
 		return Snapshot{}, err
 	}

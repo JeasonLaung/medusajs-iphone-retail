@@ -55,10 +55,10 @@ func TestOwnedProductInventory(t *testing.T) {
 		t.Fatal("fixture plan invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 34 {
+	if err != nil || result.Applied != 35 {
 		t.Fatal("twelve migrations failed")
 	}
-	if result, err = schema.Apply(ctx, pool, plan); err != nil || result.Skipped != 34 {
+	if result, err = schema.Apply(ctx, pool, plan); err != nil || result.Skipped != 35 {
 		t.Fatal("twelve migration replay failed")
 	}
 	if inventory.Ready(ctx, db) != nil {
@@ -159,5 +159,5 @@ func TestOwnedProductInventory(t *testing.T) {
 		t.Fatal("fixture drift setup failed")
 	}
 	call(root, 503)
-	t.Log(`PRODUCT_INVENTORY_REHEARSAL {"migrations":34,"active_level_uniqueness":true,"physical_fk_enabled":true,"exact_quantity_difference":true,"reservation_mismatch_preserved":true,"negative_balance_retained":true,"shared_item_requirements":true,"soft_delete_filters":true,"unmatched_reservations_retained":true,"cross_product_rejected":true,"read_fingerprint_unchanged":true,"schema_drift_rejected":true,"inventory_writes_disabled":true}`)
+	t.Log(`PRODUCT_INVENTORY_REHEARSAL {"migrations":35,"active_level_uniqueness":true,"physical_fk_enabled":true,"exact_quantity_difference":true,"reservation_mismatch_preserved":true,"negative_balance_retained":true,"shared_item_requirements":true,"soft_delete_filters":true,"unmatched_reservations_retained":true,"cross_product_rejected":true,"read_fingerprint_unchanged":true,"schema_drift_rejected":true,"inventory_writes_disabled":true}`)
 }

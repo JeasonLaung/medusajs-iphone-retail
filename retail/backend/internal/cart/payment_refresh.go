@@ -17,8 +17,12 @@ import (
 // The plan is private; subsequent provider coordination and durable completion
 // are mandatory. Never commit a changed plan as if payment refresh succeeded.
 func PreparePaymentRefresh(ctx context.Context, tx *gorm.DB, store string, ref sessionstore.CartReference, version string) (PaymentRefreshPlan, error) {
+	return preparePaymentRefreshOperation(ctx, tx, store, ref, version, "")
+}
+
+func preparePaymentRefreshOperation(ctx context.Context, tx *gorm.DB, store string, ref sessionstore.CartReference, version, operation string) (PaymentRefreshPlan, error) {
 	failed := PaymentRefreshPlan{}
-	cart, err := LockForWrite(ctx, tx, store, ref, version)
+	cart, err := lockForPaymentOperation(ctx, tx, store, ref, version, operation)
 	if err != nil {
 		return failed, err
 	}

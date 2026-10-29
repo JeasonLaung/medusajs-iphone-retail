@@ -54,7 +54,7 @@ func TestOwnedCustomerHistory(t *testing.T) {
 		t.Fatal("customer fixture plan invalid")
 	}
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 34 {
+	if err != nil || r.Applied != 35 {
 		t.Fatal("customer fixture migrations failed")
 	}
 	key := bytes.Repeat([]byte{51}, 32)
@@ -183,5 +183,5 @@ func TestOwnedCustomerHistory(t *testing.T) {
 	count("admin_users", 0)
 	count("historical_customer_subjects", 1)
 	count("migration_customer_dispositions", 1)
-	t.Log(`CUSTOMER_HISTORY_REHEARSAL {"migrations":34,"concurrent_imports":8,"persisted_subjects":1,"binding_exclusions":1,"created_login_accounts":0,"binary_metadata_roundtrip":true,"rollback_atomic":true,"row_failure_rollback":true,"old_snapshot_replay":true,"rotation_preserves_ciphertext":true,"missing_key_rejected":true,"source_snapshot_target_change_rejected":true,"account_binding_activation_rejected":true,"unknown_metadata_rejected":true}`)
+	t.Log(`CUSTOMER_HISTORY_REHEARSAL {"migrations":35,"concurrent_imports":8,"persisted_subjects":1,"binding_exclusions":1,"created_login_accounts":0,"binary_metadata_roundtrip":true,"rollback_atomic":true,"row_failure_rollback":true,"old_snapshot_replay":true,"rotation_preserves_ciphertext":true,"missing_key_rejected":true,"source_snapshot_target_change_rejected":true,"account_binding_activation_rejected":true,"unknown_metadata_rejected":true}`)
 }

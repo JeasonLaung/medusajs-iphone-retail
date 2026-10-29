@@ -52,7 +52,7 @@ func TestOwnedOrderImport(t *testing.T) {
 		t.Fatal("order import plan invalid")
 	}
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 34 {
+	if err != nil || r.Applied != 35 {
 		t.Fatal("order import migrations failed")
 	}
 	names, _ := orderimport.SourceTables()
@@ -238,5 +238,5 @@ func TestOwnedOrderImport(t *testing.T) {
 	}
 	count("migration_order_rows", 8)
 	count("order_migration_reference_holds", 5)
-	t.Log(`ORDER_IMPORT_REHEARSAL {"migrations":34,"tables":28,"columns":378,"rows":8,"reference_holds":5,"concurrent_batches":8,"single_fresh_batch":1,"replayed_batches":7,"old_snapshot_replay":true,"nullable_cycle_restored":true,"reason_cycle_preserved":true,"rollback_atomic":true,"hold_failure_rollback":true,"decimal_drift_rejected":true,"changed_cycle_not_repaired":true,"source_and_snapshot_change_rejected":true,"composite_identity_preserved":true,"sql_null_json_null_distinct":true,"protected_customer_excluded":true,"no_account_granted":true,"hold_release_rejected":true}`)
+	t.Log(`ORDER_IMPORT_REHEARSAL {"migrations":35,"tables":28,"columns":378,"rows":8,"reference_holds":5,"concurrent_batches":8,"single_fresh_batch":1,"replayed_batches":7,"old_snapshot_replay":true,"nullable_cycle_restored":true,"reason_cycle_preserved":true,"rollback_atomic":true,"hold_failure_rollback":true,"decimal_drift_rejected":true,"changed_cycle_not_repaired":true,"source_and_snapshot_change_rejected":true,"composite_identity_preserved":true,"sql_null_json_null_distinct":true,"protected_customer_excluded":true,"no_account_granted":true,"hold_release_rejected":true}`)
 }

@@ -253,3 +253,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-29 支付恢复记录补充：[持久尝试、抢占及未知结果隔离](../docs/migration/cart-payment-refresh.md)增加0033 MySQL journal，提交后派发、失败重试、超时不盲重试、旧尝试隔离、迟到结果核实；隔离8事务竞争及回滚验证。尚缺受保护任务快照、渠道适配、补偿和最终命令衔接，未调用真实支付渠道，T032/T033未验收。
 
 2026-10-29 支付恢复快照补充：[AES-GCM完整渠道请求及提交前校验](../docs/migration/cart-payment-refresh.md)增加0034加密快照、原子绑定receipt、密钥轮换重放、精确金额/JSON恢复、缺key/篡改/替换拒绝与失败回滚；仅服务端私有API。尚缺cart版本/任务协调、provider适配、响应持久化及补偿，T032/T033未验收。
+
+2026-10-29 支付协调补充：[购物车版本/冻结与内部stage-claim-record-complete](../docs/migration/cart-payment-refresh.md)增加0035默认关闭能力、真实归属和源/目标绑定、加密运行时session读取、持久冻结、已付拒绝及全部确认后的本地金额/session/版本原子完成；人工MySQL覆盖部分成功、未知结果和最终写入失败回滚。真实provider/worker/HTTP、补偿与checkout尚未完成，T032/T033未验收。

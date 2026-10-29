@@ -41,3 +41,19 @@ Stage 相同输入重放，变更摘要拒绝。Claim 在 MySQL 行锁内一次�
 这一步完成的是单个渠道动作的恢复材料，不是完整支付协调器。服务端仍须绑定当前cart授权、generation/version与集合刷新目标，持久任务顺序及补偿状态，接入真实适配器、创建响应保存/恢复、部分删除补偿和最终集合更新。SessionID为本地稳定请求标识，创建适配器须使用它作为幂等键及data.session_id，禁止用每次变化的attempt UUID。未导入旧登录态、未调用真实渠道，T032/T033未验收。
 
 0034验证结果：`go test ./...`与隔离MySQL/Redis完整23组回归通过；34迁移成功执行，admin-auth-report的273项实现SHA匹配。旧health/Admin/商品/购物车入口均200，服务日志仍只有既有PayPal seller nonce提示。请求恢复为人工fixture验证，不包含真实渠道调用或完整checkout。
+
+## 购物车支付刷新持久协调（0035）
+
+`cart.StagePaymentRefresh`在调用方真实事务中重查cart.access及独立默认关闭的cart_payment_refresh_runtime开关、当前store/channel/generation/version，复用PreparePaymentRefresh取得最终商品/税/运费/优惠后的金额。它锁定有效集合和至多100个session，从新运行时认证密文读取data/context，自动生成0034恢复请求，保存原计划、集合/session源指纹、effect keys及manifest SHA，并将operation UUID绑定cart_ownership。缺集合或金额/币种未变时只记录completed no-op，不冻结、不增加版本。阶段错误必须整体回滚；manifest插入失败不会留下已准备的效果记录。
+
+冻结经过所有现有lockCurrent UPDATE及LockForWrite入口，阻止另一个操作、商品增加/数量变更、重定价、税/运费/优惠写入。SHARE检查及金额/页面只读保持可用。冻结没有自动过期：进程中断或provider结果未知时，不能仅凭时间恢复写入。只有同一个私有支付operation能再次取得写锁，且每次都校验保存的generation/version、目标计划、源指纹和冻结指针。
+
+新增payments.SealSessionFields/OpenSessionFields，只处理新运行时session data/context，AAD绑定session/provider/collection/精确amount/currency及具体列。保留SQL NULL context，不接受明文或历史导入purpose作为运行时替代。Stage不从浏览器接收provider参数，也不因同邮箱或历史ID授予归属。加载密文前限制单字段2MiB、单操作合计8MiB，再验证单个请求1MiB上限，不截断。集合已完成/已授权/已扣款、session已授权/扣款、有authorized_at或有效payments记录均拒绝刷新；远端状态仍需真实adapter核实。
+
+`ClaimPaymentRefreshSession`绑定指定有效session及保存请求，重查后授予commit后才有效的dispatch；`RecordPaymentRefreshSession`绑定当前operation及attempt后保存经adapter核实的结果。两者不自行调用渠道。只有每个delete effect均succeeded，`CompletePaymentRefresh`才能在同一事务内更新集合精确raw金额/币种、软删原有效session、将cart版本加1、解除冻结并完成操作。任何一步失败整体回滚；provider成功记录本身保留，用于重试本地完成。completed重放不再次改价/删除/加版本，仍检查当前归属和能力。
+
+隔离MySQL人工流程串联：新匿名cart→加密运行时session→stage→两次claim→人工明确结果登记→complete。验证默认关闭、无集合no-op、已付/有效payment拒绝、manifest失败无孤儿receipt、正常写入和另一个operation冲突、读可用、generation/version重查、源/目标/冻结指针漂移拒绝、部分成功及未知结果不完成、不盲重试、attempt匹配、完成最后一步写故障全部回滚、成功金额/session/版本原子变更、重放及撤销归属拒绝。报告新增cart_payment_operations；人工结果登记没有模拟真实支付扣款或调用真实渠道。
+
+当前提供可恢复的内部协调基础，未接入HTTP、worker或真实provider，部分失败补偿/中止解除冻结尚未实现，创建provider响应及重建session也未完成。因此不得开启此能力用于真实购物；生产能力默认关闭，T032/T033及checkout仍未验收。
+
+0035验收证据：`go test ./...`与隔离MySQL/Redis完整23组回归通过，35个迁移均验证。完整报告278项/购物车专项175项SHA匹配；人工provider结果登记仅证明本地协调，不证明真实渠道完成。旧health/Admin/商品/购物车页面均200，日志无新增错误，既有PayPal nonce提示保留。
