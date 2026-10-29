@@ -209,3 +209,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-29 运费刷新补充：[保留方法ID与数据的当前重选价](../docs/migration/cart-shipping-refresh.md)在持有者/版本事务内更新精确金额、名称与含税状态，移除无价/失效方法，保留原单方法孤立profile保护及多方法清理。原纯转换6组固定，人工SQL以admin-auth-report.cart_shipping_refresh与SHA为准。完整重算/动态运价/幂等命令与前台继续待办，T032/T033未验收。
 
 2026-10-29 促销资格补充：[独立Go规则谓词](../docs/migration/promotion-rule-matching.md)承接eq/in/ne、精确范围、嵌套与scope差异，34组实际原函数对照及数值/非法配置边界通过；Go全量测试和模块静态检查通过。仅资格判断，活动SQL、分摊、预算并发和完整重算仍待完成，T032/T033未验收。
+
+2026-10-29 运费优惠补充：[复用精确金额层的分摊算术](../docs/migration/shipping-promotion-allocation.md)承接each/once/across、稳定同价排序、共享已折扣余额和20位除法；20组实际原函数对照与连续优惠/非法输入/输入隔离验证通过。仅无预算算术阶段；活动资格、预算锁、商品促销与完整重算未完成，T032/T033未验收。

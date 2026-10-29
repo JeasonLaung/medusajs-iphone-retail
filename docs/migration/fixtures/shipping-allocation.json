@@ -1,0 +1,600 @@
+{
+  "format_version": 1,
+  "scope": "Shipping arithmetic with no campaign budgets; not full qualification or checkout",
+  "sources": {
+    "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/shipping-methods.js": "d2f2803a44513074f633f4606695af132da520c532b5efe9856064be9dd5d405",
+    "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/sort-by-price.js": "6ccb720482eb3ff06778d955dbd8c03bbe5a997ea39a50cb9f56cc3af59ca48d",
+    "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/usage.js": "819328d0e7c3b855f95b6b9a4e640cc9fabc4572343796d63ebe34abe8506af8"
+  },
+  "cases": [
+    {
+      "name": "each-fixed",
+      "input": {
+        "allocation": "each",
+        "type": "fixed",
+        "value": "5",
+        "max_quantity": null,
+        "methods": [
+          {
+            "id": "b",
+            "subtotal": "20"
+          },
+          {
+            "id": "a",
+            "subtotal": "10"
+          }
+        ],
+        "previous": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "b",
+            "amount": "5"
+          },
+          {
+            "id": "a",
+            "amount": "5"
+          }
+        ],
+        "discounts": {
+          "b": "5",
+          "a": "5"
+        }
+      }
+    },
+    {
+      "name": "each-ignores-quota",
+      "input": {
+        "allocation": "each",
+        "type": "fixed",
+        "value": "5",
+        "max_quantity": 0,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "10"
+          }
+        ],
+        "previous": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "5"
+          }
+        ],
+        "discounts": {
+          "a": "5"
+        }
+      }
+    },
+    {
+      "name": "once-cheapest",
+      "input": {
+        "allocation": "once",
+        "type": "fixed",
+        "value": "5",
+        "max_quantity": 1,
+        "methods": [
+          {
+            "id": "b",
+            "subtotal": "20"
+          },
+          {
+            "id": "a",
+            "subtotal": "10"
+          }
+        ],
+        "previous": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "5"
+          }
+        ],
+        "discounts": {
+          "a": "5"
+        }
+      }
+    },
+    {
+      "name": "once-stable-tie",
+      "input": {
+        "allocation": "once",
+        "type": "fixed",
+        "value": "5",
+        "max_quantity": 1,
+        "methods": [
+          {
+            "id": "b",
+            "subtotal": "10"
+          },
+          {
+            "id": "a",
+            "subtotal": "10"
+          }
+        ],
+        "previous": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "b",
+            "amount": "5"
+          }
+        ],
+        "discounts": {
+          "b": "5"
+        }
+      }
+    },
+    {
+      "name": "once-default-zero",
+      "input": {
+        "allocation": "once",
+        "type": "fixed",
+        "value": "5",
+        "max_quantity": null,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "10"
+          }
+        ],
+        "previous": {}
+      },
+      "expected": {
+        "amounts": [],
+        "discounts": {}
+      }
+    },
+    {
+      "name": "once-zero-explicit",
+      "input": {
+        "allocation": "once",
+        "type": "fixed",
+        "value": "5",
+        "max_quantity": 0,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "10"
+          }
+        ],
+        "previous": {}
+      },
+      "expected": {
+        "amounts": [],
+        "discounts": {}
+      }
+    },
+    {
+      "name": "once-skips-exhausted",
+      "input": {
+        "allocation": "once",
+        "type": "fixed",
+        "value": "5",
+        "max_quantity": 1,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "5"
+          },
+          {
+            "id": "b",
+            "subtotal": "10"
+          }
+        ],
+        "previous": {
+          "a": "5"
+        }
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "b",
+            "amount": "5"
+          }
+        ],
+        "discounts": {
+          "a": "5",
+          "b": "5"
+        }
+      }
+    },
+    {
+      "name": "once-skips-zero",
+      "input": {
+        "allocation": "once",
+        "type": "fixed",
+        "value": "5",
+        "max_quantity": 1,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "0"
+          },
+          {
+            "id": "b",
+            "subtotal": "10"
+          }
+        ],
+        "previous": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "b",
+            "amount": "5"
+          }
+        ],
+        "discounts": {
+          "b": "5"
+        }
+      }
+    },
+    {
+      "name": "each-cap",
+      "input": {
+        "allocation": "each",
+        "type": "fixed",
+        "value": "20",
+        "max_quantity": null,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "10"
+          }
+        ],
+        "previous": {
+          "a": "7"
+        }
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "3"
+          }
+        ],
+        "discounts": {
+          "a": "10"
+        }
+      }
+    },
+    {
+      "name": "across-fixed",
+      "input": {
+        "allocation": "across",
+        "type": "fixed",
+        "value": "8",
+        "max_quantity": null,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "10"
+          },
+          {
+            "id": "b",
+            "subtotal": "30"
+          }
+        ],
+        "previous": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "2"
+          },
+          {
+            "id": "b",
+            "amount": "6"
+          }
+        ],
+        "discounts": {
+          "a": "2",
+          "b": "6"
+        }
+      }
+    },
+    {
+      "name": "across-prior",
+      "input": {
+        "allocation": "across",
+        "type": "fixed",
+        "value": "10",
+        "max_quantity": null,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "10"
+          },
+          {
+            "id": "b",
+            "subtotal": "5"
+          }
+        ],
+        "previous": {
+          "a": "5"
+        }
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "5"
+          },
+          {
+            "id": "b",
+            "amount": "5"
+          }
+        ],
+        "discounts": {
+          "a": "10",
+          "b": "5"
+        }
+      }
+    },
+    {
+      "name": "across-percentage",
+      "input": {
+        "allocation": "across",
+        "type": "percentage",
+        "value": "50",
+        "max_quantity": null,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "10"
+          },
+          {
+            "id": "b",
+            "subtotal": "30"
+          }
+        ],
+        "previous": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "5"
+          },
+          {
+            "id": "b",
+            "amount": "15"
+          }
+        ],
+        "discounts": {
+          "a": "5",
+          "b": "15"
+        }
+      }
+    },
+    {
+      "name": "each-percentage-prior",
+      "input": {
+        "allocation": "each",
+        "type": "percentage",
+        "value": "50",
+        "max_quantity": null,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "10"
+          }
+        ],
+        "previous": {
+          "a": "2"
+        }
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "4"
+          }
+        ],
+        "discounts": {
+          "a": "6"
+        }
+      }
+    },
+    {
+      "name": "percent-cap",
+      "input": {
+        "allocation": "each",
+        "type": "percentage",
+        "value": "150",
+        "max_quantity": null,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "10"
+          }
+        ],
+        "previous": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "10"
+          }
+        ],
+        "discounts": {
+          "a": "10"
+        }
+      }
+    },
+    {
+      "name": "zero-value",
+      "input": {
+        "allocation": "across",
+        "type": "fixed",
+        "value": "0",
+        "max_quantity": null,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "10"
+          }
+        ],
+        "previous": {}
+      },
+      "expected": {
+        "amounts": [],
+        "discounts": {}
+      }
+    },
+    {
+      "name": "empty",
+      "input": {
+        "allocation": "each",
+        "type": "fixed",
+        "value": "1",
+        "max_quantity": null,
+        "methods": [],
+        "previous": {
+          "other": "7"
+        }
+      },
+      "expected": {
+        "amounts": [],
+        "discounts": {
+          "other": "7"
+        }
+      }
+    },
+    {
+      "name": "negative-remainder-denominator",
+      "input": {
+        "allocation": "across",
+        "type": "fixed",
+        "value": "4",
+        "max_quantity": null,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "1"
+          },
+          {
+            "id": "b",
+            "subtotal": "5"
+          }
+        ],
+        "previous": {
+          "a": "2"
+        }
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "b",
+            "amount": "5"
+          }
+        ],
+        "discounts": {
+          "a": "2",
+          "b": "5"
+        }
+      }
+    },
+    {
+      "name": "across-total-nonpositive",
+      "input": {
+        "allocation": "across",
+        "type": "fixed",
+        "value": "4",
+        "max_quantity": null,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "1"
+          },
+          {
+            "id": "b",
+            "subtotal": "1"
+          }
+        ],
+        "previous": {
+          "a": "2"
+        }
+      },
+      "expected": {
+        "amounts": [],
+        "discounts": {
+          "a": "2"
+        }
+      }
+    },
+    {
+      "name": "fractional-no-cent-rounding",
+      "input": {
+        "allocation": "across",
+        "type": "fixed",
+        "value": "1",
+        "max_quantity": null,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "1"
+          },
+          {
+            "id": "b",
+            "subtotal": "2"
+          }
+        ],
+        "previous": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "0.33333333333333333333"
+          },
+          {
+            "id": "b",
+            "amount": "0.66666666666666666667"
+          }
+        ],
+        "discounts": {
+          "a": "0.33333333333333333333",
+          "b": "0.66666666666666666667"
+        }
+      }
+    },
+    {
+      "name": "exact-large",
+      "input": {
+        "allocation": "each",
+        "type": "percentage",
+        "value": "50",
+        "max_quantity": null,
+        "methods": [
+          {
+            "id": "a",
+            "subtotal": "9007199254740993"
+          }
+        ],
+        "previous": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "4503599627370496.5"
+          }
+        ],
+        "discounts": {
+          "a": "4503599627370496.5"
+        }
+      }
+    }
+  ]
+}
