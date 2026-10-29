@@ -24,18 +24,23 @@ function origin(raw:string|undefined,upstream=false):URL{
 // forwarded headers are never copied into the signed request.
 export async function customerBridge(request:Request,config:CustomerBridgeConfig,fetcher:typeof fetch=ginPrivateTransport):Promise<Response>{
  const url=new URL(request.url),post=request.method==='POST',path=url.pathname,action=path.slice((root+'/auth/').length)
+ const orderList=request.method==='GET'&&path===root+'/orders',orderRead=request.method==='GET'&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}$').test(path),orderAttach=post&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/attach$').test(path)
+ const target=path+url.search
+ const queryOK=orderList&&/^\?offset=(0|[1-9][0-9]{0,5})$/.test(url.search)&&Number(url.searchParams.get('offset'))<=100000
  const address=path===root+'/addresses',addressWrite=new RegExp('^'+root+'/addresses/addr_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(/delete)?$').test(path)
- if(url.search||url.href.includes('?')||!(post&&(writes.has(path)||path===root+'/me'||address||addressWrite)||request.method==='GET'&&(path===root+'/me'||address)))return failure(404)
+ if((url.href.includes('?')&&!queryOK)||!(post&&(writes.has(path)||path===root+'/me'||address||addressWrite||orderAttach)||request.method==='GET'&&(path===root+'/me'||address||orderList||orderRead)))return failure(404)
  let upstream:URL,shop:URL
  try{upstream=origin(config.ginOrigin,true);shop=origin(config.storefrontOrigin)}catch{return failure(503)}
  if(url.origin!==shop.origin||request.headers.get('sec-fetch-site')==='cross-site'||request.headers.has('origin')&&request.headers.get('origin')!==shop.origin||post&&request.headers.get('origin')!==shop.origin)return failure(403)
  const secure=shop.protocol==='https:',prefix=secure?'__Host-retail_customer_':'retail_customer_',names=['prelogin','session','csrf'].map(name=>prefix+name)
+ const cartCookie=secure?'__Host-retail_cart_possession':'retail_cart_possession'
+ const forwardedNames=orderAttach?[...names,cartCookie]:names
  const headers=new Headers({Accept:'application/json',Host:shop.host}),cookies:string[]=[],seen=new Set<string>()
  const incoming=request.headers.get('cookie')??''
  if(incoming.length>32768)return failure(400)
  for(const part of incoming.split(';')){
   const at=part.indexOf('='),name=part.slice(0,at).trim(),value=part.slice(at+1).trim()
-  if(at<0||!names.includes(name))continue
+  if(at<0||!forwardedNames.includes(name))continue
   if(seen.has(name)||!/^[0-9a-f]{64}$/.test(value))return failure(401)
   seen.add(name);cookies.push(`${name}=${value}`)
  }
@@ -52,15 +57,16 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000)
  try{
   if(config.bridgeKey!==undefined){
-   const proof=customerProof(config.bridgeKey,config.clientAddress??'',request.method,path,headers,body)
+   const proof=customerProof(config.bridgeKey,config.clientAddress??'',request.method,target,headers,body)
    proof.forEach((value,name)=>headers.set(name,value))
   }
-  const response=await fetcher(new URL(path,upstream),{method:request.method,headers,body:body as BodyInit|undefined,redirect:'error',credentials:'omit',cache:'no-store',signal:AbortSignal.any([request.signal,controller.signal])})
+  const response=await fetcher(new URL(target,upstream),{method:request.method,headers,body:body as BodyInit|undefined,redirect:'error',credentials:'omit',cache:'no-store',signal:AbortSignal.any([request.signal,controller.signal])})
   const status=response.status,out=new Headers(defaults)
+  if((orderList||orderRead||orderAttach)&&status===202)throw new Error()
   const accepted=[200,202,400,401,403,404,409,413,415,429,503].includes(status)
   if(!accepted){await response.body?.cancel().catch(()=>{});return failure(503)}
   if(response.headers.get('cache-control')!=='private, no-store'||response.headers.get('content-type')?.split(';',1)[0].trim().toLowerCase()!=='application/json')throw new Error()
-  const data=await bytes(response.body,65536),parsed=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(data))
+  const data=await bytes(response.body,orderList||orderRead?4*1024*1024:65536),parsed=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(data))
   if(!parsed||typeof parsed!=='object'||Array.isArray(parsed))throw new Error()
   const success=status===200||status===202,issued=new Map<string,boolean>()
   for(const cookie of response.headers.getSetCookie()){

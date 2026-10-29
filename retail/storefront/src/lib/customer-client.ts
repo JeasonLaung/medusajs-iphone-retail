@@ -1,3 +1,5 @@
+import {orderConfirmationProjection,type OrderConfirmation} from './cart-client.ts'
+import {orderListProjection,type CustomerOrderList} from './customer-orders.ts'
 import {customerChanged} from './customer-events.ts'
 export type Customer={id:string;email:string;first_name:string;last_name:string;phone:string;verified_at:string|null}
 export type AddressFields={first_name?:string;last_name?:string;company?:string;address_1?:string;address_2?:string;city?:string;postal_code?:string;province?:string;country_code?:string;phone?:string;is_default_billing?:boolean;is_default_shipping?:boolean}
@@ -64,6 +66,19 @@ export function customerClient(fetcher:typeof fetch=fetch){
   return matches[0][1]
  }
  return {
+  async orders(offset=0):Promise<CustomerOrderList>{
+   if(!Number.isSafeInteger(offset)||offset<0||offset>100000)throw new CustomerError(400)
+   return orderListProjection(await call('/orders?offset='+offset),offset)
+  },
+  async order(id:string):Promise<OrderConfirmation>{
+   if(!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(id))throw new CustomerError(400)
+   return orderConfirmationProjection(await call('/orders/'+id),id)
+  },
+  async attachOrder(id:string):Promise<void>{
+   if(!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(id))throw new CustomerError(400)
+   const result=await call('/orders/'+id+'/attach',{},sessionCSRF())
+   if(!result||Object.keys(result).length!==1||result.order_id!==id)throw new CustomerError(503)
+  },
   async current():Promise<Customer|null>{
    try{return customerProjection((await call('/me')).customer)}catch(error){if(error instanceof CustomerError&&error.status===401)return null;throw error}
   },

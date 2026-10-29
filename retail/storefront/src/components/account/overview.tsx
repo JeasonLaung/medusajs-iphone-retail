@@ -1,3 +1,4 @@
+import CustomerOrders from './orders'
 import {useEffect,useRef,useState} from 'react'
 import {Alert,Progress,Spin,Statistic} from 'antd'
 import type {Address,Customer} from '../../lib/customer-client'
@@ -27,7 +28,7 @@ export default function Overview({customer}:{customer:Customer}){
     <div className="flex flex-col gap-y-4"><h3 className="text-large-semi">{t('profile')}</h3><div className="flex items-end gap-x-2"><div data-testid="customer-profile-completion" data-value={completion}><Progress type="circle" size={72} percent={completion??0}/></div><span className="uppercase text-base-regular text-ui-fg-subtle">{t('completed')}</span></div></div>
     <div className="flex flex-col gap-y-4"><h3 className="text-large-semi">{t('addresses')}</h3><div className="flex items-end gap-x-2"><div data-testid="addresses-count" data-value={addresses.length}><Statistic value={addresses.length}/></div><span className="uppercase text-base-regular text-ui-fg-subtle">{t('saved')}</span></div></div>
    </div>}
-   <div className="flex flex-col gap-y-4"><div className="flex items-center gap-x-2"><h3 className="text-large-semi">{t('recentOrders')}</h3></div><Alert type="info" message={t('transactionsUnavailable')} data-testid="overview-orders-unavailable"/></div>
+   <div className="flex flex-col gap-y-4"><div className="flex items-center gap-x-2"><h3 className="text-large-semi">{t('recentOrders')}</h3></div><CustomerOrders recent/></div>
   </div></div>
  </div></div>
 }

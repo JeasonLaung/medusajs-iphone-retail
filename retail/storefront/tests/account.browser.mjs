@@ -35,6 +35,7 @@ const api=createServer(async(req,res)=>{
   }else switch(path){
    case '/api/store/customer/auth/challenge':body={csrf_token:csrf};cookies=[cookie('prelogin')];break
    case '/api/store/customer/me':if(req.method==='POST'){if(profileFailure){status=503;body={error:{code:'unavailable'}}}else{Object.assign(account,input);body={customer:account}}}else if(customerUnavailable){status=503;body={error:{code:'unavailable'}}}else if(authenticated)body={customer:account};else{status=401;body={error:{code:'customer.unauthorized'}}}break
+   case '/api/store/customer/orders':body={orders:[],count:0,limit:20,offset:0};break
    case '/api/store/customer/auth/register':registered=true;assert.equal(input.email,account.email);status=202;body={state:'verification_required',delivery:'pending',email:account.email};cookies=[clear('prelogin')];break
    case '/api/store/customer/auth/verify':verifications++;assert.equal(input.token,token);verified=true;body={success:true};cookies=[clear('prelogin')];break
    case '/api/store/customer/auth/login':
@@ -92,8 +93,8 @@ try{
  }
  await expect(page.getByTestId('customer-profile-completion')).toHaveAttribute('data-value','50')
  await expect(page.getByTestId('addresses-count')).toHaveAttribute('data-value','0')
- await expect(page.getByTestId('overview-orders-unavailable')).toBeVisible()
- await expect(page.getByTestId('no-orders-message')).toHaveCount(0)
+ await expect(page.getByTestId('no-orders-message')).toBeVisible()
+ await expect(page.getByTestId('order-wrapper')).toHaveCount(0)
  await page.locator('[data-testid="profile-link"]:visible').click()
  await expect(page.getByTestId('profile-page-wrapper')).toBeVisible()
  const nameEditor=page.getByTestId('account-name-editor')

@@ -110,6 +110,7 @@ type OrderSummary struct {
 	CreatedAt       time.Time          `json:"created_at"`
 	CurrencyCode    string             `json:"currency_code"`
 	Total           string             `json:"total"`
+	OriginalTotal   string             `json:"original_total"`
 	Items           []OrderSummaryItem `json:"items" gorm:"-"`
 }
 type OrderSummaryItem struct {
@@ -117,6 +118,7 @@ type OrderSummaryItem struct {
 	Title     string  `json:"title"`
 	Thumbnail *string `json:"thumbnail"`
 	Quantity  string  `json:"quantity" gorm:"-"`
+	SKU       *string `json:"sku"`
 }
 type OrderList struct {
 	Orders []OrderSummary `json:"orders"`
@@ -147,8 +149,9 @@ func (s *Store) Orders(ctx context.Context, token string, offset int) (OrderList
 				return ErrUnavailable
 			}
 			item.Total = amount.Totals["total"]
+			item.OriginalTotal = amount.Totals["original_total"]
 			item.Items = []OrderSummaryItem{}
-			if tx.Table("order_line_items l").Select("l.id,l.title,l.thumbnail").Joins("JOIN order_items i ON i.item_id=l.id AND i.deleted_at IS NULL").Where("i.order_id=? AND i.version=? AND l.deleted_at IS NULL", item.ID, amount.Version).Order("l.created_at DESC,l.id").Limit(1001).Scan(&item.Items).Error != nil || len(item.Items) != len(amount.Lines) {
+			if tx.Table("order_line_items l").Select("l.id,l.title,l.thumbnail,l.variant_sku AS sku").Joins("JOIN order_items i ON i.item_id=l.id AND i.deleted_at IS NULL").Where("i.order_id=? AND i.version=? AND l.deleted_at IS NULL", item.ID, amount.Version).Order("l.created_at DESC,l.id").Limit(1001).Scan(&item.Items).Error != nil || len(item.Items) != len(amount.Lines) {
 				return ErrUnavailable
 			}
 			quantities := map[string]string{}
@@ -168,6 +171,29 @@ func (s *Store) Orders(ctx context.Context, token string, offset int) (OrderList
 	})
 	if err != nil {
 		return OrderList{}, err
+	}
+	return out, nil
+}
+
+func (s *Store) Order(ctx context.Context, token, orderID string) (cart.Confirmation, error) {
+	if !customerOrderID.MatchString(orderID) {
+		return cart.Confirmation{}, ErrOrderMissing
+	}
+	var out cart.Confirmation
+	var denied bool
+	err := s.addressTransaction(ctx, token, func(tx *gorm.DB, account string) error {
+		var e error
+		out, e = cart.ReadAccountConfirmation(ctx, tx, account, orderID)
+		if errors.Is(e, cart.ErrDenied) {
+			denied = true
+		}
+		return e
+	})
+	if denied {
+		return cart.Confirmation{}, ErrOrderMissing
+	}
+	if err != nil {
+		return cart.Confirmation{}, err
 	}
 	return out, nil
 }

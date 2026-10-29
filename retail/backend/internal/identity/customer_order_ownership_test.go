@@ -141,6 +141,13 @@ func checkCustomerOrderOwnership(t *testing.T, ctx context.Context, db *gorm.DB,
 			t.Fatal("private list fields", field)
 		}
 	}
+	detail := call("GET", "/api/store/customer/orders/"+orderID, "", "", "", true, false, 200)
+	if !strings.Contains(detail.Body.String(), `"total":"158.75"`) || !strings.Contains(detail.Body.String(), `"shipping_address"`) {
+		t.Fatal("account order detail snapshot")
+	}
+	if _, err := store.Order(ctx, b.Session.Token, orderID); !errors.Is(err, customer.ErrOrderMissing) {
+		t.Fatal("other account read detail", err)
+	}
 	other, e := store.Orders(ctx, b.Session.Token, 0)
 	if e != nil || other.Count != 0 {
 		t.Fatal("cross customer list")
@@ -161,12 +168,25 @@ func checkCustomerOrderOwnership(t *testing.T, ctx context.Context, db *gorm.DB,
 	if e != nil || list.Count != 1 {
 		t.Fatal("long term ownership depended on cart token")
 	}
+	if _, err := store.Order(ctx, a.Session.Token, orderID); err != nil {
+		t.Fatal("account order detail depended on cart", err)
+	}
 	if e := store.AttachOrder(ctx, a.Session.Token, possession.Token, orderID); !errors.Is(e, customer.ErrUnauthorized) {
 		t.Fatal("revoked cart accepted", e)
 	}
+	exec("UPDATE cart_completion_runtime SET enabled=FALSE WHERE id=1")
+	exec("UPDATE cart_ownership SET active=FALSE WHERE cart_id=?", ref.CartID)
+	if _, err := store.Order(ctx, a.Session.Token, orderID); err != nil {
+		t.Fatal("account detail incorrectly depends on active cart runtime", err)
+	}
+	exec("UPDATE cart_ownership SET active=TRUE WHERE cart_id=?", ref.CartID)
+	exec("UPDATE cart_completion_runtime SET enabled=TRUE WHERE id=1")
 	exec("UPDATE customer_accounts SET auth_version=auth_version+1 WHERE id=?", a.Customer.ID)
 	if _, e := store.Orders(ctx, a.Session.Token, 0); !errors.Is(e, customer.ErrUnauthorized) {
 		t.Fatal("revoked customer read", e)
 	}
-	t.Log(`CUSTOMER_ORDER_OWNERSHIP_REHEARSAL {"real_gin_mysql_redis":true,"two_capabilities_required":true,"email_never_grants_orders":true,"concurrent_attachment_single_audit":true,"late_audit_failure_atomic":true,"other_customer_cannot_steal":true,"long_term_after_cart_revocation":true,"customer_revocation_denied":true,"exact_total":"158.75","private_list_projection":true,"browser_integrated":false}`)
+	if _, e := store.Order(ctx, a.Session.Token, orderID); !errors.Is(e, customer.ErrUnauthorized) {
+		t.Fatal("revoked customer detail", e)
+	}
+	t.Log(`CUSTOMER_ORDER_OWNERSHIP_REHEARSAL {"real_gin_mysql_redis":true,"two_capabilities_required":true,"email_never_grants_orders":true,"concurrent_attachment_single_audit":true,"late_audit_failure_atomic":true,"other_customer_cannot_steal":true,"long_term_after_cart_revocation":true,"customer_revocation_denied":true,"exact_total":"158.75","private_list_projection":true,"private_account_detail":true,"detail_independent_of_cart_runtime":true,"browser_integrated":false}`)
 }

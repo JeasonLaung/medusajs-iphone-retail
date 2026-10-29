@@ -1,0 +1,77 @@
+{
+  "scope": "Astro formal customer order routes, account attachment recovery and Gin private detail; not full storefront or real Gin browser joint acceptance",
+  "backend": {
+    "real_gin_mysql_redis": true,
+    "two_capabilities_required": true,
+    "email_never_grants_orders": true,
+    "concurrent_attachment_single_audit": true,
+    "late_audit_failure_atomic": true,
+    "other_customer_cannot_steal": true,
+    "long_term_after_cart_revocation": true,
+    "customer_revocation_denied": true,
+    "exact_total": "158.75",
+    "private_list_projection": true,
+    "private_account_detail": true,
+    "detail_independent_of_cart_runtime": true,
+    "browser_integrated": false
+  },
+  "browser": {
+    "formal_astro_routes": true,
+    "synthetic_api": true,
+    "gin_mysql_browser_joint": false,
+    "hmac_full_request_verified": true,
+    "dual_cookie_attach_only": true,
+    "lost_attach_response_recovered_without_second_post": true,
+    "account_list_and_details": true,
+    "recent_orders": true,
+    "empty_error_retry_and_session_expiry": true,
+    "exact_total": "158.75",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "widths": [
+      390,
+      1440
+    ],
+    "page_overflow": false,
+    "browser_errors": 0
+  },
+  "isolated_snapshot_migrations": 49,
+  "uncommitted_0037_included": false,
+  "go_test_all": true,
+  "frontend_unit_tests": 142,
+  "astro_check": {
+    "files": 306,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 4
+  },
+  "astro_build": true,
+  "account_browser_regression": true,
+  "checkout_browser_regression": true,
+  "source_pixel_comparison": false,
+  "external_payments_or_email": false,
+  "implementation_sha256_lf": {
+    "retail/backend/internal/cart/order_confirmation.go": "84cba63d08276376c42224ff16a5bcd1981371e009f90afaf97b548ea50367cf",
+    "retail/backend/internal/customer/orders.go": "d73da152d71da9feb8d5ef447b113992256ff52a61dd71c2c610f598491a5b9f",
+    "retail/backend/internal/customer/orders_http.go": "478681a4875cf3c521e7a5522ef2f3222c0a1b1e3b90400df35d5418059b2502",
+    "retail/backend/internal/customer/http.go": "617ef8cb12da62b373cd205c4a500cad68d9378f2596f0ab99f7fb03ea945077",
+    "retail/backend/internal/identity/customer_order_ownership_test.go": "b708dbc86a080ed438a75407d95096959021a3e9f8c5c6789d4507cc757aed5b",
+    "retail/storefront/src/lib/cart-client.ts": "777760ca2f7114aabd27b8b8b71de07e40bfcafe1dc6995759a62d23b350eb28",
+    "retail/storefront/src/lib/customer-client.ts": "fccd4ea575d352df26e5898299e000969e8f3109a87b75bf276582e2030fa052",
+    "retail/storefront/src/lib/customer-bridge.ts": "6404acd034867b95e71087899783aee02b4057656e499fc464f5d10a80f5f955",
+    "retail/storefront/src/lib/customer-orders.ts": "f47fc23795650466fd5dde3a4dcbfad5f9f073a3406efdfb0292e76099b472f0",
+    "retail/storefront/src/components/account/gin-account.tsx": "d3ce83b1ad4a3fa8b43334d5285b9010570040ea2d5d65025796ca2277745f74",
+    "retail/storefront/src/components/account/overview.tsx": "beb62ef0b79349fe03ee5cb2d383c31d57be8b31c2827ae5b1e53e3ef95de122",
+    "retail/storefront/src/components/account/orders.tsx": "878e6718885942cf6c6f387de1daa642ea288e756f5cc24aa88d6e27876a2df0",
+    "retail/storefront/src/components/account/order-details.tsx": "7bf2da8524281cabd0ad3cdcadaa5e440510a1f086bb0c1af33e80c3a0dee39b",
+    "retail/storefront/src/components/order/confirmation.tsx": "74832bc53f062a36b4942aa36cb963335e284fb4f6ccedb8435539cf0af777cd",
+    "retail/storefront/src/components/order/account-attachment.tsx": "d305a34c5570787c91bfa24dbd2d0c3ef02c861bd8c9e40e182b1e33d15dd759",
+    "retail/storefront/src/pages/[countryCode]/account/orders.astro": "5df3c9dd5e1f472492a900c6dfa2478b577a0b1bdaee67c719499048db60eb6d",
+    "retail/storefront/src/pages/[countryCode]/account/orders/details/[id].astro": "373bbb0178bed436d80c384cd095d8d43702bc4993b2d8faf8c2d8bf9049a055",
+    "retail/storefront/tests/customer-orders.test.ts": "c9367b5d5bb2d480711b31a4fb616a3c2201dadcabc1d06f0008e144fecb9c1f",
+    "retail/storefront/tests/customer-orders.browser.mjs": "09c7933f153b82003f1de49469d37549621d13ed74b4c6bd8eb01b82e5508065",
+    "retail/storefront/tests/account.browser.mjs": "2d986ceacdafb71e476cadfa94a9a2c3c736902bd534cc2039cad6936055cb38"
+  }
+}

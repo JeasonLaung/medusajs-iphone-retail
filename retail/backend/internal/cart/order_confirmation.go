@@ -128,13 +128,55 @@ func readConfirmation(ctx context.Context, db *gorm.DB, store string, ref sessio
 		if cart.SalesChannelID != channel || cart.CompletedAt == nil || cart.DeletedAt != nil || cart.CustomerID != nil {
 			return ErrDenied
 		}
+		out, err = readOrderSnapshot(tx, orderID, ref.CartID, receipt.PaymentID, receipt.CaptureID, channel)
+		if err != nil {
+			return err
+		}
+		if action != nil {
+			return action(tx)
+		}
+		return nil
+	}, &sql.TxOptions{Isolation: sql.LevelReadCommitted})
+	if err != nil {
+		return failed, sanitize(err)
+	}
+	return out, nil
+}
+
+// ReadAccountConfirmation reads a new order only through an explicit account
+// grant, inside the caller's authenticated transaction. Cart expiry/revocation
+// cannot remove a previously saved account grant. No email lookup is used.
+func ReadAccountConfirmation(ctx context.Context, tx *gorm.DB, account, orderID string) (Confirmation, error) {
+	if tx == nil || tx.Statement == nil || account == "" || !idPattern.MatchString(orderID) {
+		return Confirmation{}, ErrInput
+	}
+	if _, ok := tx.Statement.ConnPool.(gorm.TxCommitter); !ok {
+		return Confirmation{}, ErrInput
+	}
+	if orders.Ready(ctx, tx) != nil {
+		return Confirmation{}, ErrSchema
+	}
+	var receipt struct{ CartID, PaymentID, CaptureID, SalesChannelID string }
+	r := tx.Table("customer_order_ownership a").Select("a.cart_id,r.payment_id,r.capture_id,o.sales_channel_id").Joins("JOIN cart_completion_receipts r ON r.cart_id=a.cart_id AND r.order_id=a.order_id").Joins("JOIN orders o ON o.id=a.order_id AND o.deleted_at IS NULL AND o.is_draft_order=FALSE").Where("a.customer_id=? AND a.order_id=?", account, orderID).Clauses(clause.Locking{Strength: "SHARE"}).Take(&receipt)
+	if errors.Is(r.Error, gorm.ErrRecordNotFound) {
+		return Confirmation{}, ErrDenied
+	}
+	if r.Error != nil {
+		return Confirmation{}, ErrStorage
+	}
+	return readOrderSnapshot(tx, orderID, receipt.CartID, receipt.PaymentID, receipt.CaptureID, receipt.SalesChannelID)
+}
+func readOrderSnapshot(tx *gorm.DB, orderID, cartID, paymentID, captureID, channel string) (Confirmation, error) {
+	var out Confirmation
+	var err error
+	err = func() error {
 		var saved struct {
 			ID, DisplayID, CustomDisplayID, Status, Email, CurrencyCode, Locale, SalesChannelID string
 			ShippingAddressID, BillingAddressID, CustomerID                                     *string
 			CreatedAt                                                                           time.Time
 			IsDraftOrder                                                                        bool
 		}
-		r = tx.Table("orders").Select("id,CAST(display_id AS CHAR) AS display_id,custom_display_id,status,email,currency_code,locale,sales_channel_id,shipping_address_id,billing_address_id,customer_id,created_at,is_draft_order").Where("id=? AND deleted_at IS NULL", orderID).Clauses(clause.Locking{Strength: "SHARE"}).Take(&saved)
+		r := tx.Table("orders").Select("id,CAST(display_id AS CHAR) AS display_id,custom_display_id,status,email,currency_code,locale,sales_channel_id,shipping_address_id,billing_address_id,customer_id,created_at,is_draft_order").Where("id=? AND deleted_at IS NULL", orderID).Clauses(clause.Locking{Strength: "SHARE"}).Take(&saved)
 		if errors.Is(r.Error, gorm.ErrRecordNotFound) {
 			return ErrDenied
 		}
@@ -148,7 +190,7 @@ func readConfirmation(ctx context.Context, db *gorm.DB, store string, ref sessio
 			return ErrSchema
 		}
 		var linked int64
-		if tx.Table("order_carts").Where("cart_id=? AND order_id=? AND deleted_at IS NULL", ref.CartID, orderID).Count(&linked).Error != nil || linked != 1 {
+		if tx.Table("order_carts").Where("cart_id=? AND order_id=? AND deleted_at IS NULL", cartID, orderID).Count(&linked).Error != nil || linked != 1 {
 			return ErrSchema
 		}
 		out = Confirmation{ID: orderID, DisplayID: saved.DisplayID, CustomDisplayID: saved.CustomDisplayID, Status: saved.Status, Email: saved.Email, Locale: saved.Locale, CreatedAt: saved.CreatedAt, Items: []ViewItem{}}
@@ -207,7 +249,7 @@ func readConfirmation(ctx context.Context, db *gorm.DB, store string, ref sessio
 			CreatedAt                        time.Time
 			CapturedAt                       *time.Time
 		}
-		if tx.Table("payments p").Select("p.provider_id,CAST(p.amount AS CHAR) AS amount,p.raw_amount,p.currency_code,p.created_at,p.captured_at").Joins("JOIN payment_captures c ON c.payment_id=p.id AND c.id=? AND c.deleted_at IS NULL", receipt.CaptureID).Joins("JOIN order_payment_collections l ON l.payment_collection_id=p.payment_collection_id AND l.order_id=? AND l.deleted_at IS NULL", orderID).Where("p.id=? AND p.deleted_at IS NULL", receipt.PaymentID).Take(&pay).Error != nil || pay.CapturedAt == nil || pay.CurrencyCode != saved.CurrencyCode {
+		if tx.Table("payments p").Select("p.provider_id,CAST(p.amount AS CHAR) AS amount,p.raw_amount,p.currency_code,p.created_at,p.captured_at").Joins("JOIN payment_captures c ON c.payment_id=p.id AND c.id=? AND c.deleted_at IS NULL", captureID).Joins("JOIN order_payment_collections l ON l.payment_collection_id=p.payment_collection_id AND l.order_id=? AND l.deleted_at IS NULL", orderID).Where("p.id=? AND p.deleted_at IS NULL", paymentID).Take(&pay).Error != nil || pay.CapturedAt == nil || pay.CurrencyCode != saved.CurrencyCode {
 			return ErrSchema
 		}
 		number, err := nonNegativeAmount(pay.Amount, pay.RawAmount)
@@ -223,13 +265,10 @@ func readConfirmation(ctx context.Context, db *gorm.DB, store string, ref sessio
 		if err != nil || len(encoded) > 4*1024*1024 {
 			return ErrSchema
 		}
-		if action != nil {
-			return action(tx)
-		}
 		return nil
-	}, &sql.TxOptions{Isolation: sql.LevelReadCommitted})
+	}()
 	if err != nil {
-		return failed, sanitize(err)
+		return Confirmation{}, err
 	}
 	return out, nil
 }

@@ -75,3 +75,22 @@ func (h *HTTPHandler) AttachOrder(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{"order_id": c.Param("id")})
 }
+
+func (h *HTTPHandler) OrderDetail(c *gin.Context) {
+	if !h.originOK(c, false) {
+		return
+	}
+	token, ok, _ := h.cookie(c, "session")
+	if !ok {
+		h.fail(c, ErrUnauthorized)
+		return
+	}
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+	defer cancel()
+	out, e := h.store.Order(ctx, token, c.Param("id"))
+	if e != nil {
+		h.fail(c, e)
+		return
+	}
+	c.JSON(200, out)
+}
