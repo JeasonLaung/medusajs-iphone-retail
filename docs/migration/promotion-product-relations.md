@@ -14,4 +14,12 @@
 
 完整及cart-runtime-only报告含promotion_products与相关源码SHA，必须同时匹配才算证据。该阶段尚未组装完整购物车上下文，也不计算/保存新折扣，不代表checkout完成。
 
-下一步补variant/shipping option、订单/地址/客户新登录态等上下文并连接选择、计算、保存、版本/幂等和支付刷新。T032/T033未验收。
+## 规格与配送档案
+
+`catalog.ReadPromotionVariants`补齐原`cart/utils/fields.js`选择的items.variant.id/product.id/product.shipping_profile.id及weight/length/height/width/material。规格属性读取当前variant列，不回退到product重量或材质；0、null、原样材质字符串分别保留。数值列仍是DOUBLE，以SQL文本转JSON number，不声称恢复任意精度。只选择这些字段，不载入metadata或库存/provider内容。
+
+同样要求调用方事务及catalog schema，最多1000输入ID，重复合并。缺失/软删variant不进入map；缺失/软删product为null；draft商品不被公开目录过滤。配送档案要求链接和目标均未软删，没有关系为null。每商品为单一关系，多个有效目标整体拒绝，不能随意取第一条。有效配送链接查询上限1000并取上限加1检测，不截断。此投影不验证配送方法可用性，也不授予商品购买资格。
+
+隔离MySQL验证规格数值、空字段、材质首尾空格、无product的variant、缺失/软删规格与商品、软删配送链接与目标、重复配送档案拒绝；JSON投影通过现有MatchRules验证原variant规则路径。外部事务同时更改尺寸和配送链接，RR读取保留同一快照。autocommit、坏ID、超限输入和关闭schema拒绝。报告promotion_products新增variant_dimensions_material_shipping_profile及ambiguous_shipping_profile_rejected，仍明确cart_context_or_checkout_integrated=false。
+
+下一步补shipping option、订单/地址/客户新登录态等上下文并连接选择、计算、保存、版本/幂等和支付刷新。T032/T033未验收。

@@ -363,6 +363,7 @@ def main():
                 files += ['retail/backend/internal/identity/authorization_test.go','retail/backend/migrations/0023_authorization_actions.sql']
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/authorization').glob('*.go')]
                 files += ['retail/backend/internal/identity/authorization_manage_test.go','retail/backend/migrations/0024_authorization_management.sql']
+                files += ['retail/backend/internal/catalog/promotion_variants.go']
                 files += ['retail/backend/internal/catalog/store_locales.go','retail/backend/internal/catalog/default_locales.json','retail/backend/internal/identity/store_locales_test.go']
                 files += ['retail/backend/internal/catalog/store_regions.go','retail/backend/internal/catalog/http.go','retail/backend/internal/identity/store_regions_test.go']
                 files += ['retail/backend/internal/catalog/store_taxonomy.go','retail/backend/internal/catalog/store_taxonomy_test.go','retail/backend/internal/identity/store_taxonomy_test.go']

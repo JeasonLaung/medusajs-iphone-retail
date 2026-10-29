@@ -110,6 +110,8 @@
     "metadata_excluded": true,
     "caller_snapshot": true,
     "transaction_and_schema_gate": true,
+    "variant_dimensions_material_shipping_profile": true,
+    "ambiguous_shipping_profile_rejected": true,
     "cart_context_or_checkout_integrated": false
   },
   "cart_http": {
@@ -134,11 +136,11 @@
   "application_resources_used": false,
   "real_accounts_used": false,
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "c11822e5ac54ddc25af0366fb5a76362424a4aac45834ab2b26552ac5c9a850d",
+    "retail/scripts/test-admin-auth.py": "e2b662b36243183ec7291e684bbaedfa81e47088c529e4bb9b7b177d4cdcc02d",
     "retail/backend/internal/identity/cart_runtime_test.go": "9dca5e31c8eb42affcf76044f4c7045433a91ec8b334f465a335ec07eea27231",
     "retail/backend/internal/identity/cart_http_test.go": "f779a67658e3f5fcef850548abd27d2b929424152cab547f52fe85876086365c",
     "retail/backend/internal/identity/cart_amounts_test.go": "d5ce795bb25fbb3e440b79f20d63c22673fd94b6d8a0551b300882b83c8c84dc",
-    "retail/backend/internal/identity/promotion_products_test.go": "8dbc4e279229aaf7acf321c77cd8c9400ac44a80b9b1a934978f5706d6e2a62e",
+    "retail/backend/internal/identity/promotion_products_test.go": "d90aaa6556dc17b66f6e1a7286cb42112d1ec37ffadb26272f0e4688b871e07e",
     "retail/backend/internal/identity/cart_promotion_adjustments_test.go": "3cda50f61dbb5c3af9a15f89aadc32e1a798a6294f39546388d94ff2eac7a611",
     "retail/backend/internal/identity/cart_promotion_amounts_test.go": "2eec18b655e075c91b2d3937660f7c1cd9fc1c51773e243f468c506de341d054",
     "retail/backend/internal/identity/cart_items_test.go": "7dc1d277b6c465b49f907766a59905206bf2e903d389c74bc2307ba4f4f7dcb0",
@@ -210,6 +212,7 @@
     "retail/backend/internal/catalog/http.go": "3ae7817a6f1434d9e5aa0d63198f71c2ef3ed7bb67277b0a35262465ce679696",
     "retail/backend/internal/catalog/models.go": "212e73fdbf318abf0d8252ee0a3139a249856dbdab58d80cd8cabc5fa11fe97c",
     "retail/backend/internal/catalog/promotion_products.go": "41e7af95e52a921527f4cc7b78fc3cf54d966488a4eabce751b5b67d132250a7",
+    "retail/backend/internal/catalog/promotion_variants.go": "abd8e4361ed045fa5174ff70f65a4be45e28fdf36c1cec73c07da46c0496bd17",
     "retail/backend/internal/catalog/store_display.go": "3936c1b53fff54a91e0b2daec9d0e3df1913643a241466a95b1c66443fd3eec1",
     "retail/backend/internal/catalog/store_display_test.go": "f7e031aac6706b4711ce5844a3417193da4be48e5a88669acbaf67f91a8d88b7",
     "retail/backend/internal/catalog/store_locales.go": "6a1f11b7a318f68006214d1ecd832a3142f54e21c0ef688021754b380921496d",

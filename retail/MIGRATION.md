@@ -239,3 +239,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-29 优惠码选择补充：[add/replace/remove与有效调整项读取](../docs/migration/cart-promotion-codes.md)承接原有序Set、存在性校验和默认add，实际购物车授权/版本读取，链接不代替有效折扣、未知remove保持。12组原步骤对照和人工SQL保存前后衔接验证；完整规则上下文/命令、版本支付和checkout仍缺，相关任务未验收。
 
 2026-10-29 商品规则事实补充：[当前商品分类/标签及基础关系](../docs/migration/promotion-product-relations.md)在事务快照读取促销product字段，保留内部draft/分类语义、null/删除关系和数值weight，不泄漏metadata；人工SQL与原规则路径衔接，完整cart/variant/shipping/customer上下文与命令仍缺，相关任务未验收。
+
+2026-10-29 规格规则事实补充：当前variant的重量/尺寸/材质及product配送档案已加入[商品关系投影](../docs/migration/promotion-product-relations.md)，保留0/null、软删和内部draft语义，拒绝多有效档案，隔离MySQL验证原规则路径与RR一致快照。完整cart/shipping/customer上下文和刷新命令仍缺，T032/T033未验收。
