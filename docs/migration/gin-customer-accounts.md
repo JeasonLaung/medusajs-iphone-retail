@@ -65,3 +65,13 @@ Astro 只签入 adapter 提供的连接地址，不复制浏览器的 `X-Retail-
 源码核实当前 Astro Node 适配器在 Host 验证成功时会读取 `X-Forwarded-For`。当前没有可信反向代理配置，正式客户 route 因此明确拒绝包含该头的请求，再使用 clientAddress；不将攻击者指定的地址签成可信身份。未来部署代理必须单独建立实际可信拓扑，不能直接删除这个校验；当前不操作部署服务器。
 
 验证分为两层并各自记录边界：隔离 Gin/MySQL/Redis 的注册/验证/登录/退出 HTTP 用例现在全部携带签名，并校验签名地址下的限流；`tests/customer-runtime.mjs` 启动独占本地构建产物和 HTTP oracle，验证正式 Astro route 的 native transport/HMAC、adapter 地址、Cookie 过滤、伪造 forwarded IP/跨站 Origin/查询参数拒绝，退出后清理两个进程。后者没有真实 Gin/MySQL，不能把两层结果描述成已运行端到端浏览器注册。实际账户页面、发信、地址和交易归属仍是下一步。
+
+## 正式账户与验证页面：认证局部交付
+
+`/{countryCode}/account` 与 `/{countryCode}/verify-account` 已接入原站公共页外壳与新客户 API。登录/注册表单、切换按钮、原账号文案翻译、验证 Result/Spin、输入与按钮包装器从来源复制；改动集中在 Next/Medusa 数据依赖替换为本地 context 和 Gin client。原 UI 使用较新 Ant Alert 的 title，当前新前台 antd 5 对应替换为 message，保留相同内容结构。未修改旧项目文件或全站样式。
+
+注册返回待验证和邮件待发送；提示不会宣称已发送。重发密码只存在当前 React island 的 client 闭包中，既不进表单结果/JSON props/URL，也不持久化在浏览器 storage；离开页面或成功登录清除。每个写操作重新申请一次性 challenge，丢响应时不自动重试。浏览器验证页在一次 effect 中消耗链接，不自动登录；私有 no-store、no-referrer 和 noindex 防止验证链接成为公开内容。
+
+认证成功后显示实际 API 返回的新客户姓名/邮箱并提供退出；资料、地址、订单、回收等尚未接入，当前显示明确的不可用提示，未制作假统计或订单。这一登录态区域是临时交付，不是原账户 dashboard 的完整迁移。页面采用 client-only island，JavaScript 加载前的登录表单、无 JS 状态、原图像素对照及跨标签页/页头登录态仍需补齐，因此 C02 继续未验收。
+
+`tests/account.browser.mjs` 使用构建后的正式 Astro 页面、Chrome 和合成 API，验证登录/注册切换、待发送提示、重发冷却按钮、一次验证且不登录、登录后读取客户、退出、中英、390/1440 无横向溢出与无浏览器异常。未使用真实客户、未发送邮件，未将合成 API 浏览器检查声称为真实 MySQL 注册闭环。来源摘要见 `astro-account-sources.json`，本轮证据见 `astro-account-report.json`。

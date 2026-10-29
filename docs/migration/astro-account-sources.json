@@ -1,0 +1,15 @@
+{
+  "scope": "Original customer login/register/verification markup and translations; adapters changed to independent Gin",
+  "files": {
+    "medusa-store/apps/storefront/src/modules/account/components/login/index.tsx": "501e2c956a9de907e62cddde197c20e6a66446638060a5d1f2f65fcebe0729a8",
+    "medusa-store/apps/storefront/src/modules/account/components/register/index.tsx": "1d2dc3476caa4c28b2f28066742b0f563e88eb1b6af840588a0f239146583841",
+    "medusa-store/apps/storefront/src/modules/account/components/ui/index.tsx": "92a0c5cc245f87577a092df40b05e61de4662b2b10795c7a5bb8d51bafe7801e",
+    "medusa-store/apps/storefront/src/modules/account/components/verification-notice/index.tsx": "2fe14f3ea2ec0066d2284e4949d017d059115f93d7f8dcd0a73e8c782185f707",
+    "medusa-store/apps/storefront/src/modules/account/components/verify-account/index.tsx": "11a39c3cc79cf30ed841648436e1e148345400079e3efc9066c63d44bc695cc0",
+    "medusa-store/apps/storefront/src/modules/account/templates/login-template.tsx": "fef9c12f71217857225bc11aa8cb760b3091863ec3a14071ffaf70586072f561",
+    "medusa-store/apps/storefront/src/modules/account/templates/account-layout.tsx": "9cfd9f31b39f1223dc84221897fb7c110c2f24575a2339fb6305cd462de11a5f",
+    "medusa-store/apps/storefront/src/modules/account/i18n.ts": "53186b468efac7f91d83e3bc9263073029f6730ae8d154a361bd02c8352ee2f7",
+    "medusa-store/apps/storefront/src/modules/account/translations/en.json": "d6870fde8edc1c6813a73579ccc9e0645a4d88cbb528900c4944ae24b1b71268",
+    "medusa-store/apps/storefront/src/modules/account/translations/zh.json": "b88bba6b9568f906fba6f50eac153d301447f4a3907bb864acc2eb3b90ed7e71"
+  }
+}
