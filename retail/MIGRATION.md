@@ -273,4 +273,4 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 
 ### New customer identity foundation
 
-`internal/customer` and explicit migration 0038 implement new registration, encrypted verification mail intents, one-time email confirmation and separate Redis customer sessions. See [evidence and remaining work](../docs/migration/gin-customer-accounts.md). Customer HTTP, storefront pages and actual Resend delivery are not yet integrated; C02 remains incomplete.
+`internal/customer` and explicit migration 0038 implement new registration, encrypted verification mail intents, one-time email confirmation and separate Redis customer sessions. See [evidence and remaining work](../docs/migration/gin-customer-accounts.md). Customer HTTP now provides origin/CSRF guards, distinct secure cookies and registration/verification/login/logout. Astro pages and actual Resend delivery are not yet integrated; C02 remains incomplete.

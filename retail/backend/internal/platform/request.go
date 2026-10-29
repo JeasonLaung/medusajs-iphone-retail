@@ -3,6 +3,7 @@ package platform
 import (
 	"log/slog"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -32,6 +33,10 @@ func RequestBoundary(logger *slog.Logger) gin.HandlerFunc {
 		c.Header("X-Request-ID", requestID)
 		c.Header("X-Content-Type-Options", "nosniff")
 		c.Header("Referrer-Policy", "strict-origin-when-cross-origin")
+		if strings.HasPrefix(c.FullPath(), "/api/store/customer/") {
+			c.Header("Cache-Control", "private, no-store")
+			c.Header("Referrer-Policy", "no-referrer")
+		}
 		switch c.FullPath() {
 		case "/api/store/cart-sessions", "/api/store/carts", "/api/store/carts/:id", "/api/store/carts/:id/amounts", "/api/store/carts/:id/line-items":
 			// Also applies to the body-size rejection before route middleware.

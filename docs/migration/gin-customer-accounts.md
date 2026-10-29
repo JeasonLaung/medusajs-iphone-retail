@@ -1,6 +1,6 @@
 # 新客户身份：注册与验证底层
 
-本项服务于 C02 和整个前台闭环，当前为底层实现，尚不构成可用的注册页面。没有增加或修改原前台样式，也没有连接服务器。
+本项服务于 C02 和整个前台闭环，当前已实现底层和客户 HTTP，尚不构成可用的注册页面。没有增加或修改原前台样式，也没有连接服务器。
 
 ## 来源与行为
 
@@ -22,6 +22,26 @@
 
 这次增加独立迁移 0038，未依赖工作区原有未提交的 0037 支付通知迁移。已提交的迁移版本允许有空号；未提交支付改动仍单独保留。联合工作区演练会包含两者，报告不将它们全部算成本次提交。
 
-尚缺：客户 HTTP 接口和请求 Origin/CSRF/限流边界、专属 Cookie 与 Astro bridge、账户页面、资料/地址、购物车登录转移及业务归属、Resend 配置/模板/实际发送及失败恢复。当前邮件表是持久化待处理意图，尚无发送调度，不能显示“已发送”或宣称通知闭环。会话返回值仅供后续可信 HTTP 层写 Cookie，不能直接 JSON 返回。
+尚缺：Astro bridge、账户页面、资料/地址、购物车登录转移及业务归属、Resend 配置/模板/实际发送及失败恢复。当前邮件表是持久化待处理意图，尚无发送调度，不能显示“已发送”或宣称通知闭环。会话返回值仅供后续可信 HTTP 层写 Cookie，不能直接 JSON 返回。
 
 原前台资料页中的密码更新仍是 TODO；这项已有可见入口的功能也需要纳入前台缺口清单，不能因为保留了表单就计作完成。未发现独立找回密码入口，不能凭一般商城习惯宣称原项目已有该流程。
+
+## 客户 HTTP 接入
+
+生产 API 在 `/api/store/customer` 挂载独立客户接口。默认关闭（合法 JSON 请求返回 503），只有 `CUSTOMER_AUTH_ENABLED=true`、匹配 `SESSION_SECURE` 的 `STOREFRONT_ORIGIN` 及显式 `CUSTOMER_KEY_ACTIVE`/`CUSTOMER_KEYRING_JSON` 才会开启。密钥配置拒绝重复键、空值、大小写非规范 hex、零密钥及无效活动键；不能用旧账户或 Cookie secret 作为加密密钥。密钥环保留轮换前的密钥用于读取尚未处理的加密意图。
+
+| 方法 | 相对路径 | 行为 |
+| --- | --- | --- |
+| POST | `/auth/challenge` | `{}` 取得一次性预登录 CSRF，设置 HttpOnly prelogin Cookie |
+| POST | `/auth/register` | 邮箱/密码/名/姓/电话/国家/语言，新建待验证客户与邮件意图，返回 202、`verification_required` 和 `delivery: pending` |
+| POST | `/auth/verify` | `token` 在 JSON 中提交；消耗验证链接，不给打开链接的浏览器自动登录 |
+| POST | `/auth/resend` | 校验邮箱/密码/国家/语言，执行 60 秒冷却及旧链接失效，返回待发送 |
+| POST | `/auth/login` | 验证密码与验证状态；轮换会话，撤销本浏览器旧会话 |
+| GET | `/me` | 从独立客户会话读取当前客户安全投影 |
+| POST | `/auth/logout` | `{}` 加当前会话 CSRF；撤销并清除客户 Cookie |
+
+注册、验证、重发、登录均需先取得一次性预登录 CSRF；失败或成功消费后须获取新的 challenge。所有 POST 必须携带精确 Origin 且 Host 匹配，拒绝跨站 fetch；GET 同样拒绝外站 Origin/跨站 fetch。所有接口禁止查询字符串携带凭据，响应为 private/no-store、no-referrer。JSON 限 16 KiB，拒绝重复/未知/null 字段、多个文档及无效 UTF-8；全局 1 MiB 提前拒绝仍保留私有响应头。
+
+本地 HTTP Cookie 为 `retail_customer_*`，HTTPS 为 `__Host-retail_customer_*`；Path=/、无 Domain、SameSite=Lax，session/prelogin 为 HttpOnly，csrf 供双重提交读取。不会接受 admin/cart Cookie 代替客户会话。按实际直连 IP 和规范邮箱使用独立 Redis customer realm 限流，未信任任何入站 X-Forwarded-For；后续 Astro bridge 必须先解决可信客户端地址传递，不能将伪造请求头作为限流身份，也不能把代理的共享 IP 当作所有客户。
+
+`python retail/scripts/test-admin-auth.py --customer-accounts-only` 包含真实 Gin 的注册至退出用例、跨站/Host/重复 Origin/重复 Cookie 拒绝、一次性预登录 CSRF、登录轮换、管理员 Cookie 拒绝、严格 JSON/UTF-8/大小限制、邮箱/IP 限流和默认关闭状态。测试令牌仅在隔离夹具内从邮件意图解密；没有公开测试后门。报告 `http` 字段为 HTTP 证据，仍明确 Astro 与实际发信未集成。

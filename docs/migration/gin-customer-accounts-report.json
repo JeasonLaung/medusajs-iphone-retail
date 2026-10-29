@@ -1,5 +1,5 @@
 {
-  "scope": "New customer identity foundation only; HTTP, storefront and mail delivery incomplete",
+  "scope": "New customer identity and HTTP; storefront and mail delivery incomplete",
   "counts": {
     "new_customer_only": true,
     "email_normalized": true,
@@ -21,9 +21,30 @@
     "same_email_history_unchanged": true,
     "late_failure_atomic": true,
     "late_verification_failure_atomic": true,
-    "http_integrated": false,
+    "http_integrated": true,
     "mail_delivery_integrated": false,
     "storefront_integrated": false
+  },
+  "http": {
+    "real_gin_mysql_redis": true,
+    "registration_to_verification_to_login": true,
+    "origin_host_and_fetch_site_checked": true,
+    "private_no_store": true,
+    "customer_cookie_namespace": true,
+    "secure_host_cookie_flags": true,
+    "single_use_prelogin_csrf": true,
+    "unverified_session_denied": true,
+    "verification_does_not_login": true,
+    "login_rotation": true,
+    "duplicate_cookie_rejected": true,
+    "administrator_cookie_rejected": true,
+    "logout_csrf_and_revocation": true,
+    "strict_json_and_size_limit": true,
+    "email_rate_limit": true,
+    "disabled_routes_fail_closed": true,
+    "delivery": "pending",
+    "astro_bridge_integrated": false,
+    "mail_delivery_integrated": false
   },
   "application_resources_used": false,
   "real_accounts_used": false,
@@ -33,7 +54,13 @@
     "retail/backend/migrations/0038_customer_accounts.sql": "720e3e2e892b0ca48704aacf3eb15b38bf09f6307065728033e05af0e97f300b",
     "retail/backend/internal/customer/accounts.go": "69b25460dd15842ccec8308025743a1b3726766708c9ccc94df9ddec12e1ff64",
     "retail/backend/internal/customer/accounts_test.go": "13678e73415359ba13c5a9141cb51fb1a0352db5fc8d912bfa92ffda87f7e395",
-    "retail/backend/internal/identity/customer_accounts_test.go": "3702e2f41b32eb96476672edf9ea47f4c0514bdf4c6ea033b41d4afd5f4694cf"
+    "retail/backend/internal/identity/customer_accounts_test.go": "7201c2b7e598f39ee7584018a7833eaa255e12a6ba8584406c27fe80b5e9bfd5",
+    "retail/backend/internal/customer/http.go": "c2f39a410df6db2412be7d3f7dc31b668fd7597c1b18eb6be854b112dc187672",
+    "retail/backend/internal/identity/customer_http_test.go": "0c3229657eb308aa3f5ecde8aa6041a50316475e08bfd208f4f3834435cae696",
+    "retail/backend/internal/protected/config.go": "aa769d0cc15aecb84070398902dca6bde451bfaa913d61b6a0b7091d22c202d0",
+    "retail/backend/internal/protected/config_test.go": "5ed28ea0a0692000a0a6549438b92b613c3419c23fb6f9afb5a9bd770c1f5c3c",
+    "retail/backend/cmd/api/main.go": "0370729b07ccdf957fff3c1be54c39bdd729458c1e1e3e6c8c4a28dacc344fae",
+    "retail/backend/internal/platform/request.go": "06e8f5ae4804c3cf67289e068c4566c07535fe9cea90f532fbe7bbeb2deb2f40"
   },
   "cleanup": "both owned containers and temporary runner removed"
 }

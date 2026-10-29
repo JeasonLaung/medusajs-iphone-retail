@@ -14,6 +14,7 @@ import (
 	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/cart"
 	"github.com/eurorefurb/retail/internal/catalog"
+	"github.com/eurorefurb/retail/internal/customer"
 	"github.com/eurorefurb/retail/internal/fulfillment"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/inventory"
@@ -21,6 +22,7 @@ import (
 	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/eurorefurb/retail/internal/promotion"
+	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/schema"
 	"github.com/eurorefurb/retail/internal/server"
 	"github.com/eurorefurb/retail/internal/sessionstore"
@@ -108,6 +110,22 @@ func main() {
 	if err != nil {
 		log.Fatal("Explicit application origins, shop binding and matching secure cookie configuration required")
 	}
+	customers := &customer.HTTPHandler{}
+	switch os.Getenv("CUSTOMER_AUTH_ENABLED") {
+	case "", "false":
+	case "true":
+		ring, keyErr := protected.ParseKeyring(os.Getenv("CUSTOMER_KEY_ACTIVE"), os.Getenv("CUSTOMER_KEYRING_JSON"))
+		if keyErr != nil {
+			log.Fatal("Explicit customer encryption keyring required")
+		}
+		customers, err = customer.NewHTTP(db, customer.HTTPOptions{Sessions: sessions, Ring: ring, Origin: os.Getenv("STOREFRONT_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true"})
+		if err != nil {
+			log.Fatal("Customer origin and secure cookie configuration invalid")
+		}
+	default:
+		log.Fatal("CUSTOMER_AUTH_ENABLED must be true or false")
+	}
+	customers.Register(router.Group("/api/store/customer"))
 	srv := &http.Server{Addr: net.JoinHostPort(bind, port), Handler: router, ReadHeaderTimeout: 10 * time.Second, ReadTimeout: 30 * time.Second, WriteTimeout: 30 * time.Second, IdleTimeout: 60 * time.Second}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
