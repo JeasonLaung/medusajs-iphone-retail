@@ -144,6 +144,7 @@ func checkCustomerAccounts(t *testing.T, ctx context.Context, db *gorm.DB, sessi
 	}
 	checkCustomerProfile(t, ctx, db, store, login.Session.Token, a.ID)
 	checkCustomerAddresses(t, ctx, db, store, sessions, login.Session.Token, a.ID)
+	checkCustomerDelivery(t, ctx, db, store, ring)
 	public, _ := json.Marshal(login)
 	for _, secret := range []string{input.Password, login.Session.Token, login.Session.CSRF, "password_hash", "auth_version", token} {
 		if bytes.Contains(public, []byte(secret)) {

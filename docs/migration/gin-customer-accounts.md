@@ -107,3 +107,19 @@ Gin `POST /api/store/customer/me` 只接受 first_name/last_name/phone 字符串
 隔离 Gin/MySQL/Redis 验证当前客户CRUD、前导零邮编、部分更新及空电话、跨客户/未知地址一致拒绝、字段和CSRF/Origin检查、8个并发默认切换、物理唯一约束、晚失败回滚和删除失败回滚。Chrome 正式 Astro 页面使用合成API验证新增/编辑/删除、取消不写、失败保留草稿并重试、刷新读取、默认账单创建/再次编辑，以及中英与390/1440宽度；与真实SQL证据分开记录，尚不构成真实注册邮件→结账浏览器联合闭环。
 
 本批还将暂存区后端和既有来源夹具导出到独立目录（38份迁移，不含工作区未提交的0037），通过 Go 全包检查及独占 MySQL/Redis 的账户/资料/地址/Gin HTTP 演练。客户专项报告以该独立快照为证据；主工作区包含39份迁移的额外验证不作为本批提交的依赖。完整浏览器仍为合成API，邮件及结账联合验证仍未完成。
+
+## 注册验证邮件发送与恢复（局部交付）
+
+0040 显式迁移给新客户验证队列增加次数、首次尝试、下次尝试、租约、加密发送快照、提供方观察及固定错误码，并增加数据库全局节流行。既有历史邮件不启用、不发送。原 `lib/registration-email.ts` 中英主题/正文/一次性15分钟说明由 Gin 发送器继承，API固定为 Resend `POST https://api.resend.com/emails`，8秒超时、不跟随跳转、不自动重试单次请求；未知服务商正文和网络错误详情不进入日志或公开投影。
+
+`customer.DispatchVerification` 每次最多处理一封。客户行→队列行→节流行按固定顺序锁定，重查当前验证ID、收件邮箱、摘要、有效期、账号启用与未验证状态，再持久化一次尝试及30秒租约。完整JSON请求用独立purpose/row绑定加密保存；首次请求后重试解密原字节，不重新渲染模板。sender指纹绑定Resend key、from、reply-to与模板版本，未确认请求不能在更换发送账户/配置后直接重放。数据库节流使不同进程每秒最多取得一次发送资格。
+
+提供方请求在事务外执行，固定幂等键 `mail/{cv_id}`。服务商成功后SQL失败，租约到期可用原键/原请求恢复；最多3次尝试，临时失败至少等一分钟且链接届时仍有效，永久拒绝直接失败。首次尝试超过23小时停止重放（Resend官方幂等窗口为24小时，沿用原业务23小时保护）。结果写入比对租约，验证或重发已取消的队列不会被迟到结果复活。外部请求进行中无法撤回已发出的邮件，旧链接仍因当前摘要/消费状态失效。sent仅表示Resend接收，不代表收件箱已送达；投递回调尚未接入。
+
+显式命令：在 `retail/backend` 使用 `go run ./cmd/send-verification-mail --once` 处理最多一封，或不带参数作为每秒检查的worker。需显式 `CUSTOMER_VERIFICATION_MAIL_ENABLED=true`、独立MySQL、已应用完整迁移、CUSTOMER加密keyring、STOREFRONT_ORIGIN、REGISTRATION_RESEND_API_KEY与REGISTRATION_MAIL_FROM，可选REGISTRATION_MAIL_REPLY_TO。缺配置直接退出；API启动不会启用worker。当前仅环境变量引导发送人，后台邮箱配置/失败查看恢复UI仍待实现，不能视为C10完成。开发示例保持false，本轮未读取真实密钥或向真实客户发送邮件。
+
+隔离MySQL/Redis使用人工sender验证失效链接拒发、加密请求、固定幂等键、首次成功但本地记录失败后的原字节恢复、3次上限/一分钟间隔、不同邮件共享节流、永久错误终止、23小时保护、发送人变更拒绝、8个并发worker仅1次provider调用、发送进行中验证后迟到结果不复活、缺解密key失败关闭。真实签名Gin HTTP从注册写入队列，经人工sender获取邮件链接，再走验证与登录；无直接SQL取token捷径。Resend传输单元检查固定URL/headers、状态分类、中英文案、无跳转/无自动重试，使用内存transport，不发生外部发信。真实收件、Astro浏览器→邮件→验证联合验收与后台配置仍缺。
+
+提供方依据：[发送接口](https://resend.com/docs/api-reference/emails/send-email)、[幂等键和24小时窗口](https://resend.com/docs/dashboard/emails/idempotency-keys)。这些规则只约束提供方重放，不取代本地验证有效期和业务状态检查。
+
+本批提交再次导出暂存区独立后端（39份迁移，不含未提交0037）并通过Go全包检查与独占MySQL/Redis账户/资料/地址/邮件/HTTP演练；报告以独立快照为准。本批不改前台布局，不将合成sender描述成真实Resend送达。

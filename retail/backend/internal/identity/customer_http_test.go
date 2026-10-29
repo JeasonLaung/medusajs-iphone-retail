@@ -19,6 +19,7 @@ import (
 	"time"
 
 	"github.com/eurorefurb/retail/internal/customer"
+	"github.com/eurorefurb/retail/internal/maildelivery"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/sessionstore"
@@ -117,24 +118,39 @@ func checkCustomerHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions 
 	call("POST", "/auth/register", body, csrf, 403, func(r *http.Request) { r.AddCookie(&prelogin) })
 	csrf = challenge()
 	call("POST", "/auth/login", credentials, csrf, 403, nil)
-	var job struct {
-		ID      string
-		Payload []byte
+	// Observe the link through the prepared send request, rather than reading
+	// the verification token directly from SQL. The sink is artificial only.
+	sender, _ := maildelivery.NewResend("re_artificial_key", "EuroRefurb <mail@example.invalid>", "")
+	worker, workerErr := customer.NewVerificationDelivery(db, ring, "https://shop.example")
+	if workerErr != nil {
+		t.Fatal("HTTP registration worker fixture failed")
 	}
-	if db.WithContext(ctx).Raw("SELECT m.id,m.payload FROM customer_verification_mail m JOIN customer_accounts a ON a.id=m.customer_id WHERE a.email=? AND m.status='pending'", "http-customer@example.invalid").Scan(&job).Error != nil || job.ID == "" {
-		t.Fatal("HTTP registration mail intent missing")
+	if db.Exec("UPDATE customer_mail_dispatch_gate SET next_claim_at='2000-01-01' WHERE id=1").Error != nil {
+		t.Fatal("HTTP registration pacing fixture failed")
 	}
-	plain, err := ring.Open(protected.Context{Purpose: "customer-verification", Table: "customer_verification_mail", Column: "payload", Row: job.ID}, job.Payload)
-	if err != nil {
-		t.Fatal("artificial HTTP verification token unavailable")
+	capturedURL := ""
+	oracle := &deliveryOracle{sender: sender, send: func(_ context.Context, key string, body []byte) maildelivery.Result {
+		var mail struct {
+			To   []string `json:"to"`
+			Text string   `json:"text"`
+		}
+		if json.Unmarshal(body, &mail) != nil || len(mail.To) != 1 || mail.To[0] != "http-customer@example.invalid" {
+			t.Fatal("HTTP registration mail routed to wrong recipient")
+		}
+		parts := strings.Split(mail.Text, "\n\n")
+		if len(parts) != 3 {
+			t.Fatal("HTTP registration mail content differed")
+		}
+		capturedURL = parts[1]
+		return maildelivery.Result{ID: "00000000-0000-4000-8000-000000000099"}
+	}}
+	delivered, deliveryErr := worker.DispatchVerification(ctx, oracle)
+	if deliveryErr != nil || delivered.Status != "sent" || capturedURL == "" {
+		t.Fatal("HTTP registration queue not connected to sender")
 	}
-	var message struct{ URL string }
-	if json.Unmarshal(plain, &message) != nil {
-		t.Fatal("artificial mail projection invalid")
-	}
-	parsed, err := url.Parse(message.URL)
-	if err != nil {
-		t.Fatal("artificial verification URL invalid")
+	parsed, err := url.Parse(capturedURL)
+	if err != nil || parsed.Host != "shop.example" || parsed.Path != "/dk-en/verify-account" {
+		t.Fatal("HTTP registration sent link origin differed")
 	}
 	token := parsed.Query().Get("token")
 	csrf = challenge()
@@ -214,5 +230,5 @@ func checkCustomerHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions 
 	if recorder.Code != 503 {
 		t.Fatal("unconfigured customer HTTP opened")
 	}
-	t.Log(`CUSTOMER_HTTP_REHEARSAL {"real_gin_mysql_redis":true,"signed_bridge_required":true,"signed_client_ip_rate_limit":true,"registration_to_verification_to_login":true,"origin_host_and_fetch_site_checked":true,"private_no_store":true,"customer_cookie_namespace":true,"secure_host_cookie_flags":true,"single_use_prelogin_csrf":true,"unverified_session_denied":true,"verification_does_not_login":true,"login_rotation":true,"duplicate_cookie_rejected":true,"administrator_cookie_rejected":true,"logout_csrf_and_revocation":true,"strict_json_and_size_limit":true,"email_rate_limit":true,"disabled_routes_fail_closed":true,"delivery":"pending","astro_bridge_integrated":false,"mail_delivery_integrated":false}`)
+	t.Log(`CUSTOMER_HTTP_REHEARSAL {"real_gin_mysql_redis":true,"signed_bridge_required":true,"signed_client_ip_rate_limit":true,"registration_to_verification_to_login":true,"origin_host_and_fetch_site_checked":true,"private_no_store":true,"customer_cookie_namespace":true,"secure_host_cookie_flags":true,"single_use_prelogin_csrf":true,"unverified_session_denied":true,"verification_does_not_login":true,"login_rotation":true,"duplicate_cookie_rejected":true,"administrator_cookie_rejected":true,"logout_csrf_and_revocation":true,"strict_json_and_size_limit":true,"email_rate_limit":true,"disabled_routes_fail_closed":true,"registration_queue_to_synthetic_sender_to_http_verify":true,"actual_external_email":false,"delivery":"pending","astro_bridge_integrated":false,"mail_delivery_integrated":false}`)
 }

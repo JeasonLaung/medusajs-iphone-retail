@@ -94,14 +94,28 @@ type Store struct {
 }
 
 func New(db *gorm.DB, ring *protected.Ring, sessions Sessions, origin string) (*Store, error) {
+	if sessions == nil {
+		return nil, ErrUnavailable
+	}
+	store, err := NewVerificationDelivery(db, ring, origin)
+	if err != nil {
+		return nil, err
+	}
+	store.sessions = sessions
+	return store, nil
+}
+
+// NewVerificationDelivery has no customer session authority and is intended for
+// the explicitly enabled mail worker. It cannot register or authenticate users.
+func NewVerificationDelivery(db *gorm.DB, ring *protected.Ring, origin string) (*Store, error) {
 	u, err := url.Parse(origin)
-	if db == nil || ring == nil || sessions == nil || err != nil || u == nil || u.User != nil || u.Host == "" || u.Path != "" || u.RawQuery != "" || u.ForceQuery || u.Fragment != "" || u.Opaque != "" || u.String() != origin {
+	if db == nil || ring == nil || err != nil || u == nil || u.User != nil || u.Host == "" || u.Path != "" || u.RawQuery != "" || u.ForceQuery || u.Fragment != "" || u.Opaque != "" || u.String() != origin {
 		return nil, ErrUnavailable
 	}
 	if u.Scheme != "https" && (u.Scheme != "http" || (u.Hostname() != "localhost" && u.Hostname() != "127.0.0.1" && u.Hostname() != "::1")) {
 		return nil, ErrUnavailable
 	}
-	return &Store{db: db, ring: ring, sessions: sessions, origin: origin}, nil
+	return &Store{db: db, ring: ring, origin: origin}, nil
 }
 
 type Registration struct {

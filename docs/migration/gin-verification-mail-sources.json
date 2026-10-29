@@ -1,0 +1,13 @@
+{
+  "scope": "Legacy verification template, intent and queue rules; not runtime acceptance",
+  "source_sha256": {
+    "medusa-store/apps/backend/src/lib/registration-email.ts": "2111782b09aacf6157ba992078572dada595d9d94fb28103ec608ce3c697972f",
+    "medusa-store/apps/backend/src/workflows/registration-email.ts": "e0a24989cd12ac52162974109668e0442f5caf1c3b59b77a5859d6f9ffae86b8",
+    "medusa-store/apps/backend/src/workflows/steps/process-mail-queue.ts": "b4085aa15037bd63d4966d664eb5cc1f3ba517f40ca98387f256c9973c5006ae"
+  },
+  "provider_references": [
+    "https://resend.com/docs/api-reference/emails/send-email",
+    "https://resend.com/docs/dashboard/emails/idempotency-keys"
+  ],
+  "actual_external_email": false
+}
