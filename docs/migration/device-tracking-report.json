@@ -1,0 +1,62 @@
+{
+  "scope": "SKU individual tracking enrollment in Gin and React Admin; intake and fulfillment incomplete",
+  "counts": {
+    "real_gin_mysql_redis": true,
+    "explicit_grants": true,
+    "default_disabled": true,
+    "current_sku_configuration": true,
+    "shared_item_denied": true,
+    "quantity_exactly_one": true,
+    "concurrent_attempts": 4,
+    "single_creation": true,
+    "immutable_replay": true,
+    "revoked_replay_denied": true,
+    "warehouse_full_store_denied": true,
+    "late_receipt_failure_atomic": true,
+    "inventory_fingerprint_unchanged": true,
+    "strict_wire": true,
+    "intake_integrated": false
+  },
+  "migrations": 55,
+  "suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "synthetic_api_browser": {
+    "real_react_antd": true,
+    "synthetic_api": true,
+    "real_gin_joint": false,
+    "original_product_page": true,
+    "lost_response_same_request_retry": true,
+    "read_only_controls": true,
+    "shared_item_explained": true,
+    "conflict_reload": true,
+    "unavailable_retry": true,
+    "wrong_variant_rejected": true,
+    "language_en_zh": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0
+  },
+  "go_test_all": "passed",
+  "admin_type_check": "passed",
+  "admin_build": "passed; existing large-chunk advisory",
+  "existing_admin_browser_tests": 19,
+  "isolated_mysql_redis": true,
+  "published_sql_ports": 0,
+  "sql_suite_external_network": false,
+  "sql_cleanup": "both owned containers and temporary runner removed",
+  "real_joint_report": "device-tracking-joint-report.json",
+  "limitations": [
+    "No intake commands or UI",
+    "No device allocation, packing or shipping",
+    "Future catalog inventory-link mutations/import must coordinate transaction locks"
+  ],
+  "implementation_sha256_lf": {
+    "retail/backend/internal/devices/tracking.go": "a4f75beb1045c2660361f89ed147280fea9c18eab7499e87dd99b3c08b03cf22",
+    "retail/backend/internal/devices/tracking_http.go": "deb41f5b36aa2167461f9ee9acdd708383a99386983f7e658315823b6fce1fc1",
+    "retail/backend/internal/identity/device_tracking_test.go": "108f2c04a26fef11883710ad911ba3ef156207ca8499f4d55db39bda830d80d8",
+    "retail/backend/migrations/0056_device_tracking_commands.sql": "b425e8008d7ccf67dd5e203277b9f7887258091c1787fdc2438b3a856fb5a2bb",
+    "retail/admin/src/DeviceTracking.tsx": "d0e2da146510839128d40df9410fdaa9ef5b8bbb872de58a077973420cbbb60d"
+  }
+}

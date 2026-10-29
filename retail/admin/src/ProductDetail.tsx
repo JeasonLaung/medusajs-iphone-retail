@@ -9,6 +9,7 @@ import type { Copy } from './i18n'
 import ProductEdit from './ProductEdit'
 import VariantPrices from './VariantPrices'
 import VariantInventory from './VariantInventory'
+import DeviceTracking from './DeviceTracking'
 
 // Render text from the database as text; do not inject description HTML.
 function imageURL(value:string){try{const url=new URL(value,location.origin);return ['http:','https:'].includes(url.protocol)&&!url.username&&!url.password?url.href:undefined}catch{return undefined}}
@@ -25,6 +26,7 @@ export default function ProductDetail({copy,onExpired}:{copy:Copy;onExpired():vo
   const query=params.toString()
   const [attempt,setAttempt]=useState(0)
   const [editing,setEditing]=useState(false)
+  const [trackingVariant,setTrackingVariant]=useState<VariantDetail>()
   const [priceVariant,setPriceVariant]=useState<VariantDetail>()
   const [inventoryVariant,setInventoryVariant]=useState<VariantDetail>()
   const [state,setState]=useState<{loading:boolean;product?:Product;variants?:VariantList;error?:unknown}>({loading:true})
@@ -61,10 +63,12 @@ export default function ProductDetail({copy,onExpired}:{copy:Copy;onExpired():vo
           {title:copy.configuration,dataIndex:'configuration_complete',render:(complete:boolean)=>complete?<Tag color="success">{copy.complete}</Tag>:<Tag color="warning">{copy.incomplete}</Tag>},
           {title:copy.manageInventory,dataIndex:'manage_inventory',render:(enabled:boolean)=>enabled?copy.yes:copy.no},
           {title:copy.allowBackorder,dataIndex:'allow_backorder',render:(enabled:boolean)=>enabled?copy.yes:copy.no},
+          {title:copy.deviceTracking,key:'tracking',render:(_,variant)=>access.can('device.read','inventory.read')?<Button onClick={()=>setTrackingVariant(variant)}>{copy.deviceTracking}</Button>:null},
           {title:copy.configuredPrices,key:'prices',render:(_,variant)=>access.can('price.read')?<Button onClick={()=>setPriceVariant(variant)}>{copy.viewPrices}</Button>:null},
           {title:copy.inventoryDetails,key:'inventory',render:(_,variant)=>access.can('inventory.read')?<Button onClick={()=>setInventoryVariant(variant)}>{copy.viewInventory}</Button>:null},
         ]} pagination={{current:Math.floor(v.offset/v.limit)+1,pageSize:v.limit,total:v.count,showSizeChanger:true,pageSizeOptions:[20,50,100],onChange:(page,size)=>{const next=new URLSearchParams();next.set('limit',String(size));next.set('offset',String((page-1)*size));setParams(next)}}}/></div>
       </Space>}
+    {access.can('device.read','inventory.read')&&trackingVariant&&<DeviceTracking key={trackingVariant.id} productID={id} variant={trackingVariant} copy={copy} onExpired={onExpired} onClose={()=>setTrackingVariant(undefined)}/>}
     {access.can('product.write')&&editing&&p&&<ProductEdit key={p.id} product={p} copy={copy} onExpired={onExpired} onClose={()=>{setEditing(false);setAttempt(n=>n+1)}} onSaved={()=>{setEditing(false);setAttempt(n=>n+1)}}/>}
     {access.can('price.read')&&priceVariant&&<VariantPrices key={`${id}:${priceVariant.id}`} productID={id} variant={priceVariant} copy={copy} onClose={()=>setPriceVariant(undefined)} onExpired={onExpired}/>}
     {access.can('inventory.read')&&inventoryVariant&&<VariantInventory key={`${id}:${inventoryVariant.id}`} productID={id} variant={inventoryVariant} copy={copy} onClose={()=>setInventoryVariant(undefined)} onExpired={onExpired}/>}

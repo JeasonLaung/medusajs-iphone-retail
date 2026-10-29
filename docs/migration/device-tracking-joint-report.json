@@ -1,0 +1,27 @@
+{
+  "scope": "Real browser enables SKU device tracking and reloads durable state; no intake or fulfillment acceptance",
+  "counts": {
+    "real_browser_react_gin_mysql_redis": true,
+    "api_mocking": false,
+    "real_login": true,
+    "product_sku_entry": true,
+    "enrolled_and_reloaded": true,
+    "tracking_projection_verified": true,
+    "language_en_zh": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0
+  },
+  "durable_mysql_verified": true,
+  "real_accounts_used": false,
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "network": "owned bridge; egress unrestricted",
+    "published_ports": "one random API port on 127.0.0.1 only"
+  },
+  "tls_secure_cookie_verified": false,
+  "intake_accepted": false,
+  "cleanup": "both owned containers, bridge and temporary runners removed"
+}

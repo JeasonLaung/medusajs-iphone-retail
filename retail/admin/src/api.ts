@@ -295,7 +295,7 @@ export async function getOrderFulfillments(id:string,signal?:AbortSignal):Promis
 }
 
 
-export const ACTIONS=['authorization.read','authorization.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','product.read','product.write','warehouse.read','warehouse.write'] as const
+export const ACTIONS=['authorization.read','authorization.write','device.enroll','device.read','inventory.read','inventory.stock.write','mail.read','mail.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','product.read','product.write','warehouse.read','warehouse.write'] as const
 export type Action=typeof ACTIONS[number]
 export type ManagedRole={id:string;name:string;enabled:boolean;actions:Action[]}
 export type ManagedMember={user_id:string;name:string;enabled:boolean;kind:'employee'|'warehouse'|'supplier';roles:string[]}
@@ -343,4 +343,19 @@ export async function retryOrderMail(id:string,body:OrderMailRetry):Promise<void
  if(!mailJobID(id))throw new APIError(400,'request.invalid_input')
  const d=await request<{id:string;replayed:boolean}>(`notification-mail/order-jobs/${encodeURIComponent(id)}/retry`,{method:'POST',body,csrf},'/api/admin/')
  if(!d||d.id!==id||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}
+
+export type DeviceTrackingState={product_id:string;variant_id:string;revision:string;enabled:boolean;eligible:boolean;reason:''|'already_enabled'|'inventory_configuration'|'shared_inventory_item';inventory_item_id:string}
+export type DeviceEnrollInput={operation_id:string;expected_revision:string}
+function checkTracking(d:DeviceTrackingState,productID:string,variantID:string):DeviceTrackingState{
+ if(!d||d.product_id!==productID||d.variant_id!==variantID||typeof d.revision!=='string'||!/^[0-9a-f]{64}$/.test(d.revision)||typeof d.enabled!=='boolean'||typeof d.eligible!=='boolean'||typeof d.inventory_item_id!=='string'||d.inventory_item_id!==''&&!warehouseID(d.inventory_item_id)||!['','already_enabled','inventory_configuration','shared_inventory_item'].includes(d.reason)||d.enabled&&(d.eligible||d.reason!=='already_enabled')||d.eligible&&d.reason!=='')throw new APIError(0,'request.invalid_response')
+ return {product_id:d.product_id,variant_id:d.variant_id,revision:d.revision,enabled:d.enabled,eligible:d.eligible,reason:d.reason,inventory_item_id:d.inventory_item_id}
+}
+export async function deviceTracking(productID:string,variantID:string,signal?:AbortSignal):Promise<DeviceTrackingState>{
+ const d=await request<DeviceTrackingState>(`products/${encodeURIComponent(productID)}/variants/${encodeURIComponent(variantID)}/device-tracking`,{signal},'/api/admin/');return checkTracking(d,productID,variantID)
+}
+export async function enrollDeviceTracking(productID:string,variantID:string,body:DeviceEnrollInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{tracking:DeviceTrackingState;replayed:boolean}>(`products/${encodeURIComponent(productID)}/variants/${encodeURIComponent(variantID)}/device-tracking`,{method:'POST',body,csrf},'/api/admin/')
+ if(!d||typeof d.replayed!=='boolean'||!checkTracking(d.tracking,productID,variantID).enabled)throw new APIError(0,'request.invalid_response')
 }

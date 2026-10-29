@@ -150,5 +150,5 @@ func checkStoreRegions(t *testing.T, db *gorm.DB, router http.Handler) {
 	}
 	exec("DELETE FROM commerce_countries")
 	exec("DELETE FROM commerce_regions")
-	t.Log(`STORE_REGION_REHEARSAL {"migrations":54,"anonymous_cookie_independent":true,"explicit_projection":true,"list_detail_equal":true,"soft_deleted_and_unassigned_excluded":true,"empty_arrays":true,"string_country_codes":true,"strict_query":true,"invalid_routing_values_rejected":true,"directory_limits":true,"schema_failure_closed":true,"public_revalidation":true,"read_fingerprint_unchanged":true}`)
+	t.Log(`STORE_REGION_REHEARSAL {"migrations":55,"anonymous_cookie_independent":true,"explicit_projection":true,"list_detail_equal":true,"soft_deleted_and_unassigned_excluded":true,"empty_arrays":true,"string_country_codes":true,"strict_query":true,"invalid_routing_values_rejected":true,"directory_limits":true,"schema_failure_closed":true,"public_revalidation":true,"read_fingerprint_unchanged":true}`)
 }

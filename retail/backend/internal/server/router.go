@@ -9,6 +9,7 @@ import (
 	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/cart"
 	"github.com/eurorefurb/retail/internal/catalog"
+	"github.com/eurorefurb/retail/internal/devices"
 	"github.com/eurorefurb/retail/internal/fulfillment"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/inventory"
@@ -124,7 +125,7 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	public.GET("/regions", h.Regions)
 	public.GET("/locales", store.Locales)
 	public.GET("/customer-service", store.Contacts)
-		public.GET("/buy-policies", store.Policies)
+	public.GET("/buy-policies", store.Policies)
 	public.GET("/regions/:id", h.StoreRegion)
 	admin := r.Group("/api/admin")
 	admin.Use(platform.PrivateResponse, platform.GuardOrigin)
@@ -137,6 +138,8 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	access := authorization.Handler{DB: db}
 	private.GET("/auth/permissions", access.Snapshot)
 	private.GET("/warehouse/access", access.WarehouseSnapshot)
+	private.GET("/products/:id/variants/:variant_id/device-tracking", (devices.Handler{DB: db}).TrackingHTTP)
+	private.POST("/products/:id/variants/:variant_id/device-tracking", (devices.Handler{DB: db}).EnrollHTTP)
 	private.GET("/warehouse/locations/:location_id/inventory", (inventory.Handler{DB: db}).WarehouseInventory)
 	private.POST("/warehouse/locations/:location_id/inventory/:id/stock", (inventory.Handler{DB: db}).UpdateWarehouseStock)
 	private.GET("/warehouses", access.Require(authorization.WarehouseRead), (warehouse.Handler{DB: db}).Directory)
