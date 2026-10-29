@@ -31,6 +31,7 @@ export type DeliveryOption={id:string;profile_id:string;name:string;description:
 export type DeliveryOptions={cart_id:string;version:string;currency_code:string;options:DeliveryOption[];selected_option_ids:string[];complete:boolean}
 export type ShippingInput={operationID:string;version:string;optionID:string}
 export type ShippingReceipt={cart_id:string;version:string;option_id:string;replayed:boolean}
+export type PaymentAttempt={cart_id:string;version:string;operation_id:string;state:'ready'|'processing'|'requires_review';checkout_url:string|null}
 export type CartCompletion={cart_id:string;order_id:string;version:string}
 export type PaymentStatus={cart_id:string;version:string;state:'pending'|'authorized'|'paid_pending_order'|'failed'|'requires_review'}
 const contactLimits={first_name:160,last_name:160,company:160,address_1:512,address_2:512,city:160,country_code:2,province:191,postal_code:64,phone:64} as const
@@ -264,6 +265,22 @@ export class CartClient {
    const v=record(value);keys(v,['cart_id','version','line_id','quantity','replayed'])
    if(status!==200||v.cart_id!==id||v.line_id!==lineID||v.quantity!==quantity||typeof v.replayed!=='boolean'||!matches(v.version,versionPattern)||BigInt(v.version)!==BigInt(version)+1n)throw protocol()
    return {cart_id:id,line_id:lineID,quantity,version:v.version,replayed:v.replayed}
+  }catch{throw new CartError('protocol',status,true)}
+ }
+
+ async startPayment(id:string,input:{operationID:string;version:string},authorization:{csrfToken:string}):Promise<PaymentAttempt>{
+  const {operationID,version}=input,{csrfToken}=authorization
+  if(!matches(id,idPattern)||!matches(operationID,uuidPattern)||!matches(version,versionPattern)||BigInt(version)>=18446744073709551615n||!matches(csrfToken,tokenPattern))throw new CartError('input')
+  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/payment-attempts`,'POST',JSON.stringify({version}),{'X-CSRF-Token':csrfToken,'Idempotency-Key':operationID},65536,'item')
+  try{
+   const v=record(value);keys(v,['cart_id','version','operation_id','state','checkout_url'])
+   if(status!==200||v.cart_id!==id||v.operation_id!==operationID||!matches(v.version,versionPattern)||BigInt(v.version)!==BigInt(version)+1n||!['ready','processing','requires_review'].includes(String(v.state)))throw protocol()
+   if(v.state==='ready'){
+    if(typeof v.checkout_url!=='string'||v.checkout_url.length>8192||/[\x00-\x20\x7f\\]/.test(v.checkout_url))throw protocol()
+    const url=new URL(v.checkout_url)
+    if(url.protocol!=='https:'||url.username||url.password||url.hostname!=='mollie.com'&&!url.hostname.endsWith('.mollie.com')||url.port!==''&&url.port!=='443')throw protocol()
+   }else if(v.checkout_url!==null)throw protocol()
+   return v as PaymentAttempt
   }catch{throw new CartError('protocol',status,true)}
  }
 

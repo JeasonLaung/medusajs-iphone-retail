@@ -4,7 +4,7 @@ import {ginPrivateTransport} from './gin-private-transport.ts'
 export type CartBridgeConfig={ginOrigin:string|undefined;storefrontOrigin:string|undefined}
 const id='[A-Za-z0-9][A-Za-z0-9_-]{0,190}'
 const read=new RegExp(`^/api/store/(?:orders/${id}/confirmation|cart|carts/${id}(?:/(?:amounts|view|contacts|delivery-options))?)$`)
-const write=new RegExp(`^/api/store/(?:cart-sessions|carts|carts/${id}/(?:contacts|shipping-methods|payment-status|complete|line-items(?:/${id})?))$`)
+const write=new RegExp(`^/api/store/(?:cart-sessions|carts|carts/${id}/(?:contacts|shipping-methods|payment-attempts|payment-status|complete|line-items(?:/${id})?))$`)
 const privateHeaders={'Cache-Control':'private, no-store','Content-Type':'application/json','X-Content-Type-Options':'nosniff','Vary':'Cookie, Origin','Referrer-Policy':'no-referrer'}
 const failure=(status:number)=>new Response('{"error":"Cart request unavailable"}',{status,headers:privateHeaders})
 async function bytes(body:ReadableStream<Uint8Array>|null,max:number):Promise<Uint8Array>{

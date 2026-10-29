@@ -1,0 +1,15 @@
+{
+  "status": "transport_and_recovery_component_only",
+  "unit_tests": 133,
+  "astro_files": 295,
+  "errors": 0,
+  "warnings": 0,
+  "payment_ui_connected": false,
+  "live_payment_verified": false,
+  "implementation_sha256": {
+    "retail/storefront/src/lib/cart-client.ts": "288a98d4285de78f7619c03df3077cbe1242f458ad4dce9311dbbfa19ff148b1",
+    "retail/storefront/src/lib/cart-bridge.ts": "a09291f5e0f135f11cdb577359b454993bcebca28f5f2b38eae60fca666787eb",
+    "retail/storefront/src/lib/checkout-payment.ts": "4db6bb8791084762c1f5abb087bf83c58dbf8ea985710767d64ed3944055cc8f",
+    "retail/storefront/tests/checkout-payment.test.ts": "8b8cb45a7d0686bc28fb4f752606aad9136d9c0b2228aedc5b79468c2352e8ca"
+  }
+}
