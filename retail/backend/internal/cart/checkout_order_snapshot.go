@@ -32,39 +32,8 @@ func StagePaidOrderSnapshot(ctx context.Context, tx *gorm.DB, store string, ref 
 	if err != nil {
 		return orders.CheckoutSnapshot{}, err
 	}
-	if row.NeedsReview || row.ObservedStatus == nil || *row.ObservedStatus != "paid" {
-		return orders.CheckoutSnapshot{}, ErrConflict
-	}
-	var proof struct {
-		ID                            string
-		RequestSHA256, ResultEnvelope []byte
-	}
-	r := tx.Table("cart_checkout_observations p").Select("p.id,p.request_sha256,p.result_envelope").Joins("JOIN cart_checkout_attempts a ON a.paid_observation_id=p.id AND a.cart_id=p.cart_id AND a.operation_id=p.operation_id").Where("a.cart_id=? AND a.operation_id=?", ref.CartID, in.OperationID).Clauses(clause.Locking{Strength: "SHARE"}).Take(&proof)
-	if r.Error != nil || subtle.ConstantTimeCompare(proof.RequestSHA256, key.Digest[:]) != 1 {
-		return orders.CheckoutSnapshot{}, ErrConflict
-	}
-	plain, err := o.Ring.Open(observationContext(proof.ID), proof.ResultEnvelope)
-	if err != nil {
-		return orders.CheckoutSnapshot{}, ErrStorage
-	}
-	defer clear(plain)
-	var observed payments.SessionObservation
-	if json.Unmarshal(plain, &observed) != nil || observed.ProviderStatus != "paid" {
-		return orders.CheckoutSnapshot{}, ErrConflict
-	}
-	request, err := payments.ReadSessionRequest(ctx, tx, key, o.Ring)
-	if err != nil {
+	if _, err := readPaidOrderEvidence(ctx, tx, ref, in, o, row, key); err != nil {
 		return orders.CheckoutSnapshot{}, err
-	}
-	created, err := payments.ReadSessionCreation(ctx, tx, key, o.Ring)
-	if err != nil {
-		return orders.CheckoutSnapshot{}, err
-	}
-	var identity struct {
-		ID string `json:"id"`
-	}
-	if json.Unmarshal(created.Data, &identity) != nil || identity.ID == "" || payments.ValidateMollieObservation(request, identity.ID, observed) != nil {
-		return orders.CheckoutSnapshot{}, ErrConflict
 	}
 	channel, err := storeChannel(ctx, tx, store)
 	if err != nil {
@@ -79,4 +48,44 @@ func StagePaidOrderSnapshot(ctx context.Context, tx *gorm.DB, store string, ref 
 		return orders.CheckoutSnapshot{}, ErrConflict
 	}
 	return orders.WriteCartSnapshot(ctx, tx, orders.CartSnapshotInput{CartID: ref.CartID, CurrencyCode: row.CurrencyCode, Totals: amounts.Totals})
+}
+
+// Current frozen attempt/ownership must already have been authorized by the
+// caller in this transaction. An observed_status string is never paid proof.
+func readPaidOrderEvidence(ctx context.Context, tx *gorm.DB, ref sessionstore.CartReference, in InitialPaymentCommand, o InitialPaymentOptions, row initialAttempt, key payments.EffectKey) (payments.SessionObservation, error) {
+	if row.NeedsReview || row.ObservedStatus == nil || *row.ObservedStatus != "paid" {
+		return payments.SessionObservation{}, ErrConflict
+	}
+	var proof struct {
+		ID                            string
+		RequestSHA256, ResultEnvelope []byte
+	}
+	r := tx.Table("cart_checkout_observations p").Select("p.id,p.request_sha256,p.result_envelope").Joins("JOIN cart_checkout_attempts a ON a.paid_observation_id=p.id AND a.cart_id=p.cart_id AND a.operation_id=p.operation_id").Where("a.cart_id=? AND a.operation_id=?", ref.CartID, in.OperationID).Clauses(clause.Locking{Strength: "SHARE"}).Take(&proof)
+	if r.Error != nil || subtle.ConstantTimeCompare(proof.RequestSHA256, key.Digest[:]) != 1 {
+		return payments.SessionObservation{}, ErrConflict
+	}
+	plain, err := o.Ring.Open(observationContext(proof.ID), proof.ResultEnvelope)
+	if err != nil {
+		return payments.SessionObservation{}, ErrStorage
+	}
+	defer clear(plain)
+	var observed payments.SessionObservation
+	if json.Unmarshal(plain, &observed) != nil || observed.ProviderStatus != "paid" {
+		return payments.SessionObservation{}, ErrConflict
+	}
+	request, err := payments.ReadSessionRequest(ctx, tx, key, o.Ring)
+	if err != nil {
+		return payments.SessionObservation{}, err
+	}
+	created, err := payments.ReadSessionCreation(ctx, tx, key, o.Ring)
+	if err != nil {
+		return payments.SessionObservation{}, err
+	}
+	var identity struct {
+		ID string `json:"id"`
+	}
+	if json.Unmarshal(created.Data, &identity) != nil || identity.ID == "" || payments.ValidateMollieObservation(request, identity.ID, observed) != nil {
+		return payments.SessionObservation{}, ErrConflict
+	}
+	return observed, nil
 }

@@ -76,6 +76,22 @@
     "concurrent_rollback_stages": 4,
     "no_capture_no_complete_no_mail": true
   },
+  "order_ledger": {
+    "real_mysql": true,
+    "verified_paid_only": true,
+    "same_cart_order_binding": true,
+    "exact_payment_capture_and_transaction": "158.75",
+    "exact_order_total_separate_from_settlement": true,
+    "encrypted_provider_evidence": true,
+    "payment_envelope_row_swap_denied": true,
+    "collection_balances_and_session_captured": true,
+    "summary_matches_amount_reader": true,
+    "duplicate_stage_rejected": true,
+    "foreign_order_authorized_review_and_existing_balances_denied": true,
+    "late_collection_failure_rolls_back_order_stock_and_cash": true,
+    "no_external_capture_call": true,
+    "no_completion_or_mail": true
+  },
   "http": {
     "real_gin_mysql_redis": true,
     "possession_origin_csrf": true,
@@ -183,7 +199,8 @@
   },
   "implementation_sha256": {
     "retail/backend/internal/cart/amounts.go": "e9b75c133696bd13fc4b85fb9f3d06430763b62126d6d6958ff77ceb92aae2a8",
-    "retail/backend/internal/cart/checkout_order_snapshot.go": "41c3634d892c0f4ebe81ac611e46fb69a551f3385791ba892ab3226e0b40aa45",
+    "retail/backend/internal/cart/checkout_order_ledger.go": "f544a6f69775698211b960e67a8be096e4b281de0160abcc7f45ae05cc528827",
+    "retail/backend/internal/cart/checkout_order_snapshot.go": "b74a3551582c782f1494cce41cfaf382371c69ea5636b8614e482c43c863b5b2",
     "retail/backend/internal/cart/checkout_order_stock.go": "7d45b715e48b2bf9066000302454b273a2aec2da2c06b80b602926ffb71cd583",
     "retail/backend/internal/cart/checkout_payment.go": "345288a2263174f74dc3e1ab1209bf3e4953670230bc05f70cde687677d8c87b",
     "retail/backend/internal/cart/checkout_payment_http.go": "fbeaa03a73cf145e8cc930b26a94ae22e56821fec7eac401652088db265dab60",
@@ -250,7 +267,8 @@
     "retail/backend/internal/identity/cart_items_http_test.go": "24272a0cfb71c8f26308b0bd47db754a5c1f6fccd1498622062125b438c98222",
     "retail/backend/internal/identity/cart_items_test.go": "943d7652a70eb549663115f74713aec6a89598b0e0cdb832797c51af26cbc6b4",
     "retail/backend/internal/identity/cart_item_snapshots_test.go": "61f3d6b3567b5f7b730d9f2cc8e86e08ce691f49eda0dab3e6936bcade4e99ff",
-    "retail/backend/internal/identity/cart_order_snapshot_test.go": "4d6546a9b2221cc124f03e5f3df09dd509771a0857d75a27b2c93367609baf69",
+    "retail/backend/internal/identity/cart_order_ledger_test.go": "022f4a673e2e82d8b4e298b27e36a5e41cef7819f0be587fd301d347bf09e869",
+    "retail/backend/internal/identity/cart_order_snapshot_test.go": "aa0a3cbd44d7644fba20501d0bd6212dfe59ebcafa27e7d0724320d5f760b838",
     "retail/backend/internal/identity/cart_order_stock_test.go": "da68e50bb2fb902000a1f1cb58bca6ef9732460407fb46a6bb42e945c1ede8ee",
     "retail/backend/internal/identity/cart_payment_compensation_test.go": "27328c6c1f5476afdbb3465b4ef0ac5e03f2065ddba7c06dbc1efddd38d5902c",
     "retail/backend/internal/identity/cart_payment_creation_execution_test.go": "8011347b2f17d70bcd9fa1efcfdf619035e4f231856415f37767b4c02858ba42",
@@ -406,7 +424,7 @@
     "retail/backend/migrations/0045_checkout_payment_observations.sql": "2b758d3b4fdb7016c4028599f0c4662ae04ba60481076a4f5c3d518596f5ff72",
     "retail/backend/migrations/0046_order_number_allocator.sql": "d57eae43f0ce2aba8dfa80fd07e946f1d271fc5b38cff2e9f41c4500bca18361",
     "retail/backend/migrations/0047_order_checkout_codes.sql": "e3557f6cf4576f27823d41d94d132e35f93d32014f74ce338477eae1a4dc9b23",
-    "retail/scripts/test-admin-auth.py": "f92859c6b51f9aa7fee1c1920f3310f9a28c5a4af13aa5e3a83edd0e94a6d139",
+    "retail/scripts/test-admin-auth.py": "e647b86f0666d0bfe94cdf5edf56c4a10e93ccb9fd1649681ff1d01cdbe95230",
     "retail/backend/cmd/api/main.go": "f4f23d8f5223427faa9b918a5c95b24923eb721330f52b778c304b8c9f368437"
   },
   "cleanup": "both owned containers and temporary runner removed"

@@ -198,5 +198,6 @@ func checkPaidOrderSnapshots(t *testing.T, ctx context.Context, db *gorm.DB, ref
 		t.Fatal("snapshot accepted ordinary pool")
 	}
 	checkPaidOrderStock(t, ctx, db, ref, in, options)
+	checkPaidOrderLedger(t, ctx, db, ref, in, options)
 	t.Log(`CART_ORDER_SNAPSHOT_REHEARSAL {"real_mysql":true,"current_possession_and_frozen_binding":true,"sealed_paid_proof_required":true,"authorized_review_tamper_and_digest_denied":true,"server_saved_payment_identity":true,"all_cart_totals_compared":true,"original_two_order_numbers":true,"copied_addresses_lines_shipping_tax_adjustments":true,"raw_money_and_json_unchanged":true,"unicode_189_character_code":true,"new_line_ids_for_reservations":true,"cyclic_item_totals_link":true,"caller_rollback_all_rows_and_number":true,"late_sql_failure_rollback":true,"no_stock_no_capture_no_complete_no_mail":true}`)
 }
