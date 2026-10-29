@@ -233,3 +233,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-29 属性用量补充：[事务内精确属性预览](../docs/migration/promotion-attribute-read.md)实现真实MySQL完整二进制属性查询、明确无记录、共享预算去重、重复有效行拒绝、精确raw与同一快照，客户字段投影与计算复用。购物车可信事实、新登录态关联、调整项保存和完整checkout仍缺，相关任务未验收。
 
 2026-10-29 促销金额事实补充：[当前购物车未折扣基数](../docs/migration/cart-promotion-amounts.md)在调用方事务重查ownership/version，复用精确价格/税与totals，独立排除旧调整项而保留公开历史金额路径。人工SQL验证含税/未税、raw精度、坏旧优惠不污染、版本拒绝和后续整体回滚；完整规则上下文、调整项保存与checkout仍待衔接，相关任务未验收。
+
+2026-10-29 优惠保存补充：[事务内调整项及促销关系替换](../docs/migration/cart-promotion-adjustments.md)承接服务端动作、精确raw/含税、原code范围软删、null码手工保留、目标/源绑定及版本检查、空集合清理和关联原ID恢复。实际MySQL验证后续失败和写故障整体回滚，购物车刷新不登记checkout预算。完整可信上下文/命令、幂等版本/支付与checkout仍缺，相关任务未验收。

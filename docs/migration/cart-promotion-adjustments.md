@@ -1,0 +1,21 @@
+# 购物车促销调整项保存阶段
+
+2026-10-29：`cart.ReplacePromotionAdjustments`在调用方写事务里消费服务端ComputeCandidates产生的动作，重新检查当前购物车ownership generation/store/version、有效商品/运费归属、促销源ID与完整code绑定，并替换促销调整项和cart_promotions关系。它是内部保存阶段，不能接收浏览器构造的动作或充当独立折扣授权，不会再次执行资格规则/价格/税/预算预览。只有完整命令在同一事务组装可信事实并计算后才能使用。
+
+## 行为
+
+对当前活动商品/运费行读取现有调整项。原computeActions会移除所有字符串code的调整项，包括空字符串和已失效优惠码；本阶段按同样范围soft-delete，保留历史。code为null的手工调整不删除，即便有其它旧引用；软删父行的调整项不参与当前替换。所有输入先验证后再执行删除/插入，不能用动作里的任意adjustment ID删除外部行。新金额必须正值、规范精确数值，用已有sqlAmount保存完整raw及显式截断18位scalar，商品含税标志保留，运费动作不接受含税标志。
+
+超限反馈保留code/reason和原顺序，同一code既有有效折扣又有超限反馈时仍保存有效折扣并保留关联。只依据实际正折扣的promotion ID形成目标关系集合；空动作清除当前coded调整和有效关系。cart_promotions按原cart_id+promotion_id复合主键同步，失效链接soft-delete，重新应用时恢复原行ID与created_at，不碰其它购物车关系。应用方式/活动是否当前可用仍由计算与最终命令负责；保存前至少锁后验证促销存在、active、未软删以及code/ID未改绑。
+
+阶段限制10000输入动作、1000商品/100运费、每目标100调整（包含保留手工调整）、1000促销和关系，超限整体拒绝。商品、运费、旧调整、促销与链接按稳定顺序锁定；所有SQL表名来自静态代码，不接收客户端标识符。任何错误返回空结果，调用方必须完整rollback；阶段不提交、不增版本、不建立自身回执、不使HTTP能力生效。当前cart授权仍限新匿名cart，不能据此使用旧客户购物车。
+
+购物车促销刷新不登记预算用量，沿用原checkout时registerUsage的时机。购物车保存和checkout预算登记是不同阶段；后续checkout必须继续使用持久幂等用量回执、锁内合计检查，以及库存/支付协调。不能在每次改购物车时提前消耗预算。
+
+## 证据
+
+隔离CartRuntime实际MySQL测试checkCartPromotionAdjustments验证商品与运费保存、超18位raw、含税标志、空码旧优惠soft-delete、null码手工优惠与软删父行保留、旧关系失效和同ID恢复、同时成功/反馈、空集合清理、错/外部/删除目标与错code/源ID、零额/未知动作和过期version在删除前拒绝；检查购物车刷新不增加promotion.used。
+
+所有人工配置和写入都在父事务内执行，末尾模拟后续失败并对购物车、调整、关系、库存指纹确认整体恢复。另注入实际INSERT失败，验证先删除旧行后写失败仍全部回滚。autocommit拒绝。现有金额/页面/登录/订单等测试继续保留。完整与cart-runtime-only报告均新增cart_promotion_adjustments，必须与implementation SHA匹配才算通过。
+
+尚缺完整购物车规则上下文和新登录态绑定、动作计算到保存的完整命令、版本/幂等/支付集合刷新以及结账库存支付协调、Astro接入。该内部保存阶段尚无公开HTTP，T032/T033未验收。

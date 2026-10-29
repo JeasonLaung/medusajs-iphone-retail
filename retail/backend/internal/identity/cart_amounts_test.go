@@ -43,7 +43,7 @@ func checkCartAmounts(t *testing.T, ctx context.Context, db *gorm.DB, sessions *
 	fingerprint := func() string {
 		t.Helper()
 		all := []json.RawMessage{}
-		for _, table := range []string{"carts", "cart_ownership", "cart_creation_operations", "cart_line_items", "cart_line_tax_lines", "cart_line_adjustments", "cart_shipping_methods", "cart_shipping_tax_lines", "cart_shipping_adjustments", "inventory_reservations"} {
+		for _, table := range []string{"carts", "cart_ownership", "cart_creation_operations", "cart_line_items", "cart_line_tax_lines", "cart_line_adjustments", "cart_shipping_methods", "cart_shipping_tax_lines", "cart_shipping_adjustments", "cart_promotions", "inventory_reservations"} {
 			var rows []map[string]any
 			if db.Table(table).Order("1").Find(&rows).Error != nil {
 				t.Fatal("owned amount fingerprint unavailable")
@@ -100,6 +100,7 @@ func checkCartAmounts(t *testing.T, ctx context.Context, db *gorm.DB, sessions *
 	exec(`INSERT INTO cart_shipping_adjustments(id,shipping_method_id,amount,raw_amount,metadata,created_at,updated_at) VALUES ('amount-cart-shipping-discount','amount-cart-shipping',2,'{"value":"2","precision":20}','{"private":"snapshot-secret"}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 	r := check("235")
 	checkPromotionAmounts(t, ctx, db, ref, fingerprint)
+	checkCartPromotionAdjustments(t, ctx, db, ref, fingerprint)
 	if len(r.Lines) != 1 || r.Lines[0].Quantity != "2" || r.Lines[0].UnitPrice != "100" || r.Lines[0].VariantID == nil || *r.Lines[0].VariantID != "retired-sku" || r.Lines[0].Totals["total"] != "225" || len(r.ShippingMethods) != 1 || r.ShippingMethods[0].Totals["total"] != "10" {
 		t.Fatal("persisted line, tax or shipping semantics differ")
 	}
