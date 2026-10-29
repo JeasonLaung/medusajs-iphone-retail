@@ -90,6 +90,7 @@ func checkOrderConfirmation(t *testing.T, ctx context.Context, db *gorm.DB, sess
 	exec("UPDATE cart_completion_runtime SET enabled=FALSE WHERE id=1")
 	call(path, "", true, 503)
 	exec("UPDATE cart_completion_runtime SET enabled=TRUE WHERE id=1")
+	checkCustomerOrderOwnership(t, ctx, db, sessions, ref, orderID)
 	if sessions.RevokeCart(ctx, issued.Token) != nil {
 		t.Fatal("confirmation revoke")
 	}

@@ -69,7 +69,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.Use(h.bridge)
 	private.Use(func(c *gin.Context) {
 		c.Header("Referrer-Policy", "no-referrer")
-		if c.Request.URL.RawQuery != "" || c.Request.URL.ForceQuery {
+		if (c.Request.URL.RawQuery != "" || c.Request.URL.ForceQuery) && !(c.Request.Method == "GET" && c.FullPath() == "/api/store/customer/orders") {
 			platform.Fail(c, 404, "not_found", "Resource not found")
 			return
 		}
@@ -82,6 +82,8 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/auth/resend", h.ResendVerification)
 	private.GET("/me", h.Me)
 	private.POST("/me", h.UpdateProfile)
+	private.GET("/orders", h.ListOrders)
+	private.POST("/orders/:id/attach", h.AttachOrder)
 	private.GET("/addresses", h.ListAddresses)
 	private.POST("/addresses", h.CreateAddress)
 	private.POST("/addresses/:id", h.UpdateAddress)
@@ -142,6 +144,8 @@ func customerCSRF(c *gin.Context) string {
 }
 func (h *HTTPHandler) fail(c *gin.Context, err error) {
 	switch {
+	case errors.Is(err, ErrOrderMissing):
+		platform.Fail(c, 404, "customer.order_not_found", "Order not found")
 	case errors.Is(err, ErrAddressMissing):
 		platform.Fail(c, 404, "customer.address_not_found", "Address not found")
 	case errors.Is(err, ErrInvalid), errors.Is(err, ErrVerification):

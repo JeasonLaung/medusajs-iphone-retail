@@ -42,6 +42,20 @@ type ConfirmationPayment struct {
 // cart possession AND durable completion receipt, in one SQL transaction. It
 // does not search by email or accept old account/order identifiers as authority.
 func ReadConfirmation(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, orderID string) (Confirmation, error) {
+	return readConfirmation(ctx, db, store, ref, orderID, nil)
+}
+
+// WithConfirmation authorizes the same current cart and paid receipt as the
+// private confirmation view, then runs one local ownership write atomically.
+// Callers must reauthorize the customer session inside action; no remote I/O.
+func WithConfirmation(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, orderID string, action func(*gorm.DB) error) error {
+	if action == nil {
+		return ErrInput
+	}
+	_, err := readConfirmation(ctx, db, store, ref, orderID, action)
+	return err
+}
+func readConfirmation(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, orderID string, action func(*gorm.DB) error) (Confirmation, error) {
 	failed := Confirmation{}
 	if db == nil || db.Statement == nil || !refOK(store, ref) || !idPattern.MatchString(orderID) {
 		return failed, ErrInput
@@ -50,6 +64,10 @@ func ReadConfirmation(ctx context.Context, db *gorm.DB, store string, ref sessio
 		return failed, ErrInput
 	}
 	var out Confirmation
+	lock := "SHARE"
+	if action != nil {
+		lock = "UPDATE"
+	}
 	err := db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		if err := commandReady(ctx, tx, "cart.access"); err != nil {
 			return err
@@ -75,7 +93,7 @@ func ReadConfirmation(ctx context.Context, db *gorm.DB, store string, ref sessio
 			Active              bool
 			CheckoutAttemptID   *string
 		}
-		r = tx.Table("cart_ownership").Where("cart_id=?", ref.CartID).Clauses(clause.Locking{Strength: "SHARE"}).Take(&owner)
+		r = tx.Table("cart_ownership").Where("cart_id=?", ref.CartID).Clauses(clause.Locking{Strength: lock}).Take(&owner)
 		if errors.Is(r.Error, gorm.ErrRecordNotFound) {
 			return ErrDenied
 		}
@@ -204,6 +222,9 @@ func ReadConfirmation(ctx context.Context, db *gorm.DB, store string, ref sessio
 		encoded, err := json.Marshal(out)
 		if err != nil || len(encoded) > 4*1024*1024 {
 			return ErrSchema
+		}
+		if action != nil {
+			return action(tx)
 		}
 		return nil
 	}, &sql.TxOptions{Isolation: sql.LevelReadCommitted})

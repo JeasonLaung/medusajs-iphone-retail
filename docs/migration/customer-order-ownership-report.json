@@ -1,0 +1,30 @@
+{
+  "scope": "New customer attachment and private order list; no Astro integration or complete storefront acceptance",
+  "schema_migrations": 49,
+  "uncommitted_0037_included": false,
+  "go_test_all": true,
+  "isolated_order_read_and_cart_runtime": true,
+  "isolated_admin_authentication_regression": true,
+  "checks": {
+    "real_gin_mysql_redis": true,
+    "two_capabilities_required": true,
+    "email_never_grants_orders": true,
+    "concurrent_attachment_single_audit": true,
+    "late_audit_failure_atomic": true,
+    "other_customer_cannot_steal": true,
+    "long_term_after_cart_revocation": true,
+    "customer_revocation_denied": true,
+    "exact_total": "158.75",
+    "private_list_projection": true,
+    "browser_integrated": false
+  },
+  "implementation_sha256_lf": {
+    "retail/backend/internal/cart/order_confirmation.go": "4337cfafb11f9203d5b13475aa4159424b1c4430c4fbde6782a5f6483387e9e3",
+    "retail/backend/internal/customer/orders.go": "3167e64108f743526824a583864ce3ae6f625b26672dff89b9a4a2d9102db0fe",
+    "retail/backend/internal/customer/orders_http.go": "5e486fc38035ee7d287441362b9b0d3f203e34bc55db0086bee789f02521c9e2",
+    "retail/backend/internal/customer/http.go": "3fdb6296118aa19e5e4ca6e7e9e4f6bf430a2e85fe38bb69ca46310bb72634e1",
+    "retail/backend/internal/identity/order_confirmation_test.go": "398198727dfc8061a09a190e132472ce25f0cf1b9a26334bb476d281a35ad31d",
+    "retail/backend/internal/identity/customer_order_ownership_test.go": "5393797d5d89c73f56e2f04dc9256ac659d85b3ac3a2b1acdea175f9f0192b53",
+    "retail/backend/migrations/0050_customer_order_ownership.sql": "81fe576e68c907afb91c18f7bf02bb3c6cd6ddf801e4e4fc3ee7242a8ead1a2f"
+  }
+}
