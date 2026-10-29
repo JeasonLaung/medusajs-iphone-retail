@@ -101,6 +101,7 @@ func checkCartAmounts(t *testing.T, ctx context.Context, db *gorm.DB, sessions *
 	r := check("235")
 	checkPromotionAmounts(t, ctx, db, ref, fingerprint)
 	checkCartPromotionAdjustments(t, ctx, db, ref, fingerprint)
+	checkPromotionProducts(t, ctx, db)
 	if len(r.Lines) != 1 || r.Lines[0].Quantity != "2" || r.Lines[0].UnitPrice != "100" || r.Lines[0].VariantID == nil || *r.Lines[0].VariantID != "retired-sku" || r.Lines[0].Totals["total"] != "225" || len(r.ShippingMethods) != 1 || r.ShippingMethods[0].Totals["total"] != "10" {
 		t.Fatal("persisted line, tax or shipping semantics differ")
 	}

@@ -466,3 +466,5 @@
 2026-10-29 优惠保存补充：[事务内调整项及促销关系替换](migration/cart-promotion-adjustments.md)承接服务端动作、精确raw/含税、原code范围软删、null码手工保留、目标/源绑定及版本检查、空集合清理和关联原ID恢复。实际MySQL验证后续失败和写故障整体回滚，购物车刷新不登记checkout预算。完整可信上下文/命令、幂等版本/支付与checkout仍缺，相关任务未验收。
 
 2026-10-29 优惠码选择补充：[add/replace/remove与有效调整项读取](migration/cart-promotion-codes.md)承接原有序Set、存在性校验和默认add，实际购物车授权/版本读取，链接不代替有效折扣、未知remove保持。12组原步骤对照和人工SQL保存前后衔接验证；完整规则上下文/命令、版本支付和checkout仍缺，相关任务未验收。
+
+2026-10-29 商品规则事实补充：[当前商品分类/标签及基础关系](migration/promotion-product-relations.md)在事务快照读取促销product字段，保留内部draft/分类语义、null/删除关系和数值weight，不泄漏metadata；人工SQL与原规则路径衔接，完整cart/variant/shipping/customer上下文与命令仍缺，相关任务未验收。

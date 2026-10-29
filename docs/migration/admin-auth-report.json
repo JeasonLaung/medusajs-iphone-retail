@@ -59,6 +59,17 @@
     "budget_usage_not_registered": true,
     "public_command_or_checkout_integrated": false
   },
+  "promotion_products": {
+    "actual_mysql": true,
+    "internal_draft_and_category_relations_preserved": true,
+    "missing_deleted_and_null_semantics": true,
+    "numeric_weight": true,
+    "original_rule_paths": true,
+    "metadata_excluded": true,
+    "caller_snapshot": true,
+    "transaction_and_schema_gate": true,
+    "cart_context_or_checkout_integrated": false
+  },
   "cart_items": {
     "real_mysql_redis": true,
     "explicit_migrations": 32,
@@ -922,7 +933,7 @@
     "checkout": false
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "f7c564eb4af5a39d39f998b9abcc0fe0514e1408b473f5184910d26f3ead1376",
+    "retail/scripts/test-admin-auth.py": "c11822e5ac54ddc25af0366fb5a76362424a4aac45834ab2b26552ac5c9a850d",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "a0171978adfb9a70fc1426eb3ae6b1eae92cd7c2decfd6b09eedfcbe83c71e0d",
@@ -1127,7 +1138,8 @@
     "retail/backend/migrations/0026_cart_runtime_authority.sql": "70cff0b541fa6cfd845644b494142df473ec5bd4f191039a923ad6e5c399caec",
     "retail/backend/internal/identity/cart_runtime_test.go": "9dca5e31c8eb42affcf76044f4c7045433a91ec8b334f465a335ec07eea27231",
     "retail/backend/internal/identity/cart_http_test.go": "f779a67658e3f5fcef850548abd27d2b929424152cab547f52fe85876086365c",
-    "retail/backend/internal/identity/cart_amounts_test.go": "aca5c8a14ece52d037763cd105713aa637e75855012bd75a875ebc168aa6ac8c",
+    "retail/backend/internal/identity/cart_amounts_test.go": "d5ce795bb25fbb3e440b79f20d63c22673fd94b6d8a0551b300882b83c8c84dc",
+    "retail/backend/internal/identity/promotion_products_test.go": "8dbc4e279229aaf7acf321c77cd8c9400ac44a80b9b1a934978f5706d6e2a62e",
     "retail/backend/internal/identity/cart_promotion_adjustments_test.go": "3cda50f61dbb5c3af9a15f89aadc32e1a798a6294f39546388d94ff2eac7a611",
     "retail/backend/internal/identity/cart_promotion_amounts_test.go": "2eec18b655e075c91b2d3937660f7c1cd9fc1c51773e243f468c506de341d054",
     "retail/backend/internal/identity/cart_items_test.go": "7dc1d277b6c465b49f907766a59905206bf2e903d389c74bc2307ba4f4f7dcb0",
