@@ -94,6 +94,7 @@ func checkPaymentObservations(t *testing.T, ctx context.Context, db *gorm.DB, se
 		}()
 	}
 	group.Wait()
+	checkPaidOrderSnapshots(t, ctx, db, ref, options)
 	mode.Store("pending")
 	observe("paid_pending_order")
 	// Paid facts remain durable if the apply transaction fails later.

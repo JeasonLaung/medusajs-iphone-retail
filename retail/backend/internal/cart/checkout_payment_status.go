@@ -178,7 +178,11 @@ func ObserveInitialPayment(ctx context.Context, db *gorm.DB, store string, ref s
 		next, review := mergeObservedPayment(previous, observed.ProviderStatus)
 		row.NeedsReview = row.NeedsReview || review
 		row.ObservedStatus = &next
-		if r := initialWhere(tx, ref, in).Updates(map[string]any{"observed_status": next, "needs_review": row.NeedsReview}); r.Error != nil {
+		update := map[string]any{"observed_status": next, "needs_review": row.NeedsReview}
+		if observed.ProviderStatus == "paid" && next == "paid" {
+			update["paid_observation_id"] = id
+		}
+		if r := initialWhere(tx, ref, in).Updates(update); r.Error != nil {
 			return ErrStorage
 		}
 		// Do not overwrite the immutable create receipt or classify authorization

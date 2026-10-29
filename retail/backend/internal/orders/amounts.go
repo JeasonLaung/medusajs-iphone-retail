@@ -73,138 +73,9 @@ func (h Handler) Amounts(c *gin.Context) {
 	}
 	var result AmountDetail
 	err := h.DB.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
-		if err := Ready(c.Request.Context(), tx); err != nil {
-			return err
-		}
-		var order Summary
-		if err := tx.Table("orders o").Select(summaryColumns()).Where("o.id=? AND o.deleted_at IS NULL", id).Take(&order).Error; err != nil {
-			return err
-		}
-		var currency struct{ DecimalDigits int }
-		if tx.Table("commerce_currencies").Select("decimal_digits").Where("code=? AND deleted_at IS NULL", order.CurrencyCode).Take(&currency).Error != nil {
-			return ErrSchema
-		}
-		input := totals.Input{CurrencyDecimals: &currency.DecimalDigits}
-		var items []amountItem
-		if order.LineCount > 1000 {
-			return ErrSchema
-		}
-		if err := tx.Table("order_items i").Joins("JOIN order_line_items l ON l.id=i.item_id AND l.deleted_at IS NULL").Where("i.order_id=? AND i.version=? AND i.deleted_at IS NULL", id, order.Version).
-			Select(`i.id,i.item_id,CAST(COALESCE(i.unit_price,l.unit_price) AS CHAR) AS unit_price,COALESCE(i.raw_unit_price,l.raw_unit_price) AS raw_unit_price,CAST(i.quantity AS CHAR) AS quantity,i.raw_quantity,l.is_tax_inclusive,CAST(i.fulfilled_quantity AS CHAR) AS fulfilled,i.raw_fulfilled_quantity AS raw_fulfilled,CAST(i.shipped_quantity AS CHAR) AS shipped,i.raw_shipped_quantity AS raw_shipped,CAST(i.return_requested_quantity AS CHAR) AS requested,i.raw_return_requested_quantity AS raw_requested,CAST(i.return_received_quantity AS CHAR) AS received,i.raw_return_received_quantity AS raw_received,CAST(i.return_dismissed_quantity AS CHAR) AS dismissed,i.raw_return_dismissed_quantity AS raw_dismissed,CAST(i.written_off_quantity AS CHAR) AS written_off,i.raw_written_off_quantity AS raw_written_off`).Order("i.id ASC").Limit(1001).Scan(&items).Error; err != nil {
-			return err
-		}
-		if int64(len(items)) != order.LineCount {
-			return ErrSchema
-		}
-		result = AmountDetail{OrderID: id, Version: order.Version, CurrencyCode: order.CurrencyCode, Lines: make([]AmountLine, 0, len(items)), ShippingMethods: []AmountShipping{}}
-		itemIDs := make([]string, 0, len(items))
-		seen := map[string]bool{}
-		for _, row := range items {
-			if seen[row.ItemID] {
-				return ErrSchema
-			}
-			seen[row.ItemID] = true
-			itemIDs = append(itemIDs, row.ItemID)
-			price, err := amountNumber(row.UnitPrice, row.RawUnitPrice)
-			if err != nil {
-				return err
-			}
-			quantity, err := amountNumber(row.Quantity, &row.RawQuantity)
-			if err != nil {
-				return err
-			}
-			item := totals.Item{ID: row.ID, UnitPrice: price, Quantity: quantity, IsTaxInclusive: &row.IsTaxInclusive}
-			for _, p := range []struct {
-				value, raw string
-				target     **totals.Number
-			}{
-				{row.Fulfilled, row.RawFulfilled, &item.Detail.Fulfilled}, {row.Shipped, row.RawShipped, &item.Detail.Shipped},
-				{row.Requested, row.RawRequested, &item.Detail.ReturnRequested}, {row.Received, row.RawReceived, &item.Detail.ReturnReceived},
-				{row.Dismissed, row.RawDismissed, &item.Detail.ReturnDismissed}, {row.WrittenOff, row.RawWrittenOff, &item.Detail.WrittenOff},
-			} {
-				n, err := amountNumber(p.value, &p.raw)
-				if err != nil {
-					return err
-				}
-				*p.target = &n
-			}
-			input.Items = append(input.Items, item)
-			unit, _ := totals.Resolve(price)
-			qty, _ := totals.Resolve(quantity)
-			result.Lines = append(result.Lines, AmountLine{ID: row.ID, ItemID: row.ItemID, UnitPrice: unit, Quantity: qty})
-		}
-		if err := loadItemAmounts(tx, &input, itemIDs, order.Version); err != nil {
-			return err
-		}
-		var shippingCount int64
-		if tx.Table("order_shipping_versions").Where("order_id=? AND version=? AND deleted_at IS NULL", id, order.Version).Count(&shippingCount).Error != nil || shippingCount > 100 {
-			return ErrSchema
-		}
-		var shipping []amountShipping
-		if err := tx.Table("order_shipping_versions v").Joins("JOIN order_shipping_methods m ON m.id=v.shipping_method_id AND m.deleted_at IS NULL").Where("v.order_id=? AND v.version=? AND v.deleted_at IS NULL", id, order.Version).
-			Select("v.id,m.id AS method_id,m.name,CAST(m.amount AS CHAR) AS amount,m.raw_amount,m.is_tax_inclusive").Order("v.id ASC").Limit(101).Scan(&shipping).Error; err != nil {
-			return err
-		}
-		if int64(len(shipping)) != shippingCount {
-			return ErrSchema
-		}
-		methodIDs := make([]string, 0, len(shipping))
-		seen = map[string]bool{}
-		for _, row := range shipping {
-			if seen[row.MethodID] {
-				return ErrSchema
-			}
-			seen[row.MethodID] = true
-			methodIDs = append(methodIDs, row.MethodID)
-			n, err := amountNumber(row.Amount, &row.RawAmount)
-			if err != nil {
-				return err
-			}
-			input.ShippingMethods = append(input.ShippingMethods, totals.Shipping{ID: row.ID, Amount: n, IsTaxInclusive: &row.IsTaxInclusive})
-			effective, _ := totals.Resolve(n)
-			result.ShippingMethods = append(result.ShippingMethods, AmountShipping{ID: row.ID, ShippingMethodID: row.MethodID, Name: row.Name, Amount: effective, IsTaxInclusive: row.IsTaxInclusive})
-		}
-		if err := loadShippingAmounts(tx, &input, methodIDs, order.Version); err != nil {
-			return err
-		}
-		var credits []struct{ Amount, RawAmount string }
-		if tx.Table("order_credit_lines").Select("CAST(amount AS CHAR) AS amount,raw_amount").Where("order_id=? AND version=? AND deleted_at IS NULL", id, order.Version).Order("id ASC").Limit(1001).Scan(&credits).Error != nil || len(credits) > 1000 {
-			return ErrSchema
-		}
-		for _, row := range credits {
-			n, err := amountNumber(row.Amount, &row.RawAmount)
-			if err != nil {
-				return err
-			}
-			input.CreditLines = append(input.CreditLines, totals.Credit{Amount: &n})
-		}
-		var summaries []struct{ Totals *string }
-		if tx.Table("order_summaries").Select("totals").Where("order_id=? AND version=? AND deleted_at IS NULL", id, order.Version).Limit(2).Scan(&summaries).Error != nil || len(summaries) > 1 {
-			return ErrSchema
-		}
-		var transaction *string
-		if len(summaries) == 1 {
-			var err error
-			input.Summary, transaction, err = transactionSummary(summaries[0].Totals)
-			if err != nil {
-				return err
-			}
-		}
-		calculated, err := totals.Calculate(input)
-		if err != nil {
-			return ErrSchema
-		}
-		result.Totals = calculated.Totals
-		for i, row := range calculated.Items {
-			result.Lines[i].Totals = row.Totals
-		}
-		for i, row := range calculated.ShippingMethods {
-			result.ShippingMethods[i].Totals = row.Totals
-		}
-		if calculated.Summary != nil {
-			result.Summary = &AmountSummary{TransactionTotal: *transaction, PendingDifference: calculated.Summary.PendingDifference}
-		}
-		return nil
+		var err error
+		result, err = ReadAmountSnapshot(tx, id)
+		return err
 	}, &sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true})
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		platform.Fail(c, 404, "orders.not_found", "Order not found")
@@ -215,6 +86,151 @@ func (h Handler) Amounts(c *gin.Context) {
 		return
 	}
 	c.JSON(200, result)
+}
+
+// ReadAmountSnapshot is an internal financial projection in the caller-owned
+// transaction. The caller must establish order access; it grants no ownership.
+// Reused by the HTTP reader and checkout copy verification to avoid two totals
+// implementations. It does not refresh catalog prices or classify cash.
+func ReadAmountSnapshot(tx *gorm.DB, id string) (AmountDetail, error) {
+	if tx == nil || tx.Statement == nil {
+		return AmountDetail{}, ErrSchema
+	}
+	if _, ok := tx.Statement.ConnPool.(gorm.TxCommitter); !ok {
+		return AmountDetail{}, ErrSchema
+	}
+	if err := Ready(tx.Statement.Context, tx); err != nil {
+		return AmountDetail{}, err
+	}
+	var order Summary
+	if err := tx.Table("orders o").Select(summaryColumns()).Where("o.id=? AND o.deleted_at IS NULL", id).Take(&order).Error; err != nil {
+		return AmountDetail{}, err
+	}
+	var currency struct{ DecimalDigits int }
+	if tx.Table("commerce_currencies").Select("decimal_digits").Where("code=? AND deleted_at IS NULL", order.CurrencyCode).Take(&currency).Error != nil {
+		return AmountDetail{}, ErrSchema
+	}
+	input := totals.Input{CurrencyDecimals: &currency.DecimalDigits}
+	var items []amountItem
+	if order.LineCount > 1000 {
+		return AmountDetail{}, ErrSchema
+	}
+	if err := tx.Table("order_items i").Joins("JOIN order_line_items l ON l.id=i.item_id AND l.deleted_at IS NULL").Where("i.order_id=? AND i.version=? AND i.deleted_at IS NULL", id, order.Version).
+		Select(`i.id,i.item_id,CAST(COALESCE(i.unit_price,l.unit_price) AS CHAR) AS unit_price,COALESCE(i.raw_unit_price,l.raw_unit_price) AS raw_unit_price,CAST(i.quantity AS CHAR) AS quantity,i.raw_quantity,l.is_tax_inclusive,CAST(i.fulfilled_quantity AS CHAR) AS fulfilled,i.raw_fulfilled_quantity AS raw_fulfilled,CAST(i.shipped_quantity AS CHAR) AS shipped,i.raw_shipped_quantity AS raw_shipped,CAST(i.return_requested_quantity AS CHAR) AS requested,i.raw_return_requested_quantity AS raw_requested,CAST(i.return_received_quantity AS CHAR) AS received,i.raw_return_received_quantity AS raw_received,CAST(i.return_dismissed_quantity AS CHAR) AS dismissed,i.raw_return_dismissed_quantity AS raw_dismissed,CAST(i.written_off_quantity AS CHAR) AS written_off,i.raw_written_off_quantity AS raw_written_off`).Order("i.id ASC").Limit(1001).Scan(&items).Error; err != nil {
+		return AmountDetail{}, err
+	}
+	if int64(len(items)) != order.LineCount {
+		return AmountDetail{}, ErrSchema
+	}
+	result := AmountDetail{OrderID: id, Version: order.Version, CurrencyCode: order.CurrencyCode, Lines: make([]AmountLine, 0, len(items)), ShippingMethods: []AmountShipping{}}
+	itemIDs := make([]string, 0, len(items))
+	seen := map[string]bool{}
+	for _, row := range items {
+		if seen[row.ItemID] {
+			return AmountDetail{}, ErrSchema
+		}
+		seen[row.ItemID] = true
+		itemIDs = append(itemIDs, row.ItemID)
+		price, err := amountNumber(row.UnitPrice, row.RawUnitPrice)
+		if err != nil {
+			return AmountDetail{}, err
+		}
+		quantity, err := amountNumber(row.Quantity, &row.RawQuantity)
+		if err != nil {
+			return AmountDetail{}, err
+		}
+		item := totals.Item{ID: row.ID, UnitPrice: price, Quantity: quantity, IsTaxInclusive: &row.IsTaxInclusive}
+		for _, p := range []struct {
+			value, raw string
+			target     **totals.Number
+		}{
+			{row.Fulfilled, row.RawFulfilled, &item.Detail.Fulfilled}, {row.Shipped, row.RawShipped, &item.Detail.Shipped},
+			{row.Requested, row.RawRequested, &item.Detail.ReturnRequested}, {row.Received, row.RawReceived, &item.Detail.ReturnReceived},
+			{row.Dismissed, row.RawDismissed, &item.Detail.ReturnDismissed}, {row.WrittenOff, row.RawWrittenOff, &item.Detail.WrittenOff},
+		} {
+			n, err := amountNumber(p.value, &p.raw)
+			if err != nil {
+				return AmountDetail{}, err
+			}
+			*p.target = &n
+		}
+		input.Items = append(input.Items, item)
+		unit, _ := totals.Resolve(price)
+		qty, _ := totals.Resolve(quantity)
+		result.Lines = append(result.Lines, AmountLine{ID: row.ID, ItemID: row.ItemID, UnitPrice: unit, Quantity: qty})
+	}
+	if err := loadItemAmounts(tx, &input, itemIDs, order.Version); err != nil {
+		return AmountDetail{}, err
+	}
+	var shippingCount int64
+	if tx.Table("order_shipping_versions").Where("order_id=? AND version=? AND deleted_at IS NULL", id, order.Version).Count(&shippingCount).Error != nil || shippingCount > 100 {
+		return AmountDetail{}, ErrSchema
+	}
+	var shipping []amountShipping
+	if err := tx.Table("order_shipping_versions v").Joins("JOIN order_shipping_methods m ON m.id=v.shipping_method_id AND m.deleted_at IS NULL").Where("v.order_id=? AND v.version=? AND v.deleted_at IS NULL", id, order.Version).
+		Select("v.id,m.id AS method_id,m.name,CAST(m.amount AS CHAR) AS amount,m.raw_amount,m.is_tax_inclusive").Order("v.id ASC").Limit(101).Scan(&shipping).Error; err != nil {
+		return AmountDetail{}, err
+	}
+	if int64(len(shipping)) != shippingCount {
+		return AmountDetail{}, ErrSchema
+	}
+	methodIDs := make([]string, 0, len(shipping))
+	seen = map[string]bool{}
+	for _, row := range shipping {
+		if seen[row.MethodID] {
+			return AmountDetail{}, ErrSchema
+		}
+		seen[row.MethodID] = true
+		methodIDs = append(methodIDs, row.MethodID)
+		n, err := amountNumber(row.Amount, &row.RawAmount)
+		if err != nil {
+			return AmountDetail{}, err
+		}
+		input.ShippingMethods = append(input.ShippingMethods, totals.Shipping{ID: row.ID, Amount: n, IsTaxInclusive: &row.IsTaxInclusive})
+		effective, _ := totals.Resolve(n)
+		result.ShippingMethods = append(result.ShippingMethods, AmountShipping{ID: row.ID, ShippingMethodID: row.MethodID, Name: row.Name, Amount: effective, IsTaxInclusive: row.IsTaxInclusive})
+	}
+	if err := loadShippingAmounts(tx, &input, methodIDs, order.Version); err != nil {
+		return AmountDetail{}, err
+	}
+	var credits []struct{ Amount, RawAmount string }
+	if tx.Table("order_credit_lines").Select("CAST(amount AS CHAR) AS amount,raw_amount").Where("order_id=? AND version=? AND deleted_at IS NULL", id, order.Version).Order("id ASC").Limit(1001).Scan(&credits).Error != nil || len(credits) > 1000 {
+		return AmountDetail{}, ErrSchema
+	}
+	for _, row := range credits {
+		n, err := amountNumber(row.Amount, &row.RawAmount)
+		if err != nil {
+			return AmountDetail{}, err
+		}
+		input.CreditLines = append(input.CreditLines, totals.Credit{Amount: &n})
+	}
+	var summaries []struct{ Totals *string }
+	if tx.Table("order_summaries").Select("totals").Where("order_id=? AND version=? AND deleted_at IS NULL", id, order.Version).Limit(2).Scan(&summaries).Error != nil || len(summaries) > 1 {
+		return AmountDetail{}, ErrSchema
+	}
+	var transaction *string
+	if len(summaries) == 1 {
+		var err error
+		input.Summary, transaction, err = transactionSummary(summaries[0].Totals)
+		if err != nil {
+			return AmountDetail{}, err
+		}
+	}
+	calculated, err := totals.Calculate(input)
+	if err != nil {
+		return AmountDetail{}, ErrSchema
+	}
+	result.Totals = calculated.Totals
+	for i, row := range calculated.Items {
+		result.Lines[i].Totals = row.Totals
+	}
+	for i, row := range calculated.ShippingMethods {
+		result.ShippingMethods[i].Totals = row.Totals
+	}
+	if calculated.Summary != nil {
+		result.Summary = &AmountSummary{TransactionTotal: *transaction, PendingDifference: calculated.Summary.PendingDifference}
+	}
+	return result, nil
 }
 
 func loadItemAmounts(tx *gorm.DB, input *totals.Input, ids []string, version int) error {

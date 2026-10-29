@@ -23,10 +23,11 @@ def docker(*args, timeout=90):
 
 
 def main():
-    if sys.argv[1:] not in ([], ['--cart-runtime-only'], ['--promotion-usage-only'], ['--customer-accounts-only'], ['--store-collections-only'], ['--cart-contacts-only'], ['--cart-delivery-only'], ['--initial-payment-only'], ['--payment-status-only'], ['--order-numbering-only']):
+    if sys.argv[1:] not in ([], ['--cart-runtime-only'], ['--promotion-usage-only'], ['--customer-accounts-only'], ['--store-collections-only'], ['--cart-contacts-only'], ['--cart-delivery-only'], ['--initial-payment-only'], ['--payment-status-only'], ['--order-numbering-only'], ['--order-snapshot-only']):
         raise RuntimeError('Unknown rehearsal option')
     numbering_only = sys.argv[1:] == ['--order-numbering-only']
-    status_only = sys.argv[1:] == ['--payment-status-only']
+    snapshot_only = sys.argv[1:] == ['--order-snapshot-only']
+    status_only = snapshot_only or sys.argv[1:] == ['--payment-status-only']
     initial_only = status_only or sys.argv[1:] == ['--initial-payment-only']
     delivery_only = initial_only or sys.argv[1:] == ['--cart-delivery-only']
     contacts_only = delivery_only or sys.argv[1:] == ['--cart-contacts-only']
@@ -109,6 +110,8 @@ def main():
             suites = ['AdminAuthentication']
         if collection_only:
             suites = ['ProductPrices']
+        if snapshot_only:
+            suites = ['OrderRead','CartRuntime']
         if numbering_only:
             suites = ['OrderNumbering']
         output, errors = b'', b''
@@ -160,14 +163,18 @@ def main():
             if len(initial_markers)!=1 or len(initial_http_markers)!=1: raise RuntimeError('Initial payment evidence missing')
             status_markers=[line.split('CART_PAYMENT_OBSERVATION_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_PAYMENT_OBSERVATION_REHEARSAL ' in line]
             status_http_markers=[line.split('CART_PAYMENT_OBSERVATION_HTTP_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_PAYMENT_OBSERVATION_HTTP_REHEARSAL ' in line]
+            order_reader_markers=[line.split('ORDER_READ_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_READ_REHEARSAL ' in line]
+            if snapshot_only and len(order_reader_markers)!=1:raise RuntimeError('Existing order reader regression evidence missing')
+            snapshot_markers=[line.split('CART_ORDER_SNAPSHOT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_ORDER_SNAPSHOT_REHEARSAL ' in line]
+            if len(snapshot_markers)!=1:raise RuntimeError('Paid order snapshot evidence missing')
             if len(status_markers)!=1 or len(status_http_markers)!=1:raise RuntimeError('Payment status verification missing')
             counts = json.loads(markers[0])
             http_markers = [line.split('CART_CONTACT_HTTP_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_CONTACT_HTTP_REHEARSAL ' in line]
             if len(http_markers)!=1: raise RuntimeError('Cart contact HTTP verification missing')
-            files = [p.relative_to(ROOT).as_posix() for folder in ('cart','schema','identity','platform','sessionstore','payments') for p in (ROOT/'retail/backend/internal'/folder).glob('*.go')]
+            files = [p.relative_to(ROOT).as_posix() for folder in ('cart','schema','identity','platform','sessionstore','payments','orders') for p in (ROOT/'retail/backend/internal'/folder).glob('*.go')]
             files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
             files += ['retail/scripts/test-admin-auth.py','retail/backend/cmd/api/main.go']
-            report = {'scope':'Owned Gin/MySQL/Redis payment creation and authoritative return observation with isolated adapter; no real external provider, browser, reservation or order acceptance', 'counts':counts, 'http':json.loads(http_markers[0]), 'payment_status':json.loads(status_markers[0]),'payment_status_http':json.loads(status_http_markers[0]),'initial_payment':json.loads(initial_markers[0]),'initial_payment_http':json.loads(initial_http_markers[0]), 'delivery':json.loads(delivery_markers[0]), 'delivery_http':json.loads(delivery_http_markers[0]),
+            report = {'scope':'Owned Gin/MySQL/Redis payment creation and authoritative return observation with isolated adapter; no real external provider, browser, reservation or order acceptance', 'counts':counts,'existing_order_reader':json.loads(order_reader_markers[0]) if snapshot_only else None,'order_snapshot':json.loads(snapshot_markers[0]), 'http':json.loads(http_markers[0]), 'payment_status':json.loads(status_markers[0]),'payment_status_http':json.loads(status_http_markers[0]),'initial_payment':json.loads(initial_markers[0]),'initial_payment_http':json.loads(initial_http_markers[0]), 'delivery':json.loads(delivery_markers[0]), 'delivery_http':json.loads(delivery_http_markers[0]),
                       'migrations':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),
                       'includes_uncommitted_payment_0037':(ROOT/'retail/backend/migrations/0037_mollie_notification_inbox.sql').exists(),
                       'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_cpus':1,'redis_memory_mib':128,'published_ports':0,'external_network':False},
@@ -588,7 +595,7 @@ def main():
         if owned_binary and binary.exists():
             binary.unlink()
     report['cleanup'] = 'both owned containers and temporary runner removed'
-    report_name = 'order-numbering-runtime-report.json' if numbering_only else 'cart-payment-status-runtime-report.json' if status_only else 'cart-initial-payment-runtime-report.json' if initial_only else 'cart-delivery-runtime-report.json' if delivery_only else 'cart-contacts-runtime-report.json' if contacts_only else 'store-collections-runtime-report.json' if collection_only else 'gin-customer-accounts-report.json' if customer_only else 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
+    report_name = 'cart-order-snapshot-runtime-report.json' if snapshot_only else 'order-numbering-runtime-report.json' if numbering_only else 'cart-payment-status-runtime-report.json' if status_only else 'cart-initial-payment-runtime-report.json' if initial_only else 'cart-delivery-runtime-report.json' if delivery_only else 'cart-contacts-runtime-report.json' if contacts_only else 'store-collections-runtime-report.json' if collection_only else 'gin-customer-accounts-report.json' if customer_only else 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
     (ROOT / 'docs/migration' / report_name).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'counts': counts, 'cleanup': 'complete'}))
 
