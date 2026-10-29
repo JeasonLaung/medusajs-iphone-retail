@@ -2,6 +2,7 @@
 
 Default: account/order attachment, with an isolated adapter-produced order.
 --promotions: checkout discount mutations. Neither accepts real payments/mail.
+--checkout: addresses through payment/confirmation with an isolated provider.
 """
 import json
 import os
@@ -40,9 +41,10 @@ def wait_owned(process, timeout):
 
 
 def main():
-    if sys.argv[1:] not in ([], ['--promotions']):
+    if sys.argv[1:] not in ([], ['--promotions'], ['--checkout']):
         raise RuntimeError('Unknown joint rehearsal option')
     promotion = sys.argv[1:] == ['--promotions']
+    checkout = sys.argv[1:] == ['--checkout']
     log_prefix = 'promotion-joint' if promotion else 'customer-orders-joint'
     fixture_switch = 'PROMOTION_BROWSER_FIXTURE' if promotion else 'CUSTOMER_ORDERS_BROWSER_FIXTURE'
     fixture_key = 'PROMOTION_FIXTURE_KEY' if promotion else 'CUSTOMER_ORDERS_FIXTURE_KEY'
@@ -50,6 +52,10 @@ def main():
     browser_marker = 'PROMOTION_JOINT_BROWSER ' if promotion else 'CUSTOMER_ORDERS_JOINT_BROWSER '
     sql_marker = 'PROMOTION_JOINT_SQL ' if promotion else 'CUSTOMER_ORDERS_JOINT_SQL '
     regression_marker = 'CART_PROMOTION_COMMAND_REHEARSAL ' if promotion else 'CUSTOMER_ORDER_OWNERSHIP_REHEARSAL '
+    if checkout:
+        log_prefix, fixture_switch, fixture_key = 'checkout-joint', 'CHECKOUT_BROWSER_FIXTURE', 'CHECKOUT_FIXTURE_KEY'
+        test_script = 'tests/checkout.live.mjs'
+        browser_marker, sql_marker, regression_marker = 'CHECKOUT_JOINT_BROWSER ', 'CHECKOUT_JOINT_SQL ', 'CART_COMPLETION_HTTP_REHEARSAL '
     if shutil.disk_usage(ROOT).free < 2 * (1 << 30):
         raise RuntimeError('At least 2 GiB free disk required')
     for image in ['mysql:8.4', 'redis:7-alpine']:
@@ -123,10 +129,10 @@ def main():
         if len(markers) != 1 or sql_marker not in sql_output or regression_marker not in sql_output or '\nPASS\n' not in sql_output:
             raise RuntimeError('Joint evidence incomplete')
         report = {'format_version': 1, 'node_version': version, 'browser': json.loads(markers[0]), 'post_browser_sql_regression_passed': True,
-                  'sql_receipts_checked': True, 'scope': 'checkout promotions' if promotion else 'customer order attachment', 'production_services_or_data_used': False, 'full_storefront_accepted': False,
+                  'sql_receipts_checked': True, 'scope': 'checkout pipeline' if checkout else 'checkout promotions' if promotion else 'customer order attachment', 'production_services_or_data_used': False, 'full_storefront_accepted': False,
                   'resources': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                 'database_ports_published': False, 'api_port_loopback_only': True, 'network_egress_restricted': False}}
-        if not promotion:
+        if not promotion and not checkout:
             report['sql_attachment_and_unique_audit_checked'] = True
     finally:
         if process is not None and process.poll() is None:
@@ -147,8 +153,8 @@ def main():
             require(docker('network', 'rm', network), 'Owned network cleanup failed')
         binary.unlink(missing_ok=True)
     report['cleanup_complete'] = True
-    (ROOT / ('docs/migration/promotion-joint-report.json' if promotion else 'docs/migration/customer-orders-joint-report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'joint_browser': 'passed', 'scope': 'promotions' if promotion else 'customer_orders', 'sql_regressions': 'passed', 'cleanup': 'complete'}))
+    (ROOT / ('docs/migration/checkout-joint-report.json' if checkout else 'docs/migration/promotion-joint-report.json' if promotion else 'docs/migration/customer-orders-joint-report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+    print(json.dumps({'joint_browser': 'passed', 'scope': 'checkout' if checkout else 'promotions' if promotion else 'customer_orders', 'sql_regressions': 'passed', 'cleanup': 'complete'}))
 
 
 if __name__ == '__main__':
