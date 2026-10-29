@@ -98,5 +98,6 @@ func checkCartShippingQuotes(t *testing.T, ctx context.Context, db *gorm.DB, ref
 	if _, err := cart.ReadManualShippingQuotes(ctx, db, "shop", ref, "1", providers, time.Time{}); err != cart.ErrInput {
 		t.Fatal("zero time cart quote accepted")
 	}
+	checkCartShippingSelection(t, ctx, db, ref, fingerprint)
 	t.Log(`CART_SHIPPING_QUOTES_REHEARSAL {"persisted_address_channel_region_currency":true,"stored_region_changes_price":true,"exact_manual_price":true,"uncovered_profiles_retained":true,"custom_context_not_fabricated":true,"missing_address_original_geo_semantics":true,"deleted_and_oversized_address_rejected":true,"registered_providers_only":true,"stale_version_rejected":true,"saved_data_and_reservations_unchanged":true,"autocommit_and_zero_time_rejected":true,"inventory_checked":false,"shipping_saved":false,"checkout":false}`)
 }

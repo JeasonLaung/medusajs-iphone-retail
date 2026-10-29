@@ -256,7 +256,10 @@ def main():
             quote_markers = [line.split('CART_SHIPPING_QUOTES_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_SHIPPING_QUOTES_REHEARSAL ' in line]
             if len(quote_markers) != 1:
                 raise RuntimeError('Cart shipping quote evidence missing')
-            files += ['retail/backend/internal/identity/cart_shipping_profiles_test.go','retail/backend/internal/identity/cart_shipping_quotes_test.go']
+            selection_markers = [line.split('CART_SHIPPING_SELECTION_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_SHIPPING_SELECTION_REHEARSAL ' in line]
+            if len(selection_markers) != 1:
+                raise RuntimeError('Cart shipping selection evidence missing')
+            files += ['retail/backend/internal/identity/cart_shipping_profiles_test.go','retail/backend/internal/identity/cart_shipping_quotes_test.go','retail/backend/internal/identity/cart_shipping_selection_test.go']
             manual_markers = [line.split('MANUAL_SHIPPING_QUOTES_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'MANUAL_SHIPPING_QUOTES_REHEARSAL ' in line]
             if len(manual_markers) != 1:
                 raise RuntimeError('Manual shipping quote evidence missing')
@@ -377,6 +380,7 @@ def main():
                       'manual_shipping_quotes': json.loads(manual_markers[0]),
                       'cart_shipping_profiles': json.loads(profile_markers[0]),
                       'cart_shipping_quotes': json.loads(quote_markers[0]),
+                      'cart_shipping_selection': json.loads(selection_markers[0]),
                       'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
         password = ''
