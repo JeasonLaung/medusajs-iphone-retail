@@ -1,5 +1,5 @@
 ---
-import {GIN_API_ORIGIN} from 'astro:env/server'
+import {GIN_API_ORIGIN,STOREFRONT_ORIGIN} from 'astro:env/server'
 import Storefront,{type Props as StorefrontProps} from '../../../layouts/Storefront.astro'
 import {loadProductPage,type ProductPageData} from '../../../lib/product-page'
 import {loadLocales} from '../../../lib/locales'
@@ -40,7 +40,7 @@ const copy=getProductCopy(segment)
     {data.product.display.source==='swappie-html-snapshot' && <p class={styles.muted+' mt-4 text-center'}>{copy.imageNote}</p>}
    </div>
    <section aria-labelledby="product-title" id="product-info">
-    <GinProductActions product={data.product} regionID={data.region.id} currency={data.region.currency_code} segment={segment} initialLocation={Astro.url.pathname+Astro.url.search} initialVariantID={data.requestedVariantID} client:load/>
+    <GinProductActions product={data.product} regionID={data.region.id} currency={data.region.currency_code} commerceEnabled={!!STOREFRONT_ORIGIN&&Astro.url.origin===STOREFRONT_ORIGIN} segment={segment} initialLocation={Astro.url.pathname+Astro.url.search} initialVariantID={data.requestedVariantID} client:load/>
    </section>
   </div>
   <ProductDetails product={data.product} locale={segment}/>

@@ -1,0 +1,19 @@
+---
+import {GIN_API_ORIGIN,STOREFRONT_ORIGIN} from 'astro:env/server'
+import Storefront from '../../layouts/Storefront.astro'
+import GinCart from '../../components/cart/gin-cart'
+import {loadPublicPage} from '../../lib/public-page'
+import {getCartCopy} from '../../components/cart/i18n'
+const segment=(Astro.params.countryCode??'').toLowerCase(),copy=getCartCopy(segment)
+let shell:Awaited<ReturnType<typeof loadPublicPage>>=null,unavailable=false
+try{shell=await loadPublicPage(GIN_API_ORIGIN,segment)}catch{unavailable=true}
+if(unavailable)Astro.response.status=503
+else if(!shell)Astro.response.status=404
+const region=shell?.regions.find(r=>r.countries.some(c=>c.iso_2===segment.slice(0,2)))
+const commerceEnabled=!!STOREFRONT_ORIGIN&&Astro.url.origin===STOREFRONT_ORIGIN
+const message=unavailable?(segment.endsWith('-zh')?'购物车暂时无法加载，请稍后重试。':'The cart is temporarily unavailable. Please try again.'):(segment.endsWith('-zh')?'未找到页面':'Page not found')
+Astro.response.headers.set('Cache-Control','private, no-store')
+---
+<Storefront segment={segment} title={shell?copy.cart:message} canonicalPath={shell?`/${segment}/cart`:undefined} shell={shell??undefined}>
+ {region?<GinCart regionID={region.id} currency={region.currency_code} segment={segment} commerceEnabled={commerceEnabled} client:load/>:<div class="content-container py-16"><h1>{message}</h1></div>}
+</Storefront>

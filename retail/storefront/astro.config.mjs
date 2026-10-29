@@ -10,5 +10,5 @@ export default defineConfig({
  // Local development hosts only. Never trust arbitrary Host/forwarded headers
  // when constructing canonical and social-image URLs in server-rendered pages.
  security:{allowedDomains:[{hostname:'127.0.0.1'},{hostname:'localhost'}]},
- env:{schema:{GIN_API_ORIGIN:envField.string({context:'server',access:'secret',optional:true})}},
+ env:{schema:{GIN_API_ORIGIN:envField.string({context:'server',access:'secret',optional:true}),STOREFRONT_ORIGIN:envField.string({context:'server',access:'secret',optional:true})}},
 })

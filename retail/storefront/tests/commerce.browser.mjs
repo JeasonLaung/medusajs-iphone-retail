@@ -1,29 +1,37 @@
 import assert from 'node:assert/strict'
 import {createRequire} from 'node:module'
 import {fileURLToPath} from 'node:url'
-import {dev} from 'astro'
-import react from '@astrojs/react'
+import {spawn} from 'node:child_process'
+import {once} from 'node:events'
 const require=createRequire(new URL('../../admin/package.json',import.meta.url)),{chromium,expect}=require('@playwright/test')
 const target=new URL(process.env.STOREFRONT_TEST_GIN??'')
 assert.equal(target.protocol,'http:');assert.equal(target.hostname,'127.0.0.1');assert.ok(target.port)
 let server,browser
 try{
- server=await dev({root:new URL('./commerce-fixture/',import.meta.url),configFile:false,output:'server',integrations:[react()],devToolbar:{enabled:false},server:{host:'127.0.0.1',port:19200},vite:{server:{strictPort:true,proxy:{'/api':{target:target.origin,changeOrigin:false}}},resolve:{dedupe:['react','react-dom']}},logLevel:'error'})
  const origin='http://127.0.0.1:19200'
+ server=spawn(process.execPath,['scripts/start.mjs'],{env:{...process.env,HOST:'127.0.0.1',PORT:'19200',GIN_API_ORIGIN:target.origin,STOREFRONT_ORIGIN:origin,ASTRO_TELEMETRY_DISABLED:'1'},stdio:['ignore','ignore','pipe'],windowsHide:true})
+ let stderr='';server.stderr.on('data',data=>{stderr=(stderr+data).slice(-4000)})
+ server.on('error',()=>{})
+ let ready=false
+ for(let i=0;i<100;i++){
+  assert.equal(server.exitCode,null,'Owned production Astro failed to start')
+  try{if((await fetch(origin+'/health')).status===200){ready=true;break}}catch{}
+  await new Promise(resolve=>setTimeout(resolve,100))
+ }
+ assert.ok(ready,'Owned production Astro not ready')
  const warm=await fetch(origin+'/dk-en/products/browser-add-product',{signal:AbortSignal.timeout(60000)})
- assert.equal(warm.status,200);assert.match(await warm.text(),/Owned commerce fixture/)
+ assert.equal(warm.status,200);assert.match(await warm.text(),/Browser phone/)
  browser=await chromium.launch({headless:true,...(process.env.ADMIN_TEST_BROWSER?{executablePath:process.env.ADMIN_TEST_BROWSER}:{})})
  const context=await browser.newContext({viewport:{width:390,height:900}}),page=await context.newPage(),errors=[]
  page.on('pageerror',e=>{errors.push(e.message);console.error('Commerce page error',e.message)});page.on('console',m=>{if(m.type()==='error')console.error('Commerce console',m.text())});page.setDefaultTimeout(15000)
- await page.goto(origin+'/dk-en/cart?closed')
- await expect(page.getByRole('status')).toHaveText('Unavailable')
- await expect(page.getByTestId('product-row')).toHaveCount(0)
- await page.goto(origin+'/dk-en/products/browser-add-product?closed')
- await expect(page.getByTestId('add-product-button')).toBeDisabled()
  // Initialization dependency failure must remain an error, not become an empty
  // cart with an enabled purchase button. No backend response is forged happy.
  await page.route('**/api/store/cart',r=>r.fulfill({status:503,json:{}}))
  const failedInitialization=page.waitForResponse(r=>r.url()===origin+'/api/store/cart',{timeout:30000})
+ const foreign=await context.request.post(origin+'/api/store/cart-sessions',{headers:{Origin:'https://foreign.example','Content-Type':'application/json'},data:'{}'})
+ assert.equal(foreign.status(),403)
+ const unsupported=await context.request.get(origin+'/api/store/cart?store=other')
+ assert.equal(unsupported.status(),404)
  await page.goto(origin+'/dk-en/products/browser-add-product')
  assert.equal((await failedInitialization).status(),503)
  await expect(page.getByRole('status')).toContainText('Could not add this item')
@@ -49,6 +57,7 @@ try{
   await expect(page).toHaveURL(origin+'/dk-en/cart')
   await expect(page.getByRole('heading',{name:'Cart',exact:true})).toBeVisible()
   await expect(page.getByTestId('product-row')).toHaveCount(1)
+  await expect(page.getByTestId('nav-cart-link')).toContainText(width===390?'1':'2')
   await expect(page.getByText('Available to order',{exact:true})).toBeVisible()
   await expect(page.getByTestId('product-select-button')).toHaveAttribute('max','4')
   await expect(page.getByTestId('checkout-button')).toHaveCount(0)
@@ -65,6 +74,7 @@ try{
  await page.getByRole('button',{name:'Increase quantity',exact:true}).click()
  await expect(page.getByTestId('product-select-button')).toHaveValue('3')
  await expect(page.getByTestId('cart-total')).toHaveAttribute('data-value','240.000000000000000000003')
+ await expect(page.getByTestId('nav-cart-link')).toHaveAttribute('aria-label','Cart (3)')
  await page.screenshot({path:fileURLToPath(new URL('../../../logs/gin-migration/commerce-cart-live.png',import.meta.url)),fullPage:true})
  const lost=[]
  const drop=async route=>{
@@ -90,6 +100,7 @@ try{
  const replay=await recovery
  assert.equal(replay.headers()['idempotency-key'],lost[0].key);assert.deepEqual(replay.postDataJSON(),lost[0].body)
  await expect(page.getByTestId('cart-recover-button')).toHaveCount(0)
+ await expect(page.getByTestId('nav-cart-link')).toHaveAttribute('aria-label','Cart (4)')
  await expect(page.getByTestId('product-select-button')).toHaveValue('4')
  await expect(page.getByTestId('cart-total')).toHaveAttribute('data-value','320.000000000000000000004')
  await expect(page.getByRole('button',{name:'Increase quantity',exact:true})).toBeDisabled()
@@ -114,9 +125,10 @@ try{
  assert.equal(removalReplay.headers()['idempotency-key'],lost[1].key);assert.deepEqual(removalReplay.postDataJSON(),lost[1].body)
  await expect(page.getByTestId('cart-recover-button')).toHaveCount(0)
  await expect(page.getByTestId('empty-cart-message')).toBeVisible()
+ await expect(page.getByTestId('nav-cart-link')).toHaveAttribute('aria-label','Cart (0)')
  assert.equal(await page.evaluate(()=>localStorage.getItem('retail.cart.intent.v1')),null)
  await page.screenshot({path:fileURLToPath(new URL('../../../logs/gin-migration/commerce-cart-empty.png',import.meta.url)),fullPage:true})
  assert.deepEqual(errors,[])
  await context.close()
- console.log('CART_COMMERCE_BUTTON_BROWSER '+JSON.stringify({actual_astro_react_button:true,actual_gin_mysql_redis:true,initialization_failure_disabled:true,explicit_closed_disabled:true,viewports:[390,1440],loading_state:true,real_navigation:true,reload_merge_tier_price:true,original_cart_component:true,current_variant_stock:true,failed_observation_preserves_amount_and_removal:true,quantity_command:true,lost_quantity_and_removal_response_recovery:true,exact_original_operation_keys:true,explicit_recovery_only:true,noncredential_intent_cleared:true,production_page_mounted:false,full_cart_accepted:false}))
-}finally{await browser?.close();if(server)await server.stop()}
+ console.log('CART_COMMERCE_BUTTON_BROWSER '+JSON.stringify({foreign_origin_and_query_rejected:true,live_header_count:true,formal_private_cart_bridge:true,actual_astro_react_button:true,actual_gin_mysql_redis:true,initialization_failure_disabled:true,viewports:[390,1440],loading_state:true,real_navigation:true,reload_merge_tier_price:true,original_cart_component:true,current_variant_stock:true,failed_observation_preserves_amount_and_removal:true,quantity_command:true,lost_quantity_and_removal_response_recovery:true,exact_original_operation_keys:true,explicit_recovery_only:true,noncredential_intent_cleared:true,production_page_mounted:true,full_cart_accepted:false}))
+}finally{await browser?.close();if(server&&server.exitCode===null){const ended=once(server,'exit');server.kill();await ended}}

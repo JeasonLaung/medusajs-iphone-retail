@@ -61,6 +61,7 @@ export default function GinCart({regionID,currency,segment,commerceEnabled=false
   changing.current=true;const request=++run.current
   try{
    const view=await current.controller.set({cartID:current.view.amounts.cart_id,version:current.view.amounts.version,lineID,quantity})
+   window.dispatchEvent(new Event("retail:cart-changed"))
    if(live.current===context&&request===run.current)setState({...current,view,pending:false,failed:false})
   }catch(error){
    if(live.current===context&&request===run.current)setState({...current,pending:current.controller.pending().kind!=='none',failed:true})
@@ -79,7 +80,7 @@ export default function GinCart({regionID,currency,segment,commerceEnabled=false
     view=cart?await client.retrieveView(cart.id):null
     if(cart&&(!view||view.amounts.currency_code!==currency||BigInt(view.amounts.version)<BigInt(cart.version)))throw Error('Cart unavailable')
    }
-   if(live.current===context&&request===run.current){setState({...current,view,pending:false,failed:false});setError(false)}
+   if(live.current===context&&request===run.current){setState({...current,view,pending:false,failed:false});setError(false);window.dispatchEvent(new Event("retail:cart-changed"))}
   }catch{if(live.current===context&&request===run.current)setState({...current,failed:true,pending:current.controller.pending().kind!=='none'})}
   finally{changing.current=false;if(live.current===context)setRecovering(false)}
  }
