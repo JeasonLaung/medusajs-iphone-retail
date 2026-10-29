@@ -1,3 +1,4 @@
+import PriceCreate from './PriceCreate'
 import {useAccess} from './Permissions'
 import PriceEdit from './PriceEdit'
 import { useEffect, useState } from 'react'
@@ -9,6 +10,7 @@ import type { Copy } from './i18n'
 // Presentation only: trim insignificant zeros with strings, never Number/float.
 export function amountText(value:string|null){return value===null?'—':value.includes('.')?value.replace(/0+$/,'').replace(/\.$/,''):value}
 export default function VariantPrices({productID,variant,copy,onClose,onExpired}:{productID:string;variant:VariantDetail;copy:Copy;onClose():void;onExpired():void}){
+  const [creating,setCreating]=useState(false)
   const access=useAccess(),[editing,setEditing]=useState<string>()
   const [page,setPage]=useState({limit:20,offset:0})
   const [attempt,setAttempt]=useState(0)
@@ -35,9 +37,10 @@ export default function VariantPrices({productID,variant,copy,onClose,onExpired}
       {p.price_list.rules.length?<Table rowKey="id" pagination={false} dataSource={p.price_list.rules} scroll={{x:500}} columns={[{title:copy.ruleAttribute,dataIndex:'attribute'},{title:copy.ruleValue,dataIndex:'value',render:(s:string|null)=><span className="price-rule-value">{s??'NULL'}</span>}]}/>:<Typography.Text type="secondary">{copy.noRules}</Typography.Text>}
     </>:<Alert type="warning" showIcon message={copy.priceListUnavailable} description={p.price_list_id}/>)}
   </Space>
-  return <Drawer open title={copy.configuredPrices} width="min(1000px, 100vw)" onClose={()=>{if(!editing)onClose()}} closable={!editing} maskClosable={!editing} keyboard={!editing} destroyOnHidden extra={<Button disabled={!!editing} aria-label={copy.cancel} onClick={onClose}>{copy.cancel}</Button>}>
+  return <Drawer open title={copy.configuredPrices} width="min(1000px, 100vw)" onClose={()=>{if(!editing&&!creating)onClose()}} closable={!editing&&!creating} maskClosable={!editing&&!creating} keyboard={!editing&&!creating} destroyOnHidden extra={<Button disabled={!!editing||creating} aria-label={copy.cancel} onClick={onClose}>{copy.cancel}</Button>}>
     <Space direction="vertical" size={24} className="full-width">
       <Typography.Text strong>{variant.title}</Typography.Text>
+      {access.can('price.write')&&<Button onClick={()=>setCreating(true)}>{copy.createBasePrice}</Button>}
       <Alert type="info" showIcon message={copy.configuredPricesInfo}/>
       {state.loading?<Spin aria-label={copy.loadingPrices}/>:state.error!==undefined?<Space direction="vertical"><Alert type="error" showIcon message={state.error instanceof APIError&&state.error.status===404?copy.variantNotFound:copy.unavailable}/><Button onClick={()=>setAttempt(n=>n+1)}>{copy.retry}</Button></Space>:d&&<>
         <Descriptions column={1} items={[{key:'sets',label:copy.priceSets,children:d.price_set_ids.join(', ')||'—'}]}/>
@@ -52,6 +55,7 @@ export default function VariantPrices({productID,variant,copy,onClose,onExpired}
         ]} pagination={{current:Math.floor(d.offset/d.limit)+1,pageSize:d.limit,total:d.count,showSizeChanger:true,pageSizeOptions:[20,50,100],onChange:(n,size)=>setPage({limit:size,offset:(n-1)*size})}}/>
       </>}
     </Space>
+    {creating&&access.can('price.write')&&<PriceCreate productID={productID} variantID={variant.id} copy={copy} onExpired={onExpired} onClose={()=>{setCreating(false);setAttempt(n=>n+1)}}/>}
     {editing&&access.can('price.write')&&<PriceEdit productID={productID} variantID={variant.id} priceID={editing} copy={copy} onExpired={onExpired} onClose={()=>{setEditing(undefined);setAttempt(n=>n+1)}}/>}
   </Drawer>
 }

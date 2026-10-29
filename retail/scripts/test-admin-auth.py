@@ -206,6 +206,9 @@ def main():
             price_edit_markers = [line.split('PRICE_AMOUNT_EDIT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'PRICE_AMOUNT_EDIT_REHEARSAL ' in line]
             if len(price_edit_markers)!=1: raise RuntimeError('Price amount edit verification missing')
             counts['price_amount_edit'] = json.loads(price_edit_markers[0])
+            create_markers = [line.split('PRICE_CREATE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'PRICE_CREATE_REHEARSAL ' in line]
+            if len(create_markers)!=1: raise RuntimeError('Price create verification missing')
+            counts['price_create'] = json.loads(create_markers[0])
             warehouse_intake_markers = [line.split('WAREHOUSE_INTAKE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'WAREHOUSE_INTAKE_REHEARSAL ' in line]
             if len(warehouse_intake_markers)!=1: raise RuntimeError('Warehouse intake verification missing')
             counts['warehouse_intake'] = json.loads(warehouse_intake_markers[0])

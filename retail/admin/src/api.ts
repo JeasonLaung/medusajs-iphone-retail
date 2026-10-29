@@ -448,3 +448,17 @@ export async function editPriceAmount(product:string,variant:string,price:string
  const d=await request<{revision:string;replayed:boolean}>(priceEditPath(product,variant,price),{method:'POST',body,csrf},'/api/admin/')
  if(!d||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
 }
+
+export type PriceCreateContext={product_id:string;variant_id:string;price_set_id:string|null;currencies:string[];existing_base_currencies:string[];shared_variants:number;enabled:boolean;revision:string}
+export type PriceCreateInput=PriceAmountEdit&{currency_code:string}
+export async function readPriceCreate(product:string,variant:string,signal:AbortSignal):Promise<PriceCreateContext>{
+ const d=await request<PriceCreateContext>(`products/${encodeURIComponent(product)}/variants/${encodeURIComponent(variant)}/price-creation`,{signal},'/api/admin/')
+ const codes=(v:unknown):v is string[]=>Array.isArray(v)&&v.length<=1000&&v.every(c=>typeof c==='string'&&/^[a-z]{3}$/.test(c))&&new Set(v).size===v.length
+ if(!d||d.product_id!==product||d.variant_id!==variant||!nullableText(d.price_set_id)||!codes(d.currencies)||!codes(d.existing_base_currencies)||!Number.isSafeInteger(d.shared_variants)||d.shared_variants<0||typeof d.enabled!=='boolean'||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision))throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function createBasePrice(product:string,variant:string,body:PriceCreateInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{id:string;revision:string;replayed:boolean}>(`products/${encodeURIComponent(product)}/variants/${encodeURIComponent(variant)}/prices`,{method:'POST',body,csrf},'/api/admin/')
+ if(!d||typeof d.id!=='string'||!d.id.startsWith('price_')||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}

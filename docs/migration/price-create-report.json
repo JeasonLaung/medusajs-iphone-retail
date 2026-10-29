@@ -1,0 +1,52 @@
+{
+  "scope": "SKU base price creation; complete product/SKU creation and storefront migration remain incomplete",
+  "migrations": 61,
+  "sql": {
+    "default_disabled": true,
+    "atomic_new_set_link_price": true,
+    "late_receipt_failure_atomic": true,
+    "concurrent_attempts": 4,
+    "single_price": true,
+    "same_receipt_id": true,
+    "duplicate_base_currency_denied": true,
+    "missing_currency_denied": true,
+    "exact_quote": true,
+    "shared_set_preserved": true,
+    "zero_price": true,
+    "unlinked_replay_denied": true,
+    "revoked_and_warehouse_replay_denied": true
+  },
+  "checks": {
+    "go_all_packages": true,
+    "admin_typecheck": true,
+    "isolated_admin_build": true,
+    "admin_browser_tests": 21,
+    "new_browser_uncertain_same_payload_retry": true,
+    "new_browser_zero_price": true,
+    "new_browser_current_read_only_grants": true,
+    "old_backend_health": 200,
+    "old_admin": 200,
+    "old_store": 200,
+    "old_product": 200,
+    "old_cart": 200
+  },
+  "real_browser_joint": "price-create-joint-report.json",
+  "cleanup": "both owned containers and temporary runner removed",
+  "real_accounts_used": false,
+  "production_data_used": false,
+  "implementation_sha256": {
+    "retail/admin/src/PriceCreate.tsx": "9fd02913a60cb793591e1234aa434c60e628f369d8429e9a7b19629204bef8a8",
+    "retail/admin/src/VariantPrices.tsx": "0dc43f5e0286dac87440bc7f98aa89b9c8a8361922ab72f1d0637dc9841ff3ec",
+    "retail/admin/src/api.ts": "ce058dbf0831b945c0e7d86f203f6874aa751279722c21d5f6e9b2999e7c0a67",
+    "retail/admin/src/i18n.ts": "74d23aba1c1335b660e186521951b2d4108e3c32fcb6ed6c3e1ac69bbd6e58a9",
+    "retail/admin/tests/auth.spec.ts": "7cfda28ab75a6316001aad793d7b22f88c51f27ae3415e662a075004d4f56d92",
+    "retail/admin/tests/price-create.joint.mjs": "4a1d5061ad82f0c8edc03219bacb9a889b476db1af00756d592404f04630884d",
+    "retail/backend/internal/catalog/price_create.go": "d5ef410b0eebaf57123666cbb9cd2975b015df7eacaf11589376a21f158dd941",
+    "retail/backend/internal/catalog/price_create_test.go": "54af1014578431c9100b7bc6566d283b801b1874c38980b355f4a0122bfd85cb",
+    "retail/backend/internal/identity/price_amount_edit_test.go": "a042762c8f8647b3f3f3e3b7536f246c19bb1aeaed7cc6e6ab4ad3a841bb6658",
+    "retail/backend/internal/identity/price_create_test.go": "2d5ab3d224c9b0992f0ef88cfc4d677f2d752e1f64f1b999f4f22c3e2c83cb3a",
+    "retail/backend/internal/server/router.go": "75b7b29ace8bb93d84cb90c35cbb721ffcf2d9b243d16e002ddf0bb84cf2d245",
+    "retail/scripts/test-admin-auth.py": "c321eed5449e8a1a5d334b295524f28b41248f342b214d08aea899658b6b9e59",
+    "retail/scripts/test-warehouse-inventory-joint.py": "f3448fdb64f7bcc3e602fbfcec0209a3d07b9b2d4b3945eaa446d95256a0f711"
+  }
+}

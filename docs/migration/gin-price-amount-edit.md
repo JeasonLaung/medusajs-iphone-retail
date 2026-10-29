@@ -28,3 +28,5 @@
 `python retail/scripts/test-warehouse-inventory-joint.py --price-edit` 启动拥有归属标签的独立数据库、Redis和正式Gin二进制。浏览器真实登录→商品SKU价格表→共享提示→非法金额校验→保存→公开报价API核对→刷新另一SKU读取→中英及390宽度。回查持久金额/raw值、一份审计和两条共享关系，清理归属容器、网络和临时二进制后才生成报告。该用例验证React和公开Gin报价API，不声明已经完成整条Astro购买流程。
 
 新增后台浏览器回归覆盖原raw精度显示、丢响应后同一请求、字段锁定、409停止盲重试及撤销价格写权限后的只读表格。证据见 `price-amount-edit-report.json` 与 `price-edit-joint-report.json`。旧开发服务继续保持可访问，未操作服务器或真实业务数据。
+
+后续已补 [SKU新增基础价格](gin-price-create.md)，复用本命令锁、开关和操作ID收据。原金额编辑的证据范围保持不变。

@@ -510,3 +510,5 @@
 2026-10-30 仓库销售设备转退回：承接原transfer_return，必填原因、销售/退回双写权限、当前位置自有仓与活跃分配检查，同设备转returned/inspection并留审计；隔离SQL/HTTP、真实Gin浏览器联合和原19项后台回归通过。设备检测、配货、前台回收/售后闭环仍待完成，详见 [仓库设备](migration/gin-warehouse-devices.md)。
 
 2026-10-30 商品价格运营：SKU已有配置金额可通过Ant表单提交Gin，新增独立price.write、精确DECIMAL/raw同步与共享集合提示，隔离事务/并发/回滚及真实浏览器→公开报价API联合通过；原19项后台回归和新增1项通过。新增商品/SKU/价格及完整前台闭环仍未验收，详见 [价格金额编辑](migration/gin-price-amount-edit.md)。
+
+2026-10-30 SKU新增基础价格：无价格SKU可从Ant表单新增真实币种基础价，必要价格集合/关联/价格/审计同事务创建；沿用独立price.write及价格锁，保留已有共享集合、地区/阶梯价格，拒绝同币种重复基础价。隔离MySQL并发/回滚及真实浏览器→公开报价API验证，原20项加新增1项后台回归通过；商品/SKU创建及全站闭环仍未完成。详见 [新增基础价格](migration/gin-price-create.md)。

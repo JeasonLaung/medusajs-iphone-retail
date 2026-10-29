@@ -513,3 +513,25 @@ test('price edit keeps authoritative precision and one immutable attempt, then a
  await expect(edit.getByRole('button',{name:'重试本次保存',exact:true})).toHaveCount(0);expect(attempts).toHaveLength(2);expect(attempts[0]).toEqual(attempts[1]);expect(attempts[0]).toMatchObject({amount:'9007199254740993.000000000000000001'})
  await edit.getByRole('button',{name:'取消',exact:true}).click();grants.splice(grants.indexOf('price.write'),1);await page.reload();await page.getByRole('button',{name:'查看价格',exact:true}).click();await expect(page.getByRole('cell',{name:'1',exact:true})).toBeVisible();await expect(page.getByRole('button',{name:'修改金额',exact:true})).toHaveCount(0)
 })
+
+
+test('base price creation retries one immutable currency and amount, then returns to read-only',async({page})=>{
+ const grants:string[]=[...ACTIONS];await fixture(page,{permissions:grants})
+ const product={id:'base-create-product',revision:'a'.repeat(64),title:'Base price fixture',handle:'base-create-product',status:'published',thumbnail:null,collection_id:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',variant_count:1,subtitle:null,description:null,options:[],images:[]}
+ const variant={id:'base-create-v',product_id:product.id,title:'Unpriced variant',sku:'UNPRICED',thumbnail:null,variant_rank:0,manage_inventory:false,allow_backorder:false,configuration_complete:true,options:[],images:[],unassigned_option_value_ids:[]}
+ const attempts:unknown[]=[]
+ await page.route('**/api/admin/products/base-create-product**',async route=>{
+  const request=route.request(),path=new URL(request.url()).pathname
+  if(path.endsWith('/price-creation'))return route.fulfill({json:{product_id:product.id,variant_id:variant.id,price_set_id:null,currencies:['eur','usd'],existing_base_currencies:[],shared_variants:0,enabled:true,revision:'b'.repeat(64)}})
+  if(path.endsWith('/prices')){
+   if(request.method()==='POST'){expect(request.headers()['x-csrf-token']).toBe(sessionCSRF);attempts.push(request.postDataJSON());if(attempts.length===1){await route.abort('failed');return};return route.fulfill({json:{id:'price_created',revision:'c'.repeat(64),replayed:true}})}
+   return route.fulfill({json:{product_id:product.id,variant_id:variant.id,price_set_ids:[],prices:[],count:0,limit:20,offset:0}})
+  }
+  return route.fulfill({json:path.endsWith('/variants')?{variants:[variant],count:1,limit:20,offset:0}:{product}})
+ })
+ await page.goto('/account');await signIn(page);await page.goto('/products/base-create-product');await page.getByRole('button',{name:'查看价格',exact:true}).click();await page.getByRole('button',{name:'新增基础价格',exact:true}).click()
+ const edit=page.getByRole('dialog',{name:'新增基础价格',exact:true});const currency=edit.getByLabel('币种',{exact:true});await currency.click();await currency.fill('eur');await currency.press('Enter')
+ await edit.getByLabel('金额',{exact:true}).fill('0');await edit.getByRole('button',{name:'保存',exact:true}).click();await expect(edit.getByRole('button',{name:'重试本次保存',exact:true})).toBeVisible();await expect(edit.getByLabel('金额',{exact:true})).toBeDisabled();await expect(currency).toBeDisabled();await edit.getByRole('button',{name:'重试本次保存',exact:true}).click();await expect(edit).toHaveCount(0)
+ expect(attempts).toHaveLength(2);expect(attempts[0]).toEqual(attempts[1]);expect(attempts[0]).toMatchObject({currency_code:'eur',amount:'0.000000000000000000'})
+ grants.splice(grants.indexOf('price.write'),1);await page.reload();await page.getByRole('button',{name:'查看价格',exact:true}).click();await expect(page.getByText('暂无已配置价格',{exact:true})).toBeVisible();await expect(page.getByRole('button',{name:'新增基础价格',exact:true})).toHaveCount(0)
+})
