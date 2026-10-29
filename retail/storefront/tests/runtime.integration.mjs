@@ -22,8 +22,8 @@ assert.deepEqual(await loadFooterData(target.origin),{iphoneCategory:null,collec
 await assert.rejects(loadFooterData(undefined))
 assert.deepEqual(await loadLocales(target.origin),[])
 await assert.rejects(loadLocales(undefined))
-// Source-level adapter integration with the actual isolated Gin process. The
-// production Astro page currently exercises regions only; no product page claim.
+// Public adapter integration with the actual isolated Gin process. The built
+// product route is also exercised below, including shell data dependencies.
 const catalog = await loadProducts(target.origin)
 assert.equal(catalog.count,1);assert.equal(catalog.products[0].id,'fixture-b')
 assert.deepEqual(catalog.capabilities,{pricing:false,availability:true,checkout:false})
@@ -62,6 +62,15 @@ async function check(origin,expected){
   assert.ok(reply,'Owned Astro listener not ready');assert.equal(reply.status,expected)
   assert.deepEqual(await reply.json(),{status:expected===200?'ok':'unavailable',frontend:'astro'})
   assert.equal(reply.headers.get('cache-control'),'no-store');assert.equal(reply.headers.get('set-cookie'),null)
+  const productReply=await fetch(`http://127.0.0.1:${port}/dk-zh/products/fixture-b`)
+  assert.equal(productReply.status,expected)
+  const productHTML=await productReply.text()
+  assert.equal(productReply.headers.get('cache-control'),'no-store')
+  if(expected===200){
+   assert.ok(productHTML.includes('data-testid="product-container"'))
+   assert.ok(productHTML.includes('面包屑导航'));assert.ok(productHTML.includes('Public collection'))
+   assert.equal((await fetch(`http://127.0.0.1:${port}/dk-en/products/missing`)).status,404)
+  }else assert.ok(!productHTML.includes('data-testid="product-container"'))
   // Business pages are added only after their actual API and UI are ported.
   assert.equal((await fetch(`http://127.0.0.1:${port}/dk-en/store`)).status,404)
   assert.equal(child.exitCode,null)
@@ -71,4 +80,4 @@ async function check(origin,expected){
 }
 await check(target.origin,200)
 await check(undefined,503)
-console.log('ASTRO_RUNTIME_REHEARSAL '+JSON.stringify({production_node_adapter:true,real_gin_regions:true,source_adapter_real_gin_locales:true,source_adapter_real_gin_footer:true,source_adapter_real_gin_products:true,source_adapter_region_quantity:true,source_product_page_country_handle_composition:true,incomplete_variant_no_quote:true,detail_404_and_dependency_error_distinct:true,missing_configuration_503:true,response_no_store:true,no_session_cookie:true,unported_business_page_404:true,owned_processes_stopped:true}))
+console.log('ASTRO_RUNTIME_REHEARSAL '+JSON.stringify({production_node_adapter:true,real_gin_regions:true,source_adapter_real_gin_locales:true,source_adapter_real_gin_footer:true,source_adapter_real_gin_products:true,source_adapter_region_quantity:true,source_product_page_country_handle_composition:true,formal_product_route_real_gin:true,incomplete_variant_no_quote:true,detail_404_and_dependency_error_distinct:true,missing_configuration_503:true,response_no_store:true,no_session_cookie:true,unported_business_page_404:true,owned_processes_stopped:true}))

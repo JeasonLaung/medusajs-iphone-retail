@@ -10,6 +10,7 @@
     "dev": "astro dev --host 127.0.0.1 --port 9300",
     "check": "astro check",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "test:product-page": "node tests/product-page.browser.mjs",
     "build": "npm run check && astro build",
     "start": "node dist/server/entry.mjs"
   },

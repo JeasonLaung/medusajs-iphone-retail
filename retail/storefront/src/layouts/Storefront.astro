@@ -1,0 +1,42 @@
+---
+import Header from '../components/layout/header'
+import Footer from '../components/layout/footer'
+import type {Region} from '../lib/regions'
+import type {Locale} from '../lib/preferences'
+import type {FooterData} from '../lib/footer-data'
+import {localeFromSegment} from '../lib/storefront-route'
+import '../styles/original.css'
+
+export interface Props {
+ segment:string
+ title:string
+ description?:string
+ canonicalPath?:string
+ openGraph?:{title:string;description:string;images:string[]}
+ shell?:{regions:Region[];locales:Locale[];footer:FooterData}
+}
+const {segment,title,description,canonicalPath,openGraph,shell}=Astro.props
+// Private cart/account hydration is connected separately; never serialize
+// cookies, sessions or an upstream response in the public page's island props.
+Astro.response.headers.set('Cache-Control','no-store')
+---
+<!doctype html>
+<html lang={localeFromSegment(segment)}>
+ <head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>{title}</title>
+  {description && <meta name="description" content={description}/>}
+  {canonicalPath && <link rel="canonical" href={new URL(canonicalPath,Astro.url).href}/>}
+  {openGraph && <>
+   <meta property="og:title" content={openGraph.title}/>
+   <meta property="og:description" content={openGraph.description}/>
+   {openGraph.images.map(url=><meta property="og:image" content={new URL(url,Astro.url).href}/>)}
+  </>}
+ </head>
+ <body>
+  {shell && <Header regions={shell.regions} locales={shell.locales} locale={localeFromSegment(segment)} segment={segment} pathname={Astro.url.pathname} cartCount="0" isLoggedIn={false} onSelect={null} client:load/>}
+  <main id="main-content"><slot/></main>
+  {shell && <Footer data={shell.footer} segment={segment}/>}
+ </body>
+</html>

@@ -4,12 +4,12 @@ import {routeCountry} from './storefront-route.ts'
 import {galleryImages,initialVariant,productHandleFromSlug,variantSlug} from './product-variants.ts'
 
 export type ProductPageData = {
- region: Region; product: Product; requestedVariantID?: string; initialVariant?: Variant; images: Image[]
+ regions: Region[]; region: Region; product: Product; requestedVariantID?: string; initialVariant?: Variant; images: Image[]
  metadata: {title: string; description: string; canonicalPath: string; openGraph: {title: string; description: string; images: string[]}}
 }
 const unavailable = () => new Error('Product page data unavailable')
 
-// Request-scoped data composition for the future unchanged Astro page. No
+// Request-scoped data composition for the unchanged Astro page. No
 // process-global country map or fallback currency; failures do not become 404.
 export async function loadProductPage(origin: string | undefined, segment: string, handle: string, search = new URLSearchParams(), fetcher: typeof fetch = fetch): Promise<ProductPageData | null> {
  try {
@@ -33,7 +33,7 @@ export async function loadProductPage(origin: string | undefined, segment: strin
   const requestedVariantID = slugVariant?.id ?? search.get('v_id') ?? undefined
   const pathname = `/${segment.toLowerCase()}/products/${encodeURIComponent(handle)}`
   const initial = initialVariant(product,pathname,search.get('v_id'),requestedVariantID)
-  return {region,product,requestedVariantID,initialVariant:initial,images:galleryImages(product,pathname,search.get('v_id'),requestedVariantID),metadata:{
+  return {regions,region,product,requestedVariantID,initialVariant:initial,images:galleryImages(product,pathname,search.get('v_id'),requestedVariantID),metadata:{
    title:`${product.title}${slugVariant ? ` ${slugVariant.title}` : ''}`,description:product.title,
    canonicalPath:`/${segment.toLowerCase()}/products/${encodeURIComponent(variantSlug(slugVariant) ?? product.handle)}`,
    openGraph:{title:`${product.title} | EuroRefurb`,description:product.title,images:product.thumbnail ? [product.thumbnail] : []},

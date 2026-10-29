@@ -10,8 +10,9 @@ export type GinProductActionsProps=Omit<ProductActionsProps,'commerce'|'cartQuan
 type State={context:string;kind:'ready';commerce:ProductCommerce;quantities:CartQuantities}|{context:string;kind:'error'}|null
 const empty:CartQuantities={}
 
-// SSR/first hydration keep the original button disabled until the private
-// cart has been resolved. No credential or private cart is serialized in props.
+// SSR/first hydration keep purchasing disabled until the private cart has been
+// resolved. Catalog configuration remains usable independently of that cart.
+// No credential or private cart is serialized in props.
 export default function GinProductActions(props:GinProductActionsProps){
  const {regionID,currency,segment,commerceEnabled=false}=props
  const context=JSON.stringify([regionID,currency,segment,commerceEnabled])
@@ -39,5 +40,5 @@ export default function GinProductActions(props:GinProductActionsProps){
  },[regionID,currency,segment,commerceEnabled,context])
  const current=state?.context===context?state:null
  const ready=current?.kind==='ready'?current:null
- return <ProductActions {...props} commerce={ready?.commerce??{enabled:false}} cartQuantities={ready?.quantities??empty} disabled={props.disabled||!ready} cartError={current?.kind==='error'}/>
+ return <ProductActions {...props} commerce={ready?.commerce??{enabled:false}} cartQuantities={ready?.quantities??empty} disabled={props.disabled} cartError={current?.kind==='error'}/>
 }

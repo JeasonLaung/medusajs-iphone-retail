@@ -7,5 +7,8 @@ export default defineConfig({
  adapter:node({mode:'standalone'}),
  integrations:[react()],
  devToolbar:{enabled:false},
+ // Local development hosts only. Never trust arbitrary Host/forwarded headers
+ // when constructing canonical and social-image URLs in server-rendered pages.
+ security:{allowedDomains:[{hostname:'127.0.0.1'},{hostname:'localhost'}]},
  env:{schema:{GIN_API_ORIGIN:envField.string({context:'server',access:'secret',optional:true})}},
 })

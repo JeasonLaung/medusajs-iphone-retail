@@ -1,0 +1,48 @@
+---
+import {GIN_API_ORIGIN} from 'astro:env/server'
+import Storefront,{type Props as StorefrontProps} from '../../../layouts/Storefront.astro'
+import {loadProductPage,type ProductPageData} from '../../../lib/product-page'
+import {loadLocales} from '../../../lib/locales'
+import {loadFooterData} from '../../../lib/footer-data'
+import ImageGallery from '../../../components/products/image-gallery'
+import GinProductActions from '../../../components/products/gin-product-actions'
+import ProductDetails from '../../../components/products/product-details'
+import PageEntryScroll from '../../../components/cart/page-entry-scroll'
+import {getProductCopy} from '../../../components/products/i18n'
+import Breadcrumbs from '../../../components/layout/breadcrumbs'
+import styles from '../../../components/products/styles.module.css'
+
+const segment=(Astro.params.countryCode??'').toLowerCase()
+const handle=Astro.params.handle??''
+const zh=segment.endsWith('-zh')
+let data:ProductPageData|null=null
+let shell:StorefrontProps['shell']
+let unavailable=false
+try {
+ data=await loadProductPage(GIN_API_ORIGIN,segment,handle,Astro.url.searchParams)
+ if(data){
+  const [locales,footer]=await Promise.all([loadLocales(GIN_API_ORIGIN),loadFooterData(GIN_API_ORIGIN)])
+  shell={regions:data.regions,locales,footer}
+ }
+} catch {unavailable=true}
+if(unavailable)Astro.response.status=503
+else if(!data)Astro.response.status=404
+const message=unavailable?(zh?'暂时无法加载商品，请稍后重试。':'Products are temporarily unavailable. Please try again.'):(zh?'未找到商品':'Product not found')
+const copy=getProductCopy(segment)
+---
+<Storefront segment={segment} title={data&&!unavailable?`${data.metadata.title} | EuroRefurb`:message} description={data?.metadata.description} canonicalPath={data?.metadata.canonicalPath} openGraph={data?.metadata.openGraph} shell={shell}>
+ {data&&!unavailable ? <div class={styles.page}>
+  <PageEntryScroll client:load/>
+  <Breadcrumbs segment={segment} items={[{label:copy.back,href:'/store'},{label:data.product.title}]}/>
+  <div class={styles.hero} data-testid="product-container">
+   <div class={styles.visual}>
+    <ImageGallery product={data.product} segment={segment} initialLocation={Astro.url.pathname+Astro.url.search} initialVariantID={data.requestedVariantID} client:load/>
+    {data.product.display.source==='swappie-html-snapshot' && <p class={styles.muted+' mt-4 text-center'}>{copy.imageNote}</p>}
+   </div>
+   <section aria-labelledby="product-title" id="product-info">
+    <GinProductActions product={data.product} regionID={data.region.id} currency={data.region.currency_code} segment={segment} initialLocation={Astro.url.pathname+Astro.url.search} initialVariantID={data.requestedVariantID} client:load/>
+   </section>
+  </div>
+  <ProductDetails product={data.product} locale={segment}/>
+ </div> : <div class={styles.page}><h1>{message}</h1></div>}
+</Storefront>
