@@ -1,0 +1,52 @@
+{
+  "scope": "original account navigation and real customer profile/address overview; partial storefront delivery",
+  "implementation_sha256": {
+    "retail/storefront/src/components/account/gin-account.tsx": "1a7792d1b73b211743e027efa5a409eac58d634e9b4bbf291c59360da0b97f45",
+    "retail/storefront/src/components/account/account-nav.tsx": "7a0d0f9162b8fc13c4417e0199019414c8ef207f6dd46135fcc503871f2924d7",
+    "retail/storefront/src/components/account/overview.tsx": "f226c93dd45a76c0c6524330215224ac0080410df4fdc428e72718dd7577114f",
+    "retail/storefront/tests/account.browser.mjs": "c04b27c0a692876abf922e944fbdec00be45ed2a676b1df95e782eceaedc4896"
+  },
+  "validation": {
+    "astro_check": {
+      "files": 245,
+      "errors": 0,
+      "warnings": 0,
+      "existing_hints": 2
+    },
+    "existing_unit_tests": 97,
+    "astro_build": true,
+    "chrome_formal_astro_synthetic_api": true,
+    "browser_errors": 0,
+    "widths": [
+      390,
+      1440
+    ],
+    "locales": [
+      "en",
+      "zh"
+    ],
+    "profile_completion_50_to_100": true,
+    "address_count_0_to_1": true,
+    "address_failure_hides_statistics_and_retry_recovers": true,
+    "original_desktop_navigation_and_mobile_back": true,
+    "profile_address_billing_existing_flows": true,
+    "cross_tab_logout": true,
+    "manual_screenshot_review": true
+  },
+  "existing_services": {
+    "9001/health": 200,
+    "9001/app": 200,
+    "8000/dk-en/account": 200
+  },
+  "existing_service_log_findings": [
+    "Existing PayPal seller nonce warning",
+    "Existing Next controller[kState].transformAlgorithm error; account route remains HTTP200"
+  ],
+  "limitations": [
+    "Browser uses synthetic API, not joint real Gin/MySQL",
+    "Order and buyback navigation URLs retain original shape, but target pages and transaction data are not implemented",
+    "No real email delivery or payment validation",
+    "Email remains readonly",
+    "No source pixel comparison; full storefront remains unaccepted"
+  ]
+}

@@ -201,5 +201,7 @@
   "timelineDelivered": "Delivered",
   "timelineFulfillmentCanceled": "Fulfillment canceled",
   "timelineCanceled": "Order canceled",
-  "country": "Country / Region"
+  "country": "Country / Region",
+  "myRequests": "My selling requests",
+  "transactionsUnavailable": "Transaction records are temporarily unavailable."
 }

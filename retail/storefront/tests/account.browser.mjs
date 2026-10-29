@@ -22,7 +22,7 @@ const api=createServer(async(req,res)=>{
   if(path==='/api/store/customer/addresses'||path.startsWith('/api/store/customer/addresses/')){
    const id=path.split('/')[5],removing=path.endsWith('/delete')
    if(!authenticated){status=401;body={error:{code:'unauthorized'}}}
-   else if(req.method==='GET')body={addresses}
+   else if(req.method==='GET'){if(addressFailure){status=503;body={error:{code:'unavailable'}}}else body={addresses}}
    else if(addressFailure||removing&&deleteFailure){status=503;body={error:{code:'unavailable'}}}
    else if(removing){const index=addresses.findIndex(address=>address.id===id);if(index<0){status=404;body={error:{code:'missing'}}}else{addresses.splice(index,1);body={success:true}}}
    else {
@@ -85,7 +85,16 @@ try{
  await page.getByTestId('email-input').fill(account.email);await page.getByTestId('password-input').fill('artificial-password');await page.getByTestId('sign-in-button').click()
  await expect(page.getByTestId('customer-email')).toHaveText(account.email)
  await expect(page.locator('header[data-signed-in]')).toHaveAttribute('data-signed-in','true')
- await page.getByTestId('profile-link').click()
+ await expect(page.getByTestId('account-nav')).toBeVisible()
+ await expect(page.getByTestId('account-nav').locator('.ant-menu-item-selected')).toContainText('Overview')
+ for(const [id,path] of [['overview-link','/account'],['profile-link','/account/profile'],['addresses-link','/account/addresses'],['orders-link','/account/orders'],['buyback-link','/account/buyback']]){
+  await expect(page.getByTestId('account-nav').getByTestId(id)).toHaveAttribute('href','/dk-en'+path)
+ }
+ await expect(page.getByTestId('customer-profile-completion')).toHaveAttribute('data-value','50')
+ await expect(page.getByTestId('addresses-count')).toHaveAttribute('data-value','0')
+ await expect(page.getByTestId('overview-orders-unavailable')).toBeVisible()
+ await expect(page.getByTestId('no-orders-message')).toHaveCount(0)
+ await page.locator('[data-testid="profile-link"]:visible').click()
  await expect(page.getByTestId('profile-page-wrapper')).toBeVisible()
  const nameEditor=page.getByTestId('account-name-editor')
  await nameEditor.getByTestId('edit-button').click()
@@ -107,7 +116,7 @@ try{
  await expect(page.getByTestId('account-name-editor').getByTestId('current-info')).toContainText('Changed Customer')
  await expect(page.getByTestId('account-phone-editor').getByTestId('current-info')).toHaveText('+45 111')
  await expect(page.getByTestId('profile-email-readonly')).toHaveText(account.email)
- await page.getByTestId('addresses-link').click()
+ await page.locator('[data-testid="addresses-link"]:visible').click()
  await expect(page.getByTestId('addresses-page-wrapper')).toBeVisible()
  await page.getByTestId('add-address-button').click()
  let modal=page.getByTestId('add-address-modal')
@@ -148,7 +157,7 @@ try{
  await expect(page.getByTestId('address-container')).toHaveCount(1)
  deleteFailure=false
  await page.getByTestId('address-delete-button').click();await expect(page.getByTestId('address-container')).toHaveCount(0)
- await page.getByTestId('profile-link').click()
+ await page.locator('[data-testid="profile-link"]:visible').click()
  const billing=page.getByTestId('account-billing-address-editor')
  await billing.getByTestId('edit-button').click()
  await billing.getByTestId('billing-first-name-input').fill('Billing');await billing.getByTestId('billing-last-name-input').fill('Customer')
@@ -163,6 +172,34 @@ try{
  await page.getByTestId('account-billing-address-editor').getByTestId('save-button').click()
  await expect(page.getByTestId('account-billing-address-editor').getByTestId('current-info').first()).toContainText('Updated Billing 4')
  assert.equal(addresses.length,1)
+ await page.locator('[data-testid="overview-link"]:visible').click()
+ await expect(page.getByTestId('customer-profile-completion')).toHaveAttribute('data-value','100')
+ await expect(page.getByTestId('addresses-count')).toHaveAttribute('data-value','1')
+ addressFailure=true
+ await page.evaluate(()=>window.dispatchEvent(new Event('retail:customer-changed')))
+ await expect(page.getByTestId('overview-address-error')).toBeVisible()
+ await expect(page.getByTestId('addresses-count')).toHaveCount(0)
+ addressFailure=false
+ await page.getByTestId('overview-address-error').getByRole('button',{name:'Retry',exact:true}).click()
+ await expect(page.getByTestId('addresses-count')).toHaveAttribute('data-value','1')
+ await page.screenshot({path:fileURLToPath(new URL('../../../logs/gin-migration/account-overview-1440.png',import.meta.url)),fullPage:true})
+ await page.setViewportSize({width:390,height:1000})
+ await expect(page.getByTestId('mobile-account-nav')).toBeVisible()
+ await expect(page.getByTestId('account-nav')).not.toBeVisible()
+ await expect(page.getByTestId('customer-profile-completion')).not.toBeVisible()
+ await page.locator('[data-testid="profile-link"]:visible').click()
+ await expect(page.getByTestId('account-main-link')).toBeVisible()
+ await page.getByTestId('account-main-link').click()
+ await expect(page.getByTestId('mobile-account-nav').getByText('Hello Changed',{exact:true})).toBeVisible()
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
+ await page.screenshot({path:fileURLToPath(new URL('../../../logs/gin-migration/account-overview-390.png',import.meta.url)),fullPage:true})
+ await page.goto(shop+'/dk-zh/account')
+ await expect(page.getByTestId('mobile-account-nav').getByTestId('buyback-link')).toHaveText('我的回收申请')
+ await page.setViewportSize({width:1440,height:1000})
+ await expect(page.getByTestId('customer-profile-completion')).toHaveAttribute('data-value','100')
+ await expect(page.getByTestId('addresses-count')).toHaveAttribute('data-value','1')
+ await expect(page.getByTestId('account-nav').locator('.ant-menu-item-selected')).toContainText('概览')
+ await page.screenshot({path:fileURLToPath(new URL('../../../logs/gin-migration/account-overview-zh-1440.png',import.meta.url)),fullPage:true})
  await page.goto(shop+'/dk-zh/account/addresses')
  await expect(page.getByTestId('addresses-page-wrapper')).toBeVisible()
  await expect(page.getByTestId('address-address')).toHaveText('Updated Billing 4')
@@ -182,7 +219,8 @@ try{
  await expect(page.getByTestId('customer-email')).toHaveText(account.email)
  await expect(page.getByTestId('profile-page-wrapper')).toBeVisible()
  assert.ok(!(await page.content()).includes('artificial-password'))
- await page.getByRole('button',{name:'Log out',exact:true}).click();await expect(page.getByTestId('login-page')).toBeVisible()
+ await page.getByTestId('account-main-link').click()
+ await page.locator('[data-testid="logout-button"]:visible').click();await expect(page.getByTestId('login-page')).toBeVisible()
  await expect(page.locator('header[data-signed-in]')).toHaveAttribute('data-signed-in','false')
  await expect(second.getByTestId('login-page')).toBeVisible()
  await expect(second.locator('header[data-signed-in]')).toHaveAttribute('data-signed-in','false')
@@ -192,7 +230,7 @@ try{
  await page.goto(shop+'/dk-zh/account');await expect(page.getByTestId('login-page')).toContainText('登录')
  await page.goto(shop+'/dk-en/verify-account');await expect(page.getByTestId('verify-account-page')).toContainText('invalid')
  assert.deepEqual(errors,[])
- console.log('ASTRO_ACCOUNT_BROWSER '+JSON.stringify({formal_routes:true,synthetic_api:true,login_register_switch:true,pending_mail_honest:true,verify_once:true,verify_no_login:true,login_current_customer:true,logout:true,en_zh:true,widths:[390,1440],browser_errors:0,header_login_logout:true,cross_tab_logout:true,dependency_failure_not_logout:true,opaque_storage_marker:true,profile_name_phone_saved:true,profile_failure_recovery:true,profile_reload_persisted:true,email_readonly:true,address_create_edit_delete:true,address_failure_recovery:true,address_reload_persisted:true,delete_failure_visible:true,cancel_no_write:true,original_europe_country_options:true,billing_create_update_persisted:true,address_chinese_mobile:true,real_gin_mysql:false,source_pixel_comparison:false,dashboard_complete:false,mail_delivery:false}))
+ console.log('ASTRO_ACCOUNT_BROWSER '+JSON.stringify({formal_routes:true,synthetic_api:true,login_register_switch:true,pending_mail_honest:true,verify_once:true,verify_no_login:true,login_current_customer:true,logout:true,en_zh:true,widths:[390,1440],browser_errors:0,header_login_logout:true,cross_tab_logout:true,dependency_failure_not_logout:true,opaque_storage_marker:true,profile_name_phone_saved:true,profile_failure_recovery:true,profile_reload_persisted:true,email_readonly:true,address_create_edit_delete:true,address_failure_recovery:true,address_reload_persisted:true,delete_failure_visible:true,cancel_no_write:true,original_europe_country_options:true,billing_create_update_persisted:true,address_chinese_mobile:true,real_gin_mysql:false,source_pixel_comparison:false,original_account_navigation:true,overview_real_address_stats:true,address_stats_failure_not_zero:true,mobile_account_back:true,dashboard_complete:false,mail_delivery:false}))
 }finally{
  if(browser)await browser.close()
  if(child&&child.exitCode===null){child.kill();await once(child,'exit')}

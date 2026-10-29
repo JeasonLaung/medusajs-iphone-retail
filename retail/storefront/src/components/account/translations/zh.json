@@ -201,5 +201,7 @@
   "timelineDelivered": "已送达",
   "timelineFulfillmentCanceled": "履约已取消",
   "timelineCanceled": "订单已取消",
-  "country": "国家 / 地区"
+  "country": "国家 / 地区",
+  "myRequests": "我的回收申请",
+  "transactionsUnavailable": "交易记录暂时无法加载。"
 }

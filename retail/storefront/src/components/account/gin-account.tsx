@@ -1,5 +1,7 @@
 import {useEffect,useState,useRef} from 'react'
 import {Alert,Spin,Divider} from 'antd'
+import AccountNav from './account-nav'
+import Overview from './overview'
 import ProfileName from './profile-name'
 import ProfilePhone from './profile-phone'
 import AddressSection from './address-section'
@@ -16,6 +18,7 @@ import {watchCustomer} from '../../lib/customer-events'
 function Account({enabled,profile,addresses,regions}:{enabled:boolean;profile:boolean;addresses:boolean;regions:Region[]}){
  const {api,segment}=useAccountContext(),{t}=useAccountCopy()
  const [customer,setCustomer]=useState<Customer|null>(null),[loading,setLoading]=useState(true),[failed,setFailed]=useState(false)
+ const [loggingOut,setLoggingOut]=useState(false)
  const generation=useRef(0),live=useRef(false)
  const observe=async()=>{
   const run=++generation.current
@@ -30,14 +33,17 @@ function Account({enabled,profile,addresses,regions}:{enabled:boolean;profile:bo
   return()=>{live.current=false;generation.current++;stop()}
  },[enabled,segment])
  return <div className="flex-1 small:py-12" data-testid="account-page"><div className="flex-1 content-container h-full mx-auto bg-white flex flex-col">
-  <div className="py-12"><div className="min-w-0 flex-1">
+  <div className={customer&&!loading&&!failed?'grid grid-cols-1 small:grid-cols-[240px_minmax(0,1fr)] py-12':'py-12'}>
+   {customer&&!loading&&!failed?<div><AccountNav customer={customer} selected={profile?'/account/profile':addresses?'/account/addresses':'/account'} loggingOut={loggingOut} onLogout={()=>{
+    if(loggingOut)return
+    setLoggingOut(true)
+    void api.logout().then(()=>{if(live.current){generation.current++;setCustomer(null)}}).catch(()=>{if(live.current)setFailed(true)}).finally(()=>{if(live.current)setLoggingOut(false)})
+   }}/></div>:null}
+   <div className="min-w-0 flex-1">
    {loading?<div className="w-full flex justify-center px-8 py-8"><Spin/></div>:failed?<Alert type="error" showIcon message={segment.endsWith('-zh')?'账户暂时无法加载，请稍后重试。':'Your account is temporarily unavailable. Please try again.'} action={enabled?<Button onClick={()=>void observe()}>{t('timelineRetry')}</Button>:undefined}/>:customer?<div data-testid="customer-authenticated">
-    <div className="text-xl-semi flex flex-wrap gap-3 justify-between items-center mb-4"><span>{t('hello',{name:customer.first_name})}</span><span className="text-small-regular text-ui-fg-base">{t('signedIn')} <span className="font-semibold" data-testid="customer-email">{customer.email}</span></span></div>
-    <div className="flex gap-6 mb-6"><Link href="/account/profile" className="underline" data-testid="profile-link">{t('profile')}</Link><Link href="/account/addresses" className="underline" data-testid="addresses-link">{t('addresses')}</Link></div>
-    {profile?<div className="w-full mt-6" data-testid="profile-page-wrapper"><div className="mb-8 flex flex-col gap-y-4"><h1 className="text-2xl-semi">{t('profile')}</h1><p className="text-base-regular">{t('profileDescription')}</p></div><div className="flex flex-col gap-y-8 w-full"><ProfileName customer={customer}/><Divider/><div><span>{t('email')}</span><div className="font-semibold" data-testid="profile-email-readonly">{customer.email}</div></div><Divider/><ProfilePhone customer={customer}/><Divider/><AddressSection key={customer.id} customer={customer} regions={regions} billing/><Divider/></div></div>:null}
+    {profile?<div className="w-full mt-6" data-testid="profile-page-wrapper"><div className="mb-8 flex flex-col gap-y-4"><h1 className="text-2xl-semi">{t('profile')}</h1><p className="text-base-regular">{t('profileDescription')}</p></div><div className="flex flex-col gap-y-8 w-full"><ProfileName customer={customer}/><Divider/><div><span>{t('email')}</span><div data-testid="customer-email"><div className="font-semibold" data-testid="profile-email-readonly">{customer.email}</div></div></div><Divider/><ProfilePhone customer={customer}/><Divider/><AddressSection key={customer.id} customer={customer} regions={regions} billing/><Divider/></div></div>:null}
     {addresses?<AddressSection key={customer.id} customer={customer} regions={regions}/>:null}
-    {!profile&&!addresses?<Alert type="info" message={segment.endsWith('-zh')?'账户资料与交易记录暂时无法加载。':'Account details and transaction records are temporarily unavailable.'}/>:null}
-    <Button className="mt-6" onClick={async()=>{try{await api.logout();setCustomer(null)}catch{setFailed(true)}}}>{t('logout')}</Button>
+    {!profile&&!addresses?<Overview key={customer.id} customer={customer}/>:null}
    </div>:<LoginTemplate onSuccess={()=>void observe()}/>}
   </div></div>
   <div className="flex flex-col small:flex-row items-end justify-between small:border-t border-gray-200 py-12 gap-8"><div><h3 className="text-xl-semi mb-4">{t('questions')}</h3><span className="txt-medium">{t('helpDescription')}</span></div><div><Link href="/help" className="underline">{t('customerService')}</Link></div></div>
