@@ -1,5 +1,7 @@
 import {customerChanged} from './customer-events.ts'
 export type Customer={id:string;email:string;first_name:string;last_name:string;phone:string;verified_at:string|null}
+export type AddressFields={first_name?:string;last_name?:string;company?:string;address_1?:string;address_2?:string;city?:string;postal_code?:string;province?:string;country_code?:string;phone?:string;is_default_billing?:boolean;is_default_shipping?:boolean}
+export type Address=Required<AddressFields>&{id:string;created_at:string;updated_at:string}
 export type AuthState={state:'error'}|{state:'verification_required';email:string;delivery:'pending'|'failed'}|{state:'success'}|null
 const root='/api/store/customer'
 export class CustomerError extends Error{
@@ -12,6 +14,35 @@ function customerProjection(raw:unknown):Customer{
  if(typeof value.id!=='string'||!/^cust_[A-Za-z0-9-]{1,80}$/.test(value.id)||typeof value.email!=='string'||value.email.length>254||!value.email.includes('@')||typeof value.verified_at!=='string'||!Number.isFinite(Date.parse(value.verified_at)))throw new CustomerError(503)
  for(const [key,max] of [['first_name',160],['last_name',160],['phone',64]] as const)if(typeof value[key]!=='string'||[...value[key] as string].length>max||/[\x00-\x1f\x7f]/.test(value[key] as string))throw new CustomerError(503)
  return {id:value.id,email:value.email,first_name:value.first_name as string,last_name:value.last_name as string,phone:value.phone as string,verified_at:value.verified_at}
+}
+const addressID=(id:string)=>/^addr_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id)
+function addressProjection(raw:unknown):Address{
+ if(!raw||typeof raw!=='object'||Array.isArray(raw))throw new CustomerError(503)
+ const value=raw as Record<string,unknown>,out:Record<string,unknown>={}
+ if(typeof value.id!=='string'||!addressID(value.id))throw new CustomerError(503)
+ out.id=value.id
+ for(const [name,max] of Object.entries({first_name:160,last_name:160,company:255,address_1:255,address_2:255,city:160,postal_code:32,province:160,country_code:2,phone:64})){
+  const text=value[name]
+  if(typeof text!=='string'||[...text].length>max||/[\x00-\x1f\x7f]/.test(text))throw new CustomerError(503)
+  out[name]=text
+ }
+ if(!/^[a-z]{2}$/.test(out.country_code as string))throw new CustomerError(503)
+ for(const key of ['is_default_billing','is_default_shipping']){if(typeof value[key]!=='boolean')throw new CustomerError(503);out[key]=value[key]}
+ for(const key of ['created_at','updated_at']){if(typeof value[key]!=='string'||!Number.isFinite(Date.parse(value[key] as string)))throw new CustomerError(503);out[key]=value[key]}
+ return out as Address
+}
+function addressInput(fields:AddressFields){
+ const out:Record<string,string>={}
+ for(const [key,value] of Object.entries(fields)){
+  if(['is_default_billing','is_default_shipping'].includes(key)){
+   if(typeof value!=='boolean')throw new CustomerError(400);out[key]=String(value)
+  }else{
+   if(!['first_name','last_name','company','address_1','address_2','city','postal_code','province','country_code','phone'].includes(key)||typeof value!=='string')throw new CustomerError(400)
+   out[key]=value
+  }
+ }
+ if(!Object.keys(out).length)throw new CustomerError(400)
+ return out
 }
 export function customerClient(fetcher:typeof fetch=fetch){
  let pending:{email:string;password:string;country:string;locale:string}|null=null
@@ -65,6 +96,24 @@ export function customerClient(fetcher:typeof fetch=fetch){
    if(!Object.keys(input).length)throw new CustomerError(400)
    const result=customerProjection((await call('/me',input,sessionCSRF())).customer)
    customerChanged();return result
+  },
+  async addresses():Promise<Address[]>{
+   const result=await call('/addresses')
+   if(!Array.isArray(result.addresses))throw new CustomerError(503)
+   const addresses=result.addresses.map(addressProjection),ids=new Set(addresses.map((address:Address)=>address.id))
+   if(ids.size!==addresses.length||addresses.filter((a:Address)=>a.is_default_billing).length>1||addresses.filter((a:Address)=>a.is_default_shipping).length>1)throw new CustomerError(503)
+   return addresses
+  },
+  async saveAddress(id:string|null,fields:AddressFields):Promise<Address>{
+   if(id!==null&&!addressID(id))throw new CustomerError(400)
+   const input=addressInput(fields),result=addressProjection((await call('/addresses'+(id?'/'+id:''),input,sessionCSRF())).address)
+   customerChanged();return result
+  },
+  async deleteAddress(id:string){
+   if(!addressID(id))throw new CustomerError(400)
+   const result=await call('/addresses/'+id+'/delete',{},sessionCSRF())
+   if(result.success!==true)throw new CustomerError(503)
+   customerChanged()
   },
   clear(){pending=null},
  }

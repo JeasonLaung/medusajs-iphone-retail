@@ -1,0 +1,292 @@
+[
+  {
+    "code": "KZ",
+    "alpha3": "KAZ",
+    "numeric": "398"
+  },
+  {
+    "code": "AM",
+    "alpha3": "ARM",
+    "numeric": "051"
+  },
+  {
+    "code": "AZ",
+    "alpha3": "AZE",
+    "numeric": "031"
+  },
+  {
+    "code": "CY",
+    "alpha3": "CYP",
+    "numeric": "196"
+  },
+  {
+    "code": "GE",
+    "alpha3": "GEO",
+    "numeric": "268"
+  },
+  {
+    "code": "TR",
+    "alpha3": "TUR",
+    "numeric": "792"
+  },
+  {
+    "code": "BY",
+    "alpha3": "BLR",
+    "numeric": "112"
+  },
+  {
+    "code": "BG",
+    "alpha3": "BGR",
+    "numeric": "100"
+  },
+  {
+    "code": "CZ",
+    "alpha3": "CZE",
+    "numeric": "203"
+  },
+  {
+    "code": "HU",
+    "alpha3": "HUN",
+    "numeric": "348"
+  },
+  {
+    "code": "PL",
+    "alpha3": "POL",
+    "numeric": "616"
+  },
+  {
+    "code": "MD",
+    "alpha3": "MDA",
+    "numeric": "498"
+  },
+  {
+    "code": "RO",
+    "alpha3": "ROU",
+    "numeric": "642"
+  },
+  {
+    "code": "RU",
+    "alpha3": "RUS",
+    "numeric": "643"
+  },
+  {
+    "code": "SK",
+    "alpha3": "SVK",
+    "numeric": "703"
+  },
+  {
+    "code": "UA",
+    "alpha3": "UKR",
+    "numeric": "804"
+  },
+  {
+    "code": "AX",
+    "alpha3": "ALA",
+    "numeric": "248"
+  },
+  {
+    "code": "DK",
+    "alpha3": "DNK",
+    "numeric": "208"
+  },
+  {
+    "code": "EE",
+    "alpha3": "EST",
+    "numeric": "233"
+  },
+  {
+    "code": "FO",
+    "alpha3": "FRO",
+    "numeric": "234"
+  },
+  {
+    "code": "FI",
+    "alpha3": "FIN",
+    "numeric": "246"
+  },
+  {
+    "code": "GG",
+    "alpha3": "GGY",
+    "numeric": "831"
+  },
+  {
+    "code": "IS",
+    "alpha3": "ISL",
+    "numeric": "352"
+  },
+  {
+    "code": "IE",
+    "alpha3": "IRL",
+    "numeric": "372"
+  },
+  {
+    "code": "IM",
+    "alpha3": "IMN",
+    "numeric": "833"
+  },
+  {
+    "code": "JE",
+    "alpha3": "JEY",
+    "numeric": "832"
+  },
+  {
+    "code": "LV",
+    "alpha3": "LVA",
+    "numeric": "428"
+  },
+  {
+    "code": "LT",
+    "alpha3": "LTU",
+    "numeric": "440"
+  },
+  {
+    "code": "NO",
+    "alpha3": "NOR",
+    "numeric": "578"
+  },
+  {
+    "code": "SJ",
+    "alpha3": "SJM",
+    "numeric": "744"
+  },
+  {
+    "code": "SE",
+    "alpha3": "SWE",
+    "numeric": "752"
+  },
+  {
+    "code": "GB",
+    "alpha3": "GBR",
+    "numeric": "826"
+  },
+  {
+    "code": "AL",
+    "alpha3": "ALB",
+    "numeric": "008"
+  },
+  {
+    "code": "AD",
+    "alpha3": "AND",
+    "numeric": "020"
+  },
+  {
+    "code": "BA",
+    "alpha3": "BIH",
+    "numeric": "070"
+  },
+  {
+    "code": "HR",
+    "alpha3": "HRV",
+    "numeric": "191"
+  },
+  {
+    "code": "GI",
+    "alpha3": "GIB",
+    "numeric": "292"
+  },
+  {
+    "code": "GR",
+    "alpha3": "GRC",
+    "numeric": "300"
+  },
+  {
+    "code": "VA",
+    "alpha3": "VAT",
+    "numeric": "336"
+  },
+  {
+    "code": "IT",
+    "alpha3": "ITA",
+    "numeric": "380"
+  },
+  {
+    "code": "MT",
+    "alpha3": "MLT",
+    "numeric": "470"
+  },
+  {
+    "code": "ME",
+    "alpha3": "MNE",
+    "numeric": "499"
+  },
+  {
+    "code": "MK",
+    "alpha3": "MKD",
+    "numeric": "807"
+  },
+  {
+    "code": "PT",
+    "alpha3": "PRT",
+    "numeric": "620"
+  },
+  {
+    "code": "SM",
+    "alpha3": "SMR",
+    "numeric": "674"
+  },
+  {
+    "code": "RS",
+    "alpha3": "SRB",
+    "numeric": "688"
+  },
+  {
+    "code": "SI",
+    "alpha3": "SVN",
+    "numeric": "705"
+  },
+  {
+    "code": "ES",
+    "alpha3": "ESP",
+    "numeric": "724"
+  },
+  {
+    "code": "AT",
+    "alpha3": "AUT",
+    "numeric": "040"
+  },
+  {
+    "code": "BE",
+    "alpha3": "BEL",
+    "numeric": "056"
+  },
+  {
+    "code": "FR",
+    "alpha3": "FRA",
+    "numeric": "250"
+  },
+  {
+    "code": "DE",
+    "alpha3": "DEU",
+    "numeric": "276"
+  },
+  {
+    "code": "LI",
+    "alpha3": "LIE",
+    "numeric": "438"
+  },
+  {
+    "code": "LU",
+    "alpha3": "LUX",
+    "numeric": "442"
+  },
+  {
+    "code": "MC",
+    "alpha3": "MCO",
+    "numeric": "492"
+  },
+  {
+    "code": "NL",
+    "alpha3": "NLD",
+    "numeric": "528"
+  },
+  {
+    "code": "CH",
+    "alpha3": "CHE",
+    "numeric": "756"
+  },
+  {
+    "code": "XK",
+    "alpha3": "XKX",
+    "numeric": null
+  }
+]

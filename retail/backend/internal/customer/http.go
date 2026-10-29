@@ -82,6 +82,10 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/auth/resend", h.ResendVerification)
 	private.GET("/me", h.Me)
 	private.POST("/me", h.UpdateProfile)
+	private.GET("/addresses", h.ListAddresses)
+	private.POST("/addresses", h.CreateAddress)
+	private.POST("/addresses/:id", h.UpdateAddress)
+	private.POST("/addresses/:id/delete", h.RemoveAddress)
 	private.POST("/auth/logout", h.LogoutAccount)
 }
 func (h *HTTPHandler) ready(c *gin.Context) bool {
@@ -138,6 +142,8 @@ func customerCSRF(c *gin.Context) string {
 }
 func (h *HTTPHandler) fail(c *gin.Context, err error) {
 	switch {
+	case errors.Is(err, ErrAddressMissing):
+		platform.Fail(c, 404, "customer.address_not_found", "Address not found")
 	case errors.Is(err, ErrInvalid), errors.Is(err, ErrVerification):
 		platform.Fail(c, 400, "customer.invalid_request", "Request or verification link is invalid")
 	case errors.Is(err, ErrExists):

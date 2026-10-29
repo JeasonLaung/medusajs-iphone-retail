@@ -133,12 +133,16 @@ def main():
             profile_markers=[line.split('CUSTOMER_PROFILE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CUSTOMER_PROFILE_REHEARSAL ' in line]
             if len(profile_markers)!=1:
                 raise RuntimeError('Customer profile verification missing')
+            address_markers=[line.split('CUSTOMER_ADDRESSES_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CUSTOMER_ADDRESSES_REHEARSAL ' in line]
+            if len(address_markers)!=1:
+                raise RuntimeError('Customer address verification missing')
             http_markers = [line.split('CUSTOMER_HTTP_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CUSTOMER_HTTP_REHEARSAL ' in line]
             if len(http_markers) != 1:
                 raise RuntimeError('Customer HTTP verification missing')
             files = ['retail/backend/migrations/0038_customer_accounts.sql', 'retail/backend/internal/customer/accounts.go', 'retail/backend/internal/customer/accounts_test.go', 'retail/backend/internal/identity/customer_accounts_test.go']
             files += ['retail/backend/internal/customer/http.go','retail/backend/internal/customer/bridge.go','retail/backend/internal/customer/profile.go','retail/backend/internal/identity/customer_profile_test.go','retail/backend/internal/customer/bridge_test.go','retail/backend/internal/identity/customer_http_test.go','retail/backend/internal/protected/config.go','retail/backend/internal/protected/config_test.go','retail/backend/cmd/api/main.go','retail/backend/internal/platform/request.go']
-            report = {'scope':'New customer identity and HTTP; storefront and mail delivery incomplete','counts':counts,'http':json.loads(http_markers[0]),'profile':json.loads(profile_markers[0]),'application_resources_used':False,'real_accounts_used':False,'working_tree_migration_count':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),'includes_uncommitted_payment_0037':(ROOT/'retail/backend/migrations/0037_mollie_notification_inbox.sql').exists(),'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
+            files += ['retail/backend/migrations/0039_customer_account_addresses.sql','retail/backend/internal/customer/addresses.go','retail/backend/internal/customer/addresses_http.go','retail/backend/internal/identity/customer_addresses_test.go']
+            report = {'scope':'New customer identity, profile and addresses HTTP; storefront and mail delivery incomplete','counts':counts,'http':json.loads(http_markers[0]),'profile':json.loads(profile_markers[0]),'addresses':json.loads(address_markers[0]),'application_resources_used':False,'real_accounts_used':False,'working_tree_migration_count':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),'includes_uncommitted_payment_0037':(ROOT/'retail/backend/migrations/0037_mollie_notification_inbox.sql').exists(),'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
         elif usage_only:
             if tested.returncode:
                 print(tested.stdout.decode(errors='replace'))

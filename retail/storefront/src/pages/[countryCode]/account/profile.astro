@@ -13,5 +13,5 @@ Astro.response.headers.set('Cache-Control','private, no-store')
 const enabled=!!CUSTOMER_BRIDGE_KEY&&!!STOREFRONT_ORIGIN&&Astro.url.origin===STOREFRONT_ORIGIN
 ---
 <Storefront segment={segment} title={copy.t('profile')} shell={shell??undefined}>
- {shell?<GinAccount segment={segment} enabled={enabled} profile client:only="react"/>:<div class="content-container py-16"><h1>{unavailable?'Account unavailable':'Page not found'}</h1></div>}
+ {shell?<GinAccount segment={segment} enabled={enabled} regions={shell.regions} profile client:only="react"/>:<div class="content-container py-16"><h1>{unavailable?'Account unavailable':'Page not found'}</h1></div>}
 </Storefront>

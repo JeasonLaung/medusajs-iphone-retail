@@ -143,6 +143,7 @@ func checkCustomerAccounts(t *testing.T, ctx context.Context, db *gorm.DB, sessi
 		t.Fatal("customer current session failed")
 	}
 	checkCustomerProfile(t, ctx, db, store, login.Session.Token, a.ID)
+	checkCustomerAddresses(t, ctx, db, store, sessions, login.Session.Token, a.ID)
 	public, _ := json.Marshal(login)
 	for _, secret := range []string{input.Password, login.Session.Token, login.Session.CSRF, "password_hash", "auth_version", token} {
 		if bytes.Contains(public, []byte(secret)) {
@@ -152,6 +153,9 @@ func checkCustomerAccounts(t *testing.T, ctx context.Context, db *gorm.DB, sessi
 	exec("UPDATE customer_accounts SET auth_version=auth_version+1 WHERE id=?", a.ID)
 	if _, err := store.UpdateProfile(ctx, login.Session.Token, map[string]string{"phone": "revoked"}); !errors.Is(err, customer.ErrUnauthorized) {
 		t.Fatal("revoked customer updated profile")
+	}
+	if _, err := store.Addresses(ctx, login.Session.Token); !errors.Is(err, customer.ErrUnauthorized) {
+		t.Fatal("revoked customer accessed addresses")
 	}
 	if _, err := store.Current(ctx, login.Session.Token); !errors.Is(err, customer.ErrUnauthorized) {
 		t.Fatal("durable customer revocation ignored")

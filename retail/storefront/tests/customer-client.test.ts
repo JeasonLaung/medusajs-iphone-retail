@@ -68,3 +68,42 @@ test('profile update sends only explicit supported fields with current session C
   if(previousLocation)Object.defineProperty(globalThis,'location',previousLocation);else Reflect.deleteProperty(globalThis,'location')
  }
 })
+
+const address={id:'addr_00000000-0000-4000-8000-000000000001',first_name:'New',last_name:'Customer',company:'',address_1:'Street 1',address_2:'',city:'Copenhagen',postal_code:'0012',province:'',country_code:'dk',phone:'',is_default_billing:false,is_default_shipping:false,created_at:'2026-10-29T00:00:00Z',updated_at:'2026-10-29T00:00:00Z'}
+test('address writes bind current CSRF and fixed paths, preserving explicit false and empty fields',async()=>{
+ const beforeDocument=Object.getOwnPropertyDescriptor(globalThis,'document'),beforeLocation=Object.getOwnPropertyDescriptor(globalThis,'location')
+ Object.defineProperty(globalThis,'document',{value:{cookie:`retail_customer_csrf=${csrf}`},configurable:true})
+ Object.defineProperty(globalThis,'location',{value:{protocol:'http:'},configurable:true})
+ const calls:{path:string;body:any}[]=[]
+ try{
+  const api=customerClient(async(input,init)=>{
+   calls.push({path:String(input),body:JSON.parse(String(init?.body))});assert.equal(new Headers(init?.headers).get('X-CSRF-Token'),csrf)
+   assert.equal(init?.method,'POST');assert.equal(init?.cache,'no-store')
+   return Response.json(String(input).endsWith('/delete')?{success:true}:{address})
+  })
+  assert.deepEqual(await api.saveAddress(null,{first_name:'New',phone:'',is_default_billing:false}),address)
+  assert.deepEqual(calls[0],{path:'/api/store/customer/addresses',body:{first_name:'New',phone:'',is_default_billing:'false'}})
+  await api.saveAddress(address.id,{is_default_billing:true})
+  await api.deleteAddress(address.id)
+  assert.equal(calls[1].path,'/api/store/customer/addresses/'+address.id)
+  assert.equal(calls[2].path,'/api/store/customer/addresses/'+address.id+'/delete')
+  for(const id of ['other-customer-address','../auth/logout',address.id+'?secret=x'])await assert.rejects(api.deleteAddress(id),CustomerError)
+  await assert.rejects(api.saveAddress(null,{customer_id:'forbidden'} as any),CustomerError)
+  await assert.rejects(api.saveAddress(null,{is_default_billing:'true'} as any),CustomerError)
+  assert.equal(calls.length,3)
+  const failed=customerClient(async()=>{calls.push({path:'failure',body:{}});throw new Error('Lost response')})
+  await assert.rejects(failed.deleteAddress(address.id));assert.equal(calls.length,4)
+ }finally{
+  if(beforeDocument)Object.defineProperty(globalThis,'document',beforeDocument);else Reflect.deleteProperty(globalThis,'document')
+  if(beforeLocation)Object.defineProperty(globalThis,'location',beforeLocation);else Reflect.deleteProperty(globalThis,'location')
+ }
+})
+test('address observation projects public fields and rejects invalid lists or conflicting defaults',async()=>{
+ const api=customerClient(async()=>Response.json({addresses:[{...address,customer_id:'PRIVATE',metadata:{private:true}}]}))
+ assert.deepEqual(await api.addresses(),[address])
+ for(const addresses of [null,{},[null],[{...address,phone:null}],[{...address,id:'historical'}],[address,address],[{...address,is_default_billing:true},{...address,id:'addr_00000000-0000-4000-8000-000000000002',is_default_billing:true}]]){
+  await assert.rejects(customerClient(async()=>Response.json({addresses})).addresses(),CustomerError)
+ }
+ assert.deepEqual(await customerClient(async()=>Response.json({addresses:[]})).addresses(),[])
+ await assert.rejects(customerClient(async()=>Response.json({},{status:401})).addresses(),CustomerError)
+})

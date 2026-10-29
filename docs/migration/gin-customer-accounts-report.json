@@ -1,5 +1,5 @@
 {
-  "scope": "New customer identity and HTTP; storefront and mail delivery incomplete",
+  "scope": "New customer identity, profile and addresses HTTP; storefront and mail delivery incomplete",
   "counts": {
     "new_customer_only": true,
     "email_normalized": true,
@@ -61,25 +61,51 @@
     "historical_subject_unchanged": true,
     "profile_ui_integrated": false
   },
+  "addresses": {
+    "real_mysql_redis": true,
+    "owned_crud": true,
+    "empty_list": true,
+    "partial_update_and_phone_clear": true,
+    "leading_zero_postal": true,
+    "cross_customer_denied": true,
+    "missing_same_404": true,
+    "protected_fields_denied": true,
+    "default_roles_independent": true,
+    "concurrent_default_attempts": 8,
+    "single_billing_default": true,
+    "physical_unique_default": true,
+    "late_default_switch_rollback": true,
+    "delete_failure_atomic": true,
+    "admin_realm_denied": true,
+    "unknown_session_denied": true,
+    "mail_delivery": false,
+    "checkout_integrated": false
+  },
   "application_resources_used": false,
   "real_accounts_used": false,
   "working_tree_migration_count": 38,
-  "includes_uncommitted_payment_0037": true,
+  "includes_uncommitted_payment_0037": false,
   "implementation_sha256": {
     "retail/backend/migrations/0038_customer_accounts.sql": "720e3e2e892b0ca48704aacf3eb15b38bf09f6307065728033e05af0e97f300b",
     "retail/backend/internal/customer/accounts.go": "69b25460dd15842ccec8308025743a1b3726766708c9ccc94df9ddec12e1ff64",
     "retail/backend/internal/customer/accounts_test.go": "13678e73415359ba13c5a9141cb51fb1a0352db5fc8d912bfa92ffda87f7e395",
-    "retail/backend/internal/identity/customer_accounts_test.go": "26ebe5d3c8ded4ffbb2dde26e796997d3cb203f0938facdd75be113cb033434d",
-    "retail/backend/internal/customer/http.go": "36afaf76ad8d22c49fb74966723b25c9ecc6461a1950476da380e0656b364e73",
+    "retail/backend/internal/identity/customer_accounts_test.go": "a38c02552e8b65880af5634a38fae42d29d0021c3aafe5408d8fb56680ec4c50",
+    "retail/backend/internal/customer/http.go": "32ab098f36eaca88f3b914954215f3cba04a1a419bf160198d27e595cfd8ea29",
     "retail/backend/internal/customer/bridge.go": "30bac08da22bdc95c9df934e90d54dce9abcb59279e1ca383238d4e51e495900",
     "retail/backend/internal/customer/profile.go": "24aef3e9ed7ca9892724b90531b5172dc82f4ff521cdf2feedf168a290354395",
     "retail/backend/internal/identity/customer_profile_test.go": "aaa3ca73e1eaa884e38fce7172506d1617530b238f8641d3f9b119c205e985c2",
     "retail/backend/internal/customer/bridge_test.go": "d3a81a2ed035884a73dec7be6a8916728efc69bf35e99135bf95dd3af8dca328",
-    "retail/backend/internal/identity/customer_http_test.go": "1fdf8529a1238569dc5a5075fa3e0f0aad99fcd3ba46bd6b368e5af953c8f580",
+    "retail/backend/internal/identity/customer_http_test.go": "0ef980d165e7d006daf327ad3639c87b6a61cfc275d7304323d6ebf0dd6df931",
     "retail/backend/internal/protected/config.go": "aa769d0cc15aecb84070398902dca6bde451bfaa913d61b6a0b7091d22c202d0",
     "retail/backend/internal/protected/config_test.go": "5ed28ea0a0692000a0a6549438b92b613c3419c23fb6f9afb5a9bd770c1f5c3c",
     "retail/backend/cmd/api/main.go": "6c0a2c8c5e0f4f774950b5965851bc6327d48e4b0e676ccc57847ed8b77dc467",
-    "retail/backend/internal/platform/request.go": "06e8f5ae4804c3cf67289e068c4566c07535fe9cea90f532fbe7bbeb2deb2f40"
+    "retail/backend/internal/platform/request.go": "06e8f5ae4804c3cf67289e068c4566c07535fe9cea90f532fbe7bbeb2deb2f40",
+    "retail/backend/migrations/0039_customer_account_addresses.sql": "e140cec4d2d241b3ddb871bd831f7cc868bd9ef958b86d5cdfa9d72a7a43e0a6",
+    "retail/backend/internal/customer/addresses.go": "ea73da0473df0199d7f3f9da5f3df185f2d80187191b8e0cfc9078feaa81136f",
+    "retail/backend/internal/customer/addresses_http.go": "42cc6c12e341eb8a0dab41a248bc084f73f8485f3cf9c8197f54e51ffb2296a6",
+    "retail/backend/internal/identity/customer_addresses_test.go": "cea5f63c28a19c9f2f15bd581aa0bf170db6647b94b6b5a40490015ec8fbec98"
   },
-  "cleanup": "both owned containers and temporary runner removed"
+  "cleanup": "both owned containers and temporary runner removed",
+  "verification_context": "Staged snapshot exported independently with reviewed fixtures; uncommitted payment 0037 excluded",
+  "staged_backend_go_all_packages_passed": true
 }

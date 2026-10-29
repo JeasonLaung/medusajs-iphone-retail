@@ -1,5 +1,5 @@
 {
-  "scope": "Original customer login/register/verification markup and translations; adapters changed to independent Gin",
+  "scope": "Original customer account forms, address cards, billing editor, countries, and translations; adapters changed to independent Gin",
   "files": {
     "medusa-store/apps/storefront/src/modules/account/components/login/index.tsx": "501e2c956a9de907e62cddde197c20e6a66446638060a5d1f2f65fcebe0729a8",
     "medusa-store/apps/storefront/src/modules/account/components/register/index.tsx": "1d2dc3476caa4c28b2f28066742b0f563e88eb1b6af840588a0f239146583841",
@@ -16,6 +16,15 @@
     "medusa-store/apps/storefront/src/modules/account/components/profile-email/index.tsx": "410f09c09c4b383f4d05242c3a2f99749bc472cadc1c08f33060364a4816c777",
     "medusa-store/apps/storefront/src/modules/account/components/account-info/index.tsx": "9f934411dfc8df792e5d84fb31c378696d8efe5b99f90a314c43d7084b35a392",
     "medusa-store/apps/storefront/src/lib/hooks/use-toggle-state.tsx": "a837b72798d32746f2bc2aa529821aa3c1a74106f7e3c0911700d4fc69fecaa0",
-    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/profile/page.tsx": "279b105048f3779ef6b7d508b2765f4e194f9c11da2609c781974404dbb44588"
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/profile/page.tsx": "279b105048f3779ef6b7d508b2765f4e194f9c11da2609c781974404dbb44588",
+    "medusa-store/apps/storefront/src/modules/account/components/address-book/index.tsx": "58eea0bc8b0bf7634477a9ec29cd919931d844becdcb33c7f568535fd1ca0496",
+    "medusa-store/apps/storefront/src/modules/account/components/address-card/add-address.tsx": "b53ac0ebf486ae8681e6c39369fdf0a680591a502f0310b8b88892f6cf267e62",
+    "medusa-store/apps/storefront/src/modules/account/components/address-card/edit-address-modal.tsx": "05b21aaceda1a6b8c38a8dece7762d476f28b0b5e43d5b211177df7bd7bbad52",
+    "medusa-store/apps/storefront/src/modules/account/components/profile-billing-address/index.tsx": "d60a6968bf09a73ba9797abb52dc81804c6d01189028b92826759b4cfc3aa09a",
+    "medusa-store/apps/storefront/src/lib/util/countries.ts": "de6f5aeeb7d50e1cc6bc0152ff2ba196e7e22c3b4e791a2c3d5bc71705372508",
+    "medusa-store/apps/storefront/src/lib/data/european-countries.json": "cbf1eaddb92d095105125b695c65cb23ac09949a8740aec8580df8e862306b4c",
+    "medusa-store/apps/storefront/src/lib/data/country-name-overrides.json": "940fae1d6491baccbb3076d9efc606314345d0df74599c17074560f946cdd07e",
+    "medusa-store/apps/storefront/src/lib/data/country-select-translations.ts": "8b121a782b173595a00d57531302b596945ca5104049cdf0fbb17af5459bf2dd",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/addresses/page.tsx": "bfe67ba9b887cda3b5d71d5c3d13044c9848c2262242cde205ee8fe404a60a24"
   }
 }

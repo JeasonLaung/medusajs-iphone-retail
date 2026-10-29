@@ -53,7 +53,7 @@ func TestOwnedCartTaxRefresh(t *testing.T) {
 		t.Fatal("cart runtime migration plan unavailable")
 	}
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 37 {
+	if err != nil || r.Applied != 38 {
 		t.Fatal("cart runtime migration failed")
 	}
 	exec := func(query string, args ...any) {
@@ -229,5 +229,5 @@ func TestOwnedCartTaxRefresh(t *testing.T) {
 	if err != nil || current.Version != "1" {
 		t.Fatal("tax helper changed cart version")
 	}
-	t.Log(`CART_TAX_REFRESH_REHEARSAL {"migrations":37,"persisted_context":true,"item_and_shipping_lines":true,"exact_rate":true,"soft_delete_replace":true,"giftcard_and_removed_cleanup":true,"unrelated_cart_preserved":true,"whole_transaction_rollback":true,"late_insert_failure_rollback":true,"authority_version_rechecked":true,"provider_failure_preserves_taxes":true,"multibyte_code_preserved":true,"old_snapshot_current_address":true,"automatic_force_address_gates":true,"standalone_command":false,"checkout":false}`)
+	t.Log(`CART_TAX_REFRESH_REHEARSAL {"migrations":38,"persisted_context":true,"item_and_shipping_lines":true,"exact_rate":true,"soft_delete_replace":true,"giftcard_and_removed_cleanup":true,"unrelated_cart_preserved":true,"whole_transaction_rollback":true,"late_insert_failure_rollback":true,"authority_version_rechecked":true,"provider_failure_preserves_taxes":true,"multibyte_code_preserved":true,"old_snapshot_current_address":true,"automatic_force_address_gates":true,"standalone_command":false,"checkout":false}`)
 }

@@ -1,0 +1,25 @@
+-- New customer-owned addresses, separate from imported historical addresses.
+CREATE TABLE customer_account_addresses (
+ id VARCHAR(80) CHARACTER SET ascii COLLATE ascii_bin PRIMARY KEY,
+ customer_id VARCHAR(80) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+ first_name VARCHAR(160) NOT NULL,
+ last_name VARCHAR(160) NOT NULL,
+ company VARCHAR(255) NOT NULL DEFAULT '',
+ address_1 VARCHAR(255) NOT NULL,
+ address_2 VARCHAR(255) NOT NULL DEFAULT '',
+ city VARCHAR(160) NOT NULL,
+ postal_code VARCHAR(32) NOT NULL,
+ province VARCHAR(160) NOT NULL DEFAULT '',
+ country_code CHAR(2) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+ phone VARCHAR(64) NOT NULL DEFAULT '',
+ is_default_billing BOOLEAN NOT NULL DEFAULT FALSE CHECK (is_default_billing IN (0,1)),
+ is_default_shipping BOOLEAN NOT NULL DEFAULT FALSE CHECK (is_default_shipping IN (0,1)),
+ created_at DATETIME(6) NOT NULL,
+ updated_at DATETIME(6) NOT NULL,
+ billing_owner VARCHAR(80) CHARACTER SET ascii COLLATE ascii_bin GENERATED ALWAYS AS (IF(is_default_billing,customer_id,NULL)) STORED,
+ shipping_owner VARCHAR(80) CHARACTER SET ascii COLLATE ascii_bin GENERATED ALWAYS AS (IF(is_default_shipping,customer_id,NULL)) STORED,
+ UNIQUE KEY uq_customer_address_billing (billing_owner),
+ UNIQUE KEY uq_customer_address_shipping (shipping_owner),
+ INDEX idx_customer_addresses (customer_id,created_at,id),
+ FOREIGN KEY (customer_id) REFERENCES customer_accounts(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_bin;

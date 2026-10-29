@@ -167,6 +167,24 @@ func checkCustomerHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions 
 	}
 	call("POST", "/me", `{"email":"forbidden@example.invalid"}`, jar["__Host-retail_customer_csrf"].Value, 400, nil)
 	call("POST", "/me", `{}`, jar["__Host-retail_customer_csrf"].Value, 400, nil)
+	call("GET", "/addresses", "", "", 200, nil)
+	addressInput := `{"first_name":"HTTP","last_name":"Customer","address_1":"Street 1","city":"Copenhagen","postal_code":"0012","country_code":"dk","is_default_billing":"true"}`
+	call("POST", "/addresses", addressInput, strings.Repeat("a", 64), 403, nil)
+	created := call("POST", "/addresses", addressInput, jar["__Host-retail_customer_csrf"].Value, 200, nil)
+	var addressBody struct{ Address customer.Address }
+	if json.Unmarshal(created.Body.Bytes(), &addressBody) != nil || !addressBody.Address.IsDefaultBilling || addressBody.Address.PostalCode != "0012" || bytes.Contains(created.Body.Bytes(), []byte("customer_id")) {
+		t.Fatal("customer HTTP address projection failed")
+	}
+	addressPath := "/addresses/" + addressBody.Address.ID
+	call("POST", addressPath, `{"phone":"+45 111"}`, jar["__Host-retail_customer_csrf"].Value, 200, nil)
+	call("POST", addressPath, `{"customer_id":"forbidden"}`, jar["__Host-retail_customer_csrf"].Value, 400, nil)
+	call("POST", addressPath, `{"is_default_billing":true}`, jar["__Host-retail_customer_csrf"].Value, 400, nil)
+	call("POST", addressPath, `{"phone":"a","phone":"b"}`, jar["__Host-retail_customer_csrf"].Value, 400, nil)
+	call("POST", addressPath+"/delete", `{}`, strings.Repeat("a", 64), 403, nil)
+	call("POST", addressPath+"/delete", `{}`, jar["__Host-retail_customer_csrf"].Value, 403, func(r *http.Request) { r.Header.Set("Origin", "https://evil.example") })
+	call("GET", "/addresses", "", "", 401, func(r *http.Request) { r.Header.Del("Cookie") })
+	call("POST", addressPath+"/delete", `{}`, jar["__Host-retail_customer_csrf"].Value, 200, nil)
+	call("POST", addressPath+"/delete", `{}`, jar["__Host-retail_customer_csrf"].Value, 404, nil)
 	call("GET", "/me", "", "", 200, nil)
 	call("POST", "/auth/logout", "{}", jar["__Host-retail_customer_csrf"].Value, 200, nil)
 	call("GET", "/me", "", "", 401, nil)

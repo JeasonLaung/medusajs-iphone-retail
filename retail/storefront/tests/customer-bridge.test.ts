@@ -85,3 +85,21 @@ test('authenticated profile update is a fixed private POST without issuing cooki
  })
  assert.equal(result.status,200);assert.equal(result.headers.getSetCookie().length,0)
 })
+
+test('address bridge permits only canonical owned API shapes with session credentials and no cookies issued',async()=>{
+ const id='addr_00000000-0000-4000-8000-000000000001'
+ let calls=0
+ for(const [method,path] of [['GET','/addresses'],['POST','/addresses'],['POST','/addresses/'+id],['POST','/addresses/'+id+'/delete']]){
+  const init=method==='POST'?{method,headers:{Origin:shop,'Content-Type':'application/json','X-CSRF-Token':token,Cookie:`retail_customer_session=${token}`},body:'{}'}:undefined
+  const result=await customerBridge(request(path,init),config,async(url,options)=>{
+   calls++;assert.equal(String(url),config.ginOrigin+root+path)
+   if(method==='POST')assert.equal(new Headers(options?.headers).get('X-CSRF-Token'),token)
+   return response({success:true})
+  })
+  assert.equal(result.status,200);assert.equal(result.headers.getSetCookie().length,0)
+ }
+ for(const path of ['/addresses/'+id,'/addresses/'+id+'/delete','/addresses/old-id','/addresses/'+id+'?x=1']){
+  assert.equal((await customerBridge(request(path),config,async()=>{throw new Error('Must not forward')})).status,404)
+ }
+ assert.equal(calls,4)
+})
