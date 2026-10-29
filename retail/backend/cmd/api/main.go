@@ -114,11 +114,14 @@ func main() {
 	switch os.Getenv("CUSTOMER_AUTH_ENABLED") {
 	case "", "false":
 	case "true":
+		if os.Getenv("CUSTOMER_BRIDGE_KEY") == "" {
+			log.Fatal("Customer authentication requires an independent storefront bridge key")
+		}
 		ring, keyErr := protected.ParseKeyring(os.Getenv("CUSTOMER_KEY_ACTIVE"), os.Getenv("CUSTOMER_KEYRING_JSON"))
 		if keyErr != nil {
 			log.Fatal("Explicit customer encryption keyring required")
 		}
-		customers, err = customer.NewHTTP(db, customer.HTTPOptions{Sessions: sessions, Ring: ring, Origin: os.Getenv("STOREFRONT_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true"})
+		customers, err = customer.NewHTTP(db, customer.HTTPOptions{Sessions: sessions, Ring: ring, Origin: os.Getenv("STOREFRONT_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true", BridgeKey: os.Getenv("CUSTOMER_BRIDGE_KEY")})
 		if err != nil {
 			log.Fatal("Customer origin and secure cookie configuration invalid")
 		}

@@ -27,16 +27,18 @@ type HTTPSessions interface {
 	AllowLogin(context.Context, sessionstore.Realm, string) (bool, error)
 }
 type HTTPOptions struct {
-	Sessions HTTPSessions
-	Ring     *protected.Ring
-	Origin   string
-	Secure   bool
+	Sessions  HTTPSessions
+	Ring      *protected.Ring
+	Origin    string
+	Secure    bool
+	BridgeKey string
 }
 type HTTPHandler struct {
 	store        *Store
 	sessions     HTTPSessions
 	origin, host string
 	secure       bool
+	bridgeSecret []byte
 }
 
 func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
@@ -48,7 +50,15 @@ func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
 	if (u.Scheme == "https") != options.Secure {
 		return nil, ErrUnavailable
 	}
-	return &HTTPHandler{store: store, sessions: options.Sessions, origin: options.Origin, host: u.Host, secure: options.Secure}, nil
+	var key []byte
+	if options.BridgeKey != "" {
+		var ok bool
+		key, ok = bridgeKey(options.BridgeKey)
+		if !ok {
+			return nil, ErrUnavailable
+		}
+	}
+	return &HTTPHandler{store: store, sessions: options.Sessions, origin: options.Origin, host: u.Host, secure: options.Secure, bridgeSecret: key}, nil
 }
 
 // Register is mounted on /api/store/customer by the production API, even when
@@ -56,6 +66,7 @@ func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
 func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private := group.Group("")
 	private.Use(platform.PrivateResponse)
+	private.Use(h.bridge)
 	private.Use(func(c *gin.Context) {
 		c.Header("Referrer-Policy", "no-referrer")
 		if c.Request.URL.RawQuery != "" || c.Request.URL.ForceQuery {
@@ -220,7 +231,7 @@ func (h *HTTPHandler) input(c *gin.Context, allowed ...string) (map[string]strin
 	return values, true
 }
 func (h *HTTPHandler) allow(c *gin.Context, ctx context.Context, operation, email string) bool {
-	keys := []string{"customer-http:" + operation + "-ip:" + c.ClientIP()}
+	keys := []string{"customer-http:" + operation + "-ip:" + h.clientIP(c)}
 	if email != "" {
 		normalized, ok := normalizedEmail(email)
 		if !ok {

@@ -1,6 +1,7 @@
 import {ginPrivateTransport} from './gin-private-transport.ts'
+import {customerProof} from './customer-proof.ts'
 
-export type CustomerBridgeConfig={ginOrigin:string|undefined;storefrontOrigin:string|undefined}
+export type CustomerBridgeConfig={ginOrigin:string|undefined;storefrontOrigin:string|undefined;bridgeKey?:string;clientAddress?:string}
 const root='/api/store/customer'
 const writes=new Set(['challenge','register','login','verify','resend','logout'].map(name=>`${root}/auth/${name}`))
 const defaults={'Cache-Control':'private, no-store','Content-Type':'application/json','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Vary':'Cookie, Origin'}
@@ -19,8 +20,8 @@ function origin(raw:string|undefined,upstream=false):URL{
  if(!upstream&&url.protocol==='http:'&&!['localhost','127.0.0.1','[::1]'].includes(url.hostname))throw new Error()
  return url
 }
-// This transport deliberately has no public route yet. Production mounting
-// requires an authenticated client-address contract with Gin for rate limits.
+// The public route requires a key and adapter-observed client address. Browser
+// forwarded headers are never copied into the signed request.
 export async function customerBridge(request:Request,config:CustomerBridgeConfig,fetcher:typeof fetch=ginPrivateTransport):Promise<Response>{
  const url=new URL(request.url),post=request.method==='POST',path=url.pathname,action=path.slice((root+'/auth/').length)
  if(url.search||url.href.includes('?')||!(post&&writes.has(path)||request.method==='GET'&&path===root+'/me'))return failure(404)
@@ -49,6 +50,10 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
  }
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000)
  try{
+  if(config.bridgeKey!==undefined){
+   const proof=customerProof(config.bridgeKey,config.clientAddress??'',request.method,path,headers,body)
+   proof.forEach((value,name)=>headers.set(name,value))
+  }
   const response=await fetcher(new URL(path,upstream),{method:request.method,headers,body:body as BodyInit|undefined,redirect:'error',credentials:'omit',cache:'no-store',signal:AbortSignal.any([request.signal,controller.signal])})
   const status=response.status,out=new Headers(defaults)
   const accepted=[200,202,400,401,403,404,409,413,415,429,503].includes(status)

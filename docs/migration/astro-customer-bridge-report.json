@@ -1,9 +1,9 @@
 {
-  "scope": "Customer private transport foundation; not mounted to a public Astro route",
-  "unit_tests": 81,
-  "customer_bridge_tests": 5,
+  "scope": "Customer signed transport with formal Astro API route; account pages and mail delivery incomplete",
+  "unit_tests": 83,
+  "customer_bridge_tests": 7,
   "astro_check": {
-    "files": 194,
+    "files": 197,
     "errors": 0,
     "warnings": 0,
     "existing_hints": 2
@@ -11,12 +11,32 @@
   "native_http_host_and_redirect_checked": true,
   "browser_verified": false,
   "real_gin_bridge_verified": false,
-  "client_address_contract_complete": false,
-  "public_route_mounted": false,
+  "client_address_contract_complete": true,
+  "public_route_mounted": true,
   "mail_delivery_integrated": false,
   "implementation_sha256": {
-    "retail/storefront/src/lib/customer-bridge.ts": "2dd693a2cd94122549b15d074cd1ad3d9297c4c11d38d13b7a3c5cae7e71f256",
+    "retail/storefront/src/lib/customer-bridge.ts": "b81bf31bc3a5171a0cf893cd3e29307c2581e3164586ab1e6d5269071df357b6",
     "retail/storefront/tests/customer-bridge.test.ts": "70622daa55eb51b53b78b18116e86dd8ccecf131b55dacacdc9b5cf5c643fa07",
-    "retail/storefront/src/lib/gin-private-transport.ts": "e1f11c19b0c2ca41863d7596a0970f87d1c275d4791b69922c9f14e5d2a6a1e9"
-  }
+    "retail/storefront/src/lib/gin-private-transport.ts": "e1f11c19b0c2ca41863d7596a0970f87d1c275d4791b69922c9f14e5d2a6a1e9",
+    "retail/storefront/src/lib/customer-proof.ts": "fe34c25573ecd71d8ad9b4074b7f513e67f30e145b115d3200dfe916109f33af",
+    "retail/storefront/tests/customer-proof.test.ts": "ecb36b47678655d8da2fb925ea8f70b0a7fa0a38dd18365d8ef59db1a85754a5",
+    "retail/storefront/tests/customer-runtime.mjs": "0a49baf690f2eba0a5083440d84d0016e67d11c915dd0951dbaf06daefbb8a6e",
+    "retail/storefront/src/pages/api/store/customer/[...path].ts": "035ba332ee394377c820c5f7222f39f551f9cf0003cc7c8d991fa0c9ef93e9e0",
+    "retail/storefront/astro.config.mjs": "8c82eee55e20ab9779d9d2195294471ad9149cdf5f7193b3184b6a2536e5fc0d",
+    "retail/backend/internal/customer/bridge.go": "30bac08da22bdc95c9df934e90d54dce9abcb59279e1ca383238d4e51e495900",
+    "retail/backend/internal/customer/bridge_test.go": "d3a81a2ed035884a73dec7be6a8916728efc69bf35e99135bf95dd3af8dca328"
+  },
+  "formal_route_runtime": {
+    "built_formal_route": true,
+    "real_native_transport": true,
+    "hmac_verified": true,
+    "adapter_client_ip": true,
+    "forwarded_ip_rejected": true,
+    "foreign_origin_rejected": true,
+    "query_rejected": true,
+    "private_credentials_filtered": true,
+    "gin_mysql_integrated": false,
+    "customer_pages_integrated": false
+  },
+  "go_node_fixed_vector": "805ac93b9fa7d70a0c3103f6829fa1e0a22270cae12b545da7a98f5bd6ef2513"
 }

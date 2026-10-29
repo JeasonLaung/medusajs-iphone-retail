@@ -3,15 +3,20 @@ package identity_test
 import (
 	"bytes"
 	"context"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"io"
 	"log/slog"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/eurorefurb/retail/internal/customer"
 	"github.com/eurorefurb/retail/internal/platform"
@@ -23,7 +28,8 @@ import (
 
 func checkCustomerHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions *sessionstore.Store, ring *protected.Ring) {
 	t.Helper()
-	h, err := customer.NewHTTP(db, customer.HTTPOptions{Sessions: sessions, Ring: ring, Origin: "https://shop.example", Secure: true})
+	bridgeKey := strings.Repeat("71", 32)
+	h, err := customer.NewHTTP(db, customer.HTTPOptions{Sessions: sessions, Ring: ring, Origin: "https://shop.example", Secure: true, BridgeKey: bridgeKey})
 	if err != nil {
 		t.Fatal("customer HTTP configuration failed")
 	}
@@ -52,6 +58,16 @@ func checkCustomerHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions 
 		if adjust != nil {
 			adjust(request)
 		}
+		ip, _, _ := net.SplitHostPort(request.RemoteAddr)
+		stamp := strconv.FormatInt(time.Now().Unix(), 10)
+		digest := sha256.Sum256([]byte(body))
+		fields := []string{"retail-customer-bridge-v1", stamp, ip, method, request.URL.RequestURI(), request.Host, request.Header.Get("Origin"), request.Header.Get("Cookie"), request.Header.Get("X-CSRF-Token"), hex.EncodeToString(digest[:])}
+		secret, _ := hex.DecodeString(bridgeKey)
+		mac := hmac.New(sha256.New, secret)
+		mac.Write([]byte(strings.Join(fields, "\n")))
+		request.Header.Set("X-Retail-Client-IP", ip)
+		request.Header.Set("X-Retail-Bridge-Time", stamp)
+		request.Header.Set("X-Retail-Bridge-Proof", hex.EncodeToString(mac.Sum(nil)))
 		response := httptest.NewRecorder()
 		r.ServeHTTP(response, request)
 		if response.Code != expected {
@@ -173,5 +189,5 @@ func checkCustomerHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions 
 	if recorder.Code != 503 {
 		t.Fatal("unconfigured customer HTTP opened")
 	}
-	t.Log(`CUSTOMER_HTTP_REHEARSAL {"real_gin_mysql_redis":true,"registration_to_verification_to_login":true,"origin_host_and_fetch_site_checked":true,"private_no_store":true,"customer_cookie_namespace":true,"secure_host_cookie_flags":true,"single_use_prelogin_csrf":true,"unverified_session_denied":true,"verification_does_not_login":true,"login_rotation":true,"duplicate_cookie_rejected":true,"administrator_cookie_rejected":true,"logout_csrf_and_revocation":true,"strict_json_and_size_limit":true,"email_rate_limit":true,"disabled_routes_fail_closed":true,"delivery":"pending","astro_bridge_integrated":false,"mail_delivery_integrated":false}`)
+	t.Log(`CUSTOMER_HTTP_REHEARSAL {"real_gin_mysql_redis":true,"signed_bridge_required":true,"signed_client_ip_rate_limit":true,"registration_to_verification_to_login":true,"origin_host_and_fetch_site_checked":true,"private_no_store":true,"customer_cookie_namespace":true,"secure_host_cookie_flags":true,"single_use_prelogin_csrf":true,"unverified_session_denied":true,"verification_does_not_login":true,"login_rotation":true,"duplicate_cookie_rejected":true,"administrator_cookie_rejected":true,"logout_csrf_and_revocation":true,"strict_json_and_size_limit":true,"email_rate_limit":true,"disabled_routes_fail_closed":true,"delivery":"pending","astro_bridge_integrated":false,"mail_delivery_integrated":false}`)
 }

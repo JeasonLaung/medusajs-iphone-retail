@@ -27,6 +27,8 @@
   },
   "http": {
     "real_gin_mysql_redis": true,
+    "signed_bridge_required": true,
+    "signed_client_ip_rate_limit": true,
     "registration_to_verification_to_login": true,
     "origin_host_and_fetch_site_checked": true,
     "private_no_store": true,
@@ -55,11 +57,13 @@
     "retail/backend/internal/customer/accounts.go": "69b25460dd15842ccec8308025743a1b3726766708c9ccc94df9ddec12e1ff64",
     "retail/backend/internal/customer/accounts_test.go": "13678e73415359ba13c5a9141cb51fb1a0352db5fc8d912bfa92ffda87f7e395",
     "retail/backend/internal/identity/customer_accounts_test.go": "7201c2b7e598f39ee7584018a7833eaa255e12a6ba8584406c27fe80b5e9bfd5",
-    "retail/backend/internal/customer/http.go": "c2f39a410df6db2412be7d3f7dc31b668fd7597c1b18eb6be854b112dc187672",
-    "retail/backend/internal/identity/customer_http_test.go": "0c3229657eb308aa3f5ecde8aa6041a50316475e08bfd208f4f3834435cae696",
+    "retail/backend/internal/customer/http.go": "249e095095e0c5bb7e0d906a6dc99005a4337a71b8df05755edb2c0518621f26",
+    "retail/backend/internal/customer/bridge.go": "30bac08da22bdc95c9df934e90d54dce9abcb59279e1ca383238d4e51e495900",
+    "retail/backend/internal/customer/bridge_test.go": "d3a81a2ed035884a73dec7be6a8916728efc69bf35e99135bf95dd3af8dca328",
+    "retail/backend/internal/identity/customer_http_test.go": "d4417b4ed14337f53c1983617d789df7718a63bcd8ab085758ebe0f046d3dbae",
     "retail/backend/internal/protected/config.go": "aa769d0cc15aecb84070398902dca6bde451bfaa913d61b6a0b7091d22c202d0",
     "retail/backend/internal/protected/config_test.go": "5ed28ea0a0692000a0a6549438b92b613c3419c23fb6f9afb5a9bd770c1f5c3c",
-    "retail/backend/cmd/api/main.go": "0370729b07ccdf957fff3c1be54c39bdd729458c1e1e3e6c8c4a28dacc344fae",
+    "retail/backend/cmd/api/main.go": "6c0a2c8c5e0f4f774950b5965851bc6327d48e4b0e676ccc57847ed8b77dc467",
     "retail/backend/internal/platform/request.go": "06e8f5ae4804c3cf67289e068c4566c07535fe9cea90f532fbe7bbeb2deb2f40"
   },
   "cleanup": "both owned containers and temporary runner removed"
