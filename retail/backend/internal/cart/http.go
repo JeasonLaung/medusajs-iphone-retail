@@ -84,6 +84,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/cart-sessions", h.Scope)
 	private.POST("/carts", h.Create)
 	private.GET("/cart", h.Current)
+	private.GET("/orders/:id/confirmation", h.OrderConfirmation)
 	private.GET("/carts/:id", h.Detail)
 	private.GET("/carts/:id/amounts", h.Amounts)
 	private.GET("/carts/:id/view", h.View)

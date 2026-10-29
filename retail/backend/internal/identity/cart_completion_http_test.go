@@ -54,7 +54,7 @@ func checkCompletionHTTP(t *testing.T, ctx context.Context, db *gorm.DB, session
 			t.Fatalf("completion HTTP got %d want %d", w.Code, status)
 		}
 		if w.Header().Get("Cache-Control") != "private, no-store" || len(w.Result().Cookies()) != 0 {
-			t.Fatalf("completion response cache/cookies: status=%d body_bytes=%d cache=%q cookies=%d",w.Code,len(body),w.Header().Get("Cache-Control"),len(w.Result().Cookies()))
+			t.Fatalf("completion response cache/cookies: status=%d body_bytes=%d cache=%q cookies=%d", w.Code, len(body), w.Header().Get("Cache-Control"), len(w.Result().Cookies()))
 		}
 		for _, private := range []string{"tr_initial", "payment_id", "capture_id", "request_sha256", "generation", "Email", "email", "checkout_url"} {
 			if strings.Contains(w.Body.String(), private) {
@@ -119,6 +119,7 @@ func checkCompletionHTTP(t *testing.T, ctx context.Context, db *gorm.DB, session
 	if replay.Body.String() != first.Body.String() {
 		t.Fatal("HTTP lost response retry differs")
 	}
+	checkOrderConfirmation(t, ctx, db, sessions, ref, result.OrderID, o)
 	exec("UPDATE cart_completion_runtime SET enabled=FALSE WHERE id=1")
 	call(path, "{}", origin, issued.CSRF, true, 503)
 	exec("UPDATE cart_completion_runtime SET enabled=TRUE WHERE id=1")
