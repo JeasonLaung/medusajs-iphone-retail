@@ -12,6 +12,7 @@ import Payment from './payment'
 import {browserPaymentCommands} from '../../lib/checkout-payment'
 import type {CheckoutStep} from './types'
 import styles from './styles.module.css'
+import type {PromotionState} from '../../lib/checkout-promotions'
 
 type Props={region:Region;segment:string;enabled:boolean;customerEnabled:boolean}
 type Controller=ReturnType<typeof browserContactCommands>
@@ -19,6 +20,7 @@ export default function GinCheckout({region,segment,enabled,customerEnabled}:Pro
  const zh=segment.endsWith('-zh')
  const [state,setState]=useState<ContactState|null>(null),[step,setStep]=useState<CheckoutStep>('address'),[error,setError]=useState(false),[customer,setCustomer]=useState<(Customer&{addresses:Address[]})|null>(null),[recovery,setRecovery]=useState(false),[pendingSave,setPendingSave]=useState(false)
  const controller=useRef<Controller|null>(null),busy=useRef(false),live=useRef(false)
+ const [promotionBlocked,setPromotionBlocked]=useState(false),[promotionRevision,setPromotionRevision]=useState(0)
  const unavailable=zh?'结账暂时无法加载，请稍后重试。':'Checkout is temporarily unavailable. Please try again.'
  const retry=zh?'重试':'Try again'
  useEffect(()=>{
@@ -69,10 +71,14 @@ export default function GinCheckout({region,segment,enabled,customerEnabled}:Pro
   }finally{busy.current=false}
  }
  const paymentStep=(next:'payment'|'review')=>{setStep(next);const url=new URL(location.href);url.searchParams.set('step',next);history.replaceState(null,'',url)}
+ const promotionChanged=(next:PromotionState)=>{
+  if(!live.current||next.view.amounts.currency_code!==region.currency_code)return
+  setState(next);setPromotionRevision(v=>v+1)
+ }
  const recover=async()=>{if(!controller.current||busy.current)return;busy.current=true;try{accept(await controller.current.recover())}catch{setError(true)}finally{busy.current=false}}
  if(!state)return <div className={styles.page}><p role={error?'alert':'status'} className={error?styles.error:styles.muted}>{error||!enabled?unavailable:(zh?'正在加载结账…':'Loading checkout…')}</p>{error&&<button type="button" onClick={()=>location.reload()}>{retry}</button>}</div>
  const cart={...state.contacts,region}
- return <div className={styles.page}><Progress segment={segment} step={step}/><div className={styles.columns}><div className={styles.card}>
-  {recovery?<><p role="alert">{zh?'地址已提交，请重试读取结账信息。':'Your address was submitted. Retry loading checkout details.'}</p><button type="button" className={styles.primary} onClick={()=>void recover()} data-testid="contact-recover">{retry}</button></>:step==='address'?<>{pendingSave&&<p role="alert" className={styles.error}>{zh?'上次提交结果尚未确认，请保持原信息并重试。':'Your previous submission is not confirmed. Keep the original details and try again.'}</p>}<Addresses key={state.contacts.version} cart={cart} customer={customer} segment={segment} setAddresses={submit}/></>:step==='payment'||step==='review'?<Payment state={state} segment={segment} step={step} onChange={next=>setState(next)} onStep={paymentStep}/>:<Shipping state={state} segment={segment} onChange={next=>setState(next)} onContinue={()=>paymentStep('payment')}/>}
- </div><Summary view={state.view} contacts={state.contacts} region={region} step={step} locale={segment}/></div></div>
+ return <div className={styles.page}><div inert={promotionBlocked}><Progress segment={segment} step={step}/></div><div className={styles.columns}><div className={styles.card} inert={promotionBlocked}>
+  {recovery?<><p role="alert">{zh?'地址已提交，请重试读取结账信息。':'Your address was submitted. Retry loading checkout details.'}</p><button type="button" className={styles.primary} onClick={()=>void recover()} data-testid="contact-recover">{retry}</button></>:step==='address'?<>{pendingSave&&<p role="alert" className={styles.error}>{zh?'上次提交结果尚未确认，请保持原信息并重试。':'Your previous submission is not confirmed. Keep the original details and try again.'}</p>}<Addresses key={state.contacts.cart_id} cart={cart} customer={customer} segment={segment} setAddresses={submit}/></>:step==='payment'||step==='review'?<Payment key={promotionRevision} state={state} segment={segment} step={step} onChange={next=>setState(next)} onStep={paymentStep}/>:<Shipping key={promotionRevision} state={state} segment={segment} onChange={next=>setState(next)} onContinue={()=>paymentStep('payment')}/>}
+ </div><Summary view={state.view} contacts={state.contacts} region={region} step={step} locale={segment} onPromotionChange={promotionChanged} onPromotionBlocked={setPromotionBlocked}/></div></div>
 }

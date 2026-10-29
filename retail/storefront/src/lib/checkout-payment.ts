@@ -1,5 +1,5 @@
 import {CartError,cartCSRFFromCookies,type CartClient} from './cart-client.ts'
-import {cartIntentKey,contactIntentKey,shippingIntentKey,cartLockName} from './cart-commerce.ts'
+import {cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey,cartLockName} from './cart-commerce.ts'
 export const paymentIntentKey='retail:checkout-payment-intent:v1'
 type Intent={cartID:string;version:string;operationID:string}
 type Options={client:Pick<CartClient,'startPayment'>;storage:Pick<Storage,'getItem'|'setItem'>;readCSRF:()=>string|undefined;uuid:()=>string;exclusive:<T>(action:()=>Promise<T>)=>Promise<T>}
@@ -19,7 +19,7 @@ export function createPaymentCommands(o:Options){
   return v
  }
  const submit=(cartID:string,currentVersion:string)=>o.exclusive(async()=>{
-  if(!valid(cartID,id)||!version(currentVersion)||[cartIntentKey,contactIntentKey,shippingIntentKey].some(k=>o.storage.getItem(k)!==null))throw fail()
+  if(!valid(cartID,id)||!version(currentVersion)||[cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey].some(k=>o.storage.getItem(k)!==null))throw fail()
   let intent=pending()
   if(intent&&intent.cartID!==cartID)throw fail()
   const csrfToken=o.readCSRF();if(!valid(csrfToken,/^[0-9a-f]{64}$/))throw new CartError('csrf')

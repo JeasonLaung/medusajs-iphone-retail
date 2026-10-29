@@ -162,6 +162,7 @@ func checkDeliveryCommands(t *testing.T, ctx context.Context, db *gorm.DB, sessi
 	paid.OperationID = uuid.NewString()
 	reject(paid, cart.ErrConflict)
 	exec("DELETE FROM cart_payment_collections WHERE id='delivery-payment-link'")
+	checkPromotionCommands(t, ctx, db, sessions)
 	checkInitialPayments(t, ctx, db, sessions, ref)
 	exec("UPDATE cart_shipping_command_runtime SET enabled=FALSE WHERE id=1")
 	reject(in, cart.ErrSchema)

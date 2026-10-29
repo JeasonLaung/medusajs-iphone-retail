@@ -31,6 +31,11 @@ export type DeliveryOption={id:string;profile_id:string;name:string;description:
 export type DeliveryOptions={cart_id:string;version:string;currency_code:string;options:DeliveryOption[];selected_option_ids:string[];complete:boolean}
 export type ShippingInput={operationID:string;version:string;optionID:string}
 export type ShippingReceipt={cart_id:string;version:string;option_id:string;replayed:boolean}
+export type CartPromotions={cart_id:string;version:string;promotions:{id:string;code:string;is_automatic:boolean}[]}
+export type PromotionInput={operationID:string;version:string;codes:string[]}
+export function validPromotionCode(value:unknown):value is string{
+ return typeof value==='string'&&value.length>0&&new TextEncoder().encode(value).length<=191&&!/[\x00-\x1f\x7f\uD800-\uDFFF]/u.test(value)
+}
 export type CheckoutPaymentOptions={cart_id:string;version:string;providers:{id:'pp_mollie-hosted-checkout_mollie'}[];attempt_started:boolean}
 export type PaymentAttempt={cart_id:string;version:string;operation_id:string;state:'ready'|'processing'|'requires_review';checkout_url:string|null}
 export type CartCompletion={cart_id:string;order_id:string;version:string}
@@ -327,6 +332,31 @@ export class CartClient {
   return {cart_id:id,version:v.version,state:v.state as PaymentStatus['state']}
  }
 
+ async retrievePromotions(id:string):Promise<CartPromotions|null>{
+  if(!matches(id,idPattern))throw new CartError('input')
+  let response:{status:number;value:unknown}
+  try{response=await this.request(`/api/store/carts/${encodeURIComponent(id)}/promotions`,'GET',undefined,{},128*1024)}
+  catch(error){if(error instanceof CartError&&(error.status===401||error.status===404))return null;throw error}
+  const v=record(response.value);keys(v,['cart_id','version','promotions'])
+  if(response.status!==200||v.cart_id!==id||!matches(v.version,versionPattern)||BigInt(v.version)>18446744073709551615n||!Array.isArray(v.promotions)||v.promotions.length>100)throw protocol()
+  const ids=new Set<string>()
+  const promotions=v.promotions.map(value=>{
+   const p=record(value);keys(p,['id','code','is_automatic'])
+   if(!matches(p.id,idPattern)||ids.has(p.id)||typeof p.is_automatic!=='boolean'||!validPromotionCode(p.code))throw protocol()
+   ids.add(p.id);return {id:p.id,code:p.code,is_automatic:p.is_automatic}
+  })
+  return {cart_id:id,version:v.version,promotions}
+ }
+ async savePromotions(id:string,input:PromotionInput,authorization:{csrfToken:string}):Promise<CartContactReceipt>{
+  const {operationID,version,codes}=input,{csrfToken}=authorization
+  if(!matches(id,idPattern)||!matches(operationID,uuidPattern)||!matches(version,versionPattern)||BigInt(version)>=18446744073709551615n||!matches(csrfToken,tokenPattern)||!Array.isArray(codes)||codes.length>100||codes.some(code=>!validPromotionCode(code))||new TextEncoder().encode(JSON.stringify({version,codes})).length>16384)throw new CartError('input')
+  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/promotions`,'POST',JSON.stringify({version,codes}),{'X-CSRF-Token':csrfToken,'Idempotency-Key':operationID})
+  try{
+   const v=record(value);keys(v,['cart_id','version','replayed'])
+   if(status!==200||v.cart_id!==id||!matches(v.version,versionPattern)||BigInt(v.version)!==BigInt(version)+1n||typeof v.replayed!=='boolean')throw protocol()
+   return {cart_id:id,version:v.version,replayed:v.replayed}
+  }catch{throw new CartError('protocol',status,true)}
+ }
  async saveShipping(id:string,input:ShippingInput,authorization:{csrfToken:string}):Promise<ShippingReceipt>{
   const {operationID,version,optionID}=input,{csrfToken}=authorization
   if(!matches(id,idPattern)||!matches(operationID,uuidPattern)||!matches(version,versionPattern)||BigInt(version)>=18446744073709551615n||!matches(optionID,idPattern)||!matches(csrfToken,tokenPattern))throw new CartError('input')

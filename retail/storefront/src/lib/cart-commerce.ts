@@ -5,6 +5,7 @@ import type {ProductCommerce,CartAddResult} from '../components/products/product
 export const cartIntentKey='retail.cart.intent.v1'
 export const contactIntentKey='retail:checkout-contact-intent:v1'
 export const shippingIntentKey='retail:checkout-shipping-intent:v1'
+export const promotionIntentKey='retail:checkout-promotion-intent:v1'
 export const cartLockName='retail.cart.commerce.v1'
 type Base={format:1;regionID:string;segment:string;variantID:string;quantity:'1'}
 type Intent=Base & ({kind:'create';operationID:string;scopeBinding:string}|{kind:'add';cartID:string;operationID:string;version:string}|{kind:'refresh';cartID:string;version:string})
@@ -54,7 +55,7 @@ export function createCartCommerce(o:Options):Extract<ProductCommerce,{enabled:t
  const addToCart:Extract<ProductCommerce,{enabled:true}>['addToCart']=async input=>{
   if(input.countryCode!==o.segment||input.quantity!=='1'||!canonical(input.variantId,id))return {ok:false,error:'error'}
   try{return await o.exclusive(async():Promise<CartAddResult>=>{
-   if(o.storage.getItem(contactIntentKey)!==null||o.storage.getItem(shippingIntentKey)!==null)throw fail()
+   if(o.storage.getItem(contactIntentKey)!==null||o.storage.getItem(shippingIntentKey)!==null||o.storage.getItem(promotionIntentKey)!==null)throw fail()
    let pending=readIntent(o.storage.getItem(cartIntentKey))
    let resuming=pending!==null
    if(pending&&(pending.regionID!==o.regionID||pending.segment!==o.segment||pending.variantID!==input.variantId))throw fail()

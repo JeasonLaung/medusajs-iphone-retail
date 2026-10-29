@@ -90,6 +90,8 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/carts/:id/view", h.View)
 	private.GET("/carts/:id/delivery-options", h.Delivery)
 	private.GET("/carts/:id/payment-options", h.PaymentOptions)
+	private.GET("/carts/:id/promotions", h.AppliedPromotions)
+	private.POST("/carts/:id/promotions", h.Promotions)
 	private.POST("/carts/:id/shipping-methods", h.Shipping)
 	private.POST("/carts/:id/payment-attempts", h.InitialPayment)
 	private.POST("/carts/:id/payment-status", h.PaymentStatus)
@@ -431,6 +433,15 @@ func (h *HTTPHandler) detail(c *gin.Context, mode string, current bool) {
 	if mode != "detail" {
 		if mode == "delivery" {
 			result, err := ReadDeliveryOptions(ctx, h.db, h.store, ref, h.manualProviders)
+			if err != nil {
+				cartHTTPError(c, err)
+				return
+			}
+			c.JSON(200, result)
+			return
+		}
+		if mode == "promotions" {
+			result, err := ReadAppliedPromotions(ctx, h.db, h.store, ref)
 			if err != nil {
 				cartHTTPError(c, err)
 				return

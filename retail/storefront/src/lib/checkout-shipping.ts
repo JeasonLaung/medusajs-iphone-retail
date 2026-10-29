@@ -1,5 +1,5 @@
 import {CartError,cartCSRFFromCookies,type CartClient,type DeliveryOptions} from './cart-client.ts'
-import {cartIntentKey,cartLockName,contactIntentKey,shippingIntentKey} from './cart-commerce.ts'
+import {cartIntentKey,cartLockName,contactIntentKey,shippingIntentKey,promotionIntentKey} from './cart-commerce.ts'
 import type {ContactState} from './checkout-contacts.ts'
 export {shippingIntentKey} from './cart-commerce.ts'
 export type DeliveryState=ContactState&{delivery:DeliveryOptions}
@@ -11,7 +11,7 @@ const fail=()=>new CartError('conflict')
 // Only operation descriptors survive navigation. An acknowledged write is
 // journaled before reads; recovery of that stage never repeats the POST.
 export function createShippingCommands(o:Options){
- const unblocked=()=>{if(o.storage.getItem(cartIntentKey)!==null||o.storage.getItem(contactIntentKey)!==null)throw fail()}
+ const unblocked=()=>{if(o.storage.getItem(cartIntentKey)!==null||o.storage.getItem(contactIntentKey)!==null||o.storage.getItem(promotionIntentKey)!==null)throw fail()}
  const pending=():Intent|null=>{
   const raw=o.storage.getItem(shippingIntentKey);if(raw===null)return null
   if(raw.length>1024)throw fail();const v=JSON.parse(raw)

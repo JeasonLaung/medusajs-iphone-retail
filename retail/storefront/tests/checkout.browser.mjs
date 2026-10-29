@@ -16,6 +16,7 @@ const saved={...address,id:'addr_12345678-1234-4234-8234-123456789012',is_defaul
 let version='2',contacts={email:'',shipping_address:null,billing_address:null},child,browser,failed=false,readFailure=false,loseResponse=false,empty=false
 let paymentFrozen=false,paymentDisabled=false,losePaymentResponse=false;const paymentPosts=[],paymentReceipts=new Map();
 let paymentState='pending',paymentStatusPosts=0,completionPosts=0,cartClosed=false,confirmationFailure=false,completionUnavailable=true,loseCompletionResponse=false;const receipts=new Map(),posts=[],errors=[],shippingPosts=[],shippingReceipts=new Map();let selected=null,loseShippingResponse=false,shippingReadFailure=false
+let promotionCodes=[],losePromotion=false,promotionReadFailure=false;const promotionPosts=[],promotionReceipts=new Map()
 const totals=Object.fromEntries(cartKeys.map(k=>[k,['total','original_total','item_total','original_item_total'].includes(k)?'150':['tax_total','original_tax_total','item_tax_total','original_item_tax_total'].includes(k)?'30':k.includes('subtotal')&&!k.includes('shipping')&&!k.includes('discount')&&!k.includes('credit')?'120':'0']))
 const lineTotals=Object.fromEntries(rowKeys.map(k=>[k,totals[k]]))
 const delivery=()=>({cart_id:'cart',version,currency_code:'eur',options:[{id:'standard',profile_id:'profile',name:'Home delivery',description:'Tracked delivery',kind:'shipping',amount:'7',is_tax_inclusive:false,insufficient_inventory:false},{id:'pickup',profile_id:'profile',name:'Store pickup',description:'Collect in store',kind:'pickup',amount:'0',is_tax_inclusive:false,insufficient_inventory:false},{id:'unavailable',profile_id:'profile',name:'Unavailable',description:'',kind:'shipping',amount:'10',is_tax_inclusive:false,insufficient_inventory:true}],selected_option_ids:selected?[selected]:[],complete:!!selected})
@@ -34,6 +35,19 @@ const api=createServer(async(req,res)=>{
  case '/api/store/orders/order_created/confirmation':if(!req.headers.cookie?.includes('retail_cart_possession=')){status=401;break}if(confirmationFailure){status=503;break}body=confirmationFixture;break
  case '/api/store/cart':if(cartClosed){status=404;break}if(!req.headers.cookie?.includes('retail_cart_possession=')){status=401;break}body={cart:{id:'cart',region_id:'region',sales_channel_id:'channel',currency_code:'eur',locale:'en',version},capabilities:{items:false,checkout:false}};break
  case '/api/store/carts/cart/view':if(readFailure){status=503;break}body=view();break
+ case '/api/store/carts/cart/promotions':{
+  if(req.method==='POST'){
+   assert.equal(req.headers.origin,shop);assert.equal(req.headers['x-csrf-token'],'a'.repeat(64));assert.ok(req.headers.cookie?.includes('retail_cart_possession='))
+   let raw='';for await(const chunk of req)raw+=chunk;const input=JSON.parse(raw),key=req.headers['idempotency-key'];promotionPosts.push({input,key})
+   assert.deepEqual(Object.keys(input),['version','codes'])
+   const old=promotionReceipts.get(key)
+   if(old){assert.deepEqual(input,old.input);body={...old.result,replayed:true}}
+   else if(input.codes.includes('INVALID')){status=400;break}
+   else{assert.equal(paymentFrozen,false);assert.equal(input.version,version);version=String(BigInt(version)+1n);promotionCodes=input.codes;body={cart_id:'cart',version,replayed:false};promotionReceipts.set(key,{input,result:body})}
+   if(losePromotion){losePromotion=false;res.destroy();return}
+  }else{if(promotionReadFailure){status=503;break}body={cart_id:'cart',version,promotions:promotionCodes.map(code=>({id:code,code,is_automatic:code==='AUTO'}))}}
+  break
+ }
  case '/api/store/carts/cart/delivery-options':if(shippingReadFailure){status=503;break}body=delivery();break
  case '/api/store/carts/cart/complete':{
   assert.equal(req.method,'POST');assert.equal(req.headers.origin,shop);assert.equal(req.headers['x-csrf-token'],'a'.repeat(64));assert.ok(req.headers.cookie?.includes('retail_cart_possession='));let raw='';for await(const chunk of req)raw+=chunk;assert.equal(raw,'{}');completionPosts++
@@ -91,6 +105,7 @@ try{
   const context=await browser.newContext({reducedMotion:'reduce',viewport:{width,height:1100}}),page=await context.newPage();context.setDefaultTimeout(12000)
   await context.addCookies([{name:'retail_cart_possession',value:'b'.repeat(64),url:shop,httpOnly:true},{name:'retail_cart_csrf',value:'a'.repeat(64),url:shop}]);page.on('pageerror',e=>errors.push(e.message))
   cartClosed=false;completionUnavailable=true;loseCompletionResponse=false;selected=null;shippingPosts.length=0;shippingReceipts.clear();version='2';contacts={email:'',shipping_address:null,billing_address:null};receipts.clear();posts.length=0
+  promotionCodes=[];promotionPosts.length=0;promotionReceipts.clear()
   await page.goto(shop+`/dk-${language}/checkout?step=address`);await expect(page.getByTestId('shipping-first-name-input')).toBeVisible();await expect(page.getByTestId('shipping-email-input')).toHaveValue('saved@example.invalid')
   const selector=page.locator('select').filter({has:page.locator('option[value="'+saved.id+'"]')});await expect(selector).toBeVisible();await selector.selectOption(saved.id)
   await expect(page.getByTestId('shipping-first-name-input')).toHaveValue('Saved');await expect(page.getByTestId('shipping-postal-code-input')).toHaveValue('0012')
@@ -116,6 +131,18 @@ try{
   shippingReadFailure=false;await page.reload();await expect(page.getByTestId('delivery-recover')).toBeEnabled();await page.getByTestId('delivery-recover').click();await expect(page.getByTestId('delivery-recover')).toHaveCount(0)
   assert.equal(shippingPosts.length,3);await expect(page.locator('input[value="pickup"]')).toBeChecked();await expect(page.getByTestId('submit-delivery-option-button')).toBeEnabled()
   assert.equal(await page.evaluate(()=>localStorage.getItem('retail:checkout-shipping-intent:v1')),null)
+  await expect(page.getByTestId('discount-input')).toBeEnabled()
+  await page.getByTestId('discount-input').fill('SAVE10');losePromotion=true;await page.getByTestId('discount-apply-button').click()
+  await expect(page.getByTestId('discount-recover')).toBeEnabled();assert.equal(promotionPosts.length,1)
+  await expect(page.getByTestId('submit-delivery-option-button')).not.toBeFocused()
+  await page.reload();await expect(page.getByTestId('discount-recover')).toBeEnabled()
+  await page.getByTestId('discount-recover').click();await expect(page.getByTestId('discount-code-tag')).toContainText('SAVE10')
+  await expect(page.getByTestId('discount-recover')).toHaveCount(0);assert.equal(promotionPosts.length,2);assert.deepEqual(promotionPosts[0],promotionPosts[1])
+  promotionReadFailure=true;await page.getByTestId('discount-code-tag').getByRole('button').click();await expect(page.getByTestId('discount-recover')).toBeEnabled();assert.equal(promotionPosts.length,3)
+  promotionReadFailure=false;await page.getByTestId('discount-recover').click();await expect(page.getByTestId('discount-code-tag')).toHaveCount(0);assert.equal(promotionPosts.length,3)
+  promotionCodes=['AUTO'];await page.reload();await expect(page.getByTestId('discount-code-tag')).toContainText('AUTO');await expect(page.getByTestId('discount-code-tag').getByRole('button')).toHaveCount(0);promotionCodes=[];await page.reload()
+  await expect(page.getByTestId('discount-input')).toBeEnabled();await page.getByTestId('discount-input').fill('INVALID');await page.getByTestId('discount-apply-button').click();await expect(page.getByTestId('discount-error-message')).toBeVisible();await expect(page.getByTestId('discount-recover')).toHaveCount(0)
+  assert.equal(await page.evaluate(()=>localStorage.getItem('retail:checkout-promotion-intent:v1')),null)
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
   await page.screenshot({path:fileURLToPath(new URL(`../../../logs/gin-migration/delivery-${language}-${width}.png`,import.meta.url)),fullPage:true})
 
@@ -128,6 +155,7 @@ try{
   losePaymentResponse=true;await page.getByTestId('submit-payment-button').click();await expect(page.getByTestId('payment-recover')).toBeEnabled();assert.equal(paymentPosts.length,1)
   const paymentJournal=await page.evaluate(()=>localStorage.getItem('retail:checkout-payment-intent:v1'));assert.ok(paymentJournal);assert.ok(!paymentJournal.includes('mollie.com'));assert.ok(!paymentJournal.includes('saved@example.invalid'))
   await page.reload();await expect(page.getByTestId('submit-order-button')).toBeEnabled();await expect(page).toHaveURL(/step=review/);assert.equal(paymentPosts.length,2);assert.deepEqual(paymentPosts[0],paymentPosts[1]);await expect(page.getByTestId('checkout-total')).toHaveText('€150.00')
+  await expect(page.getByTestId('discount-input')).toBeDisabled()
   await page.getByTestId('edit-payment-button').click();await expect(page).toHaveURL(/step=payment/);await page.getByTestId('submit-payment-button').click();await expect(page).toHaveURL(/step=review/);assert.equal(paymentPosts.length,2)
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
   await page.screenshot({path:fileURLToPath(new URL(`../../../logs/gin-migration/checkout-review-${language}-${width}.png`,import.meta.url)),fullPage:true})
@@ -178,12 +206,16 @@ try{
  await page.goto(shop+'/dk-en/checkout?step=address');await expect(page.getByTestId('shipping-first-name-input')).toBeVisible()
  await page.locator('select').filter({has:page.locator('option[value="'+saved.id+'"]')}).selectOption(saved.id)
  await expect(page.getByTestId('billing-address-checkbox')).toBeChecked()
+ await page.getByTestId('shipping-first-name-input').fill('Unsubmitted name')
+ await page.getByTestId('discount-input').fill('SAVE10');await page.getByTestId('discount-apply-button').click();await expect(page.getByTestId('discount-code-tag')).toContainText('SAVE10');await expect(page.getByTestId('shipping-first-name-input')).toHaveValue('Unsubmitted name')
+ await page.getByTestId('discount-code-tag').getByRole('button').click();await expect(page.getByTestId('discount-code-tag')).toHaveCount(0);await expect(page.getByTestId('shipping-first-name-input')).toHaveValue('Unsubmitted name')
  readFailure=true;await page.getByTestId('submit-address-button').click();await expect(page.getByTestId('contact-recover')).toBeVisible();assert.equal(posts.length,1)
  assert.equal(contacts.shipping_address.address_1,contacts.billing_address.address_1)
  readFailure=false;await page.reload();await expect(page.getByTestId('contact-recover')).toBeVisible();await page.getByTestId('contact-recover').click()
  await expect(page).toHaveURL(/step=delivery/);await expect(page.getByTestId('contact-recover')).toHaveCount(0);assert.equal(posts.length,1)
  await context.close()
  assert.deepEqual(errors,[])
+ console.log('ASTRO_CHECKOUT_PROMOTION_BROWSER '+JSON.stringify({formal_astro:true,synthetic_api:true,real_gin_mysql_browser_joint:false,original_discount_form:true,apply_and_remove:true,automatic_not_removable:true,uncertain_write_blocks_checkout:true,lost_response_same_operation_after_reload:true,acknowledged_refresh_no_second_post:true,known_invalid_error:true,unsubmitted_address_preserved:true,discount_disabled_after_payment_started:true,en_zh:true,widths:[390,1440],overflow:false,browser_errors:0}))
  console.log('ASTRO_CHECKOUT_CONTACT_BROWSER '+JSON.stringify({formal_astro:true,synthetic_api:true,real_gin_mysql:false,original_css_and_address_markup:true,private_values_absent_from_ssr:true,no_cart_404:true,empty_cart_307:true,private_read_failure_503:true,saved_address_copy:true,email_confirmation_before_transport:true,separate_billing:true,leading_postal_zero:true,lost_response_same_operation_after_reload:true,rehydrated_contact_values:true,acknowledged_step_delivery:true,private_journal_descriptor:true,acknowledged_read_failure_read_only_recovery:true,same_billing_copy:true,exact_summary:true,edit_and_back_links:true,en_zh:true,widths:[390,1440],overflow:false,browser_errors:0,order_completion_receipt:true,delivery_selection:true,delivery_lost_response_same_operation:true,delivery_acknowledged_read_only_recovery:true,unavailable_inventory_disabled:true,hosted_payment_initiation:true,payment_response_loss_replay:true,payment_review_refresh:true,payment_redirect:true,payment_summary_reloaded:true,disabled_provider_not_offered:true,completed_journal_cleared:true,payment_still_closed:false,source_pixel_comparison:false,payment_result_page:true,paid_waits_for_order:true,completion_loss_reload_recovery:true,closed_cart_no_provider_repoll:true,confirmed_receipt_only:true,original_confirmation_route:true,private_confirmation_read:true,confirmation_retry:true,confirmation_missing:true,confirmation_pii_absent_ssr:true,authorized_not_paid:true,failed_return:true,foreign_cart_no_provider_poll:true,stable_return_callback:true}))
 }finally{
  if(browser)await browser.close();if(child&&child.exitCode===null){child.kill();await once(child,'exit')};await new Promise(resolve=>api.close(resolve))

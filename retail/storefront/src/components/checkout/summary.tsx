@@ -7,8 +7,10 @@ import type {CheckoutStep} from "./types"
 import { optionValueLabel } from "../products/i18n"
 import { getCheckoutCopy } from "./i18n"
 import styles from "./styles.module.css"
+import DiscountCode from './discount-code'
+import type {PromotionState} from '../../lib/checkout-promotions'
 
-export default function CheckoutSummary({ view,contacts,region,step,locale }: {view:CartView;contacts:CartContactDetail;region:Region;step:CheckoutStep;locale:string}) {
+export default function CheckoutSummary({ view,contacts,region,step,locale,onPromotionChange,onPromotionBlocked }: {view:CartView;contacts:CartContactDetail;region:Region;step:CheckoutStep;locale:string;onPromotionChange:(state:PromotionState)=>void;onPromotionBlocked:(blocked:boolean)=>void}) {
   const lines=new Map(view.amounts.lines.map(line=>[line.id,line]))
   const cart={item_subtotal:view.amounts.totals.item_subtotal,shipping_subtotal:view.amounts.totals.shipping_subtotal,discount_total:view.amounts.totals.discount_total,tax_total:view.amounts.totals.tax_total,total:view.amounts.totals.total,...contacts,currency_code:view.amounts.currency_code,shipping_methods:view.amounts.shipping_methods,region,items:view.items.map(item=>({...item,...lines.get(item.id)!,variant:{options:Object.values(item.option_values).map(value=>({value}))}}))}
   const copy = getCheckoutCopy(locale)
@@ -28,7 +30,7 @@ export default function CheckoutSummary({ view,contacts,region,step,locale }: {v
         </div>)}
         <div className={styles.totals}>{totals.map(([label, amount]) => <div key={label}><span>{label}</span><span>{amount === null ? copy.notSelected : money(amount)}</span></div>)}<div className={styles.total}><span>{copy.total}</span><strong data-testid="checkout-total">{money(cart.total ?? "0")}</strong></div></div>
       </details>
-      <details className={styles.promo}><summary>{copy.promotion}</summary><div className={styles.promoRow}><input aria-label={copy.promotion} placeholder={copy.promotionPlaceholder} disabled/><button disabled>{copy.apply}</button></div><p className={styles.muted}>{copy.promoError}</p></details>
+      <DiscountCode cartID={contacts.cart_id} version={contacts.version} segment={locale} onChange={onPromotionChange} onBlocked={onPromotionBlocked}/>
       {step !== "address" && address && <div className={styles.saved}>
         <div className={styles.savedTitle}><strong>{copy.contact}</strong><a href={`/${locale}/checkout?step=address`}>{copy.edit}</a></div>
         <p>{address.first_name} {address.last_name}</p><p>{cart.email}</p><p>{address.phone}</p><br />
