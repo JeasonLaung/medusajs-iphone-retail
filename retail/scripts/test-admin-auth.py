@@ -23,9 +23,10 @@ def docker(*args, timeout=90):
 
 
 def main():
-    if sys.argv[1:] not in ([], ['--cart-runtime-only'], ['--promotion-usage-only'], ['--customer-accounts-only'], ['--store-collections-only']):
+    if sys.argv[1:] not in ([], ['--cart-runtime-only'], ['--promotion-usage-only'], ['--customer-accounts-only'], ['--store-collections-only'], ['--cart-contacts-only']):
         raise RuntimeError('Unknown rehearsal option')
-    cart_only = sys.argv[1:] == ['--cart-runtime-only']
+    contacts_only = sys.argv[1:] == ['--cart-contacts-only']
+    cart_only = contacts_only or sys.argv[1:] == ['--cart-runtime-only']
     usage_only = sys.argv[1:] == ['--promotion-usage-only']
     customer_only = sys.argv[1:] == ['--customer-accounts-only']
     collection_only = sys.argv[1:] == ['--store-collections-only']
@@ -127,7 +128,23 @@ def main():
             if docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket','-e',cleanup).returncode:
                 raise RuntimeError('Owned artificial database cleanup failed')
         tested = subprocess.CompletedProcess([], tested.returncode, output, errors)
-        if collection_only:
+        if contacts_only:
+            markers = [line.split('CART_CONTACT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_CONTACT_REHEARSAL ' in line]
+            if tested.returncode or len(markers) != 1:
+                print(tested.stdout.decode(errors='replace'))
+                raise RuntimeError('Owned cart contact checks failed')
+            counts = json.loads(markers[0])
+            http_markers = [line.split('CART_CONTACT_HTTP_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_CONTACT_HTTP_REHEARSAL ' in line]
+            if len(http_markers)!=1: raise RuntimeError('Cart contact HTTP verification missing')
+            files = [p.relative_to(ROOT).as_posix() for folder in ('cart','schema','identity','platform','sessionstore') for p in (ROOT/'retail/backend/internal'/folder).glob('*.go')]
+            files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
+            files += ['retail/scripts/test-admin-auth.py']
+            report = {'scope':'Owned pre-payment contact command, real Gin/MySQL/Redis; checkout page and provider payment refresh not integrated', 'counts':counts, 'http':json.loads(http_markers[0]),
+                      'migrations':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),
+                      'includes_uncommitted_payment_0037':(ROOT/'retail/backend/migrations/0037_mollie_notification_inbox.sql').exists(),
+                      'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_cpus':1,'redis_memory_mib':128,'published_ports':0,'external_network':False},
+                      'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
+        elif collection_only:
             markers = [line.split('STORE_PRODUCT_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_PRODUCT_REHEARSAL ' in line]
             if tested.returncode or len(markers) != 1:
                 print(tested.stdout.decode(errors='replace'))
@@ -543,7 +560,7 @@ def main():
         if owned_binary and binary.exists():
             binary.unlink()
     report['cleanup'] = 'both owned containers and temporary runner removed'
-    report_name = 'store-collections-runtime-report.json' if collection_only else 'gin-customer-accounts-report.json' if customer_only else 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
+    report_name = 'cart-contacts-runtime-report.json' if contacts_only else 'store-collections-runtime-report.json' if collection_only else 'gin-customer-accounts-report.json' if customer_only else 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
     (ROOT / 'docs/migration' / report_name).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'counts': counts, 'cleanup': 'complete'}))
 

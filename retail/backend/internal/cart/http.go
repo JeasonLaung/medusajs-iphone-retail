@@ -28,18 +28,20 @@ type HTTPSessions interface {
 }
 
 type HTTPOptions struct {
-	Sessions HTTPSessions
-	Origin   string
-	StoreID  string
-	Secure   bool
+	Sessions          HTTPSessions
+	Origin            string
+	StoreID           string
+	Secure            bool
+	ManualProviderIDs []string
 }
 
 type HTTPHandler struct {
-	db       *gorm.DB
-	sessions HTTPSessions
-	origin   string
-	store    string
-	secure   bool
+	db              *gorm.DB
+	sessions        HTTPSessions
+	origin          string
+	store           string
+	secure          bool
+	manualProviders []string
 }
 
 func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
@@ -50,7 +52,17 @@ func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
 	if u.Scheme != "https" && (u.Scheme != "http" || options.Secure || (u.Hostname() != "localhost" && u.Hostname() != "127.0.0.1" && u.Hostname() != "::1")) || u.Scheme == "https" && !options.Secure {
 		return nil, ErrConfiguration
 	}
-	return &HTTPHandler{db, options.Sessions, options.Origin, options.StoreID, options.Secure}, nil
+	if len(options.ManualProviderIDs) > 100 {
+		return nil, ErrConfiguration
+	}
+	seen := map[string]bool{}
+	for _, id := range options.ManualProviderIDs {
+		if !idPattern.MatchString(id) || seen[id] {
+			return nil, ErrConfiguration
+		}
+		seen[id] = true
+	}
+	return &HTTPHandler{db: db, sessions: options.Sessions, origin: options.Origin, store: options.StoreID, secure: options.Secure, manualProviders: append([]string(nil), options.ManualProviderIDs...)}, nil
 }
 
 // An unconfigured handler keeps these routes closed. Public catalog capability
@@ -64,6 +76,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/carts/:id", h.Detail)
 	private.GET("/carts/:id/amounts", h.Amounts)
 	private.GET("/carts/:id/view", h.View)
+	private.POST("/carts/:id/contacts", h.Contacts)
 	private.POST("/carts/:id/line-items", h.AddItem)
 	private.POST("/carts/:id/line-items/:line", h.SetItem)
 }
