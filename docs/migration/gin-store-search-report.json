@@ -1,0 +1,41 @@
+{
+  "format_version": 1,
+  "date": "2026-10-29",
+  "scope": "Native Gin read-only store search with owned artificial MySQL/Redis; formal Astro search page and keyword parity not accepted",
+  "command": "python retail/scripts/test-admin-auth.py",
+  "isolated_suites_passed": 23,
+  "working_tree_migrations": 37,
+  "migration_note": "Working tree includes prior uncommitted 0037 payment notification work; search introduces no migration and does not depend on that inbox.",
+  "store_search": {
+    "batch_order": true,
+    "current_channel_only": true,
+    "live_published_only": true,
+    "strict_filters": true,
+    "list_detail_price_equal": true,
+    "live_stock_without_reindex": true,
+    "backorder_and_unmanaged_not_physical_stock": true,
+    "anonymous_cookie_independent": true,
+    "closed_channel_503": true,
+    "keyword_parity_accepted": false,
+    "formal_store_page_accepted": false
+  },
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "network": "owned shared namespace with no external network",
+    "published_ports": 0
+  },
+  "real_accounts_used": false,
+  "application_resources_used": false,
+  "full_storefront_accepted": false,
+  "implementation_sha256": {
+    "retail/backend/internal/catalog/store_products.go": "be19b6e31ab3c10625fb17b60256eef2a8717799a7937f053826f538c03e5930",
+    "retail/backend/internal/catalog/store_search.go": "e5e6ff845c3630c66a8f590800f4a78371fc714115a273d0b3d8c7c1a7f6f2f3",
+    "retail/backend/internal/catalog/store_search_colors.go": "b68ff16f5af179ec441aa4093d8fde7c32c5def594cea30f64c7d60cdaceab0c",
+    "retail/backend/internal/catalog/store_search_test.go": "459a6ff4702ebb3ad3fca096198708c02e5ec39469d4e994df3a368984c2beef",
+    "retail/backend/internal/identity/store_search_test.go": "668b734df9d828eccd23fdf72403d9c9de97b9ce4c6359b5a85a3133c0900a47"
+  },
+  "cleanup": "both owned containers and temporary runner removed"
+}

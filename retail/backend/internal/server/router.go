@@ -112,6 +112,7 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	}
 	shop.Register(public)
 	store := catalog.StoreHandler{DB: db, StoreID: os.Getenv("STOREFRONT_STORE_ID")}
+	public.POST("/search", store.Search)
 	public.GET("/products", store.Products)
 	public.GET("/products/:id", store.Product)
 	public.GET("/product-categories", store.Categories)

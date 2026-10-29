@@ -143,22 +143,9 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 		if e != nil {
 			return e
 		}
-		if q.region != "" {
-			var region struct{ CurrencyCode string }
-			if e = tx.Table("commerce_regions").Select("currency_code").Where("id=? AND deleted_at IS NULL", q.region).Take(&region).Error; e != nil {
-				return e
-			}
-			if !regionCurrency.MatchString(region.CurrencyCode) {
-				return pricing.ErrInput
-			}
-			var currencies int64
-			if e = tx.Table("commerce_store_currencies sc").Joins("JOIN commerce_currencies cur ON cur.code=sc.currency_code AND cur.deleted_at IS NULL").Where("sc.store_id=? AND sc.currency_code=? AND sc.deleted_at IS NULL", h.StoreID, region.CurrencyCode).Count(&currencies).Error; e != nil {
-				return e
-			}
-			if currencies != 1 {
-				return pricing.ErrInput
-			}
-			priceContext = &pricing.Context{Region: q.region, Currency: region.CurrencyCode, Channel: channel, Quantity: q.quantity}
+		priceContext, e = h.publicPriceContext(tx, channel, q.region, q.quantity)
+		if e != nil {
+			return e
 		}
 		base := func() *gorm.DB {
 			db := publicProducts(tx, channel)
@@ -199,44 +186,7 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 		if e = loadStoreDisplay(tx, products); e != nil {
 			return e
 		}
-		if priceContext != nil {
-			ids := []string{}
-			for _, p := range products {
-				for _, v := range p.Variants {
-					if v.ConfigurationComplete {
-						ids = append(ids, v.ID)
-					}
-				}
-			}
-			quotes, e := pricing.Read(tx, ids, *priceContext, time.Now().UTC())
-			if e != nil {
-				return e
-			}
-			for i := range products {
-				for j := range products[i].Variants {
-					v := &products[i].Variants[j]
-					v.CalculatedPrice = quotes[v.ID]
-				}
-			}
-		}
-		variants := []inventory.AvailableVariant{}
-		for _, p := range products {
-			for _, v := range p.Variants {
-				variants = append(variants, inventory.AvailableVariant{ID: v.ID, ManageInventory: v.ManageInventory, AllowBackorder: v.AllowBackorder, Complete: v.ConfigurationComplete})
-			}
-		}
-		availability, e := inventory.ReadAvailability(tx, variants, channel, q.quantity)
-		if e != nil {
-			return e
-		}
-		for i := range products {
-			for j := range products[i].Variants {
-				v := &products[i].Variants[j]
-				v.Availability = availability[v.ID]
-				v.InventoryQuantity = v.Availability.Quantity
-			}
-		}
-		return nil
+		return projectPublicOffers(tx, products, channel, q.quantity, priceContext, time.Now().UTC())
 	}, &sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true})
 	if err != nil {
 		taxonomyFailure(c, err)
@@ -341,4 +291,70 @@ func publicProductRelations(tx *gorm.DB, p *StoreProduct, budget *int) error {
 		v.Images = append(v.Images, im.AdminImage)
 	}
 	return nil
+}
+
+// Prices and availability are observed in the caller's repeatable-read snapshot.
+func projectPublicOffers(tx *gorm.DB, products []StoreProduct, channel, quantity string, priceContext *pricing.Context, now time.Time) error {
+	if priceContext != nil {
+		ids := []string{}
+		for _, p := range products {
+			for _, v := range p.Variants {
+				if v.ConfigurationComplete {
+					ids = append(ids, v.ID)
+				}
+			}
+		}
+		quotes, e := pricing.Read(tx, ids, *priceContext, now)
+		if e != nil {
+			return e
+		}
+		for i := range products {
+			for j := range products[i].Variants {
+				v := &products[i].Variants[j]
+				v.CalculatedPrice = quotes[v.ID]
+			}
+		}
+	}
+	variants := []inventory.AvailableVariant{}
+	for _, p := range products {
+		for _, v := range p.Variants {
+			variants = append(variants, inventory.AvailableVariant{ID: v.ID, ManageInventory: v.ManageInventory, AllowBackorder: v.AllowBackorder, Complete: v.ConfigurationComplete})
+		}
+	}
+	availability, e := inventory.ReadAvailability(tx, variants, channel, quantity)
+	if e != nil {
+		return e
+	}
+	for i := range products {
+		for j := range products[i].Variants {
+			v := &products[i].Variants[j]
+			v.Availability = availability[v.ID]
+			v.InventoryQuantity = v.Availability.Quantity
+		}
+	}
+	return nil
+}
+
+// Shared anonymous region and quote context for detail, listing and search.
+func (h StoreHandler) publicPriceContext(tx *gorm.DB, channel, regionID, quantity string) (*pricing.Context, error) {
+	var result *pricing.Context
+	var e error
+	if regionID != "" {
+		var region struct{ CurrencyCode string }
+		if e = tx.Table("commerce_regions").Select("currency_code").Where("id=? AND deleted_at IS NULL", regionID).Take(&region).Error; e != nil {
+			return nil, e
+		}
+		if !regionCurrency.MatchString(region.CurrencyCode) {
+			return nil, pricing.ErrInput
+		}
+		var currencies int64
+		if e = tx.Table("commerce_store_currencies sc").Joins("JOIN commerce_currencies cur ON cur.code=sc.currency_code AND cur.deleted_at IS NULL").Where("sc.store_id=? AND sc.currency_code=? AND sc.deleted_at IS NULL", h.StoreID, region.CurrencyCode).Count(&currencies).Error; e != nil {
+			return nil, e
+		}
+		if currencies != 1 {
+			return nil, pricing.ErrInput
+		}
+		result = &pricing.Context{Region: regionID, Currency: region.CurrencyCode, Channel: channel, Quantity: quantity}
+	}
+	return result, nil
 }

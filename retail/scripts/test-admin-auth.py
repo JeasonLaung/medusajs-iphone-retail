@@ -214,6 +214,7 @@ def main():
                 if tested.returncode or len(markers) != 1:
                     # All inputs and failure messages in this binary are artificial.
                     print(tested.stdout.decode(errors='replace'))
+                    print(tested.stderr.decode(errors='replace'))
                     state = docker('inspect', mysql_id, '--format', '{{.State.OOMKilled}} {{.State.ExitCode}}')
                     print(json.dumps({'test_exit_code': tested.returncode, 'mysql_oom_and_exit': state.stdout.decode().strip()}))
                     raise RuntimeError('Owned MySQL/Redis authentication checks failed')
@@ -224,6 +225,9 @@ def main():
                 cart_runtime_markers=[line.split('CART_RUNTIME_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_RUNTIME_REHEARSAL ' in line]
                 if len(cart_runtime_markers)!=1:
                     raise RuntimeError('Cart runtime verification missing')
+                search_markers=[line.split('STORE_SEARCH_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_SEARCH_REHEARSAL ' in line]
+                if len(search_markers)!=1:
+                    raise RuntimeError('Store search verification missing')
                 product_markers=[line.split('STORE_PRODUCT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_PRODUCT_REHEARSAL ' in line]
                 availability_markers=[line.split('STORE_AVAILABILITY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_AVAILABILITY_REHEARSAL ' in line]
                 cart_stock_markers=[line.split('CART_STOCK_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_STOCK_REHEARSAL ' in line]
@@ -394,6 +398,7 @@ def main():
                 files += ['retail/backend/internal/catalog/store_locales.go','retail/backend/internal/catalog/default_locales.json','retail/backend/internal/identity/store_locales_test.go']
                 files += ['retail/backend/internal/catalog/store_regions.go','retail/backend/internal/catalog/http.go','retail/backend/internal/identity/store_regions_test.go']
                 files += ['retail/backend/internal/catalog/store_taxonomy.go','retail/backend/internal/catalog/store_taxonomy_test.go','retail/backend/internal/identity/store_taxonomy_test.go']
+                files += ['retail/backend/internal/catalog/store_search.go','retail/backend/internal/catalog/store_search_colors.go','retail/backend/internal/catalog/store_search_test.go','retail/backend/internal/identity/store_search_test.go']
                 files += ['retail/backend/internal/catalog/store_products.go','retail/backend/internal/catalog/store_products_test.go','retail/backend/internal/identity/store_products_test.go']
                 files += ['retail/backend/internal/identity/store_pricing_test.go']
                 shipping_stock_markers = [line.split('CART_SHIPPING_STOCK_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_SHIPPING_STOCK_REHEARSAL ' in line]
@@ -421,6 +426,7 @@ def main():
                           'cart_items':json.loads(item_markers[0]),'cart_items_http':json.loads(item_http_markers[0]),
                           'cart_runtime':json.loads(cart_runtime_markers[0]),
                           'cart_http':json.loads(http_markers[0]),
+                          'store_search': json.loads(search_markers[0]),
                           'store_products': json.loads(product_markers[0]),
                           'store_pricing': json.loads(pricing_markers[0]),
                           'store_availability': json.loads(availability_markers[0]),
