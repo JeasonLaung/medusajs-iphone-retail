@@ -66,3 +66,13 @@ func sourceNumber(scalar string, raw *string) (totals.Number, error) {
 	}
 	return n, nil
 }
+
+// ConfiguredAmount resolves the authoritative raw value for an operations form.
+// It shares quote validation and never substitutes a rounded scalar for raw data.
+func ConfiguredAmount(scalar, raw string) (string, error) {
+	n, e := sourceNumber(scalar, &raw)
+	if e != nil {
+		return "", e
+	}
+	return totals.Resolve(n)
+}

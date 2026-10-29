@@ -1,0 +1,27 @@
+{
+  "scope": "Existing configured price amount edits, shared SKU public quote propagation; price creation and full storefront acceptance incomplete",
+  "counts": {
+    "real_browser_react_gin_mysql_redis": true,
+    "api_mocking": false,
+    "decimal_validation": true,
+    "exact_decimal_saved": true,
+    "shared_sku_warning": true,
+    "public_quotes_both_skus_updated": true,
+    "refresh_preserves_price": true,
+    "language_en_zh": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0
+  },
+  "durable_mysql_verified": true,
+  "real_accounts_used": false,
+  "tls_secure_cookie_verified": false,
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "published_ports": "one random loopback API port",
+    "network": "owned bridge; egress unrestricted"
+  },
+  "cleanup": "both owned containers, bridge and temporary runners removed"
+}

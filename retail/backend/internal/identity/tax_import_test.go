@@ -58,7 +58,7 @@ func TestOwnedTaxImport(t *testing.T) {
 		t.Fatal("tax migration plan invalid")
 	}
 	db, gdb := open("tax_import_fresh")
-	if r, err := schema.Apply(ctx, db, plan); err != nil || r.Applied != 60 {
+	if r, err := schema.Apply(ctx, db, plan); err != nil || r.Applied != 61 {
 		t.Fatal("tax import migrations failed")
 	}
 	db.SetMaxOpenConns(12)
@@ -223,5 +223,5 @@ func TestOwnedTaxImport(t *testing.T) {
 	if gdb.Exec(`UPDATE tax_migration_reference_holds SET released=TRUE`).Error == nil {
 		t.Fatal("reference hold released without policy")
 	}
-	t.Log(`TAX_IMPORT_REHEARSAL {"migrations":60,"tables":4,"source_columns":36,"rows":6,"reference_holds":1,"concurrent_batches":8,"single_fresh_batch":1,"replayed_batches":7,"old_snapshot_replay":true,"deferred_parent_restored":true,"exact_decimal_and_json_null":true,"country_province_full_value_registry":true,"rollback_atomic":true,"late_hold_failure_atomic":true,"source_and_target_drift_rejected":true,"disabled_schema_rejected":true,"accounts_restored":false,"provider_called":false}`)
+	t.Log(`TAX_IMPORT_REHEARSAL {"migrations":61,"tables":4,"source_columns":36,"rows":6,"reference_holds":1,"concurrent_batches":8,"single_fresh_batch":1,"replayed_batches":7,"old_snapshot_replay":true,"deferred_parent_restored":true,"exact_decimal_and_json_null":true,"country_province_full_value_registry":true,"rollback_atomic":true,"late_hold_failure_atomic":true,"source_and_target_drift_rejected":true,"disabled_schema_rejected":true,"accounts_restored":false,"provider_called":false}`)
 }

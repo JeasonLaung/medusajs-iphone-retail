@@ -169,6 +169,8 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	private.GET("/products/:id", access.Require(authorization.ProductRead), h.AdminProduct)
 	private.GET("/products/:id/variants", access.Require(authorization.ProductRead), h.AdminVariants)
 	private.GET("/products/:id/variants/:variant_id/prices", access.Require(authorization.ProductRead, authorization.PriceRead), h.AdminVariantPrices)
+ private.GET("/products/:id/variants/:variant_id/prices/:price_id", access.Require(authorization.ProductRead, authorization.PriceRead), h.PriceEditHTTP)
+ private.POST("/products/:id/variants/:variant_id/prices/:price_id", access.Require(authorization.ProductRead, authorization.PriceRead, authorization.PriceWrite), h.PriceEditHTTP)
 	private.GET("/products/:id/variants/:variant_id/inventory", access.Require(authorization.ProductRead, authorization.InventoryRead), (inventory.Handler{DB: db}).AdminVariant)
 	private.POST("/inventory-levels/:id/stock", access.Require(authorization.InventoryRead, authorization.StockWrite), (inventory.Handler{DB: db}).UpdateStock)
 	private.PATCH("/products/:id", access.Require(authorization.ProductWrite), h.UpdateProduct)

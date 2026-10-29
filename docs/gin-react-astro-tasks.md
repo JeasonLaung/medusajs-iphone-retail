@@ -508,3 +508,5 @@
 2026-10-29 Mollie 核实补充：[权威GET与未知创建原attempt恢复](migration/cart-payment-refresh.md)连接当前响应绑定、精确状态/金额与补偿加密结果保存；未到期不查、过期只GET、错误不解unknown，人工MySQL链与模拟渠道验证。候选发现、webhook持久队列、配置加载、worker权限和checkout未完成。
 
 2026-10-30 仓库销售设备转退回：承接原transfer_return，必填原因、销售/退回双写权限、当前位置自有仓与活跃分配检查，同设备转returned/inspection并留审计；隔离SQL/HTTP、真实Gin浏览器联合和原19项后台回归通过。设备检测、配货、前台回收/售后闭环仍待完成，详见 [仓库设备](migration/gin-warehouse-devices.md)。
+
+2026-10-30 商品价格运营：SKU已有配置金额可通过Ant表单提交Gin，新增独立price.write、精确DECIMAL/raw同步与共享集合提示，隔离事务/并发/回滚及真实浏览器→公开报价API联合通过；原19项后台回归和新增1项通过。新增商品/SKU/价格及完整前台闭环仍未验收，详见 [价格金额编辑](migration/gin-price-amount-edit.md)。

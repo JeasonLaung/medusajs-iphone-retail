@@ -295,7 +295,7 @@ export async function getOrderFulfillments(id:string,signal?:AbortSignal):Promis
 }
 
 
-export const ACTIONS=['authorization.read','authorization.write','device.enroll','device.intake','device.read','device.source.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','product.read','product.write','warehouse.intake.read','warehouse.intake.write','warehouse.read','warehouse.return.read','warehouse.return.write','warehouse.write'] as const
+export const ACTIONS=['authorization.read','authorization.write','device.enroll','device.intake','device.read','device.source.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','price.write','product.read','product.write','warehouse.intake.read','warehouse.intake.write','warehouse.read','warehouse.return.read','warehouse.return.write','warehouse.write'] as const
 export type Action=typeof ACTIONS[number]
 export type ManagedRole={id:string;name:string;enabled:boolean;actions:Action[]}
 export type ManagedMember={user_id:string;name:string;enabled:boolean;kind:'employee'|'warehouse'|'supplier';roles:string[]}
@@ -433,4 +433,18 @@ export async function warehouseIntakeVariants(scope:WarehouseIntakeScope,q:strin
  const d=await request<{variants:WarehouseIntakeVariant[];offset:number;limit:20;has_more:boolean}>(`${warehouseIntakeBase(scope)}/variants?q=${encodeURIComponent(q)}&offset=${offset}`,{signal},'/api/admin/')
  if(!d||d.offset!==offset||d.limit!==20||typeof d.has_more!=='boolean'||!Array.isArray(d.variants)||d.variants.length>20||new Set(d.variants.map(v=>v.id)).size!==d.variants.length||d.variants.some(v=>!v||!warehouseID(v.id)||!warehouseID(v.product_id)||typeof v.title!=='string'||typeof v.product_title!=='string'||v.sku!==null&&typeof v.sku!=='string'))throw new APIError(0,'request.invalid_response')
  return d
+}
+
+export type PriceAmountEdit={operation_id:string;expected_revision:string;amount:string}
+export type PriceEditContext={effective_amount:string;product_id:string;variant_id:string;id:string;price_set_id:string;currency_code:string;amount:string;min_quantity:string|null;max_quantity:string|null;price_list_id:string|null;shared_variants:number;enabled:boolean;revision:string}
+const priceEditPath=(product:string,variant:string,price:string)=>`products/${encodeURIComponent(product)}/variants/${encodeURIComponent(variant)}/prices/${encodeURIComponent(price)}`
+export async function readPriceEdit(product:string,variant:string,price:string,signal:AbortSignal):Promise<PriceEditContext>{
+ const d=await request<PriceEditContext>(priceEditPath(product,variant,price),{signal},'/api/admin/')
+ if(!d||d.product_id!==product||d.variant_id!==variant||d.id!==price||typeof d.effective_amount!=='string'||d.effective_amount.length>1024||!/^(0|[1-9]\d*)(\.\d+)?$/.test(d.effective_amount)||typeof d.price_set_id!=='string'||typeof d.currency_code!=='string'||!decimalText(d.amount)||!nullableDecimal(d.min_quantity)||!nullableDecimal(d.max_quantity)||!nullableText(d.price_list_id)||!Number.isSafeInteger(d.shared_variants)||d.shared_variants<1||typeof d.enabled!=='boolean'||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision))throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function editPriceAmount(product:string,variant:string,price:string,body:PriceAmountEdit):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{revision:string;replayed:boolean}>(priceEditPath(product,variant,price),{method:'POST',body,csrf},'/api/admin/')
+ if(!d||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
 }

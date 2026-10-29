@@ -491,3 +491,25 @@ test('current permissions hide menus, deny direct navigation and retry an unavai
  await expect(page.getByText('暂时无法连接服务，请稍后重试。',{exact:true})).toBeVisible()
  await expect(page.getByRole('menuitem',{name:'商品',exact:true})).toHaveCount(0)
 })
+
+
+test('price edit keeps authoritative precision and one immutable attempt, then applies current write grants',async({page})=>{
+ const grants:string[]=[...ACTIONS];await fixture(page,{permissions:grants})
+ const product={id:'price-edit-product',revision:'a'.repeat(64),title:'Price edit fixture',handle:'price-edit-product',status:'published',thumbnail:null,collection_id:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',variant_count:1,subtitle:null,description:null,options:[],images:[]}
+ const variant={id:'price-edit-v',product_id:product.id,title:'Price variant',sku:'Price SKU',thumbnail:null,variant_rank:0,manage_inventory:false,allow_backorder:false,configuration_complete:true,options:[],images:[],unassigned_option_value_ids:[]}
+ const attempts:unknown[]=[]
+ await page.route('**/api/admin/products/price-edit-product**',async route=>{
+  const request=route.request(),path=new URL(request.url()).pathname
+  if(path.endsWith('/prices/price-one')){
+   if(request.method()==='POST'){expect(request.headers()['x-csrf-token']).toBe(sessionCSRF);attempts.push(request.postDataJSON());if(attempts.length===1){await route.abort('failed');return};return route.fulfill({status:409,json:{error:{code:'catalog.edit_conflict'}}})}
+   return route.fulfill({json:{product_id:product.id,variant_id:variant.id,id:'price-one',price_set_id:'set',currency_code:'eur',amount:'1.000000000000000000',effective_amount:'1.00000000000000000001',min_quantity:null,max_quantity:null,price_list_id:null,shared_variants:2,enabled:true,revision:'b'.repeat(64)}})
+  }
+  if(path.endsWith('/prices'))return route.fulfill({json:{product_id:product.id,variant_id:variant.id,price_set_ids:['set'],prices:[{id:'price-one',price_set_id:'set',currency_code:'eur',amount:'1',min_quantity:null,max_quantity:null,rules_count:0,price_list_id:null,price_list:null,rules:[]}],count:1,limit:20,offset:0}})
+  return route.fulfill({json:path.endsWith('/variants')?{variants:[variant],count:1,limit:20,offset:0}:{product}})
+ })
+ await page.goto('/account');await signIn(page);await page.goto('/products/price-edit-product');await page.getByRole('button',{name:'查看价格',exact:true}).click();await page.getByRole('button',{name:'修改金额',exact:true}).click()
+ const edit=page.getByRole('dialog',{name:'修改金额',exact:true});await expect(edit.getByLabel('金额',{exact:true})).toHaveValue('1.00000000000000000001')
+ await edit.getByLabel('金额',{exact:true}).fill('9007199254740993.000000000000000001');await edit.getByRole('button',{name:'保存',exact:true}).click();await expect(edit.getByRole('button',{name:'重试本次保存',exact:true})).toBeVisible();await expect(edit.getByLabel('金额',{exact:true})).toBeDisabled();await edit.getByRole('button',{name:'重试本次保存',exact:true}).click()
+ await expect(edit.getByRole('button',{name:'重试本次保存',exact:true})).toHaveCount(0);expect(attempts).toHaveLength(2);expect(attempts[0]).toEqual(attempts[1]);expect(attempts[0]).toMatchObject({amount:'9007199254740993.000000000000000001'})
+ await edit.getByRole('button',{name:'取消',exact:true}).click();grants.splice(grants.indexOf('price.write'),1);await page.reload();await page.getByRole('button',{name:'查看价格',exact:true}).click();await expect(page.getByRole('cell',{name:'1',exact:true})).toBeVisible();await expect(page.getByRole('button',{name:'修改金额',exact:true})).toHaveCount(0)
+})
