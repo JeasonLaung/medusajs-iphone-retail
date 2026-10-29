@@ -474,3 +474,5 @@
 2026-10-29 促销目标组装补充：[购物车商品/配送及已有税优惠上下文](migration/cart-promotion-targets.md)连接私有保存字段、当前product/variant和shipping option标量关系，保留未折扣基数与当前折扣总额。人工MySQL实际串联读取→运费优惠计算→调整项保存→重读→后续失败整体回滚；完整订单/客户上下文、版本支付和checkout仍缺，T032/T033未验收。
 
 2026-10-29 订单规则上下文补充：[金额/地区/地址/促销及支付集合](migration/cart-promotion-context.md)与商品/配送投影共用事务和金额结果，保留原选择字段、联系信息与登录身份分离、软删及多支付集合拒绝。人工MySQL验证实际规则计算及整体回滚；原模型/金额装饰器对照确认七个金额、epsilon与缺失顶层quantity。新客户/groups、完整刷新幂等支付、checkout仍缺，T032/T033未验收。
+
+2026-10-29 促销刷新编排补充：[选择/事实/自动促销/属性预览/计算/保存](migration/cart-promotion-refresh.md)已由RefreshPromotions在同一调用方事务串联。人工MySQL验证自动与手动重算、remove/replace/原链接恢复、活动结束、额度反馈、手工项保留、不增加usage及后续失败整体回滚。公开命令、完整规则覆盖、新客户、支付/版本幂等及checkout仍缺，T032/T033未验收。

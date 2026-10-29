@@ -50,6 +50,7 @@ func checkPromotionAmounts(t *testing.T, ctx context.Context, db *gorm.DB, ref s
 	base := read(ref, "1", false)
 	checkPromotionTargets(t, ctx, db, ref, fingerprint)
 	checkPromotionContext(t, ctx, db, ref, fingerprint)
+	checkPromotionRefresh(t, ctx, db, ref, fingerprint)
 	if base.Totals["total"] != "262.5" || len(base.Lines) != 1 || base.Lines[0].Totals["subtotal"] != "200" || base.Lines[0].Totals["original_total"] != "250" || base.Lines[0].Totals["discount_total"] != "0" || len(base.ShippingMethods) != 1 || base.ShippingMethods[0].Totals["subtotal"] != "10" || base.ShippingMethods[0].Totals["original_total"] != "12.5" || base.PricingRecalculated || base.Checkout {
 		t.Fatal("promotion preparation reused old discounts or lost tax bases")
 	}
