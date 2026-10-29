@@ -1,0 +1,200 @@
+{
+  "format_version": 1,
+  "scope": "Original selection step with artificial query only; no cart mutation",
+  "source_file": "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/steps/get-promotion-codes-to-apply.js",
+  "source_sha256": "52caf7f1081abcbe0a18cae2a263cce5bca55f672d5b8f588db4a61ae25102ae",
+  "cases": [
+    {
+      "name": "default-add",
+      "existing": [
+        "OLD",
+        "OLD",
+        "",
+        null
+      ],
+      "requested": [
+        "NEW"
+      ],
+      "known": [
+        "NEW"
+      ],
+      "action": "",
+      "expected": [
+        "OLD",
+        "NEW"
+      ],
+      "error": false
+    },
+    {
+      "name": "add-stable-dedup",
+      "existing": [
+        "A",
+        "B"
+      ],
+      "requested": [
+        "B",
+        "C",
+        "C"
+      ],
+      "known": [
+        "B",
+        "C"
+      ],
+      "action": "add",
+      "expected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "error": false
+    },
+    {
+      "name": "replace",
+      "existing": [
+        "OLD"
+      ],
+      "requested": [
+        "B",
+        "A",
+        "B"
+      ],
+      "known": [
+        "A",
+        "B"
+      ],
+      "action": "replace",
+      "expected": [
+        "B",
+        "A"
+      ],
+      "error": false
+    },
+    {
+      "name": "replace-empty",
+      "existing": [
+        "OLD"
+      ],
+      "requested": [],
+      "known": [],
+      "action": "replace",
+      "expected": [],
+      "error": false
+    },
+    {
+      "name": "remove",
+      "existing": [
+        "A",
+        "B",
+        "C"
+      ],
+      "requested": [
+        "B"
+      ],
+      "known": [],
+      "action": "remove",
+      "expected": [
+        "A",
+        "C"
+      ],
+      "error": false
+    },
+    {
+      "name": "remove-unknown",
+      "existing": [
+        "A"
+      ],
+      "requested": [
+        "unknown"
+      ],
+      "known": [],
+      "action": "remove",
+      "expected": [
+        "A"
+      ],
+      "error": false
+    },
+    {
+      "name": "remove-all",
+      "existing": [
+        "A",
+        "A"
+      ],
+      "requested": [
+        "A"
+      ],
+      "known": [],
+      "action": "remove",
+      "expected": [],
+      "error": false
+    },
+    {
+      "name": "keep-existing-without-resolve",
+      "existing": [
+        "OLD"
+      ],
+      "requested": [],
+      "known": [],
+      "action": "add",
+      "expected": [
+        "OLD"
+      ],
+      "error": false
+    },
+    {
+      "name": "unknown-add",
+      "existing": [
+        "OLD"
+      ],
+      "requested": [
+        "unknown"
+      ],
+      "known": [],
+      "action": "add",
+      "expected": null,
+      "error": true
+    },
+    {
+      "name": "unknown-replace",
+      "existing": [
+        "OLD"
+      ],
+      "requested": [
+        "unknown"
+      ],
+      "known": [],
+      "action": "replace",
+      "expected": null,
+      "error": true
+    },
+    {
+      "name": "case-sensitive",
+      "existing": [
+        "A"
+      ],
+      "requested": [
+        "save"
+      ],
+      "known": [
+        "SAVE"
+      ],
+      "action": "add",
+      "expected": null,
+      "error": true
+    },
+    {
+      "name": "whitespace-preserved",
+      "existing": [],
+      "requested": [
+        " SAVE "
+      ],
+      "known": [
+        " SAVE "
+      ],
+      "action": "add",
+      "expected": [
+        " SAVE "
+      ],
+      "error": false
+    }
+  ]
+}

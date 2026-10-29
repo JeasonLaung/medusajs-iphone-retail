@@ -29,6 +29,26 @@ func checkCartPromotionAdjustments(t *testing.T, ctx context.Context, db *gorm.D
 		exec(tx, `INSERT INTO promotions(id,code,is_automatic,type,status,is_tax_inclusive,used,created_at,updated_at) VALUES('apply-p','SAVE',FALSE,'standard','active',FALSE,0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('old-p','OLD',FALSE,'standard','inactive',FALSE,0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 		exec(tx, `INSERT INTO cart_line_adjustments(id,item_id,promotion_id,code,amount,raw_amount,is_tax_inclusive,created_at,updated_at) VALUES('old-coded','amount-cart-line',NULL,'',1,'{"value":"1","precision":20}',FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('deleted-parent-coded','amount-cart-deleted',NULL,'OLD',1,'{"value":"1","precision":20}',FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 		exec(tx, `INSERT INTO cart_promotions(cart_id,promotion_id,id,created_at,updated_at,deleted_at) VALUES(?,'apply-p','stable-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),(?,'old-p','old-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),NULL)`, ref.CartID, ref.CartID)
+		// A linked promotion without an effective coded adjustment is not an
+		// existing code according to the original selection workflow.
+		checkCodes := func(requested []string, action string, expected []string, wantErr bool) {
+			t.Helper()
+			got, err := cart.ReadPromotionCodes(ctx, tx, "shop", ref, "1", requested, action)
+			if wantErr {
+				if err == nil || got != nil {
+					t.Fatal("invalid code selection returned facts")
+				}
+				return
+			}
+			if err != nil || !reflect.DeepEqual(got, expected) {
+				t.Fatalf("persisted code selection got %v %v want %v", got, err, expected)
+			}
+		}
+		checkCodes(nil, "add", []string{}, false)
+		checkCodes([]string{"OLD"}, "add", []string{"OLD"}, false) // exists, though inactive
+		checkCodes([]string{"unknown"}, "add", nil, true)
+		checkCodes([]string{"save"}, "add", nil, true)
+		checkCodes([]string{"unknown"}, "remove", []string{}, false)
 		actions := []promotion.ComputedAction{
 			{Action: "addItemAdjustment", Code: "SAVE", PromotionID: "apply-p", ItemID: "amount-cart-line", Amount: "0.123456789012345678901", TaxInclusive: true},
 			{Action: "campaignBudgetExceeded", Code: "SAVE", PromotionID: "apply-p"},
@@ -62,6 +82,11 @@ func checkCartPromotionAdjustments(t *testing.T, ctx context.Context, db *gorm.D
 		if count("promotions", "id='apply-p' AND used=0") != 1 {
 			t.Fatal("cart refresh consumed checkout usage")
 		}
+		checkCodes(nil, "add", []string{"SAVE"}, false)
+		checkCodes([]string{"OLD"}, "add", []string{"SAVE", "OLD"}, false)
+		checkCodes([]string{"SAVE"}, "remove", []string{}, false)
+		checkCodes(nil, "replace", []string{}, false)
+		checkCodes([]string{"OLD"}, "replace", []string{"OLD"}, false)
 		removed, err := cart.ReplacePromotionAdjustments(ctx, tx, "shop", ref, "1", nil)
 		if err != nil || removed.Removed != 2 || removed.Promotions != 0 || count("cart_promotions", "cart_id=? AND deleted_at IS NULL", ref.CartID) != 0 {
 			t.Fatal("empty desired promotions did not clear coded adjustments/links")
