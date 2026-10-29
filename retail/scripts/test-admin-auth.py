@@ -23,8 +23,9 @@ def docker(*args, timeout=90):
 
 
 def main():
-    if sys.argv[1:] not in ([], ['--cart-runtime-only'], ['--promotion-usage-only'], ['--customer-accounts-only'], ['--store-collections-only'], ['--cart-contacts-only'], ['--cart-delivery-only'], ['--initial-payment-only'], ['--payment-status-only']):
+    if sys.argv[1:] not in ([], ['--cart-runtime-only'], ['--promotion-usage-only'], ['--customer-accounts-only'], ['--store-collections-only'], ['--cart-contacts-only'], ['--cart-delivery-only'], ['--initial-payment-only'], ['--payment-status-only'], ['--order-numbering-only']):
         raise RuntimeError('Unknown rehearsal option')
+    numbering_only = sys.argv[1:] == ['--order-numbering-only']
     status_only = sys.argv[1:] == ['--payment-status-only']
     initial_only = status_only or sys.argv[1:] == ['--initial-payment-only']
     delivery_only = initial_only or sys.argv[1:] == ['--cart-delivery-only']
@@ -108,6 +109,8 @@ def main():
             suites = ['AdminAuthentication']
         if collection_only:
             suites = ['ProductPrices']
+        if numbering_only:
+            suites = ['OrderNumbering']
         output, errors = b'', b''
         for suite in suites:
             print(json.dumps({'running_suite': suite}), flush=True)
@@ -131,7 +134,20 @@ def main():
             if docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket','-e',cleanup).returncode:
                 raise RuntimeError('Owned artificial database cleanup failed')
         tested = subprocess.CompletedProcess([], tested.returncode, output, errors)
-        if contacts_only:
+        if numbering_only:
+            markers = [line.split('ORDER_NUMBERING_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_NUMBERING_REHEARSAL ' in line]
+            if tested.returncode or len(markers)!=1:
+                print(tested.stdout.decode(errors='replace'))
+                raise RuntimeError('Owned order numbering verification failed')
+            counts = json.loads(markers[0])
+            files = ['retail/backend/internal/orders/numbering.go','retail/backend/internal/orders/numbering_test.go','retail/backend/internal/orders/schema.go','retail/backend/internal/orders/schema_plan.json','retail/backend/internal/identity/order_numbering_test.go','retail/scripts/test-admin-auth.py']
+            files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
+            report = {'scope':'Owned MySQL order number cutover and allocation, not checkout/order/stock acceptance',
+                      'counts':counts,'migrations':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),
+                      'includes_uncommitted_payment_0037':(ROOT/'retail/backend/migrations/0037_mollie_notification_inbox.sql').exists(),
+                      'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'published_ports':0,'external_network':False},
+                      'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
+        elif contacts_only:
             markers = [line.split('CART_CONTACT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_CONTACT_REHEARSAL ' in line]
             if tested.returncode or len(markers) != 1:
                 print(tested.stdout.decode(errors='replace'))
@@ -572,7 +588,7 @@ def main():
         if owned_binary and binary.exists():
             binary.unlink()
     report['cleanup'] = 'both owned containers and temporary runner removed'
-    report_name = 'cart-payment-status-runtime-report.json' if status_only else 'cart-initial-payment-runtime-report.json' if initial_only else 'cart-delivery-runtime-report.json' if delivery_only else 'cart-contacts-runtime-report.json' if contacts_only else 'store-collections-runtime-report.json' if collection_only else 'gin-customer-accounts-report.json' if customer_only else 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
+    report_name = 'order-numbering-runtime-report.json' if numbering_only else 'cart-payment-status-runtime-report.json' if status_only else 'cart-initial-payment-runtime-report.json' if initial_only else 'cart-delivery-runtime-report.json' if delivery_only else 'cart-contacts-runtime-report.json' if contacts_only else 'store-collections-runtime-report.json' if collection_only else 'gin-customer-accounts-report.json' if customer_only else 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
     (ROOT / 'docs/migration' / report_name).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'counts': counts, 'cleanup': 'complete'}))
 
