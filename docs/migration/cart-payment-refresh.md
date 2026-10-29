@@ -29,3 +29,15 @@ Stage 相同输入重放，变更摘要拒绝。Claim 在 MySQL 行锁内一次�
 该表只保存当前尝试与累计次数，不是完整尝试审计日志，也不是可独立执行的任务队列。尚未接入渠道适配器或外部调用；协调器还必须在 Stage 的同一事务持久保存受保护的恢复快照、绑定当前授权/cart版本，并完成 provider 幂等/核实、部分删除补偿、集合更新和最终提交。仅有 receipt 或 Dispatch=true 不能认定支付刷新完成；T032/T033仍未验收。
 
 本轮验收证据：`go test ./...`通过；隔离数据库完整23组回归通过，33迁移及成功重放均验证；admin-auth-report的267项实现SHA匹配。旧9001 health/Admin、8000商品页及购物车页均HTTP 200，近期服务日志无新增错误（既有PayPal seller nonce配置提示保留）。这些证据不包含真实provider或checkout验收。
+
+## 加密恢复请求快照（0034）
+
+新增可空 request_envelope LONGBLOB，允许旧0033低层 receipt 保留无快照状态，但无快照不能通过新API获得派发。`StageSessionRequest`在同一调用方事务保存完整provider/collection/local session/精确amount/currency/data/context和receipt；Digest由版本化规范编码自动计算，已有非零Digest必须匹配。data为JSON对象，context允许null或对象；保留JSON原始大整数和小数、对象顺序，压缩空白，不用float解码；所有层级重复key、无效UTF8、超64层及超1MiB整体快照拒绝。金额复用精确totals，无SQL量化。
+
+复用protected AES-GCM Ring和独立业务密钥。认证上下文绑定purpose/table/column及scope/operation/kind/resource/request SHA的无歧义哈希；跨操作或资源替换密文拒绝。新私有`ReadSessionRequest`需真实事务、支付schema及journal行锁，解密、摘要与规范版本逐项核验。`ClaimSessionRequest`先完成同样核验，再抢占派发；密钥不可用、密文损坏、缺快照不推进attempt。未知结果可恢复原请求用于核实，不授予重试。密钥轮换保留旧解密key，重放保留原密文，不自动改写或修补。
+
+隔离MySQL用人工token验证密文中无明文、精确金额/JSON大数恢复、新事务重启读取、密钥轮换重放、缺key/摘要变更/篡改/跨操作替换拒绝、未知结果读取而不派发、低层无快照receipt拒绝，以及触发器模拟快照写入失败与后续命令失败均整体回滚。报告增加payment_requests；纯Go测试补JSON嵌套重复key/边界/非法输入。
+
+这一步完成的是单个渠道动作的恢复材料，不是完整支付协调器。服务端仍须绑定当前cart授权、generation/version与集合刷新目标，持久任务顺序及补偿状态，接入真实适配器、创建响应保存/恢复、部分删除补偿和最终集合更新。SessionID为本地稳定请求标识，创建适配器须使用它作为幂等键及data.session_id，禁止用每次变化的attempt UUID。未导入旧登录态、未调用真实渠道，T032/T033未验收。
+
+0034验证结果：`go test ./...`与隔离MySQL/Redis完整23组回归通过；34迁移成功执行，admin-auth-report的273项实现SHA匹配。旧health/Admin/商品/购物车入口均200，服务日志仍只有既有PayPal seller nonce提示。请求恢复为人工fixture验证，不包含真实渠道调用或完整checkout。

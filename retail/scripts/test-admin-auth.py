@@ -157,6 +157,9 @@ def main():
             if tested.returncode == 0 and len(promotion_adjustment_markers) != 1:
                 raise RuntimeError('Cart promotion adjustment evidence missing')
             promotion_amount_markers = [line.split('CART_PROMOTION_AMOUNTS_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_PROMOTION_AMOUNTS_REHEARSAL ' in line]
+            payment_request_markers = [line.split('PAYMENT_REQUESTS_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'PAYMENT_REQUESTS_REHEARSAL ' in line]
+            if tested.returncode == 0 and len(payment_request_markers) != 1:
+                raise RuntimeError('Payment request recovery evidence missing')
             payment_effect_markers = [line.split('PAYMENT_EFFECTS_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'PAYMENT_EFFECTS_REHEARSAL ' in line]
             if tested.returncode == 0 and len(payment_effect_markers) != 1:
                 raise RuntimeError('Payment effect journal evidence missing')
@@ -186,13 +189,13 @@ def main():
                 files = ['retail/scripts/test-admin-auth.py','retail/backend/internal/identity/cart_runtime_test.go','retail/backend/internal/identity/cart_http_test.go','retail/backend/internal/identity/cart_amounts_test.go','retail/backend/internal/identity/promotion_products_test.go','retail/backend/internal/identity/cart_promotion_adjustments_test.go','retail/backend/internal/identity/cart_promotion_amounts_test.go','retail/backend/internal/identity/cart_items_test.go','retail/backend/internal/identity/cart_items_http_test.go',
                          'retail/backend/internal/server/router.go','retail/backend/internal/platform/request.go','retail/backend/internal/platform/http.go',
                          'retail/backend/internal/catalog/schema.go','retail/backend/internal/catalog/schema_plan.json']
-                files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','schema','sessionstore','totals','catalog','pricing','inventory','promotion','payments') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
+                files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','schema','sessionstore','totals','catalog','pricing','inventory','promotion','payments','protected') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
                 files += ['retail/scripts/capture-cart-promotion-context.cjs','docs/migration/fixtures/cart-promotion-context.json']
                 files += ['retail/scripts/capture-cart-payment-refresh.cjs','docs/migration/fixtures/cart-payment-refresh.json']
-                files += ['retail/backend/internal/identity/cart_promotion_refresh_test.go','retail/backend/internal/identity/payment_effects_test.go','retail/backend/internal/payments/effects.go']
+                files += ['retail/backend/internal/identity/cart_promotion_refresh_test.go','retail/backend/internal/identity/payment_effects_test.go','retail/backend/internal/payments/effects.go','retail/backend/internal/payments/requests.go','retail/backend/internal/identity/payment_requests_test.go']
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
                 report = {'format_version':1,'scope':'Owned artificial MySQL/Redis cart runtime and HTTP dispatch; browser and checkout not accepted',
-                          'cart_runtime':counts,'cart_items':json.loads(item_markers[0]),'cart_items_http':json.loads(item_http_markers[0]),'cart_amounts':json.loads(amount_markers[0]),'payment_effects':json.loads(payment_effect_markers[0]),'cart_promotion_refresh':json.loads(promotion_refresh_markers[0]),'cart_promotion_amounts':json.loads(promotion_amount_markers[0]),'cart_promotion_adjustments':json.loads(promotion_adjustment_markers[0]),'promotion_products':json.loads(promotion_product_markers[0]),'cart_http':json.loads(http_markers[0]),'application_resources_used':False,'real_accounts_used':False,
+                          'cart_runtime':counts,'cart_items':json.loads(item_markers[0]),'cart_items_http':json.loads(item_http_markers[0]),'cart_amounts':json.loads(amount_markers[0]),'payment_requests':json.loads(payment_request_markers[0]),'payment_effects':json.loads(payment_effect_markers[0]),'cart_promotion_refresh':json.loads(promotion_refresh_markers[0]),'cart_promotion_amounts':json.loads(promotion_amount_markers[0]),'cart_promotion_adjustments':json.loads(promotion_adjustment_markers[0]),'promotion_products':json.loads(promotion_product_markers[0]),'cart_http':json.loads(http_markers[0]),'application_resources_used':False,'real_accounts_used':False,
                           'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
             else:
                 markers = [line.split('IDENTITY_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'IDENTITY_REHEARSAL ' in line]
@@ -392,16 +395,17 @@ def main():
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/cart').glob('*') if p.is_file()]
                 files += ['retail/scripts/capture-cart-promotion-context.cjs','docs/migration/fixtures/cart-promotion-context.json']
                 files += ['retail/scripts/capture-cart-payment-refresh.cjs','docs/migration/fixtures/cart-payment-refresh.json']
-                files += ['retail/backend/internal/identity/cart_promotion_refresh_test.go','retail/backend/internal/identity/payment_effects_test.go','retail/backend/internal/payments/effects.go']
+                files += ['retail/backend/internal/identity/cart_promotion_refresh_test.go','retail/backend/internal/identity/payment_effects_test.go','retail/backend/internal/payments/effects.go','retail/backend/internal/payments/requests.go','retail/backend/internal/identity/payment_requests_test.go']
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/sessionstore').glob('*.go')]
                 http_markers = [line.split('CART_HTTP_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_HTTP_REHEARSAL ' in line]
                 if len(http_markers) != 1:
                     raise RuntimeError('Cart HTTP evidence missing')
                 files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
                 files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/schema').glob('*.go')]
+                files += [p.relative_to(ROOT).as_posix() for folder in ('payments','protected') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
                 report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                           'cart_schema':json.loads(cart_markers[0]),
-                          'cart_amounts':json.loads(amount_markers[0]),'payment_effects':json.loads(payment_effect_markers[0]),'cart_promotion_refresh':json.loads(promotion_refresh_markers[0]),'cart_promotion_amounts':json.loads(promotion_amount_markers[0]),'cart_promotion_adjustments':json.loads(promotion_adjustment_markers[0]),'promotion_products':json.loads(promotion_product_markers[0]),
+                          'cart_amounts':json.loads(amount_markers[0]),'payment_requests':json.loads(payment_request_markers[0]),'payment_effects':json.loads(payment_effect_markers[0]),'cart_promotion_refresh':json.loads(promotion_refresh_markers[0]),'cart_promotion_amounts':json.loads(promotion_amount_markers[0]),'cart_promotion_adjustments':json.loads(promotion_adjustment_markers[0]),'promotion_products':json.loads(promotion_product_markers[0]),
                           'cart_items':json.loads(item_markers[0]),'cart_items_http':json.loads(item_http_markers[0]),
                           'cart_runtime':json.loads(cart_runtime_markers[0]),
                           'cart_http':json.loads(http_markers[0]),
