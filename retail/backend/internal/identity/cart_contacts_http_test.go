@@ -83,9 +83,31 @@ func checkCartContactsHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessi
 		t.Fatal("contact HTTP durable receipt differs")
 	}
 	call(path, body, uuid.NewString(), origin, issued.CSRF, true, 409)
+	read := func(target string, withCookie bool, status int) *httptest.ResponseRecorder {
+		t.Helper()
+		before := fingerprint()
+		req := httptest.NewRequest("GET", target, nil)
+		if withCookie {
+			req.AddCookie(&http.Cookie{Name: "retail_cart_possession", Value: issued.Token})
+		}
+		w := httptest.NewRecorder()
+		router.ServeHTTP(w, req)
+		if w.Code != status || w.Header().Get("Cache-Control") != "private, no-store" || len(w.Result().Cookies()) != 0 || before != fingerprint() {
+			t.Fatal("contact read HTTP contract differs")
+		}
+		return w
+	}
+	read(path, false, 401)
+	read("/api/store/carts/foreign-cart/contacts", true, 404)
+	read(path+"?fields=*", true, 400)
+	contactResponse := read(path, true, 200)
+	var contact cart.ContactDetail
+	if json.Unmarshal(contactResponse.Body.Bytes(), &contact) != nil || contact.Version != "5" || contact.Email != in.Email || contact.Shipping == nil || *contact.Shipping != in.Shipping {
+		t.Fatal("contact HTTP detail differs")
+	}
 	if sessions.RevokeCart(ctx, issued.Token) != nil {
 		t.Fatal("contact HTTP cleanup failed")
 	}
 	call(path, body, in.OperationID, origin, issued.CSRF, true, 401)
-	t.Log(`CART_CONTACT_HTTP_REHEARSAL {"real_gin_mysql_redis":true,"possession_origin_csrf":true,"nested_duplicate_unknown_and_null_rejected":true,"address_id_and_price_injection_denied":true,"private_no_store_including_413":true,"no_pii_response":true,"no_cookie_extension":true,"replay_and_stale_version":true,"revoked_cookie_denied":true,"checkout_page":false}`)
+	t.Log(`CART_CONTACT_HTTP_REHEARSAL {"real_gin_mysql_redis":true,"possession_origin_csrf":true,"nested_duplicate_unknown_and_null_rejected":true,"address_id_and_price_injection_denied":true,"private_no_store_including_413":true,"no_pii_response":true,"no_cookie_extension":true,"replay_and_stale_version":true,"revoked_cookie_denied":true,"contact_read_owner_only_and_no_store":true,"checkout_page":false}`)
 }

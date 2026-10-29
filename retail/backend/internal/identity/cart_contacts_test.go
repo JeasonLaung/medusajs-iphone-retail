@@ -30,6 +30,10 @@ func checkCartContacts(t *testing.T, ctx context.Context, db *gorm.DB, sessions 
 		t.Fatal("contact cart creation failed")
 	}
 	ref := created.Reference
+	blank, err := cart.ReadContacts(ctx, db, "shop", ref)
+	if err != nil || blank.Email != "" || blank.Shipping != nil || blank.Billing != nil || blank.Version != "1" {
+		t.Fatal("empty contact read differs")
+	}
 	added, err := cart.AddItem(ctx, db, "shop", ref, cart.AddItemCommand{OperationID: uuid.NewString(), Version: "1", VariantID: "add-v", Quantity: "1"})
 	if err != nil {
 		t.Fatal("contact item creation failed")
@@ -73,6 +77,10 @@ func checkCartContacts(t *testing.T, ctx context.Context, db *gorm.DB, sessions 
 	var postal string
 	if db.Table("cart_addresses").Select("postal_code").Where("id=?", saved.ShippingAddressID).Scan(&postal).Error != nil || postal != "0012" {
 		t.Fatal("leading postal zero lost")
+	}
+	detail, err := cart.ReadContacts(ctx, db, "shop", ref)
+	if err != nil || detail.Email != in.Email || detail.Shipping == nil || *detail.Shipping != in.Shipping || detail.Billing == nil || *detail.Billing != in.Billing || detail.Version != "3" {
+		t.Fatal("owned contact detail differs")
 	}
 	amounts, err := cart.ReadAmounts(ctx, db, "shop", ref)
 	if err != nil || amounts.Totals["total"] != "150" {
@@ -177,5 +185,5 @@ func checkCartContacts(t *testing.T, ctx context.Context, db *gorm.DB, sessions 
 		t.Fatal("disabled contact replay accepted")
 	}
 	exec("UPDATE cart_item_runtime SET enabled=FALSE WHERE id=1")
-	t.Log(`CART_CONTACT_REHEARSAL {"real_mysql":true,"concurrent_attempts":8,"single_fresh_receipt":true,"exact_replay":true,"price_and_tax_refresh":true,"missing_price_rollback":true,"unsupported_shipping_unchanged":true,"deleted_country_denied":true,"contact_copies":true,"leading_postal_zero":true,"late_receipt_failure_atomic":true,"retry_after_rollback":true,"stale_version_denied":true,"foreign_country_denied":true,"wrong_generation_denied":true,"payment_link_closed":true,"pii_absent_from_receipt":true,"disabled_replay_denied":true,"http_integrated":true,"checkout_page":false}`)
+	t.Log(`CART_CONTACT_REHEARSAL {"real_mysql":true,"concurrent_attempts":8,"single_fresh_receipt":true,"exact_replay":true,"price_and_tax_refresh":true,"missing_price_rollback":true,"unsupported_shipping_unchanged":true,"deleted_country_denied":true,"contact_copies":true,"private_current_contact_read":true,"leading_postal_zero":true,"late_receipt_failure_atomic":true,"retry_after_rollback":true,"stale_version_denied":true,"foreign_country_denied":true,"wrong_generation_denied":true,"payment_link_closed":true,"pii_absent_from_receipt":true,"disabled_replay_denied":true,"http_integrated":true,"checkout_page":false}`)
 }

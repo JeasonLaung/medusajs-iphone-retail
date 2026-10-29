@@ -17,6 +17,25 @@ export type CartAmounts = {
 }
 export type CartViewItem = {id:string;title:string;product_id:string|null;product_title:string|null;product_handle:string|null;thumbnail:string|null;variant_title:string|null;option_values:Record<string,string>}
 export type CartView = {amounts:CartAmounts;items:CartViewItem[]}
+export type ContactAddress={first_name:string;last_name:string;company:string;address_1:string;address_2:string;city:string;country_code:string;province:string;postal_code:string;phone:string}
+export type CartContactDetail={cart_id:string;version:string;email:string;shipping_address:ContactAddress|null;billing_address:ContactAddress|null}
+export type CartContactInput={operationID:string;version:string;email:string;shipping_address:ContactAddress;billing_address:ContactAddress}
+export type CartContactReceipt={cart_id:string;version:string;replayed:boolean}
+const contactLimits={first_name:160,last_name:160,company:160,address_1:512,address_2:512,city:160,country_code:2,province:191,postal_code:64,phone:64} as const
+export function contactAddress(value:unknown):ContactAddress {
+ const v=record(value),out:Record<string,string>={}
+ for(const [key,max] of Object.entries(contactLimits)){
+  const text=v[key]
+  if(typeof text!=='string'||[...text].length>max||/[\x00-\x1f\x7f]/.test(text))throw protocol()
+  out[key]=text
+ }
+ if(!/^[a-z]{2}$/.test(out.country_code)||['first_name','last_name','address_1','city','postal_code'].some(k=>!out[k].trim()))throw protocol()
+ return out as ContactAddress
+}
+function contactEmail(value:unknown):string {
+ if(typeof value!=='string'||value.length>254||!value.includes('@')||value.trim()!==value||/[\x00-\x20\x7f<>]/.test(value))throw protocol()
+ return value
+}
 export type CartErrorKind = 'input' | 'session' | 'csrf' | 'conflict' | 'region' | 'item' | 'rate_limit' | 'unavailable' | 'protocol'
 
 export class CartError extends Error {
@@ -234,6 +253,30 @@ export class CartClient {
    if(status!==200||v.cart_id!==id||v.line_id!==lineID||v.quantity!==quantity||typeof v.replayed!=='boolean'||!matches(v.version,versionPattern)||BigInt(v.version)!==BigInt(version)+1n)throw protocol()
    return {cart_id:id,line_id:lineID,quantity,version:v.version,replayed:v.replayed}
   }catch{throw new CartError('protocol',status,true)}
+ }
+
+ async saveContacts(id:string,input:CartContactInput,authorization:{csrfToken:string}):Promise<CartContactReceipt>{
+  const {operationID,version}=input,{csrfToken}=authorization
+  let payload:unknown
+  try{
+   if(!matches(id,idPattern)||!matches(operationID,uuidPattern)||!matches(version,versionPattern)||BigInt(version)>=18446744073709551615n||!matches(csrfToken,tokenPattern))throw protocol()
+   payload={version,email:contactEmail(input.email),shipping_address:contactAddress(input.shipping_address),billing_address:contactAddress(input.billing_address)}
+  }catch{throw new CartError('input')}
+  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/contacts`,'POST',JSON.stringify(payload),{'X-CSRF-Token':csrfToken,'Idempotency-Key':operationID},65536,'item')
+  try{
+   const v=record(value);keys(v,['cart_id','version','replayed'])
+   if(status!==200||v.cart_id!==id||!matches(v.version,versionPattern)||BigInt(v.version)!==BigInt(version)+1n||typeof v.replayed!=='boolean')throw protocol()
+   return {cart_id:id,version:v.version,replayed:v.replayed}
+  }catch{throw new CartError('protocol',status,true)}
+ }
+ async retrieveContacts(id:string):Promise<CartContactDetail|null>{
+  if(!matches(id,idPattern))throw new CartError('input')
+  let response:{status:number;value:unknown}
+  try{response=await this.request(`/api/store/carts/${encodeURIComponent(id)}/contacts`,'GET')}
+  catch(err){if(err instanceof CartError&&(err.status===401||err.status===404))return null;throw err}
+  const v=record(response.value);keys(v,['cart_id','version','email','shipping_address','billing_address'])
+  if(response.status!==200||v.cart_id!==id||!matches(v.version,versionPattern)||BigInt(v.version)>18446744073709551615n)throw protocol()
+  return {cart_id:id,version:v.version,email:v.email===''?'':contactEmail(v.email),shipping_address:v.shipping_address===null?null:contactAddress(v.shipping_address),billing_address:v.billing_address===null?null:contactAddress(v.billing_address)}
  }
 
  // Only explicit 401/404 means the ID is no longer accessible. Dependency,

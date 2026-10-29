@@ -1,0 +1,79 @@
+{
+  "scope": "Formal checkout contact step only; delivery/payment/order and joint real browser DB path incomplete",
+  "browser": {
+    "formal_astro": true,
+    "synthetic_api": true,
+    "real_gin_mysql": false,
+    "original_css_and_address_markup": true,
+    "private_values_absent_from_ssr": true,
+    "no_cart_404": true,
+    "empty_cart_307": true,
+    "private_read_failure_503": true,
+    "saved_address_copy": true,
+    "email_confirmation_before_transport": true,
+    "separate_billing": true,
+    "leading_postal_zero": true,
+    "lost_response_same_operation_after_reload": true,
+    "rehydrated_contact_values": true,
+    "acknowledged_step_delivery": true,
+    "private_journal_descriptor": true,
+    "acknowledged_read_failure_read_only_recovery": true,
+    "same_billing_copy": true,
+    "exact_summary": true,
+    "edit_and_back_links": true,
+    "en_zh": true,
+    "widths": [
+      390,
+      1440
+    ],
+    "overflow": false,
+    "browser_errors": 0,
+    "payment_or_order_complete": false,
+    "delivery_selection": false,
+    "source_pixel_comparison": false
+  },
+  "go_all_packages": "passed in independent commit-content snapshot; no uncommitted 0037",
+  "mysql_contacts_report": "cart-contacts-runtime-report.json",
+  "frontend_unit_tests": {
+    "passed": 109,
+    "failed": 0
+  },
+  "astro_check": {
+    "files": 278,
+    "errors": 0,
+    "warnings": 0,
+    "existing_hints": 2
+  },
+  "astro_build": "passed",
+  "source_css_and_i18n_identical": true,
+  "old_services": {
+    "health": 200,
+    "admin": 200,
+    "cart": 200,
+    "checkout_without_cookie": 404
+  },
+  "implementation_sha256": {
+    "retail/storefront/src/lib/cart-client.ts": "d73f26181fed4fd17174e9b028ea15090d7d857a2bbccb555c52c4f14c844764",
+    "retail/storefront/src/lib/cart-bridge.ts": "cc89d6adbdec2dde22b603d48b4cb840873d57e41e0627eb950c09e571734922",
+    "retail/storefront/src/lib/checkout-contacts.ts": "95810bb9338989372987d97686890a77a293ceee0ea71506f52b2025c01524ee",
+    "retail/storefront/src/pages/[countryCode]/checkout.astro": "459c3e1847a5d8d971c8f770b1d2b4f5cb61011aafd0d815f9729d1d41a8f41f",
+    "retail/storefront/tests/cart-bridge.test.ts": "d8542850e1abbd041f9cbde327d207d7d55f812c7a8be9aa0a6b2810438761c2",
+    "retail/storefront/tests/checkout-contacts.test.ts": "d885ce15d2c5256b748795719b890269ebff5ad3fd59cc22a98177bdcc54c353",
+    "retail/storefront/tests/checkout.browser.mjs": "fb2d3d5ff4005a772f5744ce048b265569a428fcbe6d7c9a965994ed0173277c",
+    "retail/storefront/src/components/checkout/address-fields.tsx": "c7c505bcd4bb428416c365544f7bf188a1ddca0860c1d658641543a0b20fc2a5",
+    "retail/storefront/src/components/checkout/addresses.tsx": "85aaa5359a9b7a9473993b4bf044eb6ff8ad8f423580d825b5a88ddfb84c457d",
+    "retail/storefront/src/components/checkout/billing_address.tsx": "779646afccc2f21d4054142d518e4ec1147880387d6714f9296463d7fb0888c6",
+    "retail/storefront/src/components/checkout/checkout-progress.tsx": "4cb2891eec3c2044ec0cb1e69da0d32917b07f0242ce87861029e981134c9156",
+    "retail/storefront/src/components/checkout/compare-addresses.ts": "0d87f4ed1f5ecbaf281d40b30a2a9ba0068a3b5f5d7783f910424ddfe133e848",
+    "retail/storefront/src/components/checkout/country-select.tsx": "3fe4f31e8e255fd05ea7f78d029de3fdca5a11a5710e7ccbaf27d092a0f86590",
+    "retail/storefront/src/components/checkout/error-message.tsx": "761f6968fc2b8ff8e5cc53c5961120a38a01388c9e613960e9c883c33f181739",
+    "retail/storefront/src/components/checkout/gin-checkout.tsx": "6c509711809bf02e8706b7f0e91976e5150ca3cc9c4bd0d0c58f834972c58202",
+    "retail/storefront/src/components/checkout/i18n.ts": "8a291acaf8c746941fc68f2b9a48f8a2e818f1836241948802e5abd9931e3e46",
+    "retail/storefront/src/components/checkout/icons.tsx": "0698f1bfaf491199cf4805458800999ffeebe56353e8065bf7cc4d6e721d522e",
+    "retail/storefront/src/components/checkout/shipping-address.tsx": "d1a533564505f537de38aa6b5ab49c1c8cd86f5f378a7eedb7b2c45da6c00533",
+    "retail/storefront/src/components/checkout/styles.module.css": "33ce2dd09af17b7f203ab2fa646dacdf5752f2013879a3217e2154b1c6bfb6f1",
+    "retail/storefront/src/components/checkout/submit-button.tsx": "2fef50c6a392f6f98fd5cf65ff017bc9d58a475ea6d9acc21cfc423cd1be7004",
+    "retail/storefront/src/components/checkout/summary.tsx": "78b90bab278410fe300d9d43261fd3c7dda1f100402a4449482a382468a70f6b",
+    "retail/storefront/src/components/checkout/types.ts": "0a74496b01c8b5f1fd03a5503850097456f10e4ea22c067809ec79d81dec105c"
+  }
+}

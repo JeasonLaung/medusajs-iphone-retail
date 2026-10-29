@@ -1,0 +1,41 @@
+---
+import {GIN_API_ORIGIN,STOREFRONT_ORIGIN,CUSTOMER_BRIDGE_KEY} from 'astro:env/server'
+import {loadPublicPage} from '../../lib/public-page'
+import {localeFromSegment} from '../../lib/storefront-route'
+import {CartClient} from '../../lib/cart-client'
+import {cartBridge} from '../../lib/cart-bridge'
+import GinCheckout from '../../components/checkout/gin-checkout'
+import BrandLogo from '../../components/layout/brand-logo'
+import {getCheckoutCopy} from '../../components/checkout/i18n'
+import styles from '../../components/checkout/styles.module.css'
+import '../../styles/original.css'
+const segment=(Astro.params.countryCode??'').toLowerCase(),copy=getCheckoutCopy(segment)
+let shell:Awaited<ReturnType<typeof loadPublicPage>>=null,failed=false
+try{shell=await loadPublicPage(GIN_API_ORIGIN,segment)}catch{failed=true}
+const region=shell?.regions.find(r=>r.countries.some(c=>c.iso_2===segment.slice(0,2)))
+if(failed)Astro.response.status=503
+else if(!region)Astro.response.status=404
+Astro.response.headers.set('Cache-Control','private, no-store')
+Astro.response.headers.set('Referrer-Policy','no-referrer')
+const enabled=!!STOREFRONT_ORIGIN&&Astro.url.origin===STOREFRONT_ORIGIN
+let available=!!region&&!failed
+if(available){
+ try{
+  if(!enabled)throw Error('Checkout configuration unavailable')
+  const headers=new Headers()
+  for(const name of ['Cookie','Origin','Sec-Fetch-Site'])if(Astro.request.headers.has(name))headers.set(name,Astro.request.headers.get(name)!)
+  const client=new CartClient({readScopeCSRF:()=>undefined,fetcher:(path)=>cartBridge(new Request(new URL(String(path),Astro.url),{headers}),{ginOrigin:GIN_API_ORIGIN,storefrontOrigin:STOREFRONT_ORIGIN})})
+  const cart=await client.current()
+  if(!cart){Astro.response.status=404;available=false}
+  else{
+   if(cart.region_id!==region!.id||cart.currency_code!==region!.currency_code)throw Error('Cart region mismatch')
+   const view=await client.retrieveView(cart.id)
+   if(!view)throw Error('Cart unavailable')
+   if(!view.items.length)return Astro.redirect(`/${segment}/cart`,307)
+  }
+ }catch{Astro.response.status=503;available=false;failed=true}
+}
+---
+<!doctype html><html lang={localeFromSegment(segment)}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex,nofollow"/><title>{copy.checkout}</title></head><body><div class={styles.layout}>
+<header class={styles.header}><nav><a href={`/${segment}/cart`} class={styles.back} data-testid="back-to-cart-link"><svg width="16" height="16" viewBox="0 0 15 15" fill="none" aria-hidden="true"><path d="M9.25 3.25 5 7.5l4.25 4.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>{copy.back}</a><a href={`/${segment}`} class={styles.brand} data-testid="store-link"><BrandLogo/></a></nav></header>
+<main data-testid="checkout-container">{region&&available?<GinCheckout region={region} segment={segment} enabled={enabled} customerEnabled={enabled&&!!CUSTOMER_BRIDGE_KEY} client:load/>:<div class={styles.page}><h1>{failed?(segment.endsWith('-zh')?'结账暂时无法加载':'Checkout unavailable'):(segment.endsWith('-zh')?'未找到页面':'Page not found')}</h1></div>}</main></div></body></html>

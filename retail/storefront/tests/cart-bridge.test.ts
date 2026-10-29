@@ -73,3 +73,12 @@ test('real private transport preserves public Host and paired cookies without fo
   assert.equal((await cartBridge(req('/api/store/cart',{headers:{Origin:shop}}),{...config,ginOrigin:`http://127.0.0.1:${address.port}`})).status,503)
  }finally{await new Promise<void>((resolve,reject)=>upstream.close(error=>error?reject(error):resolve()))}
 })
+
+test('contact routes retain private transport and never relay new cookies from an address command',async()=>{
+ for(const method of ['GET','POST']){
+  const response=await cartBridge(req('/api/store/carts/cart/contacts',{method,headers:{Origin:shop,...(method==='POST'?{'Content-Type':'application/json'}:{})},...(method==='POST'?{body:'{}'}:{})}),config,async(url)=>{assert.equal(String(url),config.ginOrigin+'/api/store/carts/cart/contacts');return good({version:'2'})})
+  assert.equal(response.status,200);assert.equal(response.headers.get('cache-control'),'private, no-store')
+ }
+ const response=await cartBridge(req('/api/store/carts/cart/contacts',{method:'POST',headers:{Origin:shop,'Content-Type':'application/json'},body:'{}'}),config,async()=>good({}, {'Set-Cookie':`retail_cart_csrf=${'a'.repeat(64)}; Path=/; SameSite=Lax`}))
+ assert.equal(response.status,503)
+})

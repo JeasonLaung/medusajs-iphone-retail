@@ -76,6 +76,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/carts/:id", h.Detail)
 	private.GET("/carts/:id/amounts", h.Amounts)
 	private.GET("/carts/:id/view", h.View)
+	private.GET("/carts/:id/contacts", h.ContactDetail)
 	private.POST("/carts/:id/contacts", h.Contacts)
 	private.POST("/carts/:id/line-items", h.AddItem)
 	private.POST("/carts/:id/line-items/:line", h.SetItem)
@@ -394,6 +395,15 @@ func (h *HTTPHandler) detail(c *gin.Context, mode string, current bool) {
 		return
 	}
 	if mode != "detail" {
+		if mode == "contacts" {
+			result, err := ReadContacts(ctx, h.db, h.store, ref)
+			if err != nil {
+				cartHTTPError(c, err)
+				return
+			}
+			c.JSON(200, result)
+			return
+		}
 		if mode == "view" {
 			result, err := ReadView(ctx, h.db, h.store, ref)
 			if err != nil {
@@ -418,3 +428,5 @@ func (h *HTTPHandler) detail(c *gin.Context, mode string, current bool) {
 	}
 	c.JSON(200, gin.H{"cart": snapshot, "capabilities": gin.H{"items": false, "checkout": false}})
 }
+
+func (h *HTTPHandler) ContactDetail(c *gin.Context) { h.detail(c, "contacts", false) }
