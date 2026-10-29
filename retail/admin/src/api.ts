@@ -462,3 +462,16 @@ export async function createBasePrice(product:string,variant:string,body:PriceCr
  const d=await request<{id:string;revision:string;replayed:boolean}>(`products/${encodeURIComponent(product)}/variants/${encodeURIComponent(variant)}/prices`,{method:'POST',body,csrf},'/api/admin/')
  if(!d||typeof d.id!=='string'||!d.id.startsWith('price_')||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
 }
+
+export type VariantCreateContext={product_id:string;options:ProductOption[];enabled:boolean;revision:string}
+export type VariantCreateInput={operation_id:string;expected_revision:string;title:string;sku:string;option_value_ids:string[]}
+export async function readVariantCreate(product:string,signal:AbortSignal):Promise<VariantCreateContext>{
+ const d=await request<VariantCreateContext>(`products/${encodeURIComponent(product)}/variant-creation`,{signal},'/api/admin/')
+ if(!d||d.product_id!==product||typeof d.enabled!=='boolean'||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||!Array.isArray(d.options)||d.options.length>1000||d.options.some(o=>!o||typeof o.id!=='string'||typeof o.title!=='string'||!Array.isArray(o.values)||o.values.length>10000||o.values.some(v=>!v||typeof v.id!=='string'||typeof v.value!=='string')))throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function createVariant(product:string,body:VariantCreateInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{id:string;inventory_item_id:string;sku:string;revision:string;replayed:boolean}>(`products/${encodeURIComponent(product)}/variants`,{method:'POST',body,csrf},'/api/admin/')
+ if(!d||typeof d.id!=='string'||!d.id.startsWith('variant_')||typeof d.inventory_item_id!=='string'||!d.inventory_item_id.startsWith('iitem_')||typeof d.sku!=='string'||!d.sku||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}

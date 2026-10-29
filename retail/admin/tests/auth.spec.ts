@@ -535,3 +535,23 @@ test('base price creation retries one immutable currency and amount, then return
  expect(attempts).toHaveLength(2);expect(attempts[0]).toEqual(attempts[1]);expect(attempts[0]).toMatchObject({currency_code:'eur',amount:'0.000000000000000000'})
  grants.splice(grants.indexOf('price.write'),1);await page.reload();await page.getByRole('button',{name:'查看价格',exact:true}).click();await expect(page.getByText('暂无已配置价格',{exact:true})).toBeVisible();await expect(page.getByRole('button',{name:'新增基础价格',exact:true})).toHaveCount(0)
 })
+
+test('SKU creation freezes full option selection after uncertain response and rechecks current grants',async({page})=>{
+ const grants:string[]=[...ACTIONS];await fixture(page,{permissions:grants})
+ const product={id:'sku-create-product',revision:'a'.repeat(64),title:'SKU fixture',handle:'sku-create-product',status:'published',thumbnail:null,collection_id:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',variant_count:0,subtitle:null,description:null,options:[],images:[]}
+ const attempts:unknown[]=[]
+ await page.route('**/api/admin/products/sku-create-product**',async route=>{
+  const request=route.request(),path=new URL(request.url()).pathname
+  if(path.endsWith('/variant-creation'))return route.fulfill({json:{product_id:product.id,options:[{id:'storage',title:'Storage',values:[{id:'128',value:'128 GB',rank:0}]}],enabled:true,revision:'b'.repeat(64)}})
+  if(path.endsWith('/variants')){
+   if(request.method()==='POST'){expect(request.headers()['x-csrf-token']).toBe(sessionCSRF);attempts.push(request.postDataJSON());if(attempts.length===1){await route.abort('failed');return};return route.fulfill({json:{id:'variant_created',inventory_item_id:'iitem_created',sku:'ERP10001',revision:'c'.repeat(64),replayed:true}})}
+   return route.fulfill({json:{variants:[],count:0,limit:20,offset:0}})
+  }
+  return route.fulfill({json:{product}})
+ })
+ await page.goto('/account');await signIn(page);await page.goto('/products/sku-create-product');await page.getByRole('button',{name:'新建 SKU',exact:true}).click()
+ const edit=page.getByRole('dialog',{name:'新建 SKU',exact:true});await edit.getByLabel('规格名称',{exact:true}).fill('128 GB');const storage=edit.getByLabel('Storage',{exact:true});await storage.click();await storage.fill('128');await storage.press('Enter')
+ await edit.getByRole('button',{name:'保存',exact:true}).click();await expect(edit.getByRole('button',{name:'重试本次保存',exact:true})).toBeVisible();await expect(storage).toBeDisabled();await expect(edit.getByLabel('SKU',{exact:true})).toBeDisabled();await edit.getByRole('button',{name:'重试本次保存',exact:true}).click();await expect(edit).toHaveCount(0)
+ expect(attempts).toHaveLength(2);expect(attempts[0]).toEqual(attempts[1]);expect(attempts[0]).toMatchObject({title:'128 GB',sku:'',option_value_ids:['128']})
+ grants.splice(grants.indexOf('product.write'),1);await page.reload();await expect(page.getByRole('button',{name:'新建 SKU',exact:true})).toHaveCount(0)
+})

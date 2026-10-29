@@ -160,6 +160,7 @@ func checkPriceAmountEdit(t *testing.T, db *gorm.DB, actor identity.User, call f
 	call("POST", path, `{"amount":1}`, 400)
 	exec("UPDATE catalog_price_edit_runtime SET enabled=FALSE WHERE id=1")
 	checkPriceCreate(t, db, actor, call)
+	checkVariantCreate(t, db, actor, call)
 	t.Log(`PRICE_AMOUNT_EDIT_REHEARSAL {"default_disabled":true,"explicit_price_write":true,"canonical_decimal_38_18":true,"raw_and_scalar_atomic":true,"concurrent_attempts":4,"single_mutation":true,"immutable_replay":true,"variant_receipt_binding":true,"stale_rule_context_denied":true,"rules_preserved":true,"late_receipt_failure_atomic":true,"shared_variants_public_quotes":true,"zero_price":true,"revoked_and_warehouse_replay_denied":true,"unlinked_replay_denied":true}`)
 }
 
@@ -185,6 +186,12 @@ func TestPreparePriceEditBrowserFixture(t *testing.T) {
 	}
 	defer pool.Close()
 	seedPriceEdit(t, db)
+	if os.Getenv("VARIANT_CREATE_BROWSER") == "1" {
+		seedVariantCreate(t, db)
+		if db.Exec("UPDATE catalog_variant_create_runtime SET enabled=TRUE WHERE id=1").Error != nil {
+			t.Fatal("variant gate")
+		}
+	}
 	if os.Getenv("PRICE_CREATE_BROWSER") == "1" && db.Exec(`INSERT INTO catalog_variants(id,product_id,title,sku,allow_backorder,manage_inventory,created_at,updated_at) VALUES('price-create-v','price-edit-product','Unpriced SKU','UNPRICED',FALSE,FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`).Error != nil {
 		t.Fatal("unpriced browser fixture")
 	}

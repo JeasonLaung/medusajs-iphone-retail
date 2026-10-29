@@ -26,6 +26,7 @@ def main():
     for image in ['mysql:8.4', 'redis:7-alpine']:
         if docker('image', 'inspect', image).returncode:
             raise RuntimeError('Existing fixture images required; no pull performed')
+    variant_create = sys.argv[1:] == ['--variant-create']
     price_create = sys.argv[1:] == ['--price-create']
     price_edit = sys.argv[1:] == ['--price-edit']
     warehouse_intake = sys.argv[1:] == ['--warehouse-intake']
@@ -33,7 +34,7 @@ def main():
     device_tracking = sys.argv[1:] == ['--device-tracking']
     device_sources = sys.argv[1:] == ['--device-sources']
     device_intake = sys.argv[1:] == ['--device-intake']
-    if sys.argv[1:] and not (price_create or price_edit or device_tracking or device_sources or device_intake or warehouse_devices or warehouse_intake):
+    if sys.argv[1:] and not (variant_create or price_create or price_edit or device_tracking or device_sources or device_intake or warehouse_devices or warehouse_intake):
         raise RuntimeError('Unknown joint rehearsal option')
     owner = uuid.uuid4().hex
     binaries = [ROOT / 'logs/gin-migration' / ('browser-' + owner + suffix) for suffix in ['-api', '-prep.test']]
@@ -112,10 +113,10 @@ def main():
         if warehouse_devices or warehouse_intake:
             prepared=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestPrepareWarehouseDevicesBrowserFixture$','-test.timeout','40s')
             if prepared.returncode or b'OWNED_WAREHOUSE_DEVICES_READY' not in prepared.stdout: raise RuntimeError('Warehouse devices fixture failed')
-        if price_edit or price_create:
-            prepared=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1','-e','PRICE_CREATE_BROWSER='+('1' if price_create else '0'),mysql_id,'/opt/prep.test','-test.v','-test.run','^TestPreparePriceEditBrowserFixture$','-test.timeout','40s')
+        if price_edit or price_create or variant_create:
+            prepared=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1','-e','VARIANT_CREATE_BROWSER='+('1' if variant_create else '0'),'-e','PRICE_CREATE_BROWSER='+('1' if price_create else '0'),mysql_id,'/opt/prep.test','-test.v','-test.run','^TestPreparePriceEditBrowserFixture$','-test.timeout','40s')
             if prepared.returncode or b'OWNED_PRICE_EDIT_READY' not in prepared.stdout: raise RuntimeError('Price edit fixture failed')
-        app_env = {'STOREFRONT_STORE_ID':'price-edit-store' if (price_edit or price_create) else 'fixture-store','GIN_MODE': 'release', 'APP_BIND': '0.0.0.0', 'APP_PORT': '9100', 'APP_ENV': 'development',
+        app_env = {'STOREFRONT_STORE_ID':'price-edit-store' if (price_edit or price_create or variant_create) else 'fixture-store','GIN_MODE': 'release', 'APP_BIND': '0.0.0.0', 'APP_PORT': '9100', 'APP_ENV': 'development',
                    'MYSQL_DSN': 'root:' + password + '@unix(/var/run/mysqld/mysqld.sock)/browser_identity?parseTime=true&loc=UTC',
                    'SESSION_REDIS_URL': 'redis://127.0.0.1:6379/0', 'SESSION_REDIS_PREFIX': 'eurorefurb:browser_fixture:v1:',
                    'ADMIN_ORIGIN': 'http://127.0.0.1:19383', 'STOREFRONT_ORIGIN': 'http://127.0.0.1:19383', 'SESSION_SECURE': 'false'}
@@ -143,13 +144,18 @@ def main():
         browser_env = os.environ.copy()
         browser_env['ADMIN_TEST_API_TARGET'] = target
         node = browser_env.get('ADMIN_TEST_NODE') or shutil.which('node')
-        tested = subprocess.run([node,'tests/price-create.joint.mjs' if price_create else 'tests/price-edit.joint.mjs' if price_edit else 'tests/warehouse-intake.joint.mjs' if warehouse_intake else 'tests/warehouse-devices.joint.mjs' if warehouse_devices else 'tests/device-intake.joint.mjs' if device_intake else 'tests/device-sources.joint.mjs' if device_sources else 'tests/device-tracking.joint.mjs' if device_tracking else 'tests/warehouse-inventory.joint.mjs'],cwd=ROOT/'retail/admin',env=browser_env,capture_output=True,timeout=180)
-        marker = 'PRICE_CREATE_JOINT ' if price_create else 'PRICE_EDIT_JOINT ' if price_edit else 'WAREHOUSE_INTAKE_JOINT ' if warehouse_intake else 'WAREHOUSE_DEVICES_JOINT ' if warehouse_devices else 'DEVICE_INTAKE_JOINT ' if device_intake else 'DEVICE_SOURCES_JOINT ' if device_sources else 'DEVICE_TRACKING_JOINT ' if device_tracking else 'WAREHOUSE_INVENTORY_JOINT '
+        tested = subprocess.run([node,'tests/variant-create.joint.mjs' if variant_create else 'tests/price-create.joint.mjs' if price_create else 'tests/price-edit.joint.mjs' if price_edit else 'tests/warehouse-intake.joint.mjs' if warehouse_intake else 'tests/warehouse-devices.joint.mjs' if warehouse_devices else 'tests/device-intake.joint.mjs' if device_intake else 'tests/device-sources.joint.mjs' if device_sources else 'tests/device-tracking.joint.mjs' if device_tracking else 'tests/warehouse-inventory.joint.mjs'],cwd=ROOT/'retail/admin',env=browser_env,capture_output=True,timeout=180)
+        marker = 'VARIANT_CREATE_JOINT ' if variant_create else 'PRICE_CREATE_JOINT ' if price_create else 'PRICE_EDIT_JOINT ' if price_edit else 'WAREHOUSE_INTAKE_JOINT ' if warehouse_intake else 'WAREHOUSE_DEVICES_JOINT ' if warehouse_devices else 'DEVICE_INTAKE_JOINT ' if device_intake else 'DEVICE_SOURCES_JOINT ' if device_sources else 'DEVICE_TRACKING_JOINT ' if device_tracking else 'WAREHOUSE_INVENTORY_JOINT '
         markers = [line.split(marker,1)[1] for line in tested.stdout.decode('utf-8').splitlines() if line.startswith(marker)]
         if tested.returncode or len(markers)!=1:
-            (ROOT/('logs/gin-migration/price-create-joint.log' if price_create else 'logs/gin-migration/price-edit-joint.log' if price_edit else 'logs/gin-migration/warehouse-intake-joint.log' if warehouse_intake else 'logs/gin-migration/warehouse-devices-joint.log' if warehouse_devices else 'logs/gin-migration/device-intake-joint.log' if device_intake else 'logs/gin-migration/device-sources-joint.log' if device_sources else 'logs/gin-migration/device-tracking-joint.log' if device_tracking else 'logs/gin-migration/warehouse-inventory-joint.log')).write_bytes(tested.stdout+tested.stderr)
+            (ROOT/('logs/gin-migration/variant-create-joint.log' if variant_create else 'logs/gin-migration/price-create-joint.log' if price_create else 'logs/gin-migration/price-edit-joint.log' if price_edit else 'logs/gin-migration/warehouse-intake-joint.log' if warehouse_intake else 'logs/gin-migration/warehouse-devices-joint.log' if warehouse_devices else 'logs/gin-migration/device-intake-joint.log' if device_intake else 'logs/gin-migration/device-sources-joint.log' if device_sources else 'logs/gin-migration/device-tracking-joint.log' if device_tracking else 'logs/gin-migration/warehouse-inventory-joint.log')).write_bytes(tested.stdout+tested.stderr)
             raise RuntimeError('Warehouse browser joint failed; inspect ignored log')
-        if price_create:
+        if variant_create:
+            durable=docker('exec','-e','MYSQL_PWD='+password,mysql_id,'mysql','-uroot','--protocol=socket','--database=browser_identity','--batch','--skip-column-names','-e',"SELECT (SELECT COUNT(*) FROM catalog_variant_creations),v.sku,i.sku,v.manage_inventory,v.allow_backorder,vi.required_quantity,(SELECT COUNT(*) FROM catalog_variant_options WHERE variant_id=v.id),(SELECT COUNT(*) FROM inventory_levels WHERE inventory_item_id=i.id),(SELECT COUNT(*) FROM catalog_price_edits) FROM catalog_variants v JOIN catalog_variant_inventory_items vi ON vi.variant_id=v.id AND vi.deleted_at IS NULL JOIN inventory_items i ON i.id=vi.inventory_item_id AND i.deleted_at IS NULL WHERE v.product_id='variant-create-product' AND v.deleted_at IS NULL")
+            parts=durable.stdout.decode().strip().split('\t')
+            if durable.returncode or len(parts)!=9 or parts[0]!='1' or not re.fullmatch(r'ERP[1-9][0-9]{4,}',parts[1]) or parts[1]!=parts[2] or parts[3:]!=['1','0','1.000000000000000000','2','0','1']:raise RuntimeError('Durable SKU creation differs')
+            report={'scope':'SKU creation from existing product options and independent inventory, followed by base pricing and public product read; full shopping and fulfillment remain incomplete','counts':json.loads(markers[0]),'durable_mysql_verified':True,'real_accounts_used':False,'tls_secure_cookie_verified':False,'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_cpus':1,'redis_memory_mib':128,'published_ports':'one random loopback API port','network':'owned bridge; egress unrestricted'}}
+        elif price_create:
             durable=docker('exec','-e','MYSQL_PWD='+password,mysql_id,'mysql','-uroot','--protocol=socket','--database=browser_identity','--batch','--skip-column-names','-e',"SELECT p.amount,JSON_UNQUOTE(JSON_EXTRACT(p.raw_amount,'$.value')),(SELECT COUNT(*) FROM catalog_price_edits),(SELECT COUNT(*) FROM catalog_variant_price_sets WHERE variant_id='price-create-v' AND deleted_at IS NULL) FROM pricing_prices p JOIN catalog_variant_price_sets vp ON vp.price_set_id=p.price_set_id AND vp.deleted_at IS NULL WHERE vp.variant_id='price-create-v' AND p.deleted_at IS NULL")
             if durable.returncode or durable.stdout.decode().strip()!='99.123456789012345678\t99.123456789012345678\t1\t1': raise RuntimeError('Durable new base price differs')
             report={'scope':'Base price creation on unpriced SKU and public quote propagation; product/SKU creation and complete storefront remain incomplete','counts':json.loads(markers[0]),'durable_mysql_verified':True,'real_accounts_used':False,'tls_secure_cookie_verified':False,'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_cpus':1,'redis_memory_mib':128,'published_ports':'one random loopback API port','network':'owned bridge; egress unrestricted'}}
@@ -219,7 +225,7 @@ def main():
             if binary.exists():
                 binary.unlink()
     report['cleanup']='both owned containers, bridge and temporary runners removed'
-    (ROOT/('docs/migration/price-create-joint-report.json' if price_create else 'docs/migration/price-edit-joint-report.json' if price_edit else 'docs/migration/warehouse-intake-joint-report.json' if warehouse_intake else 'docs/migration/warehouse-devices-joint-report.json' if warehouse_devices else 'docs/migration/device-intake-joint-report.json' if device_intake else 'docs/migration/device-sources-joint-report.json' if device_sources else 'docs/migration/device-tracking-joint-report.json' if device_tracking else 'docs/migration/warehouse-inventory-joint-report.json')).write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    (ROOT/('docs/migration/variant-create-joint-report.json' if variant_create else 'docs/migration/price-create-joint-report.json' if price_create else 'docs/migration/price-edit-joint-report.json' if price_edit else 'docs/migration/warehouse-intake-joint-report.json' if warehouse_intake else 'docs/migration/warehouse-devices-joint-report.json' if warehouse_devices else 'docs/migration/device-intake-joint-report.json' if device_intake else 'docs/migration/device-sources-joint-report.json' if device_sources else 'docs/migration/device-tracking-joint-report.json' if device_tracking else 'docs/migration/warehouse-inventory-joint-report.json')).write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'real_browser_joint':True,'durable_mysql_verified':True,'cleanup':'complete'}))
 
 if __name__=='__main__':
