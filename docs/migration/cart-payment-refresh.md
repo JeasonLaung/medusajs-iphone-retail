@@ -57,3 +57,17 @@ Stage 相同输入重放，变更摘要拒绝。Claim 在 MySQL 行锁内一次�
 当前提供可恢复的内部协调基础，未接入HTTP、worker或真实provider，部分失败补偿/中止解除冻结尚未实现，创建provider响应及重建session也未完成。因此不得开启此能力用于真实购物；生产能力默认关闭，T032/T033及checkout仍未验收。
 
 0035验收证据：`go test ./...`与隔离MySQL/Redis完整23组回归通过，35个迁移均验证。完整报告278项/购物车专项175项SHA匹配；人工provider结果登记仅证明本地协调，不证明真实渠道完成。旧health/Admin/商品/购物车页面均200，日志无新增错误，既有PayPal nonce提示保留。
+
+## 事务外渠道动作执行器
+
+新增 `cart.ExecutePaymentRefreshSession`，仅接受普通DB pool，拒绝外层事务和空适配器配置。在第一个自有事务调用Stage、校验冻结/来源/授权、读取加密请求并认领指定session；服务端allowlist缺provider则整体回滚，不能消耗attempt或触发外部调用。只有claim事务提交成功并且Dispatch=true才调用adapter。外部调用不持有购物车/SQL事务锁，context限20秒，adapter自身也必须为HTTP设置硬超时；不创建可能残留调用的脱离goroutine。
+
+`payments.DeleteAdapters`复制服务端allowlist，新增DeleteSessionAdapter契约，无任何真实渠道默认注册。adapter要核实远端session身份/状态，禁止删除已付session，只能在明确无副作用时返回failed；所有非nil错误、不认识的状态和panic一律变为uncertain，原始错误不记录/返回，避免token等敏感内容泄漏。正常调用不使用attempt UUID当远端幂等键。结果返回的Dispatch永远false，不能拿执行结果再派发。
+
+第二个独立事务记录已经授权的精确attempt结果。用户取消、源数据或归属在调用期间变化，不应丢弃外部事实；用WithoutCancel加5秒保存超时，仅脱离取消保存该事实，不授予新购物车权限。保存失败时返回Called=true及原inflight记录，不谎报失败或自动重试。后续执行看见inflight/uncertain/succeeded不会再调用；失效租约只转uncertain，待渠道核实同attempt后再完成本地刷新。若在调用前已经取消且确定未进入adapter，则记录明确failed。
+
+隔离SQL人工adapter验证：调用时另开事务成功取得同cart锁且读到已提交inflight；两个执行器重叠只调用1次；取消后保存成功事实；调用期间撤销generation仍保存事实，但旧归属不能再次调用/完成；错误内容不泄漏且结果未知不重试；明确失败复用原请求重试；claim写故障不调用；provider成功但结果写故障保持inflight、租约到期uncertain、不重复调用，核实结果后可完成；外层事务和未配置provider拒绝。报告新增cart_payment_execution，pure Go测试覆盖panic/非法结果/错误分类及allowlist复制。
+
+该执行器当前仅在人工adapter测试中使用，未接入worker/HTTP或真实支付渠道；没有实现部分失败补偿、创建响应持久化或session重建。T032/T033及checkout依然未验收，0035开关默认关闭。
+
+执行器验收证据：`go test ./...`、隔离MySQL/Redis完整23组回归通过，完整报告282项源码SHA匹配（35迁移保持）。旧health/Admin/商品/购物车页面均200，近期日志无新增错误，仅既有PayPal seller nonce提示。人工适配器证据不能代替真实渠道沙箱/补偿/checkout验收。
