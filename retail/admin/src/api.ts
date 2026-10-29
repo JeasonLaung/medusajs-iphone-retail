@@ -475,3 +475,17 @@ export async function createVariant(product:string,body:VariantCreateInput):Prom
  const d=await request<{id:string;inventory_item_id:string;sku:string;revision:string;replayed:boolean}>(`products/${encodeURIComponent(product)}/variants`,{method:'POST',body,csrf},'/api/admin/')
  if(!d||typeof d.id!=='string'||!d.id.startsWith('variant_')||typeof d.inventory_item_id!=='string'||!d.inventory_item_id.startsWith('iitem_')||typeof d.sku!=='string'||!d.sku||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
 }
+
+export type CreateLevelContext={product_id:string;variant_id:string;inventory_item_id:string;locations:{id:string;name:string;has_level:boolean}[];shared_variants:number;enabled:boolean;revision:string}
+export type CreateLevelInput=StockEdit&{location_id:string}
+const levelCreatePath=(p:string,v:string,i:string)=>`products/${encodeURIComponent(p)}/variants/${encodeURIComponent(v)}/inventory/${encodeURIComponent(i)}`
+export async function readCreateLevel(product:string,variant:string,item:string,signal:AbortSignal):Promise<CreateLevelContext>{
+ const d=await request<CreateLevelContext>(levelCreatePath(product,variant,item)+'/level-creation',{signal},'/api/admin/')
+ if(!d||d.product_id!==product||d.variant_id!==variant||d.inventory_item_id!==item||typeof d.enabled!=='boolean'||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||!Number.isSafeInteger(d.shared_variants)||d.shared_variants<1||!Array.isArray(d.locations)||d.locations.length>1000||d.locations.some(l=>!l||typeof l.id!=='string'||typeof l.name!=='string'||typeof l.has_level!=='boolean')||new Set(d.locations.map(l=>l.id)).size!==d.locations.length)throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function createInventoryLevel(product:string,variant:string,item:string,body:CreateLevelInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{id:string;revision:string;replayed:boolean}>(levelCreatePath(product,variant,item)+'/levels',{method:'POST',body,csrf},'/api/admin/')
+ if(!d||typeof d.id!=='string'||!d.id.startsWith('ilevel_')||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}

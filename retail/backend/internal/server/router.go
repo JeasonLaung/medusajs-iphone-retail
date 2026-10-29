@@ -176,6 +176,8 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
  private.GET("/products/:id/variants/:variant_id/prices/:price_id", access.Require(authorization.ProductRead, authorization.PriceRead), h.PriceEditHTTP)
  private.POST("/products/:id/variants/:variant_id/prices/:price_id", access.Require(authorization.ProductRead, authorization.PriceRead, authorization.PriceWrite), h.PriceEditHTTP)
 	private.GET("/products/:id/variants/:variant_id/inventory", access.Require(authorization.ProductRead, authorization.InventoryRead), (inventory.Handler{DB: db}).AdminVariant)
+ private.GET("/products/:id/variants/:variant_id/inventory/:item_id/level-creation", access.Require(authorization.ProductRead, authorization.InventoryRead, authorization.StockWrite, authorization.WarehouseRead), (inventory.Handler{DB: db}).CreateLevelHTTP)
+ private.POST("/products/:id/variants/:variant_id/inventory/:item_id/levels", access.Require(authorization.ProductRead, authorization.InventoryRead, authorization.StockWrite, authorization.WarehouseRead), (inventory.Handler{DB: db}).CreateLevelHTTP)
 	private.POST("/inventory-levels/:id/stock", access.Require(authorization.InventoryRead, authorization.StockWrite), (inventory.Handler{DB: db}).UpdateStock)
 	private.PATCH("/products/:id", access.Require(authorization.ProductWrite), h.UpdateProduct)
 	if root := os.Getenv("PUBLIC_ASSET_ROOT"); root != "" {

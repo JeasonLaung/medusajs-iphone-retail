@@ -84,7 +84,7 @@ func TestOwnedOrderRead(t *testing.T) {
 		t.Fatal("order read plan unavailable")
 	}
 	r, err := schema.Apply(ctx, pool, plan)
-	if err != nil || r.Applied != 62 {
+	if err != nil || r.Applied != 63 {
 		t.Fatal("order read schema failed")
 	}
 	seedOrderReadFixture(t, db)

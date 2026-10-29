@@ -212,6 +212,9 @@ def main():
             variant_markers = [line.split('VARIANT_CREATE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'VARIANT_CREATE_REHEARSAL ' in line]
             if len(variant_markers)!=1: raise RuntimeError('SKU creation verification missing')
             counts['variant_create'] = json.loads(variant_markers[0])
+            level_markers = [line.split('LEVEL_CREATE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'LEVEL_CREATE_REHEARSAL ' in line]
+            if len(level_markers)!=1: raise RuntimeError('Stock level creation verification missing')
+            counts['level_create'] = json.loads(level_markers[0])
             warehouse_intake_markers = [line.split('WAREHOUSE_INTAKE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'WAREHOUSE_INTAKE_REHEARSAL ' in line]
             if len(warehouse_intake_markers)!=1: raise RuntimeError('Warehouse intake verification missing')
             counts['warehouse_intake'] = json.loads(warehouse_intake_markers[0])

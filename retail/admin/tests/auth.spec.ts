@@ -555,3 +555,22 @@ test('SKU creation freezes full option selection after uncertain response and re
  expect(attempts).toHaveLength(2);expect(attempts[0]).toEqual(attempts[1]);expect(attempts[0]).toMatchObject({title:'128 GB',sku:'',option_value_ids:['128']})
  grants.splice(grants.indexOf('product.write'),1);await page.reload();await expect(page.getByRole('button',{name:'新建 SKU',exact:true})).toHaveCount(0)
 })
+
+test('warehouse stock creation freezes exact location and quantities on uncertainty',async({page})=>{
+ const grants:string[]=[...ACTIONS];await fixture(page,{permissions:grants})
+ const product={id:'stock-create-product',revision:'a'.repeat(64),title:'Stock fixture',handle:'stock-create-product',status:'published',thumbnail:null,collection_id:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',variant_count:1,subtitle:null,description:null,options:[],images:[]}
+ const variant={id:'stock-create-v',product_id:product.id,title:'Stock variant',sku:'Stock SKU',thumbnail:null,variant_rank:0,manage_inventory:true,allow_backorder:false,configuration_complete:true,options:[],images:[],unassigned_option_value_ids:[]}
+ const attempts:unknown[]=[]
+ await page.route('**/api/admin/products/stock-create-product**',async route=>{
+  const req=route.request(),path=new URL(req.url()).pathname
+  if(path.endsWith('/level-creation'))return route.fulfill({json:{product_id:product.id,variant_id:variant.id,inventory_item_id:'stock-item',locations:[{id:'stock-location',name:'Stock warehouse',has_level:false}],shared_variants:1,enabled:true,revision:'b'.repeat(64)}})
+  if(path.endsWith('/levels')){expect(req.headers()['x-csrf-token']).toBe(sessionCSRF);attempts.push(req.postDataJSON());if(attempts.length===1){await route.abort('failed');return};return route.fulfill({json:{id:'ilevel_created',revision:'c'.repeat(64),replayed:true}})}
+  if(path.endsWith('/inventory'))return route.fulfill({json:{product_id:product.id,variant_id:variant.id,manage_inventory:true,allow_backorder:false,writes_enabled:false,stock_edit_enabled:true,items:[{inventory_item_id:'stock-item',sku:'Stock SKU',title:'Stock inventory',required_quantity:'1.000000000000000000',item_available:true,levels:[],migration_holds:[],unmatched_reservations:[]}]}})
+  return route.fulfill({json:path.endsWith('/variants')?{variants:[variant],count:1,limit:20,offset:0}:{product}})
+ })
+ await page.goto('/account');await signIn(page);await page.goto('/products/stock-create-product');await page.getByRole('button',{name:'查看库存',exact:true}).click();await page.getByText('Stock inventory',{exact:true}).click();await page.getByRole('button',{name:'添加仓库库存',exact:true}).click()
+ const edit=page.getByRole('dialog').last(),location=edit.getByLabel('仓库',{exact:true});await location.click();await location.fill('Stock warehouse');await location.press('Enter');await edit.getByLabel('库存数量',{exact:true}).fill('0.000000000000000001');await edit.getByLabel('在途数量',{exact:true}).fill('2')
+ await edit.getByRole('button',{name:'保存',exact:true}).click();await expect(edit.getByRole('button',{name:'重试本次保存',exact:true})).toBeVisible();await expect(location).toBeDisabled();await expect(edit.getByLabel('库存数量',{exact:true})).toBeDisabled();await edit.getByRole('button',{name:'重试本次保存',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(1)
+ expect(attempts).toHaveLength(2);expect(attempts[0]).toEqual(attempts[1]);expect(attempts[0]).toMatchObject({location_id:'stock-location',stocked_quantity:'0.000000000000000001',incoming_quantity:'2.000000000000000000'})
+ grants.splice(grants.indexOf('warehouse.read'),1);await page.reload();await page.getByRole('button',{name:'查看库存',exact:true}).click();await page.getByText('Stock inventory',{exact:true}).click();await expect(page.getByRole('button',{name:'添加仓库库存',exact:true})).toHaveCount(0)
+})

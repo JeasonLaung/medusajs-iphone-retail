@@ -49,7 +49,7 @@ func TestPrepareOwnedBrowserAPI(t *testing.T) {
 		t.Fatal("fixture plan invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 62 {
+	if err != nil || result.Applied != 63 {
 		t.Fatal("fixture migrations failed")
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte("artificial-browser-password"), bcrypt.DefaultCost)

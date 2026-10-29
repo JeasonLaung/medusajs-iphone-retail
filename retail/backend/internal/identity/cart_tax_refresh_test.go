@@ -53,7 +53,7 @@ func TestOwnedCartTaxRefresh(t *testing.T) {
 		t.Fatal("cart runtime migration plan unavailable")
 	}
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 62 {
+	if err != nil || r.Applied != 63 {
 		t.Fatal("cart runtime migration failed")
 	}
 	exec := func(query string, args ...any) {
