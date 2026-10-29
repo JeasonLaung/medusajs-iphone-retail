@@ -409,20 +409,20 @@ export async function uploadDevicePhoto(body:{operation_id:string;filename:strin
  return {id:d.photo.id,url:d.photo.url}
 }
 
-export type WarehouseDeviceAction='activate'|'make_available'|'retire'|'delete'
+export type WarehouseDeviceAction='activate'|'make_available'|'retire'|'delete'|'transfer_return'
 export type WarehouseDevice=RecentDevice&{variant_id:string;variant_title:string|null;source_id:string;bin:string;revision:string;allowed_actions:WarehouseDeviceAction[]}
 export type WarehouseDevicePage={location_id:string;category:'sale'|'returned';devices:WarehouseDevice[];offset:number;limit:50;has_more:boolean}
-export type WarehouseDeviceCommand={operation_id:string;expected_revision:string;action:WarehouseDeviceAction}
+export type WarehouseDeviceCommand={operation_id:string;expected_revision:string;action:WarehouseDeviceAction;notes?:string}
 export async function getWarehouseDevices(location:string,category:'sale'|'returned',offset:number,q:string,signal?:AbortSignal):Promise<WarehouseDevicePage>{
  const d=await request<WarehouseDevicePage>(`warehouse/locations/${encodeURIComponent(location)}/devices/${category}?offset=${offset}&q=${encodeURIComponent(q)}`,{signal},'/api/admin/')
  if(!d||d.location_id!==location||d.category!==category||d.offset!==offset||d.limit!==50||typeof d.has_more!=='boolean'||!Array.isArray(d.devices)||d.devices.length>50||new Set(d.devices.map(r=>r.id)).size!==d.devices.length)throw new APIError(0,'request.invalid_response')
- for(const r of d.devices)if(!r||!warehouseID(r.id)||r.location_id!==location||r.category!==category||!warehouseID(r.variant_id)||!warehouseID(r.source_id)||typeof r.serial_number!=='string'||typeof r.bin!=='string'||r.variant_title!==null&&typeof r.variant_title!=='string'||!/^[a-f0-9]{64}$/.test(r.revision)||!Array.isArray(r.allowed_actions)||new Set(r.allowed_actions).size!==r.allowed_actions.length||r.allowed_actions.some(a=>!['activate','make_available','retire','delete'].includes(a))||!Array.isArray(r.photos)||r.photos.length>8||r.photos.some(p=>!validDevicePhoto(p))||[r.imei,r.imei2,r.eid].some(v=>v!==null&&typeof v!=='string'))throw new APIError(0,'request.invalid_response')
+ for(const r of d.devices)if(!r||!warehouseID(r.id)||r.location_id!==location||r.category!==category||!warehouseID(r.variant_id)||!warehouseID(r.source_id)||typeof r.serial_number!=='string'||typeof r.bin!=='string'||r.variant_title!==null&&typeof r.variant_title!=='string'||!/^[a-f0-9]{64}$/.test(r.revision)||!Array.isArray(r.allowed_actions)||new Set(r.allowed_actions).size!==r.allowed_actions.length||r.allowed_actions.some(a=>!['activate','make_available','retire','delete','transfer_return'].includes(a))||!Array.isArray(r.photos)||r.photos.length>8||r.photos.some(p=>!validDevicePhoto(p))||[r.imei,r.imei2,r.eid].some(v=>v!==null&&typeof v!=='string'))throw new APIError(0,'request.invalid_response')
  return d
 }
 export async function commandWarehouseDevice(location:string,category:'sale'|'returned',id:string,body:WarehouseDeviceCommand):Promise<void>{
  const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
  const d=await request<{id:string;state:string;deleted:boolean;replayed:boolean}>(`warehouse/locations/${encodeURIComponent(location)}/devices/${category}/${encodeURIComponent(id)}`,{method:'POST',body,csrf},'/api/admin/')
- if(!d||d.id!==id||typeof d.replayed!=='boolean'||d.deleted!==(body.action==='delete')||typeof d.state!=='string'||body.action==='retire'&&d.state!=='retired'||['activate','make_available'].includes(body.action)&&d.state!=='available')throw new APIError(0,'request.invalid_response')
+ if(!d||d.id!==id||typeof d.replayed!=='boolean'||d.deleted!==(body.action==='delete')||typeof d.state!=='string'||body.action==='retire'&&d.state!=='retired'||body.action==='transfer_return'&&d.state!=='inspection'||['activate','make_available'].includes(body.action)&&d.state!=='available')throw new APIError(0,'request.invalid_response')
 }
 
 export type WarehouseIntakeScope={locationID:string;category:'sale'|'returned'}

@@ -1,5 +1,5 @@
 {
-  "scope": "Scoped sale/returned warehouse device reads and lifecycle commands; intake and fulfillment incomplete",
+  "scope": "Scoped sale/returned warehouse devices, lifecycle and audited transfer to returned; inspection and fulfillment incomplete",
   "counts": {
     "real_browser_react_gin_mysql_redis": true,
     "api_mocking": false,
@@ -11,6 +11,8 @@
     "inspection_available": true,
     "retire": true,
     "returned_soft_delete": true,
+    "transfer_return_reason_required": true,
+    "transfer_moves_to_returned_inspection": true,
     "refresh_preserves_state": true,
     "permission_change_revokes_session": true,
     "read_only_controls": true,

@@ -506,3 +506,5 @@
 2026-10-29 Mollie 渠道创建补充：[七种方式/扣款配置、稳定幂等与精确结算](migration/cart-payment-refresh.md)实现显式服务端适配器，保留原回跳/webhook与状态映射，模拟 HTTP 验证身份/金额/模式及失败隔离。未注册或调用真实渠道，商户配置加载、对账/webhook、worker/HTTP及checkout继续待办。
 
 2026-10-29 Mollie 核实补充：[权威GET与未知创建原attempt恢复](migration/cart-payment-refresh.md)连接当前响应绑定、精确状态/金额与补偿加密结果保存；未到期不查、过期只GET、错误不解unknown，人工MySQL链与模拟渠道验证。候选发现、webhook持久队列、配置加载、worker权限和checkout未完成。
+
+2026-10-30 仓库销售设备转退回：承接原transfer_return，必填原因、销售/退回双写权限、当前位置自有仓与活跃分配检查，同设备转returned/inspection并留审计；隔离SQL/HTTP、真实Gin浏览器联合和原19项后台回归通过。设备检测、配货、前台回收/售后闭环仍待完成，详见 [仓库设备](migration/gin-warehouse-devices.md)。

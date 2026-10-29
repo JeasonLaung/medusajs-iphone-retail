@@ -18,17 +18,19 @@ import (
 )
 
 type WarehouseDevice struct {
-	AllowedActions  []string `json:"allowed_actions" gorm:"-"`
-	RecentDevice    `gorm:"embedded"`
-	VariantID       string     `json:"variant_id"`
-	VariantTitle    *string    `json:"variant_title"`
-	SourceID        string     `json:"source_id"`
-	Bin             string     `json:"bin"`
-	Revision        string     `json:"revision" gorm:"-"`
-	HasSalesHistory bool       `json:"-"`
-	SelfSource      bool       `json:"-"`
-	UpdatedAt       time.Time  `json:"-"`
-	DeletedAt       *time.Time `json:"-"`
+	AllowedActions      []string `json:"allowed_actions" gorm:"-"`
+	RecentDevice        `gorm:"embedded"`
+	VariantID           string     `json:"variant_id"`
+	VariantTitle        *string    `json:"variant_title"`
+	SourceID            string     `json:"source_id"`
+	Bin                 string     `json:"bin"`
+	Revision            string     `json:"revision" gorm:"-"`
+	HasActiveAssignment bool       `json:"-"`
+	HasOwnWarehouse     bool       `json:"-"`
+	HasSalesHistory     bool       `json:"-"`
+	SelfSource          bool       `json:"-"`
+	UpdatedAt           time.Time  `json:"-"`
+	DeletedAt           *time.Time `json:"-"`
 }
 type WarehouseDevices struct {
 	LocationID string            `json:"location_id"`
@@ -42,6 +44,7 @@ type WarehouseDeviceCommand struct {
 	OperationID      string `json:"operation_id"`
 	ExpectedRevision string `json:"expected_revision"`
 	Action           string `json:"action"`
+	Notes            string `json:"notes,omitempty"`
 }
 type WarehouseDeviceResult struct {
 	ID       string `json:"id"`
@@ -69,7 +72,7 @@ func warehouseDeviceActions(category string, write bool) ([]authorization.Action
 	return actions, nil
 }
 func warehouseDeviceQuery(tx *gorm.DB) *gorm.DB {
-	return tx.Table("devices d").Select("d.id,d.serial_number,d.imei,d.imei2,d.eid,d.variant_id,v.title AS variant_title,d.source_id,d.location_id,d.bin,d.category,d.state,d.grade,d.battery_health,d.photos,d.created_at,d.updated_at,d.deleted_at,COALESCE(s.type='self' AND s.deleted_at IS NULL,FALSE) AS self_source,EXISTS(SELECT 1 FROM device_assignments a WHERE a.device_id=d.id AND a.deleted_at IS NULL AND a.status IN ('reserved','packed','shipped','returned')) AS has_sales_history").Joins("LEFT JOIN catalog_variants v ON v.id=d.variant_id AND v.deleted_at IS NULL").Joins("LEFT JOIN device_sources s ON s.id=d.source_id")
+	return tx.Table("devices d").Select("d.id,d.serial_number,d.imei,d.imei2,d.eid,d.variant_id,v.title AS variant_title,d.source_id,d.location_id,d.bin,d.category,d.state,d.grade,d.battery_health,d.photos,d.created_at,d.updated_at,d.deleted_at,COALESCE(s.type='self' AND s.deleted_at IS NULL,FALSE) AS self_source,EXISTS(SELECT 1 FROM device_assignments a WHERE a.device_id=d.id AND a.deleted_at IS NULL AND a.status IN ('reserved','packed','shipped','returned')) AS has_sales_history,EXISTS(SELECT 1 FROM device_assignments aa WHERE aa.device_id=d.id AND aa.deleted_at IS NULL AND aa.status IN ('reserved','packed','shipped')) AS has_active_assignment,EXISTS(SELECT 1 FROM device_sources ws WHERE ws.location_id=d.location_id AND ws.type='self' AND ws.deleted_at IS NULL) AS has_own_warehouse").Joins("LEFT JOIN catalog_variants v ON v.id=d.variant_id AND v.deleted_at IS NULL").Joins("LEFT JOIN device_sources s ON s.id=d.source_id")
 }
 func projectWarehouseDevice(row *WarehouseDevice, revision uint64) error {
 	if json.Unmarshal([]byte(row.PhotoJSON), &row.Photos) != nil || row.Photos == nil || len(row.Photos) > 8 {
@@ -129,12 +132,21 @@ func (h Handler) ReadWarehouseDevices(ctx context.Context, actor identity.User, 
 		if writeErr != nil && !errors.Is(writeErr, authorization.ErrDenied) {
 			return writeErr
 		}
+		transferActions := append(append([]authorization.Action{}, writeActions...), authorization.WarehouseReturnWrite)
+		transferErr := authorization.CheckWarehouseTx(ctx, tx, actor, locationID, transferActions...)
+		if transferErr != nil && !errors.Is(transferErr, authorization.ErrDenied) {
+			return transferErr
+		}
 		for i := range out.Devices {
 			row := &out.Devices[i]
 			if e := projectWarehouseDevice(row, revision); e != nil {
 				return e
 			}
 			row.AllowedActions = []string{}
+			if category == "sale" && transferErr == nil && !row.HasActiveAssignment && row.HasOwnWarehouse && (row.State == "pending" || row.State == "inspection" || row.State == "available") {
+				row.AllowedActions = append(row.AllowedActions, "transfer_return")
+			}
+
 			if writeErr == nil && !row.HasSalesHistory {
 				switch row.State {
 				case "reserved", "packed", "shipped", "repair_ready":
@@ -159,6 +171,12 @@ func validWarehouseCommand(in WarehouseDeviceCommand) bool {
 	if validateEnroll(EnrollInput{OperationID: in.OperationID, ExpectedRevision: in.ExpectedRevision}) != nil {
 		return false
 	}
+	if in.Action == "transfer_return" {
+		return in.Notes != "" && intakeText(in.Notes, 2000)
+	}
+	if in.Notes != "" {
+		return false
+	}
 	switch in.Action {
 	case "activate", "make_available", "retire", "delete":
 		return true
@@ -179,17 +197,28 @@ func (h Handler) CommandWarehouseDevice(ctx context.Context, actor identity.User
 		if e := authorization.CheckWarehouseTx(ctx, tx, actor, locationID, actions...); e != nil {
 			return e
 		}
+		if in.Action == "transfer_return" {
+			if category != "sale" {
+				return ErrInput
+			}
+			if e := authorization.CheckWarehouseTx(ctx, tx, actor, locationID, authorization.WarehouseReturnWrite); e != nil {
+				return e
+			}
+		}
 		revision, e := sourceGate(ctx, tx)
 		if e != nil {
 			return e
 		}
 		var row WarehouseDevice
-		e = warehouseDeviceQuery(tx).Where("d.id=? AND d.location_id=? AND d.category=?", deviceID, locationID, category).Take(&row).Error
+		e = warehouseDeviceQuery(tx).Where("d.id=? AND d.location_id=?", deviceID, locationID).Take(&row).Error
 		if errors.Is(e, gorm.ErrRecordNotFound) {
 			return ErrNotFound
 		}
 		if e != nil {
 			return ErrUnavailable
+		}
+		if row.Category != category && !(in.Action == "transfer_return" && category == "sale" && row.Category == "returned") {
+			return ErrNotFound
 		}
 		// Current object binding is checked before replay too, including soft-deleted rows.
 		var prior struct{ ActorID, LocationID, Category, DeviceID, RequestJSON, ResultJSON string }
@@ -207,7 +236,7 @@ func (h Handler) CommandWarehouseDevice(ctx context.Context, actor identity.User
 		if !errors.Is(e, gorm.ErrRecordNotFound) {
 			return ErrUnavailable
 		}
-		if row.DeletedAt != nil {
+		if row.DeletedAt != nil || row.Category != category {
 			return ErrNotFound
 		}
 		if e := projectWarehouseDevice(&row, revision); e != nil {
@@ -216,11 +245,18 @@ func (h Handler) CommandWarehouseDevice(ctx context.Context, actor identity.User
 		if row.Revision != in.ExpectedRevision {
 			return ErrConflict
 		}
-		if row.HasSalesHistory {
+		if row.HasSalesHistory && in.Action != "transfer_return" {
 			return ErrConflict
 		}
 		state := row.State
+		nextCategory := row.Category
 		switch in.Action {
+		case "transfer_return":
+			if category != "sale" || row.HasActiveAssignment || !row.HasOwnWarehouse || (row.State != "pending" && row.State != "inspection" && row.State != "available") {
+				return ErrConflict
+			}
+			state = "inspection"
+			nextCategory = "returned"
 		case "activate", "make_available":
 			previous := "inspection"
 			if in.Action == "make_available" {
@@ -271,10 +307,14 @@ func (h Handler) CommandWarehouseDevice(ctx context.Context, actor identity.User
 			if tx.Exec("UPDATE devices SET deleted_at=UTC_TIMESTAMP(6),updated_at=UTC_TIMESTAMP(6) WHERE id=? AND deleted_at IS NULL", deviceID).Error != nil {
 				return ErrUnavailable
 			}
-		} else if tx.Exec("UPDATE devices SET state=?,updated_at=UTC_TIMESTAMP(6) WHERE id=? AND deleted_at IS NULL", state, deviceID).Error != nil {
+		} else if tx.Exec("UPDATE devices SET state=?,category=?,updated_at=UTC_TIMESTAMP(6) WHERE id=? AND deleted_at IS NULL", state, nextCategory, deviceID).Error != nil {
 			return ErrUnavailable
 		}
 		data, _ := json.Marshal(map[string]any{"previous_state": row.State, "category": category})
+		if in.Action == "transfer_return" {
+			data, _ = json.Marshal(map[string]any{"notes": in.Notes, "before": map[string]any{"category": row.Category, "state": row.State}, "after": map[string]any{"category": nextCategory, "state": state}})
+		}
+
 		if tx.Exec("INSERT INTO device_events(id,device_id,actor_id,action,data,created_at,updated_at) VALUES(?,?,?,?,?,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", "devent_"+uuid.NewString(), deviceID, actor.ID, in.Action, string(data)).Error != nil {
 			return ErrUnavailable
 		}

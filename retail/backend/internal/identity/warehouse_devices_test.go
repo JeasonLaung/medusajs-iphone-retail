@@ -150,11 +150,11 @@ func checkWarehouseDevices(t *testing.T, db *gorm.DB, actor identity.User, call 
 	if len(read("?q=wdev-002").Devices) != 0 {
 		t.Fatal("deleted device visible")
 	}
-	// Returned sales history blocks operations, as do currently locked states.
+	// Returned history blocks deletion but permits transfer; active assignments block transfer.
 	exec("INSERT INTO device_assignments(id,device_id,order_id,item_id,source_id,status,created_at,updated_at) VALUES('warehouse-history','wdev-003','history-order','history-item','intake-source','returned',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
 	r = read("?q=wdev-003").Devices[0]
-	if len(r.AllowedActions) != 0 {
-		t.Fatal("sales history permits mutation")
+	if len(r.AllowedActions) != 1 || r.AllowedActions[0] != "transfer_return" {
+		t.Fatal("returned history must block deletion but permit transfer")
 	}
 	retire.OperationID = uuid.NewString()
 	retire.ExpectedRevision = r.Revision
@@ -171,6 +171,111 @@ func checkWarehouseDevices(t *testing.T, db *gorm.DB, actor identity.User, call 
 	exec("UPDATE inventory_locations SET deleted_at=UTC_TIMESTAMP(6) WHERE id='intake-location'")
 	call("POST", path+"/"+row.ID, body(in), 403)
 	exec("UPDATE inventory_locations SET deleted_at=NULL WHERE id='intake-location'")
+	checkWarehouseTransferReturn(t, db, actor, role, call)
 	checkWarehouseIntake(t, db, actor, call)
 	t.Log(`WAREHOUSE_DEVICES_REHEARSAL {"location_and_category_scope":true,"recycled_denied":true,"read_only_hides_commands":true,"no_cost_notes_customer_projection":true,"exact_search":true,"pagination":true,"concurrent_attempts":4,"single_mutation":true,"immutable_replay":true,"moved_object_replay_denied":true,"revoked_replay_denied":true,"stale_revision":true,"late_receipt_atomic":true,"soft_delete_replay":true,"sales_history_and_locked_states_denied":true,"deleted_warehouse_denied":true,"activation_radio_grade_battery_checks":true}`)
+}
+
+func checkWarehouseTransferReturn(t *testing.T, db *gorm.DB, actor identity.User, role string, call func(string, string, string, int) []byte) {
+	t.Helper()
+	const path = "/api/admin/warehouse/locations/intake-location/devices/sale"
+	exec := func(q string, args ...any) {
+		t.Helper()
+		if e := db.Exec(q, args...).Error; e != nil {
+			t.Fatal(e)
+		}
+	}
+	read := func(id string) devices.WarehouseDevice {
+		t.Helper()
+		var out devices.WarehouseDevices
+		raw := call("GET", path+"?q="+strings.ToUpper(id), "", 200)
+		if json.Unmarshal(raw, &out) != nil || len(out.Devices) != 1 {
+			t.Fatal("transfer fixture lookup")
+		}
+		return out.Devices[0]
+	}
+	body := func(in devices.WarehouseDeviceCommand) string { b, _ := json.Marshal(in); return string(b) }
+	input := func(id string) devices.WarehouseDeviceCommand {
+		return devices.WarehouseDeviceCommand{OperationID: uuid.NewString(), ExpectedRevision: read(id).Revision, Action: "transfer_return", Notes: "Customer returned device for inspection"}
+	}
+	// An origin supplier does not prevent transfer while the device is in an own warehouse.
+	exec("INSERT INTO device_sources(id,name,type,location_id,created_at,updated_at) VALUES('warehouse-transfer-supplier','Transfer supplier','supplier','warehouse-transfer-origin',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
+	exec("UPDATE devices SET source_id='warehouse-transfer-supplier' WHERE id='wdev-006'")
+	in := input("wdev-006")
+	exec("DELETE FROM authorization_role_actions WHERE role_id=? AND action_code='warehouse.return.write'", role)
+	call("POST", path+"/wdev-006", body(in), 403)
+	for _, a := range read("wdev-006").AllowedActions {
+		if a == "transfer_return" {
+			t.Fatal("transfer offered without return permission")
+		}
+	}
+	exec("INSERT INTO authorization_role_actions(role_id,action_code) VALUES(?,'warehouse.return.write')", role)
+	// Receipt failure must roll back category, state, audit and global revision.
+	exec("CREATE TRIGGER warehouse_transfer_fault BEFORE INSERT ON warehouse_device_changes FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='artificial transfer fault'")
+	call("POST", path+"/wdev-006", body(in), 503)
+	exec("DROP TRIGGER warehouse_transfer_fault")
+	if r := read("wdev-006"); r.Category != "sale" || r.State != "pending" || r.Revision != in.ExpectedRevision {
+		t.Fatal("transfer rollback failed")
+	}
+	var count int64
+	if db.Table("device_events").Where("device_id='wdev-006' AND action='transfer_return'").Count(&count).Error != nil || count != 0 {
+		t.Fatal("failed transfer left audit")
+	}
+	// Both category permissions are current even for receipt replay; return read is not required to perform the write.
+	exec("DELETE FROM authorization_role_actions WHERE role_id=? AND action_code='warehouse.return.read'", role)
+	call("POST", path+"/wdev-006", body(in), 200)
+	var replay devices.WarehouseDeviceResult
+	if json.Unmarshal(call("POST", path+"/wdev-006", body(in), 200), &replay) != nil || !replay.Replayed || replay.State != "inspection" {
+		t.Fatal("transfer receipt replay")
+	}
+	exec("INSERT INTO authorization_role_actions(role_id,action_code) VALUES(?,'warehouse.return.read')", role)
+	var stored struct{ ID, SourceID, LocationID, SerialNumber, Category, State, Notes, IMEI string }
+	if db.Table("devices").Where("id='wdev-006'").Take(&stored).Error != nil || stored.ID != "wdev-006" || stored.SourceID != "warehouse-transfer-supplier" || stored.LocationID != "intake-location" || stored.SerialNumber != "WDEV-006" || stored.Category != "returned" || stored.State != "inspection" || stored.Notes != "SECRET-NOTE" || stored.IMEI != "000000000002007" {
+		t.Fatal("transfer must preserve device identity, source, location and private notes")
+	}
+	var audit struct{ Data string }
+	if db.Table("device_events").Where("device_id='wdev-006' AND action='transfer_return'").Take(&audit).Error != nil {
+		t.Fatal("transfer audit")
+	}
+	var event struct {
+		Notes         string
+		Before, After struct{ Category, State string }
+	}
+	if json.Unmarshal([]byte(audit.Data), &event) != nil || event.Notes != in.Notes || event.Before.Category != "sale" || event.Before.State != "pending" || event.After.Category != "returned" || event.After.State != "inspection" {
+		t.Fatal("transfer audit content")
+	}
+	altered := in
+	altered.Notes = "changed"
+	call("POST", path+"/wdev-006", body(altered), 409)
+	fresh := in
+	fresh.OperationID = uuid.NewString()
+	call("POST", path+"/wdev-006", body(fresh), 404)
+	exec("DELETE FROM authorization_role_actions WHERE role_id=? AND action_code='warehouse.return.write'", role)
+	call("POST", path+"/wdev-006", body(in), 403)
+	exec("INSERT INTO authorization_role_actions(role_id,action_code) VALUES(?,'warehouse.return.write')", role)
+	exec("UPDATE devices SET location_id='user-scope-b' WHERE id='wdev-006'")
+	call("POST", path+"/wdev-006", body(in), 404)
+	exec("UPDATE devices SET location_id='intake-location' WHERE id='wdev-006'")
+	// A previous returned assignment permits transfer; active assignments in any active status forbid it.
+	history := input("wdev-003")
+	call("POST", path+"/wdev-003", body(history), 200)
+	for i, status := range []string{"reserved", "packed", "shipped"} {
+		id := fmt.Sprintf("wdev-%03d", 7+i)
+		exec("INSERT INTO device_assignments(id,device_id,order_id,item_id,source_id,status,created_at,updated_at) VALUES(?,?,'transfer-order','transfer-item','intake-source',?,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", "transfer-active-"+status, id, status)
+		blocked := input(id)
+		call("POST", path+"/"+id, body(blocked), 409)
+		for _, a := range read(id).AllowedActions {
+			if a == "transfer_return" {
+				t.Fatal("active assignment offered transfer")
+			}
+		}
+	}
+	blocked := input("wdev-004")
+	call("POST", path+"/wdev-004", body(blocked), 409)
+	// Without an own source at the current location, the command is unavailable regardless of the origin source.
+	blocked = input("wdev-010")
+	exec("UPDATE device_sources SET deleted_at=UTC_TIMESTAMP(6) WHERE location_id='intake-location' AND type='self'")
+	call("POST", path+"/wdev-010", body(blocked), 409)
+	exec("UPDATE device_sources SET deleted_at=NULL WHERE location_id='intake-location' AND type='self'")
+	t.Log(`WAREHOUSE_TRANSFER_RETURN_REHEARSAL {"dual_permissions":true,"reason_audit":true,"identity_source_location_preserved":true,"supplier_origin_in_own_warehouse":true,"returned_history_permitted":true,"all_active_assignment_statuses_denied":true,"no_own_warehouse_denied":true,"late_failure_atomic":true,"replay_after_category_change":true,"revoked_and_moved_replay_denied":true,"changed_request_denied":true}`)
 }

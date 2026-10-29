@@ -17,8 +17,8 @@ import (
 
 func decodeWarehouseDeviceCommand(r io.Reader) (WarehouseDeviceCommand, error) {
 	var in WarehouseDeviceCommand
-	raw, e := io.ReadAll(io.LimitReader(r, 4097))
-	if e != nil || len(raw) > 4096 || !utf8.Valid(raw) {
+	raw, e := io.ReadAll(io.LimitReader(r, 12289))
+	if e != nil || len(raw) > 12288 || !utf8.Valid(raw) {
 		return in, ErrInput
 	}
 	d := json.NewDecoder(bytes.NewReader(raw))
@@ -32,13 +32,16 @@ func decodeWarehouseDeviceCommand(r io.Reader) (WarehouseDeviceCommand, error) {
 		return in, ErrInput
 	}
 	var fields map[string]json.RawMessage
-	if json.Unmarshal(raw, &fields) != nil || len(fields) != 3 {
+	if json.Unmarshal(raw, &fields) != nil || (len(fields) != 3 && len(fields) != 4) {
 		return in, ErrInput
 	}
 	for _, v := range fields {
 		if len(v) == 0 || v[0] != '"' {
 			return in, ErrInput
 		}
+	}
+	if (in.Action == "transfer_return" && len(fields) != 4) || (in.Action != "transfer_return" && len(fields) != 3) {
+		return in, ErrInput
 	}
 	if !validWarehouseCommand(in) {
 		return in, ErrInput

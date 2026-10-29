@@ -1,0 +1,59 @@
+{
+  "scope": "Sale device transfer to returned / inspection; complete storefront migration remains incomplete",
+  "migrations": 60,
+  "sql": {
+    "dual_permissions": true,
+    "reason_audit": true,
+    "identity_source_location_preserved": true,
+    "supplier_origin_in_own_warehouse": true,
+    "returned_history_permitted": true,
+    "all_active_assignment_statuses_denied": true,
+    "no_own_warehouse_denied": true,
+    "late_failure_atomic": true,
+    "replay_after_category_change": true,
+    "revoked_and_moved_replay_denied": true,
+    "changed_request_denied": true
+  },
+  "quantity_stock_fingerprint_unchanged": true,
+  "synthetic_browser": {
+    "synthetic_api": true,
+    "real_gin_joint": false,
+    "lost_response_same_request_retry": true,
+    "transfer_required_trimmed_reason": true,
+    "transfer_uncertain_reason_locked": true,
+    "transfer_same_request_retry": true,
+    "conflict_requires_reload": true,
+    "read_only_controls": true,
+    "category_controls": true,
+    "cross_location_response_rejected": true,
+    "pagination": true,
+    "empty_scope": true,
+    "load_failure_retry": true,
+    "browser_errors": 0
+  },
+  "real_browser_joint": "warehouse-devices-joint-report.json",
+  "checks": {
+    "go_all_packages": true,
+    "admin_typecheck": true,
+    "isolated_admin_build": true,
+    "existing_admin_browser_tests": 19,
+    "old_backend_health": 200,
+    "old_admin_route": 200,
+    "old_storefront_cart": 200
+  },
+  "cleanup": "both owned containers and temporary runner removed",
+  "real_accounts_used": false,
+  "implementation_sha256": {
+    "retail/admin/src/WarehouseDevices.tsx": "b3b331607ba6fa1c6c7f0aa3e95f5589610d1c895d359983ae529c2e622cb323",
+    "retail/admin/src/api.ts": "22da543970fac1cd50f283827da0d7b933fcb78a84f795eab6aa0eea108c8ea7",
+    "retail/admin/src/i18n.ts": "45fbaee5224d63160653c6eab05f2303fab87376b34c6a5cdf5185b1487a0ac1",
+    "retail/admin/tests/warehouse-devices.browser.mjs": "052b6b82dc206fbc2600883c6356a276e4a887b607d722a8c6d12a0de13205bd",
+    "retail/admin/tests/warehouse-devices.joint.mjs": "05f8145df59f5f2b112ed57ef033789cf83dd1027adbb4e85202f421d8a1fae8",
+    "retail/backend/internal/devices/warehouse.go": "fa7aee554adf8325b60cd44ae570fd00f5b5bcfbf09df03403edecf808cd775c",
+    "retail/backend/internal/devices/warehouse_http.go": "00cbdf1e57154179803c42e2d466e27a7df758bdff01d064c62dfb0167d517f1",
+    "retail/backend/internal/devices/warehouse_http_test.go": "920f9337a4e745c8705dd2f424ac4835fe78cb622a82eb2b3e646141c5e43cfa",
+    "retail/backend/internal/identity/warehouse_devices_test.go": "df6fbbf11c6af48f2c882e77671336aca2a77e18067c6f1006a96508569d5a32",
+    "retail/scripts/test-admin-auth.py": "2a97a351ab1ed3a94efc487462a8e33fa215bed3fd2a4109a24a9fa36704f25c",
+    "retail/scripts/test-warehouse-inventory-joint.py": "69467e89bc02d3e1164d7354b67d9b6c396a6b47941a1cf66d9bfd8d521f4e5f"
+  }
+}
