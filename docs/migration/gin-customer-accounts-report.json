@@ -1,0 +1,39 @@
+{
+  "scope": "New customer identity foundation only; HTTP, storefront and mail delivery incomplete",
+  "counts": {
+    "new_customer_only": true,
+    "email_normalized": true,
+    "unverified_login_denied": true,
+    "duplicate_cannot_overwrite": true,
+    "password_gated_resend": true,
+    "sixty_second_resend_cooldown": true,
+    "encrypted_mail_intent": true,
+    "token_digest_only": true,
+    "fifteen_minute_expiry": true,
+    "resend_invalidates_old_link": true,
+    "concurrent_verify_attempts": 8,
+    "single_consumption": true,
+    "customer_admin_realms_separate": true,
+    "public_projection_safe": true,
+    "durable_revocation": true,
+    "logout_revocation": true,
+    "disabled_login_denied": true,
+    "same_email_history_unchanged": true,
+    "late_failure_atomic": true,
+    "late_verification_failure_atomic": true,
+    "http_integrated": false,
+    "mail_delivery_integrated": false,
+    "storefront_integrated": false
+  },
+  "application_resources_used": false,
+  "real_accounts_used": false,
+  "working_tree_migration_count": 38,
+  "includes_uncommitted_payment_0037": true,
+  "implementation_sha256": {
+    "retail/backend/migrations/0038_customer_accounts.sql": "720e3e2e892b0ca48704aacf3eb15b38bf09f6307065728033e05af0e97f300b",
+    "retail/backend/internal/customer/accounts.go": "69b25460dd15842ccec8308025743a1b3726766708c9ccc94df9ddec12e1ff64",
+    "retail/backend/internal/customer/accounts_test.go": "13678e73415359ba13c5a9141cb51fb1a0352db5fc8d912bfa92ffda87f7e395",
+    "retail/backend/internal/identity/customer_accounts_test.go": "3702e2f41b32eb96476672edf9ea47f4c0514bdf4c6ea033b41d4afd5f4694cf"
+  },
+  "cleanup": "both owned containers and temporary runner removed"
+}

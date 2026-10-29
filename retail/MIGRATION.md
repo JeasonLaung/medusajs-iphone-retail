@@ -270,3 +270,7 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-29 Mollie 渠道创建补充：[七种方式/扣款配置、稳定幂等与精确结算](../docs/migration/cart-payment-refresh.md)实现显式服务端适配器，保留原回跳/webhook与状态映射，模拟 HTTP 验证身份/金额/模式及失败隔离。未注册或调用真实渠道，商户配置加载、对账/webhook、worker/HTTP及checkout继续待办。
 
 2026-10-29 Mollie 核实补充：[权威GET与未知创建原attempt恢复](../docs/migration/cart-payment-refresh.md)连接当前响应绑定、精确状态/金额与补偿加密结果保存；未到期不查、过期只GET、错误不解unknown，人工MySQL链与模拟渠道验证。候选发现、webhook持久队列、配置加载、worker权限和checkout未完成。
+
+### New customer identity foundation
+
+`internal/customer` and explicit migration 0038 implement new registration, encrypted verification mail intents, one-time email confirmation and separate Redis customer sessions. See [evidence and remaining work](../docs/migration/gin-customer-accounts.md). Customer HTTP, storefront pages and actual Resend delivery are not yet integrated; C02 remains incomplete.

@@ -23,10 +23,11 @@ def docker(*args, timeout=90):
 
 
 def main():
-    if sys.argv[1:] not in ([], ['--cart-runtime-only'], ['--promotion-usage-only']):
+    if sys.argv[1:] not in ([], ['--cart-runtime-only'], ['--promotion-usage-only'], ['--customer-accounts-only']):
         raise RuntimeError('Unknown rehearsal option')
     cart_only = sys.argv[1:] == ['--cart-runtime-only']
     usage_only = sys.argv[1:] == ['--promotion-usage-only']
+    customer_only = sys.argv[1:] == ['--customer-accounts-only']
     if shutil.disk_usage(ROOT).free < 2 * (1 << 30):
         raise RuntimeError('At least 2 GiB free workspace disk required to preserve development services')
     for image in ['mysql:8.4', 'redis:7-alpine']:
@@ -98,6 +99,8 @@ def main():
             suites = ['CartRuntime']
         if usage_only:
             suites = ['PromotionUsage']
+        if customer_only:
+            suites = ['AdminAuthentication']
         output, errors = b'', b''
         for suite in suites:
             print(json.dumps({'running_suite': suite}), flush=True)
@@ -121,7 +124,15 @@ def main():
             if docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket','-e',cleanup).returncode:
                 raise RuntimeError('Owned artificial database cleanup failed')
         tested = subprocess.CompletedProcess([], tested.returncode, output, errors)
-        if usage_only:
+        if customer_only:
+            markers = [line.split('CUSTOMER_ACCOUNTS_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'CUSTOMER_ACCOUNTS_REHEARSAL ' in line]
+            if tested.returncode or len(markers) != 1:
+                print(tested.stdout.decode(errors='replace'))
+                raise RuntimeError('Owned customer account checks failed')
+            counts = json.loads(markers[0])
+            files = ['retail/backend/migrations/0038_customer_accounts.sql', 'retail/backend/internal/customer/accounts.go', 'retail/backend/internal/customer/accounts_test.go', 'retail/backend/internal/identity/customer_accounts_test.go']
+            report = {'scope':'New customer identity foundation only; HTTP, storefront and mail delivery incomplete','counts':counts,'application_resources_used':False,'real_accounts_used':False,'working_tree_migration_count':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),'includes_uncommitted_payment_0037':(ROOT/'retail/backend/migrations/0037_mollie_notification_inbox.sql').exists(),'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
+        elif usage_only:
             if tested.returncode:
                 print(tested.stdout.decode(errors='replace'))
                 raise RuntimeError('Owned promotion usage checks failed')
@@ -219,6 +230,9 @@ def main():
                     print(json.dumps({'test_exit_code': tested.returncode, 'mysql_oom_and_exit': state.stdout.decode().strip()}))
                     raise RuntimeError('Owned MySQL/Redis authentication checks failed')
                 counts = json.loads(markers[0])
+                customer_account_markers = [line.split('CUSTOMER_ACCOUNTS_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'CUSTOMER_ACCOUNTS_REHEARSAL ' in line]
+                if len(customer_account_markers) != 1:
+                    raise RuntimeError('New customer account verification missing')
                 cart_markers=[line.split('CART_SCHEMA_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_SCHEMA_REHEARSAL ' in line]
                 if len(cart_markers)!=1:
                     raise RuntimeError('Cart schema verification missing')
@@ -424,6 +438,7 @@ def main():
                 files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
                 files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/schema').glob('*.go')]
                 files += [p.relative_to(ROOT).as_posix() for folder in ('payments','protected') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
+                files += ['retail/backend/migrations/0038_customer_accounts.sql', 'retail/backend/internal/customer/accounts.go', 'retail/backend/internal/customer/accounts_test.go', 'retail/backend/internal/identity/customer_accounts_test.go']
                 report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                           'cart_schema':json.loads(cart_markers[0]),
                           'cart_amounts':json.loads(amount_markers[0]),'cart_payment_creation_execution':json.loads(payment_creation_execution_markers[0]),'cart_payment_compensation':json.loads(payment_compensation_markers[0]),'cart_payment_execution':json.loads(payment_execution_markers[0]),'cart_payment_operations':json.loads(payment_operation_markers[0]),'payment_requests':json.loads(payment_request_markers[0]),'payment_effects':json.loads(payment_effect_markers[0]),'cart_promotion_refresh':json.loads(promotion_refresh_markers[0]),'cart_promotion_amounts':json.loads(promotion_amount_markers[0]),'cart_promotion_adjustments':json.loads(promotion_adjustment_markers[0]),'promotion_products':json.loads(promotion_product_markers[0]),
@@ -460,6 +475,7 @@ def main():
                           'order_schema': json.loads(order_markers[0]),
                           'order_import': json.loads(order_import_markers[0]),
                           'customer_history': json.loads(customer_markers[0]),
+                          'new_customer_accounts': json.loads(customer_account_markers[0]),
                           'order_fulfillments': json.loads(fulfillment_read_markers[0]),
                           'order_payments': json.loads(payment_read_markers[0]),
                           'order_read': json.loads(order_read_markers[0]),
@@ -493,7 +509,7 @@ def main():
         if owned_binary and binary.exists():
             binary.unlink()
     report['cleanup'] = 'both owned containers and temporary runner removed'
-    report_name = 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
+    report_name = 'gin-customer-accounts-report.json' if customer_only else 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
     (ROOT / 'docs/migration' / report_name).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'counts': counts, 'cleanup': 'complete'}))
 

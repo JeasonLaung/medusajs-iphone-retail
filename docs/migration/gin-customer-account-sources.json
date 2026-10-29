@@ -1,0 +1,10 @@
+{
+  "scope": "Existing customer registration, verification and account behavior reference; no legacy accounts imported",
+  "files": {
+    "medusa-store/apps/storefront/src/lib/data/customer.ts": "8f1b58e5ca40a70614f8cf123ebee5de7e460545c2e864c0cde41eaf742655be",
+    "medusa-store/apps/storefront/src/modules/account/components/register/index.tsx": "1d2dc3476caa4c28b2f28066742b0f563e88eb1b6af840588a0f239146583841",
+    "medusa-store/apps/storefront/src/modules/account/components/profile-password/index.tsx": "22e200cf39393a332647ffd7ab072e72429fa23f10a32a02526ff35912b65279",
+    "medusa-store/apps/backend/src/lib/registration-email.ts": "2111782b09aacf6157ba992078572dada595d9d94fb28103ec608ce3c697972f",
+    "medusa-store/apps/backend/src/api/registration-guards.ts": "e2b21f3fb92299f2f945846f204c794fa57d1236b546d667fc34339a2e353afa"
+  }
+}
