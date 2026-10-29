@@ -162,6 +162,7 @@ func checkDeliveryCommands(t *testing.T, ctx context.Context, db *gorm.DB, sessi
 	paid.OperationID = uuid.NewString()
 	reject(paid, cart.ErrConflict)
 	exec("DELETE FROM cart_payment_collections WHERE id='delivery-payment-link'")
+	checkInitialPayments(t, ctx, db, sessions, ref)
 	exec("UPDATE cart_shipping_command_runtime SET enabled=FALSE WHERE id=1")
 	reject(in, cart.ErrSchema)
 	t.Log(`CART_DELIVERY_REHEARSAL {"real_mysql_redis":true,"options_read_only":true,"exact_price_tax_refresh":true,"pickup_and_shipping":true,"current_stock_observation":true,"concurrent_attempts":8,"one_fresh_receipt":true,"replay_immutable":true,"profile_replacement":true,"stale_and_foreign_denied":true,"stock_failure_atomic":true,"late_receipt_failure_atomic":true,"payment_link_closed":true,"disabled_replay_denied":true,"http":true,"no_payment_no_order":true}`)

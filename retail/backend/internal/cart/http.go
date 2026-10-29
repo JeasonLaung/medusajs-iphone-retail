@@ -33,6 +33,7 @@ type HTTPOptions struct {
 	StoreID           string
 	Secure            bool
 	ManualProviderIDs []string
+	InitialPayment    *InitialPaymentOptions
 }
 
 type HTTPHandler struct {
@@ -42,6 +43,7 @@ type HTTPHandler struct {
 	store           string
 	secure          bool
 	manualProviders []string
+	initialPayment  *InitialPaymentOptions
 }
 
 func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
@@ -62,7 +64,16 @@ func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
 		}
 		seen[id] = true
 	}
-	return &HTTPHandler{db: db, sessions: options.Sessions, origin: options.Origin, store: options.StoreID, secure: options.Secure, manualProviders: append([]string(nil), options.ManualProviderIDs...)}, nil
+	var initial *InitialPaymentOptions
+	if options.InitialPayment != nil {
+		copied := *options.InitialPayment
+		copied.ManualProviders = append([]string(nil), options.ManualProviderIDs...)
+		if copied.ReturnOrigin != options.Origin || initialOptions(copied) != nil {
+			return nil, ErrConfiguration
+		}
+		initial = &copied
+	}
+	return &HTTPHandler{db: db, sessions: options.Sessions, origin: options.Origin, store: options.StoreID, secure: options.Secure, initialPayment: initial, manualProviders: append([]string(nil), options.ManualProviderIDs...)}, nil
 }
 
 // An unconfigured handler keeps these routes closed. Public catalog capability
@@ -78,6 +89,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/carts/:id/view", h.View)
 	private.GET("/carts/:id/delivery-options", h.Delivery)
 	private.POST("/carts/:id/shipping-methods", h.Shipping)
+	private.POST("/carts/:id/payment-attempts", h.InitialPayment)
 	private.GET("/carts/:id/contacts", h.ContactDetail)
 	private.POST("/carts/:id/contacts", h.Contacts)
 	private.POST("/carts/:id/line-items", h.AddItem)

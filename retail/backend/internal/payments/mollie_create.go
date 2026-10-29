@@ -262,3 +262,7 @@ func (a *MollieCreateAdapter) verifiedSession(validated json.RawMessage, request
 	}
 	return CreatedSession{Status: status, Data: encoded}, payment.Status, nil
 }
+
+// MollieSettlementAmount exposes the existing exact settlement rounding to the
+// trusted cart coordinator. It performs no provider call or currency conversion.
+func MollieSettlementAmount(amount string) (string, error) { return mollieAmount(amount) }

@@ -206,13 +206,18 @@ func lockCurrent(ctx context.Context, tx *gorm.DB, store, channel string, ref se
 }
 
 func lockCurrentPaymentOperation(ctx context.Context, tx *gorm.DB, store, channel string, ref sessionstore.CartReference, strength, operation string) (Snapshot, error) {
+	return lockCurrentAuthority(ctx, tx, store, channel, ref, strength, operation, "")
+}
+
+func lockCurrentAuthority(ctx context.Context, tx *gorm.DB, store, channel string, ref sessionstore.CartReference, strength, operation, checkout string) (Snapshot, error) {
 	var owner struct {
 		StoreID, Generation       string
 		Version                   uint64
 		Active                    bool
 		PaymentRefreshOperationID *string
+		CheckoutAttemptID         *string
 	}
-	r := tx.WithContext(ctx).Table("cart_ownership").Select("store_id,generation,version,active,payment_refresh_operation_id").Where("cart_id=?", ref.CartID).Clauses(clause.Locking{Strength: strength}).Take(&owner)
+	r := tx.WithContext(ctx).Table("cart_ownership").Select("store_id,generation,version,active,payment_refresh_operation_id,checkout_attempt_id").Where("cart_id=?", ref.CartID).Clauses(clause.Locking{Strength: strength}).Take(&owner)
 	if errors.Is(r.Error, gorm.ErrRecordNotFound) {
 		return Snapshot{}, ErrDenied
 	}
@@ -223,6 +228,9 @@ func lockCurrentPaymentOperation(ctx context.Context, tx *gorm.DB, store, channe
 		return Snapshot{}, ErrDenied
 	}
 	if strength == "UPDATE" && owner.PaymentRefreshOperationID != nil && *owner.PaymentRefreshOperationID != operation {
+		return Snapshot{}, ErrConflict
+	}
+	if strength == "UPDATE" && owner.CheckoutAttemptID != nil && *owner.CheckoutAttemptID != checkout {
 		return Snapshot{}, ErrConflict
 	}
 	var row struct {

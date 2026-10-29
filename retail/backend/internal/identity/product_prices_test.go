@@ -61,7 +61,7 @@ func TestOwnedProductPrices(t *testing.T) {
 		t.Fatal("fixture plan invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 42 {
+	if err != nil || result.Applied != 43 {
 		t.Fatal("fixture migrations failed")
 	}
 	seedReviewedCatalogFixture(t, db)
@@ -196,7 +196,7 @@ func TestOwnedProductPrices(t *testing.T) {
 	if w.Code != 401 {
 		t.Fatal("anonymous price read accepted")
 	}
-	t.Log(`PRODUCT_PRICE_REHEARSAL {"migrations":42,"configured_prices":26,"page_size":20,"exact_decimal":true,"shared_sets":true,"soft_delete_filters":true,"future_and_draft_lists_retained":true,"unavailable_list_reference_retained":true,"unknown_rule_retained":true,"cross_product_rejected":true,"anonymous_rejected":true,"rule_limit_503":true,"read_fingerprint_unchanged":true}`)
+	t.Log(`PRODUCT_PRICE_REHEARSAL {"migrations":43,"configured_prices":26,"page_size":20,"exact_decimal":true,"shared_sets":true,"soft_delete_filters":true,"future_and_draft_lists_retained":true,"unavailable_list_reference_retained":true,"unknown_rule_retained":true,"cross_product_rejected":true,"anonymous_rejected":true,"rule_limit_503":true,"read_fingerprint_unchanged":true}`)
 }
 
 func containsBytes(b []byte, s string) bool { return strings.Contains(string(b), s) }
