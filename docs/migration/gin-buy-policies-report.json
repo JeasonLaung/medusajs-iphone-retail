@@ -1,0 +1,45 @@
+{
+  "format_version": 1,
+  "verified_at": "2026-10-29T09:38:50.581798+00:00",
+  "scope": "Gin stored policy projection, synthetic Astro formal-page browser and unit regression; full storefront not accepted",
+  "go_catalog_server_tests": true,
+  "go_vet_catalog_server": true,
+  "isolated_mysql_redis_suites_passed": 23,
+  "tested_working_tree_migrations": 37,
+  "preexisting_migration_0037_not_in_this_commit": true,
+  "store_policies": {
+    "stored_values": true,
+    "whole_default": true,
+    "explicit_zero": true,
+    "private_projection": true,
+    "no_read_writes": true,
+    "store_binding": true
+  },
+  "astro_type_check_errors": 0,
+  "astro_unit_tests_passed": 67,
+  "astro_production_build": true,
+  "formal_browser": {
+    "installed_chrome": true,
+    "configured_english_and_chinese": true,
+    "explicit_zero": true,
+    "optional_failure_preserves_search_200": true,
+    "existing_search_product_public_pages_regression": true
+  },
+  "new_policy_cross_runtime_same_gin_astro_test": false,
+  "real_application_resources_used": false,
+  "full_storefront_accepted": false,
+  "implementation_sha256": {
+    "retail/backend/internal/catalog/store_policies.go": "6ac8ce8f833615583d961ccc8d3fbbe2cee420012ae6e639b1d371b41644ed22",
+    "retail/backend/internal/catalog/store_policies_test.go": "44f779b63dc445388eaf3cf5fa05ad7f04f9be1274173cb3a48aa8aafcaaa6f8",
+    "retail/backend/internal/identity/store_policies_test.go": "445c9c139d397d2633df26e2d7e19b8bcaad031ebb971165c60b5ab347bf0771",
+    "retail/backend/internal/identity/product_prices_test.go": "ab1ec1948f512b79983351be4e29f84e78b14c22b4e68796ab33861a9ad94c70",
+    "retail/backend/internal/server/router.go": "ca58015941b375a36221adef00f818d38b14a930b36a2c91e1abd6c1662b6147",
+    "retail/scripts/test-admin-auth.py": "4a27529587114708db0921eaba854b033cfddef340f66f02a2e7f7bb10c6e734",
+    "retail/scripts/test-storefront-runtime.py": "fa9e911770ab345dc238d72bd6a12fffe4622e0322a887f3b6a19c043240f678",
+    "retail/storefront/src/lib/buy-policies.ts": "2d41bb01feef131049daf629d55cfce0ea8fb040820454d4b5e51684ae35cc79",
+    "retail/storefront/tests/buy-policies.test.ts": "f536baaf9e8741b70ccf9a8ca28564f1a5e5760bb022fcf00091b00f49a26925",
+    "retail/storefront/tests/product-page.browser.mjs": "79c8b918e7a37d3524e46c4cd5279a15064ec60017896ef54153675a8144d9ec",
+    "retail/storefront/src/pages/[countryCode]/store.astro": "ea42ee0142d821c7a7a84b1f2c6d337cb7eb618cf20871a527fb2f382dc9f982",
+    "retail/storefront/src/components/search/template/index.tsx": "2145138b564f684ae4d8bb4ce09332c9c6701ccbe204c5572191a7e42e6a1441"
+  }
+}

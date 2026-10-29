@@ -18,7 +18,7 @@ import StoreRefinements from "../refinements"
 import StoreSearchBox from "../box"
 import useIsMobile from "../use-is-mobile"
 import { getStoreCopy } from "../i18n"
-export type BuyPolicies = {warranty_months:number;return_days:number;warranty_note:{en:string;zh:string};return_note:{en:string;zh:string}}
+import type {BuyPolicies} from "../../../lib/buy-policies"
 import styles from "./styles.module.css"
 
 const PRODUCT_LIMIT = 50

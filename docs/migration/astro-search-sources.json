@@ -125,7 +125,7 @@
       "source": "medusa-store/apps/storefront/src/modules/store/templates/index.tsx",
       "target": "retail/storefront/src/components/search/template/index.tsx",
       "source_sha256": "08dec7a1b10ce87c6795118a8c8330e38631201b662208be357ef2861b4af6ac",
-      "target_sha256": "71dea5d5e6656ee15aafa38275496fe98041e880efe18b577054a1a5d27deadb",
+      "target_sha256": "2145138b564f684ae4d8bb4ce09332c9c6701ccbe204c5572191a7e42e6a1441",
       "unchanged_normalized_bytes": false
     },
     {

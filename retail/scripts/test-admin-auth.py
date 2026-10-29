@@ -225,6 +225,9 @@ def main():
                 cart_runtime_markers=[line.split('CART_RUNTIME_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_RUNTIME_REHEARSAL ' in line]
                 if len(cart_runtime_markers)!=1:
                     raise RuntimeError('Cart runtime verification missing')
+                policy_markers=[line.split('STORE_POLICIES_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_POLICIES_REHEARSAL ' in line]
+                if len(policy_markers)!=1:
+                    raise RuntimeError('Store policy verification missing')
                 search_markers=[line.split('STORE_SEARCH_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_SEARCH_REHEARSAL ' in line]
                 if len(search_markers)!=1:
                     raise RuntimeError('Store search verification missing')
@@ -398,6 +401,7 @@ def main():
                 files += ['retail/backend/internal/catalog/store_locales.go','retail/backend/internal/catalog/default_locales.json','retail/backend/internal/identity/store_locales_test.go']
                 files += ['retail/backend/internal/catalog/store_regions.go','retail/backend/internal/catalog/http.go','retail/backend/internal/identity/store_regions_test.go']
                 files += ['retail/backend/internal/catalog/store_taxonomy.go','retail/backend/internal/catalog/store_taxonomy_test.go','retail/backend/internal/identity/store_taxonomy_test.go']
+                files += ['retail/backend/internal/catalog/store_policies.go','retail/backend/internal/catalog/store_policies_test.go','retail/backend/internal/identity/store_policies_test.go']
                 files += ['retail/backend/internal/catalog/store_search.go','retail/backend/internal/catalog/store_search_colors.go','retail/backend/internal/catalog/store_search_test.go','retail/backend/internal/identity/store_search_test.go']
                 files += ['retail/backend/internal/catalog/store_products.go','retail/backend/internal/catalog/store_products_test.go','retail/backend/internal/identity/store_products_test.go']
                 files += ['retail/backend/internal/identity/store_pricing_test.go']
@@ -426,6 +430,7 @@ def main():
                           'cart_items':json.loads(item_markers[0]),'cart_items_http':json.loads(item_http_markers[0]),
                           'cart_runtime':json.loads(cart_runtime_markers[0]),
                           'cart_http':json.loads(http_markers[0]),
+                          'store_policies': json.loads(policy_markers[0]),
                           'store_search': json.loads(search_markers[0]),
                           'store_products': json.loads(product_markers[0]),
                           'store_pricing': json.loads(pricing_markers[0]),

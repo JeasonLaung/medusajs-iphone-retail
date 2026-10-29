@@ -22,7 +22,8 @@ product.images.push(...product.variants.flatMap(variant=>variant.images))
 product.variants.forEach((variant,index)=>variant.calculated_price.calculated_amount=String(499+index*100))
 const region={id:'region',name:'Europe',currency_code:'eur',automatic_taxes:false,countries:[{iso_2:'dk',iso_3:'dnk',num_code:'208',name:'Denmark',display_name:'Denmark',region_id:'region'}]}
 const upstreamRequests=[]
-let dependencyFailed=false,contactsFailed=false,child,browser
+let dependencyFailed=false,contactsFailed=false,policiesFailed=false,child,browser
+let policies={warranty_months:12,return_days:30,warranty_note:{en:"Twelve months covered",zh:"十二个月保障"},return_note:{en:"Thirty day returns",zh:"三十天退货"}}
 const api=createServer(async(request,response)=>{
  upstreamRequests.push({url:request.url,headers:request.headers})
  if(dependencyFailed){response.writeHead(503,{'content-type':'application/json'});response.end('{"error":"PRIVATE_UPSTREAM_FAILURE"}');return}
@@ -30,6 +31,9 @@ const api=createServer(async(request,response)=>{
  let body
  switch(url.pathname){
   case '/api/store/search': {let raw='';for await(const chunk of request)raw+=chunk;body=searchResponse(JSON.parse(raw));break}
+  case '/api/store/buy-policies':
+   if(policiesFailed){response.writeHead(503,{'content-type':'application/json'});response.end('{}');return}
+   body={policies};break
   case '/api/store/customer-service':
    if(contactsFailed){response.writeHead(503,{'content-type':'application/json'});response.end('{}');return}
    body={contacts:[{id:'support',name:'Support Team',department:'after_sales',whatsapp:'+4512345678',email:'help@example.test',timezone:'Europe/Copenhagen',days:[1,2,3,4,5],start:'09:00',end:'17:00',availability:'online'}]};break
@@ -128,6 +132,9 @@ try{
  await page.setViewportSize({width:1440,height:1000})
  await page.goto(origin+'/dk-en/store')
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('astro-island')).every(island=>!island.hasAttribute('ssr')))
+ await expect(page.getByRole('heading',{name:'12 months',exact:true})).toBeVisible()
+ await expect(page.getByRole('heading',{name:'30 days',exact:true})).toBeVisible()
+ await expect(page.getByText('Twelve months covered',{exact:true})).toBeVisible()
  await expect(page.getByTestId('product-wrapper')).toHaveCount(50)
  await expect(page.getByTestId('sort-by-container')).toHaveValue('product/sort/created_at:desc')
  await page.getByTestId('product-pagination').getByRole('button',{name:'2',exact:true}).click()
@@ -158,6 +165,8 @@ try{
  await page.setViewportSize({width:390,height:844})
  await page.goto(origin+'/dk-zh/store')
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('astro-island')).every(island=>!island.hasAttribute('ssr')))
+ await expect(page.getByRole('heading',{name:'12 个月',exact:true})).toBeVisible()
+ await expect(page.getByText('十二个月保障',{exact:true})).toBeVisible()
  await expect(page.getByTestId('mobile-filter-toolbar')).toBeVisible()
  await page.getByTestId('mobile-filter-model').click()
  await expect(page.getByTestId('mobile-filters-panel')).toBeVisible()
@@ -169,6 +178,14 @@ try{
  await page.screenshot({path:fileURLToPath(new URL('../../../logs/gin-migration/formal-store-mobile.png',import.meta.url)),fullPage:true})
  assert.deepEqual(errors,[])
  assert.ok(upstreamRequests.every(request=>!request.headers.cookie&&!request.headers.authorization))
+ policies={...policies,warranty_months:0,return_days:0}
+ await page.goto(origin+'/dk-en/store')
+ await expect(page.getByRole('heading',{name:'No warranty',exact:true})).toBeVisible()
+ await expect(page.getByRole('heading',{name:'No returns',exact:true})).toBeVisible()
+ policiesFailed=true
+ const policyFailure=await fetch(origin+'/dk-en/store')
+ assert.equal(policyFailure.status,200)
+ assert.ok((await policyFailure.text()).includes('Contact us for details'))
  dependencyFailed=true
  const failedSearch=await fetch(origin+'/api/store/search',{method:'POST',headers:{'Content-Type':'application/json',Cookie:'PRIVATE_SEARCH_COOKIE'},body:JSON.stringify({region_id:'region',queries:[{key:'failure'}]})})
  assert.equal(failedSearch.status,503);assert.ok(!(await failedSearch.text()).includes('PRIVATE_UPSTREAM_FAILURE'))
@@ -178,7 +195,7 @@ try{
  const failure=await fetch(origin+path)
  assert.equal(failure.status,503);assert.equal(failure.headers.get('cache-control'),'no-store')
  assert.ok(!(await failure.text()).includes('PRIVATE_UPSTREAM_FAILURE'))
- console.log('ASTRO_FORMAL_PRODUCT_PAGE '+JSON.stringify({formal_built_route:true,public_gin_contract:true,ssr_header_footer:true,private_headers_omitted:true,english_chinese:true,selection_hydration:true,slug_reload:true,query_hash_preserved:true,disabled_unconnected_commerce:true,mobile_no_overflow:true,missing_404_dependency_503:true,formal_search_ssr_and_hydration:true,search_filters_sort_clear_mobile:true,search_pagination_history:true,search_histogram_bounds:true,search_bridge_failure_and_size:true,formal_about_help_journal:true,service_contacts_and_failure:true,article_navigation:true}))
+ console.log('ASTRO_FORMAL_PRODUCT_PAGE '+JSON.stringify({formal_built_route:true,public_gin_contract:true,ssr_header_footer:true,private_headers_omitted:true,english_chinese:true,selection_hydration:true,slug_reload:true,query_hash_preserved:true,disabled_unconnected_commerce:true,mobile_no_overflow:true,missing_404_dependency_503:true,stored_buy_policies_and_optional_failure:true,formal_search_ssr_and_hydration:true,search_filters_sort_clear_mobile:true,search_pagination_history:true,search_histogram_bounds:true,search_bridge_failure_and_size:true,formal_about_help_journal:true,service_contacts_and_failure:true,article_navigation:true}))
 }finally{
  if(browser)await browser.close()
  if(child&&child.exitCode===null){const ended=once(child,'exit');child.kill();await ended}
