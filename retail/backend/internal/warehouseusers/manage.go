@@ -66,7 +66,12 @@ type Result struct {
 }
 
 func allowed(a authorization.Action) bool {
-	return a == authorization.InventoryRead || a == authorization.StockWrite || a == authorization.OrderFulfillmentRead
+	for _, v := range authorization.WarehouseActions() {
+		if a == v {
+			return true
+		}
+	}
+	return false
 }
 func safeText(s string, max int) bool {
 	if !utf8.ValidString(s) || utf8.RuneCountInString(s) > max || strings.TrimSpace(s) != s {
@@ -110,7 +115,7 @@ func normalize(c Command) (Command, error) {
 	if c.ID == "" && c.Password == "" || c.Password != "" && (len(c.Password) < 12 || len(c.Password) > 72 || !utf8.ValidString(c.Password)) {
 		return c, ErrInput
 	}
-	if c.Mode != "all" && c.Mode != "selected" || c.Locations == nil || len(c.Locations) > 1000 || c.Mode == "all" && len(c.Locations) != 0 || c.Actions == nil || len(c.Actions) > 3 {
+	if c.Mode != "all" && c.Mode != "selected" || c.Locations == nil || len(c.Locations) > 1000 || c.Mode == "all" && len(c.Locations) != 0 || c.Actions == nil || len(c.Actions) > len(authorization.WarehouseActions()) {
 		return c, ErrInput
 	}
 	c.Locations = append([]string{}, c.Locations...)
@@ -170,7 +175,7 @@ func readUser(tx *gorm.DB, id string) (User, string, error) {
 	if tx.Table("authorization_warehouse_locations").Where("user_id=?", id).Order("location_id ASC").Limit(1001).Pluck("location_id", &u.Locations).Error != nil || len(u.Locations) > 1000 {
 		return u, "", ErrUnavailable
 	}
-	if tx.Table("authorization_role_actions").Where("role_id=?", row.RoleID).Order("action_code ASC").Limit(4).Pluck("action_code", &u.Actions).Error != nil || len(u.Actions) > 3 {
+	if tx.Table("authorization_role_actions").Where("role_id=?", row.RoleID).Order("action_code ASC").Limit(len(authorization.WarehouseActions())+1).Pluck("action_code", &u.Actions).Error != nil || len(u.Actions) > len(authorization.WarehouseActions()) {
 		return u, "", ErrUnavailable
 	}
 	for _, a := range u.Actions {

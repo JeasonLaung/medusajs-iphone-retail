@@ -26,10 +26,11 @@ def main():
     for image in ['mysql:8.4', 'redis:7-alpine']:
         if docker('image', 'inspect', image).returncode:
             raise RuntimeError('Existing fixture images required; no pull performed')
+    warehouse_devices = sys.argv[1:] == ['--warehouse-devices']
     device_tracking = sys.argv[1:] == ['--device-tracking']
     device_sources = sys.argv[1:] == ['--device-sources']
     device_intake = sys.argv[1:] == ['--device-intake']
-    if sys.argv[1:] and not (device_tracking or device_sources or device_intake):
+    if sys.argv[1:] and not (device_tracking or device_sources or device_intake or warehouse_devices):
         raise RuntimeError('Unknown joint rehearsal option')
     owner = uuid.uuid4().hex
     binaries = [ROOT / 'logs/gin-migration' / ('browser-' + owner + suffix) for suffix in ['-api', '-prep.test']]
@@ -105,6 +106,9 @@ def main():
                               '/opt/prep.test','-test.v','-test.run','^TestPrepareDeviceSourcesBrowserFixture$','-test.timeout','40s')
             if prepared.returncode or b'OWNED_DEVICE_SOURCES_BROWSER_READY' not in prepared.stdout:
                 raise RuntimeError('Device sources browser fixture failed')
+        if warehouse_devices:
+            prepared=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestPrepareWarehouseDevicesBrowserFixture$','-test.timeout','40s')
+            if prepared.returncode or b'OWNED_WAREHOUSE_DEVICES_READY' not in prepared.stdout: raise RuntimeError('Warehouse devices fixture failed')
         app_env = {'STOREFRONT_STORE_ID':'fixture-store','GIN_MODE': 'release', 'APP_BIND': '0.0.0.0', 'APP_PORT': '9100', 'APP_ENV': 'development',
                    'MYSQL_DSN': 'root:' + password + '@unix(/var/run/mysqld/mysqld.sock)/browser_identity?parseTime=true&loc=UTC',
                    'SESSION_REDIS_URL': 'redis://127.0.0.1:6379/0', 'SESSION_REDIS_PREFIX': 'eurorefurb:browser_fixture:v1:',
@@ -133,13 +137,17 @@ def main():
         browser_env = os.environ.copy()
         browser_env['ADMIN_TEST_API_TARGET'] = target
         node = browser_env.get('ADMIN_TEST_NODE') or shutil.which('node')
-        tested = subprocess.run([node,'tests/device-intake.joint.mjs' if device_intake else 'tests/device-sources.joint.mjs' if device_sources else 'tests/device-tracking.joint.mjs' if device_tracking else 'tests/warehouse-inventory.joint.mjs'],cwd=ROOT/'retail/admin',env=browser_env,capture_output=True,timeout=180)
-        marker = 'DEVICE_INTAKE_JOINT ' if device_intake else 'DEVICE_SOURCES_JOINT ' if device_sources else 'DEVICE_TRACKING_JOINT ' if device_tracking else 'WAREHOUSE_INVENTORY_JOINT '
+        tested = subprocess.run([node,'tests/warehouse-devices.joint.mjs' if warehouse_devices else 'tests/device-intake.joint.mjs' if device_intake else 'tests/device-sources.joint.mjs' if device_sources else 'tests/device-tracking.joint.mjs' if device_tracking else 'tests/warehouse-inventory.joint.mjs'],cwd=ROOT/'retail/admin',env=browser_env,capture_output=True,timeout=180)
+        marker = 'WAREHOUSE_DEVICES_JOINT ' if warehouse_devices else 'DEVICE_INTAKE_JOINT ' if device_intake else 'DEVICE_SOURCES_JOINT ' if device_sources else 'DEVICE_TRACKING_JOINT ' if device_tracking else 'WAREHOUSE_INVENTORY_JOINT '
         markers = [line.split(marker,1)[1] for line in tested.stdout.decode('utf-8').splitlines() if line.startswith(marker)]
         if tested.returncode or len(markers)!=1:
-            (ROOT/('logs/gin-migration/device-intake-joint.log' if device_intake else 'logs/gin-migration/device-sources-joint.log' if device_sources else 'logs/gin-migration/device-tracking-joint.log' if device_tracking else 'logs/gin-migration/warehouse-inventory-joint.log')).write_bytes(tested.stdout+tested.stderr)
+            (ROOT/('logs/gin-migration/warehouse-devices-joint.log' if warehouse_devices else 'logs/gin-migration/device-intake-joint.log' if device_intake else 'logs/gin-migration/device-sources-joint.log' if device_sources else 'logs/gin-migration/device-tracking-joint.log' if device_tracking else 'logs/gin-migration/warehouse-inventory-joint.log')).write_bytes(tested.stdout+tested.stderr)
             raise RuntimeError('Warehouse browser joint failed; inspect ignored log')
-        if device_intake:
+        if warehouse_devices:
+            durable=docker('exec','-e','MYSQL_PWD='+password,mysql_id,'mysql','-uroot','--protocol=socket','--database=browser_identity','--batch','--skip-column-names','-e',"SELECT (SELECT state FROM devices WHERE id='joint-device-1'),(SELECT state FROM devices WHERE id='joint-device-2'),(SELECT deleted_at IS NOT NULL FROM devices WHERE id='joint-device-3'),(SELECT COUNT(*) FROM warehouse_device_changes),(SELECT COUNT(*) FROM device_events WHERE action IN ('activate','make_available','retire','delete')),(SELECT stocked_quantity FROM inventory_levels WHERE id='joint-warehouse-level'),(SELECT COUNT(*) FROM inventory_stock_edits)")
+            if durable.returncode or durable.stdout.decode().strip()!='available\tretired\t1\t4\t4\t100.000000000000000001\t0': raise RuntimeError('Durable warehouse devices differs')
+            report={'scope':'Scoped sale/returned warehouse device reads and lifecycle commands; intake and fulfillment incomplete','counts':json.loads(markers[0]),'durable_mysql_verified':True,'real_accounts_used':False,'tls_secure_cookie_verified':False,'warehouse_intake_accepted':False,'fulfillment_accepted':False,'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_cpus':1,'redis_memory_mib':128,'published_ports':'one random loopback API port','network':'owned bridge; egress unrestricted'}}
+        elif device_intake:
             durable = docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket','--database=browser_identity','--batch','--skip-column-names','-e',
                              "SELECT (SELECT COUNT(*) FROM devices WHERE variant_id='joint-device-variant' AND deleted_at IS NULL),(SELECT COUNT(*) FROM device_events WHERE action='intake'),(SELECT COUNT(*) FROM device_intake_changes),(SELECT COUNT(*) FROM device_identity_claims),(SELECT stocked_quantity FROM inventory_levels WHERE id='joint-warehouse-level'),(SELECT COUNT(*) FROM inventory_stock_edits),(SELECT COUNT(*) FROM device_sources WHERE type='self'),(SELECT COUNT(*) FROM devices d JOIN device_sources s ON s.id=d.source_id WHERE d.location_id=s.location_id AND d.variant_id='joint-device-variant'),(SELECT COUNT(*) FROM device_photos),(SELECT SUM(JSON_LENGTH(photos)) FROM devices WHERE variant_id='joint-device-variant')")
             if durable.returncode or durable.stdout.decode().strip()!='2\t2\t1\t4\t100.000000000000000001\t0\t1\t2\t1\t1':
@@ -193,7 +201,7 @@ def main():
             if binary.exists():
                 binary.unlink()
     report['cleanup']='both owned containers, bridge and temporary runners removed'
-    (ROOT/('docs/migration/device-intake-joint-report.json' if device_intake else 'docs/migration/device-sources-joint-report.json' if device_sources else 'docs/migration/device-tracking-joint-report.json' if device_tracking else 'docs/migration/warehouse-inventory-joint-report.json')).write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    (ROOT/('docs/migration/warehouse-devices-joint-report.json' if warehouse_devices else 'docs/migration/device-intake-joint-report.json' if device_intake else 'docs/migration/device-sources-joint-report.json' if device_sources else 'docs/migration/device-tracking-joint-report.json' if device_tracking else 'docs/migration/warehouse-inventory-joint-report.json')).write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'real_browser_joint':True,'durable_mysql_verified':True,'cleanup':'complete'}))
 
 if __name__=='__main__':

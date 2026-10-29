@@ -37,7 +37,7 @@ func (h Handler) WarehouseAccess(ctx context.Context, actor identity.User) (Ware
 			return e
 		}
 		out.Revision = strconv.FormatUint(m.Revision, 10)
-		for _, a := range []Action{InventoryRead, StockWrite, OrderFulfillmentRead} {
+		for _, a := range WarehouseActions() {
 			if held[a] {
 				out.Actions = append(out.Actions, a)
 			}

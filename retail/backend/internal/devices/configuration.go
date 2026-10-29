@@ -69,17 +69,22 @@ func ResolveConfiguration(options []VariantOption, input Configuration) (Configu
 	if out.BatteryHealth != nil && (*out.BatteryHealth < 0 || *out.BatteryHealth > 100) {
 		return out, ErrInput
 	}
+	return out, validateStoredConfiguration(options, out)
+}
+
+// Stored devices may contain SKU-derived grades beyond the manual input enum.
+func validateStoredConfiguration(options []VariantOption, input Configuration) error {
 	for _, o := range options {
-		if gradeOption(o.Title) && (out.Grade == nil || cases.Upper(language.Und).String(o.Value) != *out.Grade) {
-			return out, ErrInput
+		if gradeOption(o.Title) && (input.Grade == nil || cases.Upper(language.Und).String(o.Value) != *input.Grade) {
+			return ErrInput
 		}
 		if batteryOption(o.Title) {
 			raw := nonPercentagePattern.ReplaceAllString(o.Value, "")
 			minimum, e := strconv.ParseFloat(raw, 64)
-			if e == nil && minimum > 0 && (out.BatteryHealth == nil || float64(*out.BatteryHealth) < minimum) {
-				return out, ErrInput
+			if e == nil && minimum > 0 && (input.BatteryHealth == nil || float64(*input.BatteryHealth) < minimum) {
+				return ErrInput
 			}
 		}
 	}
-	return out, nil
+	return nil
 }

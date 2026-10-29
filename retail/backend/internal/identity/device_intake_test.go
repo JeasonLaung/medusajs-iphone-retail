@@ -201,6 +201,7 @@ func checkDeviceIntake(t *testing.T, db *gorm.DB, actor identity.User, call func
 		t.Fatal("intake modified quantity stock")
 	}
 	checkDevicePhotos(t, db, actor, call)
+	checkWarehouseDevices(t, db, actor, call)
 	if before != fingerprint() {
 		t.Fatal("photo intake modified quantity stock")
 	}

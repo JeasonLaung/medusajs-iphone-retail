@@ -1,0 +1,35 @@
+{
+  "scope": "Scoped sale/returned warehouse device reads and lifecycle commands; intake and fulfillment incomplete",
+  "counts": {
+    "real_browser_react_gin_mysql_redis": true,
+    "api_mocking": false,
+    "admin_creates_category_grants": true,
+    "worker_login": true,
+    "location_and_category_scope": true,
+    "no_cost_notes_projection": true,
+    "pending_available": true,
+    "inspection_available": true,
+    "retire": true,
+    "returned_soft_delete": true,
+    "refresh_preserves_state": true,
+    "permission_change_revokes_session": true,
+    "read_only_controls": true,
+    "language_en_zh": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0
+  },
+  "durable_mysql_verified": true,
+  "real_accounts_used": false,
+  "tls_secure_cookie_verified": false,
+  "warehouse_intake_accepted": false,
+  "fulfillment_accepted": false,
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "published_ports": "one random loopback API port",
+    "network": "owned bridge; egress unrestricted"
+  },
+  "cleanup": "both owned containers, bridge and temporary runners removed"
+}
