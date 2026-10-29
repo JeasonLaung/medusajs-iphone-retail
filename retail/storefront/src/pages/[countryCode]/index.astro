@@ -1,0 +1,21 @@
+---
+import {GIN_API_ORIGIN} from 'astro:env/server'
+import Storefront from '../../layouts/Storefront.astro'
+import Home from '../../components/home'
+import {getHomeCopy} from '../../components/journal/i18n'
+import {loadPublicPage} from '../../lib/public-page'
+import {loadHome,type HomeData} from '../../lib/home'
+const segment=(Astro.params.countryCode??'').toLowerCase(),zh=segment.endsWith('-zh')
+const copy=getHomeCopy(zh?'zh-CN':'en')
+let shell:Awaited<ReturnType<typeof loadPublicPage>>=null,data:HomeData|undefined,unavailable=false
+try{
+ shell=await loadPublicPage(GIN_API_ORIGIN,segment)
+ if(shell)data=await loadHome(GIN_API_ORIGIN,shell.footer)
+}catch{unavailable=true}
+if(unavailable)Astro.response.status=503
+else if(!data)Astro.response.status=404
+const message=unavailable?(zh?'页面暂时无法加载，请稍后重试。':'This page is temporarily unavailable. Please try again.'):(zh?'未找到页面':'Page not found')
+---
+<Storefront segment={segment} title={data?copy.metaTitle:message} description={data?copy.description:undefined} canonicalPath={data?`/${segment}`:undefined} shell={shell??undefined}>
+ {data?<Home segment={segment} copy={copy} data={data} client:load/>:<div class="content-container py-16"><h1>{message}</h1></div>}
+</Storefront>

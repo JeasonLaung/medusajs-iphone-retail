@@ -21,8 +21,9 @@ product.images.push(...product.variants.flatMap(variant=>variant.images))
 // use normal handset prices for this real page's mobile layout checks.
 product.variants.forEach((variant,index)=>variant.calculated_price.calculated_amount=String(499+index*100))
 const region={id:'region',name:'Europe',currency_code:'eur',automatic_taxes:false,countries:[{iso_2:'dk',iso_3:'dnk',num_code:'208',name:'Denmark',display_name:'Denmark',region_id:'region'}]}
+const homeChildren=['13','Air','17','12','16','15','14','11','SE'].map(f=>({id:'series-'+f,name:'iPhone '+f+' series',handle:'iphone-'+f.toLowerCase()+'-series',parent_category_id:'iphone'}))
 const upstreamRequests=[]
-let dependencyFailed=false,contactsFailed=false,policiesFailed=false,child,browser
+let dependencyFailed=false,contactsFailed=false,policiesFailed=false,reviewsFailed=false,emptyHome=false,child,browser
 let policies={warranty_months:12,return_days:30,warranty_note:{en:"Twelve months covered",zh:"十二个月保障"},return_note:{en:"Thirty day returns",zh:"三十天退货"}}
 const api=createServer(async(request,response)=>{
  upstreamRequests.push({url:request.url,headers:request.headers})
@@ -39,9 +40,13 @@ const api=createServer(async(request,response)=>{
    body={contacts:[{id:'support',name:'Support Team',department:'after_sales',whatsapp:'+4512345678',email:'help@example.test',timezone:'Europe/Copenhagen',days:[1,2,3,4,5],start:'09:00',end:'17:00',availability:'online'}]};break
   case '/api/store/regions':body={regions:[region],count:1};break
   case '/api/store/locales':body={locales:[],count:0};break
-  case '/api/store/product-categories':body={product_categories:[],count:0,limit:2,offset:0};break
+  case '/api/store/product-categories':body={product_categories:emptyHome?[]:[{id:'iphone',name:'iPhone',handle:'iphone',category_children:homeChildren}],count:emptyHome?0:1,limit:2,offset:0};break
+  case '/api/store/product-reviews':
+   if(reviewsFailed){response.writeHead(503,{'content-type':'application/json'});response.end('{}');return}
+   body={reviews:[{id:'review',author:'Reviewer',rating:5,title:'Exactly as described',content:'Good condition',created_at:'2026-10-29T00:00:00Z',verified_purchase:true}],count:1,limit:5,offset:0};break
   case '/api/store/collections':body={collections:[],count:0,limit:6,offset:0};break
   case '/api/store/products':{
+   if(url.searchParams.has('category_id')){const p=structuredClone(product);p.variants.forEach(v=>v.calculated_price=null);body={products:[p],count:1,limit:100,offset:0,capabilities:{pricing:false,availability:true,checkout:false}};break}
    const found=url.searchParams.get('handle')===product.handle
    body={products:found?[product]:[],count:found?1:0,limit:2,offset:0,capabilities:{pricing:true,availability:true,checkout:false}};break
   }
@@ -54,7 +59,7 @@ try{
  const probe=portProbe();probe.listen(0,'127.0.0.1');await once(probe,'listening')
  const port=probe.address().port;await new Promise((resolve,reject)=>probe.close(error=>error?reject(error):resolve()))
  const origin=`http://127.0.0.1:${port}`
- child=spawn(process.execPath,['dist/server/entry.mjs'],{env:{...process.env,HOST:'127.0.0.1',PORT:String(port),GIN_API_ORIGIN:`http://127.0.0.1:${api.address().port}`,ASTRO_TELEMETRY_DISABLED:'1'},stdio:['ignore','ignore','pipe'],windowsHide:true})
+ child=spawn(process.execPath,['scripts/start.mjs'],{env:{...process.env,HOST:'127.0.0.1',PORT:String(port),GIN_API_ORIGIN:`http://127.0.0.1:${api.address().port}`,ASTRO_TELEMETRY_DISABLED:'1'},stdio:['ignore','ignore','pipe'],windowsHide:true})
  let output='';child.stderr.on('data',chunk=>{output=(output+chunk).slice(-4000)})
  child.on('error',()=>{})
  let started=false
@@ -125,6 +130,41 @@ try{
  await expect(page.getByText('联系方式暂时无法加载，请稍后重试。',{exact:true})).toBeVisible()
  await expect(page.locator('#shopping')).toBeVisible()
  assert.deepEqual(errors,[])
+ // Home uses the original family carousel, rail, reviews and blog hierarchy.
+ await page.setViewportSize({width:1440,height:1000})
+ await page.goto(origin+'/dk-en')
+ await page.waitForFunction(()=>Array.from(document.querySelectorAll('astro-island')).every(island=>!island.hasAttribute('ssr')))
+ await expect(page.getByRole('heading',{name:'iPhone series',exact:true})).toBeVisible()
+ assert.deepEqual(await page.getByTestId('series-gallery').locator('a').evaluateAll(a=>a.map(e=>e.getAttribute('data-testid'))),['17','air','16','15','14','13','12','11','se'].map(f=>'series-card-'+f))
+ const carousel=page.getByTestId('home-carousel')
+ await expect(carousel.getByRole('button',{name:'Show iPhone 17',exact:true})).toHaveAttribute('aria-current','true')
+ await carousel.getByRole('button',{name:'Next slide',exact:true}).click()
+ await expect(carousel.getByRole('button',{name:'Show iPhone Air',exact:true})).toHaveAttribute('aria-current','true')
+ await expect(page.getByTestId('home-reviews').getByText('Exactly as described',{exact:true})).toBeVisible()
+ await expect(page.locator('.ant-rate-star').first()).toHaveCSS('display','inline-block')
+ await expect(page.locator('.ant-rate').first()).toHaveCSS('color','rgb(250, 219, 20)')
+ await expect(page.getByTestId('home-blog').getByRole('link')).toHaveCount(4)
+ assert.ok(await page.locator('img[src^="/iphone-series/"]').evaluateAll(async images=>{await Promise.all(images.map(im=>im.decode()));return images.every(im=>im.naturalWidth>0)}))
+ await page.locator('img').evaluateAll(async images=>{for(const im of images)im.loading='eager';await Promise.all(images.map(im=>im.decode()))})
+ await page.screenshot({path:fileURLToPath(new URL('../../../logs/gin-migration/formal-home-desktop.png',import.meta.url)),fullPage:true})
+ await page.getByTestId('series-card-13').click()
+ await expect(page).toHaveURL(/\/dk-en\/store\?series=iPhone/)
+ await expect(page.getByTestId('store-page-title')).toBeVisible()
+ await page.setViewportSize({width:390,height:844})
+ await page.goto(origin+'/dk-zh')
+ await page.waitForFunction(()=>Array.from(document.querySelectorAll('astro-island')).every(island=>!island.hasAttribute('ssr')))
+ const rail=page.getByTestId('series-gallery'),before=await rail.evaluate(e=>e.scrollLeft)
+ await page.getByRole('button',{name:'向右查看更多系列',exact:true}).click()
+ await expect.poll(()=>rail.evaluate(e=>e.scrollLeft)).toBeGreaterThan(before)
+ assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Mobile home overflows')
+ await page.locator('img').evaluateAll(async images=>{for(const im of images)im.loading='eager';await Promise.all(images.map(im=>im.decode()))})
+ await page.screenshot({path:fileURLToPath(new URL('../../../logs/gin-migration/formal-home-mobile.png',import.meta.url)),fullPage:true})
+ reviewsFailed=true
+ const reviewFailure=await fetch(origin+'/dk-en');assert.equal(reviewFailure.status,200);assert.ok((await reviewFailure.text()).includes('Reviews are temporarily unavailable'))
+ emptyHome=true
+ const emptyHomeReply=await fetch(origin+'/dk-en');assert.equal(emptyHomeReply.status,200);assert.ok((await emptyHomeReply.text()).includes('Our iPhone collection is being updated'))
+ emptyHome=false
+ assert.equal((await fetch(origin+'/zz-en')).status,404)
  // Formal search SSR and hydrated state use the same query/currency contract.
  const store=await fetch(origin+'/dk-en/store?storage=128%20GB',{headers:{Cookie:'PRIVATE_SEARCH_COOKIE',Authorization:'Bearer PRIVATE_SEARCH_AUTH'}})
  assert.equal(store.status,200)
@@ -190,12 +230,13 @@ try{
  const failedSearch=await fetch(origin+'/api/store/search',{method:'POST',headers:{'Content-Type':'application/json',Cookie:'PRIVATE_SEARCH_COOKIE'},body:JSON.stringify({region_id:'region',queries:[{key:'failure'}]})})
  assert.equal(failedSearch.status,503);assert.ok(!(await failedSearch.text()).includes('PRIVATE_UPSTREAM_FAILURE'))
  assert.equal((await fetch(origin+'/dk-en/store')).status,503)
+ assert.equal((await fetch(origin+'/dk-en')).status,503)
  const invalidSearch=await fetch(origin+'/api/store/search',{method:'POST',body:'x'.repeat(65537)})
  assert.equal(invalidSearch.status,400)
  const failure=await fetch(origin+path)
  assert.equal(failure.status,503);assert.equal(failure.headers.get('cache-control'),'no-store')
  assert.ok(!(await failure.text()).includes('PRIVATE_UPSTREAM_FAILURE'))
- console.log('ASTRO_FORMAL_PRODUCT_PAGE '+JSON.stringify({formal_built_route:true,public_gin_contract:true,ssr_header_footer:true,private_headers_omitted:true,english_chinese:true,selection_hydration:true,slug_reload:true,query_hash_preserved:true,disabled_unconnected_commerce:true,mobile_no_overflow:true,missing_404_dependency_503:true,stored_buy_policies_and_optional_failure:true,formal_search_ssr_and_hydration:true,search_filters_sort_clear_mobile:true,search_pagination_history:true,search_histogram_bounds:true,search_bridge_failure_and_size:true,formal_about_help_journal:true,service_contacts_and_failure:true,article_navigation:true}))
+ console.log('ASTRO_FORMAL_PRODUCT_PAGE '+JSON.stringify({production_ssr_style_hashes_match:true,formal_home_carousel_rail_reviews_blog:true,home_optional_reviews_failure:true,formal_built_route:true,public_gin_contract:true,ssr_header_footer:true,private_headers_omitted:true,english_chinese:true,selection_hydration:true,slug_reload:true,query_hash_preserved:true,disabled_unconnected_commerce:true,mobile_no_overflow:true,missing_404_dependency_503:true,stored_buy_policies_and_optional_failure:true,formal_search_ssr_and_hydration:true,search_filters_sort_clear_mobile:true,search_pagination_history:true,search_histogram_bounds:true,search_bridge_failure_and_size:true,formal_about_help_journal:true,service_contacts_and_failure:true,article_navigation:true}))
 }finally{
  if(browser)await browser.close()
  if(child&&child.exitCode===null){const ended=once(child,'exit');child.kill();await ended}

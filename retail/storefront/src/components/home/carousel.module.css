@@ -1,0 +1,58 @@
+.carousel, .placeholder {
+  margin-bottom: 56px;
+  border-radius: 28px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.placeholder { min-height: 360px; }
+
+.track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar { display: none; }
+
+.slide {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  flex: 0 0 100%;
+  min-width: 0;
+  min-height: 360px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  padding: 40px 56px;
+  gap: 32px;
+}
+
+.copy { align-self: center; }
+.eyebrow { color: #737378; font-size: 12px; letter-spacing: .1em; margin-bottom: 16px; }
+.copy h2 { font-size: clamp(32px, 4vw, 52px); line-height: 1.1; font-weight: 600; letter-spacing: -.04em; }
+.cta { display: inline-block; margin-top: 24px; color: #0066cc; font-size: 16px; }
+.imageFrame { position: relative; min-height: 280px; }
+.image { object-fit: contain; }
+.controls { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 0 20px 16px; }
+.controls button { display: inline-flex; justify-content: center; align-items: center; width: 44px; height: 44px; border-radius: 50%; }
+.controls > button { background: #f5f5f7; font-size: 20px; }
+.controls > button:hover { background: #e8e8ed; }
+.dots { display: flex; }
+.dot, .activeDot { width: 7px; height: 7px; border-radius: 50%; background: #86868b; }
+.activeDot { background: #1d1d1f; }
+.slide:focus-visible { outline: 3px solid #0066cc; outline-offset: -5px; border-radius: 20px; }
+.controls button:focus-visible { outline: 3px solid #0066cc; outline-offset: 2px; }
+
+@media (max-width: 999px) {
+  .slide { padding: 32px; gap: 16px; }
+}
+
+@media (max-width: 599px) {
+  .carousel, .placeholder { margin-bottom: 36px; border-radius: 24px; }
+  .placeholder { min-height: 400px; }
+  .slide { grid-template-columns: 1fr; padding: 32px 24px 12px; gap: 24px; text-align: center; }
+  .imageFrame { min-height: 220px; }
+  .eyebrow { font-size: 11px; margin-bottom: 12px; }
+  .cta { margin-top: 16px; font-size: 14px; }
+}

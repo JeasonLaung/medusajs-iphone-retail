@@ -49,7 +49,7 @@ async function check(origin,expected){
  const port=probe.address().port;await new Promise((resolve,reject)=>probe.close(error=>error?reject(error):resolve()))
  const env={...process.env,HOST:'127.0.0.1',PORT:String(port),ASTRO_TELEMETRY_DISABLED:'1'}
  delete env.GIN_API_ORIGIN;if(origin)env.GIN_API_ORIGIN=origin
- const child=spawn(process.execPath,['dist/server/entry.mjs'],{env,stdio:['ignore','pipe','pipe'],windowsHide:true})
+ const child=spawn(process.execPath,['scripts/start.mjs'],{env,stdio:['ignore','pipe','pipe'],windowsHide:true})
  let output='';child.stdout.on('data',data=>{output=(output+data).slice(-4000)});child.stderr.on('data',data=>{output=(output+data).slice(-4000)})
  let startedError;child.on('error',error=>{startedError=error})
  try{
@@ -78,6 +78,9 @@ async function check(origin,expected){
    const html=await response.text()
    if(expected===200)assert.ok(html.includes('Public collection'))
   }
+  const home=await fetch(`http://127.0.0.1:${port}/dk-en`)
+  assert.equal(home.status,expected)
+  if(expected===200)assert.ok((await home.text()).includes('Our iPhone collection is being updated'))
   // Business pages are added only after their actual API and UI are ported.
   assert.equal((await fetch(`http://127.0.0.1:${port}/dk-en/store`)).status,origin?200:503)
   assert.equal(child.exitCode,null)
@@ -87,4 +90,4 @@ async function check(origin,expected){
 }
 await check(target.origin,200)
 await check(undefined,503)
-console.log('ASTRO_RUNTIME_REHEARSAL '+JSON.stringify({production_node_adapter:true,real_gin_regions:true,source_adapter_real_gin_locales:true,source_adapter_real_gin_footer:true,source_adapter_real_gin_products:true,source_adapter_region_quantity:true,source_product_page_country_handle_composition:true,formal_product_route_real_gin:true,incomplete_variant_no_quote:true,detail_404_and_dependency_error_distinct:true,missing_configuration_503:true,response_no_store:true,no_session_cookie:true,formal_store_route_real_gin:true,owned_processes_stopped:true}))
+console.log('ASTRO_RUNTIME_REHEARSAL '+JSON.stringify({production_node_adapter:true,real_gin_regions:true,source_adapter_real_gin_locales:true,source_adapter_real_gin_footer:true,source_adapter_real_gin_products:true,source_adapter_region_quantity:true,source_product_page_country_handle_composition:true,formal_product_route_real_gin:true,incomplete_variant_no_quote:true,detail_404_and_dependency_error_distinct:true,missing_configuration_503:true,response_no_store:true,no_session_cookie:true,formal_home_empty_catalog_real_gin:true,formal_store_route_real_gin:true,owned_processes_stopped:true}))

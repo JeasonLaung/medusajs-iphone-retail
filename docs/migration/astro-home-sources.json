@@ -1,0 +1,99 @@
+{
+  "format_version": 1,
+  "scope": "Home source components; async Gin data composed in Astro and native image/localized anchors replace Next adapters",
+  "files": [
+    {
+      "source": "medusa-store/apps/storefront/src/modules/home/components/home-carousel/index.tsx",
+      "target": "retail/storefront/src/components/home/carousel.tsx",
+      "source_sha256": "29c1fa99a4018e682913166745d841da5ddd2fb713da9dff048ceaf72b4db074",
+      "target_sha256": "2459d09cc611b8cd138b578262d1a73f6d46cd2d972318ed8d7c40829d787dd1",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/home/components/home-carousel/styles.module.css",
+      "target": "retail/storefront/src/components/home/carousel.module.css",
+      "source_sha256": "e7dae7e8956310496eee4846d1d2ecfafc2a4bd4af8abcbd28b97ebf54e7e410",
+      "target_sha256": "e7dae7e8956310496eee4846d1d2ecfafc2a4bd4af8abcbd28b97ebf54e7e410",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/home/components/series-rail/index.tsx",
+      "target": "retail/storefront/src/components/home/rail.tsx",
+      "source_sha256": "0643a5b85730616b7439dc0d061e4bd552e1a4a0fd5ee6e450715c7ad41e4d53",
+      "target_sha256": "f252d85158f00302d197158773e9632e6a8bf4c30c56c29b5d9be7effb347939",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/home/components/series-gallery/styles.module.css",
+      "target": "retail/storefront/src/components/home/gallery.module.css",
+      "source_sha256": "55f2f79e33b9653085a313bff4a8aa3a138268855d25a74b07cf899eb3b2ab37",
+      "target_sha256": "55f2f79e33b9653085a313bff4a8aa3a138268855d25a74b07cf899eb3b2ab37",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/home/components/home-sections.module.css",
+      "target": "retail/storefront/src/components/home/sections.module.css",
+      "source_sha256": "7bb1a3a1deb0ce2edc91a18ae3ce8a766a024f4d7cc831565c938fc86a2c7cc0",
+      "target_sha256": "7bb1a3a1deb0ce2edc91a18ae3ce8a766a024f4d7cc831565c938fc86a2c7cc0",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/home/components/blog-section/index.tsx",
+      "target": "retail/storefront/src/components/home/blog.tsx",
+      "source_sha256": "a001c016bb1b575667eda652b0bf052f9ba620e89b28b6e67bcb782e79b469bf",
+      "target_sha256": "4e159013b3ba489f1d807c7fc487b86024270f1686847c3800ac0bc353123ed9",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/home/components/home-reviews/index.tsx",
+      "target": "retail/storefront/src/components/home/reviews.tsx",
+      "source_sha256": "14998f43535b66cdda3a2760dca729388dedae3b79ba2b0d06ea54c0b80c4d5b",
+      "target_sha256": "3d219569db88713ab961e2e2ca0dab3af8465fbf7e1e29f81e6b11c13f86f40a",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/common/components/rating/index.tsx",
+      "target": "retail/storefront/src/components/home/rating.tsx",
+      "source_sha256": "089dd7d9d75cf7cc0e69a79c12c56bfeabf3a2e7ee75f65b178226d69891ea12",
+      "target_sha256": "9ab78135fb4ed3341fe34c5237a6347eaee1528e298118a7f02331352c72154f",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/common/components/rating/styles.module.css",
+      "target": "retail/storefront/src/components/home/rating.module.css",
+      "source_sha256": "da4ae2fe971362d1bf1c28357e66262b694cf6697eb090b090418cc9d782e0d2",
+      "target_sha256": "da4ae2fe971362d1bf1c28357e66262b694cf6697eb090b090418cc9d782e0d2",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/home/components/series-gallery/index.tsx",
+      "target": "retail/storefront/src/components/home/index.tsx",
+      "source_sha256": "cbd71565b5b79c3f1f3c0f4b5b7e59a8f83a55568f756e538db37170b0aece9a",
+      "target_sha256": "6fc1e48de3c7b012c5efc34f6fcb71a98dc13851ff0fc69764982febf59cd8dd",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/util/store-series-url.ts",
+      "target": "retail/storefront/src/components/home/series-url.ts",
+      "source_sha256": "6ab1c8a57a11154932c924a712ee8b38dea41d364f1d6285847fdcee3abb7d25",
+      "target_sha256": "6ab1c8a57a11154932c924a712ee8b38dea41d364f1d6285847fdcee3abb7d25",
+      "unchanged_normalized_bytes": true
+    }
+  ],
+  "assets": {
+    "retail/storefront/public/iphone-series/iphone-11.png": "5dad78829e1c55015f43e2cc849faf7b85062bcc5e0b00ec3489cfcc2d78d577",
+    "retail/storefront/public/iphone-series/iphone-12.png": "3d43a478e79c7608539c70b467da842475abf57b96910f2b013f46b1c6c82e3b",
+    "retail/storefront/public/iphone-series/iphone-13.png": "91d18f8cd46ead9634136ed3dcebf0ec276e13468fb2a75d17b9d1902f844692",
+    "retail/storefront/public/iphone-series/iphone-se.png": "77d4610b63681fb7e34807b44c042153797978f386163f7c1b50d7678eaa558e",
+    "retail/storefront/public/iphone-series/iphone-14/base.webp": "c4e6740b012d6e662bc4ffc006a56c38445ff2db215835c89f8ff45c7537b3fe",
+    "retail/storefront/public/iphone-series/iphone-14/series.webp": "84c963e8f1c047b2fa01062359e4c2cb628d92718c3109f42ac5cdea738f4fec",
+    "retail/storefront/public/iphone-series/iphone-15/base.webp": "2351b131ca27d9962411b5fe33ad2ffedded36cb1050e088715091ed75cee3b7",
+    "retail/storefront/public/iphone-series/iphone-15/series.webp": "687f08d748a574782c56339da524247114714bdadf08402b1c49055a6c769e2b",
+    "retail/storefront/public/iphone-series/iphone-16/base.webp": "765b4bb6b1b7f3863cbfee15f2f022da5ba9613ccabe1c50ccdfea51e06f94f3",
+    "retail/storefront/public/iphone-series/iphone-16/series.webp": "67d2c7bcc899a066b88ffc667e1248a4f6c65a960203b4870ecda994d5ec216c",
+    "retail/storefront/public/iphone-series/iphone-17/base.webp": "735f31d6aae18c6f85d6a38926bc735f839bbe9ab0353ead366b45762cdd7181",
+    "retail/storefront/public/iphone-series/iphone-17/series.webp": "c29bc01240bf78fc3a8cca3520738db22f74b325fe16cf0f25b417d7b2b300d0",
+    "retail/storefront/public/iphone-series/iphone-air/air.webp": "f69551ab8a0b3831521a4dddd9741e898ae67e40bd88464e50b7a3252c7fa796",
+    "retail/storefront/public/iphone-series/iphone-air/series.webp": "275e698c6ec62220835f217cab3d42628b129143f12bc00822e7d61487a0939a"
+  }
+}
