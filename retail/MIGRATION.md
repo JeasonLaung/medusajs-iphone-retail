@@ -205,3 +205,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-29 手工配送保存补充：[调用方事务中的方法替换](../docs/migration/cart-shipping-methods.md)重查当前报价/全车共享库存，保存精确raw与含税状态、manual对象数据，软删除同组及未知组旧方法并保留其他组和历史。人工SQL通过范围以admin-auth-report.cart_shipping_methods及SHA为准。阶段不提交/增版本/预留或提供HTTP，完整幂等命令、局部选择、促销税费支付及Astro交互继续待办，T032/T033未验收。
 
 2026-10-29 局部配送选择补充：[新旧方法合并](../docs/migration/cart-shipping-methods.md)恢复逐配送组选择语义，保留其他组方法ID/data并重新核对当前报价及全车共享库存，未选齐不宣称配送覆盖；严格完整选择继续拒绝缺组。人工SQL以cart_shipping_methods新增局部选择字段与SHA为准；完整重算/幂等命令及前台接入仍待完成。
+
+2026-10-29 运费刷新补充：[保留方法ID与数据的当前重选价](../docs/migration/cart-shipping-refresh.md)在持有者/版本事务内更新精确金额、名称与含税状态，移除无价/失效方法，保留原单方法孤立profile保护及多方法清理。原纯转换6组固定，人工SQL以admin-auth-report.cart_shipping_refresh与SHA为准。完整重算/动态运价/幂等命令与前台继续待办，T032/T033未验收。

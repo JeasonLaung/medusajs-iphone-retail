@@ -1,0 +1,286 @@
+{
+  "format_version": 1,
+  "scope": "Original pure shipping refresh transform; not SQL, provider or full workflow acceptance",
+  "source_file": "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/workflows/refresh-cart-shipping-methods.js",
+  "source_sha256": "0cca39a4e24f1c07eb7fbe648a0b0d77ba29a130656a4408cfcc09b9ec20b757",
+  "cases": [
+    {
+      "name": "zero",
+      "input": {
+        "cart": {
+          "items": [
+            {
+              "requires_shipping": true,
+              "variant": {
+                "product": {
+                  "shipping_profile": {
+                    "id": "wanted"
+                  }
+                }
+              }
+            }
+          ],
+          "shipping_methods": [
+            {
+              "id": "method",
+              "shipping_option_id": "option",
+              "data": {
+                "saved": true
+              }
+            }
+          ]
+        },
+        "shippingOptions": [
+          {
+            "id": "option",
+            "shipping_profile_id": "wanted",
+            "name": "Current",
+            "calculated_price": {
+              "calculated_amount": 0,
+              "is_calculated_price_tax_inclusive": true
+            }
+          }
+        ]
+      },
+      "output": {
+        "shippingMethodsToRemove": [],
+        "shippingMethodsToUpdate": [
+          {
+            "id": "method",
+            "shipping_option_id": "option",
+            "name": "Current",
+            "amount": 0,
+            "is_tax_inclusive": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "single-orphan",
+      "input": {
+        "cart": {
+          "items": [
+            {
+              "requires_shipping": true,
+              "variant": {
+                "product": {
+                  "shipping_profile": {
+                    "id": "wanted"
+                  }
+                }
+              }
+            }
+          ],
+          "shipping_methods": [
+            {
+              "id": "single",
+              "shipping_option_id": "orphan"
+            }
+          ]
+        },
+        "shippingOptions": [
+          {
+            "id": "orphan",
+            "shipping_profile_id": "other",
+            "name": "Other",
+            "calculated_price": {
+              "calculated_amount": 3,
+              "is_calculated_price_tax_inclusive": false
+            }
+          }
+        ]
+      },
+      "output": {
+        "shippingMethodsToRemove": [],
+        "shippingMethodsToUpdate": [
+          {
+            "id": "single",
+            "shipping_option_id": "orphan",
+            "name": "Other",
+            "amount": 3,
+            "is_tax_inclusive": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "multiple-orphan",
+      "input": {
+        "cart": {
+          "items": [
+            {
+              "requires_shipping": true,
+              "variant": {
+                "product": {
+                  "shipping_profile": {
+                    "id": "wanted"
+                  }
+                }
+              }
+            }
+          ],
+          "shipping_methods": [
+            {
+              "id": "method",
+              "shipping_option_id": "option"
+            },
+            {
+              "id": "single",
+              "shipping_option_id": "orphan"
+            }
+          ]
+        },
+        "shippingOptions": [
+          {
+            "id": "option",
+            "shipping_profile_id": "wanted",
+            "name": "Current",
+            "calculated_price": {
+              "calculated_amount": 0,
+              "is_calculated_price_tax_inclusive": true
+            }
+          },
+          {
+            "id": "orphan",
+            "shipping_profile_id": "other",
+            "name": "Other",
+            "calculated_price": {
+              "calculated_amount": 3,
+              "is_calculated_price_tax_inclusive": false
+            }
+          }
+        ]
+      },
+      "output": {
+        "shippingMethodsToRemove": [
+          "single"
+        ],
+        "shippingMethodsToUpdate": [
+          {
+            "id": "method",
+            "shipping_option_id": "option",
+            "name": "Current",
+            "amount": 0,
+            "is_tax_inclusive": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "missing-option",
+      "input": {
+        "cart": {
+          "items": [
+            {
+              "requires_shipping": true,
+              "variant": {
+                "product": {
+                  "shipping_profile": {
+                    "id": "wanted"
+                  }
+                }
+              }
+            }
+          ],
+          "shipping_methods": [
+            {
+              "id": "missing",
+              "shipping_option_id": "missing"
+            }
+          ]
+        },
+        "shippingOptions": [
+          {
+            "id": "option",
+            "shipping_profile_id": "wanted",
+            "name": "Current",
+            "calculated_price": {
+              "calculated_amount": 0,
+              "is_calculated_price_tax_inclusive": true
+            }
+          }
+        ]
+      },
+      "output": {
+        "shippingMethodsToRemove": [
+          "missing"
+        ],
+        "shippingMethodsToUpdate": []
+      }
+    },
+    {
+      "name": "missing-price",
+      "input": {
+        "cart": {
+          "items": [
+            {
+              "requires_shipping": true,
+              "variant": {
+                "product": {
+                  "shipping_profile": {
+                    "id": "wanted"
+                  }
+                }
+              }
+            }
+          ],
+          "shipping_methods": [
+            {
+              "id": "method",
+              "shipping_option_id": "option"
+            }
+          ]
+        },
+        "shippingOptions": [
+          {
+            "id": "option",
+            "shipping_profile_id": "wanted",
+            "name": "Current",
+            "calculated_price": null
+          }
+        ]
+      },
+      "output": {
+        "shippingMethodsToRemove": [
+          "method"
+        ],
+        "shippingMethodsToUpdate": []
+      }
+    },
+    {
+      "name": "empty",
+      "input": {
+        "cart": {
+          "items": [
+            {
+              "requires_shipping": true,
+              "variant": {
+                "product": {
+                  "shipping_profile": {
+                    "id": "wanted"
+                  }
+                }
+              }
+            }
+          ],
+          "shipping_methods": []
+        },
+        "shippingOptions": [
+          {
+            "id": "option",
+            "shipping_profile_id": "wanted",
+            "name": "Current",
+            "calculated_price": {
+              "calculated_amount": 0,
+              "is_calculated_price_tax_inclusive": true
+            }
+          }
+        ]
+      },
+      "output": {
+        "shippingMethodsToRemove": [],
+        "shippingMethodsToUpdate": []
+      }
+    }
+  ]
+}

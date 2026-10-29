@@ -25,6 +25,12 @@ type ShippingQuotesGroup struct {
 // separate phases; an absent context must not be fabricated from address data.
 // Caller owns the transaction, rollback, inventory checks and final command.
 func ReadManualShippingQuotes(ctx context.Context, tx *gorm.DB, store string, ref sessionstore.CartReference, version string, manualProviderIDs []string, at time.Time) ([]ShippingQuotesGroup, error) {
+	return readManualShippingQuotes(ctx, tx, store, ref, version, manualProviderIDs, at, "")
+}
+
+// singletonProfile is server-resolved only for original refresh semantics:
+// a single saved method is not removed solely because its profile is orphaned.
+func readManualShippingQuotes(ctx context.Context, tx *gorm.DB, store string, ref sessionstore.CartReference, version string, manualProviderIDs []string, at time.Time, singletonProfile string) ([]ShippingQuotesGroup, error) {
 	if at.IsZero() {
 		return nil, ErrInput
 	}
@@ -35,6 +41,17 @@ func ReadManualShippingQuotes(ctx context.Context, tx *gorm.DB, store string, re
 	groups, err := ReadShippingGroups(ctx, tx, store, ref, version)
 	if err != nil {
 		return nil, err
+	}
+	if singletonProfile != "" {
+		found := false
+		for _, group := range groups {
+			if group.ProfileID == singletonProfile {
+				found = true
+			}
+		}
+		if !found {
+			groups = append(groups, ShippingGroup{ProfileID: singletonProfile})
+		}
 	}
 	current := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "SHARE"}).Session(&gorm.Session{})
 	var saved struct{ ShippingAddressID *string }

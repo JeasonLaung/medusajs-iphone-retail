@@ -158,5 +158,6 @@ func checkCartShippingMethods(t *testing.T, ctx context.Context, db *gorm.DB, re
 		t.Fatal("retained stale profile was not revalidated")
 	}
 	exec(`UPDATE fulfillment_shipping_options SET price_type='flat' WHERE id='selected-other'`)
+	checkCartShippingRefresh(t, ctx, db, ref, fingerprint)
 	t.Log(`CART_SHIPPING_METHODS_REHEARSAL {"partial_first_and_second_selection":true,"unchanged_method_id_and_data_retained":true,"partial_not_full_coverage":true,"retained_quote_revalidated":true,"exact_raw_amount_and_tax_preference":true,"server_quote_name_and_amount":true,"manual_data_preserved_without_number_coercion":true,"same_and_unknown_profiles_soft_deleted":true,"unrelated_methods_and_historical_children_retained":true,"later_refresh_and_late_insert_rollback":true,"invalid_data_and_stale_version_unchanged":true,"version_not_incremented_by_phase":true,"autocommit_rejected":true,"inventory_reserved":false,"full_refresh":false,"http_integrated":false,"checkout":false}`)
 }

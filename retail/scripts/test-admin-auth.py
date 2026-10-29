@@ -262,7 +262,10 @@ def main():
             method_markers = [line.split('CART_SHIPPING_METHODS_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_SHIPPING_METHODS_REHEARSAL ' in line]
             if len(method_markers) != 1:
                 raise RuntimeError('Cart shipping persistence evidence missing')
-            files += ['retail/backend/internal/identity/cart_shipping_profiles_test.go','retail/backend/internal/identity/cart_shipping_quotes_test.go','retail/backend/internal/identity/cart_shipping_selection_test.go','retail/backend/internal/identity/cart_shipping_methods_test.go']
+            refresh_markers = [line.split('CART_SHIPPING_REFRESH_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_SHIPPING_REFRESH_REHEARSAL ' in line]
+            if len(refresh_markers) != 1:
+                raise RuntimeError('Cart shipping refresh evidence missing')
+            files += ['retail/backend/internal/identity/cart_shipping_profiles_test.go','retail/backend/internal/identity/cart_shipping_quotes_test.go','retail/backend/internal/identity/cart_shipping_selection_test.go','retail/backend/internal/identity/cart_shipping_methods_test.go','retail/backend/internal/identity/cart_shipping_refresh_test.go']
             manual_markers = [line.split('MANUAL_SHIPPING_QUOTES_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'MANUAL_SHIPPING_QUOTES_REHEARSAL ' in line]
             if len(manual_markers) != 1:
                 raise RuntimeError('Manual shipping quote evidence missing')
@@ -385,6 +388,7 @@ def main():
                       'cart_shipping_quotes': json.loads(quote_markers[0]),
                       'cart_shipping_selection': json.loads(selection_markers[0]),
                       'cart_shipping_methods': json.loads(method_markers[0]),
+                      'cart_shipping_refresh': json.loads(refresh_markers[0]),
                       'implementation_sha256': {name: hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files}}
     finally:
         password = ''
