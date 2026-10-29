@@ -6,6 +6,28 @@ export class APIError extends Error {
   }
 }
 
+export type WarehouseAddress={address_1:string;address_2:string;company:string;city:string;country_code:string;phone:string;province:string;postal_code:string}
+export type Warehouse={id:string;name:string;address:WarehouseAddress|null}
+export type WarehouseDirectory={revision:string;locations:Warehouse[]}
+export type WarehouseCommand={operation_id:string;expected_revision:string;id:string;name:string;address:WarehouseAddress}
+const warehouseRevision=(v:unknown):v is string=>typeof v==='string'&&!/[\r\n]/.test(v)&&/^[1-9]\d{0,19}$/.test(v)&&BigInt(v)<=18446744073709551615n
+const warehouseID=(v:unknown):v is string=>typeof v==='string'&&v.length>0&&Array.from(v).length<=191&&!/[\x00-\x1f\x7f/\\?#]/.test(v)
+export async function warehouses(signal?:AbortSignal):Promise<WarehouseDirectory>{
+ const d=await request<WarehouseDirectory>('warehouses',{signal},'/api/admin/')
+ if(!d||!warehouseRevision(d.revision)||!Array.isArray(d.locations)||d.locations.length>1000)throw new APIError(0,'request.invalid_response')
+ const locations=d.locations.map(row=>{
+  if(!row||!warehouseID(row.id)||typeof row.name!=='string'||row.address!==null&&(!row.address||typeof row.address!=='object'||Object.keys(row.address).length!==8||['address_1','address_2','company','city','country_code','phone','province','postal_code'].some(k=>typeof row.address![k as keyof WarehouseAddress]!=='string')))throw new APIError(0,'request.invalid_response')
+  return {id:row.id,name:row.name,address:row.address}
+ })
+ if(new Set(locations.map(row=>row.id)).size!==locations.length)throw new APIError(0,'request.invalid_response')
+ return {revision:d.revision,locations}
+}
+export async function saveWarehouse(body:WarehouseCommand):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{id:string;revision:string;replayed:boolean}>('warehouses',{method:'POST',body,csrf},'/api/admin/')
+ if(!d||!warehouseID(d.id)||!warehouseRevision(d.revision)||typeof d.replayed!=='boolean'||body.id!==''&&body.id!==d.id)throw new APIError(0,'request.invalid_response')
+}
+
 export type Mailbox={id:string;name:string;email:string;reply_to:string;enabled:boolean;has_api_key:boolean;has_webhook_secret:boolean;registration:boolean}
 export type MailboxDirectory={revision:string;registration_account_id:string|null;accounts:Mailbox[]}
 export type MailboxCommand={operation_id:string;expected_revision:string;id:string;name:string;email:string;reply_to:string;enabled:boolean;registration:boolean;api_key:string;webhook_secret:string}
@@ -237,7 +259,7 @@ export async function getOrderFulfillments(id:string,signal?:AbortSignal):Promis
 }
 
 
-export const ACTIONS=['authorization.read','authorization.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','product.read','product.write'] as const
+export const ACTIONS=['authorization.read','authorization.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','product.read','product.write','warehouse.read','warehouse.write'] as const
 export type Action=typeof ACTIONS[number]
 export type ManagedRole={id:string;name:string;enabled:boolean;actions:Action[]}
 export type ManagedMember={user_id:string;name:string;enabled:boolean;kind:'employee'|'warehouse'|'supplier';roles:string[]}

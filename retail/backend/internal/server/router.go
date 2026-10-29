@@ -17,6 +17,7 @@ import (
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/eurorefurb/retail/internal/promotion"
 	"github.com/eurorefurb/retail/internal/tax"
+	"github.com/eurorefurb/retail/internal/warehouse"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -134,6 +135,8 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	private.POST("/auth/logout", auth.Logout)
 	access := authorization.Handler{DB: db}
 	private.GET("/auth/permissions", access.Snapshot)
+	private.GET("/warehouses", access.Require(authorization.WarehouseRead), (warehouse.Handler{DB: db}).Directory)
+	private.POST("/warehouses", access.Require(authorization.WarehouseRead, authorization.WarehouseWrite), (warehouse.Handler{DB: db}).Command)
 	private.GET("/authorization", access.Require(authorization.Read), access.Directory)
 	private.POST("/authorization/commands", access.Require(authorization.Write), access.Command)
 	private.GET("/orders", access.Require(authorization.OrderRead), (orders.Handler{DB: db}).List)

@@ -23,8 +23,9 @@ def docker(*args, timeout=90):
 
 
 def main():
-    if sys.argv[1:] not in ([], ['--cart-runtime-only'], ['--promotion-usage-only'], ['--customer-accounts-only'], ['--store-collections-only'], ['--cart-contacts-only'], ['--cart-delivery-only'], ['--initial-payment-only'], ['--payment-status-only'], ['--order-numbering-only'], ['--order-snapshot-only']):
+    if sys.argv[1:] not in ([], ['--warehouses-only'], ['--cart-runtime-only'], ['--promotion-usage-only'], ['--customer-accounts-only'], ['--store-collections-only'], ['--cart-contacts-only'], ['--cart-delivery-only'], ['--initial-payment-only'], ['--payment-status-only'], ['--order-numbering-only'], ['--order-snapshot-only']):
         raise RuntimeError('Unknown rehearsal option')
+    warehouses_only = sys.argv[1:] == ['--warehouses-only']
     numbering_only = sys.argv[1:] == ['--order-numbering-only']
     snapshot_only = sys.argv[1:] == ['--order-snapshot-only']
     status_only = snapshot_only or sys.argv[1:] == ['--payment-status-only']
@@ -115,6 +116,8 @@ def main():
         if numbering_only:
             suites = ['OrderNumbering']
         output, errors = b'', b''
+        if warehouses_only:
+            suites = ['AdminAuthentication']
         for suite in suites:
             print(json.dumps({'running_suite': suite}), flush=True)
             tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1', mysql_id,
@@ -136,8 +139,35 @@ def main():
             cleanup += 'CREATE DATABASE identity_rehearsal;'
             if docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket','-e',cleanup).returncode:
                 raise RuntimeError('Owned artificial database cleanup failed')
+            if suite != suites[-1]:
+                # DROP DATABASE releases tables but MySQL retains dictionary
+                # allocations. Reset only this labelled disposable pair between
+                # suites so accumulated DDL cannot exhaust its 768 MiB bound.
+                for container in (mysql_id, redis_id):
+                    inspected = docker('inspect', container, '--format', '{{index .Config.Labels "' + LABEL + '"}}')
+                    if inspected.returncode or inspected.stdout.decode().strip() != owner:
+                        raise RuntimeError('Suite reset ownership mismatch')
+                if docker('stop', redis_id).returncode or docker('restart', mysql_id).returncode:
+                    raise RuntimeError('Owned suite reset failed')
+                for _ in range(100):
+                    if not docker('exec', '-e', 'MYSQL_PWD=' + password, mysql_id, 'mysql', '-uroot', '--protocol=socket', '-e', 'SELECT 1', timeout=10).returncode:
+                        break
+                    time.sleep(.5)
+                else:
+                    raise RuntimeError('Owned MySQL reset not ready')
+                if docker('start', redis_id).returncode or docker('exec', redis_id, 'redis-cli', 'PING').stdout.strip() != b'PONG':
+                    raise RuntimeError('Owned Redis reset not ready')
+                if docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket','-e','CREATE DATABASE IF NOT EXISTS identity_rehearsal').returncode:
+                    raise RuntimeError('Owned suite database reset failed')
         tested = subprocess.CompletedProcess([], tested.returncode, output, errors)
-        if numbering_only:
+        if warehouses_only:
+            markers = [line.split('WAREHOUSE_MANAGEMENT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'WAREHOUSE_MANAGEMENT_REHEARSAL ' in line]
+            if tested.returncode or len(markers)!=1:
+                print(tested.stdout.decode(errors='replace'))
+                raise RuntimeError('Owned warehouse management verification failed')
+            counts = json.loads(markers[0])
+            report = {'scope':'warehouse create/edit and explicit permissions, not warehouse user/fulfillment acceptance','counts':counts,'migrations':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),'isolated_mysql_redis':True,'published_ports':0,'external_network':False}
+        elif numbering_only:
             markers = [line.split('ORDER_NUMBERING_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_NUMBERING_REHEARSAL ' in line]
             if tested.returncode or len(markers)!=1:
                 print(tested.stdout.decode(errors='replace'))
@@ -609,7 +639,7 @@ def main():
         if owned_binary and binary.exists():
             binary.unlink()
     report['cleanup'] = 'both owned containers and temporary runner removed'
-    report_name = 'cart-order-snapshot-runtime-report.json' if snapshot_only else 'order-numbering-runtime-report.json' if numbering_only else 'cart-payment-status-runtime-report.json' if status_only else 'cart-initial-payment-runtime-report.json' if initial_only else 'cart-delivery-runtime-report.json' if delivery_only else 'cart-contacts-runtime-report.json' if contacts_only else 'store-collections-runtime-report.json' if collection_only else 'gin-customer-accounts-report.json' if customer_only else 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
+    report_name = 'warehouse-runtime-report.json' if warehouses_only else 'cart-order-snapshot-runtime-report.json' if snapshot_only else 'order-numbering-runtime-report.json' if numbering_only else 'cart-payment-status-runtime-report.json' if status_only else 'cart-initial-payment-runtime-report.json' if initial_only else 'cart-delivery-runtime-report.json' if delivery_only else 'cart-contacts-runtime-report.json' if contacts_only else 'store-collections-runtime-report.json' if collection_only else 'gin-customer-accounts-report.json' if customer_only else 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
     (ROOT / 'docs/migration' / report_name).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'counts': counts, 'cleanup': 'complete'}))
 
