@@ -1,0 +1,29 @@
+{
+  "scope": "Real browser creates self and supplier device sources, linked warehouses, channel and provider; no intake acceptance",
+  "counts": {
+    "real_browser_react_gin_mysql_redis": true,
+    "api_mocking": false,
+    "real_login": true,
+    "warehouse_entry": true,
+    "source_self_and_supplier_created": true,
+    "warehouses_reloaded": true,
+    "source_projection_verified": true,
+    "duplicate_name_conflict": true,
+    "language_en_zh": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0
+  },
+  "durable_mysql_verified": true,
+  "real_accounts_used": false,
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "network": "owned bridge; egress unrestricted",
+    "published_ports": "one random API port on 127.0.0.1 only"
+  },
+  "tls_secure_cookie_verified": false,
+  "intake_accepted": false,
+  "cleanup": "both owned containers, bridge and temporary runners removed"
+}

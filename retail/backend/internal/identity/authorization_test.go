@@ -49,7 +49,7 @@ func checkAuthorization(t *testing.T, db *gorm.DB, user identity.User, get func(
 		t.Fatal("existing principal silently reinitialized")
 	}
 	initial := view()
-	if initial.Scope != "employee" || len(initial.Actions) != 17 {
+	if initial.Scope != "employee" || len(initial.Actions) != 18 {
 		t.Fatal("explicit bootstrap actions missing")
 	}
 	mutate("DELETE FROM authorization_memberships WHERE user_id=?", user.ID)
@@ -139,8 +139,8 @@ func checkAuthorization(t *testing.T, db *gorm.DB, user identity.User, get func(
 	get("/api/admin/orders", 503)
 	get("/api/admin/auth/permissions", 503)
 	mutate("UPDATE authorization_runtime_schema SET enabled=TRUE WHERE id=1")
-	if len(view().Actions) != 17 {
+	if len(view().Actions) != 18 {
 		t.Fatal("authorization restoration failed")
 	}
-	t.Log(`AUTHORIZATION_REHEARSAL {"migrations":55,"explicit_actions":17,"admin_label_no_implicit_grants":true,"multi_role_union":true,"all_required_actions":true,"warehouse_supplier_full_store_denied":true,"disabled_role_denied":true,"unknown_wildcard_case_denied":true,"old_snapshot_revocation":true,"command_lock_blocks_permission_writer":true,"disabled_schema_rejected":true,"autocommit_rejected":true,"existing_principal_bootstrap_rejected":true,"revision_changes":true,"legacy_grants_imported":false}`)
+	t.Log(`AUTHORIZATION_REHEARSAL {"migrations":56,"explicit_actions":18,"admin_label_no_implicit_grants":true,"multi_role_union":true,"all_required_actions":true,"warehouse_supplier_full_store_denied":true,"disabled_role_denied":true,"unknown_wildcard_case_denied":true,"old_snapshot_revocation":true,"command_lock_blocks_permission_writer":true,"disabled_schema_rejected":true,"autocommit_rejected":true,"existing_principal_bootstrap_rejected":true,"revision_changes":true,"legacy_grants_imported":false}`)
 }

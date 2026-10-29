@@ -295,7 +295,7 @@ export async function getOrderFulfillments(id:string,signal?:AbortSignal):Promis
 }
 
 
-export const ACTIONS=['authorization.read','authorization.write','device.enroll','device.read','inventory.read','inventory.stock.write','mail.read','mail.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','product.read','product.write','warehouse.read','warehouse.write'] as const
+export const ACTIONS=['authorization.read','authorization.write','device.enroll','device.read','device.source.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','product.read','product.write','warehouse.read','warehouse.write'] as const
 export type Action=typeof ACTIONS[number]
 export type ManagedRole={id:string;name:string;enabled:boolean;actions:Action[]}
 export type ManagedMember={user_id:string;name:string;enabled:boolean;kind:'employee'|'warehouse'|'supplier';roles:string[]}
@@ -358,4 +358,23 @@ export async function enrollDeviceTracking(productID:string,variantID:string,bod
  const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
  const d=await request<{tracking:DeviceTrackingState;replayed:boolean}>(`products/${encodeURIComponent(productID)}/variants/${encodeURIComponent(variantID)}/device-tracking`,{method:'POST',body,csrf},'/api/admin/')
  if(!d||typeof d.replayed!=='boolean'||!checkTracking(d.tracking,productID,variantID).enabled)throw new APIError(0,'request.invalid_response')
+}
+
+export type DeviceSource={id:string;name:string;type:'self'|'supplier';location_id:string;location_name:string|null}
+export type DeviceSourcesDirectory={revision:string;sources:DeviceSource[]}
+export type DeviceSourceInput={operation_id:string;expected_revision:string;name:string;type:'self'|'supplier'}
+function sourceProjection(s:DeviceSource):DeviceSource{
+ if(!s||!warehouseID(s.id)||!warehouseID(s.location_id)||typeof s.name!=='string'||!['self','supplier'].includes(s.type)||s.location_name!==null&&typeof s.location_name!=='string')throw new APIError(0,'request.invalid_response')
+ return {id:s.id,name:s.name,type:s.type,location_id:s.location_id,location_name:s.location_name}
+}
+export async function deviceSources(signal?:AbortSignal):Promise<DeviceSourcesDirectory>{
+ const d=await request<DeviceSourcesDirectory>('device-sources',{signal},'/api/admin/')
+ if(!d||!warehouseRevision(d.revision)||!Array.isArray(d.sources)||d.sources.length>1000)throw new APIError(0,'request.invalid_response')
+ const sources=d.sources.map(sourceProjection);if(new Set(sources.map(s=>s.id)).size!==sources.length)throw new APIError(0,'request.invalid_response');return {revision:d.revision,sources}
+}
+export async function createDeviceSource(body:DeviceSourceInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{source:DeviceSource;revision:string;replayed:boolean}>('device-sources',{method:'POST',body,csrf},'/api/admin/')
+ if(!d||!warehouseRevision(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+ const source=sourceProjection(d.source);if(source.name!==body.name||source.type!==body.type||source.location_name===null)throw new APIError(0,'request.invalid_response')
 }

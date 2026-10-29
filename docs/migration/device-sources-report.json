@@ -1,0 +1,61 @@
+{
+  "scope": "Device source creation, automatic warehouse and channel/provider links in Gin and React Admin; complete storefront remains acceptance target",
+  "counts": {
+    "real_gin_mysql_redis": true,
+    "default_disabled": true,
+    "configured_store_required": true,
+    "active_default_channel_required": true,
+    "manual_provider_required": true,
+    "source_creates_warehouse_and_both_links": true,
+    "warehouse_revision_advanced": true,
+    "concurrent_attempts": 4,
+    "single_creation": true,
+    "immutable_replay": true,
+    "duplicate_name_denied": true,
+    "revoked_replay_denied": true,
+    "warehouse_creation_denied": true,
+    "late_receipt_failure_atomic": true,
+    "deleted_location_replay_denied": true,
+    "strict_wire": true,
+    "intake_integrated": false
+  },
+  "migrations": 56,
+  "suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "go_test_all": "passed",
+  "admin_type_check": "passed",
+  "admin_build": "passed; existing large-chunk advisory",
+  "existing_admin_browser_tests": 19,
+  "synthetic_api_browser": {
+    "real_react_antd": true,
+    "synthetic_api": true,
+    "real_gin_joint": false,
+    "lost_response_same_request_retry": true,
+    "uncertain_form_locked": true,
+    "read_only_controls": true,
+    "unavailable_retry": true,
+    "duplicate_projection_rejected": true,
+    "browser_errors": 0
+  },
+  "sql_suite_isolated_mysql_redis": true,
+  "sql_suite_published_ports": 0,
+  "sql_suite_external_network": false,
+  "sql_cleanup": "both owned containers and temporary runner removed",
+  "real_joint_report": "device-sources-joint-report.json",
+  "limitations": [
+    "No device intake or photo integration",
+    "No warehouse device allocations, packing or shipping",
+    "Source list limit 1000; explicit failure above limit",
+    "All future source/location writers and imports must coordinate transaction locks"
+  ],
+  "implementation_sha256_lf": {
+    "retail/backend/internal/devices/sources.go": "809359994cc38d842bd556360135585e84cecb1ad8e5081265b4cf6ea2fc8796",
+    "retail/backend/internal/devices/sources_http.go": "645ea01c754e4c872045279f8f0947f3f5d307677498135c4afa3d52d3d2509e",
+    "retail/backend/internal/identity/device_sources_test.go": "ff20f2b90ecf934d0ea51eaa07d1be5e43158ae4289ba3468d667b9991f7bf4a",
+    "retail/backend/migrations/0057_device_sources.sql": "4c9ecde04d488bdf2f3fe03892b120715f87d51696d7764643e6650c3fdf70b6",
+    "retail/admin/src/DeviceSources.tsx": "668280f08c7a6940a2fab71accd0e9589cac1e7e0275a9ce5d80df81d787cc82"
+  }
+}

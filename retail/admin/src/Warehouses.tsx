@@ -4,11 +4,13 @@ import {APIError,warehouses,saveWarehouse} from './api'
 import type {Warehouse,WarehouseAddress,WarehouseCommand,WarehouseDirectory} from './api'
 import type {Copy} from './i18n'
 import {useAccess} from './Permissions'
+import DeviceSources from './DeviceSources'
 
 const empty:WarehouseAddress={address_1:'',address_2:'',company:'',city:'',country_code:'',phone:'',province:'',postal_code:''}
 type Fields={name:string;address:WarehouseAddress}
 export default function Warehouses({copy,onExpired}:{copy:Copy;onExpired():void}){
  const access=useAccess(),{message}=App.useApp(),[form]=Form.useForm<Fields>()
+ const [sourcesOpen,setSourcesOpen]=useState(false)
  const [attempt,setAttempt]=useState(0),[data,setData]=useState<WarehouseDirectory>(),[loading,setLoading]=useState(true),[loadError,setLoadError]=useState<unknown>()
  const [editor,setEditor]=useState<{location?:Warehouse}>(),[command,setCommand]=useState<WarehouseCommand>(),[error,setError]=useState<unknown>(),[pending,setPending]=useState(false),busy=useRef(false)
  useEffect(()=>{
@@ -32,7 +34,7 @@ export default function Warehouses({copy,onExpired}:{copy:Copy;onExpired():void}
  const fields:[keyof WarehouseAddress,string,number,boolean][]=[['address_1',copy.addressLine1,500,true],['address_2',copy.addressLine2,500,false],['company',copy.company,160,false],['city',copy.city,160,false],['province',copy.province,160,false],['postal_code',copy.postalCode,40,false],['country_code',copy.country,2,true],['phone',copy.phone,80,false]]
  return <section className="account-panel"><Space direction="vertical" size={24} className="full-width">
   <Typography.Paragraph type="secondary">{copy.warehouseInfo}</Typography.Paragraph>
-  <Space wrap><Button onClick={()=>setAttempt(n=>n+1)}>{copy.reload}</Button>{write&&<Button type="primary" onClick={()=>open()}>{copy.newWarehouse}</Button>}</Space>
+  <Space wrap>{access.can('device.read')&&<Button onClick={()=>setSourcesOpen(true)}>{copy.deviceSources}</Button>}<Button onClick={()=>setAttempt(n=>n+1)}>{copy.reload}</Button>{write&&<Button type="primary" onClick={()=>open()}>{copy.newWarehouse}</Button>}</Space>
   <Table<Warehouse> rowKey="id" dataSource={data.locations} pagination={{pageSize:20,showSizeChanger:false}} scroll={{x:700}} locale={{emptyText:copy.noWarehouses}} columns={[
    {title:copy.name,dataIndex:'name',render:(name:string,row)=>write?<Button type="link" onClick={()=>open(row)}>{name}</Button>:name},
    {title:copy.stockLocation,dataIndex:'id'},
@@ -40,6 +42,7 @@ export default function Warehouses({copy,onExpired}:{copy:Copy;onExpired():void}
    {title:copy.phone,render:(_,row)=>row.address?.phone||'—'},
   ]}/>
  </Space>
+ {sourcesOpen&&access.can('device.read')&&<DeviceSources copy={copy} onClose={()=>setSourcesOpen(false)} onExpired={onExpired} onChanged={()=>setAttempt(n=>n+1)}/>}
  <Drawer open={!!editor} onClose={close} title={editor?.location?copy.editWarehouse:copy.newWarehouse} width={520}>
   {error!==undefined&&<Alert type="error" showIcon message={e?.status===409?copy.warehouseConflict:uncertain?copy.saveUncertain:e?.status===400?copy.editInvalid:copy.editForbidden}/>}
   <Form form={form} layout="vertical" disabled={pending||!!command} onFinish={submit} requiredMark={false}>
