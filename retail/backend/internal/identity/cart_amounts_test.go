@@ -99,6 +99,7 @@ func checkCartAmounts(t *testing.T, ctx context.Context, db *gorm.DB, sessions *
 	exec(`INSERT INTO cart_shipping_tax_lines(id,shipping_method_id,code,rate,metadata,created_at,updated_at) VALUES ('amount-cart-shipping-tax','amount-cart-shipping','VAT',25,'{"private":"snapshot-secret"}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 	exec(`INSERT INTO cart_shipping_adjustments(id,shipping_method_id,amount,raw_amount,metadata,created_at,updated_at) VALUES ('amount-cart-shipping-discount','amount-cart-shipping',2,'{"value":"2","precision":20}','{"private":"snapshot-secret"}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 	r := check("235")
+	checkPromotionAmounts(t, ctx, db, ref, fingerprint)
 	if len(r.Lines) != 1 || r.Lines[0].Quantity != "2" || r.Lines[0].UnitPrice != "100" || r.Lines[0].VariantID == nil || *r.Lines[0].VariantID != "retired-sku" || r.Lines[0].Totals["total"] != "225" || len(r.ShippingMethods) != 1 || r.ShippingMethods[0].Totals["total"] != "10" {
 		t.Fatal("persisted line, tax or shipping semantics differ")
 	}

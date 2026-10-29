@@ -86,6 +86,23 @@ func readCartSnapshot(ctx context.Context, db *gorm.DB, store string, ref sessio
 // The caller owns the transaction and current cart authorization. All SQL
 // identifiers below are compile-time constants, never chosen from HTTP data.
 func assembleAmounts(tx *gorm.DB, cart Snapshot) (AmountDetail, error) {
+	return assembleAmountPhase(tx, cart, true)
+}
+
+// ReadPromotionAmounts computes the undiscounted monetary facts for the next
+// promotion refresh, using the currently saved prices and taxes. It rechecks
+// ownership/version in the caller's write transaction, but neither refreshes
+// prices/taxes nor commits. Call after those phases and roll back on any error.
+// This is internal input preparation, not a public quote or checkout command.
+func ReadPromotionAmounts(ctx context.Context, tx *gorm.DB, store string, ref sessionstore.CartReference, version string) (AmountDetail, error) {
+	cart, err := LockForWrite(ctx, tx, store, ref, version)
+	if err != nil {
+		return AmountDetail{}, err
+	}
+	return assembleAmountPhase(tx, cart, false)
+}
+
+func assembleAmountPhase(tx *gorm.DB, cart Snapshot, includeAdjustments bool) (AmountDetail, error) {
 	var currency struct{ DecimalDigits int }
 	if tx.Table("commerce_currencies").Select("decimal_digits").Where("code=? AND deleted_at IS NULL", cart.CurrencyCode).Take(&currency).Error != nil {
 		return AmountDetail{}, ErrSchema
@@ -121,7 +138,7 @@ func assembleAmounts(tx *gorm.DB, cart Snapshot) (AmountDetail, error) {
 		result.Lines = append(result.Lines, AmountLine{ID: row.ID, VariantID: row.VariantID, UnitPrice: unit, Quantity: quantity, IsTaxInclusive: inclusive})
 		ids = append(ids, row.ID)
 	}
-	taxes, adjustments, err := amountRelations(tx, "cart_line_tax_lines", "cart_line_adjustments", "item_id", ids, true)
+	taxes, adjustments, err := amountPhaseRelations(tx, "cart_line_tax_lines", "cart_line_adjustments", "item_id", ids, true, includeAdjustments)
 	if err != nil {
 		return AmountDetail{}, err
 	}
@@ -151,7 +168,7 @@ func assembleAmounts(tx *gorm.DB, cart Snapshot) (AmountDetail, error) {
 		result.ShippingMethods = append(result.ShippingMethods, AmountShipping{ID: row.ID, Name: row.Name, Amount: effective, IsTaxInclusive: inclusive})
 		ids = append(ids, row.ID)
 	}
-	taxes, adjustments, err = amountRelations(tx, "cart_shipping_tax_lines", "cart_shipping_adjustments", "shipping_method_id", ids, false)
+	taxes, adjustments, err = amountPhaseRelations(tx, "cart_shipping_tax_lines", "cart_shipping_adjustments", "shipping_method_id", ids, false, includeAdjustments)
 	if err != nil {
 		return AmountDetail{}, err
 	}
@@ -173,7 +190,7 @@ func assembleAmounts(tx *gorm.DB, cart Snapshot) (AmountDetail, error) {
 	return result, nil
 }
 
-func amountRelations(tx *gorm.DB, taxTable, adjustmentTable, parent string, ids []string, inclusive bool) (map[string][]totals.TaxLine, map[string][]totals.Adjustment, error) {
+func amountPhaseRelations(tx *gorm.DB, taxTable, adjustmentTable, parent string, ids []string, inclusive, includeAdjustments bool) (map[string][]totals.TaxLine, map[string][]totals.Adjustment, error) {
 	taxes, adjustments := map[string][]totals.TaxLine{}, map[string][]totals.Adjustment{}
 	if len(ids) == 0 {
 		return taxes, adjustments, nil
@@ -187,6 +204,9 @@ func amountRelations(tx *gorm.DB, taxTable, adjustmentTable, parent string, ids 
 			return nil, nil, ErrSchema
 		}
 		taxes[row.ParentID] = append(taxes[row.ParentID], totals.TaxLine{Rate: totals.Number{Decimal: row.Rate}})
+	}
+	if !includeAdjustments {
+		return taxes, adjustments, nil
 	}
 	var adjustmentRows []struct {
 		ParentID, Amount, RawAmount string

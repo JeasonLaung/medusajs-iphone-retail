@@ -1,0 +1,15 @@
+# 购物车促销的未折扣金额事实
+
+2026-10-29：`cart.ReadPromotionAmounts`是调用方写事务内的金额准备入口，先通过既有LockForWrite检查store、持有凭证绑定的当前ownership generation、购物车状态及精确version，再使用持久价格、税行和货币定义计算未折扣金额。它不接受浏览器subtotal/total，不接收直接购物车ID替代持有凭证，不提交事务、不修改版本、不消耗优惠预算。当前购物车授权仍只允许新创建匿名购物车，绑定来源customer_id的历史购物车继续拒绝。
+
+与公开历史金额ReadAmounts复用同一组价格raw解析、税转换、货币校验、数量/关系上限和精确totals引擎。公开历史金额路径继续加载并计算已有调整项；本准备路径完全不读取调整项，保留存储原状，避免重算时把已有优惠再次减入折扣基数。损坏的旧调整项不改变新计算基数，但后续替换/保存阶段必须处理，不能凭此宣称损坏数据已修复或手工优惠已保留完成。含税/未税商品与运费都返回subtotal、original_total等精确行结果，raw精度超出MySQL scalar仍完整保留。
+
+调用顺序必须是完整购物车命令验证/锁定、商品快照/价格/税/运费刷新后，再读取本事实。本入口能看到同一事务前面阶段的写入；后续失败由调用方整体rollback。它不自行更新价格或税，也不判断商品资格、库存、配送覆盖或customer groups。返回AmountDetail仅为复用金额容器，PricingRecalculated/Checkout仍false，不新增HTTP能力。行金额是后续促销事实的一部分；不能将此对象直接当成完整规则上下文，特别是订单total规则与历史已有调整项的处理，仍需按原工作流组装并验证。
+
+## 证据
+
+隔离CartRuntime人工数据库中，checkPromotionAmounts沿用真实Gin/MySQL/Redis授权fixture：校验商品未税200/含税250、含税运费未税10/含税12.5，与已有优惠后公开总额235保持区别；校验含税商品转换、大整数超18位raw精度、旧adjustment raw损坏不污染基数、不删旧记录、缺失/错误版本和错误generation、autocommit拒绝、同事务先改税后读出新金额再整体rollback、非法来源运费raw拒绝。每次成功/失败读取前后都对人工购物车及库存表做无写入指纹比较。其余已有公开金额/页面投影用例继续运行，检验行为不变。
+
+完整报告与cart-runtime-only报告均增加cart_promotion_amounts范围。报告需包含该项并匹配implementation_sha256才为通过证据；不意味着整个促销、HTTP修改或checkout已完成。
+
+仍缺完整商品关系/订单字段/客户登录态的可信规则上下文、旧调整项选择和新调整项保存、版本/幂等命令、支付库存checkout协调与Astro接入。T032/T033未验收。

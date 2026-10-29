@@ -36,6 +36,16 @@
     "pricing_recalculated": false,
     "checkout_integrated": false
   },
+  "cart_promotion_amounts": {
+    "actual_mysql": true,
+    "undiscounted_item_and_shipping_tax_bases": true,
+    "stale_adjustments_excluded_without_deletion": true,
+    "current_authority_and_version": true,
+    "caller_refresh_visible_and_rollback_atomic": true,
+    "malformed_source_amount_rejected": true,
+    "read_only_fingerprints": true,
+    "public_http_or_checkout_integrated": false
+  },
   "cart_items": {
     "real_mysql_redis": true,
     "explicit_migrations": 32,
@@ -899,7 +909,7 @@
     "checkout": false
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "f467d0319147f008e38b9f6708335408cc2e0dc4b47d0d6080269001e7f61770",
+    "retail/scripts/test-admin-auth.py": "34ce1645dc36d146f9cd07d5ec9603f7478e3368da3b7b25b07cf2644167c7e4",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "a0171978adfb9a70fc1426eb3ae6b1eae92cd7c2decfd6b09eedfcbe83c71e0d",
@@ -1104,10 +1114,11 @@
     "retail/backend/migrations/0026_cart_runtime_authority.sql": "70cff0b541fa6cfd845644b494142df473ec5bd4f191039a923ad6e5c399caec",
     "retail/backend/internal/identity/cart_runtime_test.go": "9dca5e31c8eb42affcf76044f4c7045433a91ec8b334f465a335ec07eea27231",
     "retail/backend/internal/identity/cart_http_test.go": "f779a67658e3f5fcef850548abd27d2b929424152cab547f52fe85876086365c",
-    "retail/backend/internal/identity/cart_amounts_test.go": "17cf6a9317de63d97918a78372ee49d3410e95c171b282196c53d6280562183d",
+    "retail/backend/internal/identity/cart_amounts_test.go": "1a0ca401bd0954c4d650597e02e787ff33896a23a6fdfca1de15b4c9842ab519",
+    "retail/backend/internal/identity/cart_promotion_amounts_test.go": "2eec18b655e075c91b2d3937660f7c1cd9fc1c51773e243f468c506de341d054",
     "retail/backend/internal/identity/cart_items_test.go": "7dc1d277b6c465b49f907766a59905206bf2e903d389c74bc2307ba4f4f7dcb0",
     "retail/backend/internal/identity/cart_items_http_test.go": "24272a0cfb71c8f26308b0bd47db754a5c1f6fccd1498622062125b438c98222",
-    "retail/backend/internal/cart/amounts.go": "8738bca3d2422e9e48952b810bed93d18f46afbd3b3cd570c30099a2d9973f12",
+    "retail/backend/internal/cart/amounts.go": "e9b75c133696bd13fc4b85fb9f3d06430763b62126d6d6958ff77ceb92aae2a8",
     "retail/backend/internal/cart/context_plan.go": "f08d12223db0f3bbe53f454e662559bf1e4782b8279dda1c39e944f5f04a6636",
     "retail/backend/internal/cart/context_plan_test.go": "d495c10f4bc13cfd64515aaf5e8ada9d094394e212d68d0d0a1ed76436c3155f",
     "retail/backend/internal/cart/http.go": "cb4127420e91033ee7bbb6159b7fa0b8d3e4b0fe4655b6bcda5e8538ec0cb4d2",
