@@ -56,6 +56,7 @@ func checkNotificationMail(t *testing.T, ctx context.Context, db *gorm.DB, user 
 		}
 		return out
 	}
+	checkOrderMailJobs(t, ctx, db, user, store, call, csrf)
 	initial := directory()
 	if len(initial.Accounts) != 0 || initial.RegistrationAccountID != nil {
 		t.Fatal("historical/default mail sender adopted")

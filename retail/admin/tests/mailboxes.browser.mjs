@@ -18,6 +18,7 @@ try{
   let body,status=200
   if(path==='/api/admin/auth/me')body={user:{id:'new-fixture',name:'Fixture',email:'admin@example.invalid',role:'admin',enabled:true}}
   else if(path==='/api/admin/auth/permissions')body={revision:'1',scope:'employee',actions:['mail.read','mail.write']}
+  else if(path==='/api/admin/notification-mail/order-jobs')body={jobs:[],count:0,limit:50,offset:0}
   else if(path==='/api/admin/notification-mail/accounts'){
    if(request.method()==='GET')body={revision:String(revision),registration_account_id:accounts.find(a=>a.registration)?.id??null,accounts}
    else{

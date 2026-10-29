@@ -1,0 +1,39 @@
+{
+  "formal_react_admin": true,
+  "synthetic_api": true,
+  "real_gin_mysql": false,
+  "ant_components": true,
+  "private_task_projection": true,
+  "uncertain_same_operation_retry": true,
+  "expired_disabled": true,
+  "permission_failure_visible": true,
+  "read_only_no_retry": true,
+  "languages": [
+    "en",
+    "zh-CN"
+  ],
+  "widths": [
+    390,
+    1440
+  ],
+  "page_overflow": false,
+  "browser_errors": 0,
+  "backend_validation": {
+    "isolated_snapshot": true,
+    "schema_migrations": 48,
+    "go_test_all": true,
+    "isolated_admin_authentication": true,
+    "real_external_email": false
+  },
+  "source_sha256": {
+    "retail/backend/internal/notificationmail/http.go": "b09fbfc9e7a05e2f8f8b96d30b08d76863d6f0982a8bfb58b9633033ad00217a",
+    "retail/backend/internal/notificationmail/order_jobs.go": "1696814ebadd6b7e1af64cacb95f11257efa0682e06b4ab0ec23f05f81311887",
+    "retail/backend/internal/notificationmail/order_jobs_http.go": "eee981c4ed5f353e8549c6fda3704fb83761ce3b6c95b2220f25d7ab5e2d8452",
+    "retail/backend/internal/identity/notification_mail_test.go": "74ab3a173ff5a89e527844140fb66683f270660ed3db6679a8f35e3f9bea7ee6",
+    "retail/backend/internal/identity/order_mail_jobs_test.go": "0913dfe3bf142a6a51773a99c4879cfb2e92d5d35b76f46a7f167ffd1d19c159",
+    "retail/admin/src/api.ts": "f7954b656d1335eb109cf37dc76675d7b47f7625e3fc8512ffc53a5ddc468fce",
+    "retail/admin/src/OrderMailJobs.tsx": "9baf4781f9f278c9c5bf48dcc9709d3704387898b234216e8993a89a3b4a72c4",
+    "retail/admin/src/Mailboxes.tsx": "75d267792d8db9c09438d6ff7f2ee5cb6272c4da5b522476421fccd82af13d45",
+    "retail/admin/tests/order-mail-jobs.browser.mjs": "1fa3b4653fcdd007233a40b8d930c73d1c8ca8ecb24bf753be2386b3fd18840e"
+  }
+}

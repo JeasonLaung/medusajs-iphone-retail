@@ -263,3 +263,26 @@ export async function getPermissions(signal?:AbortSignal):Promise<Permissions>{
  if(!d||typeof d.revision!=='string'||!/^[1-9]\d{0,19}$/.test(d.revision)||!['none','employee','warehouse','supplier'].includes(d.scope)||!Array.isArray(d.actions)||d.actions.length>ACTIONS.length||d.actions.some(a=>!ACTIONS.includes(a))||new Set(d.actions).size!==d.actions.length||d.scope!=='employee'&&d.actions.length!==0)throw new APIError(0,'request.invalid_response')
  return {revision:d.revision,scope:d.scope,actions:[...d.actions]}
 }
+
+export type OrderMailJob={id:string;order_id:string;status:'pending'|'sending'|'sent'|'failed';attempts:number;created_at:string;first_attempt_at:string|null;next_attempt_at:string|null;sent_at:string|null;failed_at:string|null;error_code:string|null;retryable:boolean}
+export type OrderMailJobs={jobs:OrderMailJob[];count:number;limit:number;offset:number}
+export type OrderMailRetry={operation_id:string;expected_attempts:number}
+const mailJobID=(v:unknown):v is string=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(v)
+export async function orderMailJobs(offset:number,signal?:AbortSignal):Promise<OrderMailJobs>{
+ if(!Number.isSafeInteger(offset)||offset<0||offset>100000)throw new APIError(400,'request.invalid_input')
+ const d=await request<OrderMailJobs>(`notification-mail/order-jobs?offset=${offset}`,{signal},'/api/admin/')
+ if(!d||!Array.isArray(d.jobs)||d.jobs.length>50||d.limit!==50||d.offset!==offset||!Number.isSafeInteger(d.count)||d.count<0)throw new APIError(0,'request.invalid_response')
+ const dates=['first_attempt_at','next_attempt_at','sent_at','failed_at'] as const
+ for(const j of d.jobs){
+  if(!j||!mailJobID(j.id)||typeof j.order_id!=='string'||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(j.order_id)||!['pending','sending','sent','failed'].includes(j.status)||!Number.isSafeInteger(j.attempts)||j.attempts<0||typeof j.created_at!=='string'||!Number.isFinite(Date.parse(j.created_at))||typeof j.retryable!=='boolean'||j.retryable&&j.status!=='failed'||j.error_code!==null&&(typeof j.error_code!=='string'||! /^[a-z_]{1,32}$/.test(j.error_code)))throw new APIError(0,'request.invalid_response')
+  for(const key of dates)if(j[key]!==null&&(typeof j[key]!=='string'||!Number.isFinite(Date.parse(j[key]!))))throw new APIError(0,'request.invalid_response')
+ }
+ if(new Set(d.jobs.map(j=>j.id)).size!==d.jobs.length)throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function retryOrderMail(id:string,body:OrderMailRetry):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ if(!mailJobID(id))throw new APIError(400,'request.invalid_input')
+ const d=await request<{id:string;replayed:boolean}>(`notification-mail/order-jobs/${encodeURIComponent(id)}/retry`,{method:'POST',body,csrf},'/api/admin/')
+ if(!d||d.id!==id||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}

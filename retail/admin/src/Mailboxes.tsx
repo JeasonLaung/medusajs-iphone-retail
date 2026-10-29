@@ -3,6 +3,7 @@ import {Alert,App,Button,Checkbox,Drawer,Empty,Form,Input,Space,Spin,Table,Tag,T
 import {APIError,mailboxes,saveMailbox} from './api'
 import type {Mailbox,MailboxCommand,MailboxDirectory} from './api'
 import type {Copy} from './i18n'
+import OrderMailJobs from './OrderMailJobs'
 import {useAccess} from './Permissions'
 
 type Fields=Pick<MailboxCommand,'name'|'email'|'reply_to'|'api_key'|'webhook_secret'|'enabled'|'registration'>
@@ -64,6 +65,7 @@ export default function Mailboxes({copy,onExpired}:{copy:Copy;onExpired():void})
     ...(access.can('mail.write')?[{title:copy.editMailbox,render:(_:unknown,a:Mailbox)=><Button onClick={()=>setEditor({account:a})}>{copy.editMailbox}</Button>}]:[]),
    ]}/>
   </>}
+  <OrderMailJobs copy={copy} onExpired={onExpired}/>
   {editor&&state.data&&<Editor key={editor.account?.id??'new'} copy={copy} account={editor.account} revision={state.data.revision} onClose={close} onExpired={onExpired} onSaved={()=>{message.success(copy.mailSaved);close()}}/>}
  </Space></section>
 }
