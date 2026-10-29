@@ -5,7 +5,7 @@ import {APIError,getPermissions} from './api'
 import type {Action,Permissions} from './api'
 import type {Copy} from './i18n'
 
-type Access={loading:boolean;error?:unknown;can(...actions:Action[]):boolean;retry():void}
+type Access={loading:boolean;scope?:Permissions['scope'];error?:unknown;can(...actions:Action[]):boolean;retry():void}
 const AccessContext=createContext<Access>({loading:true,can:()=>false,retry:()=>{}})
 export const useAccess=()=>useContext(AccessContext)
 export function PermissionsProvider({children,onExpired}:{children:ReactNode;onExpired():void}){
@@ -27,7 +27,7 @@ export function PermissionsProvider({children,onExpired}:{children:ReactNode;onE
  },[attempt,onExpired])
  const retry=useCallback(()=>{setState({loading:true});setAttempt(n=>n+1)},[])
  const can=(...actions:Action[])=>actions.length>0&&state.data?.scope==='employee'&&actions.every(a=>state.data!.actions.includes(a))
- return <AccessContext.Provider value={{loading:state.loading,error:state.error,can,retry}}>{children}</AccessContext.Provider>
+ return <AccessContext.Provider value={{loading:state.loading,scope:state.data?.scope,error:state.error,can,retry}}>{children}</AccessContext.Provider>
 }
 export function RequireAction({action,copy,children}:{action:Action;copy:Copy;children:ReactNode}){
  const access=useAccess()

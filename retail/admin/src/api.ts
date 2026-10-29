@@ -124,6 +124,24 @@ export async function editProduct(id:string,body:ProductEdit):Promise<void> {
 export type VariantDetail = {id:string;product_id:string;title:string;sku:string|null;thumbnail:string|null;variant_rank:number|null;manage_inventory:boolean;allow_backorder:boolean;options:{id:string;option_id:string;value:string}[];unassigned_option_value_ids:string[];configuration_complete:boolean;images:ProductImage[]}
 export type VariantList = {variants:VariantDetail[];count:number;limit:number;offset:number}
 export type InventoryLevel={revision:string;id:string;location_id:string;location_name:string|null;stocked_quantity:string;reserved_quantity:string;incoming_quantity:string;available_quantity:string;reservation_quantity:string;reservation_count:number;reconciled:boolean}
+export type WarehouseAccess={revision:string;actions:(typeof WAREHOUSE_USER_ACTIONS)[number][];locations:{id:string;name:string}[]}
+export type WarehouseInventoryLevel=Pick<InventoryLevel,'revision'|'id'|'location_id'|'stocked_quantity'|'reserved_quantity'|'incoming_quantity'|'available_quantity'>&{inventory_item_id:string;sku:string|null;title:string|null}
+export type WarehouseInventoryPage={location_id:string;levels:WarehouseInventoryLevel[];offset:number;limit:50;has_more:boolean;writes_enabled:boolean}
+export async function getWarehouseAccess(signal?:AbortSignal):Promise<WarehouseAccess>{
+ const d=await request<WarehouseAccess>('warehouse/access',{signal},'/api/admin/')
+ if(!d||!warehouseRevision(d.revision)||!Array.isArray(d.actions)||d.actions.length>3||d.actions.some(a=>!WAREHOUSE_USER_ACTIONS.includes(a))||new Set(d.actions).size!==d.actions.length||!Array.isArray(d.locations)||d.locations.length>1000||!d.locations.every(l=>l&&warehouseID(l.id)&&typeof l.name==='string')||new Set(d.locations.map(l=>l.id)).size!==d.locations.length)throw new APIError(0,'request.invalid_response')
+ return {revision:d.revision,actions:[...d.actions],locations:d.locations.map(({id,name})=>({id,name}))}
+}
+export async function getWarehouseInventory(location:string,offset:number,signal?:AbortSignal):Promise<WarehouseInventoryPage>{
+ const d=await request<WarehouseInventoryPage>(`warehouse/locations/${encodeURIComponent(location)}/inventory?offset=${offset}`,{signal},'/api/admin/')
+ if(!d||d.location_id!==location||d.offset!==offset||d.limit!==50||typeof d.has_more!=='boolean'||typeof d.writes_enabled!=='boolean'||!Array.isArray(d.levels)||d.levels.length>50||!d.levels.every(l=>l&&warehouseID(l.id)&&warehouseID(l.inventory_item_id)&&l.location_id===location&&nullableText(l.sku)&&nullableText(l.title)&&[l.stocked_quantity,l.reserved_quantity,l.incoming_quantity,l.available_quantity].every(inventoryDecimal)&&/^[a-f0-9]{64}$/.test(l.revision))||new Set(d.levels.map(l=>l.id)).size!==d.levels.length)throw new APIError(0,'request.invalid_response')
+ return {...d,levels:d.levels.map(({id,inventory_item_id,location_id,sku,title,revision,stocked_quantity,reserved_quantity,incoming_quantity,available_quantity})=>({id,inventory_item_id,location_id,sku,title,revision,stocked_quantity,reserved_quantity,incoming_quantity,available_quantity}))}
+}
+export async function editWarehouseStock(location:string,id:string,body:StockEdit):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{revision:string;replayed:boolean}>(`warehouse/locations/${encodeURIComponent(location)}/inventory/${encodeURIComponent(id)}/stock`,{method:'POST',body,csrf},'/api/admin/')
+ if(!d||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}
 export type InventoryHold={location_id:string;reason:'reservation_mismatch'|'negative_balance'|'unmatched_reservations'}
 export type InventoryItem={migration_holds:InventoryHold[];inventory_item_id:string;required_quantity:string;sku:string|null;title:string|null;item_available:boolean;levels:InventoryLevel[];unmatched_reservations:{location_id:string;quantity:string;count:number}[]}
 export type VariantInventory={product_id:string;variant_id:string;manage_inventory:boolean;allow_backorder:boolean;writes_enabled:false;stock_edit_enabled:boolean;items:InventoryItem[]}

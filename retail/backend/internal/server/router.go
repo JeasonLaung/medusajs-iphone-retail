@@ -136,6 +136,9 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	private.POST("/auth/logout", auth.Logout)
 	access := authorization.Handler{DB: db}
 	private.GET("/auth/permissions", access.Snapshot)
+	private.GET("/warehouse/access", access.WarehouseSnapshot)
+	private.GET("/warehouse/locations/:location_id/inventory", (inventory.Handler{DB: db}).WarehouseInventory)
+	private.POST("/warehouse/locations/:location_id/inventory/:id/stock", (inventory.Handler{DB: db}).UpdateWarehouseStock)
 	private.GET("/warehouses", access.Require(authorization.WarehouseRead), (warehouse.Handler{DB: db}).Directory)
 	private.POST("/warehouses", access.Require(authorization.WarehouseRead, authorization.WarehouseWrite), (warehouse.Handler{DB: db}).Command)
 	private.GET("/warehouse-users", access.Require(authorization.Read, authorization.WarehouseRead), (warehouseusers.Handler{DB: db}).Directory)

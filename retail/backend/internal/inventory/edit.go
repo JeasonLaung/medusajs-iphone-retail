@@ -129,6 +129,17 @@ func decodeStock(reader io.Reader) (StockInput, error) {
 // reservations, serial devices, variant requirements or releases migration holds.
 // Every future reservation/fulfillment command must lock the same level first.
 func (h Handler) EditStock(ctx context.Context, levelID string, actor identity.User, in StockInput) (StockResult, error) {
+	return h.editStock(ctx, levelID, "", actor, in)
+}
+
+func (h Handler) EditWarehouseStock(ctx context.Context, locationID, levelID string, actor identity.User, in StockInput) (StockResult, error) {
+	if !validID(locationID) {
+		return StockResult{}, errStockInput
+	}
+	return h.editStock(ctx, levelID, locationID, actor, in)
+}
+
+func (h Handler) editStock(ctx context.Context, levelID, locationID string, actor identity.User, in StockInput) (StockResult, error) {
 	var result StockResult
 	if !validID(levelID) || !validStockInput(in) {
 		return result, errStockInput
@@ -138,8 +149,17 @@ func (h Handler) EditStock(ctx context.Context, levelID string, actor identity.U
 	}
 	request, _ := json.Marshal(in)
 	err := h.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := authorization.CheckTx(ctx, tx, actor, authorization.InventoryRead, authorization.StockWrite); err != nil {
+		check := func() error {
+			if locationID != "" {
+				return authorization.CheckWarehouseTx(ctx, tx, actor, locationID, authorization.InventoryRead, authorization.StockWrite)
+			}
+			return authorization.CheckTx(ctx, tx, actor, authorization.InventoryRead, authorization.StockWrite)
+		}
+		if err := check(); err != nil {
 			if errors.Is(err, authorization.ErrDenied) {
+				if locationID != "" {
+					return authorization.ErrDenied
+				}
 				return ErrStockDenied
 			}
 			return err
@@ -158,8 +178,18 @@ func (h Handler) EditStock(ctx context.Context, levelID string, actor identity.U
 			return ErrSchema
 		}
 		var before stockState
-		if err = tx.Table("inventory_levels").Clauses(clause.Locking{Strength: "UPDATE"}).Select("id,inventory_item_id,location_id,stocked_quantity,reserved_quantity,incoming_quantity,updated_at").Where("id=? AND deleted_at IS NULL", levelID).Take(&before).Error; err != nil {
+		levelQuery := tx.Table("inventory_levels").Clauses(clause.Locking{Strength: "UPDATE"}).Select("id,inventory_item_id,location_id,stocked_quantity,reserved_quantity,incoming_quantity,updated_at").Where("id=? AND deleted_at IS NULL", levelID)
+		if locationID != "" {
+			levelQuery = levelQuery.Where("location_id=?", locationID)
+		}
+		if err = levelQuery.Take(&before).Error; err != nil {
+			if locationID != "" && errors.Is(err, gorm.ErrRecordNotFound) {
+				return authorization.ErrDenied
+			}
 			return err
+		}
+		if locationID != "" && before.LocationID != locationID {
+			return authorization.ErrDenied
 		}
 		// Parent locks serialize deletions; missing/deleted objects cannot be edited.
 		for _, p := range []struct{ table, id string }{{"inventory_items", before.InventoryItemID}, {"inventory_locations", before.LocationID}} {
@@ -257,7 +287,15 @@ func (h Handler) EditStock(ctx context.Context, levelID string, actor identity.U
 	})
 	return result, err
 }
-func (h Handler) UpdateStock(c *gin.Context) {
+func (h Handler) UpdateStock(c *gin.Context) { h.updateStock(c, "") }
+func (h Handler) UpdateWarehouseStock(c *gin.Context) {
+	if !validID(c.Param("location_id")) {
+		platform.Fail(c, 400, "inventory.invalid_edit", "Invalid warehouse")
+		return
+	}
+	h.updateStock(c, c.Param("location_id"))
+}
+func (h Handler) updateStock(c *gin.Context, locationID string) {
 	if !validID(c.Param("id")) || c.Request.URL.RawQuery != "" {
 		platform.Fail(c, 400, "inventory.invalid_edit", "Invalid stock edit")
 		return
@@ -278,8 +316,10 @@ func (h Handler) UpdateStock(c *gin.Context) {
 		platform.Fail(c, 401, "auth.unauthorized", "Sign in to continue")
 		return
 	}
-	result, err := h.EditStock(c.Request.Context(), c.Param("id"), actor, in)
+	result, err := h.editStock(c.Request.Context(), c.Param("id"), locationID, actor, in)
 	switch {
+	case errors.Is(err, authorization.ErrDenied):
+		platform.Fail(c, 403, "authorization.denied", "Action not permitted")
 	case errors.Is(err, ErrStockDenied):
 		platform.Fail(c, 401, "auth.unauthorized", "Account changed; sign in again")
 	case errors.Is(err, ErrStockConflict):

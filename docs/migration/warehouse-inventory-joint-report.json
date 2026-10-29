@@ -1,0 +1,30 @@
+{
+  "scope": "Warehouse account create, scoped inventory edit and account disable with real browser and Gin",
+  "counts": {
+    "real_browser_react_gin_mysql_redis": true,
+    "api_mocking": false,
+    "admin_creates_scoped_user": true,
+    "new_user_login": true,
+    "warehouse_menu_only": true,
+    "cross_warehouse_denied": true,
+    "private_projection": true,
+    "exact_stock_saved_reloaded": true,
+    "admin_disable_revokes_old_session": true,
+    "language_en_zh": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0
+  },
+  "durable_mysql_verified": true,
+  "real_accounts_used": false,
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "network": "owned bridge; egress unrestricted",
+    "published_ports": "one random API port on 127.0.0.1 only"
+  },
+  "tls_secure_cookie_verified": false,
+  "full_warehouse_fulfillment_accepted": false,
+  "cleanup": "both owned containers, bridge and temporary runners removed"
+}

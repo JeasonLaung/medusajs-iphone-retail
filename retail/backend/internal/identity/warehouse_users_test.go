@@ -59,7 +59,7 @@ func checkWarehouseUsers(t *testing.T, db *gorm.DB, actor identity.User, call fu
 	defer exec("UPDATE warehouse_scope_runtime SET enabled=FALSE WHERE id=1")
 	exec("INSERT INTO inventory_locations(id,name,created_at,updated_at) VALUES('user-scope-a','A',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('user-scope-b','B',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
 	d := read()
-	c := warehouseusers.Command{OperationID: uuid.NewString(), ExpectedRevision: d.Revision, Name: "仓库人员", Email: "warehouse-user@example.invalid", Password: password, Enabled: true, Mode: "selected", Locations: []string{"user-scope-a"}, Actions: []authorization.Action{authorization.InventoryRead}}
+	c := warehouseusers.Command{OperationID: uuid.NewString(), ExpectedRevision: d.Revision, Name: "仓库人员", Email: "warehouse-user@example.invalid", Password: password, Enabled: true, Mode: "selected", Locations: []string{"user-scope-a"}, Actions: []authorization.Action{authorization.InventoryRead, authorization.StockWrite}}
 	h := warehouseusers.Handler{DB: db}
 	var fresh atomic.Int32
 	var failed atomic.Bool
@@ -112,6 +112,7 @@ func checkWarehouseUsers(t *testing.T, db *gorm.DB, actor identity.User, call fu
 		t.Fatal("cookie missing")
 		return nil
 	}
+	warehouseCSRF := ""
 	login := func(pass string, status int) *http.Cookie {
 		t.Helper()
 		challenge := call("POST", "/api/admin/auth/challenge", "", origin, "", nil, 200)
@@ -126,9 +127,11 @@ func checkWarehouseUsers(t *testing.T, db *gorm.DB, actor identity.User, call fu
 		if status != 200 {
 			return nil
 		}
+		warehouseCSRF = cookie(out, "__Host-retail_admin_csrf").Value
 		return cookie(out, "__Host-retail_admin_session")
 	}
 	session := login(password, 200)
+	checkWarehouseInventory(t, target, call, session, warehouseCSRF, db)
 	call("GET", "/api/admin/auth/me", "", origin, "", []*http.Cookie{session}, 200)
 	call("GET", "/api/admin/orders", "", origin, "", []*http.Cookie{session}, 403)
 	call("GET", "/api/admin/warehouse-users", "", origin, "", []*http.Cookie{session}, 403)

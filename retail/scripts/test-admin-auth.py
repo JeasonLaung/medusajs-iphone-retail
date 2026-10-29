@@ -117,7 +117,7 @@ def main():
             suites = ['OrderNumbering']
         output, errors = b'', b''
         if warehouses_only:
-            suites = ['AdminAuthentication']
+            suites = ['AdminAuthentication','InventoryStockEdits','ProductInventory']
         for suite in suites:
             print(json.dumps({'running_suite': suite}), flush=True)
             tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1', mysql_id,
@@ -174,6 +174,10 @@ def main():
             if len(user_markers)!=1:
                 raise RuntimeError('Owned warehouse user verification missing')
             counts['warehouse_users'] = json.loads(user_markers[0])
+            inventory_markers = [line.split('WAREHOUSE_INVENTORY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'WAREHOUSE_INVENTORY_REHEARSAL ' in line]
+            if len(inventory_markers)!=1:
+                raise RuntimeError('Owned warehouse inventory verification missing')
+            counts['warehouse_inventory'] = json.loads(inventory_markers[0])
             report = {'scope':'warehouse create/edit and explicit permissions, not warehouse user/fulfillment acceptance','counts':counts,'migrations':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),'isolated_mysql_redis':True,'published_ports':0,'external_network':False}
         elif numbering_only:
             markers = [line.split('ORDER_NUMBERING_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_NUMBERING_REHEARSAL ' in line]

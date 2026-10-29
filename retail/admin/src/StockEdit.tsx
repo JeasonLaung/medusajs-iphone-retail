@@ -6,7 +6,8 @@ import type { Copy } from './i18n'
 import { amountText } from './VariantPrices'
 
 type Fields={stocked_quantity:string;incoming_quantity:string}
-export default function StockEdit({level,copy,onClose,onSaved,onExpired}:{level:InventoryLevel;copy:Copy;onClose():void;onSaved():void;onExpired():void}){
+export type StockEditLevel=Pick<InventoryLevel,'id'|'revision'|'location_id'|'location_name'|'stocked_quantity'|'reserved_quantity'|'incoming_quantity'>
+export default function StockEdit({level,copy,onClose,onSaved,onExpired,save=editStock}:{level:StockEditLevel;copy:Copy;onClose():void;onSaved():void;onExpired():void;save?:(id:string,body:Attempt)=>Promise<unknown>}){
   const [form]=Form.useForm<Fields>()
   const active=useRef(false)
   const [saving,setSaving]=useState(false)
@@ -18,7 +19,7 @@ export default function StockEdit({level,copy,onClose,onSaved,onExpired}:{level:
     if(!attempt&&(!stocked||!incoming)){setError('invalid');return}
     const body=attempt??{operation_id:crypto.randomUUID(),expected_revision:level.revision,stocked_quantity:stocked!,incoming_quantity:incoming!}
     active.current=true;setSaving(true);setAttempt(body);setError(undefined)
-    try{await editStock(level.id,body);onSaved()}
+    try{await save(level.id,body);onSaved()}
     catch(err){
       if(err instanceof APIError&&err.status===401)onExpired()
       else if(err instanceof APIError&&err.code==='inventory.reconciliation_required')setError('held')

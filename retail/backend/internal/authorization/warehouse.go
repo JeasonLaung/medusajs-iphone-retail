@@ -33,38 +33,14 @@ func CheckWarehouseTx(ctx context.Context, tx *gorm.DB, actor identity.User, loc
 			return ErrDenied
 		}
 	}
-	view, err := inspect(ctx, tx, actor, true)
+	held, err := warehouseAuthority(ctx, tx, actor)
 	if err != nil {
 		return err
-	}
-	if view.Scope != "warehouse" {
-		return ErrDenied
-	}
-	var grants []struct{ ActionCode Action }
-	if tx.WithContext(ctx).Table("authorization_memberships AS m").Select("a.action_code").
-		Joins("JOIN authorization_roles r ON r.id=m.role_id AND r.enabled=TRUE").
-		Joins("JOIN authorization_role_actions a ON a.role_id=r.id").Where("m.user_id=?", actor.ID).
-		Order("a.action_code ASC").Limit(1001).Clauses(clause.Locking{Strength: "SHARE"}).Scan(&grants).Error != nil || len(grants) > 1000 {
-		return ErrUnavailable
-	}
-	held := map[Action]bool{}
-	for _, row := range grants {
-		if !known(row.ActionCode) {
-			return ErrUnavailable
-		}
-		held[row.ActionCode] = true
 	}
 	for _, action := range actions {
 		if !held[action] {
 			return ErrDenied
 		}
-	}
-	var gate struct {
-		Version int
-		Enabled bool
-	}
-	if tx.WithContext(ctx).Table("warehouse_scope_runtime").Clauses(clause.Locking{Strength: "SHARE"}).Where("id=1").Take(&gate).Error != nil || gate.Version != 1 || !gate.Enabled {
-		return ErrUnavailable
 	}
 	var scope struct{ Mode string }
 	err = tx.WithContext(ctx).Table("authorization_warehouse_scopes").Clauses(clause.Locking{Strength: "SHARE"}).Where("user_id=?", actor.ID).Take(&scope).Error
@@ -109,4 +85,36 @@ func warehouseLocationID(id string) bool {
 		}
 	}
 	return strings.TrimSpace(id) == id
+}
+
+func warehouseAuthority(ctx context.Context, tx *gorm.DB, actor identity.User) (map[Action]bool, error) {
+	view, err := inspect(ctx, tx, actor, true)
+	if err != nil {
+		return nil, err
+	}
+	if view.Scope != "warehouse" {
+		return nil, ErrDenied
+	}
+	var grants []struct{ ActionCode Action }
+	if tx.WithContext(ctx).Table("authorization_memberships AS m").Select("a.action_code").
+		Joins("JOIN authorization_roles r ON r.id=m.role_id AND r.enabled=TRUE").
+		Joins("JOIN authorization_role_actions a ON a.role_id=r.id").Where("m.user_id=?", actor.ID).
+		Order("a.action_code ASC").Limit(1001).Clauses(clause.Locking{Strength: "SHARE"}).Scan(&grants).Error != nil || len(grants) > 1000 {
+		return nil, ErrUnavailable
+	}
+	held := map[Action]bool{}
+	for _, row := range grants {
+		if !known(row.ActionCode) {
+			return nil, ErrUnavailable
+		}
+		held[row.ActionCode] = true
+	}
+	var gate struct {
+		Version int
+		Enabled bool
+	}
+	if tx.WithContext(ctx).Table("warehouse_scope_runtime").Clauses(clause.Locking{Strength: "SHARE"}).Where("id=1").Take(&gate).Error != nil || gate.Version != 1 || !gate.Enabled {
+		return nil, ErrUnavailable
+	}
+	return held, nil
 }
