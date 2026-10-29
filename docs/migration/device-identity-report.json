@@ -1,0 +1,56 @@
+{
+  "scope": "C05 device persistence and transactional identity prerequisite; whole storefront remains the acceptance target",
+  "device_identity": {
+    "real_mysql": true,
+    "reviewed_device_tables": 6,
+    "default_disabled": true,
+    "leading_zero_eid": true,
+    "cross_column_radio_conflict": true,
+    "unclaimed_source_rows_checked": true,
+    "concurrent_attempts": 6,
+    "single_winner": true,
+    "batch_failure_atomic": true,
+    "late_claim_failure_atomic": true,
+    "single_active_assignment": true,
+    "enum_and_json_rejected": true,
+    "autocommit_rejected": true,
+    "stock_changed": false,
+    "intake_http_or_ui_integrated": false
+  },
+  "migrations": 54,
+  "suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "isolated_mysql_redis": true,
+  "published_ports": 0,
+  "external_network": false,
+  "cleanup": "both owned containers and temporary runner removed",
+  "reviewed_source": {
+    "tables": [
+      "devices",
+      "device_assignments",
+      "device_events",
+      "device_sources",
+      "device_supply_commitments",
+      "device_variant_tracking"
+    ],
+    "reviewed_statements": 34,
+    "reviewed_sql_sha256": "e5cad256d0c8976ad9eb410cfe978385041d2ac5f4e594975e99158ee4b3aa9e"
+  },
+  "go_test_all": "passed",
+  "limitations": [
+    "No intake HTTP or Ant UI integrated",
+    "No allocation, packing or shipping command integrated",
+    "No complete storefront fulfillment or real payment-provider acceptance",
+    "Stock unchanged means no inventory writes in component; not intake reconciliation",
+    "All future device writers must use the same transaction gate"
+  ],
+  "implementation_sha256_lf": {
+    "retail/backend/internal/devices/identity.go": "b397ccf7db294dce67d42a6338f8163fdc7473461cc2bad755a4ea68612ae1b0",
+    "retail/backend/internal/devices/identity_test.go": "85b3cb019665ed7deec5f6a1ffe87433f9744afcfdb4be1cefdf7b6a4d5ab3cd",
+    "retail/backend/internal/identity/device_identity_test.go": "653fd8ab9518ad11db367464ab9ffa71509994775fa3b305c023053ec2c3c8b7",
+    "retail/backend/migrations/0055_device_identity.sql": "cb20e04e4fc8fb73800df3edf71e099521e45d81b9b0d9a5fd54fa96e9c6e6ba"
+  }
+}

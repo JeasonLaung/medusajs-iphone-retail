@@ -63,11 +63,11 @@ func TestOwnedPaymentSchema(t *testing.T) {
 	}
 	db, gdb := open("payment_schema_fresh")
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 53 || schema.CheckApplied(ctx, db, plan) != nil || payments.Ready(ctx, gdb) != nil {
+	if err != nil || r.Applied != 54 || schema.CheckApplied(ctx, db, plan) != nil || payments.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh payment schema failed")
 	}
 	r, err = schema.Apply(ctx, db, plan)
-	if err != nil || r.Skipped != 53 {
+	if err != nil || r.Skipped != 54 {
 		t.Fatal("payment schema replay changed facts")
 	}
 

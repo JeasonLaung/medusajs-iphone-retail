@@ -178,6 +178,10 @@ def main():
             if len(inventory_markers)!=1:
                 raise RuntimeError('Owned warehouse inventory verification missing')
             counts['warehouse_inventory'] = json.loads(inventory_markers[0])
+            device_markers = [line.split('DEVICE_IDENTITY_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'DEVICE_IDENTITY_REHEARSAL ' in line]
+            if len(device_markers)!=1:
+                raise RuntimeError('Owned device identity verification missing')
+            counts['device_identity'] = json.loads(device_markers[0])
             report = {'scope':'warehouse create/edit and explicit permissions, not warehouse user/fulfillment acceptance','counts':counts,'migrations':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),'isolated_mysql_redis':True,'published_ports':0,'external_network':False}
         elif numbering_only:
             markers = [line.split('ORDER_NUMBERING_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_NUMBERING_REHEARSAL ' in line]
