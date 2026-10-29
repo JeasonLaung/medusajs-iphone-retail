@@ -1,7 +1,7 @@
 """Actual Astro/browser -> Gin handlers -> bounded, disposable MySQL/Redis.
 
-The paid order is produced by the existing isolated payment-adapter rehearsal.
-This accepts account/order integration only, not real provider payments or mail.
+Default: account/order attachment, with an isolated adapter-produced order.
+--promotions: checkout discount mutations. Neither accepts real payments/mail.
 """
 import json
 import os
@@ -12,6 +12,7 @@ import shutil
 import subprocess
 import time
 import uuid
+import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 LABEL = 'eurorefurb.customer-orders-rehearsal'
@@ -39,6 +40,16 @@ def wait_owned(process, timeout):
 
 
 def main():
+    if sys.argv[1:] not in ([], ['--promotions']):
+        raise RuntimeError('Unknown joint rehearsal option')
+    promotion = sys.argv[1:] == ['--promotions']
+    log_prefix = 'promotion-joint' if promotion else 'customer-orders-joint'
+    fixture_switch = 'PROMOTION_BROWSER_FIXTURE' if promotion else 'CUSTOMER_ORDERS_BROWSER_FIXTURE'
+    fixture_key = 'PROMOTION_FIXTURE_KEY' if promotion else 'CUSTOMER_ORDERS_FIXTURE_KEY'
+    test_script = 'tests/promotions.live.mjs' if promotion else 'tests/customer-orders.live.mjs'
+    browser_marker = 'PROMOTION_JOINT_BROWSER ' if promotion else 'CUSTOMER_ORDERS_JOINT_BROWSER '
+    sql_marker = 'PROMOTION_JOINT_SQL ' if promotion else 'CUSTOMER_ORDERS_JOINT_SQL '
+    regression_marker = 'CART_PROMOTION_COMMAND_REHEARSAL ' if promotion else 'CUSTOMER_ORDER_OWNERSHIP_REHEARSAL '
     if shutil.disk_usage(ROOT).free < 2 * (1 << 30):
         raise RuntimeError('At least 2 GiB free disk required')
     for image in ['mysql:8.4', 'redis:7-alpine']:
@@ -59,10 +70,10 @@ def main():
     try:
         build = subprocess.run(['go', 'test', '-c', '-o', str(binary), './internal/identity'], cwd=ROOT / 'retail/backend', env=env, capture_output=True, timeout=120)
         if build.returncode:
-            (logs / 'customer-orders-joint-build.log').write_bytes(build.stdout + build.stderr)
+            (logs / (log_prefix + '-build.log')).write_bytes(build.stdout + build.stderr)
             raise RuntimeError('Identity test binary compilation failed; inspect ignored build log')
         built = subprocess.run([str(node), 'node_modules/astro/bin/astro.mjs', 'build'], cwd=ROOT / 'retail/storefront', capture_output=True, timeout=120)
-        (logs / 'customer-orders-joint-astro-build.log').write_bytes(built.stdout + built.stderr)
+        (logs / (log_prefix + '-astro-build.log')).write_bytes(built.stdout + built.stderr)
         require(built, 'Astro build failed; inspect ignored build log')
         network = require(docker('network', 'create', '--label', LABEL + '=' + owner, 'customer-orders-' + owner[:12]), 'Owned network creation failed')
         mysql = require(docker('run', '-d', '--name', 'customer-orders-mysql-' + owner[:12], '--label', LABEL + '=' + owner,
@@ -93,27 +104,30 @@ def main():
         match = re.fullmatch(r'127\.0\.0\.1:(\d+)', published)
         if not match or not 1 <= int(match[1]) <= 65535:
             raise RuntimeError('Expected one loopback-only API port')
-        stream = (logs / 'customer-orders-joint-sql.log').open('wb')
+        stream = (logs / (log_prefix + '-sql.log')).open('wb')
         process = subprocess.Popen(['docker', 'exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1',
-                                    '-e', 'CUSTOMER_ORDERS_BROWSER_FIXTURE=1', '-e', 'CUSTOMER_ORDERS_FIXTURE_KEY=' + key,
+                                    '-e', fixture_switch + '=1', '-e', fixture_key + '=' + key,
                                     mysql, '/opt/identity.test', '-test.v', '-test.run', '^TestOwnedCartRuntime$', '-test.timeout', '150s'], stdout=stream, stderr=subprocess.STDOUT)
         browser_env = os.environ.copy()
-        browser_env.update(CUSTOMER_ORDERS_TEST_GIN='http://127.0.0.1:' + match[1], CUSTOMER_ORDERS_FIXTURE_KEY=key)
-        browser = subprocess.run([str(node), 'tests/customer-orders.live.mjs'], cwd=ROOT / 'retail/storefront', env=browser_env, capture_output=True, timeout=100)
-        (logs / 'customer-orders-joint-browser.log').write_bytes(browser.stdout + browser.stderr)
+        browser_env.update(CUSTOMER_ORDERS_TEST_GIN='http://127.0.0.1:' + match[1])
+        browser_env[fixture_key] = key
+        browser = subprocess.run([str(node), test_script], cwd=ROOT / 'retail/storefront', env=browser_env, capture_output=True, timeout=100)
+        (logs / (log_prefix + '-browser.log')).write_bytes(browser.stdout + browser.stderr)
         require(browser, 'Actual Gin/Astro browser check failed; inspect ignored browser and SQL logs')
         if wait_owned(process, 45):
             raise RuntimeError('SQL regressions after browser failed; inspect ignored SQL log')
         stream.close()
         stream = None
-        sql_output = (logs / 'customer-orders-joint-sql.log').read_text(encoding='utf-8')
-        markers = [line.split('CUSTOMER_ORDERS_JOINT_BROWSER ', 1)[1] for line in browser.stdout.decode().splitlines() if line.startswith('CUSTOMER_ORDERS_JOINT_BROWSER ')]
-        if len(markers) != 1 or 'CUSTOMER_ORDERS_JOINT_SQL ' not in sql_output or 'CUSTOMER_ORDER_OWNERSHIP_REHEARSAL ' not in sql_output or '\nPASS\n' not in sql_output:
+        sql_output = (logs / (log_prefix + '-sql.log')).read_text(encoding='utf-8')
+        markers = [line.split(browser_marker, 1)[1] for line in browser.stdout.decode().splitlines() if line.startswith(browser_marker)]
+        if len(markers) != 1 or sql_marker not in sql_output or regression_marker not in sql_output or '\nPASS\n' not in sql_output:
             raise RuntimeError('Joint evidence incomplete')
         report = {'format_version': 1, 'node_version': version, 'browser': json.loads(markers[0]), 'post_browser_sql_regression_passed': True,
-                  'sql_attachment_and_unique_audit_checked': True, 'production_services_or_data_used': False, 'full_storefront_accepted': False,
+                  'sql_receipts_checked': True, 'scope': 'checkout promotions' if promotion else 'customer order attachment', 'production_services_or_data_used': False, 'full_storefront_accepted': False,
                   'resources': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                 'database_ports_published': False, 'api_port_loopback_only': True, 'network_egress_restricted': False}}
+        if not promotion:
+            report['sql_attachment_and_unique_audit_checked'] = True
     finally:
         if process is not None and process.poll() is None:
             # Stop only this runner; container removal below stops its test child.
@@ -133,8 +147,8 @@ def main():
             require(docker('network', 'rm', network), 'Owned network cleanup failed')
         binary.unlink(missing_ok=True)
     report['cleanup_complete'] = True
-    (ROOT / 'docs/migration/customer-orders-joint-report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'customer_orders_joint_browser': 'passed', 'sql_regressions': 'passed', 'cleanup': 'complete'}))
+    (ROOT / ('docs/migration/promotion-joint-report.json' if promotion else 'docs/migration/customer-orders-joint-report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+    print(json.dumps({'joint_browser': 'passed', 'scope': 'promotions' if promotion else 'customer_orders', 'sql_regressions': 'passed', 'cleanup': 'complete'}))
 
 
 if __name__ == '__main__':

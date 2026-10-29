@@ -1,0 +1,61 @@
+{
+  "format_version": 1,
+  "node_version": "v22.23.4",
+  "browser": {
+    "actual_astro_checkout": true,
+    "actual_gin_handlers": true,
+    "real_mysql_redis": true,
+    "mocked_api_responses": false,
+    "manual_code_added_and_removed": true,
+    "automatic_retained_and_nonremovable": true,
+    "exact_total_restored": true,
+    "version_incremented_twice_per_pair": true,
+    "refresh_persists_discount": true,
+    "unknown_code_400_no_amount_or_version_change": true,
+    "private_no_store": true,
+    "csrf_cart_cookie_transport": true,
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "widths": [
+      390,
+      1440
+    ],
+    "browser_errors": 0,
+    "real_external_payments_or_mail": false
+  },
+  "post_browser_sql_regression_passed": true,
+  "sql_receipts_checked": true,
+  "scope": "checkout promotions",
+  "production_services_or_data_used": false,
+  "full_storefront_accepted": false,
+  "resources": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "database_ports_published": false,
+    "api_port_loopback_only": true,
+    "network_egress_restricted": false
+  },
+  "cleanup_complete": true,
+  "source_snapshot": {
+    "base_commit": "b05ce62",
+    "committed_migrations": 50,
+    "pending_mollie_changes_excluded": true,
+    "sha256_lf": {
+      "retail/backend/internal/identity/cart_promotion_command_test.go": "a059d6c2bde110b5f597ae00bb4cd9039f1c6d0fd58a3fd3c0797b5cebc16bf3",
+      "retail/backend/internal/identity/promotion_browser_test.go": "f56c85784c69d9751ad64175dbb8622311d29ccfe3249d285a9ad440958a68d2",
+      "retail/scripts/test-customer-orders-live.py": "dfe3c5aed35ac610962932bb3ad52131bd77ef849ecf22ec64cca55b3ed39d0f",
+      "retail/storefront/tests/promotions.live.mjs": "2e7fe9a2737b820d9374eb47e9410294deb7191d3be165131ac61c5fbb14416c"
+    }
+  },
+  "go_all_packages_passed": true,
+  "customer_orders_default_mode_regression_passed": true,
+  "legacy_service_http_status": {
+    "backend_health": 200,
+    "admin": 200,
+    "storefront_cart": 200
+  }
+}

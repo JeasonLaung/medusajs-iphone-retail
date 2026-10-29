@@ -7,6 +7,7 @@ import (
 	"math/big"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"sync"
 	"testing"
@@ -200,6 +201,14 @@ func checkPromotionCommands(t *testing.T, ctx context.Context, db *gorm.DB, sess
 	restored, err := cart.SavePromotions(ctx, db, "shop", ref, frozen, providers)
 	if err != nil || restored.Version != "7" || amounts().Totals["total"] != baseline {
 		t.Fatal("promotion removal did not restore exact total", err)
+	}
+	if os.Getenv("PROMOTION_BROWSER_FIXTURE") == "1" {
+		exec("UPDATE promotions SET status='active' WHERE id IN ('command-promo','command-auto')")
+		_, err := cart.SavePromotions(ctx, db, "shop", ref, cart.PromotionCommand{OperationID: uuid.NewString(), Version: "7", Codes: []string{}}, providers)
+		if err != nil {
+			t.Fatal("browser automatic promotion baseline", err)
+		}
+		checkPromotionBrowser(t, ctx, db, sessions, ref, amounts().Totals["total"])
 	}
 	exec("UPDATE cart_promotion_command_runtime SET enabled=FALSE WHERE id=1")
 	reject(in, cart.ErrSchema)
