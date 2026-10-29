@@ -503,3 +503,16 @@ export async function saveOrderAllocation(order:string,item:string,body:Allocati
  const d=await request<{assignment_ids:string[];revision:string;replayed:boolean}>(allocationPath(order,item),{method:'POST',body,csrf},'/api/admin/')
  if(!d||!Array.isArray(d.assignment_ids)||d.assignment_ids.length!==body.ids.length||d.assignment_ids.some(id=>typeof id!=='string')||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
 }
+
+export type PackingContext={order_id:string;enabled:boolean;paid:boolean;order_active:boolean;revision:string;devices:{assignment_id:string;device_id:string;serial_number:string;item_id:string;title:string;source_id:string;source_name:string;location_id:string;location_name:string}[];options:{id:string;name:string;provider_id:string;supported:boolean}[]}
+export async function readOrderPacking(order:string,signal:AbortSignal):Promise<PackingContext>{
+ const d=await request<PackingContext>(`orders/${encodeURIComponent(order)}/packing`,{signal},'/api/admin/')
+ if(!d||d.order_id!==order||typeof d.enabled!=='boolean'||typeof d.paid!=='boolean'||typeof d.order_active!=='boolean'||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||!Array.isArray(d.devices)||d.devices.length>2000||d.devices.some(v=>!v||['assignment_id','device_id','serial_number','item_id','title','source_id','source_name','location_id','location_name'].some(k=>typeof v[k as keyof typeof v]!=='string'))||new Set(d.devices.map(d=>d.assignment_id)).size!==d.devices.length||!Array.isArray(d.options)||d.options.length>1||d.options.some(o=>!o||typeof o.id!=='string'||typeof o.name!=='string'||typeof o.provider_id!=='string'||typeof o.supported!=='boolean'))throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function saveOrderPacking(order:string,body:AllocationInput):Promise<string>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{fulfillment_id:string;replayed:boolean}>(`orders/${encodeURIComponent(order)}/packing`,{method:'POST',body,csrf},'/api/admin/')
+ if(!d||typeof d.fulfillment_id!=='string'||!d.fulfillment_id.startsWith('ful_')||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+ return d.fulfillment_id
+}

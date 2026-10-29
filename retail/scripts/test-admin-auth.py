@@ -218,6 +218,9 @@ def main():
             allocation_markers = [line.split('ORDER_DEVICE_ALLOCATION_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_DEVICE_ALLOCATION_REHEARSAL ' in line]
             if len(allocation_markers)!=1: raise RuntimeError('Order device allocation verification missing')
             counts['order_device_allocation'] = json.loads(allocation_markers[0])
+            packing_markers = [line.split('ORDER_DEVICE_PACKING_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_DEVICE_PACKING_REHEARSAL ' in line]
+            if len(packing_markers)!=1: raise RuntimeError('Order device packing verification missing')
+            counts['order_device_packing'] = json.loads(packing_markers[0])
             warehouse_intake_markers = [line.split('WAREHOUSE_INTAKE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'WAREHOUSE_INTAKE_REHEARSAL ' in line]
             if len(warehouse_intake_markers)!=1: raise RuntimeError('Warehouse intake verification missing')
             counts['warehouse_intake'] = json.loads(warehouse_intake_markers[0])

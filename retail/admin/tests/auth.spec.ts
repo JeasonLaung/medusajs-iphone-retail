@@ -592,3 +592,22 @@ test('order device reservation keeps one immutable batch after an uncertain resp
  await page.goto('/account');await signIn(page);await page.goto('/orders/allocate-order');await page.getByRole('button',{name:'设备配货',exact:true}).click();const drawer=page.getByRole('dialog');await drawer.getByRole('row').filter({has:page.getByText('ALLOC-ONE',{exact:true})}).getByRole('checkbox').check();await drawer.getByRole('button',{name:'保存预配货',exact:true}).click();await expect(drawer.getByRole('button',{name:'重试本次保存',exact:true})).toBeVisible();await expect(drawer.getByRole('row').filter({has:page.getByText('ALLOC-ONE',{exact:true})}).getByRole('checkbox')).toBeDisabled();await drawer.getByRole('button',{name:'重试本次保存',exact:true}).click();await expect(drawer.getByText('ALLOC-ONE',{exact:true})).toBeVisible();expect(attempts).toHaveLength(2);expect(attempts[0]).toEqual(attempts[1]);expect(attempts[0]).toMatchObject({action:'reserve',ids:['device-one']})
  grants.splice(grants.indexOf('order.allocation.write'),1);await page.reload();await expect(page.getByRole('button',{name:'设备配货',exact:true})).toHaveCount(0)
 })
+
+test('device packing retries one immutable parcel and rechecks permission',async({page})=>{
+ const grants:string[]=['order.read','order.payment.read','device.read','order.allocation.write','order.fulfillment.read'];await fixture(page,{permissions:grants})
+ const order={id:'allocate-order',version:1,status:'pending',currency_code:'eur',custom_display_id:'Allocate fixture',display_id:'1',is_draft_order:false,email:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',line_count:1}
+ const line={id:'order-item',item_id:'allocate-line',title:'Allocation line',variant_sku:'ALLOC-SKU',quantity:'1.000000000000000000',unit_price:'100.000000000000000000',is_tax_inclusive:false,fulfilled_quantity:'0.000000000000000000',shipped_quantity:'0.000000000000000000',return_requested_quantity:'0.000000000000000000',return_received_quantity:'0.000000000000000000',return_dismissed_quantity:'0.000000000000000000'}
+ const attempts:unknown[]=[]
+ await page.route('**/api/admin/orders/allocate-order**',async route=>{
+  const req=route.request(),path=new URL(req.url()).pathname
+  if(path.endsWith('/packing')){
+   if(req.method()==='POST'){expect(req.headers()['x-csrf-token']).toBe(sessionCSRF);attempts.push(req.postDataJSON());if(attempts.length===1){await route.abort('failed');return};return route.fulfill({json:{fulfillment_id:'ful_new',replayed:true}})}
+   return route.fulfill({json:{order_id:order.id,paid:true,enabled:true,order_active:true,revision:'b'.repeat(64),devices:[{assignment_id:'assignment-one',device_id:'device-one',serial_number:'ALLOC-ONE',item_id:'allocate-line',title:'Allocation line',source_id:'source',source_name:'Source',location_id:'location',location_name:'Warehouse'}],options:[{id:'shipping',name:'Standard',provider_id:'manual_manual',supported:true}]}})
+  }
+  if(path.endsWith('/fulfillments'))return route.fulfill({json:{order_id:order.id,version:1,operations_enabled:false,fulfillments:[]}})
+  if(path.endsWith('/payments'))return route.fulfill({json:{order_id:order.id,version:1,operations_enabled:false,collections:[]}})
+  return route.fulfill({json:{order,lines:[line]}})
+ })
+ await page.goto('/account');await signIn(page);await page.goto('/orders/allocate-order');await page.getByRole('button',{name:'创建配货包裹',exact:true}).click();const drawer=page.getByRole('dialog');await drawer.getByRole('row').filter({has:page.getByText('ALLOC-ONE',{exact:true})}).getByRole('checkbox').check();await drawer.getByRole('button',{name:'装包并扣减库存',exact:true}).click();await expect(drawer.getByRole('button',{name:'重试本次保存',exact:true})).toBeVisible();await expect(drawer.getByRole('row').filter({has:page.getByText('ALLOC-ONE',{exact:true})}).getByRole('checkbox')).toBeDisabled();await drawer.getByRole('button',{name:'重试本次保存',exact:true}).click();await expect(drawer.getByText('ALLOC-ONE',{exact:true})).toBeVisible();expect(attempts).toHaveLength(2);expect(attempts[0]).toEqual(attempts[1]);expect(attempts[0]).toMatchObject({action:'reserve',ids:['assignment-one']})
+ grants.splice(grants.indexOf('order.allocation.write'),1);await page.reload();await expect(page.getByRole('button',{name:'创建配货包裹',exact:true})).toHaveCount(0)
+})

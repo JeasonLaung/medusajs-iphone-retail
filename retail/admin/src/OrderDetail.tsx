@@ -7,6 +7,7 @@ import type { OrderDetail as Detail, OrderLine } from './api'
 import type { Copy } from './i18n'
 import { amountText } from './VariantPrices'
 import OrderAllocation from './OrderAllocation'
+import OrderPacking from './OrderPacking'
 import OrderAmounts from './OrderAmounts'
 import OrderPayments from './OrderPayments'
 import OrderFulfillments from './OrderFulfillments'
@@ -17,6 +18,7 @@ export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void
   const location=useLocation()
   const [attempt,setAttempt]=useState(0)
  const [allocating,setAllocating]=useState<OrderLine>()
+ const [packing,setPacking]=useState(false)
   const [state,setState]=useState<{loading:boolean;data?:Detail;error?:unknown}>({loading:true})
   useEffect(()=>{
     const controller=new AbortController()
@@ -36,6 +38,7 @@ export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void
       <Typography.Paragraph type="secondary">{copy.orderReadInfo}</Typography.Paragraph>
       {state.loading?<Spin />:state.error!==undefined?<Space direction="vertical"><Alert type="error" showIcon message={state.error instanceof APIError && state.error.status===404?copy.orderNotFound:copy.unavailable} /><Button onClick={()=>setAttempt(n=>n+1)}>{copy.retry}</Button></Space>:order&&<>
         <Typography.Title level={3}>{order.custom_display_id??order.display_id??order.id}</Typography.Title>
+        {access.can('order.allocation.write','order.payment.read','device.read','order.fulfillment.read')&&<Button onClick={()=>setPacking(true)}>{copy.orderPacking}</Button>}
         <Descriptions column={{xs:1,sm:2,lg:3}} items={[
           {key:'status',label:copy.status,children:<Tag color={order.status==='completed'?'success':order.status==='requires_action'?'warning':undefined}>{statuses[order.status]??order.status}</Tag>},
           {key:'email',label:copy.email,children:order.email??'—'},
@@ -60,6 +63,7 @@ export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void
 {access.can('order.fulfillment.read')&&<OrderFulfillments id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>}
       </>}
     </Space>
+    {access.can('order.allocation.write','order.payment.read','device.read','order.fulfillment.read')&&packing&&order&&<OrderPacking orderID={order.id} copy={copy} onExpired={onExpired} onClose={()=>{setPacking(false);setAttempt(n=>n+1)}}/>}
     {access.can('order.allocation.write','order.payment.read','device.read')&&allocating&&order&&<OrderAllocation orderID={order.id} itemID={allocating.item_id} title={allocating.title} copy={copy} onExpired={onExpired} onClose={()=>{setAllocating(undefined);setAttempt(n=>n+1)}}/>}
   </section>
 }

@@ -58,11 +58,11 @@ func TestOwnedCartSchema(t *testing.T) {
 	}
 	db, gdb := open("cart_schema_fresh")
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 64 || schema.CheckApplied(ctx, db, plan) != nil || cart.Ready(ctx, gdb) != nil {
+	if err != nil || r.Applied != 65 || schema.CheckApplied(ctx, db, plan) != nil || cart.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh cart schema failed")
 	}
 	r, err = schema.Apply(ctx, db, plan)
-	if err != nil || r.Skipped != 64 {
+	if err != nil || r.Skipped != 65 {
 		t.Fatal("cart schema replay changed facts")
 	}
 	ddl, err := migrations.Files.ReadFile("0025_cart_relational.sql")

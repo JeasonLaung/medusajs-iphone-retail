@@ -56,10 +56,10 @@ func TestOwnedGeoSchema(t *testing.T) {
 	}
 	db, gdb := open("geo_schema_fresh")
 	result, err := schema.Apply(ctx, db, plan)
-	if err != nil || result.Applied != 64 || schema.CheckApplied(ctx, db, plan) != nil || fulfillment.GeoReady(ctx, gdb) != nil {
+	if err != nil || result.Applied != 65 || schema.CheckApplied(ctx, db, plan) != nil || fulfillment.GeoReady(ctx, gdb) != nil {
 		t.Fatal("fresh geo schema unavailable")
 	}
-	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 64 {
+	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 65 {
 		t.Fatal("geo replay changed schema")
 	}
 	exec := func(query string, args ...any) {
