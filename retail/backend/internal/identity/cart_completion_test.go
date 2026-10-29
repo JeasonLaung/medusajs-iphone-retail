@@ -170,5 +170,5 @@ func checkPaidOrderCompletion(t *testing.T, ctx context.Context, db *gorm.DB, re
 	if fingerprint() != after {
 		t.Fatal("rejected replay changed completion")
 	}
-	t.Log(`CART_COMPLETION_REHEARSAL {"real_mysql_redis":true,"concurrent_requests":8,"one_committed_order":true,"same_attempt_after_stock_recovery":true,"late_receipt_failure_rolls_back_all":true,"lost_response_replay":true,"closed_cart":true,"revoked_replay_denied":true,"sealed_notification_intent":true,"notification_delivery":false,"coupon_completion":false}`)
+	t.Log(`CART_COMPLETION_REHEARSAL {"real_mysql_redis":true,"concurrent_requests":8,"one_committed_order":true,"same_attempt_after_stock_recovery":true,"late_receipt_failure_rolls_back_all":true,"lost_response_replay":true,"closed_cart":true,"revoked_replay_denied":true,"sealed_notification_intent":true,"notification_delivery":false,"plain_cart_completion":true}`)
 }

@@ -16,7 +16,7 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-var ErrCompletionPromotion = errors.New("checkout promotion registration is not configured")
+var ErrCompletionPromotion = errors.New("checkout promotion facts changed")
 
 type CompletionResult struct {
 	OrderID  string `json:"order_id"`
@@ -27,7 +27,7 @@ type CompletionResult struct {
 // CompletePaidOrder owns the entire LOCAL transaction. It never calls a payment
 // provider. A sealed, matching paid observation must already exist. Replay is
 // authorized against current possession even after the cart has been closed.
-// This is internal and gated; HTTP/customer ownership and coupon usage remain
+// This is internal and gated; HTTP/customer ownership remain
 // separate work. Never turn a rejection into a second payment or successful UI.
 func CompletePaidOrder(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, in InitialPaymentCommand, o InitialPaymentOptions) (CompletionResult, error) {
 	failed := CompletionResult{}
@@ -110,27 +110,11 @@ func CompletePaidOrder(ctx context.Context, db *gorm.DB, store string, ref sessi
 		if cart.CompletedAt != nil {
 			return ErrConflict
 		}
-		// Coupons must not silently skip budget/attribute usage. Reject until their
-		// exact frozen registration is connected to this transaction.
-		var n int64
-		if tx.Table("cart_promotions").Where("cart_id=? AND deleted_at IS NULL", ref.CartID).Count(&n).Error != nil {
-			return ErrStorage
-		}
-		if n != 0 {
-			return ErrCompletionPromotion
-		}
-		var promoAdjustments int64
-		if tx.Raw(`SELECT COUNT(*) FROM (
-   SELECT a.id FROM cart_line_adjustments a JOIN cart_line_items i ON i.id=a.item_id WHERE i.cart_id=? AND i.deleted_at IS NULL AND a.deleted_at IS NULL AND a.promotion_id IS NOT NULL
-   UNION ALL SELECT a.id FROM cart_shipping_adjustments a JOIN cart_shipping_methods s ON s.id=a.shipping_method_id WHERE s.cart_id=? AND s.deleted_at IS NULL AND a.deleted_at IS NULL AND a.promotion_id IS NOT NULL
-  ) p`, ref.CartID, ref.CartID).Scan(&promoAdjustments).Error != nil {
-			return ErrStorage
-		}
-		if promoAdjustments != 0 {
-			return ErrCompletionPromotion
-		}
 		staged, err := StagePaidOrderAndStock(ctx, tx, store, ref, in, o)
 		if err != nil {
+			return err
+		}
+		if err = registerPaidOrderPromotions(ctx, tx, store, ref, in, staged.Snapshot.OrderID); err != nil {
 			return err
 		}
 		ledger, err := StagePaidOrderLedger(ctx, tx, store, ref, in, o, staged.Snapshot.OrderID)
