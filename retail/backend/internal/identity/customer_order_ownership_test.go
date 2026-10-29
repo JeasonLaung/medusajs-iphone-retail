@@ -181,6 +181,7 @@ func checkCustomerOrderOwnership(t *testing.T, ctx context.Context, db *gorm.DB,
 	}
 	exec("UPDATE cart_ownership SET active=TRUE WHERE cart_id=?", ref.CartID)
 	exec("UPDATE cart_completion_runtime SET enabled=TRUE WHERE id=1")
+	checkCustomerOrdersBrowser(t, ctx, db, sessions, ref, orderID, email)
 	exec("UPDATE customer_accounts SET auth_version=auth_version+1 WHERE id=?", a.Customer.ID)
 	if _, e := store.Orders(ctx, a.Session.Token, 0); !errors.Is(e, customer.ErrUnauthorized) {
 		t.Fatal("revoked customer read", e)

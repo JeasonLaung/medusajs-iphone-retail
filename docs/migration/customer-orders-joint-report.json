@@ -1,0 +1,53 @@
+{
+  "format_version": 1,
+  "node_version": "v22.23.4",
+  "browser": {
+    "actual_astro_routes": true,
+    "actual_gin_handlers": true,
+    "real_mysql_redis": true,
+    "mocked_api_responses": false,
+    "fixture_preverified_accounts": true,
+    "fixture_order_from_paid_cart_rehearsal": true,
+    "real_provider_payment": false,
+    "login_origin_csrf_signed_bridge": true,
+    "empty_before_attach": true,
+    "dual_cookie_attachment": true,
+    "account_details_without_cart_cookie": true,
+    "private_headers": true,
+    "cross_account_denied": true,
+    "logout_revokes_access": true,
+    "exact_total": "158.75",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "widths": [
+      390,
+      1440
+    ],
+    "browser_errors": 0
+  },
+  "post_browser_sql_regression_passed": true,
+  "sql_attachment_and_unique_audit_checked": true,
+  "production_services_or_data_used": false,
+  "full_storefront_accepted": false,
+  "resources": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "database_ports_published": false,
+    "api_port_loopback_only": true,
+    "network_egress_restricted": false
+  },
+  "cleanup_complete": true,
+  "backend_source_base": "eb995ca",
+  "migrations_applied": 49,
+  "source_snapshot_excludes_uncommitted_mollie_notifications": true,
+  "implementation_sha256": {
+    "retail/backend/internal/identity/customer_order_ownership_test.go": "54df8cd5052aeceddf8e3a842902985df0bbc0d426e34e9abd6d6bf9ab3d6a6e",
+    "retail/backend/internal/identity/customer_orders_browser_test.go": "6d5b05552b91920f4f98927d3ff58acbb31bdf1d1bfecc17c9527c03501bb5df",
+    "retail/scripts/test-customer-orders-live.py": "4f00f19c6cb41dd9b696b4a42efc0870ea46aaec852101b119dba3a0434d37a7",
+    "retail/storefront/tests/customer-orders.live.mjs": "c95e7a218fdee9e55a47b06dbe7848cace9329e122298a768f292ff2a947499e"
+  }
+}
