@@ -2,7 +2,7 @@
   "format_version": 1,
   "scope": "Owned promotion usage only; not complete checkout",
   "promotion_usage": {
-    "migrations": 31,
+    "migrations": 32,
     "concurrent_attempts": 8,
     "spend_wins": 1,
     "attribute_first_create_wins": 1,
@@ -26,16 +26,30 @@
     "revert_precise_raw": true,
     "revert_late_and_write_fault_rollback": true,
     "expired_reversal_requires_saved_ledger": true,
-    "durable_idempotency_integrated": false
+    "receipt_register_concurrent_fresh": 1,
+    "receipt_register_concurrent_replays": 7,
+    "receipt_reverse_concurrent_fresh": 1,
+    "receipt_reverse_concurrent_replays": 7,
+    "canonical_receipt_and_payload_conflict": true,
+    "historical_expired_soft_deleted_reassigned_reversal": true,
+    "historical_attribute_identity": true,
+    "receipt_write_and_reverse_fault_atomic": true,
+    "receipt_underflow_rejected": true,
+    "scope_isolation": true,
+    "durable_idempotency_integrated": true,
+    "receipt_caller_failure_atomic": true,
+    "receipt_shared_attribute_preserves_other_operation": true,
+    "checkout_authorization_integrated": false
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "3522a08cffbb65d536cdca1c88ec2f14e364e26fb95c73d9dd4f9a4713d38443",
-    "retail/backend/internal/identity/promotion_usage_test.go": "216bd0197ad7322554e1a658d49c35e598c10ca1b1dc39de9ee51222b8b33df5",
+    "retail/scripts/test-admin-auth.py": "54a6b1efc2f5accac2a0e9ca6dbf14f68eb473e4b684827255f3e21bcab9efdf",
+    "retail/backend/internal/identity/promotion_usage_test.go": "5da7f62983c418a00dff54678bea3044d38754aa3188fc0480e6dc6c080bce5b",
+    "retail/backend/internal/promotion/receipts.go": "a50b752775e7c86a5b5caa750484a1c659c1753b2cd854ce0526b78e09038ce1",
     "retail/backend/internal/promotion/rules.go": "034504bd7220f943876fd8c9d1d322be793e4393083189ad8270444057c37038",
     "retail/backend/internal/promotion/rules_test.go": "5f6cbe7054e608eb8515d6f1b83779873226a15d438b6cc3e45a6205bc52a83c",
     "retail/backend/internal/promotion/schema.go": "146835af66058b9e310e31d6f9c9c65a0d28f925dd843a5bfe24a63419b81ed1",
     "retail/backend/internal/promotion/schema_plan.json": "435c506f2c037e3767f6c102fef1343be2b2722de984eda34152ffd9d1a20641",
-    "retail/backend/internal/promotion/usage.go": "ce0731993e1ba299b916a69f8ab4a437a98dd0a1f66b7ffdc05d8a6ab50df480",
+    "retail/backend/internal/promotion/usage.go": "112c2cb7f08e4d67ea352d196246452c7d622938bf5f5c49b7255cd258329d01",
     "retail/backend/migrations/0001_foundation.sql": "8678e63bde1b01f155be946e310aa0a8c18411484bfa2325e6650ac192c35b7a",
     "retail/backend/migrations/0002_unique_key_registry.sql": "443dcdeec6d6542c99d339a31c2583ec9c4fd180bbdba3c88d2274935d04ef49",
     "retail/backend/migrations/0003_unique_key_secret_scopes.sql": "3a46fe588f40b86d1461274acc50c52e9f2439de82845055dbc8c5736729086d",
@@ -66,7 +80,8 @@
     "retail/backend/migrations/0028_tax_relational.sql": "d2e5804563804918595cb21985d782c2f3e047455edc5d123c465558c4ba2b84",
     "retail/backend/migrations/0029_tax_import_evidence.sql": "0f05a2a86ce234f15ac978cabba3c2b7efe67ee6b2b5f18f3944f6c595db2d76",
     "retail/backend/migrations/0030_fulfillment_geo_relational.sql": "8bd16ec3d59376ea1b0d43a29cf761af6621a48daf7cb25b68d32c730abdb729",
-    "retail/backend/migrations/0031_promotion_relational.sql": "8af5fcccd85e12a2e30a207bff267a905551eb6b76a81b66bf9c82cc4578dd0c"
+    "retail/backend/migrations/0031_promotion_relational.sql": "8af5fcccd85e12a2e30a207bff267a905551eb6b76a81b66bf9c82cc4578dd0c",
+    "retail/backend/migrations/0032_promotion_usage_receipts.sql": "2663d45329b300b6d8ac6321c6727cf7cd29b60ff60963ac3c95d92132febda8"
   },
   "cleanup": "both owned containers and temporary runner removed"
 }

@@ -314,7 +314,7 @@ def main():
                 files += ['retail/backend/internal/identity/cart_tax_refresh_test.go']
                 files += ['retail/backend/migrations/0029_tax_import_evidence.sql','retail/scripts/generate-tax-import-plan.py','retail/backend/internal/identity/tax_import_test.go']
                 files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/taximport').glob('*') if p.is_file()]
-                files += ['retail/backend/migrations/0031_promotion_relational.sql','retail/scripts/generate-promotion-schema.py','retail/backend/internal/identity/promotion_schema_test.go','retail/backend/internal/identity/promotion_usage_test.go']
+                files += ['retail/backend/migrations/0032_promotion_usage_receipts.sql','retail/backend/migrations/0031_promotion_relational.sql','retail/scripts/generate-promotion-schema.py','retail/backend/internal/identity/promotion_schema_test.go','retail/backend/internal/identity/promotion_usage_test.go']
                 files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/promotion').glob('*') if p.is_file()]
                 files += ['retail/backend/migrations/0028_tax_relational.sql','retail/scripts/generate-tax-schema.py','retail/backend/internal/identity/tax_schema_test.go']
                 files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/tax').glob('*') if p.is_file()]

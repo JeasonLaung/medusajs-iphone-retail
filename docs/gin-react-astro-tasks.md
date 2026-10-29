@@ -450,3 +450,5 @@
 2026-10-29 预算登记补充：[调用方事务内的当前锁读与精确用量](migration/promotion-usage-registration.md)承接spend/usage/use_by_attribute、促销/活动/预算锁、完整属性值与金额raw，修复共享活动多code漏计。实库范围以admin-auth-report.promotion_usage及源码SHA为准；该阶段不提交/不提供HTTP/不独立幂等，撤销、完整回执和购物车结账编排仍缺，相关任务未验收。
 
 2026-10-29 预算撤销补充：[与登记共锁的逆向阶段](migration/promotion-usage-reversal.md)承接金额/次数/属性扣减与零封底、属性历史软删/重建和精确raw；16并发登记撤销、当前锁读及失败回滚范围以admin-auth-report.promotion_usage和SHA为准。阶段不独立幂等，活动到期后的历史释放、一次撤销回执与完整结账继续待办，相关任务未验收。
+
+2026-10-29 预算回执补充：[0032持久delta与一次登记/撤销](migration/promotion-usage-receipts.md)以scope+UUID和规范请求SHA绑定计数，活动失效/软删/改挂后按原目标释放，拒绝下溢和物理缺失；8并发首次/7重放及故障回滚、共享属性保护以最新promotion_usage报告与SHA为准。正式checkout权限、库存支付与前台尚未接入，相关任务未验收。

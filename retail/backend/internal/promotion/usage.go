@@ -105,7 +105,7 @@ func usageSQL(r *big.Rat) (string, string, error) {
 // invoke it when merely previewing/recalculating a draft shopping cart.
 // It rechecks active configuration and serialized limits, not qualification.
 func RegisterUsage(ctx context.Context, tx *gorm.DB, actions []UsageAction, in UsageRegistration) (UsageResult, error) {
-	return changeUsage(ctx, tx, actions, in, false)
+	return changeUsage(ctx, tx, actions, in, false, nil)
 }
 
 // RevertUsage is the inverse arithmetic PHASE for trusted, previously registered
@@ -115,7 +115,7 @@ func RegisterUsage(ctx context.Context, tx *gorm.DB, actions []UsageAction, in U
 // historical reversal after expiry/configuration changes needs a saved ledger.
 // All errors require rolling back the caller's entire transaction.
 func RevertUsage(ctx context.Context, tx *gorm.DB, actions []UsageAction, in UsageRegistration) (UsageResult, error) {
-	return changeUsage(ctx, tx, actions, in, true)
+	return changeUsage(ctx, tx, actions, in, true, nil)
 }
 
 func changedUsage(current, delta *big.Rat, revert bool) *big.Rat {
@@ -129,7 +129,7 @@ func changedUsage(current, delta *big.Rat, revert bool) *big.Rat {
 	return value
 }
 
-func changeUsage(ctx context.Context, tx *gorm.DB, actions []UsageAction, in UsageRegistration, revert bool) (UsageResult, error) {
+func changeUsage(ctx context.Context, tx *gorm.DB, actions []UsageAction, in UsageRegistration, revert bool, journal *[]usageDelta) (UsageResult, error) {
 	empty := UsageResult{}
 	if tx == nil || tx.Statement == nil || len(actions) > 1000 || in.At.IsZero() || !usageCurrency.MatchString(in.Currency) || len(in.Attributes) > 100 {
 		return empty, ErrUsageInput
@@ -332,6 +332,30 @@ func changeUsage(ctx context.Context, tx *gorm.DB, actions []UsageAction, in Usa
 			return empty, err
 		}
 		writes = append(writes, write{table: "promotion_campaign_budgets", id: id, scalar: scalar, raw: raw})
+	}
+	if journal != nil {
+		for _, p := range promotions {
+			if p.Limit != nil {
+				*journal = append(*journal, usageDelta{Kind: "promotion", ID: p.ID, Delta: "1"})
+			}
+		}
+		for _, id := range budgetOrder {
+			u := changes[id]
+			_, raw, e := usageSQL(u.increment)
+			if e != nil {
+				return empty, e
+			}
+			var delta totals.RawValue
+			if json.Unmarshal([]byte(raw), &delta) != nil {
+				return empty, ErrUsageStorage
+			}
+			*journal = append(*journal, usageDelta{Kind: "budget", ID: id, CampaignID: u.budget.CampaignID, Delta: delta.Value})
+		}
+		for _, w := range writes {
+			if w.table == "promotion_budget_usages" {
+				*journal = append(*journal, usageDelta{Kind: "attribute", ID: w.id, BudgetID: w.budgetID, Delta: new(big.Int).SetInt64(changes[w.budgetID].codes).String()})
+			}
+		}
 	}
 	result := UsageResult{Promotions: len(promotions), Budgets: len(changes)}
 	for _, p := range promotions {

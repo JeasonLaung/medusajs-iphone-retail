@@ -15,6 +15,7 @@ import (
 	"github.com/eurorefurb/retail/internal/schema"
 	"github.com/eurorefurb/retail/migrations"
 	driver "github.com/go-sql-driver/mysql"
+	"github.com/google/uuid"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -58,10 +59,10 @@ func TestOwnedPromotionUsage(t *testing.T) {
 	}
 	db, gdb := open("promotion_usage_fresh")
 	result, err := schema.Apply(ctx, db, plan)
-	if err != nil || result.Applied != 31 || schema.CheckApplied(ctx, db, plan) != nil || promotion.Ready(ctx, gdb) != nil {
+	if err != nil || result.Applied != 32 || schema.CheckApplied(ctx, db, plan) != nil || promotion.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh promotion schema unavailable")
 	}
-	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 31 {
+	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 32 {
 		t.Fatal("promotion replay changed schema")
 	}
 
@@ -382,5 +383,205 @@ func TestOwnedPromotionUsage(t *testing.T) {
 	if _, err := promotion.RevertUsage(ctx, gdb, attrActions, promotion.UsageRegistration{Currency: "eur", Attributes: attr, At: now}); err != promotion.ErrUsageInput {
 		t.Fatal("autocommit reversal accepted")
 	}
-	t.Log(`PROMOTION_USAGE_REHEARSAL {"migrations":31,"concurrent_attempts":8,"spend_wins":1,"attribute_first_create_wins":1,"current_locking_read_after_old_snapshot":true,"duplicate_actions_once_per_promotion":true,"shared_budget_counts_distinct_promotions":true,"complete_attribute_case_and_trailing_space":true,"missing_attribute_rejected":true,"unsupported_budget_rejected":true,"exact_raw_beyond_scale18":true,"late_failure_rollback":true,"write_fault_rollback":true,"campaign_start_inclusive_end_exclusive":true,"currency_mismatch_rejected":true,"autocommit_rejected":true,"revert_phase_integrated":true,"revert_shared_budget_and_clamp":true,"mixed_register_revert_concurrent":16,"attribute_soft_delete_recreate_history":true,"attribute_revert_current_read":true,"revert_precise_raw":true,"revert_late_and_write_fault_rollback":true,"expired_reversal_requires_saved_ledger":true,"durable_idempotency_integrated":false}`)
+
+	// Receipt-bound registration is atomic with its exact counter journal.
+	setup("receipt", "spend", "100", "0")
+	exec("UPDATE promotions SET `limit`=10 WHERE id='p_receipt'")
+	key := promotion.UsageOperation{ScopeID: "fixture-checkout", OperationID: uuid.NewString()}
+	receiptActions := []promotion.UsageAction{{PromotionID: "p_receipt", Amount: "2"}, {PromotionID: "p_receipt", Amount: "3"}}
+	receiptCall := func(key promotion.UsageOperation, actions []promotion.UsageAction) (promotion.UsageReceiptResult, error) {
+		var out promotion.UsageReceiptResult
+		err := gdb.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+			var e error
+			out, e = promotion.RegisterUsageOnce(ctx, tx, key, actions, promotion.UsageRegistration{Currency: "eur", At: now})
+			return e
+		})
+		return out, err
+	}
+	receiptReverse := func(key promotion.UsageOperation) (promotion.UsageReceiptResult, error) {
+		var out promotion.UsageReceiptResult
+		err := gdb.WithContext(ctx).Transaction(func(tx *gorm.DB) error { var e error; out, e = promotion.RevertUsageOnce(ctx, tx, key); return e })
+		return out, err
+	}
+	type receiptAttempt struct {
+		out promotion.UsageReceiptResult
+		err error
+	}
+	attempts := make(chan receiptAttempt, 8)
+	start = make(chan struct{})
+	for i := 0; i < 8; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			<-start
+			out, e := receiptCall(key, receiptActions)
+			attempts <- receiptAttempt{out, e}
+		}()
+	}
+	close(start)
+	wg.Wait()
+	close(attempts)
+	fresh, replays := 0, 0
+	for attempt := range attempts {
+		if attempt.err != nil {
+			t.Fatalf("receipt register: %v", attempt.err)
+		}
+		if attempt.out.Replayed {
+			replays++
+		} else {
+			fresh++
+		}
+	}
+	if fresh != 1 || replays != 7 || used("promotion_campaign_budgets", "b_receipt") != "5" {
+		t.Fatal("receipt repeated counter registration")
+	}
+	if db.QueryRowContext(ctx, "SELECT used FROM promotions WHERE id='p_receipt'").Scan(&count) != nil || count != 1 {
+		t.Fatal("receipt repeated promotion count")
+	}
+	// Equivalent action order/partition is a canonical retry; amount drift conflicts.
+	if out, e := receiptCall(key, []promotion.UsageAction{{PromotionID: "p_receipt", Amount: "5.0"}}); e != nil || !out.Replayed {
+		t.Fatal("equivalent receipt request did not replay")
+	}
+	if _, e := receiptCall(key, []promotion.UsageAction{{PromotionID: "p_receipt", Amount: "6"}}); e != promotion.ErrUsageConflict {
+		t.Fatal("receipt payload drift accepted")
+	}
+	// Change current campaign and invalidate the original configuration. The
+	// saved budget identity, not current links/status/time, controls reversal.
+	exec("INSERT INTO promotion_campaigns(id,name,campaign_identifier,created_at,updated_at) VALUES('c_reassigned','New','NEW',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
+	exec("UPDATE promotions SET status='inactive',campaign_id='c_reassigned',`limit`=NULL,deleted_at=UTC_TIMESTAMP(6) WHERE id='p_receipt'")
+	exec("UPDATE promotion_campaigns SET ends_at=?,deleted_at=UTC_TIMESTAMP(6) WHERE id='c_receipt'", now.Add(-time.Hour))
+	exec("UPDATE promotion_campaign_budgets SET type='spend_by_attribute',currency_code='usd',deleted_at=UTC_TIMESTAMP(6) WHERE id='b_receipt'")
+	if out, e := receiptCall(key, receiptActions); e != nil || !out.Replayed {
+		t.Fatal("registered replay requalified expired configuration")
+	}
+	attempts = make(chan receiptAttempt, 8)
+	start = make(chan struct{})
+	for i := 0; i < 8; i++ {
+		wg.Add(1)
+		go func() { defer wg.Done(); <-start; out, e := receiptReverse(key); attempts <- receiptAttempt{out, e} }()
+	}
+	close(start)
+	wg.Wait()
+	close(attempts)
+	fresh, replays = 0, 0
+	for attempt := range attempts {
+		if attempt.err != nil || !attempt.out.Reverted {
+			t.Fatalf("receipt reverse: %+v %v", attempt.out, attempt.err)
+		}
+		if attempt.out.Replayed {
+			replays++
+		} else {
+			fresh++
+		}
+	}
+	if fresh != 1 || replays != 7 || used("promotion_campaign_budgets", "b_receipt") != "0" {
+		t.Fatal("receipt repeated reversal or followed reassigned campaign")
+	}
+	if db.QueryRowContext(ctx, "SELECT used FROM promotions WHERE id='p_receipt'").Scan(&count) != nil || count != 0 {
+		t.Fatal("historical promotion count not reversed")
+	}
+	if _, e := receiptCall(key, receiptActions); e != promotion.ErrUsageConflict {
+		t.Fatal("reverted operation registered again")
+	}
+	if _, e := receiptReverse(promotion.UsageOperation{ScopeID: "other-scope", OperationID: key.OperationID}); e != promotion.ErrUsageConflict {
+		t.Fatal("receipt scope crossed")
+	}
+	// Attribute reversal follows saved usage ID even after attribute config edits.
+	setup("receiptattr", "use_by_attribute", "3", "0")
+	attrKey := promotion.UsageOperation{ScopeID: "fixture-checkout", OperationID: uuid.NewString()}
+	err = gdb.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		_, e := promotion.RegisterUsageOnce(ctx, tx, attrKey, []promotion.UsageAction{{PromotionID: "p_receiptattr", Amount: "1"}}, promotion.UsageRegistration{Currency: "eur", Attributes: map[string]string{"customer_id": "private-fixture"}, At: now})
+		return e
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	exec("UPDATE promotion_campaign_budgets SET attribute='changed',type='spend_by_attribute' WHERE id='b_receiptattr'")
+	if _, e := receiptReverse(attrKey); e != nil || used("promotion_campaign_budgets", "b_receiptattr") != "0" {
+		t.Fatal("attribute receipt reversal followed current configuration")
+	}
+	if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM promotion_budget_usages WHERE budget_id='b_receiptattr' AND deleted_at IS NULL").Scan(&count) != nil || count != 0 {
+		t.Fatal("receipt attribute not retired")
+	}
+	// A receipt write fault must roll back counter changes as well as the row.
+	setup("receiptfault", "spend", "10", "0")
+	faultKey := promotion.UsageOperation{ScopeID: "fixture-checkout", OperationID: uuid.NewString()}
+	faultActions := []promotion.UsageAction{{PromotionID: "p_receiptfault", Amount: "1"}}
+	exec("CREATE TRIGGER fixture_receipt_failure BEFORE UPDATE ON promotion_usage_operations FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='receipt fault'")
+	if _, e := receiptCall(faultKey, faultActions); e != promotion.ErrUsageStorage {
+		t.Fatal("receipt late write fault ignored")
+	}
+	exec("DROP TRIGGER fixture_receipt_failure")
+	if used("promotion_campaign_budgets", "b_receiptfault") != "0" {
+		t.Fatal("receipt fault retained counter delta")
+	}
+	if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM promotion_usage_operations WHERE operation_id=?", faultKey.OperationID).Scan(&count) != nil || count != 0 {
+		t.Fatal("receipt fault retained pending operation")
+	}
+	if _, e := receiptCall(faultKey, faultActions); e != nil {
+		t.Fatal("receipt retry after rollback failed")
+	}
+	exec("CREATE TRIGGER fixture_receipt_reverse_failure BEFORE UPDATE ON promotion_usage_operations FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='reverse receipt fault'")
+	if _, e := receiptReverse(faultKey); e != promotion.ErrUsageStorage {
+		t.Fatal("reverse receipt fault ignored")
+	}
+	exec("DROP TRIGGER fixture_receipt_reverse_failure")
+	if used("promotion_campaign_budgets", "b_receiptfault") != "1" {
+		t.Fatal("reverse receipt failure lost budget")
+	}
+	if _, e := receiptReverse(faultKey); e != nil {
+		t.Fatal("receipt reverse retry after fault failed")
+	}
+	// Underflow is a reconciliation error; no zero-clamp may release unrelated usage.
+	underflowKey := promotion.UsageOperation{ScopeID: "fixture-checkout", OperationID: uuid.NewString()}
+	if _, e := receiptCall(underflowKey, faultActions); e != nil {
+		t.Fatal(e)
+	}
+	exec(`UPDATE promotion_campaign_budgets SET used=0,raw_used='{"value":"0","precision":100}' WHERE id='b_receiptfault'`)
+	if _, e := receiptReverse(underflowKey); e != promotion.ErrUsageConflict {
+		t.Fatal("historical delta underflow was clamped")
+	}
+	if _, e := promotion.RegisterUsageOnce(ctx, gdb, key, receiptActions, promotion.UsageRegistration{Currency: "eur", At: now}); e != promotion.ErrUsageInput {
+		t.Fatal("autocommit receipt accepted")
+	}
+	if _, e := promotion.RevertUsageOnce(ctx, gdb, key); e != promotion.ErrUsageInput {
+		t.Fatal("autocommit receipt reversal accepted")
+	}
+
+	// Late caller failure cannot commit a successful receipt phase on its own.
+	lateKey := promotion.UsageOperation{ScopeID: "fixture-checkout", OperationID: uuid.NewString()}
+	err = gdb.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		if _, e := promotion.RegisterUsageOnce(ctx, tx, lateKey, faultActions, promotion.UsageRegistration{Currency: "eur", At: now}); e != nil {
+			return e
+		}
+		return late
+	})
+	if err != late || used("promotion_campaign_budgets", "b_receiptfault") != "0" {
+		t.Fatal("caller failure committed receipt delta")
+	}
+	if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM promotion_usage_operations WHERE operation_id=?", lateKey.OperationID).Scan(&count) != nil || count != 0 {
+		t.Fatal("caller rollback retained receipt")
+	}
+	// Shared attribute counters retain the other operation's registered units.
+	setup("receiptshared", "use_by_attribute", "10", "0")
+	attrKeys := []promotion.UsageOperation{{ScopeID: "fixture-checkout", OperationID: uuid.NewString()}, {ScopeID: "fixture-checkout", OperationID: uuid.NewString()}}
+	for _, k := range attrKeys {
+		err = gdb.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+			_, e := promotion.RegisterUsageOnce(ctx, tx, k, []promotion.UsageAction{{PromotionID: "p_receiptshared", Amount: "1"}}, promotion.UsageRegistration{Currency: "eur", Attributes: map[string]string{"customer_id": "shared-receipt-fixture"}, At: now})
+			return e
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	if _, e := receiptReverse(attrKeys[0]); e != nil || used("promotion_campaign_budgets", "b_receiptshared") != "1" {
+		t.Fatal("receipt reversed another operation's global count")
+	}
+	if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM promotion_budget_usages WHERE budget_id='b_receiptshared' AND deleted_at IS NULL AND used=1").Scan(&count) != nil || count != 1 {
+		t.Fatal("receipt retired another operation's attribute unit")
+	}
+	if _, e := receiptReverse(attrKeys[0]); e != nil || used("promotion_campaign_budgets", "b_receiptshared") != "1" {
+		t.Fatal("receipt replay released another operation's unit")
+	}
+	t.Log(`PROMOTION_USAGE_REHEARSAL {"migrations":32,"concurrent_attempts":8,"spend_wins":1,"attribute_first_create_wins":1,"current_locking_read_after_old_snapshot":true,"duplicate_actions_once_per_promotion":true,"shared_budget_counts_distinct_promotions":true,"complete_attribute_case_and_trailing_space":true,"missing_attribute_rejected":true,"unsupported_budget_rejected":true,"exact_raw_beyond_scale18":true,"late_failure_rollback":true,"write_fault_rollback":true,"campaign_start_inclusive_end_exclusive":true,"currency_mismatch_rejected":true,"autocommit_rejected":true,"revert_phase_integrated":true,"revert_shared_budget_and_clamp":true,"mixed_register_revert_concurrent":16,"attribute_soft_delete_recreate_history":true,"attribute_revert_current_read":true,"revert_precise_raw":true,"revert_late_and_write_fault_rollback":true,"expired_reversal_requires_saved_ledger":true,"receipt_register_concurrent_fresh":1,"receipt_register_concurrent_replays":7,"receipt_reverse_concurrent_fresh":1,"receipt_reverse_concurrent_replays":7,"canonical_receipt_and_payload_conflict":true,"historical_expired_soft_deleted_reassigned_reversal":true,"historical_attribute_identity":true,"receipt_write_and_reverse_fault_atomic":true,"receipt_underflow_rejected":true,"scope_isolation":true,"durable_idempotency_integrated":true,"receipt_caller_failure_atomic":true,"receipt_shared_attribute_preserves_other_operation":true,"checkout_authorization_integrated":false}`)
 }
