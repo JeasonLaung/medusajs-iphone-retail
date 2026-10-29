@@ -56,11 +56,11 @@ func TestOwnedAdminAuthentication(t *testing.T) {
 		t.Fatal("embedded schema invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 39 {
+	if err != nil || result.Applied != 40 {
 		t.Fatal("ten explicit migrations not applied")
 	}
 	result, err = schema.Apply(ctx, pool, plan)
-	if err != nil || result.Skipped != 39 {
+	if err != nil || result.Skipped != 40 {
 		t.Fatal("ten migrations not repeatable")
 	}
 	sessions, client, err := sessionstore.Open(ctx, "redis://127.0.0.1:6379/0", "eurorefurb:identity_fixture:v1:")
@@ -204,6 +204,9 @@ func TestOwnedAdminAuthentication(t *testing.T) {
 	if db.Table("audit_events").Where("action <> ?", "authorization.bootstrap").Count(&unimplementedWrites).Error != nil || unimplementedWrites != 0 {
 		t.Fatal("unimplemented product write created audit data")
 	}
+	checkNotificationMail(t, ctx, db, u, router, sessions, func(method, path, body, requestOrigin, requestCSRF string, status int) []byte {
+		return call(method, path, body, requestOrigin, requestCSRF, []*http.Cookie{session}, status).Body.Bytes()
+	}, csrf)
 	call("GET", "/api/admin/auth/me", "", origin, "", []*http.Cookie{session, session}, 401)
 	call("POST", "/api/admin/auth/logout", "", "", csrf, []*http.Cookie{session}, 403)
 	call("POST", "/api/admin/auth/logout", "", origin, "", []*http.Cookie{session}, 403)
@@ -290,5 +293,5 @@ func TestOwnedAdminAuthentication(t *testing.T) {
 	}
 	_ = pool.Close()
 	call("GET", "/api/admin/auth/me", "", origin, "", []*http.Cookie{active}, 503)
-	t.Log("IDENTITY_REHEARSAL " + `{"explicit_migrations":39,"login_and_me":1,"csrf_and_origin_rejection":1,"session_rotation":1,"logout_revocation":1,"disable_reenable_revocation":1,"role_restore_revocation":1,"password_restore_revocation":1,"invalid_credentials_rejection":1,"login_rate_limit":1,"generation_revocation":1,"legacy_and_customer_rejection":1,"redis_failure_rejection":1,"mysql_failure_rejection":1}`)
+	t.Log("IDENTITY_REHEARSAL " + `{"explicit_migrations":40,"login_and_me":1,"csrf_and_origin_rejection":1,"session_rotation":1,"logout_revocation":1,"disable_reenable_revocation":1,"role_restore_revocation":1,"password_restore_revocation":1,"invalid_credentials_rejection":1,"login_rate_limit":1,"generation_revocation":1,"legacy_and_customer_rejection":1,"redis_failure_rejection":1,"mysql_failure_rejection":1}`)
 }

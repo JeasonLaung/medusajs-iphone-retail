@@ -21,7 +21,7 @@ func checkAuthorizationManagement(t *testing.T, db *gorm.DB, actor identity.User
 	directory := func() authorization.Directory {
 		t.Helper()
 		var d authorization.Directory
-		if json.Unmarshal(get("/api/admin/authorization", 200), &d) != nil || len(d.Actions) != 11 || len(d.Members) == 0 {
+		if json.Unmarshal(get("/api/admin/authorization", 200), &d) != nil || len(d.Actions) != 13 || len(d.Members) == 0 {
 			t.Fatal("permission directory invalid")
 		}
 		return d
@@ -197,5 +197,5 @@ func checkAuthorizationManagement(t *testing.T, db *gorm.DB, actor identity.User
 	if db.Table("authorization_changes").Where("operation_id=?", in.OperationID).Take(&audit).Error != nil || audit.BeforeJSON != "null" || !strings.Contains(audit.AfterJSON, "Read only 中文") {
 		t.Fatal("permission before/after audit missing")
 	}
-	t.Log(`AUTHORIZATION_MANAGEMENT_REHEARSAL {"migrations":39,"explicit_actions":11,"role_and_membership_save":true,"revision_conflict":true,"immutable_replay":true,"concurrent_attempts":8,"single_fresh_attempt":1,"duplicate_replays":7,"input_unchanged":true,"receipt_failure_atomic":true,"last_manager_preserved":true,"revoked_replay_denied":true,"undelegated_action_denied":true,"scoped_member_change_denied":true,"business_lock_serialization":true,"wire_duplicate_null_unknown_rejected":true,"before_after_audit":true}`)
+	t.Log(`AUTHORIZATION_MANAGEMENT_REHEARSAL {"migrations":40,"explicit_actions":13,"role_and_membership_save":true,"revision_conflict":true,"immutable_replay":true,"concurrent_attempts":8,"single_fresh_attempt":1,"duplicate_replays":7,"input_unchanged":true,"receipt_failure_atomic":true,"last_manager_preserved":true,"revoked_replay_denied":true,"undelegated_action_denied":true,"scoped_member_change_denied":true,"business_lock_serialization":true,"wire_duplicate_null_unknown_rejected":true,"before_after_audit":true}`)
 }

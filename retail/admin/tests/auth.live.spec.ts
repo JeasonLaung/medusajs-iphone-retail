@@ -51,7 +51,7 @@ test('real browser cookie, Origin and CSRF flow through Vite to Gin and Redis', 
   await expect(page.getByText('browser@example.invalid',{exact:true})).toBeVisible()
   const permissionReply=await context.request.get('/api/admin/auth/permissions')
   expect(permissionReply.status()).toBe(200)
-  const grants=await permissionReply.json();expect(grants.scope).toBe('employee');expect(grants.actions).toHaveLength(11)
+  const grants=await permissionReply.json();expect(grants.scope).toBe('employee');expect(grants.actions).toHaveLength(13)
   expect((await context.request.get('/api/admin/auth/permissions?fields=*')).status()).toBe(400)
   const cookies=await context.cookies()
   const session=cookies.find(c=>c.name==='retail_admin_session')

@@ -123,3 +123,9 @@ Gin `POST /api/store/customer/me` 只接受 first_name/last_name/phone 字符串
 提供方依据：[发送接口](https://resend.com/docs/api-reference/emails/send-email)、[幂等键和24小时窗口](https://resend.com/docs/dashboard/emails/idempotency-keys)。这些规则只约束提供方重放，不取代本地验证有效期和业务状态检查。
 
 本批提交再次导出暂存区独立后端（39份迁移，不含未提交0037）并通过Go全包检查与独占MySQL/Redis账户/资料/地址/邮件/HTTP演练；报告以独立快照为准。本批不改前台布局，不将合成sender描述成真实Resend送达。
+
+## 0041 后台通知邮箱衔接
+
+当前进展更新见 [通知邮箱](gin-notification-mail.md)：已提供 Ant 后台通知账户配置与独立读写权限，worker 可用 `REGISTRATION_MAIL_SOURCE=database` 读取后台指定的启用账户；没有指定时承接原最早启用账户选择。导入历史邮箱仍保持 hold。先前“仅环境变量发送人/后台配置待实现”的记录描述的是0040阶段，已由本阶段替代；失败任务查看恢复、真实收件及Astro真实邮件联合验收仍待完成。
+
+本阶段暂存区独立快照为40份迁移，不含工作区未提交0037。Go全包、MySQL/Redis注册与通知HTTP演练通过；后台保存的真实数据库账户实际用于构造验证邮件并由合成sender完成账户验证与登录。新角色动作共13项，旧角色需明确授予mail.read/mail.write。不会在API启动或后台保存时直接发信。

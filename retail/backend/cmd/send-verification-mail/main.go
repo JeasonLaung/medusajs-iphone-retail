@@ -12,6 +12,7 @@ import (
 
 	"github.com/eurorefurb/retail/internal/customer"
 	"github.com/eurorefurb/retail/internal/maildelivery"
+	"github.com/eurorefurb/retail/internal/notificationmail"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/schema"
@@ -28,9 +29,23 @@ func main() {
 	if len(os.Args) != 1 && !once {
 		log.Fatal("Only --once or no arguments supported")
 	}
-	sender, err := maildelivery.NewResend(os.Getenv("REGISTRATION_RESEND_API_KEY"), os.Getenv("REGISTRATION_MAIL_FROM"), os.Getenv("REGISTRATION_MAIL_REPLY_TO"))
-	if err != nil {
-		log.Fatal("Explicit registration mail sender configuration required")
+	source := os.Getenv("REGISTRATION_MAIL_SOURCE")
+	var sender *maildelivery.Resend
+	var err error
+	var merchantRing *protected.Ring
+	switch source {
+	case "database":
+		merchantRing, err = protected.ParseKeyring(os.Getenv("MERCHANT_KEY_ACTIVE"), os.Getenv("MERCHANT_KEYRING_JSON"))
+		if err != nil {
+			log.Fatal("Explicit merchant encryption keyring required")
+		}
+	case "", "environment":
+		sender, err = maildelivery.NewResend(os.Getenv("REGISTRATION_RESEND_API_KEY"), os.Getenv("REGISTRATION_MAIL_FROM"), os.Getenv("REGISTRATION_MAIL_REPLY_TO"))
+		if err != nil {
+			log.Fatal("Explicit registration mail sender configuration required")
+		}
+	default:
+		log.Fatal("REGISTRATION_MAIL_SOURCE must be database or environment")
 	}
 	ring, err := protected.ParseKeyring(os.Getenv("CUSTOMER_KEY_ACTIVE"), os.Getenv("CUSTOMER_KEYRING_JSON"))
 	if err != nil {
@@ -63,7 +78,14 @@ func main() {
 	defer stop()
 	for {
 		run, cancel := context.WithTimeout(ctx, 15*time.Second)
-		result, err := store.DispatchVerification(run, sender)
+		var result customer.Delivery
+		var err error
+		if source == "database" {
+			sender, err = (notificationmail.Store{DB: db, Ring: merchantRing}).RegistrationSender(run)
+		}
+		if err == nil {
+			result, err = store.DispatchVerification(run, sender)
+		}
 		cancel()
 		if err != nil {
 			log.Print("Verification mail dispatch unavailable; durable intent retained")

@@ -57,10 +57,10 @@ func TestOwnedPromotionSchema(t *testing.T) {
 	}
 	db, gdb := open("promotion_schema_fresh")
 	result, err := schema.Apply(ctx, db, plan)
-	if err != nil || result.Applied != 39 || schema.CheckApplied(ctx, db, plan) != nil || promotion.Ready(ctx, gdb) != nil {
+	if err != nil || result.Applied != 40 || schema.CheckApplied(ctx, db, plan) != nil || promotion.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh promotion schema unavailable")
 	}
-	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 39 {
+	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 40 {
 		t.Fatal("promotion replay changed schema")
 	}
 	exec := func(query string, args ...any) {
@@ -169,5 +169,5 @@ func TestOwnedPromotionSchema(t *testing.T) {
 	if blocked.QueryRowContext(ctx, `SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name='promotion_runtime_schema'`).Scan(&kept) != nil || kept != 0 {
 		t.Fatal("promotion guard created partial domain")
 	}
-	t.Log(`PROMOTION_SCHEMA_REHEARSAL {"migrations":39,"tables":10,"source_columns":75,"exact_raw_and_scalar":true,"complete_attribute_text":true,"rule_leading_zero":true,"enum_json_boolean_fk_rejected":true,"active_code_uniqueness":true,"rule_link_cascade":true,"replay_unchanged":true,"existing_tables_preserved":true,"schema_drift_rejected":true,"writes_enabled":false,"budget_registration_integrated":false}`)
+	t.Log(`PROMOTION_SCHEMA_REHEARSAL {"migrations":40,"tables":10,"source_columns":75,"exact_raw_and_scalar":true,"complete_attribute_text":true,"rule_leading_zero":true,"enum_json_boolean_fk_rejected":true,"active_code_uniqueness":true,"rule_link_cascade":true,"replay_unchanged":true,"existing_tables_preserved":true,"schema_drift_rejected":true,"writes_enabled":false,"budget_registration_integrated":false}`)
 }

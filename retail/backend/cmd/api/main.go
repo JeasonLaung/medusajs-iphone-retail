@@ -18,6 +18,7 @@ import (
 	"github.com/eurorefurb/retail/internal/fulfillment"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/inventory"
+	"github.com/eurorefurb/retail/internal/notificationmail"
 	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/platform"
@@ -129,6 +130,24 @@ func main() {
 		log.Fatal("CUSTOMER_AUTH_ENABLED must be true or false")
 	}
 	customers.Register(router.Group("/api/store/customer"))
+	switch os.Getenv("NOTIFICATION_MAIL_ENABLED") {
+	case "", "false":
+	case "true":
+		ring, err := protected.ParseKeyring(os.Getenv("MERCHANT_KEY_ACTIVE"), os.Getenv("MERCHANT_KEYRING_JSON"))
+		if err != nil {
+			log.Fatal("Explicit merchant encryption keyring required for notification mail configuration")
+		}
+		adminAuth, err := identity.NewWithOptions(db, identity.Options{Sessions: sessions, Origin: os.Getenv("ADMIN_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true"})
+		if err != nil {
+			log.Fatal("Notification mailbox authentication unavailable")
+		}
+		private := router.Group("/api/admin")
+		private.Use(adminAuth.Require)
+		notificationmail.Store{DB: db, Ring: ring}.Register(private)
+	default:
+		log.Fatal("NOTIFICATION_MAIL_ENABLED must be true or false")
+	}
+
 	srv := &http.Server{Addr: net.JoinHostPort(bind, port), Handler: router, ReadHeaderTimeout: 10 * time.Second, ReadTimeout: 30 * time.Second, WriteTimeout: 30 * time.Second, IdleTimeout: 60 * time.Second}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()

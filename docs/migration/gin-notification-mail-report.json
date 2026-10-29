@@ -1,0 +1,45 @@
+{
+  "scope": "Real React Admin with synthetic mailbox API; not Gin SQL browser joint acceptance",
+  "new_edit_refresh": true,
+  "secrets_blank": true,
+  "uncertain_retry_same_operation": true,
+  "disable_clears_registration": true,
+  "permission_failure_visible": true,
+  "english_and_chinese": true,
+  "mobile_no_page_overflow": true,
+  "hydration_errors": 0,
+  "admin_existing_browser_regressions_passed": 19,
+  "admin_typecheck": true,
+  "admin_build": true,
+  "limitations": [
+    "Synthetic API browser, not real Gin/MySQL browser integration",
+    "No real external mail sent",
+    "Existing rc-util circular-reference development warning observed during failed save; no page errors",
+    "Mail job operations and order/buyback/aftersales notifications remain incomplete",
+    "Chinese and English tested with persisted language preference; language popup under reduced motion intermittently placed offscreen in this fixture and remains unaccepted"
+  ],
+  "implementation_sha256": {
+    "retail/admin/src/App.tsx": "bcf41688c6d16fb78ee948d3442587952e7f38841235b9a1cf26de973ea8e93a",
+    "retail/admin/src/Mailboxes.tsx": "fa21fe98eb22bbc4b84f616bcc68b5d9bed66754a35f17511c67a13d2631be37",
+    "retail/admin/src/api.ts": "8713ea24013954067dd556f634f5146228268d742ebb98ec5ef48d21e5960eef",
+    "retail/admin/src/i18n.ts": "3f439edafad85bf93210b9934597eb1a59bab623b0f44651ce425d8db9b4706f",
+    "retail/admin/tests/mailboxes.browser.mjs": "fee4c475c571fd1dea14b3c026ed3cb0446d83e6a75735e80d61edd41d0ebfa1"
+  },
+  "reduced_motion": true,
+  "language_selector_acceptance": false,
+  "backend_exact_staged_snapshot": {
+    "go_test_all": true,
+    "owned_customer_sql_http": true,
+    "migration_count": 40,
+    "unrelated_payment_0037_included": false,
+    "owned_full_sql_suites_passed": 23,
+    "owned_full_sql_report_sha256": "6550cabbb31c2adc8a5279ec6aa7960cde8ea52de54a8ddf00b1078881f22676",
+    "cleanup": "both owned containers and temporary runner removed"
+  },
+  "legacy_service_checks": {
+    "health9001": 200,
+    "admin9001": 200,
+    "account8000": 200,
+    "logs": "Existing PayPal nonce warning and earlier Next stream controller TypeError; account page fully returned 200, no restart"
+  }
+}

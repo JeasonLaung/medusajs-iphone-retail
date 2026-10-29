@@ -6,6 +6,27 @@ export class APIError extends Error {
   }
 }
 
+export type Mailbox={id:string;name:string;email:string;reply_to:string;enabled:boolean;has_api_key:boolean;has_webhook_secret:boolean;registration:boolean}
+export type MailboxDirectory={revision:string;registration_account_id:string|null;accounts:Mailbox[]}
+export type MailboxCommand={operation_id:string;expected_revision:string;id:string;name:string;email:string;reply_to:string;enabled:boolean;registration:boolean;api_key:string;webhook_secret:string}
+const mailboxRevision=(v:unknown):v is string=>typeof v==='string'&&/^[1-9]\d{0,19}$/.test(v)&&BigInt(v)<=18446744073709551615n
+const mailboxID=(v:unknown):v is string=>typeof v==='string'&&/^mail_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(v)
+export async function mailboxes(signal?:AbortSignal):Promise<MailboxDirectory>{
+ const d=await request<MailboxDirectory>('notification-mail/accounts',{signal},'/api/admin/')
+ if(!d||!mailboxRevision(d.revision)||!Array.isArray(d.accounts)||d.accounts.length>100||d.registration_account_id!==null&&!mailboxID(d.registration_account_id))throw new APIError(0,'request.invalid_response')
+ const accounts=d.accounts.map(a=>{
+  if(!a||!mailboxID(a.id)||typeof a.name!=='string'||typeof a.email!=='string'||typeof a.reply_to!=='string'||typeof a.enabled!=='boolean'||typeof a.has_api_key!=='boolean'||typeof a.has_webhook_secret!=='boolean'||typeof a.registration!=='boolean'||a.registration!==(a.id===d.registration_account_id))throw new APIError(0,'request.invalid_response')
+  return {id:a.id,name:a.name,email:a.email,reply_to:a.reply_to,enabled:a.enabled,has_api_key:a.has_api_key,has_webhook_secret:a.has_webhook_secret,registration:a.registration}
+ })
+ if(new Set(accounts.map(a=>a.id)).size!==accounts.length||d.registration_account_id!==null&&!accounts.some(a=>a.id===d.registration_account_id))throw new APIError(0,'request.invalid_response')
+ return {revision:d.revision,registration_account_id:d.registration_account_id,accounts}
+}
+export async function saveMailbox(body:MailboxCommand):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{id:string;revision:string;replayed:boolean}>('notification-mail/accounts',{method:'POST',body,csrf},'/api/admin/')
+ if(!d||!mailboxID(d.id)||!mailboxRevision(d.revision)||typeof d.replayed!=='boolean'||body.id!==''&&d.id!==body.id)throw new APIError(0,'request.invalid_response')
+}
+
 function csrfCookie() {
   // Secure host cookie takes precedence; never put a session token in JS storage.
   for (const name of ['__Host-retail_admin_csrf', 'retail_admin_csrf']) {
@@ -216,7 +237,7 @@ export async function getOrderFulfillments(id:string,signal?:AbortSignal):Promis
 }
 
 
-export const ACTIONS=['authorization.read','authorization.write','inventory.read','inventory.stock.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','product.read','product.write'] as const
+export const ACTIONS=['authorization.read','authorization.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','product.read','product.write'] as const
 export type Action=typeof ACTIONS[number]
 export type ManagedRole={id:string;name:string;enabled:boolean;actions:Action[]}
 export type ManagedMember={user_id:string;name:string;enabled:boolean;kind:'employee'|'warehouse'|'supplier';roles:string[]}

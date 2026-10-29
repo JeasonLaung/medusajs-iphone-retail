@@ -1,4 +1,24 @@
 {
+  "notification_mail": {
+    "real_mysql_http": true,
+    "admin_session_csrf": true,
+    "separate_grants": true,
+    "warehouse_denied": true,
+    "credentials_encrypted": true,
+    "secrets_not_returned": true,
+    "blank_preserves_secrets": true,
+    "exact_operation_replay": true,
+    "concurrent_replays": 8,
+    "single_execution": true,
+    "stale_revision_denied": true,
+    "duplicate_address_denied": true,
+    "late_audit_failure_atomic": true,
+    "revoked_permission_denies_replay": true,
+    "historical_hold_denied": true,
+    "database_selected_sender": true,
+    "configured_mailbox_to_queue_to_synthetic_sender_to_verify": true,
+    "actual_external_email": false
+  },
   "scope": "New customer identity, profile, addresses and verification delivery; complete storefront and actual external mail not accepted",
   "counts": {
     "new_customer_only": true,
@@ -107,7 +127,7 @@
   },
   "application_resources_used": false,
   "real_accounts_used": false,
-  "working_tree_migration_count": 39,
+  "working_tree_migration_count": 40,
   "includes_uncommitted_payment_0037": false,
   "implementation_sha256": {
     "retail/backend/migrations/0038_customer_accounts.sql": "720e3e2e892b0ca48704aacf3eb15b38bf09f6307065728033e05af0e97f300b",
@@ -122,7 +142,7 @@
     "retail/backend/internal/identity/customer_http_test.go": "bfb1849601a5c73a93ddc689a3000fc5a06bb48134af2d4f6b0c396c99556198",
     "retail/backend/internal/protected/config.go": "aa769d0cc15aecb84070398902dca6bde451bfaa913d61b6a0b7091d22c202d0",
     "retail/backend/internal/protected/config_test.go": "5ed28ea0a0692000a0a6549438b92b613c3419c23fb6f9afb5a9bd770c1f5c3c",
-    "retail/backend/cmd/api/main.go": "6c0a2c8c5e0f4f774950b5965851bc6327d48e4b0e676ccc57847ed8b77dc467",
+    "retail/backend/cmd/api/main.go": "c423e8367a8cbd2e7d378e5726a102effdc79a25e3a302ce961709ac15a55a9c",
     "retail/backend/internal/platform/request.go": "06e8f5ae4804c3cf67289e068c4566c07535fe9cea90f532fbe7bbeb2deb2f40",
     "retail/backend/migrations/0039_customer_account_addresses.sql": "e140cec4d2d241b3ddb871bd831f7cc868bd9ef958b86d5cdfa9d72a7a43e0a6",
     "retail/backend/internal/customer/addresses.go": "ea73da0473df0199d7f3f9da5f3df185f2d80187191b8e0cfc9078feaa81136f",
@@ -133,9 +153,13 @@
     "retail/backend/internal/maildelivery/resend.go": "b3a6323a2c9db3bec4594da3fad1825c9c80c846c128d1981147973788f4826a",
     "retail/backend/internal/maildelivery/resend_test.go": "df4b9dc7c8af22e3a985d6233d3b11af72f0815551c2d0227a327be2b8241b9c",
     "retail/backend/internal/identity/customer_delivery_test.go": "d3c01c78c43a4706911daa36dee3f9bf0c70131dc3fa22ee526e217b06cb4022",
-    "retail/backend/cmd/send-verification-mail/main.go": "5c49f9035e420ee8556529101d04759b4f7968c2cec32151f9f4ebd01534af35"
+    "retail/backend/cmd/send-verification-mail/main.go": "8718f99f386fbcd377b7e8205b8a17d39c8b1f07089698f0d57d6209a507ca0b",
+    "retail/backend/migrations/0041_notification_mail_accounts.sql": "dc897fb5942a33c50b6bbc9b388afa5be6796655c88ff27b6cd0746655a398d8",
+    "retail/backend/internal/notificationmail/accounts.go": "c5360e393d5fb30709cce8cccaee47602fa3beb8bc6720e354a22620af01b023",
+    "retail/backend/internal/notificationmail/accounts_test.go": "c3b88850b343b23b4b1d925a9515a676224efbd68488fa8052ce52066eda3adc",
+    "retail/backend/internal/notificationmail/http.go": "43c257f587e20b0fa93ccc32b7fa0382cd3d4fa4ac58f0478adf21da722613d1",
+    "retail/backend/internal/identity/notification_mail_test.go": "dba36d7b7d1c23666c22e4741ba38a60edd7c52a2e63edb267d14b406b6c550a",
+    "retail/backend/internal/authorization/model.go": "9a27c0768a699cf895231c9f040ca0349e3aa36d42bce83671bf77eeb8b934a9"
   },
-  "cleanup": "both owned containers and temporary runner removed",
-  "verification_context": "Independent staged snapshot with reviewed fixtures; uncommitted payment 0037 excluded",
-  "staged_backend_go_all_packages_passed": true
+  "cleanup": "both owned containers and temporary runner removed"
 }

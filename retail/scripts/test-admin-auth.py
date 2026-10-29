@@ -130,6 +130,9 @@ def main():
                 print(tested.stdout.decode(errors='replace'))
                 raise RuntimeError('Owned customer account checks failed')
             counts = json.loads(markers[0])
+            notification_markers=[line.split('NOTIFICATION_MAIL_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'NOTIFICATION_MAIL_REHEARSAL ' in line]
+            if len(notification_markers)!=1:
+                raise RuntimeError('Notification mail verification missing')
             profile_markers=[line.split('CUSTOMER_PROFILE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CUSTOMER_PROFILE_REHEARSAL ' in line]
             if len(profile_markers)!=1:
                 raise RuntimeError('Customer profile verification missing')
@@ -146,7 +149,8 @@ def main():
             files += ['retail/backend/internal/customer/http.go','retail/backend/internal/customer/bridge.go','retail/backend/internal/customer/profile.go','retail/backend/internal/identity/customer_profile_test.go','retail/backend/internal/customer/bridge_test.go','retail/backend/internal/identity/customer_http_test.go','retail/backend/internal/protected/config.go','retail/backend/internal/protected/config_test.go','retail/backend/cmd/api/main.go','retail/backend/internal/platform/request.go']
             files += ['retail/backend/migrations/0039_customer_account_addresses.sql','retail/backend/internal/customer/addresses.go','retail/backend/internal/customer/addresses_http.go','retail/backend/internal/identity/customer_addresses_test.go']
             files += ['retail/backend/migrations/0040_customer_verification_delivery.sql','retail/backend/internal/customer/delivery.go','retail/backend/internal/maildelivery/resend.go','retail/backend/internal/maildelivery/resend_test.go','retail/backend/internal/identity/customer_delivery_test.go','retail/backend/cmd/send-verification-mail/main.go']
-            report = {'scope':'New customer identity, profile, addresses and verification delivery; complete storefront and actual external mail not accepted','counts':counts,'http':json.loads(http_markers[0]),'profile':json.loads(profile_markers[0]),'addresses':json.loads(address_markers[0]),'verification_delivery':json.loads(delivery_markers[0]),'application_resources_used':False,'real_accounts_used':False,'working_tree_migration_count':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),'includes_uncommitted_payment_0037':(ROOT/'retail/backend/migrations/0037_mollie_notification_inbox.sql').exists(),'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
+            files += ['retail/backend/migrations/0041_notification_mail_accounts.sql','retail/backend/internal/notificationmail/accounts.go','retail/backend/internal/notificationmail/accounts_test.go','retail/backend/internal/notificationmail/http.go','retail/backend/internal/identity/notification_mail_test.go','retail/backend/internal/authorization/model.go']
+            report = {'notification_mail':json.loads(notification_markers[0]),'scope':'New customer identity, profile, addresses and verification delivery; complete storefront and actual external mail not accepted','counts':counts,'http':json.loads(http_markers[0]),'profile':json.loads(profile_markers[0]),'addresses':json.loads(address_markers[0]),'verification_delivery':json.loads(delivery_markers[0]),'application_resources_used':False,'real_accounts_used':False,'working_tree_migration_count':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),'includes_uncommitted_payment_0037':(ROOT/'retail/backend/migrations/0037_mollie_notification_inbox.sql').exists(),'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
         elif usage_only:
             if tested.returncode:
                 print(tested.stdout.decode(errors='replace'))
