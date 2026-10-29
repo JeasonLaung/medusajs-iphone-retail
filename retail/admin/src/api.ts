@@ -1,5 +1,23 @@
 export type User = { id: string; email: string; name: string; role: string; enabled: boolean }
 
+export const WAREHOUSE_USER_ACTIONS=['inventory.read','inventory.stock.write','order.fulfillment.read'] as const
+export type WarehouseUser={id:string;name:string;email:string;enabled:boolean;mode:'selected'|'all';locations:string[];actions:(typeof WAREHOUSE_USER_ACTIONS)[number][]}
+export type WarehouseUserDirectory={revision:string;users:WarehouseUser[];locations:{id:string;name:string}[]}
+export type WarehouseUserCommand=Omit<WarehouseUser,'id'>&{id:string;operation_id:string;expected_revision:string;password:string}
+export async function warehouseUsers(signal?:AbortSignal):Promise<WarehouseUserDirectory>{
+ const d=await request<WarehouseUserDirectory>('warehouse-users',{signal},'/api/admin/')
+ if(!d||!warehouseRevision(d.revision)||!Array.isArray(d.users)||d.users.length>1000||!Array.isArray(d.locations)||d.locations.length>1000)throw new APIError(0,'request.invalid_response')
+ const unique=(a:unknown):a is string[]=>Array.isArray(a)&&a.every(x=>typeof x==='string')&&new Set(a).size===a.length
+ if(!d.locations.every(l=>l&&warehouseID(l.id)&&typeof l.name==='string')||!unique(d.locations.map(l=>l.id))||!unique(d.users.map(u=>u?.id)))throw new APIError(0,'request.invalid_response')
+ if(!d.users.every(u=>u&&/^usr_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(u.id)&&typeof u.name==='string'&&typeof u.email==='string'&&typeof u.enabled==='boolean'&&['selected','all'].includes(u.mode)&&unique(u.locations)&&u.locations.length<=1000&&u.locations.every(warehouseID)&&(u.mode!=='all'||u.locations.length===0)&&unique(u.actions)&&u.actions.length<=3&&u.actions.every(a=>WAREHOUSE_USER_ACTIONS.includes(a))))throw new APIError(0,'request.invalid_response')
+ return {revision:d.revision,locations:d.locations.map(({id,name})=>({id,name})),users:d.users.map(({id,name,email,enabled,mode,locations,actions})=>({id,name,email,enabled,mode,locations:[...locations],actions:[...actions]}))}
+}
+export async function saveWarehouseUser(body:WarehouseUserCommand):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{id:string;revision:string;replayed:boolean}>('warehouse-users',{method:'POST',csrf,body},'/api/admin/')
+ if(!d||!/^usr_[0-9a-f-]{36}$/.test(d.id)||!warehouseRevision(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}
+
 export class APIError extends Error {
   constructor(readonly status: number, readonly code: string, readonly requestID = '') {
     super(code)
