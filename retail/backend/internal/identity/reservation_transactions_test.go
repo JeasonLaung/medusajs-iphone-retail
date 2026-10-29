@@ -58,7 +58,7 @@ func TestOwnedReservationTransactions(t *testing.T) {
 		t.Fatal("stock fixture plan failed")
 	}
 	applied, err := schema.Apply(ctx, pool, plan)
-	if err != nil || applied.Applied != 32 {
+	if err != nil || applied.Applied != 33 {
 		t.Fatal("stock fixture migrations failed")
 	}
 	seedReviewedCatalogFixture(t, db)
@@ -394,5 +394,5 @@ func TestOwnedReservationTransactions(t *testing.T) {
 	if _, err := run(single, true); !errors.Is(err, inventory.ErrSchema) {
 		t.Fatal("reservation model drift accepted")
 	}
-	t.Log(`RESERVATION_TRANSACTION_REHEARSAL {"migrations":32,"last_unit_attempts":8,"last_unit_wins":1,"insufficient_stock":7,"exact_duplicate_attempts":8,"exact_duplicate_replays":7,"old_repeatable_read_snapshot_replay":true,"rollback_atomic":true,"receipt_failure_rollback":true,"exact_backorder_quantity":true,"held_creation_rejected":true,"held_release_preserves_hold":true,"double_release_rejected":true,"cross_line_release_rejected":true,"shared_item_batch_aggregated":true,"live_mismatch_rejected":true,"overflow_rejected":true,"capability_disabled_by_default":true,"schema_drift_rejected":true,"stable_multi_location_locks":true,"owner_failure_rollback":true,"legacy_null_backorder_preserved":true,"http_route_exposed":false,"order_workflow_integrated":false}`)
+	t.Log(`RESERVATION_TRANSACTION_REHEARSAL {"migrations":33,"last_unit_attempts":8,"last_unit_wins":1,"insufficient_stock":7,"exact_duplicate_attempts":8,"exact_duplicate_replays":7,"old_repeatable_read_snapshot_replay":true,"rollback_atomic":true,"receipt_failure_rollback":true,"exact_backorder_quantity":true,"held_creation_rejected":true,"held_release_preserves_hold":true,"double_release_rejected":true,"cross_line_release_rejected":true,"shared_item_batch_aggregated":true,"live_mismatch_rejected":true,"overflow_rejected":true,"capability_disabled_by_default":true,"schema_drift_rejected":true,"stable_multi_location_locks":true,"owner_failure_rollback":true,"legacy_null_backorder_preserved":true,"http_route_exposed":false,"order_workflow_integrated":false}`)
 }

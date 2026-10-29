@@ -16,4 +16,16 @@ cart-runtime及全量报告cart_promotion_amounts增加payment_refresh_preparati
 
 ## 后续必须实现
 
-原delete-payment-sessions实际调用provider.deletePayment，删除失败会验证结果并尝试重建已经删除的会话；不能用SQL软删代替外部会话失效。后续需要显式的持久操作状态、provider适配和幂等/重试/补偿，在本地数据与外部副作用间保持可恢复状态，并在最终金额/币种一致后完成购物车命令。尚未启用任何新支付provider调用，也未声明支付刷新或checkout完成。T032/T033未验收。
+原delete-payment-sessions实际调用provider.deleteSession，删除失败会验证结果并尝试重建已经删除的会话；不能用SQL软删代替外部会话失效。后续需要显式的持久操作状态、provider适配和幂等/重试/补偿，在本地数据与外部副作用间保持可恢复状态，并在最终金额/币种一致后完成购物车命令。尚未启用任何新支付provider调用，也未声明支付刷新或checkout完成。T032/T033未验收。
+
+## 支付副作用的持久执行记录（0033）
+
+新增私有 `payments.StageEffect / ClaimEffect / RecordEffect` 与 `payment_effect_journal`，保存 scope/operation/动作/资源、不可变请求 SHA256、当前尝试 UUID、次数、租约和状态。支持 delete_session 与补偿用 create_session，二者独立绑定。请求摘要必须涵盖实际 provider、完整出站参数、源快照和创建幂等键；记录不存令牌或渠道 payload，也不授予购物车或支付权限。所有入口要求调用方真实事务，重查支付 schema，任何错误须回滚。
+
+Stage 相同输入重放，变更摘要拒绝。Claim 在 MySQL 行锁内一次授予一个尝试，必须提交成功后才可在事务外调用 provider；租约使用数据库 UTC 时钟，10秒至5分钟。只有 pending 或明确未产生副作用的 failed 可抢占，最多100次。inflight 到期只转 uncertain，禁止再次派发。超时/断连/取消或渠道错误含义不清时必须记录 uncertain，不能当作 failed。未知状态由原尝试的迟到确定响应或渠道核实解决；当前尝试 UUID 防止旧响应覆盖重试。成功重放不重复派发，成功不能改为失败。
+
+隔离 MySQL 验证8个独立事务争抢只授予1次派发、请求摘要变更拒绝、明确失败重试与旧尝试隔离、结果未知不重试、过期租约保持原尝试、迟到确定响应解决、成功重放、调用方回滚、创建/删除记录独立及 schema/事务约束。报告新增 payment_effects。33个版本化迁移及报告 SHA 是本轮证据。
+
+该表只保存当前尝试与累计次数，不是完整尝试审计日志，也不是可独立执行的任务队列。尚未接入渠道适配器或外部调用；协调器还必须在 Stage 的同一事务持久保存受保护的恢复快照、绑定当前授权/cart版本，并完成 provider 幂等/核实、部分删除补偿、集合更新和最终提交。仅有 receipt 或 Dispatch=true 不能认定支付刷新完成；T032/T033仍未验收。
+
+本轮验收证据：`go test ./...`通过；隔离数据库完整23组回归通过，33迁移及成功重放均验证；admin-auth-report的267项实现SHA匹配。旧9001 health/Admin、8000商品页及购物车页均HTTP 200，近期服务日志无新增错误（既有PayPal seller nonce配置提示保留）。这些证据不包含真实provider或checkout验收。

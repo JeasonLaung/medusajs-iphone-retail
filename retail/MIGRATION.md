@@ -249,3 +249,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-29 促销刷新编排补充：[选择/事实/自动促销/属性预览/计算/保存](../docs/migration/cart-promotion-refresh.md)已由RefreshPromotions在同一调用方事务串联。人工MySQL验证自动与手动重算、remove/replace/原链接恢复、活动结束、额度反馈、手工项保留、不增加usage及后续失败整体回滚。公开命令、完整规则覆盖、新客户、支付/版本幂等及checkout仍缺，T032/T033未验收。
 
 2026-10-29 支付刷新准备补充：[原决策对照与事务内锁定计划](../docs/migration/cart-payment-refresh.md)实现精确raw金额/币种变化判断、旧session清单及集合目标准备；15组原回调对照及人工MySQL关系/软删/歧义/坏raw验证。尚不更新集合、不删除本地或provider session，可靠外部执行/补偿、完整命令和checkout仍缺，T032/T033未验收。
+
+2026-10-29 支付恢复记录补充：[持久尝试、抢占及未知结果隔离](../docs/migration/cart-payment-refresh.md)增加0033 MySQL journal，提交后派发、失败重试、超时不盲重试、旧尝试隔离、迟到结果核实；隔离8事务竞争及回滚验证。尚缺受保护任务快照、渠道适配、补偿和最终命令衔接，未调用真实支付渠道，T032/T033未验收。
