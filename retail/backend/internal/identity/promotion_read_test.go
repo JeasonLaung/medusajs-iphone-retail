@@ -49,6 +49,16 @@ func verifyPromotionActiveRead(t *testing.T, ctx context.Context, gdb *gorm.DB) 
 		t.Fatalf("precision/config relationship lost: %+v", first)
 	}
 	p := first[0]
+	// The schema fixture intentionally has a null attribute on its attribute
+	// budget. It must not compute until an explicit valid configuration and
+	// lookup fact are supplied. Configure only this artificial integration read.
+	exec("UPDATE promotion_campaign_budgets SET attribute='customer_id' WHERE id='budget'")
+	computeCandidates := read([]string{"SAVE"}, false, false)
+	exec("UPDATE promotion_campaign_budgets SET attribute=NULL WHERE id='budget'")
+	computed, computeErr := promotion.ComputeCandidates(promotion.ComputeInput{Candidates: computeCandidates, Context: json.RawMessage(`{"currency_code":"eur","customer_id":"artificial","items":[{"id":"line","product_id":"00123","subtotal":"10","original_total":"12","quantity":1}]}`), Epsilon: "0.0001", AttributeUsages: map[string]promotion.AttributeUsageSnapshot{"budget": {Attribute: "customer_id", Value: "artificial", Found: false}}})
+	if computeErr != nil || len(computed.Actions) != 1 || computed.Actions[0].PromotionID != "promo" || computed.Actions[0].ItemID != "line" || computed.Actions[0].Amount != "0.123456789012345678901" || !computed.Actions[0].TaxInclusive {
+		t.Fatalf("SQL promotion to exact computation failed: %+v %v", computed, computeErr)
+	}
 	if len(p.Rules) != 1 || len(p.Method.BuyRules) != 1 || len(p.Method.TargetRules) != 1 || string(p.Rules[0].Values[0].Value) != `"00123"` {
 		t.Fatal("three rule scopes not loaded as strings")
 	}

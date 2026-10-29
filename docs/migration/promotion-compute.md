@@ -1,0 +1,23 @@
+# 促销候选计算编排
+
+2026-10-29：`promotion.ComputeCandidates`把事务读出的明确候选与服务端可信事实连接到现有资格判断、稳定优先级、普通商品/运费/买赠分摊器，并返回有源promotion ID的addItemAdjustment/addShippingMethodAdjustment、promotionLimitExceeded和campaignBudgetExceeded。沿用原动作名称和顺序，金额字符串保持精确，含税商品折扣换算成未税金额进入跨code共享图。买赠先于普通优惠，保留独立购买/目标数量共享与1000轮显式拒绝；原买赠共享图toNumber的精度损失继续使用已说明的精确替代。该函数不访问数据库、不保存调整项、不授权checkout。
+
+## 预算预览与分摊检查位置
+
+原引擎每笔正折扣检查预算，通过后才能更新共享金额和普通once配额。三个分摊器增加Filtered入口，原入口委托nil过滤器，已有金额用例保持通过。拒绝只跳过整笔，不截成剩余预算；普通商品/运费拒绝不消耗once配额。买赠先扣本批remainingToApply再检查预算，拒绝仍保留本轮购买/赠品数量；跨code继续承接该保留，避免改变原买赠业务。回调错误返回空结果；调用方必须丢弃自己在回调内收集的状态，不能把它当外部写入口。
+
+spend检查原used加本笔金额，usage检查used加1；预览不累计本次多个行或code到活动used。比如预算10、两行各优惠6时原预览都可返回，但最终登记合计12必须拒绝并整体回滚。这是预览反馈，不是额度预留。原注册阶段已有全事务当前锁读及精确合计，后续checkout必须使用它。
+
+use_by_attribute需要显式提供同一快照中的查询结果，Found=false表示确已查询无行，缺map项拒绝，避免漏查等于无限次数。支持原customer_id（顶层空值回退customer.id）和customer_email（email）两个可信来源，查询属性名与值必须完全一致。已存在用量超限时在促销limit/规则前返回预算反馈。无记录沿用原预览分支，但最终登记仍按零起点和真实limit验证。spend_by_attribute明确拒绝，不能静默当普通budget。
+
+## 输入和接入限制
+
+Context需提供刷新后、折扣前的subtotal/original_total和服务端商品/客户事实。不能把浏览器提交的同名字段或已减优惠的存储总额传入。候选源ID/code去重和配置限制校验、数量/金额精确验证，非法输入整体返回空结果。旧调整项移除命令尚未接入；不能用该函数覆盖手工调整或直接写购物车。配置读取、属性用量读取、事实组装、最终锁内登记与调整项写入必须在完整命令中衔接。
+
+## 证据
+
+`capture-promotion-compute.cjs --check`直接执行已安装原computeActions方法体，人工list服务提供配置/属性记录，prevent_auto_promotions=true以隔离已验证的自动候选读取。只增加返回内部共享map，未复制旧预算/金额算法。应用方式value按原模型BigNumber水合，避免fixture字符串字典序替代数值排序。原文件SHA、19组输入/输出保存在fixtures/promotion-compute.json，包含叠加、拒绝/通过动作交错、税内外转换、自动across后备、普通/运费预算与次数、买赠先后与拒绝后的数量保留、属性存在/不存在边界及空方法。Go逐例比较所有动作与共享金额，另验证回调错误、拒绝不占once配额、缺属性查询/错属性值/非法数量/未知预算拒绝。
+
+隔离SQL PromotionSchema suite另从数据库关系读取精确raw配置，实际调用ComputeCandidates验证源promotion/item ID、含税标志与超18位折扣金额。完整admin-auth-report源码SHA匹配才证明该衔接，纯引擎对照仍以fixture/Go测试为证据。
+
+尚缺真实购物车事实装配与属性用量读取、旧调整项移除及新调整项保存、命令版本/幂等以及支付/库存checkout协调和Astro接入。T032/T033仍未验收。

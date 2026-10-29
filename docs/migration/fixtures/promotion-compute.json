@@ -1,0 +1,1454 @@
+{
+  "format_version": 1,
+  "scope": "Original pure computeActions body with artificial read services; no SQL, registration, adjustment persistence or checkout",
+  "sources": [
+    {
+      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/services/promotion-module.js",
+      "sha256": "cb1eaec98335f68e91377548998b498167652ccecf9a3874bbb0192964cb13f1"
+    },
+    {
+      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/usage.js",
+      "sha256": "819328d0e7c3b855f95b6b9a4e640cc9fabc4572343796d63ebe34abe8506af8"
+    },
+    {
+      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/line-items.js",
+      "sha256": "c43baa69baf44b6888bfece03aba4162c530e7739a9103c6153ddad3b887c6c3"
+    },
+    {
+      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/shipping-methods.js",
+      "sha256": "d2f2803a44513074f633f4606695af132da520c532b5efe9856064be9dd5d405"
+    },
+    {
+      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/buy-get.js",
+      "sha256": "f5f1e7fce022b4868ab047ca44270a6a154f444ff380f303c570b939a3da2a47"
+    }
+  ],
+  "cases": [
+    {
+      "name": "shared-stacking",
+      "promotions": [
+        {
+          "id": "half",
+          "code": "half",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "percentage",
+            "target_type": "items",
+            "value": "50",
+            "allocation": "each"
+          }
+        },
+        {
+          "id": "fixed",
+          "code": "fixed",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "1",
+            "allocation": "each"
+          }
+        }
+      ],
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "original_total": "20",
+            "product_id": "phone"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "addItemAdjustment",
+            "Code": "half",
+            "PromotionID": "half",
+            "ItemID": "a",
+            "ShippingMethodID": "",
+            "Amount": "5",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addItemAdjustment",
+            "Code": "half",
+            "PromotionID": "half",
+            "ItemID": "b",
+            "ShippingMethodID": "",
+            "Amount": "10",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addItemAdjustment",
+            "Code": "fixed",
+            "PromotionID": "fixed",
+            "ItemID": "a",
+            "ShippingMethodID": "",
+            "Amount": "1",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addItemAdjustment",
+            "Code": "fixed",
+            "PromotionID": "fixed",
+            "ItemID": "b",
+            "ShippingMethodID": "",
+            "Amount": "1",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "a": "6",
+          "b": "11"
+        }
+      }
+    },
+    {
+      "name": "spend-reject-then-smaller-once",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "5",
+            "allocation": "once",
+            "max_quantity": 1
+          },
+          "campaign": {
+            "budget": {
+              "id": "budget",
+              "type": "spend",
+              "limit": "4",
+              "used": "0"
+            }
+          }
+        }
+      ],
+      "context": {
+        "items": [
+          {
+            "id": "big",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "small",
+            "subtotal": "3",
+            "quantity": 1,
+            "original_total": "3",
+            "product_id": "phone"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "addItemAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "small",
+            "ShippingMethodID": "",
+            "Amount": "3",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "small": "3"
+        }
+      }
+    },
+    {
+      "name": "spend-each-fails",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "1",
+            "allocation": "each"
+          },
+          "campaign": {
+            "budget": {
+              "id": "budget",
+              "type": "spend",
+              "limit": "0",
+              "used": "0"
+            }
+          }
+        }
+      ],
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "original_total": "20",
+            "product_id": "phone"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "campaignBudgetExceeded",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "",
+            "ShippingMethodID": "",
+            "Amount": "",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "campaignBudgetExceeded",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "",
+            "ShippingMethodID": "",
+            "Amount": "",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {}
+      }
+    },
+    {
+      "name": "spend-reject-before-accept",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "5",
+            "allocation": "each"
+          },
+          "campaign": {
+            "budget": {
+              "id": "budget",
+              "type": "spend",
+              "limit": "4",
+              "used": "0"
+            }
+          }
+        }
+      ],
+      "context": {
+        "items": [
+          {
+            "id": "big",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "small",
+            "subtotal": "3",
+            "quantity": 1,
+            "original_total": "3",
+            "product_id": "phone"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "campaignBudgetExceeded",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "",
+            "ShippingMethodID": "",
+            "Amount": "",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addItemAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "small",
+            "ShippingMethodID": "",
+            "Amount": "3",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "small": "3"
+        }
+      }
+    },
+    {
+      "name": "preview-not-reservation",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "6",
+            "allocation": "each"
+          },
+          "campaign": {
+            "budget": {
+              "id": "budget",
+              "type": "spend",
+              "limit": "10",
+              "used": "0"
+            }
+          }
+        }
+      ],
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "original_total": "20",
+            "product_id": "phone"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "addItemAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "a",
+            "ShippingMethodID": "",
+            "Amount": "6",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addItemAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "b",
+            "ShippingMethodID": "",
+            "Amount": "6",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "a": "6",
+          "b": "6"
+        }
+      }
+    },
+    {
+      "name": "usage-exceeded",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "1",
+            "allocation": "each"
+          },
+          "campaign": {
+            "budget": {
+              "id": "budget",
+              "type": "usage",
+              "limit": "1",
+              "used": "1"
+            }
+          }
+        }
+      ],
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "original_total": "20",
+            "product_id": "phone"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "campaignBudgetExceeded",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "",
+            "ShippingMethodID": "",
+            "Amount": "",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "campaignBudgetExceeded",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "",
+            "ShippingMethodID": "",
+            "Amount": "",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {}
+      }
+    },
+    {
+      "name": "usage-equality",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "1",
+            "allocation": "each"
+          },
+          "campaign": {
+            "budget": {
+              "id": "budget",
+              "type": "usage",
+              "limit": "1",
+              "used": "0"
+            }
+          }
+        }
+      ],
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "original_total": "20",
+            "product_id": "phone"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "addItemAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "a",
+            "ShippingMethodID": "",
+            "Amount": "1",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addItemAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "b",
+            "ShippingMethodID": "",
+            "Amount": "1",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "a": "1",
+          "b": "1"
+        }
+      }
+    },
+    {
+      "name": "limit-before-currency",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "1",
+            "allocation": "each",
+            "currency_code": "usd"
+          },
+          "limit": 0
+        }
+      ],
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "original_total": "20",
+            "product_id": "phone"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "promotionLimitExceeded",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "",
+            "ShippingMethodID": "",
+            "Amount": "",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {}
+      }
+    },
+    {
+      "name": "order-null-allocation",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "order",
+            "value": "3",
+            "allocation": null
+          }
+        }
+      ],
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "original_total": "20",
+            "product_id": "phone"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "addItemAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "a",
+            "ShippingMethodID": "",
+            "Amount": "0.99999999999999999999",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addItemAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "b",
+            "ShippingMethodID": "",
+            "Amount": "2.00000000000000000001",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "a": "0.99999999999999999999",
+          "b": "2.00000000000000000001"
+        }
+      }
+    },
+    {
+      "name": "target-and-order-rules",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "1",
+            "allocation": "each",
+            "target_rules": [
+              {
+                "attribute": "items.product_id",
+                "operator": "eq",
+                "values": [
+                  {
+                    "value": "phone"
+                  }
+                ]
+              }
+            ]
+          },
+          "rules": [
+            {
+              "attribute": "currency_code",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "eur"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "addItemAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "a",
+            "ShippingMethodID": "",
+            "Amount": "1",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "a": "1"
+        }
+      }
+    },
+    {
+      "name": "inclusive-then-exclusive",
+      "promotions": [
+        {
+          "id": "inclusive",
+          "code": "inclusive",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": true,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "6",
+            "allocation": "each"
+          }
+        },
+        {
+          "id": "exclusive",
+          "code": "exclusive",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "1",
+            "allocation": "each"
+          }
+        }
+      ],
+      "context": {
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "12",
+            "product_id": "phone"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "addItemAdjustment",
+            "Code": "inclusive",
+            "PromotionID": "inclusive",
+            "ItemID": "a",
+            "ShippingMethodID": "",
+            "Amount": "6",
+            "TaxInclusive": true
+          },
+          {
+            "Action": "addItemAdjustment",
+            "Code": "exclusive",
+            "PromotionID": "exclusive",
+            "ItemID": "a",
+            "ShippingMethodID": "",
+            "Amount": "1",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "a": "5.99999999999999999998"
+        }
+      }
+    },
+    {
+      "name": "shipping-once-reject-keeps-quota",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "shipping_methods",
+            "value": "6",
+            "allocation": "once",
+            "max_quantity": 1
+          },
+          "campaign": {
+            "budget": {
+              "id": "budget",
+              "type": "spend",
+              "limit": "5",
+              "used": "0"
+            }
+          }
+        }
+      ],
+      "context": {
+        "shipping_methods": [
+          {
+            "id": "expensive",
+            "subtotal": "10"
+          },
+          {
+            "id": "cheap",
+            "subtotal": "3"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "addShippingMethodAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "",
+            "ShippingMethodID": "cheap",
+            "Amount": "3",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "cheap": "3"
+        }
+      }
+    },
+    {
+      "name": "shipping-across-shared",
+      "promotions": [
+        {
+          "id": "s1",
+          "code": "s1",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "shipping_methods",
+            "value": "5",
+            "allocation": "across"
+          }
+        },
+        {
+          "id": "s2",
+          "code": "s2",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "percentage",
+            "target_type": "shipping_methods",
+            "value": "10",
+            "allocation": "each"
+          }
+        }
+      ],
+      "context": {
+        "shipping_methods": [
+          {
+            "id": "a",
+            "subtotal": "10"
+          },
+          {
+            "id": "b",
+            "subtotal": "15"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "addShippingMethodAdjustment",
+            "Code": "s2",
+            "PromotionID": "s2",
+            "ItemID": "",
+            "ShippingMethodID": "a",
+            "Amount": "1",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addShippingMethodAdjustment",
+            "Code": "s2",
+            "PromotionID": "s2",
+            "ItemID": "",
+            "ShippingMethodID": "b",
+            "Amount": "1.5",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addShippingMethodAdjustment",
+            "Code": "s1",
+            "PromotionID": "s1",
+            "ItemID": "",
+            "ShippingMethodID": "a",
+            "Amount": "2",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addShippingMethodAdjustment",
+            "Code": "s1",
+            "PromotionID": "s1",
+            "ItemID": "",
+            "ShippingMethodID": "b",
+            "Amount": "3",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "a": "3",
+          "b": "4.5"
+        }
+      }
+    },
+    {
+      "name": "buyget-before-standard",
+      "promotions": [
+        {
+          "id": "standard",
+          "code": "standard",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "3",
+            "allocation": "each"
+          }
+        },
+        {
+          "id": "gift",
+          "code": "gift",
+          "type": "buyget",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "2",
+            "allocation": "each",
+            "buy_rules_min_quantity": 1,
+            "apply_to_quantity": 1,
+            "max_quantity": 2,
+            "buy_rules": [
+              {
+                "attribute": "items.product_id",
+                "operator": "eq",
+                "values": [
+                  {
+                    "value": "phone"
+                  }
+                ]
+              }
+            ],
+            "target_rules": [
+              {
+                "attribute": "items.product_id",
+                "operator": "eq",
+                "values": [
+                  {
+                    "value": "gift"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "context": {
+        "items": [
+          {
+            "id": "buy",
+            "subtotal": "20",
+            "quantity": 2,
+            "original_total": "20",
+            "product_id": "phone"
+          },
+          {
+            "id": "gift",
+            "subtotal": "10",
+            "quantity": 2,
+            "original_total": "10",
+            "product_id": "gift"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "addItemAdjustment",
+            "Code": "gift",
+            "PromotionID": "gift",
+            "ItemID": "gift",
+            "ShippingMethodID": "",
+            "Amount": "4",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addItemAdjustment",
+            "Code": "standard",
+            "PromotionID": "standard",
+            "ItemID": "buy",
+            "ShippingMethodID": "",
+            "Amount": "3",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addItemAdjustment",
+            "Code": "standard",
+            "PromotionID": "standard",
+            "ItemID": "gift",
+            "ShippingMethodID": "",
+            "Amount": "3",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "gift": "7",
+          "buy": "3"
+        }
+      }
+    },
+    {
+      "name": "buyget-budget-reject-consumes-membership",
+      "promotions": [
+        {
+          "id": "gift",
+          "code": "gift",
+          "type": "buyget",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "2",
+            "allocation": "each",
+            "buy_rules_min_quantity": 1,
+            "apply_to_quantity": 1,
+            "max_quantity": 2,
+            "buy_rules": [
+              {
+                "attribute": "items.product_id",
+                "operator": "eq",
+                "values": [
+                  {
+                    "value": "phone"
+                  }
+                ]
+              }
+            ],
+            "target_rules": [
+              {
+                "attribute": "items.product_id",
+                "operator": "eq",
+                "values": [
+                  {
+                    "value": "gift"
+                  }
+                ]
+              }
+            ]
+          },
+          "campaign": {
+            "budget": {
+              "id": "budget",
+              "type": "spend",
+              "limit": "1",
+              "used": "0"
+            }
+          }
+        },
+        {
+          "id": "gift2",
+          "code": "gift2",
+          "type": "buyget",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "2",
+            "allocation": "each",
+            "buy_rules_min_quantity": 1,
+            "apply_to_quantity": 1,
+            "max_quantity": 2,
+            "buy_rules": [
+              {
+                "attribute": "items.product_id",
+                "operator": "eq",
+                "values": [
+                  {
+                    "value": "phone"
+                  }
+                ]
+              }
+            ],
+            "target_rules": [
+              {
+                "attribute": "items.product_id",
+                "operator": "eq",
+                "values": [
+                  {
+                    "value": "gift"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "context": {
+        "items": [
+          {
+            "id": "buy",
+            "subtotal": "20",
+            "quantity": 2,
+            "original_total": "20",
+            "product_id": "phone"
+          },
+          {
+            "id": "gift",
+            "subtotal": "10",
+            "quantity": 2,
+            "original_total": "10",
+            "product_id": "gift"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "campaignBudgetExceeded",
+            "Code": "gift",
+            "PromotionID": "gift",
+            "ItemID": "",
+            "ShippingMethodID": "",
+            "Amount": "",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "campaignBudgetExceeded",
+            "Code": "gift",
+            "PromotionID": "gift",
+            "ItemID": "",
+            "ShippingMethodID": "",
+            "Amount": "",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {}
+      }
+    },
+    {
+      "name": "attribute-existing-exceeded",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "1",
+            "allocation": "each"
+          },
+          "campaign": {
+            "budget": {
+              "id": "budget",
+              "type": "use_by_attribute",
+              "limit": "1",
+              "used": "0",
+              "attribute": "customer_id"
+            }
+          }
+        }
+      ],
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "original_total": "20",
+            "product_id": "phone"
+          }
+        ],
+        "customer": {
+          "id": "c"
+        }
+      },
+      "attributeUsages": {
+        "budget": {
+          "attribute": "customer_id",
+          "value": "c",
+          "found": true,
+          "used": "1"
+        }
+      },
+      "expected": {
+        "actions": [
+          {
+            "Action": "campaignBudgetExceeded",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "",
+            "ShippingMethodID": "",
+            "Amount": "",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {}
+      }
+    },
+    {
+      "name": "attribute-missing-row",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "1",
+            "allocation": "each"
+          },
+          "campaign": {
+            "budget": {
+              "id": "budget",
+              "type": "use_by_attribute",
+              "limit": "0",
+              "used": "0",
+              "attribute": "customer_email"
+            }
+          }
+        }
+      ],
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "original_total": "20",
+            "product_id": "phone"
+          }
+        ],
+        "email": "artificial@example.test"
+      },
+      "attributeUsages": {
+        "budget": {
+          "attribute": "customer_email",
+          "value": "artificial@example.test",
+          "found": false,
+          "used": ""
+        }
+      },
+      "expected": {
+        "actions": [
+          {
+            "Action": "addItemAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "a",
+            "ShippingMethodID": "",
+            "Amount": "1",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addItemAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "b",
+            "ShippingMethodID": "",
+            "Amount": "1",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "a": "1",
+          "b": "1"
+        }
+      }
+    },
+    {
+      "name": "attribute-boundary",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "fixed",
+            "target_type": "items",
+            "value": "1",
+            "allocation": "each"
+          },
+          "campaign": {
+            "budget": {
+              "id": "budget",
+              "type": "use_by_attribute",
+              "limit": "2",
+              "used": "0",
+              "attribute": "customer_id"
+            }
+          }
+        }
+      ],
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "original_total": "20",
+            "product_id": "phone"
+          }
+        ],
+        "customer_id": "c"
+      },
+      "attributeUsages": {
+        "budget": {
+          "attribute": "customer_id",
+          "value": "c",
+          "found": true,
+          "used": "1"
+        }
+      },
+      "expected": {
+        "actions": [
+          {
+            "Action": "addItemAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "a",
+            "ShippingMethodID": "",
+            "Amount": "1",
+            "TaxInclusive": false
+          },
+          {
+            "Action": "addItemAdjustment",
+            "Code": "p",
+            "PromotionID": "p",
+            "ItemID": "b",
+            "ShippingMethodID": "",
+            "Amount": "1",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "a": "1",
+          "b": "1"
+        }
+      }
+    },
+    {
+      "name": "missing-method",
+      "promotions": [
+        {
+          "id": "p",
+          "code": "p",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": null
+        }
+      ],
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "original_total": "10",
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "original_total": "20",
+            "product_id": "phone"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [],
+        "discounts": {}
+      }
+    }
+  ]
+}

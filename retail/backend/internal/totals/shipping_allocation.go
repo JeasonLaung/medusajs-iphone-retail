@@ -26,6 +26,10 @@ type ShippingAllocationResult struct {
 // half away from zero), without provider currency rounding. once consumes one
 // quota per positively discounted method, ordered by subtotal, stably for ties.
 func AllocateShipping(input ShippingAllocationInput) (ShippingAllocationResult, error) {
+	return AllocateShippingFiltered(input, nil)
+}
+
+func AllocateShippingFiltered(input ShippingAllocationInput, filter AllocationFilter) (ShippingAllocationResult, error) {
 	empty := ShippingAllocationResult{}
 	if (input.Allocation != "each" && input.Allocation != "once" && input.Allocation != "across") ||
 		(input.Type != "fixed" && input.Type != "percentage") || len(input.Methods) > 1000 || len(input.Previous) > 1000 {
@@ -119,6 +123,13 @@ func AllocateShipping(input ShippingAllocationInput) (ShippingAllocationResult, 
 			amount = available
 		}
 		if amount.r.Sign() <= 0 {
+			continue
+		}
+		accepted, err := acceptAllocation(filter, row.id, amount.text())
+		if err != nil {
+			return empty, err
+		}
+		if !accepted {
 			continue
 		}
 		result.Amounts = append(result.Amounts, ShippingAllocationAmount{row.id, amount.text()})

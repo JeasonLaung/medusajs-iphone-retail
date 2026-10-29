@@ -32,6 +32,10 @@ type ItemAllocationResult struct {
 // rounded divisions before multiplication and inclusive/exclusive conversion.
 // Invalid input returns no partial allocation and never mutates caller state.
 func AllocateItems(input ItemAllocationInput) (ItemAllocationResult, error) {
+	return AllocateItemsFiltered(input, nil)
+}
+
+func AllocateItemsFiltered(input ItemAllocationInput, filter AllocationFilter) (ItemAllocationResult, error) {
 	empty := ItemAllocationResult{}
 	if (input.Allocation != "each" && input.Allocation != "once" && input.Allocation != "across") ||
 		(input.Type != "fixed" && input.Type != "percentage") || len(input.Items) > 1000 || len(input.Previous) > 1000 {
@@ -186,6 +190,13 @@ func AllocateItems(input ItemAllocationInput) (ItemAllocationResult, error) {
 			amount = applicable
 		}
 		if amount.r.Cmp(epsilon.r) <= 0 {
+			continue
+		}
+		accepted, err := acceptAllocation(filter, row.id, amount.text())
+		if err != nil {
+			return empty, err
+		}
+		if !accepted {
 			continue
 		}
 		appliedExclusive := amount

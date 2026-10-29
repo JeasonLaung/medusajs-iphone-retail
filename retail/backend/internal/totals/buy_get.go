@@ -36,6 +36,10 @@ type BuyGetResult struct {
 // subtotal/quantity, irrespective of a tax-inclusive flag, matching this legacy
 // branch. Existing discounts accumulate but do not reduce the target price.
 func AllocateBuyGet(in BuyGetInput) (BuyGetResult, error) {
+	return AllocateBuyGetFiltered(in, nil)
+}
+
+func AllocateBuyGetFiltered(in BuyGetInput, filter AllocationFilter) (BuyGetResult, error) {
 	empty := BuyGetResult{}
 	if in.Code == "" || len(in.Code) > 191 || (in.Type != "fixed" && in.Type != "percentage") || in.MinimumBuy <= 0 || in.MinimumBuy > 2147483647 || in.ApplyQuantity < 0 || in.ApplyQuantity > 2147483647 || len(in.Items) > 1000 || len(in.Previous) > 1000 {
 		return empty, ErrInput
@@ -252,6 +256,13 @@ func AllocateBuyGet(in BuyGetInput) (BuyGetResult, error) {
 				continue
 			}
 			remainingToApply -= qty
+			accepted, err := acceptAllocation(filter, row.ID, amount.text())
+			if err != nil {
+				return empty, err
+			}
+			if !accepted {
+				continue
+			}
 			appliedQuantity += qty
 			old, ok := previous[row.ID]
 			if !ok {
