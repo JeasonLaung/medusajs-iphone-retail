@@ -24,7 +24,7 @@ export type Product = {
  thumbnail: string | null; collection_id: string | null; options: Option[]; images: Image[]; variants: Variant[]
  display: ProductDisplay
 }
-export type ProductQuery = {limit?: number; offset?: number; q?: string; handle?: string; category_id?: string; collection_id?: string; region_id?: string; quantity?: string}
+export type ProductQuery = {limit?: number; offset?: number; q?: string; handle?: string; category_id?: string; collection_id?: string; region_id?: string; quantity?: string; order?: '-created_at'; option_value_id?: string[]}
 export type PriceContext = Pick<ProductQuery,'region_id' | 'quantity'>
 export type ProductPage = {products: Product[]; count: number; limit: number; offset: number; capabilities: {pricing: boolean; availability: true; checkout: false}}
 const unavailable = () => new Error('Store products unavailable')
@@ -99,11 +99,18 @@ function capabilities(input: unknown, pricing: boolean): ProductPage['capabiliti
 }
 function query(input: ProductQuery, detail = false): {params: URLSearchParams; limit: number; offset: number; pricing: boolean; requested: bigint} {
  const q = object(input), params = new URLSearchParams()
- const allowed = detail ? ['region_id','quantity'] : ['limit','offset','q','handle','category_id','collection_id','region_id','quantity']
+ const allowed = detail ? ['region_id','quantity'] : ['limit','offset','q','handle','category_id','collection_id','region_id','quantity','order','option_value_id']
  for (const [key,value] of Object.entries(q)) {
   if (!allowed.includes(key)) throw unavailable()
   if (value === undefined) continue
-  if (key === 'limit' || key === 'offset') {
+  if (key === 'option_value_id') {
+   const values = list(value,100).map(id)
+   if (!values.length) throw unavailable()
+   for (const v of new Set(values)) params.append(key,v)
+  } else if (key === 'order') {
+   if (value !== '-created_at') throw unavailable()
+   params.set(key,value)
+  } else if (key === 'limit' || key === 'offset') {
    const n = integer(value)
    if (key === 'limit' ? n < 1 || n > 100 : n < 0 || n > 100000) throw unavailable()
    params.set(key,String(n))

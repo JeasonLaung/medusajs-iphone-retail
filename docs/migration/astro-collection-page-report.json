@@ -1,0 +1,75 @@
+{
+  "scope": "formal Astro collection page and Gin catalog query extensions; partial frontend delivery",
+  "implementation_sha256": {
+    "retail/backend/internal/catalog/store_products.go": "084e7f26cc1fe2b425a3a0facb27843f554603d13484183cdd4eb12adb1c7c8f",
+    "retail/backend/internal/catalog/store_products_test.go": "a3287c48a3bfe78739731fdd5aca4f4ac76f43fb3d443c7c905600ad05a6a975",
+    "retail/backend/internal/identity/store_products_test.go": "1875301b580275586b4aa5c9562f122ca2e11154aa39b403474697f5a9208ee1",
+    "retail/storefront/src/lib/products.ts": "34c2faa77f9a93a2772040ef966655d1470b220cfb8519f54e12471eb73e7aea",
+    "retail/storefront/src/lib/collection-page.ts": "65bde7f137a39fa9816989a3cc261463fb843638b025cbea47f15486b4bafd51",
+    "retail/storefront/src/pages/[countryCode]/collections/[handle].astro": "10669e43b783ab6ec0230933b6ba1974edf90fdc7a55cb288a66bf801888d598",
+    "retail/storefront/tests/collection-page.test.ts": "7408b871f9361bfad718dd51d815d6d27e060a9710008429e553d2ed07451b6c",
+    "retail/storefront/tests/collection.browser.mjs": "e11092bc43d9b1e0312e1894b94bd882537ca2b77edfd0494c68e8f67ba5d6bf",
+    "retail/storefront/src/components/collections/ellipse-mini-solid.d.ts": "2aff9010737b15a798982db6513fda9cc253c8312aacc480537c4181169adc86",
+    "retail/storefront/src/components/collections/ellipse-mini-solid.js": "efd1bff317a9306ed0c6bbb4ec7325d74ec6b1eb4bba62398fe3205772f74941",
+    "retail/storefront/src/components/collections/filter-radio-group.tsx": "36cebac0612d8e8bd5ea1d9033269831696ec2dbefe8208bcb092d06135fa4d0",
+    "retail/storefront/src/components/collections/index.tsx": "5ef5fc646c4e1c2c8a0891605e7e7284a9d942cd103322af6afee29a8a836dbf",
+    "retail/storefront/src/components/collections/pagination.tsx": "9484fbc10599464e4e37925a49b13c27826a04ee631f44a58b56c4fcf37aef93",
+    "retail/storefront/src/components/collections/placeholder-image.tsx": "d4f47f3543b43816afa5e69bb4946fda741b130332c70fb1e50eed9a39e46d6d",
+    "retail/storefront/src/components/collections/preview-price.tsx": "0791312cef239de25c322d55ee4a9ed96a4360d949e6ca5f12340b14d1967b5a",
+    "retail/storefront/src/components/collections/product-preview.tsx": "8f1fb76e4af7a80a95e32ef398e3a44b1204043172d002aa14d6e01d49f18b78",
+    "retail/storefront/src/components/collections/sort-products.tsx": "3379f448ce3112ce84326ec40ce23122bdfea2a1b9dfd0cbaf2e5c4f9da86925",
+    "retail/storefront/src/components/collections/styles.module.css": "c4139f64cf0a168d57ad161644c6738ba6233452bac9269bf21c81d9422f339e",
+    "retail/storefront/src/components/collections/thumbnail.tsx": "12cbb6036b839839d0bca8a60375b16d463b7e051cfec8785a8f08f00cf425b2",
+    "retail/storefront/src/components/collections/ui.tsx": "74af5b6a40775ca3df0d4ac77089150aa9df45c981aa56fce909bed88bae7e16"
+  },
+  "validation": {
+    "astro_check": {
+      "files": 260,
+      "errors": 0,
+      "warnings": 0,
+      "existing_hints": 2
+    },
+    "unit_tests": 103,
+    "astro_build": true,
+    "exact_staged_backend_go_all": true,
+    "owned_mysql_catalog_suite": true,
+    "owned_fixture_migrations": 40,
+    "owned_fixture_cleanup": "complete",
+    "formal_astro_chrome_synthetic_api": true,
+    "browser_errors": 0,
+    "widths": [
+      390,
+      1440
+    ],
+    "locales": [
+      "en",
+      "zh"
+    ],
+    "image_decoded": true,
+    "source_sort_helper_comparison": true,
+    "source_option_filter_inspected": true
+  },
+  "runtime_evidence_sha256": "bebc51d9c11489153ec63da7804a490756ab9a930c0e377bb53389cae7030fbc",
+  "service_checks": [
+    {
+      "url": "http://127.0.0.1:9001/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9001/app",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8000/dk-en/store",
+      "status": 200
+    }
+  ],
+  "limitations": [
+    "Full 23-suite run timed out at ProductPrices Docker observation and was cleaned; final ProductPrices isolated rerun passed",
+    "Browser uses synthetic API separately from real Gin/MySQL SQL checks",
+    "Original 100-product collection window is retained",
+    "No original screenshot pixel comparison",
+    "Full storefront checkout/payment/buyback/aftersales and data joint acceptance remain incomplete",
+    "Existing service logs retain PayPal seller nonce warning and Next transformAlgorithm error"
+  ]
+}

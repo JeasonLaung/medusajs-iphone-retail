@@ -1,0 +1,4 @@
+.sort div:has(input:focus-visible) > label {
+  outline: 2px solid #1677FF;
+  outline-offset: 3px;
+}

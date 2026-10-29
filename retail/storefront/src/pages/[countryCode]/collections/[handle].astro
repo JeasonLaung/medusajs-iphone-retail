@@ -1,0 +1,22 @@
+---
+import {GIN_API_ORIGIN} from 'astro:env/server'
+import Storefront from '../../../layouts/Storefront.astro'
+import Collection from '../../../components/collections'
+import {loadPublicPage} from '../../../lib/public-page'
+import {parseCollectionQuery,loadCollectionPage,type CollectionPage} from '../../../lib/collection-page'
+const segment=(Astro.params.countryCode??'').toLowerCase(),handle=Astro.params.handle??'',zh=segment.endsWith('-zh')
+let shell:Awaited<ReturnType<typeof loadPublicPage>>=null,data:CollectionPage|null=null,invalid=false,unavailable=false
+let query:ReturnType<typeof parseCollectionQuery>|undefined
+try{query=parseCollectionQuery(Astro.url.searchParams)}catch{invalid=true}
+try{
+ if(!invalid){shell=await loadPublicPage(GIN_API_ORIGIN,segment);if(shell){const region=shell.regions.find(r=>r.countries.some(c=>c.iso_2===segment.slice(0,2)))!;data=await loadCollectionPage(GIN_API_ORIGIN,handle,region,query!)}}
+}catch{unavailable=true}
+if(invalid)Astro.response.status=400
+else if(unavailable)Astro.response.status=503
+else if(!data)Astro.response.status=404
+const message=invalid?(zh?'无效的商品筛选参数':'Invalid product filters'):unavailable?(zh?'暂时无法加载商品，请稍后重试。':'Products are temporarily unavailable. Please try again.'):(zh?'未找到页面':'Page not found')
+const region=shell?.regions.find(r=>r.countries.some(c=>c.iso_2===segment.slice(0,2)))
+---
+<Storefront segment={segment} title={data?data.collection.title:message} description={data?`${data.collection.title} collection`:undefined} shell={shell??undefined} canonicalPath={data?`/${segment}/collections/${encodeURIComponent(handle)}`:undefined}>
+ {data&&region?<Collection data={data} region={region} segment={segment} requestUrl={Astro.url.href} client:load/>:<div class="content-container py-16"><h1>{message}</h1></div>}
+</Storefront>

@@ -23,11 +23,12 @@ def docker(*args, timeout=90):
 
 
 def main():
-    if sys.argv[1:] not in ([], ['--cart-runtime-only'], ['--promotion-usage-only'], ['--customer-accounts-only']):
+    if sys.argv[1:] not in ([], ['--cart-runtime-only'], ['--promotion-usage-only'], ['--customer-accounts-only'], ['--store-collections-only']):
         raise RuntimeError('Unknown rehearsal option')
     cart_only = sys.argv[1:] == ['--cart-runtime-only']
     usage_only = sys.argv[1:] == ['--promotion-usage-only']
     customer_only = sys.argv[1:] == ['--customer-accounts-only']
+    collection_only = sys.argv[1:] == ['--store-collections-only']
     if shutil.disk_usage(ROOT).free < 2 * (1 << 30):
         raise RuntimeError('At least 2 GiB free workspace disk required to preserve development services')
     for image in ['mysql:8.4', 'redis:7-alpine']:
@@ -101,6 +102,8 @@ def main():
             suites = ['PromotionUsage']
         if customer_only:
             suites = ['AdminAuthentication']
+        if collection_only:
+            suites = ['ProductPrices']
         output, errors = b'', b''
         for suite in suites:
             print(json.dumps({'running_suite': suite}), flush=True)
@@ -124,7 +127,19 @@ def main():
             if docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket','-e',cleanup).returncode:
                 raise RuntimeError('Owned artificial database cleanup failed')
         tested = subprocess.CompletedProcess([], tested.returncode, output, errors)
-        if customer_only:
+        if collection_only:
+            markers = [line.split('STORE_PRODUCT_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'STORE_PRODUCT_REHEARSAL ' in line]
+            if tested.returncode or len(markers) != 1:
+                print(tested.stdout.decode(errors='replace'))
+                raise RuntimeError('Owned store collection checks failed')
+            counts = json.loads(markers[0])
+            if not counts.get('same_variant_option_group_filter') or not counts.get('collection_latest_before_pagination'):
+                raise RuntimeError('Collection query evidence missing')
+            files = ['retail/backend/internal/catalog/store_products.go','retail/backend/internal/catalog/store_products_test.go','retail/backend/internal/identity/store_products_test.go']
+            report = {'scope':'owned Gin/MySQL public catalog and collection query verification, no browser', 'counts':counts,
+                      'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_cpus':1,'redis_memory_mib':128,'published_ports':0,'external_network':False},
+                      'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
+        elif customer_only:
             markers = [line.split('CUSTOMER_ACCOUNTS_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'CUSTOMER_ACCOUNTS_REHEARSAL ' in line]
             if tested.returncode or len(markers) != 1:
                 print(tested.stdout.decode(errors='replace'))
@@ -528,7 +543,7 @@ def main():
         if owned_binary and binary.exists():
             binary.unlink()
     report['cleanup'] = 'both owned containers and temporary runner removed'
-    report_name = 'gin-customer-accounts-report.json' if customer_only else 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
+    report_name = 'store-collections-runtime-report.json' if collection_only else 'gin-customer-accounts-report.json' if customer_only else 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
     (ROOT / 'docs/migration' / report_name).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'counts': counts, 'cleanup': 'complete'}))
 

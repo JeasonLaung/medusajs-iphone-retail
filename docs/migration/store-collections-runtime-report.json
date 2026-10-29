@@ -1,0 +1,35 @@
+{
+  "scope": "owned Gin/MySQL public catalog and collection query verification, no browser",
+  "counts": {
+    "current_channel_only": true,
+    "published_live_only": true,
+    "strict_query": true,
+    "literal_search": true,
+    "exact_detail_id": true,
+    "configuration_membership": true,
+    "foreign_options_and_images_hidden": true,
+    "stable_pagination": true,
+    "collection_latest_before_pagination": true,
+    "same_variant_option_group_filter": true,
+    "deleted_option_relationships_omitted": true,
+    "empty_arrays": true,
+    "relation_overflow_503": true,
+    "no_legacy_payload_or_prices": true,
+    "unimplemented_capabilities_explicit": true,
+    "read_fingerprint_unchanged": true
+  },
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "published_ports": 0,
+    "external_network": false
+  },
+  "implementation_sha256": {
+    "retail/backend/internal/catalog/store_products.go": "084e7f26cc1fe2b425a3a0facb27843f554603d13484183cdd4eb12adb1c7c8f",
+    "retail/backend/internal/catalog/store_products_test.go": "a3287c48a3bfe78739731fdd5aca4f4ac76f43fb3d443c7c905600ad05a6a975",
+    "retail/backend/internal/identity/store_products_test.go": "1875301b580275586b4aa5c9562f122ca2e11154aa39b403474697f5a9208ee1"
+  },
+  "cleanup": "both owned containers and temporary runner removed"
+}

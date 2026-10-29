@@ -88,12 +88,12 @@ func checkStoreProducts(t *testing.T, db *gorm.DB, router http.Handler) {
 	if !bytes.Equal(a, b) {
 		t.Fatal("public product detail differs from list")
 	}
-	for _, query := range []string{"handle=visible", "q=Visible", "collection_id=col-public&category_id=cat-root", "limit=1&offset=0"} {
+	for _, query := range []string{"handle=visible", "q=Visible", "collection_id=col-public&category_id=cat-root", "limit=1&offset=0", "order=-created_at", "option_value_id=public-128", "option_value_id=missing&option_value_id=public-128"} {
 		if json.Unmarshal(call("/api/store/products?"+query, 200), &list) != nil || list.Count != 1 {
 			t.Fatal("public product filter failed")
 		}
 	}
-	for _, query := range []string{"handle=missing", "q=%25", "q=_", "collection_id=col-foreign", "category_id=cat-hidden", "category_id=cat-inactive", "category_id=cat-deleted"} {
+	for _, query := range []string{"handle=missing", "q=%25", "q=_", "collection_id=col-foreign", "category_id=cat-hidden", "category_id=cat-inactive", "category_id=cat-deleted", "option_value_id=private-256", "option_value_id=unknown", "collection_id=col-foreign&option_value_id=public-128"} {
 		if json.Unmarshal(call("/api/store/products?"+query, 200), &list) != nil || list.Count != 0 || len(list.Products) != 0 || list.Products == nil {
 			t.Fatal("literal search or visibility filter incorrect")
 		}
@@ -109,6 +109,49 @@ func checkStoreProducts(t *testing.T, db *gorm.DB, router http.Handler) {
 		call("/api/store/products?"+query, 400)
 	}
 	call("/api/store/products/public-a?handle=visible", 400)
+	exec(`INSERT INTO catalog_options(id,title,is_exclusive,created_at,updated_at) VALUES('collection-colour','Colour',FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+	exec(`INSERT INTO catalog_option_values(id,value,option_id,created_at,updated_at) VALUES('collection-blue','Blue','collection-colour',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+	exec(`INSERT INTO catalog_product_options(id,product_id,product_option_id,created_at,updated_at) VALUES('collection-colour-member','public-a','collection-colour',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+	exec(`INSERT INTO catalog_product_option_values(id,product_product_option_id,product_option_value_id,created_at,updated_at) VALUES('collection-blue-member','collection-colour-member','collection-blue',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+	exec(`INSERT INTO catalog_variant_options(variant_id,option_value_id) VALUES('public-v-incomplete','collection-blue')`)
+	combined := "/api/store/products?option_value_id=public-128&option_value_id=collection-blue"
+	if json.Unmarshal(call(combined, 200), &list) != nil || list.Count != 0 {
+		t.Fatal("option groups matched different variants")
+	}
+	exec(`INSERT INTO catalog_variant_options(variant_id,option_value_id) VALUES('public-v','collection-blue')`)
+	if json.Unmarshal(call(combined, 200), &list) != nil || list.Count != 1 {
+		t.Fatal("same variant option groups did not match")
+	}
+	exec("UPDATE catalog_variants SET deleted_at=UTC_TIMESTAMP(6) WHERE id='public-v'")
+	if json.Unmarshal(call(combined, 200), &list) != nil || list.Count != 0 {
+		t.Fatal("deleted variant remained selectable")
+	}
+	exec("UPDATE catalog_variants SET deleted_at=NULL WHERE id='public-v'")
+	exec("DELETE FROM catalog_variant_options WHERE option_value_id='collection-blue'")
+	exec("DELETE FROM catalog_product_option_values WHERE id='collection-blue-member'")
+	exec("DELETE FROM catalog_product_options WHERE id='collection-colour-member'")
+	exec("DELETE FROM catalog_option_values WHERE id='collection-blue'")
+	exec("DELETE FROM catalog_options WHERE id='collection-colour'")
+	for _, change := range []struct{ table, column, id string }{
+		{"catalog_options", "id", "public-storage"}, {"catalog_option_values", "id", "public-128"},
+		{"catalog_product_options", "id", "public-membership"}, {"catalog_product_option_values", "id", "public-value"},
+	} {
+		exec("UPDATE "+change.table+" SET deleted_at=UTC_TIMESTAMP(6) WHERE "+change.column+"=?", change.id)
+		if json.Unmarshal(call("/api/store/products?option_value_id=public-128", 200), &list) != nil || list.Count != 0 {
+			t.Fatal("deleted option relationship remained selectable")
+		}
+		exec("UPDATE "+change.table+" SET deleted_at=NULL WHERE "+change.column+"=?", change.id)
+	}
+	exec(`INSERT INTO catalog_products(id,title,handle,is_giftcard,status,discountable,collection_id,created_at,updated_at) VALUES('public-old','Old','public-old',FALSE,'published',TRUE,'col-public','2000-01-01','2000-01-01'),('public-new','New','public-new',FALSE,'published',TRUE,'col-public','2100-01-01','2100-01-01')`)
+	exec(`INSERT INTO catalog_product_channels(product_id,sales_channel_id,id,created_at,updated_at) VALUES('public-old','public-main','pc-old',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('public-new','public-main','pc-new',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+	if json.Unmarshal(call("/api/store/products?order=-created_at&collection_id=col-public&limit=1", 200), &list) != nil || list.Count != 3 || len(list.Products) != 1 || list.Products[0].ID != "public-new" {
+		t.Fatal("latest collection sort was applied after pagination")
+	}
+	if json.Unmarshal(call("/api/store/products?order=-created_at&collection_id=col-public&offset=2&limit=1", 200), &list) != nil || list.Count != 3 || len(list.Products) != 1 || list.Products[0].ID != "public-old" {
+		t.Fatal("collection latest pagination incorrect")
+	}
+	exec("DELETE FROM catalog_product_channels WHERE id IN ('pc-old','pc-new')")
+	exec("DELETE FROM catalog_products WHERE id IN ('public-old','public-new')")
 	if !bytes.Equal(before, fingerprint()) {
 		t.Fatal("public product reads mutated history")
 	}
@@ -131,7 +174,7 @@ func checkStoreProducts(t *testing.T, db *gorm.DB, router http.Handler) {
 	if !bytes.Equal(before, fingerprint()) {
 		t.Fatal("public product failure checks changed evidence")
 	}
-	t.Log(`STORE_PRODUCT_REHEARSAL {"current_channel_only":true,"published_live_only":true,"strict_query":true,"literal_search":true,"exact_detail_id":true,"configuration_membership":true,"foreign_options_and_images_hidden":true,"stable_pagination":true,"empty_arrays":true,"relation_overflow_503":true,"no_legacy_payload_or_prices":true,"unimplemented_capabilities_explicit":true,"read_fingerprint_unchanged":true}`)
+	t.Log(`STORE_PRODUCT_REHEARSAL {"current_channel_only":true,"published_live_only":true,"strict_query":true,"literal_search":true,"exact_detail_id":true,"configuration_membership":true,"foreign_options_and_images_hidden":true,"stable_pagination":true,"collection_latest_before_pagination":true,"same_variant_option_group_filter":true,"deleted_option_relationships_omitted":true,"empty_arrays":true,"relation_overflow_503":true,"no_legacy_payload_or_prices":true,"unimplemented_capabilities_explicit":true,"read_fingerprint_unchanged":true}`)
 	checkStorePricing(t, db, router)
 	checkStoreDisplay(t, db, router)
 }

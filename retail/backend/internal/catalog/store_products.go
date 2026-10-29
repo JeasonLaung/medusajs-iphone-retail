@@ -18,6 +18,8 @@ type storeProductQuery struct {
 	limit, offset                        int
 	search, handle, collection, category string
 	region, quantity                     string
+	order                                string
+	optionValues                         []string
 }
 
 func parseStoreProducts(raw string, detail bool) (storeProductQuery, error) {
@@ -27,11 +29,32 @@ func parseStoreProducts(raw string, detail bool) (storeProductQuery, error) {
 		return q, errListQuery
 	}
 	for key, vs := range values {
+		if key == "option_value_id" && !detail {
+			if len(vs) > 100 {
+				return q, errListQuery
+			}
+			seen := map[string]bool{}
+			for _, value := range vs {
+				if !validProductID(value) {
+					return q, errListQuery
+				}
+				if !seen[value] {
+					q.optionValues = append(q.optionValues, value)
+					seen[value] = true
+				}
+			}
+			continue
+		}
 		if detail && key != "region_id" && key != "quantity" || len(vs) != 1 || vs[0] == "" || !utf8.ValidString(vs[0]) || containsControl(vs[0]) {
 			return q, errListQuery
 		}
 		v := vs[0]
 		switch key {
+		case "order":
+			if v != "-created_at" {
+				return q, errListQuery
+			}
+			q.order = "p.created_at DESC,p.id ASC"
 		case "region_id":
 			if !validProductID(v) {
 				return q, errListQuery
@@ -165,6 +188,22 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 			if q.category != "" {
 				db = db.Where("EXISTS (SELECT 1 FROM catalog_category_products cp JOIN catalog_categories cat ON cat.id=cp.category_id AND cat.deleted_at IS NULL AND cat.is_active=TRUE AND cat.is_internal=FALSE WHERE cp.product_id=p.id AND cp.category_id=?)", q.category)
 			}
+			if len(q.optionValues) > 0 {
+				// The source matches one variant across all selected option
+				// groups, with OR within a group. Public membership remains
+				// mandatory so malformed imported choices cannot match.
+				db = db.Where(`EXISTS (SELECT 1 FROM catalog_variants variant
+                    JOIN catalog_variant_options choice ON choice.variant_id=variant.id
+                    JOIN catalog_option_values ov ON ov.id=choice.option_value_id AND ov.deleted_at IS NULL
+                    JOIN catalog_options opt ON opt.id=ov.option_id AND opt.deleted_at IS NULL
+                    JOIN catalog_product_options po ON po.product_id=variant.product_id AND po.product_option_id=ov.option_id AND po.deleted_at IS NULL
+                    JOIN catalog_product_option_values pv ON pv.product_product_option_id=po.id AND pv.product_option_value_id=ov.id AND pv.deleted_at IS NULL
+                    WHERE variant.product_id=p.id AND variant.deleted_at IS NULL AND ov.id IN ?
+                    GROUP BY variant.id HAVING COUNT(DISTINCT ov.option_id)=(
+                        SELECT COUNT(DISTINCT selected.option_id) FROM catalog_option_values selected
+                        JOIN catalog_options selected_option ON selected_option.id=selected.option_id AND selected_option.deleted_at IS NULL
+                        WHERE selected.id IN ? AND selected.deleted_at IS NULL))`, q.optionValues, q.optionValues)
+			}
 			return db
 		}
 		if e = base().Count(&count).Error; e != nil {
@@ -173,8 +212,11 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 		if detail && count == 0 {
 			return gorm.ErrRecordNotFound
 		}
+		if q.order == "" {
+			q.order = "p.id ASC"
+		}
 		// Deleted collection IDs are not public relationships.
-		if e = base().Select("p.id,p.title,p.handle,p.subtitle,p.description,p.thumbnail,(SELECT col.id FROM catalog_collections col WHERE col.id=p.collection_id AND col.deleted_at IS NULL) AS collection_id").Order("p.id ASC").Limit(q.limit).Offset(q.offset).Scan(&products).Error; e != nil {
+		if e = base().Select("p.id,p.title,p.handle,p.subtitle,p.description,p.thumbnail,(SELECT col.id FROM catalog_collections col WHERE col.id=p.collection_id AND col.deleted_at IS NULL) AS collection_id").Order(q.order).Limit(q.limit).Offset(q.offset).Scan(&products).Error; e != nil {
 			return e
 		}
 		budget := 10000
