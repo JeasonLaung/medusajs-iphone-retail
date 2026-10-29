@@ -71,6 +71,13 @@ async function check(origin,expected){
    assert.ok(productHTML.includes('面包屑导航'));assert.ok(productHTML.includes('Public collection'))
    assert.equal((await fetch(`http://127.0.0.1:${port}/dk-en/products/missing`)).status,404)
   }else assert.ok(!productHTML.includes('data-testid="product-container"'))
+  for(const route of ['/dk-en/about','/dk-zh/help','/dk-en/blog','/dk-zh/blog/choose-your-storage']){
+   const response=await fetch(`http://127.0.0.1:${port}${route}`)
+   assert.equal(response.status,expected)
+   assert.equal(response.headers.get('cache-control'),'no-store')
+   const html=await response.text()
+   if(expected===200)assert.ok(html.includes('Public collection'))
+  }
   // Business pages are added only after their actual API and UI are ported.
   assert.equal((await fetch(`http://127.0.0.1:${port}/dk-en/store`)).status,404)
   assert.equal(child.exitCode,null)

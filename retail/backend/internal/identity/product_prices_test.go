@@ -188,6 +188,7 @@ func TestOwnedProductPrices(t *testing.T) {
 	checkStoreRegions(t, db, guarded)
 	checkStoreTaxonomy(t, db, guarded)
 	checkStoreLocales(t, db, guarded)
+	checkServiceContacts(t, db, guarded)
 	w := httptest.NewRecorder()
 	guarded.ServeHTTP(w, httptest.NewRequest("GET", "https://admin.example/api/admin"+root, nil))
 	if w.Code != 401 {

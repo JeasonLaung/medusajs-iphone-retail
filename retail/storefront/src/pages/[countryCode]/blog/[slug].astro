@@ -1,0 +1,20 @@
+---
+import {GIN_API_ORIGIN} from 'astro:env/server'
+import Storefront from '../../../layouts/Storefront.astro'
+import {loadPublicPage} from '../../../lib/public-page'
+import Journal from '../../../components/journal'
+import {getHomeCopy} from '../../../components/journal/i18n'
+const segment=(Astro.params.countryCode??'').toLowerCase()
+const slug=Astro.params.slug??''
+const zh=segment.endsWith('-zh')
+const post=getHomeCopy(zh?'zh-CN':'en').blogPosts.find(post=>post.slug===slug)
+let shell:Awaited<ReturnType<typeof loadPublicPage>>=null
+let unavailable=false
+if(post){try{shell=await loadPublicPage(GIN_API_ORIGIN,segment)}catch{unavailable=true}}
+if(unavailable)Astro.response.status=503
+else if(!shell)Astro.response.status=404
+const error=unavailable?(zh?'页面暂时无法加载，请稍后重试。':'This page is temporarily unavailable. Please try again.'):(zh?'未找到文章':'Article not found')
+---
+<Storefront segment={segment} title={shell&&post?`${post.title} | EuroRefurb`:error} description={shell?post?.description:undefined} canonicalPath={shell?`/${segment}/blog/${slug}`:undefined} shell={shell??undefined}>
+ {shell&&post?<Journal segment={segment} slug={slug}/>:<div class="content-container py-16"><h1>{error}</h1></div>}
+</Storefront>

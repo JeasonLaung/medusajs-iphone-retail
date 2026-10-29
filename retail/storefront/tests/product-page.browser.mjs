@@ -21,13 +21,16 @@ product.images.push(...product.variants.flatMap(variant=>variant.images))
 product.variants.forEach((variant,index)=>variant.calculated_price.calculated_amount=String(499+index*100))
 const region={id:'region',name:'Europe',currency_code:'eur',automatic_taxes:false,countries:[{iso_2:'dk',iso_3:'dnk',num_code:'208',name:'Denmark',display_name:'Denmark',region_id:'region'}]}
 const upstreamRequests=[]
-let dependencyFailed=false,child,browser
+let dependencyFailed=false,contactsFailed=false,child,browser
 const api=createServer((request,response)=>{
  upstreamRequests.push({url:request.url,headers:request.headers})
  if(dependencyFailed){response.writeHead(503,{'content-type':'application/json'});response.end('{"error":"PRIVATE_UPSTREAM_FAILURE"}');return}
  const url=new URL(request.url,'http://fixture.invalid')
  let body
  switch(url.pathname){
+  case '/api/store/customer-service':
+   if(contactsFailed){response.writeHead(503,{'content-type':'application/json'});response.end('{}');return}
+   body={contacts:[{id:'support',name:'Support Team',department:'after_sales',whatsapp:'+4512345678',email:'help@example.test',timezone:'Europe/Copenhagen',days:[1,2,3,4,5],start:'09:00',end:'17:00',availability:'online'}]};break
   case '/api/store/regions':body={regions:[region],count:1};break
   case '/api/store/locales':body={locales:[],count:0};break
   case '/api/store/product-categories':body={product_categories:[],count:0,limit:2,offset:0};break
@@ -87,11 +90,39 @@ try{
  await expect(page.locator('html')).toHaveAttribute('lang','zh-CN')
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Mobile page overflows')
  await page.screenshot({path:fileURLToPath(new URL('../../../logs/gin-migration/formal-product-mobile.png',import.meta.url)),fullPage:true})
+ for(const language of ['en','zh']){
+  const segment='dk-'+language
+  await page.goto(origin+`/${segment}/about#our-focus`)
+  await expect(page.locator('#our-focus')).toBeVisible()
+  await expect(page.locator('main h1')).toHaveCount(1)
+  await page.goto(origin+`/${segment}/help#service-title`)
+  await expect(page.locator('#service-title')).toBeVisible()
+  await expect(page.locator('a[href="mailto:help%40example.test"]')).toBeVisible()
+  await expect(page.getByRole('link',{name:/WhatsApp/}).first()).toHaveAttribute('href','https://wa.me/4512345678')
+  await expect(page.getByRole('link',{name:/WhatsApp/}).first()).toHaveAttribute('rel','noopener noreferrer')
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth))
+  await page.goto(origin+`/${segment}/blog`)
+  await expect(page.locator('[data-testid="home-blog"] article')).toHaveCount(3)
+  await page.locator('[data-testid="home-blog"] article a').first().click()
+  await expect(page).toHaveURL(origin+`/${segment}/blog/choose-your-storage`)
+  await expect(page.locator('main h1')).toHaveCount(1)
+  await expect(page.locator('main section')).toHaveCount(3)
+  await page.locator('main a').first().click()
+  await expect(page).toHaveURL(origin+`/${segment}/blog`)
+ }
+ assert.equal((await fetch(origin+'/dk-en/blog/unknown')).status,404)
+ assert.equal((await fetch(origin+'/zz-en/about')).status,404)
+ assert.equal((await fetch(origin+'/dk-en/unknown')).status,404)
+ contactsFailed=true
+ await page.goto(origin+'/dk-zh/help')
+ await expect(page.getByText('联系方式暂时无法加载，请稍后重试。',{exact:true})).toBeVisible()
+ await expect(page.locator('#shopping')).toBeVisible()
+ assert.deepEqual(errors,[])
  dependencyFailed=true
  const failure=await fetch(origin+path)
  assert.equal(failure.status,503);assert.equal(failure.headers.get('cache-control'),'no-store')
  assert.ok(!(await failure.text()).includes('PRIVATE_UPSTREAM_FAILURE'))
- console.log('ASTRO_FORMAL_PRODUCT_PAGE '+JSON.stringify({formal_built_route:true,public_gin_contract:true,ssr_header_footer:true,private_headers_omitted:true,english_chinese:true,selection_hydration:true,slug_reload:true,query_hash_preserved:true,disabled_unconnected_commerce:true,mobile_no_overflow:true,missing_404_dependency_503:true}))
+ console.log('ASTRO_FORMAL_PRODUCT_PAGE '+JSON.stringify({formal_built_route:true,public_gin_contract:true,ssr_header_footer:true,private_headers_omitted:true,english_chinese:true,selection_hydration:true,slug_reload:true,query_hash_preserved:true,disabled_unconnected_commerce:true,mobile_no_overflow:true,missing_404_dependency_503:true,formal_about_help_journal:true,service_contacts_and_failure:true,article_navigation:true}))
 }finally{
  if(browser)await browser.close()
  if(child&&child.exitCode===null){const ended=once(child,'exit');child.kill();await ended}

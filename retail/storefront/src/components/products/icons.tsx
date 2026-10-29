@@ -7,3 +7,5 @@ function Icon({path,color = 'currentColor',...props}: SVGProps<SVGSVGElement> & 
 export const ChevronLeft = (props: SVGProps<SVGSVGElement>) => <Icon path="M9.25 3.25 5 7.5l4.25 4.25" {...props} />
 export const ChevronRight = (props: SVGProps<SVGSVGElement>) => <Icon path="M5.75 11.75 10 7.5 5.75 3.25" {...props} />
 export const ArrowUpRightMini = (props: SVGProps<SVGSVGElement>) => <Icon path="m12.167 2.833-9.334 9.334M6.824 2.833h5.343v5.342" {...props} />
+export const ArrowRight = (props: SVGProps<SVGSVGElement>) => <Icon path="M13.056 7.5H1.944M9.278 3.722 13.056 7.5l-3.778 3.778" {...props} />
+export const ArrowLeft = (props: SVGProps<SVGSVGElement>) => <Icon path="M1.944 7.5h11.112M5.722 11.278 1.944 7.5l3.778-3.778" {...props} />

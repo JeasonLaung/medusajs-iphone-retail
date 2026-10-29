@@ -38,13 +38,18 @@ def main():
             raise RuntimeError('Astro build or unit checks failed; inspect ignored output')
     tap=checked.stdout.decode('utf-8')
     observed={key:int(value) for key,value in re.findall(r'^# (tests|pass|fail|cancelled|skipped|todo) (\d+)\s*$',tap,re.M)}
-    if observed!={'tests':61,'pass':61,'fail':0,'cancelled':0,'skipped':0,'todo':0}:
+    if observed!={'tests':62,'pass':62,'fail':0,'cancelled':0,'skipped':0,'todo':0}:
         raise RuntimeError('Astro unit coverage differs; no partial success report written')
     tested=subprocess.run([str(node),'tests/runtime.integration.mjs'],cwd=APP,env=env,capture_output=True,timeout=90)
     markers=[line.split('ASTRO_RUNTIME_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if line.startswith('ASTRO_RUNTIME_REHEARSAL ')]
     if tested.returncode or len(markers)!=1:
         (ROOT/'logs/gin-migration/astro-runtime-result.log').write_bytes(tested.stdout+tested.stderr)
         raise RuntimeError('Astro owned runtime check failed; inspect ignored output')
+    pages=subprocess.run([str(node),'tests/product-page.browser.mjs'],cwd=APP,env=env,capture_output=True,timeout=120)
+    page_markers=[line.split('ASTRO_FORMAL_PRODUCT_PAGE ',1)[1] for line in pages.stdout.decode('utf-8').splitlines() if line.startswith('ASTRO_FORMAL_PRODUCT_PAGE ')]
+    if pages.returncode or len(page_markers)!=1:
+        (ROOT/'logs/gin-migration/astro-formal-pages-result.log').write_bytes(pages.stdout+pages.stderr)
+        raise RuntimeError('Astro formal page browser check failed; inspect ignored output')
     browser=subprocess.run([str(node),'tests/selection.browser.mjs'],cwd=APP,env=env,capture_output=True,timeout=90)
     browser_markers=[line.split('ASTRO_SELECTION_BROWSER ',1)[1] for line in browser.stdout.decode('utf-8').splitlines() if line.startswith('ASTRO_SELECTION_BROWSER ')]
     if browser.returncode or len(browser_markers)!=1:
@@ -116,7 +121,7 @@ def main():
         if not source.is_file() or path.read_bytes()!=source.read_bytes():
             raise RuntimeError('Migrated public asset differs from original')
         public_assets[str(relative).replace('\\','/')]=hashlib.sha256(path.read_bytes()).hexdigest()
-    report={'format_version':1,'scope':'Astro Node SSR regions foundation, source-level product adapter to owned Gin, and selection browser check in a separate artificial test root; no business page acceptance','node_version':version,'unit_tests_passed':observed['pass'],'type_check_passed':True,'production_build_passed':True,'runtime':json.loads(markers[0]),'selection_browser':json.loads(browser_markers[0]),'audit_vulnerabilities':counts,'real_application_resources_used':False,'full_storefront_accepted':False,'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
+    report={'format_version':1,'scope':'Formal product/about/help/journal SSR routes against owned Gin; synthetic public page browser checks and original component comparisons; checkout and full storefront not accepted','node_version':version,'unit_tests_passed':observed['pass'],'type_check_passed':True,'production_build_passed':True,'runtime':json.loads(markers[0]),'formal_pages_browser':json.loads(page_markers[0]),'selection_browser':json.loads(browser_markers[0]),'audit_vulnerabilities':counts,'real_application_resources_used':False,'full_storefront_accepted':False,'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
     report['presentation_browser']=json.loads(presentation_markers[0])
     report['actions_browser']=json.loads(actions_markers[0])
     report['header_browser']=json.loads(header_markers[0])
