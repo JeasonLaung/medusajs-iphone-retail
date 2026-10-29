@@ -1,6 +1,11 @@
 {
-  "scope": "Formal Astro original payment result page and stable callback, synthetic API; not real payment/order acceptance",
-  "unit_tests": 116,
+  "scope": "Formal Astro payment result calling private Gin completion transport; browser uses synthetic API. Real SQL/HTTP completion separately verified in cart-order-snapshot-runtime-report.json; no real provider sandbox or email delivery.",
+  "unit_tests": 122,
+  "astro_check": {
+    "files": 288,
+    "errors": 0,
+    "warnings": 0
+  },
   "build": true,
   "browser": {
     "formal_astro": true,
@@ -30,7 +35,7 @@
     ],
     "overflow": false,
     "browser_errors": 0,
-    "payment_or_order_complete": false,
+    "order_completion_receipt": true,
     "delivery_selection": true,
     "delivery_lost_response_same_operation": true,
     "delivery_acknowledged_read_only_recovery": true,
@@ -39,25 +44,28 @@
     "source_pixel_comparison": false,
     "payment_result_page": true,
     "paid_waits_for_order": true,
+    "completion_loss_reload_recovery": true,
+    "closed_cart_no_provider_repoll": true,
+    "confirmed_receipt_only": true,
     "authorized_not_paid": true,
     "failed_return": true,
     "foreign_cart_no_provider_poll": true,
     "stable_return_callback": true
   },
+  "visual_checked": [
+    "payment-confirmed-zh-390.png"
+  ],
   "implementation_sha256": {
-    "retail/storefront/src/lib/cart-client.ts": "82f28bce97079bbedb56387d411d18d903d5d89b7f45325c40f329a19e4ebe6b",
-    "retail/storefront/src/lib/cart-bridge.ts": "7b5892e5c4163546b563744de989c818034fd9c25ab6fde2c9683a16b7383778",
-    "retail/storefront/src/pages/api/mollie-return.ts": "3b37faf1990f82a551bcf2a436a31610a982d34a72a69336637a463386d6d176",
-    "retail/storefront/src/pages/[countryCode]/payment-result.astro": "1d876a0b19f9ad0e27a22d82b89224664817301a483a7d16d462010b398473c4",
-    "retail/storefront/src/components/checkout/payment-result/index.tsx": "934d2acb2697c4207e1e97b86982217123057b02350d15180b74eb8c33e475f0",
+    "retail/storefront/src/lib/payment-result-state.ts": "a9b8dc0f177fb930a9164b1667630dc97026212a90b3190ae4d65f11456f76fe",
+    "retail/storefront/src/lib/cart-client.ts": "9d1f833b9e245c3a0ec2b35aa40d20136caa4504298cb459d952308082f0c6ec",
+    "retail/storefront/src/lib/cart-bridge.ts": "88fcf1cd4b9066bb10cccd3b06f0017e05bcbcdd9a58f7675b4e68585828df3e",
+    "retail/storefront/src/components/checkout/payment-result/index.tsx": "8134edc6f3ccca1faef755d6c6b9dc0e28641590e4769f2ef3588678877ef75f",
     "retail/storefront/src/components/checkout/payment-result/styles.module.css": "6761ab98d6be1a0d0f49090263deeee142eba93d0eafd18c4527fc54f7607a54",
-    "retail/storefront/tests/payment-result.test.ts": "4b78af9c59b164d5d0b03b2887dfef6a081fd8f758caaef4979dc866474cc6ab",
-    "retail/storefront/tests/checkout.browser.mjs": "6f84bbad432eb043805855d702d42a475faa29f657622277dd8e1706c5c37f8e"
-  },
-  "astro_check": {
-    "files": 285,
-    "errors": 0,
-    "warnings": 0,
-    "existing_hints": 2
+    "retail/storefront/src/components/checkout/i18n.ts": "1d5318d27ec49f83af80af0d57947af3b80df7db8dadac0705979242090fa671",
+    "retail/storefront/src/pages/[countryCode]/payment-result.astro": "1d876a0b19f9ad0e27a22d82b89224664817301a483a7d16d462010b398473c4",
+    "retail/storefront/src/pages/api/mollie-return.ts": "3b37faf1990f82a551bcf2a436a31610a982d34a72a69336637a463386d6d176",
+    "retail/storefront/tests/checkout.browser.mjs": "f9c0e2bbbbc1e19f08f6cc68c4055d9aad7adbb4b69f53338d313c1f4c9ec79f",
+    "retail/storefront/tests/payment-result-state.test.ts": "e9ffbd9e7b1bf99bad546273ef73c89952eb97e9c27c288f79b0bf160de67e71",
+    "retail/storefront/tests/cart-completion.test.ts": "6635d604dfa89a0334eb1b54383853a82ce19b80e7edc6650e38acbbc0377a4b"
   }
 }

@@ -1,7 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import {browserCartClient,cartCSRFFromCookies,CartError} from "../../../lib/cart-client"
+import {browserCartClient,cartCSRFFromCookies} from "../../../lib/cart-client"
+import {checkPaymentResult} from "../../../lib/payment-result-state"
 import BrandLogo from "../../layout/brand-logo"
 import { getCheckoutCopy } from "../i18n"
 import styles from "./styles.module.css"
@@ -19,22 +20,7 @@ export default function PaymentResult({ countryCode, cartId }: { countryCode: st
     const api=browserCartClient()
     async function check() {
       attempts++
-      let next: Result
-      try {
-        const cart=await api.current()
-        if(!cart||cartId&&cart.id!==cartId){next={status:'invalid'}}
-        else {
-          const csrfToken=cartCSRFFromCookies(document.cookie,location.protocol==='https:')
-          if(!csrfToken)throw Error('Payment session unavailable')
-          const result=await api.paymentStatus(cart.id,{csrfToken})
-          // Paid is still pending until the unique order is committed. Never
-          // infer confirmation from provider authorization or a return URL.
-          next={status:result.state==='failed'?'failed':result.state==='requires_review'?'error':'pending'}
-        }
-
-      } catch (error) {
-        next = { status: error instanceof CartError&&(error.status===401||error.status===404)?"invalid":"error" }
-      }
+      const next: Result = await checkPaymentResult(api,cartId,cartCSRFFromCookies(document.cookie,location.protocol==='https:'))
       if (stopped) return
       if (next.status === "pending" || next.status === "error") {
         if (attempts < 12) {
