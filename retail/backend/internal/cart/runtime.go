@@ -308,7 +308,14 @@ func lockForPaymentOperation(ctx context.Context, tx *gorm.DB, store string, ref
 	if err != nil {
 		return Snapshot{}, err
 	}
-	result, err := lockCurrentPaymentOperation(ctx, tx, store, channel, ref, "UPDATE", operation)
+	checkout := ""
+	if scope, ok := ctx.Value(checkoutReadScopeKey{}).(checkoutReadScope); ok {
+		if scope.tx != tx.Statement.ConnPool || scope.store != store || scope.ref != ref || scope.version != version || operation != "" {
+			return Snapshot{}, ErrConflict
+		}
+		checkout = scope.operation
+	}
+	result, err := lockCurrentAuthority(ctx, tx, store, channel, ref, "UPDATE", operation, checkout)
 	if err != nil {
 		return Snapshot{}, err
 	}
