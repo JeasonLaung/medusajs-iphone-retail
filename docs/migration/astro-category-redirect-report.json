@@ -1,0 +1,42 @@
+{
+  "scope": "Category compatibility redirect only; entire storefront remains incomplete",
+  "source_page": "medusa-store/apps/storefront/src/app/[countryCode]/(main)/categories/[...category]/page.tsx",
+  "source_data": "medusa-store/apps/storefront/src/lib/data/categories.ts",
+  "implementation_sha256": {
+    "retail/storefront/src/lib/category-redirect.ts": "e5cae26b067f7869bbfd3ebb9b01548fb2a57b584aa13f9e21675059a9ac5057",
+    "retail/storefront/src/pages/[countryCode]/categories/[...category].astro": "9743a77af35be57e1b112c8ff8a36307e372fde9f087f9d9cb0ff4bd8bb8b364",
+    "retail/storefront/tests/category-redirect.test.ts": "54ddd6d62c32a5d7663a147938155bcc50e52b6a06259cc4bfa238ad17d95225",
+    "retail/storefront/tests/category-redirect.runtime.mjs": "710ee9f0d4919b2d5e57bc94d16b9d5140c4e49aca6c57f984cb3244adcf22c7"
+  },
+  "verification": {
+    "storefront_unit_tests_passed": 97,
+    "astro_check": {
+      "errors": 0,
+      "warnings": 0,
+      "existing_hints": 2
+    },
+    "astro_build": true,
+    "built_route_runtime_cases": 7,
+    "direct_iphone_child_series": true,
+    "root_and_unknown_category_unfiltered": true,
+    "nested_and_unicode_handles": true,
+    "original_query_discarded": true,
+    "dependency_failure_503": true,
+    "unconfigured_country_404": true,
+    "unsupported_language_404": true,
+    "private_credentials_filtered": true,
+    "synthetic_api": true,
+    "real_gin_mysql_joint_test": false
+  },
+  "existing_development_services": {
+    "backend_health": 200,
+    "backend_admin": 200,
+    "source_category": {
+      "status": 308,
+      "location": "/dk-en/store"
+    },
+    "source_store": 200,
+    "source_account": 200,
+    "observed_log": "Old Next storefront logged controller[kState].transformAlgorithm TypeError during redirect probe; subsequent full store/account responses were 200. No old service restart or changes."
+  }
+}

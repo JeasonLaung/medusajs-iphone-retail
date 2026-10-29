@@ -1,0 +1,15 @@
+---
+import {GIN_API_ORIGIN} from 'astro:env/server'
+import Storefront from '../../../layouts/Storefront.astro'
+import {loadCategoryRedirect} from '../../../lib/category-redirect'
+const segment=(Astro.params.countryCode??'').toLowerCase()
+let destination:string|null=null,unavailable=false
+try{destination=await loadCategoryRedirect(GIN_API_ORIGIN,segment,Astro.params.category??'')}catch{unavailable=true}
+if(destination)return Astro.redirect(destination,308)
+Astro.response.status=unavailable?503:404
+const zh=segment.endsWith('-zh')
+const message=unavailable?(zh?'暂时无法加载分类，请稍后重试。':'Categories are temporarily unavailable. Please try again.'):(zh?'未找到页面':'Page not found')
+---
+<Storefront segment={segment} title={`${message} | EuroRefurb`}>
+ <div class="content-container py-16"><h1>{message}</h1></div>
+</Storefront>
