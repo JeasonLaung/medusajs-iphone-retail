@@ -99,7 +99,7 @@ func checkDeviceIntake(t *testing.T, db *gorm.DB, actor identity.User, call func
 	call("POST", path, body(bad), 400)
 	bad.Devices[0] = base
 	bad.Devices[0].Photos = []devices.Photo{{ID: "unverified", URL: "https://example.invalid/device-photo.jpg"}}
-	call("POST", path, body(bad), 503)
+	call("POST", path, body(bad), 400)
 	for _, raw := range []string{`{}`, `{"operation_id":null,"expected_revision":"x","devices":[]}`, body(in) + `{}`} {
 		call("POST", path, raw, 400)
 	}
@@ -200,5 +200,9 @@ func checkDeviceIntake(t *testing.T, db *gorm.DB, actor identity.User, call func
 	if before != fingerprint() {
 		t.Fatal("intake modified quantity stock")
 	}
-	t.Log(`DEVICE_INTAKE_REHEARSAL {"real_gin_mysql_redis":true,"valid_unenrolled_sku_allowed":true,"server_source_location":true,"sku_grade_battery_defaults":true,"measured_configuration_validated":true,"iphone_radio_required":true,"sku_change_rejected":true,"concurrent_attempts":4,"single_creation":true,"immutable_replay":true,"batch_collision_atomic":true,"revoked_replay_denied":true,"warehouse_full_store_denied":true,"late_receipt_failure_atomic":true,"sale_available_returned_recycled_inspection":true,"inventory_fingerprint_unchanged":true,"recent_records_after_reload":true,"unverified_photos_rejected":true,"photo_upload_integrated":false}`)
+	checkDevicePhotos(t, db, actor, call)
+	if before != fingerprint() {
+		t.Fatal("photo intake modified quantity stock")
+	}
+	t.Log(`DEVICE_INTAKE_REHEARSAL {"real_gin_mysql_redis":true,"valid_unenrolled_sku_allowed":true,"server_source_location":true,"sku_grade_battery_defaults":true,"measured_configuration_validated":true,"iphone_radio_required":true,"sku_change_rejected":true,"concurrent_attempts":4,"single_creation":true,"immutable_replay":true,"batch_collision_atomic":true,"revoked_replay_denied":true,"warehouse_full_store_denied":true,"late_receipt_failure_atomic":true,"sale_available_returned_recycled_inspection":true,"inventory_fingerprint_unchanged":true,"recent_records_after_reload":true,"unverified_photos_rejected":true,"photo_upload_integrated":true}`)
 }

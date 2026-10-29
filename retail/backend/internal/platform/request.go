@@ -13,6 +13,9 @@ import (
 const requestIDKey = "retail.request_id"
 const MaxJSONBodyBytes int64 = 1 << 20
 
+// One device image, encoded as base64, plus bounded JSON metadata.
+const MaxDevicePhotoBodyBytes int64 = (4 << 20) + 8192
+
 // RequestBoundary replaces Gin's default access/recovery loggers. Only the
 // matched route template is logged; unmatched paths, parameters, queries,
 // headers, bodies, c.Errors and panic values never reach the logger.
@@ -64,12 +67,16 @@ func RequestBoundary(logger *slog.Logger) gin.HandlerFunc {
 			logger.Info("http_request", "request_id", requestID, "method", method, "route", route,
 				"status", c.Writer.Status(), "duration_ms", time.Since(started).Milliseconds(), "panic", panicked)
 		}()
-		if c.Request.ContentLength > MaxJSONBodyBytes {
+		limit := MaxJSONBodyBytes
+		if c.Request.Method == http.MethodPost && c.FullPath() == "/api/admin/device-photos" {
+			limit = MaxDevicePhotoBodyBytes
+		}
+		if c.Request.ContentLength > limit {
 			Fail(c, http.StatusRequestEntityTooLarge, "request_too_large", "Request body is too large")
 			return
 		}
 		if c.Request.Body != nil {
-			c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, MaxJSONBodyBytes)
+			c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, limit)
 		}
 		c.Next()
 	}

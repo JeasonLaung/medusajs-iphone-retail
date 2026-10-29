@@ -1,5 +1,5 @@
 {
-  "scope": "Real browser creates own source, enrolls SKU and registers sale/returned devices; photo upload and fulfillment incomplete",
+  "scope": "Real browser creates own source, enrolls SKU and uploads image and registers sale/returned devices with photos surviving reload; fulfillment incomplete",
   "counts": {
     "real_browser_react_gin_mysql_redis": true,
     "api_mocking": false,
@@ -12,7 +12,9 @@
     "language_en_zh": true,
     "mobile_no_page_overflow": true,
     "browser_errors": 0,
-    "photo_upload_integrated": false
+    "photo_upload_integrated": true,
+    "photos_survive_reload": true,
+    "public_jpeg_verified": true
   },
   "durable_mysql_verified": true,
   "real_accounts_used": false,
@@ -25,7 +27,7 @@
     "published_ports": "one random API port on 127.0.0.1 only"
   },
   "tls_secure_cookie_verified": false,
-  "photo_upload_accepted": false,
+  "photo_upload_accepted": true,
   "fulfillment_accepted": false,
   "cleanup": "both owned containers, bridge and temporary runners removed"
 }

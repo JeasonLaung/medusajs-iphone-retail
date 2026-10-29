@@ -194,6 +194,9 @@ def main():
             if len(intake_markers)!=1:
                 raise RuntimeError('Owned device intake verification missing')
             counts['device_intake'] = json.loads(intake_markers[0])
+            photo_markers = [line.split('DEVICE_PHOTOS_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'DEVICE_PHOTOS_REHEARSAL ' in line]
+            if len(photo_markers)!=1: raise RuntimeError('Owned device photos verification missing')
+            counts['device_photos'] = json.loads(photo_markers[0])
             report = {'scope':'warehouse create/edit and explicit permissions, not warehouse user/fulfillment acceptance','counts':counts,'migrations':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),'isolated_mysql_redis':True,'published_ports':0,'external_network':False}
         elif numbering_only:
             markers = [line.split('ORDER_NUMBERING_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_NUMBERING_REHEARSAL ' in line]

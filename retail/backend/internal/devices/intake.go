@@ -51,6 +51,8 @@ type IntakeResult struct {
 	Replayed bool           `json:"replayed"`
 }
 type RecentDevice struct {
+	Photos        []Photo   `json:"photos" gorm:"-"`
+	PhotoJSON     string    `json:"-" gorm:"column:photos"`
 	ID            string    `json:"id"`
 	SerialNumber  string    `json:"serial_number"`
 	IMEI          *string   `json:"imei" gorm:"column:imei"`
@@ -149,8 +151,19 @@ func (h Handler) ReadIntake(ctx context.Context, actor identity.User, productID,
 		}
 		out.RecentDevices = []RecentDevice{}
 		out.RecentLimit = 50
-		if tx.Table("devices").Select("id,serial_number,imei,imei2,eid,category,state,location_id,grade,battery_health,created_at").Where("variant_id=? AND deleted_at IS NULL", variantID).Order("created_at DESC,id DESC").Limit(50).Scan(&out.RecentDevices).Error != nil {
+		if tx.Table("devices").Select("id,serial_number,imei,imei2,eid,category,state,location_id,grade,battery_health,photos,created_at").Where("variant_id=? AND deleted_at IS NULL", variantID).Order("created_at DESC,id DESC").Limit(50).Scan(&out.RecentDevices).Error != nil {
 			return ErrUnavailable
+		}
+		for i := range out.RecentDevices {
+			row := &out.RecentDevices[i]
+			if json.Unmarshal([]byte(row.PhotoJSON), &row.Photos) != nil || row.Photos == nil || len(row.Photos) > 8 {
+				return ErrUnavailable
+			}
+			for _, p := range row.Photos {
+				if !validPhotoRef(p) {
+					return ErrUnavailable
+				}
+			}
 		}
 		return nil
 	})
@@ -181,10 +194,12 @@ func validateIntake(in IntakeInput) error {
 		if d.BatteryHealth != nil && (*d.BatteryHealth < 0 || *d.BatteryHealth > 100) {
 			return ErrInput
 		}
-		// Until the file upload registry is migrated, never accept a client-asserted
-		// photo as a stored file. Empty photos preserve the original optional field.
-		if len(d.Photos) > 0 {
-			return ErrUnavailable
+		seen := map[string]bool{}
+		for _, p := range d.Photos {
+			if !validPhotoRef(p) || seen[p.ID] {
+				return ErrInput
+			}
+			seen[p.ID] = true
 		}
 	}
 	return nil
@@ -248,6 +263,10 @@ func (h Handler) Intake(ctx context.Context, actor identity.User, productID, var
 				}
 				return ErrUnavailable
 			}
+			if e := verifyPhotosTx(tx, d.Photos); e != nil {
+				return e
+			}
+			photos, _ := json.Marshal(d.Photos)
 			state := "available"
 			if d.Category != "sale" {
 				state = "inspection"
@@ -259,7 +278,7 @@ func (h Handler) Intake(ctx context.Context, actor identity.User, productID, var
 				}
 				return v
 			}
-			if e := tx.Exec("INSERT INTO devices(id,serial_number,imei,imei2,eid,variant_id,source_id,location_id,grade,battery_health,cost_cents,currency_code,bin,notes,state,category,photos,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", id, d.SerialNumber, nullable(d.IMEI), nullable(d.IMEI2), nullable(d.EID), variantID, d.SourceID, source.LocationID, d.Grade, d.BatteryHealth, d.CostCents, d.CurrencyCode, d.Bin, d.Notes, state, d.Category, "[]").Error; e != nil {
+			if e := tx.Exec("INSERT INTO devices(id,serial_number,imei,imei2,eid,variant_id,source_id,location_id,grade,battery_health,cost_cents,currency_code,bin,notes,state,category,photos,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", id, d.SerialNumber, nullable(d.IMEI), nullable(d.IMEI2), nullable(d.EID), variantID, d.SourceID, source.LocationID, d.Grade, d.BatteryHealth, d.CostCents, d.CurrencyCode, d.Bin, d.Notes, state, d.Category, string(photos)).Error; e != nil {
 				var duplicate *driver.MySQLError
 				if errors.As(e, &duplicate) && duplicate.Number == 1062 {
 					return ErrDuplicate

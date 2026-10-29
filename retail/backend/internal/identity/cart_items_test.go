@@ -174,7 +174,7 @@ func checkCartItems(t *testing.T, ctx context.Context, db *gorm.DB, sessions *se
 	if db.Table("inventory_reservations").Where("inventory_item_id='add-item'").Count(&reservations).Error != nil || reservations != 0 {
 		t.Fatal("add wrote inventory reservations")
 	}
-	t.Log(`CART_ITEMS_REHEARSAL {"real_mysql_redis":true,"explicit_migrations":57,"concurrent_attempts":8,"single_fresh_add":1,"merge_quantity_price_tier":true,"exact_raw_beyond_sql_scale":true,"whole_cart_shared_stock":true,"late_receipt_failure_atomic":true,"version_conflict_unchanged":true,"different_operation_race_single_winner":true,"current_catalog_and_authority":true,"no_inventory_reservation":true,"absolute_quantity_and_removal":true,"set_concurrent_replay":true,"delete_late_failure_atomic":true,"delete_draft_product":true,"http_integrated":false,"rules_recalculated":false,"checkout_integrated":false}`)
+	t.Log(`CART_ITEMS_REHEARSAL {"real_mysql_redis":true,"explicit_migrations":58,"concurrent_attempts":8,"single_fresh_add":1,"merge_quantity_price_tier":true,"exact_raw_beyond_sql_scale":true,"whole_cart_shared_stock":true,"late_receipt_failure_atomic":true,"version_conflict_unchanged":true,"different_operation_race_single_winner":true,"current_catalog_and_authority":true,"no_inventory_reservation":true,"absolute_quantity_and_removal":true,"set_concurrent_replay":true,"delete_late_failure_atomic":true,"delete_draft_product":true,"http_integrated":false,"rules_recalculated":false,"checkout_integrated":false}`)
 }
 
 func checkCartSetTransactions(t *testing.T, ctx context.Context, db *gorm.DB, sessions *sessionstore.Store) {

@@ -109,6 +109,7 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	})
 	h := catalog.Handler{DB: db}
 	public := r.Group("/api/store")
+	public.GET("/device-photos/:photo_id", (devices.Handler{DB: db}).PhotoHTTP)
 	shop := &cart.HTTPHandler{}
 	if len(shops) == 1 && shops[0] != nil {
 		shop = shops[0]
@@ -134,6 +135,7 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	private := admin.Group("")
 	private.Use(auth.Require)
 	private.GET("/auth/me", auth.Me)
+	private.POST("/device-photos", authorization.Handler{DB: db}.Require(authorization.DeviceRead, authorization.DeviceIntake, authorization.ProductRead, authorization.InventoryRead, authorization.WarehouseRead), (devices.Handler{DB: db}).PhotoUploadHTTP)
 	private.POST("/auth/logout", auth.Logout)
 	access := authorization.Handler{DB: db}
 	private.GET("/auth/permissions", access.Snapshot)
