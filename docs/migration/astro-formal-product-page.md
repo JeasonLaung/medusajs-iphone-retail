@@ -11,7 +11,7 @@
 - Astro 类型检查通过，0 errors；两个既有测试提示未变。正式生产构建通过。
 - 现有 61 项单元测试通过。
 - `tests/product-page.browser.mjs` 运行构建产物的正式路由，使用独占的人工公共 API：验证 SSR 头尾、规格选择、配置 slug 刷新、参数/锚点保留、canonical 更新、英文/中文、390px 布局、私有头不外传、HTML 转义、404/503 和购买按钮保持关闭。资源在 finally 中回收。
-- `tests/runtime.integration.mjs` 已增加真实隔离 Gin 的正式商品路由断言；本批尚未重新运行完整 MySQL/Redis/全部历史浏览器联合演练，旧 `astro-runtime-report.json` 不能当作本批完整验收报告。
+- `tests/runtime.integration.mjs` 增加真实隔离 Gin 的正式商品路由断言。此页初次提交时尚未重跑完整联合演练；随后[公开页面批次](astro-public-pages.md)完成整套 `test-admin-live.py`，已刷新 `astro-runtime-report.json`，包含此路由和原组件的回归证据，仍不表示商品页所有交易功能已完成。
 
 可在 `retail/storefront` 使用 Node >=22.23.4 运行 `npm run build`，再执行 `npm run test:product-page`；浏览器可用 `ADMIN_TEST_BROWSER` 指向已安装的 Chromium。该测试不访问真实业务或支付渠道。截图写入 Git 忽略的 `logs/gin-migration/formal-product-{desktop,mobile}.png`。
 
