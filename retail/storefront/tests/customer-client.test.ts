@@ -47,3 +47,24 @@ test('customer observation rejects malformed or unverified success and projects 
   await assert.rejects(customerClient(async()=>Response.json(body)).current(),CustomerError)
  }
 })
+test('profile update sends only explicit supported fields with current session CSRF and never prelogin',async()=>{
+ const previousDocument=Object.getOwnPropertyDescriptor(globalThis,'document'),previousLocation=Object.getOwnPropertyDescriptor(globalThis,'location')
+ Object.defineProperty(globalThis,'document',{value:{cookie:`retail_customer_csrf=${csrf}`},configurable:true})
+ Object.defineProperty(globalThis,'location',{value:{protocol:'http:'},configurable:true})
+ const customer={id:'cust_fixture',email:'new@example.invalid',first_name:'Changed',last_name:'Customer',phone:'',verified_at:'2026-10-29T00:00:00Z'}
+ let calls=0
+ try{
+  const api=customerClient(async(input,init)=>{
+   calls++;assert.equal(String(input),'/api/store/customer/me');assert.equal(init?.method,'POST')
+   assert.deepEqual(JSON.parse(String(init?.body)),{first_name:'Changed',phone:''});assert.equal(new Headers(init?.headers).get('X-CSRF-Token'),csrf)
+   return Response.json({customer})
+  })
+  assert.deepEqual(await api.updateProfile({first_name:'Changed',phone:''}),customer)
+  await assert.rejects(api.updateProfile({}),CustomerError)
+  await assert.rejects(api.updateProfile({email:'forbidden'} as any),CustomerError)
+  assert.equal(calls,1)
+ }finally{
+  if(previousDocument)Object.defineProperty(globalThis,'document',previousDocument);else Reflect.deleteProperty(globalThis,'document')
+  if(previousLocation)Object.defineProperty(globalThis,'location',previousLocation);else Reflect.deleteProperty(globalThis,'location')
+ }
+})

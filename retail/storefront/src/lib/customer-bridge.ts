@@ -24,7 +24,7 @@ function origin(raw:string|undefined,upstream=false):URL{
 // forwarded headers are never copied into the signed request.
 export async function customerBridge(request:Request,config:CustomerBridgeConfig,fetcher:typeof fetch=ginPrivateTransport):Promise<Response>{
  const url=new URL(request.url),post=request.method==='POST',path=url.pathname,action=path.slice((root+'/auth/').length)
- if(url.search||url.href.includes('?')||!(post&&writes.has(path)||request.method==='GET'&&path===root+'/me'))return failure(404)
+ if(url.search||url.href.includes('?')||!(post&&(writes.has(path)||path===root+'/me')||request.method==='GET'&&path===root+'/me'))return failure(404)
  let upstream:URL,shop:URL
  try{upstream=origin(config.ginOrigin,true);shop=origin(config.storefrontOrigin)}catch{return failure(503)}
  if(url.origin!==shop.origin||request.headers.get('sec-fetch-site')==='cross-site'||request.headers.has('origin')&&request.headers.get('origin')!==shop.origin||post&&request.headers.get('origin')!==shop.origin)return failure(403)

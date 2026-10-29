@@ -10,6 +10,12 @@
     "medusa-store/apps/storefront/src/modules/account/templates/account-layout.tsx": "9cfd9f31b39f1223dc84221897fb7c110c2f24575a2339fb6305cd462de11a5f",
     "medusa-store/apps/storefront/src/modules/account/i18n.ts": "53186b468efac7f91d83e3bc9263073029f6730ae8d154a361bd02c8352ee2f7",
     "medusa-store/apps/storefront/src/modules/account/translations/en.json": "d6870fde8edc1c6813a73579ccc9e0645a4d88cbb528900c4944ae24b1b71268",
-    "medusa-store/apps/storefront/src/modules/account/translations/zh.json": "b88bba6b9568f906fba6f50eac153d301447f4a3907bb864acc2eb3b90ed7e71"
+    "medusa-store/apps/storefront/src/modules/account/translations/zh.json": "b88bba6b9568f906fba6f50eac153d301447f4a3907bb864acc2eb3b90ed7e71",
+    "medusa-store/apps/storefront/src/modules/account/components/profile-name/index.tsx": "191c9088e8aeb1a835b9d3f088eaee0a151e91305fffae1fb5786e29b7adcfae",
+    "medusa-store/apps/storefront/src/modules/account/components/profile-phone/index.tsx": "0049d7f4f030a2a046ba14aebb13ec281179608a8887d0f8245daa4bf168f853",
+    "medusa-store/apps/storefront/src/modules/account/components/profile-email/index.tsx": "410f09c09c4b383f4d05242c3a2f99749bc472cadc1c08f33060364a4816c777",
+    "medusa-store/apps/storefront/src/modules/account/components/account-info/index.tsx": "9f934411dfc8df792e5d84fb31c378696d8efe5b99f90a314c43d7084b35a392",
+    "medusa-store/apps/storefront/src/lib/hooks/use-toggle-state.tsx": "a837b72798d32746f2bc2aa529821aa3c1a74106f7e3c0911700d4fc69fecaa0",
+    "medusa-store/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/profile/page.tsx": "279b105048f3779ef6b7d508b2765f4e194f9c11da2609c781974404dbb44588"
   }
 }

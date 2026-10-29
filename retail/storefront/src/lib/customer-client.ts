@@ -27,6 +27,11 @@ export function customerClient(fetcher:typeof fetch=fetch){
   return call('/auth/'+path,body,challenge.csrf_token)
  }
  function identity(form:FormData,segment:string){return {email:String(form.get('email')??''),password:String(form.get('password')??''),country:segment.slice(0,2),locale:segment.endsWith('-zh')?'zh':'en'}}
+ function sessionCSRF(){
+  const matches=document.cookie.split(';').map(p=>p.trim().split('=')).filter(([name])=>name===(location.protocol==='https:'?'__Host-':'')+'retail_customer_csrf')
+  if(matches.length!==1||!/^[0-9a-f]{64}$/.test(matches[0][1]??''))throw new CustomerError(403)
+  return matches[0][1]
+ }
  return {
   async current():Promise<Customer|null>{
    try{return customerProjection((await call('/me')).customer)}catch(error){if(error instanceof CustomerError&&error.status===401)return null;throw error}
@@ -49,9 +54,17 @@ export function customerClient(fetcher:typeof fetch=fetch){
   async resend(){if(!pending)return {success:false};try{await write('resend',pending);return {success:true}}catch{return {success:false}}},
   async verify(token:string){if(!/^[0-9a-f]{64}$/.test(token))return {success:false};try{await write('verify',{token});return {success:true}}catch{return {success:false}}},
   async logout(){
-   const matches=document.cookie.split(';').map(p=>p.trim().split('=')).filter(([name])=>name===(location.protocol==='https:'?'__Host-':'')+'retail_customer_csrf')
-   if(matches.length!==1||!/^[0-9a-f]{64}$/.test(matches[0][1]??''))throw new CustomerError(403)
-   await call('/auth/logout',{},matches[0][1]);pending=null;customerChanged()
+   await call('/auth/logout',{},sessionCSRF());pending=null;customerChanged()
+  },
+  async updateProfile(fields:{first_name?:string;last_name?:string;phone?:string}){
+   const input:Record<string,string>={}
+   for(const [name,value] of Object.entries(fields)){
+    if(!['first_name','last_name','phone'].includes(name)||typeof value!=='string')throw new CustomerError(400)
+    input[name]=value
+   }
+   if(!Object.keys(input).length)throw new CustomerError(400)
+   const result=customerProjection((await call('/me',input,sessionCSRF())).customer)
+   customerChanged();return result
   },
   clear(){pending=null},
  }

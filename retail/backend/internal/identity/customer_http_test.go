@@ -160,6 +160,13 @@ func checkCustomerHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions 
 	}
 	call("GET", "/me", "", "", 401, func(r *http.Request) { r.Header.Set("Cookie", old.Name+"="+old.Value) })
 	call("POST", "/auth/logout", "{}", strings.Repeat("a", 64), 403, nil)
+	call("POST", "/me", `{"first_name":"HTTP Updated","phone":"+45 999"}`, strings.Repeat("a", 64), 403, nil)
+	profile := call("POST", "/me", `{"first_name":"HTTP Updated","phone":"+45 999"}`, jar["__Host-retail_customer_csrf"].Value, 200, nil)
+	if !bytes.Contains(profile.Body.Bytes(), []byte(`"first_name":"HTTP Updated"`)) || !bytes.Contains(profile.Body.Bytes(), []byte(`"phone":"+45 999"`)) {
+		t.Fatal("HTTP profile result did not reflect saved values")
+	}
+	call("POST", "/me", `{"email":"forbidden@example.invalid"}`, jar["__Host-retail_customer_csrf"].Value, 400, nil)
+	call("POST", "/me", `{}`, jar["__Host-retail_customer_csrf"].Value, 400, nil)
 	call("GET", "/me", "", "", 200, nil)
 	call("POST", "/auth/logout", "{}", jar["__Host-retail_customer_csrf"].Value, 200, nil)
 	call("GET", "/me", "", "", 401, nil)

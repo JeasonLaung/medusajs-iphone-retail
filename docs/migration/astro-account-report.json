@@ -1,9 +1,9 @@
 {
   "scope": "Formal original account login/register/verification pages; account dashboard and transaction functions incomplete",
-  "unit_tests_passed": 87,
-  "customer_client_tests_passed": 4,
+  "unit_tests_passed": 89,
+  "customer_client_tests_passed": 5,
   "astro_check": {
-    "files": 214,
+    "files": 219,
     "errors": 0,
     "warnings": 0,
     "existing_hints": 2
@@ -31,18 +31,22 @@
     "header_login_logout": true,
     "cross_tab_logout": true,
     "dependency_failure_not_logout": true,
-    "opaque_storage_marker": true
+    "opaque_storage_marker": true,
+    "profile_name_phone_saved": true,
+    "profile_failure_recovery": true,
+    "profile_reload_persisted": true,
+    "email_readonly": true
   },
   "remaining": [
     "Real Gin/MySQL browser registration and actual Resend delivery",
     "SSR/no-JavaScript form parity and source pixel comparison",
-    "Complete original account dashboard/profile/addresses/orders/buyback/aftersales",
+    "Complete original account dashboard/billing/addresses/email update/orders/buyback/aftersales",
     "Logged-in cart transfer and ownership",
     "Original signed-in notification menu and related business"
   ],
   "implementation_sha256": {
     "retail/storefront/src/components/account/context.tsx": "ba178bc31fb2663a03e4e31f58eeaffa80aa1128b77284206bf6978b71e734fc",
-    "retail/storefront/src/components/account/gin-account.tsx": "96241d71b8f06e2723e4605566a3a8bd80e2f9f9cda81d6f3e4e3e8fcc170277",
+    "retail/storefront/src/components/account/gin-account.tsx": "d1c5b3076bde1f87e1c9f58fe26db0ae54fb39179eae36ffd59958092625b247",
     "retail/storefront/src/components/account/i18n.ts": "53186b468efac7f91d83e3bc9263073029f6730ae8d154a361bd02c8352ee2f7",
     "retail/storefront/src/components/account/localized-link.tsx": "155bb198f3fdb397b46e7810c314e329d406dff928ce8384962b35fd55bcb8f3",
     "retail/storefront/src/components/account/login-template.tsx": "91b02e44bbc0e488273db2c87867caf9176d62b240204d76705ee29c6d1216c7",
@@ -53,14 +57,19 @@
     "retail/storefront/src/components/account/verify-account.tsx": "ac3ad3233c9bc83fe9863766cf0704c3d92be39325e0bab381b0ff1be7fc24ba",
     "retail/storefront/src/components/account/translations/en.json": "d6870fde8edc1c6813a73579ccc9e0645a4d88cbb528900c4944ae24b1b71268",
     "retail/storefront/src/components/account/translations/zh.json": "b88bba6b9568f906fba6f50eac153d301447f4a3907bb864acc2eb3b90ed7e71",
-    "retail/storefront/src/lib/customer-client.ts": "0be5d7e7373008687ee4b1d8c5a91a6f6d3324a3a3ce7384b71ef516bada4d91",
-    "retail/storefront/tests/customer-client.test.ts": "ea3754775dd1221d808c96ae54dd2ff96af7e14b1dc6f44f64a28606a67cab45",
-    "retail/storefront/tests/account.browser.mjs": "0603cb198d5a72984ed9a9a609e9814d5bce0802d9706b854b1ed1c1a250e4e1",
+    "retail/storefront/src/lib/customer-client.ts": "e6afdf3e440db869a6923af4906d7240bb3a1796cfdb3022ee7eb63a23520333",
+    "retail/storefront/tests/customer-client.test.ts": "e0271d9cebd9c7726c4f2943d865338a3243eef2fe653db971863baeb359e162",
+    "retail/storefront/tests/account.browser.mjs": "c0877eec101fbebef02c03f1efc6799d3f36999b09e76ed918d8eddb6365146f",
     "retail/storefront/src/pages/[countryCode]/account.astro": "823e2456edc6dc6695e88fd7d38115a8e0f29c1204d28d4dbac78a90584f8790",
     "retail/storefront/src/pages/[countryCode]/verify-account.astro": "6ed1c41d4cfacf54429598267d8bf61f4437bd69938837bda9ce57f528575f2f",
     "retail/storefront/src/lib/customer-events.ts": "05a5f60b0cb3e77951ffda0351828a3e0b509e2874aedcf7ac312ddf88a1f906",
     "retail/storefront/src/components/layout/gin-header.tsx": "16ea2ebab1687d3ee6685d36012d0d51767480ef6fc2672422500e81bbe00da6",
-    "retail/storefront/src/layouts/Storefront.astro": "6a8f73b24a305a4935076f76eddd37aad7545bf58e79c4a8ff0e1e33aca6cabe"
+    "retail/storefront/src/layouts/Storefront.astro": "6a8f73b24a305a4935076f76eddd37aad7545bf58e79c4a8ff0e1e33aca6cabe",
+    "retail/storefront/src/components/account/account-info.tsx": "dbd9ce64ce6fe6c4acbb36a0f137cccaed6f107b76308cdbc6cac43dc827c844",
+    "retail/storefront/src/components/account/profile-name.tsx": "a98b2e9352d6591ce17d6f4ab9876d69b0b69a66432b2470a9000504b3ff5865",
+    "retail/storefront/src/components/account/profile-phone.tsx": "fc2a7c3ce69debb314a3b5fca415a37f3370be0886da576d64349d51fbb2b913",
+    "retail/storefront/src/components/account/use-toggle-state.tsx": "a837b72798d32746f2bc2aa529821aa3c1a74106f7e3c0911700d4fc69fecaa0",
+    "retail/storefront/src/pages/[countryCode]/account/profile.astro": "88512865eb45e710d6ded082034d7705309dd84e0ccf288d592600f3440dfc94"
   },
   "mobile_screenshot_reviewed": true,
   "source_pixel_comparison_complete": false

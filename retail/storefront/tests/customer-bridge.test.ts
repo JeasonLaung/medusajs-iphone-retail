@@ -77,3 +77,11 @@ test('native customer transport preserves public Host and never follows redirect
   assert.equal(calls,1)
  }finally{await new Promise<void>((resolve,reject)=>server.close(err=>err?reject(err):resolve()))}
 })
+test('authenticated profile update is a fixed private POST without issuing cookies',async()=>{
+ const req=request('/me',{method:'POST',headers:{Origin:shop,'Content-Type':'application/json','X-CSRF-Token':token,Cookie:`retail_customer_session=${token}`},body:'{"phone":""}'})
+ const result=await customerBridge(req,config,async(url,init)=>{
+  assert.equal(String(url),config.ginOrigin+root+'/me');assert.equal(new Headers(init?.headers).get('X-CSRF-Token'),token)
+  return response({customer:{id:'cust_fixture',phone:''}})
+ })
+ assert.equal(result.status,200);assert.equal(result.headers.getSetCookie().length,0)
+})

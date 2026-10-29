@@ -81,6 +81,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/auth/verify", h.VerifyAccount)
 	private.POST("/auth/resend", h.ResendVerification)
 	private.GET("/me", h.Me)
+	private.POST("/me", h.UpdateProfile)
 	private.POST("/auth/logout", h.LogoutAccount)
 }
 func (h *HTTPHandler) ready(c *gin.Context) bool {
@@ -416,4 +417,31 @@ func (h *HTTPHandler) LogoutAccount(c *gin.Context) {
 	h.clearCookie(c, "csrf", false)
 	h.clearCookie(c, "prelogin", true)
 	c.JSON(200, gin.H{"success": true})
+}
+
+func (h *HTTPHandler) UpdateProfile(c *gin.Context) {
+	fields, ok := h.input(c, "first_name", "last_name", "phone")
+	if !ok || !h.originOK(c, true) {
+		return
+	}
+	token, ok, _ := h.cookie(c, "session")
+	if !ok {
+		h.fail(c, ErrUnauthorized)
+		return
+	}
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+	defer cancel()
+	if err := h.sessions.VerifyCSRF(ctx, sessionstore.Customer, token, customerCSRF(c)); err != nil {
+		h.fail(c, err)
+		return
+	}
+	if !h.allow(c, ctx, "profile", "") {
+		return
+	}
+	account, err := h.store.UpdateProfile(ctx, token, fields)
+	if err != nil {
+		h.fail(c, err)
+		return
+	}
+	c.JSON(200, gin.H{"customer": account})
 }
