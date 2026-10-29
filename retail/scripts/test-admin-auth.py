@@ -85,7 +85,7 @@ def main():
         # Each suite owns artificial databases in this uniquely labelled,
         # disconnected server. Release their tmpfs tables before the next suite;
         # otherwise cumulative DDL consumes the bounded fixture memory.
-        suites = ['GeoSchema','CartPriceRefresh','CartTaxRefresh','TaxImport','TaxSchema','AdminAuthentication','CatalogSchemaTransition','ProductEdits','ProductPrices',
+        suites = ['PromotionSchema','GeoSchema','CartPriceRefresh','CartTaxRefresh','TaxImport','TaxSchema','AdminAuthentication','CatalogSchemaTransition','ProductEdits','ProductPrices',
                   'ProductInventory','InventoryStockEdits','ReservationTransactions','OrderSchema',
                   'OrderImport','CustomerHistory','OrderRead','PaymentSchema','PaymentImport','FulfillmentHistory','CartSchema','CartRuntime']
         if cart_only:
@@ -115,6 +115,9 @@ def main():
         geo_markers = [line.split('GEO_SCHEMA_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'GEO_SCHEMA_REHEARSAL ' in line]
         if tested.returncode == 0 and not cart_only and len(geo_markers) != 1:
             raise RuntimeError('Geo schema evidence missing')
+        promotion_markers = [line.split('PROMOTION_SCHEMA_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'PROMOTION_SCHEMA_REHEARSAL ' in line]
+        if tested.returncode == 0 and not cart_only and len(promotion_markers) != 1:
+            raise RuntimeError('Promotion schema evidence missing')
         amount_markers = [line.split('CART_AMOUNTS_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_AMOUNTS_REHEARSAL ' in line]
         if tested.returncode == 0 and len(amount_markers) != 1:
             raise RuntimeError('Cart amount evidence missing')
@@ -288,6 +291,8 @@ def main():
             files += ['retail/backend/internal/identity/cart_tax_refresh_test.go']
             files += ['retail/backend/migrations/0029_tax_import_evidence.sql','retail/scripts/generate-tax-import-plan.py','retail/backend/internal/identity/tax_import_test.go']
             files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/taximport').glob('*') if p.is_file()]
+            files += ['retail/backend/migrations/0031_promotion_relational.sql','retail/scripts/generate-promotion-schema.py','retail/backend/internal/identity/promotion_schema_test.go']
+            files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/promotion').glob('*') if p.is_file()]
             files += ['retail/backend/migrations/0028_tax_relational.sql','retail/scripts/generate-tax-schema.py','retail/backend/internal/identity/tax_schema_test.go']
             files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/tax').glob('*') if p.is_file()]
             files += ['retail/backend/internal/identity/catalog_schema_test.go','retail/backend/internal/schema/ready.go',
@@ -381,6 +386,7 @@ def main():
                       'cart_price_refresh': json.loads(price_refresh_markers[0]),
                       'cart_item_snapshots': json.loads(snapshot_markers[0]),
                       'flat_shipping_prices': json.loads(flat_markers[0]),
+                      'promotion_schema': json.loads(promotion_markers[0]),
                       'geo_schema': json.loads(geo_markers[0]),
                       'shipping_candidates': json.loads(candidate_markers[0]),
                       'manual_shipping_quotes': json.loads(manual_markers[0]),

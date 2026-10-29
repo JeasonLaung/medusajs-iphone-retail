@@ -20,6 +20,7 @@ import (
 	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/platform"
+	"github.com/eurorefurb/retail/internal/promotion"
 	"github.com/eurorefurb/retail/internal/schema"
 	"github.com/eurorefurb/retail/internal/server"
 	"github.com/eurorefurb/retail/internal/sessionstore"
@@ -76,6 +77,9 @@ func main() {
 	}
 	if err == nil {
 		err = tax.Ready(verifyCtx, db)
+	}
+	if err == nil {
+		err = promotion.Ready(verifyCtx, db)
 	}
 	cancelVerify()
 	if err != nil {

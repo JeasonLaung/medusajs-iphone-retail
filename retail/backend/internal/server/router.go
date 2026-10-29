@@ -15,6 +15,7 @@ import (
 	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/platform"
+	"github.com/eurorefurb/retail/internal/promotion"
 	"github.com/eurorefurb/retail/internal/tax"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -93,6 +94,9 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 		}
 		if err == nil {
 			err = tax.Ready(ctx, db)
+		}
+		if err == nil {
+			err = promotion.Ready(ctx, db)
 		}
 		if err != nil {
 			platform.Fail(c, 503, "dependency_unavailable", "Application dependency unavailable")

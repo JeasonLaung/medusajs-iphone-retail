@@ -1,0 +1,121 @@
+{
+  "format_version": 1,
+  "schema_version": 1,
+  "model_sha256": "37ff9efcdcc877ece309bf464d1468b4ddc8e005920b59314d262c23a8d3001d",
+  "migration": "0031_promotion_relational.sql",
+  "tables": [
+    "promotion_application_methods",
+    "promotion_budget_usages",
+    "promotion_buy_rules",
+    "promotion_campaign_budgets",
+    "promotion_campaigns",
+    "promotion_order_rules",
+    "promotion_rule_values",
+    "promotion_rules",
+    "promotion_target_rules",
+    "promotions"
+  ],
+  "source_tables": [
+    "application_method_buy_rules",
+    "application_method_target_rules",
+    "promotion",
+    "promotion_application_method",
+    "promotion_campaign",
+    "promotion_campaign_budget",
+    "promotion_campaign_budget_usage",
+    "promotion_promotion_rule",
+    "promotion_rule",
+    "promotion_rule_value"
+  ],
+  "source_columns": 75,
+  "reads_enabled": true,
+  "writes_enabled": false,
+  "full_business_accepted": false,
+  "historical_accounts_restored": false,
+  "explicit_enum_constraints": [
+    {
+      "table": "promotions",
+      "column": "type",
+      "allowed": [
+        "standard",
+        "buyget"
+      ]
+    },
+    {
+      "table": "promotions",
+      "column": "status",
+      "allowed": [
+        "draft",
+        "active",
+        "inactive"
+      ]
+    },
+    {
+      "table": "promotion_application_methods",
+      "column": "type",
+      "allowed": [
+        "fixed",
+        "percentage"
+      ]
+    },
+    {
+      "table": "promotion_application_methods",
+      "column": "target_type",
+      "allowed": [
+        "order",
+        "shipping_methods",
+        "items"
+      ]
+    },
+    {
+      "table": "promotion_application_methods",
+      "column": "allocation",
+      "allowed": [
+        "each",
+        "across",
+        "once"
+      ]
+    },
+    {
+      "table": "promotion_campaign_budgets",
+      "column": "type",
+      "allowed": [
+        "spend",
+        "usage",
+        "use_by_attribute",
+        "spend_by_attribute"
+      ]
+    },
+    {
+      "table": "promotion_rules",
+      "column": "operator",
+      "allowed": [
+        "gte",
+        "lte",
+        "gt",
+        "lt",
+        "eq",
+        "ne",
+        "in"
+      ]
+    }
+  ],
+  "unresolved_semantic_dependencies": [],
+  "unresolved_source_indexes": [
+    {
+      "source_table": "promotion_campaign",
+      "index_name": "IDX_promotion_campaign_campaign_identifier_unique",
+      "definition": "CREATE UNIQUE INDEX \"IDX_promotion_campaign_campaign_identifier_unique\" ON public.promotion_campaign USING btree (campaign_identifier) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    },
+    {
+      "source_table": "promotion_campaign_budget_usage",
+      "index_name": "IDX_promotion_campaign_budget_usage_attribute_value_budget_id_u",
+      "definition": "CREATE UNIQUE INDEX \"IDX_promotion_campaign_budget_usage_attribute_value_budget_id_u\" ON public.promotion_campaign_budget_usage USING btree (attribute_value, budget_id) WHERE (deleted_at IS NULL)",
+      "status": "hold",
+      "reason": "Full text/blob identity or search index requires explicit complete-value design; no prefix substitute"
+    }
+  ],
+  "migration_sha256_lf": "8af5fcccd85e12a2e30a207bff267a905551eb6b76a81b66bf9c82cc4578dd0c"
+}
