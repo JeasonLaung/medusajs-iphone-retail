@@ -21,6 +21,10 @@ export type ContactAddress={first_name:string;last_name:string;company:string;ad
 export type CartContactDetail={cart_id:string;version:string;email:string;shipping_address:ContactAddress|null;billing_address:ContactAddress|null}
 export type CartContactInput={operationID:string;version:string;email:string;shipping_address:ContactAddress;billing_address:ContactAddress}
 export type CartContactReceipt={cart_id:string;version:string;replayed:boolean}
+export type DeliveryOption={id:string;profile_id:string;name:string;description:string;kind:'shipping'|'pickup';amount:string;is_tax_inclusive:boolean;insufficient_inventory:boolean}
+export type DeliveryOptions={cart_id:string;version:string;currency_code:string;options:DeliveryOption[];selected_option_ids:string[];complete:boolean}
+export type ShippingInput={operationID:string;version:string;optionID:string}
+export type ShippingReceipt={cart_id:string;version:string;option_id:string;replayed:boolean}
 const contactLimits={first_name:160,last_name:160,company:160,address_1:512,address_2:512,city:160,country_code:2,province:191,postal_code:64,phone:64} as const
 export function contactAddress(value:unknown):ContactAddress {
  const v=record(value),out:Record<string,string>={}
@@ -253,6 +257,38 @@ export class CartClient {
    if(status!==200||v.cart_id!==id||v.line_id!==lineID||v.quantity!==quantity||typeof v.replayed!=='boolean'||!matches(v.version,versionPattern)||BigInt(v.version)!==BigInt(version)+1n)throw protocol()
    return {cart_id:id,line_id:lineID,quantity,version:v.version,replayed:v.replayed}
   }catch{throw new CartError('protocol',status,true)}
+ }
+
+ async saveShipping(id:string,input:ShippingInput,authorization:{csrfToken:string}):Promise<ShippingReceipt>{
+  const {operationID,version,optionID}=input,{csrfToken}=authorization
+  if(!matches(id,idPattern)||!matches(operationID,uuidPattern)||!matches(version,versionPattern)||BigInt(version)>=18446744073709551615n||!matches(optionID,idPattern)||!matches(csrfToken,tokenPattern))throw new CartError('input')
+  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/shipping-methods`,'POST',JSON.stringify({version,option_id:optionID}),{'X-CSRF-Token':csrfToken,'Idempotency-Key':operationID},65536,'item')
+  try{
+   const v=record(value);keys(v,['cart_id','version','option_id','replayed'])
+   if(status!==200||v.cart_id!==id||v.option_id!==optionID||!matches(v.version,versionPattern)||BigInt(v.version)!==BigInt(version)+1n||typeof v.replayed!=='boolean')throw protocol()
+   return {cart_id:id,version:v.version,option_id:optionID,replayed:v.replayed}
+  }catch{throw new CartError('protocol',status,true)}
+ }
+ async retrieveDelivery(id:string):Promise<DeliveryOptions|null>{
+  if(!matches(id,idPattern))throw new CartError('input')
+  let response:{status:number;value:unknown}
+  try{response=await this.request(`/api/store/carts/${encodeURIComponent(id)}/delivery-options`,'GET',undefined,{},1024*1024)}
+  catch(err){if(err instanceof CartError&&(err.status===401||err.status===404))return null;throw err}
+  const v=record(response.value);keys(v,['cart_id','version','currency_code','options','selected_option_ids','complete'])
+  if(response.status!==200||v.cart_id!==id||!matches(v.version,versionPattern)||BigInt(v.version)>18446744073709551615n||!matches(v.currency_code,/^[a-z]{3}$/)||!Array.isArray(v.options)||v.options.length>100||!Array.isArray(v.selected_option_ids)||v.selected_option_ids.length>100||typeof v.complete!=='boolean')throw protocol()
+  const savedText=(value:unknown):string=>{if(typeof value!=='string'||new TextEncoder().encode(value).length>4096||/[\x00-\x1f\x7f]/.test(value))throw protocol();return value}
+  const ids=new Set<string>(),profiles=new Map<string,string>()
+  const options=v.options.map(value=>{
+   const o=record(value);keys(o,['id','profile_id','name','description','kind','amount','is_tax_inclusive','insufficient_inventory'])
+   const optionID=text(o.id,idPattern),profileID=text(o.profile_id,idPattern)
+   if(ids.has(optionID)||!['shipping','pickup'].includes(String(o.kind))||typeof o.is_tax_inclusive!=='boolean'||typeof o.insufficient_inventory!=='boolean'||!matches(o.amount,/^(0|[1-9][0-9]*)(\.[0-9]+)?$/)||o.amount.length>512)throw protocol()
+   ids.add(optionID);profiles.set(optionID,profileID)
+   return {id:optionID,profile_id:profileID,name:savedText(o.name),description:savedText(o.description),kind:o.kind as DeliveryOption['kind'],amount:o.amount,is_tax_inclusive:o.is_tax_inclusive,insufficient_inventory:o.insufficient_inventory}
+  })
+  const selected=new Set<string>(),selectedProfiles=new Set<string>()
+  const selected_option_ids=v.selected_option_ids.map(value=>{const key=text(value,idPattern),profile=profiles.get(key);if(!profile||selected.has(key)||selectedProfiles.has(profile))throw protocol();selected.add(key);selectedProfiles.add(profile);return key})
+  if(v.complete&&options.some(o=>!selectedProfiles.has(o.profile_id)))throw protocol()
+  return {cart_id:id,version:v.version,currency_code:v.currency_code,options,selected_option_ids,complete:v.complete}
  }
 
  async saveContacts(id:string,input:CartContactInput,authorization:{csrfToken:string}):Promise<CartContactReceipt>{

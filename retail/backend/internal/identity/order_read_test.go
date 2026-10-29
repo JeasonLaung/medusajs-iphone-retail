@@ -84,7 +84,7 @@ func TestOwnedOrderRead(t *testing.T) {
 		t.Fatal("order read plan unavailable")
 	}
 	r, err := schema.Apply(ctx, pool, plan)
-	if err != nil || r.Applied != 41 {
+	if err != nil || r.Applied != 42 {
 		t.Fatal("order read schema failed")
 	}
 	seedOrderReadFixture(t, db)
@@ -192,5 +192,5 @@ func TestOwnedOrderRead(t *testing.T) {
 		t.Fatal("order drift fixture failed")
 	}
 	call("/orders", 503)
-	t.Log(`ORDER_READ_REHEARSAL {"migrations":41,"read_only_fingerprint":true,"exact_decimal_and_ids":true,"current_version_only":true,"snapshot_price_override_and_fallback":true,"literal_wildcard_search":true,"stable_pagination":true,"private_payload_excluded":true,"incomplete_snapshot_rejected":true,"schema_drift_rejected":true,"order_amounts_exact":true,"amount_version_filters":true,"independent_raw_price_precedence":true,"amount_dependency_failures_rejected":true}`)
+	t.Log(`ORDER_READ_REHEARSAL {"migrations":42,"read_only_fingerprint":true,"exact_decimal_and_ids":true,"current_version_only":true,"snapshot_price_override_and_fallback":true,"literal_wildcard_search":true,"stable_pagination":true,"private_payload_excluded":true,"incomplete_snapshot_rejected":true,"schema_drift_rejected":true,"order_amounts_exact":true,"amount_version_filters":true,"independent_raw_price_precedence":true,"amount_dependency_failures_rejected":true}`)
 }

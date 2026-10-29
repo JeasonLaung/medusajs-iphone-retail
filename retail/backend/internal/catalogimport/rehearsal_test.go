@@ -297,11 +297,11 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog embedded schema plan invalid")
 	}
 	created, err := schema.Apply(ctx, db, plan)
-	if err != nil || created.Applied != 41 || schema.CheckApplied(ctx, db, plan) != nil {
+	if err != nil || created.Applied != 42 || schema.CheckApplied(ctx, db, plan) != nil {
 		t.Fatal("catalog embedded migration failed")
 	}
 	repeated, err := schema.Apply(ctx, db, plan)
-	if err != nil || repeated.Skipped != 41 {
+	if err != nil || repeated.Skipped != 42 {
 		t.Fatal("catalog embedded migration replay failed")
 	}
 	counts["explicit_schema_migrations"] = int64(created.Applied)

@@ -160,26 +160,8 @@ func SaveContacts(ctx context.Context, db *gorm.DB, store string, ref sessionsto
 		if len(links) > 0 {
 			return ErrConflict
 		}
-		// Do not silently discard a live saved method for a provider whose
-		// implementation this command cannot execute.
-		var providers []struct {
-			Provider  *string
-			PriceType string
-		}
-		if tx.Table("cart_shipping_methods m").Select("o.provider_id AS provider,o.price_type").Joins("JOIN fulfillment_shipping_options o ON o.id=m.shipping_option_id AND o.deleted_at IS NULL").Where("m.cart_id=? AND m.deleted_at IS NULL", current.ID).Clauses(clause.Locking{Strength: "SHARE"}).Limit(101).Scan(&providers).Error != nil || len(providers) > 100 {
-			return ErrSchema
-		}
-		for _, provider := range providers {
-			if provider.PriceType != "flat" || provider.Provider == nil {
-				return ErrConfiguration
-			}
-			registered := false
-			for _, id := range manualProviders {
-				registered = registered || id == *provider.Provider
-			}
-			if !registered {
-				return ErrConfiguration
-			}
+		if err := supportedSavedShipping(tx, current.ID, manualProviders); err != nil {
+			return err
 		}
 		shippingID, billingID := "caaddr_"+uuid.NewString(), "caaddr_"+uuid.NewString()
 		for _, address := range []struct {

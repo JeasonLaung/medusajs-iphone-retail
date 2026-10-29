@@ -53,7 +53,7 @@ func TestOwnedPaymentImport(t *testing.T) {
 		t.Fatal("payment import plan unavailable")
 	}
 	applied, err := schema.Apply(ctx, db, plan)
-	if err != nil || applied.Applied != 41 {
+	if err != nil || applied.Applied != 42 {
 		t.Fatal("payment import migrations failed")
 	}
 	exec := func(q string, args ...any) {
@@ -280,5 +280,5 @@ func TestOwnedPaymentImport(t *testing.T) {
 	if !bytes.Equal(original, after) {
 		t.Fatal("payment import mutated source")
 	}
-	t.Log(`PAYMENT_IMPORT_REHEARSAL {"migrations":41,"tables":8,"columns":83,"rows":9,"ordinary_rows":6,"protected_rows":3,"reference_holds":4,"operation_holds":3,"concurrent_batches":8,"single_fresh_batch":1,"replayed_batches":7,"old_snapshot_replay":true,"rollback_atomic":true,"late_hold_failure_rollback":true,"composite_identity_preserved":true,"decimal_drift_rejected":true,"source_snapshot_hold_drift_rejected":true,"original_ciphertext_rotation_replay":true,"missing_key_rejected":true,"no_account_granted":true,"source_unchanged":true,"receipt_hash_policy_enforced":true,"disabled_schema_rejected":true,"holder_uniqueness_conflict_atomic":true,"provider_called":false}`)
+	t.Log(`PAYMENT_IMPORT_REHEARSAL {"migrations":42,"tables":8,"columns":83,"rows":9,"ordinary_rows":6,"protected_rows":3,"reference_holds":4,"operation_holds":3,"concurrent_batches":8,"single_fresh_batch":1,"replayed_batches":7,"old_snapshot_replay":true,"rollback_atomic":true,"late_hold_failure_rollback":true,"composite_identity_preserved":true,"decimal_drift_rejected":true,"source_snapshot_hold_drift_rejected":true,"original_ciphertext_rotation_replay":true,"missing_key_rejected":true,"no_account_granted":true,"source_unchanged":true,"receipt_hash_policy_enforced":true,"disabled_schema_rejected":true,"holder_uniqueness_conflict_atomic":true,"provider_called":false}`)
 }

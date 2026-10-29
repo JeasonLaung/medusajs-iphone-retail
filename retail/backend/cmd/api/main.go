@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -105,7 +106,11 @@ func main() {
 	defer redisClient.Close()
 	var cartOptions []cart.HTTPOptions
 	if origin := os.Getenv("STOREFRONT_ORIGIN"); origin != "" {
-		cartOptions = append(cartOptions, cart.HTTPOptions{Sessions: sessions, Origin: origin, StoreID: os.Getenv("STOREFRONT_STORE_ID"), Secure: os.Getenv("SESSION_SECURE") == "true"})
+		manualProviders := []string{}
+		if raw := os.Getenv("MANUAL_SHIPPING_PROVIDER_IDS"); raw != "" {
+			manualProviders = strings.Split(raw, ",")
+		}
+		cartOptions = append(cartOptions, cart.HTTPOptions{ManualProviderIDs: manualProviders, Sessions: sessions, Origin: origin, StoreID: os.Getenv("STOREFRONT_STORE_ID"), Secure: os.Getenv("SESSION_SECURE") == "true"})
 	}
 	router, err := server.RouterWithAuth(db, identity.Options{Sessions: sessions, Origin: os.Getenv("ADMIN_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true"}, cartOptions...)
 	if err != nil {

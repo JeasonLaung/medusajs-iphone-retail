@@ -180,6 +180,7 @@ func checkCartContacts(t *testing.T, ctx context.Context, db *gorm.DB, sessions 
 		t.Fatal("contact save reserved stock")
 	}
 	checkCartContactsHTTP(t, ctx, db, sessions, ref, next, fingerprint)
+	checkDeliveryCommands(t, ctx, db, sessions, ref)
 	exec("UPDATE cart_contact_runtime SET enabled=FALSE WHERE id=1")
 	if _, err := cart.SaveContacts(ctx, db, "shop", ref, in, nil); err != cart.ErrSchema {
 		t.Fatal("disabled contact replay accepted")

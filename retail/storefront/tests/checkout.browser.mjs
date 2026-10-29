@@ -13,11 +13,13 @@ const cartKeys=[...rowKeys,'item_total','item_subtotal','item_tax_total','item_d
 const address={first_name:'Saved',last_name:'Customer',company:'',address_1:'Saved street',address_2:'',city:'Copenhagen',country_code:'dk',province:'',postal_code:'0012',phone:'+45 111'}
 const saved={...address,id:'addr_12345678-1234-4234-8234-123456789012',is_default_billing:false,is_default_shipping:true,created_at:'2026-10-29T00:00:00Z',updated_at:'2026-10-29T00:00:00Z'}
 let version='2',contacts={email:'',shipping_address:null,billing_address:null},child,browser,failed=false,readFailure=false,loseResponse=false,empty=false
-const receipts=new Map(),posts=[],errors=[]
+const receipts=new Map(),posts=[],errors=[],shippingPosts=[],shippingReceipts=new Map();let selected=null,loseShippingResponse=false,shippingReadFailure=false
 const totals=Object.fromEntries(cartKeys.map(k=>[k,['total','original_total','item_total','original_item_total'].includes(k)?'150':['tax_total','original_tax_total','item_tax_total','original_item_tax_total'].includes(k)?'30':k.includes('subtotal')&&!k.includes('shipping')&&!k.includes('discount')&&!k.includes('credit')?'120':'0']))
 const lineTotals=Object.fromEntries(rowKeys.map(k=>[k,totals[k]]))
+const delivery=()=>({cart_id:'cart',version,currency_code:'eur',options:[{id:'standard',profile_id:'profile',name:'Home delivery',description:'Tracked delivery',kind:'shipping',amount:'7',is_tax_inclusive:false,insufficient_inventory:false},{id:'pickup',profile_id:'profile',name:'Store pickup',description:'Collect in store',kind:'pickup',amount:'0',is_tax_inclusive:false,insufficient_inventory:false},{id:'unavailable',profile_id:'profile',name:'Unavailable',description:'',kind:'shipping',amount:'10',is_tax_inclusive:false,insufficient_inventory:true}],selected_option_ids:selected?[selected]:[],complete:!!selected})
+const displayedTotals=()=>selected==='standard'?{...totals,total:'158.75',original_total:'158.75',tax_total:'31.75',original_tax_total:'31.75',subtotal:'127',original_subtotal:'127',shipping_total:'8.75',shipping_subtotal:'7',shipping_tax_total:'1.75',original_shipping_total:'8.75',original_shipping_subtotal:'7',original_shipping_tax_total:'1.75'}:totals
 const detail=()=>({cart_id:'cart',version,...contacts})
-const view=()=>({amounts:{cart_id:'cart',version,currency_code:'eur',totals,lines:empty?[]:[{id:'line',variant_id:'variant',unit_price:'120',quantity:'1',is_tax_inclusive:false,totals:lineTotals}],shipping_methods:[],pricing_recalculated:false,checkout:false},items:empty?[]:[{id:'line',title:'Phone',product_id:'p',product_title:'Phone',product_handle:'phone',thumbnail:'/iphone-thumbnails/iphone-16e/white.webp',variant_title:'128GB',option_values:{Storage:'128GB'}}]})
+const view=()=>({amounts:{cart_id:'cart',version,currency_code:'eur',totals:displayedTotals(),lines:empty?[]:[{id:'line',variant_id:'variant',unit_price:'120',quantity:'1',is_tax_inclusive:false,totals:lineTotals}],shipping_methods:selected?[{id:'method',name:selected==='standard'?'Home delivery':'Store pickup',amount:selected==='standard'?'7':'0',is_tax_inclusive:false,totals:{...lineTotals,total:selected==='standard'?'8.75':'0',subtotal:selected==='standard'?'7':'0',tax_total:selected==='standard'?'1.75':'0'}}]:[],pricing_recalculated:false,checkout:false},items:empty?[]:[{id:'line',title:'Phone',product_id:'p',product_title:'Phone',product_handle:'phone',thumbnail:'/iphone-thumbnails/iphone-16e/white.webp',variant_title:'128GB',option_values:{Storage:'128GB'}}]})
 const api=createServer(async(req,res)=>{
  try{
  const url=new URL(req.url,'http://fixture.invalid');let body={},status=200
@@ -29,6 +31,15 @@ const api=createServer(async(req,res)=>{
  case '/api/store/collections':body={collections:[],count:0,limit:Number(url.searchParams.get('limit')||100),offset:0};break
  case '/api/store/cart':if(!req.headers.cookie?.includes('retail_cart_possession=')){status=401;break}body={cart:{id:'cart',region_id:'region',sales_channel_id:'channel',currency_code:'eur',locale:'en',version},capabilities:{items:false,checkout:false}};break
  case '/api/store/carts/cart/view':if(readFailure){status=503;break}body=view();break
+ case '/api/store/carts/cart/delivery-options':if(shippingReadFailure){status=503;break}body=delivery();break
+ case '/api/store/carts/cart/shipping-methods':{
+  assert.equal(req.headers.origin,shop);assert.equal(req.headers['x-csrf-token'],'a'.repeat(64))
+  let raw='';for await(const chunk of req)raw+=chunk;const input=JSON.parse(raw),key=req.headers['idempotency-key'];shippingPosts.push({key,input})
+  assert.deepEqual(Object.keys(input),['version','option_id']);const old=shippingReceipts.get(key)
+  if(old){assert.deepEqual(input,old.input);body={...old.result,replayed:true}}
+  else{assert.equal(input.version,version);assert.ok(['standard','pickup'].includes(input.option_id));version=String(BigInt(version)+1n);selected=input.option_id;body={cart_id:'cart',version,option_id:selected,replayed:false};shippingReceipts.set(key,{input,result:body})}
+  if(loseShippingResponse){loseShippingResponse=false;status=503};break
+ }
  case '/api/store/carts/cart/contacts':
   if(req.method==='GET'){body=detail();break}
   {assert.equal(req.headers.origin,shop);assert.equal(req.headers['x-csrf-token'],'a'.repeat(64));assert.ok(req.headers.cookie.includes('retail_cart_possession='))
@@ -60,7 +71,7 @@ try{
  for(const language of ['en','zh'])for(const width of [390,1440]){
   const context=await browser.newContext({reducedMotion:'reduce',viewport:{width,height:1100}}),page=await context.newPage();context.setDefaultTimeout(12000)
   await context.addCookies([{name:'retail_cart_possession',value:'b'.repeat(64),url:shop,httpOnly:true},{name:'retail_cart_csrf',value:'a'.repeat(64),url:shop}]);page.on('pageerror',e=>errors.push(e.message))
-  version='2';contacts={email:'',shipping_address:null,billing_address:null};receipts.clear();posts.length=0
+  selected=null;shippingPosts.length=0;shippingReceipts.clear();version='2';contacts={email:'',shipping_address:null,billing_address:null};receipts.clear();posts.length=0
   await page.goto(shop+`/dk-${language}/checkout?step=address`);await expect(page.getByTestId('shipping-first-name-input')).toBeVisible();await expect(page.getByTestId('shipping-email-input')).toHaveValue('saved@example.invalid')
   const selector=page.locator('select').filter({has:page.locator('option[value="'+saved.id+'"]')});await expect(selector).toBeVisible();await selector.selectOption(saved.id)
   await expect(page.getByTestId('shipping-first-name-input')).toHaveValue('Saved');await expect(page.getByTestId('shipping-postal-code-input')).toHaveValue('0012')
@@ -78,13 +89,24 @@ try{
   assert.equal(await page.evaluate(()=>localStorage.getItem('retail:checkout-contact-intent:v1')),null)
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
   assert.equal(contacts.billing_address.first_name,'Billing')
+  await expect(page.getByTestId('delivery-option-radio')).toHaveCount(3);await expect(page.locator('input[value="unavailable"]')).toBeDisabled()
+  loseShippingResponse=true;await page.locator('input[value="standard"]').click();await expect(page.getByTestId('delivery-recover')).toBeEnabled();assert.equal(shippingPosts.length,1)
+  await page.reload();await expect(page.getByTestId('delivery-recover')).toBeEnabled();await page.getByTestId('delivery-recover').click();await expect(page.getByTestId('delivery-recover')).toHaveCount(0)
+  assert.equal(shippingPosts.length,2);assert.deepEqual(shippingPosts[0],shippingPosts[1]);await expect(page.locator('input[value="standard"]')).toBeChecked();await expect(page.getByTestId('checkout-total')).toHaveText('€158.75')
+  shippingReadFailure=true;await page.locator('input[value="pickup"]').click();await expect(page.getByTestId('delivery-recover')).toBeEnabled();assert.equal(shippingPosts.length,3)
+  shippingReadFailure=false;await page.reload();await expect(page.getByTestId('delivery-recover')).toBeEnabled();await page.getByTestId('delivery-recover').click();await expect(page.getByTestId('delivery-recover')).toHaveCount(0)
+  assert.equal(shippingPosts.length,3);await expect(page.locator('input[value="pickup"]')).toBeChecked();await expect(page.getByTestId('submit-delivery-option-button')).toBeDisabled()
+  assert.equal(await page.evaluate(()=>localStorage.getItem('retail:checkout-shipping-intent:v1')),null)
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
+  await page.screenshot({path:fileURLToPath(new URL(`../../../logs/gin-migration/delivery-${language}-${width}.png`,import.meta.url)),fullPage:true})
+
   await page.getByRole('link',{name:language==='zh'?'修改':'Edit',exact:true}).click();await expect(page.getByTestId('shipping-first-name-input')).toHaveValue('Saved')
   await expect(page.getByTestId('back-to-cart-link')).toHaveAttribute('href',`/dk-${language}/cart`)
   await context.close()
  }
  const context=await browser.newContext(),page=await context.newPage();page.on('pageerror',e=>errors.push(e.message))
  await context.addCookies([{name:'retail_cart_possession',value:'b'.repeat(64),url:shop,httpOnly:true},{name:'retail_cart_csrf',value:'a'.repeat(64),url:shop}])
- version='2';contacts={email:'',shipping_address:null,billing_address:null};receipts.clear();posts.length=0
+ selected=null;shippingPosts.length=0;shippingReceipts.clear();version='2';contacts={email:'',shipping_address:null,billing_address:null};receipts.clear();posts.length=0
  await page.goto(shop+'/dk-en/checkout?step=address');await expect(page.getByTestId('shipping-first-name-input')).toBeVisible()
  await page.locator('select').filter({has:page.locator('option[value="'+saved.id+'"]')}).selectOption(saved.id)
  await expect(page.getByTestId('billing-address-checkbox')).toBeChecked()
@@ -94,7 +116,7 @@ try{
  await expect(page).toHaveURL(/step=delivery/);await expect(page.getByTestId('contact-recover')).toHaveCount(0);assert.equal(posts.length,1)
  await context.close()
  assert.deepEqual(errors,[])
- console.log('ASTRO_CHECKOUT_CONTACT_BROWSER '+JSON.stringify({formal_astro:true,synthetic_api:true,real_gin_mysql:false,original_css_and_address_markup:true,private_values_absent_from_ssr:true,no_cart_404:true,empty_cart_307:true,private_read_failure_503:true,saved_address_copy:true,email_confirmation_before_transport:true,separate_billing:true,leading_postal_zero:true,lost_response_same_operation_after_reload:true,rehydrated_contact_values:true,acknowledged_step_delivery:true,private_journal_descriptor:true,acknowledged_read_failure_read_only_recovery:true,same_billing_copy:true,exact_summary:true,edit_and_back_links:true,en_zh:true,widths:[390,1440],overflow:false,browser_errors:0,payment_or_order_complete:false,delivery_selection:false,source_pixel_comparison:false}))
+ console.log('ASTRO_CHECKOUT_CONTACT_BROWSER '+JSON.stringify({formal_astro:true,synthetic_api:true,real_gin_mysql:false,original_css_and_address_markup:true,private_values_absent_from_ssr:true,no_cart_404:true,empty_cart_307:true,private_read_failure_503:true,saved_address_copy:true,email_confirmation_before_transport:true,separate_billing:true,leading_postal_zero:true,lost_response_same_operation_after_reload:true,rehydrated_contact_values:true,acknowledged_step_delivery:true,private_journal_descriptor:true,acknowledged_read_failure_read_only_recovery:true,same_billing_copy:true,exact_summary:true,edit_and_back_links:true,en_zh:true,widths:[390,1440],overflow:false,browser_errors:0,payment_or_order_complete:false,delivery_selection:true,delivery_lost_response_same_operation:true,delivery_acknowledged_read_only_recovery:true,unavailable_inventory_disabled:true,payment_still_closed:true,source_pixel_comparison:false}))
 }finally{
  if(browser)await browser.close();if(child&&child.exitCode===null){child.kill();await once(child,'exit')};await new Promise(resolve=>api.close(resolve))
 }

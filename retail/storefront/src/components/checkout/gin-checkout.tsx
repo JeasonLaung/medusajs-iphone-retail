@@ -1,19 +1,19 @@
 import {useEffect,useRef,useState} from 'react'
 import {browserCartClient,CartError} from '../../lib/cart-client'
 import {browserContactCommands,type ContactState,contactFields} from '../../lib/checkout-contacts'
-import {cartIntentKey} from '../../lib/cart-commerce'
+import {cartIntentKey,shippingIntentKey} from '../../lib/cart-commerce'
 import {customerClient,type Customer,type Address} from '../../lib/customer-client'
 import type {Region} from '../../lib/regions'
 import Addresses from './addresses'
 import Summary from './summary'
+import Shipping from './shipping'
 import Progress from './checkout-progress'
-import {getCheckoutCopy} from './i18n'
 import styles from './styles.module.css'
 
 type Props={region:Region;segment:string;enabled:boolean;customerEnabled:boolean}
 type Controller=ReturnType<typeof browserContactCommands>
 export default function GinCheckout({region,segment,enabled,customerEnabled}:Props){
- const copy=getCheckoutCopy(segment),zh=segment.endsWith('-zh')
+ const zh=segment.endsWith('-zh')
  const [state,setState]=useState<ContactState|null>(null),[step,setStep]=useState<'address'|'delivery'>('address'),[error,setError]=useState(false),[customer,setCustomer]=useState<(Customer&{addresses:Address[]})|null>(null),[recovery,setRecovery]=useState(false),[pendingSave,setPendingSave]=useState(false)
  const controller=useRef<Controller|null>(null),busy=useRef(false),live=useRef(false)
  const unavailable=zh?'结账暂时无法加载，请稍后重试。':'Checkout is temporarily unavailable. Please try again.'
@@ -39,7 +39,7 @@ export default function GinCheckout({region,segment,enabled,customerEnabled}:Pro
     if(!view.items.length){location.replace(`/${segment}/cart`);return}
     if(cancelled)return
     const intent=commands.pending();if(intent&&intent.cartID!==cart.id)throw Error();setCustomer(knownCustomer);controller.current=commands;setState({contacts,view});setRecovery(intent?.kind==='refresh');setPendingSave(intent?.kind==='save')
-    const currentStep=contacts.email&&contacts.shipping_address&&contacts.billing_address&&new URL(location.href).searchParams.get('step')!=='address'&&intent?.kind!=='save'?'delivery':'address'
+    const currentStep=contacts.email&&contacts.shipping_address&&contacts.billing_address&&(localStorage.getItem(shippingIntentKey)!==null||new URL(location.href).searchParams.get('step')!=='address')&&intent?.kind!=='save'?'delivery':'address'
     setStep(currentStep);const url=new URL(location.href);url.searchParams.set('step',currentStep);history.replaceState(null,'',url)
    }catch{if(!cancelled)setError(true)}
   }
@@ -66,6 +66,6 @@ export default function GinCheckout({region,segment,enabled,customerEnabled}:Pro
  if(!state)return <div className={styles.page}><p role={error?'alert':'status'} className={error?styles.error:styles.muted}>{error||!enabled?unavailable:(zh?'正在加载结账…':'Loading checkout…')}</p>{error&&<button type="button" onClick={()=>location.reload()}>{retry}</button>}</div>
  const cart={...state.contacts,region}
  return <div className={styles.page}><Progress segment={segment} step={step}/><div className={styles.columns}><div className={styles.card}>
-  {recovery?<><p role="alert">{zh?'地址已提交，请重试读取结账信息。':'Your address was submitted. Retry loading checkout details.'}</p><button type="button" className={styles.primary} onClick={()=>void recover()} data-testid="contact-recover">{retry}</button></>:step==='address'?<>{pendingSave&&<p role="alert" className={styles.error}>{zh?'上次提交结果尚未确认，请保持原信息并重试。':'Your previous submission is not confirmed. Keep the original details and try again.'}</p>}<Addresses key={state.contacts.version} cart={cart} customer={customer} segment={segment} setAddresses={submit}/></>:<><h2>{copy.delivery}</h2><p role="alert" className={styles.error}>{copy.deliveryError}</p><button type="button" onClick={()=>location.reload()}>{retry}</button></>}
+  {recovery?<><p role="alert">{zh?'地址已提交，请重试读取结账信息。':'Your address was submitted. Retry loading checkout details.'}</p><button type="button" className={styles.primary} onClick={()=>void recover()} data-testid="contact-recover">{retry}</button></>:step==='address'?<>{pendingSave&&<p role="alert" className={styles.error}>{zh?'上次提交结果尚未确认，请保持原信息并重试。':'Your previous submission is not confirmed. Keep the original details and try again.'}</p>}<Addresses key={state.contacts.version} cart={cart} customer={customer} segment={segment} setAddresses={submit}/></>:<Shipping state={state} segment={segment} onChange={next=>setState(next)}/>}
  </div><Summary view={state.view} contacts={state.contacts} region={region} step={step} locale={segment}/></div></div>
 }

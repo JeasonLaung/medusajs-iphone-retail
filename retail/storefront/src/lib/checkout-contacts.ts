@@ -1,6 +1,6 @@
 import {CartError,cartCSRFFromCookies,contactAddress,type CartClient,type CartContactInput,type CartContactDetail,type CartView} from './cart-client.ts'
-import {cartIntentKey,cartLockName} from './cart-commerce.ts'
-export const contactIntentKey='retail:checkout-contact-intent:v1'
+import {cartIntentKey,cartLockName,contactIntentKey,shippingIntentKey} from './cart-commerce.ts'
+export {contactIntentKey} from './cart-commerce.ts'
 type Fields=Omit<CartContactInput,'operationID'|'version'>
 type Intent={cartID:string;version:string;operationID:string;hash:string;kind:'save'|'refresh'}
 type Options={client:Pick<CartClient,'saveContacts'|'retrieveContacts'|'retrieveView'>;storage:Pick<Storage,'getItem'|'setItem'|'removeItem'>;readCSRF:()=>string|undefined;uuid:()=>string;hash:(value:string)=>Promise<string>;exclusive:<T>(action:()=>Promise<T>)=>Promise<T>}
@@ -33,12 +33,12 @@ export function createContactCommands(o:Options){
   return {contacts,view}
  }
  const recover=()=>o.exclusive(async()=>{
-  if(o.storage.getItem(cartIntentKey)!==null)throw fail()
+  if((o.storage.getItem(cartIntentKey)!==null||o.storage.getItem(shippingIntentKey)!==null))throw fail()
   const intent=pending();if(!intent||intent.kind!=='refresh')throw fail()
   const result=await refresh(intent.cartID,intent.version);o.storage.removeItem(contactIntentKey);return result
  })
  const submit=(cartID:string,currentVersion:string,fields:Fields)=>o.exclusive(async()=>{
-  if(o.storage.getItem(cartIntentKey)!==null||!valid(cartID,id)||!valid(currentVersion,version)||BigInt(currentVersion)>=18446744073709551615n)throw fail()
+  if((o.storage.getItem(cartIntentKey)!==null||o.storage.getItem(shippingIntentKey)!==null)||!valid(cartID,id)||!valid(currentVersion,version)||BigInt(currentVersion)>=18446744073709551615n)throw fail()
   let intent=pending()
   if(intent&&(intent.cartID!==cartID||intent.kind!=='save'))throw fail()
   const expected=intent?.version??currentVersion

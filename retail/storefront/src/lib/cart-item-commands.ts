@@ -1,5 +1,5 @@
 import {CartError,browserCartClient,cartCSRFFromCookies,type CartClient,type CartSnapshot,type CartView} from './cart-client.ts'
-import {cartIntentKey,cartLockName} from './cart-commerce.ts'
+import {cartIntentKey,cartLockName,contactIntentKey,shippingIntentKey} from './cart-commerce.ts'
 
 type Intent={format:2;kind:'set'|'refresh';regionID:string;currency:string;segment:string;cartID:string;lineID:string;quantity:string;version:string;operationID:string}
 export type ItemChange={cartID:string;version:string;lineID:string;quantity:string}
@@ -38,6 +38,7 @@ export function createCartItemCommands(o:Options){
  }
  let active:{key:string;promise:Promise<CartView>}|null=null
  const execute=async(input?:ItemChange):Promise<CartView>=>o.exclusive(async()=>{
+  if(o.storage.getItem(contactIntentKey)!==null||o.storage.getItem(shippingIntentKey)!==null)throw fail()
   const raw=o.storage.getItem(cartIntentKey),resuming=raw!==null
   let intent=raw===null?null:parse(raw)
   if(intent&&(!context(intent)||input&&(intent.cartID!==input.cartID||intent.lineID!==input.lineID||intent.quantity!==input.quantity)))throw fail()

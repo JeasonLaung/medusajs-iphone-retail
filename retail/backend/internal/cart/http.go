@@ -76,6 +76,8 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/carts/:id", h.Detail)
 	private.GET("/carts/:id/amounts", h.Amounts)
 	private.GET("/carts/:id/view", h.View)
+	private.GET("/carts/:id/delivery-options", h.Delivery)
+	private.POST("/carts/:id/shipping-methods", h.Shipping)
 	private.GET("/carts/:id/contacts", h.ContactDetail)
 	private.POST("/carts/:id/contacts", h.Contacts)
 	private.POST("/carts/:id/line-items", h.AddItem)
@@ -395,6 +397,15 @@ func (h *HTTPHandler) detail(c *gin.Context, mode string, current bool) {
 		return
 	}
 	if mode != "detail" {
+		if mode == "delivery" {
+			result, err := ReadDeliveryOptions(ctx, h.db, h.store, ref, h.manualProviders)
+			if err != nil {
+				cartHTTPError(c, err)
+				return
+			}
+			c.JSON(200, result)
+			return
+		}
 		if mode == "contacts" {
 			result, err := ReadContacts(ctx, h.db, h.store, ref)
 			if err != nil {

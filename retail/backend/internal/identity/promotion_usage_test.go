@@ -59,10 +59,10 @@ func TestOwnedPromotionUsage(t *testing.T) {
 	}
 	db, gdb := open("promotion_usage_fresh")
 	result, err := schema.Apply(ctx, db, plan)
-	if err != nil || result.Applied != 41 || schema.CheckApplied(ctx, db, plan) != nil || promotion.Ready(ctx, gdb) != nil {
+	if err != nil || result.Applied != 42 || schema.CheckApplied(ctx, db, plan) != nil || promotion.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh promotion schema unavailable")
 	}
-	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 41 {
+	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 42 {
 		t.Fatal("promotion replay changed schema")
 	}
 
@@ -583,5 +583,5 @@ func TestOwnedPromotionUsage(t *testing.T) {
 	if _, e := receiptReverse(attrKeys[0]); e != nil || used("promotion_campaign_budgets", "b_receiptshared") != "1" {
 		t.Fatal("receipt replay released another operation's unit")
 	}
-	t.Log(`PROMOTION_USAGE_REHEARSAL {"migrations":41,"concurrent_attempts":8,"spend_wins":1,"attribute_first_create_wins":1,"current_locking_read_after_old_snapshot":true,"duplicate_actions_once_per_promotion":true,"shared_budget_counts_distinct_promotions":true,"complete_attribute_case_and_trailing_space":true,"missing_attribute_rejected":true,"unsupported_budget_rejected":true,"exact_raw_beyond_scale18":true,"late_failure_rollback":true,"write_fault_rollback":true,"campaign_start_inclusive_end_exclusive":true,"currency_mismatch_rejected":true,"autocommit_rejected":true,"revert_phase_integrated":true,"revert_shared_budget_and_clamp":true,"mixed_register_revert_concurrent":16,"attribute_soft_delete_recreate_history":true,"attribute_revert_current_read":true,"revert_precise_raw":true,"revert_late_and_write_fault_rollback":true,"expired_reversal_requires_saved_ledger":true,"receipt_register_concurrent_fresh":1,"receipt_register_concurrent_replays":7,"receipt_reverse_concurrent_fresh":1,"receipt_reverse_concurrent_replays":7,"canonical_receipt_and_payload_conflict":true,"historical_expired_soft_deleted_reassigned_reversal":true,"historical_attribute_identity":true,"receipt_write_and_reverse_fault_atomic":true,"receipt_underflow_rejected":true,"scope_isolation":true,"durable_idempotency_integrated":true,"receipt_caller_failure_atomic":true,"receipt_shared_attribute_preserves_other_operation":true,"checkout_authorization_integrated":false}`)
+	t.Log(`PROMOTION_USAGE_REHEARSAL {"migrations":42,"concurrent_attempts":8,"spend_wins":1,"attribute_first_create_wins":1,"current_locking_read_after_old_snapshot":true,"duplicate_actions_once_per_promotion":true,"shared_budget_counts_distinct_promotions":true,"complete_attribute_case_and_trailing_space":true,"missing_attribute_rejected":true,"unsupported_budget_rejected":true,"exact_raw_beyond_scale18":true,"late_failure_rollback":true,"write_fault_rollback":true,"campaign_start_inclusive_end_exclusive":true,"currency_mismatch_rejected":true,"autocommit_rejected":true,"revert_phase_integrated":true,"revert_shared_budget_and_clamp":true,"mixed_register_revert_concurrent":16,"attribute_soft_delete_recreate_history":true,"attribute_revert_current_read":true,"revert_precise_raw":true,"revert_late_and_write_fault_rollback":true,"expired_reversal_requires_saved_ledger":true,"receipt_register_concurrent_fresh":1,"receipt_register_concurrent_replays":7,"receipt_reverse_concurrent_fresh":1,"receipt_reverse_concurrent_replays":7,"canonical_receipt_and_payload_conflict":true,"historical_expired_soft_deleted_reassigned_reversal":true,"historical_attribute_identity":true,"receipt_write_and_reverse_fault_atomic":true,"receipt_underflow_rejected":true,"scope_isolation":true,"durable_idempotency_integrated":true,"receipt_caller_failure_atomic":true,"receipt_shared_attribute_preserves_other_operation":true,"checkout_authorization_integrated":false}`)
 }
