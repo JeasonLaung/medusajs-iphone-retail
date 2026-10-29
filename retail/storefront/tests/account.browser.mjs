@@ -3,12 +3,13 @@ import {createServer} from 'node:http'
 import {spawn} from 'node:child_process'
 import {once} from 'node:events'
 import {createRequire} from 'node:module'
+import {fileURLToPath} from 'node:url'
 import {setTimeout as delay} from 'node:timers/promises'
 const require=createRequire(new URL('../../admin/package.json',import.meta.url)),{chromium,expect}=require('@playwright/test')
 const host='127.0.0.1',port=19371,shop=`http://${host}:${port}`,token='a'.repeat(64),csrf='b'.repeat(64)
 const account={id:'cust_browser',email:'new@example.invalid',first_name:'New',last_name:'Customer',phone:'',verified_at:'2026-10-29T00:00:00Z'}
 const region={id:'region',name:'Europe',currency_code:'eur',automatic_taxes:false,countries:[{iso_2:'dk',iso_3:'dnk',num_code:'208',name:'Denmark',display_name:'Denmark',region_id:'region'}]}
-let verified=false,authenticated=false,registered=false,verifications=0,child,browser
+let verified=false,authenticated=false,registered=false,verifications=0,customerUnavailable=false,child,browser
 const cookie=(kind,value=token)=>`retail_customer_${kind}=${value}; Path=/; Max-Age=43200; Expires=${new Date(Date.now()+43200000).toUTCString()}; ${kind==='csrf'?'':'HttpOnly; '}SameSite=Lax`
 const clear=kind=>`retail_customer_${kind}=; Path=/; Max-Age=0; ${kind==='csrf'?'':'HttpOnly; '}SameSite=Lax`
 const api=createServer(async(req,res)=>{
@@ -19,7 +20,7 @@ const api=createServer(async(req,res)=>{
   let input={};try{input=JSON.parse(raw||'{}')}catch{}
   switch(path){
    case '/api/store/customer/auth/challenge':body={csrf_token:csrf};cookies=[cookie('prelogin')];break
-   case '/api/store/customer/me':if(authenticated)body={customer:account};else{status=401;body={error:{code:'customer.unauthorized'}}}break
+   case '/api/store/customer/me':if(customerUnavailable){status=503;body={error:{code:'unavailable'}}}else if(authenticated)body={customer:account};else{status=401;body={error:{code:'customer.unauthorized'}}}break
    case '/api/store/customer/auth/register':registered=true;assert.equal(input.email,account.email);status=202;body={state:'verification_required',delivery:'pending',email:account.email};cookies=[clear('prelogin')];break
    case '/api/store/customer/auth/verify':verifications++;assert.equal(input.token,token);verified=true;body={success:true};cookies=[clear('prelogin')];break
    case '/api/store/customer/auth/login':
@@ -53,6 +54,7 @@ try{
   await page.setViewportSize({width,height:1000});await page.goto(shop+'/dk-en/account')
   await expect(page.getByTestId('login-page')).toBeVisible()
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
+  await page.screenshot({path:fileURLToPath(new URL(`../../../logs/gin-migration/account-login-${width}.png`,import.meta.url)),fullPage:true})
  }
  await page.getByTestId('register-button').click()
  await expect(page.getByTestId('register-page')).toBeVisible()
@@ -68,13 +70,30 @@ try{
  await expect(page.getByTestId('login-page')).toBeVisible()
  await page.getByTestId('email-input').fill(account.email);await page.getByTestId('password-input').fill('artificial-password');await page.getByTestId('sign-in-button').click()
  await expect(page.getByTestId('customer-email')).toHaveText(account.email)
+ await expect(page.locator('header[data-signed-in]')).toHaveAttribute('data-signed-in','true')
+ const second=await context.newPage();await second.goto(shop+'/dk-en/account')
+ await expect(second.getByTestId('customer-email')).toHaveText(account.email)
+ await expect(second.locator('header[data-signed-in]')).toHaveAttribute('data-signed-in','true')
+ customerUnavailable=true
+ await page.evaluate(()=>window.dispatchEvent(new Event('retail:customer-changed')))
+ await expect(page.getByTestId('customer-email')).not.toBeVisible()
+ await expect(page.locator('header[data-signed-in]')).toHaveAttribute('data-signed-in','true')
+ customerUnavailable=false
+ await page.getByRole('button',{name:'Retry',exact:true}).click()
+ await expect(page.getByTestId('customer-email')).toHaveText(account.email)
  await expect(page.getByTestId('customer-authenticated')).toContainText('temporarily unavailable')
  assert.ok(!(await page.content()).includes('artificial-password'))
  await page.getByRole('button',{name:'Log out',exact:true}).click();await expect(page.getByTestId('login-page')).toBeVisible()
+ await expect(page.locator('header[data-signed-in]')).toHaveAttribute('data-signed-in','false')
+ await expect(second.getByTestId('login-page')).toBeVisible()
+ await expect(second.locator('header[data-signed-in]')).toHaveAttribute('data-signed-in','false')
+ const marker=await page.evaluate(()=>localStorage.getItem('retail.customer.change.v1'))
+ assert.match(marker,/^[0-9a-f-]{36}$/);assert.ok(!marker.includes(account.email))
+ await second.close()
  await page.goto(shop+'/dk-zh/account');await expect(page.getByTestId('login-page')).toContainText('登录')
  await page.goto(shop+'/dk-en/verify-account');await expect(page.getByTestId('verify-account-page')).toContainText('invalid')
  assert.deepEqual(errors,[])
- console.log('ASTRO_ACCOUNT_BROWSER '+JSON.stringify({formal_routes:true,synthetic_api:true,login_register_switch:true,pending_mail_honest:true,verify_once:true,verify_no_login:true,login_current_customer:true,logout:true,en_zh:true,widths:[390,1440],browser_errors:0,real_gin_mysql:false,source_pixel_comparison:false,dashboard_complete:false,mail_delivery:false}))
+ console.log('ASTRO_ACCOUNT_BROWSER '+JSON.stringify({formal_routes:true,synthetic_api:true,login_register_switch:true,pending_mail_honest:true,verify_once:true,verify_no_login:true,login_current_customer:true,logout:true,en_zh:true,widths:[390,1440],browser_errors:0,header_login_logout:true,cross_tab_logout:true,dependency_failure_not_logout:true,opaque_storage_marker:true,real_gin_mysql:false,source_pixel_comparison:false,dashboard_complete:false,mail_delivery:false}))
 }finally{
  if(browser)await browser.close()
  if(child&&child.exitCode===null){child.kill();await once(child,'exit')}

@@ -1,6 +1,6 @@
 ---
 import Header from '../components/layout/gin-header'
-import {STOREFRONT_ORIGIN} from 'astro:env/server'
+import {STOREFRONT_ORIGIN,CUSTOMER_BRIDGE_KEY} from 'astro:env/server'
 import Footer from '../components/layout/footer'
 import type {Region} from '../lib/regions'
 import type {Locale} from '../lib/preferences'
@@ -36,7 +36,7 @@ if(!Astro.response.headers.has('Cache-Control'))Astro.response.headers.set('Cach
   </>}
  </head>
  <body>
-  {shell && <Header commerceEnabled={!!STOREFRONT_ORIGIN&&Astro.url.origin===STOREFRONT_ORIGIN} regions={shell.regions} locales={shell.locales} locale={localeFromSegment(segment)} segment={segment} pathname={Astro.url.pathname} cartCount="0" isLoggedIn={false} onSelect={null} client:load/>}
+  {shell && <Header customerEnabled={!!CUSTOMER_BRIDGE_KEY&&!!STOREFRONT_ORIGIN&&Astro.url.origin===STOREFRONT_ORIGIN} commerceEnabled={!!STOREFRONT_ORIGIN&&Astro.url.origin===STOREFRONT_ORIGIN} regions={shell.regions} locales={shell.locales} locale={localeFromSegment(segment)} segment={segment} pathname={Astro.url.pathname} cartCount="0" isLoggedIn={false} onSelect={null} client:load/>}
   <main id="main-content"><slot/></main>
   {shell && <Footer data={shell.footer} segment={segment}/>}
  </body>

@@ -1,9 +1,9 @@
 {
   "scope": "Formal original account login/register/verification pages; account dashboard and transaction functions incomplete",
-  "unit_tests_passed": 86,
-  "customer_client_tests_passed": 3,
+  "unit_tests_passed": 87,
+  "customer_client_tests_passed": 4,
   "astro_check": {
-    "files": 212,
+    "files": 214,
     "errors": 0,
     "warnings": 0,
     "existing_hints": 2
@@ -27,18 +27,22 @@
     "real_gin_mysql": false,
     "source_pixel_comparison": false,
     "dashboard_complete": false,
-    "mail_delivery": false
+    "mail_delivery": false,
+    "header_login_logout": true,
+    "cross_tab_logout": true,
+    "dependency_failure_not_logout": true,
+    "opaque_storage_marker": true
   },
   "remaining": [
     "Real Gin/MySQL browser registration and actual Resend delivery",
     "SSR/no-JavaScript form parity and source pixel comparison",
     "Complete original account dashboard/profile/addresses/orders/buyback/aftersales",
-    "Header and cross-tab customer session updates",
-    "Logged-in cart transfer and ownership"
+    "Logged-in cart transfer and ownership",
+    "Original signed-in notification menu and related business"
   ],
   "implementation_sha256": {
     "retail/storefront/src/components/account/context.tsx": "ba178bc31fb2663a03e4e31f58eeaffa80aa1128b77284206bf6978b71e734fc",
-    "retail/storefront/src/components/account/gin-account.tsx": "79f50b850f02431fb20131702c45b7c4285f7731b63372c043de536735ed018b",
+    "retail/storefront/src/components/account/gin-account.tsx": "96241d71b8f06e2723e4605566a3a8bd80e2f9f9cda81d6f3e4e3e8fcc170277",
     "retail/storefront/src/components/account/i18n.ts": "53186b468efac7f91d83e3bc9263073029f6730ae8d154a361bd02c8352ee2f7",
     "retail/storefront/src/components/account/localized-link.tsx": "155bb198f3fdb397b46e7810c314e329d406dff928ce8384962b35fd55bcb8f3",
     "retail/storefront/src/components/account/login-template.tsx": "91b02e44bbc0e488273db2c87867caf9176d62b240204d76705ee29c6d1216c7",
@@ -49,10 +53,15 @@
     "retail/storefront/src/components/account/verify-account.tsx": "ac3ad3233c9bc83fe9863766cf0704c3d92be39325e0bab381b0ff1be7fc24ba",
     "retail/storefront/src/components/account/translations/en.json": "d6870fde8edc1c6813a73579ccc9e0645a4d88cbb528900c4944ae24b1b71268",
     "retail/storefront/src/components/account/translations/zh.json": "b88bba6b9568f906fba6f50eac153d301447f4a3907bb864acc2eb3b90ed7e71",
-    "retail/storefront/src/lib/customer-client.ts": "7a286ef9b52ac3ea309db8962d1d32d458ac20c7078127d3c82f4c16e9a8c8e6",
-    "retail/storefront/tests/customer-client.test.ts": "870a60d1a97ac15bf506ad9523118308a9ab72aebf94b2e9c54d5021dd76ccaf",
-    "retail/storefront/tests/account.browser.mjs": "9714710a154bb686c51f638f394437b8a148788a5217b15a6540bf24e0481e07",
+    "retail/storefront/src/lib/customer-client.ts": "0be5d7e7373008687ee4b1d8c5a91a6f6d3324a3a3ce7384b71ef516bada4d91",
+    "retail/storefront/tests/customer-client.test.ts": "ea3754775dd1221d808c96ae54dd2ff96af7e14b1dc6f44f64a28606a67cab45",
+    "retail/storefront/tests/account.browser.mjs": "0603cb198d5a72984ed9a9a609e9814d5bce0802d9706b854b1ed1c1a250e4e1",
     "retail/storefront/src/pages/[countryCode]/account.astro": "823e2456edc6dc6695e88fd7d38115a8e0f29c1204d28d4dbac78a90584f8790",
-    "retail/storefront/src/pages/[countryCode]/verify-account.astro": "6ed1c41d4cfacf54429598267d8bf61f4437bd69938837bda9ce57f528575f2f"
-  }
+    "retail/storefront/src/pages/[countryCode]/verify-account.astro": "6ed1c41d4cfacf54429598267d8bf61f4437bd69938837bda9ce57f528575f2f",
+    "retail/storefront/src/lib/customer-events.ts": "05a5f60b0cb3e77951ffda0351828a3e0b509e2874aedcf7ac312ddf88a1f906",
+    "retail/storefront/src/components/layout/gin-header.tsx": "16ea2ebab1687d3ee6685d36012d0d51767480ef6fc2672422500e81bbe00da6",
+    "retail/storefront/src/layouts/Storefront.astro": "6a8f73b24a305a4935076f76eddd37aad7545bf58e79c4a8ff0e1e33aca6cabe"
+  },
+  "mobile_screenshot_reviewed": true,
+  "source_pixel_comparison_complete": false
 }

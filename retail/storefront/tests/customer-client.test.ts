@@ -39,3 +39,11 @@ test('verification checks capability shape before transport and does not create 
  assert.deepEqual(await api.verify('bad'),{success:false});assert.equal(calls,0)
  assert.deepEqual(await api.verify('a'.repeat(64)),{success:true});assert.equal(calls,2)
 })
+test('customer observation rejects malformed or unverified success and projects only public fields',async()=>{
+ const customer={id:'cust_fixture',email:'new@example.invalid',first_name:'New',last_name:'Customer',phone:'',verified_at:'2026-10-29T00:00:00Z'}
+ const api=customerClient(async()=>Response.json({customer:{...customer,admin:true,password_hash:'PRIVATE'}}))
+ assert.deepEqual(await api.current(),customer)
+ for(const body of [{},{customer:null},{customer:{...customer,verified_at:null}},{customer:{...customer,id:'old-customer-id'}},{customer:{...customer,phone:{unexpected:true}}}]){
+  await assert.rejects(customerClient(async()=>Response.json(body)).current(),CustomerError)
+ }
+})

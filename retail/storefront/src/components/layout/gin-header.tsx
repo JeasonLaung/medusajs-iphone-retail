@@ -1,8 +1,22 @@
 import {useEffect,useState} from 'react'
 import Header,{type HeaderProps} from './header'
 import {browserCartClient} from '../../lib/cart-client'
-export default function GinHeader({commerceEnabled,...props}:HeaderProps&{commerceEnabled:boolean}){
+import {customerClient} from '../../lib/customer-client'
+import {watchCustomer} from '../../lib/customer-events'
+export default function GinHeader({commerceEnabled,customerEnabled=false,...props}:HeaderProps&{commerceEnabled:boolean;customerEnabled?:boolean}){
  const [count,setCount]=useState('0')
+ const [signedIn,setSignedIn]=useState(false)
+ useEffect(()=>{
+  if(!customerEnabled){setSignedIn(false);return}
+  let live=true,generation=0
+  const api=customerClient()
+  const refresh=async()=>{
+   const run=++generation
+   try{const current=await api.current();if(live&&run===generation)setSignedIn(!!current)}catch{/* Dependency failure does not assert logout. */}
+  }
+  const stop=watchCustomer(()=>void refresh());void refresh()
+  return()=>{live=false;generation++;stop();api.clear()}
+ },[customerEnabled,props.segment])
  useEffect(()=>{
   if(!commerceEnabled)return
   let live=true,run=0
@@ -24,5 +38,7 @@ export default function GinHeader({commerceEnabled,...props}:HeaderProps&{commer
   document.addEventListener('visibilitychange',visible)
   return()=>{live=false;window.removeEventListener('retail:cart-changed',refresh);window.removeEventListener('storage',storage);document.removeEventListener('visibilitychange',visible)}
  },[commerceEnabled,props.segment])
- return <Header {...props} cartCount={commerceEnabled?count:props.cartCount}/>
+ const identity=customerEnabled?(signedIn?{isLoggedIn:true as const,notification:null}:{isLoggedIn:false as const}):(props.isLoggedIn?{isLoggedIn:true as const,notification:props.notification}:{isLoggedIn:false as const})
+ const {isLoggedIn:_isLoggedIn,notification:_notification,...base}=props
+ return <Header {...base} {...identity} cartCount={commerceEnabled?count:props.cartCount}/>
 }

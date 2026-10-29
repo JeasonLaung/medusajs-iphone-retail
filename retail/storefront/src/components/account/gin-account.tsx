@@ -1,4 +1,4 @@
-import {useEffect,useState} from 'react'
+import {useEffect,useState,useRef} from 'react'
 import {Alert,Spin} from 'antd'
 import Theme from '../products/storefront-theme'
 import {AccountContext,useAccountContext,useAccountCopy} from './context'
@@ -7,12 +7,24 @@ import VerifyAccount from './verify-account'
 import {Button} from './ui'
 import Link from './localized-link'
 import type {Customer} from '../../lib/customer-client'
+import {watchCustomer} from '../../lib/customer-events'
 
 function Account({enabled}:{enabled:boolean}){
  const {api,segment}=useAccountContext(),{t}=useAccountCopy()
  const [customer,setCustomer]=useState<Customer|null>(null),[loading,setLoading]=useState(true),[failed,setFailed]=useState(false)
- const observe=async()=>{setLoading(true);try{setCustomer(await api.current());setFailed(false)}catch{setFailed(true)}finally{setLoading(false)}}
- useEffect(()=>{if(enabled)void observe();else{setLoading(false);setFailed(true)}},[enabled,segment])
+ const generation=useRef(0),live=useRef(false)
+ const observe=async()=>{
+  const run=++generation.current
+  try{const current=await api.current();if(live.current&&run===generation.current){setCustomer(current);setFailed(false)}}
+  catch{if(live.current&&run===generation.current)setFailed(true)}
+  finally{if(live.current&&run===generation.current)setLoading(false)}
+ }
+ useEffect(()=>{
+  live.current=true
+  if(!enabled){setLoading(false);setFailed(true);return()=>{live.current=false;generation.current++}}
+  const stop=watchCustomer(()=>void observe());void observe()
+  return()=>{live.current=false;generation.current++;stop()}
+ },[enabled,segment])
  return <div className="flex-1 small:py-12" data-testid="account-page"><div className="flex-1 content-container h-full mx-auto bg-white flex flex-col">
   <div className="py-12"><div className="min-w-0 flex-1">
    {loading?<div className="w-full flex justify-center px-8 py-8"><Spin/></div>:failed?<Alert type="error" showIcon message={segment.endsWith('-zh')?'账户暂时无法加载，请稍后重试。':'Your account is temporarily unavailable. Please try again.'} action={enabled?<Button onClick={()=>void observe()}>{t('timelineRetry')}</Button>:undefined}/>:customer?<div data-testid="customer-authenticated">

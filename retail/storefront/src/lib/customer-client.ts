@@ -1,9 +1,17 @@
+import {customerChanged} from './customer-events.ts'
 export type Customer={id:string;email:string;first_name:string;last_name:string;phone:string;verified_at:string|null}
 export type AuthState={state:'error'}|{state:'verification_required';email:string;delivery:'pending'|'failed'}|{state:'success'}|null
 const root='/api/store/customer'
 export class CustomerError extends Error{
  status:number;verification:boolean
  constructor(status:number,verification=false){super('Customer request unavailable');this.status=status;this.verification=verification}
+}
+function customerProjection(raw:unknown):Customer{
+ if(!raw||typeof raw!=='object'||Array.isArray(raw))throw new CustomerError(503)
+ const value=raw as Record<string,unknown>
+ if(typeof value.id!=='string'||!/^cust_[A-Za-z0-9-]{1,80}$/.test(value.id)||typeof value.email!=='string'||value.email.length>254||!value.email.includes('@')||typeof value.verified_at!=='string'||!Number.isFinite(Date.parse(value.verified_at)))throw new CustomerError(503)
+ for(const [key,max] of [['first_name',160],['last_name',160],['phone',64]] as const)if(typeof value[key]!=='string'||[...value[key] as string].length>max||/[\x00-\x1f\x7f]/.test(value[key] as string))throw new CustomerError(503)
+ return {id:value.id,email:value.email,first_name:value.first_name as string,last_name:value.last_name as string,phone:value.phone as string,verified_at:value.verified_at}
 }
 export function customerClient(fetcher:typeof fetch=fetch){
  let pending:{email:string;password:string;country:string;locale:string}|null=null
@@ -21,11 +29,11 @@ export function customerClient(fetcher:typeof fetch=fetch){
  function identity(form:FormData,segment:string){return {email:String(form.get('email')??''),password:String(form.get('password')??''),country:segment.slice(0,2),locale:segment.endsWith('-zh')?'zh':'en'}}
  return {
   async current():Promise<Customer|null>{
-   try{return (await call('/me')).customer}catch(error){if(error instanceof CustomerError&&error.status===401)return null;throw error}
+   try{return customerProjection((await call('/me')).customer)}catch(error){if(error instanceof CustomerError&&error.status===401)return null;throw error}
   },
   async login(_previous:AuthState,form:FormData,segment:string):Promise<AuthState>{
    const input=identity(form,segment)
-   try{await write('login',{email:input.email,password:input.password});pending=null;return {state:'success'}}catch(error){
+   try{await write('login',{email:input.email,password:input.password});pending=null;customerChanged();return {state:'success'}}catch(error){
     if(error instanceof CustomerError&&error.verification){pending=input;return {state:'verification_required',email:input.email,delivery:'pending'}}
     pending=null;return {state:'error'}
    }
@@ -43,7 +51,7 @@ export function customerClient(fetcher:typeof fetch=fetch){
   async logout(){
    const matches=document.cookie.split(';').map(p=>p.trim().split('=')).filter(([name])=>name===(location.protocol==='https:'?'__Host-':'')+'retail_customer_csrf')
    if(matches.length!==1||!/^[0-9a-f]{64}$/.test(matches[0][1]??''))throw new CustomerError(403)
-   await call('/auth/logout',{},matches[0][1]);pending=null
+   await call('/auth/logout',{},matches[0][1]);pending=null;customerChanged()
   },
   clear(){pending=null},
  }
