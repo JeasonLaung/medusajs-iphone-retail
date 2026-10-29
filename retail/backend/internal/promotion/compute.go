@@ -100,23 +100,9 @@ func ComputeCandidates(in ComputeInput) (ComputeResult, error) {
 				if b.Attribute == nil {
 					return failed, ErrCompute
 				}
-				var value any
-				switch *b.Attribute {
-				case "customer_id":
-					value = context["customer_id"]
-					if value == nil {
-						if c, ok := context["customer"].(map[string]any); ok {
-							value = c["id"]
-						}
-					}
-				case "customer_email":
-					value = context["email"]
-				default:
-					return failed, ErrCompute
-				}
-				attribute, ok := value.(string)
+				attribute, err := contextAttribute(context, *b.Attribute)
 				usage, lookedUp := in.AttributeUsages[b.ID]
-				if !ok || attribute == "" || !readText(attribute, 65535) || !lookedUp || usage.Attribute != *b.Attribute || usage.Value != attribute {
+				if err != nil || !lookedUp || usage.Attribute != *b.Attribute || usage.Value != attribute {
 					return failed, ErrCompute
 				}
 				if usage.Found {

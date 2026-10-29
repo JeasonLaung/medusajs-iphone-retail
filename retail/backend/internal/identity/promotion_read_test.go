@@ -15,6 +15,7 @@ import (
 // Runs inside the owned promotion schema fixture, before its destructive cases.
 func verifyPromotionActiveRead(t *testing.T, ctx context.Context, gdb *gorm.DB) {
 	t.Helper()
+	verifyPromotionAttributeRead(t, ctx, gdb)
 	exec := func(query string, args ...any) {
 		t.Helper()
 		if err := gdb.Exec(query, args...).Error; err != nil {
@@ -53,9 +54,22 @@ func verifyPromotionActiveRead(t *testing.T, ctx context.Context, gdb *gorm.DB) 
 	// budget. It must not compute until an explicit valid configuration and
 	// lookup fact are supplied. Configure only this artificial integration read.
 	exec("UPDATE promotion_campaign_budgets SET attribute='customer_id' WHERE id='budget'")
-	computeCandidates := read([]string{"SAVE"}, false, false)
+	var computeCandidates []promotion.ActiveConfiguration
+	computeContext := json.RawMessage(`{"currency_code":"eur","customer_id":"artificial","items":[{"id":"line","product_id":"00123","subtotal":"10","original_total":"12","quantity":1}]}`)
+	var computeUsages map[string]promotion.AttributeUsageSnapshot
+	if err := gdb.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		var err error
+		computeCandidates, err = promotion.ReadActive(tx, promotion.ActiveRequest{Codes: []string{"SAVE"}, At: at})
+		if err != nil {
+			return err
+		}
+		computeUsages, err = promotion.ReadAttributeUsages(tx, computeCandidates, computeContext)
+		return err
+	}, &sql.TxOptions{ReadOnly: true}); err != nil {
+		t.Fatal("SQL attributes to computation setup failed")
+	}
 	exec("UPDATE promotion_campaign_budgets SET attribute=NULL WHERE id='budget'")
-	computed, computeErr := promotion.ComputeCandidates(promotion.ComputeInput{Candidates: computeCandidates, Context: json.RawMessage(`{"currency_code":"eur","customer_id":"artificial","items":[{"id":"line","product_id":"00123","subtotal":"10","original_total":"12","quantity":1}]}`), Epsilon: "0.0001", AttributeUsages: map[string]promotion.AttributeUsageSnapshot{"budget": {Attribute: "customer_id", Value: "artificial", Found: false}}})
+	computed, computeErr := promotion.ComputeCandidates(promotion.ComputeInput{Candidates: computeCandidates, Context: computeContext, Epsilon: "0.0001", AttributeUsages: computeUsages})
 	if computeErr != nil || len(computed.Actions) != 1 || computed.Actions[0].PromotionID != "promo" || computed.Actions[0].ItemID != "line" || computed.Actions[0].Amount != "0.123456789012345678901" || !computed.Actions[0].TaxInclusive {
 		t.Fatalf("SQL promotion to exact computation failed: %+v %v", computed, computeErr)
 	}

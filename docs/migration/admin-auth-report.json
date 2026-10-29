@@ -725,6 +725,21 @@
     "receipt_shared_attribute_preserves_other_operation": true,
     "checkout_authorization_integrated": false
   },
+  "promotion_attribute_read": {
+    "actual_sql": true,
+    "explicit_missing_row": true,
+    "full_binary_case_space_and_long_text": true,
+    "exact_raw": true,
+    "shared_budget_deduplicated": true,
+    "duplicate_effective_usage_rejected": true,
+    "soft_delete": true,
+    "invalid_raw_and_missing_context_rejected": true,
+    "caller_snapshot": true,
+    "customer_id_and_email_only": true,
+    "schema_and_transaction_gate": true,
+    "customer_values_reported": false,
+    "cart_or_checkout_integrated": false
+  },
   "promotion_read": {
     "migrations": 32,
     "actual_sql_configuration": true,
@@ -884,7 +899,7 @@
     "checkout": false
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "f09e53ceae9e8343ae3017f3a8f4d639c721f419a80e11854756aa7db0524ee9",
+    "retail/scripts/test-admin-auth.py": "f467d0319147f008e38b9f6708335408cc2e0dc4b47d0d6080269001e7f61770",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "a0171978adfb9a70fc1426eb3ae6b1eae92cd7c2decfd6b09eedfcbe83c71e0d",
@@ -919,9 +934,11 @@
     "retail/backend/migrations/0031_promotion_relational.sql": "8af5fcccd85e12a2e30a207bff267a905551eb6b76a81b66bf9c82cc4578dd0c",
     "retail/scripts/generate-promotion-schema.py": "f123c9756708271a12ac6c6c6c5de45a0f551ee67d506cc5877ddd37df074fa5",
     "retail/backend/internal/identity/promotion_schema_test.go": "b20b6bb53a2bcbce5433c23c9b14070a7003f15d3a778596226555eb2dbb24b5",
-    "retail/backend/internal/identity/promotion_read_test.go": "c14cd974747ae617033661a6299e8e7b245c0db400a1e53fda7870569eb496e5",
+    "retail/backend/internal/identity/promotion_read_test.go": "66d8382568899687a5c7d18e218bdc889bfc0f2e764bd70707dc13afddd0513a",
+    "retail/backend/internal/identity/promotion_attribute_read_test.go": "a9d8cc2b18ac0e68d4ee5cb79a48d64ee7f678c320eb3ae458b511e4fbd899bd",
     "retail/backend/internal/identity/promotion_usage_test.go": "5da7f62983c418a00dff54678bea3044d38754aa3188fc0480e6dc6c080bce5b",
-    "retail/backend/internal/promotion/compute.go": "418ebf432c9e073b1ce6171d2771e5345c7a8c78bb7820b730c5499f48c1e883",
+    "retail/backend/internal/promotion/attribute_read.go": "b2cf22ac730c0c9e0b9c0dc29a168861288c6b8a743b1b666d720a72c99b9171",
+    "retail/backend/internal/promotion/compute.go": "28ebec076bfa87e15d62b3246289687fb06f54db3e033b4563e9cfe4fc2ce286",
     "retail/backend/internal/promotion/compute_test.go": "808b24eb75ef7cb767321db077d89bcafa822b75b7d9a582f1b5779ef1c7f050",
     "retail/backend/internal/promotion/qualification.go": "971c0e6828eac748cc52674edd9de6ba2e04b322ec4d3aa6d5811046dd519562",
     "retail/backend/internal/promotion/qualification_test.go": "5669d8648a3865f43f5edaa9ec2aaccd6f3e9efc381f6502b4a0d6b20b4ef195",
