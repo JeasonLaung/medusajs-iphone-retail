@@ -432,3 +432,5 @@
 2026-10-28 当前配送选择补充：[完整profile选择与共享库存](migration/cart-shipping-selection.md)在持有者/版本锁内重查所选manual报价、当前provider仓库及商品配置，拒绝缺失/额外/重复选项；各配送组和非配送库存行统一计量。人工SQL通过范围以admin-auth-report.cart_shipping_selection与SHA为准。运费保存/重算、动态运价、完整预留支付及Astro交互继续待办，T032/T033未验收。
 
 2026-10-29 手工配送保存补充：[调用方事务中的方法替换](migration/cart-shipping-methods.md)重查当前报价/全车共享库存，保存精确raw与含税状态、manual对象数据，软删除同组及未知组旧方法并保留其他组和历史。人工SQL通过范围以admin-auth-report.cart_shipping_methods及SHA为准。阶段不提交/增版本/预留或提供HTTP，完整幂等命令、局部选择、促销税费支付及Astro交互继续待办，T032/T033未验收。
+
+2026-10-29 局部配送选择补充：[新旧方法合并](migration/cart-shipping-methods.md)恢复逐配送组选择语义，保留其他组方法ID/data并重新核对当前报价及全车共享库存，未选齐不宣称配送覆盖；严格完整选择继续拒绝缺组。人工SQL以cart_shipping_methods新增局部选择字段与SHA为准；完整重算/幂等命令及前台接入仍待完成。

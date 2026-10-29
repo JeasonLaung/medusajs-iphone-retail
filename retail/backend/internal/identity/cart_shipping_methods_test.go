@@ -34,6 +34,36 @@ func checkCartShippingMethods(t *testing.T, ctx context.Context, db *gorm.DB, re
 		b, _ := json.Marshal(all)
 		return string(b)
 	}
+	// A user may pick one profile at a time. The first choice is not a
+	// complete shipping selection; adding the second must retain the first.
+	initial := fingerprint()
+	err := db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		at := time.Date(2026, 10, 28, 12, 0, 0, 0, time.UTC)
+		providers := []string{"candidate-provider"}
+		first, err := cart.ReplaceManualShippingMethods(ctx, tx, "shop", ref, "1", []cart.ManualShippingMethodInput{{OptionID: "candidate-nested", Data: json.RawMessage(`{"first":true}`)}}, providers, at)
+		if err != nil || len(first) != 1 {
+			t.Fatalf("first partial shipping choice failed: %v", err)
+		}
+		if _, err := cart.ReadSelectedManualShipping(ctx, tx, "shop", ref, "1", []string{"candidate-nested"}, providers, at); err != cart.ErrItemUnavailable {
+			t.Fatal("partial shipping claimed full coverage")
+		}
+		second, err := cart.ReplaceManualShippingMethods(ctx, tx, "shop", ref, "1", []cart.ManualShippingMethodInput{{OptionID: "selected-other"}}, providers, at)
+		if err != nil || len(second) != 1 {
+			t.Fatalf("second partial shipping choice failed: %v", err)
+		}
+		var savedData string
+		if tx.Table("cart_shipping_methods").Select("data").Where("id=? AND deleted_at IS NULL", first[0].ID).Scan(&savedData).Error != nil || savedData != `{"first":true}` {
+			t.Fatal("second choice replaced unrelated first method")
+		}
+		full, err := cart.ReadSelectedManualShipping(ctx, tx, "shop", ref, "1", []string{"candidate-nested", "selected-other"}, providers, at)
+		if err != nil || !full.Complete || !full.Stock.CanFulfill {
+			t.Fatal("merged shipping choices not complete")
+		}
+		return errors.New("artificial partial selection rollback")
+	})
+	if err == nil || initial != fingerprint() {
+		t.Fatal("partial shipping rollback left state")
+	}
 	exec(`INSERT INTO fulfillment_shipping_profiles(id,name,type,created_at,updated_at) VALUES('unrelated-profile','Unrelated','default',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 	exec(`INSERT INTO fulfillment_shipping_options(id,name,price_type,service_zone_id,provider_id,shipping_profile_id,shipping_option_type_id,created_at,updated_at) VALUES('unrelated-option','Unrelated','flat','candidate-nested-zone','candidate-provider','unrelated-profile','candidate-type',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 	for _, row := range []struct {
@@ -120,5 +150,13 @@ func checkCartShippingMethods(t *testing.T, ctx context.Context, db *gorm.DB, re
 	if _, err := cart.ReplaceManualShippingMethods(ctx, db, "shop", ref, "1", input, []string{"candidate-provider"}, at); err != cart.ErrInput {
 		t.Fatal("autocommit shipping persistence accepted")
 	}
-	t.Log(`CART_SHIPPING_METHODS_REHEARSAL {"exact_raw_amount_and_tax_preference":true,"server_quote_name_and_amount":true,"manual_data_preserved_without_number_coercion":true,"same_and_unknown_profiles_soft_deleted":true,"unrelated_methods_and_historical_children_retained":true,"later_refresh_and_late_insert_rollback":true,"invalid_data_and_stale_version_unchanged":true,"version_not_incremented_by_phase":true,"autocommit_rejected":true,"inventory_reserved":false,"full_refresh":false,"http_integrated":false,"checkout":false}`)
+	// An unchanged profile is still revalidated. It cannot keep a stale
+	// calculated/otherwise unregistered quote while another profile changes.
+	exec(`UPDATE fulfillment_shipping_options SET price_type='calculated' WHERE id='selected-other'`)
+	before = fingerprint()
+	if _, err := run([]cart.ManualShippingMethodInput{{OptionID: "candidate-nested"}}, "1", false); err != cart.ErrItemUnavailable || before != fingerprint() {
+		t.Fatal("retained stale profile was not revalidated")
+	}
+	exec(`UPDATE fulfillment_shipping_options SET price_type='flat' WHERE id='selected-other'`)
+	t.Log(`CART_SHIPPING_METHODS_REHEARSAL {"partial_first_and_second_selection":true,"unchanged_method_id_and_data_retained":true,"partial_not_full_coverage":true,"retained_quote_revalidated":true,"exact_raw_amount_and_tax_preference":true,"server_quote_name_and_amount":true,"manual_data_preserved_without_number_coercion":true,"same_and_unknown_profiles_soft_deleted":true,"unrelated_methods_and_historical_children_retained":true,"later_refresh_and_late_insert_rollback":true,"invalid_data_and_stale_version_unchanged":true,"version_not_incremented_by_phase":true,"autocommit_rejected":true,"inventory_reserved":false,"full_refresh":false,"http_integrated":false,"checkout":false}`)
 }

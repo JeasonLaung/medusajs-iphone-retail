@@ -21,8 +21,9 @@ type SelectedShippingGroup struct {
 // ManualShippingSelection is internal, current transaction evidence only.
 // Stock assignments are not a reservation or permission to pay.
 type ManualShippingSelection struct {
-	Groups []SelectedShippingGroup
-	Stock  inventory.CartStockPlan
+	Groups   []SelectedShippingGroup
+	Stock    inventory.CartStockPlan
+	Complete bool
 }
 
 // ReadSelectedManualShipping re-resolves every selected option, requires one
@@ -31,6 +32,12 @@ type ManualShippingSelection struct {
 // warehouses, amounts or provider registrations. Caller owns the transaction
 // and must revalidate/reserve and persist all other refresh phases atomically.
 func ReadSelectedManualShipping(ctx context.Context, tx *gorm.DB, store string, ref sessionstore.CartReference, version string, optionIDs, manualProviderIDs []string, at time.Time) (ManualShippingSelection, error) {
+	return readManualShippingSelection(ctx, tx, store, ref, version, optionIDs, manualProviderIDs, at, true)
+}
+
+// In-progress selection may omit profiles. Such lines still compete for
+// channel stock, but the result must not claim complete shipping coverage.
+func readManualShippingSelection(ctx context.Context, tx *gorm.DB, store string, ref sessionstore.CartReference, version string, optionIDs, manualProviderIDs []string, at time.Time, requireComplete bool) (ManualShippingSelection, error) {
 	if len(optionIDs) > 1000 {
 		return ManualShippingSelection{}, ErrInput
 	}
@@ -63,7 +70,10 @@ func ReadSelectedManualShipping(ctx context.Context, tx *gorm.DB, store string, 
 			}
 		}
 		if choice == nil {
-			return ManualShippingSelection{}, ErrItemUnavailable
+			if requireComplete {
+				return ManualShippingSelection{}, ErrItemUnavailable
+			}
+			continue
 		}
 		matched++
 		for _, line := range group.Group.Lines {
@@ -74,6 +84,7 @@ func ReadSelectedManualShipping(ctx context.Context, tx *gorm.DB, store string, 
 	if matched != len(selected) {
 		return ManualShippingSelection{}, ErrItemUnavailable
 	}
+	result.Complete = matched == len(quotes)
 	current := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "SHARE"}).Session(&gorm.Session{})
 	var saved []struct {
 		ID               string
@@ -130,7 +141,10 @@ func ReadSelectedManualShipping(ctx context.Context, tx *gorm.DB, store string, 
 		if !line.RequiresShipping {
 			allowed[line.ID] = locations
 		} else if _, ok := allowed[line.ID]; !ok {
-			return ManualShippingSelection{}, ErrItemUnavailable
+			if requireComplete {
+				return ManualShippingSelection{}, ErrItemUnavailable
+			}
+			allowed[line.ID] = locations
 		}
 	}
 	result.Stock, err = inventory.ReadCartStockAtLocations(current, stockVariants, stockLines, cart.SalesChannelID, allowed)
