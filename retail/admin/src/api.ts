@@ -516,3 +516,17 @@ export async function saveOrderPacking(order:string,body:AllocationInput):Promis
  if(!d||typeof d.fulfillment_id!=='string'||!d.fulfillment_id.startsWith('ful_')||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
  return d.fulfillment_id
 }
+
+export type ParcelInput={operation_id:string;expected_revision:string;action:'ship'|'cancel';tracking_number:string;tracking_url:string}
+export type ParcelContext={order_id:string;fulfillment_id:string;enabled:boolean;order_active:boolean;supported:boolean;status:string;location_id:string;revision:string;devices:{assignment_id:string;device_id:string;serial_number:string;item_id:string;status:string}[];items:{id:string;item_id:string|null;title:string;quantity:string}[];labels:{id:string;tracking_number:string;tracking_url:string;label_url:string}[]}
+const parcelPath=(o:string,f:string)=>`orders/${encodeURIComponent(o)}/fulfillments/${encodeURIComponent(f)}/operations`
+export async function readOrderParcel(order:string,parcel:string,signal:AbortSignal):Promise<ParcelContext>{
+ const d=await request<ParcelContext>(parcelPath(order,parcel),{signal},'/api/admin/')
+ if(!d||d.order_id!==order||d.fulfillment_id!==parcel||typeof d.enabled!=='boolean'||typeof d.order_active!=='boolean'||typeof d.supported!=='boolean'||!['packed','shipped','delivered','canceled','unpacked'].includes(d.status)||typeof d.location_id!=='string'||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||!Array.isArray(d.devices)||d.devices.length>1000||d.devices.some(v=>!v||['assignment_id','device_id','serial_number','item_id','status'].some(k=>typeof v[k as keyof typeof v]!=='string'))||!Array.isArray(d.items)||d.items.length>1000||d.items.some(i=>!i||typeof i.id!=='string'||!nullableText(i.item_id)||typeof i.title!=='string'||typeof i.quantity!=='string')||!Array.isArray(d.labels)||d.labels.length>100||d.labels.some(l=>!l||['id','tracking_number','tracking_url','label_url'].some(k=>typeof l[k as keyof typeof l]!=='string')))throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function changeOrderParcel(order:string,parcel:string,body:ParcelInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{fulfillment_id:string;action:string;assignment_ids:string[];replayed:boolean}>(parcelPath(order,parcel),{method:'POST',body,csrf},'/api/admin/')
+ if(!d||d.fulfillment_id!==parcel||d.action!==body.action||typeof d.replayed!=='boolean'||!Array.isArray(d.assignment_ids)||d.assignment_ids.length<1||d.assignment_ids.length>1000||d.assignment_ids.some(id=>typeof id!=='string'))throw new APIError(0,'request.invalid_response')
+}

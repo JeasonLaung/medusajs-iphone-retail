@@ -1,3 +1,5 @@
+import {useAccess} from './Permissions'
+import OrderParcel from './OrderParcel'
 import {useEffect,useState} from 'react'
 import {Alert,Button,Descriptions,Empty,Space,Spin,Table,Tag,Typography} from 'antd'
 import {APIError,getOrderFulfillments} from './api'
@@ -11,7 +13,9 @@ function evidenceLink(value:string,label:string) {
  try {const url=new URL(value);if(['https:','http:'].includes(url.protocol)&&!url.username&&!url.password)return <Typography.Link href={value} target="_blank" rel="noopener noreferrer">{label}</Typography.Link>} catch {/* Retain unsupported original values as text. */}
  return <Typography.Text className="price-rule-value">{value||'—'}</Typography.Text>
 }
-export default function OrderFulfillments({id,version,copy,onExpired}:{id:string;version:number;copy:Copy;onExpired():void}) {
+export default function OrderFulfillments({id,version,copy,onExpired,onChanged}:{id:string;version:number;copy:Copy;onExpired():void;onChanged?():void}) {
+ const access=useAccess()
+ const [operating,setOperating]=useState<string>()
  const [attempt,setAttempt]=useState(0)
  const [state,setState]=useState<{loading:boolean;data?:Evidence;error?:unknown}>({loading:true})
  useEffect(()=>{
@@ -31,8 +35,9 @@ export default function OrderFulfillments({id,version,copy,onExpired}:{id:string
    <Alert type="info" showIcon message={copy.fulfillmentEvidenceInfo}/>
    {state.data.fulfillments.length===0?<Empty description={copy.noFulfillments}/>:state.data.fulfillments.map(link=>{
     const r=link.record,a=r?.address
-    return <Space direction="vertical" size={16} key={link.id} className="full-width">
+    return <Space direction="vertical" size={16} key={link.id} data-fulfillment-id={link.id} className="full-width">
      <Typography.Text strong className="price-rule-value">{link.id}</Typography.Text>
+     {r&&access.can('order.allocation.write','order.payment.read','device.read')&&<Button onClick={()=>setOperating(link.id)}>{copy.parcelOperations}</Button>}
      {!r?<Alert type="warning" showIcon message={link.availability==='deleted'?copy.fulfillmentDeleted:copy.fulfillmentMissing}/>:<>
       <Descriptions column={{xs:1,sm:2,lg:3}} items={[
        {key:'location',label:copy.fulfillmentLocation,children:text(r.location_id)},
@@ -75,5 +80,7 @@ export default function OrderFulfillments({id,version,copy,onExpired}:{id:string
     </Space>
    })}
   </>}
- </Space></section>
+ </Space>
+ {operating&&access.can('order.allocation.write','order.payment.read','device.read')&&<OrderParcel orderID={id} fulfillmentID={operating} copy={copy} onExpired={onExpired} onClose={()=>{setOperating(undefined);setAttempt(n=>n+1);onChanged?.()}}/>}
+ </section>
 }

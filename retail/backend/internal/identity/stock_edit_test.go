@@ -59,7 +59,7 @@ func TestOwnedInventoryStockEdits(t *testing.T) {
 		t.Fatal("stock fixture plan failed")
 	}
 	applied, err := schema.Apply(ctx, pool, plan)
-	if err != nil || applied.Applied != 65 {
+	if err != nil || applied.Applied != 66 {
 		t.Fatal("stock fixture migrations failed")
 	}
 	seedReviewedCatalogFixture(t, db)

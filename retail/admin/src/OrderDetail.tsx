@@ -60,7 +60,7 @@ export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void
         ]} />}} />
         {access.can('order.amount.read')&&<OrderAmounts id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>}
 {access.can('order.payment.read')&&<OrderPayments id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>}
-{access.can('order.fulfillment.read')&&<OrderFulfillments id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>}
+{access.can('order.fulfillment.read')&&<OrderFulfillments id={order.id} version={order.version} copy={copy} onExpired={onExpired} onChanged={()=>setAttempt(n=>n+1)}/>}
       </>}
     </Space>
     {access.can('order.allocation.write','order.payment.read','device.read','order.fulfillment.read')&&packing&&order&&<OrderPacking orderID={order.id} copy={copy} onExpired={onExpired} onClose={()=>{setPacking(false);setAttempt(n=>n+1)}}/>}
