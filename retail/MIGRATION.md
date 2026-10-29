@@ -201,3 +201,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-28 配送仓库库存补充：[每行仓库与整车共享容量](../docs/migration/cart-shipping-stock.md)复用规划器增加显式每行仓库限制，空列表不回退，外渠道不扩大范围，backorder和非库存管理也受仓库约束；原加购库存观察不变。人工SQL通过范围以admin-auth-report.cart_shipping_stock与SHA为准。选中方法的购物车组装、非配送行、共享预留/保存及完整交易继续待办，T032/T033未验收。
 
 2026-10-28 当前配送选择补充：[完整profile选择与共享库存](../docs/migration/cart-shipping-selection.md)在持有者/版本锁内重查所选manual报价、当前provider仓库及商品配置，拒绝缺失/额外/重复选项；各配送组和非配送库存行统一计量。人工SQL通过范围以admin-auth-report.cart_shipping_selection与SHA为准。运费保存/重算、动态运价、完整预留支付及Astro交互继续待办，T032/T033未验收。
+
+2026-10-29 手工配送保存补充：[调用方事务中的方法替换](../docs/migration/cart-shipping-methods.md)重查当前报价/全车共享库存，保存精确raw与含税状态、manual对象数据，软删除同组及未知组旧方法并保留其他组和历史。人工SQL通过范围以admin-auth-report.cart_shipping_methods及SHA为准。阶段不提交/增版本/预留或提供HTTP，完整幂等命令、局部选择、促销税费支付及Astro交互继续待办，T032/T033未验收。

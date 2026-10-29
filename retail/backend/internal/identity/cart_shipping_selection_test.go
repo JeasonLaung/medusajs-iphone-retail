@@ -90,5 +90,6 @@ func checkCartShippingSelection(t *testing.T, ctx context.Context, db *gorm.DB, 
 	if _, err := cart.ReadSelectedManualShipping(ctx, db, "shop", ref, "1", ids, []string{"candidate-provider"}, at); err != cart.ErrInput {
 		t.Fatal("autocommit selected shipping accepted")
 	}
+	checkCartShippingMethods(t, ctx, db, ref)
 	t.Log(`CART_SHIPPING_SELECTION_REHEARSAL {"current_quotes_and_full_profile_coverage":true,"duplicate_extra_missing_rejected":true,"provider_warehouse_revalidated":true,"shared_stock_across_profiles":true,"nonshipping_tracked_stock_counted":true,"unmanaged_shipping_requires_warehouse":true,"readonly_fingerprint":true,"stale_version_and_autocommit_rejected":true,"inventory_reserved":false,"shipping_saved":false,"checkout":false}`)
 }
