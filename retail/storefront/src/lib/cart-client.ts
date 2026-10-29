@@ -25,6 +25,7 @@ export type DeliveryOption={id:string;profile_id:string;name:string;description:
 export type DeliveryOptions={cart_id:string;version:string;currency_code:string;options:DeliveryOption[];selected_option_ids:string[];complete:boolean}
 export type ShippingInput={operationID:string;version:string;optionID:string}
 export type ShippingReceipt={cart_id:string;version:string;option_id:string;replayed:boolean}
+export type CartCompletion={cart_id:string;order_id:string;version:string}
 export type PaymentStatus={cart_id:string;version:string;state:'pending'|'authorized'|'paid_pending_order'|'failed'|'requires_review'}
 const contactLimits={first_name:160,last_name:160,company:160,address_1:512,address_2:512,city:160,country_code:2,province:191,postal_code:64,phone:64} as const
 export function contactAddress(value:unknown):ContactAddress {
@@ -257,6 +258,19 @@ export class CartClient {
    const v=record(value);keys(v,['cart_id','version','line_id','quantity','replayed'])
    if(status!==200||v.cart_id!==id||v.line_id!==lineID||v.quantity!==quantity||typeof v.replayed!=='boolean'||!matches(v.version,versionPattern)||BigInt(v.version)!==BigInt(version)+1n)throw protocol()
    return {cart_id:id,line_id:lineID,quantity,version:v.version,replayed:v.replayed}
+  }catch{throw new CartError('protocol',status,true)}
+ }
+
+ // Empty intention: Gin resolves the saved paid attempt and authorizes even
+ // closed-cart retries. No browser payment/order/status value is authoritative.
+ async complete(id:string,authorization:{csrfToken:string}):Promise<CartCompletion>{
+  const {csrfToken}=authorization
+  if(!matches(id,idPattern)||!matches(csrfToken,tokenPattern))throw new CartError('input')
+  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/complete`,'POST','{}',{'X-CSRF-Token':csrfToken},65536,'item')
+  try{
+   const v=record(value);keys(v,['cart_id','order_id','version'])
+   if(status!==200||v.cart_id!==id||!matches(v.order_id,idPattern)||!matches(v.version,versionPattern)||BigInt(v.version)>18446744073709551615n)throw protocol()
+   return {cart_id:id,order_id:v.order_id,version:v.version}
   }catch{throw new CartError('protocol',status,true)}
  }
 

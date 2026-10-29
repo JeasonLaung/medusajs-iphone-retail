@@ -86,7 +86,7 @@ func (s *Store) AllowCartRequest(ctx context.Context, kind, identity string) (bo
 		limit = 90
 	case "scope-ip":
 		limit = 8
-	case "contact-possession", "shipping-possession", "checkout-possession":
+	case "contact-possession", "shipping-possession", "checkout-possession", "completion-possession":
 		limit = 32
 	case "create-scope":
 		limit = 32

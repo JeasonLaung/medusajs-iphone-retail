@@ -38,7 +38,7 @@ func RequestBoundary(logger *slog.Logger) gin.HandlerFunc {
 			c.Header("Referrer-Policy", "no-referrer")
 		}
 		switch c.FullPath() {
-		case "/api/store/carts/:id/payment-status", "/api/store/carts/:id/payment-attempts", "/api/store/carts/:id/shipping-methods", "/api/store/carts/:id/contacts", "/api/store/cart-sessions", "/api/store/carts", "/api/store/carts/:id", "/api/store/carts/:id/amounts", "/api/store/carts/:id/line-items":
+		case "/api/store/carts/:id/complete", "/api/store/carts/:id/payment-status", "/api/store/carts/:id/payment-attempts", "/api/store/carts/:id/shipping-methods", "/api/store/carts/:id/contacts", "/api/store/cart-sessions", "/api/store/carts", "/api/store/carts/:id", "/api/store/carts/:id/amounts", "/api/store/carts/:id/line-items":
 			// Also applies to the body-size rejection before route middleware.
 			c.Header("Cache-Control", "private, no-store")
 		}
