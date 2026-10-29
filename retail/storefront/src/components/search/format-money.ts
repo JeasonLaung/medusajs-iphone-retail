@@ -1,0 +1,1 @@
+export function convertToLocale({amount,currency_code}:{amount:number;currency_code:string}){return new Intl.NumberFormat("en-US",{style:"currency",currency:currency_code.toUpperCase()}).format(amount)}

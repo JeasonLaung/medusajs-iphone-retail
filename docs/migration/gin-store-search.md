@@ -1,6 +1,6 @@
 # Gin 商店搜索：接口接入，页面和搜索保真尚待验收
 
-2026-10-29。属于当前交付 C01，承接 [原搜索契约](search-contract.md)。本次只完成原生搜索 API 和数据库专项验证；正式 Astro 商店页、原搜索组件及英文分词/相关度尚未验收，不能据此宣称搜索闭环或全站完成。
+2026-10-29。属于当前交付 C01，承接 [原搜索契约](search-contract.md)。本次只完成原生搜索 API 和数据库专项验证；[正式 Astro 商店页和原组件](astro-store-search.md)已接入，完整保真及英文分词/相关度尚未验收，不能据此宣称搜索闭环或全站完成。
 
 ## 请求与响应
 
@@ -41,4 +41,4 @@ sort 仅允许 `created_at:desc`、`relevance`、`price:asc`、`price:desc`、`t
 - Go 专项覆盖筛选 OR/AND、排除自身条件的分面、分页前价格分布、范围边界、超过 JavaScript 安全整数精度的价格排序、零价和缺价、固定类别隔离及输入/失败边界。
 - 隔离 MySQL + Redis 经实际 Gin router 验证批量结果顺序、当前渠道/发布/软删除限制、地区币种、搜索与详情价格一致、实时库存减少后现货标签消失、backorder/unmanaged 不制造现货，以及禁用渠道拒绝访问。测试不操作旧业务库。
 - 型号缩写沿用旧前台 `i13pm → iPhone 13 Pro Max`，原输入仍在响应中。当前关键词为词边界 AND、末词前缀和字段权重原型；**不等同于 PostgreSQL English stemming / ts_rank_cd**。来源为已安装 search-postgres 的 `keywordFragments`、`keywordTsQuerySql`；其默认 English 配置、词干、停用词和覆盖密度排序仍需对照。中文行为、相关度排序及拼写边界也未通过保真验收。
-- 下一步将原 URL 编解码、搜索/筛选/卡片/移动面板挂到 Astro 正式路由，保留 SSR、返回/前进恢复、空/错/加载状态与原样式，并补运行对照。当前 `/[countryCode]/store` 仍未交付；没有用一个新简版列表页替代原页面。
+- 下一步将原 URL 编解码、搜索/筛选/卡片/移动面板挂到 Astro 正式路由，保留 SSR、返回/前进恢复、空/错/加载状态与原样式，并补运行对照。正式路由及原组件已接入，参见 [Astro 搜索](astro-store-search.md) 的已验证交互和剩余项。

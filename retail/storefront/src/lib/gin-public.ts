@@ -3,7 +3,7 @@ export const PUBLIC_NOT_FOUND = Symbol('public-resource-not-found')
 
 // Server-owned origin only. Callers build fixed public paths; request cookies,
 // browser headers and error response bodies never cross this boundary.
-export async function publicJSON(origin: string | undefined, path: string, maxBytes: number, fetcher: typeof fetch = fetch, notFound = false): Promise<unknown> {
+export async function publicJSON(origin: string | undefined, path: string, maxBytes: number, fetcher: typeof fetch = fetch, notFound = false, body?: unknown): Promise<unknown> {
  let base: URL
  try {
   if (!origin) throw unavailable()
@@ -14,7 +14,7 @@ export async function publicJSON(origin: string | undefined, path: string, maxBy
  } catch { throw unavailable() }
  const controller = new AbortController(), timer = setTimeout(() => controller.abort(),5000)
  try {
-  const response = await fetcher(new URL(path,base),{cache:'no-store',credentials:'omit',redirect:'error',signal:controller.signal,headers:{Accept:'application/json'}})
+  const response = await fetcher(new URL(path,base),{cache:'no-store',credentials:'omit',redirect:'error',signal:controller.signal,headers:{Accept:'application/json',...(body===undefined?{}:{'Content-Type':'application/json'})},...(body===undefined?{}:{method:'POST',body:JSON.stringify(body)})})
   if (response.status === 404 && notFound) { await response.body?.cancel().catch(()=>{}); return PUBLIC_NOT_FOUND }
   if (response.status !== 200 || response.headers.get('content-type')?.split(';',1)[0].trim().toLowerCase() !== 'application/json' || !response.body) throw unavailable()
   const reader = response.body.getReader(), chunks: Uint8Array[] = []; let size = 0

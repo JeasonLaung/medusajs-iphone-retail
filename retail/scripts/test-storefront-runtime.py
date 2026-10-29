@@ -38,7 +38,7 @@ def main():
             raise RuntimeError('Astro build or unit checks failed; inspect ignored output')
     tap=checked.stdout.decode('utf-8')
     observed={key:int(value) for key,value in re.findall(r'^# (tests|pass|fail|cancelled|skipped|todo) (\d+)\s*$',tap,re.M)}
-    if observed!={'tests':62,'pass':62,'fail':0,'cancelled':0,'skipped':0,'todo':0}:
+    if observed!={'tests':66,'pass':66,'fail':0,'cancelled':0,'skipped':0,'todo':0}:
         raise RuntimeError('Astro unit coverage differs; no partial success report written')
     tested=subprocess.run([str(node),'tests/runtime.integration.mjs'],cwd=APP,env=env,capture_output=True,timeout=90)
     markers=[line.split('ASTRO_RUNTIME_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if line.startswith('ASTRO_RUNTIME_REHEARSAL ')]
@@ -121,7 +121,7 @@ def main():
         if not source.is_file() or path.read_bytes()!=source.read_bytes():
             raise RuntimeError('Migrated public asset differs from original')
         public_assets[str(relative).replace('\\','/')]=hashlib.sha256(path.read_bytes()).hexdigest()
-    report={'format_version':1,'scope':'Formal product/about/help/journal SSR routes against owned Gin; synthetic public page browser checks and original component comparisons; checkout and full storefront not accepted','node_version':version,'unit_tests_passed':observed['pass'],'type_check_passed':True,'production_build_passed':True,'runtime':json.loads(markers[0]),'formal_pages_browser':json.loads(page_markers[0]),'selection_browser':json.loads(browser_markers[0]),'audit_vulnerabilities':counts,'real_application_resources_used':False,'full_storefront_accepted':False,'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
+    report={'format_version':1,'scope':'Formal product/store-search/about/help/journal SSR routes against owned Gin; synthetic public page browser checks and original component comparisons; checkout and full storefront not accepted','node_version':version,'unit_tests_passed':observed['pass'],'type_check_passed':True,'production_build_passed':True,'runtime':json.loads(markers[0]),'formal_pages_browser':json.loads(page_markers[0]),'selection_browser':json.loads(browser_markers[0]),'audit_vulnerabilities':counts,'real_application_resources_used':False,'full_storefront_accepted':False,'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
     report['presentation_browser']=json.loads(presentation_markers[0])
     report['actions_browser']=json.loads(actions_markers[0])
     report['header_browser']=json.loads(header_markers[0])

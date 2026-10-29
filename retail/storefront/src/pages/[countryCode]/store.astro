@@ -1,0 +1,34 @@
+---
+import React from 'react'
+import {renderToString} from 'react-dom/server'
+import {getServerState} from 'react-instantsearch'
+import {GIN_API_ORIGIN} from 'astro:env/server'
+import Storefront,{type Props as StorefrontProps} from '../../layouts/Storefront.astro'
+import Search,{type StoreSearchProps} from '../../components/search'
+import {createSearchClient,type NativeResult,displayNumber} from '../../components/search/client'
+import {loadPublicPage} from '../../lib/public-page'
+const segment=(Astro.params.countryCode??'').toLowerCase(),zh=segment.endsWith('-zh')
+let props:StoreSearchProps|undefined,shell:StorefrontProps['shell'],unavailable=false
+try {
+ shell=await loadPublicPage(GIN_API_ORIGIN,segment)??undefined
+ if(shell){
+  const region=shell.regions.find(r=>r.countries.some(c=>c.iso_2===segment.slice(0,2)))!
+  const received:NativeResult[]=[]
+  const serverClient=createSearchClient(region.id,region.currency_code,GIN_API_ORIGIN,fetch,r=>received.push(...r))
+  props={segment,regionID:region.id,currencyCode:region.currency_code,requestUrl:Astro.url.href,policies:null,searchData:{options:{},distribution:{key:'',prices:[]}}}
+  const serverState=await getServerState(React.createElement(Search,{...props,serverClient}),{renderToString})
+  const first=received[0]
+  if(!first)throw new Error('Search unavailable')
+  props.searchData={options:Object.fromEntries(Object.entries(first.catalog_facets).map(([a,values])=>[a,{values}])),distribution:{key:'',prices:first.price_distribution.map(displayNumber)}}
+  if(shell.footer.iphoneCategory?.category_children.length)props.searchData.options.category={values:shell.footer.iphoneCategory.category_children.map(c=>({value:c.name,count:0}))}
+  props.serverState=serverState
+ }
+} catch {unavailable=true;props=undefined}
+if(unavailable)Astro.response.status=503
+else if(!props)Astro.response.status=404
+const title='Refurbished iPhones'
+const message=unavailable?(zh?'暂时无法加载商品，请稍后重试。':'Products are temporarily unavailable. Please try again.'):(zh?'未找到页面':'Page not found')
+---
+<Storefront segment={segment} title={`${props?title:message} | EuroRefurb`} description={props?"Browse the imported iPhone catalog.":undefined} shell={shell} canonicalPath={`/${segment}/store`}>
+ {props?<Search {...props} client:load/>:<div class="content-container py-16"><h1>{message}</h1></div>}
+</Storefront>

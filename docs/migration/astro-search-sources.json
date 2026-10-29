@@ -1,0 +1,202 @@
+{
+  "format_version": 1,
+  "scope": "Original store component sources; transformed files adapt imports, route context, exact card money, native search and SSR; not screenshot parity acceptance",
+  "files": [
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-refinements/attributes.ts",
+      "target": "retail/storefront/src/components/search/refinements/attributes.ts",
+      "source_sha256": "0742a792242934034b08cc735e4081bff42591df68d25ad57655495a9d0bb021",
+      "target_sha256": "671083465f8ca9ef60d9539fe81296d4293620f838a2ea359b387f7f65aeeb9c",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-refinements/i18n.ts",
+      "target": "retail/storefront/src/components/search/refinements/i18n.ts",
+      "source_sha256": "993e9529bafcd5dc063291c336ce213576cd3fa76272863535062c058c38bb8a",
+      "target_sha256": "656505101fb2c0e2cc5dc500ca9c742df584c3191fa39f53e7d35400e6fd70a7",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-refinements/index.tsx",
+      "target": "retail/storefront/src/components/search/refinements/index.tsx",
+      "source_sha256": "26dbf9d4b8734bed977001a3a48cf96a04109bcc0eba6e023fe7b2e513b54d20",
+      "target_sha256": "8dcfda06efc3066cc910933f8232d1d52348ca8f23c1a0c037734df2176b99fc",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-refinements/mobile-filter-context.tsx",
+      "target": "retail/storefront/src/components/search/refinements/mobile-filter-context.tsx",
+      "source_sha256": "bf07a287848bd495f22c0a5e4346df46d277e1f95c140392cd4330deb8776c44",
+      "target_sha256": "bf07a287848bd495f22c0a5e4346df46d277e1f95c140392cd4330deb8776c44",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-refinements/mobile-filters.module.css",
+      "target": "retail/storefront/src/components/search/refinements/mobile-filters.module.css",
+      "source_sha256": "09ceaeedea0d05faedba0fbcb1bda67313f952644b95c403fe14c33c64adbcc3",
+      "target_sha256": "09ceaeedea0d05faedba0fbcb1bda67313f952644b95c403fe14c33c64adbcc3",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-refinements/mobile-filters.tsx",
+      "target": "retail/storefront/src/components/search/refinements/mobile-filters.tsx",
+      "source_sha256": "62d68f19195a41a305619405362610ba35b91c66da77a7b098eb5eba1d2bf026",
+      "target_sha256": "8523daa3c083157732f0f93cf5f71f38d1dec529fdc9433dad73edfcb12b0211",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-refinements/price-range.tsx",
+      "target": "retail/storefront/src/components/search/refinements/price-range.tsx",
+      "source_sha256": "5461e042f01ed03bbb9ce84914f567f42170ce1b3f8d3a77d9a48fadcc51dadb",
+      "target_sha256": "8c979517c10c03632a6c1a75a9e49ff4d88352e9e1873186e72a6b0c51cf0e49",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-refinements/refinement-group.tsx",
+      "target": "retail/storefront/src/components/search/refinements/refinement-group.tsx",
+      "source_sha256": "a4500dd4677f7923f04b764d1026f9a122e15e4080e3c9c7d96e75ee4e714a72",
+      "target_sha256": "64100ef77641375d960320e9d9b581e4859e5fcc99a7f360a06fc0abe7874153",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-refinements/use-filter-options.ts",
+      "target": "retail/storefront/src/components/search/refinements/use-filter-options.ts",
+      "source_sha256": "154020ca93dd602b94dafc49e5bdcb67e4f0ee665d850ff47695dcb89448bc2b",
+      "target_sha256": "fb97fa05bac52b191c92d42d3c42597a071fcb568e0b5081ce0914645d134ada",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-hits/i18n.ts",
+      "target": "retail/storefront/src/components/search/hits/i18n.ts",
+      "source_sha256": "1cccaa70263442f453e8bede57b54e2283f93ee821ca75205b46a95d93866b2c",
+      "target_sha256": "1cccaa70263442f453e8bede57b54e2283f93ee821ca75205b46a95d93866b2c",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-hits/index.tsx",
+      "target": "retail/storefront/src/components/search/hits/index.tsx",
+      "source_sha256": "e0a9ffc8dbfc4bb54f841f04d9ea6615a691c4f731e05e781c6cf2447ca3b412",
+      "target_sha256": "9d68cb9d67b7bee974f961595fff0115666aa84acc865bd78790097fffb563a4",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-hits/pagination.tsx",
+      "target": "retail/storefront/src/components/search/hits/pagination.tsx",
+      "source_sha256": "f09876df576fc307ebf64048541b514c0a2f06d17bc7198e436c3616a152d3c9",
+      "target_sha256": "25e9cb3803c795d8543692b91495eca5c15a353db63285614cee5417983031b6",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-hits/price.tsx",
+      "target": "retail/storefront/src/components/search/hits/price.tsx",
+      "source_sha256": "d6a4abf3a5194c5f884738b94ea01be750445178f8a3b0b19a3de88d7acd0214",
+      "target_sha256": "4af90d154859ddd59651956240982c6c0e1c4599bcb418ca3b7d8afeab1cf204",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-hits/styles.module.css",
+      "target": "retail/storefront/src/components/search/hits/styles.module.css",
+      "source_sha256": "0f5bf2bbfe34f15ab4c3e7287bdd1b9735a1837105785bbd7769c34964617156",
+      "target_sha256": "0f5bf2bbfe34f15ab4c3e7287bdd1b9735a1837105785bbd7769c34964617156",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-search-box/i18n.ts",
+      "target": "retail/storefront/src/components/search/box/i18n.ts",
+      "source_sha256": "8870ca3a85d7f9e4d7cfb0da6c99412b534cc28a7fc6dfa3c59ce00e61d5acf8",
+      "target_sha256": "8870ca3a85d7f9e4d7cfb0da6c99412b534cc28a7fc6dfa3c59ce00e61d5acf8",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-search-box/index.tsx",
+      "target": "retail/storefront/src/components/search/box/index.tsx",
+      "source_sha256": "d4bc54ade703a88dea64112d78a7581a459dfff725d850afe9b0849a1cbeafcf",
+      "target_sha256": "7f109c45952938ad58ef957f69aeedb05c19f13e2c462aacde9e74304fb1c95e",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/components/store-search-data/index.tsx",
+      "target": "retail/storefront/src/components/search/data/index.tsx",
+      "source_sha256": "f964a4575efcced6b0a127f11a400eacdbb3f157b7be89115f9ace85a37fb49f",
+      "target_sha256": "08032a2027e0ddee1dc743c9af89bd440643b5fdd0bdf251bc00ec1011932836",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/templates/index.tsx",
+      "target": "retail/storefront/src/components/search/template/index.tsx",
+      "source_sha256": "08dec7a1b10ce87c6795118a8c8330e38631201b662208be357ef2861b4af6ac",
+      "target_sha256": "71dea5d5e6656ee15aafa38275496fe98041e880efe18b577054a1a5d27deadb",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/templates/styles.module.css",
+      "target": "retail/storefront/src/components/search/template/styles.module.css",
+      "source_sha256": "387606c8641673147498b616f050464dbfe17554bc3619faa590af3e5a4a6288",
+      "target_sha256": "387606c8641673147498b616f050464dbfe17554bc3619faa590af3e5a4a6288",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/util/store-search-routing.ts",
+      "target": "retail/storefront/src/components/search/routing.ts",
+      "source_sha256": "d6c5f974ad56ffe2fc8ac32bfdfe0f7285e3a3e01b0f5c7770ffeec5924578b7",
+      "target_sha256": "d6c5f974ad56ffe2fc8ac32bfdfe0f7285e3a3e01b0f5c7770ffeec5924578b7",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/util/store-search-data.ts",
+      "target": "retail/storefront/src/components/search/search-data.ts",
+      "source_sha256": "1873fd9ab142a85ced4820c4ee1c9917b4b8c8a6d4894120b06d0dd88c81e15d",
+      "target_sha256": "1873fd9ab142a85ced4820c4ee1c9917b4b8c8a6d4894120b06d0dd88c81e15d",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/hooks/use-search-settled.tsx",
+      "target": "retail/storefront/src/components/search/use-search-settled.tsx",
+      "source_sha256": "bb49f4e8c2fc23d17bedcf0a50a28c40a57bfc6c673e4783248bb0af188ec550",
+      "target_sha256": "bb49f4e8c2fc23d17bedcf0a50a28c40a57bfc6c673e4783248bb0af188ec550",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/lib/hooks/use-is-mobile.ts",
+      "target": "retail/storefront/src/components/search/use-is-mobile.ts",
+      "source_sha256": "9c7750e56cc9d725e5c22098d7bf2448da2ae6a80d708a61aaeb822c86073e18",
+      "target_sha256": "9c7750e56cc9d725e5c22098d7bf2448da2ae6a80d708a61aaeb822c86073e18",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/products/components/color-swatches/index.tsx",
+      "target": "retail/storefront/src/components/search/color-swatches.tsx",
+      "source_sha256": "49cbc6a2444a7c093e3bd31abcdf2c0b30aa05ae66dd8eac59f9432357bda654",
+      "target_sha256": "49cbc6a2444a7c093e3bd31abcdf2c0b30aa05ae66dd8eac59f9432357bda654",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/store/i18n.ts",
+      "target": "retail/storefront/src/components/search/i18n.ts",
+      "source_sha256": "3de9dafa89c30414cec2c436631c371ef7f55c6b580ce2591d049ec8afd2fd76",
+      "target_sha256": "3de9dafa89c30414cec2c436631c371ef7f55c6b580ce2591d049ec8afd2fd76",
+      "unchanged_normalized_bytes": true
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/skeletons/templates/skeleton-product-grid/index.tsx",
+      "target": "retail/storefront/src/components/search/skeleton-grid.tsx",
+      "source_sha256": "6d6e40295c42ecf29c6db623cb5bfed04690b835dbdf989fca0e0bbcc5a288b2",
+      "target_sha256": "c18fac170abba49ee4ec33ed031875408769f667d111903b7b07bbe2621f0cf1",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/skeletons/components/skeleton-product-preview/index.tsx",
+      "target": "retail/storefront/src/components/search/skeleton-preview.tsx",
+      "source_sha256": "9b3d592e01a2a5cef118a67d178aa8e65c67ca31db7c591bf2ecf96b50f0ca3a",
+      "target_sha256": "f5abf98b8a73576f0b436a7bb79db6534aab674cf853a466bf57f95c1303f871",
+      "unchanged_normalized_bytes": false
+    },
+    {
+      "source": "medusa-store/apps/storefront/src/modules/skeletons/components/skeleton-product-preview/styles.module.css",
+      "target": "retail/storefront/src/components/search/skeleton.module.css",
+      "source_sha256": "d7c30702e3670e0b3b8c253ac6766c04a7d1f6bfbe6342ec394bbeadc460844b",
+      "target_sha256": "275c9437d909c4beffc24cf228baef814d4e3530d13b254ad2ce9a41146a4d6a",
+      "unchanged_normalized_bytes": false
+    }
+  ]
+}

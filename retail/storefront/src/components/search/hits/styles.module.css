@@ -1,0 +1,35 @@
+.grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; width: 100%; }
+.grid > li { min-width: 0; }
+.card {
+  display: block;
+  height: 100%;
+  border: 1px solid #e8e8ec;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  transition: border-color .2s, box-shadow .2s;
+}
+.card:hover { border-color: #c8c8cd; box-shadow: 0 6px 20px #1d1d1f08; }
+.card:focus-visible { outline: 2px solid #0066cc; outline-offset: 4px; }
+.contents { display: grid; grid-template-columns: 36% minmax(0, 1fr); min-height: 210px; height: 100%; }
+.imageFrame { position: relative; min-height: 100%; background: #f7f7f8; }
+.image { object-fit: contain; padding: 12px; mix-blend-mode: multiply; }
+.details { display: flex; flex-direction: column; gap: 10px; padding: 16px; min-width: 0; }
+.title { color: #1d1d1f; font-size: 15px; line-height: 1.4; font-weight: 600; }
+.capacities { display: flex; flex-wrap: wrap; gap: 4px; }
+.tag { display: inline-flex; border: 1px solid #e2e2e7; border-radius: 999px; padding: 4px 8px; color: #54545b; font-size: 11px; line-height: 1.3; }
+.tag[data-disabled="true"] { color: #a1a1aa; border-color: #ededf0; background: #fafafa; text-decoration: line-through; opacity: .65; }
+.colours { display: flex; flex-direction: column; gap: 6px; }
+.label { color: #737378; font-size: 10px; line-height: 1.4; }
+.priceRow { margin-top: auto; padding-top: 10px; border-top: 1px solid #f0f0f2; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.priceRow [data-testid="product-price"] { flex-wrap: wrap; }
+.priceRow [data-testid="price"] { color: #1d1d1f; font-weight: 600; }
+.viewButton { display: inline-flex; align-items: center; justify-content: center; min-height: 36px; padding: 0 16px; flex-shrink: 0; border-radius: 999px; background: #0066cc; color: #fff; font-size: 12px; font-weight: 500; }
+.card:hover .viewButton, .card:focus-visible .viewButton { background: #005bb5; }
+@media (min-width: 1000px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 599px) {
+  .grid { gap: 12px; }
+  .contents { grid-template-columns: 36% minmax(0, 1fr); min-height: 200px; }
+  .details { padding: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } }

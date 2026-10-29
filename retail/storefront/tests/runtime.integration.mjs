@@ -79,7 +79,7 @@ async function check(origin,expected){
    if(expected===200)assert.ok(html.includes('Public collection'))
   }
   // Business pages are added only after their actual API and UI are ported.
-  assert.equal((await fetch(`http://127.0.0.1:${port}/dk-en/store`)).status,404)
+  assert.equal((await fetch(`http://127.0.0.1:${port}/dk-en/store`)).status,origin?200:503)
   assert.equal(child.exitCode,null)
  }finally{
   if(child.exitCode===null){const ended=once(child,'exit');child.kill();await ended}
@@ -87,4 +87,4 @@ async function check(origin,expected){
 }
 await check(target.origin,200)
 await check(undefined,503)
-console.log('ASTRO_RUNTIME_REHEARSAL '+JSON.stringify({production_node_adapter:true,real_gin_regions:true,source_adapter_real_gin_locales:true,source_adapter_real_gin_footer:true,source_adapter_real_gin_products:true,source_adapter_region_quantity:true,source_product_page_country_handle_composition:true,formal_product_route_real_gin:true,incomplete_variant_no_quote:true,detail_404_and_dependency_error_distinct:true,missing_configuration_503:true,response_no_store:true,no_session_cookie:true,unported_business_page_404:true,owned_processes_stopped:true}))
+console.log('ASTRO_RUNTIME_REHEARSAL '+JSON.stringify({production_node_adapter:true,real_gin_regions:true,source_adapter_real_gin_locales:true,source_adapter_real_gin_footer:true,source_adapter_real_gin_products:true,source_adapter_region_quantity:true,source_product_page_country_handle_composition:true,formal_product_route_real_gin:true,incomplete_variant_no_quote:true,detail_404_and_dependency_error_distinct:true,missing_configuration_503:true,response_no_store:true,no_session_cookie:true,formal_store_route_real_gin:true,owned_processes_stopped:true}))
