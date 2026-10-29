@@ -1,0 +1,31 @@
+{
+  "scope": "Real browser creates own source, enrolls SKU and registers sale/returned devices; photo upload and fulfillment incomplete",
+  "counts": {
+    "real_browser_react_gin_mysql_redis": true,
+    "api_mocking": false,
+    "real_login": true,
+    "source_created_in_ui": true,
+    "sku_enrolled_in_ui": true,
+    "batch_of_two_saved": true,
+    "sale_available_returned_inspection": true,
+    "leading_zero_imei": true,
+    "language_en_zh": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0,
+    "photo_upload_integrated": false
+  },
+  "durable_mysql_verified": true,
+  "real_accounts_used": false,
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "network": "owned bridge; egress unrestricted",
+    "published_ports": "one random API port on 127.0.0.1 only"
+  },
+  "tls_secure_cookie_verified": false,
+  "photo_upload_accepted": false,
+  "fulfillment_accepted": false,
+  "cleanup": "both owned containers, bridge and temporary runners removed"
+}

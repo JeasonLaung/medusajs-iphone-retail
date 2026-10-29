@@ -1,0 +1,70 @@
+{
+  "scope": "One-SKU atomic device intake without photos, Gin/Ant UI/current recent records; full storefront remains acceptance target",
+  "counts": {
+    "real_gin_mysql_redis": true,
+    "valid_unenrolled_sku_allowed": true,
+    "server_source_location": true,
+    "sku_grade_battery_defaults": true,
+    "measured_configuration_validated": true,
+    "iphone_radio_required": true,
+    "sku_change_rejected": true,
+    "concurrent_attempts": 4,
+    "single_creation": true,
+    "immutable_replay": true,
+    "batch_collision_atomic": true,
+    "revoked_replay_denied": true,
+    "warehouse_full_store_denied": true,
+    "late_receipt_failure_atomic": true,
+    "sale_available_returned_recycled_inspection": true,
+    "inventory_fingerprint_unchanged": true,
+    "recent_records_after_reload": true,
+    "unverified_photos_rejected": true,
+    "photo_upload_integrated": false
+  },
+  "migrations": 57,
+  "suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "go_test_all": "passed",
+  "admin_type_check": "passed",
+  "admin_build": "passed; existing large-chunk advisory",
+  "existing_admin_browser_tests": 19,
+  "synthetic_api_browser": {
+    "real_react_antd": true,
+    "synthetic_api": true,
+    "real_gin_joint": false,
+    "lost_response_same_request_retry": true,
+    "uncertain_form_locked": true,
+    "leading_zero_preserved": true,
+    "sku_defaults_left_null": true,
+    "conflict_reload": true,
+    "empty_source_disabled": true,
+    "unavailable_retry": true,
+    "read_only_controls": true,
+    "browser_errors": 0,
+    "photo_upload_integrated": false
+  },
+  "sql_suite_isolated_mysql_redis": true,
+  "sql_suite_published_ports": 0,
+  "sql_suite_external_network": false,
+  "sql_cleanup": "both owned containers and temporary runner removed",
+  "real_joint_report": "device-intake-joint-report.json",
+  "limitations": [
+    "Photo upload not integrated; all nonempty photo arrays explicitly rejected",
+    "No cross-SKU batch import yet",
+    "No warehouse employee scoped device commands yet",
+    "No allocation, packing, shipping or cancellation release",
+    "Recent-device read capped at explicit 50; full search/pagination incomplete",
+    "Fractional SKU battery default rejected unless an explicit valid integer measurement is supplied; source floating default vs reviewed integer column requires data review"
+  ],
+  "implementation_sha256_lf": {
+    "retail/backend/internal/devices/configuration.go": "be8ee8b101a0a131e7cdf27084f08581c1fe181e7fafb4cf432b1ef6de3f74c2",
+    "retail/backend/internal/devices/intake.go": "3cdd12edf339fd564e2a821b74535a80800157a2845ea64c11a5dd4b61d1f2b4",
+    "retail/backend/internal/devices/intake_http.go": "73af901363b85644bcd0f9821f602ca3f5944978263dc266fed5404bf17fa803",
+    "retail/backend/internal/identity/device_intake_test.go": "e3ec3b6b1824b275355aa553ce4b9ae30ad12a1d6015a6a6d5d44bc8c49404b6",
+    "retail/backend/migrations/0058_device_intake.sql": "20f2c6a5e8d7fe895834900912bc6930790c067931c073f1a8448ee3ea019784",
+    "retail/admin/src/DeviceIntake.tsx": "ce6031759e75d854541edffbe58ccdc09fdb67da711c2bd536590f5b3a491178"
+  }
+}

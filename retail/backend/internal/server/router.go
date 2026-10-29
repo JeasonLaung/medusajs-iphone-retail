@@ -138,6 +138,8 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	access := authorization.Handler{DB: db}
 	private.GET("/auth/permissions", access.Snapshot)
 	private.GET("/warehouse/access", access.WarehouseSnapshot)
+	private.GET("/products/:id/variants/:variant_id/device-intake", (devices.Handler{DB: db}).IntakeContextHTTP)
+	private.POST("/products/:id/variants/:variant_id/device-intake", (devices.Handler{DB: db}).IntakeHTTP)
 	private.GET("/device-sources", (devices.SourceHandler{DB: db, StoreID: os.Getenv("STOREFRONT_STORE_ID")}).DirectoryHTTP)
 	private.POST("/device-sources", (devices.SourceHandler{DB: db, StoreID: os.Getenv("STOREFRONT_STORE_ID")}).CreateHTTP)
 	private.GET("/products/:id/variants/:variant_id/device-tracking", (devices.Handler{DB: db}).TrackingHTTP)

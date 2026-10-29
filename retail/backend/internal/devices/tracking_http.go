@@ -57,11 +57,11 @@ func decodeEnroll(r io.Reader) (EnrollInput, error) {
 }
 func trackingFail(c *gin.Context, e error) {
 	switch {
-	case errors.Is(e, ErrInput):
+	case errors.Is(e, ErrInput), errors.Is(e, ErrIdentity):
 		platform.Fail(c, 400, "device.invalid_input", "Invalid device request")
 	case errors.Is(e, ErrNotFound):
 		platform.Fail(c, 404, "device.not_found", "SKU unavailable")
-	case errors.Is(e, ErrConflict):
+	case errors.Is(e, ErrConflict), errors.Is(e, ErrDuplicate):
 		platform.Fail(c, 409, "device.conflict", "Device configuration changed; reload")
 	case errors.Is(e, authorization.ErrDenied):
 		platform.Fail(c, 403, "authorization.denied", "Action not permitted")
