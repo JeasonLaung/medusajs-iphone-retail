@@ -1,0 +1,22 @@
+{
+  "scope": "Customer private transport foundation; not mounted to a public Astro route",
+  "unit_tests": 81,
+  "customer_bridge_tests": 5,
+  "astro_check": {
+    "files": 194,
+    "errors": 0,
+    "warnings": 0,
+    "existing_hints": 2
+  },
+  "native_http_host_and_redirect_checked": true,
+  "browser_verified": false,
+  "real_gin_bridge_verified": false,
+  "client_address_contract_complete": false,
+  "public_route_mounted": false,
+  "mail_delivery_integrated": false,
+  "implementation_sha256": {
+    "retail/storefront/src/lib/customer-bridge.ts": "2dd693a2cd94122549b15d074cd1ad3d9297c4c11d38d13b7a3c5cae7e71f256",
+    "retail/storefront/tests/customer-bridge.test.ts": "70622daa55eb51b53b78b18116e86dd8ccecf131b55dacacdc9b5cf5c643fa07",
+    "retail/storefront/src/lib/gin-private-transport.ts": "e1f11c19b0c2ca41863d7596a0970f87d1c275d4791b69922c9f14e5d2a6a1e9"
+  }
+}

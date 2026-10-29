@@ -45,3 +45,13 @@
 本地 HTTP Cookie 为 `retail_customer_*`，HTTPS 为 `__Host-retail_customer_*`；Path=/、无 Domain、SameSite=Lax，session/prelogin 为 HttpOnly，csrf 供双重提交读取。不会接受 admin/cart Cookie 代替客户会话。按实际直连 IP 和规范邮箱使用独立 Redis customer realm 限流，未信任任何入站 X-Forwarded-For；后续 Astro bridge 必须先解决可信客户端地址传递，不能将伪造请求头作为限流身份，也不能把代理的共享 IP 当作所有客户。
 
 `python retail/scripts/test-admin-auth.py --customer-accounts-only` 包含真实 Gin 的注册至退出用例、跨站/Host/重复 Origin/重复 Cookie 拒绝、一次性预登录 CSRF、登录轮换、管理员 Cookie 拒绝、严格 JSON/UTF-8/大小限制、邮箱/IP 限流和默认关闭状态。测试令牌仅在隔离夹具内从邮件意图解密；没有公开测试后门。报告 `http` 字段为 HTTP 证据，仍明确 Astro 与实际发信未集成。
+
+## Astro 客户传输层（尚未挂正式入口）
+
+`retail/storefront/src/lib/customer-bridge.ts` 复用已有 native Gin private transport。仅允许固定 customer 路径；只转发当前 HTTPS/HTTP 命名空间下的 prelogin/session/csrf Cookie、浏览器提供的 Origin/Fetch-Site 和规范 CSRF，不转发管理员、购物车、Medusa 凭据或任何 forwarded/client-IP 请求头。请求上限 16 KiB、响应上限 64 KiB、超时 10 秒，拒绝重定向和所有查询参数。
+
+返回 Cookie 根据 challenge/login/logout 动作校验完整集合、作用域、Secure/HttpOnly/SameSite/有效期。错误响应仅允许清除已消耗的 prelogin；不会丢失“待验证”状态或 429 重试时间，也不会转发上游数据库错误与任意响应头。拒绝成功 JSON 意外出现密码散列、会话、验证令牌或加密载荷字段。
+
+该模块还没有 Astro API route，不会对外激活。下一步必须先建立 Astro 到 Gin 的可信客户端地址契约，解决代理共享 IP 与伪造 forwarded header 的问题，再接实际账户页面。当前没有理由把传输单元测试记成浏览器注册闭环。
+
+验证：新增 5 项 customer bridge 单元测试（含真实 native HTTP 重定向/Host 测试）；前台合计 81 项全部通过。Astro check 检查 194 个文件，无 error/warning，保留原有两个 unused hints；本次没有改动页面或样式。见 `astro-customer-bridge-report.json`。
