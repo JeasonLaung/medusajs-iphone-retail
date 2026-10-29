@@ -263,3 +263,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-29 补偿创建执行补充：[提交后创建调用/加密结果/原子激活](../docs/migration/cart-payment-refresh.md)接上内部create执行器，事务外有界调用、稳定幂等ID、取消后保存、错误未知处理、写故障不重复创建；人工adapter到补偿完成链验证通过。真实provider/worker/HTTP、自动恢复和完整checkout尚未验收。
 
 2026-10-29 Mollie 渠道删除补充：[固定渠道 HTTP、当前状态保护与精确响应绑定](../docs/migration/cart-payment-refresh.md)实现显式配置的原生 Go 适配器，模拟 HTTP 验证取消/拒绝/竞态/未知结果；尚未注册或调用真实渠道。渠道创建、webhook/对账、worker/HTTP 和 checkout 仍待完成。
+
+2026-10-29 Mollie 渠道创建补充：[七种方式/扣款配置、稳定幂等与精确结算](../docs/migration/cart-payment-refresh.md)实现显式服务端适配器，保留原回跳/webhook与状态映射，模拟 HTTP 验证身份/金额/模式及失败隔离。未注册或调用真实渠道，商户配置加载、对账/webhook、worker/HTTP及checkout继续待办。

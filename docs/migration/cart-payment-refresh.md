@@ -109,3 +109,21 @@ Stage 相同输入重放，变更摘要拒绝。Claim 在 MySQL 行锁内一次�
 模拟 RoundTripper 覆盖正常取消、已付保护、原本地丢弃、处理中会话保护、终态重放、付款竞态、两次响应的五种绑定不匹配，以及重定向/404/429/500/错误/超时/超长/非法/重复 JSON。模拟请求核验固定 origin、鉴权头和硬超时；错误输出保持通用，无真实 Mollie 调用。该适配器尚未注册到应用或 HTTP/worker，也未完成创建渠道、webhook、对账或真实沙箱验收，0035 能力继续默认关闭。
 
 Mollie 删除适配器验证：`go test ./...`、`go vet ./internal/payments` 和隔离购物车专项回归通过；专项报告189项实现SHA匹配（含渠道代码和模拟测试），仍为36迁移。完整23组回归在前一补偿执行器提交1c05471通过，其290项报告保留为该阶段证据；本次不将模拟 HTTP 视为真实支付沙箱验收。
+
+## Mollie 创建渠道适配器（尚未注册）
+
+新增 `NewMollieCreateAdapter(MollieCreateConfig)`，显式配置服务端 provider ID、API key、回跳地址、后端地址、描述及手工扣款开关。对照当前项目 `initiatePayment` 与已安装 upstream 的 `normalizePaymentCreateParams`/七个 services：保留 hosted/ideal/creditcard/bancontact/giftcard/paypal/applepay 及对应原 provider ID，按原路径生成 webhook，默认描述 iPhone retail order、默认 captureMode automatic。私有 context、旧远端 payment ID、浏览器自选 method/URL 不进入渠道请求。不读取环境或导入凭证，不默认注册。
+
+HTTP 固定 POST https://api.mollie.com/v2/payments，复用禁止重定向、8 秒硬超时与 1 MiB 响应界限。请求 Idempotency-Key 固定为持久 SessionID；存在的 data.session_id、data.mollie_attempt、context.idempotency_key 必须一致，不用 journal attempt。回跳沿用 http/https、无凭证、与配置同 origin、/api/mollie-return、cart_id 匹配规则，默认端口按 origin 等价处理。
+
+按既定支付契约纠正原 Number/toFixed 浮点损失：保持两位渠道金额格式，以精确十进制 half-away 结算；购物车 raw/SQL 原值不量化。删除适配器的响应绑定改为复用相同结算格式，避免 1.005 创建为 1.01 后无法核实。大数、进位、指数和 0.005 均有固定测试。其他币种位数/新增渠道策略不在此自动推断，真实渠道支持范围仍需后续验收。
+
+仅接受 201，核对 payment resource、test/live mode、远端 ID、session/cart metadata、精确结算金额/币种与回跳地址。open/pending 保存 pending，paid/authorized 保存 authorized 事实（已有补偿完成逻辑拒绝把已付结果作为未付会话激活）；canceled/expired/failed 按原 update 状态映射。pending 还要求有效 HTTPS Mollie checkout 链接。返回原渠道 JSON 加原 cart_id/redirect_url/session_id，精确大数与私有结果仍由上层加密持久化。
+
+本地校验失败且尚未发 HTTP 是明确 failed；HTTP 非201、错误、超时、身份/金额不匹配、非法/重复/超长响应、非法checkout均 uncertain，不自动重试、换幂等键或返回未验证结果。Mollie 官方 [Create payment](https://docs.mollie.com/reference/create-payment)、[API idempotency](https://docs.mollie.com/reference/api-idempotency)、[Handling errors](https://docs.mollie.com/reference/handling-errors) 为本次核对依据。其幂等缓存只有一小时，不能替代已实现的持久 uncertain 隔离和后续对账；本地仍不自动重发未知请求。
+
+模拟 HTTP 验证七个 provider 与两种扣款方式、完全稳定的重复请求、原请求字段、精确返回 JSON、七种状态映射及25类响应/网络失败；逐项篡改 metadata/amount/currency/mode/resource/redirect/checkout 均拒绝。测试只用内存 RoundTripper，无真实渠道调用。worker/HTTP、商户配置加载、webhook/对账、完整下单仍缺，0035 开关保持关闭。
+
+POST 特别关闭 `http.Request.GetBody`：携带 Idempotency-Key 时 Go transport 对可重放 body 的隐式重试不能绕过 journal；模拟请求断言该重放函数为空。回跳使用原 URL.pathname 对应的 escaped path 校验，编码斜杠不绕过固定路由。原 health/Admin/商品/购物车均HTTP 200，近期日志无新增错误，仅既有PayPal nonce提示。
+
+本轮创建渠道验收证据：最终代码 `go test ./...`、`go vet ./internal/payments`、隔离 MySQL/Redis 完整23组回归和购物车专项均通过；36迁移保持，完整294项/专项191项实现SHA匹配。渠道用例为内存HTTP模拟，未注册或调用真实Mollie，未进行真实沙箱或完整checkout验收。

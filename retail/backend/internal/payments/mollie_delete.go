@@ -83,8 +83,9 @@ func (a *MollieDeleteAdapter) readPayment(ctx context.Context, method, id string
 
 func verifyMolliePayment(payment molliePayment, request SessionRequest, id, cartID string) bool {
 	amount, err := totals.Resolve(totals.Number{Decimal: payment.Amount.Value})
-	expected, expectedErr := totals.Resolve(totals.Number{Decimal: request.Amount})
-	return err == nil && expectedErr == nil && !strings.HasPrefix(expected, "-") &&
+	settled, expectedErr := mollieAmount(request.Amount)
+	expected, canonicalErr := totals.Resolve(totals.Number{Decimal: settled})
+	return err == nil && expectedErr == nil && canonicalErr == nil && !strings.HasPrefix(expected, "-") &&
 		amount == expected && payment.Amount.Currency == strings.ToUpper(request.Currency) &&
 		payment.ID == id && payment.Metadata.SessionID == request.SessionID &&
 		(cartID == "" || payment.Metadata.CartID == cartID)
