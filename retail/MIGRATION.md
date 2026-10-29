@@ -217,3 +217,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-29 买赠补充：[购买/赠品数量共享与精确分摊](../docs/migration/buy-get-allocation.md)承接购买优先保留赠品、稳定排序、跨code独立角色数量、重复应用与1000轮显式截断；20组实际原函数对照和1项共享map浮点精度修复证据固定。预算检查/并发登记、规则上下文组装及完整购物车命令仍缺，T032/T033未验收。
 
 2026-10-29 促销结构补充：[0031十表与75来源字段](../docs/migration/promotion-schema.md)承接促销/活动/预算/规则及三类关联，保留精确raw、完整属性文本、软删有效唯一性和物理外键。两项完整文本唯一性hold及通用写禁用保留；隔离SQL证据以最新admin-auth-report.promotion_schema和源码SHA为准。预算并发登记/撤销、配置导入及完整购物车命令仍待完成，T032/T033未验收。
+
+2026-10-29 预算登记补充：[调用方事务内的当前锁读与精确用量](../docs/migration/promotion-usage-registration.md)承接spend/usage/use_by_attribute、促销/活动/预算锁、完整属性值与金额raw，修复共享活动多code漏计。实库范围以admin-auth-report.promotion_usage及源码SHA为准；该阶段不提交/不提供HTTP/不独立幂等，撤销、完整回执和购物车结账编排仍缺，相关任务未验收。
