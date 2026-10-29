@@ -71,3 +71,19 @@ Stage 相同输入重放，变更摘要拒绝。Claim 在 MySQL 行锁内一次�
 该执行器当前仅在人工adapter测试中使用，未接入worker/HTTP或真实支付渠道；没有实现部分失败补偿、创建响应持久化或session重建。T032/T033及checkout依然未验收，0035开关默认关闭。
 
 执行器验收证据：`go test ./...`、隔离MySQL/Redis完整23组回归通过，完整报告282项源码SHA匹配（35迁移保持）。旧health/Admin/商品/购物车页面均200，近期日志无新增错误，仅既有PayPal seller nonce提示。人工适配器证据不能代替真实渠道沙箱/补偿/checkout验收。
+
+## 支付刷新部分失败的持久补偿（0036）
+
+新增cart_payment_refresh_compensations及加密result_envelope。`StagePaymentCompensation`选择不可逆的补偿分支：重新核对当前归属/generation/version、冻结、原计划和源指纹，锁内检查全部删除效果；inflight/uncertain必须先核实，不能一边重试删除一边补偿。只为succeeded删除分配新本地session ID并原子保存create请求；pending/failed原session保留。新ID、data.session_id、context.idempotency_key及已有mollie_attempt绑定同一个新稳定ID，重试不变，JSON大数不经float。开启补偿后，原删除claim/execute/正常complete均拒绝。读取补偿选择和有效payments使用锁定当前读，避免RR旧快照漏掉已选择分支或已付事实。
+
+`payments.RecordSessionCreation`将经过adapter核实的status/data与精确attempt加密保存，并在同一事务将create receipt标为succeeded。重放核验原密文及同一结果，不覆盖改变后的响应，不修补坏密文；缺key/坏密文/错误attempt拒绝。`ReadSessionCreation`要求succeeded、认证结果及同一个attempt，不能仅凭低层success receipt激活session。可保存authorized/captured等远端事实，但它们不能作为普通未付替代session被补偿完成逻辑激活，需后续人工/渠道核实处理。
+
+`ClaimPaymentCompensationSession`只读保存请求后按原租约规则认领create；不执行真实创建。`CompletePaymentCompensation`仅在全部create都有认证的未付结果后，原子插入加密的新session、软删对应已删除原session、递增cart版本、完成原操作及补偿操作并释放冻结。新session合并原data和渠道返回data，保存新local session_id；原集合金额/币种不变，其他原session不变。最后写失败整体回滚，外部成功结果保留供下一次本地完成。零已删除效果可不建session直接完成取消；补偿成功重放不重复插入或增加版本，仍检查当前归属。
+
+隔离人工MySQL串联三个原session：成功删除A、未知B先拒绝补偿，核实B失败后仅重建A，C未调用保持。验证阶段失败无孤儿create、稳定ID/幂等字段、原流程被阻止、create attempt校验、加密响应与success原子、缺key/变更结果/篡改拒绝、已授权结果不激活、最终写故障完整回滚、新session精确响应恢复、原集合和B/C保持、版本/解除冻结原子、成功重放/撤销归属拒绝，以及零效果取消。报告新增cart_payment_compensation。
+
+本轮接通的是私有持久补偿事务与返回结果保存；尚缺create adapter执行器、真实渠道适配/核实、worker/HTTP入口和完整购物车命令回滚协调。没有调用真实支付渠道；0035能力默认关闭，T032/T033和checkout尚未验收。
+
+独占关系校验：原导入cart_payment_collections只有复合主键，并不保证一个collection只关联一个cart。所有有副作用的刷新/补偿在锁定当前读中要求恰好一个有效cart链接且等于当前授权cart；共享集合拒绝，其他已软删链接不阻挡。人工SQL验证共享集合同时拒绝删除claim和补偿，软删另一链接后才可继续。该保护防止持有一个cart被误当作共享会话的完整操作权限。
+
+0036最终验收：`go test ./...`与隔离MySQL/Redis完整23组回归通过，36迁移验证成功；完整报告286项/专项183项实现SHA匹配，包含共享集合保护。旧health/Admin/商品/购物车页面均HTTP 200，近期日志无新增错误，仅既有PayPal nonce提示。本轮没有真实渠道调用或完整checkout验收。

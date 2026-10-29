@@ -76,7 +76,7 @@ func paymentOperationReady(ctx context.Context, tx *gorm.DB, in PaymentRefreshCo
 	return nil
 }
 
-func paymentSources(ctx context.Context, tx *gorm.DB, plan PaymentRefreshPlan) (paymentCollectionSource, []paymentSessionSource, [32]byte, error) {
+func paymentSources(ctx context.Context, tx *gorm.DB, cartID string, plan PaymentRefreshPlan) (paymentCollectionSource, []paymentSessionSource, [32]byte, error) {
 	var c paymentCollectionSource
 	var sessions []paymentSessionSource
 	failed := func(err error) (paymentCollectionSource, []paymentSessionSource, [32]byte, error) {
@@ -84,6 +84,16 @@ func paymentSources(ctx context.Context, tx *gorm.DB, plan PaymentRefreshPlan) (
 	}
 	if !plan.UpdateCollection {
 		return c, sessions, [32]byte{}, nil
+	}
+	// The imported source relation permits a collection to be linked to several
+	// carts. Possession of one cart cannot authorize effects on shared sessions.
+	// Current locking read also prevents RR snapshots hiding a newly shared link.
+	var owners []struct{ CartID string }
+	if tx.WithContext(ctx).Table("cart_payment_collections").Select("cart_id").Where("payment_collection_id=? AND deleted_at IS NULL", plan.CollectionID).Order("cart_id").Clauses(clause.Locking{Strength: "SHARE"}).Limit(2).Scan(&owners).Error != nil {
+		return failed(ErrStorage)
+	}
+	if len(owners) != 1 || owners[0].CartID != cartID {
+		return failed(ErrConflict)
 	}
 	if tx.WithContext(ctx).Table("payment_collections").Select("id,currency_code,CAST(amount AS CHAR) AS amount,raw_amount,status,CAST(authorized_amount AS CHAR) AS authorized_amount,raw_authorized_amount,CAST(captured_amount AS CHAR) AS captured_amount,raw_captured_amount,completed_at").Where("id=? AND deleted_at IS NULL", plan.CollectionID).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&c).Error != nil {
 		return failed(ErrSchema)
@@ -135,11 +145,11 @@ func paymentSources(ctx context.Context, tx *gorm.DB, plan PaymentRefreshPlan) (
 		}
 	}
 	if len(plan.DeleteSessionIDs) > 0 {
-		var paid int64
-		if tx.WithContext(ctx).Table("payments").Where("payment_session_id IN ? AND deleted_at IS NULL", plan.DeleteSessionIDs).Count(&paid).Error != nil {
+		var paid []struct{ ID string }
+		if tx.WithContext(ctx).Table("payments").Select("id").Where("payment_session_id IN ? AND deleted_at IS NULL", plan.DeleteSessionIDs).Clauses(clause.Locking{Strength: "SHARE"}).Limit(1).Scan(&paid).Error != nil {
 			return failed(ErrSchema)
 		}
-		if paid != 0 {
+		if len(paid) != 0 {
 			return failed(ErrConflict)
 		}
 	}
@@ -229,6 +239,13 @@ func StagePaymentRefresh(ctx context.Context, tx *gorm.DB, store string, ref ses
 	if err != nil {
 		return failed, err
 	}
+	var compensation []struct{ OperationID string }
+	if tx.Table("cart_payment_refresh_compensations").Select("operation_id").Where("cart_id=? AND operation_id=?", ref.CartID, in.OperationID).Clauses(clause.Locking{Strength: "SHARE"}).Limit(1).Scan(&compensation).Error != nil {
+		return failed, ErrStorage
+	}
+	if len(compensation) != 0 {
+		return failed, ErrConflict
+	}
 	row, manifest, found, err := readPaymentOperation(tx, ref, in)
 	if err != nil {
 		return failed, err
@@ -247,7 +264,7 @@ func StagePaymentRefresh(ctx context.Context, tx *gorm.DB, store string, ref ses
 	if err != nil {
 		return failed, err
 	}
-	_, sources, fingerprint, err := paymentSources(ctx, tx, plan)
+	_, sources, fingerprint, err := paymentSources(ctx, tx, ref.CartID, plan)
 	if err != nil {
 		return failed, err
 	}

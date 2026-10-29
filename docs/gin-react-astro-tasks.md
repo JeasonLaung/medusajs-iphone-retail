@@ -486,3 +486,5 @@
 2026-10-29 支付协调补充：[购物车版本/冻结与内部stage-claim-record-complete](migration/cart-payment-refresh.md)增加0035默认关闭能力、真实归属和源/目标绑定、加密运行时session读取、持久冻结、已付拒绝及全部确认后的本地金额/session/版本原子完成；人工MySQL覆盖部分成功、未知结果和最终写入失败回滚。真实provider/worker/HTTP、补偿与checkout尚未完成，T032/T033未验收。
 
 2026-10-29 支付执行补充：[提交后渠道调用及独立结果持久化](migration/cart-payment-refresh.md)连接已有冻结/claim与20秒adapter调用、取消后有界保存、错误/panic未知分类、结果写失败不盲重试；人工SQL验证调用无事务锁和并发单次。尚未注册真实provider或接入worker/HTTP，补偿/session重建与checkout仍缺，T032/T033未验收。
+
+2026-10-29 支付补偿补充：[持久重建计划/加密创建结果/本地原子恢复](migration/cart-payment-refresh.md)增加0036，只重建确认已删session，未知删除先核实，稳定新ID和幂等键，补偿期间禁止原删除/正常完成，完整结果认证后替换/版本/解除冻结原子完成；已付创建结果不激活、原集合及未删session保持。人工MySQL覆盖阶段/最终写故障回滚和零效果取消；create执行器、真实provider/worker/HTTP与checkout仍未完成。

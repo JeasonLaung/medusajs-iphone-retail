@@ -55,7 +55,7 @@ func TestOwnedCartRuntime(t *testing.T) {
 		t.Fatal("cart runtime migration plan unavailable")
 	}
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 35 {
+	if err != nil || r.Applied != 36 {
 		t.Fatal("cart runtime migration failed")
 	}
 	exec := func(query string, args ...any) {
@@ -323,11 +323,12 @@ func TestOwnedCartRuntime(t *testing.T) {
 	checkCartAmounts(t, ctx, gdb, sessions)
 	checkCartPaymentOperations(t, ctx, gdb)
 	checkCartPaymentExecution(t, ctx, gdb)
+	checkCartPaymentCompensation(t, ctx, gdb)
 	checkCartItems(t, ctx, gdb, sessions)
 	checkCartHTTP(t, ctx, gdb, sessions, redisClient)
 	exec(`UPDATE cart_command_capabilities SET enabled=FALSE WHERE command='cart.access'`)
 	if _, err := cart.Inspect(ctx, gdb, "shop", separate.Reference); err != cart.ErrSchema {
 		t.Fatal("disabled access capability accepted")
 	}
-	t.Log(`CART_RUNTIME_REHEARSAL {"migrations":35,"atomic_cart_authority_receipt":true,"anonymous_only":true,"real_redis_to_mysql_binding":true,"concurrent_creates":8,"fresh_create":1,"scoped_idempotency":true,"changed_request_rejected":true,"current_authority_on_replay":true,"legacy_id_denied":true,"cross_store_denied":true,"closed_deleted_customer_bound_denied":true,"region_currency_locale_validated":true,"receipt_failure_atomic":true,"autocommit_nested_create_rejected":true,"mysql_lock_wait_observed":true,"stale_version_rejected":true,"caller_rollback_preserved":true,"stale_redis_generation_denied":true,"disabled_capability_denied":true,"http_integrated":false,"checkout_integrated":false}`)
+	t.Log(`CART_RUNTIME_REHEARSAL {"migrations":36,"atomic_cart_authority_receipt":true,"anonymous_only":true,"real_redis_to_mysql_binding":true,"concurrent_creates":8,"fresh_create":1,"scoped_idempotency":true,"changed_request_rejected":true,"current_authority_on_replay":true,"legacy_id_denied":true,"cross_store_denied":true,"closed_deleted_customer_bound_denied":true,"region_currency_locale_validated":true,"receipt_failure_atomic":true,"autocommit_nested_create_rejected":true,"mysql_lock_wait_observed":true,"stale_version_rejected":true,"caller_rollback_preserved":true,"stale_redis_generation_denied":true,"disabled_capability_denied":true,"http_integrated":false,"checkout_integrated":false}`)
 }
