@@ -59,3 +59,14 @@ test('new controller after page reload reuses the persisted descriptor without g
  const restored=createPaymentCommands({storage:{getItem:k=>f.data.get(k)??null,setItem:()=>{throw Error('must reuse')}},readCSRF:()=>csrf,uuid:()=>{throw Error('must reuse')},exclusive:async a=>a(),client:{startPayment:async(cart,input)=>{assert.equal(cart,'cart');assert.deepEqual(input,{version:'2',operationID});return receipt() as PaymentAttempt}}})
  assert.equal((await restored.submit('cart','3')).state,'ready')
 })
+
+test('private method availability binds current cart/version and never offers another method for a frozen attempt',async()=>{
+ const available={cart_id:'cart',version:'9007199254740993123',providers:[{id:'pp_mollie-hosted-checkout_mollie'}],attempt_started:false}
+ const api=(body:unknown,status=200)=>new CartClient({readScopeCSRF:()=>undefined,fetcher:async(path,init)=>{assert.equal(path,'/api/store/carts/cart/payment-options');assert.equal(init?.method,'GET');return reply(body,status)}})
+ assert.deepEqual(await api(available).paymentOptions('cart'),available)
+ assert.deepEqual((await api({...available,providers:[],attempt_started:true}).paymentOptions('cart'))?.providers,[])
+ for(const body of [{...available,cart_id:'foreign'},{...available,version:1},{...available,attempt_started:true},{...available,providers:[...available.providers,...available.providers]},{...available,providers:[{id:'pp_paypal_paypal'}]},{...available,providers:[{id:'pp_mollie-hosted-checkout_mollie',api_key:'secret'}]},{...available,api_key:'secret'}])await assert.rejects(api(body).paymentOptions('cart'))
+ assert.equal(await api({},404).paymentOptions('cart'),null);await assert.rejects(api({},503).paymentOptions('cart'))
+ const config={ginOrigin:'http://127.0.0.1:9100',storefrontOrigin:'http://127.0.0.1:9300'}
+ assert.equal((await cartBridge(new Request(config.storefrontOrigin+'/api/store/carts/cart/payment-options',{headers:{Cookie:'retail_cart_possession='+csrf+'; admin=private'}}),config,async(_path,init)=>{assert.equal(new Headers(init?.headers).get('Cookie'),'retail_cart_possession='+csrf);return reply(available)})).status,200)
+})

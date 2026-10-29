@@ -104,13 +104,17 @@ func main() {
 		log.Fatal("Dedicated session Redis unavailable or configuration invalid")
 	}
 	defer redisClient.Close()
+	initialPayment, err := checkoutOptions(os.Getenv)
+	if err != nil {
+		log.Fatal("Explicit checkout payment origins, independent keyring and Mollie credentials required")
+	}
 	var cartOptions []cart.HTTPOptions
 	if origin := os.Getenv("STOREFRONT_ORIGIN"); origin != "" {
 		manualProviders := []string{}
 		if raw := os.Getenv("MANUAL_SHIPPING_PROVIDER_IDS"); raw != "" {
 			manualProviders = strings.Split(raw, ",")
 		}
-		cartOptions = append(cartOptions, cart.HTTPOptions{ManualProviderIDs: manualProviders, Sessions: sessions, Origin: origin, StoreID: os.Getenv("STOREFRONT_STORE_ID"), Secure: os.Getenv("SESSION_SECURE") == "true"})
+		cartOptions = append(cartOptions, cart.HTTPOptions{InitialPayment: initialPayment, ManualProviderIDs: manualProviders, Sessions: sessions, Origin: origin, StoreID: os.Getenv("STOREFRONT_STORE_ID"), Secure: os.Getenv("SESSION_SECURE") == "true"})
 	}
 	router, err := server.RouterWithAuth(db, identity.Options{Sessions: sessions, Origin: os.Getenv("ADMIN_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true"}, cartOptions...)
 	if err != nil {

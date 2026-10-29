@@ -89,6 +89,7 @@ func checkInitialPayments(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		t.Fatalf("default gate differs: %v", err)
 	}
 	exec("UPDATE cart_checkout_runtime SET enabled=TRUE WHERE id=1")
+	checkPaymentOptions(t, ctx, db, sessions, ref, options)
 	exec("UPDATE payment_providers SET is_enabled=FALSE WHERE id=?", provider)
 	if _, err = cart.StartInitialPayment(ctx, db, "shop", ref, in, options); err != cart.ErrConfiguration {
 		t.Fatalf("disabled provider differs: %v", err)
@@ -130,6 +131,10 @@ func checkInitialPayments(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	result, err := cart.StartInitialPayment(ctx, db, "shop", ref, in, options)
 	if err != nil || result.State != "ready" || result.CheckoutURL == nil || *result.CheckoutURL != "https://www.mollie.com/checkout/initial" {
 		t.Fatalf("ready replay: %v %s", err, result.State)
+	}
+	available, optionsErr := cart.ReadPaymentOptions(ctx, db, "shop", ref, options)
+	if optionsErr != nil || !available.AttemptStarted || len(available.Providers) != 0 || available.Version != "5" {
+		t.Fatal("frozen cart exposed another payment initiation")
 	}
 	encoded, _ := json.Marshal(result)
 	if bytes.Contains(encoded, []byte("hidden")) || bytes.Contains(encoded, []byte("tr_initial")) {

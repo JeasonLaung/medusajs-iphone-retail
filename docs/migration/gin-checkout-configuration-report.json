@@ -1,0 +1,42 @@
+{
+  "status": "startup_configuration_and_private_payment_options_verified",
+  "startup_provider_calls": false,
+  "live_payment_verified": false,
+  "payment_button_connected": false,
+  "go_test_all": true,
+  "isolated_mysql_redis": true,
+  "migrations": 47,
+  "includes_uncommitted_payment_0037": false,
+  "checks": [
+    "disabled startup does not read payment secrets",
+    "explicit independent keyring and hosted Mollie adapter",
+    "unsafe origins and missing configuration rejected",
+    "no secret values in configuration errors",
+    "current cart and generation authority",
+    "SQL checkout gate closed",
+    "disabled provider omitted",
+    "deleted region-provider relation omitted",
+    "frozen cart offers no new methods",
+    "HTTP origin and possession required",
+    "private no-store and no cookie refresh",
+    "fixed Astro bridge and strict DTO validation"
+  ],
+  "frontend_tests": 134,
+  "astro_files": 295,
+  "astro_errors": 0,
+  "astro_warnings": 0,
+  "implementation_sha256": {
+    "retail/backend/cmd/api/main.go": "41a893d09b1eee4adc8774f8bc9bbad74349270559219a2377822479cb8d0ab2",
+    "retail/backend/cmd/api/checkout.go": "fb5f308cd94af3148d7e4d168b7c0ecd5e7b66a980c900f065b5f7f22f4e5158",
+    "retail/backend/cmd/api/checkout_test.go": "b0cee69d1092caa270b31221b80b3376db20718ff9360147c22df5d634556972",
+    "retail/backend/.env.example": "6578924234dbe3449716a7a79521c478c1040a49a9feb70891a5292e9e2ad555",
+    "retail/backend/internal/cart/checkout_options.go": "4fb70ee88f94652d30dca02e4f6fe62e8b0e5b5d174825cff1760b1b2d37866b",
+    "retail/backend/internal/cart/http.go": "538fa12df80d40108d2c8e8fe462baee9ba74f4a7b4669f2f4bfaa2b387e2926",
+    "retail/backend/internal/identity/cart_initial_payment_test.go": "69518f77eeab6d468106651db4ae730d40441ef0703c2e44c6ee2deb9dd6f7b1",
+    "retail/backend/internal/identity/cart_payment_options_test.go": "d79c4c5d1a1a1e67cfd4eee6d7a593867753046fe86f3cb6f67193b588232c64",
+    "retail/backend/internal/sessionstore/cart_scope.go": "baa418d7e0bb945b74e85115a3f1b4c40ef680808e75d547f142f9f07e8f0131",
+    "retail/storefront/src/lib/cart-client.ts": "031384ec7dfde4953a907b220f6d170d7e32ad367b0d854fd88befd1d86c1720",
+    "retail/storefront/src/lib/cart-bridge.ts": "c2883fbc4ecf0b357aa12fe4fce80fc4596d75694cc4278f4d673d86c159008a",
+    "retail/storefront/tests/checkout-payment.test.ts": "81b25ca66940729f6abdb4c59e70065414a910e54f06282f373c214fbb75c87d"
+  }
+}

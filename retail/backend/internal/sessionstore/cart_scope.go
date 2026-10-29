@@ -82,7 +82,7 @@ func (s *Store) ResolveCartScope(ctx context.Context, token, csrf string) (CartS
 func (s *Store) AllowCartRequest(ctx context.Context, kind, identity string) (bool, error) {
 	limit := 0
 	switch kind {
-	case "payment-status-possession", "confirmation-possession":
+	case "payment-status-possession", "confirmation-possession", "payment-options-possession":
 		limit = 90
 	case "scope-ip":
 		limit = 8

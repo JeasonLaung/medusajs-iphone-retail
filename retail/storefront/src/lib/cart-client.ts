@@ -31,6 +31,7 @@ export type DeliveryOption={id:string;profile_id:string;name:string;description:
 export type DeliveryOptions={cart_id:string;version:string;currency_code:string;options:DeliveryOption[];selected_option_ids:string[];complete:boolean}
 export type ShippingInput={operationID:string;version:string;optionID:string}
 export type ShippingReceipt={cart_id:string;version:string;option_id:string;replayed:boolean}
+export type CheckoutPaymentOptions={cart_id:string;version:string;providers:{id:'pp_mollie-hosted-checkout_mollie'}[];attempt_started:boolean}
 export type PaymentAttempt={cart_id:string;version:string;operation_id:string;state:'ready'|'processing'|'requires_review';checkout_url:string|null}
 export type CartCompletion={cart_id:string;order_id:string;version:string}
 export type PaymentStatus={cart_id:string;version:string;state:'pending'|'authorized'|'paid_pending_order'|'failed'|'requires_review'}
@@ -266,6 +267,17 @@ export class CartClient {
    if(status!==200||v.cart_id!==id||v.line_id!==lineID||v.quantity!==quantity||typeof v.replayed!=='boolean'||!matches(v.version,versionPattern)||BigInt(v.version)!==BigInt(version)+1n)throw protocol()
    return {cart_id:id,line_id:lineID,quantity,version:v.version,replayed:v.replayed}
   }catch{throw new CartError('protocol',status,true)}
+ }
+
+ async paymentOptions(id:string):Promise<CheckoutPaymentOptions|null>{
+  if(!matches(id,idPattern))throw new CartError('input')
+  let response:{status:number;value:unknown}
+  try{response=await this.request(`/api/store/carts/${encodeURIComponent(id)}/payment-options`,'GET')}
+  catch(error){if(error instanceof CartError&&(error.status===401||error.status===404))return null;throw error}
+  const {status,value}=response,v=record(value);keys(v,['cart_id','version','providers','attempt_started'])
+  if(status!==200||v.cart_id!==id||!matches(v.version,versionPattern)||BigInt(v.version)>18446744073709551615n||typeof v.attempt_started!=='boolean'||!Array.isArray(v.providers)||v.providers.length>1||v.attempt_started&&v.providers.length!==0)throw protocol()
+  for(const item of v.providers){const p=record(item);keys(p,['id']);if(p.id!=='pp_mollie-hosted-checkout_mollie')throw protocol()}
+  return v as CheckoutPaymentOptions
  }
 
  async startPayment(id:string,input:{operationID:string;version:string},authorization:{csrfToken:string}):Promise<PaymentAttempt>{

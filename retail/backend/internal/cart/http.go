@@ -89,6 +89,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/carts/:id/amounts", h.Amounts)
 	private.GET("/carts/:id/view", h.View)
 	private.GET("/carts/:id/delivery-options", h.Delivery)
+	private.GET("/carts/:id/payment-options", h.PaymentOptions)
 	private.POST("/carts/:id/shipping-methods", h.Shipping)
 	private.POST("/carts/:id/payment-attempts", h.InitialPayment)
 	private.POST("/carts/:id/payment-status", h.PaymentStatus)
@@ -409,6 +410,22 @@ func (h *HTTPHandler) detail(c *gin.Context, mode string, current bool) {
 	}
 	if ref.StoreID != h.store || !current && ref.CartID != c.Param("id") {
 		cartHTTPError(c, ErrDenied)
+		return
+	}
+	if mode == "payment-options" {
+		if h.initialPayment == nil {
+			cartHTTPError(c, ErrConfiguration)
+			return
+		}
+		if !h.allow(c, ctx, "payment-options-possession", token) {
+			return
+		}
+		result, err := ReadPaymentOptions(ctx, h.db, h.store, ref, *h.initialPayment)
+		if err != nil {
+			cartHTTPError(c, err)
+			return
+		}
+		c.JSON(200, result)
 		return
 	}
 	if mode != "detail" {
