@@ -44,7 +44,7 @@
     "retail/storefront/src/components/account/login-template.tsx": "91b02e44bbc0e488273db2c87867caf9176d62b240204d76705ee29c6d1216c7",
     "retail/storefront/src/components/account/login.tsx": "6e59b15fb195b36ccc1afd68e6e5d83e44beb000a5b42024cdd4276f0dab5d8d",
     "retail/storefront/src/components/account/register.tsx": "b73661b210a3a896d36dc3e6c87fdcfbc8e2c24e802f022ba4634145f7427b11",
-    "retail/storefront/src/components/account/ui.tsx": "7269366d433a48b514267f7087f244a37847d1111dd1b9349f6ec3875dfc625b",
+    "retail/storefront/src/components/account/ui.tsx": "97d13dbafa8a2b664b76e5a0835238f00e29fdc165c3fb2485dc04698ae74847",
     "retail/storefront/src/components/account/verification-notice.tsx": "62affd7472d5a7d63d470628901ae0bfc6a9d367f0a669150258713908910962",
     "retail/storefront/src/components/account/verify-account.tsx": "ac3ad3233c9bc83fe9863766cf0704c3d92be39325e0bab381b0ff1be7fc24ba",
     "retail/storefront/src/components/account/translations/en.json": "d6870fde8edc1c6813a73579ccc9e0645a4d88cbb528900c4944ae24b1b71268",
