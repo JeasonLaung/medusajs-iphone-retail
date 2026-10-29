@@ -44,6 +44,8 @@
     "caller_refresh_visible_and_rollback_atomic": true,
     "malformed_source_amount_rejected": true,
     "read_only_fingerprints": true,
+    "target_rows_relations_and_existing_discounted_totals": true,
+    "sql_targets_to_compute_and_adjustment_rollback": true,
     "public_http_or_checkout_integrated": false
   },
   "cart_promotion_adjustments": {
@@ -1144,7 +1146,7 @@
     "retail/backend/internal/identity/cart_amounts_test.go": "d5ce795bb25fbb3e440b79f20d63c22673fd94b6d8a0551b300882b83c8c84dc",
     "retail/backend/internal/identity/promotion_products_test.go": "d90aaa6556dc17b66f6e1a7286cb42112d1ec37ffadb26272f0e4688b871e07e",
     "retail/backend/internal/identity/cart_promotion_adjustments_test.go": "3cda50f61dbb5c3af9a15f89aadc32e1a798a6294f39546388d94ff2eac7a611",
-    "retail/backend/internal/identity/cart_promotion_amounts_test.go": "2eec18b655e075c91b2d3937660f7c1cd9fc1c51773e243f468c506de341d054",
+    "retail/backend/internal/identity/cart_promotion_amounts_test.go": "3acf3bbc383d98f2dc810c49130c43c6e2b95730828eaf586f5120cf53f7b4fa",
     "retail/backend/internal/identity/cart_items_test.go": "7dc1d277b6c465b49f907766a59905206bf2e903d389c74bc2307ba4f4f7dcb0",
     "retail/backend/internal/identity/cart_items_http_test.go": "24272a0cfb71c8f26308b0bd47db754a5c1f6fccd1498622062125b438c98222",
     "retail/backend/internal/cart/amounts.go": "e9b75c133696bd13fc4b85fb9f3d06430763b62126d6d6958ff77ceb92aae2a8",
@@ -1160,6 +1162,7 @@
     "retail/backend/internal/cart/promotion_adjustments.go": "754b6c938aacf8661788c39acca7dcd64c8f0fb11801a0df43b945ce4d35170a",
     "retail/backend/internal/cart/promotion_codes.go": "a8114f0928974efe6d08cceb57541dc6b2792ce0b4f314ba5ea6b2d353c62f9e",
     "retail/backend/internal/cart/promotion_codes_test.go": "06cab05145910e725930d82f49c1a40faa52528819e8df5349921ff0fb4017c1",
+    "retail/backend/internal/cart/promotion_targets.go": "62a76bc00150a72616c39d73b63cfef9deb2ed5ea69f5bbd9f468cdd3393ad5c",
     "retail/backend/internal/cart/runtime.go": "731177e6b7eefce005681728460cd8ffb288b67924691426ec35ff8863c5a99f",
     "retail/backend/internal/cart/runtime_test.go": "62923e9582ffe56ab98bacc8ee806079d9ccf8efb0209436d19809261ed409eb",
     "retail/backend/internal/cart/schema.go": "7fd126f7184d19f4281a7bebbf1fc09eb8657abb82fbdcca3c02dbfa2775a392",

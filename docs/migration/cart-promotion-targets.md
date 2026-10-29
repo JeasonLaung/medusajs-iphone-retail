@@ -1,0 +1,21 @@
+# 购物车促销目标上下文
+
+2026-10-29：`cart.ReadPromotionTargets`在调用方事务重查当前购物车授权和版本，组装items与shipping_methods规则事实。它是私有内部上下文，包含原`cartFieldsForRefreshSteps`选择的metadata、data、provider等字段，禁止直接返回HTTP、写入日志或替代公开购物车DTO。它不创建/提交事务、不刷新价格或税、不变更版本、不完成checkout。
+
+商品行和配送方法使用固定字段白名单，保留已保存的字符串、null、布尔、数量、时间、JSON及原raw字段。数字通过SQL文本及JSON number读取，嵌套JSON用UseNumber，避免float64中转丢失精度。价格和调整金额按scalar/raw成对校验，以有效raw值提供数值字段。时间按原JS Date毫秒精度编码。未来新增SQL列不会自动成为规则字段。
+
+复用已有金额引擎读取现存税及调整项。subtotal/original_total仍是未折扣分配基数；total、discount_total等保留当前已折扣含义，不能将所有字段都替换为未折扣金额。原adjustments与tax_lines按有效父对象及软删条件附回，手工/有code调整均保留。损坏已有raw金额整体拒绝，不回退或把上下文当成没有优惠。原始存储raw_*字段保留，计算出来的totals提供精确JSON number；尚未仿造原BigNumber计算字段的raw对象序列化。
+
+items.product与items.variant分别按行保存的关联ID读取当前catalog关系；缺失/软删关系为null，不删除购物车行，不由另一个关系猜测补齐。复用已验证的内部draft、分类/标签、规格尺寸及配送档案语义。shipping_option只读取原图选中的shipping_option_type_id和shipping_profile_id两个标量；option本身缺失/软删为null，type/profile目标软删不抹掉option保存的外键值。这与配送报价的可用性校验是不同读取目的，不授予购买/配送资格。
+
+保留1000商品行、100配送方法、每目标100税/调整项上限；查询取上限加1拒绝，整体JSON最多1MiB，过大或解析失败不返回部分上下文。读取顺序稳定。调用方应使用同一RR事务并在前序价格/税/运费阶段之后调用，失败整体回滚。
+
+## 实际证据
+
+隔离CartRuntime测试沿用人工购物车，验证未折扣商品基数200/原含税250与当前含折扣225、运费基数10与当前含折扣10并存；有效税和调整项、私有metadata、nullable字段、时间和raw不丢失，软删父/子不进入。autocommit、错误版本/授权拒绝且无部分结果。
+
+同一事务插入人工当前draft商品、规格与配送选项，读取product/variant/metadata原规则路径，保留超18位价格raw精度及软删type/profile的option标量外键。把实际读取结果传给ComputeCandidates，按option type计算10%运费优惠1，再用ReplacePromotionAdjustments写入；重新读取可见新调整项及运费含税8.75。随后模拟后续失败，整体回滚并核对购物车/库存指纹。另测软删option、坏旧调整raw与超1MiB JSON拒绝。
+
+cart-runtime及全量报告在cart_promotion_amounts中包含target_rows_relations_and_existing_discounted_totals、sql_targets_to_compute_and_adjustment_rollback；报告源码SHA需同时匹配。本测试使用人工上下文及配置验证步骤组合，不是生产HTTP命令验收。
+
+仍缺订单级、地址/region/客户新登录态等完整上下文、计算raw对象兼容、完整规则覆盖审计、持久幂等版本/支付刷新和checkout编排。该投影不能单独作为完整促销上下文使用；T032/T033未验收。
