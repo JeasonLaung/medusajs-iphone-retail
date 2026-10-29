@@ -94,11 +94,14 @@ func checkPromotionAmounts(t *testing.T, ctx context.Context, db *gorm.DB, ref s
 	exec(`UPDATE cart_shipping_methods SET raw_amount='{}' WHERE id='amount-cart-shipping'`)
 	read(ref, "1", true)
 	exec(`UPDATE cart_shipping_methods SET raw_amount='{"value":"12.5","precision":20}' WHERE id='amount-cart-shipping'`)
-	t.Log(`CART_PROMOTION_AMOUNTS_REHEARSAL {"actual_mysql":true,"undiscounted_item_and_shipping_tax_bases":true,"stale_adjustments_excluded_without_deletion":true,"current_authority_and_version":true,"caller_refresh_visible_and_rollback_atomic":true,"malformed_source_amount_rejected":true,"read_only_fingerprints":true,"target_rows_relations_and_existing_discounted_totals":true,"sql_targets_to_compute_and_adjustment_rollback":true,"order_address_region_and_payment_context":true,"anonymous_contact_does_not_restore_customer":true,"ambiguous_payment_collection_rejected":true,"public_http_or_checkout_integrated":false}`)
+	t.Log(`CART_PROMOTION_AMOUNTS_REHEARSAL {"actual_mysql":true,"undiscounted_item_and_shipping_tax_bases":true,"stale_adjustments_excluded_without_deletion":true,"current_authority_and_version":true,"caller_refresh_visible_and_rollback_atomic":true,"malformed_source_amount_rejected":true,"read_only_fingerprints":true,"target_rows_relations_and_existing_discounted_totals":true,"sql_targets_to_compute_and_adjustment_rollback":true,"payment_refresh_preparation_without_mutation":true,"order_address_region_and_payment_context":true,"anonymous_contact_does_not_restore_customer":true,"ambiguous_payment_collection_rejected":true,"public_http_or_checkout_integrated":false}`)
 }
 
 func checkPromotionContext(t *testing.T, ctx context.Context, db *gorm.DB, ref sessionstore.CartReference, fingerprint func() string) {
 	t.Helper()
+	if plan, err := cart.PreparePaymentRefresh(ctx, db, "shop", ref, "1"); err == nil || !reflect.DeepEqual(plan, cart.PaymentRefreshPlan{}) {
+		t.Fatal("autocommit payment preparation accepted")
+	}
 	data, err := os.ReadFile("../../../../docs/migration/fixtures/cart-promotion-context.json")
 	var oracle struct {
 		BaselineAmounts          map[string]string `json:"baseline_amounts"`
@@ -138,7 +141,22 @@ func checkPromotionContext(t *testing.T, ctx context.Context, db *gorm.DB, ref s
 				t.Fatal("order context fixture failed")
 			}
 		}
+		paymentPlan := func(wantErr bool) cart.PaymentRefreshPlan {
+			t.Helper()
+			plan, err := cart.PreparePaymentRefresh(ctx, tx, "shop", ref, "1")
+			if wantErr {
+				if err == nil || !reflect.DeepEqual(plan, cart.PaymentRefreshPlan{}) {
+					t.Fatal("invalid payment preparation returned partial plan")
+				}
+			} else if err != nil {
+				t.Fatalf("payment preparation: %v", err)
+			}
+			return plan
+		}
 		got, out := read(tx, ref, "1", false)
+		if plan := paymentPlan(false); plan.ShouldExecute || plan.Changed || plan.UpdateCollection || plan.CollectionID != "" || plan.Amount != "235" || len(plan.DeleteSessionIDs) != 0 {
+			t.Fatal("missing payment collection caused creation/update")
+		}
 		if got.CurrencyEpsilon != oracle.Epsilon["2"] || string(out["total"]) != "235" || string(out["subtotal"]) != "210" || string(out["original_item_total"]) != "250" || string(out["item_total"]) != "225" || string(out["item_subtotal"]) != "200" || string(out["shipping_subtotal"]) != "10" || string(out["customer"]) != "null" || string(out["shipping_address"]) != "null" || string(out["payment_collection"]) != "null" || string(out["promotions"]) != "[]" || string(out["email"]) != "null" {
 			t.Fatal("order amount/null/empty facts changed")
 		}
@@ -165,6 +183,22 @@ func checkPromotionContext(t *testing.T, ctx context.Context, db *gorm.DB, ref s
 		exec(`INSERT INTO cart_payment_collections(cart_id,payment_collection_id,id,created_at,updated_at) VALUES(?,'context-payment','context-payment-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`, ref.CartID)
 		exec(`INSERT INTO payment_sessions(id,currency_code,amount,raw_amount,provider_id,data,context,status,payment_collection_id,created_at,updated_at,deleted_at) VALUES('context-session','usd',235,'{"value":"235","precision":20}','artificial','{"token":"provider-secret"}','{"secret":"provider-secret"}','pending','context-payment',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),NULL),('context-deleted-session','usd',235,'{"value":"235","precision":20}','artificial','{}',NULL,'pending','context-payment',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 		got, out = read(tx, ref, "1", false)
+		if plan := paymentPlan(false); !plan.ShouldExecute || !plan.Changed || !plan.UpdateCollection || plan.CollectionID != "context-payment" || plan.Amount != "235" || plan.Currency != "eur" || !reflect.DeepEqual(plan.DeleteSessionIDs, []string{"context-session"}) {
+			t.Fatal("payment plan omitted exact amount/currency change or retained deleted session")
+		}
+		var unchangedPayment string
+		if tx.Raw("SELECT currency_code FROM payment_collections WHERE id='context-payment'").Scan(&unchangedPayment).Error != nil || unchangedPayment != "usd" {
+			t.Fatal("payment preparation changed collection")
+		}
+		exec(`UPDATE payment_collections SET currency_code='eur',raw_amount='{"value":"235.00000000000000000001","precision":100}' WHERE id='context-payment'`)
+		if !paymentPlan(false).Changed {
+			t.Fatal("sub-scalar raw difference ignored")
+		}
+		exec(`UPDATE payment_collections SET raw_amount='{"value":"2.35e2","precision":20}' WHERE id='context-payment'`)
+		if plan := paymentPlan(false); plan.Changed || plan.UpdateCollection || len(plan.DeleteSessionIDs) != 0 {
+			t.Fatal("equivalent exact payment amount invalidated sessions")
+		}
+		exec(`UPDATE payment_collections SET currency_code='usd',raw_amount='{"value":"235.00000000000000000001","precision":100}' WHERE id='context-payment'`)
 		if string(out["customer"]) != "null" || string(out["email"]) != `"Buyer@Example.test "` || strings.Contains(string(got.JSON), "provider-secret") || strings.Contains(string(got.JSON), "context-deleted-session") || strings.Contains(string(got.JSON), "DELETED") {
 			t.Fatal("contact identity/private payment/deletion semantics changed")
 		}
@@ -208,6 +242,9 @@ func checkPromotionContext(t *testing.T, ctx context.Context, db *gorm.DB, ref s
 			t.Fatal("deleted promotion link survived")
 		}
 		exec(`UPDATE payment_collections SET deleted_at=UTC_TIMESTAMP(6) WHERE id='context-payment'`)
+		if plan := paymentPlan(false); plan.ShouldExecute || plan.Changed || plan.CollectionID != "" {
+			t.Fatal("deleted payment collection planned for refresh")
+		}
 		_, out = read(tx, ref, "1", false)
 		if string(out["payment_collection"]) != "null" {
 			t.Fatal("deleted payment collection survived")
@@ -215,8 +252,10 @@ func checkPromotionContext(t *testing.T, ctx context.Context, db *gorm.DB, ref s
 		exec(`UPDATE payment_collections SET deleted_at=NULL WHERE id='context-payment'`)
 		exec(`INSERT INTO cart_payment_collections(cart_id,payment_collection_id,id,created_at,updated_at) VALUES(?,'context-payment-two','context-payment-link-two',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`, ref.CartID)
 		read(tx, ref, "1", true)
+		paymentPlan(true)
 		exec(`UPDATE cart_payment_collections SET deleted_at=UTC_TIMESTAMP(6) WHERE id='context-payment-link-two'`)
 		exec(`UPDATE payment_collections SET raw_amount='{}' WHERE id='context-payment'`)
+		paymentPlan(true)
 		read(tx, ref, "1", true)
 		exec(`UPDATE payment_collections SET raw_amount='{"value":"235","precision":20}' WHERE id='context-payment'`)
 		exec(`UPDATE carts SET customer_id='historical-reference' WHERE id=?`, ref.CartID)
@@ -225,6 +264,9 @@ func checkPromotionContext(t *testing.T, ctx context.Context, db *gorm.DB, ref s
 		for _, table := range []string{"payment_runtime_schema", "promotion_runtime_schema"} {
 			exec("UPDATE " + table + " SET reads_enabled=FALSE")
 			read(tx, ref, "1", true)
+			if table == "payment_runtime_schema" {
+				paymentPlan(true)
+			}
 			exec("UPDATE " + table + " SET reads_enabled=TRUE")
 		}
 		exec(`UPDATE commerce_currencies SET decimal_digits=0 WHERE code='eur'`)

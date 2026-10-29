@@ -1,0 +1,404 @@
+{
+  "format_version": 1,
+  "scope": "Original pure workflow callbacks only; no provider, database, application or compensation executed",
+  "source_file": "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/workflows/refresh-payment-collection.js",
+  "source_sha256": "6e154a7b4d628a2fff7df1e8df54fe695bdfa40af6fdabe4fc8cf20dc622e064",
+  "cases": [
+    {
+      "name": "provided-no-collection",
+      "input": {
+        "InputCartProvided": true,
+        "InputCartIDPresent": false,
+        "Amount": "235",
+        "Currency": "eur",
+        "Collection": null
+      },
+      "expected": {
+        "ShouldExecute": false,
+        "Changed": false,
+        "UpdateCollection": false,
+        "CollectionID": "",
+        "Amount": "235",
+        "Currency": "eur",
+        "DeleteSessionIDs": []
+      }
+    },
+    {
+      "name": "id-no-collection",
+      "input": {
+        "InputCartProvided": false,
+        "InputCartIDPresent": true,
+        "Amount": "235",
+        "Currency": "eur",
+        "Collection": null
+      },
+      "expected": {
+        "ShouldExecute": true,
+        "Changed": true,
+        "UpdateCollection": false,
+        "CollectionID": "",
+        "Amount": "235",
+        "Currency": "eur",
+        "DeleteSessionIDs": []
+      }
+    },
+    {
+      "name": "no-input",
+      "input": {
+        "InputCartProvided": false,
+        "InputCartIDPresent": false,
+        "Amount": "235",
+        "Currency": "eur",
+        "Collection": null
+      },
+      "expected": {
+        "ShouldExecute": false,
+        "Changed": false,
+        "UpdateCollection": false,
+        "CollectionID": "",
+        "Amount": "235",
+        "Currency": "eur",
+        "DeleteSessionIDs": []
+      }
+    },
+    {
+      "name": "unchanged",
+      "input": {
+        "InputCartProvided": true,
+        "InputCartIDPresent": false,
+        "Amount": "235",
+        "Currency": "eur",
+        "Collection": {
+          "ID": "collection-a",
+          "Amount": "235",
+          "Currency": "eur",
+          "SessionIDs": [
+            "session-a",
+            "session-b"
+          ]
+        }
+      },
+      "expected": {
+        "ShouldExecute": true,
+        "Changed": false,
+        "UpdateCollection": false,
+        "CollectionID": "collection-a",
+        "Amount": "235",
+        "Currency": "eur",
+        "DeleteSessionIDs": []
+      }
+    },
+    {
+      "name": "equivalent-scale",
+      "input": {
+        "InputCartProvided": true,
+        "InputCartIDPresent": false,
+        "Amount": "235.000",
+        "Currency": "eur",
+        "Collection": {
+          "ID": "collection-a",
+          "Amount": "2.35e2",
+          "Currency": "eur",
+          "SessionIDs": [
+            "session-a",
+            "session-b"
+          ]
+        }
+      },
+      "expected": {
+        "ShouldExecute": true,
+        "Changed": false,
+        "UpdateCollection": false,
+        "CollectionID": "collection-a",
+        "Amount": "235",
+        "Currency": "eur",
+        "DeleteSessionIDs": []
+      }
+    },
+    {
+      "name": "changed-amount",
+      "input": {
+        "InputCartProvided": true,
+        "InputCartIDPresent": false,
+        "Amount": "225",
+        "Currency": "eur",
+        "Collection": {
+          "ID": "collection-a",
+          "Amount": "235",
+          "Currency": "eur",
+          "SessionIDs": [
+            "session-a",
+            "session-b"
+          ]
+        }
+      },
+      "expected": {
+        "ShouldExecute": true,
+        "Changed": true,
+        "UpdateCollection": true,
+        "CollectionID": "collection-a",
+        "Amount": "225",
+        "Currency": "eur",
+        "DeleteSessionIDs": [
+          "session-a",
+          "session-b"
+        ]
+      }
+    },
+    {
+      "name": "changed-currency",
+      "input": {
+        "InputCartProvided": true,
+        "InputCartIDPresent": false,
+        "Amount": "235",
+        "Currency": "usd",
+        "Collection": {
+          "ID": "collection-a",
+          "Amount": "235",
+          "Currency": "eur",
+          "SessionIDs": [
+            "session-a",
+            "session-b"
+          ]
+        }
+      },
+      "expected": {
+        "ShouldExecute": true,
+        "Changed": true,
+        "UpdateCollection": true,
+        "CollectionID": "collection-a",
+        "Amount": "235",
+        "Currency": "usd",
+        "DeleteSessionIDs": [
+          "session-a",
+          "session-b"
+        ]
+      }
+    },
+    {
+      "name": "sub-scalar-precision-change",
+      "input": {
+        "InputCartProvided": true,
+        "InputCartIDPresent": false,
+        "Amount": "235.000000000000000000001",
+        "Currency": "eur",
+        "Collection": {
+          "ID": "collection-a",
+          "Amount": "235.000000000000000000002",
+          "Currency": "eur",
+          "SessionIDs": [
+            "session-a",
+            "session-b"
+          ]
+        }
+      },
+      "expected": {
+        "ShouldExecute": true,
+        "Changed": true,
+        "UpdateCollection": true,
+        "CollectionID": "collection-a",
+        "Amount": "235.000000000000000000001",
+        "Currency": "eur",
+        "DeleteSessionIDs": [
+          "session-a",
+          "session-b"
+        ]
+      }
+    },
+    {
+      "name": "large-exact-equality",
+      "input": {
+        "InputCartProvided": true,
+        "InputCartIDPresent": false,
+        "Amount": "9007199254740993.123456789012345678901",
+        "Currency": "eur",
+        "Collection": {
+          "ID": "collection-a",
+          "Amount": "9007199254740993.123456789012345678901",
+          "Currency": "eur",
+          "SessionIDs": [
+            "session-a",
+            "session-b"
+          ]
+        }
+      },
+      "expected": {
+        "ShouldExecute": true,
+        "Changed": false,
+        "UpdateCollection": false,
+        "CollectionID": "collection-a",
+        "Amount": "9007199254740993.123456789012345678901",
+        "Currency": "eur",
+        "DeleteSessionIDs": []
+      }
+    },
+    {
+      "name": "zero-total",
+      "input": {
+        "InputCartProvided": true,
+        "InputCartIDPresent": false,
+        "Amount": "0",
+        "Currency": "eur",
+        "Collection": {
+          "ID": "collection-a",
+          "Amount": "235",
+          "Currency": "eur",
+          "SessionIDs": [
+            "session-a",
+            "session-b"
+          ]
+        }
+      },
+      "expected": {
+        "ShouldExecute": true,
+        "Changed": true,
+        "UpdateCollection": true,
+        "CollectionID": "collection-a",
+        "Amount": "0",
+        "Currency": "eur",
+        "DeleteSessionIDs": [
+          "session-a",
+          "session-b"
+        ]
+      }
+    },
+    {
+      "name": "changed-no-sessions",
+      "input": {
+        "InputCartProvided": true,
+        "InputCartIDPresent": false,
+        "Amount": "200",
+        "Currency": "eur",
+        "Collection": {
+          "ID": "collection-a",
+          "Amount": "235",
+          "Currency": "eur",
+          "SessionIDs": []
+        }
+      },
+      "expected": {
+        "ShouldExecute": true,
+        "Changed": true,
+        "UpdateCollection": true,
+        "CollectionID": "collection-a",
+        "Amount": "200",
+        "Currency": "eur",
+        "DeleteSessionIDs": []
+      }
+    },
+    {
+      "name": "id-unchanged",
+      "input": {
+        "InputCartProvided": false,
+        "InputCartIDPresent": true,
+        "Amount": "235",
+        "Currency": "eur",
+        "Collection": {
+          "ID": "collection-a",
+          "Amount": "235",
+          "Currency": "eur",
+          "SessionIDs": [
+            "session-a",
+            "session-b"
+          ]
+        }
+      },
+      "expected": {
+        "ShouldExecute": true,
+        "Changed": false,
+        "UpdateCollection": false,
+        "CollectionID": "collection-a",
+        "Amount": "235",
+        "Currency": "eur",
+        "DeleteSessionIDs": []
+      }
+    },
+    {
+      "name": "id-currency-change",
+      "input": {
+        "InputCartProvided": false,
+        "InputCartIDPresent": true,
+        "Amount": "235",
+        "Currency": "usd",
+        "Collection": {
+          "ID": "collection-a",
+          "Amount": "235",
+          "Currency": "eur",
+          "SessionIDs": [
+            "session-a",
+            "session-b"
+          ]
+        }
+      },
+      "expected": {
+        "ShouldExecute": true,
+        "Changed": true,
+        "UpdateCollection": true,
+        "CollectionID": "collection-a",
+        "Amount": "235",
+        "Currency": "usd",
+        "DeleteSessionIDs": [
+          "session-a",
+          "session-b"
+        ]
+      }
+    },
+    {
+      "name": "no-execute-amount-change",
+      "input": {
+        "InputCartProvided": false,
+        "InputCartIDPresent": false,
+        "Amount": "200",
+        "Currency": "eur",
+        "Collection": {
+          "ID": "collection-a",
+          "Amount": "235",
+          "Currency": "eur",
+          "SessionIDs": [
+            "session-a",
+            "session-b"
+          ]
+        }
+      },
+      "expected": {
+        "ShouldExecute": false,
+        "Changed": false,
+        "UpdateCollection": false,
+        "CollectionID": "collection-a",
+        "Amount": "200",
+        "Currency": "eur",
+        "DeleteSessionIDs": []
+      }
+    },
+    {
+      "name": "equal-currency-change-independent-execute",
+      "input": {
+        "InputCartProvided": false,
+        "InputCartIDPresent": false,
+        "Amount": "235",
+        "Currency": "usd",
+        "Collection": {
+          "ID": "collection-a",
+          "Amount": "235",
+          "Currency": "eur",
+          "SessionIDs": [
+            "session-a",
+            "session-b"
+          ]
+        }
+      },
+      "expected": {
+        "ShouldExecute": false,
+        "Changed": true,
+        "UpdateCollection": true,
+        "CollectionID": "collection-a",
+        "Amount": "235",
+        "Currency": "usd",
+        "DeleteSessionIDs": [
+          "session-a",
+          "session-b"
+        ]
+      }
+    }
+  ]
+}

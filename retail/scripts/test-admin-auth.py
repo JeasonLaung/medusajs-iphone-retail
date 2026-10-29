@@ -185,6 +185,7 @@ def main():
                          'retail/backend/internal/catalog/schema.go','retail/backend/internal/catalog/schema_plan.json']
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','schema','sessionstore','totals','catalog','pricing','inventory','promotion','payments') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
                 files += ['retail/scripts/capture-cart-promotion-context.cjs','docs/migration/fixtures/cart-promotion-context.json']
+                files += ['retail/scripts/capture-cart-payment-refresh.cjs','docs/migration/fixtures/cart-payment-refresh.json']
                 files += ['retail/backend/internal/identity/cart_promotion_refresh_test.go']
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
                 report = {'format_version':1,'scope':'Owned artificial MySQL/Redis cart runtime and HTTP dispatch; browser and checkout not accepted',
@@ -387,6 +388,7 @@ def main():
                 files += ['retail/backend/migrations/0026_cart_runtime_authority.sql','retail/backend/internal/identity/cart_runtime_test.go','retail/backend/internal/identity/cart_http_test.go','retail/backend/internal/identity/cart_amounts_test.go','retail/backend/internal/identity/promotion_products_test.go','retail/backend/internal/identity/cart_promotion_adjustments_test.go','retail/backend/internal/identity/cart_promotion_amounts_test.go','retail/backend/internal/identity/cart_items_test.go','retail/backend/internal/identity/cart_items_http_test.go']
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/cart').glob('*') if p.is_file()]
                 files += ['retail/scripts/capture-cart-promotion-context.cjs','docs/migration/fixtures/cart-promotion-context.json']
+                files += ['retail/scripts/capture-cart-payment-refresh.cjs','docs/migration/fixtures/cart-payment-refresh.json']
                 files += ['retail/backend/internal/identity/cart_promotion_refresh_test.go']
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/sessionstore').glob('*.go')]
                 http_markers = [line.split('CART_HTTP_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_HTTP_REHEARSAL ' in line]
