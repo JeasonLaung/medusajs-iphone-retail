@@ -35,6 +35,11 @@ func ReadPromotionTargets(ctx context.Context, tx *gorm.DB, store string, ref se
 	if err != nil {
 		return failed, err
 	}
+	return assemblePromotionTargets(tx, cart, amounts)
+}
+
+func assemblePromotionTargets(tx *gorm.DB, cart Snapshot, amounts AmountDetail) (PromotionTargets, error) {
+	failed := PromotionTargets{}
 	items, err := promotionRows(tx, "cart_line_items", "cart_id", []string{cart.ID}, 1000, promotionFields{
 		text:   "id cart_id title subtitle thumbnail variant_id product_id product_title product_description product_subtitle product_type product_collection product_handle variant_sku variant_barcode variant_title product_type_id",
 		number: "quantity compare_at_unit_price unit_price", boolean: "requires_shipping is_discountable is_tax_inclusive is_custom_price is_giftcard",

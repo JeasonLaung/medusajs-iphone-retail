@@ -85,6 +85,9 @@ def main():
                                     stdin=source, capture_output=True, timeout=60)
         if copied.returncode or docker('exec', mysql_id, 'chmod', '700', '/opt/identity.test').returncode:
             raise RuntimeError('Identity runner transfer failed')
+        # One public artificial oracle; no application configuration or data.
+        if not usage_only and (docker('exec', mysql_id, 'mkdir', '-p', '/docs/migration/fixtures').returncode or docker('cp', str(ROOT/'docs/migration/fixtures/cart-promotion-context.json'), mysql_id+':/docs/migration/fixtures/cart-promotion-context.json').returncode):
+            raise RuntimeError('Artificial promotion context oracle transfer failed')
         # Each suite owns artificial databases in this uniquely labelled,
         # disconnected server. Release their tmpfs tables before the next suite;
         # otherwise cumulative DDL consumes the bounded fixture memory.
@@ -177,7 +180,8 @@ def main():
                 files = ['retail/scripts/test-admin-auth.py','retail/backend/internal/identity/cart_runtime_test.go','retail/backend/internal/identity/cart_http_test.go','retail/backend/internal/identity/cart_amounts_test.go','retail/backend/internal/identity/promotion_products_test.go','retail/backend/internal/identity/cart_promotion_adjustments_test.go','retail/backend/internal/identity/cart_promotion_amounts_test.go','retail/backend/internal/identity/cart_items_test.go','retail/backend/internal/identity/cart_items_http_test.go',
                          'retail/backend/internal/server/router.go','retail/backend/internal/platform/request.go','retail/backend/internal/platform/http.go',
                          'retail/backend/internal/catalog/schema.go','retail/backend/internal/catalog/schema_plan.json']
-                files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','schema','sessionstore','totals','catalog','pricing','inventory') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
+                files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','schema','sessionstore','totals','catalog','pricing','inventory','promotion','payments') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
+                files += ['retail/scripts/capture-cart-promotion-context.cjs','docs/migration/fixtures/cart-promotion-context.json']
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
                 report = {'format_version':1,'scope':'Owned artificial MySQL/Redis cart runtime and HTTP dispatch; browser and checkout not accepted',
                           'cart_runtime':counts,'cart_items':json.loads(item_markers[0]),'cart_items_http':json.loads(item_http_markers[0]),'cart_amounts':json.loads(amount_markers[0]),'cart_promotion_amounts':json.loads(promotion_amount_markers[0]),'cart_promotion_adjustments':json.loads(promotion_adjustment_markers[0]),'promotion_products':json.loads(promotion_product_markers[0]),'cart_http':json.loads(http_markers[0]),'application_resources_used':False,'real_accounts_used':False,
@@ -378,6 +382,7 @@ def main():
                 files += ['retail/scripts/generate-cart-schema.py','retail/backend/migrations/0025_cart_relational.sql','retail/backend/internal/identity/cart_schema_test.go']
                 files += ['retail/backend/migrations/0026_cart_runtime_authority.sql','retail/backend/internal/identity/cart_runtime_test.go','retail/backend/internal/identity/cart_http_test.go','retail/backend/internal/identity/cart_amounts_test.go','retail/backend/internal/identity/promotion_products_test.go','retail/backend/internal/identity/cart_promotion_adjustments_test.go','retail/backend/internal/identity/cart_promotion_amounts_test.go','retail/backend/internal/identity/cart_items_test.go','retail/backend/internal/identity/cart_items_http_test.go']
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/cart').glob('*') if p.is_file()]
+                files += ['retail/scripts/capture-cart-promotion-context.cjs','docs/migration/fixtures/cart-promotion-context.json']
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/sessionstore').glob('*.go')]
                 http_markers = [line.split('CART_HTTP_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_HTTP_REHEARSAL ' in line]
                 if len(http_markers) != 1:

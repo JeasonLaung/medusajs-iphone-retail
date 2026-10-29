@@ -1,0 +1,23 @@
+# 购物车订单级促销上下文
+
+2026-10-29：`cart.ReadPromotionContext`在调用方事务验证当前购物车授权及版本后，将已有商品/配送目标投影与订单级金额、region、shipping_address、已关联promotions和payment_collection连接。它返回私有JSON及按当前货币decimal_digits生成的epsilon，不提供HTTP、提交事务、更新版本、消费预算或调用支付渠道。
+
+读取保持原刷新图的选择范围：购物车id/email/currency_code/locale/region_id/metadata/completed_at/sales_channel_id，七个订单金额字段；region与地址的源标量/JSON/时间字段；promotions仅id/code；payment_collection仅id/amount/raw_amount/currency_code及payment_sessions.id。不把整个金额DTO或未选择的billing_address、provider data/token、权限/版本字段塞入规则上下文。JSON总量最多1MiB，失败不返回部分联系信息。商品和运费投影复用同一已装配金额结果，避免重复金额计算。
+
+订单total保留现存调整项之后的金额，商品subtotal/original_total仍可作为未折扣分配基数。现存促销关系与原选择规则一样读取已关联且未软删的promotions，包含inactive记录；这不等于它们本次仍具备资格，也不替代从调整项收集已用code的逻辑。
+
+源刷新字段列表虽然包含quantity，安装版本的Cart.parse().schema及decorateCartTotals均没有顶层quantity，因此不凭空把商品数量相加写入该字段。`capture-cart-promotion-context.cjs`直接读取安装模型并运行原金额装饰器，记录该缺失事实、七个订单金额及0/2/18位货币epsilon；纯人工输入，不启动Medusa、不连接数据库。该证据范围为原模型/金额装饰器，不冒充完整QueryGraph运行验证。
+
+关系缺失/软删返回null或空数组；配送地址必须由已授权购物车保存的shipping_address_id关联，不接受浏览器传入任意地址ID。地址中的历史customer_id是业务快照，不能成为新登录身份。当前授权入口仍只支持匿名购物车，customer为null，带customer_id的购物车明确拒绝；不按相同邮箱或历史主体恢复账号/归属。购物车email原样提供customer_email属性预算读取，customer_id预算不能从地址历史标识推导。
+
+支付集合要求链接和目标均未软删，多于一个有效集合整体拒绝，不能任选其一。保留集合自身币种和raw有效金额，最多100条未软删session且只取id；不把集合币种或金额改成购物车值。这是原事实投影，不授予支付授权，完整支付刷新仍必须核对/重建。促销/支付各自schema关闭则拒绝。
+
+## 实际验证
+
+隔离CartRuntime人工MySQL验证订单七个金额与原装饰器对照、缺失quantity、nullable contact/address/customer/payment、空促销关系、货币epsilon；同一事务新增地址、region/cart metadata、已关联促销、支付集合/session，验证原订单规则路径到ComputeCandidates按地区和订单总额计算10%商品优惠20。嵌套JSON大整数在投影阶段保留精确值，规则的原JS文本转换语义由现有promotion规则组件承担，不把两者混为一谈。
+
+还验证软删地址/促销目标与链接/支付集合/session、两集合歧义、坏raw金额、错误版本/跨店、schema关闭、历史customer绑定拒绝；支付provider data/context/metadata不进入JSON。保存联系邮箱可供属性预算查询，地址历史客户ID不能提供customer_id身份。后续失败时整个事务回滚，购物车/库存指纹不变。
+
+Cart-runtime及全量报告cart_promotion_amounts增加order_address_region_and_payment_context、anonymous_contact_does_not_restore_customer、ambiguous_payment_collection_rejected，并记录实现、人工原行为fixture及采集脚本SHA。fixture须由原脚本--check复核，报告SHA须同时匹配。
+
+仍缺新客户登录态及groups关联、计算raw对象的完整兼容和全部规则覆盖审计、完整刷新命令的幂等版本/支付协调、checkout和Astro业务接入。当前组件不构成完整促销或结算验收，T032/T033未验收。

@@ -1,0 +1,27 @@
+{
+  "format_version": 1,
+  "scope": "Original model and pure arithmetic over artificial cart only; not QueryGraph or checkout acceptance",
+  "sources": {
+    "medusa-store/node_modules/.pnpm/@medusajs+cart@2.21.2_@medu_837ddb24f374370f90ac2f5435cbf605/node_modules/@medusajs/cart/dist/models/cart.js": "29fb34fedfc6488db4791e528f42a7dfd415fd4151018cbbf5fe8f9233996e83",
+    "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/utils/fields.js": "0be4c07d8de4804df4cdac8cda3932797db61568c175b4992d28fd2f68b3f404",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/cart/index.js": "5d464f4c1e908e18784a1e3795a52d614356a60ab0fefe2395046c89c2bcffd5",
+    "medusa-store/node_modules/.pnpm/@medusajs+utils@2.21.2_@types+node@20.19.43_express@4.22.2/node_modules/@medusajs/utils/dist/totals/big-number.js": "4407e278ee599bd0073f5506a777ec7b79616d802e00ae2c49284a95171de07f"
+  },
+  "quantity_requested": true,
+  "model_has_quantity": false,
+  "decorated_cart_has_quantity": false,
+  "baseline_amounts": {
+    "subtotal": "210",
+    "original_item_total": "250",
+    "item_total": "225",
+    "total": "235",
+    "original_item_subtotal": "200",
+    "item_subtotal": "200",
+    "shipping_subtotal": "10"
+  },
+  "epsilon": {
+    "0": "1",
+    "2": "0.01",
+    "18": "0.000000000000000001"
+  }
+}

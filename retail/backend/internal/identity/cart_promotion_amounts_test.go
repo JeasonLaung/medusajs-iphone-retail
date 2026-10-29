@@ -4,7 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/eurorefurb/retail/internal/cart"
@@ -47,6 +49,7 @@ func checkPromotionAmounts(t *testing.T, ctx context.Context, db *gorm.DB, ref s
 	}
 	base := read(ref, "1", false)
 	checkPromotionTargets(t, ctx, db, ref, fingerprint)
+	checkPromotionContext(t, ctx, db, ref, fingerprint)
 	if base.Totals["total"] != "262.5" || len(base.Lines) != 1 || base.Lines[0].Totals["subtotal"] != "200" || base.Lines[0].Totals["original_total"] != "250" || base.Lines[0].Totals["discount_total"] != "0" || len(base.ShippingMethods) != 1 || base.ShippingMethods[0].Totals["subtotal"] != "10" || base.ShippingMethods[0].Totals["original_total"] != "12.5" || base.PricingRecalculated || base.Checkout {
 		t.Fatal("promotion preparation reused old discounts or lost tax bases")
 	}
@@ -90,7 +93,152 @@ func checkPromotionAmounts(t *testing.T, ctx context.Context, db *gorm.DB, ref s
 	exec(`UPDATE cart_shipping_methods SET raw_amount='{}' WHERE id='amount-cart-shipping'`)
 	read(ref, "1", true)
 	exec(`UPDATE cart_shipping_methods SET raw_amount='{"value":"12.5","precision":20}' WHERE id='amount-cart-shipping'`)
-	t.Log(`CART_PROMOTION_AMOUNTS_REHEARSAL {"actual_mysql":true,"undiscounted_item_and_shipping_tax_bases":true,"stale_adjustments_excluded_without_deletion":true,"current_authority_and_version":true,"caller_refresh_visible_and_rollback_atomic":true,"malformed_source_amount_rejected":true,"read_only_fingerprints":true,"target_rows_relations_and_existing_discounted_totals":true,"sql_targets_to_compute_and_adjustment_rollback":true,"public_http_or_checkout_integrated":false}`)
+	t.Log(`CART_PROMOTION_AMOUNTS_REHEARSAL {"actual_mysql":true,"undiscounted_item_and_shipping_tax_bases":true,"stale_adjustments_excluded_without_deletion":true,"current_authority_and_version":true,"caller_refresh_visible_and_rollback_atomic":true,"malformed_source_amount_rejected":true,"read_only_fingerprints":true,"target_rows_relations_and_existing_discounted_totals":true,"sql_targets_to_compute_and_adjustment_rollback":true,"order_address_region_and_payment_context":true,"anonymous_contact_does_not_restore_customer":true,"ambiguous_payment_collection_rejected":true,"public_http_or_checkout_integrated":false}`)
+}
+
+func checkPromotionContext(t *testing.T, ctx context.Context, db *gorm.DB, ref sessionstore.CartReference, fingerprint func() string) {
+	t.Helper()
+	data, err := os.ReadFile("../../../../docs/migration/fixtures/cart-promotion-context.json")
+	var oracle struct {
+		BaselineAmounts          map[string]string `json:"baseline_amounts"`
+		Epsilon                  map[string]string
+		QuantityRequested        bool `json:"quantity_requested"`
+		ModelHasQuantity         bool `json:"model_has_quantity"`
+		DecoratedCartHasQuantity bool `json:"decorated_cart_has_quantity"`
+	}
+	if err != nil || json.Unmarshal(data, &oracle) != nil || len(oracle.BaselineAmounts) != 7 || !oracle.QuantityRequested || oracle.ModelHasQuantity || oracle.DecoratedCartHasQuantity {
+		t.Fatal("original order context evidence missing")
+	}
+	read := func(tx *gorm.DB, reference sessionstore.CartReference, version string, wantErr bool) (cart.PromotionContext, map[string]json.RawMessage) {
+		t.Helper()
+		got, err := cart.ReadPromotionContext(ctx, tx, "shop", reference, version)
+		if wantErr {
+			if err == nil || got.JSON != nil || got.CurrencyEpsilon != "" {
+				t.Fatal("invalid order context returned partial private facts")
+			}
+			return got, nil
+		}
+		if err != nil {
+			t.Fatalf("order context: %v", err)
+		}
+		var out map[string]json.RawMessage
+		if json.Unmarshal(got.JSON, &out) != nil {
+			t.Fatal("order context not JSON object")
+		}
+		return got, out
+	}
+	read(db, ref, "1", true)
+	before := fingerprint()
+	rollback := errors.New("artificial order context rollback")
+	err = db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		exec := func(query string, args ...any) {
+			t.Helper()
+			if tx.Exec(query, args...).Error != nil {
+				t.Fatal("order context fixture failed")
+			}
+		}
+		got, out := read(tx, ref, "1", false)
+		if got.CurrencyEpsilon != oracle.Epsilon["2"] || string(out["total"]) != "235" || string(out["subtotal"]) != "210" || string(out["original_item_total"]) != "250" || string(out["item_total"]) != "225" || string(out["item_subtotal"]) != "200" || string(out["shipping_subtotal"]) != "10" || string(out["customer"]) != "null" || string(out["shipping_address"]) != "null" || string(out["payment_collection"]) != "null" || string(out["promotions"]) != "[]" || string(out["email"]) != "null" {
+			t.Fatal("order amount/null/empty facts changed")
+		}
+		for key, value := range oracle.BaselineAmounts {
+			if string(out[key]) != value {
+				t.Fatalf("original order amount changed: %s", key)
+			}
+		}
+		for _, excluded := range []string{"quantity", "customer_id", "shipping_address_id", "billing_address", "version", "store_id", "generation", "tax_total", "raw_total"} {
+			if _, exists := out[excluded]; exists {
+				t.Fatalf("unselected order field leaked: %s", excluded)
+			}
+		}
+		read(tx, ref, "2", true)
+		wrong := ref
+		wrong.StoreID = "other-shop"
+		read(tx, wrong, "1", true)
+		exec(`INSERT INTO cart_addresses(id,customer_id,first_name,country_code,city,metadata,created_at,updated_at) VALUES('context-address','historical-reference','Contact','dk','City','{"segment":"address-rule","numeric":9007199254740993}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+		exec(`UPDATE carts SET shipping_address_id='context-address',email='Buyer@Example.test ',metadata='{"segment":"order-rule"}' WHERE id=?`, ref.CartID)
+		exec(`UPDATE commerce_regions SET metadata='{"segment":"region-rule"}' WHERE id='region'`)
+		exec(`INSERT INTO promotions(id,code,is_automatic,type,status,is_tax_inclusive,used,created_at,updated_at,deleted_at) VALUES('context-promotion','LINKED',FALSE,'standard','inactive',FALSE,0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),NULL),('context-deleted-promotion','DELETED',FALSE,'standard','active',FALSE,0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+		exec(`INSERT INTO cart_promotions(cart_id,promotion_id,id,created_at,updated_at) VALUES(?,'context-promotion','context-promo-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),(?,'context-deleted-promotion','context-deleted-promo-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`, ref.CartID, ref.CartID)
+		exec(`INSERT INTO payment_collections(id,currency_code,amount,raw_amount,status,metadata,created_at,updated_at) VALUES('context-payment','usd',235,'{"value":"235.00000000000000000001","precision":100}','not_paid','{"private":"provider-secret"}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('context-payment-two','eur',0,'{"value":"0","precision":20}','not_paid',NULL,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+		exec(`INSERT INTO cart_payment_collections(cart_id,payment_collection_id,id,created_at,updated_at) VALUES(?,'context-payment','context-payment-link',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`, ref.CartID)
+		exec(`INSERT INTO payment_sessions(id,currency_code,amount,raw_amount,provider_id,data,context,status,payment_collection_id,created_at,updated_at,deleted_at) VALUES('context-session','usd',235,'{"value":"235","precision":20}','artificial','{"token":"provider-secret"}','{"secret":"provider-secret"}','pending','context-payment',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),NULL),('context-deleted-session','usd',235,'{"value":"235","precision":20}','artificial','{}',NULL,'pending','context-payment',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+		got, out = read(tx, ref, "1", false)
+		if string(out["customer"]) != "null" || string(out["email"]) != `"Buyer@Example.test "` || strings.Contains(string(got.JSON), "provider-secret") || strings.Contains(string(got.JSON), "context-deleted-session") || strings.Contains(string(got.JSON), "DELETED") {
+			t.Fatal("contact identity/private payment/deletion semantics changed")
+		}
+		var collection map[string]json.RawMessage
+		if json.Unmarshal(out["payment_collection"], &collection) != nil || len(collection) != 5 || string(collection["amount"]) != "235.00000000000000000001" || string(collection["currency_code"]) != `"usd"` || string(collection["payment_sessions"]) != `[{"id":"context-session"}]` {
+			t.Fatal("selected payment graph lost raw precision or broadened private fields")
+		}
+		if !strings.Contains(string(out["shipping_address"]), `"numeric":9007199254740993`) {
+			t.Fatal("address JSON numeric fact rounded during assembly")
+		}
+		for attribute, value := range map[string]string{"email": "Buyer@Example.test ", "total": "235", "shipping_address.country_code": "dk", "region.metadata.segment": "region-rule", "metadata.segment": "order-rule", "promotions.code": "LINKED", "payment_collection.payment_sessions.id": "context-session"} {
+			raw, _ := json.Marshal(value)
+			ok, err := promotion.MatchRules(got.JSON, []promotion.Rule{{Attribute: attribute, Operator: "in", Values: []promotion.RuleValue{{Value: raw}}}}, "")
+			if err != nil || !ok {
+				t.Fatalf("order rule path failed: %s", attribute)
+			}
+		}
+		across := "across"
+		computed, err := promotion.ComputeCandidates(promotion.ComputeInput{Candidates: []promotion.ActiveConfiguration{{ID: "context-rule-p", Code: "RULE", Type: "standard", Method: &promotion.ApplicationMethod{Type: "percentage", Target: "order", Value: "10", Allocation: &across}, Rules: []promotion.Rule{{Attribute: "shipping_address.country_code", Operator: "in", Values: []promotion.RuleValue{{Value: json.RawMessage(`"dk"`)}}}, {Attribute: "total", Operator: "gte", Values: []promotion.RuleValue{{Value: json.RawMessage(`"235"`)}}}}}}, Context: got.JSON, Epsilon: got.CurrencyEpsilon})
+		if err != nil || len(computed.Actions) != 1 || computed.Actions[0].Amount != "20" || computed.Actions[0].ItemID != "amount-cart-line" {
+			t.Fatalf("order SQL facts to original allocator: %v", err)
+		}
+		budget := promotion.ActiveConfiguration{ID: "context-rule-p", Code: "RULE", Type: "standard", Method: &promotion.ApplicationMethod{}, Budget: &promotion.CampaignBudget{ID: "context-budget", Type: "use_by_attribute", Attribute: func() *string { s := "customer_email"; return &s }()}}
+		usages, err := promotion.ReadAttributeUsages(tx, []promotion.ActiveConfiguration{budget}, got.JSON)
+		if err != nil || usages["context-budget"].Value != "Buyer@Example.test " || usages["context-budget"].Found {
+			t.Fatal("cart contact attribute was changed or inferred from account")
+		}
+		idAttribute := "customer_id"
+		budget.Budget.Attribute = &idAttribute
+		if values, err := promotion.ReadAttributeUsages(tx, []promotion.ActiveConfiguration{budget}, got.JSON); err == nil || values != nil {
+			t.Fatal("anonymous address historical actor granted customer identity")
+		}
+		exec(`UPDATE cart_addresses SET deleted_at=UTC_TIMESTAMP(6) WHERE id='context-address'`)
+		_, out = read(tx, ref, "1", false)
+		if string(out["shipping_address"]) != "null" {
+			t.Fatal("deleted address survived")
+		}
+		exec(`UPDATE cart_promotions SET deleted_at=UTC_TIMESTAMP(6) WHERE id='context-promo-link'`)
+		_, out = read(tx, ref, "1", false)
+		if string(out["promotions"]) != "[]" {
+			t.Fatal("deleted promotion link survived")
+		}
+		exec(`UPDATE payment_collections SET deleted_at=UTC_TIMESTAMP(6) WHERE id='context-payment'`)
+		_, out = read(tx, ref, "1", false)
+		if string(out["payment_collection"]) != "null" {
+			t.Fatal("deleted payment collection survived")
+		}
+		exec(`UPDATE payment_collections SET deleted_at=NULL WHERE id='context-payment'`)
+		exec(`INSERT INTO cart_payment_collections(cart_id,payment_collection_id,id,created_at,updated_at) VALUES(?,'context-payment-two','context-payment-link-two',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`, ref.CartID)
+		read(tx, ref, "1", true)
+		exec(`UPDATE cart_payment_collections SET deleted_at=UTC_TIMESTAMP(6) WHERE id='context-payment-link-two'`)
+		exec(`UPDATE payment_collections SET raw_amount='{}' WHERE id='context-payment'`)
+		read(tx, ref, "1", true)
+		exec(`UPDATE payment_collections SET raw_amount='{"value":"235","precision":20}' WHERE id='context-payment'`)
+		exec(`UPDATE carts SET customer_id='historical-reference' WHERE id=?`, ref.CartID)
+		read(tx, ref, "1", true)
+		exec(`UPDATE carts SET customer_id=NULL WHERE id=?`, ref.CartID)
+		for _, table := range []string{"payment_runtime_schema", "promotion_runtime_schema"} {
+			exec("UPDATE " + table + " SET reads_enabled=FALSE")
+			read(tx, ref, "1", true)
+			exec("UPDATE " + table + " SET reads_enabled=TRUE")
+		}
+		exec(`UPDATE commerce_currencies SET decimal_digits=0 WHERE code='eur'`)
+		if result, _ := read(tx, ref, "1", false); result.CurrencyEpsilon != oracle.Epsilon["0"] {
+			t.Fatal("zero-decimal epsilon changed")
+		}
+		exec(`UPDATE commerce_currencies SET decimal_digits=18 WHERE code='eur'`)
+		if result, _ := read(tx, ref, "1", false); result.CurrencyEpsilon != oracle.Epsilon["18"] {
+			t.Fatal("18-decimal epsilon changed")
+		}
+		return rollback
+	})
+	if err != rollback || before != fingerprint() {
+		t.Fatalf("private order context escaped caller rollback: %v", err)
+	}
 }
 
 func checkPromotionTargets(t *testing.T, ctx context.Context, db *gorm.DB, ref sessionstore.CartReference, fingerprint func() string) {

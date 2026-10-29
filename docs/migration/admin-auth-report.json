@@ -46,6 +46,9 @@
     "read_only_fingerprints": true,
     "target_rows_relations_and_existing_discounted_totals": true,
     "sql_targets_to_compute_and_adjustment_rollback": true,
+    "order_address_region_and_payment_context": true,
+    "anonymous_contact_does_not_restore_customer": true,
+    "ambiguous_payment_collection_rejected": true,
     "public_http_or_checkout_integrated": false
   },
   "cart_promotion_adjustments": {
@@ -937,7 +940,7 @@
     "checkout": false
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "e2b662b36243183ec7291e684bbaedfa81e47088c529e4bb9b7b177d4cdcc02d",
+    "retail/scripts/test-admin-auth.py": "cd47a4b9ee5ecd6808316eb6e1a88b6e8736d177eafe36425d01461d3d5d72b8",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "a0171978adfb9a70fc1426eb3ae6b1eae92cd7c2decfd6b09eedfcbe83c71e0d",
@@ -1146,7 +1149,7 @@
     "retail/backend/internal/identity/cart_amounts_test.go": "d5ce795bb25fbb3e440b79f20d63c22673fd94b6d8a0551b300882b83c8c84dc",
     "retail/backend/internal/identity/promotion_products_test.go": "d90aaa6556dc17b66f6e1a7286cb42112d1ec37ffadb26272f0e4688b871e07e",
     "retail/backend/internal/identity/cart_promotion_adjustments_test.go": "3cda50f61dbb5c3af9a15f89aadc32e1a798a6294f39546388d94ff2eac7a611",
-    "retail/backend/internal/identity/cart_promotion_amounts_test.go": "3acf3bbc383d98f2dc810c49130c43c6e2b95730828eaf586f5120cf53f7b4fa",
+    "retail/backend/internal/identity/cart_promotion_amounts_test.go": "54109eee704ad080edb3ec6f48d7e19b2f32a59e6a768aaf253b7f76fd46929f",
     "retail/backend/internal/identity/cart_items_test.go": "7dc1d277b6c465b49f907766a59905206bf2e903d389c74bc2307ba4f4f7dcb0",
     "retail/backend/internal/identity/cart_items_http_test.go": "24272a0cfb71c8f26308b0bd47db754a5c1f6fccd1498622062125b438c98222",
     "retail/backend/internal/cart/amounts.go": "e9b75c133696bd13fc4b85fb9f3d06430763b62126d6d6958ff77ceb92aae2a8",
@@ -1162,7 +1165,8 @@
     "retail/backend/internal/cart/promotion_adjustments.go": "754b6c938aacf8661788c39acca7dcd64c8f0fb11801a0df43b945ce4d35170a",
     "retail/backend/internal/cart/promotion_codes.go": "a8114f0928974efe6d08cceb57541dc6b2792ce0b4f314ba5ea6b2d353c62f9e",
     "retail/backend/internal/cart/promotion_codes_test.go": "06cab05145910e725930d82f49c1a40faa52528819e8df5349921ff0fb4017c1",
-    "retail/backend/internal/cart/promotion_targets.go": "62a76bc00150a72616c39d73b63cfef9deb2ed5ea69f5bbd9f468cdd3393ad5c",
+    "retail/backend/internal/cart/promotion_context.go": "7de05409991e5b327fa76d7daa121d646a191a5273e0ae454c7de06ff9efcdf8",
+    "retail/backend/internal/cart/promotion_targets.go": "14ffd50f64a6409e21231b2147abaf6293d5dfb7bb7fc67ef3dd0c7d5ffa3aa1",
     "retail/backend/internal/cart/runtime.go": "731177e6b7eefce005681728460cd8ffb288b67924691426ec35ff8863c5a99f",
     "retail/backend/internal/cart/runtime_test.go": "62923e9582ffe56ab98bacc8ee806079d9ccf8efb0209436d19809261ed409eb",
     "retail/backend/internal/cart/schema.go": "7fd126f7184d19f4281a7bebbf1fc09eb8657abb82fbdcca3c02dbfa2775a392",
@@ -1174,6 +1178,8 @@
     "retail/backend/internal/cart/shipping_selection.go": "7958657be8d0723230e90666be679d21980270a0d7f48c346f176080d9048665",
     "retail/backend/internal/cart/taxes.go": "e9ae2c57fc7d758f3c066de092b1d380e17b461e6473c7d036288d9a03ff56cf",
     "retail/backend/internal/cart/view.go": "5e686159c803532a481e9d017ee5a2948506a9f653e6ab4617120edca481519e",
+    "retail/scripts/capture-cart-promotion-context.cjs": "dd659c2fee6885ce4e2d257a86eccccb3ba57ed2eb4a615ce764ea3a5cd0550a",
+    "docs/migration/fixtures/cart-promotion-context.json": "7fa700842d61a7f2ad5925f00584f792c50cf9b95d7d0dac6d64a3f157072b3b",
     "retail/backend/internal/sessionstore/cart.go": "08a33b38b47c0ea3d077735239594044a7fbbb1013f6f5f176e53354c41cc4d0",
     "retail/backend/internal/sessionstore/cart_scope.go": "db6c0953c9abc475cc93839322941f5cb179da7c2a20c79eabbbed23611a8503",
     "retail/backend/internal/sessionstore/cart_test.go": "dd4113af47a4c56acac505b2116cc8e0f0dfa637495cc5c9f239670fd473fd6e",

@@ -472,3 +472,5 @@
 2026-10-29 规格规则事实补充：当前variant的重量/尺寸/材质及product配送档案已加入[商品关系投影](migration/promotion-product-relations.md)，保留0/null、软删和内部draft语义，拒绝多有效档案，隔离MySQL验证原规则路径与RR一致快照。完整cart/shipping/customer上下文和刷新命令仍缺，T032/T033未验收。
 
 2026-10-29 促销目标组装补充：[购物车商品/配送及已有税优惠上下文](migration/cart-promotion-targets.md)连接私有保存字段、当前product/variant和shipping option标量关系，保留未折扣基数与当前折扣总额。人工MySQL实际串联读取→运费优惠计算→调整项保存→重读→后续失败整体回滚；完整订单/客户上下文、版本支付和checkout仍缺，T032/T033未验收。
+
+2026-10-29 订单规则上下文补充：[金额/地区/地址/促销及支付集合](migration/cart-promotion-context.md)与商品/配送投影共用事务和金额结果，保留原选择字段、联系信息与登录身份分离、软删及多支付集合拒绝。人工MySQL验证实际规则计算及整体回滚；原模型/金额装饰器对照确认七个金额、epsilon与缺失顶层quantity。新客户/groups、完整刷新幂等支付、checkout仍缺，T032/T033未验收。
