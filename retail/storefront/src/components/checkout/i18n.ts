@@ -11,7 +11,7 @@ const en = {
   paymentCheckErrorTitle: "Unable to check your payment",
   paymentCheckErrorBody: "Confirmation is taking longer than expected. Please contact support if you have already paid. Do not start another payment.",
   paymentSuccessTitle: "Payment confirmed",
-  paymentSuccessBody: "Your payment is confirmed and your order has been created.",
+  paymentSuccessBody: "Your order is ready. Opening your order confirmation…",
   paymentReturnCheckout: "Return to checkout", paymentViewOrder: "View order", paymentContactSupport: "Contact support",
   paymentNeedsReview: "Your payment needs review. Please contact support before trying again.",
   paypalMollie: "PayPal via Mollie", giftCardMollie: "Gift card via Mollie",
@@ -50,7 +50,7 @@ const zh: typeof en = {
   paymentCheckErrorTitle: "暂时无法核验付款",
   paymentCheckErrorBody: "确认时间超出预期。如果您已经付款，请联系客服，暂勿重复付款。",
   paymentSuccessTitle: "付款已确认",
-  paymentSuccessBody: "付款已确认，订单已生成。",
+  paymentSuccessBody: "订单已生成，正在打开订单确认页…",
   paymentReturnCheckout: "返回结账", paymentViewOrder: "查看订单", paymentContactSupport: "联系客服",
   paymentNeedsReview: "您的付款需要核实，请先联系客服，暂勿重复付款。",
   paypalMollie: "PayPal（通过 Mollie）", giftCardMollie: "礼品卡（通过 Mollie）",
@@ -79,6 +79,7 @@ const zh: typeof en = {
 export const getCheckoutCopy = (locale: string) => locale.startsWith("zh") || locale.endsWith("-zh") ? zh : en
 export function paymentTitle(id: string, locale: string, fallback?: string) {
   const copy = getCheckoutCopy(locale)
+  if (id === "pp_mollie-hosted-checkout_mollie") return "Mollie"
   if (id === "pp_system_default") return copy.manualPayment
   if (id === "pp_paypal_card_paypal_card") return copy.cardPaypal
   if (id === "pp_mollie-card_mollie") return copy.cardMollie

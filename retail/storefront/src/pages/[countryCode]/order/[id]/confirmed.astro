@@ -1,0 +1,17 @@
+---
+import {GIN_API_ORIGIN} from 'astro:env/server'
+import Storefront from '../../../../layouts/Storefront.astro'
+import {loadPublicPage} from '../../../../lib/public-page'
+import Confirmation from '../../../../components/order/confirmation'
+import {getAccountCopy} from '../../../../components/account/i18n'
+const segment=(Astro.params.countryCode??'').toLowerCase(),orderID=Astro.params.id??'',copy=getAccountCopy(segment)
+let shell:Awaited<ReturnType<typeof loadPublicPage>>=null,unavailable=false
+try{if(/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(orderID)&&!/[\r\n]/.test(orderID))shell=await loadPublicPage(GIN_API_ORIGIN,segment)}catch{unavailable=true}
+Astro.response.status=unavailable?503:shell?200:404
+Astro.response.headers.set('Cache-Control','private, no-store')
+Astro.response.headers.set('Referrer-Policy','no-referrer')
+Astro.response.headers.set('X-Robots-Tag','noindex, nofollow')
+---
+<Storefront segment={segment} title={copy.t('orderSummary')} shell={shell??undefined}>
+ {shell?<Confirmation segment={segment} orderID={orderID} client:only="react"/>:<div class="content-container py-16"><h1>{unavailable?copy.t('error'):'Page not found'}</h1></div>}
+</Storefront>

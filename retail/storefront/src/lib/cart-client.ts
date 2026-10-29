@@ -4,6 +4,12 @@ export type CartSnapshot = {
  id: string; region_id: string; sales_channel_id: string; currency_code: string
  locale: string; version: string
 }
+export type OrderConfirmation={
+ id:string;display_id:string;custom_display_id:string;status:string;email:string;locale:string;created_at:string
+ shipping_address:ContactAddress;billing_address:ContactAddress;items:CartViewItem[]
+ amounts:{order_id:string;version:number;currency_code:string;totals:Record<string,string>;lines:{id:string;item_id:string;unit_price:string;quantity:string;totals:Record<string,string>}[];shipping_methods:{id:string;shipping_method_id:string;name:string;amount:string;is_tax_inclusive:boolean;totals:Record<string,string>}[];summary:{transaction_total:string;pending_difference:string}|null}
+ payment:{provider_id:string;amount:string;currency_code:string;created_at:string}
+}
 export type CartScope = {csrfToken: string}
 export type CartCreation = {operationID: string; regionID: string; locale?: string}
 export type CartCreated = {cart: CartSnapshot; csrfToken: string; expiresAt: string; replayed: boolean}
@@ -272,6 +278,32 @@ export class CartClient {
    if(status!==200||v.cart_id!==id||!matches(v.order_id,idPattern)||!matches(v.version,versionPattern)||BigInt(v.version)>18446744073709551615n)throw protocol()
    return {cart_id:id,order_id:v.order_id,version:v.version}
   }catch{throw new CartError('protocol',status,true)}
+ }
+
+ async confirmation(id:string):Promise<OrderConfirmation|null>{
+  if(!matches(id,idPattern))throw new CartError('input')
+  let response:{status:number;value:unknown}
+  try{response=await this.request(`/api/store/orders/${encodeURIComponent(id)}/confirmation`,'GET',undefined,{},4*1024*1024)}
+  catch(error){if(error instanceof CartError&&(error.status===401||error.status===404))return null;throw error}
+  const v=record(response.value);keys(v,['id','display_id','custom_display_id','status','email','locale','created_at','shipping_address','billing_address','items','amounts','payment'])
+  const savedText=(value:unknown)=>{if(typeof value!=='string'||new TextEncoder().encode(value).length>4096||/[\x00-\x1f\x7f]/.test(value))throw protocol();return value}
+  const date=(value:unknown)=>{const s=savedText(value);if(!/^\d{4}-\d\d-\d\dT/.test(s)||!Number.isFinite(Date.parse(s)))throw protocol();return s}
+  const totalMap=(value:unknown)=>{const map=record(value);if(Object.keys(map).length>100||['total','original_total'].some(k=>typeof map[k]!=='string'))throw protocol();return Object.fromEntries(Object.entries(map).map(([k,n])=>{if(!/^[a-z_]{1,64}$/.test(k))throw protocol();return[k,text(n,amountPattern)]}))}
+  const address=(value:unknown)=>{keys(record(value),Object.keys(contactLimits));return contactAddress(value)}
+  if(response.status!==200||v.id!==id||!matches(v.display_id,/^[1-9][0-9]{0,18}$/)||!matches(v.custom_display_id,/^[0-9]{19}$/)||!['pending','completed','archived','canceled'].includes(String(v.status)))throw protocol()
+  const a=record(v.amounts);if(['item_subtotal','shipping_subtotal','discount_subtotal','tax_total'].some(k=>typeof record(a.totals)[k]!=='string'))throw protocol();keys(a,['order_id','version','currency_code','totals','lines','shipping_methods','summary'])
+  if(a.order_id!==id||!Number.isSafeInteger(a.version)||Number(a.version)<1||!matches(a.currency_code,/^[a-z]{3}$/)||!Array.isArray(a.lines)||!a.lines.length||a.lines.length>1000||!Array.isArray(a.shipping_methods)||a.shipping_methods.length>100)throw protocol()
+  const itemIDs=new Set<string>(),lineIDs=new Set<string>()
+  const lines=a.lines.map(value=>{const row=record(value);keys(row,['id','item_id','unit_price','quantity','totals']);const lineID=text(row.id,idPattern),itemID=text(row.item_id,idPattern);if(lineIDs.has(lineID)||itemIDs.has(itemID))throw protocol();lineIDs.add(lineID);itemIDs.add(itemID);return{id:lineID,item_id:itemID,unit_price:text(row.unit_price,amountPattern),quantity:text(row.quantity,amountPattern),totals:totalMap(row.totals)}})
+  const shippingIDs=new Set<string>()
+  const shipping_methods=a.shipping_methods.map(value=>{const row=record(value);keys(row,['id','shipping_method_id','name','amount','is_tax_inclusive','totals']);const method=text(row.shipping_method_id,idPattern);if(shippingIDs.has(method)||typeof row.is_tax_inclusive!=='boolean')throw protocol();shippingIDs.add(method);return{id:text(row.id,idPattern),shipping_method_id:method,name:savedText(row.name),amount:text(row.amount,amountPattern),is_tax_inclusive:row.is_tax_inclusive,totals:totalMap(row.totals)}})
+  if(!Array.isArray(v.items)||v.items.length!==itemIDs.size)throw protocol()
+  const nullable=(value:unknown)=>value===null?null:savedText(value)
+  const items=v.items.map(value=>{const row=record(value);keys(row,['id','title','product_id','product_title','product_handle','thumbnail','variant_title','option_values']);const itemID=text(row.id,idPattern);if(!itemIDs.delete(itemID))throw protocol();const options=record(row.option_values);if(Object.keys(options).length>64)throw protocol();return{id:itemID,title:savedText(row.title),product_id:row.product_id===null?null:text(row.product_id,idPattern),product_title:nullable(row.product_title),product_handle:nullable(row.product_handle),thumbnail:nullable(row.thumbnail),variant_title:nullable(row.variant_title),option_values:Object.fromEntries(Object.entries(options).map(([k,v])=>[savedText(k),savedText(v)]))}})
+  let summary:OrderConfirmation['amounts']['summary']=null
+  if(a.summary!==null){const row=record(a.summary);keys(row,['transaction_total','pending_difference']);summary={transaction_total:text(row.transaction_total,amountPattern),pending_difference:text(row.pending_difference,amountPattern)}}
+  const pay=record(v.payment);keys(pay,['provider_id','amount','currency_code','created_at']);if(pay.currency_code!==a.currency_code)throw protocol()
+  return{id,display_id:v.display_id,custom_display_id:v.custom_display_id,status:String(v.status),email:contactEmail(v.email),locale:savedText(v.locale),created_at:date(v.created_at),shipping_address:address(v.shipping_address),billing_address:address(v.billing_address),items,amounts:{order_id:id,version:Number(a.version),currency_code:a.currency_code,totals:totalMap(a.totals),lines,shipping_methods,summary},payment:{provider_id:text(pay.provider_id,idPattern),amount:text(pay.amount,amountPattern),currency_code:a.currency_code,created_at:date(pay.created_at)}}
  }
 
  async paymentStatus(id:string,authorization:{csrfToken:string}):Promise<PaymentStatus>{

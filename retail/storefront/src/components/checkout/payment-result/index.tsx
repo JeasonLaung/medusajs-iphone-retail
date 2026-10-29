@@ -20,7 +20,8 @@ export default function PaymentResult({ countryCode, cartId }: { countryCode: st
     const api=browserCartClient()
     async function check() {
       attempts++
-      const next: Result = await checkPaymentResult(api,cartId,cartCSRFFromCookies(document.cookie,location.protocol==='https:'))
+      const checked = await checkPaymentResult(api,cartId,cartCSRFFromCookies(document.cookie,location.protocol==='https:'))
+      const next: Result = {...checked,...(checked.status==='confirmed'&&checked.orderID?{order_url:`/${countryCode}/order/${encodeURIComponent(checked.orderID)}/confirmed`}:{})}
       if (stopped) return
       if (next.status === "pending" || next.status === "error") {
         if (attempts < 12) {
@@ -37,7 +38,7 @@ export default function PaymentResult({ countryCode, cartId }: { countryCode: st
     // cart completion requests. Each retry starts after the previous one ends.
     timer = setTimeout(() => void check(), 0)
     return () => { stopped = true; clearTimeout(timer) }
-  }, [cartId])
+  }, [cartId,countryCode])
 
   const messages = {
     checking: [copy.paymentCheckingTitle, copy.paymentCheckingBody],
