@@ -20,7 +20,10 @@ var ErrInput = errors.New("invalid device command")
 var ErrConflict = errors.New("device configuration changed")
 var ErrNotFound = errors.New("device SKU unavailable")
 
-type Handler struct{ DB *gorm.DB }
+type Handler struct {
+	DB             *gorm.DB
+	WarehouseScope *WarehouseIntakeScope
+}
 type Tracking struct {
 	ProductID       string `json:"product_id"`
 	VariantID       string `json:"variant_id"`

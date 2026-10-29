@@ -1,0 +1,33 @@
+{
+  "scope": "Warehouse employee scoped sale/returned intake with photos; editing, inspection and fulfillment incomplete",
+  "counts": {
+    "real_browser_react_gin_mysql_redis": true,
+    "api_mocking": false,
+    "admin_creates_warehouse_user": true,
+    "worker_login": true,
+    "scoped_shared_sku_picker": true,
+    "category_fixed": true,
+    "own_source_only": true,
+    "real_photo_upload": true,
+    "sale_available": true,
+    "returned_inspection": true,
+    "warehouse_list_after_close_and_reload": true,
+    "cross_warehouse_and_full_store_denied": true,
+    "language_en_zh": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0
+  },
+  "durable_mysql_verified": true,
+  "real_accounts_used": false,
+  "tls_secure_cookie_verified": false,
+  "fulfillment_accepted": false,
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "published_ports": "one random loopback API port",
+    "network": "owned bridge; egress unrestricted"
+  },
+  "cleanup": "both owned containers, bridge and temporary runners removed"
+}

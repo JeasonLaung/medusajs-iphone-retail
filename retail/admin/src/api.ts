@@ -384,16 +384,17 @@ export type RecentDevice={id:string;serial_number:string;imei:string|null;imei2:
 export type DeviceIntakeContext={recent_devices:RecentDevice[];recent_limit:50;revision:string;requires_radio:boolean;options:{title:string;value:string}[];sources:DeviceSource[]}
 export type DeviceIntakeInput={operation_id:string;expected_revision:string;devices:DeviceIntakeRow[]}
 export type DeviceIntakeRecord=Omit<DeviceIntakeRow,'grade'>&{grade:string|null;id:string;variant_id:string;location_id:string;state:'available'|'inspection'}
-export async function deviceIntakeContext(productID:string,variantID:string,signal?:AbortSignal):Promise<DeviceIntakeContext>{
- const d=await request<DeviceIntakeContext>(`products/${encodeURIComponent(productID)}/variants/${encodeURIComponent(variantID)}/device-intake`,{signal},'/api/admin/')
+export async function deviceIntakeContext(productID:string,variantID:string,signal?:AbortSignal,scope?:WarehouseIntakeScope):Promise<DeviceIntakeContext>{
+ const d=await request<DeviceIntakeContext>(intakePath(productID,variantID,scope),{signal},'/api/admin/')
  if(!d||!/^[0-9a-f]{64}$/.test(d.revision)||typeof d.requires_radio!=='boolean'||!Array.isArray(d.options)||d.options.length>100||d.options.some(o=>!o||typeof o.title!=='string'||typeof o.value!=='string')||!Array.isArray(d.sources)||d.sources.length>1000)throw new APIError(0,'request.invalid_response')
  if(d.recent_limit!==50||!Array.isArray(d.recent_devices)||d.recent_devices.length>50||new Set(d.recent_devices.map(r=>r.id)).size!==d.recent_devices.length||d.recent_devices.some(r=>!r||!warehouseID(r.id)||typeof r.serial_number!=='string'||!warehouseID(r.location_id)||!['sale','returned','recycled'].includes(r.category)||!['pending','inspection','available','reserved','packed','shipped','repair','repair_ready','retired','supplier_returned'].includes(r.state)||typeof r.created_at!=='string'||!Number.isFinite(Date.parse(r.created_at))||[r.imei,r.imei2,r.eid].some(v=>v!==null&&typeof v!=='string')||!Array.isArray(r.photos)||r.photos.length>8||r.photos.some(p=>!validDevicePhoto(p))))throw new APIError(0,'request.invalid_response')
+ if(scope&&(d.sources.some(s=>s.location_id!==scope.locationID)||d.recent_devices.some(r=>r.location_id!==scope.locationID||r.category!==scope.category)))throw new APIError(0,'request.invalid_response')
  const sources=d.sources.map(sourceProjection);if(sources.some(s=>s.type!=='self'||s.location_name===null)||new Set(sources.map(s=>s.id)).size!==sources.length)throw new APIError(0,'request.invalid_response')
  return {recent_devices:d.recent_devices.map(r=>({id:r.id,serial_number:r.serial_number,imei:r.imei,imei2:r.imei2,eid:r.eid,category:r.category,state:r.state,location_id:r.location_id,grade:r.grade,battery_health:r.battery_health,created_at:r.created_at,photos:r.photos.map(p=>({id:p.id,url:p.url}))})),recent_limit:50,revision:d.revision,requires_radio:d.requires_radio,options:d.options.map(o=>({title:o.title,value:o.value})),sources}
 }
-export async function intakeDevices(productID:string,variantID:string,body:DeviceIntakeInput):Promise<DeviceIntakeRecord[]>{
+export async function intakeDevices(productID:string,variantID:string,body:DeviceIntakeInput,scope?:WarehouseIntakeScope):Promise<DeviceIntakeRecord[]>{
  const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
- const d=await request<{devices:DeviceIntakeRecord[];replayed:boolean}>(`products/${encodeURIComponent(productID)}/variants/${encodeURIComponent(variantID)}/device-intake`,{method:'POST',body,csrf},'/api/admin/')
+ const d=await request<{devices:DeviceIntakeRecord[];replayed:boolean}>(intakePath(productID,variantID,scope),{method:'POST',body,csrf},'/api/admin/')
  if(!d||typeof d.replayed!=='boolean'||!Array.isArray(d.devices)||d.devices.length!==body.devices.length||new Set(d.devices.map(r=>r.id)).size!==d.devices.length)throw new APIError(0,'request.invalid_response')
  for(const [i,r] of d.devices.entries()){const input=body.devices[i];if(!r||!warehouseID(r.id)||r.variant_id!==variantID||!warehouseID(r.location_id)||r.serial_number!==input.serial_number.trim().toUpperCase()||r.source_id!==input.source_id||r.category!==input.category||r.state!==(input.category==='sale'?'available':'inspection')||r.imei!==input.imei||r.imei2!==input.imei2||r.eid!==input.eid||r.cost_cents!==input.cost_cents||r.currency_code!==input.currency_code||r.grade!==null&&typeof r.grade!=='string'||r.battery_health!==null&&(!Number.isInteger(r.battery_health)||r.battery_health<0||r.battery_health>100)||!Array.isArray(r.photos)||r.photos.length!==input.photos.length||r.photos.some((p,n)=>!validDevicePhoto(p)||p.id!==input.photos[n].id||p.url!==input.photos[n].url))throw new APIError(0,'request.invalid_response')}
  return d.devices
@@ -401,9 +402,9 @@ export async function intakeDevices(productID:string,variantID:string,body:Devic
 
 export type DevicePhoto={id:string;url:string}
 const validDevicePhoto=(p:DevicePhoto)=>!!p&&/^dphoto_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(p.id)&&p.url===`/api/store/device-photos/${p.id}`
-export async function uploadDevicePhoto(body:{operation_id:string;filename:string;mime_type:string;content:string}):Promise<DevicePhoto>{
+export async function uploadDevicePhoto(body:{operation_id:string;filename:string;mime_type:string;content:string},scope?:WarehouseIntakeScope):Promise<DevicePhoto>{
  const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
- const d=await request<{photo:DevicePhoto;replayed:boolean}>('device-photos',{method:'POST',body,csrf},'/api/admin/')
+ const d=await request<{photo:DevicePhoto;replayed:boolean}>(scope?warehouseIntakeBase(scope)+'/photos':'device-photos',{method:'POST',body,csrf},'/api/admin/')
  if(!d||typeof d.replayed!=='boolean'||!validDevicePhoto(d.photo))throw new APIError(0,'request.invalid_response')
  return {id:d.photo.id,url:d.photo.url}
 }
@@ -422,4 +423,14 @@ export async function commandWarehouseDevice(location:string,category:'sale'|'re
  const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
  const d=await request<{id:string;state:string;deleted:boolean;replayed:boolean}>(`warehouse/locations/${encodeURIComponent(location)}/devices/${category}/${encodeURIComponent(id)}`,{method:'POST',body,csrf},'/api/admin/')
  if(!d||d.id!==id||typeof d.replayed!=='boolean'||d.deleted!==(body.action==='delete')||typeof d.state!=='string'||body.action==='retire'&&d.state!=='retired'||['activate','make_available'].includes(body.action)&&d.state!=='available')throw new APIError(0,'request.invalid_response')
+}
+
+export type WarehouseIntakeScope={locationID:string;category:'sale'|'returned'}
+function warehouseIntakeBase(scope:WarehouseIntakeScope){return `warehouse/locations/${encodeURIComponent(scope.locationID)}/device-intake/${scope.category}`}
+function intakePath(productID:string,variantID:string,scope?:WarehouseIntakeScope){return scope?`${warehouseIntakeBase(scope)}/products/${encodeURIComponent(productID)}/variants/${encodeURIComponent(variantID)}`:`products/${encodeURIComponent(productID)}/variants/${encodeURIComponent(variantID)}/device-intake`}
+export type WarehouseIntakeVariant={id:string;product_id:string;title:string;product_title:string;sku:string|null}
+export async function warehouseIntakeVariants(scope:WarehouseIntakeScope,q:string,offset:number,signal?:AbortSignal){
+ const d=await request<{variants:WarehouseIntakeVariant[];offset:number;limit:20;has_more:boolean}>(`${warehouseIntakeBase(scope)}/variants?q=${encodeURIComponent(q)}&offset=${offset}`,{signal},'/api/admin/')
+ if(!d||d.offset!==offset||d.limit!==20||typeof d.has_more!=='boolean'||!Array.isArray(d.variants)||d.variants.length>20||new Set(d.variants.map(v=>v.id)).size!==d.variants.length||d.variants.some(v=>!v||!warehouseID(v.id)||!warehouseID(v.product_id)||typeof v.title!=='string'||typeof v.product_title!=='string'||v.sku!==null&&typeof v.sku!=='string'))throw new APIError(0,'request.invalid_response')
+ return d
 }

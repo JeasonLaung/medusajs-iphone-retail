@@ -59,7 +59,7 @@ func TestOwnedInventoryStockEdits(t *testing.T) {
 		t.Fatal("stock fixture plan failed")
 	}
 	applied, err := schema.Apply(ctx, pool, plan)
-	if err != nil || applied.Applied != 59 {
+	if err != nil || applied.Applied != 60 {
 		t.Fatal("stock fixture migrations failed")
 	}
 	seedReviewedCatalogFixture(t, db)
@@ -276,5 +276,5 @@ func TestOwnedInventoryStockEdits(t *testing.T) {
 	if auditCount() != 4 {
 		t.Fatal("denied stock edit created audit")
 	}
-	t.Log(`STOCK_EDIT_REHEARSAL {"migrations":59,"exact_decimal":true,"concurrent_attempts":8,"concurrent_wins":1,"conflicts":7,"duplicate_attempts":8,"duplicate_replays":7,"audit_rows":4,"audit_failure_rollback":true,"historical_hold_enforced":true,"live_mismatch_enforced":true,"held_increase_preserves_hold":true,"reservation_and_metadata_preserved":true,"deleted_parent_rejected":true,"stale_authority_rejected":true,"revoked_action_replay_denied":true,"disabled_command_rejected":true}`)
+	t.Log(`STOCK_EDIT_REHEARSAL {"migrations":60,"exact_decimal":true,"concurrent_attempts":8,"concurrent_wins":1,"conflicts":7,"duplicate_attempts":8,"duplicate_replays":7,"audit_rows":4,"audit_failure_rollback":true,"historical_hold_enforced":true,"live_mismatch_enforced":true,"held_increase_preserves_hold":true,"reservation_and_metadata_preserved":true,"deleted_parent_rejected":true,"stale_authority_rejected":true,"revoked_action_replay_denied":true,"disabled_command_rejected":true}`)
 }

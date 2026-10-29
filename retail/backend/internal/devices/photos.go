@@ -29,8 +29,8 @@ type PhotoInput struct {
 	Content     string `json:"content"`
 }
 type photoRow struct {
-	ID, OperationID, ActorID, Filename, MimeType, SHA256 string
-	Content                                              []byte
+	ID, OperationID, ActorID, Filename, MimeType, SHA256, ContextKey string
+	Content                                                          []byte
 }
 
 func photoMIME(b []byte) string {
@@ -73,7 +73,7 @@ func (h Handler) SavePhoto(ctx context.Context, actor identity.User, in PhotoInp
 	}
 	replay := false
 	e = h.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if e := intakeAuthority(ctx, tx, actor, true); e != nil {
+		if e := h.intakeAccess(ctx, tx, actor, true); e != nil {
 			return e
 		}
 		if _, e := sourceGate(ctx, tx); e != nil {
@@ -82,7 +82,7 @@ func (h Handler) SavePhoto(ctx context.Context, actor identity.User, in PhotoInp
 		var prior photoRow
 		e := tx.Table("device_photos").Where("operation_id=?", in.OperationID).Take(&prior).Error
 		if e == nil {
-			if prior.ActorID != actor.ID || prior.Filename != in.Filename || prior.MimeType != in.MimeType || prior.SHA256 != digest || !bytes.Equal(prior.Content, data) {
+			if prior.ContextKey != h.intakeContextKey() || prior.ActorID != actor.ID || prior.Filename != in.Filename || prior.MimeType != in.MimeType || prior.SHA256 != digest || !bytes.Equal(prior.Content, data) {
 				return ErrConflict
 			}
 			if !verifyPhoto(prior) {
@@ -97,7 +97,7 @@ func (h Handler) SavePhoto(ctx context.Context, actor identity.User, in PhotoInp
 		}
 		out = Photo{"dphoto_" + uuid.NewString(), ""}
 		out.URL = photoURL(out.ID)
-		if tx.Exec("INSERT INTO device_photos(id,operation_id,actor_id,filename,mime_type,sha256,content,created_at) VALUES(?,?,?,?,?,?,?,UTC_TIMESTAMP(6))", out.ID, in.OperationID, actor.ID, in.Filename, in.MimeType, digest, data).Error != nil {
+		if tx.Exec("INSERT INTO device_photos(id,operation_id,actor_id,filename,mime_type,sha256,content,context_key,created_at) VALUES(?,?,?,?,?,?,?,?,UTC_TIMESTAMP(6))", out.ID, in.OperationID, actor.ID, in.Filename, in.MimeType, digest, data, h.intakeContextKey()).Error != nil {
 			return ErrUnavailable
 		}
 		return nil

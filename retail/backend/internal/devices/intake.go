@@ -138,20 +138,24 @@ func (h Handler) ReadIntake(ctx context.Context, actor identity.User, productID,
 		return out, ErrUnavailable
 	}
 	e := h.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if e := intakeAuthority(ctx, tx, actor, false); e != nil {
+		if e := h.intakeAccess(ctx, tx, actor, false); e != nil {
 			return e
 		}
 		if _, e := sourceGate(ctx, tx); e != nil {
 			return e
 		}
 		var e error
-		out, e = intakeSKU(tx, productID, variantID)
+		out, e = h.intakeConfiguration(tx, productID, variantID)
 		if e != nil {
 			return e
 		}
 		out.RecentDevices = []RecentDevice{}
 		out.RecentLimit = 50
-		if tx.Table("devices").Select("id,serial_number,imei,imei2,eid,category,state,location_id,grade,battery_health,photos,created_at").Where("variant_id=? AND deleted_at IS NULL", variantID).Order("created_at DESC,id DESC").Limit(50).Scan(&out.RecentDevices).Error != nil {
+		query := tx.Table("devices").Select("id,serial_number,imei,imei2,eid,category,state,location_id,grade,battery_health,photos,created_at").Where("variant_id=? AND deleted_at IS NULL", variantID)
+		if h.WarehouseScope != nil {
+			query = query.Where("location_id=? AND category=?", h.WarehouseScope.LocationID, h.WarehouseScope.Category)
+		}
+		if query.Order("created_at DESC,id DESC").Limit(50).Scan(&out.RecentDevices).Error != nil {
 			return ErrUnavailable
 		}
 		for i := range out.RecentDevices {
@@ -217,16 +221,19 @@ func (h Handler) Intake(ctx context.Context, actor identity.User, productID, var
 	}
 	request, _ := json.Marshal(in)
 	e := h.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if e := intakeAuthority(ctx, tx, actor, true); e != nil {
+		if e := h.intakeAccess(ctx, tx, actor, true); e != nil {
 			return e
 		}
 		if _, e := sourceGate(ctx, tx); e != nil {
 			return e
 		}
-		var prior struct{ ActorID, ProductID, VariantID, RequestJSON, ResultJSON string }
+		if e := h.intakeSources(tx, in.Devices); e != nil {
+			return e
+		}
+		var prior struct{ ActorID, ProductID, VariantID, RequestJSON, ResultJSON, ContextKey string }
 		e := tx.Table("device_intake_changes").Where("operation_id=?", in.OperationID).Take(&prior).Error
 		if e == nil {
-			if prior.ActorID != actor.ID || prior.ProductID != productID || prior.VariantID != variantID || prior.RequestJSON != string(request) {
+			if prior.ContextKey != h.intakeContextKey() || prior.ActorID != actor.ID || prior.ProductID != productID || prior.VariantID != variantID || prior.RequestJSON != string(request) {
 				return ErrConflict
 			}
 			if json.Unmarshal([]byte(prior.ResultJSON), &out) != nil || len(out.Devices) != len(in.Devices) {
@@ -238,7 +245,7 @@ func (h Handler) Intake(ctx context.Context, actor identity.User, productID, var
 		if !errors.Is(e, gorm.ErrRecordNotFound) {
 			return ErrUnavailable
 		}
-		sku, e := intakeSKU(tx, productID, variantID)
+		sku, e := h.intakeConfiguration(tx, productID, variantID)
 		if e != nil {
 			return e
 		}
@@ -296,7 +303,7 @@ func (h Handler) Intake(ctx context.Context, actor identity.User, productID, var
 			out.Devices = append(out.Devices, record)
 		}
 		result, _ := json.Marshal(out)
-		if tx.Exec("INSERT INTO device_intake_changes(operation_id,actor_id,product_id,variant_id,request_json,result_json,created_at) VALUES(?,?,?,?,?,?,UTC_TIMESTAMP(6))", in.OperationID, actor.ID, productID, variantID, string(request), string(result)).Error != nil {
+		if tx.Exec("INSERT INTO device_intake_changes(operation_id,actor_id,product_id,variant_id,request_json,result_json,context_key,created_at) VALUES(?,?,?,?,?,?,?,UTC_TIMESTAMP(6))", in.OperationID, actor.ID, productID, variantID, string(request), string(result), h.intakeContextKey()).Error != nil {
 			return ErrUnavailable
 		}
 		return nil

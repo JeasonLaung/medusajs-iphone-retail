@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import {Alert,Button,Space,Upload} from 'antd'
 import {APIError,uploadDevicePhoto} from './api'
-import type {DevicePhoto} from './api'
+import type {DevicePhoto,WarehouseIntakeScope} from './api'
 import type {Copy} from './i18n'
 
 // Match the original intake camera: keep aspect ratio, at most 1800px, JPEG 85%.
@@ -18,12 +18,12 @@ async function photoContent(file:File){
   return {filename:file.name,mime_type:'image/jpeg',content}
  }finally{URL.revokeObjectURL(url)}
 }
-export default function DevicePhotos({value=[],onChange,disabled,copy,onBusy,onExpired}:{value?:DevicePhoto[];onChange?(photos:DevicePhoto[]):void;disabled?:boolean;copy:Copy;onBusy(busy:boolean):void;onExpired():void}){
+export default function DevicePhotos({value=[],onChange,disabled,copy,onBusy,onExpired,scope}:{value?:DevicePhoto[];onChange?(photos:DevicePhoto[]):void;disabled?:boolean;copy:Copy;onBusy(busy:boolean):void;onExpired():void;scope?:WarehouseIntakeScope}){
  const [uploading,setUploading]=useState(false),[error,setError]=useState(false)
  const [pending,setPending]=useState<Parameters<typeof uploadDevicePhoto>[0]>()
  const send=async(body:Parameters<typeof uploadDevicePhoto>[0])=>{
   setUploading(true);onBusy(true);setError(false);setPending(body)
-  try{const photo=await uploadDevicePhoto(body);onChange?.([...value,photo]);setPending(undefined);onBusy(false)}catch(error){if(error instanceof APIError&&error.status===401){setPending(undefined);onBusy(false);onExpired()}else setError(true)}finally{setUploading(false)}
+  try{const photo=await uploadDevicePhoto(body,scope);onChange?.([...value,photo]);setPending(undefined);onBusy(false)}catch(error){if(error instanceof APIError&&error.status===401){setPending(undefined);onBusy(false);onExpired()}else setError(true)}finally{setUploading(false)}
  }
  const select=async(file:File)=>{
   if(disabled||uploading||pending||value.length>=8)return false

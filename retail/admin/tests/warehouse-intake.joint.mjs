@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict'
+import {createServer} from 'vite'
+import {chromium,expect} from '@playwright/test'
+let server,browser
+const origin='http://127.0.0.1:19383',errors=[]
+if(!process.env.ADMIN_TEST_API_TARGET)throw Error('Owned API target required')
+try{
+ server=await createServer({server:{port:19383,strictPort:true,host:'127.0.0.1'},logLevel:'error'});await server.listen()
+ browser=await chromium.launch({headless:true,executablePath:process.env.ADMIN_TEST_BROWSER||'C:/Program Files/Google/Chrome/Application/chrome.exe'})
+ const admin=await browser.newContext({reducedMotion:'reduce'}),worker=await browser.newContext({reducedMotion:'reduce'})
+ for(const c of [admin,worker])await c.addInitScript(()=>localStorage.setItem('eurorefurb.admin.language','en'))
+ const page=await admin.newPage(),warehouse=await worker.newPage();for(const p of [page,warehouse])p.on('pageerror',e=>errors.push(e.message))
+ const login=async(p,email,password)=>{await p.goto(origin+'/account');await p.getByLabel('Email',{exact:true}).fill(email);await p.getByLabel('Password',{exact:true}).fill(password);await p.getByRole('button',{name:'Sign in',exact:true}).click();await expect(p.getByRole('button',{name:'Sign out',exact:true})).toBeVisible()}
+ await login(page,'browser@example.invalid','artificial-browser-password')
+ await page.goto(origin+'/warehouse-users');await page.getByRole('button',{name:'New warehouse user',exact:true}).click();const editor=page.getByRole('dialog')
+ await editor.getByLabel('Name',{exact:true}).fill('Device warehouse operator');await editor.getByLabel('Email',{exact:true}).fill('devices-joint@example.invalid');await editor.getByLabel('Password',{exact:true}).fill('artificial-device-joint-password')
+ await editor.getByText('Warehouse A (joint-warehouse-a)',{exact:true}).click();await editor.locator('.ant-transfer-operation button').first().click()
+ for(const label of ['View sale devices','Manage sale devices','View returned devices','Manage returned devices']){await editor.getByRole('checkbox',{name:label,exact:true}).click();await expect(editor.getByRole('checkbox',{name:label,exact:true})).toBeChecked()}
+ await editor.getByRole('button',{name:'Save',exact:true}).click();await expect(page.getByRole('button',{name:'Device warehouse operator',exact:true})).toBeVisible()
+ await login(warehouse,'devices-joint@example.invalid','artificial-device-joint-password');await warehouse.getByRole('menuitem',{name:'Warehouse devices',exact:true}).click()
+ await expect(warehouse.getByRole('cell',{name:'WAREHOUSE-PENDING',exact:true})).toBeVisible();await expect(warehouse.getByRole('radio',{name:'Warehouse B',exact:true})).toHaveCount(0);await expect(warehouse.getByRole('radio',{name:'Recycled',exact:true})).toHaveCount(0)
+ const first=await worker.request.get(origin+'/api/admin/warehouse/locations/joint-warehouse-a/device-intake/sale/variants?q=Warehouse');assert.equal(first.status(),200);assert.ok(!(await first.text()).includes('metadata'))
+ await warehouse.getByRole('button',{name:'Device intake',exact:true}).click();const picker=warehouse.getByRole('dialog').last();await expect(picker.getByRole('cell',{name:'Warehouse device SKU',exact:true})).toBeVisible();await picker.getByRole('button',{name:'Device intake',exact:true}).click();let intake=warehouse.getByRole('dialog').last()
+ await expect(intake.getByLabel('Device category',{exact:true})).toBeDisabled();await intake.getByLabel('Own warehouse',{exact:true}).scrollIntoViewIfNeeded();await intake.getByLabel('Own warehouse',{exact:true}).press('ArrowDown');await intake.getByLabel('Own warehouse',{exact:true}).press('Enter');await intake.getByLabel('SN',{exact:true}).fill('worker-new-sale');await intake.getByLabel('IMEI',{exact:true}).fill('000000000009011')
+ const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jB9kAAAAASUVORK5CYII=','base64')
+ await intake.locator('input[type=file]').first().setInputFiles({name:'worker-phone.png',mimeType:'image/png',buffer:png});await expect(intake.locator('.ant-upload-list-item')).toHaveCount(1)
+ await intake.getByRole('button',{name:'Submit intake batch',exact:true}).click();await expect(intake.getByText('Devices registered',{exact:true})).toBeVisible();await expect(intake.getByRole('cell',{name:'WORKER-NEW-SALE',exact:true})).toBeVisible();await intake.getByRole('button',{name:'Close',exact:true}).click()
+ await expect(warehouse.getByRole('cell',{name:'WORKER-NEW-SALE',exact:true})).toBeVisible();await expect(warehouse.getByRole('row').filter({has:warehouse.getByRole('cell',{name:'WORKER-NEW-SALE',exact:true})}).locator('img')).toBeVisible()
+ await warehouse.getByRole('radio',{name:'Returned',exact:true}).check();await warehouse.getByRole('button',{name:'Device intake',exact:true}).click();await warehouse.getByRole('dialog').last().getByRole('button',{name:'Device intake',exact:true}).click();intake=warehouse.getByRole('dialog').last();await expect(intake.getByLabel('Device category',{exact:true})).toBeDisabled()
+ await intake.getByLabel('Own warehouse',{exact:true}).scrollIntoViewIfNeeded();await intake.getByLabel('Own warehouse',{exact:true}).press('ArrowDown');await intake.getByLabel('Own warehouse',{exact:true}).press('Enter');await intake.getByLabel('SN',{exact:true}).fill('worker-new-return');await intake.getByLabel('IMEI',{exact:true}).fill('000000000009012');await intake.getByRole('button',{name:'Submit intake batch',exact:true}).click();await expect(intake.getByText('Devices registered',{exact:true})).toBeVisible();await expect(intake.getByRole('cell',{name:'Inspection',exact:true})).toBeVisible();await intake.getByRole('button',{name:'Close',exact:true}).click()
+ await warehouse.reload();await warehouse.getByRole('radio',{name:'Returned',exact:true}).check();await expect(warehouse.getByRole('cell',{name:'WORKER-NEW-RETURN',exact:true})).toBeVisible()
+ assert.equal((await worker.request.get(origin+'/api/admin/warehouse/locations/joint-warehouse-b/device-intake/sale/variants')).status(),403);assert.equal((await worker.request.get(origin+'/api/admin/products/joint-device-product/variants/joint-device-variant/device-intake')).status(),403)
+ await warehouse.setViewportSize({width:390,height:844});assert.equal(await warehouse.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);await worker.addInitScript(()=>localStorage.setItem('eurorefurb.admin.language','zh-CN'));await warehouse.reload();await expect(warehouse.getByRole('heading',{name:'仓库设备',exact:true})).toBeVisible();assert.deepEqual(errors,[])
+ console.log('WAREHOUSE_INTAKE_JOINT '+JSON.stringify({real_browser_react_gin_mysql_redis:true,api_mocking:false,admin_creates_warehouse_user:true,worker_login:true,scoped_shared_sku_picker:true,category_fixed:true,own_source_only:true,real_photo_upload:true,sale_available:true,returned_inspection:true,warehouse_list_after_close_and_reload:true,cross_warehouse_and_full_store_denied:true,language_en_zh:true,mobile_no_page_overflow:true,browser_errors:0}))
+}finally{await browser?.close();await server?.close()}

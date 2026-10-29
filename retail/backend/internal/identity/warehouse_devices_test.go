@@ -171,5 +171,6 @@ func checkWarehouseDevices(t *testing.T, db *gorm.DB, actor identity.User, call 
 	exec("UPDATE inventory_locations SET deleted_at=UTC_TIMESTAMP(6) WHERE id='intake-location'")
 	call("POST", path+"/"+row.ID, body(in), 403)
 	exec("UPDATE inventory_locations SET deleted_at=NULL WHERE id='intake-location'")
+	checkWarehouseIntake(t, db, actor, call)
 	t.Log(`WAREHOUSE_DEVICES_REHEARSAL {"location_and_category_scope":true,"recycled_denied":true,"read_only_hides_commands":true,"no_cost_notes_customer_projection":true,"exact_search":true,"pagination":true,"concurrent_attempts":4,"single_mutation":true,"immutable_replay":true,"moved_object_replay_denied":true,"revoked_replay_denied":true,"stale_revision":true,"late_receipt_atomic":true,"soft_delete_replay":true,"sales_history_and_locked_states_denied":true,"deleted_warehouse_denied":true,"activation_radio_grade_battery_checks":true}`)
 }

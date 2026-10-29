@@ -3,8 +3,10 @@ import {Alert,App,Button,Drawer,Image,Input,Radio,Result,Space,Spin,Table,Typogr
 import {APIError,getWarehouseAccess,getWarehouseDevices,commandWarehouseDevice} from './api'
 import type {WarehouseAccess,WarehouseDevice,WarehouseDeviceAction,WarehouseDeviceCommand,WarehouseDevicePage} from './api'
 import type {Copy} from './i18n'
+import WarehouseIntakePicker from './WarehouseIntakePicker'
 
 export default function WarehouseDevices({copy,onExpired}:{copy:Copy;onExpired():void}){
+ const [intake,setIntake]=useState(false)
  const {message}=App.useApp(),[attempt,setAttempt]=useState(0),[access,setAccess]=useState<WarehouseAccess>(),[location,setLocation]=useState(''),[category,setCategory]=useState<'sale'|'returned'>('sale'),[q,setQ]=useState(''),[offset,setOffset]=useState(0),[data,setData]=useState<WarehouseDevicePage>(),[loading,setLoading]=useState(true),[error,setError]=useState<unknown>()
  const [editor,setEditor]=useState<{row:WarehouseDevice;action:WarehouseDeviceAction}>(),[command,setCommand]=useState<WarehouseDeviceCommand>(),[saving,setSaving]=useState(false),[saveError,setSaveError]=useState<unknown>()
  const reload=()=>setAttempt(n=>n+1)
@@ -29,7 +31,7 @@ export default function WarehouseDevices({copy,onExpired}:{copy:Copy;onExpired()
  const uncertain=saveError!==undefined&&(!(saveError instanceof APIError)||saveError.status===0||saveError.status>=500)
  return <section className="account-panel"><Space direction="vertical" size={24} className="full-width">
   <Typography.Paragraph type="secondary">{copy.scopedDevicesInfo}</Typography.Paragraph>
-  <Space wrap><Button onClick={reload}>{copy.reload}</Button><Radio.Group aria-label={copy.stockLocation} value={location} onChange={e=>{setLocation(e.target.value);setOffset(0)}} options={access?.locations.map(l=>({value:l.id,label:l.name}))}/><Radio.Group aria-label={copy.deviceCategory} value={category} onChange={e=>{setCategory(e.target.value);setOffset(0)}} options={categories.map(c=>({value:c,label:c==='sale'?copy.deviceSale:copy.deviceReturned}))}/></Space>
+  <Space wrap>{location&&access?.actions.includes(category==='sale'?'warehouse.intake.write':'warehouse.return.write')&&<Button type="primary" onClick={()=>setIntake(true)}>{copy.deviceIntake}</Button>}<Button onClick={reload}>{copy.reload}</Button><Radio.Group aria-label={copy.stockLocation} value={location} onChange={e=>{setLocation(e.target.value);setOffset(0)}} options={access?.locations.map(l=>({value:l.id,label:l.name}))}/><Radio.Group aria-label={copy.deviceCategory} value={category} onChange={e=>{setCategory(e.target.value);setOffset(0)}} options={categories.map(c=>({value:c,label:c==='sale'?copy.deviceSale:copy.deviceReturned}))}/></Space>
   <Input.Search aria-label={copy.deviceExactSearch} placeholder={copy.deviceExactSearch} maxLength={100} allowClear onSearch={value=>{setQ(value.trim());setOffset(0)}}/>
   {!access?.locations.length?<Alert type="info" showIcon message={copy.noWarehouseScope}/>:data&&<>
    <Table<WarehouseDevice> rowKey="id" dataSource={data.devices} pagination={false} scroll={{x:1000}} columns={[
@@ -46,5 +48,5 @@ export default function WarehouseDevices({copy,onExpired}:{copy:Copy;onExpired()
    {!command&&<Button type="primary" danger={editor.action==='delete'||editor.action==='retire'} loading={saving} onClick={()=>void send({operation_id:crypto.randomUUID(),expected_revision:editor.row.revision,action:editor.action})}>{copy.save}</Button>}
    {command&&uncertain&&<Button type="primary" loading={saving} onClick={()=>void send(command)}>{copy.retrySave}</Button>}<Button disabled={saving} onClick={close}>{copy.cancel}</Button>
   </Space>}
- </Drawer></section>
+ </Drawer>{intake&&<WarehouseIntakePicker scope={{locationID:location,category}} copy={copy} onExpired={onExpired} onClose={()=>{setIntake(false);reload()}}/>}</section>
 }
