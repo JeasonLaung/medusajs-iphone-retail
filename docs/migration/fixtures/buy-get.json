@@ -1,0 +1,1076 @@
+{
+  "format_version": 1,
+  "scope": "No-budget buy-get reservation and arithmetic; not full qualification or checkout",
+  "sources": {
+    "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/buy-get.js": "f5f1e7fce022b4868ab047ca44270a6a154f444ff380f303c570b939a3da2a47",
+    "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/usage.js": "819328d0e7c3b855f95b6b9a4e640cc9fabc4572343796d63ebe34abe8506af8",
+    "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/validations/promotion-rule.js": "fd835ede4d3615d7dbc3633b4f047bbe8c63a696de4c2819fd5a712b4870770b"
+  },
+  "cases": [
+    {
+      "name": "same-product-buy-two-get-one",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "100",
+        "minimum_buy": 2,
+        "apply_quantity": 1,
+        "max_quantity": null,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "30",
+            "quantity": 3,
+            "buy_eligible": true,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "10"
+          }
+        ],
+        "discounts": {
+          "a": "10"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 2
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "same-product-insufficient-target",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "100",
+        "minimum_buy": 2,
+        "apply_quantity": 1,
+        "max_quantity": null,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "20",
+            "quantity": 2,
+            "buy_eligible": true,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [],
+        "discounts": {},
+        "buy_consumed": {
+          "FIXTURE": []
+        },
+        "target_consumed": {
+          "FIXTURE": []
+        }
+      }
+    },
+    {
+      "name": "prefer-buy-only-over-expensive-target",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "100",
+        "minimum_buy": 2,
+        "apply_quantity": 1,
+        "max_quantity": null,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "100",
+            "quantity": 1,
+            "buy_eligible": true,
+            "target_eligible": true
+          },
+          {
+            "id": "b",
+            "subtotal": "50",
+            "quantity": 1,
+            "buy_eligible": true,
+            "target_eligible": false
+          },
+          {
+            "id": "c",
+            "subtotal": "40",
+            "quantity": 1,
+            "buy_eligible": true,
+            "target_eligible": false
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "100"
+          }
+        ],
+        "discounts": {
+          "a": "100"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "b",
+              "quantity": 1
+            },
+            {
+              "id": "c",
+              "quantity": 1
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "repeat-same-product",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "100",
+        "minimum_buy": 2,
+        "apply_quantity": 1,
+        "max_quantity": 3,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "90",
+            "quantity": 9,
+            "buy_eligible": true,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "30"
+          }
+        ],
+        "discounts": {
+          "a": "30"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 6
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "maximum-limits-repeat",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "100",
+        "minimum_buy": 2,
+        "apply_quantity": 1,
+        "max_quantity": 2,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "90",
+            "quantity": 9,
+            "buy_eligible": true,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "20"
+          }
+        ],
+        "discounts": {
+          "a": "20"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 4
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "zero-maximum",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "100",
+        "minimum_buy": 2,
+        "apply_quantity": 1,
+        "max_quantity": 0,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "30",
+            "quantity": 3,
+            "buy_eligible": true,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [],
+        "discounts": {},
+        "buy_consumed": {
+          "FIXTURE": []
+        },
+        "target_consumed": {
+          "FIXTURE": []
+        }
+      }
+    },
+    {
+      "name": "fixed-per-target-unit-cap",
+      "input": {
+        "code": "FIXTURE",
+        "type": "fixed",
+        "value": "10",
+        "minimum_buy": 1,
+        "apply_quantity": 2,
+        "max_quantity": 2,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "buy_eligible": true,
+            "target_eligible": false
+          },
+          {
+            "id": "b",
+            "subtotal": "6",
+            "quantity": 2,
+            "buy_eligible": false,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "b",
+            "amount": "6"
+          }
+        ],
+        "discounts": {
+          "b": "6"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 1
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "b",
+              "quantity": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "target-descending-subtotal",
+      "input": {
+        "code": "FIXTURE",
+        "type": "fixed",
+        "value": "10",
+        "minimum_buy": 1,
+        "apply_quantity": 1,
+        "max_quantity": 1,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "5",
+            "quantity": 1,
+            "buy_eligible": true,
+            "target_eligible": false
+          },
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "buy_eligible": false,
+            "target_eligible": true
+          },
+          {
+            "id": "c",
+            "subtotal": "40",
+            "quantity": 1,
+            "buy_eligible": false,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "c",
+            "amount": "10"
+          }
+        ],
+        "discounts": {
+          "c": "10"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 1
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "c",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "target-stable-tie",
+      "input": {
+        "code": "FIXTURE",
+        "type": "fixed",
+        "value": "10",
+        "minimum_buy": 1,
+        "apply_quantity": 1,
+        "max_quantity": 1,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "5",
+            "quantity": 1,
+            "buy_eligible": true,
+            "target_eligible": false
+          },
+          {
+            "id": "c",
+            "subtotal": "20",
+            "quantity": 1,
+            "buy_eligible": false,
+            "target_eligible": true
+          },
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "buy_eligible": false,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "c",
+            "amount": "10"
+          }
+        ],
+        "discounts": {
+          "c": "10"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 1
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "c",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "buy-stable-tie",
+      "input": {
+        "code": "FIXTURE",
+        "type": "fixed",
+        "value": "5",
+        "minimum_buy": 1,
+        "apply_quantity": 1,
+        "max_quantity": 1,
+        "items": [
+          {
+            "id": "b",
+            "subtotal": "20",
+            "quantity": 1,
+            "buy_eligible": true,
+            "target_eligible": false
+          },
+          {
+            "id": "a",
+            "subtotal": "20",
+            "quantity": 1,
+            "buy_eligible": true,
+            "target_eligible": false
+          },
+          {
+            "id": "c",
+            "subtotal": "10",
+            "quantity": 1,
+            "buy_eligible": false,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "c",
+            "amount": "5"
+          }
+        ],
+        "discounts": {
+          "c": "5"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "b",
+              "quantity": 1
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "c",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "buy-consumed-by-other-code",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "100",
+        "minimum_buy": 2,
+        "apply_quantity": 1,
+        "max_quantity": 1,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "30",
+            "quantity": 3,
+            "buy_eligible": true,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {
+          "OTHER": [
+            {
+              "id": "a",
+              "quantity": 2
+            }
+          ]
+        },
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [],
+        "discounts": {},
+        "buy_consumed": {
+          "OTHER": [
+            {
+              "id": "a",
+              "quantity": 2
+            }
+          ],
+          "FIXTURE": []
+        },
+        "target_consumed": {
+          "FIXTURE": []
+        }
+      }
+    },
+    {
+      "name": "target-consumed-by-other-code",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "100",
+        "minimum_buy": 1,
+        "apply_quantity": 1,
+        "max_quantity": 1,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "5",
+            "quantity": 1,
+            "buy_eligible": true,
+            "target_eligible": false
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "buy_eligible": false,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {
+          "OTHER": [
+            {
+              "id": "b",
+              "quantity": 1
+            }
+          ]
+        }
+      },
+      "expected": {
+        "amounts": [],
+        "discounts": {},
+        "buy_consumed": {
+          "FIXTURE": []
+        },
+        "target_consumed": {
+          "OTHER": [
+            {
+              "id": "b",
+              "quantity": 1
+            }
+          ],
+          "FIXTURE": []
+        }
+      }
+    },
+    {
+      "name": "own-code-reservations-replaced",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "100",
+        "minimum_buy": 2,
+        "apply_quantity": 1,
+        "max_quantity": 1,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "30",
+            "quantity": 3,
+            "buy_eligible": true,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 3
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 3
+            }
+          ]
+        }
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "10"
+          }
+        ],
+        "discounts": {
+          "a": "10"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 2
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "zero-discount-still-consumes-quantities",
+      "input": {
+        "code": "FIXTURE",
+        "type": "fixed",
+        "value": "0",
+        "minimum_buy": 2,
+        "apply_quantity": 1,
+        "max_quantity": 1,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "30",
+            "quantity": 3,
+            "buy_eligible": true,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [],
+        "discounts": {},
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 2
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "previous-discount-does-not-cap-buyget",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "100",
+        "minimum_buy": 2,
+        "apply_quantity": 1,
+        "max_quantity": 1,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "30",
+            "quantity": 3,
+            "buy_eligible": true,
+            "target_eligible": true
+          }
+        ],
+        "previous": {
+          "a": "29"
+        },
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "10"
+          }
+        ],
+        "discounts": {
+          "a": "39"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 2
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "batch-allowance-not-decremented-between-lines",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "100",
+        "minimum_buy": 1,
+        "apply_quantity": 2,
+        "max_quantity": 1,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "5",
+            "quantity": 1,
+            "buy_eligible": true,
+            "target_eligible": false
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "buy_eligible": false,
+            "target_eligible": true
+          },
+          {
+            "id": "c",
+            "subtotal": "20",
+            "quantity": 1,
+            "buy_eligible": false,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "c",
+            "amount": "20"
+          },
+          {
+            "id": "b",
+            "amount": "10"
+          }
+        ],
+        "discounts": {
+          "c": "20",
+          "b": "10"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 1
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "c",
+              "quantity": 1
+            },
+            {
+              "id": "b",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "percentage-above-100-not-capped",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "150",
+        "minimum_buy": 2,
+        "apply_quantity": 1,
+        "max_quantity": 1,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "30",
+            "quantity": 3,
+            "buy_eligible": true,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "15"
+          }
+        ],
+        "discounts": {
+          "a": "15"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 2
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "apply-zero-reserves-buy",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "100",
+        "minimum_buy": 2,
+        "apply_quantity": 0,
+        "max_quantity": 1,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "30",
+            "quantity": 3,
+            "buy_eligible": true,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [],
+        "discounts": {},
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 2
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": []
+        }
+      }
+    },
+    {
+      "name": "empty-preserves-current-maps",
+      "input": {
+        "code": "FIXTURE",
+        "type": "percentage",
+        "value": "100",
+        "minimum_buy": 2,
+        "apply_quantity": 1,
+        "max_quantity": 1,
+        "items": [],
+        "previous": {
+          "other": "7"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "old",
+              "quantity": 1
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "old",
+              "quantity": 1
+            }
+          ]
+        }
+      },
+      "expected": {
+        "amounts": [],
+        "discounts": {
+          "other": "7"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "old",
+              "quantity": 1
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "old",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "original-iteration-limit",
+      "input": {
+        "code": "FIXTURE",
+        "type": "fixed",
+        "value": "1",
+        "minimum_buy": 2,
+        "apply_quantity": 1,
+        "max_quantity": 2000,
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "3003",
+            "quantity": 3003,
+            "buy_eligible": true,
+            "target_eligible": true
+          }
+        ],
+        "previous": {},
+        "buy_consumed": {},
+        "target_consumed": {}
+      },
+      "expected": {
+        "amounts": [
+          {
+            "id": "a",
+            "amount": "1000"
+          }
+        ],
+        "discounts": {
+          "a": "1000"
+        },
+        "buy_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 2000
+            }
+          ]
+        },
+        "target_consumed": {
+          "FIXTURE": [
+            {
+              "id": "a",
+              "quantity": 1000
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "iteration_limit_case": "original-iteration-limit",
+  "precision_exception": {
+    "name": "source-shared-map-toNumber-loss",
+    "item_subtotal": "27021597764222979",
+    "quantity": 3,
+    "value": "9007199254740993",
+    "source_action": "9007199254740993",
+    "source_shared_balance": "9007199254740992",
+    "required_exact_shared_balance": "9007199254740993"
+  }
+}
