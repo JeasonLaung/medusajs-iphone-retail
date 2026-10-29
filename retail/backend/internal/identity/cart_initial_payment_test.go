@@ -191,6 +191,12 @@ func checkInitialPayments(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	if err != nil || result.State != "requires_review" || calls.Load() != 3 {
 		t.Fatal("unknown creation was repeated")
 	}
+	uncertain.Store(false)
+	completionRef, completionIn := makeCart()
+	if _, err = cart.StartInitialPayment(ctx, db, "shop", completionRef, completionIn, options); err != nil {
+		t.Fatal(err)
+	}
+	checkPaidOrderCompletion(t, ctx, db, completionRef, completionIn, options)
 	exec("UPDATE cart_checkout_runtime SET enabled=FALSE WHERE id=1")
 	if _, err = cart.StartInitialPayment(ctx, db, "shop", ref, in, options); err != cart.ErrSchema {
 		t.Fatal("disabled initial replay allowed")

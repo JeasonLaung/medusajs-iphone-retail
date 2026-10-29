@@ -56,10 +56,10 @@ func TestOwnedTaxSchema(t *testing.T) {
 	}
 	db, gdb := open("tax_schema_fresh")
 	result, err := schema.Apply(ctx, db, plan)
-	if err != nil || result.Applied != 46 || schema.CheckApplied(ctx, db, plan) != nil || tax.Ready(ctx, gdb) != nil {
+	if err != nil || result.Applied != 47 || schema.CheckApplied(ctx, db, plan) != nil || tax.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh tax schema unavailable")
 	}
-	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 46 {
+	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 47 {
 		t.Fatal("tax schema replay changed facts")
 	}
 	exec := func(query string) {
@@ -173,7 +173,7 @@ func TestOwnedTaxSchema(t *testing.T) {
 	if blocked.QueryRowContext(ctx, `SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name='tax_providers'`).Scan(&kept) != nil || kept != 0 {
 		t.Fatal("tax guard created partial domain")
 	}
-	t.Log(`TAX_SCHEMA_REHEARSAL {"migrations":46,"tables":4,"source_columns":36,"actual_sql_selection":true,"province_parent_and_exact_rate":true,"giftcards_excluded":true,"automatic_force_address_gates":true,"null_rate_zero":true,"disabled_unknown_provider_rejected":true,"duplicate_tax_regions_and_priority_ties_rejected":true,"soft_deleted_rates_excluded":true,"autocommit_rejected":true,"existing_tables_preserved":true,"schema_drift_rejected":true,"writes_enabled":false,"cart_transaction_integrated":false}`)
+	t.Log(`TAX_SCHEMA_REHEARSAL {"migrations":47,"tables":4,"source_columns":36,"actual_sql_selection":true,"province_parent_and_exact_rate":true,"giftcards_excluded":true,"automatic_force_address_gates":true,"null_rate_zero":true,"disabled_unknown_provider_rejected":true,"duplicate_tax_regions_and_priority_ties_rejected":true,"soft_deleted_rates_excluded":true,"autocommit_rejected":true,"existing_tables_preserved":true,"schema_drift_rejected":true,"writes_enabled":false,"cart_transaction_integrated":false}`)
 }
 
 func testTaxPtr(s string) *string { return &s }

@@ -56,10 +56,10 @@ func TestOwnedGeoSchema(t *testing.T) {
 	}
 	db, gdb := open("geo_schema_fresh")
 	result, err := schema.Apply(ctx, db, plan)
-	if err != nil || result.Applied != 46 || schema.CheckApplied(ctx, db, plan) != nil || fulfillment.GeoReady(ctx, gdb) != nil {
+	if err != nil || result.Applied != 47 || schema.CheckApplied(ctx, db, plan) != nil || fulfillment.GeoReady(ctx, gdb) != nil {
 		t.Fatal("fresh geo schema unavailable")
 	}
-	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 46 {
+	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 47 {
 		t.Fatal("geo replay changed schema")
 	}
 	exec := func(query string, args ...any) {
@@ -138,5 +138,5 @@ func TestOwnedGeoSchema(t *testing.T) {
 	if blocked.QueryRowContext(ctx, `SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name='geo_runtime_schema'`).Scan(&kept) != nil || kept != 0 {
 		t.Fatal("geo guard created partial domain")
 	}
-	t.Log(`GEO_SCHEMA_REHEARSAL {"migrations":46,"tables":1,"source_columns":11,"exact_json_text_and_leading_zero":true,"sql_null_distinct":true,"enum_json_and_parent_fk_rejected":true,"parent_cascade":true,"replay_unchanged":true,"existing_tables_preserved":true,"schema_drift_rejected":true,"writes_enabled":false,"address_matching_integrated":false}`)
+	t.Log(`GEO_SCHEMA_REHEARSAL {"migrations":47,"tables":1,"source_columns":11,"exact_json_text_and_leading_zero":true,"sql_null_distinct":true,"enum_json_and_parent_fk_rejected":true,"parent_cascade":true,"replay_unchanged":true,"existing_tables_preserved":true,"schema_drift_rejected":true,"writes_enabled":false,"address_matching_integrated":false}`)
 }

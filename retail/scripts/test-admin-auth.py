@@ -168,6 +168,8 @@ def main():
             snapshot_markers=[line.split('CART_ORDER_SNAPSHOT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_ORDER_SNAPSHOT_REHEARSAL ' in line]
             stock_markers=[line.split('CART_ORDER_STOCK_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_ORDER_STOCK_REHEARSAL ' in line]
             ledger_markers=[line.split('CART_ORDER_LEDGER_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_ORDER_LEDGER_REHEARSAL ' in line]
+            completion_markers=[line.split('CART_COMPLETION_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_COMPLETION_REHEARSAL ' in line]
+            if len(completion_markers)!=1:raise RuntimeError('Committed order completion evidence missing')
             if len(ledger_markers)!=1:raise RuntimeError('Paid order ledger evidence missing')
             if len(stock_markers)!=1:raise RuntimeError('Paid order stock evidence missing')
             if len(snapshot_markers)!=1:raise RuntimeError('Paid order snapshot evidence missing')
@@ -178,7 +180,7 @@ def main():
             files = [p.relative_to(ROOT).as_posix() for folder in ('cart','schema','identity','platform','sessionstore','payments','orders') for p in (ROOT/'retail/backend/internal'/folder).glob('*.go')]
             files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
             files += ['retail/scripts/test-admin-auth.py','retail/backend/cmd/api/main.go']
-            report = {'scope':'Owned Gin/MySQL/Redis payment creation and authoritative return observation with isolated adapter; no real external provider, browser, reservation or order acceptance', 'counts':counts,'existing_order_reader':json.loads(order_reader_markers[0]) if snapshot_only else None,'order_snapshot':json.loads(snapshot_markers[0]),'order_stock':json.loads(stock_markers[0]),'order_ledger':json.loads(ledger_markers[0]), 'http':json.loads(http_markers[0]), 'payment_status':json.loads(status_markers[0]),'payment_status_http':json.loads(status_http_markers[0]),'initial_payment':json.loads(initial_markers[0]),'initial_payment_http':json.loads(initial_http_markers[0]), 'delivery':json.loads(delivery_markers[0]), 'delivery_http':json.loads(delivery_http_markers[0]),
+            report = {'scope':'Owned Gin/MySQL/Redis payment creation, observation and committed anonymous order completion with isolated adapter; no real external provider, browser or notification delivery', 'counts':counts,'existing_order_reader':json.loads(order_reader_markers[0]) if snapshot_only else None,'order_snapshot':json.loads(snapshot_markers[0]),'order_stock':json.loads(stock_markers[0]),'order_ledger':json.loads(ledger_markers[0]),'order_completion':json.loads(completion_markers[0]), 'http':json.loads(http_markers[0]), 'payment_status':json.loads(status_markers[0]),'payment_status_http':json.loads(status_http_markers[0]),'initial_payment':json.loads(initial_markers[0]),'initial_payment_http':json.loads(initial_http_markers[0]), 'delivery':json.loads(delivery_markers[0]), 'delivery_http':json.loads(delivery_http_markers[0]),
                       'migrations':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),
                       'includes_uncommitted_payment_0037':(ROOT/'retail/backend/migrations/0037_mollie_notification_inbox.sql').exists(),
                       'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_cpus':1,'redis_memory_mib':128,'published_ports':0,'external_network':False},
