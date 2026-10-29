@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import {CartClient,CartError,type PaymentAttempt} from '../src/lib/cart-client.ts'
 import {cartBridge} from '../src/lib/cart-bridge.ts'
-import {createPaymentCommands,paymentIntentKey} from '../src/lib/checkout-payment.ts'
+import {createPaymentCommands,paymentIntentKey,clearCompletedPayment} from '../src/lib/checkout-payment.ts'
 import {cartIntentKey,contactIntentKey,shippingIntentKey} from '../src/lib/cart-commerce.ts'
 const operationID='12345678-1234-4234-8234-123456789012',csrf='a'.repeat(64)
 const receipt=(extra:Record<string,unknown>={})=>({cart_id:'cart',version:'9007199254740993124',operation_id:operationID,state:'ready',checkout_url:'https://www.mollie.com/checkout/owned',...extra})
@@ -69,4 +69,12 @@ test('private method availability binds current cart/version and never offers an
  assert.equal(await api({},404).paymentOptions('cart'),null);await assert.rejects(api({},503).paymentOptions('cart'))
  const config={ginOrigin:'http://127.0.0.1:9100',storefrontOrigin:'http://127.0.0.1:9300'}
  assert.equal((await cartBridge(new Request(config.storefrontOrigin+'/api/store/carts/cart/payment-options',{headers:{Cookie:'retail_cart_possession='+csrf+'; admin=private'}}),config,async(_path,init)=>{assert.equal(new Headers(init?.headers).get('Cookie'),'retail_cart_possession='+csrf);return reply(available)})).status,200)
+})
+
+test('completed-cart cleanup removes only the matching validated descriptor and tolerates storage failure',async()=>{
+ const f=fixture();await f.commands.submit('cart','2');const storage={getItem:(k:string)=>f.data.get(k)??null,removeItem:(k:string)=>{f.data.delete(k)}}
+ clearCompletedPayment(storage,'other');assert.ok(f.data.has(paymentIntentKey))
+ clearCompletedPayment(storage,'cart');assert.equal(f.data.has(paymentIntentKey),false)
+ f.data.set(paymentIntentKey,'{');clearCompletedPayment(storage,'cart');assert.equal(f.data.get(paymentIntentKey),'{')
+ assert.doesNotThrow(()=>clearCompletedPayment({getItem:()=>{throw Error('disabled')},removeItem:()=>{throw Error('disabled')}},'cart'))
 })

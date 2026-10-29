@@ -10,4 +10,4 @@ HTTP 仍使用现有 HttpOnly possession、Origin、限流与 private no-store �
 
 验证：独立源码快照不包含未提交0037支付通知代码，47项SQL迁移；`go test ./...`通过，真实隔离MySQL/Redis的OrderRead及CartRuntime通过。新增用例覆盖配置开关、密钥/源拒绝、地区绑定/渠道启停、错误代次、SQL禁用、冻结购物车、Origin/凭证和隐私响应。前台134项测试通过，Astro295文件0错误0警告。
 
-剩余工作：付款按钮/复核步骤、记录清理和冻结后页面恢复仍未连接；PayPal和PayPal Card未由此开关注册。通知URL沿用现有适配器契约，但HEAD中Mollie通知收件与后台消费仍未启用，不能将生成URL视为通知闭环。原有0037通知工作区改动本次未提交。当前只验证隔离适配器及数据，未调用真实支付沙箱，未声称完成全站购物闭环。SQL checkout/completion及库存、订单编号等运行条件需单独准备，本配置不会自动开启它们。
+后续[Astro付款及复核步骤](astro-checkout-payment-page.md)已接按钮、记录清理和冻结后页面恢复，并通过合成API浏览器验证；PayPal和PayPal Card未由此开关注册。通知URL沿用现有适配器契约，但HEAD中Mollie通知收件与后台消费仍未启用，不能将生成URL视为通知闭环。原有0037通知工作区改动本次未提交。当前只验证隔离适配器及数据，未调用真实支付沙箱，未声称完成全站购物闭环。SQL checkout/completion及库存、订单编号等运行条件需单独准备，本配置不会自动开启它们。

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import {browserCartClient,cartCSRFFromCookies} from "../../../lib/cart-client"
+import {clearCompletedPayment} from '../../../lib/checkout-payment'
 import {checkPaymentResult} from "../../../lib/payment-result-state"
 import BrandLogo from "../../layout/brand-logo"
 import { getCheckoutCopy } from "../i18n"
@@ -31,8 +32,12 @@ export default function PaymentResult({ countryCode, cartId }: { countryCode: st
         return
       }
       setResult(next)
-      if (next.status === "confirmed" && next.order_url)
+      if (next.status === "confirmed" && next.order_url){
+        // cartId is a hint, but confirmed is reached only after Gin authorizes
+        // its matching completion. Cleanup cannot confer order access.
+        if(cartId)clearCompletedPayment(localStorage,cartId)
         window.location.replace(next.order_url)
+      }
     }
     // Scheduling also prevents Strict Mode's effect replay from sending two
     // cart completion requests. Each retry starts after the previous one ends.

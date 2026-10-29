@@ -5,8 +5,8 @@ import type {ContactState} from '../../lib/checkout-contacts'
 import {formatCartMoney} from '../cart/types'
 import {getCheckoutCopy} from './i18n'
 import styles from './styles.module.css'
-type Props={state:ContactState;segment:string;onChange:(state:ContactState)=>void}
-export default function Shipping({state,segment,onChange}:Props){
+type Props={state:ContactState;segment:string;onChange:(state:ContactState)=>void;onContinue:()=>void}
+export default function Shipping({state,segment,onChange,onContinue}:Props){
  const copy=getCheckoutCopy(segment),zh=segment.endsWith('-zh'),retry=zh?'重试':'Try again'
  const [delivery,setDelivery]=useState<DeliveryState['delivery']|null>(null),[error,setError]=useState<string|null>(null),[saving,setSaving]=useState(false),[pending,setPending]=useState<'save'|'refresh'|null>(null),[optimistic,setOptimistic]=useState<string|null>(null)
  const controller=useRef<ReturnType<typeof browserShippingCommands>|null>(null),busy=useRef(false),live=useRef(false)
@@ -43,7 +43,6 @@ export default function Shipping({state,segment,onChange}:Props){
   {error&&<p role="alert" className={styles.error}>{error}</p>}
   {pending&&<><p role="alert">{pending==='refresh'?(zh?'配送方式已提交，请重试读取结账信息。':'Your delivery method was submitted. Retry loading checkout details.'):(zh?'上次选择结果尚未确认，请重试原选择。':'Your previous selection is not confirmed. Retry the same selection.')}</p><button type="button" disabled={saving} onClick={()=>void choose()} data-testid="delivery-recover">{retry}</button></>}
   {!delivery&&error&&<button type="button" onClick={()=>location.reload()}>{retry}</button>}
-  <button type="button" className={styles.primary} disabled data-testid="submit-delivery-option-button">{copy.continuePayment}</button>
-  {delivery?.complete&&<p role="status" className={styles.muted}>{copy.paymentUnavailable}</p>}
+  <button type="button" className={styles.primary} disabled={!delivery?.complete||saving||pending!==null||!!error} onClick={onContinue} data-testid="submit-delivery-option-button">{copy.continuePayment}</button>
  </section>
 }

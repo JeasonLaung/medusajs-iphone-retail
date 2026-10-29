@@ -37,3 +37,14 @@ export function browserPaymentCommands(client:CartClient){
  if(!navigator.locks)throw new CartError('unavailable')
  return createPaymentCommands({client,storage:localStorage,readCSRF:()=>cartCSRFFromCookies(document.cookie,location.protocol==='https:'),uuid:()=>crypto.randomUUID(),exclusive:action=>navigator.locks.request(cartLockName,{mode:'exclusive'},action)})
 }
+
+// Call only after Gin has returned an authorized completion receipt. Cleanup is
+// advisory: storage failures never change the server's completed order result.
+export function clearCompletedPayment(storage:Pick<Storage,'getItem'|'removeItem'>,cartID:string):void{
+ try{
+  const raw=storage.getItem(paymentIntentKey);if(raw===null||raw.length>1024)return
+  const v=JSON.parse(raw)
+  if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==3||v.cartID!==cartID||!valid(v.cartID,id)||!valid(v.operationID,uuid)||!version(v.version))return
+  if(storage.getItem(paymentIntentKey)===raw)storage.removeItem(paymentIntentKey)
+ }catch{ /* Receipt remains authoritative when browser storage is unavailable. */ }
+}
