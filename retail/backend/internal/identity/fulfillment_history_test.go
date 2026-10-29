@@ -68,11 +68,11 @@ func TestOwnedFulfillmentHistory(t *testing.T) {
 	}
 	db, gdb := open("fulfillment_schema_fresh")
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 51 || schema.CheckApplied(ctx, db, plan) != nil || fulfillment.Ready(ctx, gdb) != nil {
+	if err != nil || r.Applied != 52 || schema.CheckApplied(ctx, db, plan) != nil || fulfillment.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh fulfillment schema failed")
 	}
 	r, err = schema.Apply(ctx, db, plan)
-	if err != nil || r.Skipped != 51 {
+	if err != nil || r.Skipped != 52 {
 		t.Fatal("fulfillment schema replay changed facts")
 	}
 
@@ -351,5 +351,5 @@ func TestOwnedFulfillmentHistory(t *testing.T) {
 	if blocked.QueryRowContext(ctx, "SELECT id FROM fulfillments").Scan(&kept) != nil || kept != 17 {
 		t.Fatal("existing fulfillment row lost")
 	}
-	t.Log(`FULFILLMENT_HISTORY_REHEARSAL {"migrations":51,"tables":8,"source_columns":83,"rows":11,"reference_holds":11,"concurrent_batches":8,"single_fresh_batch":1,"replayed_batches":7,"old_snapshot_replay":true,"rollback_atomic":true,"late_failure_rollback":true,"exact_quantity_and_identifiers":true,"composite_identity_preserved":true,"physical_fk_json_boolean_enum_rejected":true,"target_drift_rejected":true,"disabled_schema_rejected":true,"existing_tables_preserved":true,"inventory_not_modified":true,"geo_exact_json_text_and_nulls":true,"geo_missing_parent_atomic":true,"geo_source_target_drift_rejected":true,"geo_required_table_key":true,"geo_model_checked_on_replay":true,"provider_called":false,"writes_enabled":false}`)
+	t.Log(`FULFILLMENT_HISTORY_REHEARSAL {"migrations":52,"tables":8,"source_columns":83,"rows":11,"reference_holds":11,"concurrent_batches":8,"single_fresh_batch":1,"replayed_batches":7,"old_snapshot_replay":true,"rollback_atomic":true,"late_failure_rollback":true,"exact_quantity_and_identifiers":true,"composite_identity_preserved":true,"physical_fk_json_boolean_enum_rejected":true,"target_drift_rejected":true,"disabled_schema_rejected":true,"existing_tables_preserved":true,"inventory_not_modified":true,"geo_exact_json_text_and_nulls":true,"geo_missing_parent_atomic":true,"geo_source_target_drift_rejected":true,"geo_required_table_key":true,"geo_model_checked_on_replay":true,"provider_called":false,"writes_enabled":false}`)
 }

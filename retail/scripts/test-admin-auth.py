@@ -166,6 +166,10 @@ def main():
                 print(tested.stdout.decode(errors='replace'))
                 raise RuntimeError('Owned warehouse management verification failed')
             counts = json.loads(markers[0])
+            scope_markers = [line.split('WAREHOUSE_SCOPE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'WAREHOUSE_SCOPE_REHEARSAL ' in line]
+            if len(scope_markers)!=1:
+                raise RuntimeError('Owned warehouse scope verification missing')
+            counts['warehouse_scope'] = json.loads(scope_markers[0])
             report = {'scope':'warehouse create/edit and explicit permissions, not warehouse user/fulfillment acceptance','counts':counts,'migrations':len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),'isolated_mysql_redis':True,'published_ports':0,'external_network':False}
         elif numbering_only:
             markers = [line.split('ORDER_NUMBERING_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_NUMBERING_REHEARSAL ' in line]
