@@ -127,3 +127,19 @@ HTTP 固定 POST https://api.mollie.com/v2/payments，复用禁止重定向、8 
 POST 特别关闭 `http.Request.GetBody`：携带 Idempotency-Key 时 Go transport 对可重放 body 的隐式重试不能绕过 journal；模拟请求断言该重放函数为空。回跳使用原 URL.pathname 对应的 escaped path 校验，编码斜杠不绕过固定路由。原 health/Admin/商品/购物车均HTTP 200，近期日志无新增错误，仅既有PayPal nonce提示。
 
 本轮创建渠道验收证据：最终代码 `go test ./...`、`go vet ./internal/payments`、隔离 MySQL/Redis 完整23组回归和购物车专项均通过；36迁移保持，完整294项/专项191项实现SHA匹配。渠道用例为内存HTTP模拟，未注册或调用真实Mollie，未进行真实沙箱或完整checkout验收。
+
+## Mollie 当前状态读取与未知创建结果恢复
+
+`MollieCreateAdapter.ObserveSession` 接受可信保存请求及候选远端ID，只向固定 Mollie API GET，不 POST/DELETE。候选ID只定位远端对象，不能证明付款或购物车权限；查询复用商户key、8秒超时、禁止重定向和1MiB/重复key防护，响应复用初次创建的resource/test-live/ID/session/cart/精确结算金额/币种/回跳/checkout校验。输出私有 SessionObservation，保留远端status、原webhook动作、精确金额及可加密保存的Session；paid=successful、authorized=authorized明确分开，不能只看二者共用的session authorized状态配货。七种原状态映射有模拟GET测试，跨session/cart/金额/币种/模式/ID/回跳、404、跳转、网络及重复JSON均不返回事实。
+
+实现对照原 `getWebhookActionAndData`，官方 [Webhooks](https://docs.mollie.com/reference/webhooks) 与 [Get payment](https://docs.mollie.com/reference/get-payment)：通知只提供待查ID，渠道当前响应才是状态证据。此处还没有注册webhook入口、ACK、可靠通知队列或订单/支付状态更新，不能把查询帮助函数当作通知流程已迁移。
+
+通用 `SessionObserver` 只允许渠道读取，`CreateAdapters.Observer` 从原服务端allowlist取出可读适配器；`InvokeObservation`复用创建的错误/panic/精确响应校验边界。`cart.ReconcilePaymentCompensationSession`仅接受普通DB pool，首个自有事务重新检查当前购物车归属/generation/version、冻结、源计划和original→replacement关系；要求精确已有attempt。succeeded重放先认证加密结果、不再查询；pending/failed不能通过核实入口获得创建dispatch；inflight以数据库时钟判断租约，未到期不查，到期变uncertain。只有uncertain可在事务提交后做10秒有界GET，任何失败保持unknown，不能凭404或超时标failed再POST。
+
+核实成功后，独立5秒WithoutCancel事务将同一attempt的结果加密保存并原子标succeeded；调用过程中取消/归属撤销也不丢弃已授权尝试的真实渠道结果，不授予新dispatch。结果写失败仍保留uncertain，后续只能再查；补偿最终激活仍须当前归属检查，authorized/paid结果不得激活为普通未付会话。该入口不自动完成补偿、不放开冻结、不创建订单，也没有后台worker授权。
+
+人工MySQL链验证未知创建→GET错误保持uncertain→核实保存原attempt→成功重放无查询→补偿完成，创建次数始终一次；另验证过期inflight只GET、未过期不查询、stale attempt/错误generation/未配置observer/外层事务拒绝、GET无SQL锁、取消后保存、结果写故障保留uncertain及重查恢复、已付核实结果保存而不激活。报告扩展cart_payment_creation_execution；原创建/删除HTTP测试一起回归。没有真实渠道调用；候选ID发现（创建响应丢失且无webhook时）、持久webhook队列/对账授权、商户配置、完整checkout继续待办。
+
+恢复限制：两个并行核实只会并行GET，不新增创建尝试；结果保存仍按原attempt认证并禁止覆盖不同的已保存响应。如果渠道状态在查询间变化而结果冲突，保留冲突供后续付款对账，不覆盖旧creation结果掩盖状态变化。该creation恢复不是付款事件状态机，也不能完成捕获/退款或授予设备配货。
+
+本轮核实链验收：`go test ./...`、`go vet ./internal/payments ./internal/cart`、隔离MySQL/Redis完整23组及购物车专项均通过；36迁移，完整299项/专项196项实现SHA匹配，包含12个新增observer检查字段。原health/Admin/商品/购物车页面均200，近期日志无新增错误，仅既有PayPal nonce提示。没有真实支付调用，完整webhook/对账/checkout仍未验收。

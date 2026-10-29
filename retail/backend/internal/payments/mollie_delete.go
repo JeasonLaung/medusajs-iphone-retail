@@ -51,31 +51,43 @@ type molliePayment struct {
 	} `json:"metadata"`
 }
 
-func (a *MollieDeleteAdapter) readPayment(ctx context.Context, method, id string) (molliePayment, error) {
-	var payment molliePayment
+func (a *MollieDeleteAdapter) paymentJSON(ctx context.Context, method, id string) (json.RawMessage, error) {
 	req, err := http.NewRequestWithContext(ctx, method, "https://api.mollie.com/v2/payments/"+id, nil)
 	if err != nil {
-		return payment, ErrDeleteExecution
+		return nil, ErrDeleteExecution
 	}
 	req.Header.Set("Authorization", "Bearer "+a.apiKey)
 	req.Header.Set("Accept", "application/hal+json")
 	resp, err := a.client.Do(req)
 	if err != nil {
-		return payment, ErrDeleteExecution
+		return nil, ErrDeleteExecution
 	}
 	defer resp.Body.Close()
 	// 404 is not evidence of a prior successful cancellation. 422 may be a
 	// concurrent payment; 429/5xx/transport failures must not enable retries.
 	if resp.StatusCode != http.StatusOK {
-		return payment, ErrDeleteExecution
+		return nil, ErrDeleteExecution
 	}
 	raw, err := io.ReadAll(io.LimitReader(resp.Body, int64(protected.MaxPlaintext)+1))
 	if err != nil {
-		return payment, ErrDeleteExecution
+		return nil, ErrDeleteExecution
 	}
 	defer clear(raw)
 	validated, err := requestObject(raw, false)
-	if err != nil || json.Unmarshal(validated, &payment) != nil {
+	if err != nil {
+		return nil, ErrDeleteExecution
+	}
+	return validated, nil
+}
+
+func (a *MollieDeleteAdapter) readPayment(ctx context.Context, method, id string) (molliePayment, error) {
+	raw, err := a.paymentJSON(ctx, method, id)
+	if err != nil {
+		return molliePayment{}, err
+	}
+	defer clear(raw)
+	var payment molliePayment
+	if json.Unmarshal(raw, &payment) != nil {
 		return molliePayment{}, ErrDeleteExecution
 	}
 	return payment, nil

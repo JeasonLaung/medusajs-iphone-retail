@@ -213,6 +213,16 @@ func (a *MollieCreateAdapter) CreateSession(ctx context.Context, request Session
 	if err != nil {
 		return CreateUncertain, CreatedSession{}, ErrCreateExecution
 	}
+	result, _, err := a.verifiedSession(validated, request, "", redirect, cartID)
+	if err != nil {
+		return CreateUncertain, CreatedSession{}, ErrCreateExecution
+	}
+	return CreateSucceeded, result, nil
+}
+
+// verifiedSession is shared by initial creation and authoritative GET recovery.
+// expectedID is empty only on a POST whose new remote ID was not known yet.
+func (a *MollieCreateAdapter) verifiedSession(validated json.RawMessage, request SessionRequest, expectedID, redirect, cartID string) (CreatedSession, string, error) {
 	var payment molliePayment
 	var properties struct {
 		Resource    string `json:"resource"`
@@ -225,30 +235,30 @@ func (a *MollieCreateAdapter) CreateSession(ctx context.Context, request Session
 		} `json:"_links"`
 	}
 	if json.Unmarshal(validated, &payment) != nil || json.Unmarshal(validated, &properties) != nil ||
-		!molliePaymentID.MatchString(payment.ID) || !verifyMolliePayment(payment, request, payment.ID, cartID) ||
+		!molliePaymentID.MatchString(payment.ID) || (expectedID != "" && payment.ID != expectedID) || !verifyMolliePayment(payment, request, payment.ID, cartID) ||
 		properties.Resource != "payment" || properties.Mode != strings.SplitN(a.transport.apiKey, "_", 2)[0] || properties.RedirectURL != redirect {
-		return CreateUncertain, CreatedSession{}, ErrCreateExecution
+		return CreatedSession{}, "", ErrCreateExecution
 	}
 	status := map[string]string{"open": "pending", "pending": "pending", "paid": "authorized", "authorized": "authorized", "canceled": "canceled", "expired": "error", "failed": "error"}[payment.Status]
 	if status == "" {
-		return CreateUncertain, CreatedSession{}, ErrCreateExecution
+		return CreatedSession{}, "", ErrCreateExecution
 	}
 	if status == "pending" {
 		checkout, err := mollieHTTPURL(properties.Links.Checkout.Href)
 		if err != nil || checkout.Scheme != "https" || (checkout.Hostname() != "mollie.com" && !strings.HasSuffix(checkout.Hostname(), ".mollie.com")) || (checkout.Port() != "" && checkout.Port() != "443") {
-			return CreateUncertain, CreatedSession{}, ErrCreateExecution
+			return CreatedSession{}, "", ErrCreateExecution
 		}
 	}
 	var saved map[string]json.RawMessage
 	if json.Unmarshal(validated, &saved) != nil {
-		return CreateUncertain, CreatedSession{}, ErrCreateExecution
+		return CreatedSession{}, "", ErrCreateExecution
 	}
 	for key, value := range map[string]string{"cart_id": cartID, "redirect_url": redirect, "session_id": request.SessionID} {
 		saved[key], _ = json.Marshal(value)
 	}
 	encoded, err := json.Marshal(saved)
 	if err != nil {
-		return CreateUncertain, CreatedSession{}, ErrCreateExecution
+		return CreatedSession{}, "", ErrCreateExecution
 	}
-	return CreateSucceeded, CreatedSession{Status: status, Data: encoded}, nil
+	return CreatedSession{Status: status, Data: encoded}, payment.Status, nil
 }
