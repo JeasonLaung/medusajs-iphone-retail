@@ -259,3 +259,5 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 2026-10-29 支付执行补充：[提交后渠道调用及独立结果持久化](../docs/migration/cart-payment-refresh.md)连接已有冻结/claim与20秒adapter调用、取消后有界保存、错误/panic未知分类、结果写失败不盲重试；人工SQL验证调用无事务锁和并发单次。尚未注册真实provider或接入worker/HTTP，补偿/session重建与checkout仍缺，T032/T033未验收。
 
 2026-10-29 支付补偿补充：[持久重建计划/加密创建结果/本地原子恢复](../docs/migration/cart-payment-refresh.md)增加0036，只重建确认已删session，未知删除先核实，稳定新ID和幂等键，补偿期间禁止原删除/正常完成，完整结果认证后替换/版本/解除冻结原子完成；已付创建结果不激活、原集合及未删session保持。人工MySQL覆盖阶段/最终写故障回滚和零效果取消；create执行器、真实provider/worker/HTTP与checkout仍未完成。
+
+2026-10-29 补偿创建执行补充：[提交后创建调用/加密结果/原子激活](../docs/migration/cart-payment-refresh.md)接上内部create执行器，事务外有界调用、稳定幂等ID、取消后保存、错误未知处理、写故障不重复创建；人工adapter到补偿完成链验证通过。真实provider/worker/HTTP、自动恢复和完整checkout尚未验收。

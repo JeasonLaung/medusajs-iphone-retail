@@ -324,6 +324,7 @@ func TestOwnedCartRuntime(t *testing.T) {
 	checkCartPaymentOperations(t, ctx, gdb)
 	checkCartPaymentExecution(t, ctx, gdb)
 	checkCartPaymentCompensation(t, ctx, gdb)
+	checkCartPaymentCreationExecution(t, ctx, gdb)
 	checkCartItems(t, ctx, gdb, sessions)
 	checkCartHTTP(t, ctx, gdb, sessions, redisClient)
 	exec(`UPDATE cart_command_capabilities SET enabled=FALSE WHERE command='cart.access'`)

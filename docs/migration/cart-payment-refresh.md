@@ -87,3 +87,15 @@ Stage 相同输入重放，变更摘要拒绝。Claim 在 MySQL 行锁内一次�
 独占关系校验：原导入cart_payment_collections只有复合主键，并不保证一个collection只关联一个cart。所有有副作用的刷新/补偿在锁定当前读中要求恰好一个有效cart链接且等于当前授权cart；共享集合拒绝，其他已软删链接不阻挡。人工SQL验证共享集合同时拒绝删除claim和补偿，软删另一链接后才可继续。该保护防止持有一个cart被误当作共享会话的完整操作权限。
 
 0036最终验收：`go test ./...`与隔离MySQL/Redis完整23组回归通过，36迁移验证成功；完整报告286项/专项183项实现SHA匹配，包含共享集合保护。旧health/Admin/商品/购物车页面均HTTP 200，近期日志无新增错误，仅既有PayPal nonce提示。本轮没有真实渠道调用或完整checkout验收。
+
+## 补偿创建会话执行器
+
+新增 `payments.CreateSessionAdapter/CreateAdapters/InvokeCreate` 与 `cart.ExecutePaymentCompensationSession`。服务端allowlist复制配置，不默认注册真实渠道；adapter必须设置HTTP硬超时，核实远端身份/金额/币种并复用持久request.SessionID作为幂等键，不能使用每次改变的attempt UUID或修改本地SQL。明确failed必须没有返回会话且能证明无外部创建；非nil错误、panic、未知状态、非法status/data及矛盾失败结果统一uncertain，原始错误/未验证结果不返回或记录。
+
+执行器只接受普通DB pool。在首个自有事务重查补偿归属/版本/冻结/源计划，认领保存create请求，缺配置整体回滚。提交成功后在事务外调用，context上限20秒；不持有cart/SQL事务锁。第二个独立事务在5秒有界WithoutCancel上下文中记录结果：success调用RecordSessionCreation，将认证密文及succeeded一起提交；failed/uncertain按精确attempt记录。用户取消或归属撤销不丢弃已授权调用的外部事实，也不授予旧归属新dispatch。结果写失败返回Called和原inflight，租约到期只转uncertain，不重复创建。成功重放必须先认证保存的创建结果，裸success不能冒充可恢复结果。
+
+人工MySQL适配器验证：调用期间另开事务取得同cart锁且看到已提交inflight；重叠执行器单次创建；成功重放零调用；取消/撤销后保存结果且撤销归属不可再调；错误未知不重试；明确失败第二次复用相同ID；claim写故障零调用；创建成功但结果写故障不重复，过期uncertain后核实保存结果可完成补偿；已付结果保存却不激活；外层事务和未配置provider拒绝。完整人工链已连接删除成功→持久补偿→创建adapter→加密结果→新session原子激活。报告新增cart_payment_creation_execution，pure Go测试覆盖错误/panic/响应校验和配置复制。
+
+本轮无新增SQL迁移，沿用36迁移。未注册真实支付provider、未接入worker/HTTP或完整购物车命令；真实沙箱/对账、自动恢复授权及业务回滚协调仍缺，T032/T033和checkout未验收。
+
+本轮执行器验收：`go test ./...`、购物车专项与隔离MySQL/Redis完整23组回归通过，36迁移验证成功；完整报告290项/专项187项实现SHA匹配。旧health/Admin/商品/购物车页面均HTTP 200，近期日志无新增错误，仅既有PayPal nonce提示。上述均为人工适配器验证，真实渠道与完整checkout继续待办。
