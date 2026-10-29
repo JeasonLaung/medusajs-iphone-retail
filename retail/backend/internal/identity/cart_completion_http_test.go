@@ -120,6 +120,7 @@ func checkCompletionHTTP(t *testing.T, ctx context.Context, db *gorm.DB, session
 		t.Fatal("HTTP lost response retry differs")
 	}
 	checkOrderConfirmation(t, ctx, db, sessions, ref, result.OrderID, o)
+	checkOrderMail(t, ctx, db, result.OrderID, o.Ring)
 	exec("UPDATE cart_completion_runtime SET enabled=FALSE WHERE id=1")
 	call(path, "{}", origin, issued.CSRF, true, 503)
 	exec("UPDATE cart_completion_runtime SET enabled=TRUE WHERE id=1")

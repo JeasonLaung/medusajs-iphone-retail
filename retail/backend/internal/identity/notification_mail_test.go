@@ -103,6 +103,14 @@ func checkNotificationMail(t *testing.T, ctx context.Context, db *gorm.DB, user 
 	if e != nil {
 		t.Fatal("saved mailbox could not create registration sender")
 	}
+	orderSender, orderErr := store.OrderSender(ctx)
+	if orderErr != nil || orderSender == nil {
+		t.Fatal("approved order sender missing")
+	}
+	orderBody, orderErr := orderSender.PrepareOrder(maildelivery.OrderPlaced{To: "new@example.invalid", Reference: "2026103000000000001", Amount: "158.75", Currency: "eur", Locale: "zh"})
+	if orderErr != nil || !bytes.Contains(orderBody, []byte("notification@example.invalid")) {
+		t.Fatal("approved order sender content differs")
+	}
 	prepared, e := sender.Prepare("new@example.invalid", "https://shop.example/dk-en/verify-account?token=artificial", "zh")
 	if e != nil || !bytes.Contains(prepared, []byte("reply@example.invalid")) {
 		t.Fatal("sender mailbox reply address missing")

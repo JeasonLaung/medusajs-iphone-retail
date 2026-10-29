@@ -311,6 +311,15 @@ func (s Store) Save(ctx context.Context, actor identity.User, input Command) (Re
 // approved accounts. Explicit selection never falls back if unavailable.
 // The worker reloads each cycle; historical imported accounts remain excluded.
 func (s Store) RegistrationSender(ctx context.Context) (*maildelivery.Resend, error) {
+	return s.sender(ctx, true)
+}
+
+// OrderSender uses the oldest enabled approved notification mailbox. A selected
+// registration mailbox is not implicitly selected for other business events.
+func (s Store) OrderSender(ctx context.Context) (*maildelivery.Resend, error) {
+	return s.sender(ctx, false)
+}
+func (s Store) sender(ctx context.Context, registration bool) (*maildelivery.Resend, error) {
 	if s.DB == nil || s.Ring == nil {
 		return nil, ErrUnavailable
 	}
@@ -319,6 +328,9 @@ func (s Store) RegistrationSender(ctx context.Context) (*maildelivery.Resend, er
 		var state settings
 		if tx.Table("notification_mail_settings").Clauses(clause.Locking{Strength: "SHARE"}).Where("id=1").Take(&state).Error != nil {
 			return ErrUnavailable
+		}
+		if !registration {
+			state.RegistrationAccountID = nil
 		}
 		if state.RegistrationAccountID == nil {
 			var first struct{ ID string }
