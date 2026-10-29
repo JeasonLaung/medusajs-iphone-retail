@@ -454,3 +454,5 @@
 2026-10-29 预算回执补充：[0032持久delta与一次登记/撤销](migration/promotion-usage-receipts.md)以scope+UUID和规范请求SHA绑定计数，活动失效/软删/改挂后按原目标释放，拒绝下溢和物理缺失；8并发首次/7重放及故障回滚、共享属性保护以最新promotion_usage报告与SHA为准。正式checkout权限、库存支付与前台尚未接入，相关任务未验收。
 
 2026-10-29 当前促销读取补充：[事务内配置和三类规则装配](migration/promotion-active-read.md)承接自动/手动合并、有效活动时间与软删、raw精确金额、空方法/预算和前导零规则值；失效限制整体拒绝，人工MySQL范围以admin-auth-report.promotion_read及SHA为准。资格组装/预算反馈、调整项保存和完整购物车命令仍缺，T032/T033未验收。
+
+2026-10-29 资格与目标补充：[原分支筛选及买赠排序](migration/promotion-qualification.md)承接订单/币种判断、商品/运费/买赠独立范围与精确稳定排序。23资格+4排序原实现对照及SQL规则前导零衔接已增加；尚未执行预算预览、购物车事实组装和调整项持久化，不能据此保存优惠，相关任务未验收。

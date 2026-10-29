@@ -52,6 +52,18 @@ func verifyPromotionActiveRead(t *testing.T, ctx context.Context, gdb *gorm.DB) 
 	if len(p.Rules) != 1 || len(p.Method.BuyRules) != 1 || len(p.Method.TargetRules) != 1 || string(p.Rules[0].Values[0].Value) != `"00123"` {
 		t.Fatal("three rule scopes not loaded as strings")
 	}
+	for _, sample := range []struct {
+		context string
+		want    []string
+	}{
+		{`{"currency_code":"eur","items":[{"id":"line","product_id":"00123","subtotal":"10","quantity":1}]}`, []string{"line"}},
+		{`{"currency_code":"eur","items":[{"id":"line","product_id":"123","subtotal":"10","quantity":1}]}`, []string{}},
+	} {
+		qualified, err := promotion.QualifyTargets(p, json.RawMessage(sample.context))
+		if err != nil || !reflect.DeepEqual(qualified.Items, sample.want) {
+			t.Fatalf("SQL rules to qualification lost exact string: %+v %v", qualified, err)
+		}
+	}
 	// Mutating one linked copy must not change another scope or another read.
 	p.Rules[0].Values[0].Value[1] = '9'
 	if string(p.Method.BuyRules[0].Values[0].Value) != `"00123"` {

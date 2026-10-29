@@ -1,0 +1,1147 @@
+{
+  "format_version": 1,
+  "scope": "Original rule membership and sorting only; not amount, budget, trusted cart assembly or checkout",
+  "sources": [
+    {
+      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/validations/promotion-rule.js",
+      "sha256": "fd835ede4d3615d7dbc3633b4f047bbe8c63a696de4c2819fd5a712b4870770b"
+    },
+    {
+      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/line-items.js",
+      "sha256": "c43baa69baf44b6888bfece03aba4162c530e7739a9103c6153ddad3b887c6c3"
+    },
+    {
+      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/buy-get.js",
+      "sha256": "f5f1e7fce022b4868ab047ca44270a6a154f444ff380f303c570b939a3da2a47"
+    }
+  ],
+  "cases": [
+    {
+      "name": "standard-all",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "items",
+          "value": "1"
+        }
+      },
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [
+          "a",
+          "b"
+        ],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "target-product",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "items",
+          "value": "1",
+          "targetRules": [
+            {
+              "attribute": "items.product_id",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "phone"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [
+          "a"
+        ],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "order-rule-match",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "items",
+          "value": "1"
+        },
+        "rules": [
+          {
+            "attribute": "currency_code",
+            "operator": "eq",
+            "values": [
+              {
+                "value": "eur"
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [
+          "a",
+          "b"
+        ],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "order-rule-miss",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "items",
+          "value": "1"
+        },
+        "rules": [
+          {
+            "attribute": "currency_code",
+            "operator": "eq",
+            "values": [
+              {
+                "value": "usd"
+              }
+            ]
+          }
+        ]
+      },
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": false,
+        "items": [],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "currency-match",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "items",
+          "value": "1",
+          "currency": "eur"
+        }
+      },
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [
+          "a",
+          "b"
+        ],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "currency-miss",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "items",
+          "value": "1",
+          "currency": "usd"
+        }
+      },
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": false,
+        "items": [],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "currency-case",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "items",
+          "value": "1",
+          "currency": "EUR"
+        }
+      },
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": false,
+        "items": [],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "missing-currency",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "items",
+          "value": "1",
+          "currency": "eur"
+        }
+      },
+      "context": {
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": false,
+        "items": [],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "no-method",
+      "promotion": {
+        "type": "standard"
+      },
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": false,
+        "items": [],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "empty-items",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "items",
+          "value": "1"
+        }
+      },
+      "context": {
+        "items": []
+      },
+      "expected": {
+        "applicable": true,
+        "items": [],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "standard-filter",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "items",
+          "value": "1"
+        }
+      },
+      "context": {
+        "items": [
+          null,
+          {
+            "id": "yes",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "disabled",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone",
+            "is_discountable": false
+          },
+          {
+            "id": "zero",
+            "subtotal": "0",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "negative",
+            "subtotal": "-1",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "missing-subtotal",
+            "quantity": 1
+          },
+          {
+            "id": "missing-quantity",
+            "subtotal": "1"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [
+          "yes"
+        ],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "discountable-truthiness",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "items",
+          "value": "1"
+        }
+      },
+      "context": {
+        "items": [
+          {
+            "id": "i0",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone",
+            "is_discountable": false
+          },
+          {
+            "id": "i1",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone",
+            "is_discountable": null
+          },
+          {
+            "id": "i2",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone",
+            "is_discountable": 0
+          },
+          {
+            "id": "i3",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone",
+            "is_discountable": ""
+          },
+          {
+            "id": "i4",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone",
+            "is_discountable": true
+          },
+          {
+            "id": "i5",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone",
+            "is_discountable": 1
+          },
+          {
+            "id": "i6",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone",
+            "is_discountable": "false"
+          },
+          {
+            "id": "i7",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone",
+            "is_discountable": {}
+          },
+          {
+            "id": "i8",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone",
+            "is_discountable": []
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [
+          "i4",
+          "i5",
+          "i6",
+          "i7",
+          "i8"
+        ],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "quantity-presence-not-validation",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "items",
+          "value": "1"
+        }
+      },
+      "context": {
+        "items": [
+          {
+            "id": "zero",
+            "subtotal": "10",
+            "quantity": 0,
+            "product_id": "phone"
+          },
+          {
+            "id": "null",
+            "subtotal": "10",
+            "quantity": null,
+            "product_id": "phone"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [
+          "zero",
+          "null"
+        ],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "order-target",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "order",
+          "value": "1",
+          "targetRules": [
+            {
+              "attribute": "items.product_id",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "tablet"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [
+          "b"
+        ],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "shipping-all",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "shipping_methods",
+          "value": "1"
+        }
+      },
+      "context": {
+        "shipping_methods": [
+          {
+            "id": "express",
+            "type": "express",
+            "subtotal": "10"
+          },
+          {
+            "id": "slow",
+            "type": "standard",
+            "subtotal": "0",
+            "is_discountable": false
+          },
+          {
+            "id": "no-price",
+            "type": "express"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [],
+        "shipping": [
+          "express",
+          "slow",
+          "no-price"
+        ],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "shipping-rules",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "shipping_methods",
+          "value": "1",
+          "targetRules": [
+            {
+              "attribute": "shipping_methods.type",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "express"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "context": {
+        "shipping_methods": [
+          {
+            "id": "express",
+            "type": "express",
+            "subtotal": "10"
+          },
+          {
+            "id": "slow",
+            "type": "standard",
+            "subtotal": "0",
+            "is_discountable": false
+          },
+          {
+            "id": "no-price",
+            "type": "express"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [],
+        "shipping": [
+          "express",
+          "no-price"
+        ],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "shipping-empty",
+      "promotion": {
+        "type": "standard",
+        "method": {
+          "target": "shipping_methods",
+          "value": "1"
+        }
+      },
+      "context": {
+        "shipping_methods": []
+      },
+      "expected": {
+        "applicable": true,
+        "items": [],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "buy-target-independent",
+      "promotion": {
+        "type": "buyget",
+        "method": {
+          "target": "items",
+          "value": "1",
+          "minimumBuy": 1,
+          "buyRules": [
+            {
+              "attribute": "items.product_id",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "phone"
+                }
+              ]
+            }
+          ],
+          "targetRules": [
+            {
+              "attribute": "items.product_id",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "tablet"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [],
+        "shipping": [],
+        "buy": [
+          "a"
+        ],
+        "target": [
+          "b"
+        ]
+      }
+    },
+    {
+      "name": "buy-no-discountable-filter",
+      "promotion": {
+        "type": "buyget",
+        "method": {
+          "target": "items",
+          "value": "1",
+          "minimumBuy": 1,
+          "buyRules": [
+            {
+              "attribute": "items.product_id",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "phone"
+                }
+              ]
+            }
+          ],
+          "targetRules": [
+            {
+              "attribute": "items.product_id",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "tablet"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "context": {
+        "items": [
+          {
+            "id": "buy",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone",
+            "is_discountable": false
+          },
+          {
+            "id": "gift",
+            "subtotal": "0",
+            "quantity": 1,
+            "product_id": "tablet",
+            "is_discountable": false
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [],
+        "shipping": [],
+        "buy": [
+          "buy"
+        ],
+        "target": [
+          "gift"
+        ]
+      }
+    },
+    {
+      "name": "buy-unrestricted-target",
+      "promotion": {
+        "type": "buyget",
+        "method": {
+          "target": "items",
+          "value": "1",
+          "minimumBuy": 1,
+          "buyRules": [
+            {
+              "attribute": "items.product_id",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "phone"
+                }
+              ]
+            }
+          ],
+          "targetRules": []
+        }
+      },
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [],
+        "shipping": [],
+        "buy": [
+          "a"
+        ],
+        "target": [
+          "a",
+          "b"
+        ]
+      }
+    },
+    {
+      "name": "buy-no-rules",
+      "promotion": {
+        "type": "buyget",
+        "method": {
+          "target": "items",
+          "value": "1",
+          "minimumBuy": 1,
+          "buyRules": [],
+          "targetRules": [
+            {
+              "attribute": "items.product_id",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "tablet"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "buy-no-minimum",
+      "promotion": {
+        "type": "buyget",
+        "method": {
+          "target": "items",
+          "value": "1",
+          "minimumBuy": 0,
+          "buyRules": [
+            {
+              "attribute": "items.product_id",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "phone"
+                }
+              ]
+            }
+          ],
+          "targetRules": [
+            {
+              "attribute": "items.product_id",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "tablet"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "context": {
+        "currency_code": "eur",
+        "items": [
+          {
+            "id": "a",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "phone"
+          },
+          {
+            "id": "b",
+            "subtotal": "10",
+            "quantity": 1,
+            "product_id": "tablet"
+          }
+        ]
+      },
+      "expected": {
+        "applicable": true,
+        "items": [],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    },
+    {
+      "name": "buy-empty",
+      "promotion": {
+        "type": "buyget",
+        "method": {
+          "target": "items",
+          "value": "1",
+          "minimumBuy": 1,
+          "buyRules": [
+            {
+              "attribute": "items.product_id",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "phone"
+                }
+              ]
+            }
+          ],
+          "targetRules": [
+            {
+              "attribute": "items.product_id",
+              "operator": "eq",
+              "values": [
+                {
+                  "value": "tablet"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "context": {
+        "items": []
+      },
+      "expected": {
+        "applicable": true,
+        "items": [],
+        "shipping": [],
+        "buy": [],
+        "target": []
+      }
+    }
+  ],
+  "sorting": [
+    {
+      "name": "buy-first",
+      "input": [
+        {
+          "code": "s",
+          "type": "standard",
+          "value": "100"
+        },
+        {
+          "code": "b",
+          "type": "buyget",
+          "value": "1"
+        }
+      ],
+      "expected": [
+        "b",
+        "s"
+      ]
+    },
+    {
+      "name": "same-type-value",
+      "input": [
+        {
+          "code": "a",
+          "type": "standard",
+          "value": 1
+        },
+        {
+          "code": "b",
+          "type": "standard",
+          "value": 10
+        },
+        {
+          "code": "c",
+          "type": "standard",
+          "value": 2
+        }
+      ],
+      "expected": [
+        "b",
+        "c",
+        "a"
+      ]
+    },
+    {
+      "name": "buy-quantity-ties",
+      "input": [
+        {
+          "code": "a",
+          "type": "buyget",
+          "value": 10,
+          "minimumBuy": 1,
+          "applyQuantity": 2
+        },
+        {
+          "code": "b",
+          "type": "buyget",
+          "value": 10,
+          "minimumBuy": 2,
+          "applyQuantity": 1
+        },
+        {
+          "code": "c",
+          "type": "buyget",
+          "value": 10,
+          "minimumBuy": 2,
+          "applyQuantity": 3
+        }
+      ],
+      "expected": [
+        "c",
+        "b",
+        "a"
+      ]
+    },
+    {
+      "name": "stable-ties",
+      "input": [
+        {
+          "code": "z",
+          "type": "standard",
+          "value": 10
+        },
+        {
+          "code": "a",
+          "type": "standard",
+          "value": 10
+        }
+      ],
+      "expected": [
+        "z",
+        "a"
+      ]
+    }
+  ]
+}
