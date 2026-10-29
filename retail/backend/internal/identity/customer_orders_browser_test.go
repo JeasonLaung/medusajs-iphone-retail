@@ -62,6 +62,8 @@ func checkCustomerOrdersBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	}); err != nil {
 		t.Fatal("browser attachment fixture preparation failed")
 	}
+	cleanupProgress := seedCustomerProgress(t, db, orderID)
+	defer cleanupProgress()
 	router := gin.New()
 	_ = router.SetTrustedProxies(nil)
 	account.Register(router.Group("/api/store/customer"))

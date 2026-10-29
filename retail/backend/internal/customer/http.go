@@ -84,6 +84,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/me", h.UpdateProfile)
 	private.GET("/orders", h.ListOrders)
 	private.GET("/orders/:id", h.OrderDetail)
+	private.GET("/orders/:id/progress", h.OrderProgress)
 	private.POST("/orders/:id/attach", h.AttachOrder)
 	private.GET("/addresses", h.ListAddresses)
 	private.POST("/addresses", h.CreateAddress)

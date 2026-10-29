@@ -1,6 +1,6 @@
 import AccountAttachment,{hasCustomerHint} from './account-attachment'
 import {customerClient,CustomerError} from '../../lib/customer-client'
-import {useEffect,useState,Fragment} from 'react'
+import {useEffect,useState,Fragment,type ReactNode} from 'react'
 import {Alert,Spin,Table,Divider} from 'antd'
 import {browserCartClient,type OrderConfirmation} from '../../lib/cart-client'
 import {getAccountCopy} from '../account/i18n'
@@ -22,7 +22,7 @@ function Details({order,segment}:{order:OrderConfirmation;segment:string}){
  </div></div></div>
 }
 
-export function SavedOrderSections({order,segment,account=false}:{order:OrderConfirmation;segment:string;account?:boolean}){
+export function SavedOrderSections({order,segment,account=false,shipments}:{order:OrderConfirmation;segment:string;account?:boolean;shipments?:ReactNode}){
  const {t,locale}=getAccountCopy(segment),checkout=getCheckoutCopy(segment)
  const money=(amount:string)=>formatCartMoney(amount,order.amounts.currency_code,segment)
  const totals=order.amounts.totals,lines=new Map(order.amounts.lines.map(line=>[line.item_id,line]))
@@ -42,7 +42,7 @@ export function SavedOrderSections({order,segment,account=false}:{order:OrderCon
    <div className="min-w-0 flex flex-col" data-testid="shipping-address-summary"><Text className="txt-medium-plus text-ui-fg-base mb-1">{t('shippingAddress')}</Text><Text>{order.shipping_address.first_name} {order.shipping_address.last_name}</Text><Text>{order.shipping_address.address_1} {order.shipping_address.address_2}</Text><Text>{order.shipping_address.postal_code}, {order.shipping_address.city}</Text><Text>{order.shipping_address.country_code.toUpperCase()}</Text></div>
    <div className="min-w-0 flex flex-col" data-testid="shipping-contact-summary"><Text className="txt-medium-plus text-ui-fg-base mb-1">{t('contact')}</Text><Text>{order.shipping_address.phone}</Text><Text>{order.email}</Text></div>
    <div className="min-w-0 flex flex-col" data-testid="shipping-method-summary"><Text className="txt-medium-plus text-ui-fg-base mb-1">{t('method')}</Text>{order.amounts.shipping_methods.map(method=><Text key={method.id}>{method.name} ({money(method.totals.total)})</Text>)}</div>
-  </div><Divider className="mt-8"/></div>,
+  </div>{shipments}<Divider className="mt-8"/></div>,
 <div><Heading level="h2" className="flex flex-row text-3xl-regular my-6">{t('paymentHeading')}</Heading><div className="flex items-start gap-x-1 w-full"><div className="flex flex-col w-1/3"><Text className="txt-medium-plus text-ui-fg-base mb-1">{checkout.paymentMethod}</Text><Text data-testid="payment-method">{paymentTitle(order.payment.provider_id,segment)}</Text></div><div className="flex flex-col w-2/3"><Text className="txt-medium-plus text-ui-fg-base mb-1">{checkout.paymentDetails}</Text><Text data-testid="payment-amount">{t('paymentAmountAt',{amount:money(order.payment.amount),date:new Date(order.payment.created_at).toLocaleString(locale)})}</Text></div></div><Divider className="mt-8"/></div>
  ]
  return <>{(account?[sections[0],sections[2],sections[1],sections[3]]:sections).map((section,index)=><Fragment key={index}>{section}</Fragment>)}

@@ -197,3 +197,27 @@ func (s *Store) Order(ctx context.Context, token, orderID string) (cart.Confirma
 	}
 	return out, nil
 }
+
+func (s *Store) OrderProgress(ctx context.Context, token, orderID string) (orders.CustomerProgress, error) {
+	if !customerOrderID.MatchString(orderID) {
+		return orders.CustomerProgress{}, ErrOrderMissing
+	}
+	var out orders.CustomerProgress
+	var denied bool
+	err := s.addressTransaction(ctx, token, func(tx *gorm.DB, account string) error {
+		if _, e := cart.ReadAccountConfirmation(ctx, tx, account, orderID); e != nil {
+			denied = errors.Is(e, cart.ErrDenied)
+			return e
+		}
+		var e error
+		out, e = orders.ReadCustomerProgressTx(ctx, tx, orderID)
+		return e
+	})
+	if denied {
+		return orders.CustomerProgress{}, ErrOrderMissing
+	}
+	if err != nil {
+		return orders.CustomerProgress{}, err
+	}
+	return out, nil
+}

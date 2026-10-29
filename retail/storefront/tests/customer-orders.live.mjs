@@ -34,14 +34,18 @@ try{
  assert.ok(ready,'Owned Astro not ready')
  browser=await chromium.launch({headless:true,executablePath:process.env.ADMIN_TEST_BROWSER||'C:/Program Files/Google/Chrome/Application/chrome.exe'})
  const context=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'}),page=await context.newPage()
- page.on('pageerror',e=>errors.push(e.message))
+ page.on('pageerror',e=>{errors.push(e.message);console.error('browser-error',e.message)})
  page.on('request',request=>requests.push(request.url()))
+ page.on('response',response=>{if(response.url().includes('/customer/auth/'))console.log('auth-status',new URL(response.url()).pathname,response.status())})
  const login=async(page,email)=>{
   await page.goto(shop+'/dk-en/account/orders')
   await expect(page.getByTestId('login-page')).toBeVisible()
   await page.getByTestId('email-input').fill(email)
   await page.getByTestId('password-input').fill(fixture.password)
+  const response=page.waitForResponse(r=>r.url().endsWith('/customer/auth/login'),{timeout:10000})
   await page.getByTestId('sign-in-button').click()
+  try{assert.equal((await response).status(),200,'Owned customer login failed')}
+  catch(e){console.error('login-diagnostics',JSON.stringify({paths:requests.map(url=>new URL(url).pathname).filter(path=>path.includes('/customer/')),forms:await page.locator('form').evaluateAll(forms=>forms.map(f=>({valid:f.checkValidity(),inputs:[...f.elements].map(x=>({name:x.name,type:x.type,valid:x.validity?.valid,missing:x.validity?.valueMissing,mismatch:x.validity?.typeMismatch,disabled:x.disabled}))})))}));throw e}
   await expect(page.getByTestId('customer-authenticated')).toBeVisible()
  }
  await login(page,fixture.email)
@@ -67,9 +71,27 @@ try{
   await expect(page.getByTestId('order-details-container')).toBeVisible()
   await expect(page.getByTestId('shipping-address-summary')).not.toBeEmpty()
   await expect(page.getByTestId('cart-total')).toHaveAttribute('data-value','158.75')
+  await expect(page.getByTestId('order-timeline')).toBeVisible()
+  await expect(page.getByTestId('timeline-paid')).toContainText('158.75')
+  await expect(page.getByTestId('timeline-allocated')).toHaveCount(1)
+  await expect(page.getByTestId('timeline-fulfillment_canceled')).toHaveCount(1)
+  await expect(page.getByTestId('shipment')).toHaveCount(1)
+  await expect(page.getByTestId('shipment')).toContainText('000012345678901234567890')
+  await expect(page.getByTestId('shipment').locator('a')).toHaveCount(1)
+  await expect(page.getByTestId('shipment').locator('a')).toHaveAttribute('href','https://example.invalid/track')
+  assert.equal(await page.locator('a[href^="javascript:"]').count(),0)
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
   await page.reload();await expect(page.getByTestId('order-details-container')).toBeVisible()
  }
+ // One transport failure must leave the order itself available and allow a
+ // fresh request to the actual Gin handler. No synthetic API response is used.
+ await page.route('**/api/store/customer/orders/*/progress',route=>route.abort('failed'),{times:1})
+ await page.reload()
+ await expect(page.getByTestId('order-details-container')).toBeVisible()
+ await expect(page.getByTestId('order-timeline').getByRole('button')).toBeVisible()
+ await page.getByTestId('order-timeline').getByRole('button').click()
+ await expect(page.getByTestId('timeline-paid')).toContainText('158.75')
+ await expect(page.getByTestId('shipment')).toHaveCount(1)
  await page.goto(shop+'/dk-en/account')
  await expect(page.getByTestId('order-wrapper')).toHaveCount(1)
  const other=await browser.newContext({viewport:{width:1440,height:1000}}),otherPage=await other.newPage()
@@ -78,6 +100,8 @@ try{
  await expect(otherPage.getByTestId('no-orders-container')).toBeVisible()
  const denied=await otherPage.evaluate(async id=>{const response=await fetch('/api/store/customer/orders/'+id);return {status:response.status,cache:response.headers.get('cache-control')}},fixture.order_id)
  assert.deepEqual(denied,{status:404,cache:'private, no-store'})
+ const deniedProgress=await otherPage.evaluate(async id=>{const r=await fetch('/api/store/customer/orders/'+id+'/progress');return r.status},fixture.order_id)
+ assert.equal(deniedProgress,404)
  await page.getByTestId('account-nav').getByTestId('logout-button').click()
  await expect(page.getByTestId('login-page')).toBeVisible()
  const expired=await page.evaluate(async()=>{const response=await fetch('/api/store/customer/orders');return response.status})
@@ -85,7 +109,7 @@ try{
  assert.deepEqual(errors,[])
  assert.equal(requests.some(url=>/localhost:(8000|9001)|127\.0\.0\.1:(8000|9001)|medusa/i.test(url)),false)
  assert.equal((await control('finish')).status,204)
- console.log('CUSTOMER_ORDERS_JOINT_BROWSER '+JSON.stringify({actual_astro_routes:true,actual_gin_handlers:true,real_mysql_redis:true,mocked_api_responses:false,fixture_preverified_accounts:true,fixture_order_from_paid_cart_rehearsal:true,real_provider_payment:false,login_origin_csrf_signed_bridge:true,empty_before_attach:true,dual_cookie_attachment:true,account_details_without_cart_cookie:true,private_headers:true,cross_account_denied:true,logout_revokes_access:true,exact_total:'158.75',languages:['en','zh'],widths:[390,1440],browser_errors:0}))
+ console.log('CUSTOMER_ORDERS_JOINT_BROWSER '+JSON.stringify({actual_astro_routes:true,actual_gin_handlers:true,real_mysql_redis:true,mocked_api_responses:false,fixture_preverified_accounts:true,fixture_order_from_paid_cart_rehearsal:true,real_provider_payment:false,login_origin_csrf_signed_bridge:true,empty_before_attach:true,dual_cookie_attachment:true,account_details_without_cart_cookie:true,private_headers:true,cross_account_denied:true,logout_revokes_access:true,exact_total:'158.75',real_order_progress:true,real_shipment_tracking:true,unsafe_links_absent:true,canceled_parcel_hidden:true,cross_account_progress_denied:true,languages:['en','zh'],widths:[390,1440],browser_errors:0}))
 }finally{
  await browser?.close()
  if(app&&app.exitCode===null){app.kill();await once(app,'exit')}

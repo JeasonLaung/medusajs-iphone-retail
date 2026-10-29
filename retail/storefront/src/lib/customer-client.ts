@@ -1,6 +1,7 @@
 import {orderConfirmationProjection,type OrderConfirmation} from './cart-client.ts'
 import {orderListProjection,type CustomerOrderList} from './customer-orders.ts'
 import {customerChanged} from './customer-events.ts'
+import {customerProgressProjection,type CustomerProgress} from './customer-progress.ts'
 export type Customer={id:string;email:string;first_name:string;last_name:string;phone:string;verified_at:string|null}
 export type AddressFields={first_name?:string;last_name?:string;company?:string;address_1?:string;address_2?:string;city?:string;postal_code?:string;province?:string;country_code?:string;phone?:string;is_default_billing?:boolean;is_default_shipping?:boolean}
 export type Address=Required<AddressFields>&{id:string;created_at:string;updated_at:string}
@@ -73,6 +74,10 @@ export function customerClient(fetcher:typeof fetch=fetch){
   async order(id:string):Promise<OrderConfirmation>{
    if(!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(id))throw new CustomerError(400)
    return orderConfirmationProjection(await call('/orders/'+id),id)
+  },
+  async orderProgress(id:string):Promise<CustomerProgress>{
+   if(!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(id))throw new CustomerError(400)
+   return customerProgressProjection(await call('/orders/'+id+'/progress'),id)
   },
   async attachOrder(id:string):Promise<void>{
    if(!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(id))throw new CustomerError(400)

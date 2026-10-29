@@ -181,6 +181,12 @@ func checkCustomerOrderOwnership(t *testing.T, ctx context.Context, db *gorm.DB,
 	}
 	exec("UPDATE cart_ownership SET active=TRUE WHERE cart_id=?", ref.CartID)
 	exec("UPDATE cart_completion_runtime SET enabled=TRUE WHERE id=1")
+	checkCustomerProgress(t, ctx, db, store, a.Session.Token, b.Session.Token, orderID)
+	progressPath := "/api/store/customer/orders/" + orderID + "/progress"
+	call("GET", progressPath, "", "", "", true, false, 200)
+	call("GET", progressPath+"?email=private", "", "", "", true, false, 404)
+	call("GET", progressPath, "", "", "", false, false, 401)
+	call("GET", progressPath, "", "https://foreign.example", "", true, false, 403)
 	checkCustomerOrdersBrowser(t, ctx, db, sessions, ref, orderID, email)
 	exec("UPDATE customer_accounts SET auth_version=auth_version+1 WHERE id=?", a.Customer.ID)
 	if _, e := store.Orders(ctx, a.Session.Token, 0); !errors.Is(e, customer.ErrUnauthorized) {
@@ -188,6 +194,9 @@ func checkCustomerOrderOwnership(t *testing.T, ctx context.Context, db *gorm.DB,
 	}
 	if _, e := store.Order(ctx, a.Session.Token, orderID); !errors.Is(e, customer.ErrUnauthorized) {
 		t.Fatal("revoked customer detail", e)
+	}
+	if _, e := store.OrderProgress(ctx, a.Session.Token, orderID); !errors.Is(e, customer.ErrUnauthorized) {
+		t.Fatal("revoked customer progress", e)
 	}
 	t.Log(`CUSTOMER_ORDER_OWNERSHIP_REHEARSAL {"real_gin_mysql_redis":true,"two_capabilities_required":true,"email_never_grants_orders":true,"concurrent_attachment_single_audit":true,"late_audit_failure_atomic":true,"other_customer_cannot_steal":true,"long_term_after_cart_revocation":true,"customer_revocation_denied":true,"exact_total":"158.75","private_list_projection":true,"private_account_detail":true,"detail_independent_of_cart_runtime":true,"browser_integrated":false}`)
 }

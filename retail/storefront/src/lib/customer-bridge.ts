@@ -24,7 +24,7 @@ function origin(raw:string|undefined,upstream=false):URL{
 // forwarded headers are never copied into the signed request.
 export async function customerBridge(request:Request,config:CustomerBridgeConfig,fetcher:typeof fetch=ginPrivateTransport):Promise<Response>{
  const url=new URL(request.url),post=request.method==='POST',path=url.pathname,action=path.slice((root+'/auth/').length)
- const orderList=request.method==='GET'&&path===root+'/orders',orderRead=request.method==='GET'&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}$').test(path),orderAttach=post&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/attach$').test(path)
+ const orderList=request.method==='GET'&&path===root+'/orders',orderRead=request.method==='GET'&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}(/progress)?$').test(path),orderAttach=post&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/attach$').test(path)
  const target=path+url.search
  const queryOK=orderList&&/^\?offset=(0|[1-9][0-9]{0,5})$/.test(url.search)&&Number(url.searchParams.get('offset'))<=100000
  const address=path===root+'/addresses',addressWrite=new RegExp('^'+root+'/addresses/addr_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(/delete)?$').test(path)

@@ -1,0 +1,142 @@
+{
+  "format_version": 1,
+  "node_version": "v22.23.4",
+  "browser": {
+    "actual_astro_routes": true,
+    "actual_gin_handlers": true,
+    "real_mysql_redis": true,
+    "mocked_api_responses": false,
+    "fixture_preverified_accounts": true,
+    "fixture_order_from_paid_cart_rehearsal": true,
+    "real_provider_payment": false,
+    "login_origin_csrf_signed_bridge": true,
+    "empty_before_attach": true,
+    "dual_cookie_attachment": true,
+    "account_details_without_cart_cookie": true,
+    "private_headers": true,
+    "cross_account_denied": true,
+    "logout_revokes_access": true,
+    "exact_total": "158.75",
+    "real_order_progress": true,
+    "real_shipment_tracking": true,
+    "unsafe_links_absent": true,
+    "canceled_parcel_hidden": true,
+    "cross_account_progress_denied": true,
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "widths": [
+      390,
+      1440
+    ],
+    "browser_errors": 0
+  },
+  "post_browser_sql_regression_passed": true,
+  "sql_receipts_checked": true,
+  "scope": "Authenticated customer order progress and parcel tracking, preserving original order layout",
+  "production_services_or_data_used": false,
+  "full_storefront_accepted": false,
+  "resources": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "database_ports_published": false,
+    "api_port_loopback_only": true,
+    "network_egress_restricted": false
+  },
+  "sql_attachment_and_unique_audit_checked": true,
+  "cleanup_complete": true,
+  "customer_progress_sql": {
+    "explicit_ownership": true,
+    "cross_account_denied": true,
+    "deleted_order_denied": true,
+    "shared_parcel_denied": true,
+    "exact_capture_amount": "158.75",
+    "private_fields_absent": true,
+    "unsafe_url_suppressed": true,
+    "canceled_parcel_hidden_from_tracking": true,
+    "canceled_parcel_events_retained": true,
+    "sorted_events": true
+  },
+  "validation": {
+    "go_all_packages_passed": true,
+    "astro_check_errors": 0,
+    "astro_check_warnings": 0,
+    "astro_check_existing_hints": 4,
+    "storefront_unit_tests_passed": 149,
+    "owned_astro_build_passed": true,
+    "real_browser_network_failure_retry_passed": true,
+    "additional_http_denials_and_revocation_passed": true
+  },
+  "verified_source_files": [
+    {
+      "path": "retail/backend/internal/customer/http.go",
+      "sha256": "e046b3689e1b0a70fc91d0863783eacc4b3639bb190d7b6dcf9b0c1686881cf1"
+    },
+    {
+      "path": "retail/backend/internal/customer/orders.go",
+      "sha256": "a4666d2a56697266cec1582b5a534a4947107191b81fc6499a217a7f9585bff1"
+    },
+    {
+      "path": "retail/backend/internal/customer/orders_http.go",
+      "sha256": "733702e50e021f73aa2ce4cea5bd976aa83cc95c78db70bbee9ee164437b9376"
+    },
+    {
+      "path": "retail/backend/internal/identity/customer_order_ownership_test.go",
+      "sha256": "3029fbdc84ebbca9338676f85d3453942fabadc789bcb559f630893650c5df80"
+    },
+    {
+      "path": "retail/backend/internal/identity/customer_orders_browser_test.go",
+      "sha256": "a67408638f350bbd61db70b99460c5409078158eb382f35d9741d34a1c8ab800"
+    },
+    {
+      "path": "retail/backend/internal/identity/customer_progress_test.go",
+      "sha256": "8f01892623a0ea62d9bcb370316a5547f5d41489bc1da4c6dc1d8f1954bf276f"
+    },
+    {
+      "path": "retail/backend/internal/orders/customer_progress.go",
+      "sha256": "0c47805010f125fdd276635fd8b6fbf67126ed80088d9080dfdcbdbd9e2c51f2"
+    },
+    {
+      "path": "retail/storefront/src/components/account/order-details.tsx",
+      "sha256": "48b7a93e3a79a6571d2d872d246c23df802c71d8c78a8006a6ff3b6cced41fc2"
+    },
+    {
+      "path": "retail/storefront/src/components/order/confirmation.tsx",
+      "sha256": "1e370321670c90e124f1acf59e62581778cec1c48215462e4f61a34dcbe375e4"
+    },
+    {
+      "path": "retail/storefront/src/components/order/progress.tsx",
+      "sha256": "1a6bf710fd5e72d5eb7831e58d034691b569d273a8a9db1021c65dc9ab8c9ebb"
+    },
+    {
+      "path": "retail/storefront/src/lib/customer-bridge.ts",
+      "sha256": "4d949e5d5e4ccfdb2eb7c0f667326a20c49965ed71f524fb2629fd08c0c87cdc"
+    },
+    {
+      "path": "retail/storefront/src/lib/customer-client.ts",
+      "sha256": "82c25e7df30796f6f01247eac91df274e28b3cb03eca485b31a255038f99c483"
+    },
+    {
+      "path": "retail/storefront/src/lib/customer-progress.ts",
+      "sha256": "b0ad2f44642ebd1f519719d9f02d04c7bc5d119737aaaa9075551b5b2c0f0aac"
+    },
+    {
+      "path": "retail/storefront/tests/customer-orders.live.mjs",
+      "sha256": "7de6872e2276601dce3f681055d3b643a3eb196dba12bb337d4ee09b1af2461b"
+    },
+    {
+      "path": "retail/storefront/tests/customer-progress.test.ts",
+      "sha256": "8280df20e2153ef6272c5156abc3a973ebd1698eb31e242266f4ee7cada66c45"
+    }
+  ],
+  "source_file_count": 15,
+  "limitations": [
+    "No real provider payment, carrier booking, delivery or real email sent",
+    "Single-device after-sales, after-sales operations and shipment email integration remain incomplete",
+    "HTTP loopback fixture does not validate TLS cookie flags",
+    "Full existing storefront acceptance remains pending"
+  ]
+}
