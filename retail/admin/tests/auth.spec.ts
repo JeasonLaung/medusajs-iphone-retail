@@ -574,3 +574,21 @@ test('warehouse stock creation freezes exact location and quantities on uncertai
  expect(attempts).toHaveLength(2);expect(attempts[0]).toEqual(attempts[1]);expect(attempts[0]).toMatchObject({location_id:'stock-location',stocked_quantity:'0.000000000000000001',incoming_quantity:'2.000000000000000000'})
  grants.splice(grants.indexOf('warehouse.read'),1);await page.reload();await page.getByRole('button',{name:'查看库存',exact:true}).click();await page.getByText('Stock inventory',{exact:true}).click();await expect(page.getByRole('button',{name:'添加仓库库存',exact:true})).toHaveCount(0)
 })
+
+test('order device reservation keeps one immutable batch after an uncertain response',async({page})=>{
+ const grants:string[]=['order.read','order.payment.read','device.read','order.allocation.write'];await fixture(page,{permissions:grants})
+ const order={id:'allocate-order',version:1,status:'pending',currency_code:'eur',custom_display_id:'Allocate fixture',display_id:'1',is_draft_order:false,email:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',line_count:1}
+ const line={id:'order-item',item_id:'allocate-line',title:'Allocation line',variant_sku:'ALLOC-SKU',quantity:'1.000000000000000000',unit_price:'100.000000000000000000',is_tax_inclusive:false,fulfilled_quantity:'0.000000000000000000',shipped_quantity:'0.000000000000000000',return_requested_quantity:'0.000000000000000000',return_received_quantity:'0.000000000000000000',return_dismissed_quantity:'0.000000000000000000'}
+ const attempts:unknown[]=[]
+ await page.route('**/api/admin/orders/allocate-order**',async route=>{
+  const req=route.request(),path=new URL(req.url()).pathname
+  if(path.endsWith('/allocation')){
+   if(req.method()==='POST'){expect(req.headers()['x-csrf-token']).toBe(sessionCSRF);attempts.push(req.postDataJSON());if(attempts.length===1){await route.abort('failed');return};return route.fulfill({json:{assignment_ids:['dasg_new'],revision:'c'.repeat(64),replayed:true}})}
+   return route.fulfill({json:{order_id:order.id,item_id:'allocate-line',variant_id:'v',version:1,paid:true,enabled:true,order_active:true,quantity:1,fulfilled:0,remaining:1,revision:'b'.repeat(64),devices:[{id:'device-one',serial_number:'ALLOC-ONE',imei:null,imei2:null,eid:null,source_id:'source',source_name:'Source',location_id:'location',location_name:'Warehouse',state:'available',updated_at:order.created_at}],assignments:[]}})
+  }
+  if(path.endsWith('/payments'))return route.fulfill({json:{order_id:order.id,version:1,operations_enabled:false,collections:[]}})
+  return route.fulfill({json:{order,lines:[line]}})
+ })
+ await page.goto('/account');await signIn(page);await page.goto('/orders/allocate-order');await page.getByRole('button',{name:'设备配货',exact:true}).click();const drawer=page.getByRole('dialog');await drawer.getByRole('row').filter({has:page.getByText('ALLOC-ONE',{exact:true})}).getByRole('checkbox').check();await drawer.getByRole('button',{name:'保存预配货',exact:true}).click();await expect(drawer.getByRole('button',{name:'重试本次保存',exact:true})).toBeVisible();await expect(drawer.getByRole('row').filter({has:page.getByText('ALLOC-ONE',{exact:true})}).getByRole('checkbox')).toBeDisabled();await drawer.getByRole('button',{name:'重试本次保存',exact:true}).click();await expect(drawer.getByText('ALLOC-ONE',{exact:true})).toBeVisible();expect(attempts).toHaveLength(2);expect(attempts[0]).toEqual(attempts[1]);expect(attempts[0]).toMatchObject({action:'reserve',ids:['device-one']})
+ grants.splice(grants.indexOf('order.allocation.write'),1);await page.reload();await expect(page.getByRole('button',{name:'设备配货',exact:true})).toHaveCount(0)
+})

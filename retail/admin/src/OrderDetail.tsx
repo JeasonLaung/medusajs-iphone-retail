@@ -6,6 +6,7 @@ import { APIError, getOrder } from './api'
 import type { OrderDetail as Detail, OrderLine } from './api'
 import type { Copy } from './i18n'
 import { amountText } from './VariantPrices'
+import OrderAllocation from './OrderAllocation'
 import OrderAmounts from './OrderAmounts'
 import OrderPayments from './OrderPayments'
 import OrderFulfillments from './OrderFulfillments'
@@ -15,6 +16,7 @@ export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void
   const {id=''}=useParams()
   const location=useLocation()
   const [attempt,setAttempt]=useState(0)
+ const [allocating,setAllocating]=useState<OrderLine>()
   const [state,setState]=useState<{loading:boolean;data?:Detail;error?:unknown}>({loading:true})
   useEffect(()=>{
     const controller=new AbortController()
@@ -43,6 +45,7 @@ export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void
         ]} />
         <Table<OrderLine> rowKey="id" dataSource={state.data?.lines??[]} scroll={{x:1000}} pagination={false} locale={{emptyText:<Empty description={copy.noOrderLines} />}} columns={[
           {title:copy.productTitle,dataIndex:'title',render:(title:string,row)=><Space direction="vertical" size={0}><Typography.Text>{title}</Typography.Text><Typography.Text type="secondary">{row.variant_sku??'—'}</Typography.Text></Space>},
+          {title:copy.orderAllocation,key:'allocation',render:(_,line)=>access.can('order.allocation.write','order.payment.read','device.read')?<Button onClick={()=>setAllocating(line)}>{copy.orderAllocation}</Button>:null},
           {title:copy.orderedQuantity,dataIndex:'quantity',render:amountText},
           {title:copy.snapshotUnitPrice,dataIndex:'unit_price',render:(value:string,row)=><Space direction="vertical" size={0}><Typography.Text>{amountText(value)} {order.currency_code}</Typography.Text><Typography.Text type="secondary">{copy.taxInclusive}: {row.is_tax_inclusive?copy.yes:copy.no}</Typography.Text></Space>},
           {title:copy.fulfilledQuantity,dataIndex:'fulfilled_quantity',render:amountText},
@@ -57,5 +60,6 @@ export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void
 {access.can('order.fulfillment.read')&&<OrderFulfillments id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>}
       </>}
     </Space>
+    {access.can('order.allocation.write','order.payment.read','device.read')&&allocating&&order&&<OrderAllocation orderID={order.id} itemID={allocating.item_id} title={allocating.title} copy={copy} onExpired={onExpired} onClose={()=>{setAllocating(undefined);setAttempt(n=>n+1)}}/>}
   </section>
 }

@@ -162,6 +162,7 @@ func checkPriceAmountEdit(t *testing.T, db *gorm.DB, actor identity.User, call f
 	checkPriceCreate(t, db, actor, call)
 	checkVariantCreate(t, db, actor, call)
 	checkInventoryLevelCreate(t, db, actor, call)
+	checkOrderDeviceAllocation(t, db, actor, call)
 	t.Log(`PRICE_AMOUNT_EDIT_REHEARSAL {"default_disabled":true,"explicit_price_write":true,"canonical_decimal_38_18":true,"raw_and_scalar_atomic":true,"concurrent_attempts":4,"single_mutation":true,"immutable_replay":true,"variant_receipt_binding":true,"stale_rule_context_denied":true,"rules_preserved":true,"late_receipt_failure_atomic":true,"shared_variants_public_quotes":true,"zero_price":true,"revoked_and_warehouse_replay_denied":true,"unlinked_replay_denied":true}`)
 }
 
@@ -187,6 +188,14 @@ func TestPreparePriceEditBrowserFixture(t *testing.T) {
 	}
 	defer pool.Close()
 	seedPriceEdit(t, db)
+	if os.Getenv("ORDER_ALLOCATION_BROWSER") == "1" {
+		seedOrderDeviceAllocation(t, db)
+		for _, q := range []string{"UPDATE device_runtime_schema SET identity_enabled=TRUE,commands_enabled=TRUE WHERE id=1", "UPDATE order_device_allocation_runtime SET enabled=TRUE WHERE id=1", "UPDATE payment_collections SET status='completed' WHERE id='allocation-payment'"} {
+			if db.Exec(q).Error != nil {
+				t.Fatal("allocation browser prep")
+			}
+		}
+	}
 	if os.Getenv("VARIANT_CREATE_BROWSER") == "1" {
 		seedVariantCreate(t, db)
 		if db.Exec("UPDATE catalog_variant_create_runtime SET enabled=TRUE WHERE id=1").Error != nil {

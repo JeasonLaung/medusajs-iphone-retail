@@ -215,6 +215,9 @@ def main():
             level_markers = [line.split('LEVEL_CREATE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'LEVEL_CREATE_REHEARSAL ' in line]
             if len(level_markers)!=1: raise RuntimeError('Stock level creation verification missing')
             counts['level_create'] = json.loads(level_markers[0])
+            allocation_markers = [line.split('ORDER_DEVICE_ALLOCATION_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_DEVICE_ALLOCATION_REHEARSAL ' in line]
+            if len(allocation_markers)!=1: raise RuntimeError('Order device allocation verification missing')
+            counts['order_device_allocation'] = json.loads(allocation_markers[0])
             warehouse_intake_markers = [line.split('WAREHOUSE_INTAKE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'WAREHOUSE_INTAKE_REHEARSAL ' in line]
             if len(warehouse_intake_markers)!=1: raise RuntimeError('Warehouse intake verification missing')
             counts['warehouse_intake'] = json.loads(warehouse_intake_markers[0])

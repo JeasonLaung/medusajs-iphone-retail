@@ -295,7 +295,7 @@ export async function getOrderFulfillments(id:string,signal?:AbortSignal):Promis
 }
 
 
-export const ACTIONS=['authorization.read','authorization.write','device.enroll','device.intake','device.read','device.source.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','price.write','product.read','product.write','warehouse.intake.read','warehouse.intake.write','warehouse.read','warehouse.return.read','warehouse.return.write','warehouse.write'] as const
+export const ACTIONS=['authorization.read','authorization.write','device.enroll','device.intake','device.read','device.source.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.allocation.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','price.write','product.read','product.write','warehouse.intake.read','warehouse.intake.write','warehouse.read','warehouse.return.read','warehouse.return.write','warehouse.write'] as const
 export type Action=typeof ACTIONS[number]
 export type ManagedRole={id:string;name:string;enabled:boolean;actions:Action[]}
 export type ManagedMember={user_id:string;name:string;enabled:boolean;kind:'employee'|'warehouse'|'supplier';roles:string[]}
@@ -488,4 +488,18 @@ export async function createInventoryLevel(product:string,variant:string,item:st
  const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
  const d=await request<{id:string;revision:string;replayed:boolean}>(levelCreatePath(product,variant,item)+'/levels',{method:'POST',body,csrf},'/api/admin/')
  if(!d||typeof d.id!=='string'||!d.id.startsWith('ilevel_')||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}
+
+export type AllocationContext={order_id:string;item_id:string;variant_id:string;version:number;paid:boolean;enabled:boolean;order_active:boolean;quantity:number;fulfilled:number;remaining:number;revision:string;devices:{id:string;serial_number:string;imei:string|null;imei2:string|null;eid:string|null;source_id:string;source_name:string;location_id:string;location_name:string;state:string;updated_at:string}[];assignments:{id:string;device_id:string;status:string;fulfillment_id:string|null;updated_at:string}[]}
+export type AllocationInput={operation_id:string;expected_revision:string;action:'reserve'|'release';ids:string[]}
+const allocationPath=(o:string,i:string)=>`orders/${encodeURIComponent(o)}/items/${encodeURIComponent(i)}/allocation`
+export async function readOrderAllocation(order:string,item:string,signal:AbortSignal):Promise<AllocationContext>{
+ const d=await request<AllocationContext>(allocationPath(order,item),{signal},'/api/admin/')
+ if(!d||d.order_id!==order||d.item_id!==item||typeof d.variant_id!=='string'||!Number.isSafeInteger(d.version)||d.version<1||typeof d.enabled!=='boolean'||typeof d.paid!=='boolean'||typeof d.order_active!=='boolean'||![d.quantity,d.fulfilled,d.remaining].every(v=>Number.isSafeInteger(v)&&v>=0&&v<=1000000000)||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||!Array.isArray(d.devices)||d.devices.length>10000||d.devices.some(v=>!v||['id','serial_number','source_id','source_name','location_id','location_name','state','updated_at'].some(k=>typeof v[k as keyof typeof v]!=='string')||![v.imei,v.imei2,v.eid].every(nullableText))||!Array.isArray(d.assignments)||d.assignments.length>10000||d.assignments.some(a=>!a||typeof a.id!=='string'||typeof a.device_id!=='string'||!['reserved','packed','shipped','returned','canceled'].includes(a.status)||!nullableText(a.fulfillment_id)||typeof a.updated_at!=='string'))throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function saveOrderAllocation(order:string,item:string,body:AllocationInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{assignment_ids:string[];revision:string;replayed:boolean}>(allocationPath(order,item),{method:'POST',body,csrf},'/api/admin/')
+ if(!d||!Array.isArray(d.assignment_ids)||d.assignment_ids.length!==body.ids.length||d.assignment_ids.some(id=>typeof id!=='string')||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
 }
