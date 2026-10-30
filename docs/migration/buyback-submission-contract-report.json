@@ -1,0 +1,40 @@
+{
+  "scope": "Submission input and questionnaire state contracts only; no HTTP or persistence or mounted questionnaire UI",
+  "original_validator_cases": 128,
+  "original_validator_accepted": 40,
+  "strict_json_negative_tests": true,
+  "original_restore_executed_in_tests": true,
+  "go_all_packages": "passed in isolated migration checkout",
+  "frontend_tests": {
+    "passed": 163,
+    "total": 163
+  },
+  "astro_check": {
+    "files": 345,
+    "errors": 0,
+    "warnings": 0,
+    "existing_hints": 5
+  },
+  "legacy_services": {
+    "health": 200,
+    "admin": 200,
+    "sell": 200
+  },
+  "body_limit_bytes": 16384,
+  "provider_called": false,
+  "submission_http_registered": false,
+  "submission_database_writes": false,
+  "questionnaire_mounted": false,
+  "full_buyback_acceptance": false,
+  "implementation_sha256": {
+    "retail/backend/internal/buyback/submission.go": "158863e79d26b2f9209e2cdbab36f3da6d858c6397c5594ee183b02f63f56dc5",
+    "retail/backend/internal/buyback/submission_test.go": "99ccaa3aa80b1db2559219609cf6038b5ed5ca2a79c9d6980b92fc89a0920711",
+    "retail/scripts/capture-buyback-submission.cjs": "88c0eea3f7873a7ab014d1b75e9c35f85c4ffecb63bcf9ce8757bdf59fe44b6c",
+    "docs/migration/fixtures/buyback-submission.json": "c50797296ad207eff6f6a136e98790832a896413076d1534da859758be4e5189",
+    "retail/storefront/src/lib/sell-questionnaire.ts": "4f6bae7e4b5667687626d6106a752bc8f5745e353dcf4b27e448f3099c389769",
+    "retail/storefront/tests/sell-questionnaire.test.ts": "e8283252539d61c96531d3ea852ce9b6c69432404b9d0f30d671c7ae3103ca70",
+    "medusa-store/apps/backend/src/api/buyback-validators.ts": "9a566c72c0b883489f56262f2094c34cdfe54bdd0581f1d338ad5664d8e1217d",
+    "medusa-store/apps/backend/src/lib/recycled-assessment.ts": "3c9d9f539dd34535d5a169173c3cbd541adbd11233a02dd07034f73a4b2ea15d",
+    "medusa-store/apps/storefront/src/modules/sell/components/sell-flow.tsx": "ac753ba37914c3ca40de79ea04f6c49d44f1995d4261284f69901465bd6ce112"
+  }
+}
