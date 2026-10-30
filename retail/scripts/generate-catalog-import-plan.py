@@ -12,11 +12,15 @@ def main():
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
     paths = ['docs/migration/catalog-field-mapping.json', 'retail/backend/internal/rowimport/field_plans.json',
-             'retail/backend/internal/uniquekey/source_plans.json']
-    mapping, fields, keys = [json.loads((ROOT / p).read_text(encoding='utf-8')) for p in paths]
+             'retail/backend/internal/uniquekey/source_plans.json', 'docs/migration/operations-field-mapping.json']
+    mapping, fields, keys, operations = [json.loads((ROOT / p).read_text(encoding='utf-8')) for p in paths]
+    # Pricing is configuration; requests/photos/payment operations remain outside
+    # this importer and require their own reviewed business policy.
+    buyback = [t for t in operations['tables'] if t['source_table'] == 'buyback_price']
+    assert len(buyback) == 1
     all_fields = {t['source']: t for t in fields['tables']}
     plans = []
-    for table in mapping['tables']:
+    for table in mapping['tables'] + buyback:
         plan = all_fields[table['source_table']]
         assert plan['target'] == table['target_table']
         assert plan['primary_key']
@@ -32,7 +36,7 @@ def main():
         plans.append({'source': plan['source'], 'target': plan['target'], 'primary': primary,
                       'columns': [{'source': f['source'], 'target': f['target'], 'decimal': f['target_type'].startswith('DECIMAL(38,18)')}
                                   for f in plan['fields']], 'registry': bool(registry)})
-    assert len(plans) == 36
+    assert len(plans) == 37
     report = {'version': 1, 'input_sha256': {p: hashlib.sha256((ROOT / p).read_bytes().replace(b'\r\n', b'\n')).hexdigest() for p in paths}, 'tables': plans}
     output = ROOT / 'retail/backend/internal/catalogimport/plans.json'
     expected = json.dumps(report, ensure_ascii=False, indent=2) + '\n'

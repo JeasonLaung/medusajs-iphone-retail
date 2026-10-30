@@ -105,7 +105,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 			}
 		}
 	}
-	if len(scope) != 45 {
+	if len(scope) != 46 {
 		t.Fatal("catalog parent closure differs")
 	}
 	selected := map[string][]rowimport.SourceRow{}
@@ -269,7 +269,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 			selected[table] = sorted
 		}
 	}
-	counts := map[string]int64{"source_verified_tables": 159, "source_verified_rows": relations.Relations.Rows, "unresolved_global_references": missing, "catalog_tables": 36, "dependency_tables": 9, "closure_reference_missing": 0}
+	counts := map[string]int64{"source_verified_tables": 159, "source_verified_rows": relations.Relations.Rows, "unresolved_global_references": missing, "catalog_tables": 37, "dependency_tables": 9, "closure_reference_missing": 0}
 	for _, table := range order {
 		if _, ok := catalog[table]; ok {
 			counts["catalog_rows"] += int64(len(selected[table]))
@@ -277,7 +277,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 			counts["dependency_rows"] += int64(len(selected[table]))
 		}
 	}
-	if counts["catalog_rows"] != 21837 || counts["dependency_rows"] != 1722 {
+	if counts["catalog_rows"] != 21898 || counts["dependency_rows"] != 1722 {
 		t.Fatal("catalog scope row counts differ")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 240*time.Second)
@@ -297,11 +297,11 @@ func TestActualCatalogMySQL(t *testing.T) {
 		t.Fatal("catalog embedded schema plan invalid")
 	}
 	created, err := schema.Apply(ctx, db, plan)
-	if err != nil || created.Applied != 57 || schema.CheckApplied(ctx, db, plan) != nil {
+	if err != nil || created.Applied != 72 || schema.CheckApplied(ctx, db, plan) != nil {
 		t.Fatal("catalog embedded migration failed")
 	}
 	repeated, err := schema.Apply(ctx, db, plan)
-	if err != nil || repeated.Skipped != 57 {
+	if err != nil || repeated.Skipped != 72 {
 		t.Fatal("catalog embedded migration replay failed")
 	}
 	counts["explicit_schema_migrations"] = int64(created.Applied)
@@ -405,8 +405,8 @@ func TestActualCatalogMySQL(t *testing.T) {
 			t.Fatal("actual catalog rollback left evidence")
 		}
 	}
-	counts["rollback_business_rows"] = 23559
-	counts["rollback_provenance_rows"] = 21837
+	counts["rollback_business_rows"] = 23620
+	counts["rollback_provenance_rows"] = 21898
 	stage(true, true)
 	for _, table := range order {
 		n := count(all[table].Target)
@@ -415,10 +415,10 @@ func TestActualCatalogMySQL(t *testing.T) {
 		}
 		counts["committed_"+table] = n
 	}
-	if count("migration_catalog_rows") != 21837 {
+	if count("migration_catalog_rows") != 21898 {
 		t.Fatal("catalog provenance count differs")
 	}
-	counts["committed_provenance_rows"] = 21837
+	counts["committed_provenance_rows"] = 21898
 	counts["committed_unique_claims"] = count("unique_key_claims")
 	// Inventory rows and immutable discrepancy evidence commit together.
 	stageInventory := func(commit bool) {
@@ -817,6 +817,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 	router.GET("/regions", (cataloghttp.Handler{DB: gdb}).Regions)
 	router.GET("/regions/:id", (cataloghttp.Handler{DB: gdb}).StoreRegion)
 	checkActualRegions(t, ctx, db, router, counts)
+	checkActualBuybackPrices(t, ctx, db, gdb, router, selected["buyback_price"], counts)
 	checkActualTaxonomy(t, ctx, db, gdb, router, counts)
 	router.GET("/orders", (orders.Handler{DB: gdb}).List)
 	router.GET("/orders/:id", (orders.Handler{DB: gdb}).Detail)
@@ -1192,7 +1193,7 @@ func TestActualCatalogMySQL(t *testing.T) {
 	if !bytes.Equal(before, fingerprint()) {
 		t.Fatal("actual catalog replay changed evidence")
 	}
-	counts["exact_replay_catalog_rows"] = 21837
+	counts["exact_replay_catalog_rows"] = 21898
 	counts["exact_replay_dependency_rows"] = 1722
 	counts["physical_foreign_key_checks_enabled"] = 1
 	report, _ := json.Marshal(counts)

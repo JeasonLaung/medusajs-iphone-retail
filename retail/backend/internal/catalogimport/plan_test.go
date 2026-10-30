@@ -18,7 +18,7 @@ func TestCatalogLayoutMatchesReviewedInputs(t *testing.T) {
 		Hashes map[string]string `json:"input_sha256"`
 		Tables []table           `json:"tables"`
 	}
-	if json.Unmarshal(program, &document) != nil || len(document.Tables) != 36 || len(document.Hashes) != 3 {
+	if json.Unmarshal(program, &document) != nil || len(document.Tables) != 37 || len(document.Hashes) != 4 {
 		t.Fatal("catalog layout coverage differs")
 	}
 	for path, expected := range document.Hashes {
@@ -80,7 +80,38 @@ func TestCatalogLayoutMatchesReviewedInputs(t *testing.T) {
 			registry++
 		}
 	}
-	if registry != 7 {
+	if registry != 8 {
 		t.Fatal("catalog complete unique registry coverage differs")
+	}
+}
+
+func TestCatalogOperationsScopeIsOnlyBuybackPrices(t *testing.T) {
+	data, err := os.ReadFile("../../../../docs/migration/operations-field-mapping.json")
+	var operations struct {
+		Tables []struct {
+			Source string `json:"source_table"`
+		} `json:"tables"`
+	}
+	if err != nil || json.Unmarshal(data, &operations) != nil || len(operations.Tables) == 0 {
+		t.Fatal("reviewed operations scope unavailable")
+	}
+	layouts, err := plans()
+	if err != nil {
+		t.Fatal("fixed catalog scope unavailable")
+	}
+	matched := 0
+	for _, operation := range operations.Tables {
+		layout, exists := layouts[operation.Source]
+		if operation.Source == "buyback_price" {
+			if !exists || layout.Target != "buyback_prices" || len(layout.Columns) != 10 || !layout.Registry {
+				t.Fatal("buyback configuration coverage differs")
+			}
+			matched++
+		} else if exists {
+			t.Fatal("unreviewed operation included in catalog importer")
+		}
+	}
+	if matched != 1 {
+		t.Fatal("buyback configuration source missing")
 	}
 }

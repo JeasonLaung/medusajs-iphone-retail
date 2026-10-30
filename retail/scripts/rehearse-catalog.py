@@ -106,6 +106,14 @@ def main():
             raise RuntimeError('Private order arithmetic expectation transfer failed')
         expected = None
         with snapshot.open('rb') as private_source:
+            expected = subprocess.run(['node', str(ROOT/'retail/scripts/capture-buyback-source.cjs')],
+                                      stdin=private_source, capture_output=True, timeout=60)
+        if expected.returncode:
+            raise RuntimeError('Private original buyback oracle failed')
+        if docker('exec', '-i', container, '/bin/sh', '-c', 'umask 077; cat > /tmp/buyback-expected.json', input=expected.stdout).returncode:
+            raise RuntimeError('Private buyback expectation transfer failed')
+        expected = None
+        with snapshot.open('rb') as private_source:
             expected = subprocess.run(['node', str(ROOT/'retail/scripts/capture-store-prices.cjs')],
                                       stdin=private_source, capture_output=True, timeout=60)
         if expected.returncode:
@@ -164,7 +172,9 @@ def main():
         files += ['retail/backend/internal/catalog/store_display.go','retail/backend/internal/catalog/store_display_test.go','retail/backend/internal/catalogimport/display_rehearsal_test.go']
         files += ['retail/scripts/capture-store-prices.cjs','retail/backend/internal/catalogimport/pricing_rehearsal_test.go','retail/backend/internal/catalogimport/availability_rehearsal_test.go']
         files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/pricing').glob('*.go')]
-        report = {'format_version': 1, 'scope': '36 catalog tables, nine parent dependencies, two inventory tables, 28 ordinary order tables, eight payment tables eight fulfillment/geo tables and four tax configuration tables in disposable tmpfs MySQL; five historical customer subjects without account bindings and catalog parent rows have no ledger; no full import/runtime acceptance',
+        files += ['retail/scripts/capture-buyback-source.cjs','retail/backend/internal/catalogimport/buyback_rehearsal_test.go','medusa-store/apps/backend/src/lib/buyback-pricing.ts']
+        files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/buyback').glob('*.go')]
+        report = {'format_version': 1, 'scope': '37 catalog/configuration tables including buyback prices, nine parent dependencies, two inventory tables, 28 ordinary order tables, eight payment tables eight fulfillment/geo tables and four tax configuration tables in disposable tmpfs MySQL; five historical customer subjects without account bindings and catalog parent rows have no ledger; no full import/runtime acceptance',
                   'snapshot_sha256': PINNED_SHA, 'mysql_version': version, 'counts': counts,
                   'embedded_migration_plan_used': True, 'review_ddl_injected': False,
                   'limits': {'cpus': 1, 'memory_mib': 768, 'mysql_tmpfs_mib': 512, 'private_input_tmpfs_mib': 128, 'network': 'none', 'published_ports': 0},

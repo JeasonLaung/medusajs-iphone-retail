@@ -49,7 +49,7 @@ var plans = sync.OnceValues(func() (map[string]table, error) {
 		Version int     `json:"version"`
 		Tables  []table `json:"tables"`
 	}
-	if json.Unmarshal(program, &p) != nil || p.Version != 1 || len(p.Tables) != 36 {
+	if json.Unmarshal(program, &p) != nil || p.Version != 1 || len(p.Tables) != 37 {
 		return nil, ErrPolicy
 	}
 	result := map[string]table{}

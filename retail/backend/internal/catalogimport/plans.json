@@ -3,7 +3,8 @@
   "input_sha256": {
     "docs/migration/catalog-field-mapping.json": "e760f3ea032fa7fd09119fe017bb9c634cbade3b08648a47cfc1c3481cc2255b",
     "retail/backend/internal/rowimport/field_plans.json": "d3bff5f26b890e19f7424888430a638d4e45f6b46766e3643913e6eb670c5b77",
-    "retail/backend/internal/uniquekey/source_plans.json": "827c3e69e269b0e3ad1445ec03ae0182a1c16a9d33634c570f03be7b56dcf01b"
+    "retail/backend/internal/uniquekey/source_plans.json": "827c3e69e269b0e3ad1445ec03ae0182a1c16a9d33634c570f03be7b56dcf01b",
+    "docs/migration/operations-field-mapping.json": "02e8348f1fe6101680769bbbaa516c306320d530739e24eae1c0e9e3ee5b5335"
   },
   "tables": [
     {
@@ -1973,6 +1974,69 @@
         }
       ],
       "registry": false
+    },
+    {
+      "source": "buyback_price",
+      "target": "buyback_prices",
+      "primary": [
+        {
+          "source": "id",
+          "target": "id"
+        }
+      ],
+      "columns": [
+        {
+          "source": "id",
+          "target": "id",
+          "decimal": false
+        },
+        {
+          "source": "product_id",
+          "target": "product_id",
+          "decimal": false
+        },
+        {
+          "source": "capacity",
+          "target": "capacity",
+          "decimal": false
+        },
+        {
+          "source": "amount",
+          "target": "amount",
+          "decimal": true
+        },
+        {
+          "source": "currency_code",
+          "target": "currency_code",
+          "decimal": false
+        },
+        {
+          "source": "created_at",
+          "target": "created_at",
+          "decimal": false
+        },
+        {
+          "source": "updated_at",
+          "target": "updated_at",
+          "decimal": false
+        },
+        {
+          "source": "deleted_at",
+          "target": "deleted_at",
+          "decimal": false
+        },
+        {
+          "source": "raw_amount",
+          "target": "raw_amount",
+          "decimal": false
+        },
+        {
+          "source": "pricing_rules",
+          "target": "pricing_rules",
+          "decimal": false
+        }
+      ],
+      "registry": true
     }
   ]
 }
