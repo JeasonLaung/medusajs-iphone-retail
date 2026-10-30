@@ -14,7 +14,10 @@ import (
 // It preserves numeric lexemes and rejects duplicate keys before Go's decoder
 // could silently choose the last value. Only questionnaire check slots are null.
 func decode(raw []byte, out any, required ...string) error {
-	if len(raw) == 0 || len(raw) > 16384 || !utf8.Valid(raw) {
+	return decodeBounded(raw, out, 16384, required...)
+}
+func decodeBounded(raw []byte, out any, max int, required ...string) error {
+	if len(raw) == 0 || len(raw) > max || !utf8.Valid(raw) {
 		return ErrInput
 	}
 	d := json.NewDecoder(bytes.NewReader(raw))

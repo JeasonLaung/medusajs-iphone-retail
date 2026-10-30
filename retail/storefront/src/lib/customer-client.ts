@@ -2,6 +2,7 @@ import {orderConfirmationProjection,type OrderConfirmation} from './cart-client.
 import {orderListProjection,type CustomerOrderList} from './customer-orders.ts'
 import {customerChanged} from './customer-events.ts'
 import type {BuybackDraft} from './buyback-client.ts'
+import {buybackID,photoProjection,photoContentProjection,type BuybackPhotoUpload} from './buyback-photos.ts'
 import {noticePage,noticeID} from './customer-notices.ts'
 import {customerProgressProjection,type CustomerProgress} from './customer-progress.ts'
 import {afterSalesListProjection,afterSalesRequestProjection,orderDevicesProjection,type AfterSalesInput} from './customer-after-sales.ts'
@@ -11,8 +12,8 @@ export type Address=Required<AddressFields>&{id:string;created_at:string;updated
 export type AuthState={state:'error'}|{state:'verification_required';email:string;delivery:'pending'|'failed'}|{state:'success'}|null
 const root='/api/store/customer'
 export class CustomerError extends Error{
- status:number;verification:boolean
- constructor(status:number,verification=false){super('Customer request unavailable');this.status=status;this.verification=verification}
+ status:number;verification:boolean;code?:string
+ constructor(status:number,verification=false,code?:string){super('Customer request unavailable');this.status=status;this.verification=verification;this.code=code}
 }
 function customerProjection(raw:unknown):Customer{
  if(!raw||typeof raw!=='object'||Array.isArray(raw))throw new CustomerError(503)
@@ -50,12 +51,19 @@ function addressInput(fields:AddressFields){
  if(!Object.keys(out).length)throw new CustomerError(400)
  return out
 }
+function photoError(e:unknown):string{
+ if(e instanceof CustomerError){
+  if(e.status===401)return 'BUYBACK_LOGIN_REQUIRED'
+  if(e.code&&({BUYBACK_INVALID_PHOTO:400,BUYBACK_PHOTO_NOT_FOUND:404,BUYBACK_INVALID_STATE:409,BUYBACK_TOO_MANY_PHOTOS:409} as Record<string,number>)[e.code]===e.status)return e.code
+ }
+ return 'BUYBACK_REQUEST_FAILED'
+}
 export function customerClient(fetcher:typeof fetch=fetch){
  let pending:{email:string;password:string;country:string;locale:string}|null=null
  async function call(path:string,body?:Record<string,unknown>,csrf?:string,expectedStatus?:number):Promise<any>{
   const response=await fetcher(root+path,{method:body?'POST':'GET',credentials:'same-origin',cache:'no-store',redirect:'error',headers:body?{'Content-Type':'application/json',...(csrf?{'X-CSRF-Token':csrf}:{})}:undefined,body:body?JSON.stringify(body):undefined})
   const data=await response.json()
-  if(!response.ok)throw new CustomerError(response.status,data?.state==='verification_required')
+  if(!response.ok)throw new CustomerError(response.status,data?.state==='verification_required',typeof data?.error?.code==='string'?data.error.code:undefined)
   if(expectedStatus!==undefined&&response.status!==expectedStatus)throw new CustomerError(503)
   return data
  }
@@ -71,6 +79,22 @@ export function customerClient(fetcher:typeof fetch=fetch){
   return matches[0][1]
  }
  return {
+  async uploadBuybackPhoto(id:string,input:BuybackPhotoUpload){
+   try{
+    if(!buybackID(id))throw new CustomerError(400)
+    const raw=await call('/buyback/requests/'+id+'/photos',input as unknown as Record<string,unknown>,sessionCSRF(),201)
+    if(!raw||Object.keys(raw).length!==1)throw new CustomerError(503)
+    const photo=photoProjection(raw.photo,id)
+    if(photo.item_id!==input.item_id||photo.photo_type!==input.photo_type||photo.mime_type!==input.mime_type||photo.review_status!=='pending')throw new CustomerError(503)
+    return {data:{photo},error:null}
+   }catch(e){return {data:null,error:photoError(e)}}
+  },
+  async buybackPhoto(id:string,photoID:string){
+   try{
+    if(!buybackID(id)||!buybackID(photoID))throw new CustomerError(400)
+    return {data:photoContentProjection(await call('/buyback/requests/'+id+'/photos/'+photoID,undefined,undefined,200)),error:null}
+   }catch(e){return {data:null,error:photoError(e)}}
+  },
   async createBuyback(input:BuybackDraft):Promise<{data:{request:{id:string}}|null;error:string|null}>{
    try{
     const result=await call('/buyback/requests',input as unknown as Record<string,unknown>,sessionCSRF(),201)

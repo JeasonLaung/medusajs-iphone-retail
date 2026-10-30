@@ -68,7 +68,7 @@ func RequestBoundary(logger *slog.Logger) gin.HandlerFunc {
 				"status", c.Writer.Status(), "duration_ms", time.Since(started).Milliseconds(), "panic", panicked)
 		}()
 		limit := MaxJSONBodyBytes
-		if c.Request.Method == http.MethodPost && (c.FullPath() == "/api/admin/device-photos" || c.FullPath() == "/api/admin/warehouse/locations/:location_id/device-intake/:category/photos") {
+		if c.Request.Method == http.MethodPost && (c.FullPath() == "/api/admin/device-photos" || c.FullPath() == "/api/admin/warehouse/locations/:location_id/device-intake/:category/photos" || c.FullPath() == "/api/store/customer/buyback/requests/:id/photos") {
 			limit = MaxDevicePhotoBodyBytes
 		}
 		if c.Request.ContentLength > limit {

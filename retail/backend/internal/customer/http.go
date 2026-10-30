@@ -88,6 +88,8 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/buyback/requests", h.CreateBuyback)
 	private.GET("/buyback/requests", h.ListBuybacks)
 	private.GET("/buyback/requests/:id", h.BuybackDetail)
+	private.POST("/buyback/requests/:id/photos", h.UploadBuybackPhoto)
+	private.GET("/buyback/requests/:id/photos/:photo_id", h.BuybackPhoto)
 	private.POST("/me", h.UpdateProfile)
 	private.GET("/orders", h.ListOrders)
 	private.GET("/orders/:id", h.OrderDetail)

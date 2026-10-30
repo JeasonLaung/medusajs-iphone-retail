@@ -56,3 +56,34 @@ func (s *Store) Buybacks(ctx context.Context, token, storeID string, offset int)
 	}
 	return out, nil
 }
+
+func (s *Store) UploadBuybackPhoto(ctx context.Context, token, storeID, id string, in buyback.PhotoUpload) (buyback.PublicPhoto, error) {
+	var out buyback.PublicPhoto
+	var business error
+	e := s.addressTransaction(ctx, token, func(tx *gorm.DB, account string) error {
+		out, business = buyback.StagePhotoUpload(ctx, tx, storeID, account, id, in)
+		return business
+	})
+	if e != nil {
+		if errors.Is(business, buyback.ErrMissing) || errors.Is(business, buyback.ErrPhotoMissing) || errors.Is(business, buyback.ErrPhotoState) || errors.Is(business, buyback.ErrPhotoLimit) || errors.Is(business, buyback.ErrInput) {
+			return buyback.PublicPhoto{}, business
+		}
+		return buyback.PublicPhoto{}, e
+	}
+	return out, nil
+}
+func (s *Store) BuybackPhoto(ctx context.Context, token, storeID, id, photoID string) (buyback.PhotoContent, error) {
+	var out buyback.PhotoContent
+	var business error
+	e := s.addressTransaction(ctx, token, func(tx *gorm.DB, account string) error {
+		out, business = buyback.ReadPhoto(ctx, tx, storeID, account, id, photoID)
+		return business
+	})
+	if e != nil {
+		if errors.Is(business, buyback.ErrMissing) || errors.Is(business, buyback.ErrPhotoMissing) {
+			return buyback.PhotoContent{}, business
+		}
+		return buyback.PhotoContent{}, e
+	}
+	return out, nil
+}

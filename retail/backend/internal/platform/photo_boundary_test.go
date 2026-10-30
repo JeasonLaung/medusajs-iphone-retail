@@ -25,11 +25,13 @@ func TestPhotoBodyLimitIsRouteAndMethodSpecific(t *testing.T) {
 	r.POST("/api/admin/products", handler)
 	r.POST("/api/admin/warehouse/locations/:location_id/device-intake/:category/photos", handler)
 	r.GET("/api/admin/warehouse/locations/:location_id/device-intake/:category/photos", handler)
+	r.POST("/api/store/customer/buyback/requests/:id/photos", handler)
+	r.GET("/api/store/customer/buyback/requests/:id/photos", handler)
 	for _, v := range []struct {
 		method, path string
 		size         int64
 		status       int
-	}{{"POST", "/api/admin/warehouse/locations/a/device-intake/sale/photos", MaxJSONBodyBytes + 1, 200}, {"GET", "/api/admin/warehouse/locations/a/device-intake/sale/photos", MaxJSONBodyBytes + 1, 413}, {"POST", "/api/admin/warehouse/locations/a/device-intake/sale/photos", MaxDevicePhotoBodyBytes + 1, 413}, {"POST", "/api/admin/device-photos", MaxJSONBodyBytes + 1, 200}, {"POST", "/api/admin/products", MaxJSONBodyBytes + 1, 413}, {"GET", "/api/admin/device-photos", MaxJSONBodyBytes + 1, 413}, {"POST", "/api/admin/device-photos", MaxDevicePhotoBodyBytes + 1, 413}} {
+	}{{"POST", "/api/store/customer/buyback/requests/id/photos", MaxJSONBodyBytes + 1, 200}, {"POST", "/api/store/customer/buyback/requests/id/photos", MaxDevicePhotoBodyBytes + 1, 413}, {"GET", "/api/store/customer/buyback/requests/id/photos", MaxJSONBodyBytes + 1, 413}, {"POST", "/api/admin/warehouse/locations/a/device-intake/sale/photos", MaxJSONBodyBytes + 1, 200}, {"GET", "/api/admin/warehouse/locations/a/device-intake/sale/photos", MaxJSONBodyBytes + 1, 413}, {"POST", "/api/admin/warehouse/locations/a/device-intake/sale/photos", MaxDevicePhotoBodyBytes + 1, 413}, {"POST", "/api/admin/device-photos", MaxJSONBodyBytes + 1, 200}, {"POST", "/api/admin/products", MaxJSONBodyBytes + 1, 413}, {"GET", "/api/admin/device-photos", MaxJSONBodyBytes + 1, 413}, {"POST", "/api/admin/device-photos", MaxDevicePhotoBodyBytes + 1, 413}} {
 		w := httptest.NewRecorder()
 		req := httptest.NewRequest(v.method, v.path, strings.NewReader(strings.Repeat("x", int(v.size))))
 		r.ServeHTTP(w, req)

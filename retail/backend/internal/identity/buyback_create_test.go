@@ -197,6 +197,7 @@ func checkBuybackCreation(t *testing.T, db *gorm.DB) {
 	}
 	t.Log(`BUYBACK_CREATE_HTTP_REHEARSAL {"created_status":201,"csrf_required":true,"origin_required":true,"anonymous_denied":true,"query_denied":true,"duplicate_json_denied":true,"private_projection":true}`)
 	checkBuybackRead(t, db, customers, router, login.Session.Token, store, bound.ID)
+	checkBuybackPhotos(t, db, customers, router, login.Session.Token, login.Session.CSRF, store, in)
 	if e := customers.Logout(ctx, login.Session.Token); e != nil {
 		t.Fatal("buyback customer logout")
 	}

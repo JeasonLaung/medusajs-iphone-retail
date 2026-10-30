@@ -30,10 +30,12 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
  const buybackCreate=post&&path===root+'/buyback/requests'
  const buybackList=request.method==='GET'&&path===root+'/buyback/requests'
  const buybackRead=request.method==='GET'&&new RegExp('^'+root+'/buyback/requests/[A-Za-z0-9][A-Za-z0-9_-]{0,190}$').test(path)
+ const buybackPhotoWrite=post&&new RegExp('^'+root+'/buyback/requests/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/photos$').test(path)
+ const buybackPhotoRead=request.method==='GET'&&new RegExp('^'+root+'/buyback/requests/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/photos/[A-Za-z0-9][A-Za-z0-9_-]{0,190}$').test(path)
  const target=path+url.search
  const queryOK=(orderList||buybackList||notices&&request.method==='GET')&&/^\?offset=(0|[1-9][0-9]{0,5})$/.test(url.search)&&Number(url.searchParams.get('offset'))<=100000
  const address=path===root+'/addresses',addressWrite=new RegExp('^'+root+'/addresses/addr_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(/delete)?$').test(path)
- if((url.href.includes('?')&&!queryOK)||!(post&&(writes.has(path)||path===root+'/me'||address||addressWrite||orderAttach||afterSalesWrite||notices||buybackCreate)||request.method==='GET'&&(path===root+'/me'||address||orderList||orderRead||notices||buybackList||buybackRead)))return failure(404)
+ if((url.href.includes('?')&&!queryOK)||!(post&&(writes.has(path)||path===root+'/me'||address||addressWrite||orderAttach||afterSalesWrite||notices||buybackCreate||buybackPhotoWrite)||request.method==='GET'&&(path===root+'/me'||address||orderList||orderRead||notices||buybackList||buybackRead||buybackPhotoRead)))return failure(404)
  let upstream:URL,shop:URL
  try{upstream=origin(config.ginOrigin,true);shop=origin(config.storefrontOrigin)}catch{return failure(503)}
  if(url.origin!==shop.origin||request.headers.get('sec-fetch-site')==='cross-site'||request.headers.has('origin')&&request.headers.get('origin')!==shop.origin||post&&request.headers.get('origin')!==shop.origin)return failure(403)
@@ -57,7 +59,7 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
   const csrf=request.headers.get('x-csrf-token')
   if(csrf!==null){if(!/^[0-9a-f]{64}$/.test(csrf))return failure(400);headers.set('X-CSRF-Token',csrf)}
   headers.set('Content-Type','application/json')
-  try{body=await bytes(request.body,16384)}catch{return failure(413)}
+  try{body=await bytes(request.body,buybackPhotoWrite?(4<<20)+8192:16384)}catch{return failure(413)}
  }
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000)
  try{
@@ -67,13 +69,13 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
   }
   const response=await fetcher(new URL(target,upstream),{method:request.method,headers,body:body as BodyInit|undefined,redirect:'error',credentials:'omit',cache:'no-store',signal:AbortSignal.any([request.signal,controller.signal])})
   const status=response.status,out=new Headers(defaults)
-  if((orderList||orderRead||orderAttach||afterSalesWrite||notices||buybackCreate||buybackList||buybackRead)&&status===202||buybackCreate&&status===200)throw new Error()
-  const accepted=((afterSalesWrite||buybackCreate)&&status===201)||[200,202,400,401,403,404,409,413,415,429,503].includes(status)
+  if((orderList||orderRead||orderAttach||afterSalesWrite||notices||buybackCreate||buybackList||buybackRead||buybackPhotoWrite||buybackPhotoRead)&&status===202||(buybackCreate||buybackPhotoWrite)&&status===200)throw new Error()
+  const accepted=((afterSalesWrite||buybackCreate||buybackPhotoWrite)&&status===201)||[200,202,400,401,403,404,409,413,415,429,503].includes(status)
   if(!accepted){await response.body?.cancel().catch(()=>{});return failure(503)}
   if(response.headers.get('cache-control')!=='private, no-store'||response.headers.get('content-type')?.split(';',1)[0].trim().toLowerCase()!=='application/json')throw new Error()
-  const data=await bytes(response.body,orderList||orderRead||buybackList||buybackRead?4*1024*1024:65536),parsed=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(data))
+  const data=await bytes(response.body,buybackPhotoRead?(4<<20)+8192:orderList||orderRead||buybackList||buybackRead?4*1024*1024:65536),parsed=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(data))
   if(!parsed||typeof parsed!=='object'||Array.isArray(parsed))throw new Error()
-  const success=status===200||status===202||(afterSalesWrite||buybackCreate)&&status===201,issued=new Map<string,boolean>()
+  const success=status===200||status===202||(afterSalesWrite||buybackCreate||buybackPhotoWrite)&&status===201,issued=new Map<string,boolean>()
   for(const cookie of response.headers.getSetCookie()){
    if(cookie.length>1024)throw new Error()
    const parts=cookie.split(';').map(part=>part.trim()),[name,value,...extra]=parts[0].split('='),kind=name.slice(prefix.length),attrs=new Map<string,string>()
@@ -99,6 +101,8 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
   if(id&&/^req_[0-9a-f-]{36}$/.test(id))out.set('X-Request-ID',id)
   if(status===429&&retry&&/^[1-9][0-9]{0,5}$/.test(retry))out.set('Retry-After',retry)
   if(!success){
+   const photoError=(buybackPhotoWrite||buybackPhotoRead)&&({BUYBACK_INVALID_PHOTO:400,BUYBACK_PHOTO_NOT_FOUND:404,BUYBACK_INVALID_STATE:409,BUYBACK_TOO_MANY_PHOTOS:409} as Record<string,number>)[parsed.error?.code]===status
+   if(photoError)return new Response(JSON.stringify({error:{code:parsed.error.code,message:'Photo request unavailable'}}),{status,headers:out})
    const verification=status===403&&parsed.state==='verification_required'&&parsed.error?.code==='customer.verification_required'
    return new Response(JSON.stringify(verification?{state:'verification_required',error:{code:'customer.verification_required',message:'Verify your email before signing in'}}:{error:{code:'customer.request_unavailable',message:'Customer request unavailable'}}),{status,headers:out})
   }
