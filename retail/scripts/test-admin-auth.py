@@ -52,7 +52,7 @@ def main():
     try:
         owned_binary = True
         built = subprocess.run(['go', 'test', '-c', '-o', str(binary), './internal/identity'],
-                               cwd=ROOT / 'retail/backend', env=env, capture_output=True, timeout=120)
+                               cwd=Path(os.environ.get('ADMIN_AUTH_TEST_BACKEND', str(ROOT / 'retail/backend'))), env=env, capture_output=True, timeout=120)
         if built.returncode:
             raise RuntimeError('Identity runner compilation failed')
         mysql = docker('run', '-d', '--name', 'eurorefurb-identity-mysql-' + owner[:12],

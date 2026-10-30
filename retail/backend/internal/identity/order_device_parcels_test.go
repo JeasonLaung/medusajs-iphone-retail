@@ -217,6 +217,7 @@ func checkOrderDeviceParcels(t *testing.T, db *gorm.DB, actor identity.User, cal
 	exec("UPDATE authorization_principals SET kind='warehouse' WHERE user_id=?", actor.ID)
 	call("GET", path(aID), "", 403)
 	exec("UPDATE authorization_principals SET kind='employee' WHERE user_id=?", actor.ID)
+	checkWarehouseFulfillments(t, db, actor, call, repacked.FulfillmentID)
 	checkDeviceReturns(t, db, actor, call)
 	t.Log(`ORDER_DEVICE_PARCEL_REHEARSAL {"default_disabled":true,"strict_http_and_order_binding":true,"stale_parcel_and_reservation_discrepancy_rejected":true,"independent_from_new_packing_capability":true,"cancel_concurrent_attempts":4,"one_cancel_receipt":true,"restore_stock_and_new_reservation":true,"devices_remain_reserved":true,"repack_consumes_restored_quantity_once":true,"restore_existing_reservation_at_original_location":true,"ship_concurrent_attempts":4,"single_shipment_label_and_receipt":true,"shipment_does_not_change_inventory":true,"whole_parcel_quantity_required":true,"cancel_and_ship_late_failure_atomic":true,"tracking_and_shipped_counters":true,"repeat_or_cancel_shipped_denied":true,"immutable_replay":true,"deleted_target_replay_denied":true,"revoked_and_warehouse_denied":true}`)
 }

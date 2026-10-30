@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-30",
+  "scope": "Warehouse scoped fulfillment reading only",
+  "mysql_gin": {
+    "real_gin_mysql": true,
+    "authorized_location_only": true,
+    "existing_shipped_parcel_and_tracking": true,
+    "no_payment_cost_other_warehouse_fields": true,
+    "strict_query": true,
+    "moved_canceled_wrong_order_hidden": true,
+    "scope_and_action_revocation": true,
+    "full_store_endpoint_denied": true,
+    "supplier_denied": true,
+    "warehouse_write_implemented": false
+  },
+  "browser": {
+    "formal_admin": true,
+    "synthetic_api": true,
+    "real_gin_browser_joint": false,
+    "languages": [
+      "en",
+      "zh-CN"
+    ],
+    "widths": [
+      390,
+      1440
+    ],
+    "scoped_detail_and_tracking": true,
+    "exact_quantity": true,
+    "dependency_retry": true,
+    "permission_revocation_visible": true,
+    "foreign_location_response_rejected": true,
+    "empty_scope": true,
+    "browser_errors": 0
+  },
+  "go_all_passed": true,
+  "admin_typescript_passed": true,
+  "source_lf_sha256": {
+    "retail/admin/src/App.tsx": "21a7380de6a180969cea3df2cbe293c6083dd07db31991e28dfa23af47c80f6b",
+    "retail/admin/src/WarehouseFulfillments.tsx": "0d12996c0bff42677313a20138490d30b9dcc8c169868b598aeb84da150e6263",
+    "retail/admin/src/warehouse-fulfillments-api.ts": "cd342cf2d9fb10094190f9fbd2f426d016e9805d363c0de3c5d27c7c9520237d",
+    "retail/admin/tests/warehouse-fulfillments.browser.mjs": "66ddd2105a8c53425bb80a1819d8a8fad2f40ac1846a5bed517e4e740d47b5b4",
+    "retail/backend/internal/devices/warehouse_fulfillments.go": "f358a3453a65bc7a520318af682a33a2dc25ada290e08d64d7c090a0bdacc675",
+    "retail/backend/internal/identity/warehouse_fulfillments_test.go": "6cd8380c157d9722ee2423728149819cac29cda0dd1d1984e71afad80ab35b2f",
+    "retail/backend/internal/identity/order_device_parcels_test.go": "f053b54159f29593211a3e28735d5fee5c94209b38e8ecb7042501d9d1508360"
+  },
+  "existing_admin_browser_regression": {
+    "passed": 31,
+    "existing_ant_form_connection_warning": true
+  },
+  "existing_dev_services": {
+    "backend_health": 200,
+    "backend_admin": 200,
+    "storefront_account": 200
+  }
+}

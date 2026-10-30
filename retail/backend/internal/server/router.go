@@ -137,6 +137,7 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	admin.POST("/auth/login", auth.Login)
 	private := admin.Group("")
 	private.Use(auth.Require)
+	(devices.Handler{DB: db}).RegisterWarehouseFulfillments(private)
 	private.GET("/auth/me", auth.Me)
  (buyback.AdminHandler{DB:db,StoreID:os.Getenv("STOREFRONT_STORE_ID")}).Register(private)
 	private.GET("/warehouse/locations/:location_id/device-intake/:category/variants", (devices.Handler{DB: db}).WarehouseIntakeVariantsHTTP)

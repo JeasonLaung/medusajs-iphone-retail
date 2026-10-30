@@ -570,3 +570,8 @@
 2026-10-30 通知邮箱真实联合：生产 React Admin 保存及空密钥编辑→生产 Astro 原注册表单→Gin/MySQL 验证队列→Resend 发送适配（仅拦截外部 HTTP）→原验证链接→新客户登录；后台人工订单邮件取消确认/重新排队/刷新及冻结正文、指纹和唯一审计持久化通过。修复重试锚点弹层出屏，改用 Ant Modal 确认并显示订单编号。见 [联合验收](migration/mail-joint.md) 和 [报告](migration/mail-joint-report.json)。未验证真实外部收件及付款成单至邮件 worker 全链路，C10 仍未完成。
 
 2026-10-30 付款成单至邮件联合：原 Astro 中英/390及1440四笔结账实际成单后，生产订单 worker 读取完成收据/实收、批准数据库邮箱和生产 Resend 适配器，校验收件人/编号/158.75 EUR及中英各2封。并发仅一次初次发送；连续3次提供方已接收但丢响应后，生产恢复命令保留同正文/键/提供方编号，审计1条，已发送回执重放不重排。7请求/4唯一人工提供方消息，冻结正文加密及4条sent持久化通过，Go全量和原结账SQL/浏览器回归通过。仅替换外部通道，无真实扣款/收件；完整浏览加购、仓库配货与全站闭环继续。见 [付款邮件联合](migration/checkout-mail-joint.md) 与 [报告](migration/checkout-mail-joint-report.json)。
+
+
+### 2026-10-30: warehouse fulfillment scoped reads
+
+- Added dedicated authorized warehouse parcel list/detail APIs and Ant Design Admin page. Real Gin/MySQL scope/revocation checks and English/Chinese mobile/desktop browser checks pass separately. Warehouse write commands remain pending. Evidence: `migration/warehouse-fulfillments.md`.

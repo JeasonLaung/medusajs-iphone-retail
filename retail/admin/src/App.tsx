@@ -11,6 +11,7 @@ import { copies } from './i18n'
 import type { Copy, Language } from './i18n'
 const Buybacks = lazy(() => import('./Buybacks'))
 const Mailboxes = lazy(() => import('./Mailboxes'))
+const WarehouseFulfillments = lazy(() => import('./WarehouseFulfillments'))
 const WarehouseDevices = lazy(() => import('./WarehouseDevices'))
 const WarehouseInventory = lazy(() => import('./WarehouseInventory'))
 const WarehouseUsers = lazy(() => import('./WarehouseUsers'))
@@ -78,6 +79,8 @@ function WorkspaceContent({ copy, session, onSession }: { copy: Copy; session: E
   const orderPage = location.pathname === '/orders' || location.pathname.startsWith('/orders/')
   const authorizationPage = location.pathname === '/authorization'
   const mailboxPage = location.pathname === '/mailboxes'
+  const warehouseFulfillmentsPage = location.pathname === '/warehouse-fulfillments'
+  const warehouseFulfillmentsLabel=copy.language==='语言'?'仓库履约':'Warehouse fulfillments'
   const warehouseDevicesPage = location.pathname === '/warehouse-devices'
   const warehouseInventoryPage = location.pathname === '/warehouse-inventory'
   const warehouseUsersPage = location.pathname === '/warehouse-users'
@@ -110,12 +113,12 @@ function WorkspaceContent({ copy, session, onSession }: { copy: Copy; session: E
       else setError(error)
     } finally { busy.current = false; setPending(false) }
   }
-  const menu = <Menu selectedKeys={[buybackPage?'buyback':orderPage?'orders':productPage?'products':warehouseDevicesPage?'warehouse-devices':warehouseInventoryPage?'warehouse-inventory':warehouseUsersPage?'warehouse-users':warehousePage?'warehouses':mailboxPage?'mailboxes':authorizationPage?'authorization':'account']} items={[...(access.scope==='warehouse'?[{key:'warehouse-inventory',label:copy.scopedInventory},{key:'warehouse-devices',label:copy.scopedDevices}]:[]),...(access.can('buyback.read')?[{key:'buyback',label:buybackLabel}]:[]),...(access.can('order.read')?[{key:'orders',label:copy.orders}]:[]),...(access.can('product.read')?[{key:'products',label:copy.products}]:[]),...(access.can('authorization.read','warehouse.read')?[{key:'warehouse-users',label:copy.warehouseUsers}]:[]),...(access.can('warehouse.read')?[{key:'warehouses',label:copy.warehouses}]:[]),...(access.can('mail.read')?[{key:'mailboxes',label:copy.mailboxes}]:[]),...(access.can('authorization.read')?[{key:'authorization',label:copy.authorization}]:[]),{ key: 'account', icon: <UserOutlined />, label: copy.account }]} onClick={({key}) => { navigate(`/${key}`); setDrawer(false) }} />
+  const menu = <Menu selectedKeys={[warehouseFulfillmentsPage?'warehouse-fulfillments':buybackPage?'buyback':orderPage?'orders':productPage?'products':warehouseDevicesPage?'warehouse-devices':warehouseInventoryPage?'warehouse-inventory':warehouseUsersPage?'warehouse-users':warehousePage?'warehouses':mailboxPage?'mailboxes':authorizationPage?'authorization':'account']} items={[...(access.scope==='warehouse'?[{key:'warehouse-inventory',label:copy.scopedInventory},{key:'warehouse-devices',label:copy.scopedDevices},{key:'warehouse-fulfillments',label:warehouseFulfillmentsLabel}]:[]),...(access.can('buyback.read')?[{key:'buyback',label:buybackLabel}]:[]),...(access.can('order.read')?[{key:'orders',label:copy.orders}]:[]),...(access.can('product.read')?[{key:'products',label:copy.products}]:[]),...(access.can('authorization.read','warehouse.read')?[{key:'warehouse-users',label:copy.warehouseUsers}]:[]),...(access.can('warehouse.read')?[{key:'warehouses',label:copy.warehouses}]:[]),...(access.can('mail.read')?[{key:'mailboxes',label:copy.mailboxes}]:[]),...(access.can('authorization.read')?[{key:'authorization',label:copy.authorization}]:[]),{ key: 'account', icon: <UserOutlined />, label: copy.account }]} onClick={({key}) => { navigate(`/${key}`); setDrawer(false) }} />
   return <Layout className="workspace">
     <Layout.Sider className="desktop-nav" width={208} theme="light"><nav aria-label={copy.admin}>{menu}</nav></Layout.Sider>
     <Drawer open={drawer} onClose={() => setDrawer(false)} title={copy.admin} placement="left" width={256}>{menu}</Drawer>
     <Layout.Content className="workspace-content">
-      <div className="page-toolbar"><Button className="mobile-nav" icon={<MenuOutlined />} aria-label={copy.navigation} onClick={() => setDrawer(true)} /><Typography.Title level={2}>{buybackPage?buybackLabel:orderPage?copy.orders:productPage?copy.products:warehouseDevicesPage?copy.scopedDevices:warehouseInventoryPage?copy.scopedInventory:warehouseUsersPage?copy.warehouseUsers:warehousePage?copy.warehouses:mailboxPage?copy.mailboxes:authorizationPage?copy.authorization:copy.account}</Typography.Title><Button aria-label={copy.logout} disabled={pending} loading={pending} onClick={logout}>{copy.logout}</Button></div>
+      <div className="page-toolbar"><Button className="mobile-nav" icon={<MenuOutlined />} aria-label={copy.navigation} onClick={() => setDrawer(true)} /><Typography.Title level={2}>{warehouseFulfillmentsPage?warehouseFulfillmentsLabel:buybackPage?buybackLabel:orderPage?copy.orders:productPage?copy.products:warehouseDevicesPage?copy.scopedDevices:warehouseInventoryPage?copy.scopedInventory:warehouseUsersPage?copy.warehouseUsers:warehousePage?copy.warehouses:mailboxPage?copy.mailboxes:authorizationPage?copy.authorization:copy.account}</Typography.Title><Button aria-label={copy.logout} disabled={pending} loading={pending} onClick={logout}>{copy.logout}</Button></div>
       {error !== undefined && <div className="request-error"><ErrorNotice error={error} copy={copy} /></div>}
       <Routes>
  <Route path="/buyback" element={<Suspense fallback={<Spin/>}><RequireAction action="buyback.read" copy={copy}><Buybacks copy={copy} onExpired={onExpired}/></RequireAction></Suspense>}/>
@@ -124,6 +127,7 @@ function WorkspaceContent({ copy, session, onSession }: { copy: Copy; session: E
         <Route path="/warehouse-users" element={<Suspense fallback={<Spin/>}><RequireAction action="authorization.read" copy={copy}><WarehouseUsers copy={copy} onExpired={onExpired}/></RequireAction></Suspense>}/>
         <Route path="/warehouses" element={<Suspense fallback={<Spin/>}><RequireAction action="warehouse.read" copy={copy}><Warehouses copy={copy} onExpired={onExpired}/></RequireAction></Suspense>}/>
         <Route path="/mailboxes" element={<Suspense fallback={<Spin/>}><RequireAction action="mail.read" copy={copy}><Mailboxes copy={copy} onExpired={onExpired}/></RequireAction></Suspense>}/>
+        <Route path="/warehouse-fulfillments" element={<Suspense fallback={<Spin/>}><WarehouseFulfillments copy={copy} onExpired={onExpired}/></Suspense>}/>
         <Route path="/authorization" element={<Suspense fallback={<Spin/>}><RequireAction action="authorization.read" copy={copy}><Authorization copy={copy} onExpired={onExpired}/></RequireAction></Suspense>}/>
         <Route path="/orders" element={<Suspense fallback={<Spin />}><RequireAction action="order.read" copy={copy}><Orders copy={copy} onExpired={onExpired} /></RequireAction></Suspense>} />
         <Route path="/orders/:id" element={<Suspense fallback={<Spin />}><RequireAction action="order.read" copy={copy}><OrderDetail copy={copy} onExpired={onExpired} /></RequireAction></Suspense>} />
