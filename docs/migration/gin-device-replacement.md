@@ -1,0 +1,27 @@
+# Gin 同 SKU 换机：资格与候选设备
+
+2026-10-30。本批只完成真实资格读取，不标记换机或整个前台闭环。POST 换机命令、订单变更、新商品行、配货和发货联合仍须继续。
+
+## 已接入
+
+`GET /api/admin/orders/:id/after-sales/:request_id/devices/:assignment_id/replacement` 绑定订单、申请、原销售分配和设备。需要员工的订单、付款、设备、仓库、商品、库存读取及 `order.allocation.write`；专用仓库身份不能进入全店接口。查询参数和空问号均拒绝。
+
+响应返回原机/订单商品/SKU/当前订单版本、资格原因、候选设备及事实摘要版本。`write_available` 固定为 false，读取不预留库存、不创建分配、不修改任何业务记录。不将候选读取暴露成可以完成换机的 UI。
+
+资格继承原流程：已收回的原分配、处理中换机、未关联原生退货、无 reserved/packed/shipped 替换分配、订单有效、所有付款集合已 completed。取消的旧替换分配不阻止重配。普通订单已全部履约不限制售后换机。
+
+候选复用真实分配读取：订单商品原 SKU、sale/available、没有活动销售分配、来源与设备仓库一致、仓库关联订单销售渠道。原机检测已改 SKU 时仍使用订单 SKU。响应不包含 IMEI/EID、成本、备注、事件、操作者或原始支付内容。
+
+## 原执行链及后续写入约束
+
+来源为 `medusa-store/apps/backend/src/workflows/device-operations.ts` 中 assign/replacement_of 和 device-native-exchange 分支；同时核对当前安装的 Medusa 2.21.2 order 模块 `utils/actions/{item-add,return-item,receive-damaged-return-item}.js` 与 `utils/apply-order-changes.js`。
+
+原流程先校验 paid、原分配 returned、处理中 exchange、没有活动替换，再创建真实 order exchange、请求原商品退货、以订单原 unit_price 添加一个同 SKU 新商品行、确认 exchange、begin receive/dismiss/confirm receive 隔离原机。最后将替换分配绑定新商品行，将原分配绑定 exchange 的 return_id。不能直接给原销售行追加一条替换分配并宣称迁移完成。
+
+RETURN_ITEM 增加 requested；RECEIVE_DAMAGED_RETURN_ITEM 增加 dismissed 和 written_off、扣回 requested，不增加 received。原数量库存不自动回补。ITEM_ADD 新建独立商品行/数量；apply-order-changes 使用动作版本生成 order_items 快照，还处理版本化调整/运费/credit line 和 summary。后续事务写入须保留这些数量、金额、版本及引用关系，并与现有订单金额读取、配货/取消/发货、客户设备查询共同验证。
+
+下一批写入需要同一事务重读当前权限与上述事实，验证设备身份及 SKU，持久化不可变操作收据，创建换货/退货/新订单商品/变更动作与版本，再预留替换机。写入成功响应丢失、并发重复和中途失败必须单次生效或完整回滚；同 SKU 也不能假设优惠/税/版本金额天然不变。
+
+## 证据
+
+[资格读取报告](device-replacement-report.json)。隔离 Gin/MySQL/Redis 通过：订单原 SKU、已履约候选、来源/仓库一致性、设备可用状态、重复替换、原生退货关联、付款/申请状态、事实版本变化、撤权/仓库身份/已删除设备/外订单、严格查询与业务设备不变。没有浏览器或换机写入完成声明。

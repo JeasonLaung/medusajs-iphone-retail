@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-30",
+  "scope": "Replacement eligibility and same-SKU candidate read only",
+  "full_storefront_accepted": false,
+  "exchange_write_complete": false,
+  "schema_migrations": 70,
+  "go_packages_passed": true,
+  "real_sql_suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "evidence": {
+    "real_gin_mysql_redis": true,
+    "order_sku_after_inspection": true,
+    "fulfilled_order_candidates": true,
+    "same_sku_channel_source_and_availability": true,
+    "active_replacement_blocked": true,
+    "native_return_binding": true,
+    "payment_and_processing_required": true,
+    "revision_changes_with_candidates": true,
+    "revoked_warehouse_deleted_foreign_denied": true,
+    "query_rejected": true,
+    "no_device_mutation": true,
+    "write_available": false
+  },
+  "source_files": [
+    {
+      "path": "retail/backend/internal/devices/replacement.go",
+      "sha256": "bfd6bf699e4c00144e25046aadbebe0678a4188b7b8741d4e562a24fd37db12d"
+    },
+    {
+      "path": "retail/backend/internal/devices/replacement_test.go",
+      "sha256": "70ba330c3b0954de961e7e77cd756621e4b7d8c9c252cf4a28b1d2ce6d92a9af"
+    },
+    {
+      "path": "retail/backend/internal/identity/device_replacement_test.go",
+      "sha256": "bbb9a90f8aad838eada8f59d4fbb541b26c845003ff8629e3047f7b0da610aff"
+    },
+    {
+      "path": "retail/backend/internal/identity/device_returns_test.go",
+      "sha256": "1bd67713e15a9f95b7bebb4fa5d47f98bb5fac39d73e6d440042913b691109d4"
+    },
+    {
+      "path": "retail/backend/internal/server/router.go",
+      "sha256": "7c5e30237c7de49dcab7a10497883849616d256b05c5613b6cea3dda2ec5e391"
+    }
+  ],
+  "isolated_resources_cleaned": true,
+  "ui_complete": false,
+  "remaining": [
+    "native exchange and return",
+    "new order line and versioned amounts",
+    "atomic replacement reservation",
+    "packing and dispatch",
+    "customer exchange joint flow",
+    "refunds and notifications"
+  ]
+}
