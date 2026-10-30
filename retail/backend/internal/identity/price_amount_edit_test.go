@@ -209,6 +209,17 @@ func TestPreparePriceEditBrowserFixture(t *testing.T) {
 			t.Fatal("parcel browser gate")
 		}
 	}
+	if os.Getenv("DEVICE_RETURNS_BROWSER") == "1" {
+		for _, q := range []string{
+			"UPDATE device_return_runtime SET enabled=TRUE WHERE id=1",
+			"UPDATE after_sales_review_runtime SET enabled=TRUE WHERE id=1",
+			`INSERT INTO after_sales_requests(id,order_id,customer_id,type,reason,items,status,created_at,updated_at) VALUES('asr-browser-return','allocation-order','new-browser-customer','return','Original customer return','{"lines":[{"item_id":"allocation-line","quantity":1,"title":"Allocation snapshot","device_ids":["allocation-a"]}]}','pending',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		} {
+			if db.Exec(q).Error != nil {
+				t.Fatal("device return browser fixture")
+			}
+		}
+	}
 	if os.Getenv("VARIANT_CREATE_BROWSER") == "1" {
 		seedVariantCreate(t, db)
 		if db.Exec("UPDATE catalog_variant_create_runtime SET enabled=TRUE WHERE id=1").Error != nil {

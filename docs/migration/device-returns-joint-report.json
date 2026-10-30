@@ -1,0 +1,25 @@
+{
+  "scope": "Real React Admin review and physical device receipt following preallocation, packing, cancellation and shipment; inspection, refund, notification and warehouse employee receipt remain incomplete",
+  "counts": {
+    "real_browser_react_gin_mysql_redis": true,
+    "api_mocking": false,
+    "preallocation_packing_cancel_repack_ship": true,
+    "real_review_processing": true,
+    "wrong_machine_rejected": true,
+    "lost_successful_reply": true,
+    "same_uuid_and_scan_retry": true,
+    "refresh_preserves_returned_machine": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0
+  },
+  "durable_mysql_verified": true,
+  "real_accounts_used": false,
+  "tls_secure_cookie_verified": false,
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128
+  },
+  "cleanup": "both owned containers, bridge and temporary runners removed"
+}

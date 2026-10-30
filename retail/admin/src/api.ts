@@ -542,3 +542,19 @@ function afterSalesReviewProjection(d:AfterSalesReview,id:string):AfterSalesRevi
 }
 export async function readAfterSales(id:string,signal?:AbortSignal):Promise<AfterSalesReview>{return afterSalesReviewProjection(await request<AfterSalesReview>('orders/'+encodeURIComponent(id)+'/after-sales',{signal},'/api/admin/'),id)}
 export async function reviewAfterSales(id:string,body:AfterSalesReviewInput):Promise<AfterSalesReview>{const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf');return afterSalesReviewProjection(await request<AfterSalesReview>('orders/'+encodeURIComponent(id)+'/after-sales',{method:'POST',body,csrf},'/api/admin/'),id)}
+
+export type DeviceReturnInput={operation_id:string;expected_revision:string;assignment_id:string;source_id:string;scan:string}
+export type DeviceReturnContext={order_id:string;request_id:string;type:string;status:string;revision:string;enabled:boolean;devices:{assignment_id:string;device_id:string;item_id:string;serial_number:string;status:string;state:string;location_id:string}[];sources:{id:string;name:string;type:string;location_id:string;location_name:string|null}[]}
+function deviceReturnPath(order:string,requestID:string){return 'orders/'+encodeURIComponent(order)+'/after-sales/'+encodeURIComponent(requestID)+'/device-returns'}
+export async function readDeviceReturn(order:string,requestID:string,signal?:AbortSignal):Promise<DeviceReturnContext>{
+ const d=await request<DeviceReturnContext>(deviceReturnPath(order,requestID),{signal},'/api/admin/')
+ if(!d||d.order_id!==order||d.request_id!==requestID||!['return','repair','exchange'].includes(d.type)||!['pending','processing','completed','rejected'].includes(d.status)||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.enabled!=='boolean'||!Array.isArray(d.devices)||d.devices.length>1000||!Array.isArray(d.sources)||d.sources.length>1000)throw new APIError(0,'request.invalid_response')
+ const seen=new Set<string>();for(const v of d.devices){if(!v||!warehouseID(v.assignment_id)||seen.has(v.assignment_id)||!warehouseID(v.device_id)||!warehouseID(v.item_id)||typeof v.serial_number!=='string'||!warehouseID(v.location_id)||!['reserved','packed','shipped','returned','canceled'].includes(v.status)||typeof v.state!=='string')throw new APIError(0,'request.invalid_response');seen.add(v.assignment_id)}
+ for(const s of d.sources)if(!s||!warehouseID(s.id)||typeof s.name!=='string'||!['self','supplier'].includes(s.type)||!warehouseID(s.location_id)||s.location_name!==null&&typeof s.location_name!=='string')throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function receiveDeviceReturn(order:string,requestID:string,body:DeviceReturnInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{assignment_id:string;device_id:string;return_id:string;state:string;replayed:boolean}>(deviceReturnPath(order,requestID),{method:'POST',body,csrf},'/api/admin/')
+ if(!d||d.assignment_id!==body.assignment_id||!warehouseID(d.device_id)||typeof d.return_id!=='string'||!['repair','inspection'].includes(d.state)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}

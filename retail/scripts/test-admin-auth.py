@@ -125,6 +125,7 @@ def main():
                             '-test.timeout', '150s', timeout=180)
             output += tested.stdout
             errors += tested.stderr
+            (ROOT/'logs/gin-migration/warehouse-auth-sql.log').write_bytes(output+errors)
             if tested.returncode:
                 break
             names = docker('exec','-e','MYSQL_PWD=' + password,mysql_id,'mysql','-uroot','--protocol=socket',

@@ -61,7 +61,7 @@ func TestOwnedProductPrices(t *testing.T) {
 		t.Fatal("fixture plan invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 68 {
+	if err != nil || result.Applied != 69 {
 		t.Fatal("fixture migrations failed")
 	}
 	seedReviewedCatalogFixture(t, db)

@@ -659,3 +659,29 @@ test('after-sales review keeps the same operation after a lost reply and display
  expect(posted).toHaveLength(2);expect(posted[0]).toEqual(posted[1])
  await page.setViewportSize({width:390,height:844});await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
 })
+
+test('after-sales device receipt freezes the scanned machine after a lost response',async({page})=>{
+ await fixture(page,{permissions:['order.read','order.payment.read','device.read','warehouse.read','device.intake','order.after_sales.write']})
+ const date='2026-10-30T00:00:00Z',order={id:'return-order',version:1,status:'pending',currency_code:'eur',custom_display_id:'Return fixture',display_id:'1',is_draft_order:false,email:null,created_at:date,updated_at:date,line_count:0}
+ const posted:unknown[]=[];let received=false
+ await page.route('**/api/admin/orders/return-order**',async route=>{
+  const req=route.request(),path=new URL(req.url()).pathname
+  if(path.endsWith('/device-returns')){
+   if(req.method()==='POST'){expect(req.headers()['x-csrf-token']).toBe(sessionCSRF);posted.push(req.postDataJSON());received=true;if(posted.length===1)return route.abort('failed');return route.fulfill({json:{assignment_id:'assigned',device_id:'device',return_id:'return-one',state:'inspection',replayed:true}})}
+   return route.fulfill({json:{order_id:order.id,request_id:'asr_receive',type:'return',status:'processing',revision:(received?'b':'a').repeat(64),enabled:true,devices:[{assignment_id:'assigned',device_id:'device',item_id:'line',serial_number:'SN-ORIGINAL',status:received?'returned':'shipped',state:received?'inspection':'shipped',location_id:'warehouse'}],sources:[{id:'source',name:'Own source',type:'self',location_id:'warehouse',location_name:'Warehouse'}]}})
+  }
+  if(path.endsWith('/after-sales'))return route.fulfill({json:{order_id:order.id,revision:'a'.repeat(64),enabled:true,requests:[{id:'asr_receive',type:'return',status:'processing',reason:'Return device',created_at:date,items:[{item_id:'line',title:'Phone',quantity:1,device_ids:['device']}]}]}})
+  if(path.endsWith('/payments'))return route.fulfill({json:{order_id:order.id,version:1,operations_enabled:false,collections:[]}})
+  return route.fulfill({json:{order,lines:[]}})
+ })
+ await page.goto('/login');await signIn(page);await page.goto('/orders/return-order')
+ await page.getByRole('button',{name:'收回设备',exact:true}).click();const drawer=page.getByRole('dialog')
+ await drawer.getByLabel('原发货设备',{exact:true}).click();await drawer.getByLabel('原发货设备',{exact:true}).press('Enter')
+ await drawer.getByLabel('收货来源 / 仓库',{exact:true}).click();await drawer.getByLabel('收货来源 / 仓库',{exact:true}).press('Enter')
+ const scan=drawer.getByLabel('扫描序列号 / IMEI / EID',{exact:true});await scan.fill('SN-ORIGINAL')
+ await drawer.getByRole('button',{name:'确认收回设备',exact:true}).click()
+ await expect(drawer.getByRole('button',{name:'重试本次收回',exact:true})).toBeVisible();await expect(scan).toBeDisabled()
+ await drawer.getByRole('button',{name:'重试本次收回',exact:true}).click();await expect(drawer.getByText('设备已收回',{exact:true})).toBeVisible()
+ expect(posted).toHaveLength(2);expect(posted[0]).toEqual(posted[1]);expect(posted[0]).toMatchObject({assignment_id:'assigned',source_id:'source',scan:'SN-ORIGINAL'})
+ await page.setViewportSize({width:390,height:844});await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
+})

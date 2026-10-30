@@ -55,7 +55,7 @@ func TestOwnedCartRuntime(t *testing.T) {
 		t.Fatal("cart runtime migration plan unavailable")
 	}
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 68 {
+	if err != nil || r.Applied != 69 {
 		t.Fatal("cart runtime migration failed")
 	}
 	exec := func(query string, args ...any) {
