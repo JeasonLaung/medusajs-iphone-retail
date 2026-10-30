@@ -39,7 +39,7 @@ func checkPaidOrderPromotionCompletion(t *testing.T, ctx context.Context, db *go
 			if r.Amount != "157.19" {
 				t.Error("coupon settlement", r.Amount)
 			}
-			return payments.CreateSucceeded, payments.CreatedSession{Status: "pending", Data: json.RawMessage(`{"id":"tr_coupon","_links":{"checkout":{"href":"https://www.mollie.com/checkout/coupon"}}}`)}, nil
+			return payments.CreateSucceeded, payments.CreatedSession{Status: "pending", Data: ownedMollieCreation(r, "tr_coupon", "https://www.mollie.com/checkout/coupon")}, nil
 		},
 		observe: func(_ context.Context, r payments.SessionRequest, id string) (payments.SessionObservation, error) {
 			raw, _ := json.Marshal(map[string]any{"id": id, "status": "paid", "amount": map[string]string{"value": r.Amount, "currency": strings.ToUpper(r.Currency)}, "metadata": map[string]string{"session_id": r.SessionID, "cart_id": inScope(r)}})

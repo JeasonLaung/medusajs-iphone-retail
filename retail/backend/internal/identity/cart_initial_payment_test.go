@@ -47,7 +47,7 @@ func checkInitialPayments(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		if db.WithContext(callCtx).Table("cart_ownership").Select("checkout_attempt_id").Where("cart_id=?", inScope(in)).Scan(&freeze).Error != nil || freeze == "" {
 			t.Error("provider dispatched before durable freeze")
 		}
-		return payments.CreateSucceeded, payments.CreatedSession{Status: "pending", Data: json.RawMessage(`{"id":"tr_initial","_links":{"checkout":{"href":"https://www.mollie.com/checkout/initial"}},"private":"hidden"}`)}, nil
+		return payments.CreateSucceeded, payments.CreatedSession{Status: "pending", Data: ownedMollieCreation(in, "tr_initial", "https://www.mollie.com/checkout/initial")}, nil
 	})})
 	if err != nil {
 		t.Fatal(err)

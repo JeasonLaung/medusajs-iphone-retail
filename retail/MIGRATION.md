@@ -271,6 +271,8 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 
 2026-10-29 Mollie 核实补充：[权威GET与未知创建原attempt恢复](../docs/migration/cart-payment-refresh.md)连接当前响应绑定、精确状态/金额与补偿加密结果保存；未到期不查、过期只GET、错误不解unknown，人工MySQL链与模拟渠道验证。候选发现、webhook持久队列、配置加载、worker权限和checkout未完成。
 
+2026-10-29 Mollie 通知持久化补充：[0037远端引用/代次收件箱/加密证据及原HTTP回调](../docs/migration/cart-payment-refresh.md)接上显式配置接收与事务外GET worker函数；未知ID同ACK不存储，任务过期恢复/新代次/写故障回滚有人工MySQL证据。默认关闭，启动worker/商户配置、业务证据消费、创建响应丢失候选发现及完整checkout未完成。
+
 ### New customer identity foundation
 
 `internal/customer` and explicit migration 0038 implement new registration, encrypted verification mail intents, one-time email confirmation and separate Redis customer sessions. See [evidence and remaining work](../docs/migration/gin-customer-accounts.md). Customer HTTP now provides origin/CSRF guards, distinct secure cookies and registration/verification/login/logout. Astro pages and actual Resend delivery are not yet integrated; C02 remains incomplete.

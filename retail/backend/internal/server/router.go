@@ -10,8 +10,8 @@ import (
 	"github.com/eurorefurb/retail/internal/cart"
  "github.com/eurorefurb/retail/internal/buyback"
 	"github.com/eurorefurb/retail/internal/catalog"
-	"github.com/eurorefurb/retail/internal/customer"
-	"github.com/eurorefurb/retail/internal/devices"
+ "github.com/eurorefurb/retail/internal/customer"
+ "github.com/eurorefurb/retail/internal/devices"
 	"github.com/eurorefurb/retail/internal/fulfillment"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/inventory"
@@ -35,6 +35,10 @@ func router(db *gorm.DB, logger *slog.Logger) *gin.Engine {
 }
 
 func RouterWithAuth(db *gorm.DB, options identity.Options, cartOptions ...cart.HTTPOptions) (*gin.Engine, error) {
+	return RouterWithAuthAndWebhooks(db, options, payments.MollieWebhookOptions{}, cartOptions...)
+}
+
+func RouterWithAuthAndWebhooks(db *gorm.DB, options identity.Options, webhookOptions payments.MollieWebhookOptions, cartOptions ...cart.HTTPOptions) (*gin.Engine, error) {
 	h, err := identity.NewWithOptions(db, options)
 	if err != nil {
 		return nil, err
@@ -49,10 +53,22 @@ func RouterWithAuth(db *gorm.DB, options identity.Options, cartOptions ...cart.H
 			return nil, err
 		}
 	}
-	return routerWithIdentity(db, slog.Default(), h, shop), nil
+	webhooks, err := payments.NewMollieWebhook(db, webhookOptions)
+	if err != nil {
+		return nil, err
+	}
+	return routerWithHandlers(db, slog.Default(), h, shop, webhooks), nil
 }
 
 func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler, shops ...*cart.HTTPHandler) *gin.Engine {
+	shop := &cart.HTTPHandler{}
+	if len(shops) == 1 && shops[0] != nil {
+		shop = shops[0]
+	}
+	return routerWithHandlers(db, logger, auth, shop, &payments.MollieWebhookHandler{})
+}
+
+func routerWithHandlers(db *gorm.DB, logger *slog.Logger, auth *identity.Handler, shop *cart.HTTPHandler, webhooks *payments.MollieWebhookHandler) *gin.Engine {
 	r := gin.New()
 	_ = r.SetTrustedProxies(nil)
 	r.Use(platform.RequestBoundary(logger))
@@ -111,11 +127,8 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	})
 	h := catalog.Handler{DB: db}
 	public := r.Group("/api/store")
-	public.GET("/device-photos/:photo_id", (devices.Handler{DB: db}).PhotoHTTP)
-	shop := &cart.HTTPHandler{}
-	if len(shops) == 1 && shops[0] != nil {
-		shop = shops[0]
-	}
+ public.GET("/device-photos/:photo_id",(devices.Handler{DB:db}).PhotoHTTP)
+	webhooks.Register(r)
 	shop.Register(public)
 	store := catalog.StoreHandler{DB: db, StoreID: os.Getenv("STOREFRONT_STORE_ID")}
  (buyback.Store{DB:db,StoreID:os.Getenv("STOREFRONT_STORE_ID")}).Register(public)
@@ -140,23 +153,24 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	(devices.Handler{DB: db}).RegisterWarehouseFulfillments(private)
 	private.GET("/auth/me", auth.Me)
  (buyback.AdminHandler{DB:db,StoreID:os.Getenv("STOREFRONT_STORE_ID")}).Register(private)
-	private.GET("/warehouse/locations/:location_id/device-intake/:category/variants", (devices.Handler{DB: db}).WarehouseIntakeVariantsHTTP)
-	private.POST("/warehouse/locations/:location_id/device-intake/:category/photos", (devices.Handler{DB: db}).WarehousePhotoHTTP)
-	private.GET("/warehouse/locations/:location_id/device-intake/:category/products/:id/variants/:variant_id", (devices.Handler{DB: db}).WarehouseIntakeHTTP)
-	private.POST("/warehouse/locations/:location_id/device-intake/:category/products/:id/variants/:variant_id", (devices.Handler{DB: db}).WarehouseIntakeHTTP)
-	private.GET("/warehouse/locations/:location_id/devices/:category", (devices.Handler{DB: db}).WarehouseDevicesHTTP)
-	private.POST("/warehouse/locations/:location_id/devices/:category/:device_id", (devices.Handler{DB: db}).WarehouseDeviceCommandHTTP)
-	private.POST("/device-photos", authorization.Handler{DB: db}.Require(authorization.DeviceRead, authorization.DeviceIntake, authorization.ProductRead, authorization.InventoryRead, authorization.WarehouseRead), (devices.Handler{DB: db}).PhotoUploadHTTP)
+ private.GET("/warehouse/locations/:location_id/device-intake/:category/variants",(devices.Handler{DB:db}).WarehouseIntakeVariantsHTTP)
+ private.POST("/warehouse/locations/:location_id/device-intake/:category/photos",(devices.Handler{DB:db}).WarehousePhotoHTTP)
+ private.GET("/warehouse/locations/:location_id/device-intake/:category/products/:id/variants/:variant_id",(devices.Handler{DB:db}).WarehouseIntakeHTTP)
+ private.POST("/warehouse/locations/:location_id/device-intake/:category/products/:id/variants/:variant_id",(devices.Handler{DB:db}).WarehouseIntakeHTTP)
+
+ private.GET("/warehouse/locations/:location_id/devices/:category",(devices.Handler{DB:db}).WarehouseDevicesHTTP)
+ private.POST("/warehouse/locations/:location_id/devices/:category/:device_id",(devices.Handler{DB:db}).WarehouseDeviceCommandHTTP)
+ private.POST("/device-photos",authorization.Handler{DB:db}.Require(authorization.DeviceRead,authorization.DeviceIntake,authorization.ProductRead,authorization.InventoryRead,authorization.WarehouseRead),(devices.Handler{DB:db}).PhotoUploadHTTP)
 	private.POST("/auth/logout", auth.Logout)
 	access := authorization.Handler{DB: db}
 	private.GET("/auth/permissions", access.Snapshot)
 	private.GET("/warehouse/access", access.WarehouseSnapshot)
-	private.GET("/products/:id/variants/:variant_id/device-intake", (devices.Handler{DB: db}).IntakeContextHTTP)
-	private.POST("/products/:id/variants/:variant_id/device-intake", (devices.Handler{DB: db}).IntakeHTTP)
-	private.GET("/device-sources", (devices.SourceHandler{DB: db, StoreID: os.Getenv("STOREFRONT_STORE_ID")}).DirectoryHTTP)
-	private.POST("/device-sources", (devices.SourceHandler{DB: db, StoreID: os.Getenv("STOREFRONT_STORE_ID")}).CreateHTTP)
-	private.GET("/products/:id/variants/:variant_id/device-tracking", (devices.Handler{DB: db}).TrackingHTTP)
-	private.POST("/products/:id/variants/:variant_id/device-tracking", (devices.Handler{DB: db}).EnrollHTTP)
+ private.GET("/products/:id/variants/:variant_id/device-intake",(devices.Handler{DB:db}).IntakeContextHTTP)
+ private.POST("/products/:id/variants/:variant_id/device-intake",(devices.Handler{DB:db}).IntakeHTTP)
+ private.GET("/device-sources",(devices.SourceHandler{DB:db,StoreID:os.Getenv("STOREFRONT_STORE_ID")}).DirectoryHTTP)
+ private.POST("/device-sources",(devices.SourceHandler{DB:db,StoreID:os.Getenv("STOREFRONT_STORE_ID")}).CreateHTTP)
+ private.GET("/products/:id/variants/:variant_id/device-tracking",(devices.Handler{DB:db}).TrackingHTTP)
+ private.POST("/products/:id/variants/:variant_id/device-tracking",(devices.Handler{DB:db}).EnrollHTTP)
 	private.GET("/warehouse/locations/:location_id/inventory", (inventory.Handler{DB: db}).WarehouseInventory)
 	private.POST("/warehouse/locations/:location_id/inventory/:id/stock", (inventory.Handler{DB: db}).UpdateWarehouseStock)
 	private.GET("/warehouses", access.Require(authorization.WarehouseRead), (warehouse.Handler{DB: db}).Directory)
@@ -165,14 +179,14 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	private.POST("/warehouse-users", access.Require(authorization.Read, authorization.Write, authorization.WarehouseRead, authorization.WarehouseWrite), (warehouseusers.Handler{DB: db}).Command)
 	private.GET("/authorization", access.Require(authorization.Read), access.Directory)
 	private.POST("/authorization/commands", access.Require(authorization.Write), access.Command)
-	private.GET("/orders/:id/after-sales/:request_id/devices/:assignment_id/replacement", (devices.Handler{DB: db}).ReplacementHTTP)
+ private.GET("/orders/:id/after-sales/:request_id/devices/:assignment_id/replacement", (devices.Handler{DB: db}).ReplacementHTTP)
  private.POST("/orders/:id/after-sales/:request_id/devices/:assignment_id/replacement",(devices.Handler{DB:db}).ReplaceDeviceHTTP)
 	private.GET("/orders/:id/after-sales/:request_id/devices/:assignment_id/service",(devices.Handler{DB:db}).ServiceHTTP)
-	private.POST("/orders/:id/after-sales/:request_id/devices/:assignment_id/service",(devices.Handler{DB:db}).ServiceHTTP)
-	private.GET("/orders/:id/after-sales/:request_id/device-returns",(devices.Handler{DB:db}).ReturnHTTP)
-	private.POST("/orders/:id/after-sales/:request_id/device-returns",(devices.Handler{DB:db}).ReturnHTTP)
-	private.GET("/orders/:id/after-sales", access.Require(authorization.OrderRead, authorization.OrderPaymentRead, authorization.DeviceRead), (customer.ReviewHandler{DB: db}).HTTP)
-	private.POST("/orders/:id/after-sales", access.Require(authorization.OrderRead, authorization.OrderPaymentRead, authorization.DeviceRead, authorization.OrderAfterSalesWrite), (customer.ReviewHandler{DB: db}).HTTP)
+ private.POST("/orders/:id/after-sales/:request_id/devices/:assignment_id/service",(devices.Handler{DB:db}).ServiceHTTP)
+ private.GET("/orders/:id/after-sales/:request_id/device-returns",(devices.Handler{DB:db}).ReturnHTTP)
+ private.POST("/orders/:id/after-sales/:request_id/device-returns",(devices.Handler{DB:db}).ReturnHTTP)
+ private.GET("/orders/:id/after-sales",access.Require(authorization.OrderRead,authorization.OrderPaymentRead,authorization.DeviceRead),(customer.ReviewHandler{DB:db}).HTTP)
+ private.POST("/orders/:id/after-sales",access.Require(authorization.OrderRead,authorization.OrderPaymentRead,authorization.DeviceRead,authorization.OrderAfterSalesWrite),(customer.ReviewHandler{DB:db}).HTTP)
 	private.GET("/orders", access.Require(authorization.OrderRead), (orders.Handler{DB: db}).List)
 	private.GET("/orders/:id", access.Require(authorization.OrderRead), (orders.Handler{DB: db}).Detail)
 	private.GET("/orders/:id/fulfillments/:fulfillment_id/operations", access.Require(authorization.OrderRead, authorization.OrderPaymentRead, authorization.DeviceRead, authorization.OrderAllocationWrite, authorization.OrderFulfillmentRead), (devices.Handler{DB: db}).ParcelHTTP)

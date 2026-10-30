@@ -132,7 +132,7 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 			if db.WithContext(callCtx).Table("cart_ownership").Select("checkout_attempt_id").Where("cart_id=?", inScope(r)).Scan(&freeze).Error != nil || freeze == "" {
 				t.Error("browser provider dispatched before committed freeze")
 			}
-			raw, _ := json.Marshal(map[string]any{"id": "tr_" + strings.ReplaceAll(r.SessionID, "-", ""), "_links": map[string]any{"checkout": map[string]string{"href": "https://www.mollie.com/checkout/joint/" + r.SessionID}}})
+			raw, _ := json.Marshal(map[string]any{"id": "tr_" + strings.ReplaceAll(r.SessionID, "-", ""), "status": "open", "amount": map[string]string{"value": r.Amount, "currency": "EUR"}, "metadata": map[string]string{"session_id": r.SessionID, "cart_id": inScope(r)}, "_links": map[string]any{"checkout": map[string]string{"href": "https://www.mollie.com/checkout/joint/" + r.SessionID}}})
 			return payments.CreateSucceeded, payments.CreatedSession{Status: "pending", Data: raw}, nil
 		},
 		observe: func(_ context.Context, r payments.SessionRequest, id string) (payments.SessionObservation, error) {

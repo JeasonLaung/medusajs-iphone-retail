@@ -129,6 +129,9 @@ func RecordSessionCreation(ctx context.Context, tx *gorm.DB, key EffectKey, atte
 			return EffectReceipt{}, ErrEffectStorage
 		}
 	}
+	if err := registerMollieReference(ctx, tx, key, ring, result); err != nil {
+		return EffectReceipt{}, err
+	}
 	return RecordEffect(ctx, tx, key, attempt, "succeeded")
 }
 

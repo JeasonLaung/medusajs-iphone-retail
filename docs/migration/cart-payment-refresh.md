@@ -143,3 +143,19 @@ POST 特别关闭 `http.Request.GetBody`：携带 Idempotency-Key 时 Go transpo
 恢复限制：两个并行核实只会并行GET，不新增创建尝试；结果保存仍按原attempt认证并禁止覆盖不同的已保存响应。如果渠道状态在查询间变化而结果冲突，保留冲突供后续付款对账，不覆盖旧creation结果掩盖状态变化。该creation恢复不是付款事件状态机，也不能完成捕获/退款或授予设备配货。
 
 本轮核实链验收：`go test ./...`、`go vet ./internal/payments ./internal/cart`、隔离MySQL/Redis完整23组及购物车专项均通过；36迁移，完整299项/专项196项实现SHA匹配，包含12个新增observer检查字段。原health/Admin/商品/购物车页面均200，近期日志无新增错误，仅既有PayPal nonce提示。没有真实支付调用，完整webhook/对账/checkout仍未验收。
+
+## Mollie 持久通知收件箱与原回调入口（0037）
+
+0037 新增默认关闭的 mollie_notification_runtime、不可覆盖的 mollie_payment_references、代次收件箱 mollie_notification_inbox、加密证据 mollie_notification_observations。RecordSessionCreation 对七种已知Mollie provider，在创建结果/成功receipt同一事务登记 remote ID→精确effect key/digest；参考保存的session/cart metadata与精确结算金额，远端ID及本地session唯一，不按email或外部入参追认。登记失败则创建结果和receipt整体回滚。引用保留原加密请求，旧本地session软删/替换不遗忘可能仍收款的远端尝试。
+
+Gin 注册原七条 `/hooks/payment/{原identifier}_mollie`；默认未配置均503。新增 RouterWithAuthAndWebhooks 显式服务端provider allowlist，原RouterWithAuth行为与购物车配置保持，启动入口未启用通知。接收只允许1KiB内 application/x-www-form-urlencoded 的单个id字段，拒绝重复/额外字段/非法ID；只为已知remote引用入队，未知ID同样200但不新增存储。已知通知必须在入队事务提交后才200，数据库故障503以允许渠道重试；不要求商店浏览器cookie/Origin，不接收或信任通知status/amount。官方依据 [Mollie Webhooks](https://docs.mollie.com/reference/webhooks)：现有通知仅提供资源ID，必须从API取当前状态；未知ID返回相同ACK，通知可多次到达。
+
+每个provider+remote只一条收件箱，但每次通知递增generation。claim保存claimed_generation和UUID租约，8竞争只派发1个；提交后才GET。GET执行期间的新通知递增generation，旧ACK仅推进processed_generation到其认领代次，仍有新代次则pending而非idle。过期lease可新UUID重新GET，旧attempt被隔离；网络失败有一分钟延迟，不当作已付款或ACK处理。DueMollieNotifications按DB时钟返回最多100个待查locators，仍需claim；无Redis唯一事实、无内存任务可靠性假设。
+
+ProcessMollieNotification只接受普通DB pool、显式商户allowlist与business ring。先事务认领，再10秒有界渠道GET，最后5秒WithoutCancel事务持久化完整SessionObservation密文与代次ACK；不发POST/DELETE、不持有SQL锁调用渠道、不更新业务付款/订单/库存。成功查询但结果写失败保留inflight等待租约恢复，失败GET只安排GET重试。观察结果的远端ID、session/cart、精确金额/币种、原动作和session状态再次绑定保存请求，防止错误adapter映射；证据用attempt绑定AEAD，精确JSON不经float，完成重放必须同一结果，错误密钥/篡改不回退。ReadMollieNotificationObservation提供认证私有事实读取，consumed_at继续NULL，不虚称已处理支付或订单。
+
+隔离MySQL+内存HTTP验证：创建引用写故障整体回滚；未知ID不占存储、已知/未知同ACK；严格body、默认/数据库开关关闭；8并发认领单次、8并发通知不丢代次、GET期间新通知保留；回滚/证据写故障无ACK、失败入队HTTP503；过期GET认领恢复/旧attempt拒绝、backoff、idle不重复GET、查询时可另开同记录事务；加密结果读取/篡改拒绝、未标业务消费。报告新增mollie_notifications。
+
+2026-10-30 与当前全部82份迁移一起验证：更新完整迁移计划断言，并补齐隔离创建响应的唯一远端ID、金额/币种与session/cart metadata。Go全包测试、付款/购物车vet、真实MySQL/Redis购物车专项通过。采用当前工作树（包含0037）重新运行新账号购物联合：中英文、390/1440宽度四组真实Astro→Gin→MySQL/Redis购物、模拟支付、成单、账号归属和SQL回归均通过，见 [账号购物报告](shopping-account-joint-report.json)。支付渠道与邮件最终投递仍是隔离替身，未调用真实支付。
+
+当前只有显式配置的通知接收及可调用的worker函数，未启用启动worker/商户配置加载，未实现业务证据消费、支付单调状态转换、成单、退款/拒付或自动对账授权。若创建响应丢失，尚无remote reference的通知仍按未知处理；候选发现和恢复需后续闭合，不能因这个收件箱就开放生产付款。T032/T033与checkout仍未整体验收。

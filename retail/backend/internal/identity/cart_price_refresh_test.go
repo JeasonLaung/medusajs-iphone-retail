@@ -52,7 +52,7 @@ func TestOwnedCartPriceRefresh(t *testing.T) {
 		t.Fatal("cart runtime migration plan unavailable")
 	}
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 81 {
+	if err != nil || r.Applied != 82 {
 		t.Fatal("cart runtime migration failed")
 	}
 	exec := func(query string, args ...any) {
@@ -216,5 +216,5 @@ func TestOwnedCartPriceRefresh(t *testing.T) {
 	checkShippingCandidates(t, ctx, gdb)
 	checkManualShippingQuotes(t, ctx, gdb)
 	checkCartShippingProfiles(t, ctx, gdb, ref)
-	t.Log(`CART_PRICE_REFRESH_REHEARSAL {"migrations":61,"per_line_quantity_context":true,"shared_set":true,"raw_beyond_scale_18":true,"custom_and_manual_prices_retained":true,"saved_compare_at_retained":true,"sale_compare_fallback":true,"tax_inclusive_preference":true,"soft_deleted_lines_preserved":true,"later_failure_rollback":true,"late_update_failure_rollback":true,"unpublished_and_missing_price_rejected":true,"stale_version_rejected":true,"stored_region_context":true,"full_refresh":false,"checkout":false}`)
+	t.Log(`CART_PRICE_REFRESH_REHEARSAL {"migrations":62,"per_line_quantity_context":true,"shared_set":true,"raw_beyond_scale_18":true,"custom_and_manual_prices_retained":true,"saved_compare_at_retained":true,"sale_compare_fallback":true,"tax_inclusive_preference":true,"soft_deleted_lines_preserved":true,"later_failure_rollback":true,"late_update_failure_rollback":true,"unpublished_and_missing_price_rejected":true,"stale_version_rejected":true,"stored_region_context":true,"full_refresh":false,"checkout":false}`)
 }
