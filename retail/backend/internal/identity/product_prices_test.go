@@ -61,7 +61,7 @@ func TestOwnedProductPrices(t *testing.T) {
 		t.Fatal("fixture plan invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 71 {
+	if err != nil || result.Applied != 72 {
 		t.Fatal("fixture migrations failed")
 	}
 	seedReviewedCatalogFixture(t, db)
@@ -190,6 +190,7 @@ func TestOwnedProductPrices(t *testing.T) {
 	checkStoreLocales(t, db, guarded)
 	checkServiceContacts(t, db, guarded)
 	checkStorePolicies(t, db, guarded)
+ checkBuybackPrices(t,db,guarded)
 	checkStoreSearch(t, db, guarded)
 	w := httptest.NewRecorder()
 	guarded.ServeHTTP(w, httptest.NewRequest("GET", "https://admin.example/api/admin"+root, nil))

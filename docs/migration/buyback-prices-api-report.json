@@ -1,0 +1,195 @@
+{
+  "date": "2026-10-30",
+  "scope": "Persisted buyback prices, public Gin price/estimate API and Astro API bridge/client; questionnaire page and request lifecycle pending",
+  "full_buyback_accepted": false,
+  "migration": "0073_buyback_prices.sql",
+  "committed_migration_count": 72,
+  "sql": {
+    "suites": [
+      "ProductPrices",
+      "AdminAuthentication",
+      "InventoryStockEdits",
+      "ProductInventory"
+    ],
+    "real_mysql_redis": true,
+    "owned_disconnected_containers": true,
+    "cleanup": "complete",
+    "live_price_projection": true,
+    "exact_raw_legacy": "10.1234567890123456789",
+    "rules_estimate": "152.02",
+    "missing_amount_null": true,
+    "disabled_and_eligibility": true,
+    "tb_normalization": true,
+    "soft_delete_and_active_unique": true,
+    "strict_query_json": true,
+    "invalid_persisted_config_503": true,
+    "store_binding": true,
+    "read_only_fingerprint": true
+  },
+  "front_client_bridge_tests": 3,
+  "astro_check": {
+    "files": 332,
+    "errors": 0,
+    "warnings": 0,
+    "existing_hints": 5
+  },
+  "go_all_packages_passed": true,
+  "legacy_services": {
+    "health_9001": 200,
+    "app_9001": 200,
+    "sell_8000": 200,
+    "existing_logs": "Anonymous orders 401 and locales 404 unchanged."
+  },
+  "business_rows_imported": false,
+  "external_payments_or_mail_called": false,
+  "real_astro_gin_joint": false,
+  "remaining": [
+    "Historical price/config import and validation",
+    "Original Astro sell/questionnaire pages wired to this client",
+    "New account request creation, private photos and full lifecycle",
+    "React Admin buyback operations, device linking, final offer, manual payout record and returns",
+    "Notices/mail and whole frontend closure"
+  ],
+  "tested_sources": [
+    {
+      "path": "retail/backend/internal/buyback/http.go",
+      "sha256_lf": "41ad9ff977fcd2547462276dfe2eb9e11182ba50f0ad21e2e27cad0758e3e743"
+    },
+    {
+      "path": "retail/backend/internal/buyback/read.go",
+      "sha256_lf": "e6d66ac707fcc51662e709ba559db6335c4541ac4397bdf9759b8e812016b320"
+    },
+    {
+      "path": "retail/backend/internal/identity/browser_fixture_test.go",
+      "sha256_lf": "14b9c6639a1f1885407accc96f755363d4841be06526aa8ab557d9212293669c"
+    },
+    {
+      "path": "retail/backend/internal/identity/buyback_prices_test.go",
+      "sha256_lf": "b6a7e0400dd8d01e30ea531fc2016c0278549b0f87477e4870c08082b64a675f"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_price_refresh_test.go",
+      "sha256_lf": "f513829b4c1edbc4cd50326db24c1cb9f47718e4c893480874ee54028019a79e"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_runtime_test.go",
+      "sha256_lf": "2b64255e1c452a816a3d150efd87d28982d90216c02485e639bb25cef10ed287"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_schema_test.go",
+      "sha256_lf": "a4bdd6d91b4cd220a992f4807e2d5cf15ddfbf4c7ad62bc26bb1a3f80422bc27"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_tax_refresh_test.go",
+      "sha256_lf": "55b1491918e0d05dd6631e978833bf31a2ed843ad9b4798a7b9d7098cc663a0c"
+    },
+    {
+      "path": "retail/backend/internal/identity/customer_history_test.go",
+      "sha256_lf": "ae0e4d02700bb2829ff4340ee80451532f6b974fa2490c8d154a6f20fd654baf"
+    },
+    {
+      "path": "retail/backend/internal/identity/fulfillment_history_test.go",
+      "sha256_lf": "e33744f93093e988c87275af199661831da240779f564b3fc7ab9817cc21b1ec"
+    },
+    {
+      "path": "retail/backend/internal/identity/geo_schema_test.go",
+      "sha256_lf": "563ab023b7aeca1badff2a06a50f0c693bdacec6882e97c6abc51841fa347bca"
+    },
+    {
+      "path": "retail/backend/internal/identity/integration_test.go",
+      "sha256_lf": "ff974d005a0be05e997d489f5d1aec9c60ab7be3e637b0876596ab2867f716dc"
+    },
+    {
+      "path": "retail/backend/internal/identity/order_import_test.go",
+      "sha256_lf": "99fccb7ec6ce7b7ed070aa563368857992a756746f767d115148b8f9d1edd0c1"
+    },
+    {
+      "path": "retail/backend/internal/identity/order_numbering_test.go",
+      "sha256_lf": "43dd634e455a6a5658177698750b9b41ca3c178991927fd0b612272ff749becf"
+    },
+    {
+      "path": "retail/backend/internal/identity/order_read_test.go",
+      "sha256_lf": "9a922b548964f3f69d71e29a11d1d5c700031e7614bf6a07034f84bdca907ca6"
+    },
+    {
+      "path": "retail/backend/internal/identity/order_schema_test.go",
+      "sha256_lf": "7b0e64ead0987125b953a4684c97e42e7413da75d5793e23a7cee5e124c8f9a0"
+    },
+    {
+      "path": "retail/backend/internal/identity/payment_import_test.go",
+      "sha256_lf": "fc228b99c86c8ac91c9d9b0757e9685c203a046b5cf10ffe47670506d346f8bf"
+    },
+    {
+      "path": "retail/backend/internal/identity/payment_schema_test.go",
+      "sha256_lf": "4465afb2ebc3000b10f92e74eda126ee75a47922480bfff7782b7a910990e807"
+    },
+    {
+      "path": "retail/backend/internal/identity/product_edit_test.go",
+      "sha256_lf": "01fe74f4c67088c2323b55229f53349c57e31e67b2ad8a3c6713c3589eaff395"
+    },
+    {
+      "path": "retail/backend/internal/identity/product_inventory_test.go",
+      "sha256_lf": "ee075ba7f18ba8e076efb8fb9c7ca92b94d55eb63c8647d3742d55876ed0a827"
+    },
+    {
+      "path": "retail/backend/internal/identity/product_prices_test.go",
+      "sha256_lf": "1d7dbdeac31defe249fdc96040a9f1671861673bee37ef9742a2673328329e81"
+    },
+    {
+      "path": "retail/backend/internal/identity/promotion_schema_test.go",
+      "sha256_lf": "7defa31944fbbe5457b7221ae5edc1ccaf49c870e6003bd8309324101b454741"
+    },
+    {
+      "path": "retail/backend/internal/identity/promotion_usage_test.go",
+      "sha256_lf": "73bbaddbc16fe4788d21824b08212c005c1ae6fb77f157c903160ebcccdf4419"
+    },
+    {
+      "path": "retail/backend/internal/identity/reservation_transactions_test.go",
+      "sha256_lf": "29590534849ffc39e6493140d37bd30cea79ca24b936f774aba4bca48f8cd57b"
+    },
+    {
+      "path": "retail/backend/internal/identity/stock_edit_test.go",
+      "sha256_lf": "d2e80ef8a5c6be07982e9c06b824315253a7340656b23dae223c52ef3ee7a0c8"
+    },
+    {
+      "path": "retail/backend/internal/identity/tax_import_test.go",
+      "sha256_lf": "9ebde20a54b1afd397d315432373389bd909200ae2b82666bf6c60b2f0a72e22"
+    },
+    {
+      "path": "retail/backend/internal/identity/tax_schema_test.go",
+      "sha256_lf": "9d2b62f20a76ddfe6d1f4e25129818da4109c599d9346a243d41690b3b31b79c"
+    },
+    {
+      "path": "retail/backend/internal/schema/plan_test.go",
+      "sha256_lf": "2d8ce47bb0b85f8b0f867538bbe32ec7d7a9d16b67c856ebb5a8666774fb9ad7"
+    },
+    {
+      "path": "retail/backend/internal/server/router.go",
+      "sha256_lf": "8cca0e2e653e991d576a026b84dc50e909db17cd0653c00040c1cb096818f703"
+    },
+    {
+      "path": "retail/backend/migrations/0073_buyback_prices.sql",
+      "sha256_lf": "df63652f80f2bc378bfb0a561d3b254e3cb48d9ceaf9533a9bb3c1904b67be5f"
+    },
+    {
+      "path": "retail/storefront/src/lib/buyback-bridge.ts",
+      "sha256_lf": "fb41de83ab90eaec3f18230b9b934fe33e921579902038be8880884beec23dc8"
+    },
+    {
+      "path": "retail/storefront/src/lib/buyback-client.ts",
+      "sha256_lf": "a43f3406ac27c85a681a11321641437326dde8b82c4cc212362ca7f3cc3b1f6c"
+    },
+    {
+      "path": "retail/storefront/src/pages/api/store/buyback/estimate.ts",
+      "sha256_lf": "6ddb99b6d0d6a968a274b42ef785993cb6867f9600ff95b240cd0e6046de3648"
+    },
+    {
+      "path": "retail/storefront/src/pages/api/store/buyback/prices.ts",
+      "sha256_lf": "3018a0094ca02d10985d17bad7ae6198243b7b4cb0cfe2d77d798331341fa660"
+    },
+    {
+      "path": "retail/storefront/tests/buyback-client.test.ts",
+      "sha256_lf": "d64c4cecf0319409ff3b2e80b51ffdd088818ae37fb59b9cf9f0cc532d82e5c5"
+    }
+  ]
+}

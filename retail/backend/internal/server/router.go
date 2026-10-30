@@ -8,6 +8,7 @@ import (
 
 	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/cart"
+ "github.com/eurorefurb/retail/internal/buyback"
 	"github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/customer"
 	"github.com/eurorefurb/retail/internal/devices"
@@ -117,6 +118,7 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	}
 	shop.Register(public)
 	store := catalog.StoreHandler{DB: db, StoreID: os.Getenv("STOREFRONT_STORE_ID")}
+ (buyback.Store{DB:db,StoreID:os.Getenv("STOREFRONT_STORE_ID")}).Register(public)
 	public.POST("/search", store.Search)
 	public.GET("/products", store.Products)
 	public.GET("/products/:id", store.Product)

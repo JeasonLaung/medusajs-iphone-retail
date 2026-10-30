@@ -54,7 +54,7 @@ func TestOwnedCustomerHistory(t *testing.T) {
 		t.Fatal("customer fixture plan invalid")
 	}
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 71 {
+	if err != nil || r.Applied != 72 {
 		t.Fatal("customer fixture migrations failed")
 	}
 	key := bytes.Repeat([]byte{51}, 32)
