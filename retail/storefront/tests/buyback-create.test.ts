@@ -48,7 +48,7 @@ test('buyback bridge preserves signed raw bytes and permits only exact POST crea
  }
  const result=await customerBridge(request(),config,transport)
  assert.equal(result.status,201);assert.deepEqual(await result.json(),{request:{id}})
- for(const [suffix,method] of [['?unexpected=1','POST'],['/extra','POST']])assert.equal((await customerBridge(request(suffix,method),config,transport)).status,404)
+ for(const [suffix,method] of [['?unexpected=1','POST'],['/extra/nested','POST']])assert.equal((await customerBridge(request(suffix,method),config,transport)).status,404)
  assert.equal(calls,1)
  for(const status of [200,202])assert.equal((await customerBridge(request(),config,async()=>Response.json({request:{id}},{status,headers:{'Cache-Control':'private, no-store'}}))).status,503)
  assert.equal((await customerBridge(request(),config,async()=>Response.json({request:{id}},{status:201,headers:{'Cache-Control':'private, no-store','Set-Cookie':`retail_customer_session=${csrf}; Path=/; HttpOnly; SameSite=Lax`}}))).status,503)

@@ -87,3 +87,19 @@ func (s *Store) BuybackPhoto(ctx context.Context, token, storeID, id, photoID st
 	}
 	return out, nil
 }
+
+func (s *Store) UpdateBuyback(ctx context.Context, token, storeID, id string, in buyback.CustomerCommand) (buyback.RequestDetail, error) {
+	var out buyback.RequestDetail
+	var business error
+	e := s.addressTransaction(ctx, token, func(tx *gorm.DB, account string) error {
+		out, business = buyback.StageCustomerCommand(ctx, tx, storeID, account, id, in)
+		return business
+	})
+	if e != nil {
+		if errors.Is(business, buyback.ErrMissing) || errors.Is(business, buyback.ErrInput) || errors.Is(business, buyback.ErrCommandState) || errors.Is(business, buyback.ErrCommandIdentity) || errors.Is(business, buyback.ErrCommandPhotos) || errors.Is(business, buyback.ErrCommandOffer) {
+			return buyback.RequestDetail{}, business
+		}
+		return buyback.RequestDetail{}, e
+	}
+	return out, nil
+}

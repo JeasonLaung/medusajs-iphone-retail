@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-30",
+  "scope": "Gin customer commands and Astro signed bridge only; original account UI still pending",
+  "migrations": 75,
+  "original_zod_fixture": {
+    "cases": 71,
+    "accepted": 24,
+    "capture_check": "passed"
+  },
+  "mysql": {
+    "state_action_matrix": 60,
+    "identities_exact_set": true,
+    "sn_imei_unique": true,
+    "front_back_conditional_edges": true,
+    "retake_rejected_pending_allowed": true,
+    "submit_race": [
+      1,
+      1
+    ],
+    "offer_accept_decline_single_winner": true,
+    "stale_offer_rejected": true,
+    "tracking_trimmed": true,
+    "cancel_closed_at": true,
+    "late_failure_atomic": true,
+    "cross_account_denied": true,
+    "default_gate": true,
+    "http_csrf_session_query_duplicates": true,
+    "customer_notice_not_emitted": true
+  },
+  "checks": {
+    "go_all": "passed in isolated snapshot",
+    "node_tests": 171,
+    "astro_files": 360,
+    "astro_errors": 0,
+    "astro_warnings": 0,
+    "astro_hints": 5,
+    "legacy_health": 200,
+    "legacy_admin": 200,
+    "legacy_sell": 200,
+    "new_legacy_stderr": false,
+    "sql_regressions": [
+      "AdminAuthentication",
+      "InventoryStockEdits",
+      "ProductInventory"
+    ]
+  },
+  "limitations": [
+    "No original account list/detail UI or Astro-to-real-Gin browser joint yet.",
+    "Platform approval/receipt/inspection/quote states in these tests are explicit SQL fixtures, not operational commands.",
+    "Accepting a quote records acceptance only; no payment side effect or payment closure proved.",
+    "Original customer commands reject repeat transitions; no automatic retry or new command idempotency contract added."
+  ],
+  "sha256": {
+    "retail/backend/internal/buyback/customer_command.go": "8d0c3a6b9fd1ef0959a8f234d7a3409d8cf40571c84b1ff8c2f7a8a49b5175c8",
+    "retail/backend/internal/buyback/customer_command_test.go": "bff20c98716649ac96665f267e85a76887857a42a9b9923002921acdc2b92ad4",
+    "retail/backend/internal/customer/buyback.go": "45f56d55f3159e6baf4b190379a6a1310b856f5a98b4d9b01a39e96f5ca04336",
+    "retail/backend/internal/customer/buyback_command_http.go": "17a98295571e8694d2b8171549476ab5a776cbba4a1e72d20b5bbe7a6f0a75cf",
+    "retail/backend/internal/customer/http.go": "b5d4b85e5ad8f64a0a3a0d4bb3a38ae49d85f9a41cc1e7eb44f83ed22726175b",
+    "retail/backend/internal/identity/buyback_command_test.go": "0d397f2c47c761a05ea9cc57446034fa7650df4f7deec6ada666636bc4a775a8",
+    "retail/backend/internal/identity/buyback_create_test.go": "26167698154e56d6a1988d0f51e1b79dcc275543dc9259493d3300f87053b2ee",
+    "retail/scripts/capture-buyback-customer-command.cjs": "7cabd2911118ece00405fd2eb063d94a8db7532e253efd584e303d3c696c38a8",
+    "docs/migration/fixtures/buyback-customer-command.json": "5ca253ebec87d5f9b28d53b079a12c6c131611e50816929699def0442f43621d",
+    "retail/storefront/src/lib/customer-bridge.ts": "7d438e8ec6a86c4359c0579939cffcc964f99bce4f59180839ccc7d27337fd15",
+    "retail/storefront/tests/buyback-command-bridge.test.ts": "fcaa2ee2f15c982eef476addf09f846da2c6483208398d2532169686403f97a8",
+    "retail/storefront/tests/buyback-create.test.ts": "16ea9ce17e3f7f59061e135cc4ac587a80602cdb3cb95bf95f27b24607e438f2"
+  },
+  "execution_evidence_sha256": {
+    "buyback-command-go.log": "f19e2524c4105d69aa0db97bd7335434553aea2275137a10e94b984fa7eafebb",
+    "buyback-command-sql.log": "a94bfd5607acb45f1d2d24afb17079047c896db7c8f85e17bf35448eb30b4b6a",
+    "buyback-command-evidence.log": "2c0cbbf2082acd581427314c938017983a5eabd028d27427d57d455b8d78a975"
+  }
+}

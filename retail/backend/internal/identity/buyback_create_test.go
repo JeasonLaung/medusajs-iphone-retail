@@ -198,6 +198,7 @@ func checkBuybackCreation(t *testing.T, db *gorm.DB) {
 	t.Log(`BUYBACK_CREATE_HTTP_REHEARSAL {"created_status":201,"csrf_required":true,"origin_required":true,"anonymous_denied":true,"query_denied":true,"duplicate_json_denied":true,"private_projection":true}`)
 	checkBuybackRead(t, db, customers, router, login.Session.Token, store, bound.ID)
 	checkBuybackPhotos(t, db, customers, router, login.Session.Token, login.Session.CSRF, store, in)
+	checkBuybackCommands(t, db, customers, router, login.Session.Token, login.Session.CSRF, store, in)
 	if e := customers.Logout(ctx, login.Session.Token); e != nil {
 		t.Fatal("buyback customer logout")
 	}
@@ -206,6 +207,9 @@ func checkBuybackCreation(t *testing.T, db *gorm.DB) {
 	}
 	if _, e := customers.Buyback(ctx, login.Session.Token, store, bound.ID); !errors.Is(e, customer.ErrUnauthorized) {
 		t.Fatal("revoked buyback detail read")
+	}
+	if _, e := customers.UpdateBuyback(ctx, login.Session.Token, store, bound.ID, buyback.CustomerCommand{Action: "cancel"}); !errors.Is(e, customer.ErrUnauthorized) {
+		t.Fatal("revoked buyback command")
 	}
 	if _, e := customers.CreateBuyback(ctx, "", store, in); !errors.Is(e, customer.ErrUnauthorized) {
 		t.Fatal("anonymous buyback creation")
