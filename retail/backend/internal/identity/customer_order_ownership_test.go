@@ -181,12 +181,34 @@ func checkCustomerOrderOwnership(t *testing.T, ctx context.Context, db *gorm.DB,
 	}
 	exec("UPDATE cart_ownership SET active=TRUE WHERE cart_id=?", ref.CartID)
 	exec("UPDATE cart_completion_runtime SET enabled=TRUE WHERE id=1")
+	checkCustomerAfterSales(t, ctx, db, store, a.Session.Token, b.Session.Token, orderID)
 	checkCustomerProgress(t, ctx, db, store, a.Session.Token, b.Session.Token, orderID)
 	progressPath := "/api/store/customer/orders/" + orderID + "/progress"
 	call("GET", progressPath, "", "", "", true, false, 200)
 	call("GET", progressPath+"?email=private", "", "", "", true, false, 404)
 	call("GET", progressPath, "", "", "", false, false, 401)
 	call("GET", progressPath, "", "https://foreign.example", "", true, false, 403)
+
+	call("GET", "/api/store/customer/orders/"+orderID+"/after-sales", "", "", "", true, false, 200)
+	call("GET", "/api/store/customer/orders/"+orderID+"/devices", "", "", "", true, false, 200)
+	call("GET", "/api/store/customer/orders/"+orderID+"/devices?email=private", "", "", "", true, false, 404)
+	asPath := "/api/store/customer/orders/" + orderID + "/after-sales"
+	var asItem string
+	if db.Table("order_items").Select("item_id").Where("order_id=? AND deleted_at IS NULL", orderID).Limit(1).Scan(&asItem).Error != nil {
+		t.Fatal("after-sales HTTP item")
+	}
+	asBody := `{"operation_id":"3a12f147-8c08-4ba3-8a1f-ceeff1fcf5bc","type":"return","reason":"Please review this item before dispatch.","items":[{"item_id":"` + asItem + `","quantity":1}]}`
+	exec("UPDATE customer_after_sales_runtime SET enabled=TRUE WHERE id=1")
+	call("POST", asPath, asBody, origin, "", true, false, 403)
+	call("POST", asPath, asBody, origin, a.Session.CSRF, false, false, 401)
+	call("POST", asPath, asBody, "https://foreign.example", a.Session.CSRF, true, false, 403)
+	call("POST", asPath, strings.Replace(asBody, `"quantity":1`, `"quantity":1,"quantity":1`, 1), origin, a.Session.CSRF, true, false, 400)
+	call("POST", asPath, asBody, origin, a.Session.CSRF, true, false, 201)
+	call("POST", asPath, asBody, origin, a.Session.CSRF, true, false, 201)
+	exec("DELETE FROM audit_events WHERE action='customer.after_sales.create' AND actor_id=?", a.Customer.ID)
+	exec("DELETE FROM customer_after_sales_operations WHERE order_id=?", orderID)
+	exec("DELETE FROM after_sales_requests WHERE order_id=?", orderID)
+	exec("UPDATE customer_after_sales_runtime SET enabled=FALSE WHERE id=1")
 	checkCustomerOrdersBrowser(t, ctx, db, sessions, ref, orderID, email)
 	exec("UPDATE customer_accounts SET auth_version=auth_version+1 WHERE id=?", a.Customer.ID)
 	if _, e := store.Orders(ctx, a.Session.Token, 0); !errors.Is(e, customer.ErrUnauthorized) {

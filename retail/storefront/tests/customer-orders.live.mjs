@@ -92,6 +92,28 @@ try{
  await page.getByTestId('order-timeline').getByRole('button').click()
  await expect(page.getByTestId('timeline-paid')).toContainText('158.75')
  await expect(page.getByTestId('shipment')).toHaveCount(1)
+ // Actual Gin commits the first request; the browser loses the response.
+ // Retrying the form must retain its UUID and recover the same request.
+ await page.goto(shop+`/dk-en/account/orders/details/${fixture.order_id}`)
+ const support=page.getByTestId('after-sales-section')
+ await support.getByRole('button',{name:'Request after-sales support'}).click()
+ await expect(support.locator('form')).toBeVisible()
+ await support.getByRole('checkbox').first().check()
+ await support.getByRole('textbox').last().fill('Please review this item before dispatch.')
+ const posted=[]
+ page.on('request',r=>{if(r.url().endsWith('/after-sales')&&r.method()==='POST')posted.push(r.postDataJSON())})
+ await page.route('**/api/store/customer/orders/*/after-sales',async route=>{
+  if(route.request().method()!=='POST'){await route.continue();return}
+  const r=await route.fetch();assert.equal(r.status(),201);await route.abort('failed')
+ },{times:1})
+ await support.getByRole('button',{name:'Submit request',exact:true}).click()
+ await expect(support.getByRole('button',{name:'Try again',exact:true})).toBeVisible()
+ await support.getByRole('button',{name:'Try again',exact:true}).click()
+ await expect(support).toContainText('Your request has been submitted.')
+ assert.equal(posted.length,2);assert.deepEqual(posted[0],posted[1])
+ await page.reload()
+ await page.getByTestId('after-sales-section').getByRole('button',{name:'Request after-sales support'}).click()
+ await expect(page.getByTestId('after-sales-section')).toContainText('You already have an open request')
  await page.goto(shop+'/dk-en/account')
  await expect(page.getByTestId('order-wrapper')).toHaveCount(1)
  const other=await browser.newContext({viewport:{width:1440,height:1000}}),otherPage=await other.newPage()
@@ -109,7 +131,7 @@ try{
  assert.deepEqual(errors,[])
  assert.equal(requests.some(url=>/localhost:(8000|9001)|127\.0\.0\.1:(8000|9001)|medusa/i.test(url)),false)
  assert.equal((await control('finish')).status,204)
- console.log('CUSTOMER_ORDERS_JOINT_BROWSER '+JSON.stringify({actual_astro_routes:true,actual_gin_handlers:true,real_mysql_redis:true,mocked_api_responses:false,fixture_preverified_accounts:true,fixture_order_from_paid_cart_rehearsal:true,real_provider_payment:false,login_origin_csrf_signed_bridge:true,empty_before_attach:true,dual_cookie_attachment:true,account_details_without_cart_cookie:true,private_headers:true,cross_account_denied:true,logout_revokes_access:true,exact_total:'158.75',real_order_progress:true,real_shipment_tracking:true,unsafe_links_absent:true,canceled_parcel_hidden:true,cross_account_progress_denied:true,languages:['en','zh'],widths:[390,1440],browser_errors:0}))
+ console.log('CUSTOMER_ORDERS_JOINT_BROWSER '+JSON.stringify({actual_astro_routes:true,actual_gin_handlers:true,real_mysql_redis:true,mocked_api_responses:false,fixture_preverified_accounts:true,fixture_order_from_paid_cart_rehearsal:true,real_provider_payment:false,login_origin_csrf_signed_bridge:true,empty_before_attach:true,dual_cookie_attachment:true,account_details_without_cart_cookie:true,private_headers:true,cross_account_denied:true,logout_revokes_access:true,exact_total:'158.75',real_order_progress:true,real_shipment_tracking:true,unsafe_links_absent:true,canceled_parcel_hidden:true,cross_account_progress_denied:true,after_sales_real_submission:true,lost_response_same_uuid_recovery:true,after_sales_persisted_after_reload:true,languages:['en','zh'],widths:[390,1440],browser_errors:0}))
 }finally{
  await browser?.close()
  if(app&&app.exitCode===null){app.kill();await once(app,'exit')}

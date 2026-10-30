@@ -85,6 +85,9 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/orders", h.ListOrders)
 	private.GET("/orders/:id", h.OrderDetail)
 	private.GET("/orders/:id/progress", h.OrderProgress)
+	private.GET("/orders/:id/devices", h.OrderDevices)
+	private.GET("/orders/:id/after-sales", h.AfterSales)
+	private.POST("/orders/:id/after-sales", h.CreateAfterSales)
 	private.POST("/orders/:id/attach", h.AttachOrder)
 	private.GET("/addresses", h.ListAddresses)
 	private.POST("/addresses", h.CreateAddress)
@@ -146,6 +149,8 @@ func customerCSRF(c *gin.Context) string {
 }
 func (h *HTTPHandler) fail(c *gin.Context, err error) {
 	switch {
+	case errors.Is(err, ErrAfterSalesConflict):
+		platform.Fail(c, 409, "customer.after_sales_conflict", "An after-sales request is already open or this operation has changed")
 	case errors.Is(err, ErrOrderMissing):
 		platform.Fail(c, 404, "customer.order_not_found", "Order not found")
 	case errors.Is(err, ErrAddressMissing):

@@ -56,10 +56,10 @@ func TestOwnedTaxSchema(t *testing.T) {
 	}
 	db, gdb := open("tax_schema_fresh")
 	result, err := schema.Apply(ctx, db, plan)
-	if err != nil || result.Applied != 66 || schema.CheckApplied(ctx, db, plan) != nil || tax.Ready(ctx, gdb) != nil {
+	if err != nil || result.Applied != 67 || schema.CheckApplied(ctx, db, plan) != nil || tax.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh tax schema unavailable")
 	}
-	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 66 {
+	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 67 {
 		t.Fatal("tax schema replay changed facts")
 	}
 	exec := func(query string) {

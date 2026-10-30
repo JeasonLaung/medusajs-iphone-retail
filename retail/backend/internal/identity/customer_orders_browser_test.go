@@ -62,6 +62,10 @@ func checkCustomerOrdersBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	}); err != nil {
 		t.Fatal("browser attachment fixture preparation failed")
 	}
+	if db.Exec("UPDATE customer_after_sales_runtime SET enabled=TRUE WHERE id=1").Error != nil {
+		t.Fatal("browser after-sales gate")
+	}
+	defer db.Exec("UPDATE customer_after_sales_runtime SET enabled=FALSE WHERE id=1")
 	cleanupProgress := seedCustomerProgress(t, db, orderID)
 	defer cleanupProgress()
 	router := gin.New()
@@ -118,5 +122,15 @@ func checkCustomerOrdersBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	if db.Table("audit_events").Where("action='customer.order.attach' AND resource_id=?", orderID).Count(&count).Error != nil || count != 1 {
 		t.Fatal("browser attachment audit not unique")
 	}
+	if db.Table("after_sales_requests").Where("order_id=? AND status='pending'", orderID).Count(&count).Error != nil || count != 1 {
+		t.Fatal("browser after-sales request missing")
+	}
+	if db.Table("customer_after_sales_operations").Where("order_id=?", orderID).Count(&count).Error != nil || count != 1 {
+		t.Fatal("browser duplicate after-sales receipt")
+	}
+	if db.Table("audit_events").Where("action='customer.after_sales.create' AND actor_id IN (SELECT customer_id FROM customer_order_ownership WHERE order_id=?)", orderID).Count(&count).Error != nil || count != 1 {
+		t.Fatal("browser duplicate after-sales audit")
+	}
+	t.Log(`CUSTOMER_AFTER_SALES_JOINT_SQL {"request_persisted":true,"one_operation_after_lost_response":true,"single_audit":true,"external_mail":false}`)
 	t.Log(`CUSTOMER_ORDERS_JOINT_SQL {"real_handlers_mysql_redis":true,"browser_attachment_persisted":true,"single_attachment_audit":true,"external_payment_provider":false}`)
 }

@@ -1,3 +1,4 @@
+import AfterSales from './after-sales'
 import AccountAttachment,{hasCustomerHint} from './account-attachment'
 import {customerClient,CustomerError} from '../../lib/customer-client'
 import {useEffect,useState,Fragment,type ReactNode} from 'react'
@@ -18,7 +19,7 @@ function Details({order,segment}:{order:OrderConfirmation;segment:string}){
   <div><Text className="mt-2">{t('orderDate')} <span data-testid="order-date">{new Date(order.created_at).toLocaleDateString(locale)}</span></Text><Text className="mt-2 text-ui-fg-interactive">{t('orderNumberLabel')}<span data-testid="order-id">{order.custom_display_id||order.display_id}</span></Text></div>
   <Heading level="h2" className="flex flex-row text-3xl-regular">{t('orderSummary')}</Heading>
   <SavedOrderSections order={order} segment={segment}/>
-  <div><Heading level="h2">{t('afterSales')}</Heading><Text>{t('afterSalesDescription')}</Text><Button disabled>{t('requestAfterSales')}</Button><Text>{t('afterSalesUnavailable')}</Text></div>
+  <AfterSales order={order} segment={segment}/>
  </div></div></div>
 }
 

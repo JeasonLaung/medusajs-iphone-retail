@@ -1,0 +1,265 @@
+{
+  "format_version": 1,
+  "node_version": "v22.23.4",
+  "browser": {
+    "actual_astro_routes": true,
+    "actual_gin_handlers": true,
+    "real_mysql_redis": true,
+    "mocked_api_responses": false,
+    "fixture_preverified_accounts": true,
+    "fixture_order_from_paid_cart_rehearsal": true,
+    "real_provider_payment": false,
+    "login_origin_csrf_signed_bridge": true,
+    "empty_before_attach": true,
+    "dual_cookie_attachment": true,
+    "account_details_without_cart_cookie": true,
+    "private_headers": true,
+    "cross_account_denied": true,
+    "logout_revokes_access": true,
+    "exact_total": "158.75",
+    "real_order_progress": true,
+    "real_shipment_tracking": true,
+    "unsafe_links_absent": true,
+    "canceled_parcel_hidden": true,
+    "cross_account_progress_denied": true,
+    "after_sales_real_submission": true,
+    "lost_response_same_uuid_recovery": true,
+    "after_sales_persisted_after_reload": true,
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "widths": [
+      390,
+      1440
+    ],
+    "browser_errors": 0
+  },
+  "post_browser_sql_regression_passed": true,
+  "sql_receipts_checked": true,
+  "scope": "Customer after-sales submission and shipped-device selection; review/physical returns/refunds/notification still pending",
+  "production_services_or_data_used": false,
+  "full_storefront_accepted": false,
+  "resources": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "database_ports_published": false,
+    "api_port_loopback_only": true,
+    "network_egress_restricted": false
+  },
+  "sql_attachment_and_unique_audit_checked": true,
+  "cleanup_complete": true,
+  "sql_after_sales": {
+    "unshipped_managed_return": true,
+    "repair_exchange_need_shipped_devices": true,
+    "shipped_three_types": true,
+    "canceled_parcel_not_shipped": true,
+    "exact_quantity_validation": true,
+    "foreign_devices_denied": true,
+    "cross_account_reads_denied": true,
+    "late_audit_failure_atomic": true,
+    "same_uuid_concurrent_once": true,
+    "distinct_uuid_one_open": true,
+    "immutable_replay": true,
+    "paused_receipt_recovery": true,
+    "private_projection": true,
+    "external_mail_sent": false
+  },
+  "sql_browser_receipt": {
+    "request_persisted": true,
+    "one_operation_after_lost_response": true,
+    "single_audit": true,
+    "external_mail": false
+  },
+  "validation": {
+    "go_all_packages_passed": true,
+    "astro_check_errors": 0,
+    "astro_check_warnings": 0,
+    "astro_hints": 5,
+    "storefront_unit_tests_passed": 151,
+    "owned_astro_build_passed": true,
+    "new_migration_count": 67,
+    "late_audit_failure_atomic": true,
+    "closed_request_allows_later_application": true,
+    "canceled_order_denied": true,
+    "foreign_account_write_denied": true
+  },
+  "verified_source_files": [
+    {
+      "path": "retail/backend/internal/customer/after_sales.go",
+      "sha256": "e599257c4fa38fe9cc7d07b9753ffef7e4bfce00c74c925e4dcb36ff0506518a"
+    },
+    {
+      "path": "retail/backend/internal/customer/after_sales_http.go",
+      "sha256": "03eee67249fcfc855aecd427e35013b29e77229122bf443381cf196638e85e89"
+    },
+    {
+      "path": "retail/backend/internal/customer/after_sales_http_test.go",
+      "sha256": "4009b41da659ff0a7f7e23bbfe203d74d5b26e0ffed51ff7701fa4c616ec8876"
+    },
+    {
+      "path": "retail/backend/internal/customer/http.go",
+      "sha256": "13e72186d120835fb6f90a4a58b1cf7baa35ad0965b9b1c82d14aa8775793391"
+    },
+    {
+      "path": "retail/backend/internal/identity/browser_fixture_test.go",
+      "sha256": "eabb79167756150a6b4b694f57b524a72d944b9194df23a257163090dff6049c"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_price_refresh_test.go",
+      "sha256": "8affb253b520a9f7106d41be5dfebc39190f2c46fbebb7265323d1cae20737fa"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_runtime_test.go",
+      "sha256": "f26b1ec24f36ac9d99cd3fa88ac5b82af2a5f6325619c2331455bfbca5f4aea2"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_schema_test.go",
+      "sha256": "3f5c116a2cf5aab53c57dc7cdaaedf550795108fd785c93d3f805778ade9f3cc"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_tax_refresh_test.go",
+      "sha256": "5d23c21ed441db65698aab3d09206536bea1e920ddda5d5341ecd94f1f13ce5e"
+    },
+    {
+      "path": "retail/backend/internal/identity/customer_after_sales_test.go",
+      "sha256": "e98e0bc80626ede36d25ed9a08cf49f19be2795c1000c329275ebc36e6efd49c"
+    },
+    {
+      "path": "retail/backend/internal/identity/customer_history_test.go",
+      "sha256": "e499e93e24a5da5d9036304b5a895fcad4ea6666ae9dabeeda83c47b6c443deb"
+    },
+    {
+      "path": "retail/backend/internal/identity/customer_order_ownership_test.go",
+      "sha256": "42af6c001c52e740899434241705936ab41e38554ff359c47b9ddafb598af090"
+    },
+    {
+      "path": "retail/backend/internal/identity/customer_orders_browser_test.go",
+      "sha256": "be6a41072b0ef8d992371871f4bd9fcb547d2cb903803d8ebe3426477b119399"
+    },
+    {
+      "path": "retail/backend/internal/identity/fulfillment_history_test.go",
+      "sha256": "a4994b8c2beb4104a2cd1c488c8f311dc6e1fb1856468f6a8305daa44c32c9eb"
+    },
+    {
+      "path": "retail/backend/internal/identity/geo_schema_test.go",
+      "sha256": "6e3cc2b5f1dff7df1d013e39e4aa9ebe1e636edd2880f8e62371f05fe3ce6922"
+    },
+    {
+      "path": "retail/backend/internal/identity/integration_test.go",
+      "sha256": "12dd093802b34e97fbadb76d95a54952501a877f9628cb79240a964dd68afccb"
+    },
+    {
+      "path": "retail/backend/internal/identity/order_import_test.go",
+      "sha256": "d96233a1d4916abe69680d2e434ac5c73c0d5c29bdbdbffc5a5b85c75242bbd3"
+    },
+    {
+      "path": "retail/backend/internal/identity/order_numbering_test.go",
+      "sha256": "fc4f56d4a1df2575dade55ac83831d34a5c06780197da909f6c545fd45c131d2"
+    },
+    {
+      "path": "retail/backend/internal/identity/order_read_test.go",
+      "sha256": "51125a5c7b40430aeddda523f9cac1bff0c0cbd88ad4107bad5fcbfb43a274fb"
+    },
+    {
+      "path": "retail/backend/internal/identity/order_schema_test.go",
+      "sha256": "1ffb55a48327ff9897ba8506ef2071b8817a8176846b496d9ff96ff3f52dc7eb"
+    },
+    {
+      "path": "retail/backend/internal/identity/payment_import_test.go",
+      "sha256": "3711fc5503687793407effcab2a67fcfa3bc52562e4fe7343fb1a2a7761285d7"
+    },
+    {
+      "path": "retail/backend/internal/identity/payment_schema_test.go",
+      "sha256": "c8abddb454acb0f49ce37858088c949ba48c6994e9b987f7ba7fbc689c05116b"
+    },
+    {
+      "path": "retail/backend/internal/identity/product_edit_test.go",
+      "sha256": "66bd916a175a6302b481506f091704bf9cc272a9a549d4f6325fb6da93f08673"
+    },
+    {
+      "path": "retail/backend/internal/identity/product_inventory_test.go",
+      "sha256": "ac30029a1036875a7d64273eb43398bbb3ba507007598cf49a1a1df6fb72f47e"
+    },
+    {
+      "path": "retail/backend/internal/identity/product_prices_test.go",
+      "sha256": "27151f88211c241ba58c6d094442245e384b3d0f81532c95b717de7e21e9bd0d"
+    },
+    {
+      "path": "retail/backend/internal/identity/promotion_schema_test.go",
+      "sha256": "9f724efac4a550e2b7e51dcaf2ed0cfdf65288118595100ced784e458a2dfbf7"
+    },
+    {
+      "path": "retail/backend/internal/identity/promotion_usage_test.go",
+      "sha256": "789aba8c9f518f245ac90392d4c5cb5813efefe34bb75519cae825021431115b"
+    },
+    {
+      "path": "retail/backend/internal/identity/reservation_transactions_test.go",
+      "sha256": "ca8238f3a5eee675191da201acf7909940902d6fd29264db802a4199d2af29f1"
+    },
+    {
+      "path": "retail/backend/internal/identity/stock_edit_test.go",
+      "sha256": "3753945e3966d65f59b6e70ead02dd574bf6462bcc229712d12fd2c50fbc0c96"
+    },
+    {
+      "path": "retail/backend/internal/identity/tax_import_test.go",
+      "sha256": "5338f7c6b21d807c06e6ac19b42c00f124ab51b6bc07e71a3d1ae57441fb4bd4"
+    },
+    {
+      "path": "retail/backend/internal/identity/tax_schema_test.go",
+      "sha256": "44512a6eff6e2f5bfb9716e79064090c35b7357fb3fe3817f820b7c62b99c5e9"
+    },
+    {
+      "path": "retail/backend/internal/orders/after_sales_quantities.go",
+      "sha256": "fc740571322c6fa4579403e96e003bee08371b90e22cda446141e9caa2be02dc"
+    },
+    {
+      "path": "retail/backend/internal/schema/plan_test.go",
+      "sha256": "dce02ce721527609fc1c491519a6ff0dfbcdbe9ed1491015b1632cbad9388ff6"
+    },
+    {
+      "path": "retail/backend/migrations/0068_customer_after_sales.sql",
+      "sha256": "bcc9938b6e0a2b1ff616e98c15dfd9731aa53602898612f7c54c29328b9ab8f0"
+    },
+    {
+      "path": "retail/storefront/src/components/account/order-details.tsx",
+      "sha256": "0e200f71efba12ded5b64203863302d39aef756c233d173b9cb818c334f85fa7"
+    },
+    {
+      "path": "retail/storefront/src/components/order/after-sales.tsx",
+      "sha256": "9d3c4465d6644e4c6659bdd03c781319c4d8e1887fb5c367873df522bafb8a2e"
+    },
+    {
+      "path": "retail/storefront/src/components/order/confirmation.tsx",
+      "sha256": "9da734df7b336cfaa5a107615a9515333420c2ae65a4663b95666fb3ea2fa5b5"
+    },
+    {
+      "path": "retail/storefront/src/lib/customer-after-sales.ts",
+      "sha256": "3e5bebf8710f31884bdf0e1b7c6d7032287a6c5880163bc1556b27f18e3f1b76"
+    },
+    {
+      "path": "retail/storefront/src/lib/customer-bridge.ts",
+      "sha256": "8faaf0f43eaac1cfbcec57e4e71fe4c3d25ffbe77a65b9fcae291e1047ae8339"
+    },
+    {
+      "path": "retail/storefront/src/lib/customer-client.ts",
+      "sha256": "4d6a837051d02971b41dd02348958831fb360434f7e52370ba08769987001c4e"
+    },
+    {
+      "path": "retail/storefront/tests/customer-after-sales.test.ts",
+      "sha256": "f58824d2261143ee5b9e33944936695b4b735acf04bf1721874eb08cad3aac6a"
+    },
+    {
+      "path": "retail/storefront/tests/customer-orders.live.mjs",
+      "sha256": "3cdf220ab6193818937d858e989ceb0c09a472c9f800ef5ee8ff9f8372487254"
+    }
+  ],
+  "source_file_count": 42,
+  "limits": [
+    "No real provider payment, refund, email, physical device receipt or carrier booking",
+    "No full after-sales acceptance until review/receive/inspection/repair/exchange/refund/notification completes",
+    "Loopback HTTP browser rehearsal does not validate HTTPS cookie flags"
+  ]
+}

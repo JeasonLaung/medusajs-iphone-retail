@@ -2,6 +2,7 @@ import {orderConfirmationProjection,type OrderConfirmation} from './cart-client.
 import {orderListProjection,type CustomerOrderList} from './customer-orders.ts'
 import {customerChanged} from './customer-events.ts'
 import {customerProgressProjection,type CustomerProgress} from './customer-progress.ts'
+import {afterSalesListProjection,afterSalesRequestProjection,orderDevicesProjection,type AfterSalesInput} from './customer-after-sales.ts'
 export type Customer={id:string;email:string;first_name:string;last_name:string;phone:string;verified_at:string|null}
 export type AddressFields={first_name?:string;last_name?:string;company?:string;address_1?:string;address_2?:string;city?:string;postal_code?:string;province?:string;country_code?:string;phone?:string;is_default_billing?:boolean;is_default_shipping?:boolean}
 export type Address=Required<AddressFields>&{id:string;created_at:string;updated_at:string}
@@ -49,7 +50,7 @@ function addressInput(fields:AddressFields){
 }
 export function customerClient(fetcher:typeof fetch=fetch){
  let pending:{email:string;password:string;country:string;locale:string}|null=null
- async function call(path:string,body?:Record<string,string>,csrf?:string):Promise<any>{
+ async function call(path:string,body?:Record<string,unknown>,csrf?:string):Promise<any>{
   const response=await fetcher(root+path,{method:body?'POST':'GET',credentials:'same-origin',cache:'no-store',redirect:'error',headers:body?{'Content-Type':'application/json',...(csrf?{'X-CSRF-Token':csrf}:{})}:undefined,body:body?JSON.stringify(body):undefined})
   const data=await response.json()
   if(!response.ok)throw new CustomerError(response.status,data?.state==='verification_required')
@@ -78,6 +79,20 @@ export function customerClient(fetcher:typeof fetch=fetch){
   async orderProgress(id:string):Promise<CustomerProgress>{
    if(!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(id))throw new CustomerError(400)
    return customerProgressProjection(await call('/orders/'+id+'/progress'),id)
+  },
+  async afterSales(id:string){
+   if(!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(id))throw new CustomerError(400)
+   return afterSalesListProjection(await call('/orders/'+id+'/after-sales'))
+  },
+  async orderDevices(id:string){
+   if(!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(id))throw new CustomerError(400)
+   return orderDevicesProjection(await call('/orders/'+id+'/devices'))
+  },
+  async createAfterSales(id:string,input:AfterSalesInput){
+   if(!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(id))throw new CustomerError(400)
+   const raw=await call('/orders/'+id+'/after-sales',input,sessionCSRF())
+   if(!raw||Object.keys(raw).length!==1||!raw.request)throw new CustomerError(503)
+   return afterSalesRequestProjection(raw.request)
   },
   async attachOrder(id:string):Promise<void>{
    if(!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(id))throw new CustomerError(400)
