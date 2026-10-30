@@ -1,4 +1,29 @@
 {
+  "inspection_browser": {
+    "synthetic_api": false,
+    "real_admin_and_customer": true,
+    "device_link_persisted": true,
+    "link_notice_suppressed": true,
+    "final_offer_persisted": true,
+    "customer_acceptance_persisted": true,
+    "offer_notice_exactly_once": true,
+    "final_amount": 270.01,
+    "admin_zh_mobile": true,
+    "browser_errors": 0
+  },
+  "inspection_sql_policies": {
+    "same_device_single_winner": true,
+    "device_identity_sku_capacity_scope_checked": true,
+    "exact_item_coverage": true,
+    "zero_quote": true,
+    "customer_acceptance": true,
+    "late_failure_atomic": true,
+    "link_notice_suppressed": true,
+    "competing_quote_single_winner": true,
+    "multiple_phone_ordered_sum": true,
+    "customer_decline": true,
+    "inventory_unchanged": true
+  },
   "admin_sql_policies": {
     "competing_transition_single_winner": true,
     "disabled_write_denied": true,
@@ -38,23 +63,51 @@
     "redis_memory_mib": 128
   },
   "cleanup": "both owned containers, bridge and temporary runners removed",
-  "formal_migrations": 76,
+  "formal_migrations": 77,
   "admin_typecheck": true,
-  "original_zod_cases": {
-    "cases": 67,
-    "accepted": 18
-  },
   "frontend_tests": 173,
   "astro_check": {
-    "files": 390,
+    "files": 391,
     "errors": 0,
     "warnings": 0,
     "existing_hints": 5
   },
-  "admin_auth_stock_product_sql_regression": true,
+  "go_all": true,
   "old_service_routes": {
     "health": 200,
     "admin": 200,
     "sell": 200
+  },
+  "broader_sql_run": {
+    "completed_suites_before_runner_reset_failure": [
+      "PromotionUsage",
+      "PromotionSchema",
+      "GeoSchema",
+      "CartPriceRefresh",
+      "CartTaxRefresh",
+      "TaxImport",
+      "TaxSchema",
+      "AdminAuthentication",
+      "CatalogSchemaTransition",
+      "ProductEdits",
+      "ProductPrices",
+      "ProductInventory",
+      "InventoryStockEdits",
+      "ReservationTransactions",
+      "OrderSchema"
+    ],
+    "full_run_passed": false,
+    "failure": "owned suite database reset failed after OrderSchema",
+    "targeted_rerun_pending": false
+  },
+  "targeted_sql_regression": {
+    "suites": [
+      "AdminAuthentication",
+      "InventoryStockEdits",
+      "ProductInventory"
+    ],
+    "passed": true,
+    "runner_waits_for_final_mysql_server": true,
+    "cleanup": "both owned containers and runner removed"
   }
 }

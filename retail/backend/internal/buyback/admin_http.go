@@ -23,6 +23,7 @@ func (h AdminHandler) Register(g *gin.RouterGroup) {
 	g.GET("/buyback/:id", h.HTTP)
 	g.POST("/buyback/:id", h.HTTP)
 	g.GET("/buyback/:id/photos/:photo_id", h.HTTP)
+	g.GET("/buyback/:id/items/:item_id/devices", h.HTTP)
 }
 func adminFailure(c *gin.Context, e error) {
 	status, code := 503, "BUYBACK_REQUEST_FAILED"
@@ -41,6 +42,10 @@ func adminFailure(c *gin.Context, e error) {
 		status, code = 409, "BUYBACK_PHOTOS_REQUIRED"
 	case errors.Is(e, ErrReviewNote):
 		status, code = 409, "BUYBACK_REVIEW_NOTE_REQUIRED"
+	case errors.Is(e, ErrDeviceMismatch):
+		status, code = 409, "BUYBACK_DEVICE_MISMATCH"
+	case errors.Is(e, ErrLinkDevices):
+		status, code = 409, "BUYBACK_LINK_DEVICES_FIRST"
 	}
 	platform.Fail(c, status, code, "Buyback request unavailable")
 }
@@ -96,22 +101,28 @@ func (h AdminHandler) HTTP(c *gin.Context) {
 		}
 	}
 	var in *AdminCommand
+	var inspection *InspectionCommand
 	if c.Request.Method == "POST" {
 		if strings.Split(c.GetHeader("Content-Type"), ";")[0] != "application/json" {
 			adminFailure(c, ErrInput)
 			return
 		}
-		raw, err := io.ReadAll(io.LimitReader(c.Request.Body, 16385))
+		raw, err := io.ReadAll(io.LimitReader(c.Request.Body, 65537))
 		if err != nil {
 			adminFailure(c, ErrInput)
 			return
 		}
 		command, err := ParseAdminCommand(raw)
-		if err != nil {
-			adminFailure(c, err)
-			return
+		if err == nil {
+			in = &command
+		} else {
+			value, e := ParseInspectionCommand(raw)
+			if e != nil {
+				adminFailure(c, e)
+				return
+			}
+			inspection = &value
 		}
-		in = &command
 	}
 	if h.DB == nil {
 		adminFailure(c, ErrUnavailable)
@@ -119,6 +130,16 @@ func (h AdminHandler) HTTP(c *gin.Context) {
 	}
 	var out any
 	e = h.DB.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
+		if itemID := c.Param("item_id"); itemID != "" {
+			v, err := InspectionCandidatesTx(c.Request.Context(), tx, actor, h.StoreID, id, itemID)
+			out = v
+			return err
+		}
+		if inspection != nil {
+			v, err := InspectionTx(c.Request.Context(), tx, actor, h.StoreID, id, *inspection)
+			out = v
+			return err
+		}
 		if id == "" {
 			v, err := AdminListTx(c.Request.Context(), tx, actor, h.StoreID, status, search, offset)
 			out = v

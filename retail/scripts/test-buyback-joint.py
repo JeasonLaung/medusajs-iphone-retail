@@ -126,11 +126,22 @@ def main():
         policy=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestVerifyBuybackAdminPolicies$','-test.timeout','50s')
         (ROOT/'logs/gin-migration/buyback-admin-policy.log').write_bytes(policy.stdout+policy.stderr)
         if policy.returncode or b'BUYBACK_ADMIN_POLICIES ' not in policy.stdout:raise RuntimeError('Buyback admin SQL policy failed')
-        durable=docker('exec','-e','MYSQL_PWD='+password,mysql_id,'mysql','-uroot','--protocol=socket','--database=browser_identity','--batch','--skip-column-names','-e',"SELECT (SELECT COUNT(*) FROM buyback_requests),(SELECT COUNT(*) FROM customer_buyback_submissions),(SELECT COUNT(*) FROM buyback_photos),(SELECT COUNT(*) FROM buyback_photo_bytes),(SELECT COUNT(*) FROM buyback_requests WHERE status='received'),(SELECT COUNT(*) FROM buyback_requests WHERE status='canceled' AND closed_at IS NOT NULL),(SELECT COUNT(*) FROM buyback_requests WHERE JSON_UNQUOTE(JSON_EXTRACT(items,'$[0].serial_number'))='SN-JOINT'),(SELECT COUNT(*) FROM customer_buyback_submissions WHERE customer_id='cust_buyback-other')")
+        inspection=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestVerifyBuybackInspectionPolicies$','-test.timeout','50s')
+        (ROOT/'logs/gin-migration/buyback-inspection-policy.log').write_bytes(inspection.stdout+inspection.stderr)
+        if inspection.returncode or b'BUYBACK_INSPECTION_POLICIES ' not in inspection.stdout:raise RuntimeError('Buyback inspection SQL policy failed')
+        prepared=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestPrepareInspectionBrowserDevice$','-test.timeout','20s')
+        if prepared.returncode or b'OWNED_INSPECTION_BROWSER_READY' not in prepared.stdout:raise RuntimeError('Inspection browser fixture failed')
+        joint=subprocess.run([node,'tests/buyback-inspection.joint.mjs'],cwd=ROOT/'retail/storefront',env=browser_env,capture_output=True,timeout=180)
+        (ROOT/'logs/gin-migration/buyback-inspection-browser.log').write_bytes(joint.stdout+joint.stderr)
+        joint_results=[json.loads(line.split('BUYBACK_INSPECTION_JOINT ',1)[1]) for line in joint.stdout.decode('utf-8').splitlines() if line.startswith('BUYBACK_INSPECTION_JOINT ')]
+        if joint.returncode or len(joint_results)!=1:raise RuntimeError('Inspection browser joint failed')
+        durable=docker('exec','-e','MYSQL_PWD='+password,mysql_id,'mysql','-uroot','--protocol=socket','--database=browser_identity','--batch','--skip-column-names','-e',"SELECT (SELECT COUNT(*) FROM buyback_requests),(SELECT COUNT(*) FROM customer_buyback_submissions),(SELECT COUNT(*) FROM buyback_photos),(SELECT COUNT(*) FROM buyback_photo_bytes),(SELECT COUNT(*) FROM buyback_requests WHERE status='accepted'),(SELECT COUNT(*) FROM buyback_requests WHERE status='canceled' AND closed_at IS NOT NULL),(SELECT COUNT(*) FROM buyback_requests WHERE JSON_UNQUOTE(JSON_EXTRACT(items,'$[0].serial_number'))='SN-JOINT'),(SELECT COUNT(*) FROM customer_buyback_submissions WHERE customer_id='cust_buyback-other')")
         if durable.returncode or durable.stdout.decode().strip()!='2\t2\t3\t3\t1\t1\t1\t0':raise RuntimeError('Durable buyback state differs: '+durable.stdout.decode().strip())
         policies=[json.loads(line.split('BUYBACK_ADMIN_POLICIES ',1)[1]) for line in policy.stdout.decode().splitlines() if 'BUYBACK_ADMIN_POLICIES ' in line]
         if len(policies)!=1:raise RuntimeError('Policy evidence missing')
-        report={'admin_sql_policies':policies[0],'browser':json.loads(outcomes[0]),'durable_mysql_verified':True,'artificial_accounts_only':True,'tls_secure_cookie_verified':False,'full_buyback_accepted':False,'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_memory_mib':128}}
+        inspection_policies=[json.loads(line.split('BUYBACK_INSPECTION_POLICIES ',1)[1]) for line in inspection.stdout.decode().splitlines() if 'BUYBACK_INSPECTION_POLICIES ' in line]
+        if len(inspection_policies)!=1:raise RuntimeError('Inspection evidence missing')
+        report={'inspection_browser':joint_results[0],'inspection_sql_policies':inspection_policies[0],'admin_sql_policies':policies[0],'browser':json.loads(outcomes[0]),'durable_mysql_verified':True,'artificial_accounts_only':True,'tls_secure_cookie_verified':False,'full_buyback_accepted':False,'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_memory_mib':128}}
     finally:
         password = ''
         for container in reversed(containers):

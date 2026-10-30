@@ -1,6 +1,7 @@
 import {useEffect,useRef,useState} from 'react'
 import {Alert,Button,Descriptions,Drawer,Form,Image,Input,Modal,Select,Space,Spin,Table,Tag,Timeline,Typography} from 'antd'
 import {APIError} from './api'
+import BuybackInspection from './BuybackInspection'
 import {getFlowCopy} from '../../storefront/src/components/sell/flow-copy'
 import {getBuybackCopy} from '../../storefront/src/components/sell/buyback-copy'
 import {useAccess} from './Permissions'
@@ -60,6 +61,7 @@ export default function Buybacks({copy,onExpired}:{copy:Copy;onExpired():void}){
  <Descriptions size="small" column={2} items={assessmentRows(item)}/>
  <Space align="start" wrap>{request.photos.filter(p=>p.item_id===item.id).map(p=><Space direction="vertical" key={p.id}><Typography.Text>{selling.photoTypes[p.photo_type as keyof typeof selling.photoTypes]}</Typography.Text><Photo id={id} photo={p} onExpired={onExpired}/><Tag>{selling.reviews[p.review_status as keyof typeof selling.reviews]}</Tag>{p.review_note&&<Typography.Text>{p.review_note}</Typography.Text>}{write&&['awaiting_photos','photo_review'].includes(request.status)&&p.review_status!=='expired'&&<Space><Button disabled={busy} onClick={()=>open({action:'review_photo',photo_id:p.id,review_status:'approved',note:''})}>{text('通过','Approve')}</Button><Button disabled={busy} onClick={()=>open({action:'review_photo',photo_id:p.id,review_status:'retake',note:''})}>{text('要求重拍','Request retake')}</Button></Space>}</Space>)}</Space></section>)}
  <Space wrap>{write&&request.status==='photo_review'&&<Button type="primary" onClick={()=>open({action:'approve_shipping',shipping_instructions:''})}>{text('批准寄件','Approve shipping')}</Button>}{write&&['ready_to_ship','in_transit'].includes(request.status)&&<Button onClick={()=>open({action:'mark_received'})}>{text('确认收货','Mark received')}</Button>}{write&&['awaiting_photos','photo_review','ready_to_ship'].includes(request.status)&&<Button danger onClick={()=>open({action:'cancel',note:''})}>{text('取消申请','Cancel request')}</Button>}</Space>
+ {['received','final_offer','accepted','paid','return_requested','returning','returned'].includes(request.status)&&<BuybackInspection key={request.id+request.updated_at} request={request} write={!!write} zh={zh} onExpired={onExpired} onSaved={current=>{setDetail(current);setAttempt(n=>n+1)}}/>}
  <Timeline items={request.history.slice().reverse().map((v,i)=>({key:i,children:<>{statuses[v.status as keyof typeof statuses]} · {v.action} · {v.actor}<br/>{new Date(v.at).toLocaleString(zh?'zh-CN':'en-GB')}{v.note&&<p>{v.note}</p>}</>}))}/>
  </>}
  </Space></Drawer>

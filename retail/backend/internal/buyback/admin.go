@@ -211,10 +211,15 @@ func AdminRequestTx(ctx context.Context, tx *gorm.DB, actor identity.User, store
 		status = "canceled"
 		changes["review_note"] = in.Note
 	}
+	return finishAdminCommandTx(ctx, tx, actor, store, account, request, out, in.Action, in.Note, in.PhotoID, status, changes, notice)
+}
+
+func finishAdminCommandTx(ctx context.Context, tx *gorm.DB, actor identity.User, store, account string, request RequestDetail, out AdminDetail, action, note, photoID, status string, changes map[string]any, notice bool) (AdminDetail, error) {
+	id := request.ID
 	now := time.Now().UTC().Truncate(time.Microsecond)
-	event := map[string]any{"at": now, "action": in.Action, "actor": "platform", "status": status, "note": in.Note}
-	if in.Action == "review_photo" {
-		event["photo_id"] = in.PhotoID
+	event := map[string]any{"at": now, "action": action, "actor": "platform", "status": status, "note": note}
+	if action == "review_photo" {
+		event["photo_id"] = photoID
 	}
 	raw, e := json.Marshal(event)
 	if e != nil {
@@ -240,12 +245,12 @@ func AdminRequestTx(ctx context.Context, tx *gorm.DB, actor identity.User, store
 			return out, ErrUnavailable
 		}
 		if active == 1 {
-			if tx.Table("customer_account_notices").Create(map[string]any{"id": "notice_" + uuid.NewString(), "customer_id": account, "event_key": "buyback:" + id + ":" + uuid.NewString(), "kind": "buyback.updated", "resource_id": id, "reference": id, "action": in.Action, "created_at": now}).Error != nil {
+			if tx.Table("customer_account_notices").Create(map[string]any{"id": "notice_" + uuid.NewString(), "customer_id": account, "event_key": "buyback:" + id + ":" + uuid.NewString(), "kind": "buyback.updated", "resource_id": id, "reference": id, "action": action, "created_at": now}).Error != nil {
 				return out, ErrUnavailable
 			}
 		}
 	}
-	audit, _ := json.Marshal(map[string]any{"action": in.Action, "photo_id": in.PhotoID, "from_status": request.Status, "to_status": status})
+	audit, _ := json.Marshal(map[string]any{"action": action, "photo_id": photoID, "from_status": request.Status, "to_status": status})
 	if tx.Table("audit_events").Create(map[string]any{"id": "audit_" + uuid.NewString(), "actor_id": actor.ID, "action": "buyback.command", "resource_id": id, "data": string(audit), "created_at": now}).Error != nil {
 		return out, ErrUnavailable
 	}

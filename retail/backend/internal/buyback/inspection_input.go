@@ -3,8 +3,7 @@ package buyback
 import "encoding/json"
 
 // InspectionCommand is the original device-link/final-offer input contract.
-// It is preparation for inspection persistence; the admin HTTP handler does not
-// accept these actions until its transactional device checks are implemented.
+// The HTTP handler routes these actions to their own transactional device checks.
 type InspectionCommand struct {
 	Action   string            `json:"action"`
 	ItemID   string            `json:"item_id,omitempty"`

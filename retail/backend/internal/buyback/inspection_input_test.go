@@ -61,10 +61,11 @@ func TestOriginalInspectionCommandValidator(t *testing.T) {
 			t.Fatal("invalid inspection input accepted")
 		}
 	}
-	// Preparation is not accidentally exposed by the currently enabled handler.
+	// Inspection actions retain their separate strict parser; review-only input
+	// must not silently accept additional union arms.
 	for _, raw := range []string{`{"action":"link_device","item_id":"i","device_id":"d"}`, `{"action":"final_offer","items":[{"item_id":"i","amount":0,"notes":"inspected"}]}`} {
 		if _, e := ParseAdminCommand([]byte(raw)); e == nil {
-			t.Fatal("unimplemented inspection action exposed")
+			t.Fatal("review parser accepted inspection action")
 		}
 	}
 }

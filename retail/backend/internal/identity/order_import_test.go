@@ -52,7 +52,7 @@ func TestOwnedOrderImport(t *testing.T) {
 		t.Fatal("order import plan invalid")
 	}
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 76 {
+	if err != nil || r.Applied != 77 {
 		t.Fatal("order import migrations failed")
 	}
 	names, _ := orderimport.SourceTables()
