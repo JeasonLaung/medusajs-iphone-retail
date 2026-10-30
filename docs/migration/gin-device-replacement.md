@@ -25,3 +25,11 @@ RETURN_ITEM 增加 requested；RECEIVE_DAMAGED_RETURN_ITEM 增加 dismissed 和 
 ## 证据
 
 [资格读取报告](device-replacement-report.json)。隔离 Gin/MySQL/Redis 通过：订单原 SKU、已履约候选、来源/仓库一致性、设备可用状态、重复替换、原生退货关联、付款/申请状态、事实版本变化、撤权/仓库身份/已删除设备/外订单、严格查询与业务设备不变。没有浏览器或换机写入完成声明。
+
+## 订单版本事务参与者
+
+后续换机写入复用 `orders.AdvanceVersionTx`：必须在调用方已授权的真实事务内执行，锁订单并核对当前版本，拒绝草稿/取消订单、待处理变更及已存在的后续版本。按新行 ID 复制当前商品数量、运费关联、优惠调整、credit line 和 summary，保留完整 scalar/raw 字段、可空引用和元数据；税行和商品描述本来不按版本复制，继续共享原快照。
+
+复制后调用现有 ReadAmountSnapshot 核对每个商品/运费及总金额、交易汇总完全一致，再返回新版本；原版本不修改。调用者任意后续错误必须回滚整个事务，不能因参与者返回成功就提交不完整换机。这不是独立公开 API，没有自动赋予权限、创建换货单、新商品或库存预留，也没有替代不可变命令收据。当前换机写入仍不可用。
+
+参与者验证见 [订单版本报告](order-version-report.json)：全部 Go 包、真实 SQL 的 AdminAuthentication / InventoryStockEdits / ProductInventory 通过；不含换机命令或浏览器完成声明。复制时 MySQL 运费优惠生成列由数据库重算，未来版本优惠也被拒绝；测试在独立人工数据中执行并完整清理。

@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-30",
+  "scope": "Internal order version transaction participant required for exchange write",
+  "full_storefront_accepted": false,
+  "exchange_command_integrated": false,
+  "schema_migrations": 70,
+  "unit_all_go_packages_passed": true,
+  "real_sql_suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "evidence": {
+    "real_mysql": true,
+    "exact_amounts_unchanged": true,
+    "raw_precision_preserved": true,
+    "old_version_immutable": true,
+    "items_shipping_credit_summary_adjustments_copied": true,
+    "tax_snapshot_shared": true,
+    "stale_canceled_pending_future_denied": true,
+    "autocommit_denied": true,
+    "owner_rollback": true,
+    "late_copy_failure_atomic": true,
+    "exchange_command_integrated": false
+  },
+  "generated_shipping_adjustment_key_recomputed": true,
+  "future_adjustment_version_rejected": true,
+  "tested_source_files": [
+    {
+      "path": "retail/backend/internal/identity/device_replacement_test.go",
+      "sha256": "9471829ffe287aff03e1fa5f9e99a550a8b30f14d0bffeda3bf63ed15d6a71f5"
+    },
+    {
+      "path": "retail/backend/internal/identity/order_version_test.go",
+      "sha256": "426661ab993cef4dc222fdc542290508a25bf627a876796239afa03c50e60c20"
+    },
+    {
+      "path": "retail/backend/internal/orders/version.go",
+      "sha256": "ed2fa98edf810e4e608039b6f898054c87abddbf917ff3cdcd92c242c33fc9e5"
+    }
+  ],
+  "owned_containers_and_runner_cleaned": true,
+  "existing_service_health": {
+    "9001_health": 200,
+    "9001_app": 200,
+    "8000_account_orders": 200,
+    "8000_cart": 200
+  },
+  "existing_logs": "Existing anonymous order Unauthorized / locales 404 remain; no new outage observed",
+  "remaining": [
+    "native exchange command",
+    "new item with tax and promotion behavior",
+    "quarantine return and exchange records",
+    "atomic replacement reservation",
+    "React operation and real joint flow",
+    "full storefront closure"
+  ]
+}
