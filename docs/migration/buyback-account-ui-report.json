@@ -1,0 +1,47 @@
+{
+  "cases": [
+    "23-request original list, pagination, global totals, retry and account nav",
+    "identity/required-photo validation, real PNG-to-WebP compression, three slots, CSRF submission and timeline",
+    "accept_offer original confirmation and response state with stale-offer recovery",
+    "decline_offer original confirmation and response state",
+    "cancel original confirmation and response state",
+    "Chinese shipping form, packaging-only controls, current timeline and mobile layout",
+    "anonymous account route uses existing login",
+    "en/390/list: original body identical pixels in shared Ant5 runtime",
+    "en/390/awaiting_photos: original body identical pixels in shared Ant5 runtime",
+    "en/390/final_offer: original body identical pixels in shared Ant5 runtime",
+    "en/1440/list: original body identical pixels in shared Ant5 runtime",
+    "en/1440/awaiting_photos: original body identical pixels in shared Ant5 runtime",
+    "en/1440/final_offer: original body identical pixels in shared Ant5 runtime",
+    "zh/390/list: original body identical pixels in shared Ant5 runtime",
+    "zh/390/awaiting_photos: original body identical pixels in shared Ant5 runtime",
+    "zh/390/final_offer: original body identical pixels in shared Ant5 runtime",
+    "zh/1440/list: original body identical pixels in shared Ant5 runtime",
+    "zh/1440/awaiting_photos: original body identical pixels in shared Ant5 runtime",
+    "zh/1440/final_offer: original body identical pixels in shared Ant5 runtime"
+  ],
+  "hydration_errors": 0,
+  "scope": "Real Astro/React original account list/detail and customer client with intercepted API; 12 original-body pixel comparisons in shared Ant5; not real Gin joint or Next/Ant6 full-page acceptance.",
+  "date": "2026-10-30",
+  "frontend_unit_tests": 173,
+  "astro_check": {
+    "files": 387,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 5
+  },
+  "photo_preview_decoded": true,
+  "old_services": {
+    "health": 200,
+    "app": 200,
+    "sell": 200,
+    "existing_locales_404": true,
+    "new_stderr": false
+  },
+  "original_source_sha256": {
+    "medusa-store\\apps\\storefront\\src\\modules\\sell\\components\\buyback-requests.tsx": "99f8e09d44b9f5e9b3221e84d919cbf2eb11f6349d0a9a34310990e8006c7858",
+    "medusa-store\\apps\\storefront\\src\\modules\\sell\\request.module.css": "0ebb45e39d1b5a5b456535c82cc66ba2ba9146813624ae53800bf0af24b2fc6a",
+    "medusa-store\\apps\\storefront\\src\\modules\\sell\\buyback-copy.ts": "30e3ba82658d39cb23541e0e55efc5316389989c3aa979d90c6117df5b6a1f94"
+  },
+  "accepted_full_buyback_loop": false
+}

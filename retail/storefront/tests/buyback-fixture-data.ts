@@ -1,0 +1,5 @@
+import type {BuybackRequest} from '../src/lib/buyback-requests.ts'
+export const requestFixture=():BuybackRequest=>({
+ id:'bbr_00000000-0000-4000-8000-000000000001',status:'awaiting_photos',contact_name:'Test Customer',email:'customer@example.invalid',phone:'+45123456',return_address:{name:'Test Customer',address_1:'Street 1',address_2:'',city:'Copenhagen',postal_code:'1000',country_code:'dk'},
+ items:[{id:'bbi_fixture',product_id:'prod_fixture',model:'iphone-13',model_name:'iPhone 13',capacity:'128GB',assessment:{battery:'90',checks:[true,true,true,true,true],faults:['none'],glass:['none'],screen:'none',frame:'visible',back:'none'},reference_amount:294,final_amount:null,inspection_notes:'',serial_number:'',imei:'',device_id:null}],photos:[],reference_amount:294,final_amount:null,currency_code:'eur',shipping_instructions:'',tracking_number:'',return_tracking:'',payment_reference:'',review_note:'',created_at:'2026-10-30T00:00:00Z',updated_at:'2026-10-30T00:00:00Z',closed_at:null,deleted_at:null,retention_days:180,history:[{at:'2026-10-30T00:00:00Z',action:'submitted',actor:'customer',status:'awaiting_photos'}],
+})

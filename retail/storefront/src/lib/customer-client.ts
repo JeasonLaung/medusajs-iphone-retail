@@ -2,6 +2,7 @@ import {orderConfirmationProjection,type OrderConfirmation} from './cart-client.
 import {orderListProjection,type CustomerOrderList} from './customer-orders.ts'
 import {customerChanged} from './customer-events.ts'
 import type {BuybackDraft} from './buyback-client.ts'
+import {buybackRequestProjection,buybackListProjection,type BuybackCommand} from './buyback-requests.ts'
 import {buybackID,photoProjection,photoContentProjection,type BuybackPhotoUpload} from './buyback-photos.ts'
 import {noticePage,noticeID} from './customer-notices.ts'
 import {customerProgressProjection,type CustomerProgress} from './customer-progress.ts'
@@ -78,7 +79,26 @@ export function customerClient(fetcher:typeof fetch=fetch){
   if(matches.length!==1||!/^[0-9a-f]{64}$/.test(matches[0][1]??''))throw new CustomerError(403)
   return matches[0][1]
  }
+ async function buybackResult<T>(work:()=>Promise<T>){
+  try{return {data:await work(),error:null}}catch(e){
+   const codes:Record<string,number>={BUYBACK_NOT_FOUND:404,BUYBACK_INVALID_STATE:409,BUYBACK_IDENTITY_REQUIRED:409,BUYBACK_PHOTOS_REQUIRED:409,BUYBACK_OFFER_CHANGED:409}
+   return {data:null,error:e instanceof CustomerError&&e.status===401?'BUYBACK_LOGIN_REQUIRED':e instanceof CustomerError&&e.code&&codes[e.code]===e.status?e.code:'BUYBACK_REQUEST_FAILED'}
+  }
+ }
+ async function buybackRequest(id:string,body?:BuybackCommand){
+  if(!buybackID(id))throw new CustomerError(400)
+  const raw=await call('/buyback/requests/'+id,body as unknown as Record<string,unknown>|undefined,body?sessionCSRF():undefined,200)
+  if(!raw||Object.keys(raw).length!==1)throw new CustomerError(503)
+  const request=buybackRequestProjection(raw.request);if(request.id!==id)throw new CustomerError(503)
+  return {request}
+ }
  return {
+  async buybackRequest(id:string){return buybackResult(()=>buybackRequest(id))},
+  async updateBuybackRequest(id:string,input:BuybackCommand){return buybackResult(()=>buybackRequest(id,input))},
+  async buybackRequests(offset=0){return buybackResult(async()=>{
+   if(!Number.isSafeInteger(offset)||offset<0||offset>100000)throw new CustomerError(400)
+   return buybackListProjection(await call('/buyback/requests?offset='+offset,undefined,undefined,200),offset)
+  })},
   async uploadBuybackPhoto(id:string,input:BuybackPhotoUpload){
    try{
     if(!buybackID(id))throw new CustomerError(400)

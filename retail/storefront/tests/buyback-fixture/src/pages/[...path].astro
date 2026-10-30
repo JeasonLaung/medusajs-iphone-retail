@@ -1,0 +1,8 @@
+---
+import Compare from '../compare'
+import GinAccount from '../../../../src/components/account/gin-account'
+import '../../../../src/styles/original.css'
+const parts=Astro.url.pathname.split('/').filter(Boolean)
+const segment=parts[0]||'dk-en',id=parts[3]||''
+---
+<html lang={segment.endsWith('-zh')?'zh':'en'}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head><body><Fragment>{Astro.url.searchParams.has("compare")?<Compare segment={segment} id={id} reference={Astro.url.searchParams.get("compare")==="reference"} client:load/>:<GinAccount segment={segment} enabled={true} buyback={!id} buybackID={id} client:load/>}</Fragment></body></html>

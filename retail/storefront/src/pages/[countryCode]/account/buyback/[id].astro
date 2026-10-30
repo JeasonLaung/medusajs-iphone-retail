@@ -1,0 +1,18 @@
+---
+import {GIN_API_ORIGIN,STOREFRONT_ORIGIN,CUSTOMER_BRIDGE_KEY} from 'astro:env/server'
+import Storefront from '../../../../layouts/Storefront.astro'
+import GinAccount from '../../../../components/account/gin-account'
+import {loadPublicPage} from '../../../../lib/public-page'
+import {getBuybackCopy} from '../../../../components/sell/buyback-copy'
+const segment=(Astro.params.countryCode??'').toLowerCase(),copy=getBuybackCopy(segment.endsWith("-zh")?"zh-CN":"en")
+let shell:Awaited<ReturnType<typeof loadPublicPage>>=null,unavailable=false
+try{shell=await loadPublicPage(GIN_API_ORIGIN,segment)}catch{unavailable=true}
+if(unavailable)Astro.response.status=503
+else if(!shell)Astro.response.status=404
+Astro.response.headers.set('Cache-Control','private, no-store')
+Astro.response.headers.set('X-Robots-Tag','noindex')
+const enabled=!!CUSTOMER_BRIDGE_KEY&&!!STOREFRONT_ORIGIN&&Astro.url.origin===STOREFRONT_ORIGIN
+---
+<Storefront segment={segment} title={copy.requestTitle} shell={shell??undefined}>
+ {shell?<GinAccount segment={segment} enabled={enabled} regions={shell.regions} buybackID={Astro.params.id??''} client:only="react"/>:<div class="content-container py-16"><h1>{unavailable?'Account unavailable':'Page not found'}</h1></div>}
+</Storefront>
