@@ -1,11 +1,12 @@
 import {useEffect,useRef,useState} from 'react'
-import {Alert,App,Button,Popconfirm,Space,Spin,Table,Tag,Typography} from 'antd'
+import {Alert,App,Button,Modal,Space,Spin,Table,Tag,Typography} from 'antd'
 import {APIError,orderMailJobs,retryOrderMail,type OrderMailJob,type OrderMailJobs as Jobs,type OrderMailRetry} from './api'
 import {useAccess} from './Permissions'
 import type {Copy} from './i18n'
 export default function OrderMailJobs({copy,onExpired}:{copy:Copy;onExpired():void}){
  const zh=copy.language==='语言',access=useAccess(),{message}=App.useApp(),busy=useRef(false)
  const [page,setPage]=useState(1),[revision,setRevision]=useState(0),[state,setState]=useState<{data?:Jobs;error?:unknown}>({}),[sending,setSending]=useState(false),[pending,setPending]=useState<{id:string;body:OrderMailRetry}>(),[error,setError]=useState<'uncertain'|'conflict'|'forbidden'>()
+ const [confirmation,setConfirmation]=useState<OrderMailJob>()
  const words=zh?{title:'订单邮件任务',info:'发送成功表示邮件服务已接收，不代表收件箱最终投递。人工重试保留原正文与编号，超过恢复时限的任务不能重发。',order:'订单',attempts:'尝试次数',reason:'失败原因',created:'创建时间',sent:'发送时间',retry:'重新排队',confirm:'确认重新排队这封订单邮件？',uncertain:'重试结果尚未确认，请使用同一操作重试。',conflict:'任务状态或恢复时限已变化，请刷新查看。',queued:'已重新排队',pending:'待发送',sending:'发送中',success:'服务已接收',failed:'失败'}:{title:'Order email jobs',info:'Sent means the email provider accepted the message, not confirmed inbox delivery. Retry preserves the original message and key; expired recovery windows cannot be retried.',order:'Order',attempts:'Attempts',reason:'Failure reason',created:'Created',sent:'Sent',retry:'Queue again',confirm:'Queue this order email again?',uncertain:'The retry result is not confirmed. Retry this same operation.',conflict:'The task or recovery window changed. Reload its current state.',queued:'Queued again',pending:'Pending',sending:'Sending',success:'Provider accepted',failed:'Failed'}
  const reload=()=>setRevision(n=>n+1)
  useEffect(()=>{const controller=new AbortController();setState({});orderMailJobs((page-1)*50,controller.signal).then(data=>{if(!controller.signal.aborted)setState({data})}).catch(error=>{if(!controller.signal.aborted){setState({error});if(error instanceof APIError&&error.status===401)onExpired()}});return()=>controller.abort()},[page,revision,onExpired])
@@ -29,7 +30,8 @@ export default function OrderMailJobs({copy,onExpired}:{copy:Copy;onExpired():vo
    {title:words.reason,dataIndex:'error_code',render:(v:string|null)=>v??'—'},
    {title:words.created,dataIndex:'created_at',render:date},
    {title:words.sent,dataIndex:'sent_at',render:date},
-   ...(access.can('mail.write')?[{title:words.retry,render:(_:unknown,j:OrderMailJob)=>pending?.id===j.id?<Button aria-label={words.retry} loading={sending} disabled={sending||error!=='uncertain'} onClick={()=>void retry(j)}>{words.retry}</Button>:<Popconfirm okText={zh?'确定':'OK'} cancelText={copy.cancel} title={words.confirm} onConfirm={()=>retry(j)} disabled={!!pending||!j.retryable}><Button aria-label={words.retry} loading={sending&&pending?.id===j.id} disabled={!j.retryable||!!pending&&(pending.id!==j.id||error!=='uncertain')} onClick={()=>{if(pending?.id===j.id&&error==='uncertain')void retry(j)}}>{words.retry}</Button></Popconfirm>}]:[])
+   ...(access.can('mail.write')?[{title:words.retry,render:(_:unknown,j:OrderMailJob)=>pending?.id===j.id?<Button aria-label={words.retry} loading={sending} disabled={sending||error!=='uncertain'} onClick={()=>void retry(j)}>{words.retry}</Button>:<Button aria-label={words.retry} disabled={!j.retryable||!!pending||!!confirmation} onClick={()=>setConfirmation(j)}>{words.retry}</Button>}]:[])
   ]}/>}
+  <Modal open={!!confirmation} title={words.confirm} okText={zh?'确定':'OK'} cancelText={copy.cancel} onCancel={()=>setConfirmation(undefined)} onOk={()=>{const job=confirmation;setConfirmation(undefined);if(job)void retry(job)}}><Typography.Paragraph>{confirmation?.order_id}</Typography.Paragraph></Modal>
  </Space></section>
 }

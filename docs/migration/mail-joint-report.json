@@ -1,0 +1,18 @@
+{
+  "real_admin": true,
+  "real_gin": true,
+  "real_mysql": true,
+  "mailbox_create_edit": true,
+  "blank_secret_preserved": true,
+  "original_mobile_registration": true,
+  "verification_link_consumed": true,
+  "new_customer_login": true,
+  "order_retry_confirmation_cancel": true,
+  "order_retry_persisted": true,
+  "mobile": true,
+  "browser_errors": 0,
+  "real_external_send": false,
+  "paid_order_worker_joint": false,
+  "durable_sql_verified": true,
+  "provider_transport_intercepted": true
+}
