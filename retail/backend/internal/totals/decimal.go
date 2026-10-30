@@ -141,3 +141,19 @@ func Resolve(n Number) (string, error) {
 	}
 	return v.text(), nil
 }
+
+// Sum combines validated scalar/raw numbers exactly without settlement rounding.
+func Sum(numbers ...Number) (string, error) {
+	if len(numbers) > 10000 {
+		return "", ErrInput
+	}
+	sum := integer(0)
+	for _, number := range numbers {
+		value, e := number.value()
+		if e != nil {
+			return "", e
+		}
+		sum = sum.add(value)
+	}
+	return sum.text(), nil
+}

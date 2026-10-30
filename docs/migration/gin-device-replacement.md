@@ -41,3 +41,11 @@ RETURN_ITEM 增加 requested；RECEIVE_DAMAGED_RETURN_ITEM 增加 dismissed 和 
 新行使用当前系统税配置，旧商品税行不改。原生 begin exchange 没有启用 carry_over_promotions，因此本参与者不盲目复制原商品优惠。所有履约、发货、退货及核销数量初始化为 0；订单数量为 1。保留任意精度 raw 单价，SQL DECIMAL 投影仅截取兼容精度；先创建商品与订单关联再回填 totals_id，遵守外键。
 
 本参与者仍未接公开换机命令。换货单、隔离退货、订单变更动作、金额汇总、数量预留及替换设备分配须由同一授权事务完成后才能开放界面。真实数据库证据见 [新商品行报告](exchange-item-report.json)，不表示完整换机已完成。
+
+## 换机订单汇总参与者
+
+`orders.RefreshChangeSummaryTx` 在同一调用方事务内按当前商品、税、优惠、数量及 credit 计算订单总额，再从未删除的实际 order_transactions 重算 transaction_total、paid_total、refunded_total，重算当前版本 credit_line_total。汇总缓存不能替代流水。币种不一致或晚于当前版本的流水拒绝；金额使用既有 totals 的精确 raw 优先算法，不经过浮点或支付币种舍入。
+
+current_order_total 与 accounting_total 继承原 order-change 的当前总额规则，pending_difference 为总额减净交易额，允许负数。保留历史版本、交易流水、original_order_total 及其他历史字段；当前汇总 scalar/raw 一起更新。该参与者不收款、不退款、不推断订单已付，也不单独提交；调用方必须将权限、换货/隔离退货、设备分配、库存预留和操作收据一起完成。
+
+验证使用原精确单价、新税行、含精确低位的实收与负向退款流水，确认新版本汇总与金额读取一致，旧版本及私有历史不变；故障触发器拒绝汇总更新时，已复制的订单版本与新商品行全部回滚。见 [汇总报告](exchange-summary-report.json)。换机公开命令及界面仍未完成。

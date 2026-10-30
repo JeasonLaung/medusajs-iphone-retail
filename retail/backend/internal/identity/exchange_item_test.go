@@ -1,6 +1,7 @@
 package identity_test
 
 import (
+	"encoding/json"
 	"errors"
 	"testing"
 
@@ -34,10 +35,16 @@ func checkExchangeItem(t *testing.T, db *gorm.DB) {
 	if _, e := orders.CreateExchangeItemTx(ctx, db, "allocation-order", "allocation-line", 1); e == nil {
 		t.Fatal("autocommit exchange item")
 	}
+	if _, e := orders.RefreshChangeSummaryTx(ctx, db, "allocation-order", 1); e == nil {
+		t.Fatal("autocommit summary")
+	}
 	var before int64
 	db.Table("order_line_items").Count(&before)
 	e := db.Transaction(func(tx *gorm.DB) error {
 		seed(tx)
+		originalSummary := `{"transaction_total":"1000","raw_transaction_total":{"value":"1000.000000000000000000001","precision":100},"paid_total":"1000","refunded_total":"0","original_order_total":"1000","private_history":{"keep":"exact"}}`
+		exec(tx, "INSERT INTO order_summaries(id,order_id,version,totals,created_at,updated_at) VALUES('exchange-summary','allocation-order',1,?,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", originalSummary)
+		exec(tx, `INSERT INTO order_transactions(id,order_id,version,amount,raw_amount,currency_code,created_at,updated_at) VALUES('exchange-capture','allocation-order',1,1100,'{"value":"1100.000000000000000000001","precision":100}','eur',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('exchange-refund','allocation-order',1,-100,'{"value":"-100","precision":100}','eur',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 		version, e := orders.AdvanceVersionTx(ctx, tx, "allocation-order", 1)
 		if e != nil {
 			t.Fatal("exchange version fixture", e)
@@ -71,6 +78,35 @@ func checkExchangeItem(t *testing.T, db *gorm.DB) {
 		amounts, e := orders.ReadAmountSnapshot(tx, "allocation-order")
 		if e != nil || len(amounts.Lines) != 2 {
 			t.Fatal("exchange item unreadable", e)
+		}
+		refreshed, e := orders.RefreshChangeSummaryTx(ctx, tx, "allocation-order", version)
+		if e != nil || refreshed.Summary == nil || refreshed.Summary.PendingDifference[0] != '-' {
+			t.Fatal("exchange summary signed difference", e)
+		}
+		var updated, oldSummary string
+		tx.Table("order_summaries").Select("totals").Where("order_id='allocation-order' AND version=?", version).Scan(&updated)
+		tx.Table("order_summaries").Select("totals").Where("id='exchange-summary'").Scan(&oldSummary)
+		var obj map[string]json.RawMessage
+		if json.Unmarshal([]byte(updated), &obj) != nil || string(obj["paid_total"]) != `"1100.000000000000000000001"` || string(obj["refunded_total"]) != `"100"` || string(obj["private_history"]) != `{"keep":"exact"}` || oldSummary != originalSummary || string(obj["raw_transaction_total"]) != `{"value":"1000.000000000000000000001","precision":100}` {
+			t.Fatal("exchange summary history changed", updated)
+		}
+		var current, pending string
+		json.Unmarshal(obj["current_order_total"], &current)
+		json.Unmarshal(obj["pending_difference"], &pending)
+		if current != refreshed.Totals["total"] || pending != refreshed.Summary.PendingDifference || len(obj["raw_pending_difference"]) == 0 {
+			t.Fatal("exchange summary amount mismatch")
+		}
+		exec(tx, "UPDATE order_transactions SET currency_code='usd' WHERE id='exchange-refund'")
+		if _, e := orders.RefreshChangeSummaryTx(ctx, tx, "allocation-order", version); e == nil {
+			t.Fatal("foreign ledger currency")
+		}
+		exec(tx, "UPDATE order_transactions SET currency_code='eur',version=99 WHERE id='exchange-refund'")
+		if _, e := orders.RefreshChangeSummaryTx(ctx, tx, "allocation-order", version); e == nil {
+			t.Fatal("future ledger version")
+		}
+		exec(tx, "UPDATE order_transactions SET version=1 WHERE id='exchange-refund'")
+		if _, e := orders.RefreshChangeSummaryTx(ctx, tx, "allocation-order", 1); e == nil {
+			t.Fatal("stale summary")
 		}
 		if _, e := orders.CreateExchangeItemTx(ctx, tx, "allocation-order", "allocation-line", 1); e == nil {
 			t.Fatal("stale item version")
@@ -140,5 +176,29 @@ func checkExchangeItem(t *testing.T, db *gorm.DB) {
 	if before != after {
 		t.Fatal("late tax failure leaked")
 	}
-	t.Log(`EXCHANGE_ITEM_REHEARSAL {"real_mysql":true,"same_order_sku":true,"original_exact_unit_price":true,"fresh_catalog_snapshot":true,"custom_price_without_quote":true,"inclusive_flag_not_copied":true,"current_quote_inclusive_and_sale_reference":true,"fresh_system_tax_original_untouched":true,"no_blind_discount_copy":true,"new_item_zero_fulfillment":true,"current_amount_reader":true,"stale_foreign_unpublished_provider_denied":true,"missing_region_and_disabled_channel_denied":true,"autocommit_denied":true,"owner_rollback":true,"late_tax_failure_atomic":true,"exchange_command_integrated":false}`)
+	exec(db, "CREATE TRIGGER exchange_summary_fault BEFORE UPDATE ON order_summaries FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='artificial summary update failure'")
+	e = db.Transaction(func(tx *gorm.DB) error {
+		seed(tx)
+		exec(tx, `INSERT INTO order_summaries(id,order_id,version,totals,created_at,updated_at) VALUES('exchange-fault-summary','allocation-order',1,'{"transaction_total":"0"}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+		v, e := orders.AdvanceVersionTx(ctx, tx, "allocation-order", 1)
+		if e != nil {
+			return e
+		}
+		if _, e = orders.CreateExchangeItemTx(ctx, tx, "allocation-order", "allocation-line", v); e != nil {
+			return e
+		}
+		_, e = orders.RefreshChangeSummaryTx(ctx, tx, "allocation-order", v)
+		return e
+	})
+	exec(db, "DROP TRIGGER exchange_summary_fault")
+	if e == nil {
+		t.Fatal("summary fault accepted")
+	}
+	db.Table("order_line_items").Count(&after)
+	var versionAfter int
+	db.Table("orders").Select("version").Where("id='allocation-order'").Scan(&versionAfter)
+	if before != after || versionAfter != 1 {
+		t.Fatal("summary failure leaked new line/version")
+	}
+	t.Log(`EXCHANGE_ITEM_REHEARSAL {"real_mysql":true,"same_order_sku":true,"original_exact_unit_price":true,"fresh_catalog_snapshot":true,"custom_price_without_quote":true,"inclusive_flag_not_copied":true,"current_quote_inclusive_and_sale_reference":true,"fresh_system_tax_original_untouched":true,"no_blind_discount_copy":true,"new_item_zero_fulfillment":true,"current_amount_reader":true,"stale_foreign_unpublished_provider_denied":true,"missing_region_and_disabled_channel_denied":true,"autocommit_denied":true,"owner_rollback":true,"late_tax_failure_atomic":true,"summary_preserves_history_and_old_version":true,"signed_exact_difference":true,"ledger_paid_and_refund_aggregates":true,"future_and_foreign_ledger_denied":true,"late_summary_failure_atomic":true,"exchange_command_integrated":false}`)
 }

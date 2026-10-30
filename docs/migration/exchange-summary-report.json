@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-30",
+  "scope": "Current order change summary refreshed from immutable ledger in owning exchange transaction",
+  "exchange_command_integrated": false,
+  "full_storefront_accepted": false,
+  "unit_all_go_packages_passed": true,
+  "real_sql_suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "evidence": {
+    "real_mysql": true,
+    "summary_preserves_history_and_old_version": true,
+    "signed_exact_difference": true,
+    "ledger_paid_and_refund_aggregates": true,
+    "future_and_foreign_ledger_denied": true,
+    "late_summary_failure_atomic": true,
+    "exchange_command_integrated": false
+  },
+  "tested_source_files": [
+    {
+      "path": "retail/backend/internal/orders/change_summary.go",
+      "sha256": "c481aaf79afa78a428d82c66ee6b0dd58db759888e2805071396f53e10935979"
+    },
+    {
+      "path": "retail/backend/internal/totals/decimal.go",
+      "sha256": "52a5e78e970727ca18eebcebf5c9f81e6e60372d739b9556a2f8cc2857a7d5d0"
+    },
+    {
+      "path": "retail/backend/internal/identity/exchange_item_test.go",
+      "sha256": "396fb9739f0cdb41500572c529335a9d7d16a9ee55583719a78fd25813f160e8"
+    }
+  ],
+  "owned_runner_cleanup": "complete",
+  "existing_service_health": {
+    "9001_health": 200,
+    "9001_app": 200,
+    "8000_account_orders": 200,
+    "8000_cart": 200
+  },
+  "remaining": [
+    "Native exchange and quarantine return records",
+    "Atomic quantity reservation and device replacement allocation",
+    "Command receipt, HTTP and React operation",
+    "Real complete exchange joint flow",
+    "Full storefront closure"
+  ]
+}
