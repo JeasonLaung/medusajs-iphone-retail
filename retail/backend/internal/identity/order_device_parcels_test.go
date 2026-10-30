@@ -32,6 +32,7 @@ func checkOrderDeviceParcels(t *testing.T, db *gorm.DB, actor identity.User, cal
 	if bID == "" || aID == "" || aID == bID {
 		t.Fatal("two owned parcel fixtures required")
 	}
+	checkWarehouseAllocation(t, db, actor, call, bID)
 	path := func(f string) string { return "/api/admin/orders/allocation-order/fulfillments/" + f + "/operations" }
 	body := func(in devices.ParcelInput) string { b, _ := json.Marshal(in); return string(b) }
 	read := func(f string) devices.ParcelContext {

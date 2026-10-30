@@ -4,12 +4,12 @@ import {APIError,type ParcelInput} from './api'
 import {warehouseShipment,shipWarehouseParcel,type WarehouseShipment as Shipment} from './warehouse-fulfillments-api'
 import type {Copy} from './i18n'
 
-export default function WarehouseShipment({location,order,id,copy,onExpired,onSaved,onBusy}:{location:string;order:string;id:string;copy:Copy;onExpired():void;onSaved():void;onBusy(busy:boolean):void}){
+export default function WarehouseShipment({location,order,id,copy,onExpired,onSaved,onBusy,blocked=false}:{location:string;order:string;id:string;copy:Copy;onExpired():void;onSaved():void;onBusy(busy:boolean):void;blocked?:boolean}){
  const [data,setData]=useState<Shipment>(),[loadError,setLoadError]=useState(false),[reload,setReload]=useState(0),[error,setError]=useState<'uncertain'|'denied'|'conflict'|'invalid'>(),[attempt,setAttempt]=useState<ParcelInput>(),[saving,setSaving]=useState(false),[done,setDone]=useState(false),active=useRef(false)
  const [form]=Form.useForm<{tracking_number:string;tracking_url:string}>()
  useEffect(()=>{const abort=new AbortController();setData(undefined);setLoadError(false);warehouseShipment(location,order,id,abort.signal).then(d=>{if(!abort.signal.aborted)setData(d)}).catch(e=>{if(!abort.signal.aborted){if(e instanceof APIError&&e.status===401)onExpired();else setLoadError(true)}});return()=>abort.abort()},[location,order,id,reload,onExpired])
  const send=async()=>{
-  if(active.current||!data)return
+  if(active.current||blocked||!data)return
   active.current=true
   let body=attempt
   if(!body){try{const v=await form.validateFields();body={operation_id:crypto.randomUUID(),expected_revision:data.revision,action:'ship',tracking_number:v.tracking_number.trim(),tracking_url:(v.tracking_url??'').trim()}}catch{active.current=false;return}}
@@ -18,7 +18,7 @@ export default function WarehouseShipment({location,order,id,copy,onExpired,onSa
   catch(e){if(e instanceof APIError&&e.status===401)onExpired();else if(e instanceof APIError&&[403,404].includes(e.status))setError('denied');else if(e instanceof APIError&&e.status===409)setError('conflict');else if(e instanceof APIError&&e.status===400){setAttempt(undefined);setError('invalid')}else setError('uncertain')}
   finally{active.current=false;setSaving(false);onBusy(false)}
  }
- const locked=saving||!!attempt||done||!data?.enabled||!data.order_active||!data.supported||data.status!=='packed'
+ const locked=blocked||saving||!!attempt||done||!data?.enabled||!data.order_active||!data.supported||data.status!=='packed'
  if(loadError)return <Alert type="error" message={copy.unavailable} action={<Button onClick={()=>setReload(n=>n+1)}>{copy.retry}</Button>}/>
  if(!data)return <Spin/>
  return <Space direction="vertical" className="full-width" data-testid="warehouse-shipment">

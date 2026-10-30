@@ -11,7 +11,7 @@ export async function shipAsWarehouse({browser,admin,page,origin,parcelID,errors
  await editor.getByLabel('Email',{exact:true}).fill('warehouse-shipping@example.invalid')
  await editor.getByLabel('Password',{exact:true}).fill('artificial-warehouse-shipping-password')
  await editor.getByText(`${location.name} (${location.id})`,{exact:true}).click();await editor.locator('.ant-transfer-operation button').first().click()
- for(const name of ['View fulfillment records','Ship warehouse parcels']){await editor.getByRole('checkbox',{name,exact:true}).click();await expect(editor.getByRole('checkbox',{name,exact:true})).toBeChecked()}
+ for(const name of ['View fulfillment records','Ship warehouse parcels','Allocate warehouse parcels']){await editor.getByRole('checkbox',{name,exact:true}).click();await expect(editor.getByRole('checkbox',{name,exact:true})).toBeChecked()}
  await editor.getByRole('button',{name:'Save',exact:true}).click();await expect(editor).not.toBeVisible()
  const worker=await browser.newContext({viewport:{width:390,height:1000},reducedMotion:'reduce'})
  try{
@@ -20,7 +20,29 @@ export async function shipAsWarehouse({browser,admin,page,origin,parcelID,errors
   await p.goto(origin+'/account');await p.getByLabel('Email',{exact:true}).fill('warehouse-shipping@example.invalid');await p.getByLabel('Password',{exact:true}).fill('artificial-warehouse-shipping-password');await p.getByRole('button',{name:'Sign in',exact:true}).click();await expect(p.getByRole('button',{name:'Sign out',exact:true})).toBeVisible()
   await p.goto(origin+'/warehouse-fulfillments');await p.getByTestId('warehouse-fulfillments').getByRole('button',{name:parcelID,exact:true}).click()
   const detail=p.locator('.ant-drawer-content'),shipping=detail.getByTestId('warehouse-shipment')
-  await expect(detail.getByText('ALLOC-A',{exact:true})).toBeVisible();await expect(detail.getByText('ALLOC-B',{exact:true})).toBeVisible()
+  await expect(detail.getByText('ALLOC-A',{exact:true}).first()).toBeVisible();await expect(detail.getByText('ALLOC-B',{exact:true}).first()).toBeVisible()
+  const allocation=detail.getByTestId('warehouse-allocation'),allocationRequests=[]
+  await p.route('**/allocation',async route=>{
+   if(route.request().method()!=='POST'){await route.continue();return}
+   allocationRequests.push(route.request().postDataJSON());const response=await route.fetch();assert.equal(response.status(),200)
+   if(allocationRequests.length===1)await route.abort('failed');else await route.fulfill({response})
+  })
+  async function replace(from,to){
+   await allocation.getByRole('row').filter({has:p.getByText(from,{exact:true})}).getByRole('checkbox').uncheck()
+   await allocation.getByRole('row').filter({has:p.getByText(to,{exact:true})}).getByRole('checkbox').check()
+   await allocation.getByRole('button',{name:'Save',exact:true}).click()
+  }
+  await replace('ALLOC-A','ALLOC-C')
+  await expect(allocation.getByRole('button',{name:'Retry this save',exact:true})).toBeVisible()
+  await allocation.getByRole('button',{name:'Retry this save',exact:true}).click()
+  await expect(detail.getByRole('table').first()).toBeVisible()
+  await expect(detail.getByRole('cell',{name:'ALLOC-C',exact:true}).first()).toBeVisible()
+  await expect(allocation.getByRole('button',{name:'Save',exact:true})).toBeEnabled()
+  await expect(allocation.getByRole('row').filter({has:p.getByText('ALLOC-C',{exact:true})}).getByRole('checkbox')).toBeChecked()
+  assert.equal(allocationRequests.length,2);assert.deepEqual(allocationRequests[0],allocationRequests[1])
+  await replace('ALLOC-C','ALLOC-A')
+  await expect(allocation.getByRole('row').filter({has:p.getByText('ALLOC-A',{exact:true})}).getByRole('checkbox')).toBeChecked()
+  await expect(allocation.getByRole('button',{name:'Save',exact:true})).toBeEnabled()
   await shipping.getByLabel('Tracking number',{exact:true}).fill('TRACK-JOINT-001')
   await shipping.getByLabel('Tracking URL',{exact:true}).fill('https://tracking.example.invalid/TRACK-JOINT-001')
   const requests=[]

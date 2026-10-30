@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-30",
+  "scope": "Warehouse existing-parcel initial allocation and replacement; cancel/release pending",
+  "gin_mysql": {
+    "real_gin_mysql": true,
+    "same_warehouse_sku_candidates": true,
+    "private_projection": true,
+    "payment_and_capacity_checked": true,
+    "replace_preserves_assignment_id": true,
+    "old_device_available": true,
+    "concurrent_attempts": 4,
+    "one_fresh_receipt": true,
+    "late_failure_atomic": true,
+    "immutable_replay": true,
+    "revoked_scope_and_moved_device_replay_denied": true,
+    "original_device_restored_by_command": true,
+    "same_device_no_duplicate": true,
+    "parcel_release_pending": true
+  },
+  "quantity_stock_and_reservations_identical": true,
+  "historical_parcel_initial_assignment": true,
+  "go_all_passed": true,
+  "admin_typescript_passed": true,
+  "real_browser_joint": {
+    "api_response_fabricated": false,
+    "real_response_dropped_for_retry": true,
+    "replacement_then_restore_then_ship": true,
+    "allocation_retry_body_unchanged": true,
+    "mobile_en": 390,
+    "desktop_zh": 1440,
+    "durable_mysql_verified": true
+  },
+  "read_browser_regression_passed": true,
+  "source_lf_sha256": {
+    "retail/backend/internal/devices/allocation.go": "f92469a3dc3248b33fdd686cfb77305c24a9a76e01e6b932ca9127944a5e4ade",
+    "retail/backend/internal/devices/warehouse_allocation.go": "a2e080ac47539fc74121498441d81009cd706ab84505c88acfdae6d2a872c0bf",
+    "retail/backend/internal/devices/warehouse_fulfillments.go": "91ff6a36a84865dad1dd0aa06614b573db13fdca118b35d888bb505a09aa7678",
+    "retail/backend/internal/identity/warehouse_allocation_test.go": "0441396c40ae6ddfa57cee3303f5c347618bf00825a4864415f7db2d7cca2426",
+    "retail/backend/internal/identity/order_device_parcels_test.go": "fd1f12514ab64ac1153b679e1a841c24f27e94353a0bad17f882477afe86256d",
+    "retail/admin/src/WarehouseAllocation.tsx": "4131a17c7d61429f76feef9e31b0c7438bca852b2f4255c35c1cc9985ff8f63a",
+    "retail/admin/src/WarehouseShipment.tsx": "86a4d3411de783832d96d12ca5934f84eb31b9e4b22f3aa2beb1174b0a6b71aa",
+    "retail/admin/src/WarehouseFulfillments.tsx": "e2ceb6fb2bcc0e56cab25d95f44f0b63fe61fde9856d680d6aa8f6391ced5f9b",
+    "retail/admin/src/warehouse-fulfillments-api.ts": "d1c11ca7953efce20f0b4d9d0921be4fc16a13da61e2c632920b12c71c24c77c",
+    "retail/admin/tests/warehouse-shipment.joint.mjs": "2bfe53dd92f876895d94f542d2a2e16cdedd0ef0137dab4d4f4d5ca238fd6ac4"
+  },
+  "cleanup": "complete"
+}

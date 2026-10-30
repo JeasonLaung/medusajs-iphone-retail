@@ -590,3 +590,8 @@
 ### 2026-10-30: warehouse whole parcel shipment
 
 - Dedicated read/ship endpoints and Ant parcel form reuse platform shipment transaction with current warehouse grants/bindings before receipt replay. Moved devices/assignments and revoked scopes denied. Real SQL concurrency/rollback/no repeated stock deduction and real mobile English shipment with dropped-response immutable retry passed; Chinese desktop disabled state and four read-only contexts passed. Full Go, Admin types and scoped read browser regression pass. Warehouse allocation/replacement remain pending. See `migration/warehouse-shipment.md`.
+
+
+### 2026-10-30: warehouse parcel allocation and replacement
+
+- Added dedicated existing-parcel item allocation and Ant searchable device table. Own warehouse/SKU/source/channel/payment/quantity and current permission checks; replacement preserves assignment identity, restores old device and never mutates quantity stock. Real MySQL concurrent/idempotent/rollback/revocation tests plus initial historical parcel allocation pass. Real mobile Admin replacement/lost-response retry/restore followed by whole shipment and Chinese desktop checks pass; full Go and types pass. Warehouse release/cancel workflow remains pending. See `migration/warehouse-allocation.md`.

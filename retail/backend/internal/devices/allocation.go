@@ -165,6 +165,9 @@ func allocationRuntimeGate(ctx context.Context, tx *gorm.DB) (uint64, bool, erro
 	return revision, cap.Enabled, nil
 }
 func loadAllocation(tx *gorm.DB, orderID, itemID string, revision uint64, enabled bool) (AllocationContext, error) {
+	return loadAllocationAt(tx, orderID, itemID, revision, enabled, "")
+}
+func loadAllocationAt(tx *gorm.DB, orderID, itemID string, revision uint64, enabled bool, location string) (AllocationContext, error) {
 	out := AllocationContext{OrderID: orderID, ItemID: itemID, Enabled: enabled, Devices: []AllocationDevice{}, Assignments: []AllocationAssignment{}}
 	var order struct {
 		ID, Status     string
@@ -225,7 +228,11 @@ func loadAllocation(tx *gorm.DB, orderID, itemID string, revision uint64, enable
 		out.Remaining = 0
 	}
 	if order.SalesChannelID != nil {
-		if tx.Table("devices d").Select("d.id,d.serial_number,d.imei,d.imei2,d.eid,d.variant_id,d.source_id,s.name AS source_name,d.location_id,l.name AS location_name,d.state,d.category,d.updated_at").Joins("JOIN device_sources s ON s.id=d.source_id AND s.deleted_at IS NULL AND s.location_id=d.location_id").Joins("JOIN inventory_locations l ON l.id=d.location_id AND l.deleted_at IS NULL").Where("d.variant_id=? AND d.deleted_at IS NULL AND d.state='available' AND d.category='sale'", line.VariantID).Where("EXISTS (SELECT 1 FROM commerce_channel_locations cl WHERE cl.stock_location_id=d.location_id AND cl.sales_channel_id=? AND cl.deleted_at IS NULL)", *order.SalesChannelID).Where("NOT EXISTS (SELECT 1 FROM device_assignments a WHERE a.device_id=d.id AND a.status IN ('reserved','packed','shipped') AND a.deleted_at IS NULL)").Order("d.location_id,d.id").Limit(10001).Clauses(clause.Locking{Strength: "SHARE"}).Scan(&out.Devices).Error != nil || len(out.Devices) > 10000 {
+		query := tx.Table("devices d").Select("d.id,d.serial_number,d.imei,d.imei2,d.eid,d.variant_id,d.source_id,s.name AS source_name,d.location_id,l.name AS location_name,d.state,d.category,d.updated_at").Joins("JOIN device_sources s ON s.id=d.source_id AND s.deleted_at IS NULL AND s.location_id=d.location_id").Joins("JOIN inventory_locations l ON l.id=d.location_id AND l.deleted_at IS NULL").Where("d.variant_id=? AND d.deleted_at IS NULL AND d.state='available' AND d.category='sale'", line.VariantID).Where("EXISTS (SELECT 1 FROM commerce_channel_locations cl WHERE cl.stock_location_id=d.location_id AND cl.sales_channel_id=? AND cl.deleted_at IS NULL)", *order.SalesChannelID).Where("NOT EXISTS (SELECT 1 FROM device_assignments a WHERE a.device_id=d.id AND a.status IN ('reserved','packed','shipped') AND a.deleted_at IS NULL)")
+		if location != "" {
+			query = query.Where("d.location_id=?", location)
+		}
+		if query.Order("d.location_id,d.id").Limit(10001).Clauses(clause.Locking{Strength: "SHARE"}).Scan(&out.Devices).Error != nil || len(out.Devices) > 10000 {
 			return out, ErrUnavailable
 		}
 	}

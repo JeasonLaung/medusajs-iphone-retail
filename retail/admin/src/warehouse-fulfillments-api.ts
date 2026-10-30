@@ -1,11 +1,23 @@
 import {APIError,request,csrfCookie} from './api'
-import type {ParcelInput} from './api'
+import type {ParcelInput,AllocationInput} from './api'
 export type WarehouseParcel={id:string;order_id:string;reference:string;location_id:string;created_at:string;packed_at:string|null;shipped_at:string|null;delivered_at:string|null}
 export type WarehouseParcels={location_id:string;fulfillments:WarehouseParcel[];offset:number;limit:50;has_more:boolean}
 export type WarehouseParcelDetail=WarehouseParcel&{items:{id:string;item_id:string|null;title:string;sku:string;quantity:string}[];devices:{id:string;item_id:string;serial_number:string;status:string}[];labels:{id:string;tracking_number:string;tracking_url:string;label_url:string}[]}
 const parcel=(p:WarehouseParcel,location:string)=>p&&p.location_id===location&&typeof p.id==='string'&&typeof p.order_id==='string'&&typeof p.reference==='string'&&['created_at','packed_at','shipped_at','delivered_at'].every(k=>{const v=p[k as keyof WarehouseParcel];return v===null&&k!=='created_at'||typeof v==='string'&&Number.isFinite(Date.parse(v))})
 const path=(location:string)=>`warehouse/locations/${encodeURIComponent(location)}`
 const shipmentPath=(location:string,order:string,id:string)=>`${path(location)}/orders/${encodeURIComponent(order)}/fulfillments/${encodeURIComponent(id)}/shipment`
+const allocationPath=(location:string,order:string,id:string,item:string)=>`${path(location)}/orders/${encodeURIComponent(order)}/fulfillments/${encodeURIComponent(id)}/items/${encodeURIComponent(item)}/allocation`
+export type WarehouseAllocation={location_id:string;order_id:string;fulfillment_id:string;item_id:string;enabled:boolean;editable:boolean;quantity:number;assigned:{id:string;serial_number:string;assignment_id:string}[];candidates:{id:string;serial_number:string;assignment_id:string}[];revision:string}
+export async function warehouseAllocation(location:string,order:string,id:string,item:string,signal?:AbortSignal){
+ const d=await request<WarehouseAllocation>(allocationPath(location,order,id,item),{signal},'/api/admin/')
+ if(!d||d.location_id!==location||d.order_id!==order||d.fulfillment_id!==id||d.item_id!==item||typeof d.enabled!=='boolean'||typeof d.editable!=='boolean'||!Number.isInteger(d.quantity)||d.quantity<1||!Array.isArray(d.assigned)||!Array.isArray(d.candidates)||d.assigned.length>d.quantity||d.candidates.length>10000||[...d.assigned,...d.candidates].some(v=>!v||typeof v.id!=='string'||typeof v.serial_number!=='string'||typeof v.assignment_id!=='string')||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision))throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function saveWarehouseAllocation(location:string,order:string,id:string,item:string,body:AllocationInput){
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{assignment_ids:string[];revision:string;replayed:boolean}>(allocationPath(location,order,id,item),{method:'POST',body,csrf},'/api/admin/')
+ if(!d||!Array.isArray(d.assignment_ids)||!d.assignment_ids.length||d.assignment_ids.length>200||d.assignment_ids.some(v=>typeof v!=='string')||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}
 export type WarehouseShipment={location_id:string;order_id:string;fulfillment_id:string;enabled:boolean;order_active:boolean;supported:boolean;status:string;revision:string}
 export async function warehouseShipment(location:string,order:string,id:string,signal?:AbortSignal){
  const out=await request<WarehouseShipment>(shipmentPath(location,order,id),{signal},'/api/admin/')
