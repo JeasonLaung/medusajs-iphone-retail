@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-30",
+  "scope": "Same-SKU exchange new item transaction participant",
+  "exchange_command_integrated": false,
+  "full_storefront_accepted": false,
+  "unit_all_go_packages_passed": true,
+  "real_sql_suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "evidence": {
+    "real_mysql": true,
+    "same_order_sku": true,
+    "original_exact_unit_price": true,
+    "fresh_catalog_snapshot": true,
+    "custom_price_without_quote": true,
+    "inclusive_flag_not_copied": true,
+    "current_quote_inclusive_and_sale_reference": true,
+    "fresh_system_tax_original_untouched": true,
+    "no_blind_discount_copy": true,
+    "new_item_zero_fulfillment": true,
+    "current_amount_reader": true,
+    "stale_foreign_unpublished_provider_denied": true,
+    "missing_region_and_disabled_channel_denied": true,
+    "autocommit_denied": true,
+    "owner_rollback": true,
+    "late_tax_failure_atomic": true,
+    "exchange_command_integrated": false
+  },
+  "tested_source_files": [
+    {
+      "path": "retail/backend/internal/orders/exchange_item.go",
+      "sha256": "84d849f361dfed070d2b0fb912f96e8e2ee7442576dc154f2f47a288a85288d1"
+    },
+    {
+      "path": "retail/backend/internal/identity/exchange_item_test.go",
+      "sha256": "247905d811a290c2271990e28af62a23944f3e8abb0db5a4177e220aab84b52f"
+    },
+    {
+      "path": "retail/backend/internal/identity/device_replacement_test.go",
+      "sha256": "1405fbd661ca9c96d39002fcae126231afa3eca24daba6f0e08b7b5baf92b4b9"
+    }
+  ],
+  "owned_runner_cleanup": "complete",
+  "existing_service_health": {
+    "9001_health": 200,
+    "9001_app": 200,
+    "8000_account_orders": 200,
+    "8000_cart": 200
+  },
+  "remaining": [
+    "native exchange and quarantine return records",
+    "order change actions and final amount summary",
+    "atomic inventory reservation and replacement device allocation",
+    "React operation and real joint flow",
+    "full storefront closure"
+  ]
+}
