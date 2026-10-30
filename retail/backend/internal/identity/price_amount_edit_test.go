@@ -230,6 +230,9 @@ func TestPreparePriceEditBrowserFixture(t *testing.T) {
 			t.Fatal("repair browser request")
 		}
 	}
+	if os.Getenv("DEVICE_REPLACEMENT_BROWSER") == "1" {
+		seedDeviceReplacementBrowser(t, db)
+	}
 	if os.Getenv("VARIANT_CREATE_BROWSER") == "1" {
 		seedVariantCreate(t, db)
 		if db.Exec("UPDATE catalog_variant_create_runtime SET enabled=TRUE WHERE id=1").Error != nil {

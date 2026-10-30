@@ -360,7 +360,7 @@ func checkExchangeItem(t *testing.T, db *gorm.DB, actor identity.User, assignmen
 					t.Fatal("negative exchange payment", due)
 				}
 			} else {
-				if len(due) != 1 || due[0].Status != "not_paid" || out.Amounts.Summary.PendingDifference != "0" {
+				if len(due) != 0 || out.Amounts.Summary.PendingDifference != "0" {
 					t.Fatal("zero difference", due, out.Amounts.Summary)
 				}
 			}

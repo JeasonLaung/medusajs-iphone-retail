@@ -90,13 +90,14 @@ func ApplyDeviceExchangeTx(ctx context.Context, tx *gorm.DB, in DeviceExchangeIn
 	if e = exchangeActionTx(tx, in, out, change, first, 1, "ITEM_ADD", item.ItemID, item.UnitPrice, now); e != nil {
 		return out, e
 	}
-	firstAmounts, e := RefreshChangeSummaryTx(ctx, tx, in.OrderID, first)
+	_, e = RefreshChangeSummaryTx(ctx, tx, in.OrderID, first)
 	if e != nil {
 		return out, e
 	}
-	if e = refreshExchangePaymentTx(tx, firstAmounts); e != nil {
-		return out, e
-	}
+	// Both confirmations belong to one atomic device operation. Preserve the
+	// intermediate order summary, but reconcile payment only after receipt:
+	// creating a transient charge here leaves an unpaid zero-value collection
+	// on an even exchange and blocks the existing paid-only fulfillment gate.
 	second, e := AdvanceVersionTx(ctx, tx, in.OrderID, first)
 	if e != nil {
 		return out, e

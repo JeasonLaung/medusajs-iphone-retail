@@ -1,0 +1,83 @@
+{
+  "scope": "Real React Admin exchange, inspected original, replacement packing and shipment, completed review; actual difference collection/refund and notifications remain incomplete",
+  "counts": {
+    "real_browser_react_gin_mysql_redis": true,
+    "api_mocking": false,
+    "preallocate_pack_cancel_repack_ship": true,
+    "review_and_scan_return": true,
+    "native_exchange_new_item": true,
+    "zero_difference_without_unpaid_collection": true,
+    "replacement_pack_and_ship": true,
+    "original_inspection_with_photo": true,
+    "lost_successful_replies": true,
+    "immutable_replacement_retry": true,
+    "complete_after_shipment_and_inspection": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0
+  },
+  "durable_mysql_verified": true,
+  "real_accounts_used": false,
+  "tls_secure_cookie_verified": false,
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128
+  },
+  "cleanup": "both owned containers, bridge and temporary runners removed",
+  "date": "2026-10-30",
+  "full_storefront_accepted": false,
+  "tested_source_files": [
+    {
+      "path": "retail/backend/internal/orders/device_exchange.go",
+      "sha256": "65bd08d337d0429733c7882f5325628cded5fba34227c79370537de618e2aef7"
+    },
+    {
+      "path": "retail/backend/internal/orders/exchange_payment.go",
+      "sha256": "f44194835f06c625d1aa5f634eef413ad7ef501b1782eb74bf2e1d2b780441b9"
+    },
+    {
+      "path": "retail/backend/internal/identity/exchange_item_test.go",
+      "sha256": "d449b0554ef7624192bdf0188ba5316f5560c3a40f48fc112e7cdb9e8915f833"
+    },
+    {
+      "path": "retail/backend/internal/identity/device_replacement_browser_fixture_test.go",
+      "sha256": "2c970ceaf148f0804ec36653a1a86a608033b928481d0ed07d96cef86808b9b1"
+    },
+    {
+      "path": "retail/backend/internal/identity/price_amount_edit_test.go",
+      "sha256": "9ab04c27004e430ab48be5ed6c48d82f9b3ecd4b4f4a163ee77cc24230ef866c"
+    },
+    {
+      "path": "retail/admin/tests/device-replacement.joint.mjs",
+      "sha256": "d78e50ebda4b8353b77e20cf090e93318a8cec660cfe27247cdf5b0f7b977406"
+    },
+    {
+      "path": "retail/scripts/test-warehouse-inventory-joint.py",
+      "sha256": "9ff1b0b43d81062943330e2c60b34afb2f74fd0164fb37146cfc2dab847867a8"
+    }
+  ],
+  "verification": {
+    "all_go_packages_passed": true,
+    "real_sql_suites": [
+      "AdminAuthentication",
+      "InventoryStockEdits",
+      "ProductInventory"
+    ],
+    "admin_browser": "real production API joint; no fabricated API responses",
+    "existing_service_health": {
+      "9001_health": 200,
+      "9001_app": 200,
+      "8000_account_orders": 200,
+      "8000_cart": 200
+    },
+    "existing_service_logs": "Existing anonymous order 401, locales 404 and storefront request errors remain; no new outage observed"
+  },
+  "remaining": [
+    "Independent concurrent replacement attempts",
+    "Actual payment-channel difference collection/refund",
+    "After-sales notification mail",
+    "Warehouse employee fulfillment permissions",
+    "Full Astro storefront closure"
+  ]
+}
