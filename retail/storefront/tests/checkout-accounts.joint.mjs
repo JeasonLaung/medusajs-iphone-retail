@@ -70,4 +70,3 @@ export async function verifyCheckoutAccountOrder({page,context,shop,segment,orde
   assert.ok(href&&!href.includes(orderID))
  }
 }
-
