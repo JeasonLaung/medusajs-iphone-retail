@@ -1,8 +1,10 @@
 package identity_test
 
 import (
+	"os"
 	"testing"
 
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -11,8 +13,8 @@ import (
 func seedDeviceReplacementBrowser(t *testing.T, db *gorm.DB) {
 	t.Helper()
 	for _, q := range []string{
-		`INSERT INTO customer_accounts(id,email,password_hash,first_name,last_name,enabled,auth_version,verified_at,created_at,updated_at) VALUES('cust_replacement_notice','replacement-notice@example.invalid','artificial-no-login','Artificial','Recipient',TRUE,1,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
-		`INSERT INTO customer_order_ownership(order_id,customer_id,cart_id,store_id,created_at) VALUES('allocation-order','cust_replacement_notice','replacement-notice-cart','price-edit-store',UTC_TIMESTAMP(6))`,
+		`INSERT INTO customer_accounts(id,email,password_hash,first_name,last_name,enabled,auth_version,verified_at,created_at,updated_at) VALUES('cust_replacement-notice','replacement-notice@example.invalid','artificial-no-login','Artificial','Recipient',TRUE,1,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO customer_order_ownership(order_id,customer_id,cart_id,store_id,created_at) VALUES('allocation-order','cust_replacement-notice','replacement-notice-cart','price-edit-store',UTC_TIMESTAMP(6))`,
 		`UPDATE after_sales_requests SET type='exchange' WHERE id='asr-browser-return'`,
 		`UPDATE orders SET region_id='price-edit-region' WHERE id='allocation-order'`,
 		`INSERT INTO catalog_product_channels(id,product_id,sales_channel_id,created_at,updated_at) VALUES('exchange-browser-channel','allocation-product','price-edit-channel',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
@@ -24,6 +26,24 @@ func seedDeviceReplacementBrowser(t *testing.T, db *gorm.DB) {
 	} {
 		if e := db.Exec(q).Error; e != nil {
 			t.Fatal("replacement browser fixture", e)
+		}
+	}
+	if os.Getenv("CUSTOMER_NOTICES_BROWSER") == "1" {
+		hash, err := bcrypt.GenerateFromPassword([]byte("artificial-customer-notice-password"), bcrypt.DefaultCost)
+		if err != nil {
+			t.Fatal(err)
+		}
+		// Only owned rehearsal accounts; never old customer identities.
+		for _, pair := range [][2]string{{"cust_replacement-notice", "replacement-notice@example.invalid"}, {"cust_notice-other", "other-notice@example.invalid"}} {
+			if pair[0] == "cust_replacement-notice" {
+				if err := db.Exec("UPDATE customer_accounts SET password_hash=? WHERE id=?", string(hash), pair[0]).Error; err != nil {
+					t.Fatal(err)
+				}
+			} else {
+				if err := db.Exec("INSERT INTO customer_accounts(id,email,password_hash,first_name,last_name,enabled,auth_version,verified_at,created_at,updated_at) VALUES(?,?,?,'Other','Recipient',TRUE,1,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", pair[0], pair[1], string(hash)).Error; err != nil {
+					t.Fatal(err)
+				}
+			}
 		}
 	}
 }

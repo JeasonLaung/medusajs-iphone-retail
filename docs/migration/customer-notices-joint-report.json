@@ -1,0 +1,112 @@
+{
+  "scope": "Real Admin exchange and shipment then production Astro header/login/bell and customer bridge to Gin/MySQL/Redis; full storefront and mail not accepted",
+  "counts": {
+    "real_browser_react_gin_mysql_redis": true,
+    "api_mocking": false,
+    "preallocate_pack_cancel_repack_ship": true,
+    "review_and_scan_return": true,
+    "native_exchange_new_item": true,
+    "zero_difference_without_unpaid_collection": true,
+    "replacement_pack_and_ship": true,
+    "original_inspection_with_photo": true,
+    "lost_successful_replies": true,
+    "immutable_replacement_retry": true,
+    "complete_after_shipment_and_inspection": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0
+  },
+  "durable_mysql_verified": true,
+  "real_accounts_used": false,
+  "tls_secure_cookie_verified": false,
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128
+  },
+  "astro_customer_notices": {
+    "synthetic_api": false,
+    "production_login_form": true,
+    "production_header_bell": true,
+    "production_signed_bridge": true,
+    "real_gin_mysql_redis": true,
+    "unread": 4,
+    "single_read_survives_reload": true,
+    "all_read": true,
+    "detail_navigation": true,
+    "logout_hides_bell": true,
+    "account_switch_isolated": true,
+    "foreign_read_noop": true,
+    "direct_unsigned_denied": true,
+    "forwarded_ip_denied": true,
+    "csrf_denied": true,
+    "browser_errors": 0,
+    "full_storefront_accepted": false
+  },
+  "durable_read_and_owner_verified": true,
+  "full_storefront_accepted": false,
+  "cleanup": "both owned containers, bridge and temporary runners removed",
+  "date": "2026-10-30",
+  "go_all_packages_passed": true,
+  "front_client_bridge_tests": 16,
+  "astro_check": {
+    "files": 327,
+    "errors": 0,
+    "warnings": 0,
+    "existing_hints": 5
+  },
+  "detail_scope": "Fixture page mounts unchanged production header/account/login/bell and re-exports production customer API. Detail destination URL verified; full destination order page is not served by this fixture.",
+  "legacy_services": {
+    "health_9001": 200,
+    "app_9001": 200,
+    "orders_8000": 200,
+    "cart_8000": 200,
+    "existing_log_errors": "Anonymous legacy orders 401 and locales 404 persist; no new service outage."
+  },
+  "tested_sources": [
+    {
+      "path": "retail/backend/internal/identity/device_replacement_browser_fixture_test.go",
+      "sha256_lf": "fb9d8866a5c7ef73dd76b1d0e14d4024b45513cb8fc038a90cebace035c02bb4"
+    },
+    {
+      "path": "retail/scripts/test-warehouse-inventory-joint.py",
+      "sha256_lf": "07130c3ef3f651ceedac79389272a8d5aca65be73748da6e39b69f5e127bab95"
+    },
+    {
+      "path": "retail/storefront/tests/customer-notices.joint.mjs",
+      "sha256_lf": "44837db8a5621dc332ca4ed35f8d8fd46c7b2a54bf9e3ce682d21a4caeee2239"
+    },
+    {
+      "path": "retail/storefront/src/components/layout/gin-header.tsx",
+      "sha256_lf": "661d9d9451a49918388a8c00a1add54c8adc0fffc227239c16d30dcca1584b59"
+    },
+    {
+      "path": "retail/storefront/src/components/account/gin-account.tsx",
+      "sha256_lf": "d3ce83b1ad4a3fa8b43334d5285b9010570040ea2d5d65025796ca2277745f74"
+    },
+    {
+      "path": "retail/storefront/src/components/notifications/notification-bell.tsx",
+      "sha256_lf": "9d2302a9bf63d4301096f19066afb4e9c9419326d7a04726b6cf41cf0722ab92"
+    },
+    {
+      "path": "retail/storefront/src/lib/customer-client.ts",
+      "sha256_lf": "246de1627bada428a579ece6b7c3b55d9111ef358cf35d658c61034f07a7c472"
+    },
+    {
+      "path": "retail/storefront/src/lib/customer-bridge.ts",
+      "sha256_lf": "5c3f7404550e0cfba1c3067306bd6785284b10e9c928ac68593dce40677af466"
+    },
+    {
+      "path": "retail/storefront/src/pages/api/store/customer/[...path].ts",
+      "sha256_lf": "035ba332ee394377c820c5f7222f39f551f9cf0003cc7c8d991fa0c9ef93e9e0"
+    },
+    {
+      "path": "retail/storefront/tests/notices-joint-fixture/src/pages/index.astro",
+      "sha256_lf": "b565dc74b9b2920a072f2a3803e621dae8c4cf9d9bce2d53d304c05ba3bf2001"
+    },
+    {
+      "path": "retail/storefront/tests/notices-joint-fixture/src/pages/api/store/customer/[...path].ts",
+      "sha256_lf": "42afa49d1845ae75b438ef672ddf00e7041430b969d322d6e9842053e8756ffe"
+    }
+  ]
+}

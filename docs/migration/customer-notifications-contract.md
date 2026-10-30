@@ -6,7 +6,7 @@
 
 原 `subscribers/customer-notifications.ts` 监听 shipment.created、delivery.created、order.canceled、after_sales.processing、after_sales.completed、after_sales.rejected。售后事件按 `event:request_id` 去重，发货按原履约资源去重；资源详情指向订单。`workflows/update-after-sales.ts` 同状态重存不发事件。`workflows/customer-notifications.ts` 的 buyback.updated 对同一回收申请合并一条未读提醒，并在与已读操作竞争时保留新提醒。
 
-原 `api/store/notifications/route.ts` 每页20条，created_at/id倒序，返回 notifications/count/unread/offset/limit；POST空对象全部已读，传id单条已读，写入本身限定当前客户和read_at为空。`modules/notifications/notification-bell.tsx` 每30秒在可见页面刷新、窗口focus刷新、打开抽屉刷新，保留失败重试、分页、未读标识和查看详情后跳转。当前 Astro `gin-header.tsx` 对登录客户传 notification:null，当前 Gin customer 路由、customer bridge白名单与customer client均无通知操作。不能以现有订单进度页面代替通知入口。
+原 `api/store/notifications/route.ts` 每页20条，created_at/id倒序，返回 notifications/count/unread/offset/limit；POST空对象全部已读，传id单条已读，写入本身限定当前客户和read_at为空。`modules/notifications/notification-bell.tsx` 每30秒在可见页面刷新、窗口focus刷新、打开抽屉刷新，保留失败重试、分页、未读标识和查看详情后跳转。契约建立时，Astro `gin-header.tsx` 对登录客户传 notification:null，Gin customer 路由、customer bridge白名单与customer client均无通知操作。不能以现有订单进度页面代替通知入口。
 
 ## 身份、数据与事件边界
 
@@ -36,3 +36,10 @@ Astro沿用现有 customerClient 和桥接层，直接对Gin通信。铃铛组�
 收件人通过当前新订单归属及有效新账户解析；没有归属则不投递。事件唯一键为kind:业务资源ID，资源链接仍为所属订单。消息不携带原邮箱、客户内部字段、支付或设备成本。新表故意不通过客户外键在事件提交时取得账户共享锁，避免后台先锁订单与客户先锁账户的读取形成锁顺序反转；客户有效性由归属查询和每次私有读取认证保证，账号未提供物理删除入口。
 
 验证包含真实MySQL的23条消息分页、未读计数、并发单条已读、全部已读、跨账号无操作、禁用/匿名拒绝、事件无归属不投递及去重、调用方回滚和晚期插入失败回滚，以及签名HTTP的Origin/CSRF/严格JSON/query校验。原 Ant 换机发货真实浏览器联合进一步核对两次发货和两次售后状态实际生成四条新客户通知。Astro铃铛浏览器使用合成API单独验证交互，不能代替完整Astro→Gin收件箱联合验收；后者、邮件发送与回收未读合并继续待办。
+
+
+## Astro → Gin 真实联合补充
+
+`python retail/scripts/test-warehouse-inventory-joint.py --customer-notices` 在独占人工 MySQL/Redis 上先运行真实后台换机/发货，再启动 Astro 夹具页挂载原生产 GinHeader、GinAccount、登录表单和 NotificationBell，API 路由直接复用生产 customer bridge。没有拦截 API 或合成响应。通过正式登录显示4条未读，切换另一人工账号收件箱为空，提交原账号消息ID不改变其4条未读；原账号重新登录后单条已读为3，刷新仍为3，全部已读后数据库4条记录均已读。退出会隐藏铃铛，订单详情目标URL正确；不将夹具页的目标URL检查宣称为完整订单详情页验收。
+
+直接访问无签名Gin、伪造转发IP及缺CSRF的已读请求均被拒绝。人工账号ID遵守正式公开契约，未放宽生产校验；没有迁移旧账号。Go全量、16项客户端/桥接测试和Astro检查通过（0错误/0警告，5条既有提示）。资源按所有权标记清理，旧9001 health/app及8000账户订单/cart均返回200；既有匿名订单401和locales404日志保留。详情见 [真实联合报告](customer-notices-joint-report.json)。分页/中英文/移动端仍由前一份独立铃铛浏览器检查覆盖；回收未读合并、其他事件生产者、邮件和全站闭环继续待办。

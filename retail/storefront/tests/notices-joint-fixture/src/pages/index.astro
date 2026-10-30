@@ -1,0 +1,9 @@
+---
+import Header from '../../../../src/components/layout/gin-header'
+import Account from '../../../../src/components/account/gin-account'
+export const prerender=false
+---
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head><body>
+<Header commerceEnabled={false} customerEnabled={true} regions={[]} locales={[]} locale="en" cartCount="0" segment="dk-en" pathname="/dk-en/account" onSelect={null} isLoggedIn={false} client:load/>
+<Account segment="dk-en" enabled={true} profile={true} client:load/>
+</body></html>
