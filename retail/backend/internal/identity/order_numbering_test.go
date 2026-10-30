@@ -52,7 +52,7 @@ func TestOwnedOrderNumbering(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result, err := schema.Apply(ctx, pool, plan); err != nil || result.Applied != 73 {
+	if result, err := schema.Apply(ctx, pool, plan); err != nil || result.Applied != 74 {
 		t.Fatal("numbering migrations", err)
 	}
 	txRun := func(fn func(*gorm.DB) error) error {

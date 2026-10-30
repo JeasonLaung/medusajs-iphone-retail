@@ -71,7 +71,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.Use(h.bridge)
 	private.Use(func(c *gin.Context) {
 		c.Header("Referrer-Policy", "no-referrer")
-		if (c.Request.URL.RawQuery != "" || c.Request.URL.ForceQuery) && !(c.Request.Method == "GET" && (c.FullPath() == "/api/store/customer/orders" || c.FullPath() == "/api/store/customer/notifications")) {
+		if (c.Request.URL.RawQuery != "" || c.Request.URL.ForceQuery) && !(c.Request.Method == "GET" && (c.FullPath() == "/api/store/customer/orders" || c.FullPath() == "/api/store/customer/notifications" || c.FullPath() == "/api/store/customer/buyback/requests")) {
 			platform.Fail(c, 404, "not_found", "Resource not found")
 			return
 		}
@@ -86,6 +86,8 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/notifications", h.ListNotices)
 	private.POST("/notifications", h.MarkNoticesRead)
 	private.POST("/buyback/requests", h.CreateBuyback)
+	private.GET("/buyback/requests", h.ListBuybacks)
+	private.GET("/buyback/requests/:id", h.BuybackDetail)
 	private.POST("/me", h.UpdateProfile)
 	private.GET("/orders", h.ListOrders)
 	private.GET("/orders/:id", h.OrderDetail)

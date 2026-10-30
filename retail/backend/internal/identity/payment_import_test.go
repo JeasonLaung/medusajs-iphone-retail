@@ -53,7 +53,7 @@ func TestOwnedPaymentImport(t *testing.T) {
 		t.Fatal("payment import plan unavailable")
 	}
 	applied, err := schema.Apply(ctx, db, plan)
-	if err != nil || applied.Applied != 73 {
+	if err != nil || applied.Applied != 74 {
 		t.Fatal("payment import migrations failed")
 	}
 	exec := func(q string, args ...any) {

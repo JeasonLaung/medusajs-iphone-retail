@@ -9,6 +9,7 @@ import (
 	"io"
 	"mime"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -50,4 +51,58 @@ func (h *HTTPHandler) CreateBuyback(c *gin.Context) {
 		return
 	}
 	c.JSON(201, gin.H{"request": out})
+}
+
+func (h *HTTPHandler) BuybackDetail(c *gin.Context) {
+	if !h.originOK(c, false) {
+		return
+	}
+	token, ok, _ := h.cookie(c, "session")
+	if !ok {
+		h.fail(c, ErrUnauthorized)
+		return
+	}
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+	defer cancel()
+	out, e := h.store.Buyback(ctx, token, h.storeID, c.Param("id"))
+	if e != nil {
+		if errors.Is(e, buyback.ErrMissing) {
+			platform.Fail(c, 404, "buyback.not_found", "Buyback request not found")
+		} else {
+			h.fail(c, e)
+		}
+		return
+	}
+	c.JSON(200, gin.H{"request": out})
+}
+
+func (h *HTTPHandler) ListBuybacks(c *gin.Context) {
+	if !h.originOK(c, false) {
+		return
+	}
+	offset := 0
+	if c.Request.URL.RawQuery != "" || c.Request.URL.ForceQuery {
+		if !noticeOffset.MatchString(c.Request.URL.RawQuery) {
+			h.fail(c, ErrInvalid)
+			return
+		}
+		offset, _ = strconv.Atoi(c.Query("offset"))
+		if offset > 100000 {
+			h.fail(c, ErrInvalid)
+			return
+		}
+	}
+	token, ok, _ := h.cookie(c, "session")
+	if !ok {
+		h.fail(c, ErrUnauthorized)
+		return
+	}
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+	defer cancel()
+	out, e := h.store.Buybacks(ctx, token, h.storeID, offset)
+	if e != nil {
+		h.fail(c, e)
+		return
+	}
+	c.JSON(200, out)
 }

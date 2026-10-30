@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-30",
+  "scope": "Gin/MySQL/Redis customer buyback list/detail and Astro private bridge; not UI lifecycle acceptance",
+  "migrations": 74,
+  "mysql_suites": [
+    "ProductPrices (includes create, read, list)",
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "detail": {
+    "explicit_customer_and_store_binding": true,
+    "legacy_matching_identity_denied": true,
+    "current_state_not_create_receipt": true,
+    "authoritative_raw_precision": true,
+    "invalid_raw_rejected": true,
+    "latest_photo_versions_and_id_ties": true,
+    "deleted_photo_hidden": true,
+    "photo_storage_key_not_selected": true,
+    "history_note_photo_id_preserved": true,
+    "closed_and_deleted_dates": true,
+    "disabled_account_and_revoked_session_denied": true,
+    "independent_of_write_gate": true,
+    "private_no_store": true
+  },
+  "list": {
+    "page_size": 20,
+    "added_fixture_requests": 23,
+    "global_summary_not_page_scoped": true,
+    "paid_devices_recycled": 2,
+    "returned_canceled_excluded": true,
+    "currency_grouping_and_order": true,
+    "epsilon_rounding": true,
+    "pages_no_duplicate_ids": true,
+    "empty_page_preserves_totals": true,
+    "strict_offset_max": 100000
+  },
+  "checks": {
+    "go_all": "passed in isolated source snapshot",
+    "node_tests": 166,
+    "astro_files": 357,
+    "astro_errors": 0,
+    "astro_warnings": 0,
+    "astro_hints": 5,
+    "legacy_health": 200,
+    "legacy_admin": 200,
+    "legacy_sell": 200,
+    "new_legacy_stderr": false,
+    "known_legacy_locales_404": "unchanged"
+  },
+  "limitations": [
+    "No Astro-to-real-Gin browser joint yet.",
+    "Original buyback list/detail UI, image bytes/upload, customer commands, platform review/inspection, final offer/payment/return and email remain pending.",
+    "Photo table is schema/read support only; artificial SQL photos do not prove a file storage/upload lifecycle.",
+    "Paid/returned/canceled and final-offer rows are artificial fixtures; no operational payment/status commands executed."
+  ],
+  "sha256": {
+    "retail/backend/internal/buyback/request_read.go": "aed48561f05bb0abf5cfd5e24957bd67629241ce520e5d13cc96a7f8b6a77484",
+    "retail/backend/internal/buyback/request_list.go": "c9c199826fd0a45b537c84ec7d949fa411cc27e5ff57c665601438e2242690ec",
+    "retail/backend/internal/customer/buyback.go": "df35bbb59cb1d7d960029aa492e59bd80db2527d70aaaec93a1f1b77d1080298",
+    "retail/backend/internal/customer/buyback_http.go": "bfaa0bd161c53c285bb5eb786310d88a3c65c48d3cfbbdaa63fb35933a79c1cb",
+    "retail/backend/internal/customer/http.go": "fd43783290710937a4747ee8fe3f7762b8e5ec54724d6b79dae3d9f7236bbd91",
+    "retail/backend/internal/identity/buyback_read_test.go": "9b902e6478c07ec540fdfddcdf069f85b8770898d3c64fb96d595c9165557182",
+    "retail/backend/internal/identity/buyback_create_test.go": "29ee2d0179a6fbcea6e3f4d095042db8afc008e4a74a19c5c03f89d2d62e7c0a",
+    "retail/backend/migrations/0075_buyback_photos.sql": "a68c47e3f299aeb270ce9e2888e58fd6b3a438aa61fa92c19798244f9bba49b4",
+    "retail/storefront/src/lib/customer-bridge.ts": "4b990d5db3f033a151047dc38d3f1b40c7c80db0d48e23e2224b6366e69a8e9c",
+    "retail/storefront/tests/buyback-read-bridge.test.ts": "cd40ddbf33649a1f2ce671fd2fe13521357e8cc9f23c902c0c6d215dacd6a9e4"
+  },
+  "execution_evidence_sha256": {
+    "buyback-read-go.log": "6c431733feb3bd525136bffea79c3c03e3b71637a289cedb8e3fe1b949b61ab8",
+    "buyback-read-list-sql.log": "a94bfd5607acb45f1d2d24afb17079047c896db7c8f85e17bf35448eb30b4b6a",
+    "buyback-read-regression.log": "eb28b6527653918d6aee461864f5604263261a24a4dcb14be6e58d6546c588ea"
+  }
+}
