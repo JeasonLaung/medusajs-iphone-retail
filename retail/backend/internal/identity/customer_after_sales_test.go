@@ -138,6 +138,7 @@ func checkCustomerAfterSales(t *testing.T, ctx context.Context, db *gorm.DB, sto
 			t.Fatal("private after-sales field", private)
 		}
 	}
+	checkAfterSalesReview(t, ctx, db, orderID, key)
 	// Closing the request frees the original one-open slot for a later case.
 	exec("UPDATE after_sales_requests SET status='rejected' WHERE id=?", key)
 	if _, e := store.CreateAfterSales(ctx, owner, orderID, makeInput()); e != nil {

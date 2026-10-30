@@ -57,10 +57,10 @@ func TestOwnedPromotionSchema(t *testing.T) {
 	}
 	db, gdb := open("promotion_schema_fresh")
 	result, err := schema.Apply(ctx, db, plan)
-	if err != nil || result.Applied != 67 || schema.CheckApplied(ctx, db, plan) != nil || promotion.Ready(ctx, gdb) != nil {
+	if err != nil || result.Applied != 68 || schema.CheckApplied(ctx, db, plan) != nil || promotion.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh promotion schema unavailable")
 	}
-	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 67 {
+	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 68 {
 		t.Fatal("promotion replay changed schema")
 	}
 	exec := func(query string, args ...any) {

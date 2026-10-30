@@ -634,3 +634,28 @@ for(const action of ['ship','cancel'] as const)test(`parcel ${action} keeps one 
  await drawer.getByRole('button',{name:'重试本次保存',exact:true}).click();await expect(drawer.getByText('包裹操作已保存',{exact:true})).toBeVisible();await expect(drawer.getByRole('button',{name:actionLabel,exact:true})).toBeDisabled();expect(attempts).toHaveLength(2);expect(attempts[0]).toEqual(attempts[1]);expect(attempts[0]).toMatchObject({action,tracking_number:action==='ship'?'TRACK-ONE':'',tracking_url:action==='ship'?'https://tracking.example.invalid/TRACK-ONE':''})
  grants.splice(grants.indexOf('order.allocation.write'),1);await page.reload();await expect(page.getByRole('button',{name:'包裹操作',exact:true})).toHaveCount(0)
 })
+
+
+test('after-sales review keeps the same operation after a lost reply and displays saved status',async({page})=>{
+ await fixture(page,{permissions:['order.read','order.payment.read','device.read','order.after_sales.write']})
+ const order={id:'review-order',version:1,status:'pending',currency_code:'eur',custom_display_id:'Review fixture',display_id:'1',is_draft_order:false,email:null,created_at:'2026-10-28T00:00:00Z',updated_at:'2026-10-28T00:00:00Z',line_count:0}
+ let state='pending',lost=true;const posted:unknown[]=[]
+ await page.route('**/api/admin/orders/review-order**',async route=>{
+  const req=route.request(),path=new URL(req.url()).pathname
+  if(path.endsWith('/payments'))return route.fulfill({json:{order_id:order.id,version:1,operations_enabled:false,collections:[]}})
+  if(!path.endsWith('/after-sales'))return route.fulfill({json:{order,lines:[]}})
+  if(req.method()==='POST'){posted.push(req.postDataJSON());expect(req.headers()['x-csrf-token']).toBe(sessionCSRF);state='processing';if(lost){lost=false;return route.abort('failed')}}
+  return route.fulfill({json:{order_id:order.id,revision:(state==='pending'?'a':'b').repeat(64),enabled:true,requests:[{id:'asr_fixture',type:'return',status:state,reason:'Please review this device.',created_at:'2026-10-30T00:00:00Z',items:[{item_id:'line',quantity:1,title:'Phone'}]}]}})
+ })
+ await page.goto('/login');await signIn(page);await page.goto('/orders/review-order')
+ const panel=page.getByTestId('order-after-sales')
+ await expect(panel.getByText('待审核',{exact:true})).toBeVisible()
+ await panel.getByRole('button',{name:'保存',exact:true}).click();await page.getByRole('button',{name:'确认更新',exact:true}).click()
+ await expect(panel.getByRole('button',{name:'重试原操作',exact:true})).toBeVisible()
+ await expect(page.getByRole('button',{name:'确认更新',exact:true})).toBeHidden()
+ await expect(panel.getByRole('button',{name:'重试原操作',exact:true})).toBeEnabled()
+ await panel.getByRole('button',{name:'重试原操作',exact:true}).click()
+ await expect(panel.locator('.ant-tag')).toHaveText('处理中')
+ expect(posted).toHaveLength(2);expect(posted[0]).toEqual(posted[1])
+ await page.setViewportSize({width:390,height:844});await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
+})

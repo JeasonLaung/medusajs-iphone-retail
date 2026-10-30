@@ -8,6 +8,7 @@ import type { Copy } from './i18n'
 import { amountText } from './VariantPrices'
 import OrderAllocation from './OrderAllocation'
 import OrderPacking from './OrderPacking'
+import OrderAfterSales from './OrderAfterSales'
 import OrderAmounts from './OrderAmounts'
 import OrderPayments from './OrderPayments'
 import OrderFulfillments from './OrderFulfillments'
@@ -32,7 +33,7 @@ export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void
   },[id,attempt,onExpired])
   const order=state.data?.order
   const statuses:Record<string,string>={pending:copy.pendingOrder,completed:copy.completedOrder,draft:copy.draft,archived:copy.archivedOrder,canceled:copy.canceledOrder,requires_action:copy.requiresActionOrder}
-  return <section className="account-panel" aria-label={copy.orderLines}>
+  return <section className="account-panel order-detail" aria-label={copy.orderLines}>
     <Space direction="vertical" size={24} className="full-width">
       <Link to={`/orders${location.search}`} className="product-link">{copy.backOrders}</Link>
       <Typography.Paragraph type="secondary">{copy.orderReadInfo}</Typography.Paragraph>
@@ -58,7 +59,8 @@ export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void
           {key:'received',label:copy.returnReceivedQuantity,children:amountText(row.return_received_quantity)},
           {key:'dismissed',label:copy.returnDismissedQuantity,children:amountText(row.return_dismissed_quantity)},
         ]} />}} />
-        {access.can('order.amount.read')&&<OrderAmounts id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>}
+        {access.can('order.payment.read','device.read')&&<OrderAfterSales id={order.id} onExpired={onExpired}/>}
+{access.can('order.amount.read')&&<OrderAmounts id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>}
 {access.can('order.payment.read')&&<OrderPayments id={order.id} version={order.version} copy={copy} onExpired={onExpired}/>}
 {access.can('order.fulfillment.read')&&<OrderFulfillments id={order.id} version={order.version} copy={copy} onExpired={onExpired} onChanged={()=>setAttempt(n=>n+1)}/>}
       </>}

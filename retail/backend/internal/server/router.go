@@ -9,6 +9,7 @@ import (
 	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/cart"
 	"github.com/eurorefurb/retail/internal/catalog"
+	"github.com/eurorefurb/retail/internal/customer"
 	"github.com/eurorefurb/retail/internal/devices"
 	"github.com/eurorefurb/retail/internal/fulfillment"
 	"github.com/eurorefurb/retail/internal/identity"
@@ -160,6 +161,8 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	private.POST("/warehouse-users", access.Require(authorization.Read, authorization.Write, authorization.WarehouseRead, authorization.WarehouseWrite), (warehouseusers.Handler{DB: db}).Command)
 	private.GET("/authorization", access.Require(authorization.Read), access.Directory)
 	private.POST("/authorization/commands", access.Require(authorization.Write), access.Command)
+	private.GET("/orders/:id/after-sales", access.Require(authorization.OrderRead, authorization.OrderPaymentRead, authorization.DeviceRead), (customer.ReviewHandler{DB: db}).HTTP)
+	private.POST("/orders/:id/after-sales", access.Require(authorization.OrderRead, authorization.OrderPaymentRead, authorization.DeviceRead, authorization.OrderAfterSalesWrite), (customer.ReviewHandler{DB: db}).HTTP)
 	private.GET("/orders", access.Require(authorization.OrderRead), (orders.Handler{DB: db}).List)
 	private.GET("/orders/:id", access.Require(authorization.OrderRead), (orders.Handler{DB: db}).Detail)
 	private.GET("/orders/:id/fulfillments/:fulfillment_id/operations", access.Require(authorization.OrderRead, authorization.OrderPaymentRead, authorization.DeviceRead, authorization.OrderAllocationWrite, authorization.OrderFulfillmentRead), (devices.Handler{DB: db}).ParcelHTTP)

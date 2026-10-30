@@ -44,3 +44,5 @@ html, body, #root { min-width: 320px; min-height: 100%; margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+.order-detail > .ant-space > .ant-space-item, .order-after-sales > .ant-space > .ant-space-item { min-width: 0; max-width: 100%; }

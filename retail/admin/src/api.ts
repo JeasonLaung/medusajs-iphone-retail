@@ -295,7 +295,7 @@ export async function getOrderFulfillments(id:string,signal?:AbortSignal):Promis
 }
 
 
-export const ACTIONS=['authorization.read','authorization.write','device.enroll','device.intake','device.read','device.source.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.allocation.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','price.write','product.read','product.write','warehouse.intake.read','warehouse.intake.write','warehouse.read','warehouse.return.read','warehouse.return.write','warehouse.write'] as const
+export const ACTIONS=['authorization.read','authorization.write','device.enroll','device.intake','device.read','device.source.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.after_sales.write','order.allocation.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','price.write','product.read','product.write','warehouse.intake.read','warehouse.intake.write','warehouse.read','warehouse.return.read','warehouse.return.write','warehouse.write'] as const
 export type Action=typeof ACTIONS[number]
 export type ManagedRole={id:string;name:string;enabled:boolean;actions:Action[]}
 export type ManagedMember={user_id:string;name:string;enabled:boolean;kind:'employee'|'warehouse'|'supplier';roles:string[]}
@@ -530,3 +530,15 @@ export async function changeOrderParcel(order:string,parcel:string,body:ParcelIn
  const d=await request<{fulfillment_id:string;action:string;assignment_ids:string[];replayed:boolean}>(parcelPath(order,parcel),{method:'POST',body,csrf},'/api/admin/')
  if(!d||d.fulfillment_id!==parcel||d.action!==body.action||typeof d.replayed!=='boolean'||!Array.isArray(d.assignment_ids)||d.assignment_ids.length<1||d.assignment_ids.length>1000||d.assignment_ids.some(id=>typeof id!=='string'))throw new APIError(0,'request.invalid_response')
 }
+
+export type AfterSalesReviewInput={operation_id:string;expected_revision:string;request_id:string;status:string}
+export type AfterSalesReview={order_id:string;revision:string;enabled:boolean;requests:{id:string;type:string;status:string;reason:string;created_at:string;items:{item_id:string;title:string;quantity:number;device_ids?:string[]}[]}[]}
+function afterSalesReviewProjection(d:AfterSalesReview,id:string):AfterSalesReview{
+ if(!d||d.order_id!==id||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.enabled!=='boolean'||!Array.isArray(d.requests)||d.requests.length>1000||Object.keys(d).some(k=>!['order_id','revision','enabled','requests'].includes(k)))throw new APIError(0,'request.invalid_response')
+ const seen=new Set<string>()
+ for(const r of d.requests){if(!r||!warehouseID(r.id)||seen.has(r.id)||!['return','exchange','repair'].includes(r.type)||!['pending','processing','completed','rejected'].includes(r.status)||typeof r.reason!=='string'||r.reason.length>8000||!Number.isFinite(Date.parse(r.created_at))||!Array.isArray(r.items)||r.items.length<1||r.items.length>100||Object.keys(r).some(k=>!['id','type','status','reason','items','created_at'].includes(k)))throw new APIError(0,'request.invalid_response');seen.add(r.id)
+ for(const l of r.items){if(!l||!warehouseID(l.item_id)||typeof l.title!=='string'||!Number.isSafeInteger(l.quantity)||l.quantity<1||l.quantity>10000||l.device_ids&&(!Array.isArray(l.device_ids)||l.device_ids.some(v=>!warehouseID(v)))||Object.keys(l).some(k=>!['item_id','title','quantity','device_ids'].includes(k)))throw new APIError(0,'request.invalid_response')}
+ }return d
+}
+export async function readAfterSales(id:string,signal?:AbortSignal):Promise<AfterSalesReview>{return afterSalesReviewProjection(await request<AfterSalesReview>('orders/'+encodeURIComponent(id)+'/after-sales',{signal},'/api/admin/'),id)}
+export async function reviewAfterSales(id:string,body:AfterSalesReviewInput):Promise<AfterSalesReview>{const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf');return afterSalesReviewProjection(await request<AfterSalesReview>('orders/'+encodeURIComponent(id)+'/after-sales',{method:'POST',body,csrf},'/api/admin/'),id)}

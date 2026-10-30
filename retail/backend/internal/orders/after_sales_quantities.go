@@ -40,3 +40,19 @@ func AfterSalesShippedTx(ctx context.Context, tx *gorm.DB, orderID, itemID strin
 	}
 	return out, nil
 }
+
+func PositiveAfterSalesRefund(decimal, raw string) (bool, error) {
+	n, e := amountNumber(decimal, &raw)
+	if e != nil {
+		return false, e
+	}
+	value, e := totals.Resolve(n)
+	if e != nil {
+		return false, e
+	}
+	q, ok := new(big.Rat).SetString(value)
+	if !ok {
+		return false, ErrSchema
+	}
+	return q.Sign() > 0, nil
+}

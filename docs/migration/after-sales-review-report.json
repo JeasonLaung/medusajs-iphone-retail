@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-30",
+  "scope": "admin_after_sales_status_review",
+  "full_storefront_accepted": false,
+  "schema_migrations": 68,
+  "authorization_actions": 26,
+  "go_all_packages_passed": true,
+  "admin_typecheck_and_isolated_build_passed": true,
+  "owned_mysql_review": {
+    "real_mysql": true,
+    "explicit_grants": true,
+    "late_receipt_failure_atomic": true,
+    "concurrent_replay_once": true,
+    "stale_revision_denied": true,
+    "revoked_grant_replay_denied": true,
+    "unshipped_original_completion": true,
+    "closed_request_not_reopened": true,
+    "notifications_sent": false
+  },
+  "real_gin_http_handler": {
+    "read": true,
+    "strict_duplicate_null_fields": true,
+    "immutable_replay": true,
+    "revoked_replay_denied": true,
+    "session_csrf_in_this_handler_fixture": false
+  },
+  "customer_astro_gin_mysql_redis_joint": {
+    "passed": true,
+    "mocked_api": false,
+    "cleanup_complete": true,
+    "real_provider_payment": false
+  },
+  "admin_auth_stock_product_inventory_real_sql_suites": {
+    "passed": true,
+    "cleanup_complete": true
+  },
+  "admin_browser": {
+    "api_mocked": true,
+    "full_suite": "28 passed",
+    "mobile_390px_no_page_overflow": true
+  },
+  "legacy_services": {
+    "health": 200,
+    "admin": 200,
+    "account": 200,
+    "cart": 200,
+    "known_log_errors": [
+      "unauthenticated order query 401",
+      "store/locales 404"
+    ]
+  },
+  "remaining": [
+    "device receipt and inspection",
+    "repair and replacement execution",
+    "actual refund execution",
+    "notification delivery",
+    "remaining storefront acceptance paths"
+  ]
+}
