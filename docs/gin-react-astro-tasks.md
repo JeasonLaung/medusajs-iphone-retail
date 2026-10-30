@@ -605,3 +605,8 @@
 ### 2026-10-30: product add to cart and checkout joint
 
 - Found and fixed formal GinCart missing checkoutHref, preserving pending/failure recovery gates and existing styling. Real product-page add, cart reload, checkout click, address/delivery/payment/confirmation passed in en/zh at 390/1440 against isolated Gin/MySQL/Redis; four durable orders and mail queue recovery verified. Astro check has zero errors/warnings. Empty cart credentials are precreated; anonymous cart creation, login transfer, real provider payment/mail, full catalog and fulfillment/customer tracking joint remain pending. See `migration/shopping-joint.md`.
+
+
+### 2026-10-30: first anonymous cart through checkout
+
+- Browser now starts without injected cart credentials or precreated cart/items. Production scope/create/add, cart reload, checkout/payment/confirmation and immutable completion pass in en/zh at 390/1440 against real isolated Gin/MySQL/Redis. Fixed new English cart locale from en to registered en-GB. Four durable orders, stock reservations and order mail recovery verified; 173 storefront unit tests pass. Full account/catalog/fulfillment joint and real provider payment/mail remain pending. See `migration/shopping-fresh-cart-joint.md`.

@@ -75,7 +75,7 @@ export function createCartCommerce(o:Options):Extract<ProductCommerce,{enabled:t
     if(pending.kind==='create'){
      const csrf=o.readScopeCSRF()
      if(!canonical(csrf,token)||await o.bindScope(csrf)!==pending.scopeBinding)throw fail()
-     const created=await o.client.create({operationID:pending.operationID,regionID:o.regionID,locale:o.segment.endsWith('-zh')?'zh-CN':'en'},{csrfToken:csrf})
+     const created=await o.client.create({operationID:pending.operationID,regionID:o.regionID,locale:o.segment.endsWith('-zh')?'zh-CN':'en-GB'},{csrfToken:csrf})
      if(!validCart(created.cart))throw fail()
      pending={...base,kind:'add',cartID:created.cart.id,version:created.cart.version,operationID:o.uuid()}
      save(pending)

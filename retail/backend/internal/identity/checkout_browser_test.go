@@ -42,6 +42,7 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		}
 	}
 	const origin = "http://127.0.0.1:19379"
+	fresh := os.Getenv("CHECKOUT_FRESH_CART") == "1"
 	exec("UPDATE commerce_store_locales SET locale_code='en-GB' WHERE store_id='shop' AND locale_code='en'")
 	defer exec("UPDATE commerce_store_locales SET locale_code='en' WHERE store_id='shop' AND locale_code='en-GB'")
 	exec("UPDATE cart_completion_runtime SET enabled=TRUE WHERE id=1")
@@ -63,11 +64,18 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		Token string `json:"token"`
 		CSRF  string `json:"csrf"`
 	}
-	var fixtures []fixtureCart
+	fixtures := []fixtureCart{}
 	known := map[string]bool{}
 	paid := map[string]bool{}
 	var mu sync.Mutex
+	var previous []string
+	if db.Table("cart_ownership").Pluck("cart_id", &previous).Error != nil {
+		t.Fatal("existing cart baseline")
+	}
 	for i := 0; i < 4; i++ {
+		if fresh {
+			continue
+		}
 		id := uuid.NewString()
 		locale := "en-GB"
 		if i >= 2 {
@@ -95,7 +103,17 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	registry, err := payments.NewCreateAdapters(map[string]payments.CreateSessionAdapter{"pp_mollie-hosted-checkout_mollie": executionObserver{
 		create: func(callCtx context.Context, r payments.SessionRequest) (payments.CreateOutcome, payments.CreatedSession, error) {
 			creates.Add(1)
-			if !known[inScope(r)] || r.Amount != "158.75" || r.Currency != "eur" {
+			mu.Lock()
+			if fresh && !known[inScope(r)] {
+				var count int64
+				if db.WithContext(callCtx).Table("cart_ownership").Where("cart_id=? AND cart_id NOT IN ? AND store_id='shop'", inScope(r), previous).Count(&count).Error == nil && count == 1 {
+					known[inScope(r)] = true
+					fixtures = append(fixtures, fixtureCart{ID: inScope(r)})
+				}
+			}
+			valid := known[inScope(r)]
+			mu.Unlock()
+			if !valid || r.Amount != "158.75" || r.Currency != "eur" {
 				t.Error("browser payment request differs")
 				return payments.CreateUncertain, payments.CreatedSession{}, nil
 			}
@@ -149,17 +167,21 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 			c.AbortWithStatus(404)
 		}
 	})
-	fixture.GET("/ready", func(c *gin.Context) { c.JSON(200, gin.H{"carts": fixtures}) })
+	fixture.GET("/ready", func(c *gin.Context) {
+		mu.Lock()
+		defer mu.Unlock()
+		c.JSON(200, gin.H{"carts": fixtures, "fresh_cart": fresh})
+	})
 	fixture.POST("/paid/:id", func(c *gin.Context) {
 		id := c.Param("id")
+		mu.Lock()
+		defer mu.Unlock()
 		if !known[id] {
 			c.Status(404)
 			return
 		}
 		// Change only the isolated provider's observation, never SQL order/payment state.
-		mu.Lock()
 		paid[id] = true
-		mu.Unlock()
 		c.Status(204)
 	})
 	fixture.POST("/finish", func(c *gin.Context) {
