@@ -90,7 +90,11 @@ func ApplyDeviceExchangeTx(ctx context.Context, tx *gorm.DB, in DeviceExchangeIn
 	if e = exchangeActionTx(tx, in, out, change, first, 1, "ITEM_ADD", item.ItemID, item.UnitPrice, now); e != nil {
 		return out, e
 	}
-	if _, e = RefreshChangeSummaryTx(ctx, tx, in.OrderID, first); e != nil {
+	firstAmounts, e := RefreshChangeSummaryTx(ctx, tx, in.OrderID, first)
+	if e != nil {
+		return out, e
+	}
+	if e = refreshExchangePaymentTx(tx, firstAmounts); e != nil {
 		return out, e
 	}
 	second, e := AdvanceVersionTx(ctx, tx, in.OrderID, first)
@@ -116,6 +120,9 @@ func ApplyDeviceExchangeTx(ctx context.Context, tx *gorm.DB, in DeviceExchangeIn
 	}
 	out.Amounts, e = RefreshChangeSummaryTx(ctx, tx, in.OrderID, second)
 	if e != nil {
+		return out, e
+	}
+	if e = refreshExchangePaymentTx(tx, out.Amounts); e != nil {
 		return out, e
 	}
 	return out, nil

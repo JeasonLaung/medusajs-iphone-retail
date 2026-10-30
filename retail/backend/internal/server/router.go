@@ -162,6 +162,7 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	private.GET("/authorization", access.Require(authorization.Read), access.Directory)
 	private.POST("/authorization/commands", access.Require(authorization.Write), access.Command)
 	private.GET("/orders/:id/after-sales/:request_id/devices/:assignment_id/replacement", (devices.Handler{DB: db}).ReplacementHTTP)
+ private.POST("/orders/:id/after-sales/:request_id/devices/:assignment_id/replacement",(devices.Handler{DB:db}).ReplaceDeviceHTTP)
 	private.GET("/orders/:id/after-sales/:request_id/devices/:assignment_id/service",(devices.Handler{DB:db}).ServiceHTTP)
 	private.POST("/orders/:id/after-sales/:request_id/devices/:assignment_id/service",(devices.Handler{DB:db}).ServiceHTTP)
 	private.GET("/orders/:id/after-sales/:request_id/device-returns",(devices.Handler{DB:db}).ReturnHTTP)

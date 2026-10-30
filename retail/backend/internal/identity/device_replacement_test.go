@@ -136,6 +136,6 @@ func checkDeviceReplacement(t *testing.T, db *gorm.DB, actor identity.User, call
 		t.Fatal("preparation mutated device facts")
 	}
 	checkOrderVersion(t, db)
-	checkExchangeItem(t, db)
+	checkExchangeItem(t, db, actor, assignment)
 	t.Log(`DEVICE_REPLACEMENT_PREPARATION {"real_gin_mysql_redis":true,"order_sku_after_inspection":true,"fulfilled_order_candidates":true,"same_sku_channel_source_and_availability":true,"active_replacement_blocked":true,"native_return_binding":true,"payment_and_processing_required":true,"revision_changes_with_candidates":true,"revoked_warehouse_deleted_foreign_denied":true,"query_rejected":true,"no_device_mutation":true,"write_available":false}`)
 }

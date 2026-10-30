@@ -3,13 +3,19 @@ package identity_test
 import (
 	"encoding/json"
 	"errors"
+	"github.com/gin-gonic/gin"
+	"net/http/httptest"
+	"strings"
 	"testing"
 
+	"github.com/eurorefurb/retail/internal/devices"
+	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/orders"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
-func checkExchangeItem(t *testing.T, db *gorm.DB) {
+func checkExchangeItem(t *testing.T, db *gorm.DB, actor identity.User, assignment string) {
 	t.Helper()
 	ctx := t.Context()
 	rollback := errors.New("exchange item owner rollback")
@@ -165,12 +171,114 @@ func checkExchangeItem(t *testing.T, db *gorm.DB) {
 	nativeInput := orders.DeviceExchangeInput{OrderID: "allocation-order", OriginalItemID: "allocation-line", LocationID: "allocation-location", OriginalAssignmentID: "allocation-original", RequestID: "allocation-exchange", ActorID: "exchange-actor", ExpectedVersion: 1}
 	nativeSeed := func(tx *gorm.DB) {
 		seed(tx)
+		exec(tx, "UPDATE device_service_runtime SET enabled=TRUE WHERE id=1")
 		exec(tx, `UPDATE order_items SET fulfilled_quantity=1,raw_fulfilled_quantity='{"value":"1","precision":100}',return_requested_quantity=0,raw_return_requested_quantity='{"value":"0","precision":100}',return_received_quantity=0,raw_return_received_quantity='{"value":"0","precision":100}',return_dismissed_quantity=0,raw_return_dismissed_quantity='{"value":"0","precision":100}',written_off_quantity=0,raw_written_off_quantity='{"value":"0","precision":100}' WHERE order_id='allocation-order' AND version=1`)
 		exec(tx, `INSERT INTO order_summaries(id,order_id,version,totals,created_at,updated_at) VALUES('native-exchange-summary','allocation-order',1,'{"transaction_total":"0"}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 	}
 	if _, e := orders.ApplyDeviceExchangeTx(ctx, db, nativeInput); e == nil {
 		t.Fatal("native exchange autocommit")
 	}
+	e = db.Transaction(func(tx *gorm.DB) error {
+		nativeSeed(tx)
+		h := devices.Handler{DB: tx}
+		before, e := h.ReadReplacement(ctx, actor, "allocation-order", "asr-receive-exchange", assignment)
+		if e != nil || !before.Eligible {
+			t.Fatal("replacement command preparation", e, before.Reason)
+		}
+		httpPath := "/api/admin/orders/allocation-order/after-sales/asr-receive-exchange/devices/" + assignment + "/replacement"
+		router := gin.New()
+		router.Use(func(c *gin.Context) { c.Set("admin_user", actor) })
+		router.POST("/api/admin/orders/:id/after-sales/:request_id/devices/:assignment_id/replacement", h.ReplaceDeviceHTTP)
+		httpCall := func(body string, want int) []byte {
+			t.Helper()
+			req := httptest.NewRequest("POST", httpPath, strings.NewReader(body))
+			req.Header.Set("Content-Type", "application/json")
+			rec := httptest.NewRecorder()
+			router.ServeHTTP(rec, req)
+			if rec.Code != want {
+				t.Fatal("replacement HTTP", rec.Code, rec.Body.String())
+			}
+			return rec.Body.Bytes()
+		}
+		httpCall(`{"operation_id":"bad","expected_revision":"bad","device_id":"allocation-c"}`, 400)
+		httpCall(`{"operation_id":"bad","operation_id":"bad","expected_revision":"bad","device_id":"allocation-c"}`, 400)
+		in := devices.ReplacementInput{OperationID: uuid.NewString(), ExpectedRevision: before.Revision, DeviceID: "allocation-c"}
+		wire, _ := json.Marshal(in)
+		var out devices.ReplacementResult
+		if json.Unmarshal(httpCall(string(wire), 200), &out) != nil {
+			t.Fatal("replacement HTTP result")
+		}
+		e = nil
+		if e != nil || out.OrderVersion != 3 || out.DeviceID != "allocation-c" || out.Replayed {
+			t.Fatal("replacement command", e, out)
+		}
+		replay, e := h.ReplaceDevice(ctx, actor, "allocation-order", "asr-receive-exchange", assignment, in)
+		if e != nil || !replay.Replayed || replay.AssignmentID != out.AssignmentID {
+			t.Fatal("replacement replay", e, replay)
+		}
+		var saved struct{ ItemID, ReplacementOf, AfterSalesRequestID, Status string }
+		tx.Table("device_assignments").Select("item_id,replacement_of,after_sales_request_id,status").Where("id=?", out.AssignmentID).Take(&saved)
+		var nativeReturn, state string
+		tx.Table("device_assignments").Select("return_id").Where("id=?", assignment).Scan(&nativeReturn)
+		tx.Table("devices").Select("state").Where("id='allocation-c'").Scan(&state)
+		if saved.ItemID != out.ItemID || saved.ReplacementOf != assignment || saved.AfterSalesRequestID != "asr-receive-exchange" || saved.Status != "reserved" || nativeReturn != out.ReturnID || state != "reserved" {
+			t.Fatal("replacement binding", saved, nativeReturn, state)
+		}
+		wrong := in
+		wrong.OperationID = uuid.NewString()
+		if _, e = h.ReplaceDevice(ctx, actor, "allocation-order", "asr-receive-exchange", assignment, wrong); e == nil {
+			t.Fatal("second replacement accepted")
+		}
+		wrong = in
+		wrong.DeviceID = "allocation-a"
+		if _, e = h.ReplaceDevice(ctx, actor, "allocation-order", "asr-receive-exchange", assignment, wrong); e == nil {
+			t.Fatal("changed replacement receipt accepted")
+		}
+		exec(tx, "UPDATE device_service_runtime SET enabled=FALSE WHERE id=1")
+		if replay, e = h.ReplaceDevice(ctx, actor, "allocation-order", "asr-receive-exchange", assignment, in); e != nil || !replay.Replayed {
+			t.Fatal("paused replacement recovery", e)
+		}
+		exec(tx, "UPDATE device_service_runtime SET enabled=TRUE WHERE id=1")
+		var role string
+		tx.Table("authorization_memberships").Select("role_id").Where("user_id=?", actor.ID).Limit(1).Scan(&role)
+		exec(tx, "DELETE FROM authorization_role_actions WHERE role_id=? AND action_code='order.after_sales.write'", role)
+		if _, e = h.ReplaceDevice(ctx, actor, "allocation-order", "asr-receive-exchange", assignment, in); e == nil {
+			t.Fatal("revoked replacement replay")
+		}
+		exec(tx, "INSERT INTO authorization_role_actions(role_id,action_code) VALUES(?,'order.after_sales.write')", role)
+		exec(tx, "UPDATE devices SET deleted_at=UTC_TIMESTAMP(6) WHERE id='allocation-c'")
+		if _, e = h.ReplaceDevice(ctx, actor, "allocation-order", "asr-receive-exchange", assignment, in); e == nil {
+			t.Fatal("deleted replacement replay")
+		}
+		return rollback
+	})
+	if !errors.Is(e, rollback) {
+		t.Fatal("replacement command owner rollback", e)
+	}
+	exec(db, "CREATE TRIGGER replacement_command_receipt_fault BEFORE INSERT ON device_service_receipts FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='artificial replacement receipt failure'")
+	e = db.Transaction(func(tx *gorm.DB) error {
+		nativeSeed(tx)
+		h := devices.Handler{DB: tx}
+		before, e := h.ReadReplacement(ctx, actor, "allocation-order", "asr-receive-exchange", assignment)
+		if e != nil {
+			return e
+		}
+		in := devices.ReplacementInput{OperationID: uuid.NewString(), ExpectedRevision: before.Revision, DeviceID: "allocation-c"}
+		_, e = h.ReplaceDevice(ctx, actor, "allocation-order", "asr-receive-exchange", assignment, in)
+		return e
+	})
+	exec(db, "DROP TRIGGER replacement_command_receipt_fault")
+	if e == nil {
+		t.Fatal("replacement receipt fault accepted")
+	}
+	var receiptVersion int
+	var receiptState string
+	db.Table("orders").Select("version").Where("id='allocation-order'").Scan(&receiptVersion)
+	db.Table("devices").Select("state").Where("id='allocation-c'").Scan(&receiptState)
+	if receiptVersion != 1 || receiptState != "available" {
+		t.Fatal("replacement receipt leaked order/device", receiptVersion, receiptState)
+	}
+	var nativeFinalTotal string
 	e = db.Transaction(func(tx *gorm.DB) error {
 		nativeSeed(tx)
 		out, e := orders.ApplyDeviceExchangeTx(ctx, tx, nativeInput)
@@ -214,10 +322,68 @@ func checkExchangeItem(t *testing.T, db *gorm.DB) {
 		if actions != 3 || changes != 2 || items != 1 {
 			t.Fatal("native actions", actions, changes, items)
 		}
+		nativeFinalTotal = out.Amounts.Totals["total"]
+		var due struct{ Amount, RawAmount, Status string }
+		if tx.Table("payment_collections p").Select("CAST(p.amount AS CHAR) AS amount,p.raw_amount,p.status").Joins("JOIN order_payment_collections l ON l.payment_collection_id=p.id").Where("l.order_id='allocation-order' AND p.id<>'allocation-payment'").Take(&due).Error != nil || due.Status != "not_paid" {
+			t.Fatal("replacement pending payment collection", due)
+		}
+		var rawDue struct {
+			Value     string
+			Precision int
+		}
+		if json.Unmarshal([]byte(due.RawAmount), &rawDue) != nil || rawDue.Value != out.Amounts.Summary.PendingDifference {
+			t.Fatal("pending raw difference", due)
+		}
 		return rollback
 	})
 	if !errors.Is(e, rollback) {
 		t.Fatal("native owner rollback", e)
+	}
+	for _, scenario := range []string{"negative", "zero"} {
+		e = db.Transaction(func(tx *gorm.DB) error {
+			nativeSeed(tx)
+			amount := "10000"
+			if scenario == "zero" {
+				amount = nativeFinalTotal
+			}
+			raw, _ := json.Marshal(map[string]any{"value": amount, "precision": 100})
+			// SQL scalar is a projection; the immutable raw transaction remains exact.
+			exec(tx, "INSERT INTO order_transactions(id,order_id,version,amount,raw_amount,currency_code,created_at,updated_at) VALUES('exchange-scenario-capture','allocation-order',1,?,?, 'eur',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", amount, string(raw))
+			out, e := orders.ApplyDeviceExchangeTx(ctx, tx, nativeInput)
+			if e != nil {
+				t.Fatal("native payment scenario", scenario, e)
+			}
+			var due []struct{ RawAmount, Status string }
+			tx.Table("payment_collections p").Select("p.raw_amount,p.status").Joins("JOIN order_payment_collections l ON l.payment_collection_id=p.id").Where("l.order_id='allocation-order' AND p.id<>'allocation-payment'").Find(&due)
+			if scenario == "negative" {
+				if len(due) != 0 || out.Amounts.Summary.PendingDifference[0] != '-' {
+					t.Fatal("negative exchange payment", due)
+				}
+			} else {
+				if len(due) != 1 || due[0].Status != "not_paid" || out.Amounts.Summary.PendingDifference != "0" {
+					t.Fatal("zero difference", due, out.Amounts.Summary)
+				}
+			}
+			return rollback
+		})
+		if !errors.Is(e, rollback) {
+			t.Fatal("payment scenario rollback", e)
+		}
+	}
+	exec(db, "CREATE TRIGGER exchange_payment_link_fault BEFORE INSERT ON order_payment_collections FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='artificial exchange payment link failure'")
+	e = db.Transaction(func(tx *gorm.DB) error {
+		nativeSeed(tx)
+		_, e := orders.ApplyDeviceExchangeTx(ctx, tx, nativeInput)
+		return e
+	})
+	exec(db, "DROP TRIGGER exchange_payment_link_fault")
+	if e == nil {
+		t.Fatal("exchange payment failure accepted")
+	}
+	var paymentLeaks int64
+	db.Table("order_payment_collections").Where("order_id='allocation-order' AND payment_collection_id<>'allocation-payment'").Count(&paymentLeaks)
+	if paymentLeaks != 0 {
+		t.Fatal("exchange payment link leaked")
 	}
 	exec(db, "CREATE TRIGGER exchange_receive_action_fault BEFORE INSERT ON order_change_actions FOR EACH ROW BEGIN IF NEW.action='RECEIVE_DAMAGED_RETURN_ITEM' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='artificial exchange receive failure'; END IF; END")
 	e = db.Transaction(func(tx *gorm.DB) error {
@@ -275,5 +441,5 @@ func checkExchangeItem(t *testing.T, db *gorm.DB) {
 	if before != after || versionAfter != 1 {
 		t.Fatal("summary failure leaked new line/version")
 	}
-	t.Log(`EXCHANGE_ITEM_REHEARSAL {"real_mysql":true,"same_order_sku":true,"original_exact_unit_price":true,"fresh_catalog_snapshot":true,"custom_price_without_quote":true,"inclusive_flag_not_copied":true,"current_quote_inclusive_and_sale_reference":true,"fresh_system_tax_original_untouched":true,"no_blind_discount_copy":true,"new_item_zero_fulfillment":true,"current_amount_reader":true,"stale_foreign_unpublished_provider_denied":true,"missing_region_and_disabled_channel_denied":true,"autocommit_denied":true,"owner_rollback":true,"late_tax_failure_atomic":true,"summary_preserves_history_and_old_version":true,"signed_exact_difference":true,"ledger_paid_and_refund_aggregates":true,"future_and_foreign_ledger_denied":true,"late_summary_failure_atomic":true,"native_exchange_and_quarantine_records":true,"two_confirmed_versions_three_actions":true,"late_receive_action_failure_atomic":true,"exchange_command_integrated":false}`)
+	t.Log(`EXCHANGE_ITEM_REHEARSAL {"real_mysql":true,"same_order_sku":true,"original_exact_unit_price":true,"fresh_catalog_snapshot":true,"custom_price_without_quote":true,"inclusive_flag_not_copied":true,"current_quote_inclusive_and_sale_reference":true,"fresh_system_tax_original_untouched":true,"no_blind_discount_copy":true,"new_item_zero_fulfillment":true,"current_amount_reader":true,"stale_foreign_unpublished_provider_denied":true,"missing_region_and_disabled_channel_denied":true,"autocommit_denied":true,"owner_rollback":true,"late_tax_failure_atomic":true,"summary_preserves_history_and_old_version":true,"signed_exact_difference":true,"ledger_paid_and_refund_aggregates":true,"future_and_foreign_ledger_denied":true,"late_summary_failure_atomic":true,"native_exchange_and_quarantine_records":true,"two_confirmed_versions_three_actions":true,"late_receive_action_failure_atomic":true,"positive_zero_negative_payment_difference":true,"no_fake_capture_or_refund":true,"late_payment_link_failure_atomic":true,"device_replacement_command":true,"private_http_strict_input_and_result":true,"replacement_receipt_replay_and_bindings":true,"replacement_receipt_failure_atomic":true,"replacement_revoked_deleted_replay_denied":true,"replacement_paused_recovery":true,"exchange_command_integrated":false}`)
 }

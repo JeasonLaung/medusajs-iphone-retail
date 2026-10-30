@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-30",
+  "scope": "Gin device replacement command, pending payment difference and Ant operation",
+  "full_storefront_accepted": false,
+  "unit_all_go_packages_passed": true,
+  "admin_typecheck_passed": true,
+  "admin_browser_tests": 31,
+  "browser_uses_synthetic_api": true,
+  "real_sql_suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "evidence": {
+    "real_mysql": true,
+    "positive_zero_negative_payment_difference": true,
+    "no_fake_capture_or_refund": true,
+    "late_payment_link_failure_atomic": true,
+    "device_replacement_command": true,
+    "private_http_strict_input_and_result": true,
+    "replacement_receipt_replay_and_bindings": true,
+    "replacement_receipt_failure_atomic": true,
+    "replacement_revoked_deleted_replay_denied": true,
+    "replacement_paused_recovery": true
+  },
+  "tested_source_files": [
+    {
+      "path": "retail/backend/internal/devices/replacement.go",
+      "sha256": "351056f63f63ba7c93534570c7ed9a876b29a56d4406e4ee5cc7ecba171af1fe"
+    },
+    {
+      "path": "retail/backend/internal/devices/replacement_command.go",
+      "sha256": "0b1bc671a60ca2b7926237e6416e292f88e4d414fabd2da753c91c044853c2d3"
+    },
+    {
+      "path": "retail/backend/internal/devices/replacement_http.go",
+      "sha256": "2177e889561bcf35e6257983cdd67a58af9c9ed9348b7997e3f8dabf14e45836"
+    },
+    {
+      "path": "retail/backend/internal/orders/device_exchange.go",
+      "sha256": "a7fe79e20132dde1ef28457c99aaa97369006c3bb0338292339c34249c3ac436"
+    },
+    {
+      "path": "retail/backend/internal/orders/exchange_payment.go",
+      "sha256": "f44194835f06c625d1aa5f634eef413ad7ef501b1782eb74bf2e1d2b780441b9"
+    },
+    {
+      "path": "retail/backend/internal/identity/exchange_item_test.go",
+      "sha256": "488eb3f64d7fbec5ce0a66f7d7211024779a4caecd7816154d38a3cc34e6486a"
+    },
+    {
+      "path": "retail/backend/internal/identity/device_replacement_test.go",
+      "sha256": "fc312c8aed78b489f3cf1371adb92cc21d45b467b79a89077d9928617773afb2"
+    },
+    {
+      "path": "retail/admin/src/api.ts",
+      "sha256": "df555b048db19f3f11b06069bb3ecb692c66622fee1542e3b5d653b2897724e0"
+    },
+    {
+      "path": "retail/admin/src/DeviceService.tsx",
+      "sha256": "bc61fc9375097bd4e4e6432630d8ce321b861459fd4ca918dfc9eca42a7dbc1d"
+    },
+    {
+      "path": "retail/admin/src/DeviceReplacement.tsx",
+      "sha256": "2a3d893a977a5d37226f914da4782377fa5c26d05512f8d8a23bd2d489bdc43a"
+    },
+    {
+      "path": "retail/admin/tests/auth.spec.ts",
+      "sha256": "f112e81e16a50526b24cd6ccc7bfbae6cb5a0adc7512927593523f29ed05b9d3"
+    },
+    {
+      "path": "retail/backend/internal/server/router.go",
+      "sha256": "6441accf2fedf601dc836bf640acd1c297acb0b7d865badc8a31fe592377a6ba",
+      "scope": "committed router plus POST route only"
+    }
+  ],
+  "owned_runner_cleanup": "complete",
+  "existing_service_health": {
+    "9001_health": 200,
+    "9001_app": 200,
+    "8000_account_orders": 200,
+    "8000_cart": 200
+  },
+  "existing_service_logs": "Existing anonymous order 401/locales 404 and storefront request errors remain; no new outage observed",
+  "remaining": [
+    "Real React/Gin/MySQL replacement packing and shipment joint flow",
+    "Independent concurrent replacement attempts",
+    "Real payment channel collection/refund of difference",
+    "After-sales notifications",
+    "Full storefront closure"
+  ]
+}

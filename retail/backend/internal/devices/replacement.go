@@ -80,51 +80,9 @@ func (h Handler) ReadReplacement(ctx context.Context, actor identity.User, o, r,
 		return out, ErrUnavailable
 	}
 	e := h.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if e := serviceAuthority(ctx, tx, actor, false); e != nil {
-			return e
-		}
-		if e := authorization.CheckTx(ctx, tx, actor, authorization.OrderPaymentRead, authorization.OrderAllocationWrite); e != nil {
-			return e
-		}
-		if payments.Ready(ctx, tx) != nil {
-			return ErrUnavailable
-		}
-		service, _, e := loadService(ctx, tx, o, r, a)
-		if e != nil {
-			return e
-		}
-		var original replacementOriginal
-		if e = tx.Table("device_assignments").Select("id,item_id,return_id,replacement_of").Where("id=? AND order_id=? AND after_sales_request_id=? AND deleted_at IS NULL", a, o, r).Clauses(clause.Locking{Strength: "SHARE"}).Take(&original).Error; e != nil {
-			return e
-		}
-		// The order line's SKU is authoritative even after inspection has changed
-		// the original machine's SKU. Ordinary remaining-to-fulfil capacity does
-		// not restrict exchange eligibility (the original has already shipped).
-		allocation, e := loadAllocation(tx, o, original.ItemID, 0, false)
-		if e != nil {
-			return e
-		}
-		var replacements []struct {
-			ID, DeviceID, Status string
-			UpdatedAt            time.Time
-		}
-		if tx.Table("device_assignments").Select("id,device_id,status,updated_at").Where("replacement_of=? AND status IN ('reserved','packed','shipped') AND deleted_at IS NULL", a).Order("id").Limit(1001).Clauses(clause.Locking{Strength: "SHARE"}).Scan(&replacements).Error != nil || len(replacements) > 1000 {
-			return ErrUnavailable
-		}
-		reason := replacementReason(service, allocation.OrderActive, allocation.Paid, original, int64(len(replacements)))
-		out = ReplacementContext{OrderID: o, RequestID: r, OriginalAssignmentID: a, OriginalDeviceID: service.DeviceID, OriginalItemID: original.ItemID, VariantID: allocation.VariantID, OrderVersion: allocation.Version, Eligible: reason == "eligible", Reason: reason, Devices: []ReplacementDevice{}}
-		if out.Eligible {
-			for _, d := range allocation.Devices {
-				if d.ID == service.DeviceID {
-					continue
-				}
-				out.Devices = append(out.Devices, ReplacementDevice{ID: d.ID, SerialNumber: d.SerialNumber, LocationID: d.LocationID, LocationName: d.LocationName, SourceID: d.SourceID, SourceName: d.SourceName})
-			}
-		}
-		data, _ := json.Marshal([]any{service.Revision, allocation.Revision, original, replacements})
-		digest := sha256.Sum256(data)
-		out.Revision = hex.EncodeToString(digest[:])
-		return nil
+		var e error
+		out, e = loadReplacementTx(ctx, tx, actor, o, r, a)
+		return e
 	})
 	return out, e
 }
@@ -161,4 +119,61 @@ func (h Handler) ReplacementHTTP(c *gin.Context) {
 		status = 409
 	}
 	platform.Fail(c, status, "devices.replacement_unavailable", "Replacement preparation unavailable; verify the original device and current permission")
+}
+
+func loadReplacementTx(ctx context.Context, tx *gorm.DB, actor identity.User, o, r, a string) (ReplacementContext, error) {
+	var out ReplacementContext
+	if e := serviceAuthority(ctx, tx, actor, false); e != nil {
+		return out, e
+	}
+	if e := authorization.CheckTx(ctx, tx, actor, authorization.OrderPaymentRead, authorization.OrderAllocationWrite); e != nil {
+		return out, e
+	}
+	if payments.Ready(ctx, tx) != nil {
+		return out, ErrUnavailable
+	}
+	service, _, e := loadService(ctx, tx, o, r, a)
+	if e != nil {
+		return out, e
+	}
+	var original replacementOriginal
+	if e = tx.Table("device_assignments").Select("id,item_id,return_id,replacement_of").Where("id=? AND order_id=? AND after_sales_request_id=? AND deleted_at IS NULL", a, o, r).Clauses(clause.Locking{Strength: "SHARE"}).Take(&original).Error; e != nil {
+		return out, e
+	}
+	// The order line's SKU is authoritative even after inspection has changed
+	// the original machine's SKU. Ordinary remaining-to-fulfil capacity does
+	// not restrict exchange eligibility (the original has already shipped).
+	allocation, e := loadAllocation(tx, o, original.ItemID, 0, false)
+	if e != nil {
+		return out, e
+	}
+	var replacements []struct {
+		ID, DeviceID, Status string
+		UpdatedAt            time.Time
+	}
+	if tx.Table("device_assignments").Select("id,device_id,status,updated_at").Where("replacement_of=? AND status IN ('reserved','packed','shipped') AND deleted_at IS NULL", a).Order("id").Limit(1001).Clauses(clause.Locking{Strength: "SHARE"}).Scan(&replacements).Error != nil || len(replacements) > 1000 {
+		return out, ErrUnavailable
+	}
+	reason := replacementReason(service, allocation.OrderActive, allocation.Paid, original, int64(len(replacements)))
+	out = ReplacementContext{OrderID: o, RequestID: r, OriginalAssignmentID: a, OriginalDeviceID: service.DeviceID, OriginalItemID: original.ItemID, VariantID: allocation.VariantID, OrderVersion: allocation.Version, Eligible: reason == "eligible", Reason: reason, Devices: []ReplacementDevice{}}
+	var gate struct {
+		Version int
+		Enabled bool
+	}
+	if tx.Table("order_device_allocation_runtime").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&gate).Error != nil || gate.Version != 1 {
+		return out, ErrUnavailable
+	}
+	out.WriteAvailable = service.Enabled && gate.Enabled && serviceAuthority(ctx, tx, actor, true) == nil
+	if out.Eligible {
+		for _, d := range allocation.Devices {
+			if d.ID == service.DeviceID {
+				continue
+			}
+			out.Devices = append(out.Devices, ReplacementDevice{ID: d.ID, SerialNumber: d.SerialNumber, LocationID: d.LocationID, LocationName: d.LocationName, SourceID: d.SourceID, SourceName: d.SourceName})
+		}
+	}
+	data, _ := json.Marshal([]any{service.Revision, allocation.Revision, original, replacements})
+	digest := sha256.Sum256(data)
+	out.Revision = hex.EncodeToString(digest[:])
+	return out, nil
 }

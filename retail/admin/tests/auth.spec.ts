@@ -719,3 +719,35 @@ test('inspection and repaired-device dispatch retry immutable commands after los
  await drawer.getByRole('button',{name:'重试本次处理',exact:true}).click();await expect(drawer.getByText('设备处理已保存',{exact:true})).toBeVisible();await expect(drawer.getByText('shipped',{exact:true})).toBeVisible();await expect(drawer.getByText('REPAIRED-TRACK',{exact:true})).toBeVisible();expect(posted).toHaveLength(4);expect(posted[2]).toEqual(posted[3]);expect(posted[2]).toMatchObject({action:'repair_ship',tracking_number:'REPAIRED-TRACK',variant_id:'',photos:[]})
  await page.setViewportSize({width:390,height:844});await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
 })
+
+
+test('replacement drawer retries an immutable command after a lost reply',async({page})=>{
+ await fixture(page,{permissions:['order.read','order.payment.read','device.read','warehouse.read','product.read','inventory.read','device.intake','order.after_sales.write','order.allocation.write']})
+ const date='2026-10-30T00:00:00Z',order={id:'exchange-order',version:1,status:'pending',currency_code:'eur',custom_display_id:'Exchange',display_id:'1',is_draft_order:false,email:null,created_at:date,updated_at:date,line_count:0}
+ let assigned=false;const posted:unknown[]=[]
+ await page.route('**/api/admin/orders/exchange-order**',async route=>{
+  const req=route.request(),path=new URL(req.url()).pathname
+  if(path.endsWith('/replacement')){
+   if(req.method()==='POST'){expect(req.headers()['x-csrf-token']).toBe(sessionCSRF);posted.push(req.postDataJSON());assigned=true;if(posted.length===1)return route.abort('failed');return route.fulfill({json:{assignment_id:'replacement-assignment',device_id:'replacement-device',exchange_id:'exchange-one',return_id:'return-one',item_id:'new-line',order_version:3,pending_difference:'5.125',replayed:true}})}
+   return route.fulfill({json:{order_id:order.id,request_id:'asr_exchange',original_assignment_id:'assigned',original_device_id:'device',original_item_id:'line',variant_id:'original-sku',order_version:assigned?3:1,eligible:!assigned,reason:assigned?'native_return_exists':'eligible',write_available:true,revision:'a'.repeat(64),devices:assigned?[]:[{id:'replacement-device',serial_number:'REPLACEMENT-SN',location_id:'warehouse',location_name:'Warehouse',source_id:'source',source_name:'Own source'}]}})
+  }
+  if(path.endsWith('/service'))return route.fulfill({json:{order_id:order.id,request_id:'asr_exchange',assignment_id:'assigned',device_id:'device',serial_number:'ORIGINAL-SN',type:'exchange',request_status:'processing',status:'returned',state:'available',category:'sale',product_id:'product',variant_id:'inspected-sku',grade:'B',battery_health:85,tracking_number:null,revision:'a'.repeat(64),enabled:true}})
+  if(path.endsWith('/device-returns'))return route.fulfill({json:{order_id:order.id,request_id:'asr_exchange',type:'exchange',status:'processing',revision:'a'.repeat(64),enabled:true,devices:[{assignment_id:'assigned',device_id:'device',item_id:'line',serial_number:'ORIGINAL-SN',status:'returned',state:'available',location_id:'warehouse'}],sources:[]}})
+  if(path.endsWith('/after-sales'))return route.fulfill({json:{order_id:order.id,revision:'a'.repeat(64),enabled:true,requests:[{id:'asr_exchange',type:'exchange',status:'processing',reason:'Exchange original',created_at:date,items:[{item_id:'line',title:'Phone',quantity:1,device_ids:['device']}]}]}})
+  if(path.endsWith('/payments'))return route.fulfill({json:{order_id:order.id,version:1,operations_enabled:false,collections:[]}})
+  return route.fulfill({json:{order,lines:[]}})
+ })
+ await page.goto('/login');await signIn(page);await page.goto('/orders/exchange-order')
+ await page.getByRole('button',{name:'收回设备',exact:true}).click();await page.getByRole('dialog').getByRole('button',{name:'处理设备',exact:true}).click()
+ await page.getByRole('dialog').last().getByRole('button',{name:'分配替换设备',exact:true}).click()
+ const drawer=page.getByRole('dialog').last()
+ await expect(drawer.getByText('SKU: original-sku',{exact:true})).toBeVisible()
+ await drawer.getByRole('combobox',{name:'替换设备',exact:true}).click();await page.locator('.ant-select-item-option[title="REPLACEMENT-SN / Own source / Warehouse"]').click()
+ await drawer.getByRole('button',{name:'确认分配替换设备',exact:true}).click()
+ await expect(drawer.getByRole('button',{name:'重试本次换机',exact:true})).toBeVisible();await expect(drawer.getByRole('combobox',{name:'替换设备',exact:true})).toBeDisabled()
+ await drawer.getByRole('button',{name:'重试本次换机',exact:true}).click()
+ await expect(drawer.getByText('替换设备已分配',{exact:true})).toBeVisible();await expect(drawer.getByText('5.125',{exact:true})).toBeVisible()
+ expect(posted).toHaveLength(2);expect(posted[0]).toEqual(posted[1]);expect(posted[0]).toMatchObject({device_id:'replacement-device'})
+ await expect(drawer.getByRole('button',{name:'确认分配替换设备',exact:true})).toBeDisabled()
+ await page.setViewportSize({width:390,height:844});await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
+})

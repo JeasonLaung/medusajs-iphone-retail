@@ -59,3 +59,15 @@ current_order_total 与 accounting_total 继承原 order-change 的当前总额�
 来源继续核对安装的 Medusa 2.21.2：createOrderRelatedEntity_、confirmExchangeRequestWorkflow、beginReceiveReturnWorkflow、confirmReturnReceiveWorkflow、三个 action 实现及 applyChangesToOrder。额外确认：confirm exchange 仅在有 exchangeShippingMethod 时创建数量预留；原自定义换机未添加此配送方式。因此实际替换设备仍按原流程预留设备，打包时处理数量库存。之前后续清单中的“数量预留”不能作为无条件新增步骤。
 
 本批仅是订单事务参与者，尚未开放 POST 或 React 换机按钮。调用方仍须验证当前操作者、已付订单、处理中换机、已收回原分配、可售同 SKU 替换设备，绑定原分配 return_id，生成替换分配、事件和不可变收据，并处理原支付集合差额更新；任意失败必须整笔回滚。真实 SQL 验证覆盖双版本、三动作、完整引用与明细、精确税价和汇总、末尾接收动作故障回滚，见 [订单换货报告](native-exchange-report.json)。
+
+## 实际替换命令与 Ant 界面
+
+`POST /api/admin/orders/:id/after-sales/:request_id/devices/:assignment_id/replacement` 接收且仅接收 operation_id / expected_revision / device_id 三个字符串字段。沿用私有管理员认证、CSRF/Origin 和业务权限校验；拒绝重复 JSON 字段、未知字段、空问号、非法 UUID/版本、非 JSON 和超长请求。GET 的 write_available 现在来自维修服务与分配开关及当前实际写权限，不再固定 false。默认配置没有因此自动启用写入。
+
+命令在真实事务中重新校验已付订单、处理中换机、已收回原分配、无原生退货关联/活动替换、当前候选版本和设备身份。先完成订单换货参与者，再将原分配绑定 return_id；替换设备绑定新订单商品行、原分配、售后申请和来源，状态 reserved。设备事件与既有 device_service_receipts 的全局 UUID 收据一起提交；检查/换机请求字段不同，同 UUID 不能跨命令重放。权限和当前目标引用在重放时仍重新校验；服务写开关关闭后允许核实已有结果。
+
+支付集合在两个确认阶段按原流程刷新：已完成付款集合不改；正差额建立 not_paid 集合，后续非负差额更新这个未付集合，负差额保留原集合和待退款差额。没有创建捕获/退款、没有标记已结清。内部遇到已授权但未捕获的活动集合拒绝处理，须由拥有支付会话取消/重建能力的流程处理；本命令首次要求所有集合已 completed，因此正常初次换机不进入该分支。数量库存不改，沿用无新换机配送方式的原自定义设备预留行为。
+
+React Admin 从售后收回→处理设备打开 Ant 换机抽屉，显示订单原 SKU、SN/来源/仓库候选，提交后显示新商品行、退货单和待结差额。未确认结果冻结选择，重试保留原 operation_id 和完整请求；重新读取后核对真实记录。没有把保存设备分配当作发货或售后完成。
+
+证据分开记录：真实 Gin/MySQL/Redis 验证订单/设备/收据绑定、重复恢复、撤权/删除拒绝、收据失败回滚，以及正/零/负差额；浏览器使用合成 API 验证 Ant 操作及丢响应恢复。见 [命令报告](replacement-command-report.json)。完整 React→真实 Gin→真实 MySQL 的换机/配货/发货联合、独立命令并发竞争、补款渠道/实际退款和通知仍待继续；本批不标记整个售后或前台完成。

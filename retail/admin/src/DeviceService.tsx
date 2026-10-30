@@ -4,8 +4,11 @@ import {APIError,readDeviceService,serviceDevice,type DeviceServiceContext,type 
 import {copies} from './i18n'
 import DevicePhotos from './DevicePhotos'
 import ServiceVariantPicker from './ServiceVariantPicker'
+import DeviceReplacement from './DeviceReplacement'
+import {useAccess} from './Permissions'
 type Fields={result:string;grade:string;battery_health:number;notes:string;photos:DevicePhoto[];tracking_number:string}
 export default function DeviceService({order,requestID,assignment,onClose,onExpired}:{order:string;requestID:string;assignment:string;onClose():void;onExpired():void}){
+ const access=useAccess(),[replacing,setReplacing]=useState(false)
  const zh=document.documentElement.lang.startsWith('zh'),copy=copies[zh?'zh-CN':'en'],[form]=Form.useForm<Fields>(),[data,setData]=useState<DeviceServiceContext>(),[attempt,setAttempt]=useState(0),[error,setError]=useState(false),[pending,setPending]=useState<DeviceServiceInput>(),[saving,setSaving]=useState(false),[failed,setFailed]=useState(false),[saved,setSaved]=useState(false),[photoBusy,setPhotoBusy]=useState(false),[picker,setPicker]=useState(false),[variant,setVariant]=useState<{id:string;label:string}>(),busy=useRef(false)
  useEffect(()=>{const c=new AbortController();setData(undefined);setError(false);readDeviceService(order,requestID,assignment,c.signal).then(d=>{if(!c.signal.aborted){setData(d);setVariant({id:d.variant_id,label:d.variant_id});form.setFieldsValue({result:'pass',grade:d.grade??'B',battery_health:d.battery_health??0,notes:'',photos:[],tracking_number:''})}}).catch(e=>{if(!c.signal.aborted){if(e instanceof APIError&&e.status===401)onExpired();else setError(true)}});return()=>c.abort()},[order,requestID,assignment,attempt,onExpired,form])
  const send=async(body:DeviceServiceInput)=>{if(busy.current)return;busy.current=true;setSaving(true);setFailed(false);setPending(body);try{await serviceDevice(order,requestID,assignment,body);setPending(undefined);setSaved(true);setAttempt(n=>n+1)}catch(e){if(e instanceof APIError&&e.status===401)onExpired();else setFailed(true)}finally{busy.current=false;setSaving(false)}}
@@ -16,6 +19,7 @@ export default function DeviceService({order,requestID,assignment,onClose,onExpi
  <Alert type="info" message={zh?'检测记录设备实际成色、电池和处理结果。维修原机通过检测后需填写物流单号返还；这些操作不会增减数量库存。':'Record the actual condition, battery and inspection result. Dispatch the repaired original device with a tracking number after it passes inspection. Quantity stock is unchanged.'}/>
  {error?<><Alert type="error" message={zh?'设备记录暂不可用':'Device records unavailable'}/><Button onClick={reload}>{zh?'重新读取':'Reload'}</Button></>:!data?<Spin/>:<>
  <Descriptions column={1} items={[{key:'serial',label:zh?'序列号':'Serial number',children:data.serial_number},{key:'state',label:zh?'设备状态':'Device state',children:data.state},{key:'tracking',label:zh?'返还物流单号':'Return tracking number',children:data.tracking_number??'—'}]}/>
+ {data.type==='exchange'&&data.request_status==='processing'&&data.status==='returned'&&access.can('order.allocation.write','order.payment.read','order.after_sales.write','device.intake')&&<Button disabled={saving||!!pending||photoBusy} onClick={()=>setReplacing(true)}>{zh?'分配替换设备':'Assign replacement device'}</Button>}
  {saved&&<Alert type="success" message={zh?'设备处理已保存':'Device operation saved'}/>}
  {!data.enabled&&<Alert type="warning" message={zh?'检测与返还操作尚未启用':'Inspection and repair return writes are disabled'}/>}
  {failed&&<Alert type="error" message={zh?'结果未确认或处理条件已变化，请重试原操作或重新读取核对。':'Result unconfirmed or prerequisites changed. Retry the same operation or reload to verify.'}/>}
@@ -33,5 +37,5 @@ export default function DeviceService({order,requestID,assignment,onClose,onExpi
  {pending&&<Button type="primary" loading={saving} onClick={()=>void send(pending)}>{zh?'重试本次处理':'Retry this operation'}</Button>}
  <Button disabled={saving||photoBusy} onClick={reload}>{zh?'重新读取':'Reload'}</Button>
  </>}
- </Space>{picker&&<ServiceVariantPicker onExpired={onExpired} onClose={()=>setPicker(false)} onSelect={(id,label)=>{setVariant({id,label});setPicker(false)}}/>}</Drawer>
+ </Space>{picker&&<ServiceVariantPicker onExpired={onExpired} onClose={()=>setPicker(false)} onSelect={(id,label)=>{setVariant({id,label});setPicker(false)}}/>}{replacing&&<DeviceReplacement order={order} requestID={requestID} assignment={assignment} onExpired={onExpired} onClose={()=>{setReplacing(false);reload()}}/>}</Drawer>
 }

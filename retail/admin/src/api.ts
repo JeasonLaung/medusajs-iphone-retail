@@ -572,3 +572,19 @@ export async function serviceDevice(order:string,requestID:string,assignment:str
  const d=await request<{device_id:string;assignment_id:string;state:string;category:string;replayed:boolean}>(deviceServicePath(order,requestID,assignment),{method:'POST',body,csrf},'/api/admin/')
  if(!d||d.assignment_id!==assignment||!warehouseID(d.device_id)||!['available','repair','repair_ready','retired','supplier_returned','shipped'].includes(d.state)||!['sale','returned','recycled'].includes(d.category)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
 }
+
+export type ReplacementContext={order_id:string;request_id:string;original_assignment_id:string;original_device_id:string;original_item_id:string;variant_id:string;order_version:number;eligible:boolean;reason:string;write_available:boolean;revision:string;devices:{id:string;serial_number:string;location_id:string;location_name:string;source_id:string;source_name:string}[]}
+export type ReplacementInput={operation_id:string;expected_revision:string;device_id:string}
+export type ReplacementResult={assignment_id:string;device_id:string;exchange_id:string;return_id:string;item_id:string;order_version:number;pending_difference:string;replayed:boolean}
+const replacementPath=(o:string,r:string,a:string)=>`orders/${encodeURIComponent(o)}/after-sales/${encodeURIComponent(r)}/devices/${encodeURIComponent(a)}/replacement`
+export async function readReplacement(o:string,r:string,a:string,signal?:AbortSignal):Promise<ReplacementContext>{
+ const d=await request<ReplacementContext>(replacementPath(o,r,a),{signal},'/api/admin/')
+ if(!d||d.order_id!==o||d.request_id!==r||d.original_assignment_id!==a||!warehouseID(d.original_device_id)||!warehouseID(d.original_item_id)||!warehouseID(d.variant_id)||!Number.isInteger(d.order_version)||d.order_version<1||typeof d.eligible!=='boolean'||typeof d.reason!=='string'||typeof d.write_available!=='boolean'||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||!Array.isArray(d.devices)||d.devices.length>10000||d.devices.some(v=>!v||!warehouseID(v.id)||!warehouseID(v.location_id)||!warehouseID(v.source_id)||typeof v.serial_number!=='string'||typeof v.location_name!=='string'||typeof v.source_name!=='string')||new Set(d.devices.map(v=>v.id)).size!==d.devices.length)throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function replaceDevice(o:string,r:string,a:string,body:ReplacementInput):Promise<ReplacementResult>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<ReplacementResult>(replacementPath(o,r,a),{method:'POST',body,csrf},'/api/admin/')
+ if(!d||d.device_id!==body.device_id||![d.assignment_id,d.exchange_id,d.return_id,d.item_id].every(warehouseID)||!Number.isInteger(d.order_version)||d.order_version<1||typeof d.pending_difference!=='string'||!/^-?(0|[1-9]\d*)(\.\d+)?$/.test(d.pending_difference)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+ return d
+}
