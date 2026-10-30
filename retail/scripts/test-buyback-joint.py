@@ -25,6 +25,7 @@ def main():
         if docker('image', 'inspect', image).returncode:
             raise RuntimeError('Existing fixture images required; no pull performed')
     backend = Path(os.environ.get("BUYBACK_JOINT_BACKEND", str(ROOT / "retail/backend"))).resolve()
+    returning=os.environ.get('BUYBACK_INSPECTION_DECISION')=='decline'
     owner = uuid.uuid4().hex
     binaries = [ROOT / 'logs/gin-migration' / ('browser-' + owner + suffix) for suffix in ['-api', '-prep.test']]
     for binary in binaries:
@@ -135,7 +136,7 @@ def main():
         (ROOT/'logs/gin-migration/buyback-inspection-browser.log').write_bytes(joint.stdout+joint.stderr)
         joint_results=[json.loads(line.split('BUYBACK_INSPECTION_JOINT ',1)[1]) for line in joint.stdout.decode('utf-8').splitlines() if line.startswith('BUYBACK_INSPECTION_JOINT ')]
         if joint.returncode or len(joint_results)!=1:raise RuntimeError('Inspection browser joint failed')
-        durable=docker('exec','-e','MYSQL_PWD='+password,mysql_id,'mysql','-uroot','--protocol=socket','--database=browser_identity','--batch','--skip-column-names','-e',"SELECT (SELECT COUNT(*) FROM buyback_requests),(SELECT COUNT(*) FROM customer_buyback_submissions),(SELECT COUNT(*) FROM buyback_photos),(SELECT COUNT(*) FROM buyback_photo_bytes),(SELECT COUNT(*) FROM buyback_requests WHERE status='accepted'),(SELECT COUNT(*) FROM buyback_requests WHERE status='canceled' AND closed_at IS NOT NULL),(SELECT COUNT(*) FROM buyback_requests WHERE JSON_UNQUOTE(JSON_EXTRACT(items,'$[0].serial_number'))='SN-JOINT'),(SELECT COUNT(*) FROM customer_buyback_submissions WHERE customer_id='cust_buyback-other')")
+        durable=docker('exec','-e','MYSQL_PWD='+password,mysql_id,'mysql','-uroot','--protocol=socket','--database=browser_identity','--batch','--skip-column-names','-e',"SELECT (SELECT COUNT(*) FROM buyback_requests),(SELECT COUNT(*) FROM customer_buyback_submissions),(SELECT COUNT(*) FROM buyback_photos),(SELECT COUNT(*) FROM buyback_photo_bytes),(SELECT COUNT(*) FROM buyback_requests WHERE status IN ('paid','returned') AND closed_at IS NOT NULL),(SELECT COUNT(*) FROM buyback_requests WHERE status='canceled' AND closed_at IS NOT NULL),(SELECT COUNT(*) FROM buyback_requests WHERE JSON_UNQUOTE(JSON_EXTRACT(items,'$[0].serial_number'))='SN-JOINT'),(SELECT COUNT(*) FROM customer_buyback_submissions WHERE customer_id='cust_buyback-other')")
         if durable.returncode or durable.stdout.decode().strip()!='2\t2\t3\t3\t1\t1\t1\t0':raise RuntimeError('Durable buyback state differs: '+durable.stdout.decode().strip())
         policies=[json.loads(line.split('BUYBACK_ADMIN_POLICIES ',1)[1]) for line in policy.stdout.decode().splitlines() if 'BUYBACK_ADMIN_POLICIES ' in line]
         if len(policies)!=1:raise RuntimeError('Policy evidence missing')
@@ -160,7 +161,7 @@ def main():
             if binary.exists():
                 binary.unlink()
     report['cleanup']='both owned containers, bridge and temporary runners removed'
-    (ROOT/'docs/migration/buyback-joint-report.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    (ROOT/('docs/migration/buyback-return-joint-report.json' if returning else 'docs/migration/buyback-joint-report.json')).write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'real_browser_joint':True,'durable_mysql_verified':True,'cleanup':'complete'}))
 
 if __name__=='__main__':main()

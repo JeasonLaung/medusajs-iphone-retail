@@ -22,6 +22,8 @@ type AdminCommand struct {
 	ReviewStatus         string `json:"review_status,omitempty"`
 	Note                 string `json:"note,omitempty"`
 	ShippingInstructions string `json:"shipping_instructions,omitempty"`
+	PaymentReference     string `json:"payment_reference,omitempty"`
+	ReturnTracking       string `json:"return_tracking,omitempty"`
 }
 
 func ParseAdminCommand(raw []byte) (AdminCommand, error) {
@@ -33,7 +35,7 @@ func ParseAdminCommand(raw []byte) (AdminCommand, error) {
 	_ = json.Unmarshal(raw, &fields)
 	switch out.Action {
 	case "review_photo":
-		if len(fields) < 3 || len(fields) > 4 || fields["photo_id"] == nil || fields["review_status"] == nil || fields["shipping_instructions"] != nil {
+		if len(fields) < 3 || len(fields) > 4 || fields["photo_id"] == nil || fields["review_status"] == nil || fields["shipping_instructions"] != nil || fields["payment_reference"] != nil || fields["return_tracking"] != nil {
 			return AdminCommand{}, ErrInput
 		}
 		var e error
@@ -57,16 +59,34 @@ func ParseAdminCommand(raw []byte) (AdminCommand, error) {
 		if e != nil {
 			return AdminCommand{}, e
 		}
-	case "mark_received":
+	case "mark_received", "mark_returned":
 		if len(fields) != 1 {
 			return AdminCommand{}, ErrInput
 		}
-	case "cancel":
+	case "cancel", "request_return":
 		if len(fields) != 2 || fields["note"] == nil {
 			return AdminCommand{}, ErrInput
 		}
 		var e error
 		out.Note, e = trimSubmission(out.Note, 3, 1000)
+		if e != nil {
+			return AdminCommand{}, e
+		}
+	case "mark_paid":
+		if len(fields) != 2 || fields["payment_reference"] == nil {
+			return AdminCommand{}, ErrInput
+		}
+		var e error
+		out.PaymentReference, e = trimSubmission(out.PaymentReference, 3, 200)
+		if e != nil {
+			return AdminCommand{}, e
+		}
+	case "mark_returning":
+		if len(fields) != 2 || fields["return_tracking"] == nil {
+			return AdminCommand{}, ErrInput
+		}
+		var e error
+		out.ReturnTracking, e = trimSubmission(out.ReturnTracking, 3, 150)
 		if e != nil {
 			return AdminCommand{}, e
 		}
@@ -210,6 +230,29 @@ func AdminRequestTx(ctx context.Context, tx *gorm.DB, actor identity.User, store
 		}
 		status = "canceled"
 		changes["review_note"] = in.Note
+	case "mark_paid":
+		if status != "accepted" {
+			return out, ErrCommandState
+		}
+		status = "paid"
+		changes["payment_reference"] = in.PaymentReference
+	case "request_return":
+		if status != "received" && status != "final_offer" {
+			return out, ErrCommandState
+		}
+		status = "return_requested"
+		changes["review_note"] = in.Note
+	case "mark_returning":
+		if status != "return_requested" {
+			return out, ErrCommandState
+		}
+		status = "returning"
+		changes["return_tracking"] = in.ReturnTracking
+	case "mark_returned":
+		if status != "returning" {
+			return out, ErrCommandState
+		}
+		status = "returned"
 	}
 	return finishAdminCommandTx(ctx, tx, actor, store, account, request, out, in.Action, in.Note, in.PhotoID, status, changes, notice)
 }
@@ -232,7 +275,7 @@ func finishAdminCommandTx(ctx context.Context, tx *gorm.DB, actor identity.User,
 	changes["status"] = status
 	changes["history"] = string(history)
 	changes["updated_at"] = now
-	if status == "canceled" {
+	if status == "canceled" || status == "paid" || status == "returned" {
 		changes["closed_at"] = now
 	}
 	if tx.Table("buyback_requests").Where("id=? AND deleted_at IS NULL", id).Updates(changes).Error != nil {
@@ -245,7 +288,7 @@ func finishAdminCommandTx(ctx context.Context, tx *gorm.DB, actor identity.User,
 			return out, ErrUnavailable
 		}
 		if active == 1 {
-			if tx.Table("customer_account_notices").Create(map[string]any{"id": "notice_" + uuid.NewString(), "customer_id": account, "event_key": "buyback:" + id + ":" + uuid.NewString(), "kind": "buyback.updated", "resource_id": id, "reference": id, "action": action, "created_at": now}).Error != nil {
+			if e := stageBuybackNotice(tx, account, id, action, now); e != nil {
 				return out, ErrUnavailable
 			}
 		}
@@ -256,6 +299,27 @@ func finishAdminCommandTx(ctx context.Context, tx *gorm.DB, actor identity.User,
 	}
 	out.Request, e = ReadRequest(ctx, tx, store, account, id)
 	return out, e
+}
+
+// Original customer-notifications workflow keeps one unread update per request.
+// A concurrent read either commits first (so this inserts a new reminder) or
+// waits for this update. Never overwrite a notice that was already read.
+func stageBuybackNotice(tx *gorm.DB, account, id, action string, now time.Time) error {
+	var unread struct{ ID string }
+	e := tx.Table("customer_account_notices").Select("id").Where("customer_id=? AND kind='buyback.updated' AND resource_id=? AND read_at IS NULL", account, id).Order("created_at DESC,id DESC").Clauses(clause.Locking{Strength: "UPDATE"}).Take(&unread).Error
+	event := "buyback:" + id + ":" + uuid.NewString()
+	if e == nil {
+		r := tx.Table("customer_account_notices").Where("id=? AND customer_id=? AND read_at IS NULL", unread.ID, account).Updates(map[string]any{"event_key": event, "action": action, "reference": id})
+		if r.Error != nil {
+			return r.Error
+		}
+		if r.RowsAffected == 1 {
+			return nil
+		}
+	} else if !errors.Is(e, gorm.ErrRecordNotFound) {
+		return e
+	}
+	return tx.Table("customer_account_notices").Create(map[string]any{"id": "notice_" + uuid.NewString(), "customer_id": account, "event_key": event, "kind": "buyback.updated", "resource_id": id, "reference": id, "action": action, "created_at": now}).Error
 }
 func AdminPhotoTx(ctx context.Context, tx *gorm.DB, actor identity.User, store, id, photo string) (PhotoContent, error) {
 	if _, e := adminGate(ctx, tx, actor, false); e != nil {

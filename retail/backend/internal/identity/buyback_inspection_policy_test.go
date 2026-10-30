@@ -237,6 +237,16 @@ func TestVerifyBuybackInspectionPolicies(t *testing.T) {
 	if saved != after || n != notices || a != audits || l != 0 {
 		t.Fatal("rollback effects")
 	}
+	var baselineNotices []struct{ ID string }
+	if db.Table("customer_account_notices").Select("id").Where("resource_id=? AND read_at IS NULL", saved.ID).Find(&baselineNotices).Error != nil {
+		t.Fatal("notice baseline")
+	}
+	exec(db, "UPDATE customer_account_notices SET read_at=UTC_TIMESTAMP(6) WHERE resource_id=? AND read_at IS NULL", saved.ID)
+	defer func() {
+		for _, notice := range baselineNotices {
+			exec(db, "UPDATE customer_account_notices SET read_at=NULL WHERE id=?", notice.ID)
+		}
+	}()
 	// Competing actual transactions on the same request/device: exactly one wins.
 	if e := db.Transaction(func(tx *gorm.DB) error { setup(tx); return nil }); e != nil {
 		t.Fatal(e)

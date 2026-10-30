@@ -1,0 +1,95 @@
+{
+  "inspection_browser": {
+    "synthetic_api": false,
+    "real_admin_and_customer": true,
+    "device_link_persisted": true,
+    "link_notice_suppressed": true,
+    "final_offer_persisted": true,
+    "customer_decision": "declined",
+    "closed_state": "returned",
+    "closed_at_persisted": true,
+    "payment_reference_or_return_tracking_persisted": true,
+    "closing_notices_once": true,
+    "offer_notice_exactly_once": true,
+    "final_amount": 270.01,
+    "admin_zh_mobile": true,
+    "browser_errors": 0
+  },
+  "inspection_sql_policies": {
+    "same_device_single_winner": true,
+    "device_identity_sku_capacity_scope_checked": true,
+    "exact_item_coverage": true,
+    "zero_quote": true,
+    "customer_acceptance": true,
+    "late_failure_atomic": true,
+    "link_notice_suppressed": true,
+    "competing_quote_single_winner": true,
+    "multiple_phone_ordered_sum": true,
+    "customer_decline": true,
+    "inventory_unchanged": true
+  },
+  "admin_sql_policies": {
+    "closing_commands_single_winner": true,
+    "closing_failure_fields_atomic": true,
+    "closing_notice_once": true,
+    "competing_transition_single_winner": true,
+    "disabled_write_denied": true,
+    "grants_rechecked": true,
+    "late_failure_atomic": true,
+    "state_action_cases": 96,
+    "strict_http": true,
+    "unread_notice_coalescing": true,
+    "warehouse_denied": true
+  },
+  "browser": {
+    "synthetic_api": false,
+    "production_routes": true,
+    "original_questionnaire": true,
+    "real_login": true,
+    "real_gin_mysql_redis": true,
+    "created": 2,
+    "private_photos": 3,
+    "admin_retake_replacement_approval_shipping_receipt": true,
+    "transactional_unread_customer_notices": 1,
+    "admin_en_zh_and_mobile": true,
+    "photo_previews_decoded_after_reload": true,
+    "submit_photos_survives_reload": true,
+    "cancel_closed_at_survives_reload": true,
+    "account_switch_isolated": true,
+    "foreign_photo_denied": true,
+    "unsigned_and_csrf_denied": true,
+    "browser_errors": 0,
+    "platform_review_payment_return_accepted": false
+  },
+  "durable_mysql_verified": true,
+  "artificial_accounts_only": true,
+  "tls_secure_cookie_verified": false,
+  "full_buyback_accepted": false,
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_memory_mib": 128
+  },
+  "cleanup": "both owned containers, bridge and temporary runners removed",
+  "formal_migrations": 77,
+  "original_admin_zod_cases": {
+    "cases": 116,
+    "accepted": 31
+  },
+  "go_all": true,
+  "admin_typecheck": true,
+  "frontend_tests": 173,
+  "astro_check": {
+    "files": 391,
+    "errors": 0,
+    "warnings": 0,
+    "existing_hints": 5
+  },
+  "old_service_routes": {
+    "health": 200,
+    "admin": 200,
+    "sell": 200
+  },
+  "manual_reference_only": true,
+  "external_transfer_or_carrier_verified": false
+}

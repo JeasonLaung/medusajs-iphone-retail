@@ -1,6 +1,6 @@
 # 回收设备关联与最终报价
 
-2026-10-30。依据原 buyback-validators.ts 的 BuybackAdminCommand、workflows/buyback.ts 第 125–150 行与 buyback-request.ts 的 BuybackDeviceLink 模型核对，本批已接入平台设备关联、逐台最终报价及客户接受报价的真实联合流程。收购打款与退回尚未完成，不计整个回收闭环。
+2026-10-30。依据原 buyback-validators.ts 的 BuybackAdminCommand、workflows/buyback.ts 第 125–150 行与 buyback-request.ts 的 BuybackDeviceLink 模型核对，本批已接入平台设备关联、逐台最终报价及客户接受报价的真实联合流程。后续打款和退回登记见 [登记与退回](gin-buyback-settlement.md)，邮件/图片等仍未整体验收。
 
 ## 已实现并验证
 
@@ -33,4 +33,4 @@ Admin TypeScript、173 项前端测试、Go 全量与 Astro 391 文件检查通�
 
 ## 剩余范围
 
-实际收购转账后的打款登记、拒绝报价后的退回物流与签收、通知邮箱、历史回收申请/图片导入、180 天图片清理及 HTTPS Secure cookie 联合仍待办。设备入库既有模块的独立验证不能替代整个回收付款/退回闭环。
+打款登记和退回物流/送达已在后续 [登记与退回](gin-buyback-settlement.md) 验证。通知邮箱、历史回收申请/图片导入、180 天图片清理及 HTTPS Secure cookie 联合仍待办。设备入库既有模块的独立验证不能替代整个回收付款/退回闭环。

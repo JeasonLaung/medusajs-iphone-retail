@@ -2,7 +2,7 @@ import {APIError,request,csrfCookie} from './api'
 import {buybackRequestProjection,type BuybackRequest} from '../../storefront/src/lib/buyback-requests'
 import {photoContentProjection} from '../../storefront/src/lib/buyback-photos'
 export type {BuybackRequest}
-export type ReviewCommand={action:'review_photo';photo_id:string;review_status:'approved'|'retake';note:string}|{action:'approve_shipping';shipping_instructions:string}|{action:'mark_received'}|{action:'cancel';note:string}
+export type ReviewCommand={action:'review_photo';photo_id:string;review_status:'approved'|'retake';note:string}|{action:'approve_shipping';shipping_instructions:string}|{action:'mark_received'|'mark_returned'}|{action:'cancel'|'request_return';note:string}|{action:'mark_paid';payment_reference:string}|{action:'mark_returning';return_tracking:string}
 export type InspectionCommand={action:'link_device';item_id:string;device_id:string}|{action:'final_offer';items:{item_id:string;amount:number;notes:string}[]}
 export async function buybacks(query:URLSearchParams,signal:AbortSignal){
  const d=await request<{requests:unknown[];count:number;limit:number;offset:number}>('buyback?'+query,{signal},'/api/admin/')
