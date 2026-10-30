@@ -595,3 +595,8 @@
 ### 2026-10-30: warehouse parcel allocation and replacement
 
 - Added dedicated existing-parcel item allocation and Ant searchable device table. Own warehouse/SKU/source/channel/payment/quantity and current permission checks; replacement preserves assignment identity, restores old device and never mutates quantity stock. Real MySQL concurrent/idempotent/rollback/revocation tests plus initial historical parcel allocation pass. Real mobile Admin replacement/lost-response retry/restore followed by whole shipment and Chinese desktop checks pass; full Go and types pass. Warehouse release/cancel workflow remains pending. See `migration/warehouse-allocation.md`.
+
+
+### 2026-10-30: warehouse packed-device release
+
+- Added scoped release context and Ant confirmation. Reuses whole-parcel cancellation/restock, releases only the selected device and retains sibling order reservations. Real two-device MySQL rollback branch and real mobile Admin lost-success immutable retry/repacking/shipment joint passed; Go all packages and Admin types passed. Unpacked warehouse release and Astro tracking joint remain pending. See `migration/warehouse-release.md`.

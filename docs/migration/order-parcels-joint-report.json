@@ -1,10 +1,11 @@
 {
-  "scope": "Employee cancellation/repacking followed by warehouse parcel replacement/restore, whole shipment and scoped reads; warehouse release/cancellation remain incomplete",
+  "scope": "Warehouse packed-device release with whole parcel cancellation, platform repacking, warehouse replacement/restore, shipment and scoped reads; unpacked warehouse release and Astro tracking joint remain incomplete",
   "counts": {
     "real_browser_react_gin_mysql_redis": true,
     "api_mocking": false,
     "preallocation_packing_cancellation_repacking_shipment": true,
     "cancel_confirmation": true,
+    "warehouse_release_confirmation_and_immutable_retry": true,
     "restored_devices_pack_again": true,
     "whole_parcel_tracking_persisted": true,
     "shipped_repetition_disabled": true,
@@ -40,25 +41,18 @@
     "network": "owned bridge; egress unrestricted"
   },
   "cleanup": "both owned containers, bridge and temporary runners removed",
-  "source_lf_sha256": {
-    "retail/backend/internal/devices/allocation.go": "f92469a3dc3248b33fdd686cfb77305c24a9a76e01e6b932ca9127944a5e4ade",
-    "retail/backend/internal/devices/warehouse_allocation.go": "a2e080ac47539fc74121498441d81009cd706ab84505c88acfdae6d2a872c0bf",
-    "retail/backend/internal/devices/warehouse_fulfillments.go": "91ff6a36a84865dad1dd0aa06614b573db13fdca118b35d888bb505a09aa7678",
-    "retail/backend/internal/identity/warehouse_allocation_test.go": "0441396c40ae6ddfa57cee3303f5c347618bf00825a4864415f7db2d7cca2426",
-    "retail/backend/internal/identity/order_device_parcels_test.go": "fd1f12514ab64ac1153b679e1a841c24f27e94353a0bad17f882477afe86256d",
-    "retail/admin/src/WarehouseAllocation.tsx": "4131a17c7d61429f76feef9e31b0c7438bca852b2f4255c35c1cc9985ff8f63a",
-    "retail/admin/src/WarehouseShipment.tsx": "86a4d3411de783832d96d12ca5934f84eb31b9e4b22f3aa2beb1174b0a6b71aa",
-    "retail/admin/src/WarehouseFulfillments.tsx": "e2ceb6fb2bcc0e56cab25d95f44f0b63fe61fde9856d680d6aa8f6391ced5f9b",
-    "retail/admin/src/warehouse-fulfillments-api.ts": "d1c11ca7953efce20f0b4d9d0921be4fc16a13da61e2c632920b12c71c24c77c",
-    "retail/admin/tests/warehouse-shipment.joint.mjs": "2bfe53dd92f876895d94f542d2a2e16cdedd0ef0137dab4d4f4d5ca238fd6ac4"
-  },
-  "warehouse_allocation_joint": {
-    "api_response_fabricated": false,
-    "real_response_dropped_for_retry": true,
-    "replacement_then_restore_then_ship": true,
-    "allocation_retry_body_unchanged": true,
-    "mobile_en": 390,
-    "desktop_zh": 1440,
-    "durable_mysql_verified": true
+  "warehouse_release": {
+    "two_device_sql_branch_passed": true,
+    "sibling_reserved": true,
+    "same_request_retry_after_lost_success": true,
+    "go_all_packages_passed": true,
+    "admin_types_passed": true,
+    "source_sha256_lf": {
+      "retail/backend/internal/devices/parcels.go": "e6c5429bffe1cfef67a1e6f28c569712b489934923a7cd6c3b0f5b9890e97697",
+      "retail/backend/internal/devices/warehouse_release.go": "fe218f2b1f638fbf043d5a30f4953bfab6ca1d2ed3e9eea1623ce3b5b849ea03",
+      "retail/backend/internal/identity/warehouse_release_test.go": "ec0876cb4a5c486637f1e75f0e61e8a6e99d81599c96940df15b4946f0a013b6",
+      "retail/admin/src/WarehouseRelease.tsx": "1adf5647a7e79b390f1b3fc47d4efffc678b5affa8ba819182e1ca754cbeda22",
+      "retail/admin/tests/warehouse-release.joint.mjs": "dfe5ad465c50c571335292cd962b44a7fbe7041acaa4f1aa2ab436680867e433"
+    }
   }
 }

@@ -6,6 +6,18 @@ export type WarehouseParcelDetail=WarehouseParcel&{items:{id:string;item_id:stri
 const parcel=(p:WarehouseParcel,location:string)=>p&&p.location_id===location&&typeof p.id==='string'&&typeof p.order_id==='string'&&typeof p.reference==='string'&&['created_at','packed_at','shipped_at','delivered_at'].every(k=>{const v=p[k as keyof WarehouseParcel];return v===null&&k!=='created_at'||typeof v==='string'&&Number.isFinite(Date.parse(v))})
 const path=(location:string)=>`warehouse/locations/${encodeURIComponent(location)}`
 const shipmentPath=(location:string,order:string,id:string)=>`${path(location)}/orders/${encodeURIComponent(order)}/fulfillments/${encodeURIComponent(id)}/shipment`
+const releasePath=(location:string,order:string,id:string)=>`${path(location)}/orders/${encodeURIComponent(order)}/fulfillments/${encodeURIComponent(id)}/release`
+export type WarehouseRelease=WarehouseShipment&{devices:{id:string;serial_number:string;assignment_id:string}[]}
+export async function warehouseRelease(location:string,order:string,id:string,signal?:AbortSignal){
+ const d=await request<WarehouseRelease>(releasePath(location,order,id),{signal},'/api/admin/')
+ if(!d||d.location_id!==location||d.order_id!==order||d.fulfillment_id!==id||typeof d.enabled!=='boolean'||typeof d.order_active!=='boolean'||typeof d.supported!=='boolean'||!['packed','unpacked','shipped','delivered'].includes(d.status)||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||!Array.isArray(d.devices)||d.devices.length>1000||d.devices.some(v=>!v||typeof v.id!=='string'||typeof v.serial_number!=='string'||typeof v.assignment_id!=='string'))throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function releaseWarehouseDevice(location:string,order:string,id:string,assignment:string,body:ParcelInput){
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{fulfillment_id:string;action:string;assignment_ids:string[];replayed:boolean}>(`${releasePath(location,order,id)}/${encodeURIComponent(assignment)}`,{method:'POST',csrf,body},'/api/admin/')
+ if(!d||d.fulfillment_id!==id||d.action!=='cancel'||typeof d.replayed!=='boolean'||!Array.isArray(d.assignment_ids)||!d.assignment_ids.includes(assignment)||d.assignment_ids.some(v=>typeof v!=='string'))throw new APIError(0,'request.invalid_response')
+}
 const allocationPath=(location:string,order:string,id:string,item:string)=>`${path(location)}/orders/${encodeURIComponent(order)}/fulfillments/${encodeURIComponent(id)}/items/${encodeURIComponent(item)}/allocation`
 export type WarehouseAllocation={location_id:string;order_id:string;fulfillment_id:string;item_id:string;enabled:boolean;editable:boolean;quantity:number;assigned:{id:string;serial_number:string;assignment_id:string}[];candidates:{id:string;serial_number:string;assignment_id:string}[];revision:string}
 export async function warehouseAllocation(location:string,order:string,id:string,item:string,signal?:AbortSignal){

@@ -162,6 +162,9 @@ func parcelGate(ctx context.Context, tx *gorm.DB, actor identity.User) (uint64, 
 	return parcelAccessGate(ctx, tx, actor, "")
 }
 func parcelAccessGate(ctx context.Context, tx *gorm.DB, actor identity.User, location string) (uint64, bool, error) {
+	return parcelAccessFor(ctx, tx, actor, location, authorization.WarehouseShipmentWrite)
+}
+func parcelAccessFor(ctx context.Context, tx *gorm.DB, actor identity.User, location string, action authorization.Action) (uint64, bool, error) {
 	// Allocation's enabled flag does not disable cancellation/recovery of an
 	// existing parcel. Its current identity/permission/schema checks still apply.
 	var rev uint64
@@ -172,7 +175,7 @@ func parcelAccessGate(ctx context.Context, tx *gorm.DB, actor identity.User, loc
 			e = authorization.CheckTx(ctx, tx, actor, authorization.OrderFulfillmentRead)
 		}
 	} else {
-		e = authorization.CheckWarehouseTx(ctx, tx, actor, location, authorization.OrderFulfillmentRead, authorization.WarehouseShipmentWrite)
+		e = authorization.CheckWarehouseTx(ctx, tx, actor, location, authorization.OrderFulfillmentRead, action)
 		if e == nil {
 			rev, _, e = allocationRuntimeGate(ctx, tx)
 		}
@@ -368,15 +371,21 @@ func restoreParcelStock(tx *gorm.DB, actor, item, stockID, location, quantity st
 	return nil
 }
 func (h Handler) ChangeParcel(ctx context.Context, actor identity.User, o, f string, in ParcelInput) (ParcelResult, error) {
-	return h.changeParcel(ctx, actor, o, f, "", in)
+	return h.changeParcel(ctx, actor, o, f, "", "", in)
 }
 func (h Handler) ChangeWarehouseShipment(ctx context.Context, actor identity.User, location, o, f string, in ParcelInput) (ParcelResult, error) {
 	if !validPathID(location) || in.Action != "ship" {
 		return ParcelResult{}, ErrInput
 	}
-	return h.changeParcel(ctx, actor, o, f, location, in)
+	return h.changeParcel(ctx, actor, o, f, location, "", in)
 }
-func (h Handler) changeParcel(ctx context.Context, actor identity.User, o, f, location string, in ParcelInput) (ParcelResult, error) {
+func (h Handler) ReleaseWarehouseParcelDevice(ctx context.Context, actor identity.User, location, o, f, assignment string, in ParcelInput) (ParcelResult, error) {
+	if !validPathID(location) || !validPathID(assignment) || in.Action != "cancel" {
+		return ParcelResult{}, ErrInput
+	}
+	return h.changeParcel(ctx, actor, o, f, location, assignment, in)
+}
+func (h Handler) changeParcel(ctx context.Context, actor identity.User, o, f, location, releaseID string, in ParcelInput) (ParcelResult, error) {
 	var result ParcelResult
 	if !validPathID(o) || !validPathID(f) || !validParcel(in) {
 		return result, ErrInput
@@ -385,8 +394,15 @@ func (h Handler) changeParcel(ctx context.Context, actor identity.User, o, f, lo
 		return result, ErrUnavailable
 	}
 	request, _ := json.Marshal(in)
+	if releaseID != "" {
+		request, _ = json.Marshal([]any{"warehouse-parcel-release", location, releaseID, in})
+	}
 	e := h.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		rev, enabled, e := parcelAccessGate(ctx, tx, actor, location)
+		action := authorization.WarehouseShipmentWrite
+		if releaseID != "" {
+			action = authorization.WarehouseAllocationWrite
+		}
+		rev, enabled, e := parcelAccessFor(ctx, tx, actor, location, action)
 		if e != nil {
 			return e
 		}
@@ -398,7 +414,13 @@ func (h Handler) changeParcel(ctx context.Context, actor identity.User, o, f, lo
 			return e
 		}
 		if location != "" {
-			if e = warehouseShipmentBinding(before, location); e != nil {
+			binding := before
+			// A successful release cancels the parcel. The immutable receipt may
+			// still be recovered, but only in its current authorized warehouse.
+			if releaseID != "" && binding.Status == "canceled" {
+				binding.Status = "release_receipt"
+			}
+			if e = warehouseShipmentBinding(binding, location); e != nil {
 				return e
 			}
 		}
@@ -414,7 +436,10 @@ func (h Handler) changeParcel(ctx context.Context, actor identity.User, o, f, lo
 			for _, id := range result.AssignmentIDs {
 				query := tx.Table("device_assignments a").Joins("JOIN devices d ON d.id=a.device_id AND d.deleted_at IS NULL").Joins("JOIN order_items i ON i.order_id=a.order_id AND i.item_id=a.item_id AND i.version=? AND i.deleted_at IS NULL", facts.Packing.Version).Joins("JOIN order_line_items l ON l.id=a.item_id AND l.deleted_at IS NULL").Where("a.id=? AND a.order_id=? AND a.deleted_at IS NULL", id, o)
 				if location != "" {
-					query = query.Where("a.fulfillment_id=? AND d.location_id=?", f, location)
+					query = query.Where("d.location_id=?", location)
+					if releaseID == "" {
+						query = query.Where("a.fulfillment_id=?", f)
+					}
 				}
 				if !packingExactlyOne(query, "a.id") {
 					return gorm.ErrRecordNotFound
@@ -428,6 +453,17 @@ func (h Handler) changeParcel(ctx context.Context, actor identity.User, o, f, lo
 		}
 		if !before.OrderActive || !before.Supported || before.Status != "packed" || before.Revision != in.ExpectedRevision || len(before.Items) == 0 || len(before.Devices) == 0 {
 			return ErrConflict
+		}
+		if releaseID != "" {
+			found := false
+			for _, d := range before.Devices {
+				if d.AssignmentID == releaseID {
+					found = true
+				}
+			}
+			if !found {
+				return gorm.ErrRecordNotFound
+			}
 		}
 		var allAssignments []struct{ ID, OrderID string }
 		if tx.Table("device_assignments").Select("id,order_id").Where("fulfillment_id=? AND deleted_at IS NULL", f).Order("id").Limit(1001).Clauses(clause.Locking{Strength: "UPDATE"}).Find(&allAssignments).Error != nil || len(allAssignments) != len(before.Devices) {
@@ -550,6 +586,12 @@ func (h Handler) changeParcel(ctx context.Context, actor identity.User, o, f, lo
 				eventAction = "cancel_fulfillment"
 				if tx.Exec("UPDATE device_assignments SET status='reserved',fulfillment_id=NULL,updated_at=UTC_TIMESTAMP(6) WHERE id=?", d.AssignmentID).Error != nil || tx.Exec("UPDATE devices SET state='reserved',updated_at=UTC_TIMESTAMP(6) WHERE id=?", d.DeviceID).Error != nil {
 					return ErrUnavailable
+				}
+				if d.AssignmentID == releaseID {
+					eventAction = "release"
+					if tx.Exec("UPDATE device_assignments SET status='canceled',updated_at=UTC_TIMESTAMP(6) WHERE id=?", d.AssignmentID).Error != nil || tx.Exec("UPDATE devices SET state='available',updated_at=UTC_TIMESTAMP(6) WHERE id=?", d.DeviceID).Error != nil {
+						return ErrUnavailable
+					}
 				}
 			} else {
 				if tx.Exec("UPDATE device_assignments SET status='shipped',tracking_number=?,updated_at=UTC_TIMESTAMP(6) WHERE id=?", in.TrackingNumber, d.AssignmentID).Error != nil || tx.Exec("UPDATE devices SET state='shipped',updated_at=UTC_TIMESTAMP(6) WHERE id=?", d.DeviceID).Error != nil {
