@@ -1,0 +1,7 @@
+---
+import Fixture from '../fixture'
+import '../../../../src/styles/original.css'
+const locale=Astro.url.searchParams.get('locale')==='zh'?'zh':'en'
+const reference=Astro.url.searchParams.has('reference')
+---
+<html lang={locale}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head><body><Fixture locale={locale} reference={reference} client:load/></body></html>

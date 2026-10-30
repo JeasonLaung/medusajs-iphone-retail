@@ -1,0 +1,95 @@
+{
+  "scope": "Original sell entry component and catalogue model policy, not questionnaire or submission acceptance",
+  "browser": {
+    "cases": [
+      {
+        "case": "en-390-initial",
+        "identical_pixels": true
+      },
+      {
+        "case": "en-390-expanded",
+        "identical_pixels": true
+      },
+      {
+        "case": "en-768-initial",
+        "identical_pixels": true
+      },
+      {
+        "case": "en-768-expanded",
+        "identical_pixels": true
+      },
+      {
+        "case": "en-1440-initial",
+        "identical_pixels": true
+      },
+      {
+        "case": "en-1440-expanded",
+        "identical_pixels": true
+      },
+      {
+        "case": "zh-390-initial",
+        "identical_pixels": true
+      },
+      {
+        "case": "zh-390-expanded",
+        "identical_pixels": true
+      },
+      {
+        "case": "zh-768-initial",
+        "identical_pixels": true
+      },
+      {
+        "case": "zh-768-expanded",
+        "identical_pixels": true
+      },
+      {
+        "case": "zh-1440-initial",
+        "identical_pixels": true
+      },
+      {
+        "case": "zh-1440-expanded",
+        "identical_pixels": true
+      }
+    ],
+    "hydration_errors": 0,
+    "no_overflow": true,
+    "scope": "Original landing body/CSS, link and collapse parity only; questionnaire/submission not accepted"
+  },
+  "reference_runtime": "Shared Astro React/Ant Design 5 with Next framework and Ant Design 6 prop bridges; not live Next/Ant Design 6 page comparison",
+  "frontend_tests": {
+    "total": 159,
+    "passed": 159
+  },
+  "astro_check": {
+    "files": 343,
+    "errors": 0,
+    "warnings": 0,
+    "existing_hints": 5
+  },
+  "legacy_health": {
+    "health": 200,
+    "admin": 200,
+    "sell": 200
+  },
+  "source_image_bytes_identical": true,
+  "models_loader_connected_to_questionnaire": false,
+  "questionnaire_accepted": false,
+  "full_buyback_accepted": false,
+  "implementation_sha256": {
+    "retail/storefront/src/lib/sell-models.ts": "094a84a9d8e99f3fb7cbe0e1805a4107fee718c82ea8ce5b5b740cabc03ad554",
+    "retail/storefront/src/pages/[countryCode]/sell/index.astro": "578fb9d9c47d315df6330f3ff4ff181baef30ae5737562064112bd95fb8d90a1",
+    "retail/storefront/src/components/sell/index.tsx": "11be83fe833b0b44458f73d731a87d5f8c556a12d5194176bb191c3315cced1e",
+    "retail/storefront/src/components/sell/i18n.ts": "6446783cb1b861f3007e0c070cf08f166b3afb550ea1e689c13bb0ecdd7f6a0a",
+    "retail/storefront/src/components/sell/buyback-copy.ts": "9768db0d357507a3766f83e0940fd01bde6536f8d49dc962880e10d3a94a36a3",
+    "retail/storefront/src/components/sell/styles.module.css": "cd6e29c0dbc326776006953d01b03e331db782cd77736b558c42dc4a309ecd27",
+    "retail/storefront/public/images/sell/iphones-in-hand.png": "0bdbcb8b24ad44f0f6cefa13185c585dbccf8362b43512888b7da9916d9a78fb",
+    "retail/storefront/tests/sell-models.test.ts": "628ce75017d36758274ebf7bb9ec17b43c0e16080166aa7593fc05cf6ba509b7",
+    "retail/storefront/tests/sell-landing.browser.mjs": "bb022fa1bcdd8c6baf3987e931a008fa1577be995f71ed5c22fec5294bceb24f",
+    "retail/storefront/tests/legacy-sell.mjs": "5e1e2741243522e77d08cd8dad26aeb9586e97fdf00c6288adead7842082897a",
+    "retail/storefront/tests/sell-fixture/src/fixture.tsx": "057ea80fea35fa5bfb10104fc5afdf1ba023de052673bb40e812cdb1cc80ffea",
+    "retail/storefront/tests/sell-fixture/src/pages/index.astro": "03291ff15842997d886580c5c99c4cf54688638e86d461a61c6783a0df51788d",
+    "medusa-store/apps/storefront/src/lib/data/sell-models.ts": "6595c1a824dcec9243e9b30320f37eaa0ded7de4bda2085be4f0fb79692b7114",
+    "medusa-store/apps/storefront/src/modules/sell/components/sell-landing.tsx": "f04af61471941ac2c52e4b3b4a19bb2ba482b7752601f2f34d21ba06f2931cd6",
+    "medusa-store/apps/storefront/src/modules/sell/styles.module.css": "cd6e29c0dbc326776006953d01b03e331db782cd77736b558c42dc4a309ecd27"
+  }
+}
