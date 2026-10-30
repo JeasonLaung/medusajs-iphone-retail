@@ -115,6 +115,7 @@ def main():
         stream = (logs / (log_prefix + '-sql.log')).open('wb')
         process = subprocess.Popen(['docker', 'exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1',
                                     '-e', fixture_switch + '=1', '-e', fixture_key + '=' + key,
+                                    '-e', 'CHECKOUT_PRODUCT_BROWSE=' + os.environ.get('CHECKOUT_PRODUCT_BROWSE', '0'),
                                     mysql, '/opt/identity.test', '-test.v', '-test.run', '^TestOwnedCartRuntime$', '-test.timeout', '150s'], stdout=stream, stderr=subprocess.STDOUT)
         browser_env = os.environ.copy()
         browser_env.update(CUSTOMER_ORDERS_TEST_GIN='http://127.0.0.1:' + match[1])
@@ -131,7 +132,7 @@ def main():
         if len(markers) != 1 or sql_marker not in sql_output or regression_marker not in sql_output or '\nPASS\n' not in sql_output:
             raise RuntimeError('Joint evidence incomplete')
         report = {'format_version': 1, 'node_version': version, 'browser': json.loads(markers[0]), 'post_browser_sql_regression_passed': True,
-                  'sql_receipts_checked': True, 'scope': 'checkout pipeline' if checkout else 'checkout promotions' if promotion else 'customer order attachment', 'production_services_or_data_used': False, 'full_storefront_accepted': False,
+                  'sql_receipts_checked': True, 'scope': ('product page add to empty cart through checkout, payment and confirmation' if os.environ.get('CHECKOUT_PRODUCT_BROWSE') == '1' else 'checkout pipeline') if checkout else 'checkout promotions' if promotion else 'customer order attachment', 'production_services_or_data_used': False, 'full_storefront_accepted': False,
                   'resources': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                 'database_ports_published': False, 'api_port_loopback_only': True, 'network_egress_restricted': False}}
         if not promotion and not checkout:
@@ -150,7 +151,8 @@ def main():
             sources = [(backend / 'internal/identity' / name, 'retail/backend/internal/identity/' + name)
                        for name in ['checkout_browser_test.go', 'checkout_mail_joint_test.go', 'mail_joint_test.go']]
             sources += [(Path(__file__), 'retail/scripts/test-customer-orders-live.py'),
-                        (ROOT / 'retail/storefront/tests/checkout.live.mjs', 'retail/storefront/tests/checkout.live.mjs')]
+                        (ROOT / 'retail/storefront/tests/checkout.live.mjs', 'retail/storefront/tests/checkout.live.mjs'),
+                        (ROOT / 'retail/storefront/src/components/cart/gin-cart.tsx', 'retail/storefront/src/components/cart/gin-cart.tsx')]
             for source, name in sources:
                 report['source_sha256_lf'][name] = hashlib.sha256(source.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
     finally:
@@ -172,7 +174,7 @@ def main():
             require(docker('network', 'rm', network), 'Owned network cleanup failed')
         binary.unlink(missing_ok=True)
     report['cleanup_complete'] = True
-    (ROOT / ('docs/migration/checkout-mail-joint-report.json' if checkout else 'docs/migration/promotion-joint-report.json' if promotion else 'docs/migration/customer-orders-joint-report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+    (ROOT / (('docs/migration/shopping-joint-report.json' if os.environ.get('CHECKOUT_PRODUCT_BROWSE') == '1' else 'docs/migration/checkout-mail-joint-report.json') if checkout else 'docs/migration/promotion-joint-report.json' if promotion else 'docs/migration/customer-orders-joint-report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'joint_browser': 'passed', 'scope': 'checkout' if checkout else 'promotions' if promotion else 'customer_orders', 'sql_regressions': 'passed', 'cleanup': 'complete'}))
 
 

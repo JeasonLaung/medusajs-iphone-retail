@@ -78,8 +78,10 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 			t.Fatal("owned checkout cart unavailable", err)
 		}
 		ref := created.Reference
-		if _, err = cart.AddItem(ctx, db, "shop", ref, cart.AddItemCommand{OperationID: uuid.NewString(), Version: "1", VariantID: "add-v", Quantity: "1"}); err != nil {
-			t.Fatal("owned checkout item unavailable", err)
+		if os.Getenv("CHECKOUT_PRODUCT_BROWSE") != "1" {
+			if _, err = cart.AddItem(ctx, db, "shop", ref, cart.AddItemCommand{OperationID: uuid.NewString(), Version: "1", VariantID: "add-v", Quantity: "1"}); err != nil {
+				t.Fatal("owned checkout item unavailable", err)
+			}
 		}
 		possession, err := sessions.IssueCart(ctx, ref)
 		if err != nil {
@@ -134,6 +136,11 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	public.GET("/locales", catalogue.Locales)
 	public.GET("/collections", catalogue.Collections)
 	public.GET("/product-categories", catalogue.Categories)
+	public.GET("/products", catalogue.Products)
+	public.GET("/products/:id", catalogue.Product)
+	public.GET("/buy-policies", catalogue.Policies)
+	public.GET("/customer-service", catalogue.Contacts)
+	public.POST("/search", catalogue.Search)
 	finish := make(chan struct{}, 1)
 	fixture := router.Group("/__fixture")
 	fixture.Use(func(c *gin.Context) {

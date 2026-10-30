@@ -600,3 +600,8 @@
 ### 2026-10-30: warehouse packed-device release
 
 - Added scoped release context and Ant confirmation. Reuses whole-parcel cancellation/restock, releases only the selected device and retains sibling order reservations. Real two-device MySQL rollback branch and real mobile Admin lost-success immutable retry/repacking/shipment joint passed; Go all packages and Admin types passed. Unpacked warehouse release and Astro tracking joint remain pending. See `migration/warehouse-release.md`.
+
+
+### 2026-10-30: product add to cart and checkout joint
+
+- Found and fixed formal GinCart missing checkoutHref, preserving pending/failure recovery gates and existing styling. Real product-page add, cart reload, checkout click, address/delivery/payment/confirmation passed in en/zh at 390/1440 against isolated Gin/MySQL/Redis; four durable orders and mail queue recovery verified. Astro check has zero errors/warnings. Empty cart credentials are precreated; anonymous cart creation, login transfer, real provider payment/mail, full catalog and fulfillment/customer tracking joint remain pending. See `migration/shopping-joint.md`.

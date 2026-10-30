@@ -6,6 +6,7 @@ import {setTimeout as delay} from 'node:timers/promises'
 const require=createRequire(new URL('../../admin/package.json',import.meta.url)),{chromium,expect}=require('@playwright/test')
 const target=new URL(process.env.CUSTOMER_ORDERS_TEST_GIN??''),key=process.env.CHECKOUT_FIXTURE_KEY,shop='http://127.0.0.1:19379'
 assert.equal(target.hostname,'127.0.0.1');assert.equal(target.protocol,'http:');assert.equal(target.pathname,'/');assert.ok(target.port);assert.match(key??'',/^[0-9a-f]{64}$/)
+const browse=process.env.CHECKOUT_PRODUCT_BROWSE==='1'
 let app,browser
 const control=async path=>{
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),1500)
@@ -37,7 +38,19 @@ try{
    assert.match(route.request().url(),/^https:\/\/www\.mollie\.com\/checkout\/joint\/payses_/)
    await route.fulfill({status:200,contentType:'text/html',body:`<h1>Isolated provider checkout</h1><a href="${shop}/${segment}/payment-result?cart_id=${cart.id}">Return to shop</a>`})
   })
-  await page.goto(shop+`/${segment}/checkout?step=address`)
+  if(browse){
+   await page.goto(shop+`/${segment}/products/add-product?v_id=add-v`,{waitUntil:"domcontentloaded"})
+   await expect(page.getByTestId('product-title')).toHaveText('Saved product')
+   await expect(page.getByTestId('add-product-button')).toBeEnabled()
+   const added=page.waitForResponse(r=>r.request().method()==='POST'&&r.url().endsWith('/line-items'))
+   await page.getByTestId('add-product-button').click()
+   assert.equal((await added).status(),200)
+   await expect(page).toHaveURL(new RegExp(`/${segment}/cart$`))
+   await expect(page.getByTestId('checkout-button')).toBeVisible()
+   await page.reload()
+   await expect(page.getByTestId('checkout-button')).toBeVisible()
+   await page.getByTestId('checkout-button').click()
+  }else await page.goto(shop+`/${segment}/checkout?step=address`)
   await expect(page.getByTestId('shipping-first-name-input')).toBeVisible()
   const values={'shipping-first-name-input':'Joint','shipping-last-name-input':'Customer','shipping-email-input':`checkout-${index}@example.invalid`,'confirm-email-input':`checkout-${index}@example.invalid`,'shipping-phone-input':'+45 11111111','shipping-address-input':'Joint fixture street','shipping-postal-code-input':'0012','shipping-city-input':'Copenhagen'}
   for(const [id,value] of Object.entries(values))await page.getByTestId(id).fill(value)
@@ -90,5 +103,5 @@ try{
  }
  assert.equal(orders.size,4);assert.equal(starts.length,8);assert.equal(completions.length,4);assert.deepEqual(errors,[])
  assert.equal((await control('finish')).status,204)
- console.log('CHECKOUT_JOINT_BROWSER '+JSON.stringify({actual_astro_checkout:true,actual_gin_handlers:true,real_mysql_redis:true,mocked_business_api_responses:false,isolated_provider_adapter_and_hosted_page:true,real_provider_payments:false,preseeded_cart_items:true,address_delivery_payment_review_result_confirmation:true,pending_before_paid:true,payment_reload_replays_original:true,confirmation_reload:true,completion_replay_same_order:true,unauthenticated_confirmation_denied:true,payment_journal_cleared:true,languages:['en','zh'],widths:[390,1440],unique_orders:4,browser_errors:0,real_email_delivery:false}))
+ console.log('CHECKOUT_JOINT_BROWSER '+JSON.stringify({actual_astro_checkout:true,actual_gin_handlers:true,real_mysql_redis:true,mocked_business_api_responses:false,isolated_provider_adapter_and_hosted_page:true,real_provider_payments:false,preseeded_cart_items:!browse,precreated_empty_cart:browse,product_page_add_cart_checkout:browse,address_delivery_payment_review_result_confirmation:true,pending_before_paid:true,payment_reload_replays_original:true,confirmation_reload:true,completion_replay_same_order:true,unauthenticated_confirmation_denied:true,payment_journal_cleared:true,languages:['en','zh'],widths:[390,1440],unique_orders:4,browser_errors:0,real_email_delivery:false}))
 }finally{await browser?.close();if(app&&app.exitCode===null){app.kill();await once(app,'exit')}}
