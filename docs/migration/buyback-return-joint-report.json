@@ -1,4 +1,14 @@
 {
+  "photo_expiry": {
+    "strict_180_day_boundary": true,
+    "open_preserved": true,
+    "dry_run": true,
+    "private_bytes_deleted_atomically": true,
+    "legacy_preserved": true,
+    "repeat_safe": true,
+    "rollback": true,
+    "metadata_failure_restores_bytes": true
+  },
   "inspection_browser": {
     "synthetic_api": false,
     "real_admin_and_customer": true,
@@ -72,24 +82,7 @@
   },
   "cleanup": "both owned containers, bridge and temporary runners removed",
   "formal_migrations": 77,
-  "original_admin_zod_cases": {
-    "cases": 116,
-    "accepted": 31
-  },
   "go_all": true,
-  "admin_typecheck": true,
-  "frontend_tests": 173,
-  "astro_check": {
-    "files": 391,
-    "errors": 0,
-    "warnings": 0,
-    "existing_hints": 5
-  },
-  "old_service_routes": {
-    "health": 200,
-    "admin": 200,
-    "sell": 200
-  },
-  "manual_reference_only": true,
-  "external_transfer_or_carrier_verified": false
+  "expiry_command_schedule_test": true,
+  "legacy_private_objects_deleted": false
 }

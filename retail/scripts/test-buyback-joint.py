@@ -127,6 +127,9 @@ def main():
         policy=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestVerifyBuybackAdminPolicies$','-test.timeout','50s')
         (ROOT/'logs/gin-migration/buyback-admin-policy.log').write_bytes(policy.stdout+policy.stderr)
         if policy.returncode or b'BUYBACK_ADMIN_POLICIES ' not in policy.stdout:raise RuntimeError('Buyback admin SQL policy failed')
+        expiry=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestVerifyBuybackPhotoExpiry$','-test.timeout','40s')
+        (ROOT/'logs/gin-migration/buyback-expiry-policy.log').write_bytes(expiry.stdout+expiry.stderr)
+        if expiry.returncode or b'BUYBACK_EXPIRY ' not in expiry.stdout:raise RuntimeError('Photo expiry policy failed')
         inspection=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestVerifyBuybackInspectionPolicies$','-test.timeout','50s')
         (ROOT/'logs/gin-migration/buyback-inspection-policy.log').write_bytes(inspection.stdout+inspection.stderr)
         if inspection.returncode or b'BUYBACK_INSPECTION_POLICIES ' not in inspection.stdout:raise RuntimeError('Buyback inspection SQL policy failed')
@@ -142,7 +145,9 @@ def main():
         if len(policies)!=1:raise RuntimeError('Policy evidence missing')
         inspection_policies=[json.loads(line.split('BUYBACK_INSPECTION_POLICIES ',1)[1]) for line in inspection.stdout.decode().splitlines() if 'BUYBACK_INSPECTION_POLICIES ' in line]
         if len(inspection_policies)!=1:raise RuntimeError('Inspection evidence missing')
-        report={'inspection_browser':joint_results[0],'inspection_sql_policies':inspection_policies[0],'admin_sql_policies':policies[0],'browser':json.loads(outcomes[0]),'durable_mysql_verified':True,'artificial_accounts_only':True,'tls_secure_cookie_verified':False,'full_buyback_accepted':False,'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_memory_mib':128}}
+        expiry_results=[json.loads(line.split('BUYBACK_EXPIRY ',1)[1]) for line in expiry.stdout.decode().splitlines() if 'BUYBACK_EXPIRY ' in line]
+        if len(expiry_results)!=1:raise RuntimeError('Expiry evidence missing')
+        report={'photo_expiry':expiry_results[0],'inspection_browser':joint_results[0],'inspection_sql_policies':inspection_policies[0],'admin_sql_policies':policies[0],'browser':json.loads(outcomes[0]),'durable_mysql_verified':True,'artificial_accounts_only':True,'tls_secure_cookie_verified':False,'full_buyback_accepted':False,'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_memory_mib':128}}
     finally:
         password = ''
         for container in reversed(containers):

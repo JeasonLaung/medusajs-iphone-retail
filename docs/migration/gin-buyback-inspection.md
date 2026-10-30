@@ -34,3 +34,5 @@ Admin TypeScript、173 项前端测试、Go 全量与 Astro 391 文件检查通�
 ## 剩余范围
 
 打款登记和退回物流/送达已在后续 [登记与退回](gin-buyback-settlement.md) 验证。通知邮箱、历史回收申请/图片导入、180 天图片清理及 HTTPS Secure cookie 联合仍待办。设备入库既有模块的独立验证不能替代整个回收付款/退回闭环。
+
+后续新上传照片的180天清理已交付，见 [照片清理](gin-buyback-photo-expiry.md)；旧外部私有文件删除仍待适配。
