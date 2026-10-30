@@ -1,6 +1,7 @@
 import {orderConfirmationProjection,type OrderConfirmation} from './cart-client.ts'
 import {orderListProjection,type CustomerOrderList} from './customer-orders.ts'
 import {customerChanged} from './customer-events.ts'
+import type {BuybackDraft} from './buyback-client.ts'
 import {noticePage,noticeID} from './customer-notices.ts'
 import {customerProgressProjection,type CustomerProgress} from './customer-progress.ts'
 import {afterSalesListProjection,afterSalesRequestProjection,orderDevicesProjection,type AfterSalesInput} from './customer-after-sales.ts'
@@ -51,10 +52,11 @@ function addressInput(fields:AddressFields){
 }
 export function customerClient(fetcher:typeof fetch=fetch){
  let pending:{email:string;password:string;country:string;locale:string}|null=null
- async function call(path:string,body?:Record<string,unknown>,csrf?:string):Promise<any>{
+ async function call(path:string,body?:Record<string,unknown>,csrf?:string,expectedStatus?:number):Promise<any>{
   const response=await fetcher(root+path,{method:body?'POST':'GET',credentials:'same-origin',cache:'no-store',redirect:'error',headers:body?{'Content-Type':'application/json',...(csrf?{'X-CSRF-Token':csrf}:{})}:undefined,body:body?JSON.stringify(body):undefined})
   const data=await response.json()
   if(!response.ok)throw new CustomerError(response.status,data?.state==='verification_required')
+  if(expectedStatus!==undefined&&response.status!==expectedStatus)throw new CustomerError(503)
   return data
  }
  async function write(path:string,body:Record<string,string>){
@@ -69,6 +71,13 @@ export function customerClient(fetcher:typeof fetch=fetch){
   return matches[0][1]
  }
  return {
+  async createBuyback(input:BuybackDraft):Promise<{data:{request:{id:string}}|null;error:string|null}>{
+   try{
+    const result=await call('/buyback/requests',input as unknown as Record<string,unknown>,sessionCSRF(),201)
+    if(!result||Object.keys(result).length!==1||!result.request||typeof result.request.id!=='string'||!/^bbr_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(result.request.id))throw new CustomerError(503)
+    return {data:{request:{id:result.request.id}},error:null}
+   }catch(e){return {data:null,error:e instanceof CustomerError&&e.status===401?'BUYBACK_LOGIN_REQUIRED':'BUYBACK_REQUEST_FAILED'}}
+  },
   async notifications(offset=0){
    if(!Number.isSafeInteger(offset)||offset<0||offset>100000)throw new CustomerError(400)
    return noticePage(await call('/notifications?offset='+offset),offset)

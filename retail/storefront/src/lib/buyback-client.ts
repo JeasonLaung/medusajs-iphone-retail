@@ -1,4 +1,5 @@
 export type BuybackAssessment={battery:string;checks:(boolean|null)[];faults:string[];glass:string[];screen:string;frame:string;back:string}
+export type BuybackDraft={submission_key:string;contact_name:string;phone:string;return_address:{name:string;address_1:string;address_2:string;city:string;postal_code:string;country_code:string};reference_acknowledged:true;privacy_acknowledged:true;items:{model:string;capacity:string;assessment:BuybackAssessment}[]}
 export type BuybackEstimate={amount:number|null;status:'estimated'|'legacy'|'unconfigured'|'disabled'|'ineligible';visual:string|null;faults:string[];provisional:boolean;currency_code:'eur'}
 const fail=()=>new Error('Buyback pricing unavailable')
 export function estimateProjection(raw:unknown):BuybackEstimate{

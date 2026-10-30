@@ -1,0 +1,44 @@
+{
+  "cases": [
+    "healthy nine stages, refresh, delayed identity, CSRF, failed submission retry uses same identity, success destination",
+    "anonymous submit opens account modal without writing or losing contact form",
+    "damaged screen/back skips and persisted summary",
+    "direct incomplete summary guards to first missing answer",
+    "Chinese summary with original copy and no mobile overflow",
+    "ineligible powered-off device blocks progression and can restart",
+    "add another phone preserves first device while clearing current questionnaire"
+  ],
+  "hydration_errors": 0,
+  "scope": "Real Astro/React questionnaire and customer client; API responses intercepted. Does not prove actual Gin submit or request-detail lifecycle.",
+  "date": "2026-10-30",
+  "unit_tests": {
+    "passed": 165,
+    "failed": 0
+  },
+  "astro_check": {
+    "files": 356,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 5
+  },
+  "legacy_http": {
+    "health": 200,
+    "admin": 200,
+    "sell": 200
+  },
+  "limitations": [
+    "Browser API responses intercepted; real Astro-to-Gin creation not jointly verified.",
+    "Successful submit destination asserted using placeholder detail route; production detail page and lifecycle remain absent.",
+    "Original CSS and flow body ported; no full Next/Ant6 versus Astro/Ant5 pixel acceptance.",
+    "Read legacy recent logs: recurring /store/locales 404 remains; no new stderr during checks."
+  ],
+  "sha256": {
+    "src/components/sell/sell-flow.tsx": "1b624a73151bb6c3932889773900c8e03f48815a19783fa79a33a11f4eeaf35e",
+    "src/components/sell/buyback-submission.tsx": "88d7b182f817f06abc082417f58d81e3243f70bae11dc7ca6b187201e1e4d43c",
+    "src/components/sell/flow.module.css": "29c0e0bb7535a53ea3985182c023e27f4158e1a679c27e9493a5623afce08258",
+    "src/components/sell/request.module.css": "0ebb45e39d1b5a5b456535c82cc66ba2ba9146813624ae53800bf0af24b2fc6a",
+    "src/lib/customer-bridge.ts": "30fd6c4efa37bab9fd186d202ad6a23221bfc44a599225886619e02fdebfe106",
+    "src/lib/customer-client.ts": "cab68853150d2b990577997f76bd90a4e2d9ff05c0c5187b98faa3888d019c4b",
+    "tests/sell-questionnaire.browser.mjs": "64ebd43c36163699de2bea736d848f0ab19b7ff88f78eac3f727b8e0c4acae92"
+  }
+}

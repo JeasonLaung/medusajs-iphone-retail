@@ -1,0 +1,7 @@
+---
+import Questionnaire from '../../../../src/components/sell/questionnaire'
+import '../../../../src/styles/original.css'
+const parts=Astro.url.pathname.split('/').filter(Boolean),segment=parts[0],steps=parts.slice(3)
+const models=[{id:'prod_fixture',name:'iPhone 13',handle:'iphone-13',capacities:['128GB','256GB']}]
+---
+<html lang={segment?.endsWith('-zh')?'zh':'en'}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head><body>{parts[1]==='account'?<h1>Request detail destination fixture</h1>:<Questionnaire segment={segment} steps={steps} models={models} client:load/>}</body></html>

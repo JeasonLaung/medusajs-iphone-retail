@@ -1,0 +1,21 @@
+---
+import {GIN_API_ORIGIN} from 'astro:env/server'
+import {loadPublicPage} from '../../../../lib/public-page'
+import {loadSellModels} from '../../../../lib/sell-models'
+import {validQuestionnaireRoute} from '../../../../lib/sell-questionnaire'
+import {getSellCopy} from '../../../../components/sell/i18n'
+import Questionnaire from '../../../../components/sell/questionnaire'
+import styles from '../../../../components/sell/flow.module.css'
+import '../../../../styles/original.css'
+const segment=(Astro.params.countryCode??'').toLowerCase(),steps=(Astro.params.steps??'').split('/')
+const locale=segment.endsWith('-zh')?'zh-CN':'en',copy=getSellCopy(locale)
+let models:Awaited<ReturnType<typeof loadSellModels>>=[],country=false,unavailable=false
+try{country=!!await loadPublicPage(GIN_API_ORIGIN,segment);if(country)models=await loadSellModels(GIN_API_ORIGIN)}catch{unavailable=true}
+const valid=country&&models.length>0&&validQuestionnaireRoute(steps,models)
+if(unavailable||country&&!models.length)Astro.response.status=503
+else if(!valid)Astro.response.status=404
+Astro.response.headers.set('Cache-Control','private, no-store')
+---
+<!doctype html><html lang={locale}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex"/><title>{copy.title} | EuroRefurb</title><meta name="description" content={copy.intro}/></head><body>
+ {valid?<Questionnaire segment={segment} models={models} steps={steps} client:load/>:<div class={styles.page}><div class={styles.container}><h1>{copy.modelTitle}</h1><p role="status">{copy.unavailable}</p><a href={`/${segment}/sell/iphone/model`} class={styles.primary}>{copy.retry}</a><a href={`/${segment}/sell`}>{copy.back}</a></div></div>}
+</body></html>
