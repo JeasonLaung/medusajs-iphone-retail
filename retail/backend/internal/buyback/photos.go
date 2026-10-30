@@ -170,8 +170,12 @@ func readPhotoBytes(ctx context.Context, tx *gorm.DB, requestID, photoID string)
 	if e != nil {
 		return out, ErrUnavailable
 	}
+	importedDigest := ""
 	if row.StorageKey != "buyback-db:"+photoID {
-		return out, ErrPhotoMissing
+		importedDigest, e = verifiedImportedPhoto(tx, photoID, row.StorageKey, row.MimeType)
+		if e != nil {
+			return out, e
+		}
 	}
 	var saved struct {
 		MimeType, SHA256 string
@@ -181,6 +185,9 @@ func readPhotoBytes(ctx context.Context, tx *gorm.DB, requestID, photoID string)
 		return out, ErrUnavailable
 	}
 	sum := sha256.Sum256(saved.Content)
+	if importedDigest != "" && importedDigest != hex.EncodeToString(sum[:]) {
+		return out, ErrUnavailable
+	}
 	if len(saved.Content) > MaxPhotoBytes || photoMIME(saved.Content) == "" || photoMIME(saved.Content) != row.MimeType || saved.MimeType != row.MimeType || saved.SHA256 != hex.EncodeToString(sum[:]) {
 		return out, ErrUnavailable
 	}

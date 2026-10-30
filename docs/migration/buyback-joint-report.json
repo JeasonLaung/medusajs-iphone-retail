@@ -81,13 +81,18 @@
     "redis_memory_mib": 128
   },
   "history_import": {
-    "cases": 9,
+    "cases": 10,
     "exact_replay": true,
     "conflict_rejected": true,
     "ownership_granted": false,
     "external_files_touched": false,
-    "caller_rollback": true
+    "caller_rollback": true,
+    "private_file_copy": true,
+    "copied_file_expiry": true
   },
   "cleanup": "both owned containers, bridge and temporary runners removed",
-  "go_all": true
+  "go_all": true,
+  "formal_migrations": 78,
+  "legacy_private_objects_deleted": false,
+  "original_private_objects_read_only_verified": 6
 }

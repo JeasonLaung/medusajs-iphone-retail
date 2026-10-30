@@ -69,8 +69,14 @@ func ExpirePhotoPage(ctx context.Context, db *gorm.DB, now time.Time, after stri
 					page.Photos++
 					last = photo.ID
 					if photo.StorageKey != "" && photo.StorageKey != "buyback-db:"+photo.ID {
-						page.LegacyFiles++
-						continue
+						var copied int64
+						if tx.Table("buyback_photo_imports").Where("photo_id=? AND source_key=?", photo.ID, photo.StorageKey).Count(&copied).Error != nil {
+							return ErrUnavailable
+						}
+						if copied != 1 {
+							page.LegacyFiles++
+							continue
+						}
 					}
 					if !apply {
 						continue
