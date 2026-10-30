@@ -97,30 +97,35 @@ func (s Store) Estimate(ctx context.Context, in EstimateInput) (Estimate, error)
 		return out, ErrInput
 	}
 	e := s.read(ctx, func(tx *gorm.DB) error {
-		capacity := NormalizeCapacity(in.Capacity)
-		var rows []priceRecord
-		if tx.Table("buyback_prices").Select(priceFields).Where("product_id=? AND active_capacity_digest=UNHEX(SHA2(?,256)) AND BINARY capacity=BINARY ? AND deleted_at IS NULL", in.ProductID, capacity, capacity).Limit(2).Scan(&rows).Error != nil || len(rows) > 1 {
-			return ErrInput
-		}
-		var rules *Rules
-		var legacy *json.Number
-		if len(rows) == 1 {
-			price, e := projectPrice(rows[0])
-			if e != nil {
-				return e
-			}
-			legacy = &price.Amount
-			if rows[0].PricingRules != nil && strings.TrimSpace(*rows[0].PricingRules) != "null" {
-				parsed, e := ParseRules([]byte(*rows[0].PricingRules))
-				if e != nil {
-					return e
-				}
-				rules = &parsed
-			}
-		}
 		var e error
-		out, e = Assess(rules, in.Assessment, legacy)
+		out, e = estimateInTransaction(tx, in.ProductID, in.Capacity, in.Assessment)
 		return e
 	})
 	return out, e
+}
+
+// Reuse the caller's transaction when capturing prices for a new request.
+func estimateInTransaction(tx *gorm.DB, productID, inputCapacity string, assessment Assessment) (Estimate, error) {
+	capacity := NormalizeCapacity(inputCapacity)
+	var rows []priceRecord
+	if tx.Table("buyback_prices").Select(priceFields).Where("product_id=? AND active_capacity_digest=UNHEX(SHA2(?,256)) AND BINARY capacity=BINARY ? AND deleted_at IS NULL", productID, capacity, capacity).Limit(2).Scan(&rows).Error != nil || len(rows) > 1 {
+		return Estimate{}, ErrInput
+	}
+	var rules *Rules
+	var legacy *json.Number
+	if len(rows) == 1 {
+		price, e := projectPrice(rows[0])
+		if e != nil {
+			return Estimate{}, e
+		}
+		legacy = &price.Amount
+		if rows[0].PricingRules != nil && strings.TrimSpace(*rows[0].PricingRules) != "null" {
+			parsed, e := ParseRules([]byte(*rows[0].PricingRules))
+			if e != nil {
+				return Estimate{}, e
+			}
+			rules = &parsed
+		}
+	}
+	return Assess(rules, assessment, legacy)
 }

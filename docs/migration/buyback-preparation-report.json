@@ -1,0 +1,45 @@
+{
+  "scope": "Caller transaction product/option and current buyback price preparation only",
+  "sql": {
+    "BUYBACK_PREPARE_REHEARSAL": {
+      "trusted_catalog": true,
+      "current_rules": true,
+      "multiple_phones": true,
+      "capacity_membership": true,
+      "unconfigured_null": true,
+      "caller_rollback": true,
+      "application_writes": false
+    },
+    "BUYBACK_PRICE_REHEARSAL": {
+      "live_prices": 3,
+      "real_rules_estimate": "152.02",
+      "legacy_raw_precision": true,
+      "missing_null": true,
+      "disabled_and_ineligible": true,
+      "tb_normalization": true,
+      "partial_unique": true,
+      "strict_public_http": true,
+      "read_only_fingerprint": true
+    }
+  },
+  "go_all_packages": "passed",
+  "owned_sql_containers_removed": true,
+  "legacy_services": {
+    "health": 200,
+    "admin": 200,
+    "sell": 200
+  },
+  "source_database_connected": false,
+  "application_request_written": false,
+  "customer_identity_bound": false,
+  "submission_http_registered": false,
+  "full_buyback_acceptance": false,
+  "implementation_sha256": {
+    "retail/backend/internal/buyback/prepare.go": "ffe9469e0e8385f5a67c8fbe8341f9a49a28805079fe263b18648dc7dc38462f",
+    "retail/backend/internal/buyback/prepare_test.go": "eef2123dd9e4c7a1b592e141e469c1fe37376ba41a84fcde6c74abc4d0a8a06e",
+    "retail/backend/internal/buyback/read.go": "c52b9e2b7c91f69e2f673da3c617e8b1100e198ae8439d8425e472af3471d053",
+    "retail/backend/internal/buyback/submission.go": "158863e79d26b2f9209e2cdbab36f3da6d858c6397c5594ee183b02f63f56dc5",
+    "retail/backend/internal/identity/buyback_prepare_test.go": "7fde4ca3653824fff403672a86d36346302e51ba6976aef8c92617cb333ca978",
+    "retail/backend/internal/identity/buyback_prices_test.go": "e3bd0738a148c1105a8fd6f688ea351bfe28fd21a063d8d0a4204e2537b6c7fd"
+  }
+}
