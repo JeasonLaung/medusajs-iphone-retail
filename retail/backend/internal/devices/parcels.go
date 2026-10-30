@@ -18,6 +18,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/eurorefurb/retail/internal/authorization"
+	"github.com/eurorefurb/retail/internal/customernotices"
 	"github.com/eurorefurb/retail/internal/fulfillment"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/inventory"
@@ -540,6 +541,9 @@ func (h Handler) ChangeParcel(ctx context.Context, actor identity.User, o, f str
 				return ErrUnavailable
 			}
 			if tx.Exec("INSERT INTO fulfillment_labels(id,fulfillment_id,tracking_number,tracking_url,label_url,created_at,updated_at) VALUES(?,?,?,?,'',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", "fullabel_"+uuid.NewString(), f, in.TrackingNumber, in.TrackingURL).Error != nil {
+				return ErrUnavailable
+			}
+			if e := customernotices.EmitOrderTx(tx, o, "shipment.created", f); e != nil {
 				return ErrUnavailable
 			}
 		}

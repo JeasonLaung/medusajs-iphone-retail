@@ -69,7 +69,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.Use(h.bridge)
 	private.Use(func(c *gin.Context) {
 		c.Header("Referrer-Policy", "no-referrer")
-		if (c.Request.URL.RawQuery != "" || c.Request.URL.ForceQuery) && !(c.Request.Method == "GET" && c.FullPath() == "/api/store/customer/orders") {
+		if (c.Request.URL.RawQuery != "" || c.Request.URL.ForceQuery) && !(c.Request.Method == "GET" && (c.FullPath() == "/api/store/customer/orders" || c.FullPath() == "/api/store/customer/notifications")) {
 			platform.Fail(c, 404, "not_found", "Resource not found")
 			return
 		}
@@ -81,6 +81,8 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/auth/verify", h.VerifyAccount)
 	private.POST("/auth/resend", h.ResendVerification)
 	private.GET("/me", h.Me)
+	private.GET("/notifications", h.ListNotices)
+	private.POST("/notifications", h.MarkNoticesRead)
 	private.POST("/me", h.UpdateProfile)
 	private.GET("/orders", h.ListOrders)
 	private.GET("/orders/:id", h.OrderDetail)

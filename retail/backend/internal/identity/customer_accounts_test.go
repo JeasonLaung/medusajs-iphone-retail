@@ -143,6 +143,7 @@ func checkCustomerAccounts(t *testing.T, ctx context.Context, db *gorm.DB, sessi
 		t.Fatal("customer current session failed")
 	}
 	checkCustomerProfile(t, ctx, db, store, login.Session.Token, a.ID)
+	checkCustomerNotices(t, ctx, db, store, login.Session.Token, a.ID)
 	checkCustomerAddresses(t, ctx, db, store, sessions, login.Session.Token, a.ID)
 	checkCustomerDelivery(t, ctx, db, store, ring)
 	public, _ := json.Marshal(login)

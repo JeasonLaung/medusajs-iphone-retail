@@ -1,0 +1,6 @@
+---
+import Bell from '../../../../src/components/notifications/notification-bell'
+export const prerender=false
+const locale=Astro.url.searchParams.get('lang')==='zh'?'zh':'en'
+---
+<html lang={locale}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head><body><Bell locale={locale} segment={'dk-'+locale} client:load/></body></html>

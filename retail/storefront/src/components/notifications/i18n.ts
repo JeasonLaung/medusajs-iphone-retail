@@ -1,0 +1,11 @@
+const en = {
+  title: "Notifications", empty: "You're all caught up.", loading: "Loading notifications…", error: "Unable to load notifications. Please try again.", readError: "Unable to mark notifications as read. Please try again.", retry: "Retry", allRead: "Mark all as read", read: "Mark as read", unread: "Unread", open: "View details", close: "Close notifications", previous: "Previous", next: "Next",
+  events: { "shipment.created": "Your order has shipped", "delivery.created": "Your order has been delivered", "order.canceled": "Your order has been canceled", "after_sales.processing": "Your after-sales request is being processed", "after_sales.completed": "Your after-sales request is complete", "after_sales.rejected": "Your after-sales request has a response", "buyback.updated": "Your buyback request has an update" } as Record<string, string>,
+  actions: { review_photo: "Photo review updated", approve_shipping: "Photos approved. You can send your device", mark_received: "Your device has been received", final_offer: "Your final offer is ready to review", mark_paid: "Your payment has been recorded", request_return: "Your return needs attention", mark_returning: "Your device is on its way back", mark_returned: "Your device return is complete", cancel: "Your buyback request has been canceled" } as Record<string, string>,
+}
+const zh: typeof en = {
+  title: "消息通知", empty: "暂无消息", loading: "正在加载消息…", error: "消息加载失败，请重试。", readError: "标记已读失败，请重试。", retry: "重试", allRead: "全部已读", read: "标记已读", unread: "未读", open: "查看详情", close: "关闭消息通知", previous: "上一页", next: "下一页",
+  events: { "shipment.created": "您的订单已发货", "delivery.created": "您的订单已送达", "order.canceled": "您的订单已取消", "after_sales.processing": "您的售后申请正在处理", "after_sales.completed": "您的售后申请已完成", "after_sales.rejected": "您的售后申请有新回应", "buyback.updated": "您的回收申请有新进展" },
+  actions: { review_photo: "照片审核结果已更新", approve_shipping: "照片审核通过，可以寄出设备", mark_received: "您的设备已收到", final_offer: "最终报价已出，请查看并确认", mark_paid: "回收款项已登记支付", request_return: "回收退回申请需要您关注", mark_returning: "您的设备已寄回", mark_returned: "设备退回已完成", cancel: "您的回收申请已取消" },
+}
+export const getNotificationCopy = (locale: string | null) => locale?.startsWith("zh") ? zh : en

@@ -26,10 +26,11 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
  const url=new URL(request.url),post=request.method==='POST',path=url.pathname,action=path.slice((root+'/auth/').length)
  const orderList=request.method==='GET'&&path===root+'/orders',orderRead=request.method==='GET'&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}(/progress|/devices|/after-sales)?$').test(path),orderAttach=post&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/attach$').test(path)
  const afterSalesWrite=post&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/after-sales$').test(path)
+ const notices=path===root+'/notifications'
  const target=path+url.search
- const queryOK=orderList&&/^\?offset=(0|[1-9][0-9]{0,5})$/.test(url.search)&&Number(url.searchParams.get('offset'))<=100000
+ const queryOK=(orderList||notices&&request.method==='GET')&&/^\?offset=(0|[1-9][0-9]{0,5})$/.test(url.search)&&Number(url.searchParams.get('offset'))<=100000
  const address=path===root+'/addresses',addressWrite=new RegExp('^'+root+'/addresses/addr_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(/delete)?$').test(path)
- if((url.href.includes('?')&&!queryOK)||!(post&&(writes.has(path)||path===root+'/me'||address||addressWrite||orderAttach||afterSalesWrite)||request.method==='GET'&&(path===root+'/me'||address||orderList||orderRead)))return failure(404)
+ if((url.href.includes('?')&&!queryOK)||!(post&&(writes.has(path)||path===root+'/me'||address||addressWrite||orderAttach||afterSalesWrite||notices)||request.method==='GET'&&(path===root+'/me'||address||orderList||orderRead||notices)))return failure(404)
  let upstream:URL,shop:URL
  try{upstream=origin(config.ginOrigin,true);shop=origin(config.storefrontOrigin)}catch{return failure(503)}
  if(url.origin!==shop.origin||request.headers.get('sec-fetch-site')==='cross-site'||request.headers.has('origin')&&request.headers.get('origin')!==shop.origin||post&&request.headers.get('origin')!==shop.origin)return failure(403)
@@ -63,7 +64,7 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
   }
   const response=await fetcher(new URL(target,upstream),{method:request.method,headers,body:body as BodyInit|undefined,redirect:'error',credentials:'omit',cache:'no-store',signal:AbortSignal.any([request.signal,controller.signal])})
   const status=response.status,out=new Headers(defaults)
-  if((orderList||orderRead||orderAttach||afterSalesWrite)&&status===202)throw new Error()
+  if((orderList||orderRead||orderAttach||afterSalesWrite||notices)&&status===202)throw new Error()
   const accepted=(afterSalesWrite&&status===201)||[200,202,400,401,403,404,409,413,415,429,503].includes(status)
   if(!accepted){await response.body?.cancel().catch(()=>{});return failure(503)}
   if(response.headers.get('cache-control')!=='private, no-store'||response.headers.get('content-type')?.split(';',1)[0].trim().toLowerCase()!=='application/json')throw new Error()

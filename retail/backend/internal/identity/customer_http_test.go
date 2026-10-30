@@ -164,6 +164,15 @@ func checkCustomerHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions 
 	if session == nil || bytes.Contains(login.Body.Bytes(), []byte(session.Value)) || bytes.Contains(login.Body.Bytes(), []byte("password_hash")) {
 		t.Fatal("login token missing or exposed")
 	}
+	call("GET", "/notifications?offset=0", "", "", 200, nil)
+	for _, path := range []string{"/notifications?", "/notifications?offset=-1", "/notifications?offset=100001", "/notifications?offset=0&offset=20", "/notifications?unknown=1"} {
+		call("GET", path, "", "", 400, nil)
+	}
+	call("POST", "/notifications", "{}", jar["__Host-retail_customer_csrf"].Value, 200, nil)
+	call("POST", "/notifications", "{}", "", 403, nil)
+	for _, body := range []string{`{"id":null}`, `{"id":"bad"}`, `{"id":"bad","id":"bad"}`, `{"customer_id":"other"}`} {
+		call("POST", "/notifications", body, jar["__Host-retail_customer_csrf"].Value, 400, nil)
+	}
 	old := *session
 	call("GET", "/me", "", "", 200, nil)
 	call("GET", "/me", "", "", 403, func(r *http.Request) { r.Header.Set("Origin", "https://evil.example") })

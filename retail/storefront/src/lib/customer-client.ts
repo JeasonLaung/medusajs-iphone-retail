@@ -1,6 +1,7 @@
 import {orderConfirmationProjection,type OrderConfirmation} from './cart-client.ts'
 import {orderListProjection,type CustomerOrderList} from './customer-orders.ts'
 import {customerChanged} from './customer-events.ts'
+import {noticePage,noticeID} from './customer-notices.ts'
 import {customerProgressProjection,type CustomerProgress} from './customer-progress.ts'
 import {afterSalesListProjection,afterSalesRequestProjection,orderDevicesProjection,type AfterSalesInput} from './customer-after-sales.ts'
 export type Customer={id:string;email:string;first_name:string;last_name:string;phone:string;verified_at:string|null}
@@ -68,6 +69,15 @@ export function customerClient(fetcher:typeof fetch=fetch){
   return matches[0][1]
  }
  return {
+  async notifications(offset=0){
+   if(!Number.isSafeInteger(offset)||offset<0||offset>100000)throw new CustomerError(400)
+   return noticePage(await call('/notifications?offset='+offset),offset)
+  },
+  async readNotifications(id?:string){
+   if(id!==undefined&&!noticeID(id))throw new CustomerError(400)
+   const out=await call('/notifications',id===undefined?{}:{id},sessionCSRF())
+   if(out.success!==true||Object.keys(out).length!==1)throw new CustomerError(503)
+  },
   async orders(offset=0):Promise<CustomerOrderList>{
    if(!Number.isSafeInteger(offset)||offset<0||offset>100000)throw new CustomerError(400)
    return orderListProjection(await call('/orders?offset='+offset),offset)

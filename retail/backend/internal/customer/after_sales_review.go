@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/eurorefurb/retail/internal/authorization"
+	"github.com/eurorefurb/retail/internal/customernotices"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/payments"
@@ -239,6 +240,11 @@ func ReviewAfterSalesTx(ctx context.Context, tx *gorm.DB, actor identity.User, o
 	saved, _ := json.Marshal(out)
 	if tx.Table("after_sales_reviews").Create(map[string]any{"operation_id": input.OperationID, "actor_id": actor.ID, "order_id": orderID, "request_id": request.ID, "request_json": string(raw), "before_status": request.Status, "after_status": input.Status, "result_json": string(saved), "created_at": time.Now().UTC()}).Error != nil {
 		return out, ErrUnavailable
+	}
+	if request.Status != input.Status {
+		if e := customernotices.EmitOrderTx(tx, orderID, "after_sales."+input.Status, request.ID); e != nil {
+			return out, ErrUnavailable
+		}
 	}
 	return out, nil
 }

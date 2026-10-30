@@ -1,0 +1,267 @@
+{
+  "date": "2026-10-30",
+  "scope": "New customer inbox, Gin authenticated reads, original Astro notification bell, after-sales status and parcel shipment emission",
+  "full_storefront_accepted": false,
+  "committed_migrations": 71,
+  "migration": "0072_customer_notices.sql",
+  "sql": {
+    "new_account_only": true,
+    "private_projection": true,
+    "pagination_20": true,
+    "global_unread": true,
+    "single_read_concurrent": 4,
+    "mark_all_read": true,
+    "unknown_id_noop": true,
+    "invalid_offset_id_denied": true,
+    "anonymous_disabled_denied": true,
+    "autocommit_emitter_denied": true
+  },
+  "additional_sql_checks": {
+    "foreign_id_noop": true,
+    "unowned_order_no_delivery": true,
+    "ownership_event_deduplication": true,
+    "owner_transaction_rollback": true,
+    "late_insert_failure_rolls_back_order": true,
+    "signed_http_query_json_and_csrf": true
+  },
+  "real_sql_suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "browser_ui": {
+    "synthetic_api": true,
+    "original_dialog_structure": true,
+    "unread_badge": true,
+    "pagination_20": true,
+    "single_and_all_read": true,
+    "detail_navigation": true,
+    "error_retains_data": true,
+    "retry": true,
+    "chinese_english": true,
+    "mobile_390": true,
+    "browser_errors": 0
+  },
+  "real_admin_browser_joint": {
+    "passed": true,
+    "fake_api_responses": false,
+    "durable_new_customer_messages": {
+      "shipment.created": 2,
+      "after_sales.processing": 1,
+      "after_sales.completed": 1
+    },
+    "owned_cleanup": "complete"
+  },
+  "front_client_bridge_tests": 16,
+  "astro_check": {
+    "errors": 0,
+    "warnings": 0,
+    "existing_hints": 5
+  },
+  "go_all_packages_passed": true,
+  "tested_source_files": [
+    {
+      "path": "retail/backend/internal/customer/after_sales_review.go",
+      "sha256_lf": "c821f97a0472371fb486cc92dbd7b287405ac2274212dcfc46f0104cee8a48cf"
+    },
+    {
+      "path": "retail/backend/internal/customer/http.go",
+      "sha256_lf": "4f112209986c34a281e74c90917cb29757ef281d73626a9893654dd1d9d8a4fe"
+    },
+    {
+      "path": "retail/backend/internal/customer/notices.go",
+      "sha256_lf": "7aa5f01056759b27464e9732f8c3922eda1a25021f8ee8d40c49dc20227f2472"
+    },
+    {
+      "path": "retail/backend/internal/customer/notices_http.go",
+      "sha256_lf": "73e03ba5cb7bc86006f7d2dfcb42b3d6fd979e50a8879b18b7d29f121a3fac12"
+    },
+    {
+      "path": "retail/backend/internal/customernotices/events.go",
+      "sha256_lf": "108266034e35d2dbc7285dd475716a411df697f9ac48601b38a07eae774784c2"
+    },
+    {
+      "path": "retail/backend/internal/devices/parcels.go",
+      "sha256_lf": "d9151a7e3259a791d18df35c281f89657dcc461a5320ae5671285023d7303021"
+    },
+    {
+      "path": "retail/backend/internal/identity/browser_fixture_test.go",
+      "sha256_lf": "5a153cb7454689de60c2aef5b135453b4cdf6bf344f0cb44157f727e758e8f66"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_price_refresh_test.go",
+      "sha256_lf": "54d3566c032a0d84143fbac89a0a3cb622bfe528ee1dce049db21ed72ea64e20"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_runtime_test.go",
+      "sha256_lf": "056c62d2f5527285a2b892d8f320b640157a95271e94cbfb17c4a5cac89a55fe"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_schema_test.go",
+      "sha256_lf": "fc3933b7446b9ca672f02f3cb37c874590797cbf14c1f50eebd6783455a7dbec"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_tax_refresh_test.go",
+      "sha256_lf": "92be0b07f0b6a57ddb87e984da8b7523ae6d6c215d6652677ccbe861bf7a16c9"
+    },
+    {
+      "path": "retail/backend/internal/identity/customer_accounts_test.go",
+      "sha256_lf": "e42ab0a89446fbf3d0099b0007dff68259b1136c3c914c5845223c979ad3be49"
+    },
+    {
+      "path": "retail/backend/internal/identity/customer_history_test.go",
+      "sha256_lf": "d6c9338a4f96dd7c8c3ec7943724596fd7925c7e41dc75e82a020392596503ab"
+    },
+    {
+      "path": "retail/backend/internal/identity/customer_http_test.go",
+      "sha256_lf": "ae3620e0c05602bf987817a8171011d467c8bb5fe695c77ac255651677cbb85d"
+    },
+    {
+      "path": "retail/backend/internal/identity/customer_notices_test.go",
+      "sha256_lf": "5de038b6db2b36da1cefe187a181172ec54cc5bf5c18aee9e2afe7a985e13713"
+    },
+    {
+      "path": "retail/backend/internal/identity/device_replacement_browser_fixture_test.go",
+      "sha256_lf": "dc8c1f9406c0823dba29cf6190e40e517e138aba5de80c76f274965e91836c66"
+    },
+    {
+      "path": "retail/backend/internal/identity/fulfillment_history_test.go",
+      "sha256_lf": "e9343111b31d2f84b2e121ce06ac7b449567a2025af41aa0ee7d388609d054c7"
+    },
+    {
+      "path": "retail/backend/internal/identity/geo_schema_test.go",
+      "sha256_lf": "9ba060514c03a7417c7d39995a213226d6167fd5ab063f03b2e035a38a65fef8"
+    },
+    {
+      "path": "retail/backend/internal/identity/integration_test.go",
+      "sha256_lf": "96c3215c94306bfc5da30496a77469cd6668d796845f06b2f22bbf3398db7111"
+    },
+    {
+      "path": "retail/backend/internal/identity/order_import_test.go",
+      "sha256_lf": "3970a284812b559be46cc94ec80e33262de11acd0d020d791f0d2da0c35008ae"
+    },
+    {
+      "path": "retail/backend/internal/identity/order_numbering_test.go",
+      "sha256_lf": "17b67e42a51c11a58d28402305170c5502a26dc2f38d043f01f57543e8264494"
+    },
+    {
+      "path": "retail/backend/internal/identity/order_read_test.go",
+      "sha256_lf": "2ac11c34a4c7754ff38fe1da2be6774f16475b02ebcbdde45908021e54955ebb"
+    },
+    {
+      "path": "retail/backend/internal/identity/order_schema_test.go",
+      "sha256_lf": "913aa21b1e9b0bd2e802e8a2977c245ecf5944ae41ae1f2758b9cdf332533778"
+    },
+    {
+      "path": "retail/backend/internal/identity/payment_import_test.go",
+      "sha256_lf": "24d125cbb3a79073ad46c5cf7bab3901417f54e8bdf039637e2f3f488e7f8efd"
+    },
+    {
+      "path": "retail/backend/internal/identity/payment_schema_test.go",
+      "sha256_lf": "54697fc94345470c565a8ecd318ae0ef90b65c53b36ca70d5be83867e4a22011"
+    },
+    {
+      "path": "retail/backend/internal/identity/product_edit_test.go",
+      "sha256_lf": "d12f3641e301a84708d7f80e056104aa0fa9ed5775ec705c0fc9ceb004f0586c"
+    },
+    {
+      "path": "retail/backend/internal/identity/product_inventory_test.go",
+      "sha256_lf": "1bd6ddcc4b01831d884f4ed2b2ebe25ea15b95504adef83d4e8759b69626bc14"
+    },
+    {
+      "path": "retail/backend/internal/identity/product_prices_test.go",
+      "sha256_lf": "42eebe5b141595c74fd913347951adbb2ad8eade359409a0d18eedf967db0265"
+    },
+    {
+      "path": "retail/backend/internal/identity/promotion_schema_test.go",
+      "sha256_lf": "bafb6efced7e8dcb6f3ca9bba2e8198da6e89a75c9c1f83475fe3e0cbfb367bc"
+    },
+    {
+      "path": "retail/backend/internal/identity/promotion_usage_test.go",
+      "sha256_lf": "143dcc91d6bdb6db96c92577f0f1590d1bca6e7e9c96f2cd3944eb43b3ebdf1c"
+    },
+    {
+      "path": "retail/backend/internal/identity/reservation_transactions_test.go",
+      "sha256_lf": "98bddeef6a25526bd715d3b3c2625694c0e5002094d367ba1f7beb0f5e1dc812"
+    },
+    {
+      "path": "retail/backend/internal/identity/stock_edit_test.go",
+      "sha256_lf": "0ed064b93190292c4188342307cd0aad6192d2155ec211d335631bd92b6887d3"
+    },
+    {
+      "path": "retail/backend/internal/identity/tax_import_test.go",
+      "sha256_lf": "fa6aa0e561e77b8f4851ca52f6dcf876a445ca6f1a20b7886074e4ea9515bd10"
+    },
+    {
+      "path": "retail/backend/internal/identity/tax_schema_test.go",
+      "sha256_lf": "f35e705e611880e141b53719868d12624f5d2045b9c4ba7ef4088df1afafce1b"
+    },
+    {
+      "path": "retail/backend/internal/schema/plan_test.go",
+      "sha256_lf": "bb079589c2e25776a19c1e5d928e8772723802f75c786c12177fd75718717dbb"
+    },
+    {
+      "path": "retail/backend/migrations/0072_customer_notices.sql",
+      "sha256_lf": "89dacab8433858e8684890d743d71446f0a8cda36ed893233e9b7bbb6599241a"
+    },
+    {
+      "path": "retail/scripts/test-warehouse-inventory-joint.py",
+      "sha256_lf": "d51fa9999d7161ba3413562bb0da4735703307a80683fe780ef1483c24b2f0c9"
+    },
+    {
+      "path": "retail/storefront/src/components/layout/gin-header.tsx",
+      "sha256_lf": "661d9d9451a49918388a8c00a1add54c8adc0fffc227239c16d30dcca1584b59"
+    },
+    {
+      "path": "retail/storefront/src/components/notifications/i18n.ts",
+      "sha256_lf": "f057ee8f6c67e71dd67de643b30d77e0e316d7d378f196b2035c0ffdb4a8d762"
+    },
+    {
+      "path": "retail/storefront/src/components/notifications/notification-bell.tsx",
+      "sha256_lf": "9d2302a9bf63d4301096f19066afb4e9c9419326d7a04726b6cf41cf0722ab92"
+    },
+    {
+      "path": "retail/storefront/src/components/notifications/styles.module.css",
+      "sha256_lf": "1aba486e7ec8ed12eab667be8a0c0c9bc300a87a99a608dd10c3ddaadb0dc250"
+    },
+    {
+      "path": "retail/storefront/src/lib/customer-bridge.ts",
+      "sha256_lf": "5c3f7404550e0cfba1c3067306bd6785284b10e9c928ac68593dce40677af466"
+    },
+    {
+      "path": "retail/storefront/src/lib/customer-client.ts",
+      "sha256_lf": "246de1627bada428a579ece6b7c3b55d9111ef358cf35d658c61034f07a7c472"
+    },
+    {
+      "path": "retail/storefront/src/lib/customer-notices.ts",
+      "sha256_lf": "9f90ff5da4e78873746728018ff53fa4de94ad562c55e435168473f7b5e66c7c"
+    },
+    {
+      "path": "retail/storefront/tests/customer-notices.browser.mjs",
+      "sha256_lf": "47e66d2147424cdf6875608373bc797a1d0f807e9857922aeaf10f6cbfc66bde"
+    },
+    {
+      "path": "retail/storefront/tests/customer-notices.test.ts",
+      "sha256_lf": "107bcd019e5c6638472560ed940be6cd65e9d78ee7cdfb45f81a9ebadb9d01df"
+    },
+    {
+      "path": "retail/storefront/tests/notices-fixture/src/pages/index.astro",
+      "sha256_lf": "143c6ee579809bb7650673055f80b2ae070320c301b04e5f14204fb24be93372"
+    }
+  ],
+  "existing_service_health": {
+    "9001_health": 200,
+    "9001_app": 200,
+    "8000_account_orders": 200,
+    "8000_cart": 200
+  },
+  "existing_logs": "Existing anonymous orders 401/locales 404 and storefront request errors remain; no new outage",
+  "remaining": [
+    "Full Astro bell -> signed bridge -> real Gin/MySQL joint",
+    "Buyback unread reminder merging and events",
+    "Delivery/cancellation producers when those commands migrate",
+    "Notification email delivery",
+    "Actual payment difference/refund",
+    "Full storefront closure"
+  ]
+}

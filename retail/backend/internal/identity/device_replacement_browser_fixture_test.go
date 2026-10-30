@@ -11,6 +11,8 @@ import (
 func seedDeviceReplacementBrowser(t *testing.T, db *gorm.DB) {
 	t.Helper()
 	for _, q := range []string{
+		`INSERT INTO customer_accounts(id,email,password_hash,first_name,last_name,enabled,auth_version,verified_at,created_at,updated_at) VALUES('cust_replacement_notice','replacement-notice@example.invalid','artificial-no-login','Artificial','Recipient',TRUE,1,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO customer_order_ownership(order_id,customer_id,cart_id,store_id,created_at) VALUES('allocation-order','cust_replacement_notice','replacement-notice-cart','price-edit-store',UTC_TIMESTAMP(6))`,
 		`UPDATE after_sales_requests SET type='exchange' WHERE id='asr-browser-return'`,
 		`UPDATE orders SET region_id='price-edit-region' WHERE id='allocation-order'`,
 		`INSERT INTO catalog_product_channels(id,product_id,sales_channel_id,created_at,updated_at) VALUES('exchange-browser-channel','allocation-product','price-edit-channel',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
