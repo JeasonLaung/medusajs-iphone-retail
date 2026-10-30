@@ -685,3 +685,37 @@ test('after-sales device receipt freezes the scanned machine after a lost respon
  expect(posted).toHaveLength(2);expect(posted[0]).toEqual(posted[1]);expect(posted[0]).toMatchObject({assignment_id:'assigned',source_id:'source',scan:'SN-ORIGINAL'})
  await page.setViewportSize({width:390,height:844});await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
 })
+
+test('inspection and repaired-device dispatch retry immutable commands after lost replies',async({page})=>{
+ await fixture(page,{permissions:['order.read','order.payment.read','device.read','warehouse.read','device.intake','order.after_sales.write','product.read','inventory.read']})
+ const date='2026-10-30T00:00:00Z',order={id:'service-order',version:1,status:'pending',currency_code:'eur',custom_display_id:'Repair fixture',display_id:'1',is_draft_order:false,email:null,created_at:date,updated_at:date,line_count:0}
+ let state='repair',tracking:string|null=null;const posted:Record<string,unknown>[]=[],lost=new Set<string>()
+ await page.route('**/api/admin/orders/service-order**',async route=>{
+  const req=route.request(),path=new URL(req.url()).pathname
+  if(path.endsWith('/service')){
+   if(req.method()==='POST'){expect(req.headers()['x-csrf-token']).toBe(sessionCSRF);const body=req.postDataJSON();posted.push(body);if(body.action==='inspect')state='repair_ready';else{state='shipped';tracking=body.tracking_number};if(!lost.has(body.action)){lost.add(body.action);return route.abort('failed')};return route.fulfill({json:{device_id:'device',assignment_id:'assigned',state,category:'returned',replayed:true}})}
+   return route.fulfill({json:{order_id:order.id,request_id:'asr_repair',assignment_id:'assigned',device_id:'device',serial_number:'REPAIR-SN',type:'repair',request_status:'processing',status:state==='shipped'?'shipped':'returned',state,category:'returned',product_id:'product',variant_id:'original-sku',grade:'B',battery_health:85,tracking_number:tracking,revision:(state==='repair'?'a':state==='repair_ready'?'b':'c').repeat(64),enabled:true}})
+  }
+  if(path.endsWith('/device-returns'))return route.fulfill({json:{order_id:order.id,request_id:'asr_repair',type:'repair',status:'processing',revision:'a'.repeat(64),enabled:true,devices:[{assignment_id:'assigned',device_id:'device',item_id:'line',serial_number:'REPAIR-SN',status:'returned',state,location_id:'warehouse'}],sources:[]}})
+  if(path.endsWith('/after-sales'))return route.fulfill({json:{order_id:order.id,revision:'a'.repeat(64),enabled:true,requests:[{id:'asr_repair',type:'repair',status:'processing',reason:'Repair original device',created_at:date,items:[{item_id:'line',title:'Phone',quantity:1,device_ids:['device']}]}]}})
+  if(path.endsWith('/payments'))return route.fulfill({json:{order_id:order.id,version:1,operations_enabled:false,collections:[]}})
+  return route.fulfill({json:{order,lines:[]}})
+ })
+ await page.route('**/api/admin/products**',async route=>{
+  const path=new URL(route.request().url()).pathname
+  if(path.endsWith('/variants'))return route.fulfill({json:{variants:[{id:'original-sku',product_id:'product',title:'Original SKU',sku:'ORIGINAL',thumbnail:null,variant_rank:0,manage_inventory:true,allow_backorder:false,options:[],unassigned_option_value_ids:[],configuration_complete:true,images:[]}],count:1,limit:20,offset:0}})
+  return route.fulfill({json:{products:[{id:'product',title:'Repair product',handle:'repair-product',status:'published',thumbnail:null,collection_id:null,created_at:date,updated_at:date,variant_count:1}],count:1,limit:20,offset:0}})
+ })
+ await page.goto('/login');await signIn(page);await page.goto('/orders/service-order')
+ await page.getByRole('button',{name:'收回设备',exact:true}).click();await page.getByRole('dialog').getByRole('button',{name:'处理设备',exact:true}).click();const drawer=page.getByRole('dialog').last()
+ await drawer.getByRole('button',{name:'选择检测后 SKU',exact:true}).click();const picker=page.getByRole('dialog').last()
+ await picker.getByRole('combobox',{name:'商品',exact:true}).click();await page.locator('.ant-select-item-option[title="Repair product"]').click()
+ await picker.getByRole('combobox',{name:'SKU',exact:true}).click();await page.locator('.ant-select-item-option[title="ORIGINAL Original SKU"]').click();await picker.getByRole('button',{name:'使用此 SKU',exact:true}).click()
+ await drawer.getByLabel('检测说明',{exact:true}).fill('Repaired and physically inspected')
+ await drawer.getByRole('button',{name:'保存检测结果',exact:true}).click();await expect(drawer.getByRole('button',{name:'重试本次处理',exact:true})).toBeVisible();await expect(drawer.getByLabel('检测说明',{exact:true})).toBeDisabled()
+ await drawer.getByRole('button',{name:'重试本次处理',exact:true}).click();await expect(drawer.getByText('设备处理已保存',{exact:true})).toBeVisible();await expect(drawer.getByText('repair_ready',{exact:true})).toBeVisible();expect(posted).toHaveLength(2);expect(posted[0]).toEqual(posted[1]);expect(posted[0]).toMatchObject({action:'inspect',variant_id:'original-sku',grade:'B',battery_health:85})
+ await drawer.getByRole('button',{name:'重新读取',exact:true}).click();const trackingInput=drawer.getByLabel('返还物流单号',{exact:true});await trackingInput.fill('REPAIRED-TRACK')
+ await drawer.getByRole('button',{name:'确认维修返还',exact:true}).click();await expect(drawer.getByRole('button',{name:'重试本次处理',exact:true})).toBeVisible();await expect(trackingInput).toBeDisabled()
+ await drawer.getByRole('button',{name:'重试本次处理',exact:true}).click();await expect(drawer.getByText('设备处理已保存',{exact:true})).toBeVisible();await expect(drawer.getByText('shipped',{exact:true})).toBeVisible();await expect(drawer.getByText('REPAIRED-TRACK',{exact:true})).toBeVisible();expect(posted).toHaveLength(4);expect(posted[2]).toEqual(posted[3]);expect(posted[2]).toMatchObject({action:'repair_ship',tracking_number:'REPAIRED-TRACK',variant_id:'',photos:[]})
+ await page.setViewportSize({width:390,height:844});await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
+})

@@ -175,6 +175,11 @@ func checkDeviceReturns(t *testing.T, db *gorm.DB, actor identity.User, call fun
 			t.Fatal("repair/exchange receipt", e)
 		}
 		call("POST", path, body(in), 404)
+		if kind == "repair" {
+			checkDeviceService(t, db, actor, call, aid)
+		} else {
+			checkDeviceInspectionOutcomes(t, db, actor, call, aid)
+		}
 		exec("UPDATE after_sales_requests SET status='completed' WHERE id=?", key)
 	}
 	if stock() != baseline {

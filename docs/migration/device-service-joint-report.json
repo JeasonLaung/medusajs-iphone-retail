@@ -1,0 +1,28 @@
+{
+  "scope": "Real React Admin inspection, photo evidence and original repair return followed by review completion; ordinary replacements, actual refund, notifications and warehouse inspection remain incomplete",
+  "counts": {
+    "real_browser_react_gin_mysql_redis": true,
+    "api_mocking": false,
+    "preallocate_pack_cancel_repack_ship": true,
+    "review_and_scan_return": true,
+    "real_inspection_with_photo": true,
+    "product_sku_picker": true,
+    "original_repair_ready": true,
+    "repair_dispatch_tracking": true,
+    "lost_successful_replies": true,
+    "immutable_inspection_and_ship_retries": true,
+    "complete_after_repair_return": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0
+  },
+  "durable_mysql_verified": true,
+  "real_accounts_used": false,
+  "tls_secure_cookie_verified": false,
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128
+  },
+  "cleanup": "both owned containers, bridge and temporary runners removed"
+}

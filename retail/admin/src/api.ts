@@ -558,3 +558,17 @@ export async function receiveDeviceReturn(order:string,requestID:string,body:Dev
  const d=await request<{assignment_id:string;device_id:string;return_id:string;state:string;replayed:boolean}>(deviceReturnPath(order,requestID),{method:'POST',body,csrf},'/api/admin/')
  if(!d||d.assignment_id!==body.assignment_id||!warehouseID(d.device_id)||typeof d.return_id!=='string'||!['repair','inspection'].includes(d.state)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
 }
+
+export type DeviceServiceContext={order_id:string;request_id:string;assignment_id:string;device_id:string;serial_number:string;type:string;request_status:string;status:string;state:string;category:string;product_id:string;variant_id:string;grade:string|null;battery_health:number|null;tracking_number:string|null;revision:string;enabled:boolean}
+export type DeviceServiceInput={operation_id:string;expected_revision:string;action:'inspect'|'repair_ship';result:string;variant_id:string;grade:string;battery_health:number;notes:string;photos:DevicePhoto[];tracking_number:string}
+function deviceServicePath(order:string,requestID:string,assignment:string){return 'orders/'+encodeURIComponent(order)+'/after-sales/'+encodeURIComponent(requestID)+'/devices/'+encodeURIComponent(assignment)+'/service'}
+export async function readDeviceService(order:string,requestID:string,assignment:string,signal?:AbortSignal):Promise<DeviceServiceContext>{
+ const d=await request<DeviceServiceContext>(deviceServicePath(order,requestID,assignment),{signal},'/api/admin/')
+ if(!d||d.order_id!==order||d.request_id!==requestID||d.assignment_id!==assignment||!warehouseID(d.device_id)||!warehouseID(d.variant_id)||typeof d.product_id!=='string'||typeof d.serial_number!=='string'||!['return','repair','exchange'].includes(d.type)||!['pending','processing','completed','rejected'].includes(d.request_status)||!['reserved','packed','shipped','returned','canceled'].includes(d.status)||!['pending','inspection','available','reserved','packed','shipped','repair','repair_ready','retired','supplier_returned'].includes(d.state)||!['sale','returned','recycled'].includes(d.category)||d.grade!==null&&typeof d.grade!=='string'||d.battery_health!==null&&(!Number.isInteger(d.battery_health)||d.battery_health<0||d.battery_health>100)||d.tracking_number!==null&&typeof d.tracking_number!=='string'||typeof d.enabled!=='boolean'||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision))throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function serviceDevice(order:string,requestID:string,assignment:string,body:DeviceServiceInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{device_id:string;assignment_id:string;state:string;category:string;replayed:boolean}>(deviceServicePath(order,requestID,assignment),{method:'POST',body,csrf},'/api/admin/')
+ if(!d||d.assignment_id!==assignment||!warehouseID(d.device_id)||!['available','repair','repair_ready','retired','supplier_returned','shipped'].includes(d.state)||!['sale','returned','recycled'].includes(d.category)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}

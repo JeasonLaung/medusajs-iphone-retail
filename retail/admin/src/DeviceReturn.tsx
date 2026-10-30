@@ -1,8 +1,11 @@
 import {useEffect,useRef,useState} from 'react'
 import {Alert,Button,Drawer,Form,Input,Select,Space,Spin,Table,Typography} from 'antd'
+import DeviceService from './DeviceService'
+import {useAccess} from './Permissions'
 import {APIError,readDeviceReturn,receiveDeviceReturn,type DeviceReturnContext,type DeviceReturnInput} from './api'
 
 export default function DeviceReturn({order,requestID,onClose,onExpired}:{order:string;requestID:string;onClose():void;onExpired():void}){
+ const access=useAccess(),[servicing,setServicing]=useState<string>()
  const zh=document.documentElement.lang.startsWith('zh'),[form]=Form.useForm<{assignment_id:string;source_id:string;scan:string}>(),[data,setData]=useState<DeviceReturnContext>(),[attempt,setAttempt]=useState(0),[error,setError]=useState(false),[pending,setPending]=useState<DeviceReturnInput>(),[saving,setSaving]=useState(false),[failed,setFailed]=useState(false),[saved,setSaved]=useState(false),busy=useRef(false)
  useEffect(()=>{const c=new AbortController();setError(false);setData(undefined);readDeviceReturn(order,requestID,c.signal).then(d=>{if(!c.signal.aborted)setData(d)}).catch(e=>{if(!c.signal.aborted){if(e instanceof APIError&&e.status===401)onExpired();else setError(true)}});return()=>c.abort()},[order,requestID,attempt,onExpired])
  const send=async(body:DeviceReturnInput)=>{if(busy.current)return;busy.current=true;setSaving(true);setFailed(false);setPending(body);try{await receiveDeviceReturn(order,requestID,body);setSaved(true);setPending(undefined);setAttempt(n=>n+1);form.resetFields()}catch(e){if(e instanceof APIError&&e.status===401)onExpired();else setFailed(true)}finally{busy.current=false;setSaving(false)}}
@@ -14,7 +17,7 @@ export default function DeviceReturn({order,requestID,onClose,onExpired}:{order:
  {error?<><Alert type="error" message={zh?'售后设备暂不可用':'Device records unavailable'}/><Button onClick={reload}>{zh?'重新读取':'Reload'}</Button></>:!data?<Spin/>:<>
  {saved&&<Alert type="success" message={zh?'设备已收回':'Device received'}/>}
  {(!data.enabled||data.status!=='processing')&&<Alert type="warning" message={zh?'需先将申请标记处理中，并启用收回操作':'The request must be processing and receipt operations enabled'}/>}
- <Table rowKey="assignment_id" dataSource={data.devices} pagination={false} scroll={{x:480}} columns={[{title:zh?'序列号':'Serial number',dataIndex:'serial_number'},{title:zh?'分配状态':'Assignment status',dataIndex:'status'},{title:zh?'设备状态':'Device state',dataIndex:'state'}]}/>
+ <Table rowKey="assignment_id" dataSource={data.devices} pagination={false} scroll={{x:480}} columns={[{title:zh?'序列号':'Serial number',dataIndex:'serial_number'},{title:zh?'分配状态':'Assignment status',dataIndex:'status'},{title:zh?'设备状态':'Device state',dataIndex:'state'},{title:zh?'检测与返还':'Inspection / return',render:(_,r)=>access.can('device.intake','product.read','inventory.read','order.after_sales.write')&&(r.status==='returned'||data.type==='repair'&&r.status==='shipped')?<Button onClick={()=>setServicing(r.assignment_id)}>{zh?'处理设备':'Service device'}</Button>:null}]}/>
  {failed&&<Alert type="error" message={zh?'结果未确认或处理条件已变化，请重试原操作或重新读取核对。':'Result unconfirmed or prerequisites changed. Retry the same operation or reload to verify.'}/>}
  <Form form={form} layout="vertical" disabled={saving||!!pending||!data.enabled||data.status!=='processing'} onFinish={v=>void send({operation_id:crypto.randomUUID(),expected_revision:data.revision,assignment_id:v.assignment_id,source_id:v.source_id,scan:v.scan.trim()})}>
  <Form.Item name="assignment_id" label={zh?'原发货设备':'Originally shipped device'} rules={[{required:true}]}><Select options={eligible.map(d=>({value:d.assignment_id,label:d.serial_number}))}/></Form.Item>
@@ -26,5 +29,5 @@ export default function DeviceReturn({order,requestID,onClose,onExpired}:{order:
  <Button disabled={saving} onClick={reload}>{zh?'重新读取':'Reload'}</Button>
  <Typography.Text type="secondary">{zh?'退款、检测和返还发货需分别处理。':'Refund, inspection and return dispatch are separate operations.'}</Typography.Text>
  </>}
- </Space></Drawer>
+ </Space>{servicing&&<DeviceService order={order} requestID={requestID} assignment={servicing} onExpired={onExpired} onClose={()=>{setServicing(undefined);reload()}}/>}</Drawer>
 }

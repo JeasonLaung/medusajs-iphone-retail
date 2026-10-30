@@ -209,6 +209,11 @@ func TestPreparePriceEditBrowserFixture(t *testing.T) {
 			t.Fatal("parcel browser gate")
 		}
 	}
+	if os.Getenv("DEVICE_SERVICE_BROWSER") == "1" {
+		if db.Exec("UPDATE device_service_runtime SET enabled=TRUE WHERE id=1").Error != nil {
+			t.Fatal("service browser gate")
+		}
+	}
 	if os.Getenv("DEVICE_RETURNS_BROWSER") == "1" {
 		for _, q := range []string{
 			"UPDATE device_return_runtime SET enabled=TRUE WHERE id=1",
@@ -218,6 +223,11 @@ func TestPreparePriceEditBrowserFixture(t *testing.T) {
 			if db.Exec(q).Error != nil {
 				t.Fatal("device return browser fixture")
 			}
+		}
+	}
+	if os.Getenv("DEVICE_SERVICE_BROWSER") == "1" {
+		if db.Exec("UPDATE after_sales_requests SET type='repair' WHERE id='asr-browser-return'").Error != nil {
+			t.Fatal("repair browser request")
 		}
 	}
 	if os.Getenv("VARIANT_CREATE_BROWSER") == "1" {

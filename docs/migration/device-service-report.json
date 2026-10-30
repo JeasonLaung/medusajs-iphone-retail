@@ -1,0 +1,259 @@
+{
+  "date": "2026-10-30",
+  "scope": "Employee after-sales inspection and original repaired-device return",
+  "full_storefront_accepted": false,
+  "schema_migrations": 70,
+  "unit_all_go_packages_passed": true,
+  "admin_browser_tests_passed": 30,
+  "focused_final_browser_regression_passed": true,
+  "admin_production_build_in_isolated_snapshot": true,
+  "real_sql_suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "repair_service": {
+    "real_gin_mysql_redis": true,
+    "default_disabled": true,
+    "original_repair_sku_required": true,
+    "grade_and_battery_checked": true,
+    "unverified_photos_denied": true,
+    "stale_context_denied": true,
+    "inspection_late_failure_atomic": true,
+    "repair_dispatch_late_failure_atomic": true,
+    "concurrent_attempts_per_command": 4,
+    "single_inspection_and_dispatch": true,
+    "active_assignment_denied": true,
+    "repair_ready_then_shipped": true,
+    "quantity_stock_unchanged": true,
+    "repair_completion_requires_dispatch": true,
+    "revoked_deleted_warehouse_denied": true,
+    "paused_write_replay": true
+  },
+  "inspection_outcomes": {
+    "real_mysql": true,
+    "supplier_origin_required": true,
+    "supplier_return_retire_repair_pass": true,
+    "ordinary_pass_can_change_sku": true,
+    "photos_verified_and_audited": true,
+    "immutable_replay": true
+  },
+  "joint_report": "device-service-joint-report.json",
+  "tested_indexed_source_files": [
+    {
+      "path": "retail/admin/src/DeviceReturn.tsx",
+      "sha256": "8287d621958b1b03792069d6084e36cb20c7c662573bbb736f0cb18ccf1fcd69",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/admin/src/DeviceService.tsx",
+      "sha256": "91a2011fc97d12bb396f63bef3acfcc17c62c356f3055e99d27e06ec9018b5c2",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/admin/src/ServiceVariantPicker.tsx",
+      "sha256": "14f674f20017db8c75047c310d878c870b9d0c835f5618c33e29d9a6ca04c85f",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/admin/src/api.ts",
+      "sha256": "8966e56d938304c352f386204b77006899be467ce79b571a9ab516385efba31d",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/admin/tests/auth.spec.ts",
+      "sha256": "d7423d1e9b33ae5c03ad5093105a8158f49072a3433f2956c5b66692044000c8",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/admin/tests/device-service.joint.mjs",
+      "sha256": "2ea780af8e49a1d828d673b38efd5c8b2269dfe78587402b1180377ab4a94533",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/devices/service.go",
+      "sha256": "bb50f7c2b406f3e4059bbe62292b12c51154bfe40092e235fe7f553efe7c4f66",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/devices/service_http.go",
+      "sha256": "f254ee27b5d5cf1a15170a0191325469fe982da0717a03546b9265a63f174c40",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/devices/service_test.go",
+      "sha256": "9bb33f780b47a5a545cc3ba43196df9c57526d2b4f4736a9c94695a93c3f4dec",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/browser_fixture_test.go",
+      "sha256": "abce5418f2c4f996b422b0ac12ae9ba87cfa0737faa43eb4af161c5c348e48a4",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_price_refresh_test.go",
+      "sha256": "b0b3cdaf84fba8443a9e047162ea140d78606361cd2cf7f2a9e275b208deb993",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_runtime_test.go",
+      "sha256": "3f6c4959ff25d6da48b6cdbd588ad96951743b593da4ec36e468153147c76262",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_schema_test.go",
+      "sha256": "d150532ee536acf1fafe0a9393f1f4a4835e307fda30e0ec6ef4df46875d032a",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_tax_refresh_test.go",
+      "sha256": "2f895708c55214e8e70173bf4152dce573a41fb91ea387555a2095191cd1d3d6",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/customer_history_test.go",
+      "sha256": "be07e565ca9073f486aa51d6b81bbf256077e6519da2c21bab703a1ad7a5bec4",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/device_returns_test.go",
+      "sha256": "0c14c5784acc29f05b894746b1df02ca6cf66739dd886357fc874c2e1de6131d",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/device_service_test.go",
+      "sha256": "de67e9500b42fc41a1dfc019ec2135e99f44264fb043088bf1a3267edd5451a4",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/fulfillment_history_test.go",
+      "sha256": "057371b946ac91d2611570982a2f87130931bd12f1e45b7e8347ebb7a8c42f02",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/geo_schema_test.go",
+      "sha256": "c1ecc20296701254fa40827c0980212ea76ffd44fc625f025a4d8f251e3c4039",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/integration_test.go",
+      "sha256": "53e56f8ebbfd9719ba48e3e0d8b09656556dbcc388d7a68eae3fd73e0775ee15",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/order_import_test.go",
+      "sha256": "ac39039643c21ba4b605a53fc6f8c19374e0303307b2860987df9cc43738912b",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/order_numbering_test.go",
+      "sha256": "9dcab2490b1e27b35c327280b4962d4ab08bd35c26392db12f980bdef83e2a11",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/order_read_test.go",
+      "sha256": "b32176d47181ca58a06a790108cb8a8d4b9ae365c6865e6e5eabccdfdaf9dfb4",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/order_schema_test.go",
+      "sha256": "5465c4b3b83a940ec9716884144c7a7268aab96c5ccc43d293d815fe24699ae6",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/payment_import_test.go",
+      "sha256": "3bf2cdd5964a223d97ebe91e0d3ce98d6b2062d32553246fa2f6c2fbe33c752e",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/payment_schema_test.go",
+      "sha256": "9acd56203fbf72dd4ff5418df228bd78fe45d8b2b9fd46ed58fd31b5125b624c",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/price_amount_edit_test.go",
+      "sha256": "bf7fa38555ecbcd09395ed001dc0e0f5f3f1d03f5da9a8b1919205fb3a7f00af",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/product_edit_test.go",
+      "sha256": "9e19524c29b6919b66b162c3bfab198802c6547ceaf7be7793ce74b534431f6c",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/product_inventory_test.go",
+      "sha256": "9f8e177ac0c550e17dc8b76b62b013fab8204c11f35d89245d2b00d468250b38",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/product_prices_test.go",
+      "sha256": "b7031f39957c1d73652947b303652b10f67af7def76d82ba25f5955b699dbadc",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/promotion_schema_test.go",
+      "sha256": "663a4611b0d00df0ec3486cccd4813e3045dd1c44e17b7c34fc525ea4e5f784e",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/promotion_usage_test.go",
+      "sha256": "69f00cc7c33cbf1bd59b82e7746f5c4bda1be984231121ab17723d099c0390f6",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/reservation_transactions_test.go",
+      "sha256": "0ed7b945eb369458766893c7d0b3d1fb49a595a60318c80695e14e15e95782a5",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/stock_edit_test.go",
+      "sha256": "8387379c033c2994ff9cd2bfaa1504102ccd0f084d581628fac680915d384368",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/tax_import_test.go",
+      "sha256": "e26a61dc4a98f53e92daa1680f8c4c18c56765cb3f8e752ca8b4b7f1e3dbbe2b",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/identity/tax_schema_test.go",
+      "sha256": "cb7cf7a1b8ceb2345771f862acae6faa94daf49d58754f75a04a0ad09f11d047",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/schema/plan_test.go",
+      "sha256": "1386c9c6fecc5337a9667440677413b4d7db080a131049f22073b1f4b2f4894a",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/internal/server/router.go",
+      "sha256": "075f324e7bac1e56baba0216f8dc49897954d538fb9fd1fff35c83da72bc1346",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/backend/migrations/0071_device_service.sql",
+      "sha256": "372d36923125f9bb522d5899c76adffe9e2a39e667bf1d6c287ca3b879802999",
+      "matches_snapshot": true
+    },
+    {
+      "path": "retail/scripts/test-warehouse-inventory-joint.py",
+      "sha256": "85221452fa46192a5c56398392242cdaee701f060c49ca85bf2f44868fb548d2",
+      "matches_snapshot": true
+    }
+  ],
+  "existing_services": {
+    "9001_health": 200,
+    "9001_app": 200,
+    "8000_gb_account": 200,
+    "8000_gb_cart": 200,
+    "recent_logs": "Existing unauthenticated order 401 and store/locales 404 remain; service endpoints responded"
+  },
+  "remaining": [
+    "same-SKU replacement",
+    "actual provider refund",
+    "notifications",
+    "warehouse scoped service",
+    "buyback closure",
+    "full storefront acceptance"
+  ]
+}
