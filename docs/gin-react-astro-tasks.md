@@ -575,3 +575,8 @@
 ### 2026-10-30: warehouse fulfillment scoped reads
 
 - Added dedicated authorized warehouse parcel list/detail APIs and Ant Design Admin page. Real Gin/MySQL scope/revocation checks and English/Chinese mobile/desktop browser checks pass separately. Warehouse write commands remain pending. Evidence: `migration/warehouse-fulfillments.md`.
+
+
+### 2026-10-30: warehouse reads real browser joint
+
+- Production Admin reservation/packing/cancellation/repacking/shipment now continues into newly created scoped warehouse account reads in English/Chinese at 390/1440. Real Gin/MySQL rejects cross-warehouse/full-store reads; grant edit revokes old session and new login remains denied. Quantity stock and parcel/device/tracking persistence verified, owned fixtures cleaned. See `migration/warehouse-fulfillments.md` and pending write requirements in `migration/warehouse-fulfillment-write-contract.md`.

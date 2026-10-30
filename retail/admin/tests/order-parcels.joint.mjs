@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import {createServer} from 'vite'
 import {chromium,expect} from '@playwright/test'
+import {checkWarehouseFulfillments} from './warehouse-fulfillments.joint.mjs'
 let server,browser
 const origin='http://127.0.0.1:19383',errors=[]
 if(!process.env.ADMIN_TEST_API_TARGET)throw Error('Owned API target required')
@@ -21,5 +22,7 @@ try{
  drawer=await openParcel(second);await expect(drawer.getByText('ALLOC-A',{exact:true})).toBeVisible();await expect(drawer.getByText('ALLOC-B',{exact:true})).toBeVisible();await expect(drawer.getByRole('button',{name:'Ship entire parcel',exact:true})).toBeDisabled()
  await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false)
  await context.addInitScript(()=>localStorage.setItem('eurorefurb.admin.language','zh-CN'));await page.reload();await page.locator('[data-fulfillment-id="'+second+'"]').getByRole('button',{name:'包裹操作',exact:true}).click();await expect(page.getByRole('dialog').getByRole('button',{name:'整包发货',exact:true})).toBeDisabled();assert.deepEqual(errors,[])
- console.log('ORDER_PARCELS_JOINT '+JSON.stringify({real_browser_react_gin_mysql_redis:true,api_mocking:false,preallocation_packing_cancellation_repacking_shipment:true,cancel_confirmation:true,restored_devices_pack_again:true,whole_parcel_tracking_persisted:true,shipped_repetition_disabled:true,language_en_zh:true,mobile_no_page_overflow:true,browser_errors:0}))
+ await context.addInitScript(()=>localStorage.setItem('eurorefurb.admin.language','en'));await page.reload()
+ const warehouse=await checkWarehouseFulfillments({browser,admin:context,page,origin,parcelID:second,canceledID:first,errors});assert.deepEqual(errors,[])
+ console.log('ORDER_PARCELS_JOINT '+JSON.stringify({real_browser_react_gin_mysql_redis:true,api_mocking:false,preallocation_packing_cancellation_repacking_shipment:true,cancel_confirmation:true,restored_devices_pack_again:true,whole_parcel_tracking_persisted:true,shipped_repetition_disabled:true,language_en_zh:true,mobile_no_page_overflow:true,browser_errors:0,...warehouse}))
 }finally{await browser?.close();await server?.close()}

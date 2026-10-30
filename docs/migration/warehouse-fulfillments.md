@@ -12,3 +12,9 @@
 执行后端集成演练可使用 `ADMIN_AUTH_TEST_BACKEND` 指向隔离的后端源码，再运行 `python retail/scripts/test-admin-auth.py --customer-accounts-only`。该套件包含现有订单装包演练。浏览器脚本在 `retail/admin` 下以 Node 22 运行。此次隔离后端全部 Go 测试和 Admin TypeScript 检查通过；不接触真实业务数据。
 
 Existing Admin browser regression: 31 passed. Existing Ant Form connection warnings remain in after-sales regression cases. Legacy backend health/Admin and storefront account each returned HTTP 200.
+
+## 后续真实联合补验
+
+同日补跑 `python retail/scripts/test-warehouse-inventory-joint.py --order-parcels`（`WAREHOUSE_JOINT_BACKEND` 可指定独立后端源码）。平台生产页面实际预占设备、装包、取消、重新装包和整包发货后，再由生产后台创建仅绑定包裹仓库的新账号。四个独立登录会话覆盖中英/390及1440，查看相同商品、两台设备和实际物流单；已取消包裹不可读、其他仓库和全店订单拒绝，字段投影不泄露内部信息。没有模拟接口或直接 SQL 修改权限。管理员移除读取权限后旧会话返回 401，新登录仍对该包裹返回 403，页面显示无权限。
+
+生产命令形成的数量库存、预留、履约/发货数量、两个设备状态和唯一物流标签经 MySQL 再核对；自有容器/网络/临时程序全部清理。见 [联合报告](order-parcels-joint-report.json)。此前两部分独立验证的描述保留为历史记录；本次补齐了仓库读取的真实联合路径，未完成仓库写操作，规则见 [写入契约](warehouse-fulfillment-write-contract.md)。
