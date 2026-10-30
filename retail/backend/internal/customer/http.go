@@ -32,6 +32,7 @@ type HTTPOptions struct {
 	Origin    string
 	Secure    bool
 	BridgeKey string
+	StoreID   string
 }
 type HTTPHandler struct {
 	store        *Store
@@ -39,6 +40,7 @@ type HTTPHandler struct {
 	origin, host string
 	secure       bool
 	bridgeSecret []byte
+	storeID      string
 }
 
 func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
@@ -58,7 +60,7 @@ func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
 			return nil, ErrUnavailable
 		}
 	}
-	return &HTTPHandler{store: store, sessions: options.Sessions, origin: options.Origin, host: u.Host, secure: options.Secure, bridgeSecret: key}, nil
+	return &HTTPHandler{store: store, sessions: options.Sessions, origin: options.Origin, host: u.Host, secure: options.Secure, bridgeSecret: key, storeID: options.StoreID}, nil
 }
 
 // Register is mounted on /api/store/customer by the production API, even when
@@ -83,6 +85,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/me", h.Me)
 	private.GET("/notifications", h.ListNotices)
 	private.POST("/notifications", h.MarkNoticesRead)
+	private.POST("/buyback/requests", h.CreateBuyback)
 	private.POST("/me", h.UpdateProfile)
 	private.GET("/orders", h.ListOrders)
 	private.GET("/orders/:id", h.OrderDetail)

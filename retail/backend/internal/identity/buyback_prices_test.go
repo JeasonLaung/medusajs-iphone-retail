@@ -128,5 +128,6 @@ func checkBuybackPrices(t *testing.T, db *gorm.DB, router http.Handler) {
 		t.Fatal("unbound shop exposed price")
 	}
 	checkBuybackPreparation(t, db)
+	checkBuybackCreation(t, db)
 	t.Log(`BUYBACK_PRICE_REHEARSAL {"live_prices":3,"real_rules_estimate":"152.02","legacy_raw_precision":true,"missing_null":true,"disabled_and_ineligible":true,"tb_normalization":true,"partial_unique":true,"strict_public_http":true,"read_only_fingerprint":true}`)
 }

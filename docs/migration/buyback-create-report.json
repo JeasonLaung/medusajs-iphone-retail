@@ -1,0 +1,71 @@
+{
+  "scope": "New account bound request creation, atomic receipt and Gin HTTP only",
+  "migrations": 73,
+  "sql": {
+    "BUYBACK_CREATE_REHEARSAL": {
+      "concurrent_replays": 8,
+      "single_request_and_receipt": true,
+      "changed_input_conflict": true,
+      "cross_account_isolation": true,
+      "disabled_gate": true,
+      "disabled_customer": true,
+      "late_failure_atomic": true,
+      "customer_email_from_server": true
+    },
+    "BUYBACK_CREATE_HTTP_REHEARSAL": {
+      "created_status": 201,
+      "csrf_required": true,
+      "origin_required": true,
+      "anonymous_denied": true,
+      "query_denied": true,
+      "duplicate_json_denied": true,
+      "private_projection": true
+    },
+    "BUYBACK_CUSTOMER_CREATE_REHEARSAL": {
+      "real_redis_session": true,
+      "customer_bound_creation": true,
+      "revoked_replay_denied": true,
+      "anonymous_denied": true
+    },
+    "BUYBACK_PRICE_REHEARSAL": {
+      "live_prices": 3,
+      "real_rules_estimate": "152.02",
+      "legacy_raw_precision": true,
+      "missing_null": true,
+      "disabled_and_ineligible": true,
+      "tb_normalization": true,
+      "partial_unique": true,
+      "strict_public_http": true,
+      "read_only_fingerprint": true
+    }
+  },
+  "go_all_packages": "passed in isolated migration checkout",
+  "owned_sql_containers_removed": true,
+  "legacy_services": {
+    "health": 200,
+    "admin": 200,
+    "sell": 200
+  },
+  "source_database_connected": false,
+  "provider_called": false,
+  "new_write_gate_enabled_in_application": false,
+  "astro_bridge_connected": false,
+  "questionnaire_connected": false,
+  "full_buyback_acceptance": false,
+  "implementation_sha256": {
+    "retail/backend/migrations/0074_buyback_requests.sql": "06b327f97710a46b140801057675b43fb7e0eefe0de198e78953cdc783a18be5",
+    "retail/backend/internal/buyback/create.go": "205ba1c02560cf8ac177b2c5d9047863f13fd2f5d0683c32b49a752438f510a8",
+    "retail/backend/internal/customer/buyback.go": "cdd22650e52e150e865a513b0fe267210087537f30674b215b80bd96d9595bdc",
+    "retail/backend/internal/customer/buyback_http.go": "e37677050033ea6132d627dbdaf48c8608737674f391fd62f54847ea27587f63",
+    "retail/backend/internal/customer/http.go": "7d24c06cc2d8486ab2d64f1f7fd3a9022146a59b87bc4721e307106f823f4262",
+    "retail/backend/cmd/api/main.go": "72285b37dc6cadf33522229bf2eb0f989b544b0ab0e54f19b1e51b036de0df31",
+    "retail/backend/internal/identity/buyback_create_test.go": "2a0eb8a8e18065627f36bda7eb5cf8da9f1ef2547c2bc525f9b0732a691a1b6e",
+    "retail/backend/internal/identity/buyback_prices_test.go": "876fdef2fefc02b5bd0d5c7639579b40be9043bb9d14121aaa2fdce27f5c85a9"
+  },
+  "regression_sql_suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "regression_sql_passed": true
+}

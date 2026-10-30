@@ -55,10 +55,10 @@ func TestOwnedProductInventory(t *testing.T) {
 		t.Fatal("fixture plan invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 72 {
+	if err != nil || result.Applied != 73 {
 		t.Fatal("twelve migrations failed")
 	}
-	if result, err = schema.Apply(ctx, pool, plan); err != nil || result.Skipped != 72 {
+	if result, err = schema.Apply(ctx, pool, plan); err != nil || result.Skipped != 73 {
 		t.Fatal("twelve migration replay failed")
 	}
 	if inventory.Ready(ctx, db) != nil {
