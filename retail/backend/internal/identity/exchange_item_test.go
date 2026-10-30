@@ -441,5 +441,12 @@ func checkExchangeItem(t *testing.T, db *gorm.DB, actor identity.User, assignmen
 	if before != after || versionAfter != 1 {
 		t.Fatal("summary failure leaked new line/version")
 	}
+	var priorServiceEnabled bool
+	if db.Table("device_service_runtime").Select("enabled").Where("id=1").Scan(&priorServiceEnabled).Error != nil {
+		t.Fatal("concurrent replacement service gate")
+	}
+	defer exec(db, "UPDATE device_service_runtime SET enabled=? WHERE id=1", priorServiceEnabled)
+	nativeSeed(db)
+	checkDeviceReplacementConcurrency(t, db, actor, assignment)
 	t.Log(`EXCHANGE_ITEM_REHEARSAL {"real_mysql":true,"same_order_sku":true,"original_exact_unit_price":true,"fresh_catalog_snapshot":true,"custom_price_without_quote":true,"inclusive_flag_not_copied":true,"current_quote_inclusive_and_sale_reference":true,"fresh_system_tax_original_untouched":true,"no_blind_discount_copy":true,"new_item_zero_fulfillment":true,"current_amount_reader":true,"stale_foreign_unpublished_provider_denied":true,"missing_region_and_disabled_channel_denied":true,"autocommit_denied":true,"owner_rollback":true,"late_tax_failure_atomic":true,"summary_preserves_history_and_old_version":true,"signed_exact_difference":true,"ledger_paid_and_refund_aggregates":true,"future_and_foreign_ledger_denied":true,"late_summary_failure_atomic":true,"native_exchange_and_quarantine_records":true,"two_confirmed_versions_three_actions":true,"late_receive_action_failure_atomic":true,"positive_zero_negative_payment_difference":true,"no_fake_capture_or_refund":true,"late_payment_link_failure_atomic":true,"device_replacement_command":true,"private_http_strict_input_and_result":true,"replacement_receipt_replay_and_bindings":true,"replacement_receipt_failure_atomic":true,"replacement_revoked_deleted_replay_denied":true,"replacement_paused_recovery":true,"exchange_command_integrated":false}`)
 }

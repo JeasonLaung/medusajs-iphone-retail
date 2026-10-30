@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-30",
+  "scope": "Independent competing replacement commands and concurrent immutable receipt recovery in owned MySQL/Redis",
+  "full_storefront_accepted": false,
+  "counts": {
+    "independent_mysql_transactions": true,
+    "distinct_operations": 4,
+    "one_winner": true,
+    "three_conflicts": true,
+    "concurrent_receipt_replays": 4,
+    "immutable_result": true,
+    "two_versions_only": true,
+    "one_native_exchange_and_return": true,
+    "one_assignment_event_and_receipt": true,
+    "quantity_stock_unchanged": true
+  },
+  "additional_assertions": {
+    "new_order_items": 4,
+    "new_summaries": 2,
+    "new_payment_collections": 1,
+    "new_payment_links": 1,
+    "new_payment_transactions": 0,
+    "new_captures": 0,
+    "new_refunds": 0,
+    "final_order_version_checked": true
+  },
+  "all_go_packages_passed": true,
+  "real_sql_suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "sql_marker_log_sha256": "c6a723e16d24cb6fc7fc9ae8a96aa106541a07cf3a931c4d0abaad434474ea5b",
+  "tested_source_files": [
+    {
+      "path": "retail/backend/internal/identity/device_replacement_concurrency_test.go",
+      "sha256": "f850e85d11268c460f35c67ee33a7ac5caf6057815d5d09b21d367081cf32c13"
+    },
+    {
+      "path": "retail/backend/internal/identity/exchange_item_test.go",
+      "sha256": "cc716c15921e0e8be7e0d3dc92e4037049e08f2bf71f291fd3158a4884a6087e"
+    },
+    {
+      "path": "retail/backend/internal/devices/replacement_command.go",
+      "sha256": "0b1bc671a60ca2b7926237e6416e292f88e4d414fabd2da753c91c044853c2d3"
+    },
+    {
+      "path": "retail/backend/internal/devices/replacement.go",
+      "sha256": "351056f63f63ba7c93534570c7ed9a876b29a56d4406e4ee5cc7ecba171af1fe"
+    },
+    {
+      "path": "retail/backend/internal/orders/device_exchange.go",
+      "sha256": "65bd08d337d0429733c7882f5325628cded5fba34227c79370537de618e2aef7"
+    }
+  ],
+  "cleanup": "owned runner confirmed complete",
+  "existing_service_health": {
+    "9001_health": 200,
+    "9001_app": 200,
+    "8000_account_orders": 200,
+    "8000_cart": 200
+  },
+  "existing_service_logs": "Existing anonymous orders 401/locales 404 and storefront request error persist; no new outage",
+  "remaining": [
+    "Actual difference collection/refund",
+    "Customer in-site notifications and email delivery",
+    "Warehouse employee full fulfillment",
+    "Full storefront closure"
+  ]
+}
