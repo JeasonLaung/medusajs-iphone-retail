@@ -46,6 +46,7 @@ func TestPrepareBuybackBrowserFixture(t *testing.T) {
 		`UPDATE catalog_products SET title='iPhone 13',handle='swappie-iphone-13' WHERE id='fixture-b'`,
 		`INSERT INTO buyback_prices(id,product_id,capacity,amount,raw_amount,currency_code,created_at,updated_at) VALUES('buyback-browser-price','fixture-b','256GB',294,'{"value":"294","precision":100}','eur',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
 		`UPDATE buyback_request_runtime SET enabled=TRUE WHERE id=1`,
+		`UPDATE buyback_admin_runtime SET enabled=TRUE WHERE id=1`,
 	} {
 		if db.Exec(q).Error != nil {
 			t.Fatal("buyback browser fixture")

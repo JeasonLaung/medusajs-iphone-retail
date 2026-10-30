@@ -58,11 +58,11 @@ func TestOwnedOrderSchema(t *testing.T) {
 	}
 	db, gdb := open("order_schema_fresh")
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 75 || schema.CheckApplied(ctx, db, plan) != nil || orders.Ready(ctx, gdb) != nil {
+	if err != nil || r.Applied != 76 || schema.CheckApplied(ctx, db, plan) != nil || orders.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh order schema failed")
 	}
 	r, err = schema.Apply(ctx, db, plan)
-	if err != nil || r.Skipped != 75 {
+	if err != nil || r.Skipped != 76 {
 		t.Fatal("order schema replay changed facts")
 	}
 	ddl, err := migrations.Files.ReadFile("0016_order_relational.sql")

@@ -155,6 +155,10 @@ func ReadPhoto(ctx context.Context, tx *gorm.DB, storeID, accountID, requestID, 
 	if _, e := ReadRequest(ctx, tx, storeID, accountID, requestID); e != nil {
 		return out, e
 	}
+	return readPhotoBytes(ctx, tx, requestID, photoID)
+}
+func readPhotoBytes(ctx context.Context, tx *gorm.DB, requestID, photoID string) (PhotoContent, error) {
+	var out PhotoContent
 	if !validID(photoID, 191) {
 		return out, ErrPhotoMissing
 	}

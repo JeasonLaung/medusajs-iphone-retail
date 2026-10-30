@@ -123,9 +123,14 @@ def main():
         marker='BUYBACK_JOINT '
         outcomes=[line.split(marker,1)[1] for line in tested.stdout.decode('utf-8').splitlines() if line.startswith(marker)]
         if tested.returncode or len(outcomes)!=1:raise RuntimeError('Buyback browser joint failed; inspect ignored browser log')
-        durable=docker('exec','-e','MYSQL_PWD='+password,mysql_id,'mysql','-uroot','--protocol=socket','--database=browser_identity','--batch','--skip-column-names','-e',"SELECT (SELECT COUNT(*) FROM buyback_requests),(SELECT COUNT(*) FROM customer_buyback_submissions),(SELECT COUNT(*) FROM buyback_photos),(SELECT COUNT(*) FROM buyback_photo_bytes),(SELECT COUNT(*) FROM buyback_requests WHERE status='photo_review'),(SELECT COUNT(*) FROM buyback_requests WHERE status='canceled' AND closed_at IS NOT NULL),(SELECT COUNT(*) FROM buyback_requests WHERE JSON_UNQUOTE(JSON_EXTRACT(items,'$[0].serial_number'))='SN-JOINT'),(SELECT COUNT(*) FROM customer_buyback_submissions WHERE customer_id='cust_buyback-other')")
-        if durable.returncode or durable.stdout.decode().strip()!='2\t2\t2\t2\t1\t1\t1\t0':raise RuntimeError('Durable buyback state differs: '+durable.stdout.decode().strip())
-        report={'browser':json.loads(outcomes[0]),'durable_mysql_verified':True,'artificial_accounts_only':True,'tls_secure_cookie_verified':False,'full_buyback_accepted':False,'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_memory_mib':128}}
+        policy=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestVerifyBuybackAdminPolicies$','-test.timeout','50s')
+        (ROOT/'logs/gin-migration/buyback-admin-policy.log').write_bytes(policy.stdout+policy.stderr)
+        if policy.returncode or b'BUYBACK_ADMIN_POLICIES ' not in policy.stdout:raise RuntimeError('Buyback admin SQL policy failed')
+        durable=docker('exec','-e','MYSQL_PWD='+password,mysql_id,'mysql','-uroot','--protocol=socket','--database=browser_identity','--batch','--skip-column-names','-e',"SELECT (SELECT COUNT(*) FROM buyback_requests),(SELECT COUNT(*) FROM customer_buyback_submissions),(SELECT COUNT(*) FROM buyback_photos),(SELECT COUNT(*) FROM buyback_photo_bytes),(SELECT COUNT(*) FROM buyback_requests WHERE status='received'),(SELECT COUNT(*) FROM buyback_requests WHERE status='canceled' AND closed_at IS NOT NULL),(SELECT COUNT(*) FROM buyback_requests WHERE JSON_UNQUOTE(JSON_EXTRACT(items,'$[0].serial_number'))='SN-JOINT'),(SELECT COUNT(*) FROM customer_buyback_submissions WHERE customer_id='cust_buyback-other')")
+        if durable.returncode or durable.stdout.decode().strip()!='2\t2\t3\t3\t1\t1\t1\t0':raise RuntimeError('Durable buyback state differs: '+durable.stdout.decode().strip())
+        policies=[json.loads(line.split('BUYBACK_ADMIN_POLICIES ',1)[1]) for line in policy.stdout.decode().splitlines() if 'BUYBACK_ADMIN_POLICIES ' in line]
+        if len(policies)!=1:raise RuntimeError('Policy evidence missing')
+        report={'admin_sql_policies':policies[0],'browser':json.loads(outcomes[0]),'durable_mysql_verified':True,'artificial_accounts_only':True,'tls_secure_cookie_verified':False,'full_buyback_accepted':False,'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_memory_mib':128}}
     finally:
         password = ''
         for container in reversed(containers):

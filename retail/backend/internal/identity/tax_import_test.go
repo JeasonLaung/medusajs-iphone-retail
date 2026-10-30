@@ -58,7 +58,7 @@ func TestOwnedTaxImport(t *testing.T) {
 		t.Fatal("tax migration plan invalid")
 	}
 	db, gdb := open("tax_import_fresh")
-	if r, err := schema.Apply(ctx, db, plan); err != nil || r.Applied != 75 {
+	if r, err := schema.Apply(ctx, db, plan); err != nil || r.Applied != 76 {
 		t.Fatal("tax import migrations failed")
 	}
 	db.SetMaxOpenConns(12)

@@ -1,11 +1,13 @@
 // Package authorization checks explicit current grants for new accounts.
 package authorization
 
-const modelSHA = "ab61db8993129bfaead8ac5b6beba9c31412c0cbbdab066b91cbe3ba47e3787a"
+const modelSHA = "9219d37bae441485208be46b119ec86dd4ed1189804ee0c5fa7a17d48b268f9f"
 
 type Action string
 
 const (
+	BuybackRead          Action = "buyback.read"
+	BuybackWrite         Action = "buyback.write"
 	OrderAfterSalesWrite Action = "order.after_sales.write"
 	OrderAllocationWrite Action = "order.allocation.write"
 	WarehouseIntakeRead  Action = "warehouse.intake.read"
@@ -36,7 +38,7 @@ const (
 
 // Actions returns a fresh, exact and case-sensitive vocabulary. No wildcards.
 func Actions() []Action {
-	return []Action{Read, Write, DeviceEnroll, DeviceIntake, DeviceRead, DeviceSourceWrite, InventoryRead, StockWrite, MailRead, MailWrite, OrderAfterSalesWrite, OrderAllocationWrite, OrderAmountRead, OrderFulfillmentRead, OrderPaymentRead, OrderRead, PriceRead, PriceWrite, ProductRead, ProductWrite, WarehouseIntakeRead, WarehouseIntakeWrite, WarehouseRead, WarehouseReturnRead, WarehouseReturnWrite, WarehouseWrite}
+	return []Action{Read, Write, BuybackRead, BuybackWrite, DeviceEnroll, DeviceIntake, DeviceRead, DeviceSourceWrite, InventoryRead, StockWrite, MailRead, MailWrite, OrderAfterSalesWrite, OrderAllocationWrite, OrderAmountRead, OrderFulfillmentRead, OrderPaymentRead, OrderRead, PriceRead, PriceWrite, ProductRead, ProductWrite, WarehouseIntakeRead, WarehouseIntakeWrite, WarehouseRead, WarehouseReturnRead, WarehouseReturnWrite, WarehouseWrite}
 }
 func known(action Action) bool {
 	for _, value := range Actions() {

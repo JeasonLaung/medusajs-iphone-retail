@@ -67,7 +67,7 @@ export async function saveMailbox(body:MailboxCommand):Promise<void>{
  if(!d||!mailboxID(d.id)||!mailboxRevision(d.revision)||typeof d.replayed!=='boolean'||body.id!==''&&d.id!==body.id)throw new APIError(0,'request.invalid_response')
 }
 
-function csrfCookie() {
+export function csrfCookie() {
   // Secure host cookie takes precedence; never put a session token in JS storage.
   for (const name of ['__Host-retail_admin_csrf', 'retail_admin_csrf']) {
     const matches = document.cookie.split(';').map(c => c.trim()).filter(c => c.startsWith(`${name}=`))
@@ -79,7 +79,7 @@ function csrfCookie() {
   return ''
 }
 
-async function request<T>(path: string, options: { method?: 'GET' | 'POST' | 'PATCH'; body?: unknown; csrf?: string; signal?: AbortSignal } = {}, base = '/api/admin/auth/'): Promise<T> {
+export async function request<T>(path: string, options: { method?: 'GET' | 'POST' | 'PATCH'; body?: unknown; csrf?: string; signal?: AbortSignal } = {}, base = '/api/admin/auth/'): Promise<T> {
   const controller = new AbortController()
   const abort = () => controller.abort()
   options.signal?.addEventListener('abort', abort, { once: true })
@@ -295,7 +295,7 @@ export async function getOrderFulfillments(id:string,signal?:AbortSignal):Promis
 }
 
 
-export const ACTIONS=['authorization.read','authorization.write','device.enroll','device.intake','device.read','device.source.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.after_sales.write','order.allocation.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','price.write','product.read','product.write','warehouse.intake.read','warehouse.intake.write','warehouse.read','warehouse.return.read','warehouse.return.write','warehouse.write'] as const
+export const ACTIONS=['authorization.read','authorization.write','buyback.read','buyback.write','device.enroll','device.intake','device.read','device.source.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.after_sales.write','order.allocation.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','price.write','product.read','product.write','warehouse.intake.read','warehouse.intake.write','warehouse.read','warehouse.return.read','warehouse.return.write','warehouse.write'] as const
 export type Action=typeof ACTIONS[number]
 export type ManagedRole={id:string;name:string;enabled:boolean;actions:Action[]}
 export type ManagedMember={user_id:string;name:string;enabled:boolean;kind:'employee'|'warehouse'|'supplier';roles:string[]}

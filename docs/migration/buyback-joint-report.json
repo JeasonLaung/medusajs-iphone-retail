@@ -1,4 +1,13 @@
 {
+  "admin_sql_policies": {
+    "competing_transition_single_winner": true,
+    "disabled_write_denied": true,
+    "grants_rechecked": true,
+    "late_failure_atomic": true,
+    "state_action_cases": 48,
+    "strict_http": true,
+    "warehouse_denied": true
+  },
   "browser": {
     "synthetic_api": false,
     "production_routes": true,
@@ -6,7 +15,10 @@
     "real_login": true,
     "real_gin_mysql_redis": true,
     "created": 2,
-    "private_photos": 2,
+    "private_photos": 3,
+    "admin_retake_replacement_approval_shipping_receipt": true,
+    "transactional_customer_notices": 3,
+    "admin_en_zh_and_mobile": true,
     "photo_previews_decoded_after_reload": true,
     "submit_photos_survives_reload": true,
     "cancel_closed_at_survives_reload": true,
@@ -25,5 +37,24 @@
     "mysql_memory_mib": 768,
     "redis_memory_mib": 128
   },
-  "cleanup": "both owned containers, bridge and temporary runners removed"
+  "cleanup": "both owned containers, bridge and temporary runners removed",
+  "formal_migrations": 76,
+  "admin_typecheck": true,
+  "original_zod_cases": {
+    "cases": 67,
+    "accepted": 18
+  },
+  "frontend_tests": 173,
+  "astro_check": {
+    "files": 390,
+    "errors": 0,
+    "warnings": 0,
+    "existing_hints": 5
+  },
+  "admin_auth_stock_product_sql_regression": true,
+  "old_service_routes": {
+    "health": 200,
+    "admin": 200,
+    "sell": 200
+  }
 }
