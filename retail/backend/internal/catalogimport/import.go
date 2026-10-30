@@ -107,6 +107,12 @@ func Import(ctx context.Context, tx *sql.Tx, snapshotSHA, sourceTable string, so
 	if !ok {
 		return ErrPolicy
 	}
+	return importTable(ctx, tx, snapshotSHA, sourceTable, source, t)
+}
+
+// importTable accepts only package-owned layouts. Public entry points must
+// select their reviewed scope before reaching this common evidence writer.
+func importTable(ctx context.Context, tx *sql.Tx, snapshotSHA, sourceTable string, source rowimport.SourceRow, t table) error {
 	snapshot, err := hex.DecodeString(snapshotSHA)
 	if err != nil || len(snapshot) != 32 || snapshotSHA != strings.ToLower(snapshotSHA) {
 		return ErrPolicy

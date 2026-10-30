@@ -6,7 +6,8 @@
     "private_bytes_deleted_atomically": true,
     "legacy_preserved": true,
     "repeat_safe": true,
-    "rollback": true
+    "rollback": true,
+    "metadata_failure_restores_bytes": true
   },
   "inspection_browser": {
     "synthetic_api": false,
@@ -79,9 +80,14 @@
     "mysql_memory_mib": 768,
     "redis_memory_mib": 128
   },
+  "history_import": {
+    "cases": 9,
+    "exact_replay": true,
+    "conflict_rejected": true,
+    "ownership_granted": false,
+    "external_files_touched": false,
+    "caller_rollback": true
+  },
   "cleanup": "both owned containers, bridge and temporary runners removed",
-  "formal_migrations": 77,
-  "go_all": true,
-  "expiry_command_schedule_test": true,
-  "legacy_private_objects_deleted": false
+  "go_all": true
 }

@@ -135,6 +135,9 @@ def main():
         if inspection.returncode or b'BUYBACK_INSPECTION_POLICIES ' not in inspection.stdout:raise RuntimeError('Buyback inspection SQL policy failed')
         prepared=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestPrepareInspectionBrowserDevice$','-test.timeout','20s')
         if prepared.returncode or b'OWNED_INSPECTION_BROWSER_READY' not in prepared.stdout:raise RuntimeError('Inspection browser fixture failed')
+        history=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestVerifyBuybackHistoryImport$','-test.timeout','40s')
+        (ROOT/'logs/gin-migration/buyback-history-import.log').write_bytes(history.stdout+history.stderr)
+        if history.returncode or b'BUYBACK_HISTORY_IMPORT ' not in history.stdout:raise RuntimeError('Buyback history import failed')
         joint=subprocess.run([node,'tests/buyback-inspection.joint.mjs'],cwd=ROOT/'retail/storefront',env=browser_env,capture_output=True,timeout=180)
         (ROOT/'logs/gin-migration/buyback-inspection-browser.log').write_bytes(joint.stdout+joint.stderr)
         joint_results=[json.loads(line.split('BUYBACK_INSPECTION_JOINT ',1)[1]) for line in joint.stdout.decode('utf-8').splitlines() if line.startswith('BUYBACK_INSPECTION_JOINT ')]
@@ -148,6 +151,9 @@ def main():
         expiry_results=[json.loads(line.split('BUYBACK_EXPIRY ',1)[1]) for line in expiry.stdout.decode().splitlines() if 'BUYBACK_EXPIRY ' in line]
         if len(expiry_results)!=1:raise RuntimeError('Expiry evidence missing')
         report={'photo_expiry':expiry_results[0],'inspection_browser':joint_results[0],'inspection_sql_policies':inspection_policies[0],'admin_sql_policies':policies[0],'browser':json.loads(outcomes[0]),'durable_mysql_verified':True,'artificial_accounts_only':True,'tls_secure_cookie_verified':False,'full_buyback_accepted':False,'limits':{'mysql_cpus':1,'mysql_memory_mib':768,'redis_memory_mib':128}}
+        history_results=[json.loads(line.split('BUYBACK_HISTORY_IMPORT ',1)[1]) for line in history.stdout.decode().splitlines() if 'BUYBACK_HISTORY_IMPORT ' in line]
+        if len(history_results)!=1:raise RuntimeError('History import evidence missing')
+        report['history_import']=history_results[0]
     finally:
         password = ''
         for container in reversed(containers):
