@@ -21,6 +21,7 @@ import (
 	"github.com/eurorefurb/retail/internal/sessionstore"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
 
@@ -30,6 +31,16 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	t.Helper()
 	if os.Getenv("CHECKOUT_BROWSER_FIXTURE") != "1" {
 		return
+	}
+	var browserRedis *redis.Client
+	if os.Getenv("CHECKOUT_ACCOUNTS") == "1" {
+		browserRedis = redis.NewClient(&redis.Options{Addr: "127.0.0.1:6379", MaxRetries: -1, Protocol: 2, DisableIdentity: true})
+		defer browserRedis.Close()
+		var e error
+		sessions, e = sessionstore.New(browserRedis, "eurorefurb:checkout-browser:v1:")
+		if e != nil {
+			t.Fatal("owned checkout session namespace")
+		}
 	}
 	key := os.Getenv("CHECKOUT_FIXTURE_KEY")
 	if len(key) != 64 || strings.Trim(key, "0123456789abcdef") != "" {
@@ -172,6 +183,9 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		defer mu.Unlock()
 		c.JSON(200, gin.H{"carts": fixtures, "fresh_cart": fresh})
 	})
+	if os.Getenv("CHECKOUT_ACCOUNTS") == "1" {
+		mountCheckoutAccounts(t, db, sessions, options.Ring, router, fixture, key, origin, browserRedis)
+	}
 	fixture.POST("/paid/:id", func(c *gin.Context) {
 		id := c.Param("id")
 		mu.Lock()
@@ -250,6 +264,9 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	after, valid := new(big.Rat).SetString(reservedAfter)
 	if !ok || !valid || new(big.Rat).Sub(after, before).Cmp(big.NewRat(10, 1)) != 0 {
 		t.Fatal("browser stock reservation delta differs")
+	}
+	if os.Getenv("CHECKOUT_ACCOUNTS") == "1" {
+		checkCheckoutAccountReceipts(t, db, orderIDs)
 	}
 	checkCheckoutMailJoint(t, ctx, db, options.Ring, orderIDs)
 	t.Log(`CHECKOUT_JOINT_SQL {"four_unique_orders":true,"four_provider_creations":true,"notification_outbox_per_order":true,"reservation_operation_per_order":true,"captured_amount":"158.75","reserved_inventory_delta":"10"}`)

@@ -1,0 +1,96 @@
+{
+  "format_version": 1,
+  "node_version": "v22.23.4",
+  "browser": {
+    "actual_astro_checkout": true,
+    "actual_gin_handlers": true,
+    "real_mysql_redis": true,
+    "mocked_business_api_responses": false,
+    "isolated_provider_adapter_and_hosted_page": true,
+    "real_provider_payments": false,
+    "preseeded_cart_items": false,
+    "precreated_empty_cart": false,
+    "anonymous_cart_creation": true,
+    "registration_verification_login": true,
+    "paid_order_account_attachment": true,
+    "account_read_without_cart": true,
+    "cross_account_denied": true,
+    "same_browser_account_switch": true,
+    "logout_denies_order": true,
+    "product_page_add_cart_checkout": true,
+    "address_delivery_payment_review_result_confirmation": true,
+    "pending_before_paid": true,
+    "payment_reload_replays_original": true,
+    "confirmation_reload": true,
+    "completion_replay_same_order": true,
+    "unauthenticated_confirmation_denied": true,
+    "payment_journal_cleared": true,
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "widths": [
+      390,
+      1440
+    ],
+    "unique_orders": 4,
+    "browser_errors": 0,
+    "real_email_delivery": false
+  },
+  "post_browser_sql_regression_passed": true,
+  "sql_receipts_checked": true,
+  "scope": "new account registration, verification, anonymous cart, payment and account order ownership",
+  "production_services_or_data_used": false,
+  "full_storefront_accepted": false,
+  "resources": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "database_ports_published": false,
+    "api_port_loopback_only": true,
+    "network_egress_restricted": false
+  },
+  "order_mail": {
+    "browser_paid_orders": 4,
+    "production_resend_adapter": true,
+    "approved_database_sender": true,
+    "captured_total": "158.75 EUR",
+    "english_messages": 2,
+    "chinese_messages": 2,
+    "concurrent_single_dispatch": true,
+    "ambiguous_attempts": 3,
+    "manual_recovery_with_one_audit": true,
+    "stable_body_key_provider_identity": true,
+    "provider_requests": 7,
+    "unique_provider_messages": 4,
+    "sent_not_requeued_on_receipt_replay": true,
+    "encrypted_frozen_requests": true,
+    "real_external_send": false
+  },
+  "account_ownership": {
+    "four_verified_new_owners": true,
+    "one_attachment_audit_per_order": true,
+    "old_accounts_used": false
+  },
+  "sql": {
+    "four_unique_orders": true,
+    "four_provider_creations": true,
+    "notification_outbox_per_order": true,
+    "reservation_operation_per_order": true,
+    "captured_amount": "158.75",
+    "reserved_inventory_delta": "10"
+  },
+  "source_sha256_lf": {
+    "retail/backend/internal/identity/checkout_browser_test.go": "05db5436b9e80477559e3f1b8d7efca9297c6f47ba5af52bb3b2970abe71f448",
+    "retail/backend/internal/identity/checkout_accounts_browser_test.go": "b3ff9d7e0e8421239aa6d3eadb504758c6b5d87bf94f52ece9fe19d5abb59f51",
+    "retail/backend/internal/identity/checkout_mail_joint_test.go": "d890a105df5b01cfd264720d4ba8361ad2da270c04f43ca772ddff239dc4df00",
+    "retail/backend/internal/identity/mail_joint_test.go": "784da16a548d77bbef318b2f4e1afad20ccb6de09fdfbda0a4fe44de208d0120",
+    "retail/scripts/test-customer-orders-live.py": "67155925c95ceff6a31420661e9942791f2a3c42d10b0fe12214174d55327f2b",
+    "retail/storefront/tests/checkout.live.mjs": "378a6c706aaf3234b1c789d00b1b26cc53574e21992b17908159bd764f97df00",
+    "retail/storefront/src/components/cart/gin-cart.tsx": "5004e9a1dbcd762661d21b8b2b906912aa188609df8b3536f85a9f465272a6ef",
+    "retail/storefront/src/lib/cart-commerce.ts": "2d56dca2ed5ff5b606cb3b27ef8cd167fa9fd32b24fd7ddd67edec00bdc1289a",
+    "retail/storefront/tests/checkout-accounts.joint.mjs": "410a340bb599e46b2961686e6e7af6501b57ebe8d8f82b45538785ba76c81a8e"
+  },
+  "cleanup_complete": true
+}

@@ -117,6 +117,7 @@ def main():
                                     '-e', fixture_switch + '=1', '-e', fixture_key + '=' + key,
                                     '-e', 'CHECKOUT_PRODUCT_BROWSE=' + os.environ.get('CHECKOUT_PRODUCT_BROWSE', '0'),
                                     '-e', 'CHECKOUT_FRESH_CART=' + os.environ.get('CHECKOUT_FRESH_CART', '0'),
+                                    '-e', 'CHECKOUT_ACCOUNTS=' + os.environ.get('CHECKOUT_ACCOUNTS', '0'),
                                     mysql, '/opt/identity.test', '-test.v', '-test.run', '^TestOwnedCartRuntime$', '-test.timeout', '150s'], stdout=stream, stderr=subprocess.STDOUT)
         browser_env = os.environ.copy()
         browser_env.update(CUSTOMER_ORDERS_TEST_GIN='http://127.0.0.1:' + match[1])
@@ -133,7 +134,7 @@ def main():
         if len(markers) != 1 or sql_marker not in sql_output or regression_marker not in sql_output or '\nPASS\n' not in sql_output:
             raise RuntimeError('Joint evidence incomplete')
         report = {'format_version': 1, 'node_version': version, 'browser': json.loads(markers[0]), 'post_browser_sql_regression_passed': True,
-                  'sql_receipts_checked': True, 'scope': ('anonymous cart creation, product add, checkout, payment and confirmation' if os.environ.get('CHECKOUT_FRESH_CART') == '1' else 'product page add to empty cart through checkout, payment and confirmation' if os.environ.get('CHECKOUT_PRODUCT_BROWSE') == '1' else 'checkout pipeline') if checkout else 'checkout promotions' if promotion else 'customer order attachment', 'production_services_or_data_used': False, 'full_storefront_accepted': False,
+                  'sql_receipts_checked': True, 'scope': ('new account registration, verification, anonymous cart, payment and account order ownership' if os.environ.get('CHECKOUT_ACCOUNTS') == '1' else 'anonymous cart creation, product add, checkout, payment and confirmation' if os.environ.get('CHECKOUT_FRESH_CART') == '1' else 'product page add to empty cart through checkout, payment and confirmation' if os.environ.get('CHECKOUT_PRODUCT_BROWSE') == '1' else 'checkout pipeline') if checkout else 'checkout promotions' if promotion else 'customer order attachment', 'production_services_or_data_used': False, 'full_storefront_accepted': False,
                   'resources': {'mysql_cpus': 1, 'mysql_memory_mib': 768, 'redis_cpus': 1, 'redis_memory_mib': 128,
                                 'database_ports_published': False, 'api_port_loopback_only': True, 'network_egress_restricted': False}}
         if not promotion and not checkout:
@@ -144,17 +145,23 @@ def main():
             if len(mail) != 1:
                 raise RuntimeError('Paid checkout mail evidence incomplete')
             report['order_mail'] = json.loads(mail[0])
+            if os.environ.get('CHECKOUT_ACCOUNTS') == '1':
+                accounts = [line.split('CHECKOUT_ACCOUNT_JOINT_SQL ', 1)[1] for line in sql_output.splitlines() if 'CHECKOUT_ACCOUNT_JOINT_SQL ' in line]
+                if len(accounts) != 1:
+                    raise RuntimeError('Checkout account evidence incomplete')
+                report['account_ownership'] = json.loads(accounts[0])
             sql = [line.split(sql_marker, 1)[1] for line in sql_output.splitlines() if sql_marker in line]
             if len(sql) != 1:
                 raise RuntimeError('Checkout receipt evidence incomplete')
             report['sql'] = json.loads(sql[0])
             report['source_sha256_lf'] = {}
             sources = [(backend / 'internal/identity' / name, 'retail/backend/internal/identity/' + name)
-                       for name in ['checkout_browser_test.go', 'checkout_mail_joint_test.go', 'mail_joint_test.go']]
+                       for name in ['checkout_browser_test.go', 'checkout_accounts_browser_test.go', 'checkout_mail_joint_test.go', 'mail_joint_test.go']]
             sources += [(Path(__file__), 'retail/scripts/test-customer-orders-live.py'),
                         (ROOT / 'retail/storefront/tests/checkout.live.mjs', 'retail/storefront/tests/checkout.live.mjs'),
                         (ROOT / 'retail/storefront/src/components/cart/gin-cart.tsx', 'retail/storefront/src/components/cart/gin-cart.tsx'),
-                        (ROOT / 'retail/storefront/src/lib/cart-commerce.ts', 'retail/storefront/src/lib/cart-commerce.ts')]
+                        (ROOT / 'retail/storefront/src/lib/cart-commerce.ts', 'retail/storefront/src/lib/cart-commerce.ts'),
+                        (ROOT / 'retail/storefront/tests/checkout-accounts.joint.mjs', 'retail/storefront/tests/checkout-accounts.joint.mjs')]
             for source, name in sources:
                 report['source_sha256_lf'][name] = hashlib.sha256(source.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
     finally:
@@ -176,7 +183,7 @@ def main():
             require(docker('network', 'rm', network), 'Owned network cleanup failed')
         binary.unlink(missing_ok=True)
     report['cleanup_complete'] = True
-    (ROOT / (('docs/migration/shopping-fresh-cart-joint-report.json' if os.environ.get('CHECKOUT_FRESH_CART') == '1' else 'docs/migration/shopping-joint-report.json' if os.environ.get('CHECKOUT_PRODUCT_BROWSE') == '1' else 'docs/migration/checkout-mail-joint-report.json') if checkout else 'docs/migration/promotion-joint-report.json' if promotion else 'docs/migration/customer-orders-joint-report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+    (ROOT / (('docs/migration/shopping-account-joint-report.json' if os.environ.get('CHECKOUT_ACCOUNTS') == '1' else 'docs/migration/shopping-fresh-cart-joint-report.json' if os.environ.get('CHECKOUT_FRESH_CART') == '1' else 'docs/migration/shopping-joint-report.json' if os.environ.get('CHECKOUT_PRODUCT_BROWSE') == '1' else 'docs/migration/checkout-mail-joint-report.json') if checkout else 'docs/migration/promotion-joint-report.json' if promotion else 'docs/migration/customer-orders-joint-report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'joint_browser': 'passed', 'scope': 'checkout' if checkout else 'promotions' if promotion else 'customer_orders', 'sql_regressions': 'passed', 'cleanup': 'complete'}))
 
 

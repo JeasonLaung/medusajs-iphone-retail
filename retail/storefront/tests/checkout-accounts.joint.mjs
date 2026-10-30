@@ -1,0 +1,73 @@
+import assert from 'node:assert/strict'
+
+const password='fixture-checkout-new-account-password'
+export async function registerCheckoutCustomer({page,context,shop,segment,index,control,expect,previousOrder}){
+ assert.equal((await control('case/'+index)).status,204)
+ const email=`checkout-${index}@example.invalid`,statuses=[]
+ page.on('response',r=>{if(r.url().includes('/customer/auth/'))statuses.push({path:new URL(r.url()).pathname,status:r.status()})})
+ await page.goto(shop+`/${segment}/account`,{waitUntil:'domcontentloaded'})
+ await expect(page.getByTestId('login-page')).toBeVisible()
+ await page.getByTestId('register-button').click()
+ const form=page.getByTestId('register-page')
+ for(const [id,value] of Object.entries({'first-name-input':'New','last-name-input':'Shopper','email-input':email,'password-input':password}))await form.getByTestId(id).fill(value)
+ const registration=page.waitForResponse(r=>r.url().endsWith('/customer/auth/register'))
+ await form.getByTestId('register-button').click()
+ try{assert.equal((await registration).status(),202)}catch(e){console.error('registration-statuses',JSON.stringify({statuses,valid:await form.locator('form').evaluate(f=>f.checkValidity()),error:await form.getByTestId('register-error').textContent()}));throw e}
+ await expect(page.getByTestId('register-verification-message')).toBeVisible()
+ await page.goto(shop+`/${segment}/account`,{waitUntil:'domcontentloaded'})
+ await page.getByTestId('email-input').fill(email)
+ await page.getByTestId('password-input').fill(password)
+ const unverified=page.waitForResponse(r=>r.url().endsWith('/customer/auth/login'))
+ await page.getByTestId('sign-in-button').click()
+ assert.equal((await unverified).status(),403)
+ assert.equal((await context.cookies(shop)).some(c=>c.name==='retail_customer_session'),false)
+ const intent=await control('verification/'+index)
+ assert.equal(intent.status,200)
+ const link=new URL((await intent.json()).url)
+ assert.equal(link.origin,shop)
+ const verification=page.waitForResponse(r=>r.url().endsWith('/customer/auth/verify'))
+ await page.goto(link.href,{waitUntil:'domcontentloaded'})
+ assert.equal((await verification).status(),200)
+ await page.goto(shop+`/${segment}/account/orders`,{waitUntil:'domcontentloaded'})
+ await page.getByTestId('email-input').fill(email)
+ await page.getByTestId('password-input').fill(password)
+ const login=page.waitForResponse(r=>r.url().endsWith('/customer/auth/login'))
+ await page.getByTestId('sign-in-button').click()
+ assert.equal((await login).status(),200)
+ await expect(page.getByTestId('customer-authenticated')).toBeVisible()
+ await expect(page.getByTestId('no-orders-container')).toBeVisible()
+ if(previousOrder)assert.equal((await context.request.get(shop+'/api/store/customer/orders/'+previousOrder)).status(),404)
+}
+
+export async function verifyCheckoutAccountOrder({page,context,shop,segment,orderID,index,expect}){
+ await expect.poll(async()=> (await context.request.get(shop+'/api/store/customer/orders/'+orderID)).status()).toBe(200)
+ await expect(page.getByTestId('order-account-attachment-error')).toHaveCount(0)
+ await context.clearCookies({name:'retail_cart_possession'})
+ await context.clearCookies({name:'retail_cart_csrf'})
+ assert.equal((await context.request.get(shop+`/api/store/orders/${orderID}/confirmation`)).status(),401)
+ await page.goto(shop+`/${segment}/account/orders`,{waitUntil:'domcontentloaded'})
+ await expect(page.getByTestId('order-card')).toHaveCount(1)
+ await page.getByTestId('order-details-link').click()
+ await expect(page.getByTestId('order-details-container')).toBeVisible()
+ await expect(page.getByTestId('cart-total')).toHaveAttribute('data-value','158.75')
+ await page.reload({waitUntil:'domcontentloaded'})
+ await expect(page.getByTestId('order-details-container')).toBeVisible()
+ await page.goto(shop+`/${segment}/account`,{waitUntil:'domcontentloaded'})
+ await page.locator('[data-testid="logout-button"]:visible').click()
+ await expect(page.getByTestId('login-page')).toBeVisible()
+ assert.equal((await context.request.get(shop+'/api/store/customer/orders/'+orderID)).status(),401)
+ if(index>1){
+  await page.getByTestId('email-input').fill(`checkout-${index-1}@example.invalid`)
+  await page.getByTestId('password-input').fill(password)
+  const switched=page.waitForResponse(r=>r.url().endsWith('/customer/auth/login'))
+  await page.getByTestId('sign-in-button').click()
+  assert.equal((await switched).status(),200)
+  await expect(page.getByTestId('customer-authenticated')).toBeAttached()
+  assert.equal((await context.request.get(shop+'/api/store/customer/orders/'+orderID)).status(),404)
+  await page.goto(shop+`/${segment}/account/orders`,{waitUntil:'domcontentloaded'})
+  await expect(page.getByTestId('order-card')).toHaveCount(1)
+  const href=await page.getByTestId('order-details-link').getAttribute('href')
+  assert.ok(href&&!href.includes(orderID))
+ }
+}
+

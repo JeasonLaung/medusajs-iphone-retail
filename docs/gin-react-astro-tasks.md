@@ -610,3 +610,8 @@
 ### 2026-10-30: first anonymous cart through checkout
 
 - Browser now starts without injected cart credentials or precreated cart/items. Production scope/create/add, cart reload, checkout/payment/confirmation and immutable completion pass in en/zh at 390/1440 against real isolated Gin/MySQL/Redis. Fixed new English cart locale from en to registered en-GB. Four durable orders, stock reservations and order mail recovery verified; 173 storefront unit tests pass. Full account/catalog/fulfillment joint and real provider payment/mail remain pending. See `migration/shopping-fresh-cart-joint.md`.
+
+
+### 2026-10-30: new account shopping and durable order ownership
+
+- Actual Astro registration rejects unverified login, consumes production verification link, then signs in and creates an anonymous cart, adds product and pays through the isolated provider. Four en/zh mobile/desktop paths attach the paid order to the verified new account. Account list/detail survive losing cart credentials; other accounts and logged-out access are denied. Same-browser account switching shows only the current account orders. Real SQL confirms one owner and one attachment audit per order; stock/payment/mail recovery regressions pass. Independent test Redis namespace and per-case limiter counters preserve production rate policy. Real external verification/payment/mail and full catalog/fulfillment joint remain pending. See `migration/shopping-account-joint.md`.
