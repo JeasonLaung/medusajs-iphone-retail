@@ -104,8 +104,25 @@
     "mobile": true,
     "browser_errors": 0
   },
+  "actual_history_rehearsal": {
+    "caller_rollback": true,
+    "complete_snapshot_verified": true,
+    "customer_access_granted": false,
+    "exact_metadata_replay": true,
+    "platform_read": true,
+    "private_bytes_roundtrip": 6,
+    "real_store_assignment_verified": false,
+    "source_device_links": 0,
+    "source_photos": 6,
+    "source_requests": 1,
+    "frontend_projection": {
+      "actual_admin_projection": true,
+      "photos": 6,
+      "items": 1
+    },
+    "source_files_preserved": true
+  },
   "cleanup": "both owned containers, bridge and temporary runners removed",
   "go_all": true,
-  "formal_migrations": 79,
-  "admin_typecheck": true
+  "formal_migrations": 79
 }

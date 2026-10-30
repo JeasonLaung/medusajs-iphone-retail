@@ -1,4 +1,6 @@
 """Production Astro browser -> signed bridge -> production Gin binary, with owned artificial SQL/Redis."""
+import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -19,6 +21,29 @@ def docker(*args, timeout=90):
 
 
 def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--actual-buyback-snapshot',type=Path)
+    parser.add_argument('--legacy-private-root',type=Path)
+    args=parser.parse_args()
+    actual_files=[]
+    if bool(args.actual_buyback_snapshot)!=bool(args.legacy_private_root):
+        raise RuntimeError('Both explicit private snapshot and source directory are required')
+    if args.actual_buyback_snapshot:
+        snapshot=args.actual_buyback_snapshot.resolve()
+        private_root=args.legacy_private_root.resolve()
+        if subprocess.run(['git','check-ignore','--quiet',str(snapshot)],cwd=ROOT,capture_output=True).returncode or hashlib.sha256(snapshot.read_bytes()).hexdigest()!='b58a26812eeea8e75c6bd3e4ec4635b6260d8e704bc9a63fd095f0e7d9f13985':
+            raise RuntimeError('Pinned ignored complete source required')
+        for line in snapshot.open(encoding='utf-8'):
+            row=json.loads(line)
+            if row.get('table')=='buyback_photo' and 'cells' in row:
+                key=json.loads(row['cells']['storage_key']['value_json'])
+                if not re.fullmatch(r'private-[0-9]+-buyback-[0-9a-fA-F-]+\.(jpg|png|webp)',key):
+                    raise RuntimeError('Source photo key requires explicit storage review')
+                source=(private_root/key).resolve()
+                if source.parent!=private_root or not source.is_file() or not 3<=source.stat().st_size<=3*1024*1024:
+                    raise RuntimeError('Private source confinement or size differs')
+                actual_files.append((source,key,hashlib.sha256(source.read_bytes()).hexdigest()))
+        if len(actual_files)!=6:raise RuntimeError('Pinned private object count differs')
     if shutil.disk_usage(ROOT).free < 2 * (1 << 30):
         raise RuntimeError('At least 2 GiB free workspace disk required to preserve development services')
     for image in ['mysql:8.4', 'redis:7-alpine']:
@@ -144,6 +169,27 @@ def main():
         if joint.returncode or len(joint_results)!=1:raise RuntimeError('Inspection browser joint failed')
         durable=docker('exec','-e','MYSQL_PWD='+password,mysql_id,'mysql','-uroot','--protocol=socket','--database=browser_identity','--batch','--skip-column-names','-e',"SELECT (SELECT COUNT(*) FROM buyback_requests),(SELECT COUNT(*) FROM customer_buyback_submissions),(SELECT COUNT(*) FROM buyback_photos),(SELECT COUNT(*) FROM buyback_photo_bytes),(SELECT COUNT(*) FROM buyback_requests WHERE status IN ('paid','returned') AND closed_at IS NOT NULL),(SELECT COUNT(*) FROM buyback_requests WHERE status='canceled' AND closed_at IS NOT NULL),(SELECT COUNT(*) FROM buyback_requests WHERE JSON_UNQUOTE(JSON_EXTRACT(items,'$[0].serial_number'))='SN-JOINT'),(SELECT COUNT(*) FROM customer_buyback_submissions WHERE customer_id='cust_buyback-other')")
         if durable.returncode or durable.stdout.decode().strip()!='2\t2\t3\t3\t1\t1\t1\t0':raise RuntimeError('Durable buyback state differs: '+durable.stdout.decode().strip())
+        actual_results=None
+        if actual_files:
+            if docker('exec',mysql_id,'mkdir','-m','700','/tmp/buyback-private').returncode:raise RuntimeError('Private tmpfs directory creation failed')
+            for source,remote in [(snapshot,'/tmp/buyback-history-source.ndjson')]+[(path,'/tmp/buyback-private/'+key) for path,key,_ in actual_files]:
+                with source.open('rb') as content:
+                    transferred=subprocess.run(['docker','exec','-i',mysql_id,'/bin/sh','-c','umask 077; cat > '+remote],stdin=content,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=60)
+                if transferred.returncode:raise RuntimeError('Private source transfer failed')
+            actual=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1','-e','ACTUAL_BUYBACK_HISTORY=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestActualBuybackHistoryImport$','-test.timeout','60s')
+            # Only the fixed summary is public. Test/driver output can contain PII.
+            markers=[json.loads(line.split('ACTUAL_BUYBACK_HISTORY ',1)[1]) for line in actual.stdout.decode('utf-8').splitlines() if 'ACTUAL_BUYBACK_HISTORY ' in line]
+            if actual.returncode or len(markers)!=1:raise RuntimeError('Actual historical import rehearsal failed; private output suppressed')
+            actual_results=markers[0]
+            private_dto=docker('exec',mysql_id,'cat','/tmp/actual-buyback-history-detail.json')
+            if private_dto.returncode:raise RuntimeError('Actual historical DTO unavailable')
+            projected=subprocess.run([node,'--experimental-strip-types','tests/buyback-history-projection.mjs'],cwd=ROOT/'retail/storefront',input=private_dto.stdout,capture_output=True,timeout=20)
+            if projected.returncode:raise RuntimeError('Actual historical Admin DTO projection failed; private output suppressed')
+            actual_results['frontend_projection']=json.loads(projected.stdout)
+            private_dto=None
+            for path,_,expected in actual_files:
+                if hashlib.sha256(path.read_bytes()).hexdigest()!=expected:raise RuntimeError('Original private file changed during read-only rehearsal')
+            actual_results['source_files_preserved']=True
         fixture=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestPrepareBuybackHistoryBrowser$','-test.timeout','30s')
         if fixture.returncode or b'OWNED_BUYBACK_HISTORY_BROWSER_READY' not in fixture.stdout:raise RuntimeError('History browser fixture failed')
         history_browser=subprocess.run([node,'tests/buyback-history.joint.mjs'],cwd=ROOT/'retail/storefront',env=browser_env,capture_output=True,timeout=120)
@@ -161,6 +207,7 @@ def main():
         if len(history_results)!=1:raise RuntimeError('History import evidence missing')
         report['history_import']=history_results[0]
         report['history_browser']=history_browser_results[0]
+        if actual_results:report['actual_history_rehearsal']=actual_results
     finally:
         password = ''
         for container in reversed(containers):
