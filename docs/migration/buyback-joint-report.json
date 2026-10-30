@@ -1,0 +1,29 @@
+{
+  "browser": {
+    "synthetic_api": false,
+    "production_routes": true,
+    "original_questionnaire": true,
+    "real_login": true,
+    "real_gin_mysql_redis": true,
+    "created": 2,
+    "private_photos": 2,
+    "photo_previews_decoded_after_reload": true,
+    "submit_photos_survives_reload": true,
+    "cancel_closed_at_survives_reload": true,
+    "account_switch_isolated": true,
+    "foreign_photo_denied": true,
+    "unsigned_and_csrf_denied": true,
+    "browser_errors": 0,
+    "platform_review_payment_return_accepted": false
+  },
+  "durable_mysql_verified": true,
+  "artificial_accounts_only": true,
+  "tls_secure_cookie_verified": false,
+  "full_buyback_accepted": false,
+  "limits": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_memory_mib": 128
+  },
+  "cleanup": "both owned containers, bridge and temporary runners removed"
+}
