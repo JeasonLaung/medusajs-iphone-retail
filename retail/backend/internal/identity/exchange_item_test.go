@@ -162,6 +162,81 @@ func checkExchangeItem(t *testing.T, db *gorm.DB) {
 	if before != after {
 		t.Fatal("exchange item rollback leaked")
 	}
+	nativeInput := orders.DeviceExchangeInput{OrderID: "allocation-order", OriginalItemID: "allocation-line", LocationID: "allocation-location", OriginalAssignmentID: "allocation-original", RequestID: "allocation-exchange", ActorID: "exchange-actor", ExpectedVersion: 1}
+	nativeSeed := func(tx *gorm.DB) {
+		seed(tx)
+		exec(tx, `UPDATE order_items SET fulfilled_quantity=1,raw_fulfilled_quantity='{"value":"1","precision":100}',return_requested_quantity=0,raw_return_requested_quantity='{"value":"0","precision":100}',return_received_quantity=0,raw_return_received_quantity='{"value":"0","precision":100}',return_dismissed_quantity=0,raw_return_dismissed_quantity='{"value":"0","precision":100}',written_off_quantity=0,raw_written_off_quantity='{"value":"0","precision":100}' WHERE order_id='allocation-order' AND version=1`)
+		exec(tx, `INSERT INTO order_summaries(id,order_id,version,totals,created_at,updated_at) VALUES('native-exchange-summary','allocation-order',1,'{"transaction_total":"0"}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+	}
+	if _, e := orders.ApplyDeviceExchangeTx(ctx, db, nativeInput); e == nil {
+		t.Fatal("native exchange autocommit")
+	}
+	e = db.Transaction(func(tx *gorm.DB) error {
+		nativeSeed(tx)
+		out, e := orders.ApplyDeviceExchangeTx(ctx, tx, nativeInput)
+		if e != nil {
+			t.Fatal("native exchange", e)
+		}
+		if out.ExchangeVersion != 2 || out.ReceivedVersion != 3 || out.ItemID == "allocation-line" || out.VariantID != "allocation-v" {
+			t.Fatal("native versions/item", out)
+		}
+		var lines []struct {
+			Version                                 int
+			Requested, Dismissed, Written, Received string
+		}
+		if tx.Table("order_items").Select("version,CAST(return_requested_quantity AS CHAR) AS requested,CAST(return_dismissed_quantity AS CHAR) AS dismissed,CAST(written_off_quantity AS CHAR) AS written,CAST(return_received_quantity AS CHAR) AS received").Where("order_id='allocation-order' AND item_id='allocation-line'").Order("version").Scan(&lines).Error != nil || len(lines) != 3 {
+			t.Fatal("native line versions")
+		}
+		if lines[0].Written != "0.000000000000000000" || lines[1].Requested != "1.000000000000000000" || lines[1].Written != "0.000000000000000000" || lines[2].Requested != "0.000000000000000000" || lines[2].Written != "1.000000000000000000" || lines[2].Dismissed != "1.000000000000000000" || lines[2].Received != "0.000000000000000000" {
+			t.Fatal("native quarantine counters", lines)
+		}
+		var ret struct {
+			Status       string
+			OrderVersion int
+			ExchangeID   string
+		}
+		tx.Table("returns").Select("status,order_version,exchange_id").Where("id=?", out.ReturnID).Take(&ret)
+		var ri struct{ Received, Damaged string }
+		tx.Table("return_items").Select("CAST(received_quantity AS CHAR) AS received,CAST(damaged_quantity AS CHAR) AS damaged").Where("return_id=?", out.ReturnID).Take(&ri)
+		if ret.Status != "received" || ret.OrderVersion != 1 || ret.ExchangeID != out.ExchangeID || ri.Received != "1.000000000000000000" || ri.Damaged != "1.000000000000000000" {
+			t.Fatal("native records", ret, ri)
+		}
+		var actions, changes, items int64
+		tx.Table("order_change_actions").Where("order_id='allocation-order' AND applied=TRUE").Count(&actions)
+		tx.Table("order_changes").Where("order_id='allocation-order' AND status='confirmed'").Count(&changes)
+		tx.Table("order_exchange_items").Where("exchange_id=? AND item_id=?", out.ExchangeID, out.ItemID).Count(&items)
+		var addAction struct{ Reference, Details string }
+		tx.Table("order_change_actions").Select("reference,details").Where("order_id='allocation-order' AND action='ITEM_ADD'").Take(&addAction)
+		var addDetail map[string]json.RawMessage
+		if json.Unmarshal([]byte(addAction.Details), &addDetail) != nil || addAction.Reference != "order_exchange" || string(addDetail["unit_price"]) != `"123.123456789012345678901"` {
+			t.Fatal("native item action reference/price", addAction)
+		}
+		if actions != 3 || changes != 2 || items != 1 {
+			t.Fatal("native actions", actions, changes, items)
+		}
+		return rollback
+	})
+	if !errors.Is(e, rollback) {
+		t.Fatal("native owner rollback", e)
+	}
+	exec(db, "CREATE TRIGGER exchange_receive_action_fault BEFORE INSERT ON order_change_actions FOR EACH ROW BEGIN IF NEW.action='RECEIVE_DAMAGED_RETURN_ITEM' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='artificial exchange receive failure'; END IF; END")
+	e = db.Transaction(func(tx *gorm.DB) error {
+		nativeSeed(tx)
+		_, e := orders.ApplyDeviceExchangeTx(ctx, tx, nativeInput)
+		return e
+	})
+	exec(db, "DROP TRIGGER exchange_receive_action_fault")
+	if e == nil {
+		t.Fatal("native receive fault accepted")
+	}
+	var leaked int64
+	txTables := []string{"order_exchanges", "order_changes", "order_change_actions"}
+	for _, table := range txTables {
+		db.Table(table).Where("order_id='allocation-order'").Count(&leaked)
+		if leaked != 0 {
+			t.Fatal("native rollback leaked", table)
+		}
+	}
 	exec(db, "CREATE TRIGGER exchange_item_tax_fault BEFORE INSERT ON order_line_tax_lines FOR EACH ROW BEGIN IF NEW.item_id <> 'allocation-line' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='artificial exchange tax failure'; END IF; END")
 	e = db.Transaction(func(tx *gorm.DB) error {
 		seed(tx)
@@ -200,5 +275,5 @@ func checkExchangeItem(t *testing.T, db *gorm.DB) {
 	if before != after || versionAfter != 1 {
 		t.Fatal("summary failure leaked new line/version")
 	}
-	t.Log(`EXCHANGE_ITEM_REHEARSAL {"real_mysql":true,"same_order_sku":true,"original_exact_unit_price":true,"fresh_catalog_snapshot":true,"custom_price_without_quote":true,"inclusive_flag_not_copied":true,"current_quote_inclusive_and_sale_reference":true,"fresh_system_tax_original_untouched":true,"no_blind_discount_copy":true,"new_item_zero_fulfillment":true,"current_amount_reader":true,"stale_foreign_unpublished_provider_denied":true,"missing_region_and_disabled_channel_denied":true,"autocommit_denied":true,"owner_rollback":true,"late_tax_failure_atomic":true,"summary_preserves_history_and_old_version":true,"signed_exact_difference":true,"ledger_paid_and_refund_aggregates":true,"future_and_foreign_ledger_denied":true,"late_summary_failure_atomic":true,"exchange_command_integrated":false}`)
+	t.Log(`EXCHANGE_ITEM_REHEARSAL {"real_mysql":true,"same_order_sku":true,"original_exact_unit_price":true,"fresh_catalog_snapshot":true,"custom_price_without_quote":true,"inclusive_flag_not_copied":true,"current_quote_inclusive_and_sale_reference":true,"fresh_system_tax_original_untouched":true,"no_blind_discount_copy":true,"new_item_zero_fulfillment":true,"current_amount_reader":true,"stale_foreign_unpublished_provider_denied":true,"missing_region_and_disabled_channel_denied":true,"autocommit_denied":true,"owner_rollback":true,"late_tax_failure_atomic":true,"summary_preserves_history_and_old_version":true,"signed_exact_difference":true,"ledger_paid_and_refund_aggregates":true,"future_and_foreign_ledger_denied":true,"late_summary_failure_atomic":true,"native_exchange_and_quarantine_records":true,"two_confirmed_versions_three_actions":true,"late_receive_action_failure_atomic":true,"exchange_command_integrated":false}`)
 }

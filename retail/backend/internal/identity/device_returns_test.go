@@ -126,6 +126,11 @@ func checkDeviceReturns(t *testing.T, db *gorm.DB, actor identity.User, call fun
 	if quantities.Requested != "0.000000000000000000" || quantities.Received != "0.000000000000000000" || quantities.Dismissed != "1.000000000000000000" || quantities.WrittenOff != "1.000000000000000000" {
 		t.Fatal("quarantine counters", quantities)
 	}
+	var receivedDetail string
+	db.Table("return_items i").Select("CAST(i.received_quantity AS CHAR)").Joins("JOIN returns r ON r.id=i.return_id").Where("r.order_id='allocation-order'").Scan(&receivedDetail)
+	if receivedDetail != "1.000000000000000000" {
+		t.Fatal("quarantine return detail physical receipt", receivedDetail)
+	}
 	wrong = in
 	wrong.OperationID = uuid.NewString()
 	wrong.ExpectedRevision = read().Revision

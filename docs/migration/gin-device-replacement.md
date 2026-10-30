@@ -49,3 +49,13 @@ RETURN_ITEM 增加 requested；RECEIVE_DAMAGED_RETURN_ITEM 增加 dismissed 和 
 current_order_total 与 accounting_total 继承原 order-change 的当前总额规则，pending_difference 为总额减净交易额，允许负数。保留历史版本、交易流水、original_order_total 及其他历史字段；当前汇总 scalar/raw 一起更新。该参与者不收款、不退款、不推断订单已付，也不单独提交；调用方必须将权限、换货/隔离退货、设备分配、库存预留和操作收据一起完成。
 
 验证使用原精确单价、新税行、含精确低位的实收与负向退款流水，确认新版本汇总与金额读取一致，旧版本及私有历史不变；故障触发器拒绝汇总更新时，已复制的订单版本与新商品行全部回滚。见 [汇总报告](exchange-summary-report.json)。换机公开命令及界面仍未完成。
+
+## 换货和隔离收货订单事务
+
+`orders.ApplyDeviceExchangeTx` 将现有版本复制、新商品行、换货单、退货及关联明细、三个已应用变更动作和两个确认变更接入同一调用方事务。第一次确认产生 v+1，原商品 requested 增加 1；第二次隔离确认产生 v+2，requested 扣回 1、dismissed 和 written_off 增加 1、正常 received 不增加。每阶段重算当前订单汇总；旧版本保留。换货/退货单保留创建时的 order_version，新增商品明细进入两个新版本；ITEM_ADD 动作保留完整精确单价和 order_exchange 引用。
+
+退货单明细的物理 received_quantity 和 damaged_quantity 均为 1；这与订单商品正常 return_received_quantity 为 0 是不同语义。本批也纠正已有普通隔离退货的新写入，使退货明细记录物理收货数量。没有回补数量库存，也不批量修改历史记录。Gin 原生退货与换货显示编号通过同一运行时行锁串行分配，订单锁先于编号锁。
+
+来源继续核对安装的 Medusa 2.21.2：createOrderRelatedEntity_、confirmExchangeRequestWorkflow、beginReceiveReturnWorkflow、confirmReturnReceiveWorkflow、三个 action 实现及 applyChangesToOrder。额外确认：confirm exchange 仅在有 exchangeShippingMethod 时创建数量预留；原自定义换机未添加此配送方式。因此实际替换设备仍按原流程预留设备，打包时处理数量库存。之前后续清单中的“数量预留”不能作为无条件新增步骤。
+
+本批仅是订单事务参与者，尚未开放 POST 或 React 换机按钮。调用方仍须验证当前操作者、已付订单、处理中换机、已收回原分配、可售同 SKU 替换设备，绑定原分配 return_id，生成替换分配、事件和不可变收据，并处理原支付集合差额更新；任意失败必须整笔回滚。真实 SQL 验证覆盖双版本、三动作、完整引用与明细、精确税价和汇总、末尾接收动作故障回滚，见 [订单换货报告](native-exchange-report.json)。

@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-30",
+  "scope": "Native exchange and quarantine order records in the owning transaction",
+  "exchange_command_integrated": false,
+  "full_storefront_accepted": false,
+  "unit_all_go_packages_passed": true,
+  "real_sql_suites": [
+    "AdminAuthentication",
+    "InventoryStockEdits",
+    "ProductInventory"
+  ],
+  "evidence": {
+    "real_mysql": true,
+    "native_exchange_and_quarantine_records": true,
+    "two_confirmed_versions_three_actions": true,
+    "late_receive_action_failure_atomic": true,
+    "summary_preserves_history_and_old_version": true,
+    "exchange_command_integrated": false
+  },
+  "physical_return_detail_received_and_damaged_one": true,
+  "order_normal_received_zero": true,
+  "unconditional_quantity_reservation_not_source_behavior": true,
+  "tested_source_files": [
+    {
+      "path": "retail/backend/internal/orders/device_exchange.go",
+      "sha256": "fa2f7cf1771ba0b5320293d70360834ae6ed3a2aa4607e18238871b0a133732c"
+    },
+    {
+      "path": "retail/backend/internal/devices/returns.go",
+      "sha256": "e937961f3d907ae80446ad6198310b9af3e24c1e14682bfdd6769bfb58946d52"
+    },
+    {
+      "path": "retail/backend/internal/identity/exchange_item_test.go",
+      "sha256": "1c574a43726b11b30cdd6a874b8d039f908eaf29895b5338f03656a08828efea"
+    },
+    {
+      "path": "retail/backend/internal/identity/device_returns_test.go",
+      "sha256": "d05356a5c3094cecab07d041cbb81c98b4f9cf19c983222de4e4f84f155e3182"
+    }
+  ],
+  "owned_runner_cleanup": "complete",
+  "existing_service_health": {
+    "9001_health": 200,
+    "9001_app": 200,
+    "8000_account_orders": 200,
+    "8000_cart": 200
+  },
+  "remaining": [
+    "Device replacement command with original return binding and replacement allocation",
+    "Order payment collection difference behavior",
+    "Immutable command receipts, private HTTP and Ant UI",
+    "Complete real joint exchange flow",
+    "Full storefront closure"
+  ]
+}

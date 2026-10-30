@@ -342,6 +342,10 @@ func quarantineReturn(tx *gorm.DB, o, item, location string, version int, reques
 		return "", e
 	}
 	id := "return_" + uuid.NewString()
+	var schemaID int
+	if tx.Table("order_runtime_schema").Select("id").Where("id=1").Clauses(clause.Locking{Strength: "UPDATE"}).Scan(&schemaID).Error != nil || schemaID != 1 {
+		return "", ErrUnavailable
+	}
 	var display int64
 	if tx.Table("returns").Select("COALESCE(MAX(display_id),0)+1").Scan(&display).Error != nil || display > 2147483647 {
 		return "", ErrUnavailable
@@ -350,7 +354,7 @@ func quarantineReturn(tx *gorm.DB, o, item, location string, version int, reques
 	if tx.Exec("INSERT INTO returns(id,order_id,order_version,display_id,status,location_id,metadata,received_at,created_at,updated_at) VALUES(?,?,?,?,'received',?,?,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", id, o, version, display, location, string(metadata)).Error != nil {
 		return "", ErrUnavailable
 	}
-	if tx.Exec("INSERT INTO return_items(id,return_id,item_id,quantity,raw_quantity,received_quantity,raw_received_quantity,damaged_quantity,raw_damaged_quantity,created_at,updated_at) VALUES(?,?,?,1,?,0,?,1,?,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", "retitem_"+uuid.NewString(), id, item, rawCount("1"), rawCount("0"), rawCount("1")).Error != nil {
+	if tx.Exec("INSERT INTO return_items(id,return_id,item_id,quantity,raw_quantity,received_quantity,raw_received_quantity,damaged_quantity,raw_damaged_quantity,created_at,updated_at) VALUES(?,?,?,1,?,1,?,1,?,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", "retitem_"+uuid.NewString(), id, item, rawCount("1"), rawCount("1"), rawCount("1")).Error != nil {
 		return "", ErrUnavailable
 	}
 	if tx.Exec("UPDATE order_items SET return_dismissed_quantity=?,raw_return_dismissed_quantity=?,written_off_quantity=?,raw_written_off_quantity=?,updated_at=UTC_TIMESTAMP(6) WHERE id=?", dismissed, rawCount(dismissed), written, rawCount(written), line.ID).Error != nil {
