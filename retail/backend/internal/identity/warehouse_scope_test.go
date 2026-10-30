@@ -64,6 +64,14 @@ func checkWarehouseScope(t *testing.T, db *gorm.DB, actor identity.User) {
 	if db.Raw("SELECT role_id FROM authorization_memberships WHERE user_id=? LIMIT 1", actor.ID).Scan(&role).Error != nil || role == "" {
 		t.Fatal("role missing")
 	}
+	for _, action := range []authorization.Action{authorization.WarehouseAllocationWrite, authorization.WarehouseShipmentWrite} {
+		check(actor, a, nil, authorization.OrderFulfillmentRead, action)
+		check(actor, b, authorization.ErrDenied, action)
+		exec("DELETE FROM authorization_role_actions WHERE role_id=? AND action_code=?", role, action)
+		check(actor, a, authorization.ErrDenied, action)
+		check(actor, a, nil, authorization.OrderFulfillmentRead)
+		exec("INSERT INTO authorization_role_actions(role_id,action_code) VALUES(?,?)", role, action)
+	}
 	exec("UPDATE authorization_roles SET enabled=FALSE WHERE id=?", role)
 	check(actor, a, authorization.ErrDenied, authorization.InventoryRead)
 	exec("UPDATE authorization_roles SET enabled=TRUE WHERE id=?", role)

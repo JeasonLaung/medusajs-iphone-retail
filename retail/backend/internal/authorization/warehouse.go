@@ -28,7 +28,7 @@ func CheckWarehouseTx(ctx context.Context, tx *gorm.DB, actor identity.User, loc
 	}
 	for _, action := range actions {
 		switch action {
-		case InventoryRead, StockWrite, OrderFulfillmentRead, WarehouseIntakeRead, WarehouseIntakeWrite, WarehouseReturnRead, WarehouseReturnWrite:
+		case InventoryRead, StockWrite, OrderFulfillmentRead, WarehouseAllocationWrite, WarehouseShipmentWrite, WarehouseIntakeRead, WarehouseIntakeWrite, WarehouseReturnRead, WarehouseReturnWrite:
 		default:
 			return ErrDenied
 		}
@@ -121,5 +121,5 @@ func warehouseAuthority(ctx context.Context, tx *gorm.DB, actor identity.User) (
 
 // WarehouseActions are explicit dedicated-endpoint permissions; they never grant full-store access.
 func WarehouseActions() []Action {
-	return []Action{InventoryRead, StockWrite, OrderFulfillmentRead, WarehouseIntakeRead, WarehouseIntakeWrite, WarehouseReturnRead, WarehouseReturnWrite}
+	return []Action{InventoryRead, StockWrite, OrderFulfillmentRead, WarehouseAllocationWrite, WarehouseShipmentWrite, WarehouseIntakeRead, WarehouseIntakeWrite, WarehouseReturnRead, WarehouseReturnWrite}
 }

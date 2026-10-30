@@ -580,3 +580,8 @@
 ### 2026-10-30: warehouse reads real browser joint
 
 - Production Admin reservation/packing/cancellation/repacking/shipment now continues into newly created scoped warehouse account reads in English/Chinese at 390/1440. Real Gin/MySQL rejects cross-warehouse/full-store reads; grant edit revokes old session and new login remains denied. Quantity stock and parcel/device/tracking persistence verified, owned fixtures cleaned. See `migration/warehouse-fulfillments.md` and pending write requirements in `migration/warehouse-fulfillment-write-contract.md`.
+
+
+### 2026-10-30: warehouse allocation/shipment explicit permissions
+
+- Added separate `warehouse.allocation.write` and `warehouse.shipment.write` vocabulary, MySQL 0082, Ant account/role selectors and bilingual labels. Existing roles receive no implicit grants. Real old-schema upgrade and current account save/revocation/scope tests pass; full-store access remains denied. Full Go, Admin types, warehouse user browser and original parcel real joint pass. Business write commands remain pending. See `migration/warehouse-fulfillment-permissions.md`.

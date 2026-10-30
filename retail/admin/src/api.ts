@@ -1,6 +1,6 @@
 export type User = { id: string; email: string; name: string; role: string; enabled: boolean }
 
-export const WAREHOUSE_USER_ACTIONS=['inventory.read','inventory.stock.write','order.fulfillment.read','warehouse.intake.read','warehouse.intake.write','warehouse.return.read','warehouse.return.write'] as const
+export const WAREHOUSE_USER_ACTIONS=['inventory.read','inventory.stock.write','order.fulfillment.read','warehouse.allocation.write','warehouse.intake.read','warehouse.intake.write','warehouse.return.read','warehouse.return.write','warehouse.shipment.write'] as const
 export type WarehouseUser={id:string;name:string;email:string;enabled:boolean;mode:'selected'|'all';locations:string[];actions:(typeof WAREHOUSE_USER_ACTIONS)[number][]}
 export type WarehouseUserDirectory={revision:string;users:WarehouseUser[];locations:{id:string;name:string}[]}
 export type WarehouseUserCommand=Omit<WarehouseUser,'id'>&{id:string;operation_id:string;expected_revision:string;password:string}
@@ -295,7 +295,7 @@ export async function getOrderFulfillments(id:string,signal?:AbortSignal):Promis
 }
 
 
-export const ACTIONS=['authorization.read','authorization.write','buyback.read','buyback.write','device.enroll','device.intake','device.read','device.source.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.after_sales.write','order.allocation.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','price.write','product.read','product.write','warehouse.intake.read','warehouse.intake.write','warehouse.read','warehouse.return.read','warehouse.return.write','warehouse.write'] as const
+export const ACTIONS=['authorization.read','authorization.write','buyback.read','buyback.write','device.enroll','device.intake','device.read','device.source.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.after_sales.write','order.allocation.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','price.read','price.write','product.read','product.write','warehouse.allocation.write','warehouse.intake.read','warehouse.intake.write','warehouse.read','warehouse.return.read','warehouse.return.write','warehouse.shipment.write','warehouse.write'] as const
 export type Action=typeof ACTIONS[number]
 export type ManagedRole={id:string;name:string;enabled:boolean;actions:Action[]}
 export type ManagedMember={user_id:string;name:string;enabled:boolean;kind:'employee'|'warehouse'|'supplier';roles:string[]}

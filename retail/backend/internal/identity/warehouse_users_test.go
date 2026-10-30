@@ -92,6 +92,15 @@ func checkWarehouseUsers(t *testing.T, db *gorm.DB, actor identity.User, call fu
 	if db.Where("id=?", created.ID).Take(&target).Error != nil {
 		t.Fatal("account missing")
 	}
+	// New warehouse write actions are ordinary explicit grants, never implied
+	// by inventory editing or fulfillment reading on an existing account.
+	for _, action := range []authorization.Action{authorization.WarehouseAllocationWrite, authorization.WarehouseShipmentWrite} {
+		if e := db.Transaction(func(tx *gorm.DB) error {
+			return authorization.CheckWarehouseTx(ctx, tx, target, "user-scope-a", action)
+		}); !errors.Is(e, authorization.ErrDenied) {
+			t.Fatal("warehouse write action implicitly granted")
+		}
+	}
 	if e := db.Transaction(func(tx *gorm.DB) error {
 		return authorization.CheckWarehouseTx(ctx, tx, target, "user-scope-a", authorization.InventoryRead)
 	}); e != nil {
@@ -157,16 +166,37 @@ func checkWarehouseUsers(t *testing.T, db *gorm.DB, actor identity.User, call fu
 	edit.Enabled = true
 	edit.Mode = "all"
 	edit.Locations = []string{}
+	edit.Actions = append(append([]authorization.Action{}, c.Actions...), authorization.WarehouseAllocationWrite, authorization.WarehouseShipmentWrite)
 	post(edit, 200)
 	session = login(password, 200)
 	call("GET", "/api/admin/auth/me", "", origin, "", []*http.Cookie{session}, 200)
+	if db.Where("id=?", created.ID).Take(&target).Error != nil {
+		t.Fatal("updated warehouse account missing")
+	}
+	if e := db.Transaction(func(tx *gorm.DB) error {
+		return authorization.CheckWarehouseTx(ctx, tx, target, "user-scope-a", authorization.WarehouseAllocationWrite, authorization.WarehouseShipmentWrite)
+	}); e != nil {
+		t.Fatal("explicit warehouse write grants not saved", e)
+	}
+	call("GET", "/api/admin/orders", "", origin, "", []*http.Cookie{session}, 403)
 	edit.OperationID = uuid.NewString()
 	edit.ExpectedRevision = read().Revision
 	edit.Mode = "selected"
 	edit.Locations = []string{"user-scope-b"}
+	edit.Actions = c.Actions
 	post(edit, 200)
 	call("GET", "/api/admin/auth/me", "", origin, "", []*http.Cookie{session}, 401)
 	session = login(password, 200)
+	if db.Where("id=?", created.ID).Take(&target).Error != nil {
+		t.Fatal("revoked warehouse account missing")
+	}
+	for _, action := range []authorization.Action{authorization.WarehouseAllocationWrite, authorization.WarehouseShipmentWrite} {
+		if e := db.Transaction(func(tx *gorm.DB) error {
+			return authorization.CheckWarehouseTx(ctx, tx, target, "user-scope-b", action)
+		}); !errors.Is(e, authorization.ErrDenied) {
+			t.Fatal("warehouse write grant revocation ignored")
+		}
+	}
 	// Password reset and scope edit invalidate even the re-enabled session.
 	edit.OperationID = uuid.NewString()
 	edit.ExpectedRevision = read().Revision

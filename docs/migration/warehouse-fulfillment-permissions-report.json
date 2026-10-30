@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-30",
+  "scope": "Dedicated warehouse allocation and shipment permissions; business commands not implemented",
+  "new_actions": [
+    "warehouse.allocation.write",
+    "warehouse.shipment.write"
+  ],
+  "formal_migrations": 81,
+  "exact_action_vocabulary_count": 30,
+  "mysql_upgrade": {
+    "real_mysql": true,
+    "old_roles_unchanged": true,
+    "distinct_allocation_and_shipment_actions": true,
+    "old_model_rejected": true,
+    "new_model_ready": true,
+    "unknown_action_sql_rejected": true,
+    "migration_replay": true
+  },
+  "owned_admin_authentication_suite_passed": true,
+  "explicit_save_and_revocation_checked": true,
+  "full_store_denied_with_new_grants": true,
+  "go_all_passed": true,
+  "admin_typescript_passed": true,
+  "warehouse_user_browser": {
+    "synthetic_api": true,
+    "passed": true
+  },
+  "real_admin_parcel_joint": {
+    "api_mocking": false,
+    "passed": true,
+    "new_write_actions_initially_unchecked": true
+  },
+  "source_lf_sha256": {
+    "retail/backend/internal/authorization/model.go": "2fbae4d11391f16022d1a7fac0da7b5caedb008407d590b469161071214d23ae",
+    "retail/backend/internal/authorization/warehouse.go": "910fd4b5cf3997774fcf025bb2fc831981e63d2e3c7e15605cd6bfcb360f01fa",
+    "retail/backend/migrations/0082_warehouse_fulfillment_permissions.sql": "628f5df6d3b7abadeea18162688aaddaab47a031552c2c2f5e665656dd6f834e",
+    "retail/backend/internal/identity/warehouse_permission_upgrade_test.go": "64f927382a323ba96ffaf2146d03aeee30362b12e53a9fc163905383eb9bda10",
+    "retail/backend/internal/identity/warehouse_users_test.go": "7701e9a33740454e74667dc5ae9555332ef2d481b03c1565f33b0f1572bc03ce",
+    "retail/backend/internal/identity/warehouse_scope_test.go": "810eccaffdf72f3f7ab04b365f0729b0af2a30e37b60a791579528fa4de0206c",
+    "retail/admin/src/api.ts": "7be00bd60999076a520fc38430844f96b22c0f61931f587937e3f2aac51966c4",
+    "retail/admin/src/i18n.ts": "10ab194edea0c4ad031f9c6fc36a59524abfdd7136a81217ab6b05c1e24d701c",
+    "retail/admin/tests/warehouse-fulfillments.joint.mjs": "8125278fbadeeab31c8ed458fcc69776bd389e9c842ee2453d530f1e06e90105"
+  }
+}

@@ -18,6 +18,7 @@ export async function checkWarehouseFulfillments({browser,admin,page,origin,parc
  await editor.getByLabel('Password',{exact:true}).fill('artificial-parcel-warehouse-password')
  await editor.getByText(`${bound.name} (${bound.id})`,{exact:true}).click()
  await editor.locator('.ant-transfer-operation button').first().click()
+ for(const name of ['Allocate warehouse parcels','Ship warehouse parcels'])await expect(editor.getByRole('checkbox',{name,exact:true})).not.toBeChecked()
  await editor.getByRole('checkbox',{name:'View fulfillment records',exact:true}).click()
  await expect(editor.getByRole('checkbox',{name:'View fulfillment records',exact:true})).toBeChecked()
  await editor.getByRole('button',{name:'Save',exact:true}).click()

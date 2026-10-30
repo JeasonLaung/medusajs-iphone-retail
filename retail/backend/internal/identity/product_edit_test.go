@@ -59,7 +59,7 @@ func TestOwnedProductEdits(t *testing.T) {
 		t.Fatal("fixture plan failed")
 	}
 	applied, err := schema.Apply(ctx, pool, plan)
-	if err != nil || applied.Applied != 80 {
+	if err != nil || applied.Applied != 81 {
 		t.Fatal("eleven migrations failed")
 	}
 	user := identity.User{ID: "edit-fixture-admin", Email: "edit@example.invalid", Name: "Edit", Role: "admin", Enabled: true, AuthVersion: 1, PasswordHash: "artificial-hash", CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()}

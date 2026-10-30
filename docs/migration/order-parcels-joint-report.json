@@ -39,10 +39,11 @@
   },
   "cleanup": "both owned containers, bridge and temporary runners removed",
   "source_lf_sha256": {
-    "retail/admin/tests/order-parcels.joint.mjs": "f2ffc4f9cbcf7d8fea08c708149871a18078445b729c80b74590a1d3ef813148",
-    "retail/admin/tests/warehouse-fulfillments.joint.mjs": "1a468973b3e7542b34825f16f0b50b7d1decc465ae9fb8f687b7973bd4994394",
-    "retail/admin/src/WarehouseFulfillments.tsx": "0d12996c0bff42677313a20138490d30b9dcc8c169868b598aeb84da150e6263",
-    "retail/admin/src/warehouse-fulfillments-api.ts": "cd342cf2d9fb10094190f9fbd2f426d016e9805d363c0de3c5d27c7c9520237d",
-    "retail/backend/internal/devices/warehouse_fulfillments.go": "f358a3453a65bc7a520318af682a33a2dc25ada290e08d64d7c090a0bdacc675"
+    "retail/admin/tests/warehouse-fulfillments.joint.mjs": "8125278fbadeeab31c8ed458fcc69776bd389e9c842ee2453d530f1e06e90105",
+    "retail/admin/src/api.ts": "7be00bd60999076a520fc38430844f96b22c0f61931f587937e3f2aac51966c4",
+    "retail/admin/src/i18n.ts": "10ab194edea0c4ad031f9c6fc36a59524abfdd7136a81217ab6b05c1e24d701c",
+    "retail/backend/internal/authorization/model.go": "2fbae4d11391f16022d1a7fac0da7b5caedb008407d590b469161071214d23ae",
+    "retail/backend/internal/authorization/warehouse.go": "910fd4b5cf3997774fcf025bb2fc831981e63d2e3c7e15605cd6bfcb360f01fa",
+    "retail/backend/migrations/0082_warehouse_fulfillment_permissions.sql": "628f5df6d3b7abadeea18162688aaddaab47a031552c2c2f5e665656dd6f834e"
   }
 }
