@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-30",
+  "scope": "Native Go buyback pricing, questionnaire/photo requirements and strict input; no HTTP or persistence yet",
+  "full_buyback_accepted": false,
+  "original_comparison": {
+    "configurations": 67,
+    "price_combinations": 8576,
+    "assessments": 231,
+    "capacities": 7,
+    "sealed_box_excluded": "Original questionnaire offers four visual grades; sealed box references are not questionnaire options.",
+    "source_hashes": [
+      {
+        "path": "medusa-store/apps/backend/src/lib/buyback-pricing.ts",
+        "sha256": "8184f3e4f7bafbc1c427ad10e2303e9fe0cf5c915559212bd1b1ce215bd3a78a"
+      },
+      {
+        "path": "medusa-store/apps/backend/src/lib/recycled-assessment.ts",
+        "sha256": "3c9d9f539dd34535d5a169173c3cbd541adbd11233a02dd07034f73a4b2ea15d"
+      },
+      {
+        "path": "medusa-store/apps/backend/src/lib/data/swappie-buyback-reference.json",
+        "sha256": "535ff1ed79e5034003e2cd71ebdad6fb5766b0a01c78c4cd4cb555a53402b822"
+      }
+    ]
+  },
+  "go_all_packages_passed": true,
+  "sql_migration_added": false,
+  "frontend_changed": false,
+  "provider_calls": false,
+  "private_customer_data_used": false,
+  "remaining": [
+    "MySQL price/request persistence and import",
+    "Gin public estimate API and Astro sell page",
+    "new customer ownership and idempotent request creation",
+    "private photo upload/download/review/retention",
+    "React Admin scoped commands and 12 states",
+    "device links, final offer, acceptance, manual payment and returns",
+    "transactional notices, mail and full browser joint"
+  ],
+  "tested_sources": [
+    {
+      "path": "retail/backend/internal/buyback/input.go",
+      "sha256_lf": "2c20960df7c6ebc0281fd42dde6f7648a7fa4afe561556601d81d4cd8f54a55d"
+    },
+    {
+      "path": "retail/backend/internal/buyback/input_test.go",
+      "sha256_lf": "f1e5d75edf4898a83ece007237c3dbfe93e732cbc6f0af9440b6d045cf59ed31"
+    },
+    {
+      "path": "retail/backend/internal/buyback/pricing.go",
+      "sha256_lf": "96d1b285f075d3c6515e83aa8886957627a4a7e6f98c8193ba80486b2ee34626"
+    },
+    {
+      "path": "retail/backend/internal/buyback/pricing_test.go",
+      "sha256_lf": "9e93c40cc3334c5181537139f2dc837585d027fb7ba89c2c71e75b764050464a"
+    }
+  ],
+  "legacy_services": {
+    "health_9001": 200,
+    "app_9001": 200,
+    "sell_8000": 200,
+    "cart_8000": 200,
+    "sell_initial_timeout": "Initial 20s observation timed out; the same running service returned 200 on follow-up without restart.",
+    "existing_log_errors": "Anonymous order authorization and missing locales endpoint errors remain."
+  }
+}
