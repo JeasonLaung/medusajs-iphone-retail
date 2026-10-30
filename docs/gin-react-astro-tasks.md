@@ -585,3 +585,8 @@
 ### 2026-10-30: warehouse allocation/shipment explicit permissions
 
 - Added separate `warehouse.allocation.write` and `warehouse.shipment.write` vocabulary, MySQL 0082, Ant account/role selectors and bilingual labels. Existing roles receive no implicit grants. Real old-schema upgrade and current account save/revocation/scope tests pass; full-store access remains denied. Full Go, Admin types, warehouse user browser and original parcel real joint pass. Business write commands remain pending. See `migration/warehouse-fulfillment-permissions.md`.
+
+
+### 2026-10-30: warehouse whole parcel shipment
+
+- Dedicated read/ship endpoints and Ant parcel form reuse platform shipment transaction with current warehouse grants/bindings before receipt replay. Moved devices/assignments and revoked scopes denied. Real SQL concurrency/rollback/no repeated stock deduction and real mobile English shipment with dropped-response immutable retry passed; Chinese desktop disabled state and four read-only contexts passed. Full Go, Admin types and scoped read browser regression pass. Warehouse allocation/replacement remain pending. See `migration/warehouse-shipment.md`.

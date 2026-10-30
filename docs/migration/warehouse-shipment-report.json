@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-30",
+  "scope": "Dedicated warehouse whole parcel shipment; allocation and replacement pending",
+  "gin_mysql": {
+    "real_gin_mysql": true,
+    "same_shared_shipping_command": true,
+    "no_full_store_access": true,
+    "strict_projection": true,
+    "cancel_denied": true,
+    "stale_moved_and_revoked_denied": true,
+    "concurrent_attempts": 4,
+    "fresh": 1,
+    "replayed": 3,
+    "late_failure_rollback": true,
+    "revoked_scope_and_moved_device_replay_denied": true
+  },
+  "real_browser_joint": {
+    "real_browser_react_gin_mysql_redis": true,
+    "api_mocking": false,
+    "preallocation_packing_cancellation_repacking_shipment": true,
+    "cancel_confirmation": true,
+    "restored_devices_pack_again": true,
+    "whole_parcel_tracking_persisted": true,
+    "shipped_repetition_disabled": true,
+    "language_en_zh": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0,
+    "warehouse_shipment_real_command": true,
+    "lost_shipment_reply_same_command_retry": true,
+    "platform_packing_to_new_warehouse_user": true,
+    "real_scoped_parcel_and_tracking": true,
+    "canceled_hidden": true,
+    "cross_warehouse_and_full_store_denied": true,
+    "read_grant_revoked_via_admin": true,
+    "scoped_private_projection": true,
+    "warehouse_languages": [
+      "en",
+      "zh-CN"
+    ],
+    "warehouse_widths": [
+      390,
+      1440
+    ]
+  },
+  "durable_mysql_verified": true,
+  "go_all_passed": true,
+  "admin_typescript_passed": true,
+  "read_browser_regression_passed": true,
+  "source_lf_sha256": {
+    "retail/backend/internal/devices/allocation.go": "0d1e7cc103798f274d5ab106aee4af777ffb5054d6802a96ca6c12fa5d85f4aa",
+    "retail/backend/internal/devices/parcels.go": "26f9735f371ccecaaf673f5646ea319eb313cb89892c9c546157c9a97b3ecfd2",
+    "retail/backend/internal/devices/warehouse_shipment.go": "4811c6a3c40b3a6d1652448bf6287a07ecc003e1d689507a6e31f74472f965e1",
+    "retail/backend/internal/devices/warehouse_fulfillments.go": "906e99a87100ebf65819af27bda402a6490cd3a1e2ebf65543048711850f9c25",
+    "retail/backend/internal/identity/warehouse_shipment_test.go": "2c43550a135ce352f3609b72c22f958b8b14f1ca5d93d03d569a59955b7d1273",
+    "retail/backend/internal/identity/order_device_parcels_test.go": "85fd3c05bcc7cfb1cdcb4694b37ca5f74910e78882ae6b874219872b8ee1351e",
+    "retail/admin/src/WarehouseShipment.tsx": "73fd467c6457699cafc5d04c053acc4d5523f4dc21984a1b873d07bac5d48805",
+    "retail/admin/src/WarehouseFulfillments.tsx": "2888c2cd7c2270aa931d5a7f08e7ef911b63166edb6d3df4f8b32e5e6cf50f94",
+    "retail/admin/src/warehouse-fulfillments-api.ts": "17482250c6070a99bc64fbb87fbf753a1ba9e6f57b501b847447e4e93abdc575",
+    "retail/admin/tests/warehouse-shipment.joint.mjs": "0510e0d550e8f454dffb8ea67c054b4c50eba598fd214ce58d506513f50a01bd",
+    "retail/admin/tests/order-parcels.joint.mjs": "a03a83223106c3338017df5a724c47564d7003032e6663a0a7d25441b8d21c8a",
+    "retail/admin/tests/warehouse-fulfillments.joint.mjs": "4547589bb51c32b2bd8a244bbf33c194bec2ee3d2fc18bd38f0c428772332c1d"
+  },
+  "cleanup": "complete"
+}

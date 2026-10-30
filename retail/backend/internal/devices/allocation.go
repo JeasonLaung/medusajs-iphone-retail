@@ -148,6 +148,9 @@ func allocationGate(ctx context.Context, tx *gorm.DB, actor identity.User) (uint
 	if e := authorization.CheckTx(ctx, tx, actor, authorization.OrderRead, authorization.OrderPaymentRead, authorization.DeviceRead, authorization.OrderAllocationWrite); e != nil {
 		return 0, false, e
 	}
+	return allocationRuntimeGate(ctx, tx)
+}
+func allocationRuntimeGate(ctx context.Context, tx *gorm.DB) (uint64, bool, error) {
 	revision, e := sourceGate(ctx, tx)
 	if e != nil {
 		return 0, false, e

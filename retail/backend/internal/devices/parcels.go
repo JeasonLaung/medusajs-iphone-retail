@@ -159,13 +159,25 @@ func decodeParcel(reader io.Reader) (ParcelInput, error) {
 	return in, nil
 }
 func parcelGate(ctx context.Context, tx *gorm.DB, actor identity.User) (uint64, bool, error) {
+	return parcelAccessGate(ctx, tx, actor, "")
+}
+func parcelAccessGate(ctx context.Context, tx *gorm.DB, actor identity.User, location string) (uint64, bool, error) {
 	// Allocation's enabled flag does not disable cancellation/recovery of an
 	// existing parcel. Its current identity/permission/schema checks still apply.
-	rev, _, e := allocationGate(ctx, tx, actor)
-	if e != nil {
-		return 0, false, e
+	var rev uint64
+	var e error
+	if location == "" {
+		rev, _, e = allocationGate(ctx, tx, actor)
+		if e == nil {
+			e = authorization.CheckTx(ctx, tx, actor, authorization.OrderFulfillmentRead)
+		}
+	} else {
+		e = authorization.CheckWarehouseTx(ctx, tx, actor, location, authorization.OrderFulfillmentRead, authorization.WarehouseShipmentWrite)
+		if e == nil {
+			rev, _, e = allocationRuntimeGate(ctx, tx)
+		}
 	}
-	if e = authorization.CheckTx(ctx, tx, actor, authorization.OrderFulfillmentRead); e != nil {
+	if e != nil {
 		return 0, false, e
 	}
 	var cap struct {
@@ -356,6 +368,15 @@ func restoreParcelStock(tx *gorm.DB, actor, item, stockID, location, quantity st
 	return nil
 }
 func (h Handler) ChangeParcel(ctx context.Context, actor identity.User, o, f string, in ParcelInput) (ParcelResult, error) {
+	return h.changeParcel(ctx, actor, o, f, "", in)
+}
+func (h Handler) ChangeWarehouseShipment(ctx context.Context, actor identity.User, location, o, f string, in ParcelInput) (ParcelResult, error) {
+	if !validPathID(location) || in.Action != "ship" {
+		return ParcelResult{}, ErrInput
+	}
+	return h.changeParcel(ctx, actor, o, f, location, in)
+}
+func (h Handler) changeParcel(ctx context.Context, actor identity.User, o, f, location string, in ParcelInput) (ParcelResult, error) {
 	var result ParcelResult
 	if !validPathID(o) || !validPathID(f) || !validParcel(in) {
 		return result, ErrInput
@@ -365,7 +386,7 @@ func (h Handler) ChangeParcel(ctx context.Context, actor identity.User, o, f str
 	}
 	request, _ := json.Marshal(in)
 	e := h.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		rev, enabled, e := parcelGate(ctx, tx, actor)
+		rev, enabled, e := parcelAccessGate(ctx, tx, actor, location)
 		if e != nil {
 			return e
 		}
@@ -375,6 +396,11 @@ func (h Handler) ChangeParcel(ctx context.Context, actor identity.User, o, f str
 		before, facts, e := loadParcel(tx, o, f, rev, enabled)
 		if e != nil {
 			return e
+		}
+		if location != "" {
+			if e = warehouseShipmentBinding(before, location); e != nil {
+				return e
+			}
 		}
 		var receipt struct{ ActorID, OrderID, FulfillmentID, RequestJSON, ResultJSON string }
 		e = tx.Table("order_device_parcel_operations").Where("operation_id=?", in.OperationID).Clauses(clause.Locking{Strength: "SHARE"}).Take(&receipt).Error
@@ -386,7 +412,11 @@ func (h Handler) ChangeParcel(ctx context.Context, actor identity.User, o, f str
 				return ErrUnavailable
 			}
 			for _, id := range result.AssignmentIDs {
-				if !packingExactlyOne(tx.Table("device_assignments a").Joins("JOIN devices d ON d.id=a.device_id AND d.deleted_at IS NULL").Joins("JOIN order_items i ON i.order_id=a.order_id AND i.item_id=a.item_id AND i.version=? AND i.deleted_at IS NULL", facts.Packing.Version).Joins("JOIN order_line_items l ON l.id=a.item_id AND l.deleted_at IS NULL").Where("a.id=? AND a.order_id=? AND a.deleted_at IS NULL", id, o), "a.id") {
+				query := tx.Table("device_assignments a").Joins("JOIN devices d ON d.id=a.device_id AND d.deleted_at IS NULL").Joins("JOIN order_items i ON i.order_id=a.order_id AND i.item_id=a.item_id AND i.version=? AND i.deleted_at IS NULL", facts.Packing.Version).Joins("JOIN order_line_items l ON l.id=a.item_id AND l.deleted_at IS NULL").Where("a.id=? AND a.order_id=? AND a.deleted_at IS NULL", id, o)
+				if location != "" {
+					query = query.Where("a.fulfillment_id=? AND d.location_id=?", f, location)
+				}
+				if !packingExactlyOne(query, "a.id") {
 					return gorm.ErrRecordNotFound
 				}
 			}
@@ -601,6 +631,9 @@ func (h Handler) ParcelHTTP(c *gin.Context) {
 			}
 		}
 	}
+	parcelFail(c, e)
+}
+func parcelFail(c *gin.Context, e error) {
 	switch {
 	case errors.Is(e, ErrInput), errors.Is(e, ErrIdentity):
 		platform.Fail(c, 400, "devices.invalid_parcel", "Invalid parcel command or identity")

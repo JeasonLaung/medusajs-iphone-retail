@@ -162,26 +162,9 @@ func checkOrderDeviceParcels(t *testing.T, db *gorm.DB, actor identity.User, cal
 	if stock() != baseline || read(repacked.FulfillmentID).Status != "packed" {
 		t.Fatal("shipment rollback")
 	}
-	fresh.Store(0)
-	replay.Store(0)
-	bad.Store(0)
-	for i := 0; i < 4; i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			r, e := h.ChangeParcel(ctx, actor, "allocation-order", repacked.FulfillmentID, ship)
-			if e != nil {
-				bad.Add(1)
-			} else if r.Replayed {
-				replay.Add(1)
-			} else {
-				fresh.Add(1)
-			}
-		}()
-	}
-	wg.Wait()
-	if fresh.Load() != 1 || replay.Load() != 3 || bad.Load() != 0 || stock() != baseline {
-		t.Fatal("shipment uniqueness or inventory changed", fresh.Load(), replay.Load(), bad.Load())
+	checkWarehouseShipment(t, db, actor, call, repacked.FulfillmentID, ship)
+	if stock() != baseline {
+		t.Fatal("warehouse shipment changed stock")
 	}
 	shipped := read(repacked.FulfillmentID)
 	if shipped.Status != "shipped" || len(shipped.Labels) != 1 || shipped.Labels[0].TrackingNumber != "TRACK-001" || shipped.Labels[0].TrackingURL != ship.TrackingURL || len(shipped.Devices) != 1 || shipped.Devices[0].Status != "shipped" {

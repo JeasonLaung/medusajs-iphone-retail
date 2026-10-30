@@ -142,6 +142,8 @@ func (h Handler) ReadWarehouseFulfillment(ctx context.Context, actor identity.Us
 	return out, err
 }
 func (h Handler) RegisterWarehouseFulfillments(private *gin.RouterGroup) {
+	private.GET("/warehouse/locations/:location_id/orders/:order_id/fulfillments/:fulfillment_id/shipment", h.WarehouseShipmentHTTP)
+	private.POST("/warehouse/locations/:location_id/orders/:order_id/fulfillments/:fulfillment_id/shipment", h.WarehouseShipmentHTTP)
 	private.GET("/warehouse/locations/:location_id/fulfillments", h.WarehouseFulfillmentsHTTP)
 	private.GET("/warehouse/locations/:location_id/orders/:order_id/fulfillments/:fulfillment_id", h.WarehouseFulfillmentsHTTP)
 }

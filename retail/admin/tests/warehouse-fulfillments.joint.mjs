@@ -41,6 +41,7 @@ export async function checkWarehouseFulfillments({browser,admin,page,origin,parc
    await expect(panel.getByRole('button',{name:canceledID,exact:true})).toHaveCount(0)
    await panel.getByRole('button',{name:parcelID,exact:true}).click()
    const detail=p.locator('.ant-drawer-content')
+   await expect(detail.getByTestId('warehouse-shipment')).toHaveCount(0)
    for(const text of ['ALLOC-A','ALLOC-B','TRACK-JOINT-001'])await expect(detail.getByText(text,{exact:true})).toBeVisible()
    assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
    const scoped=`/api/admin/warehouse/locations/${location}/orders/allocation-order/fulfillments/`
