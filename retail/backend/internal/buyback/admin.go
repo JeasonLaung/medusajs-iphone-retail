@@ -137,8 +137,9 @@ func adminOwner(tx *gorm.DB, store, id string, lock bool) (string, error) {
 }
 
 type AdminDetail struct {
-	Request RequestDetail `json:"request"`
-	Enabled bool          `json:"enabled"`
+	Request    RequestDetail `json:"request"`
+	Enabled    bool          `json:"enabled"`
+	Historical bool          `json:"historical"`
 }
 
 func AdminRequestTx(ctx context.Context, tx *gorm.DB, actor identity.User, store, id string, in *AdminCommand) (AdminDetail, error) {
@@ -161,6 +162,12 @@ func AdminRequestTx(ctx context.Context, tx *gorm.DB, actor identity.User, store
 	}
 	account, e := adminOwner(tx, store, id, in != nil)
 	if e != nil {
+		if in == nil && errors.Is(e, ErrMissing) {
+			out.Request, e = readHistoricalRequest(tx, store, id)
+			out.Enabled = false
+			out.Historical = true
+			return out, e
+		}
 		return out, e
 	}
 	request, e := ReadRequest(ctx, tx, store, account, id)
@@ -326,7 +333,12 @@ func AdminPhotoTx(ctx context.Context, tx *gorm.DB, actor identity.User, store, 
 		return PhotoContent{}, e
 	}
 	if _, e := adminOwner(tx, store, id, false); e != nil {
-		return PhotoContent{}, e
+		if !errors.Is(e, ErrMissing) {
+			return PhotoContent{}, e
+		}
+		if _, err := readHistoricalRequest(tx, store, id); err != nil {
+			return PhotoContent{}, err
+		}
 	}
 	return readPhotoBytes(ctx, tx, id, photo)
 }
@@ -347,7 +359,7 @@ func AdminListTx(ctx context.Context, tx *gorm.DB, actor identity.User, store, s
 		return out, ErrInput
 	}
 	query := func() *gorm.DB {
-		q := tx.Table("buyback_requests r").Joins("JOIN customer_buyback_submissions b ON b.request_id=r.id AND b.customer_id=r.customer_id").Joins("JOIN commerce_stores s ON s.id=b.store_id AND s.deleted_at IS NULL").Where("b.store_id=? AND r.deleted_at IS NULL", store)
+		q := tx.Table("buyback_requests r").Where("r.deleted_at IS NULL").Where(`EXISTS(SELECT 1 FROM commerce_stores s WHERE s.id=? AND s.deleted_at IS NULL) AND (EXISTS(SELECT 1 FROM customer_buyback_submissions b WHERE b.request_id=r.id AND b.customer_id=r.customer_id AND b.store_id=?) OR (EXISTS(SELECT 1 FROM buyback_history_stores h WHERE h.request_id=r.id AND h.store_id=?) AND NOT EXISTS(SELECT 1 FROM customer_buyback_submissions b WHERE b.request_id=r.id)))`, store, store, store)
 		if status != "" {
 			q = q.Where("r.status=?", status)
 		}
@@ -361,15 +373,15 @@ func AdminListTx(ctx context.Context, tx *gorm.DB, actor identity.User, store, s
 		return out, ErrUnavailable
 	}
 	var rows []struct{ ID, CustomerID string }
-	if query().Select("r.id,b.customer_id").Order("r.created_at DESC,r.id DESC").Limit(20).Offset(offset).Scan(&rows).Error != nil {
+	if query().Select("r.id").Order("r.created_at DESC,r.id DESC").Limit(20).Offset(offset).Scan(&rows).Error != nil {
 		return out, ErrUnavailable
 	}
 	for _, r := range rows {
-		request, e := ReadRequest(ctx, tx, store, r.CustomerID, r.ID)
+		detail, e := AdminRequestTx(ctx, tx, actor, store, r.ID, nil)
 		if e != nil {
 			return out, e
 		}
-		out.Requests = append(out.Requests, request)
+		out.Requests = append(out.Requests, detail.Request)
 	}
 	return out, nil
 }

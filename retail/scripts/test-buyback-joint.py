@@ -144,6 +144,12 @@ def main():
         if joint.returncode or len(joint_results)!=1:raise RuntimeError('Inspection browser joint failed')
         durable=docker('exec','-e','MYSQL_PWD='+password,mysql_id,'mysql','-uroot','--protocol=socket','--database=browser_identity','--batch','--skip-column-names','-e',"SELECT (SELECT COUNT(*) FROM buyback_requests),(SELECT COUNT(*) FROM customer_buyback_submissions),(SELECT COUNT(*) FROM buyback_photos),(SELECT COUNT(*) FROM buyback_photo_bytes),(SELECT COUNT(*) FROM buyback_requests WHERE status IN ('paid','returned') AND closed_at IS NOT NULL),(SELECT COUNT(*) FROM buyback_requests WHERE status='canceled' AND closed_at IS NOT NULL),(SELECT COUNT(*) FROM buyback_requests WHERE JSON_UNQUOTE(JSON_EXTRACT(items,'$[0].serial_number'))='SN-JOINT'),(SELECT COUNT(*) FROM customer_buyback_submissions WHERE customer_id='cust_buyback-other')")
         if durable.returncode or durable.stdout.decode().strip()!='2\t2\t3\t3\t1\t1\t1\t0':raise RuntimeError('Durable buyback state differs: '+durable.stdout.decode().strip())
+        fixture=docker('exec','-e','MYSQL_PWD='+password,'-e','BROWSER_IDENTITY_FIXTURE=1',mysql_id,'/opt/prep.test','-test.v','-test.run','^TestPrepareBuybackHistoryBrowser$','-test.timeout','30s')
+        if fixture.returncode or b'OWNED_BUYBACK_HISTORY_BROWSER_READY' not in fixture.stdout:raise RuntimeError('History browser fixture failed')
+        history_browser=subprocess.run([node,'tests/buyback-history.joint.mjs'],cwd=ROOT/'retail/storefront',env=browser_env,capture_output=True,timeout=120)
+        (ROOT/'logs/gin-migration/buyback-history-browser.log').write_bytes(history_browser.stdout+history_browser.stderr)
+        history_browser_results=[json.loads(line.split('BUYBACK_HISTORY_BROWSER ',1)[1]) for line in history_browser.stdout.decode('utf-8').splitlines() if line.startswith('BUYBACK_HISTORY_BROWSER ')]
+        if history_browser.returncode or len(history_browser_results)!=1:raise RuntimeError('Historical Admin browser failed')
         policies=[json.loads(line.split('BUYBACK_ADMIN_POLICIES ',1)[1]) for line in policy.stdout.decode().splitlines() if 'BUYBACK_ADMIN_POLICIES ' in line]
         if len(policies)!=1:raise RuntimeError('Policy evidence missing')
         inspection_policies=[json.loads(line.split('BUYBACK_INSPECTION_POLICIES ',1)[1]) for line in inspection.stdout.decode().splitlines() if 'BUYBACK_INSPECTION_POLICIES ' in line]
@@ -154,6 +160,7 @@ def main():
         history_results=[json.loads(line.split('BUYBACK_HISTORY_IMPORT ',1)[1]) for line in history.stdout.decode().splitlines() if 'BUYBACK_HISTORY_IMPORT ' in line]
         if len(history_results)!=1:raise RuntimeError('History import evidence missing')
         report['history_import']=history_results[0]
+        report['history_browser']=history_browser_results[0]
     finally:
         password = ''
         for container in reversed(containers):

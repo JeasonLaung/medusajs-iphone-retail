@@ -79,6 +79,14 @@ func ReadRequest(ctx context.Context, tx *gorm.DB, storeID, accountID, id string
 	if e != nil {
 		return out, ErrUnavailable
 	}
+	return projectRequest(tx, row, id)
+}
+
+// Projection is shared only after the caller has proved customer or platform
+// historical scope. It is not an authorization entry point.
+func projectRequest(tx *gorm.DB, row requestRow, id string) (RequestDetail, error) {
+	var out RequestDetail
+	var e error
 	if len(row.Items) > 262144 || len(row.ReturnAddress) > 16384 || len(row.History) > 1048576 {
 		return out, ErrUnavailable
 	}

@@ -11,9 +11,9 @@ export async function buybacks(query:URLSearchParams,signal:AbortSignal){
 }
 export async function buyback(id:string,command?:ReviewCommand|InspectionCommand,signal?:AbortSignal){
  const csrf=command?csrfCookie():undefined;if(command&&!csrf)throw new APIError(403,'auth.invalid_csrf')
- const d=await request<{request:unknown;enabled:boolean}>('buyback/'+encodeURIComponent(id),{method:command?'POST':'GET',body:command,csrf,signal},'/api/admin/')
- if(!d||typeof d.enabled!=='boolean')throw new APIError(0,'request.invalid_response')
- const r=buybackRequestProjection(d.request);if(r.id!==id)throw new APIError(0,'request.invalid_response');return {request:r,enabled:d.enabled}
+ const d=await request<{request:unknown;enabled:boolean;historical:boolean}>('buyback/'+encodeURIComponent(id),{method:command?'POST':'GET',body:command,csrf,signal},'/api/admin/')
+ if(!d||typeof d.enabled!=='boolean'||typeof d.historical!=='boolean')throw new APIError(0,'request.invalid_response')
+ const r=buybackRequestProjection(d.request);if(r.id!==id)throw new APIError(0,'request.invalid_response');return {request:r,enabled:d.enabled,historical:d.historical}
 }
 export async function buybackPhoto(id:string,photo:string,signal:AbortSignal){return photoContentProjection(await request('buyback/'+encodeURIComponent(id)+'/photos/'+encodeURIComponent(photo),{signal},'/api/admin/'))}
 export async function inspectionDevices(id:string,item:string,signal:AbortSignal){

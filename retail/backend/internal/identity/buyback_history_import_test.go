@@ -16,7 +16,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/catalogimport"
+	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/rowimport"
 	driver "github.com/go-sql-driver/mysql"
 )
@@ -31,6 +33,8 @@ func TestVerifyBuybackHistoryImport(t *testing.T) {
 	cfg.Net = "unix"
 	cfg.Addr = "/var/run/mysqld/mysqld.sock"
 	cfg.DBName = "browser_identity"
+	cfg.ParseTime = true
+	cfg.Loc = time.UTC
 	db, e := sql.Open("mysql", cfg.FormatDSN())
 	if e != nil {
 		t.Fatal("fixture SQL")
@@ -130,6 +134,51 @@ func TestVerifyBuybackHistoryImport(t *testing.T) {
 				if e := apply("buyback_photo", photo); e != nil {
 					t.Fatal("file copy changed original metadata", e)
 				}
+				var actor identity.User
+				if gdb.Where("id='new-browser-fixture'").Take(&actor).Error != nil {
+					t.Fatal("platform fixture")
+				}
+				if _, e := buyback.AdminRequestTx(ctx, gdb, actor, "fixture-store", "history-request", nil); !errors.Is(e, buyback.ErrMissing) {
+					t.Fatal("unbound history visible")
+				}
+				for i := 0; i < 2; i++ {
+					if e := buyback.BindHistoricalStoreTx(ctx, gdb, "history-request", "fixture-store", sha); e != nil {
+						t.Fatal("historical store binding", e)
+					}
+				}
+				if e := buyback.BindHistoricalStoreTx(ctx, gdb, "history-request", "fixture-store", strings.Repeat("b", 64)); e == nil {
+					t.Fatal("binding snapshot drift")
+				}
+				current, e := buyback.AdminRequestTx(ctx, gdb, actor, "fixture-store", "history-request", nil)
+				if e != nil || !current.Historical || current.Enabled || current.Request.ID != "history-request" {
+					t.Fatal("historical detail", e)
+				}
+				list, e := buyback.AdminListTx(ctx, gdb, actor, "fixture-store", "paid", "history-request", 0)
+				if e != nil || list.Count != 1 || len(list.Requests) != 1 {
+					t.Fatal("historical list", e)
+				}
+				content, e := buyback.AdminPhotoTx(ctx, gdb, actor, "fixture-store", "history-request", "history-photo")
+				if e != nil || content.MimeType != "image/png" {
+					t.Fatal("historical private photo", e)
+				}
+				if _, e := buyback.AdminRequestTx(ctx, gdb, actor, "other-store", "history-request", nil); !errors.Is(e, buyback.ErrMissing) {
+					t.Fatal("cross-store historical read")
+				}
+				if _, e := buyback.AdminPhotoTx(ctx, gdb, actor, "other-store", "history-request", "history-photo"); !errors.Is(e, buyback.ErrMissing) {
+					t.Fatal("cross-store historical photo")
+				}
+				if _, e := buyback.AdminRequestTx(ctx, gdb, actor, "fixture-store", "history-request", &buyback.AdminCommand{Action: "mark_paid", PaymentReference: "new"}); !errors.Is(e, buyback.ErrMissing) {
+					t.Fatal("history write enabled")
+				}
+				if e := gdb.Exec("UPDATE authorization_principals SET kind='warehouse' WHERE user_id=?", actor.ID).Error; e != nil {
+					t.Fatal("warehouse fixture")
+				}
+				if _, e := buyback.AdminRequestTx(ctx, gdb, actor, "fixture-store", "history-request", nil); !errors.Is(e, authorization.ErrDenied) {
+					t.Fatal("warehouse historical access")
+				}
+				if e := gdb.Exec("UPDATE authorization_principals SET kind='employee' WHERE user_id=?", actor.ID).Error; e != nil {
+					t.Fatal("platform restore")
+				}
 				if _, e := tx.ExecContext(ctx, "UPDATE buyback_photo_bytes SET content=? WHERE photo_id='history-photo'", []byte{137, 80, 78, 71, 13, 10, 26, 10, 2}); e != nil {
 					t.Fatal("corrupt copy fixture")
 				}
@@ -221,5 +270,5 @@ func TestVerifyBuybackHistoryImport(t *testing.T) {
 	if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM buyback_requests WHERE id='history-request'").Scan(&count) != nil || count != 0 {
 		t.Fatal("caller rollback failed")
 	}
-	t.Log(`BUYBACK_HISTORY_IMPORT {"cases":10,"exact_replay":true,"conflict_rejected":true,"ownership_granted":false,"external_files_touched":false,"caller_rollback":true,"private_file_copy":true,"copied_file_expiry":true}`)
+	t.Log(`BUYBACK_HISTORY_IMPORT {"cases":10,"exact_replay":true,"conflict_rejected":true,"ownership_granted":false,"external_files_touched":false,"caller_rollback":true,"private_file_copy":true,"copied_file_expiry":true,"platform_history_read":true,"cross_store_denied":true,"warehouse_denied":true,"history_commands_disabled":true}`)
 }
