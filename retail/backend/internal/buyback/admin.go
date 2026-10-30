@@ -122,7 +122,7 @@ func adminOwner(tx *gorm.DB, store, id string, lock bool) (string, error) {
 		return "", ErrMissing
 	}
 	var row struct{ CustomerID string }
-	q := tx.Table("buyback_requests r").Select("b.customer_id").Joins("JOIN customer_buyback_submissions b ON b.request_id=r.id AND b.customer_id=r.customer_id").Joins("JOIN commerce_stores s ON s.id=b.store_id AND s.deleted_at IS NULL").Where("r.id=? AND r.deleted_at IS NULL AND b.store_id=?", id, store)
+	q := tx.Table("buyback_requests r").Select("b.customer_id").Joins("JOIN buyback_account_access b ON b.request_id=r.id").Joins("JOIN commerce_stores s ON s.id=b.store_id AND s.deleted_at IS NULL").Where("r.id=? AND r.deleted_at IS NULL AND b.store_id=?", id, store)
 	if lock {
 		q = q.Clauses(clause.Locking{Strength: "UPDATE"})
 	}
@@ -137,9 +137,10 @@ func adminOwner(tx *gorm.DB, store, id string, lock bool) (string, error) {
 }
 
 type AdminDetail struct {
-	Request    RequestDetail `json:"request"`
-	Enabled    bool          `json:"enabled"`
-	Historical bool          `json:"historical"`
+	Request      RequestDetail `json:"request"`
+	Enabled      bool          `json:"enabled"`
+	Historical   bool          `json:"historical"`
+	ClaimEnabled bool          `json:"claim_enabled"`
 }
 
 func AdminRequestTx(ctx context.Context, tx *gorm.DB, actor identity.User, store, id string, in *AdminCommand) (AdminDetail, error) {
@@ -166,6 +167,7 @@ func AdminRequestTx(ctx context.Context, tx *gorm.DB, actor identity.User, store
 			out.Request, e = readHistoricalRequest(tx, store, id)
 			out.Enabled = false
 			out.Historical = true
+			out.ClaimEnabled = enabled && e == nil && out.Request.ClosedAt == nil && out.Request.Status != "paid" && out.Request.Status != "returned" && out.Request.Status != "canceled"
 			return out, e
 		}
 		return out, e
@@ -359,7 +361,7 @@ func AdminListTx(ctx context.Context, tx *gorm.DB, actor identity.User, store, s
 		return out, ErrInput
 	}
 	query := func() *gorm.DB {
-		q := tx.Table("buyback_requests r").Where("r.deleted_at IS NULL").Where(`EXISTS(SELECT 1 FROM commerce_stores s WHERE s.id=? AND s.deleted_at IS NULL) AND (EXISTS(SELECT 1 FROM customer_buyback_submissions b WHERE b.request_id=r.id AND b.customer_id=r.customer_id AND b.store_id=?) OR (EXISTS(SELECT 1 FROM buyback_history_stores h WHERE h.request_id=r.id AND h.store_id=?) AND NOT EXISTS(SELECT 1 FROM customer_buyback_submissions b WHERE b.request_id=r.id)))`, store, store, store)
+		q := tx.Table("buyback_requests r").Where("r.deleted_at IS NULL").Where(`EXISTS(SELECT 1 FROM commerce_stores s WHERE s.id=? AND s.deleted_at IS NULL) AND (EXISTS(SELECT 1 FROM buyback_account_access b WHERE b.request_id=r.id AND b.store_id=?) OR (EXISTS(SELECT 1 FROM buyback_history_stores h WHERE h.request_id=r.id AND h.store_id=?) AND NOT EXISTS(SELECT 1 FROM customer_buyback_submissions b WHERE b.request_id=r.id)))`, store, store, store)
 		if status != "" {
 			q = q.Where("r.status=?", status)
 		}

@@ -72,7 +72,7 @@ func ReadRequest(ctx context.Context, tx *gorm.DB, storeID, accountID, id string
 	}
 	tx = tx.WithContext(ctx)
 	var row requestRow
-	e := tx.Table("buyback_requests r").Select(`r.id,r.status,r.contact_name,r.email,r.phone,r.return_address,r.items,r.currency_code,CAST(r.reference_amount AS CHAR) AS reference_amount,r.raw_reference_amount,CAST(r.final_amount AS CHAR) AS final_amount,r.raw_final_amount,r.shipping_instructions,r.tracking_number,r.return_tracking,r.payment_reference,r.review_note,r.history,r.created_at,r.updated_at,r.closed_at,r.deleted_at`).Joins("JOIN customer_buyback_submissions b ON b.request_id=r.id AND b.customer_id=r.customer_id").Joins("JOIN commerce_stores s ON s.id=b.store_id AND s.deleted_at IS NULL").Where("r.id=? AND r.deleted_at IS NULL AND b.customer_id=? AND b.store_id=?", id, accountID, storeID).Take(&row).Error
+	e := tx.Table("buyback_requests r").Select(`r.id,r.status,r.contact_name,r.email,r.phone,r.return_address,r.items,r.currency_code,CAST(r.reference_amount AS CHAR) AS reference_amount,r.raw_reference_amount,CAST(r.final_amount AS CHAR) AS final_amount,r.raw_final_amount,r.shipping_instructions,r.tracking_number,r.return_tracking,r.payment_reference,r.review_note,r.history,r.created_at,r.updated_at,r.closed_at,r.deleted_at`).Joins("JOIN buyback_account_access b ON b.request_id=r.id").Joins("JOIN commerce_stores s ON s.id=b.store_id AND s.deleted_at IS NULL").Where("r.id=? AND r.deleted_at IS NULL AND b.customer_id=? AND b.store_id=?", id, accountID, storeID).Take(&row).Error
 	if errors.Is(e, gorm.ErrRecordNotFound) {
 		return out, ErrMissing
 	}

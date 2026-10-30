@@ -36,6 +36,9 @@ SELECT 'historical-browser-request','legacy-no-login','historical-browser-key','
 		`INSERT INTO buyback_photos(id,request_id,item_id,photo_type,uploaded_at,storage_key,mime_type,review_status,review_note,created_at,updated_at) SELECT 'historical-browser-photo','historical-browser-request',p.item_id,p.photo_type,p.uploaded_at,'historical-private-key',p.mime_type,p.review_status,p.review_note,p.created_at,p.updated_at FROM buyback_photos p JOIN buyback_photo_bytes b ON b.photo_id=p.id LIMIT 1`,
 		`INSERT INTO buyback_photo_bytes(photo_id,mime_type,sha256,content,created_at) SELECT 'historical-browser-photo',b.mime_type,b.sha256,b.content,b.created_at FROM buyback_photo_bytes b LIMIT 1`,
 		`INSERT INTO buyback_photo_imports(photo_id,source_key,snapshot_sha256,content_sha256,mime_type,created_at) SELECT photo_id,'historical-private-key',UNHEX(REPEAT('a',64)),sha256,mime_type,created_at FROM buyback_photo_bytes WHERE photo_id='historical-browser-photo'`,
+		`INSERT INTO buyback_requests(id,customer_id,submission_key,contact_name,email,phone,return_address,items,status,reference_amount,raw_reference_amount,final_amount,raw_final_amount,currency_code,shipping_instructions,tracking_number,return_tracking,payment_reference,review_note,history,closed_at,created_at,updated_at)
+SELECT 'historical-claim-request','legacy-no-login','historical-claim-key',contact_name,email,phone,return_address,items,'awaiting_photos',reference_amount,raw_reference_amount,final_amount,raw_final_amount,currency_code,shipping_instructions,tracking_number,return_tracking,'',review_note,history,NULL,created_at,updated_at FROM buyback_requests WHERE id='historical-browser-request'`,
+		`INSERT INTO buyback_history_stores VALUES('historical-claim-request','fixture-store',UNHEX(REPEAT('a',64)))`,
 	}
 	for _, q := range queries {
 		if _, e := tx.ExecContext(t.Context(), q); e != nil {

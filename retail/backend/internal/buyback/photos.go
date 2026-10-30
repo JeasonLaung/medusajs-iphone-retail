@@ -101,7 +101,7 @@ func StagePhotoUpload(ctx context.Context, tx *gorm.DB, storeID, accountID, requ
 	}
 	tx = tx.WithContext(ctx)
 	var locked struct{ ID string }
-	e = tx.Table("buyback_requests r").Select("r.id").Joins("JOIN customer_buyback_submissions b ON b.request_id=r.id AND b.customer_id=r.customer_id").Where("r.id=? AND r.deleted_at IS NULL AND b.customer_id=? AND b.store_id=?", requestID, accountID, storeID).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&locked).Error
+	e = tx.Table("buyback_requests r").Select("r.id").Joins("JOIN buyback_account_access b ON b.request_id=r.id").Where("r.id=? AND r.deleted_at IS NULL AND b.customer_id=? AND b.store_id=?", requestID, accountID, storeID).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&locked).Error
 	if errors.Is(e, gorm.ErrRecordNotFound) {
 		return out, ErrMissing
 	}

@@ -92,7 +92,10 @@
     "platform_history_read": true,
     "cross_store_denied": true,
     "warehouse_denied": true,
-    "history_commands_disabled": true
+    "history_commands_disabled": true,
+    "verified_human_claim": true,
+    "claimed_customer_continuation": true,
+    "claim_audit_atomic": true
   },
   "history_browser": {
     "real_admin": true,
@@ -101,6 +104,9 @@
     "private_photo_decoded": true,
     "refresh_persisted": true,
     "commands_hidden": true,
+    "human_claim": true,
+    "claimed_customer_read": true,
+    "claimed_customer_action_persisted": true,
     "mobile": true,
     "browser_errors": 0
   },
@@ -124,5 +130,6 @@
   },
   "cleanup": "both owned containers, bridge and temporary runners removed",
   "go_all": true,
-  "formal_migrations": 79
+  "formal_migrations": 80,
+  "admin_typecheck": true
 }

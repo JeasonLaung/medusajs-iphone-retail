@@ -22,12 +22,53 @@ func (h AdminHandler) Register(g *gin.RouterGroup) {
 	g.GET("/buyback", h.HTTP)
 	g.GET("/buyback/:id", h.HTTP)
 	g.POST("/buyback/:id", h.HTTP)
+	g.POST("/buyback/:id/claim", h.ClaimHTTP)
 	g.GET("/buyback/:id/photos/:photo_id", h.HTTP)
 	g.GET("/buyback/:id/items/:item_id/devices", h.HTTP)
+}
+
+func (h AdminHandler) ClaimHTTP(c *gin.Context) {
+	value, _ := c.Get("admin_user")
+	actor, ok := value.(identity.User)
+	if !ok {
+		platform.Fail(c, 401, "auth.required", "Sign in required")
+		return
+	}
+	if c.Request.URL.RawQuery != "" || c.Request.URL.ForceQuery || strings.Split(c.GetHeader("Content-Type"), ";")[0] != "application/json" {
+		adminFailure(c, ErrInput)
+		return
+	}
+	raw, e := io.ReadAll(io.LimitReader(c.Request.Body, 8193))
+	if e != nil {
+		adminFailure(c, ErrInput)
+		return
+	}
+	in, e := ParseHistoryClaim(raw)
+	if e != nil {
+		adminFailure(c, e)
+		return
+	}
+	var out AdminDetail
+	if h.DB == nil {
+		adminFailure(c, ErrUnavailable)
+		return
+	}
+	e = h.DB.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
+		var err error
+		out, err = ClaimHistoricalTx(c.Request.Context(), tx, actor, h.StoreID, c.Param("id"), in)
+		return err
+	})
+	if e != nil {
+		adminFailure(c, e)
+		return
+	}
+	c.JSON(200, out)
 }
 func adminFailure(c *gin.Context, e error) {
 	status, code := 503, "BUYBACK_REQUEST_FAILED"
 	switch {
+	case errors.Is(e, ErrConflict):
+		status, code = 409, "BUYBACK_CLAIM_CONFLICT"
 	case errors.Is(e, authorization.ErrDenied):
 		status, code = 403, "BUYBACK_DENIED"
 	case errors.Is(e, ErrInput):

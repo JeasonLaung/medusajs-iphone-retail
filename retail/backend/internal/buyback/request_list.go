@@ -37,7 +37,7 @@ func ListRequests(ctx context.Context, tx *gorm.DB, storeID, accountID string, o
 	}
 	tx = tx.WithContext(ctx)
 	query := func() *gorm.DB {
-		return tx.Table("buyback_requests r").Joins("JOIN customer_buyback_submissions b ON b.request_id=r.id AND b.customer_id=r.customer_id").Joins("JOIN commerce_stores s ON s.id=b.store_id AND s.deleted_at IS NULL").Where("r.deleted_at IS NULL AND b.customer_id=? AND b.store_id=?", accountID, storeID)
+		return tx.Table("buyback_requests r").Joins("JOIN buyback_account_access b ON b.request_id=r.id").Joins("JOIN commerce_stores s ON s.id=b.store_id AND s.deleted_at IS NULL").Where("r.deleted_at IS NULL AND b.customer_id=? AND b.store_id=?", accountID, storeID)
 	}
 	if query().Count(&out.Count).Error != nil {
 		return RequestList{}, ErrUnavailable

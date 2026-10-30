@@ -2,6 +2,7 @@ import {useEffect,useRef,useState} from 'react'
 import {Alert,Button,Descriptions,Drawer,Form,Image,Input,Modal,Select,Space,Spin,Table,Tag,Timeline,Typography} from 'antd'
 import {APIError} from './api'
 import BuybackInspection from './BuybackInspection'
+import BuybackHistoryClaim from './BuybackHistoryClaim'
 import {getFlowCopy} from '../../storefront/src/components/sell/flow-copy'
 import {getBuybackCopy} from '../../storefront/src/components/sell/buyback-copy'
 import {useAccess} from './Permissions'
@@ -56,6 +57,7 @@ export default function Buybacks({copy,onExpired}:{copy:Copy;onExpired():void}){
  <Space direction="vertical" size={16} className="full-width">{detailError&&<Alert type="error" showIcon message={detailError}/>}<Button disabled={busy} onClick={()=>setAttempt(n=>n+1)}>{text('刷新当前申请','Refresh request')}</Button>
  {!request?<Spin/>:<>
  {detail.historical?<Alert type="info" message={text('历史回收记录，仅供查阅；旧客户账号未迁移','Historical selling record, available for reference. Legacy customer accounts were not migrated.')}/>:!detail.enabled&&<Alert type="info" message={text('回收处理尚未启用，仅可查看','Selling request commands are disabled')}/>}
+ {detail.claim_enabled&&access.can('buyback.write')&&<BuybackHistoryClaim id={request.id} zh={zh} onExpired={onExpired} onBusy={setBusy} onSaved={current=>{setDetail(current);setAttempt(n=>n+1)}}/>}
  <Descriptions column={1} items={[{key:'id',label:text('申请','Request'),children:request.id},{key:'status',label:text('状态','Status'),children:statuses[request.status as keyof typeof statuses]},{key:'customer',label:text('客户','Customer'),children:request.contact_name+' · '+request.email+' · '+request.phone},{key:'address',label:text('退回地址','Return address'),children:Object.values(request.return_address).filter(Boolean).join(', ')},{key:'tracking',label:text('物流单号','Tracking'),children:request.tracking_number||'—'},{key:'note',label:text('审核说明','Review note'),children:request.review_note||'—'}]}/>
  {request.items.map(item=><section key={item.id}><Typography.Title level={4}>{item.model_name} · {item.capacity}</Typography.Title><Typography.Paragraph>SN: {item.serial_number||'—'} · IMEI: {item.imei||'—'}</Typography.Paragraph>
  <Descriptions size="small" column={2} items={assessmentRows(item)}/>

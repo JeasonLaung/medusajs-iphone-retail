@@ -191,6 +191,98 @@ func TestVerifyBuybackHistoryImport(t *testing.T) {
 				if _, e := buyback.ReadPhoto(ctx, gdb, "fixture-store", "cust_buyback-browser", "history-request", "history-photo"); e == nil {
 					t.Fatal("history granted customer access")
 				}
+				claim := buyback.HistoryClaim{CustomerID: "cust_buyback-browser", EvidenceNote: "Artificial customer identity verified with original request"}
+				if _, e := buyback.ClaimHistoricalTx(ctx, gdb, actor, "fixture-store", "history-request", claim); !errors.Is(e, buyback.ErrCommandState) {
+					t.Fatal("closed history claimed")
+				}
+				rollbackClaim := errors.New("rollback claim verification")
+				e = gdb.Transaction(func(nested *gorm.DB) error {
+					if nested.Exec("UPDATE buyback_requests SET status='awaiting_photos',closed_at=NULL WHERE id='history-request'").Error != nil {
+						t.Fatal("claim fixture")
+					}
+					if _, e := buyback.ClaimHistoricalTx(ctx, nested, actor, "other-store", "history-request", claim); !errors.Is(e, buyback.ErrMissing) {
+						t.Fatal("cross store claim")
+					}
+					if nested.Exec("UPDATE authorization_principals SET kind='warehouse' WHERE user_id=?", actor.ID).Error != nil {
+						t.Fatal("claim warehouse fixture")
+					}
+					if _, e := buyback.ClaimHistoricalTx(ctx, nested, actor, "fixture-store", "history-request", claim); !errors.Is(e, authorization.ErrDenied) {
+						t.Fatal("warehouse claim")
+					}
+					if nested.Exec("UPDATE authorization_principals SET kind='employee' WHERE user_id=?", actor.ID).Error != nil {
+						t.Fatal("claim employee restore")
+					}
+					if nested.Exec("UPDATE customer_accounts SET verified_at=NULL WHERE id=?", claim.CustomerID).Error != nil {
+						t.Fatal("unverified fixture")
+					}
+					if _, e := buyback.ClaimHistoricalTx(ctx, nested, actor, "fixture-store", "history-request", claim); !errors.Is(e, buyback.ErrInput) {
+						t.Fatal("unverified account claimed")
+					}
+					if nested.Exec("UPDATE customer_accounts SET verified_at=UTC_TIMESTAMP(6) WHERE id=?", claim.CustomerID).Error != nil {
+						t.Fatal("verified restore")
+					}
+					callback := "claim-audit-failure"
+					if nested.Callback().Create().Before("gorm:create").Register(callback, func(db *gorm.DB) {
+						if db.Statement.Table == "audit_events" {
+							db.AddError(errors.New("artificial claim audit failure"))
+						}
+					}) != nil {
+						t.Fatal("claim fault setup")
+					}
+					fault := nested.Transaction(func(inner *gorm.DB) error {
+						_, e := buyback.ClaimHistoricalTx(ctx, inner, actor, "fixture-store", "history-request", claim)
+						return e
+					})
+					nested.Callback().Create().Remove(callback)
+					var leaked int64
+					if fault == nil || nested.Table("buyback_history_claims").Where("request_id='history-request'").Count(&leaked).Error != nil || leaked != 0 {
+						t.Fatal("claim audit failure leaked ownership")
+					}
+					for i := 0; i < 2; i++ {
+						out, e := buyback.ClaimHistoricalTx(ctx, nested, actor, "fixture-store", "history-request", claim)
+						if e != nil || out.Historical || !out.Enabled {
+							t.Fatal("human claim/replay", e)
+						}
+					}
+					other := claim
+					other.CustomerID = "cust_buyback-other"
+					if _, e := buyback.ClaimHistoricalTx(ctx, nested, actor, "fixture-store", "history-request", other); !errors.Is(e, buyback.ErrConflict) {
+						t.Fatal("claim reassigned")
+					}
+					if _, e := buyback.ReadPhoto(ctx, nested, "fixture-store", claim.CustomerID, "history-request", "history-photo"); e != nil {
+						t.Fatal("claimed photo", e)
+					}
+					listed, e := buyback.ListRequests(ctx, nested, "fixture-store", claim.CustomerID, 0)
+					if e != nil {
+						t.Fatal("claimed list", e)
+					}
+					found := false
+					for _, r := range listed.Requests {
+						found = found || r.ID == "history-request"
+					}
+					if !found {
+						t.Fatal("claimed request absent from original account list")
+					}
+					if _, e := buyback.ReadRequest(ctx, nested, "fixture-store", "cust_buyback-other", "history-request"); !errors.Is(e, buyback.ErrMissing) {
+						t.Fatal("claim foreign account")
+					}
+					updated, e := buyback.StageCustomerCommand(ctx, nested, "fixture-store", claim.CustomerID, "history-request", buyback.CustomerCommand{Action: "cancel"})
+					if e != nil || updated.Status != "canceled" {
+						t.Fatal("claimed customer continuation", e)
+					}
+					var legacy string
+					var audits int64
+					if nested.Table("buyback_requests").Select("customer_id").Where("id='history-request'").Scan(&legacy).Error != nil || legacy != "legacy-customer-no-login" {
+						t.Fatal("legacy identity overwritten")
+					}
+					if nested.Table("audit_events").Where("resource_id='history-request' AND action='buyback.history_claim'").Count(&audits).Error != nil || audits != 1 {
+						t.Fatal("claim audit duplicated")
+					}
+					return rollbackClaim
+				})
+				if !errors.Is(e, rollbackClaim) {
+					t.Fatal("claim rollback", e)
+				}
 				if _, e := tx.ExecContext(ctx, "UPDATE buyback_requests SET closed_at=? WHERE id='history-request'", time.Now().UTC().Add(-181*24*time.Hour)); e != nil {
 					t.Fatal("expiry fixture")
 				}
@@ -270,5 +362,5 @@ func TestVerifyBuybackHistoryImport(t *testing.T) {
 	if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM buyback_requests WHERE id='history-request'").Scan(&count) != nil || count != 0 {
 		t.Fatal("caller rollback failed")
 	}
-	t.Log(`BUYBACK_HISTORY_IMPORT {"cases":10,"exact_replay":true,"conflict_rejected":true,"ownership_granted":false,"external_files_touched":false,"caller_rollback":true,"private_file_copy":true,"copied_file_expiry":true,"platform_history_read":true,"cross_store_denied":true,"warehouse_denied":true,"history_commands_disabled":true}`)
+	t.Log(`BUYBACK_HISTORY_IMPORT {"cases":10,"exact_replay":true,"conflict_rejected":true,"ownership_granted":false,"external_files_touched":false,"caller_rollback":true,"private_file_copy":true,"copied_file_expiry":true,"platform_history_read":true,"cross_store_denied":true,"warehouse_denied":true,"history_commands_disabled":true,"verified_human_claim":true,"claimed_customer_continuation":true,"claim_audit_atomic":true}`)
 }

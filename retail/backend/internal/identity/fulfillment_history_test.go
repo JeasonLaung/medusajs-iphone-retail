@@ -68,11 +68,11 @@ func TestOwnedFulfillmentHistory(t *testing.T) {
 	}
 	db, gdb := open("fulfillment_schema_fresh")
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 79 || schema.CheckApplied(ctx, db, plan) != nil || fulfillment.Ready(ctx, gdb) != nil {
+	if err != nil || r.Applied != 80 || schema.CheckApplied(ctx, db, plan) != nil || fulfillment.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh fulfillment schema failed")
 	}
 	r, err = schema.Apply(ctx, db, plan)
-	if err != nil || r.Skipped != 79 {
+	if err != nil || r.Skipped != 80 {
 		t.Fatal("fulfillment schema replay changed facts")
 	}
 
