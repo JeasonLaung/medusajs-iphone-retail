@@ -1,0 +1,78 @@
+{
+  "format_version": 1,
+  "node_version": "v22.23.4",
+  "browser": {
+    "actual_astro_checkout": true,
+    "actual_gin_handlers": true,
+    "real_mysql_redis": true,
+    "mocked_business_api_responses": false,
+    "isolated_provider_adapter_and_hosted_page": true,
+    "real_provider_payments": false,
+    "preseeded_cart_items": true,
+    "address_delivery_payment_review_result_confirmation": true,
+    "pending_before_paid": true,
+    "payment_reload_replays_original": true,
+    "confirmation_reload": true,
+    "completion_replay_same_order": true,
+    "unauthenticated_confirmation_denied": true,
+    "payment_journal_cleared": true,
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "widths": [
+      390,
+      1440
+    ],
+    "unique_orders": 4,
+    "browser_errors": 0,
+    "real_email_delivery": false
+  },
+  "post_browser_sql_regression_passed": true,
+  "sql_receipts_checked": true,
+  "scope": "checkout pipeline",
+  "production_services_or_data_used": false,
+  "full_storefront_accepted": false,
+  "resources": {
+    "mysql_cpus": 1,
+    "mysql_memory_mib": 768,
+    "redis_cpus": 1,
+    "redis_memory_mib": 128,
+    "database_ports_published": false,
+    "api_port_loopback_only": true,
+    "network_egress_restricted": false
+  },
+  "order_mail": {
+    "browser_paid_orders": 4,
+    "production_resend_adapter": true,
+    "approved_database_sender": true,
+    "captured_total": "158.75 EUR",
+    "english_messages": 2,
+    "chinese_messages": 2,
+    "concurrent_single_dispatch": true,
+    "ambiguous_attempts": 3,
+    "manual_recovery_with_one_audit": true,
+    "stable_body_key_provider_identity": true,
+    "provider_requests": 7,
+    "unique_provider_messages": 4,
+    "sent_not_requeued_on_receipt_replay": true,
+    "encrypted_frozen_requests": true,
+    "real_external_send": false
+  },
+  "sql": {
+    "four_unique_orders": true,
+    "four_provider_creations": true,
+    "notification_outbox_per_order": true,
+    "reservation_operation_per_order": true,
+    "captured_amount": "158.75",
+    "reserved_inventory_delta": "10"
+  },
+  "source_sha256_lf": {
+    "retail/backend/internal/identity/checkout_browser_test.go": "4034a3ee1097361841b7ecdb25f35db9819fd4382fd2c8087417194061b3c9d5",
+    "retail/backend/internal/identity/checkout_mail_joint_test.go": "d890a105df5b01cfd264720d4ba8361ad2da270c04f43ca772ddff239dc4df00",
+    "retail/backend/internal/identity/mail_joint_test.go": "784da16a548d77bbef318b2f4e1afad20ccb6de09fdfbda0a4fe44de208d0120",
+    "retail/scripts/test-customer-orders-live.py": "00fdaf93faedc8525498ef00d7fe7067b44f01fae90a3f373c356bf569f228b2",
+    "retail/storefront/tests/checkout.live.mjs": "3d6643e277541c07af76d05309e3e172303f2567661a21414659c847ab6042fa"
+  },
+  "cleanup_complete": true
+}

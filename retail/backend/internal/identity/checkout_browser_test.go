@@ -69,7 +69,11 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	var mu sync.Mutex
 	for i := 0; i < 4; i++ {
 		id := uuid.NewString()
-		created, err := cart.Create(ctx, db, cart.CreateCommand{OperationID: id, ScopeHash: sha256.Sum256([]byte(id)), StoreID: "shop", RegionID: "region", Locale: "en-GB"})
+		locale := "en-GB"
+		if i >= 2 {
+			locale = "zh-CN"
+		}
+		created, err := cart.Create(ctx, db, cart.CreateCommand{OperationID: id, ScopeHash: sha256.Sum256([]byte(id)), StoreID: "shop", RegionID: "region", Locale: locale})
 		if err != nil {
 			t.Fatal("owned checkout cart unavailable", err)
 		}
@@ -180,6 +184,7 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	if creates.Load() != 4 || observations.Load() < 8 {
 		t.Fatal("browser provider calls differ", creates.Load(), observations.Load())
 	}
+	var orderIDs []string
 	for _, f := range fixtures {
 		var receipt struct {
 			OrderID          string
@@ -188,6 +193,7 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		if db.Table("cart_completion_receipts").Where("cart_id=?", f.ID).Take(&receipt).Error != nil || receipt.CompletedVersion != 6 {
 			t.Fatal("browser completion receipt missing")
 		}
+		orderIDs = append(orderIDs, receipt.OrderID)
 		for _, table := range []string{"order_carts", "order_notification_outbox"} {
 			var count int64
 			if db.Table(table).Where("order_id=?", receipt.OrderID).Count(&count).Error != nil || count != 1 {
@@ -216,5 +222,6 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	if !ok || !valid || new(big.Rat).Sub(after, before).Cmp(big.NewRat(10, 1)) != 0 {
 		t.Fatal("browser stock reservation delta differs")
 	}
+	checkCheckoutMailJoint(t, ctx, db, options.Ring, orderIDs)
 	t.Log(`CHECKOUT_JOINT_SQL {"four_unique_orders":true,"four_provider_creations":true,"notification_outbox_per_order":true,"reservation_operation_per_order":true,"captured_amount":"158.75","reserved_inventory_delta":"10"}`)
 }

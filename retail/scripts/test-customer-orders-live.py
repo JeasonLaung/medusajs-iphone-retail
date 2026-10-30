@@ -5,6 +5,7 @@ Default: account/order attachment, with an isolated adapter-produced order.
 --checkout: addresses through payment/confirmation with an isolated provider.
 """
 import json
+import hashlib
 import os
 from pathlib import Path
 import re
@@ -74,7 +75,8 @@ def main():
     containers, network, process, stream = [], None, None, None
     password, key = secrets.token_urlsafe(32), secrets.token_hex(32)
     try:
-        build = subprocess.run(['go', 'test', '-c', '-o', str(binary), './internal/identity'], cwd=ROOT / 'retail/backend', env=env, capture_output=True, timeout=120)
+        backend = Path(os.environ.get('CUSTOMER_ORDERS_TEST_BACKEND', str(ROOT / 'retail/backend'))).resolve()
+        build = subprocess.run(['go', 'test', '-c', '-o', str(binary), './internal/identity'], cwd=backend, env=env, capture_output=True, timeout=120)
         if build.returncode:
             (logs / (log_prefix + '-build.log')).write_bytes(build.stdout + build.stderr)
             raise RuntimeError('Identity test binary compilation failed; inspect ignored build log')
@@ -134,6 +136,23 @@ def main():
                                 'database_ports_published': False, 'api_port_loopback_only': True, 'network_egress_restricted': False}}
         if not promotion and not checkout:
             report['sql_attachment_and_unique_audit_checked'] = True
+        if checkout:
+            mail_marker = 'CHECKOUT_MAIL_JOINT_SQL '
+            mail = [line.split(mail_marker, 1)[1] for line in sql_output.splitlines() if mail_marker in line]
+            if len(mail) != 1:
+                raise RuntimeError('Paid checkout mail evidence incomplete')
+            report['order_mail'] = json.loads(mail[0])
+            sql = [line.split(sql_marker, 1)[1] for line in sql_output.splitlines() if sql_marker in line]
+            if len(sql) != 1:
+                raise RuntimeError('Checkout receipt evidence incomplete')
+            report['sql'] = json.loads(sql[0])
+            report['source_sha256_lf'] = {}
+            sources = [(backend / 'internal/identity' / name, 'retail/backend/internal/identity/' + name)
+                       for name in ['checkout_browser_test.go', 'checkout_mail_joint_test.go', 'mail_joint_test.go']]
+            sources += [(Path(__file__), 'retail/scripts/test-customer-orders-live.py'),
+                        (ROOT / 'retail/storefront/tests/checkout.live.mjs', 'retail/storefront/tests/checkout.live.mjs')]
+            for source, name in sources:
+                report['source_sha256_lf'][name] = hashlib.sha256(source.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
     finally:
         if process is not None and process.poll() is None:
             # Stop only this runner; container removal below stops its test child.
@@ -153,7 +172,7 @@ def main():
             require(docker('network', 'rm', network), 'Owned network cleanup failed')
         binary.unlink(missing_ok=True)
     report['cleanup_complete'] = True
-    (ROOT / ('docs/migration/checkout-joint-report.json' if checkout else 'docs/migration/promotion-joint-report.json' if promotion else 'docs/migration/customer-orders-joint-report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+    (ROOT / ('docs/migration/checkout-mail-joint-report.json' if checkout else 'docs/migration/promotion-joint-report.json' if promotion else 'docs/migration/customer-orders-joint-report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'joint_browser': 'passed', 'scope': 'checkout' if checkout else 'promotions' if promotion else 'customer_orders', 'sql_regressions': 'passed', 'cleanup': 'complete'}))
 
 
