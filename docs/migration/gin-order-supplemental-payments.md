@@ -1,18 +1,32 @@
 # 原订单正差额补款指令
 
-此页记录正差额在线补款的持久指令阶段。0087 默认关闭补款；当前已有内部 Prepare/Read/Cancel、单次创建/GET恢复、paid通知原子消费和独立Worker；生产CLI已编译。顾客会话/HTTP、补款页面、本人收款通知、补款再退款trace及实际CLI/浏览器连续联合仍待。不能以本阶段关闭 C07/C09 或整站迁移清单。
+此页记录正差额在线补款的持久指令阶段。0087 默认关闭补款；当前已有内部 Prepare/Read/Cancel、单次创建/GET恢复、paid通知原子消费和独立Worker；生产CLI已编译。当前另已接入顾客会话下的私有准备/查询/取消HTTP及Astro桥接白名单；补款上下文、受保护checkout链接与补款页面、本人收款通知、补款再退款trace及实际CLI/浏览器连续联合仍待。不能以本阶段关闭 C07/C09 或整站迁移清单。
 
 ## 不可变指令与来源
 
 新指令绑定新账号及授权版本、店铺、原订单及当前版本、原已完成 checkout、唯一未付集合、独立新付款会话、完整两位小数金额及币种。UUID 重放需匹配原输入指纹和原加密请求；同一未付集合及订单最多一条未决指令。没有自动启用或按邮箱继承历史订单。
 
-`orderpayments.Principal` 是内部可信参数，不能从浏览器 JSON 解码。当前数据库账号必须存在、启用、已验证且授权版本一致；新账号的 `customer_order_ownership` 是归属来源。顾客会话协调器还未实现，不把内部账号检查报告成真实会话或 CSRF 验收。
+`orderpayments.Principal` 是内部可信参数，不能从浏览器 JSON 解码。当前数据库账号必须存在、启用、已验证且授权版本一致；新账号的 `customer_order_ownership` 是归属来源。顾客协调器现复用已有账号事务：先解析Customer realm的Redis会话，锁定SQL账号，再次解析Redis会话并核对当前密码/启用/已验证/auth_version摘要，最后由服务器读取账号代次并在同一事务调用补款参与者。内部参数仍不是浏览器提供的身份。
 
 原 checkout receipt、原 attempt 与已完成购物车提供静态成单证据；原购物车的匿名能力撤销、代次轮换或软删除不会撤销已附加的新账号订单归属。新补款不重新打开或挂接购物车付款集合，不需要旧购物车凭证。Mollie 创建请求继续携带原 cart_id 作为渠道元数据，同时使用新 session_id 与独立原订单回跳参数。
 
 Prepare 在订单锁内调用当前完整欠款校验，核对原渠道及地区允许的已启用 Mollie provider，拒绝订单级未决退款、其他未决补款、未知历史会话、任何已有付款（包括已软删除付款）及购物车付款集合借用。旧终态会话必须属于本集合的已知终态指令；只改本地状态不足以授权新收费。
 
 完整请求使用现有 payment effect journal 的行绑定加密，scope 为原订单而非已完成购物车；本地会话 data/context 也加密。Prepare 不调用渠道，不创建 payment/capture、现金交易、额外集合或库存事实。
+
+## 顾客私有 HTTP
+
+生产API将默认关闭的ORDER_PAYMENTS配置传入现有customer handler，要求店铺和回跳origin与顾客配置一致；支付keyring与顾客keyring各自使用，不混用。沿用现有同源检查、桥接签名、Customer HttpOnly cookie、CSRF、private/no-store和no-referrer。新增接口不调用Run或渠道，worker负责发送和恢复。
+
+- `POST /api/store/customer/orders/:id/payments`：严格字符串JSON字段operation_id、expected_version、collection_id、amount、currency_code及可选previous_operation_id；订单只取路径，不接收account/auth_version/session/provider或浏览器paid字段。expected_version必须为规范正整数字符串；202只表示本地指令已持久化。
+- `GET /api/store/customer/orders/:id/payments/:operation_id`：当前合法本人会话读取最小本地回执；不返回远端ID、支付session、加密信封、购物车身份或checkout链接，也不查询渠道。账号代次更新后需重新登录。
+- `POST /api/store/customer/orders/:id/payments/:operation_id/cancel`：正文只含独立取消operation_id，原补款UUID取路径；与当前会话复核、会话/指令状态及审计回执同一SQL事务。关闭SQL补款gate仍可查询/取消未发送指令。
+
+Astro customerBridge同步放行这三种规范路径，付款UUID须为规范v4；只转发当前Customer cookie，旧cart、Admin及Authorization不进入请求。准备只接受202，查询/取消只接受200，拒绝浏览器run或provider动作路径和全部查询参数。沿用现有签名、受限响应及cookie处理。12项实际Node桥接/签名测试及Astro check通过，页面和回跳仍未接入。
+
+不存在或不属于本人订单/指令均返回404，撤销/禁用/未验证/旧代次会话返回401，CSRF/Origin失败拒绝；金额/版本等状态变更返回409，依赖或写入失败返回503。私有组拒绝这些路径的全部查询参数。PrepareTx、ReadTx、CancelTx均保留在调用者事务中，不用另一个池绕过账号锁。
+
+新HTTP测试给人工SQL新账号设置测试密码，通过实际customer.Login取得Redis会话；账号建立/verified和归属仍为SQL夹具，不宣称真实注册、验证邮件或浏览器成单。六个HTTP prepare并发返回同一指令；真实SQL账号锁等待期间撤销Redis会话会被第二次解析拒绝。另覆盖Admin realm/跨账号、严格JSON、Origin/CSRF、禁用/未验证/旧代次、取消末尾SQL触发器整事务回滚和关闭SQLgate后的读取/取消重放。report-order-payment-customer-http.py从完整23组SQL和完整源码指纹派生专门报告。
 
 ## 明确取消及新尝试
 
@@ -64,4 +78,4 @@ Worker分别有界扫描10条创建/已保存结果、10条专属订单通知GET
 
 report-order-payment-runtime.py从完整23组SQL、唯一执行/现金标记与清理回执派生新报告，并拒绝测试后源码/迁移漂移。原order-payment-commands-report记录只prepare/cancel的独立回滚场景；当前runtime报告记录新的提交/入账测试，两者验收边界不同。
 
-紧接顾客当前session/CSRF/私有HTTP、本人订单补款入口/返回页/双付款展示、唯一本人付款通知，以及独立CLI的本地TLS渠道/丢响应重启和四新客户正差额至替换出库联合。补款payment后续退款必须扩展可信trace及新支付数据的order-payment-v1保护用途，不能只认原checkout receipt.payment_id。真实渠道/邮件、常驻进程及其余C01–C11继续开放。
+紧接本人补款上下文与安全checkout链接、本人订单补款入口/返回页/双付款展示、唯一本人付款通知，以及独立CLI的本地TLS渠道/丢响应重启和四新客户正差额至替换出库联合。补款payment后续退款必须扩展可信trace及新支付数据的order-payment-v1保护用途，不能只认原checkout receipt.payment_id。真实渠道/邮件、常驻进程及其余C01–C11继续开放。

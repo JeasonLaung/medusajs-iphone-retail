@@ -12,6 +12,7 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/eurorefurb/retail/internal/orderpayments"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/sessionstore"
@@ -27,25 +28,30 @@ type HTTPSessions interface {
 	AllowLogin(context.Context, sessionstore.Realm, string) (bool, error)
 }
 type HTTPOptions struct {
-	Sessions  HTTPSessions
-	Ring      *protected.Ring
-	Origin    string
-	Secure    bool
-	BridgeKey string
-	StoreID   string
+	OrderPayments *orderpayments.Service
+	Sessions      HTTPSessions
+	Ring          *protected.Ring
+	Origin        string
+	Secure        bool
+	BridgeKey     string
+	StoreID       string
 }
 type HTTPHandler struct {
-	store        *Store
-	sessions     HTTPSessions
-	origin, host string
-	secure       bool
-	bridgeSecret []byte
-	storeID      string
+	orderPayments *orderpayments.Service
+	store         *Store
+	sessions      HTTPSessions
+	origin, host  string
+	secure        bool
+	bridgeSecret  []byte
+	storeID       string
 }
 
 func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
 	store, err := New(db, options.Ring, options.Sessions, options.Origin)
 	if err != nil {
+		return nil, ErrUnavailable
+	}
+	if options.OrderPayments != nil && (options.OrderPayments.StoreID != options.StoreID || options.OrderPayments.ReturnOrigin != options.Origin) {
 		return nil, ErrUnavailable
 	}
 	u, _ := url.Parse(options.Origin)
@@ -60,7 +66,7 @@ func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
 			return nil, ErrUnavailable
 		}
 	}
-	return &HTTPHandler{store: store, sessions: options.Sessions, origin: options.Origin, host: u.Host, secure: options.Secure, bridgeSecret: key, storeID: options.StoreID}, nil
+	return &HTTPHandler{orderPayments: options.OrderPayments, store: store, sessions: options.Sessions, origin: options.Origin, host: u.Host, secure: options.Secure, bridgeSecret: key, storeID: options.StoreID}, nil
 }
 
 // Register is mounted on /api/store/customer by the production API, even when
@@ -99,6 +105,9 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/orders/:id/after-sales", h.AfterSales)
 	private.POST("/orders/:id/after-sales", h.CreateAfterSales)
 	private.POST("/orders/:id/attach", h.AttachOrder)
+	private.POST("/orders/:id/payments", h.PrepareOrderPayment)
+	private.GET("/orders/:id/payments/:operation_id", h.ReadOrderPayment)
+	private.POST("/orders/:id/payments/:operation_id/cancel", h.CancelOrderPayment)
 	private.GET("/addresses", h.ListAddresses)
 	private.POST("/addresses", h.CreateAddress)
 	private.POST("/addresses/:id", h.UpdateAddress)

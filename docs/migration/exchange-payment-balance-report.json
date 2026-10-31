@@ -56,8 +56,8 @@
   "cleanup": "both owned containers and temporary runner removed",
   "online_supplemental_payment_accepted": false,
   "real_provider_called": false,
-  "transcript_sha256": "533be4f0e2818933a1e7ac07264405671f75058986e02cdf5f136a78f94bdb97",
-  "full_sql_report_sha256": "8800f18992c177cf200d5f72e107a272544dad09b4f59f152d2db3ddbd05ec6b",
+  "transcript_sha256": "8546af960e01fe46b3c30d4888122f052da4b02fa1b200a300abd756839c20e7",
+  "full_sql_report_sha256": "68d12353093adfc14cab8c74c7ba4b8dd0ae825aaea30f9b1080ee0ae6cb6036",
   "implementation_sha256_lf": {
     "retail/backend/internal/identity/cart_completion_test.go": "8fa2350b79ef778ac75eb5b9e99ace203f5ca96b310100d205e7f9d9baed3829",
     "retail/backend/internal/identity/exchange_payment_balance_test.go": "0aaff055080f81625c174227c382a662057387e9c9052492d81b5061ee7ee809",
@@ -174,6 +174,6 @@
     "retail/backend/migrations/0086_exchange_refund_balance.sql": "0227a8f069a8759b3376b595c636426ce71983c71cc0ecc0d523bcad3ec48221",
     "retail/backend/migrations/0087_order_supplemental_payments.sql": "b12f2309529e2184f864d5fb246019bd4f7cfa5b05f0f40db77d80815b6e7a48",
     "retail/scripts/report-exchange-payment-balance.py": "6fd3016bf88afa1b787f9482c03201d328a10597ec5b80908e85ed53d0824772",
-    "retail/scripts/test-admin-auth.py": "8ab049ba324f3f5a04a3b0e221fa23f00e08ccb128cdc17065b75e425cd3cc08"
+    "retail/scripts/test-admin-auth.py": "011fc1f6cb2725f3574cfd6c40da036aa2b3bd6fb2169e454590a7b59051643a"
   }
 }

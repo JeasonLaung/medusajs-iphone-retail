@@ -165,6 +165,7 @@ func checkOrderPaymentExecution(t *testing.T, ctx context.Context, db *gorm.DB, 
 	}
 	defer exec("UPDATE mollie_notification_runtime SET enabled=? WHERE id=1", intake)
 	exec("UPDATE mollie_notification_runtime SET enabled=TRUE WHERE id=1")
+	in = checkOrderPaymentCustomerHTTP(t, ctx, db, s, p, in)
 	var wg sync.WaitGroup
 	for i := 0; i < 6; i++ {
 		wg.Go(func() {

@@ -129,6 +129,13 @@ func main() {
 	if err != nil {
 		log.Fatal("Explicit application origins, shop binding and matching secure cookie configuration required")
 	}
+	orderPaymentOptions, err := checkoutconfig.OrderPayments(os.Getenv, initialPayment)
+	if err != nil {
+		log.Fatal("Explicit order payment configuration invalid")
+	}
+	if orderPaymentOptions != nil {
+		orderPaymentOptions.DB = db
+	}
 	customers := &customer.HTTPHandler{}
 	switch os.Getenv("CUSTOMER_AUTH_ENABLED") {
 	case "", "false":
@@ -140,7 +147,7 @@ func main() {
 		if keyErr != nil {
 			log.Fatal("Explicit customer encryption keyring required")
 		}
-		customers, err = customer.NewHTTP(db, customer.HTTPOptions{Sessions: sessions, Ring: ring, Origin: os.Getenv("STOREFRONT_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true", BridgeKey: os.Getenv("CUSTOMER_BRIDGE_KEY"), StoreID: os.Getenv("STOREFRONT_STORE_ID")})
+		customers, err = customer.NewHTTP(db, customer.HTTPOptions{OrderPayments: orderPaymentOptions, Sessions: sessions, Ring: ring, Origin: os.Getenv("STOREFRONT_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true", BridgeKey: os.Getenv("CUSTOMER_BRIDGE_KEY"), StoreID: os.Getenv("STOREFRONT_STORE_ID")})
 		if err != nil {
 			log.Fatal("Customer origin and secure cookie configuration invalid")
 		}
