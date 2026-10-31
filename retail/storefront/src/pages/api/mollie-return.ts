@@ -1,12 +1,14 @@
 import type {APIRoute} from 'astro'
-import {GIN_API_ORIGIN,STOREFRONT_ORIGIN} from 'astro:env/server'
+import {GIN_API_ORIGIN,STOREFRONT_ORIGIN,CUSTOMER_BRIDGE_KEY} from 'astro:env/server'
+import {orderPaymentReturn} from '../../lib/order-payment-return'
 import {CartClient} from '../../lib/cart-client'
 import {cartBridge} from '../../lib/cart-bridge'
 // Stable original callback URL. GET only routes to the status page; it never
 // confirms payment, accepts a remote status or performs a provider operation.
-export const GET:APIRoute=async({request,url})=>{
+export const GET:APIRoute=async({request,url,clientAddress})=>{
  const headers={'Cache-Control':'private, no-store','Referrer-Policy':'no-referrer'}
  if(!STOREFRONT_ORIGIN||url.origin!==STOREFRONT_ORIGIN)return new Response('Payment return unavailable',{status:503,headers})
+ if(url.searchParams.has('order_id')||url.searchParams.has('order_payment_id'))return orderPaymentReturn(request,{ginOrigin:GIN_API_ORIGIN,storefrontOrigin:STOREFRONT_ORIGIN,bridgeKey:CUSTOMER_BRIDGE_KEY,clientAddress})
  try{
   const incoming=new Headers();for(const name of ['Cookie','Origin','Sec-Fetch-Site'])if(request.headers.has(name))incoming.set(name,request.headers.get(name)!)
   // Cross-site navigation from the provider is expected. Do not forward its

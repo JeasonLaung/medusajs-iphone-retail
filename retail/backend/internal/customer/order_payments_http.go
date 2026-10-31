@@ -83,3 +83,22 @@ func (h *HTTPHandler) CancelOrderPayment(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{"payment": out})
 }
+
+func (h *HTTPHandler) OrderPaymentContext(c *gin.Context) {
+	if !h.originOK(c, false) {
+		return
+	}
+	token, ok, _ := h.cookie(c, "session")
+	if !ok {
+		h.fail(c, ErrUnauthorized)
+		return
+	}
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+	defer cancel()
+	out, e := h.store.OrderPaymentContext(ctx, token, h.orderPayments, c.Param("id"))
+	if e != nil {
+		h.paymentFailure(c, e)
+		return
+	}
+	c.JSON(200, out)
+}

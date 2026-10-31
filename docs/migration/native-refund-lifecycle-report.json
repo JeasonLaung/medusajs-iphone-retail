@@ -75,7 +75,7 @@
   "browser_return_flow_accepted": false,
   "real_provider_refund": false,
   "cleanup": "both owned containers and temporary runner removed",
-  "transcript_sha256": "8546af960e01fe46b3c30d4888122f052da4b02fa1b200a300abd756839c20e7",
+  "transcript_sha256": "8949a7b96e6d4829323f2006481a59bdea5fc2b5a823fc95cb3550d398aef276",
   "implementation_sha256_lf": {
     "retail/admin/src/api.ts": "90708bde150b4eaf1f47008619f73157cda6b25d616433c6b72e036faa54c61f",
     "retail/admin/src/i18n.ts": "2448a8bc24244860e0937faedb3f84f33510fd13a7ece40f11c73e1ffbad0646",

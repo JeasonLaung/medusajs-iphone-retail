@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
@@ -14,6 +15,7 @@ import (
 
 	"github.com/eurorefurb/retail/internal/customer"
 	"github.com/eurorefurb/retail/internal/orderpayments"
+	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/sessionstore"
 	"github.com/gin-gonic/gin"
@@ -136,6 +138,13 @@ func checkOrderPaymentCustomerHTTP(t *testing.T, ctx context.Context, db *gorm.D
 		}
 		return w
 	}
+	contextResponse := call("GET", path, "", "", issued.Token, "", 200)
+	var before orderpayments.Context
+	if json.Unmarshal(contextResponse.Body.Bytes(), &before) != nil || before.PendingDifference != "6" || before.Next == nil || before.Next.Amount != "6.00" || len(before.Payments) != 0 {
+		t.Fatal("current exact payment consent missing")
+	}
+	call("GET", path, "", "", other.Token, "", 404)
+	call("GET", path+"?status=paid", "", "", issued.Token, "", 404)
 	call("POST", path, body, s.ReturnOrigin, "", issued.CSRF, 401)
 	call("POST", path, body, s.ReturnOrigin, issued.Token, "", 403)
 	call("POST", path, body, "https://foreign.example", issued.Token, issued.CSRF, 403)
@@ -153,6 +162,59 @@ func checkOrderPaymentCustomerHTTP(t *testing.T, ctx context.Context, db *gorm.D
 		wg.Go(func() { call("POST", path, body, s.ReturnOrigin, issued.Token, issued.CSRF, 202) })
 	}
 	wg.Wait()
+	contextResponse = call("GET", path, "", "", issued.Token, "", 200)
+	var staged orderpayments.Context
+	if json.Unmarshal(contextResponse.Body.Bytes(), &staged) != nil || staged.Next != nil || len(staged.Payments) != 1 || staged.Payments[0].CheckoutURL != nil {
+		t.Fatal("staged context offered a second charge or unverified URL")
+	}
+	// Protected creation is an artificial SQL fixture inside a rollback. No
+	// adapter POST or new external fact is claimed by this URL presentation test.
+	rollback := errors.New("owned presentation rollback")
+	if e := db.Transaction(func(tx *gorm.DB) error {
+		var row struct {
+			SessionID     string
+			RequestSHA256 []byte
+		}
+		if e := tx.Table("order_payment_operations").Select("session_id,request_sha256").Where("operation_id=?", id).Take(&row).Error; e != nil {
+			return e
+		}
+		key := payments.EffectKey{ScopeID: in.OrderID, OperationID: id, Kind: "create_session", ResourceID: row.SessionID}
+		copy(key.Digest[:], row.RequestSHA256)
+		receipt, req, e := payments.ClaimSessionRequest(ctx, tx, key, s.Ring, time.Minute)
+		if e != nil {
+			return e
+		}
+		created := payments.CreatedSession{Status: "pending", Data: ownedMollieCreation(req, "tr_owned_view", "https://www.mollie.com/checkout/owned")}
+		if _, e = payments.RecordSessionCreation(ctx, tx, key, receipt.AttemptID, s.Ring, created); e != nil {
+			return e
+		}
+		if e = tx.Table("order_payment_operations").Where("operation_id=?", id).Updates(map[string]any{"state": "uncertain", "dispatched_at": gorm.Expr("UTC_TIMESTAMP(6)")}).Error; e != nil {
+			return e
+		}
+		view, e := s.ViewTx(ctx, tx, p, in.OrderID, id)
+		if e != nil || view.CheckoutURL == nil || *view.CheckoutURL != "https://www.mollie.com/checkout/owned" || view.Applied {
+			t.Fatal("protected exact-due checkout URL", view, e)
+		}
+		if e = tx.Exec("UPDATE orders SET version=version+1 WHERE id=?", in.OrderID).Error; e != nil {
+			return e
+		}
+		changed, e := s.ViewTx(ctx, tx, p, in.OrderID, id)
+		if e != nil || changed.CheckoutURL != nil {
+			t.Fatal("stale version offered payment URL", e)
+		}
+		if e = tx.Exec("UPDATE orders SET version=version-1 WHERE id=?", in.OrderID).Error; e != nil {
+			return e
+		}
+		if e = tx.Exec("UPDATE payment_effect_journal SET result_envelope=REPEAT('x',100) WHERE scope_id=? AND operation_id=?", in.OrderID, id).Error; e != nil {
+			return e
+		}
+		if _, e = s.ViewTx(ctx, tx, p, in.OrderID, id); e == nil {
+			t.Fatal("corrupt creation receipt offered URL")
+		}
+		return rollback
+	}); !errors.Is(e, rollback) {
+		t.Fatal("URL fixture failed", e)
+	}
 	read := path + "/" + id
 	w := call("GET", read, "", "", issued.Token, "", 200)
 	var response struct {
@@ -222,7 +284,7 @@ func checkOrderPaymentCustomerHTTP(t *testing.T, ctx context.Context, db *gorm.D
 	if db.Table("order_payment_operations").Where("operation_id=? AND state='canceled' AND dispatched_at IS NULL", id).Count(&count).Error != nil || count != 1 {
 		t.Fatal("HTTP instruction not canceled exactly once")
 	}
-	t.Log(`ORDER_PAYMENT_CUSTOMER_HTTP_REHEARSAL {"real_redis_customer_capability":true,"authenticated_transaction":true,"revocation_while_waiting_account_lock_denied":true,"csrf_origin":true,"realm_and_owner_denied":true,"strict_wire":true,"concurrent_prepare":6,"private_receipt":true,"revoked_disabled_stale_unverified_denied":true,"late_cancel_rollback":true,"feature_off_read_cancel":true,"provider_calls":0,"registration_browser":false,"payment_notice":false}`)
+	t.Log(`ORDER_PAYMENT_CUSTOMER_HTTP_REHEARSAL {"real_redis_customer_capability":true,"authenticated_transaction":true,"revocation_while_waiting_account_lock_denied":true,"csrf_origin":true,"realm_and_owner_denied":true,"strict_wire":true,"concurrent_prepare":6,"private_receipt":true,"revoked_disabled_stale_unverified_denied":true,"late_cancel_rollback":true,"feature_off_read_cancel":true,"exact_current_consent_and_history":true,"active_instruction_no_second_consent":true,"protected_checkout_url":true,"stale_version_hides_url":true,"corrupt_creation_url_denied":true,"provider_calls":0,"registration_browser":false,"payment_notice":false}`)
 	in.PreviousOperationID = id
 	return in
 }

@@ -56,8 +56,8 @@
   "cleanup": "both owned containers and temporary runner removed",
   "online_supplemental_payment_accepted": false,
   "real_provider_called": false,
-  "transcript_sha256": "8546af960e01fe46b3c30d4888122f052da4b02fa1b200a300abd756839c20e7",
-  "full_sql_report_sha256": "68d12353093adfc14cab8c74c7ba4b8dd0ae825aaea30f9b1080ee0ae6cb6036",
+  "transcript_sha256": "8949a7b96e6d4829323f2006481a59bdea5fc2b5a823fc95cb3550d398aef276",
+  "full_sql_report_sha256": "412111d93ae51173053cc9cb05c1657e1327ffabe451fa584cd513021dd54862",
   "implementation_sha256_lf": {
     "retail/backend/internal/identity/cart_completion_test.go": "8fa2350b79ef778ac75eb5b9e99ace203f5ca96b310100d205e7f9d9baed3829",
     "retail/backend/internal/identity/exchange_payment_balance_test.go": "0aaff055080f81625c174227c382a662057387e9c9052492d81b5061ee7ee809",

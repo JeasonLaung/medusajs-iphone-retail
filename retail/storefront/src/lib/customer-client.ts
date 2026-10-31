@@ -1,3 +1,4 @@
+import {paymentContext,paymentReceipt,paymentOrderID,paymentUUID,type PaymentInput} from './order-payments.ts'
 import {orderConfirmationProjection,type OrderConfirmation} from './cart-client.ts'
 import {orderListProjection,type CustomerOrderList} from './customer-orders.ts'
 import {customerChanged} from './customer-events.ts'
@@ -138,6 +139,32 @@ export function customerClient(fetcher:typeof fetch=fetch){
   async order(id:string):Promise<OrderConfirmation>{
    if(!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(id))throw new CustomerError(400)
    return orderConfirmationProjection(await call('/orders/'+id),id)
+  },
+  async orderPayments(id:string){
+   if(!paymentOrderID(id))throw new CustomerError(400)
+   return paymentContext(await call('/orders/'+id+'/payments',undefined,undefined,200),id)
+  },
+  async orderPayment(id:string,operation:string){
+   if(!paymentOrderID(id)||!paymentUUID(operation))throw new CustomerError(400)
+   const raw=await call('/orders/'+id+'/payments/'+operation,undefined,undefined,200)
+   if(!raw||Object.keys(raw).length!==1)throw new CustomerError(503)
+   return paymentReceipt(raw.payment,id,operation,true)
+  },
+  async prepareOrderPayment(id:string,input:PaymentInput){
+   if(!paymentOrderID(id)||!paymentUUID(input.operation_id))throw new CustomerError(400)
+   const raw=await call('/orders/'+id+'/payments',input,sessionCSRF(),202)
+   if(!raw||Object.keys(raw).length!==1)throw new CustomerError(503)
+   const out=paymentReceipt(raw.payment,id,input.operation_id)
+   if(out.order_version!==Number(input.expected_version)||out.collection_id!==input.collection_id||out.amount!==input.amount||out.currency_code!==input.currency_code||(out.previous_operation_id??'')!==(input.previous_operation_id??''))throw new CustomerError(503)
+   return out
+  },
+  async cancelOrderPayment(id:string,operation:string,cancellation:string){
+   if(!paymentOrderID(id)||!paymentUUID(operation)||!paymentUUID(cancellation))throw new CustomerError(400)
+   const raw=await call('/orders/'+id+'/payments/'+operation+'/cancel',{operation_id:cancellation},sessionCSRF(),200)
+   if(!raw||Object.keys(raw).length!==1)throw new CustomerError(503)
+   const out=paymentReceipt(raw.payment,id,operation)
+   if(out.state!=='canceled'||out.can_cancel||out.applied)throw new CustomerError(503)
+   return out
   },
   async orderProgress(id:string):Promise<CustomerProgress>{
    if(!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(id))throw new CustomerError(400)

@@ -52,18 +52,18 @@ func (s *Store) PrepareOrderPayment(ctx context.Context, token string, service *
 	}
 	return out, nil
 }
-func (s *Store) ReadOrderPayment(ctx context.Context, token string, service *orderpayments.Service, order, id string) (orderpayments.Result, error) {
-	var out orderpayments.Result
+func (s *Store) ReadOrderPayment(ctx context.Context, token string, service *orderpayments.Service, order, id string) (orderpayments.View, error) {
+	var out orderpayments.View
 	if service == nil {
 		return out, ErrUnavailable
 	}
 	err := s.paymentTransaction(ctx, token, func(tx *gorm.DB, p orderpayments.Principal) error {
 		var e error
-		out, e = service.ReadTx(ctx, tx, p, order, id)
+		out, e = service.ViewTx(ctx, tx, p, order, id)
 		return e
 	})
 	if err != nil {
-		return orderpayments.Result{}, err
+		return orderpayments.View{}, err
 	}
 	return out, nil
 }
@@ -79,6 +79,22 @@ func (s *Store) CancelOrderPayment(ctx context.Context, token string, service *o
 	})
 	if err != nil {
 		return orderpayments.Result{}, err
+	}
+	return out, nil
+}
+
+func (s *Store) OrderPaymentContext(ctx context.Context, token string, service *orderpayments.Service, order string) (orderpayments.Context, error) {
+	var out orderpayments.Context
+	if service == nil {
+		return out, ErrUnavailable
+	}
+	err := s.paymentTransaction(ctx, token, func(tx *gorm.DB, p orderpayments.Principal) error {
+		var e error
+		out, e = service.ContextTx(ctx, tx, p, order)
+		return e
+	})
+	if err != nil {
+		return orderpayments.Context{}, err
 	}
 	return out, nil
 }

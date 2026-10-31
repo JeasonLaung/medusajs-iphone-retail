@@ -106,6 +106,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/orders/:id/after-sales", h.CreateAfterSales)
 	private.POST("/orders/:id/attach", h.AttachOrder)
 	private.POST("/orders/:id/payments", h.PrepareOrderPayment)
+	private.GET("/orders/:id/payments", h.OrderPaymentContext)
 	private.GET("/orders/:id/payments/:operation_id", h.ReadOrderPayment)
 	private.POST("/orders/:id/payments/:operation_id/cancel", h.CancelOrderPayment)
 	private.GET("/addresses", h.ListAddresses)

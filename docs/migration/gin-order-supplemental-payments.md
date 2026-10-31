@@ -1,6 +1,6 @@
 # 原订单正差额补款指令
 
-此页记录正差额在线补款的持久指令阶段。0087 默认关闭补款；当前已有内部 Prepare/Read/Cancel、单次创建/GET恢复、paid通知原子消费和独立Worker；生产CLI已编译。当前另已接入顾客会话下的私有准备/查询/取消HTTP及Astro桥接白名单；补款上下文、受保护checkout链接与补款页面、本人收款通知、补款再退款trace及实际CLI/浏览器连续联合仍待。不能以本阶段关闭 C07/C09 或整站迁移清单。
+此页记录正差额在线补款的持久指令阶段。0087 默认关闭补款；当前已有内部 Prepare/Read/Cancel、单次创建/GET恢复、paid通知原子消费和独立Worker；生产CLI已编译。当前另已接入顾客会话下的私有准备/查询/取消HTTP及Astro桥接白名单；本人补款上下文、安全checkout链接、双语订单入口、付款回跳与双付款展示现已通过SQL及独立夹具浏览器验证。本人收款通知、补款再退款trace及实际客户/独立CLI连续联合仍待。不能以本阶段关闭 C07/C09 或整站迁移清单。
 
 ## 不可变指令与来源
 
@@ -19,10 +19,12 @@ Prepare 在订单锁内调用当前完整欠款校验，核对原渠道及地区
 生产API将默认关闭的ORDER_PAYMENTS配置传入现有customer handler，要求店铺和回跳origin与顾客配置一致；支付keyring与顾客keyring各自使用，不混用。沿用现有同源检查、桥接签名、Customer HttpOnly cookie、CSRF、private/no-store和no-referrer。新增接口不调用Run或渠道，worker负责发送和恢复。
 
 - `POST /api/store/customer/orders/:id/payments`：严格字符串JSON字段operation_id、expected_version、collection_id、amount、currency_code及可选previous_operation_id；订单只取路径，不接收account/auth_version/session/provider或浏览器paid字段。expected_version必须为规范正整数字符串；202只表示本地指令已持久化。
-- `GET /api/store/customer/orders/:id/payments/:operation_id`：当前合法本人会话读取最小本地回执；不返回远端ID、支付session、加密信封、购物车身份或checkout链接，也不查询渠道。账号代次更新后需重新登录。
+- `GET /api/store/customer/orders/:id/payments/:operation_id`：当前合法本人会话读取最小本地回执；不返回远端ID、支付session、加密信封或购物车身份；checkout_url仅为经保护创建回执且当前版本/完整欠款仍一致的安全Mollie HTTPS链接，否则为null，也不查询渠道。账号代次更新后需重新登录。
 - `POST /api/store/customer/orders/:id/payments/:operation_id/cancel`：正文只含独立取消operation_id，原补款UUID取路径；与当前会话复核、会话/指令状态及审计回执同一SQL事务。关闭SQL补款gate仍可查询/取消未发送指令。
 
-Astro customerBridge同步放行这三种规范路径，付款UUID须为规范v4；只转发当前Customer cookie，旧cart、Admin及Authorization不进入请求。准备只接受202，查询/取消只接受200，拒绝浏览器run或provider动作路径和全部查询参数。沿用现有签名、受限响应及cookie处理。12项实际Node桥接/签名测试及Astro check通过，页面和回跳仍未接入。
+新增 `GET /api/store/customer/orders/:id/payments` 返回本人当前版本、币种、精确欠款、历史回执及可选next同意快照；next不是收费授权，准备及首次POST仍重新验证。next只在开关、金额、集合、前驱和退款/付款占用均允许时出现。
+
+Astro customerBridge同步放行这四种规范路径，付款UUID须为规范v4；只转发当前Customer cookie，旧cart、Admin及Authorization不进入请求。准备只接受202，查询/取消只接受200，拒绝浏览器run或provider动作路径和全部查询参数。沿用现有签名、受限响应及cookie处理。12项实际Node桥接/签名测试及Astro check通过，随后新增的页面和回跳验收见下文。
 
 不存在或不属于本人订单/指令均返回404，撤销/禁用/未验证/旧代次会话返回401，CSRF/Origin失败拒绝；金额/版本等状态变更返回409，依赖或写入失败返回503。私有组拒绝这些路径的全部查询参数。PrepareTx、ReadTx、CancelTx均保留在调用者事务中，不用另一个池绕过账号锁。
 
@@ -78,4 +80,18 @@ Worker分别有界扫描10条创建/已保存结果、10条专属订单通知GET
 
 report-order-payment-runtime.py从完整23组SQL、唯一执行/现金标记与清理回执派生新报告，并拒绝测试后源码/迁移漂移。原order-payment-commands-report记录只prepare/cancel的独立回滚场景；当前runtime报告记录新的提交/入账测试，两者验收边界不同。
 
-紧接本人补款上下文与安全checkout链接、本人订单补款入口/返回页/双付款展示、唯一本人付款通知，以及独立CLI的本地TLS渠道/丢响应重启和四新客户正差额至替换出库联合。补款payment后续退款必须扩展可信trace及新支付数据的order-payment-v1保护用途，不能只认原checkout receipt.payment_id。真实渠道/邮件、常驻进程及其余C01–C11继续开放。
+紧接唯一本人付款通知，以及独立CLI的本地TLS渠道/丢响应重启和四新客户正差额至替换出库连续联合。补款payment后续退款必须扩展可信trace及新支付数据的order-payment-v1保护用途，不能只认原checkout receipt.payment_id。真实渠道/邮件、常驻进程及其余C01–C11继续开放。
+
+## 本人订单页面与只读付款回跳
+
+本人订单详情在原付款/配送/商品区保持原结构，追加补款区，使用现有主题、金额格式和按钮/Tag/反馈组件，支持中文/英文和手机/桌面。完整欠款与金额/币种/集合/版本/明确前驱取自本人上下文；点击确认才用新UUID准备该完整金额。请求丢失或服务端结果不明时保留同一个UUID及正文，只重试同一请求；页面重载从本人完整历史恢复活动指令，活动指令没有第二份next同意。明确409后仅在成功重读上下文时重新展示当前可同意金额。取消请求也保留独立UUID，不调用远端DELETE。
+
+创建/不确定/授权/paid未应用均显示准备或核对状态，只有applied=true才显示“补款已收妥”。页面只GET轮询已存在活动指令，后台仍负责创建、观察及现金事务。当前原付款158.75和补款6.00分别展示，当前订单164.75与现金入账后待补0保持区分；原付款不改写成164.75。普通无差额且无历史订单保持原布局，未配置/不适用补款功能不会新增错误块；需要补款的订单保留明确失败及重试反馈。
+
+checkout_url只从同一支付effect的加密成功回执解出，复核请求/远端identity、金额币种和metadata，再限制为无账号信息、无fragment、长度受限且443端口的Mollie HTTPS域名。当前订单版本、唯一未付集合或完整欠款变化即不再提供链接；授权/终态/已应用也不提供链接。读取不POST、不记账、不以创建返回的paid判定成功。
+
+原 `/api/mollie-return` 保持购物车路径；只有带order_id/order_payment_id的补款回跳转入新分支，严格核对恰好三个规范参数。原cart_id仅作为格式校验的历史元数据，不解析其bearer cookie，不调用cart或重新checkout。当前Customer会话只读本人付款回执及订单，按保存的locale/配送国家303至原本人订单详情补款区域。跨站渠道导航预期存在，但不把其Origin当同源写入；后续本人读取仍走服务器签名桥接。撤销/非本人/坏参数拒绝，浏览器status=paid等额外字段不能改变付款事实。
+
+新增SQL定向和完整23组回归覆盖当前6.00同意、活动指令无第二同意、事务内人工保护创建回执解出的URL、旧版本隐藏链接、损坏信封拒绝，以及唯一现金后当前代次可读三份历史（取消/失败/已付款）、零欠款及不再提供链接。URL夹具事务回滚，没有额外provider POST。独立正式Astro构建+签名桥接的本地API/渠道浏览器夹具覆盖en/zh×390/1440、丢响应同UUID、刷新页面恢复、取消后明确前驱、安全结账链接、无cart bearer的只读回跳、paid未应用仅核对中、应用后显示收妥、原158.75和新6.00分别展示、无重读循环/溢出。原购物车支付/稳定回跳与普通本人订单浏览器回归继续通过，截图人工核对。
+
+`report-order-payment-presentation.py` 绑定同版完整SQL源码和独立前端源码/构建/24项Node测试/新旧浏览器记录；主动拒绝测试后源码漂移。该报告明确区分两组证据：SQL使用专有真实MySQL/Redis和人工账号归属/设备/渠道；页面使用本地API/渠道夹具。尚未把四个实际注册客户、原生换机、独立CLI、收款通知、补款后替换出库接成连续联合，不能用本批完成C07/C09或C01–C11。真实渠道/邮件、常驻worker及补款再退款trace继续开放。

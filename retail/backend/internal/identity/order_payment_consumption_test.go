@@ -3,6 +3,7 @@ package identity_test
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"sync"
 	"testing"
 
@@ -250,5 +251,34 @@ func checkOrderPaymentConsumption(t *testing.T, ctx context.Context, db *gorm.DB
 	if r, e := foreignWorker.RunOnce(ctx); e != nil || r.Selected+r.Queried+r.Consumed+r.Failed != 0 {
 		t.Fatal("cross-store worker picked another shop", r, e)
 	}
+	// Current authenticated-generation reader sees both local supplemental
+	// receipts and zero exact due, including after the original cart retired.
+	presentationRollback := errors.New("paid presentation rollback")
+	if e := db.Transaction(func(tx *gorm.DB) error {
+		var owner struct{ AccountID string }
+		if e := tx.Table("order_payment_operations").Select("account_id").Where("operation_id=?", in.OperationID).Take(&owner).Error; e != nil {
+			return e
+		}
+		if e := tx.Exec("UPDATE customer_accounts SET enabled=TRUE WHERE id=?", owner.AccountID).Error; e != nil {
+			return e
+		}
+		context, e := s.ContextTx(ctx, tx, orderpayments.Principal{AccountID: owner.AccountID, AuthVersion: 2}, in.OrderID)
+		if e != nil || context.PendingDifference != "0" || context.Next != nil || len(context.Payments) != 3 {
+			t.Fatal("paid supplemental context", context, e)
+		}
+		found := false
+		for _, view := range context.Payments {
+			if view.OperationID == in.OperationID {
+				found = view.Applied && view.State == "paid" && view.CheckoutURL == nil && view.Amount == "6.00"
+			}
+		}
+		if !found {
+			t.Fatal("paid current receipt absent")
+		}
+		return presentationRollback
+	}); !errors.Is(e, presentationRollback) {
+		t.Fatal(e)
+	}
+	t.Log(`ORDER_PAYMENT_PRESENTATION_REHEARSAL {"exact_zero_due_after_cash":true,"paid_receipt_only_after_application":true,"retired_cart_independent":true,"paid_checkout_url_absent":true,"new_generation_read":true,"provider_called_by_presentation":false,"customer_browser_cli":false}`)
 	t.Log(`NATIVE_ORDER_PAYMENT_CONSUMPTION_REHEARSAL {"actual_notification_get_and_encrypted_evidence":true,"paid_due":"6.00","exact_total_cash":"164.75","authorized_not_cash":true,"open_does_not_regress_authorized":true,"cross_store_denied":true,"corrupt_envelope_denied":true,"changed_balance_retains_paid_evidence":true,"late_ledger_failure_atomic":true,"last_consumption_failure_atomic":true,"concurrent_consumers":6,"worker_run_once_accepted":true,"worker_cli_process_accepted":false,"idle_cross_store_worker":true,"unique_payment_capture_transaction":true,"collection_completed_session_captured":true,"summary_zero_difference":true,"local_retry_without_network":true,"revoked_account_retired_cart_recovery":true,"canceled_order_cash_without_reopening":true,"late_unpaid_does_not_regress_cash":true,"applied_releases_version_hold":true,"original_cart_preserved":true,"no_new_order_stock_or_device_mutation":true,"real_provider":false,"customer_session_browser_cli":false,"payment_notice_accepted":false}`)
 }
