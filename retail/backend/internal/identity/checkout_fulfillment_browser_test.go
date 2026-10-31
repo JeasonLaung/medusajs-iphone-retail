@@ -52,7 +52,11 @@ func mountCheckoutFulfillment(t *testing.T, ctx context.Context, db *gorm.DB, se
 		exec("UPDATE fulfillment_shipping_options SET provider_id='delivery-provider' WHERE id='delivery-standard'")
 	})
 	exec(`INSERT INTO device_sources(id,name,type,location_id,created_at,updated_at) VALUES('checkout-source','Checkout warehouse stock','self','add-location',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
-	for i := 1; i <= 4; i++ {
+	deviceCount := 4
+	if os.Getenv("CHECKOUT_EXCHANGE") == "1" {
+		deviceCount = 8
+	}
+	for i := 1; i <= deviceCount; i++ {
 		exec(`INSERT INTO devices(id,serial_number,variant_id,source_id,location_id,cost_cents,currency_code,bin,notes,state,category,photos,created_at,updated_at) VALUES(?,?,'add-v','checkout-source','add-location',0,'eur','','','available','sale','[]',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`, fmt.Sprintf("checkout-device-%d", i), fmt.Sprintf("CHECKOUT-DEVICE-%d", i))
 	}
 	exec("UPDATE device_runtime_schema SET identity_enabled=TRUE,commands_enabled=TRUE WHERE id=1")
@@ -61,7 +65,7 @@ func mountCheckoutFulfillment(t *testing.T, ctx context.Context, db *gorm.DB, se
 		exec("UPDATE " + table + " SET enabled=TRUE WHERE id=1")
 		addCleanup(func() { exec("UPDATE " + table + " SET enabled=FALSE WHERE id=1") })
 	}
-	if os.Getenv("CHECKOUT_REPAIR") == "1" {
+	if os.Getenv("CHECKOUT_REPAIR") == "1" || os.Getenv("CHECKOUT_EXCHANGE") == "1" {
 		// The ordinary cart fixture deliberately shares stock between two SKUs.
 		// This owned serialized SKU must satisfy the real enrollment contract.
 		exec("UPDATE catalog_variant_inventory_items SET deleted_at=UTC_TIMESTAMP(6) WHERE id='add-shared-link'")
@@ -97,6 +101,10 @@ func mountCheckoutFulfillment(t *testing.T, ctx context.Context, db *gorm.DB, se
 
 func checkCheckoutFulfillment(t *testing.T, db *gorm.DB, orders []string) {
 	t.Helper()
+	if os.Getenv("CHECKOUT_EXCHANGE") == "1" {
+		checkCheckoutExchange(t, db, orders)
+		return
+	}
 	trackingPrefix := "CHECKOUT-TRACK-%"
 	if os.Getenv("CHECKOUT_REPAIR") == "1" {
 		trackingPrefix = "000-CHECKOUT-REPAIR-%"

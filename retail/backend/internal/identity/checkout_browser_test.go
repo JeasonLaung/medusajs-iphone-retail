@@ -295,7 +295,11 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		}
 		a, aOK := new(big.Rat).SetString(stockedAfter)
 		b, bOK := new(big.Rat).SetString(stockedBefore)
-		if !aOK || !bOK || new(big.Rat).Sub(a, b).Cmp(big.NewRat(6, 1)) != 0 {
+		expectedStock := int64(6)
+		if os.Getenv("CHECKOUT_EXCHANGE") == "1" {
+			expectedStock = 2
+		}
+		if !aOK || !bOK || new(big.Rat).Sub(a, b).Cmp(big.NewRat(expectedStock, 1)) != 0 {
 			t.Fatal("checkout exact stock delta")
 		}
 	}

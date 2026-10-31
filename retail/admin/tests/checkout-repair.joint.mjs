@@ -3,7 +3,7 @@ import {expect} from '@playwright/test'
 import {readFileSync} from 'node:fs'
 import {fileURLToPath} from 'node:url'
 
-async function lostReply(page,pattern,root,submit,retry,complete,status=200){
+export async function lostReply(page,pattern,root,submit,retry,complete,status=200){
  const requests=[];let body
  const retryName=retry==='重试'?/重\s*试$/:new RegExp(retry.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'$')
  await page.route(pattern,async route=>{
@@ -12,7 +12,7 @@ async function lostReply(page,pattern,root,submit,retry,complete,status=200){
   if(requests.length===1)await route.abort('failed');else await route.fulfill({response:r})
  })
  try{
-  await submit();const retryButton=root.getByRole('button',{name:retryName});await expect(retryButton).toBeVisible();await expect(retryButton).toBeEnabled();await retryButton.click();await complete()
+  await submit();await expect(root.locator('.ant-alert-error')).toBeVisible();const retryButton=root.getByRole('button',{name:retryName});await expect(retryButton).toBeVisible();await expect(retryButton).not.toHaveClass(/ant-btn-loading/);await expect(retryButton).toBeEnabled();await retryButton.click();await complete()
   assert.equal(requests.length,2);assert.deepEqual(requests[0],requests[1]);return body
  }finally{await page.unrouteAll({behavior:'wait'})}
 }
@@ -21,16 +21,16 @@ export async function enableCheckoutTracking(page,origin){
  await page.getByRole('row').filter({has:page.getByRole('cell',{name:'00123456789012345678',exact:true})}).getByRole('button',{name:'Device tracking',exact:true}).click()
  const d=page.getByRole('dialog');await d.getByRole('button',{name:'Enable individual device tracking',exact:true}).click();await expect(d.getByText('Enabled',{exact:true})).toBeVisible()
 }
-export async function requestCheckoutRepair({page,orderID,result,segment}){
+export async function requestCheckoutAfterSales({page,orderID,result,segment,type="repair"}){
  const copy=JSON.parse(readFileSync(new URL(`../../storefront/src/components/account/translations/${segment.endsWith('-zh')?'zh':'en'}.json`,import.meta.url)))
  const section=page.getByTestId('after-sales-section')
  await section.getByRole('button').first().click()
- await section.locator('.ant-select-selector').click();await page.locator('.ant-select-item-option').filter({hasText:copy.repairType}).click()
+ await section.locator('.ant-select-selector').click();await page.locator('.ant-select-item-option').filter({hasText:type==='repair'?copy.repairType:copy.exchangeType}).click()
  await section.getByRole('checkbox').first().check()
  await section.locator('label').filter({hasText:result.sn}).getByRole('checkbox').check()
- await section.getByRole('textbox').last().fill('Original device needs warranty repair after delivery.')
+ await section.getByRole('textbox').last().fill(type==='repair'?'Original device needs warranty repair after delivery.':'Original device needs warranty replacement after delivery.')
  const response=await lostReply(page,'**/api/store/customer/orders/'+orderID+'/after-sales',section,()=>section.getByRole('button',{name:copy.submitRequest,exact:true}).click(),copy.retry,()=>expect(section).toContainText(copy.requestSuccess),201)
- assert.equal(response.request.type,'repair');assert.equal(response.request.items.length,1);assert.equal(response.request.items[0].device_ids.length,1)
+ assert.equal(response.request.type,type);assert.equal(response.request.items.length,1);assert.equal(response.request.items[0].device_ids.length,1)
  await page.reload();await section.getByRole('button').first().click();await expect(section).toContainText(copy.openRequest)
  return {id:response.request.id,copy}
 }
