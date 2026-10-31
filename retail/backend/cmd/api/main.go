@@ -15,6 +15,7 @@ import (
 	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/cart"
 	"github.com/eurorefurb/retail/internal/catalog"
+	"github.com/eurorefurb/retail/internal/checkoutconfig"
 	"github.com/eurorefurb/retail/internal/customer"
 	"github.com/eurorefurb/retail/internal/fulfillment"
 	"github.com/eurorefurb/retail/internal/identity"
@@ -116,7 +117,11 @@ func main() {
 		}
 		cartOptions = append(cartOptions, cart.HTTPOptions{InitialPayment: initialPayment, ManualProviderIDs: manualProviders, Sessions: sessions, Origin: origin, StoreID: os.Getenv("STOREFRONT_STORE_ID"), Secure: os.Getenv("SESSION_SECURE") == "true"})
 	}
-	router, err := server.RouterWithAuth(db, identity.Options{Sessions: sessions, Origin: os.Getenv("ADMIN_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true"}, cartOptions...)
+	webhooks, err := checkoutconfig.Webhooks(os.Getenv, initialPayment)
+	if err != nil {
+		log.Fatal("Explicit Mollie notification configuration and registered checkout required")
+	}
+	router, err := server.RouterWithAuthAndWebhooks(db, identity.Options{Sessions: sessions, Origin: os.Getenv("ADMIN_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true"}, webhooks, cartOptions...)
 	if err != nil {
 		log.Fatal("Explicit application origins, shop binding and matching secure cookie configuration required")
 	}

@@ -84,16 +84,38 @@ func TestOwnedFulfillmentHistory(t *testing.T) {
 	if len(matches) != 7 {
 		t.Fatal("fulfillment table count differs")
 	}
-	total := 0
-	for _, m := range matches {
-		var n int
-		if db.QueryRowContext(ctx, "SELECT COUNT(*) FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name=? AND extra NOT LIKE '%GENERATED%'", string(m[1])).Scan(&n) != nil || n == 0 {
-			t.Fatal("fulfillment field count unavailable")
-		}
-		total += n
+	// Reviewed source contracts: 72 columns in 0021, plus the separate
+	// 11-column geo contract in 0030. Check names and order, not just a sum
+	// that could hide one missing field behind an unrelated added field.
+	expectedColumns := map[string]string{
+		"fulfillments":                   "id location_id packed_at shipped_at delivered_at canceled_at data provider_id shipping_option_id metadata delivery_address_id created_at updated_at deleted_at marked_shipped_by created_by requires_shipping",
+		"fulfillment_addresses":          "id company first_name last_name address_1 address_2 city country_code province postal_code phone metadata created_at updated_at deleted_at",
+		"fulfillment_items":              "id title sku barcode quantity raw_quantity line_item_id inventory_item_id fulfillment_id created_at updated_at deleted_at",
+		"fulfillment_labels":             "id tracking_number tracking_url label_url fulfillment_id created_at updated_at deleted_at",
+		"fulfillment_location_providers": "stock_location_id fulfillment_provider_id id created_at updated_at deleted_at",
+		"fulfillment_location_sets":      "stock_location_id fulfillment_set_id id created_at updated_at deleted_at",
+		"fulfillment_option_rules":       "id attribute operator value shipping_option_id created_at updated_at deleted_at",
+		"fulfillment_geo_zones":          "id type country_code province_code city service_zone_id postal_expression metadata created_at updated_at deleted_at",
 	}
-	if total != 75 {
-		t.Fatal("fulfillment field count differs")
+	for table, expected := range expectedColumns {
+		rows, err := db.QueryContext(ctx, "SELECT column_name FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name=? AND extra NOT LIKE '%GENERATED%' ORDER BY ordinal_position", table)
+		if err != nil {
+			t.Fatal("fulfillment source columns unavailable")
+		}
+		var columns []string
+		for rows.Next() {
+			var column string
+			if err := rows.Scan(&column); err != nil {
+				rows.Close()
+				t.Fatal("fulfillment source column unavailable")
+			}
+			columns = append(columns, column)
+		}
+		err = rows.Err()
+		rows.Close()
+		if err != nil || strings.Join(columns, " ") != expected {
+			t.Fatalf("fulfillment source columns differ for %s: got %v, want %s", table, columns, expected)
+		}
 	}
 	exec := func(q string) {
 		t.Helper()
@@ -351,5 +373,5 @@ func TestOwnedFulfillmentHistory(t *testing.T) {
 	if blocked.QueryRowContext(ctx, "SELECT id FROM fulfillments").Scan(&kept) != nil || kept != 17 {
 		t.Fatal("existing fulfillment row lost")
 	}
-	t.Log(`FULFILLMENT_HISTORY_REHEARSAL {"migrations":62,"tables":8,"source_columns":83,"rows":11,"reference_holds":11,"concurrent_batches":8,"single_fresh_batch":1,"replayed_batches":7,"old_snapshot_replay":true,"rollback_atomic":true,"late_failure_rollback":true,"exact_quantity_and_identifiers":true,"composite_identity_preserved":true,"physical_fk_json_boolean_enum_rejected":true,"target_drift_rejected":true,"disabled_schema_rejected":true,"existing_tables_preserved":true,"inventory_not_modified":true,"geo_exact_json_text_and_nulls":true,"geo_missing_parent_atomic":true,"geo_source_target_drift_rejected":true,"geo_required_table_key":true,"geo_model_checked_on_replay":true,"provider_called":false,"writes_enabled":false}`)
+	t.Log(`FULFILLMENT_HISTORY_REHEARSAL {"migrations":82,"tables":8,"source_columns":83,"rows":11,"reference_holds":11,"concurrent_batches":8,"single_fresh_batch":1,"replayed_batches":7,"old_snapshot_replay":true,"rollback_atomic":true,"late_failure_rollback":true,"exact_quantity_and_identifiers":true,"composite_identity_preserved":true,"physical_fk_json_boolean_enum_rejected":true,"target_drift_rejected":true,"disabled_schema_rejected":true,"existing_tables_preserved":true,"inventory_not_modified":true,"geo_exact_json_text_and_nulls":true,"geo_missing_parent_atomic":true,"geo_source_target_drift_rejected":true,"geo_required_table_key":true,"geo_model_checked_on_replay":true,"provider_called":false,"writes_enabled":false}`)
 }

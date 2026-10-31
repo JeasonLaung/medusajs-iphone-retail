@@ -81,8 +81,11 @@ def main():
         redis_id = redis.stdout.decode().strip()
         containers.append(redis_id)
         for _ in range(100):
-            ready = docker('exec', '-e', 'MYSQL_PWD=' + password, mysql_id, 'mysql', '-uroot', '--protocol=socket', '-e', 'SELECT 1', timeout=10)
-            if ready.returncode == 0:
+            # The image starts a temporary socket-only server during init.
+            # Wait for the final server; SELECT 1 alone can succeed just before
+            # the temporary server shuts down and cause a false-ready reset.
+            ready = docker('exec', '-e', 'MYSQL_PWD=' + password, mysql_id, 'mysql', '-uroot', '--protocol=socket', '--batch', '--skip-column-names', '-e', 'SELECT @@GLOBAL.skip_networking', timeout=10)
+            if ready.returncode == 0 and ready.stdout.strip() == b'0':
                 break
             time.sleep(.5)
         else:
@@ -151,7 +154,8 @@ def main():
                 if docker('stop', redis_id).returncode or docker('restart', mysql_id).returncode:
                     raise RuntimeError('Owned suite reset failed')
                 for _ in range(100):
-                    if not docker('exec', '-e', 'MYSQL_PWD=' + password, mysql_id, 'mysql', '-uroot', '--protocol=socket', '-e', 'SELECT 1', timeout=10).returncode:
+                    ready = docker('exec', '-e', 'MYSQL_PWD=' + password, mysql_id, 'mysql', '-uroot', '--protocol=socket', '--batch', '--skip-column-names', '-e', 'SELECT @@GLOBAL.skip_networking', timeout=10)
+                    if ready.returncode == 0 and ready.stdout.strip() == b'0':
                         break
                     time.sleep(.5)
                 else:
@@ -361,6 +365,9 @@ def main():
                 raise RuntimeError('Cart promotion adjustment evidence missing')
             promotion_amount_markers = [line.split('CART_PROMOTION_AMOUNTS_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_PROMOTION_AMOUNTS_REHEARSAL ' in line]
             mollie_notification_markers = [line.split('MOLLIE_NOTIFICATIONS_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'MOLLIE_NOTIFICATIONS_REHEARSAL ' in line]
+            mollie_consumer_markers = [line.split('MOLLIE_CHECKOUT_CONSUMER_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'MOLLIE_CHECKOUT_CONSUMER_REHEARSAL ' in line]
+            if tested.returncode == 0 and len(mollie_consumer_markers) != 1:
+                raise RuntimeError('Mollie checkout business consumption evidence missing')
             if tested.returncode == 0 and len(mollie_notification_markers) != 1:
                 raise RuntimeError('Mollie notification inbox evidence missing')
             payment_creation_execution_markers = [line.split('CART_PAYMENT_CREATION_EXECUTION_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_PAYMENT_CREATION_EXECUTION_REHEARSAL ' in line]
@@ -410,13 +417,13 @@ def main():
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for folder in ('cart','schema','sessionstore','totals','catalog','pricing','inventory','promotion','payments','protected') for p in (ROOT/'retail/backend/internal'/folder).glob('*') if p.is_file()]
                 files += ['retail/scripts/capture-cart-promotion-context.cjs','docs/migration/fixtures/cart-promotion-context.json']
                 files += ['retail/scripts/capture-cart-payment-refresh.cjs','docs/migration/fixtures/cart-payment-refresh.json']
-                files += ['retail/backend/internal/identity/cart_promotion_refresh_test.go','retail/backend/internal/identity/payment_effects_test.go','retail/backend/internal/payments/effects.go','retail/backend/internal/payments/requests.go','retail/backend/internal/identity/payment_requests_test.go','retail/backend/internal/identity/cart_payment_operations_test.go','retail/backend/internal/identity/cart_payment_execution_test.go','retail/backend/internal/identity/cart_payment_compensation_test.go','retail/backend/internal/identity/cart_payment_creation_execution_test.go','retail/backend/internal/identity/mollie_notifications_test.go']
+                files += ['retail/backend/internal/identity/cart_promotion_refresh_test.go','retail/backend/internal/identity/payment_effects_test.go','retail/backend/internal/payments/effects.go','retail/backend/internal/payments/requests.go','retail/backend/internal/identity/payment_requests_test.go','retail/backend/internal/identity/cart_payment_operations_test.go','retail/backend/internal/identity/cart_payment_execution_test.go','retail/backend/internal/identity/cart_payment_compensation_test.go','retail/backend/internal/identity/cart_payment_creation_execution_test.go','retail/backend/internal/identity/mollie_notifications_test.go','retail/backend/internal/identity/mollie_checkout_consumer_test.go','retail/backend/internal/identity/cart_initial_payment_test.go','retail/backend/internal/checkoutconfig/checkout.go','retail/backend/internal/checkoutconfig/checkout_test.go','retail/backend/internal/mollieworker/worker.go','retail/backend/cmd/process-mollie-notifications/main.go','retail/backend/cmd/api/checkout.go','retail/backend/cmd/api/main.go']
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
                 report = {'format_version':1,'scope':'Owned artificial MySQL/Redis cart runtime and HTTP dispatch; browser and checkout not accepted',
-                          'cart_runtime':counts,'cart_items':json.loads(item_markers[0]),'cart_items_http':json.loads(item_http_markers[0]),'cart_amounts':json.loads(amount_markers[0]),'mollie_notifications':json.loads(mollie_notification_markers[0]),'cart_payment_creation_execution':json.loads(payment_creation_execution_markers[0]),'cart_payment_compensation':json.loads(payment_compensation_markers[0]),'cart_payment_execution':json.loads(payment_execution_markers[0]),'cart_payment_operations':json.loads(payment_operation_markers[0]),'payment_requests':json.loads(payment_request_markers[0]),'payment_effects':json.loads(payment_effect_markers[0]),'cart_promotion_refresh':json.loads(promotion_refresh_markers[0]),'cart_promotion_amounts':json.loads(promotion_amount_markers[0]),'cart_promotion_adjustments':json.loads(promotion_adjustment_markers[0]),'promotion_products':json.loads(promotion_product_markers[0]),'cart_http':json.loads(http_markers[0]),'application_resources_used':False,'real_accounts_used':False,
+                          'cart_runtime':counts,'cart_items':json.loads(item_markers[0]),'cart_items_http':json.loads(item_http_markers[0]),'cart_amounts':json.loads(amount_markers[0]),'mollie_notifications':json.loads(mollie_notification_markers[0]),'mollie_checkout_consumer':json.loads(mollie_consumer_markers[0]),'cart_payment_creation_execution':json.loads(payment_creation_execution_markers[0]),'cart_payment_compensation':json.loads(payment_compensation_markers[0]),'cart_payment_execution':json.loads(payment_execution_markers[0]),'cart_payment_operations':json.loads(payment_operation_markers[0]),'payment_requests':json.loads(payment_request_markers[0]),'payment_effects':json.loads(payment_effect_markers[0]),'cart_promotion_refresh':json.loads(promotion_refresh_markers[0]),'cart_promotion_amounts':json.loads(promotion_amount_markers[0]),'cart_promotion_adjustments':json.loads(promotion_adjustment_markers[0]),'promotion_products':json.loads(promotion_product_markers[0]),'cart_http':json.loads(http_markers[0]),'application_resources_used':False,'real_accounts_used':False,
                           'implementation_sha256':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
             else:
-                markers = [line.split('IDENTITY_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if 'IDENTITY_REHEARSAL ' in line]
+                markers = [line.split('IDENTITY_REHEARSAL ', 1)[1] for line in tested.stdout.decode().splitlines() if re.search(r'(?:^|\s)IDENTITY_REHEARSAL ', line)]
                 if tested.returncode or len(markers) != 1:
                     # All inputs and failure messages in this binary are artificial.
                     print(tested.stdout.decode(errors='replace'))
@@ -625,7 +632,7 @@ def main():
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/cart').glob('*') if p.is_file()]
                 files += ['retail/scripts/capture-cart-promotion-context.cjs','docs/migration/fixtures/cart-promotion-context.json']
                 files += ['retail/scripts/capture-cart-payment-refresh.cjs','docs/migration/fixtures/cart-payment-refresh.json']
-                files += ['retail/backend/internal/identity/cart_promotion_refresh_test.go','retail/backend/internal/identity/payment_effects_test.go','retail/backend/internal/payments/effects.go','retail/backend/internal/payments/requests.go','retail/backend/internal/identity/payment_requests_test.go','retail/backend/internal/identity/cart_payment_operations_test.go','retail/backend/internal/identity/cart_payment_execution_test.go','retail/backend/internal/identity/cart_payment_compensation_test.go','retail/backend/internal/identity/cart_payment_creation_execution_test.go','retail/backend/internal/identity/mollie_notifications_test.go']
+                files += ['retail/backend/internal/identity/cart_promotion_refresh_test.go','retail/backend/internal/identity/payment_effects_test.go','retail/backend/internal/payments/effects.go','retail/backend/internal/payments/requests.go','retail/backend/internal/identity/payment_requests_test.go','retail/backend/internal/identity/cart_payment_operations_test.go','retail/backend/internal/identity/cart_payment_execution_test.go','retail/backend/internal/identity/cart_payment_compensation_test.go','retail/backend/internal/identity/cart_payment_creation_execution_test.go','retail/backend/internal/identity/mollie_notifications_test.go','retail/backend/internal/identity/mollie_checkout_consumer_test.go','retail/backend/internal/identity/cart_initial_payment_test.go','retail/backend/internal/checkoutconfig/checkout.go','retail/backend/internal/checkoutconfig/checkout_test.go','retail/backend/internal/mollieworker/worker.go','retail/backend/cmd/process-mollie-notifications/main.go','retail/backend/cmd/api/checkout.go','retail/backend/cmd/api/main.go']
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/sessionstore').glob('*.go')]
                 http_markers = [line.split('CART_HTTP_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'CART_HTTP_REHEARSAL ' in line]
                 if len(http_markers) != 1:
@@ -636,7 +643,7 @@ def main():
                 files += ['retail/backend/migrations/0038_customer_accounts.sql', 'retail/backend/internal/customer/accounts.go', 'retail/backend/internal/customer/accounts_test.go', 'retail/backend/internal/identity/customer_accounts_test.go']
                 report = {'format_version': 1, 'scope': 'New artificial admin with real Gin dispatch/MySQL/Redis; not customer/authz/UI acceptance',
                           'cart_schema':json.loads(cart_markers[0]),
-                          'cart_amounts':json.loads(amount_markers[0]),'mollie_notifications':json.loads(mollie_notification_markers[0]),'cart_payment_creation_execution':json.loads(payment_creation_execution_markers[0]),'cart_payment_compensation':json.loads(payment_compensation_markers[0]),'cart_payment_execution':json.loads(payment_execution_markers[0]),'cart_payment_operations':json.loads(payment_operation_markers[0]),'payment_requests':json.loads(payment_request_markers[0]),'payment_effects':json.loads(payment_effect_markers[0]),'cart_promotion_refresh':json.loads(promotion_refresh_markers[0]),'cart_promotion_amounts':json.loads(promotion_amount_markers[0]),'cart_promotion_adjustments':json.loads(promotion_adjustment_markers[0]),'promotion_products':json.loads(promotion_product_markers[0]),
+                          'cart_amounts':json.loads(amount_markers[0]),'mollie_notifications':json.loads(mollie_notification_markers[0]),'mollie_checkout_consumer':json.loads(mollie_consumer_markers[0]),'cart_payment_creation_execution':json.loads(payment_creation_execution_markers[0]),'cart_payment_compensation':json.loads(payment_compensation_markers[0]),'cart_payment_execution':json.loads(payment_execution_markers[0]),'cart_payment_operations':json.loads(payment_operation_markers[0]),'payment_requests':json.loads(payment_request_markers[0]),'payment_effects':json.loads(payment_effect_markers[0]),'cart_promotion_refresh':json.loads(promotion_refresh_markers[0]),'cart_promotion_amounts':json.loads(promotion_amount_markers[0]),'cart_promotion_adjustments':json.loads(promotion_adjustment_markers[0]),'promotion_products':json.loads(promotion_product_markers[0]),
                           'cart_items':json.loads(item_markers[0]),'cart_items_http':json.loads(item_http_markers[0]),
                           'cart_runtime':json.loads(cart_runtime_markers[0]),
                           'cart_http':json.loads(http_markers[0]),

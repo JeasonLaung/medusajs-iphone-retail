@@ -97,7 +97,8 @@ def main():
                               '--maxmemory', '16mb', '--maxmemory-policy', 'noeviction'), 'Owned Redis creation failed')
         containers.append(redis)
         for _ in range(100):
-            if not docker('exec', '-e', 'MYSQL_PWD=' + password, mysql, 'mysql', '-uroot', '--protocol=socket', '-e', 'SELECT 1', timeout=10).returncode:
+            ready = docker('exec', '-e', 'MYSQL_PWD=' + password, mysql, 'mysql', '-uroot', '--protocol=socket', '--batch', '--skip-column-names', '-e', 'SELECT @@GLOBAL.skip_networking', timeout=10)
+            if ready.returncode == 0 and ready.stdout.strip() == b'0':
                 break
             time.sleep(.5)
         else:

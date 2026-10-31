@@ -617,3 +617,13 @@
 ### 2026-10-30: new account shopping and durable order ownership
 
 - Actual Astro registration rejects unverified login, consumes production verification link, then signs in and creates an anonymous cart, adds product and pays through the isolated provider. Four en/zh mobile/desktop paths attach the paid order to the verified new account. Account list/detail survive losing cart credentials; other accounts and logged-out access are denied. Same-browser account switching shows only the current account orders. Real SQL confirms one owner and one attachment audit per order; stock/payment/mail recovery regressions pass. Independent test Redis namespace and per-case limiter counters preserve production rate policy. Real external verification/payment/mail and full catalog/fulfillment joint remain pending. See `migration/shopping-account-joint.md`.
+
+
+### 2026-10-31: resume handoff, SQL contract fix and Mollie automatic order consumption
+
+- Confirmed actual MySQL source columns: 72 in the seven fulfillment tables, plus 11 geo fields; replaced the incorrect 75-column assertion with exact per-table ordered column contracts, retaining historical import and rollback checks. Fixed fixture readiness to wait for MySQL's final server and exact authentication-marker parsing to avoid matching DEVICE_IDENTITY_REHEARSAL.
+- Added authenticated notification consumption using the original local paid-order transaction and shared monotone state merge. Seven injected failure points roll back observations/order/stock/cash/promotion/mail/consumption together; eight concurrent browser/consumer paths return one order. Authorized stays unpaid; delayed open does not downgrade captured cash; contradictory terminal states retain review.
+- Configured hosted callback registration and a default-off independent worker now reuse the existing checkout configuration. Real isolated HTTP→queue→GET→worker→order and restart after failed consumption without a second GET pass. No real provider charge or external mail acceptance. Details: [Mollie consumer](migration/mollie-checkout-consumer.md).
+- Full storefront scope, unknown creation-result discovery/reconciliation, real sandbox/recipient acceptance and post-payment fulfillment/customer tracking remain pending. This is a local delivery increment, not T032/T033 or whole-site acceptance.
+
+- 本批最终验证：完整23组SQL脚本退出0（82迁移，履约83来源列）；正式通知worker专项、Go全量/vet、173前台测试、中英/390与1440真实新账号购物联合及后续SQL回归均通过。Astro395文件0错误0警告，7提示；旧9001 health/app及8000商店为200。所有隔离资源已清理，真实渠道/收件仍未验收。

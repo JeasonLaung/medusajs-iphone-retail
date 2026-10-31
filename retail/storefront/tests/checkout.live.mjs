@@ -79,13 +79,16 @@ try{
   assert.deepEqual(starts.at(-1),starts.at(-2),'Reload changed the original payment operation')
   await page.getByTestId('submit-order-button').click()
   await expect(page).toHaveURL(/^https:\/\/www\.mollie\.com\/checkout\/joint\//)
-  const pendingResponse=page.waitForResponse(r=>r.url().endsWith('/payment-status'))
+  const pendingResponse=page.waitForResponse(r=>r.url().endsWith('/payment-status')).then(async response=>({status:response.status(),body:await response.json()}))
   await page.getByRole('link',{name:'Return to shop'}).click()
-  const pending=await pendingResponse;assert.equal(pending.status(),200);assert.equal((await pending.json()).state,'pending')
+  const pending=await pendingResponse;assert.equal(pending.status,200);assert.equal(pending.body.state,'pending')
   await expect(page.getByTestId('payment-result')).toHaveAttribute('data-status','pending')
   assert.equal((await control('paid/'+cart.id)).status,204)
   const paidResponse=page.waitForResponse(r=>r.url().endsWith('/payment-status')).then(async response=>({status:response.status(),body:await response.json()}))
   const completionResponse=page.waitForResponse(r=>r.url().endsWith('/complete'))
+  // Preserve the original navigation/assertion error if cleanup closes a
+  // still-pending response waiter; awaiting below still propagates rejection.
+  paidResponse.catch(()=>{});completionResponse.catch(()=>{})
   await page.reload()
   const paid=await paidResponse;assert.equal(paid.status,200);assert.equal(paid.body.state,'paid_pending_order')
   assert.equal((await completionResponse).status(),200)
@@ -111,4 +114,4 @@ try{
  assert.equal(orders.size,4);assert.equal(starts.length,8);assert.equal(completions.length,4);assert.deepEqual(errors,[])
  assert.equal((await control('finish')).status,204)
  console.log('CHECKOUT_JOINT_BROWSER '+JSON.stringify({actual_astro_checkout:true,actual_gin_handlers:true,real_mysql_redis:true,mocked_business_api_responses:false,isolated_provider_adapter_and_hosted_page:true,real_provider_payments:false,preseeded_cart_items:!browse,precreated_empty_cart:browse&&!fresh,anonymous_cart_creation:fresh,registration_verification_login:accounts,paid_order_account_attachment:accounts,account_read_without_cart:accounts,cross_account_denied:accounts,same_browser_account_switch:accounts,logout_denies_order:accounts,product_page_add_cart_checkout:browse,address_delivery_payment_review_result_confirmation:true,pending_before_paid:true,payment_reload_replays_original:true,confirmation_reload:true,completion_replay_same_order:true,unauthenticated_confirmation_denied:true,payment_journal_cleared:true,languages:['en','zh'],widths:[390,1440],unique_orders:4,browser_errors:0,real_email_delivery:false}))
-}finally{await browser?.close();if(app&&app.exitCode===null){app.kill();await once(app,'exit')}}
+}catch(error){console.error(error);throw error}finally{await browser?.close();if(app&&app.exitCode===null){app.kill();await once(app,'exit')}}

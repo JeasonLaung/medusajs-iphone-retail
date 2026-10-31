@@ -1,6 +1,18 @@
 # Mollie 通知到订单的业务消费契约
 
-状态：待实现与验收。0037 收件箱及查询函数已实现；不能据此开放正式收款。
+状态（2026-10-31）：本地业务消费、显式 API 接收配置和独立 worker 已实现，真实隔离 MySQL/Redis 专项通过。真实渠道沙箱、真实邮件收件、未知创建结果的候选发现/自动对账仍未验收，不能据此开放正式收款。下文契约继续作为验收要求。
+
+## 当前实现与本地证据
+
+- `cart.ConsumeMollieCheckoutObservation` 仅接收服务端配置的店铺和持久观察 attempt UUID；认证加密观察、原创建请求/回执及不可覆盖的引用，再检查当前 SQL 归属、原代次/尝试、会话/集合、摘要、金额/币种和提供方。
+- 浏览器与通知共用 `applyInitialObservation`，共用原成单事务参与函数 `completePaidOrder`；观察投影、状态、唯一订单、库存预留、优惠使用、现金账本、邮件意图、完成回执和 `consumed_at` 同事务提交。`authorized` 不成单，已付不被迟到 open/pending 降级；矛盾终态保留 `needs_review`，已捕获 session 不降级。
+- 已完成订单的通知仍复核当前归属、提供方、原引用/请求/观察以及完成回执；不会再次扣款、预留、创建订单或重排邮件。浏览器返回后通过原完成接口拿到相同订单。
+- `internal/checkoutconfig` 复用原显式配置，API 与 worker 使用同一付款密钥、店铺、Mollie 适配器及人工配送 allowlist。`MOLLIE_NOTIFICATIONS_ENABLED` 默认 false；仅显式注册 hosted Mollie，其他六条原回调入口仍关闭。本次没有新增 SQL 迁移或自动开启已有运行开关。
+- `go run ./cmd/process-mollie-notifications [--once]` 独立运行，不随 API 启动。每批最多十次 GET 和十次消费，GET 仍在事务之外并复用持久租约。已保存但未消费的观察可在新进程中继续；扫描游标仅用于公平调度，业务任务和结果都保存在 MySQL。失败记录不标记已消费，游标会遍历后续记录并循环重试。
+- 完整23组隔离SQL脚本最终退出0，82份迁移全部应用；[完整报告](admin-auth-report.json)包含履约83字段及最新worker消费证据。当前Go全量、相关vet、173项前台测试通过；Astro395文件0错误/0警告（7提示），中英×390/1440新账号完整购物联合及后续SQL回归通过，见[联合报告](shopping-account-joint-report.json)。
+- [购物车隔离报告](cart-runtime-report.json) 的 `mollie_checkout_consumer` 覆盖配置接收→worker→成单、消费末尾故障后重启无需第二次 GET、空闲不重放、店铺/开关检查、pending/authorized、8 路浏览器/worker 竞争、七处事务故障，以及错误密钥/密文/摘要/金额/币种/cart/session/当前权限拒绝。真实付款和真实收件仍为 false。
+
+通知不需要仍存活的购物车 Redis 会话即可完成正确的当前尝试；这不会按邮箱创建客户订单归属。现有新账户订单绑定仍走双方凭证的正式接口，失去所有凭证且从未完成绑定的订单恢复仍需单独补齐。无 remote reference 的未知创建结果、退款/拒付及人工核查后台仍是独立待办。
 
 现有正式购物路径由浏览器调用 `ObserveInitialPayment` 查询渠道，再调用 `CompleteCurrentPaidOrder` 完成订单。后者在一个本地事务中建立订单快照、库存预留、促销使用、付款账本、购物车完成回执和订单邮件意图。后台通知必须复用这套业务规则，不能另写一套简化成单逻辑。
 

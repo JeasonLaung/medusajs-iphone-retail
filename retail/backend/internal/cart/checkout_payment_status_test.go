@@ -3,6 +3,9 @@ package cart
 import "testing"
 
 func TestVerifiedPaymentTransitionsDoNotDowngradePaid(t *testing.T) {
+	if state, review := mergeObservedPayment("failed", "canceled"); state != "failed" || !review {
+		t.Fatal("conflicting unpaid terminal states require review")
+	}
 	for _, test := range []struct {
 		old, next, want string
 		review          bool

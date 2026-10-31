@@ -171,37 +171,9 @@ func ObserveInitialPayment(ctx context.Context, db *gorm.DB, store string, ref s
 		if err != nil {
 			return err
 		}
-		previous := ""
-		if row.ObservedStatus != nil {
-			previous = *row.ObservedStatus
-		}
-		next, review := mergeObservedPayment(previous, observed.ProviderStatus)
-		row.NeedsReview = row.NeedsReview || review
-		row.ObservedStatus = &next
-		update := map[string]any{"observed_status": next, "needs_review": row.NeedsReview}
-		if observed.ProviderStatus == "paid" && next == "paid" {
-			update["paid_observation_id"] = id
-		}
-		if r := initialWhere(tx, ref, in).Updates(update); r.Error != nil {
-			return ErrStorage
-		}
-		// Do not overwrite the immutable create receipt or classify authorization
-		// as cash. Session 'authorized' matches source mapping for either fact.
-		var local struct{ Status string }
-		if tx.Table("payment_sessions").Select("status").Where("id=? AND payment_collection_id=? AND deleted_at IS NULL", row.SessionID, row.CollectionID).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&local).Error != nil {
-			return ErrStorage
-		}
-		statuses := map[string]string{"open": "pending", "pending": "pending", "paid": "authorized", "authorized": "authorized", "canceled": "canceled", "expired": "error", "failed": "error"}
-		if r := tx.Table("payment_sessions").Where("id=? AND payment_collection_id=? AND deleted_at IS NULL", row.SessionID, row.CollectionID).Updates(map[string]any{"status": func() string {
-			if local.Status == "captured" {
-				return "captured"
-			}
-			if local.Status == "authorized" && (next == "open" || next == "pending") {
-				return "authorized"
-			}
-			return statuses[next]
-		}(), "updated_at": gorm.Expr("UTC_TIMESTAMP(6)")}); r.Error != nil || r.RowsAffected != 1 {
-			return ErrStorage
+		row, err = applyInitialObservation(tx, ref, in, row, id, observed)
+		if err != nil {
+			return err
 		}
 		out.State = statusState(row)
 		return nil
@@ -223,10 +195,48 @@ func mergeObservedPayment(previous, next string) (string, bool) {
 		return previous, false
 	}
 	if failed(previous) {
-		return previous, next == "authorized"
+		return previous, next == "authorized" || failed(next) && previous != next
 	}
 	if strings.TrimSpace(next) != next {
 		return previous, true
 	}
 	return next, false
+}
+
+// Shared by browser polling and the durable notification consumer. The caller
+// owns the transaction and has authenticated evidence and the current attempt.
+func applyInitialObservation(tx *gorm.DB, ref sessionstore.CartReference, in InitialPaymentCommand, row initialAttempt, id string, observed payments.SessionObservation) (initialAttempt, error) {
+	previous := ""
+	if row.ObservedStatus != nil {
+		previous = *row.ObservedStatus
+	}
+	next, review := mergeObservedPayment(previous, observed.ProviderStatus)
+	row.NeedsReview = row.NeedsReview || review
+	row.ObservedStatus = &next
+	update := map[string]any{"observed_status": next, "needs_review": row.NeedsReview}
+	if observed.ProviderStatus == "paid" && next == "paid" {
+		update["paid_observation_id"] = id
+	}
+	if r := initialWhere(tx, ref, in).Updates(update); r.Error != nil {
+		return row, ErrStorage
+	}
+	// Do not overwrite the immutable create receipt or classify authorization
+	// as cash. Session 'authorized' matches source mapping for either fact.
+	var local struct{ Status string }
+	if tx.Table("payment_sessions").Select("status").Where("id=? AND payment_collection_id=? AND deleted_at IS NULL", row.SessionID, row.CollectionID).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&local).Error != nil {
+		return row, ErrStorage
+	}
+	statuses := map[string]string{"open": "pending", "pending": "pending", "paid": "authorized", "authorized": "authorized", "canceled": "canceled", "expired": "error", "failed": "error"}
+	if r := tx.Table("payment_sessions").Where("id=? AND payment_collection_id=? AND deleted_at IS NULL", row.SessionID, row.CollectionID).Updates(map[string]any{"status": func() string {
+		if local.Status == "captured" {
+			return "captured"
+		}
+		if local.Status == "authorized" && (next == "open" || next == "pending") {
+			return "authorized"
+		}
+		return statuses[next]
+	}(), "updated_at": gorm.Expr("UTC_TIMESTAMP(6)")}); r.Error != nil || r.RowsAffected != 1 {
+		return row, ErrStorage
+	}
+	return row, nil
 }

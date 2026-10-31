@@ -276,3 +276,8 @@ Gin明确字段投影，URL分页、稳定排序、软删及私密payload隔离�
 ### New customer identity foundation
 
 `internal/customer` and explicit migration 0038 implement new registration, encrypted verification mail intents, one-time email confirmation and separate Redis customer sessions. See [evidence and remaining work](../docs/migration/gin-customer-accounts.md). Customer HTTP now provides origin/CSRF guards, distinct secure cookies and registration/verification/login/logout. Astro pages and actual Resend delivery are not yet integrated; C02 remains incomplete.
+
+
+### 2026-10-31: Mollie notification checkout consumer and explicit worker
+
+A server-only observation consumer now reuses the existing monotone payment merge and unique local completion transaction. Configured hosted callbacks enqueue known references; the separate `process-mollie-notifications` worker performs authoritative reads outside SQL and consumes durable evidence. Observations, paid order, stock, promotion receipts, cash ledger, order-mail intent and consumed marker commit together. Isolated SQL covers seven failure stages, eight browser/consumer competitors, authenticated mismatches, revoked/disabled replay, notification-only completion and restart after business failure without another GET. Shared environment parsing and notification flags remain explicit/default off; no startup DDL or real provider payment/mail. See [contract and evidence](../docs/migration/mollie-checkout-consumer.md). Unknown-create discovery/reconciliation, real sandbox/recipient acceptance and the remaining frontend delivery checklist remain unfinished.

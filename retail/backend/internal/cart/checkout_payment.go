@@ -141,36 +141,9 @@ func stageInitialPayment(ctx context.Context, tx *gorm.DB, store string, ref ses
 		if err != nil || amounts.Totals["total"] != row.CartAmount || amounts.CurrencyCode != row.CurrencyCode {
 			return fail(ErrConflict)
 		}
-		key := initialKey(ref, in, row)
-		request, err := payments.ReadSessionRequest(ctx, tx, key, o.Ring)
+		key, err := validateInitialBinding(ctx, tx, ref, in, row, o)
 		if err != nil {
 			return fail(err)
-		}
-		if request.SessionID != row.SessionID || request.CollectionID != row.CollectionID || request.ProviderID != hostedMollie || request.Amount != row.SettlementAmount || request.Currency != row.CurrencyCode {
-			return fail(ErrConflict)
-		}
-		var owners []string
-		if tx.Table("cart_payment_collections").Select("cart_id").Where("payment_collection_id=? AND deleted_at IS NULL", row.CollectionID).Clauses(clause.Locking{Strength: "SHARE"}).Limit(2).Scan(&owners).Error != nil || len(owners) != 1 || owners[0] != ref.CartID {
-			return fail(ErrConflict)
-		}
-		var sessions []string
-		if tx.Table("payment_sessions").Select("id").Where("payment_collection_id=? AND deleted_at IS NULL", row.CollectionID).Clauses(clause.Locking{Strength: "SHARE"}).Limit(2).Scan(&sessions).Error != nil || len(sessions) != 1 || sessions[0] != row.SessionID {
-			return fail(ErrConflict)
-		}
-		var binding struct{ CollectionID, SessionID, ProviderID, CurrencyCode, Amount, RawAmount, SessionCurrency, SessionAmount, SessionRaw string }
-		r := tx.Table("cart_payment_collections l").Select("c.id AS collection_id,s.id AS session_id,s.provider_id,c.currency_code,CAST(c.amount AS CHAR) AS amount,c.raw_amount,s.currency_code AS session_currency,CAST(s.amount AS CHAR) AS session_amount,s.raw_amount AS session_raw").Joins("JOIN payment_collections c ON c.id=l.payment_collection_id AND c.deleted_at IS NULL").Joins("JOIN payment_sessions s ON s.payment_collection_id=c.id AND s.id=? AND s.deleted_at IS NULL", row.SessionID).Where("l.cart_id=? AND l.payment_collection_id=? AND l.deleted_at IS NULL", ref.CartID, row.CollectionID).Clauses(clause.Locking{Strength: "SHARE"}).Scan(&binding)
-		if r.Error != nil || r.RowsAffected != 1 || binding.ProviderID != hostedMollie || binding.CurrencyCode != row.CurrencyCode || binding.SessionCurrency != row.CurrencyCode {
-			return fail(ErrConflict)
-		}
-		for _, pair := range [][2]string{{binding.Amount, binding.RawAmount}, {binding.SessionAmount, binding.SessionRaw}} {
-			n, err := nonNegativeAmount(pair[0], &pair[1])
-			if err != nil {
-				return fail(err)
-			}
-			value, err := totals.Resolve(n)
-			if err != nil || value != row.SettlementAmount {
-				return fail(ErrConflict)
-			}
 		}
 		return row, key, nil
 	}
@@ -404,4 +377,45 @@ func StartInitialPayment(ctx context.Context, db *gorm.DB, store string, ref ses
 		return nil
 	}, &sql.TxOptions{Isolation: sql.LevelReadCommitted})
 	return out, err
+}
+
+// validateInitialBinding authenticates the original frozen request and its
+// unique live collection/session, including after an order has been completed.
+func validateInitialBinding(ctx context.Context, tx *gorm.DB, ref sessionstore.CartReference, in InitialPaymentCommand, row initialAttempt, o InitialPaymentOptions) (payments.EffectKey, error) {
+	key := initialKey(ref, in, row)
+	request, err := payments.ReadSessionRequest(ctx, tx, key, o.Ring)
+	if err != nil {
+		return payments.EffectKey{}, err
+	}
+	var metadata struct {
+		CartID    string `json:"cart_id"`
+		SessionID string `json:"session_id"`
+	}
+	if json.Unmarshal(request.Data, &metadata) != nil || metadata.CartID != ref.CartID || metadata.SessionID != row.SessionID || request.SessionID != row.SessionID || request.CollectionID != row.CollectionID || request.ProviderID != hostedMollie || request.Amount != row.SettlementAmount || request.Currency != row.CurrencyCode {
+		return payments.EffectKey{}, ErrConflict
+	}
+	var owners []string
+	if tx.Table("cart_payment_collections").Select("cart_id").Where("payment_collection_id=? AND deleted_at IS NULL", row.CollectionID).Clauses(clause.Locking{Strength: "SHARE"}).Limit(2).Scan(&owners).Error != nil || len(owners) != 1 || owners[0] != ref.CartID {
+		return payments.EffectKey{}, ErrConflict
+	}
+	var sessions []string
+	if tx.Table("payment_sessions").Select("id").Where("payment_collection_id=? AND deleted_at IS NULL", row.CollectionID).Clauses(clause.Locking{Strength: "SHARE"}).Limit(2).Scan(&sessions).Error != nil || len(sessions) != 1 || sessions[0] != row.SessionID {
+		return payments.EffectKey{}, ErrConflict
+	}
+	var binding struct{ CollectionID, SessionID, ProviderID, CurrencyCode, Amount, RawAmount, SessionCurrency, SessionAmount, SessionRaw string }
+	r := tx.Table("cart_payment_collections l").Select("c.id AS collection_id,s.id AS session_id,s.provider_id,c.currency_code,CAST(c.amount AS CHAR) AS amount,c.raw_amount,s.currency_code AS session_currency,CAST(s.amount AS CHAR) AS session_amount,s.raw_amount AS session_raw").Joins("JOIN payment_collections c ON c.id=l.payment_collection_id AND c.deleted_at IS NULL").Joins("JOIN payment_sessions s ON s.payment_collection_id=c.id AND s.id=? AND s.deleted_at IS NULL", row.SessionID).Where("l.cart_id=? AND l.payment_collection_id=? AND l.deleted_at IS NULL", ref.CartID, row.CollectionID).Clauses(clause.Locking{Strength: "SHARE"}).Scan(&binding)
+	if r.Error != nil || r.RowsAffected != 1 || binding.ProviderID != hostedMollie || binding.CurrencyCode != row.CurrencyCode || binding.SessionCurrency != row.CurrencyCode {
+		return payments.EffectKey{}, ErrConflict
+	}
+	for _, pair := range [][2]string{{binding.Amount, binding.RawAmount}, {binding.SessionAmount, binding.SessionRaw}} {
+		n, err := nonNegativeAmount(pair[0], &pair[1])
+		if err != nil {
+			return payments.EffectKey{}, err
+		}
+		value, err := totals.Resolve(n)
+		if err != nil || value != row.SettlementAmount {
+			return payments.EffectKey{}, ErrConflict
+		}
+	}
+	return key, nil
 }

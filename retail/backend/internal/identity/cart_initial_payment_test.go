@@ -209,6 +209,7 @@ func checkInitialPayments(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	}
 	checkCompletionHTTP(t, ctx, db, sessions, completionHTTPRef, options)
 	checkCheckoutBrowser(t, ctx, db, sessions, options)
+	checkMollieCheckoutConsumer(t, ctx, db, makeCart, options)
 	exec("UPDATE cart_checkout_runtime SET enabled=FALSE WHERE id=1")
 	if _, err = cart.StartInitialPayment(ctx, db, "shop", ref, in, options); err != cart.ErrSchema {
 		t.Fatal("disabled initial replay allowed")
