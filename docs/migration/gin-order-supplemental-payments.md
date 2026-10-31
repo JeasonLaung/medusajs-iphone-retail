@@ -130,3 +130,16 @@ checkout_url只从同一支付effect的加密成功回执解出，复核请求/�
 此模式验证本地连续业务链，不代表真实商户付款/邮件送达、常驻worker生命周期或全商城交付。`order-payment-v1`实收再退款可信trace及C01–C11其余项仍待完成；历史notice/CLI/presentation报告中的未联合标志保留其当时范围，不能改写成该轮已验收。
 
 最终88文件快照：正差额四客户联合162.49秒、原负差额退款联合200.37秒，均浏览器错误0并清理完资源；完整23组SQL、Go全包及相关vet通过。正差额报告1232份、负差额报告150份、完整SQL442份源码指纹逐项匹配；只验收隔离的0001–0087加0093，不包含并行商品/评价迁移。
+
+
+### 补款实收的退款可信来源（2026-10-31）
+
+退款 Prepare 保留原 checkout receipt 路径；仅原付款路径确实找不到时，沿已 applied 的补款指令、同订单原 checkout、确定 ID 的 payment/capture/正交易及同 effect 的渠道 reference 查找补款来源。保存原订单 scope、操作 UUID、session、remote payment 和受保护请求摘要，不按 email、当前 cart bearer 或当前账号授权推导现金来源。无需新增迁移，沿用退款指令的既有不可变字段。
+
+准备及发送/恢复前都重新校验受保护 SessionRequest、成功创建回执、`order-payment-v1` 的 `ers1.` 加密 paid 数据、精确金额/币种/渠道 metadata，以及唯一规范 capture 和对应正交易。拒绝损坏信封、跨 session/store、缺失/额外/改额 capture；准备后改坏来源也不能发送 POST。退款金额仍受原 capture 余额限制，原 checkout 现金不被当作补款渠道目标。
+
+专有 SQL 沿实际原生 checkout/正差额换货/6.00实收，再使用明确人工退货请求和退回设备事实验证退款：撤销客户账号及退役旧 cart 后，当前授权员工仍可六并发准备同一 UUID；6.01拒绝，6.00首次 POST 丢响应，后续仅 GET 恢复。退款通知末尾故障使 refund/负交易/集合/汇总全部回滚，保存的渠道结果可无额外网络本地重应用，最终各一份6.00退款、-6.00交易及本人通知，原付款没有退款。
+
+这里没有提交原生退货金额变更：实收164.75、退款6.00后当前汇总 pending_difference 为6，明确不宣称完整退货财务闭环。设备和请求是人工 SQL 夹具，不是实际替换设备再次退回；尚未验收客户浏览器至生产退款 CLI 的补款再退款连续链。报告 `order-payment-refund-trace-report.json` 将这些限制写为显式字段，并绑定同版23组 SQL、原四新客户正差额联合及1254份源码指纹；来源漂移拒绝探针通过。
+
+最终隔离88文件基线完整23组 SQL、Go全包和refunds/identity/orderpayments/payments vet通过；原四新客户补款至通知/替换出库联合179.72秒，浏览器错误0、资源清理完成。原负差额退款联合本次复跑在启动前因可用空间低于2GiB被拒绝，没有建立资源，不能把上一轮成功记录算作本轮复跑。日志、失败记录、截图和报告归档 `logs/gin-migration/supplement-refund-trace-validation-88`。原服务及Gin/Admin/Astro六项直连均200，近期日志中断标记0；主库86基线及并行商品/评价改动保留。后续继续实际补款再退款客户连续链、原生退货金额语义核对、常驻worker与C01–C11剩余范围。

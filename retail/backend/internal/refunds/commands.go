@@ -115,6 +115,13 @@ func (s Service) request(ctx context.Context, tx *gorm.DB, r operation) (payment
 	if e != nil || req.SessionID != r.SessionID || req.CollectionID != r.CollectionID || req.ProviderID != r.ProviderID || req.Currency != r.CurrencyCode {
 		return payments.RefundRequest{}, ErrUnavailable
 	}
+	if r.ScopeID == r.OrderID {
+		if e := s.verifySupplemental(ctx, tx, r, req); e != nil {
+			clear(req.Data)
+			clear(req.Context)
+			return payments.RefundRequest{}, e
+		}
+	}
 	return payments.RefundRequest{Session: req, RemotePaymentID: r.RemotePaymentID, OperationID: r.OperationID, OrderID: r.OrderID, RequestID: r.RequestID, Amount: r.Amount}, nil
 }
 
@@ -225,8 +232,14 @@ func (s Service) Prepare(ctx context.Context, actor identity.User, in Input) (Re
 			RequestSHA256                             []byte
 		}
 		e = tx.Table("cart_completion_receipts c").Select("a.cart_id AS scope_id,a.operation_id,a.session_id,r.remote_id,a.request_sha256").Joins("JOIN cart_checkout_attempts a ON a.cart_id=c.cart_id AND a.operation_id=c.operation_id").Joins("JOIN mollie_payment_references r ON r.scope_id=a.cart_id AND r.operation_id=a.operation_id AND r.resource_id=a.session_id AND r.effect_kind='create_session' AND r.request_sha256=a.request_sha256").Where("c.order_id=? AND c.payment_id=? AND a.collection_id=? AND a.session_id=? AND r.provider_id=?", in.OrderID, in.PaymentID, p.PaymentCollectionID, p.PaymentSessionID, p.ProviderID).Clauses(clause.Locking{Strength: "SHARE"}).Take(&trace).Error
-		if e != nil {
-			return ErrConflict
+		if errors.Is(e, gorm.ErrRecordNotFound) {
+			supplemental, err := s.supplementalTrace(tx, in.OrderID, in.PaymentID, p.PaymentCollectionID, p.PaymentSessionID, p.ProviderID)
+			if err != nil {
+				return err
+			}
+			trace.ScopeID, trace.OperationID, trace.SessionID, trace.RemoteID, trace.RequestSHA256 = supplemental.ScopeID, supplemental.OperationID, supplemental.SessionID, supplemental.RemoteID, supplemental.RequestSHA256
+		} else if e != nil {
+			return ErrUnavailable
 		}
 		r.ScopeID, r.CheckoutOperationID, r.SessionID, r.RemotePaymentID, r.RequestSHA256 = trace.ScopeID, trace.OperationID, trace.SessionID, trace.RemoteID, trace.RequestSHA256
 		req, e := s.request(ctx, tx, r)
