@@ -1,8 +1,11 @@
 package checkoutconfig
 
 import (
+	"crypto/x509"
 	"errors"
+	"io"
 	"net/url"
+	"os"
 	"regexp"
 	"strings"
 
@@ -41,7 +44,26 @@ func Load(env func(string) string) (*cart.InitialPaymentOptions, error) {
 		return nil, ErrInvalid
 	}
 	const provider = "pp_mollie-hosted-checkout_mollie"
-	adapter, err := payments.NewMollieCreateAdapter(payments.MollieCreateConfig{ProviderID: provider, APIKey: env("MOLLIE_API_KEY"), RedirectURL: origin + "/api/mollie-return", BackendURL: backend})
+	var roots *x509.CertPool
+	if path := env("MOLLIE_CA_FILE"); path != "" {
+		file, e := os.Open(path)
+		if e != nil {
+			return nil, ErrInvalid
+		}
+		pem, e := io.ReadAll(io.LimitReader(file, (1<<20)+1))
+		_ = file.Close()
+		if e != nil || len(pem) > 1<<20 {
+			return nil, ErrInvalid
+		}
+		roots, e = x509.SystemCertPool()
+		if e != nil {
+			return nil, ErrInvalid
+		}
+		if !roots.AppendCertsFromPEM(pem) {
+			return nil, ErrInvalid
+		}
+	}
+	adapter, err := payments.NewMollieCreateAdapter(payments.MollieCreateConfig{ProviderID: provider, APIKey: env("MOLLIE_API_KEY"), RedirectURL: origin + "/api/mollie-return", BackendURL: backend, RootCAs: roots})
 	if err != nil {
 		return nil, ErrInvalid
 	}

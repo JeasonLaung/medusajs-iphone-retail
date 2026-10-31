@@ -3,6 +3,8 @@ package payments
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
+	"crypto/x509"
 	"encoding/json"
 	"io"
 	"math/big"
@@ -34,6 +36,8 @@ type MollieCreateConfig struct {
 	BackendURL    string
 	Description   string
 	ManualCapture bool
+	// Optional server-owned trust roots. Nil keeps the platform trust store.
+	RootCAs *x509.CertPool
 }
 
 // MollieCreateAdapter must be configured explicitly by trusted server code.
@@ -72,6 +76,15 @@ func NewMollieCreateAdapter(config MollieCreateConfig) (*MollieCreateAdapter, er
 	transport, err := NewMollieDeleteAdapter(config.ProviderID, config.APIKey)
 	if err != nil {
 		return nil, err
+	}
+	if config.RootCAs != nil {
+		base, ok := http.DefaultTransport.(*http.Transport)
+		if !ok {
+			return nil, ErrEffectInput
+		}
+		clientTransport := base.Clone()
+		clientTransport.TLSClientConfig = &tls.Config{RootCAs: config.RootCAs.Clone(), MinVersion: tls.VersionTLS12}
+		transport.client.Transport = clientTransport
 	}
 	redirect, err := mollieHTTPURL(config.RedirectURL)
 	if err != nil || redirect.EscapedPath() != "/api/mollie-return" {

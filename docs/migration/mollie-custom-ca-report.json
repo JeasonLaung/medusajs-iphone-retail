@@ -1,0 +1,35 @@
+{
+  "format_version": 1,
+  "scope": "Explicit trusted server CA configuration; platform defaults retained when unset. Actual production CLI/customer supplemental refund joint remains pending.",
+  "ca_configuration": "MOLLIE_CA_FILE",
+  "file_limit_bytes": 1048576,
+  "platform_roots_preserved": true,
+  "custom_pool_cloned": true,
+  "tls_min_version": "1.2",
+  "provider_host_fixed": true,
+  "insecure_skip_verify": false,
+  "real_local_tls_assertions": {
+    "matching_certificate_and_host": true,
+    "platform_only_refuses_private_ca": true,
+    "unrelated_ca_refused": true,
+    "wrong_hostname_refused": true
+  },
+  "invalid_file_missing_malformed_oversize_fail_closed": true,
+  "go_all_packages_passed": true,
+  "related_go_vet_passed": true,
+  "full_sql_rerun_after_ca_change": false,
+  "actual_cli_customer_refund_joint": false,
+  "real_provider": false,
+  "source_sha256_lf": {
+    "retail/backend/internal/payments/mollie_create.go": "75e53a480c0617913c6422a94a71a59ba776a10cc7d45e5133e17aacfd2a3871",
+    "retail/backend/internal/payments/mollie_trust_test.go": "bf7cb62c6d804c982f3fd2e19b821e68b1f50779e176a43aa7fb97c8d87dab48",
+    "retail/backend/internal/checkoutconfig/checkout.go": "21ab90151cd2633afac9e0340f7c6f1a5aca9a88e4ac418c34ec0d01a5b5a1ef",
+    "retail/backend/internal/checkoutconfig/ca_test.go": "73d95076dde6c93ad2595bf494f13e6a93a36dd7e55ffac030653078a28f0bc1",
+    "retail/backend/.env.example": "3e0028ceb800cfd0a5921e35fa1d592c45dc2450bc4cae238848b5121ae1cca2"
+  },
+  "transcript_sha256_lf": {
+    "logs/gin-migration/mollie-ca-validation/go-all-unadapted.log": "238081041d6d7f4d3413f289db6c2d3bcbb6059249807be7862568350bdbdf54",
+    "logs/gin-migration/mollie-ca-validation/go-vet-unadapted.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/gin-migration/mollie-ca-validation/ca-tests.log": "bb417e0a8d50dc5c4cf45a6dc7e06a9298e2f99007b0adf6568e57548438c1b5"
+  }
+}
