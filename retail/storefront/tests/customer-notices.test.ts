@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import {getNotificationCopy} from '../src/components/notifications/i18n.ts'
 import {noticePage} from '../src/lib/customer-notices.ts'
 import {customerClient} from '../src/lib/customer-client.ts'
 import {customerBridge} from '../src/lib/customer-bridge.ts'
@@ -25,4 +26,12 @@ test('notification client and bridge keep authenticated list separate from CSRF 
   for(const q of ['?','?offset=-1','?offset=100001','?offset=0&offset=20','?customer_id=other'])assert.equal((await customerBridge(new Request(shop+'/api/store/customer/notifications'+q),config,transport)).status,404)
   assert.equal(calls,1)
  }finally{if(d)Object.defineProperty(globalThis,'document',d);else Reflect.deleteProperty(globalThis,'document');if(l)Object.defineProperty(globalThis,'location',l);else Reflect.deleteProperty(globalThis,'location')}
+})
+
+test('supplemental cash notice uses existing private order projection and localized copy',()=>{
+ const expected={...row,kind:'payment.received'}
+ assert.deepEqual(noticePage({...page,notifications:[{...expected,remote_id:'PRIVATE',amount:'6.00'}]},0).notifications,[expected])
+ assert.equal(getNotificationCopy('en').events['payment.received'],'Your supplemental payment has been recorded')
+ assert.equal(getNotificationCopy('zh-CN').events['payment.received'],'您的补款已记账')
+ assert.throws(()=>noticePage({...page,notifications:[{...row,kind:'payment.pending'}]},0))
 })

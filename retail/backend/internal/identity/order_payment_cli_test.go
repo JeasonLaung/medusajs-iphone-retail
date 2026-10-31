@@ -230,9 +230,12 @@ func checkOrderPaymentCLI(t *testing.T, ctx context.Context, db *gorm.DB, s orde
 	if count("payments", "payment_collection_id=?", in.CollectionID) != 1 || count("payment_captures", "id=?", "cap_supp_"+in.OperationID) != 1 || count("order_transactions", "id=?", "ordtr_supp_"+in.OperationID) != 1 || count("order_payment_operations", "operation_id=? AND state='paid' AND applied=TRUE", in.OperationID) != 1 || count("orders", "id=? AND status='canceled'", in.OrderID) != 1 || count("mollie_notification_observations", "remote_id=? AND consumed_at IS NOT NULL", "tr_ownedSupplementCLI") != 1 {
 		t.Fatal("CLI final cash/ACK not unique or canceled order reopened")
 	}
+	if count("customer_account_notices", "event_key=?", "payment.received:pay_supp_"+in.OperationID) != 0 {
+		t.Fatal("disabled recipient received a retrospective notice")
+	}
 	var due, cash string
 	if db.Table("order_summaries").Select("JSON_UNQUOTE(JSON_EXTRACT(totals,'$.pending_difference'))").Where("order_id=? AND version=3", in.OrderID).Scan(&due).Error != nil || db.Table("order_summaries").Select("JSON_UNQUOTE(JSON_EXTRACT(totals,'$.transaction_total'))").Where("order_id=? AND version=3", in.OrderID).Scan(&cash).Error != nil || due != "0" || cash != "164.75" {
 		t.Fatal("CLI exact cash summary", due, cash)
 	}
-	t.Log(`ORDER_PAYMENT_CLI_REHEARSAL {"production_binary":true,"distinct_processes":4,"owned_tls_proxy":true,"durable_claim_before_post":true,"single_post":true,"lost_response_process_exit":true,"new_process_get_discovery":true,"protected_creation_and_paid_observation":true,"last_ack_rolls_back_cash":true,"new_process_local_reapply_without_network":true,"revoked_account_retired_cart_disabled_feature_recovery":true,"canceled_order_not_reopened":true,"unique_payment_capture_transaction_ack":true,"cash_total":"164.75","pending_difference":"0","idle_process":true,"real_provider":false,"registration_browser":false,"payment_notice":false}`)
+	t.Log(`ORDER_PAYMENT_CLI_REHEARSAL {"production_binary":true,"distinct_processes":4,"owned_tls_proxy":true,"durable_claim_before_post":true,"single_post":true,"lost_response_process_exit":true,"new_process_get_discovery":true,"protected_creation_and_paid_observation":true,"last_ack_rolls_back_cash":true,"new_process_local_reapply_without_network":true,"revoked_account_retired_cart_disabled_feature_recovery":true,"canceled_order_not_reopened":true,"unique_payment_capture_transaction_ack":true,"cash_total":"164.75","pending_difference":"0","idle_process":true,"disabled_recipient_no_notice":true,"real_provider":false,"registration_browser":false,"payment_notice":false}`)
 }

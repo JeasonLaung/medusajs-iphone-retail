@@ -8,6 +8,7 @@ import (
 	"math/big"
 	"time"
 
+	"github.com/eurorefurb/retail/internal/customernotices"
 	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/protected"
@@ -266,6 +267,9 @@ func (s Service) applyPaid(ctx context.Context, tx *gorm.DB, r *operation, req p
 	}
 	if _, e = orders.RefreshCashSummaryTx(ctx, tx, r.OrderID, ord.Version); e != nil {
 		return e
+	}
+	if e = customernotices.EmitOrderTx(tx, r.OrderID, "payment.received", payID); e != nil {
+		return ErrUnavailable
 	}
 	updated = tx.Model(&operation{}).Where("operation_id=? AND applied=FALSE", r.OperationID).Updates(map[string]any{"state": "paid", "applied": true, "updated_at": now})
 	if updated.Error != nil || updated.RowsAffected != 1 {

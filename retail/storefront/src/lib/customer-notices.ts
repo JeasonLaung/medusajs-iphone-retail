@@ -1,7 +1,7 @@
 export type CustomerNotice={id:string;kind:string;resource_id:string;reference:string;action:string;read_at:string|null;created_at:string}
 export type NoticePage={notifications:CustomerNotice[];count:number;unread:number;offset:number;limit:number}
 export const noticeID=(id:string)=>/^notice_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(id)
-const kinds=new Set(['refund.created','shipment.created','delivery.created','order.canceled','after_sales.processing','after_sales.completed','after_sales.rejected','buyback.updated'])
+const kinds=new Set(['payment.received','refund.created','shipment.created','delivery.created','order.canceled','after_sales.processing','after_sales.completed','after_sales.rejected','buyback.updated'])
 export function noticePage(raw:unknown,offset:number):NoticePage{
  const fail=()=>{throw Error('Notification response unavailable')}
  if(!raw||typeof raw!=='object'||Array.isArray(raw))return fail()

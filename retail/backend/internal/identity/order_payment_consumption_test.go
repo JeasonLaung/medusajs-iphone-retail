@@ -7,6 +7,7 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/eurorefurb/retail/internal/customernotices"
 	"github.com/eurorefurb/retail/internal/orderpayments"
 	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/payments"
@@ -107,7 +108,7 @@ func checkOrderPaymentConsumption(t *testing.T, ctx context.Context, db *gorm.DB
 	}
 	assertUnpaid := func() {
 		t.Helper()
-		if count("payments", "payment_collection_id=?", in.CollectionID) != 0 || count("payment_captures", "id=?", "cap_supp_"+in.OperationID) != 0 || count("order_transactions", "id=?", "ordtr_supp_"+in.OperationID) != 0 {
+		if count("customer_account_notices", "event_key=?", "payment.received:pay_supp_"+in.OperationID) != 0 || count("payments", "payment_collection_id=?", in.CollectionID) != 0 || count("payment_captures", "id=?", "cap_supp_"+in.OperationID) != 0 || count("order_transactions", "id=?", "ordtr_supp_"+in.OperationID) != 0 {
 			t.Fatal("partial supplement cash leaked")
 		}
 		var row struct {
@@ -153,6 +154,31 @@ func checkOrderPaymentConsumption(t *testing.T, ctx context.Context, db *gorm.DB
 	}
 	exec("UPDATE mollie_notification_observations SET result_envelope=? WHERE attempt_id=?", envelope, paid)
 	assertUnpaid()
+	// The old generation remains revoked; a currently enabled verified recipient
+	// receives this cash event. The independent CLI case retains disabled recovery.
+	var owner struct{ AccountID string }
+	if db.Table("order_payment_operations").Select("account_id").Where("operation_id=?", in.OperationID).Take(&owner).Error != nil {
+		t.Fatal("notice owner")
+	}
+	exec("UPDATE customer_accounts SET enabled=TRUE WHERE id=?", owner.AccountID)
+	for _, change := range []string{"UPDATE customer_accounts SET enabled=FALSE WHERE id=?", "UPDATE customer_accounts SET verified_at=NULL WHERE id=?", "DELETE FROM customer_order_ownership WHERE customer_id=?"} {
+		rollback := errors.New("notice recipient rollback")
+		if e := db.Transaction(func(tx *gorm.DB) error {
+			if e := tx.Exec(change, owner.AccountID).Error; e != nil {
+				return e
+			}
+			if e := customernotices.EmitOrderTx(tx, in.OrderID, "payment.received", "pay_supp_"+in.OperationID); e != nil {
+				return e
+			}
+			var n int64
+			if tx.Table("customer_account_notices").Where("event_key=?", "payment.received:pay_supp_"+in.OperationID).Count(&n).Error != nil || n != 0 {
+				t.Fatal("notice granted unverified/disabled/absent ownership")
+			}
+			return rollback
+		}); !errors.Is(e, rollback) {
+			t.Fatal("notice recipient check", e)
+		}
+	}
 	setTax := func(rate string) {
 		exec("UPDATE order_line_tax_lines t JOIN order_exchange_items i ON i.item_id=t.item_id JOIN order_exchanges e ON e.id=i.exchange_id SET t.rate=?,t.raw_rate=JSON_OBJECT('value',?,'precision',100) WHERE e.order_id=?", rate, rate, in.OrderID)
 	}
@@ -168,6 +194,12 @@ func checkOrderPaymentConsumption(t *testing.T, ctx context.Context, db *gorm.DB
 	}
 	exec("DROP TRIGGER owned_supplement_ledger_failure")
 	assertUnpaid()
+	exec("CREATE TRIGGER owned_supplement_notice_failure BEFORE INSERT ON customer_account_notices FOR EACH ROW BEGIN IF NEW.kind='payment.received' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='owned supplement notice failure'; END IF; END")
+	if _, e = s.Consume(ctx, paid); e == nil {
+		t.Fatal("notice failure accepted cash")
+	}
+	exec("DROP TRIGGER owned_supplement_notice_failure")
+	assertUnpaid()
 	// Last ACK fails after cash, summary and applied have all been written.
 	exec("CREATE TRIGGER owned_supplement_ack_failure BEFORE UPDATE ON mollie_notification_observations FOR EACH ROW BEGIN IF NEW.attempt_id='" + paid + "' AND NEW.consumed_at IS NOT NULL THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='owned supplement consumption failure'; END IF; END")
 	if _, e = s.Consume(ctx, paid); e == nil {
@@ -182,7 +214,7 @@ func checkOrderPaymentConsumption(t *testing.T, ctx context.Context, db *gorm.DB
 	if db.Table("order_summaries").Select("JSON_UNQUOTE(JSON_EXTRACT(totals,'$.pending_difference'))").Where("order_id=? AND version=3", in.OrderID).Scan(&summary).Error != nil || summary != "6" {
 		t.Fatal("failed cash changed summary", summary)
 	}
-	// Already dispatched cash survives current account/cart retirement and a
+	// Already dispatched cash survives old-generation revocation/cart retirement and a
 	// canceled order. It grants no permission to alter that canceled order.
 	exec("UPDATE orders SET status='canceled',canceled_at=UTC_TIMESTAMP(6) WHERE id=?", in.OrderID)
 	var wg sync.WaitGroup
@@ -222,6 +254,9 @@ func checkOrderPaymentConsumption(t *testing.T, ctx context.Context, db *gorm.DB
 	if count("cart_completion_receipts", "order_id=?", in.OrderID) != 1 || count("cart_payment_collections", "cart_id=?", cartID) != 1 || count("carts", "id=? AND completed_at IS NOT NULL AND deleted_at IS NOT NULL", cartID) != 1 {
 		t.Fatal("cash application changed completed retired cart")
 	}
+	if count("customer_account_notices", "event_key=? AND customer_id=? AND resource_id=? AND read_at IS NULL", "payment.received:pay_supp_"+in.OperationID, owner.AccountID, in.OrderID) != 1 {
+		t.Fatal("paid cash did not create unique owned notice")
+	}
 	status = "open"
 	late := observe()
 	if r, e := s.Consume(ctx, late); e != nil || !r.Applied || r.State != "paid" {
@@ -230,6 +265,10 @@ func checkOrderPaymentConsumption(t *testing.T, ctx context.Context, db *gorm.DB
 	if count("payments", "payment_collection_id=?", in.CollectionID) != 1 {
 		t.Fatal("late observation duplicated cash")
 	}
+	if count("customer_account_notices", "event_key=?", "payment.received:pay_supp_"+in.OperationID) != 1 {
+		t.Fatal("late observation duplicated notice")
+	}
+	checkOrderPaymentNoticeCustomer(t, ctx, db, s, owner.AccountID, in)
 	exec("UPDATE orders SET status='pending',canceled_at=NULL WHERE id=?", in.OrderID)
 	rollback := db.Begin()
 	if next, e := orders.AdvanceVersionTx(ctx, rollback, in.OrderID, 3); e != nil || next != 4 {
@@ -280,5 +319,5 @@ func checkOrderPaymentConsumption(t *testing.T, ctx context.Context, db *gorm.DB
 		t.Fatal(e)
 	}
 	t.Log(`ORDER_PAYMENT_PRESENTATION_REHEARSAL {"exact_zero_due_after_cash":true,"paid_receipt_only_after_application":true,"retired_cart_independent":true,"paid_checkout_url_absent":true,"new_generation_read":true,"provider_called_by_presentation":false,"customer_browser_cli":false}`)
-	t.Log(`NATIVE_ORDER_PAYMENT_CONSUMPTION_REHEARSAL {"actual_notification_get_and_encrypted_evidence":true,"paid_due":"6.00","exact_total_cash":"164.75","authorized_not_cash":true,"open_does_not_regress_authorized":true,"cross_store_denied":true,"corrupt_envelope_denied":true,"changed_balance_retains_paid_evidence":true,"late_ledger_failure_atomic":true,"last_consumption_failure_atomic":true,"concurrent_consumers":6,"worker_run_once_accepted":true,"worker_cli_process_accepted":false,"idle_cross_store_worker":true,"unique_payment_capture_transaction":true,"collection_completed_session_captured":true,"summary_zero_difference":true,"local_retry_without_network":true,"revoked_account_retired_cart_recovery":true,"canceled_order_cash_without_reopening":true,"late_unpaid_does_not_regress_cash":true,"applied_releases_version_hold":true,"original_cart_preserved":true,"no_new_order_stock_or_device_mutation":true,"real_provider":false,"customer_session_browser_cli":false,"payment_notice_accepted":false}`)
+	t.Log(`NATIVE_ORDER_PAYMENT_CONSUMPTION_REHEARSAL {"actual_notification_get_and_encrypted_evidence":true,"paid_due":"6.00","exact_total_cash":"164.75","authorized_not_cash":true,"open_does_not_regress_authorized":true,"cross_store_denied":true,"corrupt_envelope_denied":true,"changed_balance_retains_paid_evidence":true,"late_ledger_failure_atomic":true,"last_consumption_failure_atomic":true,"concurrent_consumers":6,"worker_run_once_accepted":true,"worker_cli_process_accepted":false,"idle_cross_store_worker":true,"unique_payment_capture_transaction":true,"collection_completed_session_captured":true,"summary_zero_difference":true,"local_retry_without_network":true,"revoked_account_retired_cart_recovery":true,"canceled_order_cash_without_reopening":true,"late_unpaid_does_not_regress_cash":true,"applied_releases_version_hold":true,"original_cart_preserved":true,"no_new_order_stock_or_device_mutation":true,"real_provider":false,"customer_session_browser_cli":false,"payment_notice_accepted":true}`)
 }

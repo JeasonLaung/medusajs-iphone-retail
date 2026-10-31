@@ -1,6 +1,6 @@
 # 原订单正差额补款指令
 
-此页记录正差额在线补款的持久指令阶段。0087 默认关闭补款；当前已有内部 Prepare/Read/Cancel、单次创建/GET恢复、paid通知原子消费和独立Worker；生产CLI已编译。当前另已接入顾客会话下的私有准备/查询/取消HTTP及Astro桥接白名单；本人补款上下文、安全checkout链接、双语订单入口、付款回跳与双付款展示现已通过SQL及独立夹具浏览器验证。本人收款通知、补款再退款trace及实际客户/独立CLI连续联合仍待。不能以本阶段关闭 C07/C09 或整站迁移清单。
+此页记录正差额在线补款的持久指令阶段。0087 默认关闭补款；当前已有内部 Prepare/Read/Cancel、单次创建/GET恢复、paid通知原子消费和独立Worker；生产CLI已通过本地TLS夹具四独立进程恢复验证。当前另已接入顾客会话下的私有准备/查询/取消HTTP及Astro桥接白名单；本人补款上下文、安全checkout链接、双语订单入口、付款回跳与双付款展示现已通过SQL及独立夹具浏览器验证。本人收款站内通知已接入唯一现金事务，当前本人HTTP收件/已读及独立弹窗夹具已验证；补款再退款trace及实际客户/独立CLI连续联合仍待。不能以本阶段关闭 C07/C09 或整站迁移清单。
 
 ## 不可变指令与来源
 
@@ -54,13 +54,13 @@ Run只接受普通数据库池，在真实提交effect claim及dispatched_at之�
 
 Consume只接受私有通知attempt UUID，从原Mollie worker的加密GET观察取得事实，复核完整order/op/session/request digest、远端identity/金额/币种及保护创建回执。authorized不算实收；旧open不回退authorized，任何迟到未付观察不回退已paid/applied。
 
-权威paid以同一事务产生确定ID的payment、capture、原订单正交易，完成原未付集合并将会话标captured，重算当前汇总、设置applied并确认通知消费。任何末尾失败都回滚全部本地现金，保留未消费的加密paid证据供无网络重试；不新建订单、重开cart或改库存/设备。原生CashSummary独立于可变订单命令资格，取消订单仍能记入已收到现金，不会把订单改回pending；原金额变更/退款入口继续原有取消限制。
+权威paid以同一事务产生确定ID的payment、capture、原订单正交易，完成原未付集合并将会话标captured，重算当前汇总、生成唯一本人站内通知、设置applied并确认渠道通知消费。任何末尾失败都回滚全部本地现金，保留未消费的加密paid证据供无网络重试；不新建订单、重开cart或改库存/设备。原生CashSummary独立于可变订单命令资格，取消订单仍能记入已收到现金，不会把订单改回pending；原金额变更/退款入口继续原有取消限制。
 
 若版本、精确欠款、集合来源或原始金额被带外修改，保留paid证据待核对，不私自改指令金额或抹平差额。已软删除订单的创建/恢复证据仍保存；当前金额投影不能读取软删除订单时，现金消费继续待人工恢复核对，不自动取消软删除。终态后出现矛盾paid也保留证据，不能静默覆盖明确后继。
 
 ## 独立worker
 
-process-order-payments需明确ORDER_PAYMENTS_ENABLED=true、原checkout/keyring/商户配置、MOLLIE_NOTIFICATIONS_ENABLED=true及已应用完整迁移；默认false。API启动不执行DDL、不打开SQLgate，也不启动worker。无参数持续运行，--once执行一批后退出；日志仅固定说明和工作计数，不打印商户/付款数据。当前已编译并验证配置拒绝边界，独立CLI进程及常驻生命周期尚未实际验收。
+process-order-payments需明确ORDER_PAYMENTS_ENABLED=true、原checkout/keyring/商户配置、MOLLIE_NOTIFICATIONS_ENABLED=true及已应用完整迁移；默认false。API启动不执行DDL、不打开SQLgate，也不启动worker。无参数持续运行，--once执行一批后退出；日志仅固定说明和工作计数，不打印商户/付款数据。当前已验证配置拒绝边界及四次独立CLI进程恢复；常驻生命周期尚未实际验收。
 
 Worker分别有界扫描10条创建/已保存结果、10条专属订单通知GET、10条未消费观察；未知创建每进程每分钟至多一次discovery，并有独立轮转游标，坏记录不能永远挡住下一笔。普通checkout/其他店铺的引用不能占用补款批次。MySQL拥有claim、lease、不可变证据与唯一现金；内存游标和节流不授予POST。六个独立Worker实例的并发创建与消费、空任务和跨店过滤已经过真实SQL验证。关闭补款SQLgate阻止首次发送，已发送的查询和记账仍保留。
 
@@ -80,7 +80,7 @@ Worker分别有界扫描10条创建/已保存结果、10条专属订单通知GET
 
 report-order-payment-runtime.py从完整23组SQL、唯一执行/现金标记与清理回执派生新报告，并拒绝测试后源码/迁移漂移。原order-payment-commands-report记录只prepare/cancel的独立回滚场景；当前runtime报告记录新的提交/入账测试，两者验收边界不同。
 
-紧接唯一本人付款通知，以及独立CLI的本地TLS渠道/丢响应重启和四新客户正差额至替换出库连续联合。补款payment后续退款必须扩展可信trace及新支付数据的order-payment-v1保护用途，不能只认原checkout receipt.payment_id。真实渠道/邮件、常驻进程及其余C01–C11继续开放。
+下一步继续四新客户正差额、本人付款通知至替换出库的实际浏览器/独立CLI连续联合。补款payment后续退款必须扩展可信trace及新支付数据的order-payment-v1保护用途，不能只认原checkout receipt.payment_id。真实渠道/邮件、常驻进程及其余C01–C11继续开放。
 
 ## 本人订单页面与只读付款回跳
 
@@ -103,4 +103,15 @@ checkout_url只从同一支付effect的加密成功回执解出，复核请求/�
 
 第一进程在持久 claim 后仅一次 POST，远端夹具保存付款后断开响应，并拒绝该进程的恢复 GET，进程失败退出且保留 uncertain。第二进程只 GET 列表及独立付款，再取得加密通知证据；通知最后 ACK 的 SQL 故障使 payment/capture/正交易/汇总/applied 全部回滚，保护创建与 paid 证据保留。随后撤销账号、退役 cart、关闭新发送 gate 并取消订单，第三进程在禁止网络的夹具状态下本地重应用：总实收164.75、欠款0，各现金行和 ACK 只一份，订单仍取消。第四进程是空批次，没有额外 GET/POST。正式 CLI 日志不输出测试密钥、远端付款标识或指令 UUID。
 
-报告 `order-payment-cli-report.json` 绑定生产二进制摘要、测试前冻结/结束复核的后端源码指纹、CLI SQL 记录和完整23组 SQL 记录。该验收证明独立生产进程恢复，不等于四实际新客户浏览器/CLI正差额连续联合；账号归属、商品、设备收回和 provider 仍含人工夹具。本人付款通知、补款再退款 trace、实际新客户至替换出库的联合、真实渠道/邮件及常驻 worker 生命周期继续未完成。上一轮浏览器夹具证据与本轮 CLI 证据不能拼接成已经通过的连续链。
+报告 `order-payment-cli-report.json` 绑定生产二进制摘要、测试前冻结/结束复核的后端源码指纹、CLI SQL 记录和完整23组 SQL 记录。该验收证明独立生产进程恢复，不等于四实际新客户浏览器/CLI正差额连续联合；账号归属、商品、设备收回和 provider 仍含人工夹具。该轮未验收本人付款通知；本轮新增通知证据见下文。补款再退款 trace、实际新客户至替换出库的联合、真实渠道/邮件及常驻 worker 生命周期继续未完成。上一轮浏览器夹具证据与本轮 CLI 证据不能拼接成已经通过的连续链。
+
+
+### 本人补款站内通知与现金同事务（2026-10-31）
+
+显式0093扩展既有customer_account_notices.kind约束，保留所有原通知类型，不做启动DDL。收到并验证paid后，以确定的本地payment ID生成`payment.received:pay_supp_<operation UUID>`事件；订单号为reference、原订单为resource_id、action为空，不包含金额、远端付款/会话ID或支付载荷。复用现有明确customer_order_ownership和已启用/已验证新账号收件规则，不能以旧订单customer_id或匹配email授予通知。缺少合格收件人时不阻断已收到现金的恢复，也不在以后补发或自动绑定。
+
+事件与payment/capture/正交易/集合/汇总/applied及渠道通知ACK同事务。专有SQL注入通知INSERT末尾失败及最终ACK失败，验证现金与站内通知一起回滚，保留加密paid证据供本地重试。六并发消费者只一份事件，迟到open不重复通知。禁用/未验证/无明确归属均不收件；当前代次真实Login+Redis会话可通过既有私有HTTP列表读取并CSRF标记已读，其他账号不能读取该事件或修改其已读状态，重复已读保持原时间，已撤销会话拒绝。
+
+商城复用原通知铃铛/弹窗、排版、分页、未读角标、已读/重试与订单详情导航，仅新增英文“Your supplemental payment has been recorded”和中文“您的补款已记账”。无颜色、字体、布局或交互重做。浏览器以明确合成API验证中英、移动390、原分页/单条及全部已读/错误保留/重试和规范本人订单详情跳转，浏览器错误0；这不是实际Gin/SQL付款通知浏览器联合。新报告`order-payment-notice-report.json`分别绑定完整SQL、禁用收件人四独立CLI恢复和弹窗夹具，不把独立证据拼接为四新客户连续链。
+
+0093序号避开工作区并行商品迁移0088–0092；本批隔离基线是已提交0001–0087加0093，共88个显式SQL文件，并行商品迁移不在本批验收/提交范围。相应测试计数按该隔离基线更新；工作区含并行迁移时的总计数另外保留。下一项仍是实际新客户正差额6.00至本人通知和替换出库连续联合，以及补款实收再退款可信trace。
