@@ -627,3 +627,5 @@
 - Full storefront scope, unknown creation-result discovery/reconciliation, real sandbox/recipient acceptance and post-payment fulfillment/customer tracking remain pending. This is a local delivery increment, not T032/T033 or whole-site acceptance.
 
 - 本批最终验证：完整23组SQL脚本退出0（82迁移，履约83来源列）；正式通知worker专项、Go全量/vet、173前台测试、中英/390与1440真实新账号购物联合及后续SQL回归均通过。Astro395文件0错误0警告，7提示；旧9001 health/app及8000商店为200。所有隔离资源已清理，真实渠道/收件仍未验收。
+
+2026-10-31 接续：未知创建响应已有服务端有界候选发现→原付款尝试恢复→通知排队/消费，保留原idempotency、禁止第二次POST，pending可继续原checkout，paid可不经浏览器返回成唯一订单。每进程每分钟一笔、最多100条完整分页；超出范围、多匹配或冲突保留待核对，不能当作全量自动对账。详见 [恢复边界](migration/mollie-checkout-consumer.md)。真实渠道/收件、大历史扫描、人工核查及原交付清单其余闭环继续未完成。

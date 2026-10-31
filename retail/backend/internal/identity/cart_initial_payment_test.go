@@ -196,6 +196,9 @@ func checkInitialPayments(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	if err != nil || result.State != "requires_review" || calls.Load() != 3 {
 		t.Fatal("unknown creation was repeated")
 	}
+	// This deliberately unresolved fixture is no longer an active checkout;
+	// later worker suites must not discover its artificial provider request.
+	exec("UPDATE cart_ownership SET active=FALSE WHERE cart_id=?", unknownRef.CartID)
 	uncertain.Store(false)
 	completionRef, completionIn := makeCart()
 	if _, err = cart.StartInitialPayment(ctx, db, "shop", completionRef, completionIn, options); err != nil {
@@ -210,6 +213,7 @@ func checkInitialPayments(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	checkCompletionHTTP(t, ctx, db, sessions, completionHTTPRef, options)
 	checkCheckoutBrowser(t, ctx, db, sessions, options)
 	checkMollieCheckoutConsumer(t, ctx, db, makeCart, options)
+	checkInitialPaymentRecovery(t, ctx, db, makeCart, options)
 	exec("UPDATE cart_checkout_runtime SET enabled=FALSE WHERE id=1")
 	if _, err = cart.StartInitialPayment(ctx, db, "shop", ref, in, options); err != cart.ErrSchema {
 		t.Fatal("disabled initial replay allowed")

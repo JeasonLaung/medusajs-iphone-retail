@@ -62,6 +62,18 @@
     "real_provider_called": false,
     "order_payment_updated": false
   },
+  "initial_payment_recovery": {
+    "real_mysql_redis": true,
+    "no_second_post": true,
+    "live_lease_respected": true,
+    "authority_rechecked": true,
+    "queue_failure_atomic": true,
+    "concurrent_recovery": 8,
+    "browser_resume": true,
+    "worker_restart": true,
+    "lost_response_to_paid_order": true,
+    "real_provider_called": false
+  },
   "mollie_checkout_consumer": {
     "real_mysql_redis": true,
     "configured_http_and_worker": true,
@@ -1175,7 +1187,7 @@
     "checkout": false
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "b41aeb00b42cf21121ff9a4572ec71c794ea010c8061cce08f1968da77ac7b14",
+    "retail/scripts/test-admin-auth.py": "7738ebb5b0dba071a26f8266be06315365ce2410f7da8146fefb0dc405836f04",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "a367e432668a5cf4e4a3435fd5298d1f5de455aff1c372711f9243a79ab62029",
@@ -1421,6 +1433,7 @@
     "retail/backend/internal/cart/runtime.go": "3457f4a2dd3cfcb134a00fc6e054c1d2a45d7d4f0d4264faf469abad82e78c80",
     "retail/backend/internal/cart/checkout_completion_current.go": "5d4ce5f1e25e3c90e05e280c7be36cbb2c7f2d70baedde18a694ebc6702c817f",
     "retail/backend/internal/cart/shipping_command.go": "d8f19c1778649b261d94406d8befd4901795f8cf8ec4ba8798a64e7b51b10900",
+    "retail/backend/internal/cart/checkout_payment_recovery.go": "26e9a42c663f50f33b3c8a00940405bfa7d61ad22deb6e8f2f6e4419fbeb6f35",
     "retail/backend/internal/cart/shipping_methods.go": "8ca5a822ab8e9929dd5029b126ca286363d9f57a20faacf70746a618f5c91b1e",
     "retail/backend/internal/cart/checkout_completion.go": "9e345a394986985cd3bcce10f9ab441ec6ab701ee1297ee689642cf35d9e7ccb",
     "retail/backend/internal/cart/promotion_codes.go": "a8114f0928974efe6d08cceb57541dc6b2792ce0b4f314ba5ea6b2d353c62f9e",
@@ -1476,11 +1489,14 @@
     "retail/backend/internal/identity/cart_payment_creation_execution_test.go": "8011347b2f17d70bcd9fa1efcfdf619035e4f231856415f37767b4c02858ba42",
     "retail/backend/internal/identity/mollie_notifications_test.go": "d11933cb4497218f45145ba885e08e6c61f11920b0bf41df993bcdaf4f101918",
     "retail/backend/internal/identity/mollie_checkout_consumer_test.go": "868ef02f60baab1aa076f18cae5ceebafd397f8c9062a62eb3919abc52a51c98",
-    "retail/backend/internal/identity/cart_initial_payment_test.go": "c5a11dc14e2c142f5e2f27dbd2d8b424c8b17f4d112084cfd20444e378d36cfa",
+    "retail/backend/internal/identity/cart_initial_payment_test.go": "2a3bfc5078ec95865e8994de1384dbeb9046e6b468f9b932b64044604336876c",
+    "retail/backend/internal/identity/cart_initial_payment_recovery_test.go": "ce5c666db4a2713983f777a227654fb0383a1f9b23c966a1b24ea3b9abb62b0f",
+    "retail/backend/internal/payments/mollie_discovery.go": "b6c48bcee8d9541673fd347db64a325788d6fd6fd1b0fccce0233c312208a6f4",
+    "retail/backend/internal/payments/mollie_discovery_test.go": "9ee97d9842fb5d9654297d29908eed255cb9adecbb0a3200b9902db8e86d94ef",
     "retail/backend/internal/checkoutconfig/checkout.go": "b4a323627ab0821fb530d00c6ecf0a9bd7cacf9a8cec2312036d3f397e0bb2c8",
     "retail/backend/internal/checkoutconfig/checkout_test.go": "41e7cbf70d9d131845321ba882cd3209b01e64fbc0b6e1031c148e6aff4fc236",
-    "retail/backend/internal/mollieworker/worker.go": "bd08caf33bae7f3118a98c48a614b788f45f25431a00a971a624977b8564fff5",
-    "retail/backend/cmd/process-mollie-notifications/main.go": "d8c4d585d948a27a87d299566fd2a4b042e82a9bfc07ef483453dd031b9c89a0",
+    "retail/backend/internal/mollieworker/worker.go": "3d78370227192f5d6af9efce280c6e8afb8ae39ca3d6be14bac7e0193518b105",
+    "retail/backend/cmd/process-mollie-notifications/main.go": "14eef92e87da5eb44cda80b3a68726e4cafcbb17887cdf8637e6773765ea514a",
     "retail/backend/cmd/api/checkout.go": "4c6977c143e8fcca1443af2b60b484c8aacfe2e1564b6b045247f5ba3aad0616",
     "retail/backend/internal/sessionstore/cart.go": "08a33b38b47c0ea3d077735239594044a7fbbb1013f6f5f176e53354c41cc4d0",
     "retail/backend/internal/sessionstore/cart_scope.go": "5474379308664cc7e96ca2215ec40998712809e206f897d532e89356eac7fead",

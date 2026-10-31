@@ -63,8 +63,8 @@ func main() {
 			failed = true
 		} else {
 			failed = result.Failed > 0
-			if result.Queried+result.Consumed+result.Failed > 0 {
-				log.Printf("Payment notifications queried=%d consumed=%d review=%d failed=%d", result.Queried, result.Consumed, result.Review, result.Failed)
+			if result.Queried+result.Consumed+result.Failed+result.Recovered > 0 {
+				log.Printf("Payment notifications queried=%d consumed=%d review=%d failed=%d recovered=%d", result.Queried, result.Consumed, result.Review, result.Failed, result.Recovered)
 			}
 		}
 		if once {

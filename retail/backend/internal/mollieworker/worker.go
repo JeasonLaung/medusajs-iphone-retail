@@ -5,7 +5,9 @@ package mollieworker
 import (
 	"context"
 	"errors"
+	"github.com/eurorefurb/retail/internal/sessionstore"
 	"regexp"
+	"strconv"
 	"time"
 
 	"github.com/eurorefurb/retail/internal/cart"
@@ -23,12 +25,15 @@ type Worker struct {
 	Payment cart.InitialPaymentOptions
 	// Only scheduling fairness is in memory. All work, leases, observations
 	// and consumption receipts remain in MySQL and survive worker restarts.
-	cursor string
+	cursor         string
+	recoveryCursor string
+	nextRecovery   time.Time
 }
 
-type Result struct{ Queried, Consumed, Review, Failed int }
+type Result struct{ Queried, Consumed, Review, Failed, Recovered int }
 
-// RunOnce processes at most ten provider queries and ten saved observations.
+// RunOnce processes at most ten notification queries and ten saved observations.
+// Once per minute it may also discover one uncertain creation (at most five GETs).
 // A single Worker is called serially; independent processes may run concurrently
 // because provider claims and business commits are fenced by durable SQL locks.
 func (w *Worker) RunOnce(ctx context.Context) (Result, error) {
@@ -101,6 +106,36 @@ func (w *Worker) RunOnce(ctx context.Context) (Result, error) {
 	}
 	if len(attempts) < 10 {
 		w.cursor = ""
+	}
+	// Discovery is deliberately slower than notification consumption: at most
+	// one uncertain creation per minute per process, with a fair scan cursor.
+	// Restart only repeats read-only provider queries; the original effect
+	// journal remains the sole authority and never grants a second POST.
+	adapter, _ := w.Payment.Adapters.Lookup(provider)
+	if _, supported := adapter.(payments.SessionDiscoverer); supported && !time.Now().Before(w.nextRecovery) {
+		w.nextRecovery = time.Now().Add(time.Minute)
+		var pending []struct {
+			CartID, OperationID, Generation string
+			InputVersion                    uint64
+		}
+		r := w.DB.WithContext(ctx).Table("cart_checkout_attempts a").Select("a.cart_id,a.operation_id,a.generation,a.input_version").Joins("JOIN cart_ownership o ON o.cart_id=a.cart_id AND o.generation=a.generation AND o.checkout_attempt_id=a.operation_id").Joins("JOIN payment_effect_journal e ON e.scope_id=a.cart_id AND e.operation_id=a.operation_id AND e.resource_id=a.session_id AND e.effect_kind='create_session' AND e.request_sha256=a.request_sha256").Where("o.store_id=? AND o.active=TRUE AND o.payment_refresh_operation_id IS NULL AND a.cart_id>? AND (e.state='uncertain' OR (e.state='inflight' AND e.lease_until<=UTC_TIMESTAMP(6)))", w.StoreID, w.recoveryCursor).Order("a.cart_id").Limit(1).Scan(&pending)
+		if r.Error != nil {
+			return out, payments.ErrEffectStorage
+		}
+		if len(pending) == 0 {
+			w.recoveryCursor = ""
+		}
+		for _, row := range pending {
+			w.recoveryCursor = row.CartID
+			ref := sessionstore.CartReference{CartID: row.CartID, StoreID: w.StoreID, Generation: row.Generation}
+			command := cart.InitialPaymentCommand{OperationID: row.OperationID, Version: strconv.FormatUint(row.InputVersion, 10)}
+			recovered, err := cart.RecoverInitialPayment(ctx, w.DB, w.StoreID, ref, command, w.Payment)
+			if err != nil {
+				out.Failed++
+			} else if recovered {
+				out.Recovered++
+			}
+		}
 	}
 	return out, nil
 }
