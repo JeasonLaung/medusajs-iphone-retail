@@ -340,4 +340,5 @@ func checkNativeRefundCommands(t *testing.T, ctx context.Context, db *gorm.DB, o
 		t.Fatal("refund command POST count")
 	}
 	t.Log(`NATIVE_REFUND_COMMAND_REHEARSAL {"real_mysql":true,"actual_completed_checkout":true,"explicit_default_off":true,"concurrent_prepare":6,"single_instruction_per_return":true,"immutable_amount":true,"unreceived_denied":true,"remaining_balance_enforced":true,"pending_review_close_denied":true,"two_partial_refunds":true,"lost_response_get_only":true,"late_ledger_failure_atomic":true,"saved_observation_apply_without_network":true,"revoked_actor_recovery":true,"revoked_first_dispatch_denied":true,"exact_refunded":"158.75","provider_posts":4,"explicit_failed_canceled_successors":true,"undispatched_cancel_atomic":true,"cancel_after_dispatch_denied":true,"http_real_auth_csrf":true,"worker_concurrency":6,"real_provider_refund":false,"browser_return_flow":false}`)
+	checkOrderPaymentExecution(t, ctx, db, o)
 }

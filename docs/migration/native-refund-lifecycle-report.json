@@ -75,11 +75,11 @@
   "browser_return_flow_accepted": false,
   "real_provider_refund": false,
   "cleanup": "both owned containers and temporary runner removed",
-  "transcript_sha256": "3fef363c35642127328a46ab6ce11cb0c511bfe9c31bd85cda4fe1d2b7b5cda5",
+  "transcript_sha256": "533be4f0e2818933a1e7ac07264405671f75058986e02cdf5f136a78f94bdb97",
   "implementation_sha256_lf": {
     "retail/admin/src/api.ts": "90708bde150b4eaf1f47008619f73157cda6b25d616433c6b72e036faa54c61f",
     "retail/admin/src/i18n.ts": "2448a8bc24244860e0937faedb3f84f33510fd13a7ece40f11c73e1ffbad0646",
-    "retail/backend/.env.example": "c70cf4642589ec9a0573be8b9978a8177ff1748c90da43bea2573744f4cd807b",
+    "retail/backend/.env.example": "bd8d960485dc4840ee87a4094e80971a28d862ffdb5629721196353a33a58ba1",
     "retail/backend/cmd/api/main.go": "6e4cc5fe561d2ad2ae1d60c7d6bfcff1c0056172156e6cd3c1e623d592f19fbe",
     "retail/backend/cmd/process-order-refunds/main.go": "b9837a8ace45f6819e2d956deeb625a3a575dacb5adbd2f98ebde9cab75826ef",
     "retail/backend/internal/authorization/model.go": "cd3a2d2265750d6ea478b481762be05dd483438276643c8bc24034482927b6ba",
@@ -89,8 +89,9 @@
     "retail/backend/internal/customernotices/events.go": "21898f53f684f71bfd48dadece3f6fae0ab96ba63d95b2f5253f8a1040fbcb67",
     "retail/backend/internal/identity/cart_completion_test.go": "8fa2350b79ef778ac75eb5b9e99ace203f5ca96b310100d205e7f9d9baed3829",
     "retail/backend/internal/identity/exchange_refund_commands_test.go": "241e9600f80c646c3604a12c052bc459e1c28f019022ee18102b3b1d83b0c84c",
-    "retail/backend/internal/identity/order_refund_commands_test.go": "f590d265ddcad612c902d500172db44b5b71df02512a466779b27cef3836a343",
+    "retail/backend/internal/identity/order_refund_commands_test.go": "dffce4f9d721096a5fcff526d30979d5ab87fc1c8288372be53eb4eddda0e5eb",
     "retail/backend/internal/identity/order_refund_http_test.go": "021bd2a3a1c81e1b981964aaf870b21c92e4a5707e976e1c70db5b77a6d02422",
+    "retail/backend/internal/orders/change_summary.go": "034e2e65c2be0ad7d58907992575f4b0ebecaf6000aeee36ed9d8b95f2c9585d",
     "retail/backend/internal/orders/current_balance.go": "a9886f761725942e57be9049a2eacf4948a631487dfb925c41456c696dd86592",
     "retail/backend/internal/orders/schema.go": "ac37229accddf1cbd3ec280159299b31f097f24bbc210b2bb15686baa2d61916",
     "retail/backend/internal/orders/supplemental_payment.go": "b394903ff8f9e68de54bbd0c8cde8bf8bfa523a6c32a88ee5ef7c72efcaa968d",
@@ -191,6 +192,6 @@
     "retail/backend/migrations/0085_refund_customer_notice.sql": "62ef54cc4e7dbab0c953c920b1ae857783ee84775cc3fe8c24548622040227ad",
     "retail/backend/migrations/0086_exchange_refund_balance.sql": "0227a8f069a8759b3376b595c636426ce71983c71cc0ecc0d523bcad3ec48221",
     "retail/backend/migrations/0087_order_supplemental_payments.sql": "b12f2309529e2184f864d5fb246019bd4f7cfa5b05f0f40db77d80815b6e7a48",
-    "retail/scripts/report-native-refunds.py": "ca0c29eac7a8b1d8e08e2fe3f46656fad1f3d0a5c9a930d0328825d74e5ce478"
+    "retail/scripts/report-native-refunds.py": "e6918d08125457261bfbc8895fa8264fe40d59db04b7d2b3c855cb63e903b8b7"
   }
 }

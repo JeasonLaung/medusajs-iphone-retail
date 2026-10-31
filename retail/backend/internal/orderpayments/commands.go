@@ -361,8 +361,13 @@ func (s Service) fresh(tx *gorm.DB, p Principal, in Input, cart string) error {
 			return ErrConflict
 		}
 	}
+	return s.originalProvider(tx, in.OrderID, cart)
+}
+
+// Current original paid trace and enabled regional provider; no cart bearer authority.
+func (s Service) originalProvider(tx *gorm.DB, order, cart string) error {
 	var original struct{ ID, RegionID, ProviderID string }
-	if tx.Table("cart_completion_receipts r").Select("p.id,o.region_id,s.provider_id").Joins("JOIN orders o ON o.id=r.order_id AND o.deleted_at IS NULL").Joins("JOIN cart_checkout_attempts a ON a.cart_id=r.cart_id AND a.operation_id=r.operation_id").Joins("JOIN payments p ON p.id=r.payment_id AND p.payment_collection_id=a.collection_id AND p.payment_session_id=a.session_id AND p.captured_at IS NOT NULL AND p.deleted_at IS NULL").Joins("JOIN payment_sessions s ON s.id=p.payment_session_id AND s.status='captured' AND s.deleted_at IS NULL").Where("r.order_id=? AND r.cart_id=?", in.OrderID, cart).Clauses(clause.Locking{Strength: "SHARE"}).Take(&original).Error != nil || original.ProviderID != provider {
+	if tx.Table("cart_completion_receipts r").Select("p.id,o.region_id,s.provider_id").Joins("JOIN orders o ON o.id=r.order_id AND o.deleted_at IS NULL").Joins("JOIN cart_checkout_attempts a ON a.cart_id=r.cart_id AND a.operation_id=r.operation_id").Joins("JOIN payments p ON p.id=r.payment_id AND p.payment_collection_id=a.collection_id AND p.payment_session_id=a.session_id AND p.captured_at IS NOT NULL AND p.deleted_at IS NULL").Joins("JOIN payment_sessions s ON s.id=p.payment_session_id AND s.status='captured' AND s.deleted_at IS NULL").Where("r.order_id=? AND r.cart_id=?", order, cart).Clauses(clause.Locking{Strength: "SHARE"}).Take(&original).Error != nil || original.ProviderID != provider {
 		return ErrConflict
 	}
 	var allowed []struct{ ID string }

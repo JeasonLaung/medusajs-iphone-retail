@@ -16,6 +16,17 @@ import (
 // transaction on error. Transaction rows and historical versions remain unchanged; cached aggregates
 // are refreshed from the actual ledger, never used to infer payment status.
 func RefreshChangeSummaryTx(ctx context.Context, tx *gorm.DB, orderID string, version int) (AmountDetail, error) {
+	return refreshFinancialSummaryTx(ctx, tx, orderID, version, true)
+}
+
+// RefreshCashSummaryTx projects already verified cash. Cancellation does not
+// erase received money; this participant grants no authority to charge or change
+// items. Caller owns the order lock, exact provider evidence and cash transaction.
+func RefreshCashSummaryTx(ctx context.Context, tx *gorm.DB, orderID string, version int) (AmountDetail, error) {
+	return refreshFinancialSummaryTx(ctx, tx, orderID, version, false)
+}
+
+func refreshFinancialSummaryTx(ctx context.Context, tx *gorm.DB, orderID string, version int, changing bool) (AmountDetail, error) {
 	if !checkoutID.MatchString(orderID) || version < 1 || numberTransaction(ctx, tx) != nil {
 		return AmountDetail{}, ErrSchema
 	}
@@ -25,7 +36,7 @@ func RefreshChangeSummaryTx(ctx context.Context, tx *gorm.DB, orderID string, ve
 		IsDraftOrder bool
 		CanceledAt   *time.Time
 	}
-	if tx.Table("orders").Select("version,status,is_draft_order,canceled_at").Where("id=? AND deleted_at IS NULL", orderID).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&order).Error != nil || order.Version != version || order.IsDraftOrder || order.Status == "draft" || order.Status == "canceled" || order.CanceledAt != nil {
+	if tx.Table("orders").Select("version,status,is_draft_order,canceled_at").Where("id=? AND deleted_at IS NULL", orderID).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&order).Error != nil || order.Version != version || order.IsDraftOrder || order.Status == "draft" || changing && (order.Status == "canceled" || order.CanceledAt != nil) {
 		return AmountDetail{}, ErrVersionConflict
 	}
 	var rows []struct {

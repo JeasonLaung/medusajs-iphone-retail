@@ -1,6 +1,6 @@
 # 原订单正差额补款指令
 
-此页记录正差额在线补款的持久指令阶段。0087 默认关闭补款；当前仅有内部 Prepare/Read/Cancel，尚未接顾客会话/HTTP、渠道发送和恢复、paid 入账、worker/CLI 或补款页面。不能以本阶段关闭 C07/C09 或整站迁移清单。
+此页记录正差额在线补款的持久指令阶段。0087 默认关闭补款；当前已有内部 Prepare/Read/Cancel、单次创建/GET恢复、paid通知原子消费和独立Worker；生产CLI已编译。顾客会话/HTTP、补款页面、本人收款通知、补款再退款trace及实际CLI/浏览器连续联合仍待。不能以本阶段关闭 C07/C09 或整站迁移清单。
 
 ## 不可变指令与来源
 
@@ -18,7 +18,7 @@ Prepare 在订单锁内调用当前完整欠款校验，核对原渠道及地区
 
 只允许取消本账号仍拥有订单的未发送 pending 指令，并要求原 effect 仍 pending、尚未认领。取消会同时更新本地会话/指令并写入独立 UUID 的取消回执。开关关闭时仍允许当前合法账号读取和取消未发送指令；账号撤销不授予取消权限。已认领、已发送或不确定结果必须走后续查询恢复，不能本地取消后重新收费。
 
-失败/取消/过期后的新尝试需要新 UUID 和明确前驱；每个前驱只能有一个后继，历史输入和会话不覆盖。新尝试重新核对当前账号授权版本及当前欠款。现阶段没有发送器，所以只验收了本地取消后的前驱链；外部失败/取消/过期事实的权威消费仍待实现。
+失败/取消/过期后的新尝试需要新 UUID 和明确前驱；每个前驱只能有一个后继，历史输入和会话不覆盖。新尝试重新核对当前账号授权版本及当前欠款。已验收本地取消及创建适配器明确无远端效果的 failed 前驱链。权威GET也能消费 failed/canceled/expired；这些终态后的完整客户新尝试联合仍待，不能凭本地会话状态推断远端终态。
 
 ## 版本与退款互斥
 
@@ -27,6 +27,26 @@ Prepare 在订单锁内调用当前完整欠款校验，核对原渠道及地区
 退款运行时升级到 v4；新退款及首次 POST 同样检查补款占用。补款 Prepare 检查订单级未决退款。已发送退款继续原有观察/本地应用恢复，不因新增占用变成第二次 POST。
 
 0087 将原生订单运行时提升到 v2，旧订单写入/导入代码必须拒绝执行；历史 source schema plan 及 source model 仍为 v1，不重写0016或源证据。当前历史 order importer 检查 native v2。退款 v4 保留原 enabled 值，不自动开启。应用启动不执行 DDL；本批仅向自有隔离回归库应用迁移，没有改动原服务或其他本机数据组合。
+
+## 单次创建与恢复
+
+Run只接受普通数据库池，在真实提交effect claim及dispatched_at之后才POST。首次发送重新核对当前账号/授权代次/已验证、明确归属、原成单trace、当前版本/精确欠款、地区启用provider及原加密待付会话。任何丢响应、panic、取消或未知结果只走GET discovery；通用effect的failed可重试语义不能授权同一补款UUID再次POST。明确无远端效果的创建失败，才以同事务failed/error释放占用，顾客须明确前驱创建新UUID。
+
+已发送恢复不依赖当前账号、旧cart匿名能力或旧cart当前attempt。授权后的远端结果即使请求断开仍以WithoutCancel短事务保存。RecordSessionCreation和Mollie reference同事务；晚期reference失败回滚整份创建结果。创建结果先提交，再单独enqueue通知，因此关闭通知接收不能丢掉已经取得的创建证据；恢复时读取已保存结果，不必再次访问渠道。创建响应或discovery中的paid仍不记现金。
+
+## 权威paid的唯一现金消费
+
+Consume只接受私有通知attempt UUID，从原Mollie worker的加密GET观察取得事实，复核完整order/op/session/request digest、远端identity/金额/币种及保护创建回执。authorized不算实收；旧open不回退authorized，任何迟到未付观察不回退已paid/applied。
+
+权威paid以同一事务产生确定ID的payment、capture、原订单正交易，完成原未付集合并将会话标captured，重算当前汇总、设置applied并确认通知消费。任何末尾失败都回滚全部本地现金，保留未消费的加密paid证据供无网络重试；不新建订单、重开cart或改库存/设备。原生CashSummary独立于可变订单命令资格，取消订单仍能记入已收到现金，不会把订单改回pending；原金额变更/退款入口继续原有取消限制。
+
+若版本、精确欠款、集合来源或原始金额被带外修改，保留paid证据待核对，不私自改指令金额或抹平差额。已软删除订单的创建/恢复证据仍保存；当前金额投影不能读取软删除订单时，现金消费继续待人工恢复核对，不自动取消软删除。终态后出现矛盾paid也保留证据，不能静默覆盖明确后继。
+
+## 独立worker
+
+process-order-payments需明确ORDER_PAYMENTS_ENABLED=true、原checkout/keyring/商户配置、MOLLIE_NOTIFICATIONS_ENABLED=true及已应用完整迁移；默认false。API启动不执行DDL、不打开SQLgate，也不启动worker。无参数持续运行，--once执行一批后退出；日志仅固定说明和工作计数，不打印商户/付款数据。当前已编译并验证配置拒绝边界，独立CLI进程及常驻生命周期尚未实际验收。
+
+Worker分别有界扫描10条创建/已保存结果、10条专属订单通知GET、10条未消费观察；未知创建每进程每分钟至多一次discovery，并有独立轮转游标，坏记录不能永远挡住下一笔。普通checkout/其他店铺的引用不能占用补款批次。MySQL拥有claim、lease、不可变证据与唯一现金；内存游标和节流不授予POST。六个独立Worker实例的并发创建与消费、空任务和跨店过滤已经过真实SQL验证。关闭补款SQLgate阻止首次发送，已发送的查询和记账仍保留。
 
 ## SQL 验收边界
 
@@ -38,8 +58,10 @@ Prepare 在订单锁内调用当前完整欠款校验，核对原渠道及地区
 
 `report-order-payments.py` 要求23组完整 SQL、唯一指令标记和资源清理回执，生成带源码/日志指纹的独立报告。它明确标记：未做并发补款验收、真实顾客会话、渠道调用、现金消费或浏览器/CLI。现有四新客户负差额退款联合仅用于回归原退款业务，不代表正差额补款已经可用。
 
-## 紧接工作
+## 持续交付边界
 
-接入单次创建认领、protected creation receipt/Mollie reference、丢响应只 GET 找回和独立订单 inbox 路由。首次发送复核当前账号/归属/版本/金额；已发送后保留权威现金恢复能力，不因账号撤销丢失已付事实。只在权威 paid 观察后，以同一事务产生唯一 payment/capture/正交易、集合完成及当前汇总；authorized 与浏览器回跳均不能记现金。
+新增SQL执行测试另行完成一笔真实原生checkout，再提交真实原生换货/收货形成6.00差额；新账号ownership、设备收回事实及商户是人工夹具。创建并发、租约期间不POST/不discovery、首次权限/金额/开关/provider复核、丢响应GET、创建末尾回滚及关闭inbox仍保存回执均通过。消费验证实际notification claim/GET/encryption路径、六并发、授权不收款、信封损坏/跨店/带外金额拒绝、现金末尾及通知ACK末尾回滚、无网络重应用、撤销账号/旧cart退役/订单取消后实收、迟到观察及金额版本释放。不把这些SQL事实报告为实际顾客注册登录、生产CLI、浏览器补款或真实Mollie。
 
-之后接顾客会话/CSRF/私有 HTTP、默认关闭配置与独立生产 worker/CLI、本人补款入口/返回页/双付款展示，再做四新客户正差额付款至替换出库联合。补款 payment 后续退款也必须扩展可信 trace，不能继续假设所有可退现金都等于原 checkout receipt 的那一笔。真实渠道/邮件、常驻进程及其余 C01–C11 继续开放。
+report-order-payment-runtime.py从完整23组SQL、唯一执行/现金标记与清理回执派生新报告，并拒绝测试后源码/迁移漂移。原order-payment-commands-report记录只prepare/cancel的独立回滚场景；当前runtime报告记录新的提交/入账测试，两者验收边界不同。
+
+紧接顾客当前session/CSRF/私有HTTP、本人订单补款入口/返回页/双付款展示、唯一本人付款通知，以及独立CLI的本地TLS渠道/丢响应重启和四新客户正差额至替换出库联合。补款payment后续退款必须扩展可信trace及新支付数据的order-payment-v1保护用途，不能只认原checkout receipt.payment_id。真实渠道/邮件、常驻进程及其余C01–C11继续开放。
