@@ -32,6 +32,9 @@ func TestOwnedCartRuntime(t *testing.T) {
 	if os.Getenv("CHECKOUT_FULFILLMENT") == "1" {
 		duration = 6 * time.Minute
 	}
+	if os.Getenv("CHECKOUT_REPAIR") == "1" {
+		duration = 8 * time.Minute
+	}
 	ctx, cancel := context.WithTimeout(t.Context(), duration)
 	defer cancel()
 	cfg := driver.NewConfig()

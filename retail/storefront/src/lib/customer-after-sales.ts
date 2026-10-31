@@ -1,13 +1,14 @@
 export type AfterSalesType='return'|'exchange'|'repair'
 export type AfterSalesInput={operation_id:string;type:AfterSalesType;reason:string;items:{item_id:string;quantity:number;device_ids?:string[]}[]}
-export type AfterSalesRequest={id:string;type:AfterSalesType;status:'pending'|'processing'|'completed'|'rejected';reason:string;items:{item_id:string;quantity:number;title:string;device_ids?:string[]}[];created_at:string}
+export type RepairShipment={id:string;serial_number:string|null;tracking_number:string;shipped_at:string}
+export type AfterSalesRequest={id:string;type:AfterSalesType;status:'pending'|'processing'|'completed'|'rejected';reason:string;items:{item_id:string;quantity:number;title:string;device_ids?:string[]}[];created_at:string;repair_shipments?:RepairShipment[]}
 export type OrderDevice={id:string;assignment_id:string;item_id:string;serial_number:string|null;imei:string|null;status:'shipped'|'returned';replacement_of:string|null;tracking_number:string|null}
 const obj=(v:unknown):Record<string,unknown>=>{if(!v||typeof v!=='object'||Array.isArray(v))throw Error('Invalid after-sales response');return v as Record<string,unknown>}
 const keys=(v:Record<string,unknown>,allowed:string[])=>{if(Object.keys(v).some(k=>!allowed.includes(k)))throw Error('Invalid after-sales response')}
 const text=(v:unknown,max:number,multiline=false)=>{if(typeof v!=='string'||[...v].length>max||(multiline?/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/:/[\x00-\x1f\x7f]/).test(v))throw Error('Invalid after-sales response');return v}
 const id=(v:unknown)=>{const s=text(v,191);if(!/^[A-Za-z0-9][A-Za-z0-9_-]*$/.test(s))throw Error('Invalid after-sales response');return s}
 export function afterSalesRequestProjection(raw:unknown):AfterSalesRequest{
- const r=obj(raw);keys(r,['id','type','status','reason','items','created_at'])
+ const r=obj(raw);keys(r,['id','type','status','reason','items','created_at','repair_shipments'])
  const key=id(r.id),reason=text(r.reason,2000,true),created=text(r.created_at,40)
  if(!['return','exchange','repair'].includes(String(r.type))||!['pending','processing','completed','rejected'].includes(String(r.status))||!Number.isFinite(Date.parse(created))||!Array.isArray(r.items)||r.items.length<1||r.items.length>100)throw Error('Invalid after-sales response')
  const seen=new Set<string>(),items=r.items.map(raw=>{const l=obj(raw);keys(l,['item_id','quantity','title','device_ids']);const key=id(l.item_id)
@@ -16,7 +17,16 @@ export function afterSalesRequestProjection(raw:unknown):AfterSalesRequest{
   if('device_ids'in l){if(!Array.isArray(l.device_ids)||l.device_ids.length<1||l.device_ids.length>100)throw Error('Invalid after-sales response');out.device_ids=l.device_ids.map(id);if(new Set(out.device_ids).size!==out.device_ids.length)throw Error('Invalid after-sales response')}
   return out
  })
- return {id:key,type:r.type as AfterSalesType,status:r.status as AfterSalesRequest['status'],reason,items,created_at:created}
+ const out:AfterSalesRequest={id:key,type:r.type as AfterSalesType,status:r.status as AfterSalesRequest['status'],reason,items,created_at:created}
+ if('repair_shipments'in r){
+  if(r.type!=='repair'||!Array.isArray(r.repair_shipments)||r.repair_shipments.length<1||r.repair_shipments.length>1000)throw Error('Invalid repair shipment')
+  const shipments=new Set<string>()
+  out.repair_shipments=r.repair_shipments.map(raw=>{const s=obj(raw);keys(s,['id','serial_number','tracking_number','shipped_at']);const key=id(s.id),tracking=text(s.tracking_number,200),date=text(s.shipped_at,40)
+   if(shipments.has(key)||!tracking||tracking.trim()!==tracking||!Number.isFinite(Date.parse(date)))throw Error('Invalid repair shipment');shipments.add(key)
+   return {id:key,serial_number:s.serial_number===null?null:text(s.serial_number,191),tracking_number:tracking,shipped_at:date}
+  })
+ }
+ return out
 }
 export function afterSalesListProjection(raw:unknown):AfterSalesRequest[]{
  const v=obj(raw);keys(v,['requests']);if(!Array.isArray(v.requests)||v.requests.length>1000)throw Error('Invalid after-sales response')

@@ -7,7 +7,7 @@ import {customerClient,CustomerError} from '../../lib/customer-client'
 import type {AfterSalesRequest,OrderDevice,AfterSalesInput} from '../../lib/customer-after-sales'
 import type {OrderConfirmation} from '../../lib/cart-client'
 export default function AfterSales({ order,segment }: { order: OrderConfirmation;segment:string }) {
-  const { t } = getAccountCopy(segment)
+  const { t, locale } = getAccountCopy(segment)
   const api=useMemo(()=>customerClient(),[])
   useEffect(()=>()=>api.clear(),[api])
   const pending=useRef<AfterSalesInput|null>(null)
@@ -196,6 +196,14 @@ export default function AfterSales({ order,segment }: { order: OrderConfirmation
                           </li>
                         ))}
                       </ul>
+                      {request.repair_shipments?.map((shipment) => (
+                        <div key={shipment.id} className="mt-3 space-y-1 break-words" data-testid="repair-return">
+                          <p className="font-medium">{locale === "zh-CN" ? "维修设备已寄回" : "Repaired device dispatched"}</p>
+                          {shipment.serial_number && <p>{t("serial")} {shipment.serial_number}</p>}
+                          <p>{locale === "zh-CN" ? "返还物流单号：" : "Return tracking number: "}{shipment.tracking_number}</p>
+                          <time className="text-ui-fg-subtle" dateTime={shipment.shipped_at}>{new Date(shipment.shipped_at).toLocaleString(locale)}</time>
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>

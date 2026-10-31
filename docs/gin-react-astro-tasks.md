@@ -633,3 +633,7 @@
 2026-10-31 接续：已补 [仓库员工未装包设备预配释放](migration/warehouse-reserved-release.md)，复用设备页原确认/重试，配货权限独立校验，取消单一reserved assignment并恢复设备可售，不改数量库存/订单预留。SQL与真实中英桌面/手机联合证据见说明；已装包释放仍沿原整包取消语义。完整购物付款→仓库配货/发货→客户物流/设备/通知连续联合及其余范围仍未完成。
 
 2026-10-31 接续：[新购物订单→仓库发货→本人物流/设备/通知联合](migration/shopping-fulfillment-joint.md)通过四个新账号、中英/手机与桌面；平台初配和重配装包、仓库范围内解除和发货均走实际 Gin/MySQL/Redis，丢响应后重试不重复扣库存/发通知。隔离付款和邮件边界不变；整体交付仍未完成。下一批继续把这些本人新订单串入售后处理/返还联合及其他清单缺口。
+
+### 2026-10-31: new purchased orders through original-device repair return
+
+Added opt-in `CHECKOUT_REPAIR=1` on the same four newly purchased/shipped customer orders. Real Astro repair selection/submission and real Admin acceptance, scanned physical receipt, uploaded inspection photo, original-SKU inspection, repair dispatch and completion all run in English/Chinese at 390/1440. Lost committed replies replay the same immutable customer/return/inspection/dispatch commands. SQL confirms one set of durable facts, three read own notices, preserved original sales tracking and no quantity inventory changes from repair. Customer after-sales history now projects only successful immutable repair receipt ID, nullable SN, return tracking string and time after existing ownership checks; private inspection/actor/location fields remain excluded. [Evidence and limits](migration/shopping-repair-joint.md). Full 23 SQL suites, Go tests/vet, 174 storefront tests and Astro check pass. Exchange/replacement fulfillment, balance payments/refunds, real provider/mail acceptance and the remaining delivery scope remain unfinished.

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import {enableCheckoutTracking,repairCheckoutOrder} from './checkout-repair.joint.mjs'
 import {createServer} from 'vite'
 import {expect} from '@playwright/test'
 import {fileURLToPath} from 'node:url'
@@ -18,6 +19,7 @@ export async function startCheckoutFulfillment({browser,target,errors}){
   }
   admin=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'});admin.setDefaultTimeout(12000)
   const page=await login(admin,'browser@example.invalid','artificial-browser-password')
+  if(process.env.CHECKOUT_REPAIR==='1')await enableCheckoutTracking(page,origin)
   const response=await admin.request.get(origin+'/api/admin/warehouse-users');assert.equal(response.status(),200)
   const directory=await response.json(),location=directory.locations.find(l=>l.id==='add-location');assert.ok(location)
   await page.goto(origin+'/warehouse-users');await page.getByRole('button',{name:'New warehouse user',exact:true}).click()
@@ -68,6 +70,7 @@ export async function startCheckoutFulfillment({browser,target,errors}){
     assert.equal((await worker.request.get(origin+'/api/admin/orders/'+orderID)).status(),403)
     return {sn,tracking,canceled,shipped}
    },
+   async repair(orderID,request,result,index){return repairCheckoutOrder({page,origin,orderID,request,result,index})},
    async close(){await worker.close();await admin.close();await server.close()}
   }
  }catch(e){await worker?.close();await admin?.close();await server?.close();throw e}

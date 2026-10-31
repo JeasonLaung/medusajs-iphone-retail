@@ -74,6 +74,9 @@ def main():
     promotion = sys.argv[1:] == ['--promotions']
     checkout = sys.argv[1:] == ['--checkout']
     fulfillment = os.environ.get('CHECKOUT_FULFILLMENT') == '1'
+    repair = os.environ.get('CHECKOUT_REPAIR') == '1'
+    if repair and not fulfillment:
+        raise RuntimeError('Repair requires the new order fulfillment mode')
     if fulfillment and (not checkout or any(os.environ.get(k) != '1' for k in ['CHECKOUT_ACCOUNTS', 'CHECKOUT_FRESH_CART', 'CHECKOUT_PRODUCT_BROWSE'])):
         raise RuntimeError('Fulfillment requires checkout with new accounts and fresh product carts')
     log_prefix = 'promotion-joint' if promotion else 'customer-orders-joint'
@@ -87,7 +90,7 @@ def main():
         log_prefix, fixture_switch, fixture_key = 'checkout-joint', 'CHECKOUT_BROWSER_FIXTURE', 'CHECKOUT_FIXTURE_KEY'
         test_script = 'tests/checkout.live.mjs'
         if fulfillment:
-            log_prefix = 'shopping-fulfillment-joint'
+            log_prefix = 'shopping-repair-joint' if repair else 'shopping-fulfillment-joint'
         browser_marker, sql_marker, regression_marker = 'CHECKOUT_JOINT_BROWSER ', 'CHECKOUT_JOINT_SQL ', 'CART_COMPLETION_HTTP_REHEARSAL '
     if shutil.disk_usage(ROOT).free < 2 * (1 << 30):
         raise RuntimeError('At least 2 GiB free disk required')
@@ -152,11 +155,12 @@ def main():
                                     '-e', 'CHECKOUT_FRESH_CART=' + os.environ.get('CHECKOUT_FRESH_CART', '0'),
                                     '-e', 'CHECKOUT_ACCOUNTS=' + os.environ.get('CHECKOUT_ACCOUNTS', '0'),
                                     '-e', 'CHECKOUT_FULFILLMENT=' + ('1' if fulfillment else '0'),
-                                    mysql, '/opt/identity.test', '-test.v', '-test.run', '^TestOwnedCartRuntime$', '-test.timeout', '420s' if fulfillment else '150s'], stdout=stream, stderr=subprocess.STDOUT)
+                                    '-e', 'CHECKOUT_REPAIR=' + ('1' if repair else '0'),
+                                    mysql, '/opt/identity.test', '-test.v', '-test.run', '^TestOwnedCartRuntime$', '-test.timeout', '540s' if repair else '420s' if fulfillment else '150s'], stdout=stream, stderr=subprocess.STDOUT)
         browser_env = os.environ.copy()
         browser_env.update(CUSTOMER_ORDERS_TEST_GIN='http://127.0.0.1:' + match[1])
         browser_env[fixture_key] = key
-        browser = run_owned_browser([str(node), test_script], cwd=ROOT / 'retail/storefront', env=browser_env, timeout=340 if fulfillment else 100)
+        browser = run_owned_browser([str(node), test_script], cwd=ROOT / 'retail/storefront', env=browser_env, timeout=420 if repair else 340 if fulfillment else 100)
         (logs / (log_prefix + '-browser.log')).write_bytes(browser.stdout + browser.stderr)
         require(browser, 'Actual Gin/Astro browser check failed; inspect ignored browser and SQL logs')
         if wait_owned(process, 45):
@@ -184,7 +188,12 @@ def main():
                 if len(evidence) != 1:
                     raise RuntimeError('New order fulfillment evidence incomplete')
                 report['fulfillment'] = json.loads(evidence[0])
-                report['scope'] = 'new customer registration and shopping through the same paid order, cancellation, warehouse reallocation, repacking, shipment and own customer tracking and notice'
+                if repair:
+                    evidence = [line.split('CHECKOUT_REPAIR_JOINT_SQL ', 1)[1] for line in sql_output.splitlines() if 'CHECKOUT_REPAIR_JOINT_SQL ' in line]
+                    if len(evidence) != 1:
+                        raise RuntimeError('New order repair evidence incomplete')
+                    report['repair'] = json.loads(evidence[0])
+                report['scope'] = 'new customer registration and shopping through the same paid order, cancellation, warehouse reallocation, repacking, shipment and own customer tracking and notice' + ('; own repair request, physical receipt, inspection with photo, original-device repair dispatch, completion and own return tracking/notices' if repair else '')
             if os.environ.get('CHECKOUT_ACCOUNTS') == '1':
                 accounts = [line.split('CHECKOUT_ACCOUNT_JOINT_SQL ', 1)[1] for line in sql_output.splitlines() if 'CHECKOUT_ACCOUNT_JOINT_SQL ' in line]
                 if len(accounts) != 1:
@@ -203,8 +212,10 @@ def main():
                         (ROOT / 'retail/storefront/src/lib/cart-commerce.ts', 'retail/storefront/src/lib/cart-commerce.ts'),
                         (ROOT / 'retail/storefront/tests/checkout-accounts.joint.mjs', 'retail/storefront/tests/checkout-accounts.joint.mjs')]
             if fulfillment:
-                sources += [(backend / 'internal/identity' / name, 'retail/backend/internal/identity/' + name) for name in ['checkout_fulfillment_browser_test.go', 'cart_runtime_test.go']]
-                sources += [(ROOT / 'retail/admin/tests/checkout-fulfillment.joint.mjs', 'retail/admin/tests/checkout-fulfillment.joint.mjs')]
+                sources += [(backend / 'internal/identity' / name, 'retail/backend/internal/identity/' + name) for name in ['checkout_fulfillment_browser_test.go', 'checkout_repair_browser_test.go', 'cart_runtime_test.go']]
+                sources += [(ROOT / 'retail/admin/tests' / name, 'retail/admin/tests/' + name) for name in ['checkout-fulfillment.joint.mjs', 'checkout-repair.joint.mjs']]
+            if repair:
+                sources += [(ROOT / name, name) for name in ['retail/backend/internal/customer/after_sales.go', 'retail/backend/internal/customer/repair_shipments.go', 'retail/backend/internal/devices/service.go', 'retail/storefront/src/lib/customer-after-sales.ts', 'retail/storefront/src/components/order/after-sales.tsx']]
             for source, name in sources:
                 report['source_sha256_lf'][name] = hashlib.sha256(source.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
     finally:
@@ -226,7 +237,7 @@ def main():
             require(docker('network', 'rm', network), 'Owned network cleanup failed')
         binary.unlink(missing_ok=True)
     report['cleanup_complete'] = True
-    (ROOT / (('docs/migration/shopping-fulfillment-joint-report.json' if fulfillment else 'docs/migration/shopping-account-joint-report.json' if os.environ.get('CHECKOUT_ACCOUNTS') == '1' else 'docs/migration/shopping-fresh-cart-joint-report.json' if os.environ.get('CHECKOUT_FRESH_CART') == '1' else 'docs/migration/shopping-joint-report.json' if os.environ.get('CHECKOUT_PRODUCT_BROWSE') == '1' else 'docs/migration/checkout-mail-joint-report.json') if checkout else 'docs/migration/promotion-joint-report.json' if promotion else 'docs/migration/customer-orders-joint-report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+    (ROOT / (('docs/migration/shopping-repair-joint-report.json' if repair else 'docs/migration/shopping-fulfillment-joint-report.json' if fulfillment else 'docs/migration/shopping-account-joint-report.json' if os.environ.get('CHECKOUT_ACCOUNTS') == '1' else 'docs/migration/shopping-fresh-cart-joint-report.json' if os.environ.get('CHECKOUT_FRESH_CART') == '1' else 'docs/migration/shopping-joint-report.json' if os.environ.get('CHECKOUT_PRODUCT_BROWSE') == '1' else 'docs/migration/checkout-mail-joint-report.json') if checkout else 'docs/migration/promotion-joint-report.json' if promotion else 'docs/migration/customer-orders-joint-report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'joint_browser': 'passed', 'scope': 'checkout' if checkout else 'promotions' if promotion else 'customer_orders', 'sql_regressions': 'passed', 'cleanup': 'complete'}))
 
 

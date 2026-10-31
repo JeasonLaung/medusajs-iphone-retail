@@ -20,3 +20,10 @@ test('after-sales private bridge accepts 201 only for the authorized mutation an
  const api=customerClient(async(url,init)=>{assert.equal(url,root);assert.equal(new Headers(init?.headers).get('X-CSRF-Token'),csrf);assert.deepEqual(JSON.parse(init?.body as string),body);return Response.json({request:request()},{status:201})})
  try{assert.deepEqual(await api.createAfterSales('order_created',body as any),request())}finally{api.clear();Reflect.deleteProperty(globalThis,'document');Reflect.deleteProperty(globalThis,'location')}
 })
+
+test('repair return projection keeps exact tracking and rejects private or contradictory fields',()=>{
+ const shipment={id:'receipt',serial_number:'ORIGINAL-SN',tracking_number:'00012345678901234567890',shipped_at:'2026-10-31T00:00:00Z'}
+ const valid={...request(),type:'repair',status:'completed',repair_shipments:[shipment]}
+ assert.deepEqual(afterSalesRequestProjection(valid),valid)
+ for(const bad of [{...valid,type:'return'},{...valid,repair_shipments:[]},{...valid,repair_shipments:[shipment,shipment]},{...valid,repair_shipments:[{...shipment,tracking_number:' TRACK '}]},{...valid,repair_shipments:[{...shipment,actor_id:'PRIVATE'}]},{...valid,repair_shipments:[{...shipment,shipped_at:'bad'}]},{...valid,repair_shipments:[{...shipment,serial_number:123}]}])assert.throws(()=>afterSalesRequestProjection(bad))
+})

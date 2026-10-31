@@ -32,12 +32,13 @@ type AfterSalesInput struct {
 	Items       []AfterSalesLine `json:"items"`
 }
 type AfterSalesRequest struct {
-	ID        string           `json:"id"`
-	Type      string           `json:"type"`
-	Status    string           `json:"status"`
-	Reason    string           `json:"reason"`
-	Items     []AfterSalesLine `json:"items" gorm:"-"`
-	CreatedAt time.Time        `json:"created_at"`
+	ID              string           `json:"id"`
+	Type            string           `json:"type"`
+	Status          string           `json:"status"`
+	Reason          string           `json:"reason"`
+	Items           []AfterSalesLine `json:"items" gorm:"-"`
+	CreatedAt       time.Time        `json:"created_at"`
+	RepairShipments []RepairShipment `json:"repair_shipments,omitempty" gorm:"-"`
 }
 type OrderDevice struct {
 	ID             string  `json:"id"`
@@ -137,6 +138,9 @@ func readAfterSales(tx *gorm.DB, account, orderID string) ([]AfterSalesRequest, 
 		}
 		row.AfterSalesRequest.Items = items.Lines
 		out = append(out, row.AfterSalesRequest)
+	}
+	if e := readRepairShipments(tx, orderID, out); e != nil {
+		return nil, e
 	}
 	return out, nil
 }

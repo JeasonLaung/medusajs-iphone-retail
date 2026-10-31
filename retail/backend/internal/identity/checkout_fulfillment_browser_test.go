@@ -3,6 +3,8 @@ package identity_test
 import (
 	"context"
 	"fmt"
+	"github.com/eurorefurb/retail/internal/devices"
+	"os"
 	"testing"
 	"time"
 
@@ -59,6 +61,20 @@ func mountCheckoutFulfillment(t *testing.T, ctx context.Context, db *gorm.DB, se
 		exec("UPDATE " + table + " SET enabled=TRUE WHERE id=1")
 		addCleanup(func() { exec("UPDATE " + table + " SET enabled=FALSE WHERE id=1") })
 	}
+	if os.Getenv("CHECKOUT_REPAIR") == "1" {
+		// The ordinary cart fixture deliberately shares stock between two SKUs.
+		// This owned serialized SKU must satisfy the real enrollment contract.
+		exec("UPDATE catalog_variant_inventory_items SET deleted_at=UTC_TIMESTAMP(6) WHERE id='add-shared-link'")
+		addCleanup(func() { exec("UPDATE catalog_variant_inventory_items SET deleted_at=NULL WHERE id='add-shared-link'") })
+		addCleanup(func() {
+			exec("UPDATE device_variant_tracking SET deleted_at=UTC_TIMESTAMP(6) WHERE variant_id='add-v' AND deleted_at IS NULL")
+		})
+		for _, table := range []string{"customer_after_sales_runtime", "after_sales_review_runtime", "device_return_runtime", "device_service_runtime"} {
+			exec("UPDATE " + table + " SET enabled=TRUE WHERE id=1")
+			addCleanup(func() { exec("UPDATE " + table + " SET enabled=FALSE WHERE id=1") })
+		}
+		router.GET("/api/store/device-photos/:photo_id", (devices.Handler{DB: db}).PhotoHTTP)
+	}
 	hash, e := bcrypt.GenerateFromPassword([]byte("artificial-browser-password"), bcrypt.DefaultCost)
 	if e != nil {
 		t.Fatal("checkout operator KDF")
@@ -81,6 +97,10 @@ func mountCheckoutFulfillment(t *testing.T, ctx context.Context, db *gorm.DB, se
 
 func checkCheckoutFulfillment(t *testing.T, db *gorm.DB, orders []string) {
 	t.Helper()
+	trackingPrefix := "CHECKOUT-TRACK-%"
+	if os.Getenv("CHECKOUT_REPAIR") == "1" {
+		trackingPrefix = "000-CHECKOUT-REPAIR-%"
+	}
 	for _, order := range orders {
 		checks := []struct {
 			query string
@@ -88,7 +108,7 @@ func checkCheckoutFulfillment(t *testing.T, db *gorm.DB, orders []string) {
 		}{
 			{"SELECT COUNT(*) FROM order_fulfillments l JOIN fulfillments f ON f.id=l.fulfillment_id WHERE l.order_id=? AND f.shipped_at IS NOT NULL AND f.canceled_at IS NULL", 1},
 			{"SELECT COUNT(*) FROM order_fulfillments l JOIN fulfillments f ON f.id=l.fulfillment_id WHERE l.order_id=? AND f.canceled_at IS NOT NULL", 1},
-			{"SELECT COUNT(*) FROM device_assignments a JOIN devices d ON d.id=a.device_id WHERE a.order_id=? AND a.status='shipped' AND d.state='shipped' AND a.tracking_number LIKE 'CHECKOUT-TRACK-%'", 1},
+			{"SELECT COUNT(*) FROM device_assignments a JOIN devices d ON d.id=a.device_id WHERE a.order_id=? AND a.status='shipped' AND d.state='shipped' AND a.tracking_number LIKE '" + trackingPrefix + "'", 1},
 			{"SELECT COUNT(*) FROM device_assignments WHERE order_id=? AND status='canceled'", 1},
 			{"SELECT COUNT(*) FROM inventory_reservations r JOIN order_items oi ON oi.item_id=r.line_item_id WHERE oi.order_id=? AND r.deleted_at IS NULL", 0},
 			{"SELECT COUNT(*) FROM order_items WHERE order_id=? AND quantity=1 AND fulfilled_quantity=1 AND shipped_quantity=1", 1},
@@ -101,6 +121,9 @@ func checkCheckoutFulfillment(t *testing.T, db *gorm.DB, orders []string) {
 				t.Fatalf("checkout fulfillment durable facts differ: %s: %d, %v", check.query, n, e)
 			}
 		}
+	}
+	if os.Getenv("CHECKOUT_REPAIR") == "1" {
+		checkCheckoutRepair(t, db, orders)
 	}
 	t.Log(`CHECKOUT_FULFILLMENT_JOINT_SQL {"same_four_new_paid_orders":true,"four_canceled_and_four_shipped_parcels":true,"one_shipment_receipt_per_order":true,"one_canceled_and_one_shipped_assignment_per_order":true,"reservations_consumed":true,"fulfilled_and_shipped_quantity_per_order":"1","one_own_read_shipment_notice_per_order":true,"final_reserved_delta":"0","final_stock_delta_from_added_baseline":"-4"}`)
 }
