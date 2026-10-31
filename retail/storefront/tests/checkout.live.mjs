@@ -1,3 +1,4 @@
+import {verifyCheckoutRefund} from '../../admin/tests/checkout-refund.joint.mjs'
 import {verifyCheckoutExchange} from '../../admin/tests/checkout-exchange.joint.mjs'
 import assert from 'node:assert/strict'
 import {requestCheckoutAfterSales,verifyCheckoutRepair} from '../../admin/tests/checkout-repair.joint.mjs'
@@ -11,8 +12,8 @@ const require=createRequire(new URL('../../admin/package.json',import.meta.url))
 const target=new URL(process.env.CUSTOMER_ORDERS_TEST_GIN??''),key=process.env.CHECKOUT_FIXTURE_KEY,shop='http://127.0.0.1:19379'
 assert.equal(target.hostname,'127.0.0.1');assert.equal(target.protocol,'http:');assert.equal(target.pathname,'/');assert.ok(target.port);assert.match(key??'',/^[0-9a-f]{64}$/)
 const browse=process.env.CHECKOUT_PRODUCT_BROWSE==='1',fresh=process.env.CHECKOUT_FRESH_CART==='1'
-const accounts=process.env.CHECKOUT_ACCOUNTS==='1',fulfillment=process.env.CHECKOUT_FULFILLMENT==='1',repair=process.env.CHECKOUT_REPAIR==='1',exchange=process.env.CHECKOUT_EXCHANGE==='1'
-assert.ok(!fresh||browse);assert.ok(!accounts||fresh);assert.ok(!fulfillment||accounts);assert.ok(!repair||fulfillment);assert.ok(!exchange||fulfillment);assert.ok(!(repair&&exchange))
+const accounts=process.env.CHECKOUT_ACCOUNTS==='1',fulfillment=process.env.CHECKOUT_FULFILLMENT==='1',repair=process.env.CHECKOUT_REPAIR==='1',exchange=process.env.CHECKOUT_EXCHANGE==='1',refund=process.env.CHECKOUT_REFUND==='1'
+assert.ok(!fresh||browse);assert.ok(!accounts||fresh);assert.ok(!fulfillment||accounts);assert.ok(!repair||fulfillment);assert.ok(!exchange||fulfillment);assert.ok(!(repair&&exchange));assert.ok(!refund||fulfillment&&!repair&&!exchange)
 let app,browser,fulfiller
 const control=async path=>{
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),1500)
@@ -55,11 +56,11 @@ try{
    await page.goto(shop+`/${segment}/products/add-product?v_id=add-v`,{waitUntil:"domcontentloaded"})
    await expect(page.getByTestId('product-title')).toHaveText('Saved product')
    await expect(page.getByTestId('add-product-button')).toBeEnabled()
-   const created=fresh?page.waitForResponse(r=>r.request().method()==='POST'&&r.url()===shop+'/api/store/carts'):null
+   const created=fresh?page.waitForResponse(r=>r.request().method()==='POST'&&r.url()===shop+'/api/store/carts').then(async response=>{assert.equal(response.status(),201);return (await response.json()).cart.id}):null
    const added=page.waitForResponse(r=>r.request().method()==='POST'&&r.url().endsWith('/line-items'))
    await page.getByTestId('add-product-button').click()
    assert.equal((await added).status(),200)
-   if(created){const response=await created;assert.equal(response.status(),201);cart.id=(await response.json()).cart.id;const cookies=await context.cookies(shop);cart.csrf=cookies.find(c=>c.name==='retail_cart_csrf')?.value;assert.match(cart.csrf??'',/^[0-9a-f]{64}$/)}
+   if(created){cart.id=await created;const cookies=await context.cookies(shop);cart.csrf=cookies.find(c=>c.name==='retail_cart_csrf')?.value;assert.match(cart.csrf??'',/^[0-9a-f]{64}$/)}
    await expect(page).toHaveURL(new RegExp(`/${segment}/cart$`))
    await expect(page.getByTestId('checkout-button')).toBeVisible()
    await page.reload()
@@ -114,7 +115,7 @@ try{
   const replay=await context.request.post(shop+`/api/store/carts/${cart.id}/complete`,{data:{},headers:{Origin:shop,'X-CSRF-Token':cart.csrf}})
   assert.equal(replay.status(),200);assert.equal((await replay.json()).order_id,orderID)
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
-  if(accounts)await verifyCheckoutAccountOrder({page,context,shop,segment,orderID,index,expect,afterDetail:fulfillment?async()=>{const result=await fulfiller.fulfill(orderID,index);await verifyCheckoutShipment({page,context,shop,orderID,result,expect});if(repair){const request=await requestCheckoutAfterSales({page,orderID,result,segment});const tracking=await fulfiller.repair(orderID,request,result,index);await verifyCheckoutRepair({page,context,shop,orderID,result,request,tracking})}if(exchange){const request=await requestCheckoutAfterSales({page,orderID,result,segment,type:"exchange"});const replacement=await fulfiller.exchange(orderID,request,result,index);await verifyCheckoutExchange({page,context,shop,orderID,result,request,replacement,segment})}}:undefined})
+  if(accounts)await verifyCheckoutAccountOrder({page,context,shop,segment,orderID,index,expect,afterDetail:fulfillment?async()=>{const result=await fulfiller.fulfill(orderID,index);await verifyCheckoutShipment({page,context,shop,orderID,result,expect});if(repair){const request=await requestCheckoutAfterSales({page,orderID,result,segment});const tracking=await fulfiller.repair(orderID,request,result,index);await verifyCheckoutRepair({page,context,shop,orderID,result,request,tracking})}if(refund){const request=await requestCheckoutAfterSales({page,orderID,result,segment,type:"return"});await fulfiller.refund(orderID,request,result,index);await verifyCheckoutRefund({page,context,shop,orderID,result,request,segment})}if(exchange){const request=await requestCheckoutAfterSales({page,orderID,result,segment,type:"exchange"});const replacement=await fulfiller.exchange(orderID,request,result,index);await verifyCheckoutExchange({page,context,shop,orderID,result,request,replacement,segment})}}:undefined})
   await context.clearCookies()
   const denied=await context.request.get(shop+`/api/store/orders/${orderID}/confirmation`)
   assert.equal(denied.status(),401)
@@ -122,5 +123,5 @@ try{
  }
  assert.equal(orders.size,4);assert.equal(starts.length,8);assert.equal(completions.length,4);assert.deepEqual(errors,[])
  assert.equal((await control('finish')).status,204)
- console.log('CHECKOUT_JOINT_BROWSER '+JSON.stringify({actual_astro_checkout:true,actual_gin_handlers:true,real_mysql_redis:true,mocked_business_api_responses:false,isolated_provider_adapter_and_hosted_page:true,real_provider_payments:false,preseeded_cart_items:!browse,precreated_empty_cart:browse&&!fresh,anonymous_cart_creation:fresh,registration_verification_login:accounts,paid_order_account_attachment:accounts,account_read_without_cart:accounts,cross_account_denied:accounts,same_browser_account_switch:accounts,logout_denies_order:accounts,product_page_add_cart_checkout:browse,address_delivery_payment_review_result_confirmation:true,pending_before_paid:true,payment_reload_replays_original:true,confirmation_reload:true,completion_replay_same_order:true,unauthenticated_confirmation_denied:true,payment_journal_cleared:true,languages:['en','zh'],widths:[390,1440],unique_orders:4,browser_errors:0,real_email_delivery:false,same_new_order_fulfillment:fulfillment,warehouse_cancel_release_reallocate_repack_ship:fulfillment,lost_release_and_shipment_reply_replayed:fulfillment,customer_actual_device_tracking_and_notice:fulfillment,new_order_repair_request_receipt_inspection_dispatch_completion:repair,own_repair_return_tracking_and_notices:repair,same_new_order_exchange_replacement_shipped:exchange,own_original_and_replacement_device_tracking_notices:exchange}))
+ console.log('CHECKOUT_JOINT_BROWSER '+JSON.stringify({actual_astro_checkout:true,actual_gin_handlers:true,real_mysql_redis:true,mocked_business_api_responses:false,isolated_provider_adapter_and_hosted_page:true,real_provider_payments:false,preseeded_cart_items:!browse,precreated_empty_cart:browse&&!fresh,anonymous_cart_creation:fresh,registration_verification_login:accounts,paid_order_account_attachment:accounts,account_read_without_cart:accounts,cross_account_denied:accounts,same_browser_account_switch:accounts,logout_denies_order:accounts,product_page_add_cart_checkout:browse,address_delivery_payment_review_result_confirmation:true,pending_before_paid:true,payment_reload_replays_original:true,confirmation_reload:true,completion_replay_same_order:true,unauthenticated_confirmation_denied:true,payment_journal_cleared:true,languages:['en','zh'],widths:[390,1440],unique_orders:4,browser_errors:0,real_email_delivery:false,same_new_order_fulfillment:fulfillment,warehouse_cancel_release_reallocate_repack_ship:fulfillment,lost_release_and_shipment_reply_replayed:fulfillment,customer_actual_device_tracking_and_notice:fulfillment,new_order_repair_request_receipt_inspection_dispatch_completion:repair,own_repair_return_tracking_and_notices:repair,same_new_order_return_refund_worker_and_own_notice:refund,same_new_order_exchange_replacement_shipped:exchange,own_original_and_replacement_device_tracking_notices:exchange}))
 }catch(error){console.error(error);throw error}finally{await fulfiller?.close();await browser?.close();if(app&&app.exitCode===null){app.kill();await once(app,'exit')}}

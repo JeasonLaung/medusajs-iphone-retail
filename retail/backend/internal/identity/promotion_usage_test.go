@@ -59,10 +59,10 @@ func TestOwnedPromotionUsage(t *testing.T) {
 	}
 	db, gdb := open("promotion_usage_fresh")
 	result, err := schema.Apply(ctx, db, plan)
-	if err != nil || result.Applied != 84 || schema.CheckApplied(ctx, db, plan) != nil || promotion.Ready(ctx, gdb) != nil {
+	if err != nil || result.Applied != 85 || schema.CheckApplied(ctx, db, plan) != nil || promotion.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh promotion schema unavailable")
 	}
-	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 84 {
+	if result, err = schema.Apply(ctx, db, plan); err != nil || result.Skipped != 85 {
 		t.Fatal("promotion replay changed schema")
 	}
 

@@ -28,7 +28,7 @@ func EmitOrderTx(tx *gorm.DB, orderID, kind, resource string) error {
 		return ErrUnavailable
 	}
 	switch kind {
-	case "shipment.created", "delivery.created", "order.canceled", "after_sales.processing", "after_sales.completed", "after_sales.rejected":
+	case "refund.created", "shipment.created", "delivery.created", "order.canceled", "after_sales.processing", "after_sales.completed", "after_sales.rejected":
 	default:
 		return ErrUnavailable
 	}

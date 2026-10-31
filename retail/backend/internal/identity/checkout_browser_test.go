@@ -119,7 +119,7 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		known[ref.CartID] = true
 	}
 	var creates, observations atomic.Int32
-	registry, err := payments.NewCreateAdapters(map[string]payments.CreateSessionAdapter{"pp_mollie-hosted-checkout_mollie": executionObserver{
+	observer := executionObserver{
 		create: func(callCtx context.Context, r payments.SessionRequest) (payments.CreateOutcome, payments.CreatedSession, error) {
 			creates.Add(1)
 			mu.Lock()
@@ -155,7 +155,12 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 			raw, _ := json.Marshal(map[string]any{"id": id, "status": status, "amount": map[string]string{"value": r.Amount, "currency": strings.ToUpper(r.Currency)}, "metadata": map[string]string{"session_id": r.SessionID, "cart_id": inScope(r)}})
 			return payments.SessionObservation{PaymentID: id, ProviderStatus: status, Action: action, Amount: r.Amount, Currency: r.Currency, Session: payments.CreatedSession{Status: local, Data: raw}}, nil
 		},
-	}})
+	}
+	var adapter payments.CreateSessionAdapter = observer
+	if os.Getenv("CHECKOUT_REFUND") == "1" {
+		adapter = checkoutRefundAdapter{observer}
+	}
+	registry, err := payments.NewCreateAdapters(map[string]payments.CreateSessionAdapter{"pp_mollie-hosted-checkout_mollie": adapter})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -170,7 +175,13 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	router := gin.New()
 	_ = router.SetTrustedProxies(nil)
 	if fulfillment {
-		cleanup := mountCheckoutFulfillment(t, ctx, db, sessions, router)
+		cleanup := mountCheckoutFulfillment(t, ctx, db, sessions, router, options)
+		defer cleanup()
+	}
+	var refundWorker *checkoutRefundWorker
+	if os.Getenv("CHECKOUT_REFUND") == "1" {
+		var cleanup func()
+		refundWorker, cleanup = startCheckoutRefundWorker(t, ctx, db)
 		defer cleanup()
 	}
 	public := router.Group("/api/store")
@@ -288,7 +299,11 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		checkCheckoutAccountReceipts(t, db, orderIDs)
 	}
 	if fulfillment {
-		checkCheckoutFulfillment(t, db, orderIDs)
+		if refundWorker != nil {
+			checkCheckoutRefund(t, db, orderIDs, refundWorker)
+		} else {
+			checkCheckoutFulfillment(t, db, orderIDs)
+		}
 		var stockedAfter string
 		if db.Table("inventory_levels").Select("CAST(stocked_quantity AS CHAR)").Where("id='add-level'").Scan(&stockedAfter).Error != nil {
 			t.Fatal("checkout final stock")

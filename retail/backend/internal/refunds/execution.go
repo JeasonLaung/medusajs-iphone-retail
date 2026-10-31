@@ -3,6 +3,7 @@ package refunds
 import (
 	"context"
 	"encoding/json"
+	"github.com/eurorefurb/retail/internal/customernotices"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/payments"
@@ -266,6 +267,9 @@ func (s Service) apply(ctx context.Context, tx *gorm.DB, r *operation) error {
 		return ErrUnavailable
 	}
 	if _, e := orders.RefreshChangeSummaryTx(ctx, tx, r.OrderID, ord.Version); e != nil {
+		return e
+	}
+	if e := customernotices.EmitOrderTx(tx, r.OrderID, "refund.created", refundID); e != nil {
 		return e
 	}
 	if tx.Model(&operation{}).Where("operation_id=? AND applied=FALSE", r.OperationID).Updates(map[string]any{"applied": true, "updated_at": now}).Error != nil {

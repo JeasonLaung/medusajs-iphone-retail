@@ -44,7 +44,7 @@ export default function NotificationBell({ locale,segment }: { locale: string | 
       await refresh()
       if (notice) {
         setOpen(false)
-        window.location.assign(`/${countryCode}/account/${notice.kind === "buyback.updated" ? "buyback" : "orders"}/${encodeURIComponent(notice.resource_id)}`)
+        window.location.assign(`/${countryCode}/account/${notice.kind === "buyback.updated" ? "buyback" : "orders/details"}/${encodeURIComponent(notice.resource_id)}`)
       }
     } finally { if(active.current)setBusy(false) }
   }
