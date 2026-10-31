@@ -1,0 +1,53 @@
+{
+  "format_version": 1,
+  "scope": "React Admin return refund drawer with mocked business API responses; no actual shopper return or real provider refund",
+  "browser": "local Google Chrome via Playwright; isolated Vite port 19200",
+  "tests_passed": [
+    "after-sales review keeps the same operation after a lost reply and displays saved status",
+    "after-sales device receipt freezes the scanned machine after a lost response",
+    "inspection and repaired-device dispatch retry immutable commands after lost replies",
+    "replacement drawer retries an immutable command after a lost reply",
+    "refund drawer retries immutable instructions, cancels before dispatch and preserves history zh 390",
+    "refund drawer retries immutable instructions, cancels before dispatch and preserves history zh 1440",
+    "refund drawer retries immutable instructions, cancels before dispatch and preserves history en 390",
+    "refund drawer retries immutable instructions, cancels before dispatch and preserves history en 1440",
+    "refund drawer refuses writes when disabled",
+    "refund drawer refuses writes when malformed",
+    "refund drawer refuses writes when revoked"
+  ],
+  "passed": 11,
+  "languages": [
+    "zh",
+    "en"
+  ],
+  "widths": [
+    390,
+    1440
+  ],
+  "immutable_prepare_and_cancel_retry": true,
+  "same_order_drawer_close_reopen_retains_pending_command": true,
+  "explicit_predecessor_new_attempt": true,
+  "disabled_malformed_revoked_writes_rejected": true,
+  "existing_review_receipt_service_replacement_regression": true,
+  "real_business_api": false,
+  "continuous_new_customer_refund": false,
+  "real_provider_refund": false,
+  "transcript_sha256": "9eea91288d697db763ad2fd0aa739d9140cb0c1d77b2d34c3dfb2578055be423",
+  "implementation_sha256_lf": {
+    "retail/admin/src/OrderRefund.tsx": "c19cd2e853488a7837be7c206229f7d8f1f398d2ea2ce4e082ac71154a116f15",
+    "retail/admin/src/refundApi.ts": "75f30893cca8585a25f4d74e04dbb371fd8fbbd5632a028ebdca5b6c9c16b314",
+    "retail/admin/src/OrderAfterSales.tsx": "31fce4dd0c7d1f03ecba70409bff80747bd6f269a384d31485eb32da32c092e7",
+    "retail/admin/src/api.ts": "90708bde150b4eaf1f47008619f73157cda6b25d616433c6b72e036faa54c61f",
+    "retail/admin/src/Permissions.tsx": "378cdb24e4571a365926115f904c0cd14a39773c45af69346cd65474b1140791",
+    "retail/admin/src/App.tsx": "21a7380de6a180969cea3df2cbe293c6083dd07db31991e28dfa23af47c80f6b",
+    "retail/admin/tests/auth.spec.ts": "569f3da6d381b713565e9b036db43184aaa012f7d2bb05ff99f93e012cbb9ff9",
+    "retail/admin/playwright.config.ts": "d5079532fde48472f7d8b6fe7dba4b12d0a2b22121e25a72f094db31721ad543",
+    "retail/scripts/report-refund-admin.py": "63e38240d7000d6c2823cd488c42ba7c71f6e3eb1d842f460bf295119bea73ac"
+  },
+  "screenshots_sha256": {
+    "refund-zh-390.png": "1b22668bcf9d9f459f9b046dd6f5957c2c70bd22186b8e73b791e479342f37ac",
+    "refund-zh-1440.png": "717945b13c4ba04a1037093a2cbcaceb410111aaa945a0e842bf5ae9787d0c94",
+    "refund-en-390.png": "47c8f80414803865095533228da8160cdc485393ce5c4ba4de3c3b3332ce6ef9",
+    "refund-en-1440.png": "b1ae78107b65172c789f35090100993a603e6edd61a6539206083b45f313a7a6"
+  }
+}

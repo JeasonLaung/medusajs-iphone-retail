@@ -104,3 +104,5 @@ C06 增加 [Mollie 通知消费及独立 worker](mollie-checkout-consumer.md)：
 2026-10-31 已接[原生退款指令/账务](mollie-refunds.md)：0083默认关闭开关、独立退款权限、由真实成单链关联原付款、精确未决额度占用、一次POST和只GET恢复、观察先存与唯一负向账务同事务。新增退款权限中英文标签，保留现有UI/样式。退款HTTP/worker/售后UI及新购物连续退货退款仍待接；不得把隔离SQL渠道fixture当作实际客户退款联合或C06/C09/P10完成。
 
 2026-10-31 接续[退款生命周期私有HTTP与RunDue](gin-after-sales-refunds.md)：0084/runtime v2、权威失败/取消后的显式新指令、未发送本地取消/回执原子性、当前员工/可信店铺、现有Admin登录/CSRF、默认关闭独立worker入口。接口只持久202，后台首次单次POST，恢复只GET/本地观察记账。隔离真实认证SQL及并发RunDue已有验证；Admin退款表单、新购物连续客户联合、独立CLI启动/重启和真实渠道尚未验收，不标C06/C09/P10完成。
+
+2026-10-31：现有售后页增加Admin退款抽屉，含原付款/精确金额/历史、原UUID重试、未发送取消、明确前驱新尝试及有界本地状态轮询。UI仅模拟接口浏览器验收，真实新购物至退货退款/独立worker/本人通知连续链仍待；不据此关闭C06/C09/P10或C01–C11。详见docs/migration/gin-after-sales-refunds.md与refund-admin-ui-report.json。
