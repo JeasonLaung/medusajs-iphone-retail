@@ -3,13 +3,23 @@ package orders
 import (
 	"github.com/eurorefurb/retail/internal/totals"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"math/big"
 )
 
 // CurrentPendingDifferenceTx reads current native amounts against the exact
 // transaction ledger. Cached summary cash totals never authorize a refund.
-// Caller owns access and the order lock; this does not mutate a summary.
+// Caller owns access, a SQL transaction and the order lock; this does not mutate
+// a summary. Locking reads avoid an earlier repeatable-read snapshot hiding
+// newly committed cash even after the caller acquires the order lock.
 func CurrentPendingDifferenceTx(tx *gorm.DB, id string) (*big.Rat, error) {
+	if tx == nil || tx.Statement == nil {
+		return nil, ErrSchema
+	}
+	if _, ok := tx.Statement.ConnPool.(gorm.TxCommitter); !ok {
+		return nil, ErrSchema
+	}
+	tx = currentAmountReads(tx)
 	amounts, e := ReadAmountSnapshot(tx, id)
 	if e != nil {
 		return nil, e
@@ -44,4 +54,10 @@ func CurrentPendingDifferenceTx(tx *gorm.DB, id string) (*big.Rat, error) {
 		balance.Sub(balance, n)
 	}
 	return balance, nil
+}
+
+// Session cloning preserves the read lock without sharing query predicates
+// between the independent reads in ReadAmountSnapshot.
+func currentAmountReads(tx *gorm.DB) *gorm.DB {
+	return tx.Clauses(clause.Locking{Strength: "SHARE"}).Session(&gorm.Session{})
 }

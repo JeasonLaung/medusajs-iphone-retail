@@ -1188,7 +1188,7 @@
     "checkout": false
   },
   "implementation_sha256": {
-    "retail/scripts/test-admin-auth.py": "aaecb81781e9d35e7d111832746153bb16b0472c68b3a03545bcea6ee47353fe",
+    "retail/scripts/test-admin-auth.py": "a33f20c24c0b53da032db8e4dc66ab8b1929140ffe1d1eb4d20bed573310f942",
     "retail/backend/internal/identity/admin.go": "9308d166f97878eed977b99ecf16a995a6eda9bc4fb642afc5b6887930a8a165",
     "retail/backend/internal/identity/admin_test.go": "69fdc1af2f1a37d36228ec776e9dcca96124bfc4bbefeb7ba331a15d5fe1845e",
     "retail/backend/internal/identity/integration_test.go": "66ceb7ba521a4fbdb1a27ce7192ecb1e31a22ece026636ec4140537a8f7af7b7",
@@ -1312,6 +1312,9 @@
     "retail/backend/internal/orders/amounts.go": "a05ad884284fb3c2badc0e5d607936c38ae302ec455f208e324986435cf67bed",
     "retail/backend/internal/orders/amount_json.go": "a1c9a0097e4cca8e138cd2e708ffa670b37708acda0ae51899d18401e60fb0d8",
     "retail/backend/internal/identity/order_amounts_test.go": "fc30b3050e94b326edada1f9de68c3f566555ace237df056677f95b01423029d",
+    "retail/backend/internal/orders/current_balance.go": "a9886f761725942e57be9049a2eacf4948a631487dfb925c41456c696dd86592",
+    "retail/backend/internal/orders/supplemental_payment.go": "182295c43d519df290d8f9f540b0d8788d294caae5e138a532fcd3057589c95c",
+    "retail/backend/internal/identity/exchange_payment_balance_test.go": "fa1c5d8cf9582bf1e8716884558c054ccdb1dc37df9a3b2b0e6ab9382a5490eb",
     "retail/backend/internal/totals/stored_test.go": "e79599f2ce4d16f8c076316c6053cf7a566042c3c64f0d85100a9db00f01102d",
     "retail/backend/internal/totals/buy_get.go": "6a82569d7419fe7d51280af0f2c7a5018a02fd40fe55afddb605c47b06c1bae5",
     "retail/backend/internal/totals/stored.go": "fc041ec6de9d634f67827663cda5b319b07fa7affc6ba5829daf086ceff8b948",

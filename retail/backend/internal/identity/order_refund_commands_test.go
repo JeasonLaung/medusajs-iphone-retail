@@ -112,6 +112,7 @@ func checkNativeRefundCommands(t *testing.T, ctx context.Context, db *gorm.DB, o
 	}
 	exec("UPDATE order_refund_runtime SET enabled=TRUE WHERE id=1")
 	defer exec("UPDATE order_refund_runtime SET enabled=FALSE WHERE id=1")
+	checkExchangePaymentBalance(t, ctx, db, order, in.RequestID, actor.ID)
 	checkExchangeRefundCredit(t, ctx, db, s, actor, in, channel)
 	var wg sync.WaitGroup
 	errs := make(chan error, 6)
