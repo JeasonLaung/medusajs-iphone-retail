@@ -87,7 +87,7 @@ func checkWarehousePermissionUpgrade(t *testing.T) {
 		t.Fatal(e)
 	}
 	result, e := schema.Apply(t.Context(), target, all)
-	if e != nil || result.Applied != 1 || authorization.Ready(t.Context(), upgrade) != nil {
+	if e != nil || result.Applied != 2 || authorization.Ready(t.Context(), upgrade) != nil {
 		t.Fatal("permission upgrade unavailable", e)
 	}
 	var grants []string
