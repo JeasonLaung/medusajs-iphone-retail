@@ -121,7 +121,11 @@ func main() {
 	if err != nil {
 		log.Fatal("Explicit Mollie notification configuration and registered checkout required")
 	}
-	router, err := server.RouterWithAuthAndWebhooks(db, identity.Options{Sessions: sessions, Origin: os.Getenv("ADMIN_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true"}, webhooks, cartOptions...)
+	refundOptions, err := checkoutconfig.Refunds(os.Getenv, initialPayment)
+	if err != nil {
+		log.Fatal("Explicit refund configuration invalid")
+	}
+	router, err := server.RouterWithAuthAndRefunds(db, identity.Options{Sessions: sessions, Origin: os.Getenv("ADMIN_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true"}, webhooks, refundOptions, cartOptions...)
 	if err != nil {
 		log.Fatal("Explicit application origins, shop binding and matching secure cookie configuration required")
 	}

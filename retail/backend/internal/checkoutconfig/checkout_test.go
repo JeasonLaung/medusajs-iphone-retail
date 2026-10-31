@@ -48,3 +48,37 @@ func TestExplicitIndependentNotificationConfiguration(t *testing.T) {
 		}
 	}
 }
+
+func TestRefundsRequireIndependentExplicitEnablement(t *testing.T) {
+	e := fixture()
+	env := func(k string) string { return e[k] }
+	payment, err := Load(env)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, flag := range []string{"", "false"} {
+		e["ORDER_REFUNDS_ENABLED"] = flag
+		out, err := Refunds(env, payment)
+		if err != nil || out.Enabled || out.Ring != nil || out.Adapters != nil {
+			t.Fatal("checkout enabled refunds implicitly")
+		}
+	}
+	for _, flag := range []string{"TRUE", "1", " true", "false "} {
+		e["ORDER_REFUNDS_ENABLED"] = flag
+		if _, err := Refunds(env, payment); err != ErrInvalid {
+			t.Fatal("ambiguous refund flag")
+		}
+	}
+	e["ORDER_REFUNDS_ENABLED"] = "true"
+	if _, err := Refunds(env, nil); err != ErrInvalid {
+		t.Fatal("refunds without protected configured provider")
+	}
+	out, err := Refunds(env, payment)
+	if err != nil || !out.Enabled || out.StoreID != "shop" || out.Ring != payment.Ring || out.Adapters != payment.Adapters {
+		t.Fatal("refunds not bound to original configuration")
+	}
+	e["STOREFRONT_STORE_ID"] = "../other"
+	if _, err := Refunds(env, payment); err != ErrInvalid {
+		t.Fatal("invalid refund store accepted")
+	}
+}

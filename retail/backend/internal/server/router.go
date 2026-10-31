@@ -17,6 +17,7 @@ import (
 	"github.com/eurorefurb/retail/internal/inventory"
 	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/payments"
+"github.com/eurorefurb/retail/internal/refunds"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/eurorefurb/retail/internal/promotion"
 	"github.com/eurorefurb/retail/internal/tax"
@@ -39,6 +40,10 @@ func RouterWithAuth(db *gorm.DB, options identity.Options, cartOptions ...cart.H
 }
 
 func RouterWithAuthAndWebhooks(db *gorm.DB, options identity.Options, webhookOptions payments.MollieWebhookOptions, cartOptions ...cart.HTTPOptions) (*gin.Engine, error) {
+ return RouterWithAuthAndRefunds(db,options,webhookOptions,refunds.Options{},cartOptions...)
+}
+func RouterWithAuthAndRefunds(db *gorm.DB, options identity.Options, webhookOptions payments.MollieWebhookOptions, refundOptions refunds.Options, cartOptions ...cart.HTTPOptions) (*gin.Engine, error) {
+
 	h, err := identity.NewWithOptions(db, options)
 	if err != nil {
 		return nil, err
@@ -57,7 +62,8 @@ func RouterWithAuthAndWebhooks(db *gorm.DB, options identity.Options, webhookOpt
 	if err != nil {
 		return nil, err
 	}
-	return routerWithHandlers(db, slog.Default(), h, shop, webhooks), nil
+	if refundOptions.Enabled && (refundOptions.StoreID==""||refundOptions.Ring==nil||refundOptions.Adapters==nil){return nil,refunds.ErrUnavailable}
+ return routerWithHandlers(db, slog.Default(), h, shop, webhooks, refundOptions), nil
 }
 
 func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler, shops ...*cart.HTTPHandler) *gin.Engine {
@@ -68,7 +74,7 @@ func routerWithIdentity(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	return routerWithHandlers(db, logger, auth, shop, &payments.MollieWebhookHandler{})
 }
 
-func routerWithHandlers(db *gorm.DB, logger *slog.Logger, auth *identity.Handler, shop *cart.HTTPHandler, webhooks *payments.MollieWebhookHandler) *gin.Engine {
+func routerWithHandlers(db *gorm.DB, logger *slog.Logger, auth *identity.Handler, shop *cart.HTTPHandler, webhooks *payments.MollieWebhookHandler, refundOptions ...refunds.Options) *gin.Engine {
 	r := gin.New()
 	_ = r.SetTrustedProxies(nil)
 	r.Use(platform.RequestBoundary(logger))
@@ -185,6 +191,12 @@ func routerWithHandlers(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
  private.POST("/orders/:id/after-sales/:request_id/devices/:assignment_id/service",(devices.Handler{DB:db}).ServiceHTTP)
  private.GET("/orders/:id/after-sales/:request_id/device-returns",(devices.Handler{DB:db}).ReturnHTTP)
  private.POST("/orders/:id/after-sales/:request_id/device-returns",(devices.Handler{DB:db}).ReturnHTTP)
+ var refund refunds.Options
+ if len(refundOptions)==1 {refund=refundOptions[0]}
+ refundHandler:=refunds.NewHTTP(refunds.Service{DB:db,StoreID:refund.StoreID,Ring:refund.Ring,Adapters:refund.Adapters},refund.Enabled)
+ private.GET("/orders/:id/after-sales/:request_id/refunds",refundHandler.HTTP)
+ private.POST("/orders/:id/after-sales/:request_id/refunds",refundHandler.HTTP)
+ private.POST("/orders/:id/after-sales/:request_id/refunds/:operation_id/cancel",refundHandler.HTTP)
  private.GET("/orders/:id/after-sales",access.Require(authorization.OrderRead,authorization.OrderPaymentRead,authorization.DeviceRead),(customer.ReviewHandler{DB:db}).HTTP)
  private.POST("/orders/:id/after-sales",access.Require(authorization.OrderRead,authorization.OrderPaymentRead,authorization.DeviceRead,authorization.OrderAfterSalesWrite),(customer.ReviewHandler{DB:db}).HTTP)
 	private.GET("/orders", access.Require(authorization.OrderRead), (orders.Handler{DB: db}).List)

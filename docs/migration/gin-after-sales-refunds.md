@@ -1,0 +1,37 @@
+# 原生售后退款接口与后台恢复
+
+当前已接 Gin 私有接口、显式失败新尝试、未发送取消及持久 RunDue 调度；Admin 退款表单、新账号真实购物至退货退款连续联合、客户退款通知，以及独立 CLI 进程启动/重启联合仍未验收。现有 SQL 验证采用真实完成订单和原保护请求，设备/申请原始事实及渠道观察为专用 fixture，不是实际 Mollie 退款。C06/C09/P10及全站范围保持未完成。
+
+## 指令与权限
+
+所有接口位于现有 Admin 登录、Origin、CSRF、私有 no-store 边界内，并在业务事务中核对当前全店员工及 order.read/order.payment.read/order.after_sales.write/order.refund.write。店铺由可信进程配置提供，订单必须关联该店铺的原完成回执；浏览器不能提供远端支付/退款 ID、凭据或状态。前后端31项权限词汇一致，已有角色不自动获得退款权限。
+
+- `GET /api/admin/orders/:id/after-sales/:request_id/refunds`：返回本申请至多100条本地指令及运行开关、精确金额、状态、applied、前驱、当前是否可取消/新尝试；不触发渠道查询，不返回 actor、摘要、商户响应或恢复材料。旧失败指令已有后续指令时不再显示可新尝试。
+- `POST` 同一路径：字符串字段 operation_id、payment_id、amount，可选 previous_operation_id。仅持久保存并返回202，不代表渠道已退或本地已记账。丢响应重试必须使用相同完整指令；原 UUID 不能改金额/付款/前驱。
+- `POST .../refunds/:operation_id/cancel`：字符串字段 operation_id 是本次取消的新UUID。仅取消尚未认领发送的本地指令，不调用渠道取消接口。取消标记与独立审计回执在同一事务，失败全回滚；认领已提交、待核对、排队、处理中和已退款均不能这样取消。
+
+JSON仅允许上述非空字符串字段，拒绝数字金额、null、嵌套、重复、未知字段及多份正文。金额最多两位小数并使用精确算法；不读取JS浮点结果作为账务权威。
+
+## 显式后续尝试
+
+0084保留每条旧指令、观察和取消回执，以生成列约束每申请最多一个仍有效的指令，每条前驱最多一个后继。渠道权威 failed/canceled，或尚未发送的本地取消，才释放占用；新的UUID必须明确引用该前驱，并重新校验当前权限、处理中原申请、全部选中原机已收回和实收余额。未知结果、pending/queued/processing、refunded及已应用指令都不能创建后继。
+
+同UUID的重复调用永远恢复原结果，不把“新尝试”实现成再次发送旧POST。保留原0083指令摘要编码，新增可选前驱为空时不改变摘要。每申请最多100次历史，读取及写入同时受界限保护。
+
+0084将退款运行时提升为version2。0083已生成的CHECK被显式替换；旧version1程序会拒绝执行，不能忽略新取消标记继续发送。数据库约束也拒绝给本地取消行设置 dispatched_at。
+
+## 独立后台任务
+
+配置示例新增默认关闭的 `ORDER_REFUNDS_ENABLED=false`。启用必须同时有原 checkout 配置、原 PAYMENT keyring/商户 adapter、明确店铺，及显式迁移/SQL退款version2开关。启用 checkout 本身不启用退款，API启动不会迁移、打开开关或调用退款渠道。本轮没有启用真实运行配置。
+
+独立入口为 `retail/backend/cmd/process-order-refunds`，支持无参数持续运行或 `--once`。它只校验完整迁移，不修改schema；通过RunDue每批最多10条，45秒持久认领/claim fencing和SQL序列化可支持多个进程。首次认领提交且重新核对原职员当前权限后才能POST；所有后续工作只GET，或从已保存refunded观察直接恢复本地记账。撤权阻止首次发送，但不会永久阻止已发送退款对账。
+
+游标只负责公平轮转，权威指令/租约/观察/记账结果都在MySQL；重建Service、关闭请求或重启进程不会产生新指令。默认持续循环间隔2秒，各次Run有40秒边界；CLI每批总边界7分钟。日志只含计数和固定错误，不记录付款数据/原始渠道响应。Selected/Processed是扫描处理计数，不是实际退款笔数或现金成功证明。
+
+## 验证与剩余交付
+
+`TestOwnedCartRuntime` 在原真实完成订单上验证真实Admin登录/CSRF、严格JSON、当前权限、并发重试、GET无外部动作、取消末尾失败回滚、发送后拒绝取消、failed/canceled显式后继、重建Service/6个并发RunDue只一次POST、空任务、跨店拒绝、原两笔退款精确合计158.75及完整历史。真实MySQL迁移同时验证从0083升级到0084。worker调用的是实际RunDue，尚未宣称独立CLI进程被启动或外部渠道/收件验收。
+
+完整SQL与当前报告由 `retail/scripts/test-admin-auth.py` 和 `retail/scripts/report-native-refunds.py` 生成，专项文件为 `native-refund-lifecycle-report.json`。旧 `native-refund-command-report.json` 保留0083阶段快照，不伪造刷新。另有Go严格JSON/旧摘要兼容/独立开关测试，Admin权限浏览器及类型检查。
+
+下一步直接接现有售后页的退款表单/历史、不可变重试、未发送取消及显式新尝试；随后在四个实际新购物/已发货账号上完成本人退货→平台受理/扫描/检测→退款指令→后台恢复→唯一现金流水→申请完成→本人退款/通知的中英手机/桌面联合。实际渠道沙箱、非零换机补差和其他C01–C11仍待完成。

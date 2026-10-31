@@ -16,6 +16,7 @@ import (
 	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/refunds"
 	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -65,7 +66,11 @@ func checkNativeRefundCommands(t *testing.T, ctx context.Context, db *gorm.DB, o
 			t.Fatal("refund fixture", e)
 		}
 	}
-	actor := identity.User{ID: "refund-command-actor", Email: "refund-commands@example.invalid", Name: "Refund", Role: "admin", Enabled: true, AuthVersion: 1, PasswordHash: "artificial-unused-hash", CreatedAt: time.Now(), UpdatedAt: time.Now()}
+	hash, e := bcrypt.GenerateFromPassword([]byte("artificial-refund-password"), bcrypt.DefaultCost)
+	if e != nil {
+		t.Fatal(e)
+	}
+	actor := identity.User{ID: "refund-command-actor", Email: "refund-commands@example.invalid", Name: "Refund", Role: "admin", Enabled: true, AuthVersion: 1, PasswordHash: string(hash), CreatedAt: time.Now(), UpdatedAt: time.Now()}
 	if db.Create(&actor).Error != nil {
 		t.Fatal("refund actor")
 	}
@@ -94,7 +99,13 @@ func checkNativeRefundCommands(t *testing.T, ctx context.Context, db *gorm.DB, o
 	if e != nil {
 		t.Fatal(e)
 	}
-	s := refunds.Service{DB: db, Ring: o.Ring, Adapters: registry}
+	s := refunds.Service{StoreID: "shop", DB: db, Ring: o.Ring, Adapters: registry}
+	httpFixture := newRefundHTTPFixture(t, ctx, s, actor)
+	path := "/api/admin/orders/" + order + "/after-sales/refund-return/refunds"
+	httpFixture.call("GET", path, "", false, false, 401)
+	httpFixture.call("GET", path, "", true, false, 200)
+	httpFixture.call("POST", path, `{}`, true, false, 403)
+	httpFixture.call("POST", path, `{}`, true, true, 400)
 	in := refunds.Input{OperationID: uuid.NewString(), OrderID: order, RequestID: "refund-return", PaymentID: receipt.PaymentID, Amount: "100.01"}
 	if _, e := s.Prepare(ctx, actor, in); e != refunds.ErrUnavailable {
 		t.Fatal("refund default off", e)
@@ -114,6 +125,15 @@ func checkNativeRefundCommands(t *testing.T, ctx context.Context, db *gorm.DB, o
 			t.Fatal("refund prepare replay", e)
 		}
 	}
+	wire := func(input refunds.Input) string {
+		b, _ := json.Marshal(map[string]string{"operation_id": input.OperationID, "payment_id": input.PaymentID, "amount": input.Amount})
+		return string(b)
+	}
+	httpFixture.call("POST", path, wire(in), true, true, 202)
+	for _, bad := range []string{`{"operation_id":"x","operation_id":"y","payment_id":"p","amount":"1"}`, `{"operation_id":"x","payment_id":"p","amount":1}`, `{"operation_id":"x","payment_id":"p","amount":"1","remote_payment_id":"tr_other"}`, `{"operation_id":"x","payment_id":"p","amount":null}`, `{} {}`} {
+		httpFixture.call("POST", path, bad, true, true, 400)
+	}
+	httpFixture.call("GET", path+"?unknown=1", "", true, false, 400)
 	var count int64
 	db.Table("order_refund_operations").Where("payment_id=?", in.PaymentID).Count(&count)
 	if count != 1 || channel.posts.Load() != 0 {
@@ -154,6 +174,9 @@ func checkNativeRefundCommands(t *testing.T, ctx context.Context, db *gorm.DB, o
 	}
 	if _, e := s.Run(ctx, in.OperationID); e != nil || channel.posts.Load() != 1 || channel.gets.Load() != 0 {
 		t.Fatal("live lease re-dispatched", e)
+	}
+	if _, e := s.Cancel(ctx, actor, order, in.RequestID, refunds.CancelInput{OperationID: uuid.NewString(), RefundOperationID: in.OperationID}); e != refunds.ErrConflict {
+		t.Fatal("dispatched refund canceled", e)
 	}
 	// Revoked principals cannot replay or create, but internal recovery remains possible.
 	exec("DELETE FROM authorization_role_actions WHERE role_id IN (SELECT role_id FROM authorization_memberships WHERE user_id=?) AND action_code='order.refund.write'", actor.ID)
@@ -215,9 +238,85 @@ func checkNativeRefundCommands(t *testing.T, ctx context.Context, db *gorm.DB, o
 		t.Fatal("revoked actor dispatched pending refund", e)
 	}
 	exec("INSERT INTO authorization_role_actions(role_id,action_code) SELECT role_id,'order.refund.write' FROM authorization_memberships WHERE user_id=?", actor.ID)
-	// Second partial uses its own immutable command and one POST.
-	if r, e := s.Run(ctx, second.OperationID); e != nil || !r.Applied {
-		t.Fatal("second partial refund", r, e)
+	// Cancel must be atomic and must never contact the provider.
+	secondPath := "/api/admin/orders/" + order + "/after-sales/" + second.RequestID + "/refunds"
+	cancellation := refunds.CancelInput{OperationID: uuid.NewString(), RefundOperationID: second.OperationID}
+	cancelPath := secondPath + "/" + second.OperationID + "/cancel"
+	cancelWire := `{"operation_id":"` + cancellation.OperationID + `"}`
+	exec("CREATE TRIGGER refund_cancel_fault BEFORE INSERT ON order_refund_cancellations FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='artificial cancel receipt failure'")
+	httpFixture.call("POST", cancelPath, cancelWire, true, true, 503)
+	exec("DROP TRIGGER refund_cancel_fault")
+	var canceledCount int64
+	db.Table("order_refund_operations").Where("operation_id=? AND canceled_at IS NOT NULL", second.OperationID).Count(&canceledCount)
+	if canceledCount != 0 {
+		t.Fatal("cancel did not roll back")
+	}
+	httpFixture.call("POST", cancelPath, cancelWire, true, true, 200)
+	httpFixture.call("POST", cancelPath, cancelWire, true, true, 200)
+	if r, e := s.Run(ctx, second.OperationID); e != nil || r.State != "canceled" || channel.posts.Load() != 1 {
+		t.Fatal("locally canceled command dispatched", r, e)
+	}
+	// All new attempts need an explicit predecessor; old commands never re-dispatch.
+	next := second
+	next.OperationID = uuid.NewString()
+	httpFixture.call("POST", secondPath, wire(next), true, true, 409)
+	next.PreviousOperationID = second.OperationID
+	attemptWire := func(input refunds.Input) string {
+		b, _ := json.Marshal(map[string]string{"operation_id": input.OperationID, "payment_id": input.PaymentID, "amount": input.Amount, "previous_operation_id": input.PreviousOperationID})
+		return string(b)
+	}
+	httpFixture.call("POST", secondPath, attemptWire(next), true, true, 202)
+	channel.status = "failed"
+	work, _, e := s.RunDue(ctx, "")
+	if e != nil || work.Selected != 1 || work.Processed != 1 {
+		t.Fatal("failed refund worker", work, e)
+	}
+	if r, e := s.Run(ctx, next.OperationID); e != nil || r.State != "failed" || r.Applied {
+		t.Fatal("failed command replay", r, e)
+	}
+	successor := next
+	successor.OperationID = uuid.NewString()
+	successor.PreviousOperationID = second.OperationID
+	httpFixture.call("POST", secondPath, attemptWire(successor), true, true, 409)
+	successor.PreviousOperationID = next.OperationID
+	httpFixture.call("POST", secondPath, attemptWire(successor), true, true, 202)
+	channel.status = "canceled"
+	work, _, e = s.RunDue(ctx, "")
+	if e != nil || work.Selected != 1 || work.Processed != 1 {
+		t.Fatal("provider canceled worker", work, e)
+	}
+	final := successor
+	final.OperationID = uuid.NewString()
+	final.PreviousOperationID = successor.OperationID
+	httpFixture.call("POST", secondPath, attemptWire(final), true, true, 202)
+	channel.status = "refunded"
+	for i := 0; i < 6; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			fresh := refunds.Service{StoreID: s.StoreID, DB: db, Ring: s.Ring, Adapters: s.Adapters}
+			_, _, e := fresh.RunDue(ctx, "")
+			if e != nil {
+				t.Error("concurrent refund worker", e)
+			}
+		}()
+	}
+	wg.Wait()
+	if r, e := s.Run(ctx, final.OperationID); e != nil || !r.Applied {
+		t.Fatal("explicit final attempt", r, e)
+	}
+	work, _, e = s.RunDue(ctx, "")
+	if e != nil || work.Selected != 0 {
+		t.Fatal("idle refund worker", work, e)
+	}
+	foreign := s
+	foreign.StoreID = "other-shop"
+	if _, e := foreign.Read(ctx, actor, order, second.RequestID); e != refunds.ErrConflict {
+		t.Fatal("cross-store refund read", e)
+	}
+	var view refunds.Context
+	if json.Unmarshal(httpFixture.call("GET", secondPath, "", true, false, 200), &view) != nil || len(view.Operations) != 4 {
+		t.Fatal("refund attempt history")
 	}
 	db.Table("payment_refunds").Where("payment_id=?", in.PaymentID).Count(&count)
 	if count != 2 {
@@ -231,8 +330,8 @@ func checkNativeRefundCommands(t *testing.T, ctx context.Context, db *gorm.DB, o
 	if db.Table("order_transactions").Select("CAST(SUM(amount) AS CHAR)").Where("order_id=? AND reference='refund'", order).Scan(&negative).Error != nil || negative != "-158.750000000000000000" {
 		t.Fatal("exact negative ledger", negative)
 	}
-	if channel.posts.Load() != 2 {
+	if channel.posts.Load() != 4 {
 		t.Fatal("refund command POST count")
 	}
-	t.Log(`NATIVE_REFUND_COMMAND_REHEARSAL {"real_mysql":true,"actual_completed_checkout":true,"explicit_default_off":true,"concurrent_prepare":6,"single_instruction_per_return":true,"immutable_amount":true,"unreceived_denied":true,"remaining_balance_enforced":true,"pending_review_close_denied":true,"two_partial_refunds":true,"lost_response_get_only":true,"late_ledger_failure_atomic":true,"saved_observation_apply_without_network":true,"revoked_actor_recovery":true,"revoked_first_dispatch_denied":true,"exact_refunded":"158.75","provider_posts":2,"real_provider_refund":false,"browser_return_flow":false}`)
+	t.Log(`NATIVE_REFUND_COMMAND_REHEARSAL {"real_mysql":true,"actual_completed_checkout":true,"explicit_default_off":true,"concurrent_prepare":6,"single_instruction_per_return":true,"immutable_amount":true,"unreceived_denied":true,"remaining_balance_enforced":true,"pending_review_close_denied":true,"two_partial_refunds":true,"lost_response_get_only":true,"late_ledger_failure_atomic":true,"saved_observation_apply_without_network":true,"revoked_actor_recovery":true,"revoked_first_dispatch_denied":true,"exact_refunded":"158.75","provider_posts":4,"explicit_failed_canceled_successors":true,"undispatched_cancel_atomic":true,"cancel_after_dispatch_denied":true,"http_real_auth_csrf":true,"worker_concurrency":6,"real_provider_refund":false,"browser_return_flow":false}`)
 }

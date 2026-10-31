@@ -24,7 +24,7 @@ func (s Service) Run(ctx context.Context, id string) (Result, error) {
 		return out, ErrUnavailable
 	}
 	var locator operation
-	if s.DB.WithContext(ctx).Select("order_id,actor_id,dispatched_at").Where("operation_id=?", id).Take(&locator).Error != nil {
+	if s.DB.WithContext(ctx).Select("order_id,actor_id,dispatched_at,canceled_at").Where("operation_id=?", id).Take(&locator).Error != nil {
 		return out, ErrConflict
 	}
 	var row operation
@@ -36,7 +36,7 @@ func (s Service) Run(ctx context.Context, id string) (Result, error) {
 		if e := gate(tx); e != nil {
 			return e
 		}
-		if locator.DispatchedAt == nil {
+		if locator.DispatchedAt == nil && locator.CanceledAt == nil {
 			var actor identity.User
 			if tx.Where("id=?", locator.ActorID).Take(&actor).Error != nil {
 				return ErrUnavailable
@@ -44,6 +44,9 @@ func (s Service) Run(ctx context.Context, id string) (Result, error) {
 			if e := authority(ctx, tx, actor); e != nil {
 				return e
 			}
+		}
+		if e := s.scope(tx, locator.OrderID); e != nil {
+			return e
 		}
 		var order struct{ ID string }
 		if tx.Table("orders").Select("id").Where("id=?", locator.OrderID).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&order).Error != nil {
@@ -53,7 +56,7 @@ func (s Service) Run(ctx context.Context, id string) (Result, error) {
 			return ErrUnavailable
 		}
 		out = result(row)
-		if row.Applied || row.State == "failed" || row.State == "canceled" {
+		if row.CanceledAt != nil || row.Applied || row.State == "failed" || row.State == "canceled" {
 			return nil
 		}
 		if row.State == "refunded" {

@@ -9,6 +9,7 @@ import (
 	"github.com/eurorefurb/retail/internal/cart"
 	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/protected"
+	"github.com/eurorefurb/retail/internal/refunds"
 )
 
 // Parsing configuration never contacts the provider or changes SQL gates.
@@ -79,5 +80,27 @@ func Webhooks(env func(string) string, payment *cart.InitialPaymentOptions) (pay
 		return payments.MollieWebhookOptions{ProviderIDs: []string{provider}}, nil
 	default:
 		return payments.MollieWebhookOptions{}, ErrInvalid
+	}
+}
+
+// Refunds is separately opt-in; checkout enablement never authorizes refunds.
+func Refunds(env func(string) string, payment *cart.InitialPaymentOptions) (refunds.Options, error) {
+	out := refunds.Options{StoreID: env("STOREFRONT_STORE_ID")}
+	switch env("ORDER_REFUNDS_ENABLED") {
+	case "", "false":
+		return out, nil
+	case "true":
+		if payment == nil || payment.Ring == nil || payment.Adapters == nil || !regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$`).MatchString(out.StoreID) {
+			return refunds.Options{}, ErrInvalid
+		}
+		if _, e := payment.Adapters.Refunder("pp_mollie-hosted-checkout_mollie"); e != nil {
+			return refunds.Options{}, ErrInvalid
+		}
+		out.Enabled = true
+		out.Ring = payment.Ring
+		out.Adapters = payment.Adapters
+		return out, nil
+	default:
+		return refunds.Options{}, ErrInvalid
 	}
 }

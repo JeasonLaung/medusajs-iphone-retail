@@ -14,19 +14,30 @@ def main():
     if set(passed) != set(SUITES) or len(passed) != len(SUITES) or re.search(r'^--- FAIL:|^FAIL$', text, re.M):
         raise RuntimeError('All 23 owned SQL suites must pass before reporting refunds')
     markers = [json.loads(line.split('NATIVE_REFUND_COMMAND_REHEARSAL ',1)[1]) for line in text.splitlines() if 'NATIVE_REFUND_COMMAND_REHEARSAL ' in line]
-    if len(markers) != 1 or not markers[0].get('revoked_first_dispatch_denied') or not markers[0].get('pending_review_close_denied'):
+    if len(markers) != 1 or not markers[0].get('revoked_first_dispatch_denied') or not markers[0].get('pending_review_close_denied') or not markers[0].get('explicit_failed_canceled_successors') or not markers[0].get('http_real_auth_csrf') or markers[0].get('worker_concurrency') != 6:
         raise RuntimeError('Current native refund evidence missing')
+    # The original 0083 marker names its concurrent-active-duplicate assertion
+    # "single_instruction_per_return". It never asserts one historical row after
+    # adding explicit successors. Preserve the transcript hash and name the
+    # derived assertion precisely in this lifecycle report.
+    commands = dict(markers[0])
+    commands['single_active_instruction_per_return'] = commands.pop('single_instruction_per_return')
     report_path = ROOT/'docs/migration/admin-auth-report.json'
     existing = json.loads(report_path.read_text())
     if report_path.stat().st_mtime_ns < log.stat().st_mtime_ns:
         raise RuntimeError('Full runner cleanup/report must finish after the transcript')
     if existing.get('cleanup') != 'both owned containers and temporary runner removed':
         raise RuntimeError('Owned cleanup receipt missing')
-    files = ['retail/backend/internal/refunds/commands.go','retail/backend/internal/refunds/execution.go','retail/backend/internal/refunds/commands_test.go','retail/backend/internal/identity/order_refund_commands_test.go','retail/backend/internal/identity/cart_completion_test.go','retail/backend/internal/customer/after_sales_review.go','retail/backend/internal/authorization/model.go','retail/scripts/report-native-refunds.py','retail/admin/src/i18n.ts']
+    files = ['retail/backend/cmd/process-order-refunds/main.go','retail/backend/cmd/api/main.go','retail/backend/internal/server/router.go','retail/backend/internal/checkoutconfig/checkout.go','retail/backend/internal/checkoutconfig/checkout_test.go','retail/backend/.env.example','retail/admin/src/api.ts','retail/backend/internal/identity/order_refund_http_test.go','retail/backend/internal/refunds/commands.go','retail/backend/internal/refunds/execution.go','retail/backend/internal/refunds/commands_test.go','retail/backend/internal/identity/order_refund_commands_test.go','retail/backend/internal/identity/cart_completion_test.go','retail/backend/internal/customer/after_sales_review.go','retail/backend/internal/authorization/model.go','retail/scripts/report-native-refunds.py','retail/admin/src/i18n.ts']
     files += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'retail/backend/migrations').glob('*.sql'))]
-    report = {'format_version':1,'scope':'Native refund command and ledger over an actual completed checkout; return/device and channel observations are artificial fixtures','sql_suites_passed':passed,'migration_count':83,'native_refund_commands':markers[0], 'http_accepted':False,'background_worker_accepted':False,'browser_return_flow_accepted':False,'real_provider_refund':False,'cleanup':existing['cleanup'],'transcript_sha256':hashlib.sha256(log.read_bytes()).hexdigest(),'implementation_sha256_lf':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
-    (ROOT/'docs/migration/native-refund-command-report.json').write_text(json.dumps(report,indent=2)+'\n')
-    print(json.dumps({'native_refund_command_report':'written','sql_suites':len(passed),'migrations':83}))
+    files += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'retail/backend/internal/refunds').glob('*.go'))]
+    files = sorted(set(files))
+    runtime = [json.loads(line.split('CART_RUNTIME_REHEARSAL ',1)[1]) for line in text.splitlines() if 'CART_RUNTIME_REHEARSAL ' in line]
+    if len(runtime)!=1 or runtime[0].get('migrations')!=84:
+        raise RuntimeError('Current migration 84 evidence required')
+    report = {'format_version':1,'scope':'Native refund lifecycle, authenticated Gin HTTP and durable RunDue worker over an actual completed checkout; return/device facts and channel observations are artificial fixtures; no browser return or separately launched worker process accepted','sql_suites_passed':passed,'migration_count':84,'native_refund_commands':commands,'test_marker_field_renamed':{'single_instruction_per_return':'single_active_instruction_per_return'}, 'http_accepted':True,'worker_run_due_accepted':True,'worker_cli_process_accepted':False,'browser_return_flow_accepted':False,'real_provider_refund':False,'cleanup':existing['cleanup'],'transcript_sha256':hashlib.sha256(log.read_bytes()).hexdigest(),'implementation_sha256_lf':{name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in files}}
+    (ROOT/'docs/migration/native-refund-lifecycle-report.json').write_text(json.dumps(report,indent=2)+'\n')
+    print(json.dumps({'native_refund_lifecycle_report':'written','sql_suites':len(passed),'migrations':84}))
 
 if __name__ == '__main__':
     main()

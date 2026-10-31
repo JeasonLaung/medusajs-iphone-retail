@@ -220,7 +220,7 @@ func ReviewAfterSalesTx(ctx context.Context, tx *gorm.DB, actor identity.User, o
 	// An external refund may already have happened. Do not close/reject the
 	// request while its reserved money or local ledger application is unresolved.
 	var unsettled int64
-	if tx.Table("order_refund_operations").Where("request_id=? AND applied=FALSE AND state NOT IN ('failed','canceled')", request.ID).Count(&unsettled).Error != nil {
+	if tx.Table("order_refund_operations").Where("request_id=? AND canceled_at IS NULL AND applied=FALSE AND state NOT IN ('failed','canceled')", request.ID).Count(&unsettled).Error != nil {
 		return out, ErrUnavailable
 	}
 	if unsettled != 0 && input.Status != request.Status {

@@ -31,30 +31,38 @@ var (
 )
 
 type Input struct {
-	OperationID string `json:"operation_id"`
-	OrderID     string `json:"order_id"`
-	RequestID   string `json:"request_id"`
-	PaymentID   string `json:"payment_id"`
-	Amount      string `json:"amount"`
+	PreviousOperationID string `json:"previous_operation_id,omitempty"`
+	OperationID         string `json:"operation_id"`
+	OrderID             string `json:"order_id"`
+	RequestID           string `json:"request_id"`
+	PaymentID           string `json:"payment_id"`
+	Amount              string `json:"amount"`
 }
 
 // Result exposes local facts only. External references and recovery material are private.
 type Result struct {
-	OperationID string `json:"operation_id"`
-	OrderID     string `json:"order_id"`
-	RequestID   string `json:"request_id"`
-	PaymentID   string `json:"payment_id"`
-	Amount      string `json:"amount"`
-	Currency    string `json:"currency_code"`
-	State       string `json:"state"`
-	Applied     bool   `json:"applied"`
+	PreviousOperationID *string `json:"previous_operation_id,omitempty"`
+	CanCancel           bool    `json:"can_cancel"`
+	CanRetry            bool    `json:"can_retry"`
+	OperationID         string  `json:"operation_id"`
+	OrderID             string  `json:"order_id"`
+	RequestID           string  `json:"request_id"`
+	PaymentID           string  `json:"payment_id"`
+	Amount              string  `json:"amount"`
+	Currency            string  `json:"currency_code"`
+	State               string  `json:"state"`
+	Applied             bool    `json:"applied"`
 }
 type Service struct {
+	StoreID  string
 	DB       *gorm.DB
 	Ring     *protected.Ring
 	Adapters *payments.CreateAdapters
 }
 type operation struct {
+	PreviousOperationID                                                                     *string
+	CanceledAt                                                                              *time.Time
+	CanceledBy                                                                              *string
 	ClaimID                                                                                 *string
 	OperationID, ActorID, OrderID, RequestID, PaymentID, CollectionID, Amount, CurrencyCode string
 	InputSHA256                                                                             []byte
@@ -69,19 +77,22 @@ type operation struct {
 
 func (operation) TableName() string { return "order_refund_operations" }
 func result(r operation) Result {
-	return Result{r.OperationID, r.OrderID, r.RequestID, r.PaymentID, r.Amount, r.CurrencyCode, r.State, r.Applied}
+	if r.CanceledAt != nil {
+		r.State = "canceled"
+	}
+	return Result{OperationID: r.OperationID, OrderID: r.OrderID, RequestID: r.RequestID, PaymentID: r.PaymentID, Amount: r.Amount, Currency: r.CurrencyCode, State: r.State, Applied: r.Applied, PreviousOperationID: r.PreviousOperationID, CanCancel: r.DispatchedAt == nil && r.CanceledAt == nil && r.State == "pending", CanRetry: r.State == "failed" || r.State == "canceled"}
 }
 func positive(s string) bool { n, ok := new(big.Rat).SetString(s); return ok && n.Sign() > 0 }
 func valid(in Input) bool {
 	id, e := uuid.Parse(in.OperationID)
-	return e == nil && id.Version() == 4 && id.String() == in.OperationID && idPattern.MatchString(in.OrderID) && idPattern.MatchString(in.RequestID) && idPattern.MatchString(in.PaymentID) && moneyPattern.MatchString(in.Amount) && positive(in.Amount)
+	return e == nil && id.Version() == 4 && id.String() == in.OperationID && idPattern.MatchString(in.OrderID) && idPattern.MatchString(in.RequestID) && idPattern.MatchString(in.PaymentID) && moneyPattern.MatchString(in.Amount) && positive(in.Amount) && (in.PreviousOperationID == "" || validUUID(in.PreviousOperationID))
 }
 func gate(tx *gorm.DB) error {
 	var r struct {
 		Version int
 		Enabled bool
 	}
-	if tx.Table("order_refund_runtime").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&r).Error != nil || r.Version != 1 || !r.Enabled {
+	if tx.Table("order_refund_runtime").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&r).Error != nil || r.Version != 2 || !r.Enabled {
 		return ErrUnavailable
 	}
 	return nil
@@ -113,7 +124,7 @@ func (s Service) Prepare(ctx context.Context, actor identity.User, in Input) (Re
 	if !valid(in) {
 		return out, ErrInput
 	}
-	if s.DB == nil || s.Ring == nil || s.Adapters == nil {
+	if s.DB == nil || s.Ring == nil || s.Adapters == nil || !idPattern.MatchString(s.StoreID) {
 		return out, ErrUnavailable
 	}
 	e := s.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -121,6 +132,9 @@ func (s Service) Prepare(ctx context.Context, actor identity.User, in Input) (Re
 			return e
 		}
 		if e := gate(tx); e != nil {
+			return e
+		}
+		if e := s.scope(tx, in.OrderID); e != nil {
 			return e
 		}
 		var ord struct {
@@ -151,11 +165,34 @@ func (s Service) Prepare(ctx context.Context, actor identity.User, in Input) (Re
 			return e
 		}
 		var used int64
-		if tx.Model(&operation{}).Where("request_id=?", in.RequestID).Count(&used).Error != nil {
+		if tx.Model(&operation{}).Where("request_id=? AND canceled_at IS NULL AND state NOT IN ('failed','canceled')", in.RequestID).Count(&used).Error != nil {
 			return ErrUnavailable
 		}
 		if used != 0 {
 			return ErrConflict
+		}
+		var history int64
+		if tx.Model(&operation{}).Where("request_id=?", in.RequestID).Count(&history).Error != nil {
+			return ErrUnavailable
+		}
+		if history >= 100 {
+			return ErrConflict
+		}
+		if history > 0 && in.PreviousOperationID == "" || history == 0 && in.PreviousOperationID != "" {
+			return ErrConflict
+		}
+		if in.PreviousOperationID != "" {
+			var parent operation
+			if tx.Where("operation_id=? AND order_id=? AND request_id=? AND payment_id=?", in.PreviousOperationID, in.OrderID, in.RequestID, in.PaymentID).Take(&parent).Error != nil || (parent.CanceledAt == nil && parent.State != "failed" && parent.State != "canceled") {
+				return ErrConflict
+			}
+			var successors int64
+			if tx.Model(&operation{}).Where("previous_operation_id=?", in.PreviousOperationID).Count(&successors).Error != nil {
+				return ErrUnavailable
+			}
+			if successors != 0 {
+				return ErrConflict
+			}
 		}
 		var p struct {
 			ID, PaymentCollectionID, PaymentSessionID, ProviderID, CurrencyCode string
@@ -173,6 +210,9 @@ func (s Service) Prepare(ctx context.Context, actor identity.User, in Input) (Re
 			return ErrUnavailable
 		}
 		r := operation{OperationID: in.OperationID, ActorID: actor.ID, OrderID: in.OrderID, RequestID: in.RequestID, PaymentID: in.PaymentID, CollectionID: p.PaymentCollectionID, Amount: in.Amount, CurrencyCode: p.CurrencyCode, ProviderID: p.ProviderID, InputSHA256: sum[:], State: "pending"}
+		if in.PreviousOperationID != "" {
+			r.PreviousOperationID = &in.PreviousOperationID
+		}
 		var trace struct {
 			ScopeID, OperationID, SessionID, RemoteID string
 			RequestSHA256                             []byte
@@ -191,7 +231,7 @@ func (s Service) Prepare(ctx context.Context, actor identity.User, in Input) (Re
 		if e := reserve(tx, in.PaymentID, in.Amount); e != nil {
 			return e
 		}
-		if tx.Model(&operation{}).Create(map[string]any{"operation_id": r.OperationID, "actor_id": r.ActorID, "order_id": r.OrderID, "request_id": r.RequestID, "payment_id": r.PaymentID, "collection_id": r.CollectionID, "amount": r.Amount, "currency_code": r.CurrencyCode, "input_sha256": r.InputSHA256, "scope_id": r.ScopeID, "checkout_operation_id": r.CheckoutOperationID, "session_id": r.SessionID, "request_sha256": r.RequestSHA256, "provider_id": r.ProviderID, "remote_payment_id": r.RemotePaymentID, "state": "pending", "created_at": gorm.Expr("UTC_TIMESTAMP(6)"), "updated_at": gorm.Expr("UTC_TIMESTAMP(6)")}).Error != nil {
+		if tx.Model(&operation{}).Create(map[string]any{"previous_operation_id": r.PreviousOperationID, "operation_id": r.OperationID, "actor_id": r.ActorID, "order_id": r.OrderID, "request_id": r.RequestID, "payment_id": r.PaymentID, "collection_id": r.CollectionID, "amount": r.Amount, "currency_code": r.CurrencyCode, "input_sha256": r.InputSHA256, "scope_id": r.ScopeID, "checkout_operation_id": r.CheckoutOperationID, "session_id": r.SessionID, "request_sha256": r.RequestSHA256, "provider_id": r.ProviderID, "remote_payment_id": r.RemotePaymentID, "state": "pending", "created_at": gorm.Expr("UTC_TIMESTAMP(6)"), "updated_at": gorm.Expr("UTC_TIMESTAMP(6)")}).Error != nil {
 			return ErrConflict
 		}
 		out = result(r)
@@ -261,7 +301,7 @@ func reserve(tx *gorm.DB, payment, amount string) error {
 		}
 	}
 	var holds []operation
-	if tx.Where("payment_id=? AND applied=FALSE AND state NOT IN ('failed','canceled')", payment).Limit(10001).Find(&holds).Error != nil || len(holds) > 10000 {
+	if tx.Where("payment_id=? AND canceled_at IS NULL AND applied=FALSE AND state NOT IN ('failed','canceled')", payment).Limit(10001).Find(&holds).Error != nil || len(holds) > 10000 {
 		return ErrUnavailable
 	}
 	for _, r := range holds {
@@ -287,4 +327,26 @@ func exact(decimal, raw string) (string, error) {
 		return "", ErrUnavailable
 	}
 	return v, nil
+}
+
+func validUUID(s string) bool {
+	id, e := uuid.Parse(s)
+	return e == nil && id.Version() == 4 && id.String() == s
+}
+
+func (s Service) scope(tx *gorm.DB, order string) error {
+	if !idPattern.MatchString(s.StoreID) {
+		return ErrUnavailable
+	}
+	// Current locking reads must precede the order lock. A plain count here
+	// would freeze a repeatable-read snapshot before a concurrent command commits,
+	// hiding its receipt even after this transaction acquires the order lock.
+	var rows []struct{ OrderID string }
+	if tx.Table("cart_completion_receipts r").Select("r.order_id").Joins("JOIN cart_ownership o ON o.cart_id=r.cart_id").Where("r.order_id=? AND o.store_id=?", order, s.StoreID).Clauses(clause.Locking{Strength: "SHARE"}).Limit(2).Find(&rows).Error != nil {
+		return ErrUnavailable
+	}
+	if len(rows) != 1 {
+		return ErrConflict
+	}
+	return nil
 }
