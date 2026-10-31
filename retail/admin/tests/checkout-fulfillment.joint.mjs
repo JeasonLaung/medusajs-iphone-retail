@@ -73,7 +73,7 @@ export async function startCheckoutFulfillment({browser,target,errors}){
     return {sn,tracking,canceled,shipped}
    },
    async refund(orderID,request,result,index){return refundCheckoutOrder({page,origin,orderID,request,result,index})},
-   async exchange(orderID,request,result,index){return exchangeCheckoutOrder({page,origin,orderID,request,result,index,pack,warehouse,parcel,retryLost})},
+   async exchange(orderID,request,result,index,settlePayment){return exchangeCheckoutOrder({page,origin,orderID,request,result,index,pack,warehouse,parcel,retryLost,settlePayment})},
    async repair(orderID,request,result,index){return repairCheckoutOrder({page,origin,orderID,request,result,index})},
    async close(){await worker.close();await admin.close();await server.close()}
   }

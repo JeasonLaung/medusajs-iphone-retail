@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/eurorefurb/retail/internal/customer"
+	"github.com/eurorefurb/retail/internal/orderpayments"
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/sessionstore"
 	"github.com/gin-gonic/gin"
@@ -16,9 +17,9 @@ import (
 
 // Only the owned fixture can read its artificial verification-mail intent.
 // Registration, verification, login and order attachment use production HTTP.
-func mountCheckoutAccounts(t *testing.T, db *gorm.DB, sessions *sessionstore.Store, ring *protected.Ring, router *gin.Engine, fixture *gin.RouterGroup, key, origin string, client *redis.Client) {
+func mountCheckoutAccounts(t *testing.T, db *gorm.DB, sessions *sessionstore.Store, ring *protected.Ring, router *gin.Engine, fixture *gin.RouterGroup, key, origin string, client *redis.Client, supplemental *orderpayments.Service) {
 	t.Helper()
-	h, e := customer.NewHTTP(db, customer.HTTPOptions{Sessions: sessions, Ring: ring, Origin: origin, BridgeKey: key, StoreID: "shop"})
+	h, e := customer.NewHTTP(db, customer.HTTPOptions{Sessions: sessions, Ring: ring, Origin: origin, BridgeKey: key, StoreID: "shop", OrderPayments: supplemental})
 	if e != nil {
 		t.Fatal("checkout customer handler unavailable")
 	}

@@ -17,6 +17,7 @@ import (
 
 	"github.com/eurorefurb/retail/internal/cart"
 	"github.com/eurorefurb/retail/internal/catalog"
+	"github.com/eurorefurb/retail/internal/orderpayments"
 	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/sessionstore"
 	"github.com/gin-gonic/gin"
@@ -184,6 +185,13 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		refundWorker, cleanup = startCheckoutRefundWorker(t, ctx, db)
 		defer cleanup()
 	}
+	var supplemental *orderpayments.Service
+	var paymentWorker *checkoutPaymentWorker
+	if os.Getenv("CHECKOUT_EXCHANGE_PAYMENT") == "1" {
+		var cleanup func()
+		supplemental, paymentWorker, cleanup = startCheckoutPaymentWorker(t, ctx, db, options.Ring, router, origin)
+		defer cleanup()
+	}
 	public := router.Group("/api/store")
 	shop.Register(public)
 	catalogue := catalog.StoreHandler{DB: db, StoreID: "shop"}
@@ -210,12 +218,12 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		c.JSON(200, gin.H{"carts": fixtures, "fresh_cart": fresh})
 	})
 	if os.Getenv("CHECKOUT_ACCOUNTS") == "1" {
-		mountCheckoutAccounts(t, db, sessions, options.Ring, router, fixture, key, origin, browserRedis)
+		mountCheckoutAccounts(t, db, sessions, options.Ring, router, fixture, key, origin, browserRedis, supplemental)
 	}
-	if os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" {
+	if os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" || os.Getenv("CHECKOUT_EXCHANGE_PAYMENT") == "1" {
 		fixture.POST("/exchange-tax/:rate", func(c *gin.Context) {
 			rate := c.Param("rate")
-			if rate != "15" && rate != "25" {
+			if rate != "15" && rate != "25" && rate != "30" {
 				c.Status(400)
 				return
 			}
@@ -225,6 +233,9 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 			}
 			c.Status(204)
 		})
+	}
+	if paymentWorker != nil {
+		paymentWorker.mount(fixture, router)
 	}
 	fixture.POST("/paid/:id", func(c *gin.Context) {
 		id := c.Param("id")
@@ -320,6 +331,9 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 			}
 		} else {
 			checkCheckoutFulfillment(t, db, orderIDs)
+		}
+		if paymentWorker != nil {
+			checkCheckoutExchangePayment(t, db, orderIDs, paymentWorker)
 		}
 		var stockedAfter string
 		if db.Table("inventory_levels").Select("CAST(stocked_quantity AS CHAR)").Where("id='add-level'").Scan(&stockedAfter).Error != nil {
