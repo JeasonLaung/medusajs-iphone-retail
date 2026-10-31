@@ -36,7 +36,7 @@ func (s Service) Read(ctx context.Context, actor identity.User, order, request s
 			Version int
 			Enabled bool
 		}
-		if tx.Table("order_refund_runtime").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&runtime).Error != nil || runtime.Version != 3 {
+		if tx.Table("order_refund_runtime").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&runtime).Error != nil || runtime.Version != 4 {
 			return ErrUnavailable
 		}
 		out.Enabled = runtime.Enabled

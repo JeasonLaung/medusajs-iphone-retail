@@ -3,6 +3,7 @@ package refunds
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"github.com/eurorefurb/retail/internal/customernotices"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/orders"
@@ -80,6 +81,12 @@ func (s Service) Run(ctx context.Context, id string) (Result, error) {
 		}
 		post = row.DispatchedAt == nil
 		if post {
+			if e := orders.EnsureNoPendingPaymentTx(tx, row.OrderID); e != nil {
+				if errors.Is(e, orders.ErrVersionConflict) {
+					return ErrConflict
+				}
+				return ErrUnavailable
+			}
 			if e := returned(tx, row.OrderID, row.RequestID); e != nil {
 				return e
 			}

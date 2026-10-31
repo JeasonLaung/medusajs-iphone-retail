@@ -5,6 +5,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/eurorefurb/retail/internal/cart"
 	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -12,7 +13,7 @@ import (
 
 // SQL-only prerequisites on the actual completed checkout. These never initiate
 // a provider payment, insert a successful payment or release replacement stock.
-func checkExchangePaymentBalance(t *testing.T, ctx context.Context, db *gorm.DB, order, request, actor string) {
+func checkExchangePaymentBalance(t *testing.T, ctx context.Context, db *gorm.DB, order, request, actor string, options cart.InitialPaymentOptions) {
 	t.Helper()
 	if _, e := orders.ReadSupplementalPaymentTx(ctx, db, order, 1); e != orders.ErrSchema {
 		t.Fatal("supplemental autocommit accepted", e)
@@ -120,6 +121,7 @@ func checkExchangePaymentBalance(t *testing.T, ctx context.Context, db *gorm.DB,
 		if tx.Table("order_payment_collections").Where("order_id=? AND deleted_at IS NULL", order).Count(&collections).Error != nil || tx.Table("payments p").Joins("JOIN order_payment_collections l ON l.payment_collection_id=p.payment_collection_id").Where("l.order_id=? AND p.deleted_at IS NULL", order).Count(&payments).Error != nil || collections != 2 || payments != 1 {
 			t.Fatal("supplemental reader changed cash or collections", collections, payments)
 		}
+		checkSupplementalPaymentCommands(t, ctx, tx, out, options)
 		return rollback
 	})
 	if !errors.Is(e, rollback) {

@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "scope": "SQL-only internal supplemental balance validation and current-read regression; no customer authority, payment operation, dispatch, cash receipt, API or browser acceptance",
+  "scope": "SQL-only internal supplemental balance validation and current-read regression; this report does not accept customer sessions, command lifecycle, dispatch, cash receipts, API or browser flows",
   "positive_exchange_balance": {
     "native_positive_exchange": true,
     "order_version": 3,
@@ -52,25 +52,25 @@
     "CartSchema",
     "CartRuntime"
   ],
-  "migration_count": 86,
+  "migration_count": 87,
   "cleanup": "both owned containers and temporary runner removed",
   "online_supplemental_payment_accepted": false,
   "real_provider_called": false,
-  "transcript_sha256": "6fb0b10e468ad402d590c0d51722f329136da1ebf9be7f89208ec13f6692509e",
-  "full_sql_report_sha256": "7a5e26174a04f5dc08641c0046b07f023a7482dde1e9e0e729a1b0e34fe52b81",
+  "transcript_sha256": "3fef363c35642127328a46ab6ce11cb0c511bfe9c31bd85cda4fe1d2b7b5cda5",
+  "full_sql_report_sha256": "c93b567305b8ce0139c81110db416442f10f8bba70f0c82c0e9bea0584f6706a",
   "implementation_sha256_lf": {
     "retail/backend/internal/identity/cart_completion_test.go": "8fa2350b79ef778ac75eb5b9e99ace203f5ca96b310100d205e7f9d9baed3829",
-    "retail/backend/internal/identity/exchange_payment_balance_test.go": "fa1c5d8cf9582bf1e8716884558c054ccdb1dc37df9a3b2b0e6ab9382a5490eb",
-    "retail/backend/internal/identity/order_refund_commands_test.go": "4dd0e804955279b7b4220e2fb13299fc6dc08ee066bcfab532e71de6280ce81b",
+    "retail/backend/internal/identity/exchange_payment_balance_test.go": "0aaff055080f81625c174227c382a662057387e9c9052492d81b5061ee7ee809",
+    "retail/backend/internal/identity/order_refund_commands_test.go": "f590d265ddcad612c902d500172db44b5b71df02512a466779b27cef3836a343",
     "retail/backend/internal/orders/amount_json.go": "a1c9a0097e4cca8e138cd2e708ffa670b37708acda0ae51899d18401e60fb0d8",
     "retail/backend/internal/orders/amounts.go": "a05ad884284fb3c2badc0e5d607936c38ae302ec455f208e324986435cf67bed",
     "retail/backend/internal/orders/current_balance.go": "a9886f761725942e57be9049a2eacf4948a631487dfb925c41456c696dd86592",
     "retail/backend/internal/orders/device_exchange.go": "65bd08d337d0429733c7882f5325628cded5fba34227c79370537de618e2aef7",
     "retail/backend/internal/orders/exchange_payment.go": "f44194835f06c625d1aa5f634eef413ad7ef501b1782eb74bf2e1d2b780441b9",
-    "retail/backend/internal/orders/schema.go": "f309485a3e2cf97c068f0be4f814e86a0a81cc38b67587f0b5c3280db5dda3d7",
+    "retail/backend/internal/orders/schema.go": "ac37229accddf1cbd3ec280159299b31f097f24bbc210b2bb15686baa2d61916",
     "retail/backend/internal/orders/schema_plan.json": "cfc3afdb2a2ff3dddd80a6a3b14a9e8def92300bf615b29452342dc192a99fe1",
-    "retail/backend/internal/orders/supplemental_payment.go": "182295c43d519df290d8f9f540b0d8788d294caae5e138a532fcd3057589c95c",
-    "retail/backend/internal/orders/version.go": "ed2fa98edf810e4e608039b6f898054c87abddbf917ff3cdcd92c242c33fc9e5",
+    "retail/backend/internal/orders/supplemental_payment.go": "b394903ff8f9e68de54bbd0c8cde8bf8bfa523a6c32a88ee5ef7c72efcaa968d",
+    "retail/backend/internal/orders/version.go": "58584c4f7af4fe29fd65d29a022055b6968912209ba500afc5892dd33a974ae1",
     "retail/backend/internal/payments/mollie_create.go": "8a9922f3613bde7df0a83d5b7369d71d7fc26ad7eb8cb558349ef8b26a95a40f",
     "retail/backend/internal/totals/allocation_filter.go": "435d4a740eb8cad7f26dde13338e185fbc74c51063b701eaae8a4b14899d6b4c",
     "retail/backend/internal/totals/allocation_filter_test.go": "69c471dd8ecdf134d554de88b3f4eef462e84128e0900261a9d9176d9e6d3d3c",
@@ -172,7 +172,8 @@
     "retail/backend/migrations/0084_order_refund_attempts.sql": "8d6f9c95de003f93fba244cb704763e69fcce04394e6344dfd7f090363490268",
     "retail/backend/migrations/0085_refund_customer_notice.sql": "62ef54cc4e7dbab0c953c920b1ae857783ee84775cc3fe8c24548622040227ad",
     "retail/backend/migrations/0086_exchange_refund_balance.sql": "0227a8f069a8759b3376b595c636426ce71983c71cc0ecc0d523bcad3ec48221",
-    "retail/scripts/report-exchange-payment-balance.py": "e253af6da4600c8cee10947edc7a2d168488d65665da2a802209801450809101",
-    "retail/scripts/test-admin-auth.py": "a33f20c24c0b53da032db8e4dc66ab8b1929140ffe1d1eb4d20bed573310f942"
+    "retail/backend/migrations/0087_order_supplemental_payments.sql": "b12f2309529e2184f864d5fb246019bd4f7cfa5b05f0f40db77d80815b6e7a48",
+    "retail/scripts/report-exchange-payment-balance.py": "6fd3016bf88afa1b787f9482c03201d328a10597ec5b80908e85ed53d0824772",
+    "retail/scripts/test-admin-auth.py": "5aa1c3135be078ca5ca6ed008021beca1868b1a87efb2b70a2b4b37a9111192a"
   }
 }

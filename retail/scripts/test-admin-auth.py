@@ -607,6 +607,8 @@ def main():
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/orderimport').glob('*') if p.is_file()]
                 files += ['retail/backend/migrations/0018_customer_history_dispositions.sql','retail/backend/internal/customerimport/import.go','retail/backend/internal/rowimport/history_customer.go','retail/backend/internal/rowimport/history_customer_test.go','retail/backend/internal/identity/customer_history_test.go','retail/backend/internal/rowimport/convert.go']
                 files += ['retail/backend/internal/orders/admin.go','retail/backend/internal/identity/order_read_test.go']
+                files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/orderpayments').glob('*.go')]
+                files += ['retail/backend/internal/orders/version.go','retail/backend/internal/identity/order_payment_commands_test.go','retail/backend/internal/identity/order_refund_commands_test.go']
                 files += ['retail/backend/internal/orders/amounts.go','retail/backend/internal/orders/amount_json.go','retail/backend/internal/identity/order_amounts_test.go', 'retail/backend/internal/orders/current_balance.go', 'retail/backend/internal/orders/supplemental_payment.go', 'retail/backend/internal/identity/exchange_payment_balance_test.go']
                 files += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'retail/backend/internal/totals').glob('*.go')]
                 files += ['retail/backend/internal/identity/payment_schema_test.go','retail/backend/migrations/0019_payment_relational.sql','retail/scripts/generate-payment-schema.py','retail/backend/internal/payments/schema.go','retail/backend/internal/payments/schema_plan.json']

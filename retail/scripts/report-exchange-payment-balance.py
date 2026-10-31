@@ -29,12 +29,20 @@ def main():
         raise RuntimeError('Current positive balance evidence required')
     if not all(current.get(k) is True for k in ['repeatable_read_old_snapshot_proven','separate_connection_committed_ledger','current_locked_ledger_read','current_locked_line_amount_read','artificial_ledger_only']):
         raise RuntimeError('Current snapshot regression evidence required')
+    # Derive evidence only from the same source snapshot as the completed run.
+    manifest = cleanup.get('implementation_sha256', {})
+    migrations = {p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/migrations').glob('*.sql')}
+    tested_migrations = {p for p in manifest if p.startswith('retail/backend/migrations/') and p.endswith('.sql')}
+    if not manifest or migrations != tested_migrations or len(migrations) != 87:
+        raise RuntimeError('Completed SQL source snapshot/migration set differs; use an isolated validation checkout')
+    if any(not (ROOT/p).is_file() or hashlib.sha256((ROOT/p).read_bytes().replace(b'\r\n', b'\n')).hexdigest() != digest for p, digest in manifest.items()):
+        raise RuntimeError('Source changed after SQL validation; do not regenerate evidence from untested files')
     files = ['retail/backend/internal/orders/current_balance.go','retail/backend/internal/orders/supplemental_payment.go','retail/backend/internal/orders/amounts.go','retail/backend/internal/orders/amount_json.go','retail/backend/internal/orders/schema.go','retail/backend/internal/orders/schema_plan.json','retail/backend/internal/orders/device_exchange.go','retail/backend/internal/orders/exchange_payment.go','retail/backend/internal/orders/version.go','retail/backend/internal/identity/exchange_payment_balance_test.go','retail/backend/internal/identity/order_refund_commands_test.go','retail/backend/internal/identity/cart_completion_test.go','retail/scripts/test-admin-auth.py','retail/scripts/report-exchange-payment-balance.py','retail/backend/internal/payments/mollie_create.go']
     files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/internal/totals').glob('*.go')]
     files += [p.relative_to(ROOT).as_posix() for p in (ROOT/'retail/backend/migrations').glob('*.sql')]
     report = {
         'format_version': 1,
-        'scope': 'SQL-only internal supplemental balance validation and current-read regression; no customer authority, payment operation, dispatch, cash receipt, API or browser acceptance',
+        'scope': 'SQL-only internal supplemental balance validation and current-read regression; this report does not accept customer sessions, command lifecycle, dispatch, cash receipts, API or browser flows',
         'positive_exchange_balance': positive, 'current_read': current,
         'sql_suites_passed': passed, 'migration_count': len(list((ROOT/'retail/backend/migrations').glob('*.sql'))),
         'cleanup': cleanup['cleanup'],

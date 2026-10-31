@@ -40,6 +40,11 @@ func AdvanceVersionTx(ctx context.Context, tx *gorm.DB, orderID string, expected
 	if order.Version != expected || order.IsDraftOrder || order.Status == "draft" || order.Status == "canceled" || order.CanceledAt != nil {
 		return 0, ErrVersionConflict
 	}
+	// Pending, externally uncertain and verified-but-unapplied money freezes
+	// the amount version, including when the optional feature is later disabled.
+	if e := EnsureNoPendingPaymentTx(tx, orderID); e != nil {
+		return 0, e
+	}
 	before, e := ReadAmountSnapshot(tx, orderID)
 	if e != nil {
 		return 0, e

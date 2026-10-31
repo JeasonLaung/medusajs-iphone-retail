@@ -131,3 +131,22 @@ func exactSupplementalNumber(scalar string, raw *string) (*big.Rat, error) {
 	}
 	return v, nil
 }
+
+// EnsureNoPendingPaymentTx is an internal participant. Caller owns the order
+// lock; switching the feature off never releases a durable monetary hold.
+func EnsureNoPendingPaymentTx(tx *gorm.DB, id string) error {
+	if tx == nil || tx.Statement == nil || !checkoutID.MatchString(id) {
+		return ErrSchema
+	}
+	if _, ok := tx.Statement.ConnPool.(gorm.TxCommitter); !ok {
+		return ErrSchema
+	}
+	var holds []struct{ OperationID string }
+	if tx.Table("order_payment_operations").Select("operation_id").Where("active_order=?", id).Limit(1).Clauses(clause.Locking{Strength: "SHARE"}).Find(&holds).Error != nil {
+		return ErrSchema
+	}
+	if len(holds) != 0 {
+		return ErrVersionConflict
+	}
+	return nil
+}

@@ -18,6 +18,7 @@ import (
 	"sync"
 
 	"github.com/eurorefurb/retail/internal/importvalue"
+	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/rowimport"
 )
 
@@ -192,7 +193,7 @@ func Import(ctx context.Context, tx *sql.Tx, snapshotSHA string, input map[strin
 	var version int
 	var model string
 	var reads, writes bool
-	if tx.QueryRowContext(ctx, `SELECT schema_version,model_sha256,reads_enabled,writes_enabled FROM order_runtime_schema WHERE id=1 FOR UPDATE`).Scan(&version, &model, &reads, &writes) != nil || version != 1 || model != p.ModelSHA || !reads || writes {
+	if tx.QueryRowContext(ctx, `SELECT schema_version,model_sha256,reads_enabled,writes_enabled FROM order_runtime_schema WHERE id=1 FOR UPDATE`).Scan(&version, &model, &reads, &writes) != nil || version != orders.NativeRuntimeVersion || model != p.ModelSHA || !reads || writes {
 		return result, ErrPolicy
 	}
 	for _, row := range rows {

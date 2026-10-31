@@ -14,6 +14,10 @@ var schemaPlan []byte
 
 var ErrSchema = errors.New("order schema unavailable")
 
+// Historical source evidence remains schema_plan v1. Native contract v2 also
+// serializes order changes against durable supplemental-payment holds.
+const NativeRuntimeVersion = 2
+
 // Ready verifies the compiled evidence schema. It grants neither customer
 // ownership nor write authority; no checkout or order HTTP route is enabled.
 func Ready(ctx context.Context, db *gorm.DB) error {
@@ -32,7 +36,7 @@ func Ready(ctx context.Context, db *gorm.DB) error {
 		ModelSHA256                 string
 		ReadsEnabled, WritesEnabled bool
 	}
-	if db.WithContext(ctx).Table("order_runtime_schema").Where("id=1").Take(&actual).Error != nil || actual.SchemaVersion != expected.SchemaVersion || actual.ModelSHA256 != expected.ModelSHA || !actual.ReadsEnabled || actual.WritesEnabled {
+	if db.WithContext(ctx).Table("order_runtime_schema").Where("id=1").Take(&actual).Error != nil || actual.SchemaVersion != NativeRuntimeVersion || actual.ModelSHA256 != expected.ModelSHA || !actual.ReadsEnabled || actual.WritesEnabled {
 		return ErrSchema
 	}
 	return nil

@@ -112,7 +112,11 @@ func checkNativeRefundCommands(t *testing.T, ctx context.Context, db *gorm.DB, o
 	}
 	exec("UPDATE order_refund_runtime SET enabled=TRUE WHERE id=1")
 	defer exec("UPDATE order_refund_runtime SET enabled=FALSE WHERE id=1")
-	checkExchangePaymentBalance(t, ctx, db, order, in.RequestID, actor.ID)
+	exec("CREATE TRIGGER owned_order_payment_late_failure BEFORE INSERT ON order_payment_operations FOR EACH ROW BEGIN IF COALESCE(@owned_order_payment_insert_failure,0)=1 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='owned order payment failure'; END IF; END")
+	exec("CREATE TRIGGER owned_order_payment_cancel_failure BEFORE INSERT ON order_payment_cancellations FOR EACH ROW BEGIN IF COALESCE(@owned_order_payment_cancel_failure,0)=1 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='owned order payment cancel failure'; END IF; END")
+	checkExchangePaymentBalance(t, ctx, db, order, in.RequestID, actor.ID, o)
+	exec("DROP TRIGGER owned_order_payment_cancel_failure")
+	exec("DROP TRIGGER owned_order_payment_late_failure")
 	checkExchangeRefundCredit(t, ctx, db, s, actor, in, channel)
 	var wg sync.WaitGroup
 	errs := make(chan error, 6)

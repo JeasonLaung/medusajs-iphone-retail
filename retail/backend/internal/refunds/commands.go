@@ -14,6 +14,7 @@ import (
 
 	"github.com/eurorefurb/retail/internal/authorization"
 	"github.com/eurorefurb/retail/internal/identity"
+	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/totals"
@@ -92,7 +93,7 @@ func gate(tx *gorm.DB) error {
 		Version int
 		Enabled bool
 	}
-	if tx.Table("order_refund_runtime").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&r).Error != nil || r.Version != 3 || !r.Enabled {
+	if tx.Table("order_refund_runtime").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&r).Error != nil || r.Version != 4 || !r.Enabled {
 		return ErrUnavailable
 	}
 	return nil
@@ -156,6 +157,12 @@ func (s Service) Prepare(ctx context.Context, actor identity.User, in Input) (Re
 			return nil
 		}
 		if !errors.Is(e, gorm.ErrRecordNotFound) {
+			return ErrUnavailable
+		}
+		if e := orders.EnsureNoPendingPaymentTx(tx, in.OrderID); e != nil {
+			if errors.Is(e, orders.ErrVersionConflict) {
+				return ErrConflict
+			}
 			return ErrUnavailable
 		}
 		if ord.Version < 1 || ord.Status == "canceled" || ord.IsDraftOrder {
