@@ -92,7 +92,7 @@ func gate(tx *gorm.DB) error {
 		Version int
 		Enabled bool
 	}
-	if tx.Table("order_refund_runtime").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&r).Error != nil || r.Version != 2 || !r.Enabled {
+	if tx.Table("order_refund_runtime").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&r).Error != nil || r.Version != 3 || !r.Enabled {
 		return ErrUnavailable
 	}
 	return nil
@@ -228,6 +228,9 @@ func (s Service) Prepare(ctx context.Context, actor identity.User, in Input) (Re
 		}
 		defer clear(req.Session.Data)
 		defer clear(req.Session.Context)
+		if e := exchangeAmount(tx, r); e != nil {
+			return e
+		}
 		if e := reserve(tx, in.PaymentID, in.Amount); e != nil {
 			return e
 		}
@@ -243,7 +246,7 @@ func (s Service) Prepare(ctx context.Context, actor identity.User, in Input) (Re
 // returned checks every explicitly selected original device, with no ownership inference.
 func returned(tx *gorm.DB, o, r string) error {
 	var req struct{ Type, Status, Items string }
-	if tx.Table("after_sales_requests").Where("id=? AND order_id=? AND deleted_at IS NULL", r, o).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&req).Error != nil || req.Type != "return" || req.Status != "processing" {
+	if tx.Table("after_sales_requests").Where("id=? AND order_id=? AND deleted_at IS NULL", r, o).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&req).Error != nil || (req.Type != "return" && req.Type != "exchange") || req.Status != "processing" {
 		return ErrConflict
 	}
 	var items struct {
@@ -269,6 +272,12 @@ func returned(tx *gorm.DB, o, r string) error {
 			var count int64
 			if tx.Table("device_assignments a").Joins("JOIN devices d ON d.id=a.device_id AND d.deleted_at IS NULL").Where("a.order_id=? AND a.item_id=? AND a.device_id=? AND a.after_sales_request_id=? AND a.status='returned' AND a.deleted_at IS NULL", o, l.ItemID, d, r).Count(&count).Error != nil || count != 1 {
 				return ErrConflict
+			}
+			if req.Type == "exchange" {
+				var native int64
+				if tx.Table("device_assignments a").Joins("JOIN order_exchanges e ON e.order_id=a.order_id AND e.deleted_at IS NULL AND JSON_UNQUOTE(JSON_EXTRACT(e.metadata,'$.replacement_of'))=a.id AND JSON_UNQUOTE(JSON_EXTRACT(e.metadata,'$.after_sales_request_id'))=a.after_sales_request_id").Joins("JOIN returns r ON r.id=e.return_id AND r.exchange_id=e.id AND r.status='received' AND r.deleted_at IS NULL").Where("a.order_id=? AND a.item_id=? AND a.device_id=? AND a.after_sales_request_id=? AND a.status='returned' AND a.deleted_at IS NULL", o, l.ItemID, d, r).Count(&native).Error != nil || native != 1 {
+					return ErrConflict
+				}
 			}
 		}
 	}

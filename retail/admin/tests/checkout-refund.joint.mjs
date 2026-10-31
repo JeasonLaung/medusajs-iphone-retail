@@ -16,17 +16,21 @@ export async function refundCheckoutOrder({page,origin,orderID,request,result,in
  await service.locator('input[type="file"]').first().setInputFiles({name:'return-inspection.png',mimeType:'image/png',buffer:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jB9kAAAAASUVORK5CYII=','base64')})
  await expect(service.locator('.ant-upload-list-item-done')).toHaveCount(1)
  await lostReply(page,'**/after-sales/'+request.id+'/devices/*/service',service,()=>service.getByRole('button',{name:'Save inspection',exact:true}).click(),'Retry this operation',async()=>{await expect(service.getByText('Device operation saved',{exact:true})).toBeVisible();await expect(service.getByText('available',{exact:true})).toBeVisible()})
- await page.reload();await panel.getByRole('button',{name:'Refund history and actions',exact:true}).click();const drawer=page.getByRole('dialog')
+ const accepted=await submitCheckoutRefund({page,orderID,request,index,amount:'158.75'})
+ await page.reload();await panel.locator('.ant-select-selector').click();await page.locator('.ant-select-item-option[title="Completed"]').click();await panel.getByRole('button',{name:'Save',exact:true}).click();await page.getByRole('button',{name:'Confirm update',exact:true}).click();await expect(panel.locator('.ant-tag')).toHaveText('Completed')
+ return accepted
+}
+export async function submitCheckoutRefund({page,orderID,request,index,amount}){
+ const panel=page.getByTestId('order-after-sales');await page.reload();await panel.getByRole('button',{name:'Refund history and actions',exact:true}).click();const drawer=page.getByRole('dialog')
  const payment=drawer.getByLabel('Original payment',{exact:true});await payment.focus();await payment.press('ArrowDown');await payment.press('Enter')
- await drawer.getByLabel('Refund amount (two decimal places)',{exact:true}).fill('158.75')
+ await drawer.getByLabel('Refund amount (two decimal places)',{exact:true}).fill(amount)
  const accepted=await lostReply(page,'**/after-sales/'+request.id+'/refunds',drawer,()=>drawer.getByRole('button',{name:'Submit refund instruction',exact:true}).click(),'Retry same refund operation',()=>expect(drawer.getByText('Instruction accepted. Check its processing status.',{exact:true})).toBeVisible(),202)
- assert.equal(accepted.amount,'158.75')
+ assert.equal(accepted.amount,amount)
  // The first real worker process loses the provider POST response. A fresh
  // process waits for its SQL lease and discovers it by GET; browser only reads.
  await expect(drawer.getByText('Posted',{exact:true})).toBeVisible({timeout:90000})
  await expect(drawer.getByRole('button',{name:'Submit refund instruction',exact:true})).toBeDisabled()
- await page.screenshot({path:fileURLToPath(new URL('../../../logs/gin-migration/refund-admin-joint-'+index+'.png',import.meta.url))})
- await page.reload();await panel.locator('.ant-select-selector').click();await page.locator('.ant-select-item-option[title="Completed"]').click();await panel.getByRole('button',{name:'Save',exact:true}).click();await page.getByRole('button',{name:'Confirm update',exact:true}).click();await expect(panel.locator('.ant-tag')).toHaveText('Completed')
+ await page.screenshot({path:fileURLToPath(new URL('../../../logs/gin-migration/'+(process.env.CHECKOUT_EXCHANGE_REFUND==='1'?'exchange-refund':'refund')+'-admin-joint-'+index+'.png',import.meta.url))})
  return accepted
 }
 export async function verifyCheckoutRefund({page,context,shop,orderID,result,request,segment}){

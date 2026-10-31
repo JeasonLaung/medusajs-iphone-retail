@@ -1,7 +1,7 @@
 import {APIError,csrfCookie,request} from './api'
 export type RefundInput={operation_id:string;payment_id:string;amount:string;previous_operation_id?:string}
 export type RefundOperation={operation_id:string;order_id:string;request_id:string;payment_id:string;amount:string;currency_code:string;state:string;applied:boolean;can_cancel:boolean;can_retry:boolean;previous_operation_id?:string}
-export type RefundContext={order_id:string;request_id:string;enabled:boolean;operations:RefundOperation[]}
+export type RefundContext={order_id:string;request_id:string;enabled:boolean;request_type:string;exchange_credit?:string;operations:RefundOperation[]}
 const path=(o:string,r:string)=>`orders/${encodeURIComponent(o)}/after-sales/${encodeURIComponent(r)}/refunds`
 function operation(d:RefundOperation,o:string,r:string):RefundOperation{
  const text=(v:unknown)=>typeof v==='string'&&v.length>0&&v.length<=191
@@ -11,8 +11,9 @@ function operation(d:RefundOperation,o:string,r:string):RefundOperation{
 export async function readRefunds(o:string,r:string,signal?:AbortSignal):Promise<RefundContext>{
  const d=await request<RefundContext>(path(o,r),{signal},'/api/admin/')
  if(!d||d.order_id!==o||d.request_id!==r||typeof d.enabled!=='boolean'||!Array.isArray(d.operations)||d.operations.length>100)throw new APIError(0,'request.invalid_response')
+ if(!['return','exchange','repair'].includes(d.request_type)||d.request_type==='exchange'&&(typeof d.exchange_credit!=='string'||!/^(?:0|[1-9]\d{0,17})\.\d{2}$/.test(d.exchange_credit))||d.request_type!=='exchange'&&d.exchange_credit!==undefined)throw new APIError(0,'request.invalid_response')
  const rows=d.operations.map(v=>operation(v,o,r));if(new Set(rows.map(v=>v.operation_id)).size!==rows.length)throw new APIError(0,'request.invalid_response')
- return {order_id:o,request_id:r,enabled:d.enabled,operations:rows}
+ return {order_id:o,request_id:r,enabled:d.enabled,request_type:d.request_type,...(d.exchange_credit!==undefined?{exchange_credit:d.exchange_credit}:{}),operations:rows}
 }
 export async function prepareRefund(o:string,r:string,body:RefundInput):Promise<RefundOperation>{
  const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')

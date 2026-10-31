@@ -157,7 +157,7 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		},
 	}
 	var adapter payments.CreateSessionAdapter = observer
-	if os.Getenv("CHECKOUT_REFUND") == "1" {
+	if os.Getenv("CHECKOUT_REFUND") == "1" || os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" {
 		adapter = checkoutRefundAdapter{observer}
 	}
 	registry, err := payments.NewCreateAdapters(map[string]payments.CreateSessionAdapter{"pp_mollie-hosted-checkout_mollie": adapter})
@@ -179,7 +179,7 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		defer cleanup()
 	}
 	var refundWorker *checkoutRefundWorker
-	if os.Getenv("CHECKOUT_REFUND") == "1" {
+	if os.Getenv("CHECKOUT_REFUND") == "1" || os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" {
 		var cleanup func()
 		refundWorker, cleanup = startCheckoutRefundWorker(t, ctx, db)
 		defer cleanup()
@@ -211,6 +211,20 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	})
 	if os.Getenv("CHECKOUT_ACCOUNTS") == "1" {
 		mountCheckoutAccounts(t, db, sessions, options.Ring, router, fixture, key, origin, browserRedis)
+	}
+	if os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" {
+		fixture.POST("/exchange-tax/:rate", func(c *gin.Context) {
+			rate := c.Param("rate")
+			if rate != "15" && rate != "25" {
+				c.Status(400)
+				return
+			}
+			if db.Exec("UPDATE tax_rates SET rate=? WHERE id='contact-rate' AND deleted_at IS NULL", rate).Error != nil {
+				c.Status(503)
+				return
+			}
+			c.Status(204)
+		})
 	}
 	fixture.POST("/paid/:id", func(c *gin.Context) {
 		id := c.Param("id")
@@ -301,6 +315,9 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	if fulfillment {
 		if refundWorker != nil {
 			checkCheckoutRefund(t, db, orderIDs, refundWorker)
+			if os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" {
+				checkCheckoutExchange(t, db, orderIDs)
+			}
 		} else {
 			checkCheckoutFulfillment(t, db, orderIDs)
 		}

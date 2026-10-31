@@ -77,6 +77,9 @@ def main():
     repair = os.environ.get('CHECKOUT_REPAIR') == '1'
     exchange = os.environ.get('CHECKOUT_EXCHANGE') == '1'
     refund = os.environ.get('CHECKOUT_REFUND') == '1'
+    exchange_refund = os.environ.get('CHECKOUT_EXCHANGE_REFUND') == '1'
+    if exchange_refund and (not exchange or refund):
+        raise RuntimeError('Exchange credit refund requires exchange mode without return mode')
     if refund and (not fulfillment or repair or exchange):
         raise RuntimeError('Refund requires fulfillment and is separate from repair/exchange modes')
     if exchange and (not fulfillment or repair):
@@ -96,7 +99,7 @@ def main():
         log_prefix, fixture_switch, fixture_key = 'checkout-joint', 'CHECKOUT_BROWSER_FIXTURE', 'CHECKOUT_FIXTURE_KEY'
         test_script = 'tests/checkout.live.mjs'
         if fulfillment:
-            log_prefix = 'shopping-refund-joint' if refund else 'shopping-exchange-joint' if exchange else 'shopping-repair-joint' if repair else 'shopping-fulfillment-joint'
+            log_prefix = 'shopping-exchange-refund-joint' if exchange_refund else 'shopping-refund-joint' if refund else 'shopping-exchange-joint' if exchange else 'shopping-repair-joint' if repair else 'shopping-fulfillment-joint'
         browser_marker, sql_marker, regression_marker = 'CHECKOUT_JOINT_BROWSER ', 'CHECKOUT_JOINT_SQL ', 'CART_COMPLETION_HTTP_REHEARSAL '
     if shutil.disk_usage(ROOT).free < 2 * (1 << 30):
         raise RuntimeError('At least 2 GiB free disk required')
@@ -122,7 +125,7 @@ def main():
         if build.returncode:
             (logs / (log_prefix + '-build.log')).write_bytes(build.stdout + build.stderr)
             raise RuntimeError('Identity test binary compilation failed; inspect ignored build log')
-        if refund:
+        if refund or exchange_refund:
             require(subprocess.run(['go','build','-o',str(refund_binary),'./cmd/process-order-refunds'],cwd=backend,env=env,capture_output=True,timeout=120),'Refund CLI build failed')
         built = subprocess.run([str(node), 'node_modules/astro/bin/astro.mjs', 'build'], cwd=ROOT / 'retail/storefront', capture_output=True, timeout=120)
         (logs / (log_prefix + '-astro-build.log')).write_bytes(built.stdout + built.stderr)
@@ -158,7 +161,7 @@ def main():
         if not match or not 1 <= int(match[1]) <= 65535:
             raise RuntimeError('Expected one loopback-only API port')
         stream = (logs / (log_prefix + '-sql.log')).open('wb')
-        if refund:
+        if refund or exchange_refund:
             require(docker('cp',str(refund_binary),mysql+':/opt/refund-worker'),'Owned refund worker copy failed')
         process = subprocess.Popen(['docker', 'exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1',
                                     '-e', fixture_switch + '=1', '-e', fixture_key + '=' + key,
@@ -169,6 +172,7 @@ def main():
                                     '-e', 'CHECKOUT_REPAIR=' + ('1' if repair else '0'),
                                     '-e', 'CHECKOUT_EXCHANGE=' + ('1' if exchange else '0'),
                                     '-e', 'CHECKOUT_REFUND=' + ('1' if refund else '0'),
+                                    '-e', 'CHECKOUT_EXCHANGE_REFUND=' + ('1' if exchange_refund else '0'),
                                     '-e', 'CHECKOUT_REFUND_WORKER_BINARY=/opt/refund-worker',
                                     mysql, '/opt/identity.test', '-test.v', '-test.run', '^TestOwnedCartRuntime$', '-test.timeout', '540s' if repair or exchange or refund else '420s' if fulfillment else '150s'], stdout=stream, stderr=subprocess.STDOUT)
         browser_env = os.environ.copy()
@@ -202,11 +206,12 @@ def main():
                 if len(evidence) != 1:
                     raise RuntimeError('New order fulfillment evidence incomplete')
                 report['fulfillment'] = json.loads(evidence[0])
-                if refund:
-                    evidence=[line.split('CHECKOUT_REFUND_JOINT_SQL ',1)[1] for line in sql_output.splitlines() if 'CHECKOUT_REFUND_JOINT_SQL ' in line]
+                if refund or exchange_refund:
+                    refund_marker='CHECKOUT_EXCHANGE_REFUND_JOINT_SQL ' if exchange_refund else 'CHECKOUT_REFUND_JOINT_SQL '
+                    evidence=[line.split(refund_marker,1)[1] for line in sql_output.splitlines() if refund_marker in line]
                     if len(evidence)!=1: raise RuntimeError('New shopper refund evidence incomplete')
                     report['refund']=json.loads(evidence[0])
-                if exchange:
+                if exchange and not exchange_refund:
                     evidence = [line.split('CHECKOUT_EXCHANGE_JOINT_SQL ', 1)[1] for line in sql_output.splitlines() if 'CHECKOUT_EXCHANGE_JOINT_SQL ' in line]
                     if len(evidence) != 1:
                         raise RuntimeError('New order exchange evidence incomplete')
@@ -239,11 +244,11 @@ def main():
                 sources += [(ROOT / 'retail/admin/tests' / name, 'retail/admin/tests/' + name) for name in ['checkout-fulfillment.joint.mjs', 'checkout-repair.joint.mjs', 'checkout-exchange.joint.mjs']]
             if repair or exchange or refund:
                 sources += [(ROOT / name, name) for name in ['retail/backend/internal/customer/after_sales.go', 'retail/backend/internal/customer/repair_shipments.go', 'retail/backend/internal/devices/service.go', 'retail/storefront/src/lib/customer-after-sales.ts', 'retail/storefront/src/components/order/after-sales.tsx']]
-            if refund:
-                sources += [(ROOT / name,name) for name in ['retail/admin/tests/checkout-refund.joint.mjs','retail/backend/internal/identity/checkout_refund_worker_test.go','retail/backend/internal/identity/checkout_refund_browser_test.go','retail/backend/cmd/process-order-refunds/main.go','retail/backend/internal/customernotices/events.go','retail/storefront/src/lib/customer-notices.ts','retail/storefront/src/components/notifications/i18n.ts','retail/storefront/src/components/notifications/notification-bell.tsx','retail/admin/src/OrderRefund.tsx','retail/admin/src/refundApi.ts']]
+            if refund or exchange_refund:
+                sources += [(ROOT / name,name) for name in ['retail/admin/tests/checkout-refund.joint.mjs','retail/backend/internal/identity/checkout_refund_worker_test.go','retail/backend/internal/identity/checkout_refund_browser_test.go','retail/backend/cmd/process-order-refunds/main.go','retail/backend/internal/customernotices/events.go','retail/storefront/src/lib/customer-notices.ts','retail/storefront/src/components/notifications/i18n.ts','retail/storefront/src/components/notifications/notification-bell.tsx','retail/admin/src/OrderRefund.tsx','retail/admin/src/refundApi.ts','retail/backend/internal/orders/current_balance.go','retail/backend/internal/customer/after_sales_review.go']]
                 sources += [(p,str(p.relative_to(ROOT))) for p in (backend/'internal/refunds').glob('*.go')]
                 sources += [(p,str(p.relative_to(ROOT))) for p in (backend/'migrations').glob('*.sql')]
-                report['scope'] += '; own return, receipt/photo inspection, Admin refund drawer, separate production CLI via owned HTTPS provider, lost POST restart GET recovery, exact refund ledger and own notice'
+                report['scope'] += '; ' + ('own exchange credit 12 EUR settled to zero difference' if exchange_refund else 'own return') + ', receipt/photo inspection, Admin refund drawer, separate production CLI via owned HTTPS provider, lost POST restart GET recovery, exact refund ledger and own notice'
             for source, name in sources:
                 report['source_sha256_lf'][name] = hashlib.sha256(source.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
     finally:
@@ -266,7 +271,7 @@ def main():
         binary.unlink(missing_ok=True)
         refund_binary.unlink(missing_ok=True)
     report['cleanup_complete'] = True
-    (ROOT / (('docs/migration/shopping-refund-joint-report.json' if refund else 'docs/migration/shopping-exchange-joint-report.json' if exchange else 'docs/migration/shopping-repair-joint-report.json' if repair else 'docs/migration/shopping-fulfillment-joint-report.json' if fulfillment else 'docs/migration/shopping-account-joint-report.json' if os.environ.get('CHECKOUT_ACCOUNTS') == '1' else 'docs/migration/shopping-fresh-cart-joint-report.json' if os.environ.get('CHECKOUT_FRESH_CART') == '1' else 'docs/migration/shopping-joint-report.json' if os.environ.get('CHECKOUT_PRODUCT_BROWSE') == '1' else 'docs/migration/checkout-mail-joint-report.json') if checkout else 'docs/migration/promotion-joint-report.json' if promotion else 'docs/migration/customer-orders-joint-report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+    (ROOT / (('docs/migration/shopping-exchange-refund-joint-report.json' if exchange_refund else 'docs/migration/shopping-refund-joint-report.json' if refund else 'docs/migration/shopping-exchange-joint-report.json' if exchange else 'docs/migration/shopping-repair-joint-report.json' if repair else 'docs/migration/shopping-fulfillment-joint-report.json' if fulfillment else 'docs/migration/shopping-account-joint-report.json' if os.environ.get('CHECKOUT_ACCOUNTS') == '1' else 'docs/migration/shopping-fresh-cart-joint-report.json' if os.environ.get('CHECKOUT_FRESH_CART') == '1' else 'docs/migration/shopping-joint-report.json' if os.environ.get('CHECKOUT_PRODUCT_BROWSE') == '1' else 'docs/migration/checkout-mail-joint-report.json') if checkout else 'docs/migration/promotion-joint-report.json' if promotion else 'docs/migration/customer-orders-joint-report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'joint_browser': 'passed', 'scope': 'checkout' if checkout else 'promotions' if promotion else 'customer_orders', 'sql_regressions': 'passed', 'cleanup': 'complete'}))
 
 

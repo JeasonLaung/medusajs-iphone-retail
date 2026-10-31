@@ -5,13 +5,16 @@ import (
 	"github.com/eurorefurb/retail/internal/identity"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
+	"math/big"
 )
 
 type Context struct {
-	OrderID    string   `json:"order_id"`
-	RequestID  string   `json:"request_id"`
-	Enabled    bool     `json:"enabled"`
-	Operations []Result `json:"operations"`
+	RequestType    string   `json:"request_type"`
+	ExchangeCredit *string  `json:"exchange_credit,omitempty"`
+	OrderID        string   `json:"order_id"`
+	RequestID      string   `json:"request_id"`
+	Enabled        bool     `json:"enabled"`
+	Operations     []Result `json:"operations"`
 }
 
 func (s Service) Read(ctx context.Context, actor identity.User, order, request string) (Context, error) {
@@ -33,10 +36,34 @@ func (s Service) Read(ctx context.Context, actor identity.User, order, request s
 			Version int
 			Enabled bool
 		}
-		if tx.Table("order_refund_runtime").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&runtime).Error != nil || runtime.Version != 2 {
+		if tx.Table("order_refund_runtime").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&runtime).Error != nil || runtime.Version != 3 {
 			return ErrUnavailable
 		}
 		out.Enabled = runtime.Enabled
+		var locked struct{ ID string }
+		if tx.Table("orders").Select("id").Where("id=? AND deleted_at IS NULL", order).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&locked).Error != nil {
+			return ErrConflict
+		}
+		var req struct{ Type string }
+		if tx.Table("after_sales_requests").Select("type").Where("id=? AND order_id=? AND deleted_at IS NULL", request, order).Take(&req).Error != nil {
+			return ErrConflict
+		}
+		out.RequestType = req.Type
+		if req.Type == "exchange" {
+			credit, e := exchangeCredit(tx, order, "")
+			if e != nil {
+				return e
+			}
+			if credit.Sign() < 0 {
+				credit.SetInt64(0)
+			}
+			value := credit.FloatString(2)
+			exactValue, ok := new(big.Rat).SetString(value)
+			if !ok || exactValue.Cmp(credit) != 0 {
+				return ErrConflict
+			}
+			out.ExchangeCredit = &value
+		}
 		var n int64
 		if tx.Table("after_sales_requests").Where("id=? AND order_id=? AND deleted_at IS NULL", request, order).Count(&n).Error != nil {
 			return ErrUnavailable

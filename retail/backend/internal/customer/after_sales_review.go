@@ -226,6 +226,23 @@ func ReviewAfterSalesTx(ctx context.Context, tx *gorm.DB, actor identity.User, o
 	if unsettled != 0 && input.Status != request.Status {
 		return out, ErrAfterSalesConflict
 	}
+	// A native exchange can complete only after its current financial difference
+	// is settled. Legacy request snapshots without native changes are preserved.
+	if request.Type == "exchange" && input.Status == "completed" {
+		var native int64
+		if tx.Table("order_exchanges").Where("order_id=? AND deleted_at IS NULL AND JSON_UNQUOTE(JSON_EXTRACT(metadata,'$.after_sales_request_id'))=?", orderID, request.ID).Count(&native).Error != nil {
+			return out, ErrUnavailable
+		}
+		if native > 0 {
+			pending, e := orders.CurrentPendingDifferenceTx(tx, orderID)
+			if e != nil {
+				return out, ErrUnavailable
+			}
+			if pending.Sign() != 0 {
+				return out, ErrAfterSalesConflict
+			}
+		}
+	}
 	refunded := false
 	for _, refund := range facts.Refunds {
 		if refund.Note == "after-sales:"+request.ID {

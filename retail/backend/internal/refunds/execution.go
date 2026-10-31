@@ -79,6 +79,14 @@ func (s Service) Run(ctx context.Context, id string) (Result, error) {
 			return ErrUnavailable
 		}
 		post = row.DispatchedAt == nil
+		if post {
+			if e := returned(tx, row.OrderID, row.RequestID); e != nil {
+				return e
+			}
+			if e := exchangeAmount(tx, row); e != nil {
+				return e
+			}
+		}
 		updates := map[string]any{"claim_id": claim, "lease_until": now.Add(45 * time.Second), "updated_at": now}
 		if post {
 			updates["dispatched_at"] = now

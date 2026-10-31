@@ -1,4 +1,17 @@
 {
+  "exchange_refund_credit": {
+    "actual_completed_checkout": true,
+    "native_exchange_change": true,
+    "credit": "12.00",
+    "exact_full_credit_only": true,
+    "cached_summary_not_cash_authority": true,
+    "order_wide_hold_projection": true,
+    "stale_first_dispatch_denied": true,
+    "zero_positive_difference_denied": true,
+    "fixture_rolled_back": true,
+    "provider_dispatch": false,
+    "browser_cli_acceptance": false
+  },
   "format_version": 1,
   "scope": "SQL-only native refund lifecycle, authenticated Gin HTTP and durable RunDue worker over an actual completed checkout; return/device facts and channel observations are artificial fixtures; this SQL rehearsal does not exercise browser return or a separately launched worker; shopping-refund-joint-report.json records that separate actual acceptance",
   "sql_suites_passed": [
@@ -26,7 +39,7 @@
     "CartSchema",
     "CartRuntime"
   ],
-  "migration_count": 85,
+  "migration_count": 86,
   "native_refund_commands": {
     "real_mysql": true,
     "actual_completed_checkout": true,
@@ -62,7 +75,7 @@
   "browser_return_flow_accepted": false,
   "real_provider_refund": false,
   "cleanup": "both owned containers and temporary runner removed",
-  "transcript_sha256": "b3af8df2c592fda0c9465a3a7257673fa40f08695f1904928b5c63e40cdb6c92",
+  "transcript_sha256": "5942907c1d2111b067f471dd167dd4719c1ec17376c50d5e84dd66dacff00756",
   "implementation_sha256_lf": {
     "retail/admin/src/api.ts": "90708bde150b4eaf1f47008619f73157cda6b25d616433c6b72e036faa54c61f",
     "retail/admin/src/i18n.ts": "2448a8bc24244860e0937faedb3f84f33510fd13a7ece40f11c73e1ffbad0646",
@@ -72,18 +85,21 @@
     "retail/backend/internal/authorization/model.go": "cd3a2d2265750d6ea478b481762be05dd483438276643c8bc24034482927b6ba",
     "retail/backend/internal/checkoutconfig/checkout.go": "37c2bc39105941258d1dc13ff6213fa4d4abeb58f18d4116d14865983bd4bc8b",
     "retail/backend/internal/checkoutconfig/checkout_test.go": "1e15c63e1a6ae3cc6e2dafddbc66a42299ee1c70d8000e9284c358010eb17cb5",
-    "retail/backend/internal/customer/after_sales_review.go": "4a1962b35a8b60f2aa8f0486037ec9e44eb4f100419585d96f1c5de89a6b73f1",
+    "retail/backend/internal/customer/after_sales_review.go": "8549b505e361b6e66bfa3dcf252e4044c73f3d996d6a0020d732d8b2df82cd29",
     "retail/backend/internal/customernotices/events.go": "21898f53f684f71bfd48dadece3f6fae0ab96ba63d95b2f5253f8a1040fbcb67",
     "retail/backend/internal/identity/cart_completion_test.go": "8fa2350b79ef778ac75eb5b9e99ace203f5ca96b310100d205e7f9d9baed3829",
-    "retail/backend/internal/identity/order_refund_commands_test.go": "2e68acf2d1582ce8bd1049eb4fb6ff4405c12a2714a9953cb467ab14e7713dc5",
+    "retail/backend/internal/identity/exchange_refund_commands_test.go": "241e9600f80c646c3604a12c052bc459e1c28f019022ee18102b3b1d83b0c84c",
+    "retail/backend/internal/identity/order_refund_commands_test.go": "a6345d73f2994aba86cdb359854002a37b71221387364bcd05ecba48de16e8e5",
     "retail/backend/internal/identity/order_refund_http_test.go": "021bd2a3a1c81e1b981964aaf870b21c92e4a5707e976e1c70db5b77a6d02422",
+    "retail/backend/internal/orders/current_balance.go": "1b9ca9b27abdc3bca893639415a0899ddc434860590b1423536370d526f4c235",
     "retail/backend/internal/refunds/cancellation.go": "3e3e23deab60fa7db4ef9cbb15205a64a9a356bd6fc4c9b9818e34766a7c4964",
-    "retail/backend/internal/refunds/commands.go": "27cba998f5675315aea2cfde87258fe8f10a8bb37847819ed51c6bd7261336e9",
+    "retail/backend/internal/refunds/commands.go": "f31d0b9957f2ae31da3830b302371ff3a92991716fcec17a98ee3ab03e5df483",
     "retail/backend/internal/refunds/commands_test.go": "6f248a002cb99caa994c4f58f027c7d06ffea734fda65b4dbc947d5d937c2a27",
-    "retail/backend/internal/refunds/execution.go": "85da9da5a67b3fb740cf719b3b6fa81662c065774e34f32640c93d8a3dea21b0",
+    "retail/backend/internal/refunds/exchange.go": "b94249b45fd346ec5fbc7f7cd6a5c182642d6935a6c4f73c4bf0fbe27ae5d721",
+    "retail/backend/internal/refunds/execution.go": "5d24892a9e0ade357f25261f36c05c02365f91f62a8b15c34312e1d7681c7286",
     "retail/backend/internal/refunds/http.go": "86f8b188c5d19611a5eba99654fb172b4564fb26e6ae7e98b1859f579fa52666",
     "retail/backend/internal/refunds/http_test.go": "a7b8c27fb2d66f7c1888fa6a136e05bd63e708473c4671d199622b5c53cbbd99",
-    "retail/backend/internal/refunds/read.go": "5401fcc76ca59c27eb94fbd1aa19be7377c78a0f036df951e2103ecf1800f4d9",
+    "retail/backend/internal/refunds/read.go": "9966b411fa34dd7fe4c5ac87021b0df4f5d33db8f5361995dfbcd21f5602bfdf",
     "retail/backend/internal/refunds/worker.go": "77567602923871672ba35f46ab3fd26b38221d7dd2322ceffac6cd73b98aae2f",
     "retail/backend/internal/server/router.go": "b67b62cdb069ad8506b440e9309e4cbf4f9683ec95a56a6d9329371ed34faca8",
     "retail/backend/migrations/0001_foundation.sql": "8678e63bde1b01f155be946e310aa0a8c18411484bfa2325e6650ac192c35b7a",
@@ -171,6 +187,7 @@
     "retail/backend/migrations/0083_order_refunds.sql": "05f8517aeb232d57be02f79ae940168df02666e515228028ddc06ea36ac944e7",
     "retail/backend/migrations/0084_order_refund_attempts.sql": "8d6f9c95de003f93fba244cb704763e69fcce04394e6344dfd7f090363490268",
     "retail/backend/migrations/0085_refund_customer_notice.sql": "62ef54cc4e7dbab0c953c920b1ae857783ee84775cc3fe8c24548622040227ad",
-    "retail/scripts/report-native-refunds.py": "5719bc67c906b0e2acbc43d13b53139cf0eeab0e0aeb40addd93658cfe7dff4c"
+    "retail/backend/migrations/0086_exchange_refund_balance.sql": "0227a8f069a8759b3376b595c636426ce71983c71cc0ecc0d523bcad3ec48221",
+    "retail/scripts/report-native-refunds.py": "b84d34dff2d0cfc48e1edd4372c9014635c27989179437c87c3d6a056995f098"
   }
 }

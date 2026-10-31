@@ -1,21 +1,25 @@
 {
   "format_version": 1,
-  "scope": "React Admin return refund drawer with mocked business API responses; no actual shopper return or real provider refund",
+  "scope": "React Admin return and exchange credit refund drawer with mocked business API responses; no actual shopper return or real provider refund",
   "browser": "local Google Chrome via Playwright; isolated Vite port 19200",
   "tests_passed": [
     "after-sales review keeps the same operation after a lost reply and displays saved status",
     "after-sales device receipt freezes the scanned machine after a lost response",
     "inspection and repaired-device dispatch retry immutable commands after lost replies",
     "replacement drawer retries an immutable command after a lost reply",
-    "refund drawer retries immutable instructions, cancels before dispatch and preserves history zh 390",
-    "refund drawer retries immutable instructions, cancels before dispatch and preserves history zh 1440",
-    "refund drawer retries immutable instructions, cancels before dispatch and preserves history en 390",
-    "refund drawer retries immutable instructions, cancels before dispatch and preserves history en 1440",
+    "refund drawer retries immutable instructions, cancels before dispatch and preserves history return zh 390",
+    "refund drawer retries immutable instructions, cancels before dispatch and preserves history return zh 1440",
+    "refund drawer retries immutable instructions, cancels before dispatch and preserves history return en 390",
+    "refund drawer retries immutable instructions, cancels before dispatch and preserves history return en 1440",
+    "refund drawer retries immutable instructions, cancels before dispatch and preserves history exchange zh 390",
+    "refund drawer retries immutable instructions, cancels before dispatch and preserves history exchange zh 1440",
+    "refund drawer retries immutable instructions, cancels before dispatch and preserves history exchange en 390",
+    "refund drawer retries immutable instructions, cancels before dispatch and preserves history exchange en 1440",
     "refund drawer refuses writes when disabled",
     "refund drawer refuses writes when malformed",
     "refund drawer refuses writes when revoked"
   ],
-  "passed": 11,
+  "passed": 15,
   "languages": [
     "zh",
     "en"
@@ -32,22 +36,26 @@
   "real_business_api": false,
   "continuous_new_customer_refund": false,
   "real_provider_refund": false,
-  "transcript_sha256": "9eea91288d697db763ad2fd0aa739d9140cb0c1d77b2d34c3dfb2578055be423",
+  "transcript_sha256": "07bdd0eaf71b010f4c0ca306b5afe4301ec4849199da545196b6c6e9cb502c75",
   "implementation_sha256_lf": {
-    "retail/admin/src/OrderRefund.tsx": "c19cd2e853488a7837be7c206229f7d8f1f398d2ea2ce4e082ac71154a116f15",
-    "retail/admin/src/refundApi.ts": "75f30893cca8585a25f4d74e04dbb371fd8fbbd5632a028ebdca5b6c9c16b314",
-    "retail/admin/src/OrderAfterSales.tsx": "31fce4dd0c7d1f03ecba70409bff80747bd6f269a384d31485eb32da32c092e7",
+    "retail/admin/src/OrderRefund.tsx": "8a7768ba1697d638a2dd2f8e05b5bf90ddc392354d2d44bb2376f19964d0d935",
+    "retail/admin/src/refundApi.ts": "3dc4a31cecc1761658074e2aff7452224417021ba5c6bcf63fe4986c6924d621",
+    "retail/admin/src/OrderAfterSales.tsx": "466ba94c45a03634b541ba5eebcd5e5d9f98c635712f8b39b6374a57fa57a85c",
     "retail/admin/src/api.ts": "90708bde150b4eaf1f47008619f73157cda6b25d616433c6b72e036faa54c61f",
     "retail/admin/src/Permissions.tsx": "378cdb24e4571a365926115f904c0cd14a39773c45af69346cd65474b1140791",
     "retail/admin/src/App.tsx": "21a7380de6a180969cea3df2cbe293c6083dd07db31991e28dfa23af47c80f6b",
-    "retail/admin/tests/auth.spec.ts": "569f3da6d381b713565e9b036db43184aaa012f7d2bb05ff99f93e012cbb9ff9",
+    "retail/admin/tests/auth.spec.ts": "d2d64e73efbe8e84143fea2b027127618588bbac7fac5801dd47493bdb495f36",
     "retail/admin/playwright.config.ts": "d5079532fde48472f7d8b6fe7dba4b12d0a2b22121e25a72f094db31721ad543",
-    "retail/scripts/report-refund-admin.py": "63e38240d7000d6c2823cd488c42ba7c71f6e3eb1d842f460bf295119bea73ac"
+    "retail/scripts/report-refund-admin.py": "d715e7a05d7ef3932a612aa92eb4ba4e526412afa15332e7e8721b037b3f5327"
   },
   "screenshots_sha256": {
-    "refund-zh-390.png": "1b22668bcf9d9f459f9b046dd6f5957c2c70bd22186b8e73b791e479342f37ac",
-    "refund-zh-1440.png": "717945b13c4ba04a1037093a2cbcaceb410111aaa945a0e842bf5ae9787d0c94",
-    "refund-en-390.png": "47c8f80414803865095533228da8160cdc485393ce5c4ba4de3c3b3332ce6ef9",
-    "refund-en-1440.png": "b1ae78107b65172c789f35090100993a603e6edd61a6539206083b45f313a7a6"
+    "refund-return-zh-390.png": "a8045931b87f8ec789754e48f758ad9371340785ff1d41edebef3a8998dd2283",
+    "refund-return-zh-1440.png": "48dc480589c96ca61b3c9058dbf57929cb1d704524a49fa35703f2a8b87c95de",
+    "refund-return-en-390.png": "8513c0eaa224c4747ec334f07d4534af939e0e4e4e8a96c7ee1f4f2bf539735f",
+    "refund-return-en-1440.png": "e7dfd4f4d03ffe2f96d0d8028754c89d4a4c7c77fe975e5234f10b6c38b670aa",
+    "refund-exchange-zh-390.png": "4cb143e8152c8ef400f40dcad62435765059b28a1210b1488c6eccc1f3af910e",
+    "refund-exchange-zh-1440.png": "3078aa8a2b07c2d82015e3ca2022f3cfa4692e7775e1848a4a16a7848e8913fa",
+    "refund-exchange-en-390.png": "64898d28360ad2169bcd78abc87dfad1b01c0db5fb586eb206e3a79d40cba54c",
+    "refund-exchange-en-1440.png": "b78f6d69825881122501739cea9c11982303eba9ffb6762412870aca507df8d1"
   }
 }

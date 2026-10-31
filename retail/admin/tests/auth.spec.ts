@@ -752,10 +752,11 @@ test('replacement drawer retries an immutable command after a lost reply',async(
  await page.setViewportSize({width:390,height:844});await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
 })
 
-for(const lang of ['zh','en'] as const)for(const width of [390,1440])test(`refund drawer retries immutable instructions, cancels before dispatch and preserves history ${lang} ${width}`,async({page})=>{
+for(const kind of ['return','exchange'] as const)for(const lang of ['zh','en'] as const)for(const width of [390,1440])test(`refund drawer retries immutable instructions, cancels before dispatch and preserves history ${kind} ${lang} ${width}`,async({page})=>{
  await page.setViewportSize({width,height:900})
  await fixture(page,{permissions:['order.read','order.payment.read','device.read','order.after_sales.write','order.refund.write']})
  const date='2026-10-31T00:00:00Z',order={id:'refund-order',version:1,status:'pending',currency_code:'eur',custom_display_id:'Refund fixture',display_id:'1',is_draft_order:false,email:null,created_at:date,updated_at:date,line_count:0}
+ const refundAmount=kind==='exchange'?'6.25':'10.00'
  const operations:any[]=[],posted:any[]=[],canceled:any[]=[];let losePrepare=true,loseCancel=true
  await page.route('**/api/admin/orders/refund-order**',async route=>{
   const req=route.request(),path=new URL(req.url()).pathname
@@ -772,9 +773,9 @@ for(const lang of ['zh','en'] as const)for(const width of [390,1440])test(`refun
     if(losePrepare){losePrepare=false;return route.abort('failed')}
     return route.fulfill({status:202,json:operations.find(o=>o.operation_id===body.operation_id)})
    }
-   return route.fulfill({json:{order_id:order.id,request_id:'asr_refund',enabled:true,operations}})
+   return route.fulfill({json:{order_id:order.id,request_id:'asr_refund',request_type:kind,...(kind==='exchange'?{exchange_credit:operations.some(r=>r.state==='pending')?'0.00':'6.25'}:{}),enabled:true,operations}})
   }
-  if(path.endsWith('/after-sales'))return route.fulfill({json:{order_id:order.id,revision:'a'.repeat(64),enabled:true,requests:[{id:'asr_refund',type:'return',status:'processing',reason:'Refund original payment',created_at:date,items:[{item_id:'line',title:'Phone',quantity:1}]}]}})
+  if(path.endsWith('/after-sales'))return route.fulfill({json:{order_id:order.id,revision:'a'.repeat(64),enabled:true,requests:[{id:'asr_refund',type:kind,status:'processing',reason:'Refund original payment',created_at:date,items:[{item_id:'line',title:'Phone',quantity:1}]}]}})
   if(path.endsWith('/payments'))return route.fulfill({json:{order_id:order.id,version:1,operations_enabled:false,collections:[{id:'collection',currency_code:'eur',status:'completed',amount:'158.75',authorized_amount:'158.75',captured_amount:'158.75',refunded_amount:'0.00',sessions:[],payments:[{id:'pay_native',provider_id:'mollie',session_id:'session',currency_code:'eur',amount:'158.75',captured_at:date,canceled_at:null,operation_hold:'held',captures:[],refunds:[]}]}]}})
   return route.fulfill({json:{order,lines:[]}})
  })
@@ -784,17 +785,18 @@ for(const lang of ['zh','en'] as const)for(const width of [390,1440])test(`refun
  await page.getByRole('button',{name:label('退款记录与操作','Refund history and actions'),exact:true}).click()
  const drawer=page.getByRole('dialog'),submit=drawer.getByRole('button',{name:label('提交退款指令','Submit refund instruction'),exact:true}),amount=drawer.getByLabel(label('退款金额（两位小数）','Refund amount (two decimal places)'),{exact:true})
  await drawer.getByLabel(label('原付款','Original payment'),{exact:true}).click();await drawer.getByLabel(label('原付款','Original payment'),{exact:true}).press('Enter')
- await amount.fill('10.001');await submit.click();await expect(drawer.getByText(label('请输入大于零的精确金额，例如 10.00','Enter a positive exact amount, e.g. 10.00'),{exact:true})).toBeVisible();expect(posted).toHaveLength(0)
- await amount.fill('10.00');await submit.click()
+ await amount.fill('10.001');await submit.click();await expect(drawer.getByText(kind==='exchange'?label('请输入完整的当前可退差额','Enter the full current exchange credit'):label('请输入大于零的精确金额，例如 10.00','Enter a positive exact amount, e.g. 10.00'),{exact:true})).toBeVisible();expect(posted).toHaveLength(0)
+ if(kind==='exchange'){await amount.fill('6.26');await submit.click();await expect(drawer.getByText(label('请输入完整的当前可退差额','Enter the full current exchange credit'),{exact:true})).toBeVisible();expect(posted).toHaveLength(0)}
+ await amount.fill(refundAmount);await submit.click()
  const retry=drawer.getByRole('button',{name:label('重试同一退款操作','Retry same refund operation'),exact:true})
  await expect(retry).toBeVisible();await expect(amount).toBeDisabled();await drawer.getByRole('button',{name:'Close',exact:true}).click();await page.getByRole('button',{name:label('退款记录与操作','Refund history and actions'),exact:true}).click();await expect(retry).toBeVisible();await retry.click();await expect(retry).toHaveCount(0)
- expect(posted).toHaveLength(2);expect(posted[0]).toEqual(posted[1]);expect(posted[0].amount).toBe('10.00')
+ expect(posted).toHaveLength(2);expect(posted[0]).toEqual(posted[1]);expect(posted[0].amount).toBe(refundAmount)
  await drawer.getByRole('button',{name:label('取消退款指令','Cancel refund instruction'),exact:true}).click();await page.getByRole('button',{name:label('确认取消退款','Confirm cancellation'),exact:true}).click()
  await expect(retry).toBeVisible();await retry.click();await expect(retry).toHaveCount(0);expect(canceled).toHaveLength(2);expect(canceled[0]).toEqual(canceled[1])
- await drawer.getByRole('button',{name:label('明确发起新尝试','Start a new attempt'),exact:true}).click();await expect(amount).toHaveValue('10.00');await submit.click();await expect(submit).toBeDisabled();expect(posted).toHaveLength(3);expect(posted[2].previous_operation_id).toBe(posted[0].operation_id);expect(posted[2].operation_id).not.toBe(posted[0].operation_id)
+ await drawer.getByRole('button',{name:label('明确发起新尝试','Start a new attempt'),exact:true}).click();await expect(amount).toHaveValue(refundAmount);await submit.click();await expect(submit).toBeDisabled();expect(posted).toHaveLength(3);expect(posted[2].previous_operation_id).toBe(posted[0].operation_id);expect(posted[2].operation_id).not.toBe(posted[0].operation_id)
  operations[1]={...operations[1],state:'refunded',applied:true,can_cancel:false};await drawer.getByRole('button',{name:label('重新读取退款记录','Reload refund records'),exact:true}).click();await expect(drawer.getByText(label('已记账','Posted'),{exact:true})).toBeVisible();await expect(drawer.getByRole('button',{name:label('取消退款指令','Cancel refund instruction'),exact:true})).toHaveCount(0)
  await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
- await page.screenshot({path:`../../logs/gin-migration/admin-ui/refund-${lang}-${width}.png`})
+ await page.screenshot({path:`../../logs/gin-migration/admin-ui/refund-${kind}-${lang}-${width}.png`})
 })
 
 for(const mode of ['disabled','malformed','revoked'] as const)test(`refund drawer refuses writes when ${mode}`,async({page})=>{
@@ -803,7 +805,7 @@ for(const mode of ['disabled','malformed','revoked'] as const)test(`refund drawe
  const date='2026-10-31T00:00:00Z',order={id:'refund-closed',version:1,status:'pending',currency_code:'eur',custom_display_id:'Closed fixture',display_id:'1',is_draft_order:false,email:null,created_at:date,updated_at:date,line_count:0};let posts=0
  await page.route('**/api/admin/orders/refund-closed**',async route=>{
   const path=new URL(route.request().url()).pathname;if(route.request().method()==='POST')posts++
-  if(path.endsWith('/refunds'))return route.fulfill({json:{order_id:mode==='malformed'?'wrong-order':order.id,request_id:'asr_closed',enabled:mode!=='disabled',operations:mode==='disabled'?[{operation_id:'old-failed',order_id:order.id,request_id:'asr_closed',payment_id:'old-payment',amount:'10.5',currency_code:'eur',state:'failed',applied:false,can_cancel:false,can_retry:true}]:[]}})
+  if(path.endsWith('/refunds'))return route.fulfill({json:{order_id:mode==='malformed'?'wrong-order':order.id,request_id:'asr_closed',request_type:'return',enabled:mode!=='disabled',operations:mode==='disabled'?[{operation_id:'old-failed',order_id:order.id,request_id:'asr_closed',payment_id:'old-payment',amount:'10.5',currency_code:'eur',state:'failed',applied:false,can_cancel:false,can_retry:true}]:[]}})
   if(path.endsWith('/payments'))return route.fulfill({json:{order_id:order.id,version:1,operations_enabled:false,collections:[]}})
   if(path.endsWith('/after-sales'))return route.fulfill({json:{order_id:order.id,revision:'a'.repeat(64),enabled:true,requests:[{id:'asr_closed',type:'return',status:'processing',reason:'Closed refund',created_at:date,items:[{item_id:'line',title:'Phone',quantity:1}]}]}})
   return route.fulfill({json:{order,lines:[]}})
