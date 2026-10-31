@@ -45,6 +45,15 @@ def main():
     binary = ROOT / 'logs/gin-migration' / ('identity-' + owner + '.test')
     if binary.exists() or subprocess.run(['git', 'check-ignore', '--quiet', str(binary)], cwd=ROOT, capture_output=True).returncode:
         raise RuntimeError('New ignored runner path required')
+    payment_cli = os.environ.get("ORDER_PAYMENT_CLI_REHEARSAL") == "1"
+    if payment_cli and not cart_only:
+        raise RuntimeError("Payment CLI rehearsal requires --cart-runtime-only")
+    worker = binary.with_suffix(".worker")
+    cli_sources = {}
+    if payment_cli:
+        source_files = [p for p in (ROOT/'retail/backend').rglob('*') if p.is_file() and p.suffix in ('.go', '.sql', '.json')]
+        source_files += [ROOT/'retail/backend/go.mod', ROOT/'retail/backend/go.sum', Path(__file__).resolve()]
+        cli_sources = {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes().replace(b'\r\n', b'\n')).hexdigest() for p in source_files}
     env = os.environ.copy()
     env.update(GOOS='linux', GOARCH='amd64', CGO_ENABLED='0')
     containers, owned_binary = [], False
@@ -55,6 +64,11 @@ def main():
                                cwd=Path(os.environ.get('ADMIN_AUTH_TEST_BACKEND', str(ROOT / 'retail/backend'))), env=env, capture_output=True, timeout=120)
         if built.returncode:
             raise RuntimeError('Identity runner compilation failed')
+        if payment_cli:
+            built_worker = subprocess.run(['go', 'build', '-o', str(worker), './cmd/process-order-payments'], cwd=Path(os.environ.get('ADMIN_AUTH_TEST_BACKEND', str(ROOT / 'retail/backend'))), env=env, capture_output=True, timeout=120)
+            if built_worker.returncode:
+                raise RuntimeError('Production order payment CLI compilation failed')
+            worker_sha256 = hashlib.sha256(worker.read_bytes()).hexdigest()
         mysql = docker('run', '-d', '--name', 'eurorefurb-identity-mysql-' + owner[:12],
                        '--label', LABEL + '=' + owner, '--network', 'none', '--cpus', '1',
                        '--memory', '768m', '--memory-swap', '768m', '--pids-limit', '192',
@@ -97,6 +111,11 @@ def main():
                                     stdin=source, capture_output=True, timeout=60)
         if copied.returncode or docker('exec', mysql_id, 'chmod', '700', '/opt/identity.test').returncode:
             raise RuntimeError('Identity runner transfer failed')
+        if payment_cli:
+            with worker.open('rb') as source:
+                copied_worker = subprocess.run(['docker', 'exec', '-i', mysql_id, '/bin/sh', '-c', 'umask 077; cat > /opt/order-payment-worker'], stdin=source, capture_output=True, timeout=60)
+            if copied_worker.returncode or docker('exec', mysql_id, 'chmod', '700', '/opt/order-payment-worker').returncode:
+                raise RuntimeError('Production order payment CLI transfer failed')
         # One public artificial oracle; no application configuration or data.
         if not usage_only and (docker('exec', mysql_id, 'mkdir', '-p', '/docs/migration/fixtures').returncode or docker('cp', str(ROOT/'docs/migration/fixtures/cart-promotion-context.json'), mysql_id+':/docs/migration/fixtures/cart-promotion-context.json').returncode):
             raise RuntimeError('Artificial promotion context oracle transfer failed')
@@ -123,7 +142,7 @@ def main():
             suites = ['AdminAuthentication','InventoryStockEdits','ProductInventory']
         for suite in suites:
             print(json.dumps({'running_suite': suite}), flush=True)
-            tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1', mysql_id,
+            tested = docker('exec', '-e', 'MYSQL_PWD=' + password, '-e', 'IDENTITY_REHEARSAL=1', *(['-e', 'ORDER_PAYMENT_CLI_BINARY=/opt/order-payment-worker'] if payment_cli else []), mysql_id,
                             '/opt/identity.test', '-test.v', '-test.run', '^TestOwned' + suite + '$',
                             '-test.timeout', '150s', timeout=180)
             output += tested.stdout
@@ -717,11 +736,22 @@ def main():
                 raise RuntimeError('Identity fixture ownership mismatch; cleanup refused')
             if docker('rm', '-f', '-v', container).returncode:
                 raise RuntimeError('Owned identity fixture cleanup failed')
+        if payment_cli and worker.exists():
+            worker.unlink()
         if owned_binary and binary.exists():
             binary.unlink()
     if warehouses_only:
         files=['retail/backend/internal/devices/warehouse.go','retail/backend/internal/devices/warehouse_reserved_release.go','retail/backend/internal/identity/warehouse_reserved_release_test.go','retail/backend/internal/identity/warehouse_devices_test.go','retail/scripts/test-admin-auth.py']
         report.setdefault('implementation_sha256',{}).update({p:hashlib.sha256((ROOT/p).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for p in files})
+    if payment_cli:
+        markers = [line.split('ORDER_PAYMENT_CLI_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'ORDER_PAYMENT_CLI_REHEARSAL ' in line]
+        if tested.returncode or len(markers) != 1:
+            raise RuntimeError('Production payment CLI evidence missing')
+        if any(hashlib.sha256((ROOT/p).read_bytes().replace(b'\r\n', b'\n')).hexdigest() != digest for p, digest in cli_sources.items()):
+            raise RuntimeError('Payment CLI source changed during verification')
+        report['order_payment_cli'] = json.loads(markers[0])
+        report['order_payment_cli_binary_sha256'] = worker_sha256
+        report['implementation_sha256'].update(cli_sources)
     report['cleanup'] = 'both owned containers and temporary runner removed'
     report_name = 'warehouse-runtime-report.json' if warehouses_only else 'cart-order-snapshot-runtime-report.json' if snapshot_only else 'order-numbering-runtime-report.json' if numbering_only else 'cart-payment-status-runtime-report.json' if status_only else 'cart-initial-payment-runtime-report.json' if initial_only else 'cart-delivery-runtime-report.json' if delivery_only else 'cart-contacts-runtime-report.json' if contacts_only else 'store-collections-runtime-report.json' if collection_only else 'gin-customer-accounts-report.json' if customer_only else 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
     (ROOT / 'docs/migration' / report_name).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
