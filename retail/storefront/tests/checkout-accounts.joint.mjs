@@ -39,7 +39,7 @@ export async function registerCheckoutCustomer({page,context,shop,segment,index,
  if(previousOrder)assert.equal((await context.request.get(shop+'/api/store/customer/orders/'+previousOrder)).status(),404)
 }
 
-export async function verifyCheckoutAccountOrder({page,context,shop,segment,orderID,index,expect}){
+export async function verifyCheckoutAccountOrder({page,context,shop,segment,orderID,index,expect,afterDetail}){
  await expect.poll(async()=> (await context.request.get(shop+'/api/store/customer/orders/'+orderID)).status()).toBe(200)
  await expect(page.getByTestId('order-account-attachment-error')).toHaveCount(0)
  await context.clearCookies({name:'retail_cart_possession'})
@@ -52,6 +52,7 @@ export async function verifyCheckoutAccountOrder({page,context,shop,segment,orde
  await expect(page.getByTestId('cart-total')).toHaveAttribute('data-value','158.75')
  await page.reload({waitUntil:'domcontentloaded'})
  await expect(page.getByTestId('order-details-container')).toBeVisible()
+ if(afterDetail)await afterDetail()
  await page.goto(shop+`/${segment}/account`,{waitUntil:'domcontentloaded'})
  await page.locator('[data-testid="logout-button"]:visible').click()
  await expect(page.getByTestId('login-page')).toBeVisible()

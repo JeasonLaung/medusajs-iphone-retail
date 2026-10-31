@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import {startCheckoutFulfillment,verifyCheckoutShipment} from '../../admin/tests/checkout-fulfillment.joint.mjs'
 import {registerCheckoutCustomer,verifyCheckoutAccountOrder} from './checkout-accounts.joint.mjs'
 import {spawn} from 'node:child_process'
 import {once} from 'node:events'
@@ -8,9 +9,9 @@ const require=createRequire(new URL('../../admin/package.json',import.meta.url))
 const target=new URL(process.env.CUSTOMER_ORDERS_TEST_GIN??''),key=process.env.CHECKOUT_FIXTURE_KEY,shop='http://127.0.0.1:19379'
 assert.equal(target.hostname,'127.0.0.1');assert.equal(target.protocol,'http:');assert.equal(target.pathname,'/');assert.ok(target.port);assert.match(key??'',/^[0-9a-f]{64}$/)
 const browse=process.env.CHECKOUT_PRODUCT_BROWSE==='1',fresh=process.env.CHECKOUT_FRESH_CART==='1'
-const accounts=process.env.CHECKOUT_ACCOUNTS==='1'
-assert.ok(!fresh||browse);assert.ok(!accounts||fresh)
-let app,browser
+const accounts=process.env.CHECKOUT_ACCOUNTS==='1',fulfillment=process.env.CHECKOUT_FULFILLMENT==='1'
+assert.ok(!fresh||browse);assert.ok(!accounts||fresh);assert.ok(!fulfillment||accounts)
+let app,browser,fulfiller
 const control=async path=>{
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),1500)
  try{return await fetch(new URL('/__fixture/'+path,target),{method:path==='ready'||path.startsWith('verification/')?'GET':'POST',headers:{'X-Fixture-Key':key},signal:controller.signal})}finally{clearTimeout(timer)}
@@ -24,11 +25,17 @@ try{
  for(let i=0;i<100;i++){if(app.exitCode!==null)throw Error('Owned Astro stopped');try{if((await fetch(shop+'/health')).ok){ready=true;break}}catch{}await delay(100)}assert.ok(ready)
  browser=await chromium.launch({headless:true,executablePath:process.env.ADMIN_TEST_BROWSER||'C:/Program Files/Google/Chrome/Application/chrome.exe'})
  const errors=[],orders=new Set(),starts=[],completions=[]
+ if(fulfillment)fulfiller=await startCheckoutFulfillment({browser,target:target.origin,errors})
  let index=0
  for(const segment of ['dk-en','dk-zh'])for(const width of [390,1440]){
   const cart=fresh?{}:fixture.carts[index],context=await browser.newContext({viewport:{width,height:1100},reducedMotion:'reduce'}),page=await context.newPage()
   index++;context.setDefaultTimeout(12000)
   page.on('pageerror',e=>errors.push(e.message))
+  const observedStatuses=[]
+  // Capture the real response before the application can navigate away from
+  // the result page; forward its original bytes/headers without substitution.
+  await page.route('**/payment-status',async route=>{const response=await route.fetch();observedStatuses.push({status:response.status(),body:await response.json()});await route.fulfill({response})})
+  const nextStatus=()=>{const index=observedStatuses.length;return expect.poll(()=>observedStatuses.length).toBeGreaterThan(index).then(()=>observedStatuses[index])}
   page.on('request',request=>{
    if(request.method()==='POST'&&request.url().endsWith('/payment-attempts'))starts.push({input:request.postDataJSON(),key:request.headers()['idempotency-key']})
    if(request.method()==='POST'&&request.url().endsWith('/complete'))completions.push(request.postDataJSON())
@@ -36,8 +43,8 @@ try{
   })
   if(accounts)await registerCheckoutCustomer({page,context,shop,segment,index,control,expect,previousOrder:[...orders].at(-1)})
   if(!fresh)await context.addCookies([{name:'retail_cart_possession',value:cart.token,url:shop,httpOnly:true,sameSite:'Lax'},{name:'retail_cart_csrf',value:cart.csrf,url:shop,sameSite:'Lax'}])
-  // Only the external hosted payment screen is a test double. No Gin/Astro
-  // business response is intercepted, and no real payment service is called.
+  // Only the external hosted payment screen is a test double. The status
+  // observer above forwards real business responses; no real provider is called.
   await page.route('https://www.mollie.com/**',async route=>{
    assert.match(route.request().url(),/^https:\/\/www\.mollie\.com\/checkout\/joint\/payses_/)
    await route.fulfill({status:200,contentType:'text/html',body:`<h1>Isolated provider checkout</h1><a href="${shop}/${segment}/payment-result?cart_id=${cart.id}">Return to shop</a>`})
@@ -79,12 +86,12 @@ try{
   assert.deepEqual(starts.at(-1),starts.at(-2),'Reload changed the original payment operation')
   await page.getByTestId('submit-order-button').click()
   await expect(page).toHaveURL(/^https:\/\/www\.mollie\.com\/checkout\/joint\//)
-  const pendingResponse=page.waitForResponse(r=>r.url().endsWith('/payment-status')).then(async response=>({status:response.status(),body:await response.json()}))
+  const pendingResponse=nextStatus()
   await page.getByRole('link',{name:'Return to shop'}).click()
   const pending=await pendingResponse;assert.equal(pending.status,200);assert.equal(pending.body.state,'pending')
   await expect(page.getByTestId('payment-result')).toHaveAttribute('data-status','pending')
   assert.equal((await control('paid/'+cart.id)).status,204)
-  const paidResponse=page.waitForResponse(r=>r.url().endsWith('/payment-status')).then(async response=>({status:response.status(),body:await response.json()}))
+  const paidResponse=nextStatus()
   const completionResponse=page.waitForResponse(r=>r.url().endsWith('/complete'))
   // Preserve the original navigation/assertion error if cleanup closes a
   // still-pending response waiter; awaiting below still propagates rejection.
@@ -105,7 +112,7 @@ try{
   const replay=await context.request.post(shop+`/api/store/carts/${cart.id}/complete`,{data:{},headers:{Origin:shop,'X-CSRF-Token':cart.csrf}})
   assert.equal(replay.status(),200);assert.equal((await replay.json()).order_id,orderID)
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
-  if(accounts)await verifyCheckoutAccountOrder({page,context,shop,segment,orderID,index,expect})
+  if(accounts)await verifyCheckoutAccountOrder({page,context,shop,segment,orderID,index,expect,afterDetail:fulfillment?async()=>{const result=await fulfiller.fulfill(orderID,index);await verifyCheckoutShipment({page,context,shop,orderID,result,expect})}:undefined})
   await context.clearCookies()
   const denied=await context.request.get(shop+`/api/store/orders/${orderID}/confirmation`)
   assert.equal(denied.status(),401)
@@ -113,5 +120,5 @@ try{
  }
  assert.equal(orders.size,4);assert.equal(starts.length,8);assert.equal(completions.length,4);assert.deepEqual(errors,[])
  assert.equal((await control('finish')).status,204)
- console.log('CHECKOUT_JOINT_BROWSER '+JSON.stringify({actual_astro_checkout:true,actual_gin_handlers:true,real_mysql_redis:true,mocked_business_api_responses:false,isolated_provider_adapter_and_hosted_page:true,real_provider_payments:false,preseeded_cart_items:!browse,precreated_empty_cart:browse&&!fresh,anonymous_cart_creation:fresh,registration_verification_login:accounts,paid_order_account_attachment:accounts,account_read_without_cart:accounts,cross_account_denied:accounts,same_browser_account_switch:accounts,logout_denies_order:accounts,product_page_add_cart_checkout:browse,address_delivery_payment_review_result_confirmation:true,pending_before_paid:true,payment_reload_replays_original:true,confirmation_reload:true,completion_replay_same_order:true,unauthenticated_confirmation_denied:true,payment_journal_cleared:true,languages:['en','zh'],widths:[390,1440],unique_orders:4,browser_errors:0,real_email_delivery:false}))
-}catch(error){console.error(error);throw error}finally{await browser?.close();if(app&&app.exitCode===null){app.kill();await once(app,'exit')}}
+ console.log('CHECKOUT_JOINT_BROWSER '+JSON.stringify({actual_astro_checkout:true,actual_gin_handlers:true,real_mysql_redis:true,mocked_business_api_responses:false,isolated_provider_adapter_and_hosted_page:true,real_provider_payments:false,preseeded_cart_items:!browse,precreated_empty_cart:browse&&!fresh,anonymous_cart_creation:fresh,registration_verification_login:accounts,paid_order_account_attachment:accounts,account_read_without_cart:accounts,cross_account_denied:accounts,same_browser_account_switch:accounts,logout_denies_order:accounts,product_page_add_cart_checkout:browse,address_delivery_payment_review_result_confirmation:true,pending_before_paid:true,payment_reload_replays_original:true,confirmation_reload:true,completion_replay_same_order:true,unauthenticated_confirmation_denied:true,payment_journal_cleared:true,languages:['en','zh'],widths:[390,1440],unique_orders:4,browser_errors:0,real_email_delivery:false,same_new_order_fulfillment:fulfillment,warehouse_cancel_release_reallocate_repack_ship:fulfillment,lost_release_and_shipment_reply_replayed:fulfillment,customer_actual_device_tracking_and_notice:fulfillment}))
+}catch(error){console.error(error);throw error}finally{await fulfiller?.close();await browser?.close();if(app&&app.exitCode===null){app.kill();await once(app,'exit')}}

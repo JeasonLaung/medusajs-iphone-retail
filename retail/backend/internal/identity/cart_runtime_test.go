@@ -28,7 +28,11 @@ func TestOwnedCartRuntime(t *testing.T) {
 	if os.Getenv("IDENTITY_REHEARSAL") != "1" {
 		t.Skip("owned MySQL/Redis required")
 	}
-	ctx, cancel := context.WithTimeout(t.Context(), 100*time.Second)
+	duration := 100 * time.Second
+	if os.Getenv("CHECKOUT_FULFILLMENT") == "1" {
+		duration = 6 * time.Minute
+	}
+	ctx, cancel := context.WithTimeout(t.Context(), duration)
 	defer cancel()
 	cfg := driver.NewConfig()
 	cfg.User, cfg.Passwd, cfg.Net, cfg.Addr = "root", os.Getenv("MYSQL_PWD"), "unix", "/var/run/mysqld/mysqld.sock"

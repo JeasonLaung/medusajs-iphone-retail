@@ -54,6 +54,10 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	}
 	const origin = "http://127.0.0.1:19379"
 	fresh := os.Getenv("CHECKOUT_FRESH_CART") == "1"
+	fulfillment := os.Getenv("CHECKOUT_FULFILLMENT") == "1"
+	if fulfillment && (os.Getenv("CHECKOUT_ACCOUNTS") != "1" || !fresh) {
+		t.Fatal("fulfillment requires fresh customer checkout")
+	}
 	exec("UPDATE commerce_store_locales SET locale_code='en-GB' WHERE store_id='shop' AND locale_code='en'")
 	defer exec("UPDATE commerce_store_locales SET locale_code='en' WHERE store_id='shop' AND locale_code='en-GB'")
 	exec("UPDATE cart_completion_runtime SET enabled=TRUE WHERE id=1")
@@ -63,12 +67,16 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	exec("UPDATE inventory_command_capabilities SET enabled=TRUE WHERE command='inventory.reservations'")
 	defer exec("UPDATE inventory_command_capabilities SET enabled=FALSE WHERE command='inventory.reservations'")
 	// Preserve and check the actual stock increment caused by these four orders.
-	var reservedBefore string
+	var reservedBefore, stockedBefore string
+	if db.Table("inventory_levels").Select("CAST(stocked_quantity AS CHAR)").Where("id='add-level'").Scan(&stockedBefore).Error != nil {
+		t.Fatal("checkout stock baseline")
+	}
 	if db.Table("inventory_levels").Select("CAST(reserved_quantity AS CHAR)").Where("id='add-level'").Scan(&reservedBefore).Error != nil {
 		t.Fatal("owned checkout stock baseline unavailable")
 	}
-	// Each fixture SKU consumes 2.5 inventory units. Add only the ten units
-	// needed by these four carts to this disposable database, retaining holds.
+	// The default four carts consume ten units (2.5 per SKU). Keep this same
+	// owned stock increment in serialized fulfillment mode and check its net
+	// deduction separately, preserving all pre-existing holds.
 	exec("UPDATE inventory_levels SET stocked_quantity=stocked_quantity+10 WHERE id='add-level'")
 	type fixtureCart struct {
 		ID    string `json:"id"`
@@ -152,12 +160,19 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		t.Fatal(err)
 	}
 	options.Adapters, options.ReturnOrigin = registry, origin
+	if fulfillment {
+		options.ManualProviders = append(options.ManualProviders, "manual_manual")
+	}
 	shop, err := cart.NewHTTP(db, cart.HTTPOptions{Sessions: sessions, Origin: origin, StoreID: "shop", ManualProviderIDs: options.ManualProviders, InitialPayment: &options})
 	if err != nil {
 		t.Fatal("owned checkout handler unavailable", err)
 	}
 	router := gin.New()
 	_ = router.SetTrustedProxies(nil)
+	if fulfillment {
+		cleanup := mountCheckoutFulfillment(t, ctx, db, sessions, router)
+		defer cleanup()
+	}
 	public := router.Group("/api/store")
 	shop.Register(public)
 	catalogue := catalog.StoreHandler{DB: db, StoreID: "shop"}
@@ -260,14 +275,34 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	if db.Table("inventory_levels").Select("CAST(reserved_quantity AS CHAR)").Where("id='add-level'").Scan(&reservedAfter).Error != nil {
 		t.Fatal("browser final stock unavailable")
 	}
+	expectedDelta := int64(10)
+	if fulfillment {
+		expectedDelta = 0
+	}
 	before, ok := new(big.Rat).SetString(reservedBefore)
 	after, valid := new(big.Rat).SetString(reservedAfter)
-	if !ok || !valid || new(big.Rat).Sub(after, before).Cmp(big.NewRat(10, 1)) != 0 {
+	if !ok || !valid || new(big.Rat).Sub(after, before).Cmp(big.NewRat(expectedDelta, 1)) != 0 {
 		t.Fatal("browser stock reservation delta differs")
 	}
 	if os.Getenv("CHECKOUT_ACCOUNTS") == "1" {
 		checkCheckoutAccountReceipts(t, db, orderIDs)
 	}
+	if fulfillment {
+		checkCheckoutFulfillment(t, db, orderIDs)
+		var stockedAfter string
+		if db.Table("inventory_levels").Select("CAST(stocked_quantity AS CHAR)").Where("id='add-level'").Scan(&stockedAfter).Error != nil {
+			t.Fatal("checkout final stock")
+		}
+		a, aOK := new(big.Rat).SetString(stockedAfter)
+		b, bOK := new(big.Rat).SetString(stockedBefore)
+		if !aOK || !bOK || new(big.Rat).Sub(a, b).Cmp(big.NewRat(6, 1)) != 0 {
+			t.Fatal("checkout exact stock delta")
+		}
+	}
 	checkCheckoutMailJoint(t, ctx, db, options.Ring, orderIDs)
-	t.Log(`CHECKOUT_JOINT_SQL {"four_unique_orders":true,"four_provider_creations":true,"notification_outbox_per_order":true,"reservation_operation_per_order":true,"captured_amount":"158.75","reserved_inventory_delta":"10"}`)
+	if !fulfillment {
+		t.Log(`CHECKOUT_JOINT_SQL {"four_unique_orders":true,"four_provider_creations":true,"notification_outbox_per_order":true,"reservation_operation_per_order":true,"captured_amount":"158.75","reserved_inventory_delta":"10"}`)
+	} else {
+		t.Log(`CHECKOUT_JOINT_SQL {"four_unique_orders":true,"four_provider_creations":true,"notification_outbox_per_order":true,"reservation_operation_per_order":true,"captured_amount":"158.75","reserved_inventory_delta":"0"}`)
+	}
 }
