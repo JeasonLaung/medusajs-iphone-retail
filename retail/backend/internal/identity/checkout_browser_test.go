@@ -158,7 +158,7 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		},
 	}
 	var adapter payments.CreateSessionAdapter = observer
-	if os.Getenv("CHECKOUT_REFUND") == "1" || os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" {
+	if os.Getenv("CHECKOUT_REFUND") == "1" || os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" || os.Getenv("CHECKOUT_SUPPLEMENT_REFUND") == "1" {
 		adapter = checkoutRefundAdapter{observer}
 	}
 	registry, err := payments.NewCreateAdapters(map[string]payments.CreateSessionAdapter{"pp_mollie-hosted-checkout_mollie": adapter})
@@ -180,7 +180,7 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		defer cleanup()
 	}
 	var refundWorker *checkoutRefundWorker
-	if os.Getenv("CHECKOUT_REFUND") == "1" || os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" {
+	if os.Getenv("CHECKOUT_REFUND") == "1" || os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" || os.Getenv("CHECKOUT_SUPPLEMENT_REFUND") == "1" {
 		var cleanup func()
 		refundWorker, cleanup = startCheckoutRefundWorker(t, ctx, db)
 		defer cleanup()
@@ -324,7 +324,9 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 		checkCheckoutAccountReceipts(t, db, orderIDs)
 	}
 	if fulfillment {
-		if refundWorker != nil {
+		if os.Getenv("CHECKOUT_SUPPLEMENT_REFUND") == "1" {
+			checkCheckoutSupplementRefund(t, db, orderIDs, refundWorker)
+		} else if refundWorker != nil {
 			checkCheckoutRefund(t, db, orderIDs, refundWorker)
 			if os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" {
 				checkCheckoutExchange(t, db, orderIDs)

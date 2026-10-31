@@ -3,9 +3,9 @@ import {expect} from '@playwright/test'
 import {fileURLToPath} from 'node:url'
 import {lostReply} from './checkout-repair.joint.mjs'
 
-export async function refundCheckoutOrder({page,origin,orderID,request,result,index}){
+export async function refundCheckoutOrder({page,origin,orderID,request,result,index,amount="158.75",paymentID,expectCompletionConflict=false}){
  await page.goto(origin+'/orders/'+orderID)
- const panel=page.getByTestId('order-after-sales');await expect(panel.getByText('Pending',{exact:true})).toBeVisible()
+ const panel=page.getByTestId('order-after-sales').locator('tr[data-row-key="'+request.id+'"]');await expect(panel.getByText('Pending',{exact:true})).toBeVisible()
  await panel.getByRole('button',{name:'Save',exact:true}).click();await page.getByRole('button',{name:'Confirm update',exact:true}).click();await expect(panel.locator('.ant-tag')).toHaveText('Processing')
  await panel.getByRole('button',{name:'Receive device',exact:true}).click();const receipt=page.getByRole('dialog')
  for(const label of ['Originally shipped device','Receiving source / warehouse']){const input=receipt.getByLabel(label,{exact:true});await input.focus();await input.press('ArrowDown');await input.press('Enter')}
@@ -16,13 +16,16 @@ export async function refundCheckoutOrder({page,origin,orderID,request,result,in
  await service.locator('input[type="file"]').first().setInputFiles({name:'return-inspection.png',mimeType:'image/png',buffer:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jB9kAAAAASUVORK5CYII=','base64')})
  await expect(service.locator('.ant-upload-list-item-done')).toHaveCount(1)
  await lostReply(page,'**/after-sales/'+request.id+'/devices/*/service',service,()=>service.getByRole('button',{name:'Save inspection',exact:true}).click(),'Retry this operation',async()=>{await expect(service.getByText('Device operation saved',{exact:true})).toBeVisible();await expect(service.getByText('available',{exact:true})).toBeVisible()})
- const accepted=await submitCheckoutRefund({page,orderID,request,index,amount:'158.75'})
- await page.reload();await panel.locator('.ant-select-selector').click();await page.locator('.ant-select-item-option[title="Completed"]').click();await panel.getByRole('button',{name:'Save',exact:true}).click();await page.getByRole('button',{name:'Confirm update',exact:true}).click();await expect(panel.locator('.ant-tag')).toHaveText('Completed')
+ const accepted=await submitCheckoutRefund({page,orderID,request,index,amount,paymentID})
+ await page.reload();await panel.locator('.ant-select-selector').click();await page.locator('.ant-select-item-option[title="Completed"]').click();await panel.getByRole('button',{name:'Save',exact:true}).click();const completed=expectCompletionConflict?page.waitForResponse(r=>r.request().method()==='POST'&&r.url().endsWith('/orders/'+orderID+'/after-sales')):null
+ await page.getByRole('button',{name:'Confirm update',exact:true}).click()
+ if(completed){const denied=await completed;assert.equal(denied.status(),409);assert.equal((await denied.json()).error.code,'after_sales.unavailable');await expect(panel.locator('.ant-tag')).toHaveText('Processing')}
+ else await expect(panel.locator('.ant-tag')).toHaveText('Completed')
  return accepted
 }
-export async function submitCheckoutRefund({page,orderID,request,index,amount}){
- const panel=page.getByTestId('order-after-sales');await page.reload();await panel.getByRole('button',{name:'Refund history and actions',exact:true}).click();const drawer=page.getByRole('dialog')
- const payment=drawer.getByLabel('Original payment',{exact:true});await payment.focus();await payment.press('ArrowDown');await payment.press('Enter')
+export async function submitCheckoutRefund({page,orderID,request,index,amount,paymentID}){
+ const panel=page.getByTestId('order-after-sales').locator('tr[data-row-key="'+request.id+'"]');await page.reload();await panel.getByRole('button',{name:'Refund history and actions',exact:true}).click();const drawer=page.getByRole('dialog')
+ const payment=drawer.getByLabel('Original payment',{exact:true});await payment.focus();if(paymentID){await payment.click();await page.locator('.ant-select-item-option').filter({hasText:paymentID}).click()}else{await payment.press('ArrowDown');await payment.press('Enter')}
  await drawer.getByLabel('Refund amount (two decimal places)',{exact:true}).fill(amount)
  const accepted=await lostReply(page,'**/after-sales/'+request.id+'/refunds',drawer,()=>drawer.getByRole('button',{name:'Submit refund instruction',exact:true}).click(),'Retry same refund operation',()=>expect(drawer.getByText('Instruction accepted. Check its processing status.',{exact:true})).toBeVisible(),202)
  assert.equal(accepted.amount,amount)

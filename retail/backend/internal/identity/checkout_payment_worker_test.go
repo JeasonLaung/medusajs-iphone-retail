@@ -133,7 +133,7 @@ func startCheckoutPaymentWorker(t *testing.T, ctx context.Context, db *gorm.DB, 
 		defer close(done)
 		for {
 			cmd := exec.CommandContext(workerCtx, binary, "--once")
-			cmd.Env = []string{"PATH=/usr/bin:/bin", "MYSQL_DSN=root:" + os.Getenv("MYSQL_PWD") + "@unix(/var/run/mysqld/mysqld.sock)/" + database + "?parseTime=true&loc=UTC", "CHECKOUT_PAYMENT_ENABLED=true", "ORDER_PAYMENTS_ENABLED=true", "MOLLIE_NOTIFICATIONS_ENABLED=true", "STOREFRONT_ORIGIN=http://127.0.0.1:19379", "MOLLIE_BACKEND_ORIGIN=http://127.0.0.1:9100", "STOREFRONT_STORE_ID=shop", "MOLLIE_API_KEY=test_artificialPaymentJoint", "PAYMENT_KEY_ACTIVE=initial", "PAYMENT_KEYRING_JSON={\"initial\":\"" + hex.EncodeToString(bytes.Repeat([]byte{0x71}, 32)) + "\"}", "HTTPS_PROXY=" + proxy.URL, "NO_PROXY=", "SSL_CERT_FILE=" + ca, "SSL_CERT_DIR=" + directory}
+			cmd.Env = []string{"PATH=/usr/bin:/bin", "MYSQL_DSN=root:" + os.Getenv("MYSQL_PWD") + "@unix(/var/run/mysqld/mysqld.sock)/" + database + "?parseTime=true&loc=UTC", "CHECKOUT_PAYMENT_ENABLED=true", "ORDER_PAYMENTS_ENABLED=true", "MOLLIE_NOTIFICATIONS_ENABLED=true", "STOREFRONT_ORIGIN=http://127.0.0.1:19379", "MOLLIE_BACKEND_ORIGIN=http://127.0.0.1:9100", "STOREFRONT_STORE_ID=shop", "MOLLIE_API_KEY=test_artificialPaymentJoint", "PAYMENT_KEY_ACTIVE=initial", "PAYMENT_KEYRING_JSON={\"initial\":\"" + hex.EncodeToString(bytes.Repeat([]byte{0x71}, 32)) + "\"}", "HTTPS_PROXY=" + proxy.URL, "NO_PROXY=", "MOLLIE_CA_FILE=" + ca, "SSL_CERT_FILE=" + ca, "SSL_CERT_DIR=" + directory}
 			state.runs.Add(1)
 			output, e := cmd.CombinedOutput()
 			if workerCtx.Err() != nil {
@@ -261,6 +261,9 @@ func checkCheckoutExchangePayment(t *testing.T, db *gorm.DB, orders []string, s 
 				t.Fatalf("joint payment facts differ %s: %d %v", q, n, e)
 			}
 		}
+	}
+	if os.Getenv("CHECKOUT_SUPPLEMENT_REFUND") == "1" {
+		return // Final refund-state assertions belong to the combined checker.
 	}
 	t.Log(`CHECKOUT_EXCHANGE_PAYMENT_JOINT_SQL {"same_four_registered_verified_customers":true,"same_four_original_paid_shipped_orders":true,"exact_supplemental_amount":"6.00","original_cash":"158.75","current_cash":"164.75","pending_difference":"0","separate_production_cli":true,"single_post_each":true,"lost_response_new_process_get_recovery":true,"unique_payment_capture_positive_transaction":true,"five_own_read_notices_each":true,"replacement_shipped_after_settlement":true,"original_checkout_retained":true,"real_provider":false,"real_email":false}`)
 }

@@ -72,7 +72,7 @@ export async function startCheckoutFulfillment({browser,target,errors}){
     assert.equal((await worker.request.get(origin+'/api/admin/orders/'+orderID)).status(),403)
     return {sn,tracking,canceled,shipped}
    },
-   async refund(orderID,request,result,index){return refundCheckoutOrder({page,origin,orderID,request,result,index})},
+   async refund(orderID,request,result,index,options={}){return refundCheckoutOrder({page,origin,orderID,request,result,index,...options})},
    async exchange(orderID,request,result,index,settlePayment){return exchangeCheckoutOrder({page,origin,orderID,request,result,index,pack,warehouse,parcel,retryLost,settlePayment})},
    async repair(orderID,request,result,index){return repairCheckoutOrder({page,origin,orderID,request,result,index})},
    async close(){await worker.close();await admin.close();await server.close()}

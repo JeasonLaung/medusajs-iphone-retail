@@ -16,6 +16,7 @@ import (
 	"math/big"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -122,7 +123,7 @@ func startCheckoutRefundWorker(t *testing.T, ctx context.Context, db *gorm.DB) (
 		defer close(done)
 		for {
 			cmd := exec.CommandContext(workerCtx, binary, "--once")
-			cmd.Env = []string{"PATH=/usr/bin:/bin", "MYSQL_DSN=root:" + os.Getenv("MYSQL_PWD") + "@unix(/var/run/mysqld/mysqld.sock)/" + database + "?parseTime=true&loc=UTC", "CHECKOUT_PAYMENT_ENABLED=true", "ORDER_REFUNDS_ENABLED=true", "STOREFRONT_ORIGIN=http://127.0.0.1:19379", "MOLLIE_BACKEND_ORIGIN=http://127.0.0.1:9100", "STOREFRONT_STORE_ID=shop", "MOLLIE_API_KEY=test_artificialRefundJoint", "PAYMENT_KEY_ACTIVE=initial", "PAYMENT_KEYRING_JSON={\"initial\":\"" + hex.EncodeToString(bytes.Repeat([]byte{0x71}, 32)) + "\"}", "HTTPS_PROXY=" + proxy.URL, "NO_PROXY=", "SSL_CERT_FILE=" + ca, "SSL_CERT_DIR=" + directory}
+			cmd.Env = []string{"PATH=/usr/bin:/bin", "MYSQL_DSN=root:" + os.Getenv("MYSQL_PWD") + "@unix(/var/run/mysqld/mysqld.sock)/" + database + "?parseTime=true&loc=UTC", "CHECKOUT_PAYMENT_ENABLED=true", "ORDER_REFUNDS_ENABLED=true", "STOREFRONT_ORIGIN=http://127.0.0.1:19379", "MOLLIE_BACKEND_ORIGIN=http://127.0.0.1:9100", "STOREFRONT_STORE_ID=shop", "MOLLIE_API_KEY=test_artificialRefundJoint", "PAYMENT_KEY_ACTIVE=initial", "PAYMENT_KEYRING_JSON={\"initial\":\"" + hex.EncodeToString(bytes.Repeat([]byte{0x71}, 32)) + "\"}", "HTTPS_PROXY=" + proxy.URL, "NO_PROXY=", "MOLLIE_CA_FILE=" + ca, "SSL_CERT_FILE=" + ca, "SSL_CERT_DIR=" + directory}
 			state.runs.Add(1)
 			output, e := cmd.CombinedOutput()
 			if workerCtx.Err() != nil {
@@ -179,12 +180,25 @@ func (s *checkoutRefundWorker) response(t *testing.T, db *gorm.DB, r *http.Reque
 	payment := parts[2]
 	if r.Method == "GET" && len(parts) == 3 {
 		s.gets.Add(1)
-		var row struct{ SessionID, CartID string }
-		if db.Table("order_refund_operations o").Select("o.session_id,c.cart_id").Joins("JOIN cart_completion_receipts c ON c.order_id=o.order_id").Where("o.remote_payment_id=?", payment).Take(&row).Error != nil {
+		var row struct{ SessionID, CartID, Amount, ScopeID, OrderID, CheckoutOperationID string }
+		if db.Table("order_refund_operations o").Select("o.session_id,c.cart_id,o.scope_id,p.amount,o.order_id,o.checkout_operation_id").Joins("JOIN cart_completion_receipts c ON c.order_id=o.order_id").Joins("JOIN payments p ON p.id=o.payment_id").Where("o.remote_payment_id=?", payment).Take(&row).Error != nil {
 			t.Error("refund original session unavailable")
 			return 404, nil, false
 		}
-		return 200, map[string]any{"id": payment, "resource": "payment", "redirectUrl": "http://127.0.0.1:19379/api/mollie-return?cart_id=" + row.CartID, "mode": "test", "status": "paid", "amount": map[string]string{"value": "158.75", "currency": "EUR"}, "amountRemaining": map[string]string{"value": "158.75", "currency": "EUR"}, "metadata": map[string]string{"session_id": row.SessionID, "cart_id": row.CartID}}, false
+		amount, err := payments.MollieSettlementAmount(row.Amount)
+		if err != nil {
+			t.Error("refund payment amount invalid")
+			return 409, nil, false
+		}
+		if row.ScopeID != row.CartID && (os.Getenv("CHECKOUT_SUPPLEMENT_REFUND") != "1" || amount != "6.00") {
+			t.Error("refund must target this supplemental capture")
+			return 409, nil, false
+		}
+		redirect := "http://127.0.0.1:19379/api/mollie-return?cart_id=" + row.CartID
+		if row.ScopeID != row.CartID {
+			redirect = "http://127.0.0.1:19379/api/mollie-return?" + url.Values{"cart_id": {row.CartID}, "order_id": {row.OrderID}, "order_payment_id": {row.CheckoutOperationID}}.Encode()
+		}
+		return 200, map[string]any{"id": payment, "resource": "payment", "redirectUrl": redirect, "mode": "test", "status": "paid", "amount": map[string]string{"value": amount, "currency": "EUR"}, "amountRemaining": map[string]string{"value": amount, "currency": "EUR"}, "metadata": map[string]string{"session_id": row.SessionID, "cart_id": row.CartID}}, false
 	}
 	if len(parts) < 4 || parts[3] != "refunds" {
 		t.Error("unexpected refund resource")

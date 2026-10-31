@@ -68,7 +68,7 @@ func mountCheckoutFulfillment(t *testing.T, ctx context.Context, db *gorm.DB, se
 		exec("UPDATE " + table + " SET enabled=TRUE WHERE id=1")
 		addCleanup(func() { exec("UPDATE " + table + " SET enabled=FALSE WHERE id=1") })
 	}
-	if (os.Getenv("CHECKOUT_REFUND") == "1" || os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1") || os.Getenv("CHECKOUT_REPAIR") == "1" || os.Getenv("CHECKOUT_EXCHANGE") == "1" {
+	if (os.Getenv("CHECKOUT_REFUND") == "1" || os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" || os.Getenv("CHECKOUT_SUPPLEMENT_REFUND") == "1") || os.Getenv("CHECKOUT_REPAIR") == "1" || os.Getenv("CHECKOUT_EXCHANGE") == "1" {
 		// The ordinary cart fixture deliberately shares stock between two SKUs.
 		// This owned serialized SKU must satisfy the real enrollment contract.
 		exec("UPDATE catalog_variant_inventory_items SET deleted_at=UTC_TIMESTAMP(6) WHERE id='add-shared-link'")
@@ -90,12 +90,12 @@ func mountCheckoutFulfillment(t *testing.T, ctx context.Context, db *gorm.DB, se
 	if db.Create(&actor).Error != nil || db.Transaction(func(tx *gorm.DB) error { return authorization.Bootstrap(ctx, tx, actor.ID) }) != nil {
 		t.Fatal("checkout operator explicit grants")
 	}
-	if os.Getenv("CHECKOUT_REFUND") == "1" || os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" {
+	if os.Getenv("CHECKOUT_REFUND") == "1" || os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" || os.Getenv("CHECKOUT_SUPPLEMENT_REFUND") == "1" {
 		exec("UPDATE order_refund_runtime SET enabled=TRUE WHERE id=1")
 		addCleanup(func() { exec("UPDATE order_refund_runtime SET enabled=FALSE WHERE id=1") })
 	}
 	var admin *gin.Engine
-	if os.Getenv("CHECKOUT_REFUND") == "1" || os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" {
+	if os.Getenv("CHECKOUT_REFUND") == "1" || os.Getenv("CHECKOUT_EXCHANGE_REFUND") == "1" || os.Getenv("CHECKOUT_SUPPLEMENT_REFUND") == "1" {
 		admin, e = server.RouterWithAuthAndRefunds(db, identity.Options{Sessions: sessions, Origin: "http://127.0.0.1:19383"}, payments.MollieWebhookOptions{}, refunds.Options{Enabled: true, StoreID: "shop", Ring: options.Ring, Adapters: options.Adapters})
 	} else {
 		admin, e = server.RouterWithAuth(db, identity.Options{Sessions: sessions, Origin: "http://127.0.0.1:19383"})

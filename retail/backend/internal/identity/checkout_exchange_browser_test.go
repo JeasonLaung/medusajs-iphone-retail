@@ -49,6 +49,25 @@ func checkCheckoutExchange(t *testing.T, db *gorm.DB, orders []string) {
 				}
 				check.sql = strings.ReplaceAll(check.sql, "$.paid_total'))='158.75'", "$.paid_total'))='164.75'")
 			}
+			if os.Getenv("CHECKOUT_SUPPLEMENT_REFUND") == "1" {
+				if strings.Contains(check.sql, "customer_after_sales_operations") || strings.Contains(check.sql, "device_return_receipts") || strings.Contains(check.sql, "FROM returns ") {
+					check.want = 2
+				}
+				if strings.Contains(check.sql, "FROM device_service_receipts WHERE order_id=?") {
+					check.want = 3
+					if strings.Contains(check.sql, "JSON_UNQUOTE") {
+						check.want = 2
+					}
+				}
+				if strings.Contains(check.sql, "customer_account_notices n") {
+					check.want = 7
+				}
+				if strings.Contains(check.sql, "old.id=a.replacement_of") {
+					check.sql = strings.ReplaceAll(check.sql, "a.status='shipped' AND d.state='shipped'", "a.status='returned' AND d.state='available' AND d.category='sale'")
+				}
+				check.sql = strings.ReplaceAll(check.sql, "$.refunded_total'))='0'", "$.refunded_total'))='6'")
+				check.sql = strings.ReplaceAll(check.sql, "$.pending_difference'))='0'", "$.pending_difference'))='-150'")
+			}
 			var n int64
 			if e := db.Raw(check.sql, order).Scan(&n).Error; e != nil || n != check.want {
 				t.Fatalf("new order exchange facts differ %s: %d %v", check.sql, n, e)

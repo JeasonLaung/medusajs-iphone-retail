@@ -133,8 +133,11 @@ func checkSupplementalRefund(t *testing.T, ctx context.Context, db *gorm.DB, pai
 	}
 	exec("UPDATE payments SET data=? WHERE id=?", data.Data, command.PaymentID)
 	channel.lost.Store(true)
-	if _, e := s.Run(ctx, command.OperationID); e != payments.ErrRefundExecution || channel.posts.Load() != 1 {
-		t.Fatal("supplement refund lost POST", e)
+	if result, _, e := foreign.RunDue(ctx, ""); e != nil || result.Selected != 0 || channel.posts.Load() != 0 {
+		t.Fatal("foreign worker selected supplemental refund", result, e)
+	}
+	if result, _, e := s.RunDue(ctx, ""); e != nil || result.Selected != 1 || result.Failed != 1 || channel.posts.Load() != 1 {
+		t.Fatal("supplement refund worker lost POST", result, e)
 	}
 	exec("UPDATE order_refund_operations SET lease_until=UTC_TIMESTAMP(6)-INTERVAL 1 SECOND WHERE operation_id=?", command.OperationID)
 	exec("UPDATE customer_accounts SET enabled=TRUE WHERE id=(SELECT account_id FROM order_payment_operations WHERE operation_id=?)", in.OperationID)
