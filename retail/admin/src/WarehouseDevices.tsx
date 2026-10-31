@@ -45,6 +45,7 @@ export default function WarehouseDevices({copy,onExpired}:{copy:Copy;onExpired()
   </>}
  </Space><Drawer open={!!editor} title={editor?copy.deviceCommandNames[editor.action]:''} width={480} closable={!saving} maskClosable={!saving} keyboard={!saving} onClose={close}>
   {editor&&<Space direction="vertical" size={24} className="full-width"><Typography.Text>{editor.row.serial_number}</Typography.Text><Typography.Paragraph>{copy.deviceCommandConfirm}</Typography.Paragraph>
+   {editor.action==='release_reserved'&&<Alert type="info" showIcon message={copy.language==='语言'?'只解除此设备尚未装包的预配，恢复设备可售；数量库存和订单预留保持不变。':'Release only this device’s unpacked reservation and make it available. Quantity stock and order reservations remain unchanged.'}/>}
    {saveError!==undefined&&<Alert type="error" showIcon message={uncertain?copy.saveUncertain:copy.deviceIntakeConflict}/>}
    <Form form={form} layout="vertical" disabled={saving||!!command} onFinish={values=>void send({operation_id:crypto.randomUUID(),expected_revision:editor.row.revision,action:editor.action,...(editor.action==='transfer_return'?{notes:values.notes.trim()}:{})})}>
     {editor.action==='transfer_return'&&<><Alert type="info" showIcon message={copy.deviceTransferReturnInfo}/><Form.Item name="notes" label={copy.deviceTransferReturnReason} rules={[{required:true,whitespace:true,message:copy.required},{max:2000,message:copy.editTooLong}]}><Input.TextArea maxLength={2000} autoSize={{minRows:3,maxRows:8}}/></Form.Item></>}

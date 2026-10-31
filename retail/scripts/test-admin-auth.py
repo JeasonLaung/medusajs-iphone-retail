@@ -208,6 +208,9 @@ def main():
             transfer_markers = [line.split('WAREHOUSE_TRANSFER_RETURN_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'WAREHOUSE_TRANSFER_RETURN_REHEARSAL ' in line]
             if len(transfer_markers)!=1: raise RuntimeError('Warehouse transfer return verification missing')
             counts['warehouse_transfer_return'] = json.loads(transfer_markers[0])
+            release_markers=[line.split('WAREHOUSE_RESERVED_RELEASE_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'WAREHOUSE_RESERVED_RELEASE_REHEARSAL ' in line]
+            if len(release_markers)!=1:raise RuntimeError('Warehouse reserved release evidence missing')
+            counts['warehouse_reserved_release']=json.loads(release_markers[0])
             price_edit_markers = [line.split('PRICE_AMOUNT_EDIT_REHEARSAL ',1)[1] for line in tested.stdout.decode().splitlines() if 'PRICE_AMOUNT_EDIT_REHEARSAL ' in line]
             if len(price_edit_markers)!=1: raise RuntimeError('Price amount edit verification missing')
             counts['price_amount_edit'] = json.loads(price_edit_markers[0])
@@ -713,6 +716,9 @@ def main():
                 raise RuntimeError('Owned identity fixture cleanup failed')
         if owned_binary and binary.exists():
             binary.unlink()
+    if warehouses_only:
+        files=['retail/backend/internal/devices/warehouse.go','retail/backend/internal/devices/warehouse_reserved_release.go','retail/backend/internal/identity/warehouse_reserved_release_test.go','retail/backend/internal/identity/warehouse_devices_test.go','retail/scripts/test-admin-auth.py']
+        report.setdefault('implementation_sha256',{}).update({p:hashlib.sha256((ROOT/p).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for p in files})
     report['cleanup'] = 'both owned containers and temporary runner removed'
     report_name = 'warehouse-runtime-report.json' if warehouses_only else 'cart-order-snapshot-runtime-report.json' if snapshot_only else 'order-numbering-runtime-report.json' if numbering_only else 'cart-payment-status-runtime-report.json' if status_only else 'cart-initial-payment-runtime-report.json' if initial_only else 'cart-delivery-runtime-report.json' if delivery_only else 'cart-contacts-runtime-report.json' if contacts_only else 'store-collections-runtime-report.json' if collection_only else 'gin-customer-accounts-report.json' if customer_only else 'promotion-usage-report.json' if usage_only else 'cart-runtime-report.json' if cart_only else 'admin-auth-report.json'
     (ROOT / 'docs/migration' / report_name).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')

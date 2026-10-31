@@ -179,6 +179,20 @@
       "revoked_and_moved_replay_denied": true,
       "changed_request_denied": true
     },
+    "warehouse_reserved_release": {
+      "real_mysql_http": true,
+      "allocation_permission_only": true,
+      "no_order_projection": true,
+      "current_scope_and_binding": true,
+      "unpacked_only": true,
+      "inactive_order_denied": true,
+      "changed_assignment_revision_denied": true,
+      "late_failure_atomic": true,
+      "concurrency": 4,
+      "one_release_event": true,
+      "quantity_and_reservations_unchanged": true,
+      "changed_moved_revoked_replay_denied": true
+    },
     "price_amount_edit": {
       "default_disabled": true,
       "explicit_price_write": true,
@@ -326,9 +340,16 @@
       "sale_available_returned_inspection": true
     }
   },
-  "migrations": 78,
+  "migrations": 82,
   "isolated_mysql_redis": true,
   "published_ports": 0,
   "external_network": false,
+  "implementation_sha256": {
+    "retail/backend/internal/devices/warehouse.go": "2520e6041bca4106372cfb31d943ff9c709583c2d6e57dbf605f155c30659834",
+    "retail/backend/internal/devices/warehouse_reserved_release.go": "53d48d1ba1c3fe4db260e844b4e2c50e9633083408551d565596ff4fb17ff727",
+    "retail/backend/internal/identity/warehouse_reserved_release_test.go": "d3d9e0eaca48af791368a8a3d4b7f495f0d0efd40768786b3969b94a99a33c71",
+    "retail/backend/internal/identity/warehouse_devices_test.go": "f965256f7dbcd701fdca7b0a518a9363552d7ab6a19aa7e8986711ce4d7ac95a",
+    "retail/scripts/test-admin-auth.py": "aaecb81781e9d35e7d111832746153bb16b0472c68b3a03545bcea6ee47353fe"
+  },
   "cleanup": "both owned containers and temporary runner removed"
 }

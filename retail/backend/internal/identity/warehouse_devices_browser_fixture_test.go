@@ -35,6 +35,7 @@ func TestPrepareWarehouseDevicesBrowserFixture(t *testing.T) {
 	}
 	defer pool.Close()
 	for _, q := range []string{
+		"UPDATE order_device_allocation_runtime SET enabled=TRUE WHERE id=1",
 		"UPDATE device_runtime_schema SET identity_enabled=TRUE,commands_enabled=TRUE WHERE id=1",
 		"INSERT INTO catalog_products(id,title,handle,is_giftcard,status,discountable,created_at,updated_at) VALUES('joint-device-product','iPhone 14','joint-device-product',FALSE,'draft',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))",
 		"INSERT INTO catalog_variants(id,product_id,title,manage_inventory,allow_backorder,created_at,updated_at) VALUES('joint-device-variant','joint-device-product','Warehouse device SKU',TRUE,FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))",
@@ -48,6 +49,17 @@ func TestPrepareWarehouseDevicesBrowserFixture(t *testing.T) {
 	} {
 		if db.Exec(q).Error != nil {
 			t.Fatal("warehouse device fixture failed")
+		}
+	}
+	if db.Exec("INSERT INTO orders(id,version,status,is_draft_order,currency_code,created_at,updated_at) VALUES('joint-reserved-order',1,'pending',FALSE,'eur',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))").Error != nil {
+		t.Fatal("reserved order fixture")
+	}
+	for _, id := range []string{"4", "5", "6"} {
+		if db.Exec("INSERT INTO devices(id,serial_number,variant_id,source_id,location_id,cost_cents,currency_code,bin,notes,state,category,photos,created_at,updated_at) VALUES(?,?,'joint-device-variant','joint-device-source','joint-warehouse-a',0,'eur','','','reserved','sale','[]',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", "joint-device-"+id, "WAREHOUSE-RESERVED-"+id).Error != nil {
+			t.Fatal("reserved device fixture")
+		}
+		if db.Exec("INSERT INTO device_assignments(id,device_id,order_id,item_id,source_id,status,created_at,updated_at) VALUES(?,?,'joint-reserved-order','joint-reserved-item','joint-device-source','reserved',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", "joint-reserved-"+id, "joint-device-"+id).Error != nil {
+			t.Fatal("reserved assignment fixture")
 		}
 	}
 	t.Log("OWNED_WAREHOUSE_DEVICES_READY")

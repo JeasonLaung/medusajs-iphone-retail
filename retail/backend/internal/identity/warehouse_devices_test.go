@@ -277,5 +277,6 @@ func checkWarehouseTransferReturn(t *testing.T, db *gorm.DB, actor identity.User
 	exec("UPDATE device_sources SET deleted_at=UTC_TIMESTAMP(6) WHERE location_id='intake-location' AND type='self'")
 	call("POST", path+"/wdev-010", body(blocked), 409)
 	exec("UPDATE device_sources SET deleted_at=NULL WHERE location_id='intake-location' AND type='self'")
+	checkWarehouseReservedRelease(t, db, actor, call)
 	t.Log(`WAREHOUSE_TRANSFER_RETURN_REHEARSAL {"dual_permissions":true,"reason_audit":true,"identity_source_location_preserved":true,"supplier_origin_in_own_warehouse":true,"returned_history_permitted":true,"all_active_assignment_statuses_denied":true,"no_own_warehouse_denied":true,"late_failure_atomic":true,"replay_after_category_change":true,"revoked_and_moved_replay_denied":true,"changed_request_denied":true}`)
 }

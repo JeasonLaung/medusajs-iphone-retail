@@ -18,7 +18,8 @@ import (
 )
 
 type WarehouseDevice struct {
-	AllowedActions      []string `json:"allowed_actions" gorm:"-"`
+	Reservation         *warehouseReservation `json:"-" gorm:"-"`
+	AllowedActions      []string              `json:"allowed_actions" gorm:"-"`
 	RecentDevice        `gorm:"embedded"`
 	VariantID           string     `json:"variant_id"`
 	VariantTitle        *string    `json:"variant_title"`
@@ -47,10 +48,11 @@ type WarehouseDeviceCommand struct {
 	Notes            string `json:"notes,omitempty"`
 }
 type WarehouseDeviceResult struct {
-	ID       string `json:"id"`
-	State    string `json:"state"`
-	Deleted  bool   `json:"deleted"`
-	Replayed bool   `json:"replayed"`
+	AssignmentID string `json:"assignment_id,omitempty"`
+	ID           string `json:"id"`
+	State        string `json:"state"`
+	Deleted      bool   `json:"deleted"`
+	Replayed     bool   `json:"replayed"`
 }
 
 func warehouseDeviceActions(category string, write bool) ([]authorization.Action, error) {
@@ -83,7 +85,7 @@ func projectWarehouseDevice(row *WarehouseDevice, revision uint64) error {
 			return ErrUnavailable
 		}
 	}
-	b, _ := json.Marshal([]any{row.ID, row.SerialNumber, row.IMEI, row.IMEI2, row.EID, row.VariantID, row.SourceID, row.LocationID, row.Bin, row.Category, row.State, row.Grade, row.BatteryHealth, row.Photos, row.UpdatedAt, row.DeletedAt, revision})
+	b, _ := json.Marshal([]any{row.ID, row.SerialNumber, row.IMEI, row.IMEI2, row.EID, row.VariantID, row.SourceID, row.LocationID, row.Bin, row.Category, row.State, row.Grade, row.BatteryHealth, row.Photos, row.UpdatedAt, row.DeletedAt, revision, row.Reservation})
 	sum := sha256.Sum256(b)
 	row.Revision = hex.EncodeToString(sum[:])
 	return nil
@@ -137,12 +139,26 @@ func (h Handler) ReadWarehouseDevices(ctx context.Context, actor identity.User, 
 		if transferErr != nil && !errors.Is(transferErr, authorization.ErrDenied) {
 			return transferErr
 		}
+		releaseErr := authorization.CheckWarehouseTx(ctx, tx, actor, locationID, authorization.OrderFulfillmentRead, authorization.WarehouseAllocationWrite)
+		releaseEnabled := false
+		if releaseErr == nil {
+			_, releaseEnabled, releaseErr = allocationRuntimeGate(ctx, tx)
+		}
 		for i := range out.Devices {
 			row := &out.Devices[i]
+			if category == "sale" && row.State == "reserved" && releaseErr == nil && releaseEnabled {
+				row.Reservation, e = readWarehouseReservation(tx, *row, "")
+				if e != nil {
+					return e
+				}
+			}
 			if e := projectWarehouseDevice(row, revision); e != nil {
 				return e
 			}
 			row.AllowedActions = []string{}
+			if releaseErr == nil && releaseEnabled && row.Reservation != nil {
+				row.AllowedActions = append(row.AllowedActions, "release_reserved")
+			}
 			if category == "sale" && transferErr == nil && !row.HasActiveAssignment && row.HasOwnWarehouse && (row.State == "pending" || row.State == "inspection" || row.State == "available") {
 				row.AllowedActions = append(row.AllowedActions, "transfer_return")
 			}
@@ -178,12 +194,15 @@ func validWarehouseCommand(in WarehouseDeviceCommand) bool {
 		return false
 	}
 	switch in.Action {
-	case "activate", "make_available", "retire", "delete":
+	case "activate", "make_available", "retire", "delete", "release_reserved":
 		return true
 	}
 	return false
 }
 func (h Handler) CommandWarehouseDevice(ctx context.Context, actor identity.User, locationID, category, deviceID string, in WarehouseDeviceCommand) (WarehouseDeviceResult, error) {
+	if in.Action == "release_reserved" {
+		return h.releaseWarehouseReservation(ctx, actor, locationID, category, deviceID, in)
+	}
 	var out WarehouseDeviceResult
 	actions, e := warehouseDeviceActions(category, true)
 	if e != nil || !validPathID(locationID) || !validPathID(deviceID) || !validWarehouseCommand(in) {

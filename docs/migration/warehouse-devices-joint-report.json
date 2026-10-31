@@ -1,10 +1,14 @@
 {
-  "scope": "Scoped sale/returned warehouse devices, lifecycle and audited transfer to returned; inspection and fulfillment incomplete",
+  "scope": "Scoped sale/returned warehouse devices, lifecycle and audited transfer to returned and unpacked device release; inspection and fulfillment incomplete",
   "counts": {
     "real_browser_react_gin_mysql_redis": true,
     "api_mocking": false,
     "admin_creates_category_grants": true,
     "worker_login": true,
+    "unpacked_release_en_desktop_zh_mobile": true,
+    "lost_response_same_command_retry": true,
+    "refresh_keeps_released_state": true,
+    "allocation_revoke_hides_release": true,
     "location_and_category_scope": true,
     "no_cost_notes_projection": true,
     "pending_available": true,
@@ -32,6 +36,17 @@
     "redis_memory_mib": 128,
     "published_ports": "one random loopback API port",
     "network": "owned bridge; egress unrestricted"
+  },
+  "implementation_sha256": {
+    "retail/scripts/test-warehouse-inventory-joint.py": "d5c8b18736f5f1d3ead97e8ca69d882a00761e9a6306e5a9cbc83439dbc1ca48",
+    "retail/admin/tests/warehouse-devices.joint.mjs": "2cb78e987cc9cb8328d658bdb3b01701157267ca85176bc6a3a74bf199b43065",
+    "retail/admin/src/WarehouseDevices.tsx": "81816781802c25634435afdba8b66484f59aee647d7ec1af1043adbdc7c1eec9",
+    "retail/admin/src/api.ts": "cfc6b2d23f4fd593c2f53f593adab5b8505bd403a8ba6f101aedfdf3c2bb0a2b",
+    "retail/admin/src/i18n.ts": "f893ef54062fd38141c5a39fd8698d532d1aae9b0643f6643b651efdbee54cf1",
+    "retail/backend/internal/devices/warehouse.go": "2520e6041bca4106372cfb31d943ff9c709583c2d6e57dbf605f155c30659834",
+    "retail/backend/internal/devices/warehouse_reserved_release.go": "53d48d1ba1c3fe4db260e844b4e2c50e9633083408551d565596ff4fb17ff727",
+    "retail/backend/internal/identity/warehouse_reserved_release_test.go": "d3d9e0eaca48af791368a8a3d4b7f495f0d0efd40768786b3969b94a99a33c71",
+    "retail/backend/internal/identity/warehouse_devices_browser_fixture_test.go": "b9ff23f7a72ed22f515850a5209dc66b3d6c32a11e4cea6c738754124cc08dfa"
   },
   "cleanup": "both owned containers, bridge and temporary runners removed"
 }
