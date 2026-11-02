@@ -12,6 +12,7 @@
 | --- | --- |
 | `POST /__fixture/new` | 通过现有命令建立一个可结账购物车，返回测试专用possession/CSRF |
 | `POST /__fixture/price` | 改变专用商品价格，触发金额变化 |
+| `POST /__fixture/original-price` | 恢复专用商品原价格，让同一付款可继续保存设置 |
 | `POST /__fixture/mode/:mode` | 人工适配器切换正常、未知删除、未知创建、取消或已付观察结果 |
 | `GET /__fixture/facts` | 查询版本、冻结、收据、CREATE/DELETE/观察次数及保护表指纹 |
 | `POST /__fixture/case-done` / `finish` | 记录完成的分项数量并结束自有进程 |
@@ -28,12 +29,16 @@ node retail/scripts/test-context-payment-joint.mjs
 # 替代会话已付款/仅授权恢复（不进入订单、配货等后续流程）
 node retail/scripts/test-context-payment-joint.mjs --scenario replacement-paid
 node retail/scripts/test-context-payment-joint.mjs --scenario replacement-authorized
-# 已绑定同客户重登/匿名已有付款首次绑定拒绝
+# 已绑定同客户重登/匿名已有付款金额变化协调
 node retail/scripts/test-context-payment-joint.mjs --scenario same-account
 node retail/scripts/test-context-payment-joint.mjs --scenario unbound-account
-# 匿名已有付款首次绑定：相同精确金额保留，低于分的变化拒绝
+# 匿名已有付款首次绑定：相同精确金额保留，低于分的变化进入取消协调
 node retail/scripts/test-context-payment-joint.mjs --scenario unbound-unchanged
 node retail/scripts/test-context-payment-joint.mjs --scenario unbound-precision
+# 同一购物车连续保存两次→取消后恢复→替代付款继续保存→查询付款
+node retail/scripts/test-context-payment-joint.mjs --scenario continuous
+# 一次选择多个受影响的场景，共用一次编译及隔离服务
+node retail/scripts/test-context-payment-joint.mjs --scenario unbound-account --scenario unbound-delete-unknown
 # 仅需要检查本项语言/尺寸组合时使用，仍非完整交易链路
 node retail/scripts/test-context-payment-joint.mjs --scenario restore --matrix
 ```
@@ -62,3 +67,11 @@ node retail/scripts/test-context-payment-joint.mjs --scenario restore --matrix
 恢复只释放本次设置操作的冻结并保留付款绑定，不保存用户取消的目标设置，不将授权当实收，也不依据创建结果直接生成订单。现有付款查询仍须通过服务端渠道读取、金额/币种/购物车/会话校验及加密证据落库，才能区分paid_pending_order与authorized。再次准备付款返回requires_review，不返回旧收银台链接或额外CREATE；订单完成仍由现有独立入口处理。
 
 [本项去敏报告](replacement-payment-recovery-report.json)记录局部浏览器与原生SQL验证：新增两个场景均经历未知CREATE、刷新发现、恢复成功响应丢失及同UUID重放，最终版本6、无目标保存收据、两次CREATE（原始+替代）、一次DELETE。付款查询分别断言paid_pending_order/authorized，再次准备仍无额外CREATE。六个已有场景同时回归；库存、预留、订单、实收、通知指纹全部不变。未在本项执行订单完成或完整业务链，中英/尺寸矩阵及真实渠道沙箱仍待后续验收。
+
+## 同一购物车连续保存与恢复（2026-11-02 后续任务）
+
+`--scenario continuous` 从固定购物车版本4准备原付款，随后始终使用同一持有凭证和同一购物车。两次语言保存均丢成功响应、刷新后沿用原操作重放：版本5→6→7，原CREATE输入4/原cart5不变，独立effective版本分别6、7，没有删除或新建付款。第三次保存时改变测试价格，旧付款取消后再次报价漂移使目标无法提交；显式恢复原设置并丢恢复成功响应，刷新按同编号完成恢复，版本7→8，新CREATE输入7/cart8，原attempt保留。将测试价格恢复为原价后再次保存语言，版本8→9，继续保留替代CREATE与effective9。最终实际付款状态POST返回版本9/pending，未生成订单。
+
+[连续联合报告](context-payment-continuous-report.json)绑定本轮实际二进制与原始报告摘要：中英×390/1440四组通过，无浏览器异常。每组四个独立上下文操作，各操作内的重试和恢复使用相同UUID/原版本/目标；三条目标保存收据、两次CREATE合计、一次DELETE。库存、预留、订单、实收及通知全表指纹不变，冻结源码复核及自有容器/网络/数据卷清理完成。Go identity/cart测试、identity vet与两份脚本语法检查通过；没有改生产业务逻辑，无需整站构建或完整订单链。
+
+脚本现在可重复传入`--scenario`，选中的子场景去重后共用一次构建和同一套独立服务，各场景仍建立自己的购物车，避免每个分项重复初始化。`continuous`刻意不新建中间购物车，证明有效版本与替代付款能够连续衔接。跨币种、后续商品/优惠变化及C01—C11其他交付终点继续开放；完整业务链按用户要求在大任务结束后统一执行。

@@ -1,0 +1,735 @@
+{
+  "owner": "41f1a5bf174d",
+  "passed": true,
+  "finished_utc": "2026-11-02T08:25:32.603Z",
+  "binary_sha256": "99a23fd5ddba823d33c3e94ffdbe7a575a91d2832c245232eb03a2d92cf1f988",
+  "local_report_sha256": "c0c4124342b9b1614ada63e519ddef8a0c4f2275dcca98690b6febb2c63d0809",
+  "actual_gin_mysql_redis_astro": true,
+  "real_provider_called": false,
+  "frozen_source_verified": true,
+  "owned_resources_removed": true,
+  "validation_scope": "Same cart: save twice, cancel and restore after quote drift, save again using replacement, observe payment. No full order flow.",
+  "browser": {
+    "cases": [
+      {
+        "scenario": "continuous",
+        "lang": "en",
+        "width": 390,
+        "steps": [
+          {
+            "cart": {
+              "id": "cart_ea6c0338-6ab6-4c3d-a6fa-ad72a2816aac",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "zh-CN",
+              "version": "6"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "d7f2007c-4ed5-48f5-b574-37da6536c7f6",
+              "creates": 1,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            }
+          },
+          {
+            "cart": {
+              "id": "cart_ea6c0338-6ab6-4c3d-a6fa-ad72a2816aac",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "en-GB",
+              "version": "7"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                }
+              ],
+              "checkout": "d7f2007c-4ed5-48f5-b574-37da6536c7f6",
+              "creates": 1,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 2,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 7
+            }
+          },
+          {
+            "cart": {
+              "id": "cart_ea6c0338-6ab6-4c3d-a6fa-ad72a2816aac",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "en-GB",
+              "version": "8"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                },
+                {
+                  "InputVersion": 7,
+                  "CartVersion": 8,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "c313d532-8d1f-4776-a7c1-8797942d9bc1",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 2,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 8
+            }
+          },
+          {
+            "cart": {
+              "id": "cart_ea6c0338-6ab6-4c3d-a6fa-ad72a2816aac",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "zh-CN",
+              "version": "9"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                },
+                {
+                  "InputVersion": 7,
+                  "CartVersion": 8,
+                  "EffectiveCartVersion": 9
+                }
+              ],
+              "checkout": "c313d532-8d1f-4776-a7c1-8797942d9bc1",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 3,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 9
+            }
+          }
+        ],
+        "observed": {
+          "status": 200,
+          "body": {
+            "cart_id": "cart_ea6c0338-6ab6-4c3d-a6fa-ad72a2816aac",
+            "version": "9",
+            "state": "pending"
+          }
+        },
+        "final": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": 7
+            },
+            {
+              "InputVersion": 7,
+              "CartVersion": 8,
+              "EffectiveCartVersion": 9
+            }
+          ],
+          "checkout": "c313d532-8d1f-4776-a7c1-8797942d9bc1",
+          "creates": 2,
+          "deletes": 1,
+          "discovers": 0,
+          "email": "owned@example.invalid",
+          "observes": 1,
+          "protected_unchanged": true,
+          "receipts": 3,
+          "refresh": null,
+          "transfer_receipts": 0,
+          "version": 9
+        },
+        "unchanged_saves_then_replacement_then_save": true,
+        "lost_save_and_restore_responses": true,
+        "same_uuid_per_operation": true,
+        "full_order_flow_executed": false
+      },
+      {
+        "scenario": "continuous",
+        "lang": "en",
+        "width": 1440,
+        "steps": [
+          {
+            "cart": {
+              "id": "cart_aebdbf34-e858-4e4d-83e3-0a2f10bdfa59",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "zh-CN",
+              "version": "6"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "daea4519-52b0-4452-92ad-2b6875af2c7d",
+              "creates": 1,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            }
+          },
+          {
+            "cart": {
+              "id": "cart_aebdbf34-e858-4e4d-83e3-0a2f10bdfa59",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "en-GB",
+              "version": "7"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                }
+              ],
+              "checkout": "daea4519-52b0-4452-92ad-2b6875af2c7d",
+              "creates": 1,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 2,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 7
+            }
+          },
+          {
+            "cart": {
+              "id": "cart_aebdbf34-e858-4e4d-83e3-0a2f10bdfa59",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "en-GB",
+              "version": "8"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                },
+                {
+                  "InputVersion": 7,
+                  "CartVersion": 8,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "93ec579b-b62a-4d04-806d-8d9613c91605",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 2,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 8
+            }
+          },
+          {
+            "cart": {
+              "id": "cart_aebdbf34-e858-4e4d-83e3-0a2f10bdfa59",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "zh-CN",
+              "version": "9"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                },
+                {
+                  "InputVersion": 7,
+                  "CartVersion": 8,
+                  "EffectiveCartVersion": 9
+                }
+              ],
+              "checkout": "93ec579b-b62a-4d04-806d-8d9613c91605",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 3,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 9
+            }
+          }
+        ],
+        "observed": {
+          "status": 200,
+          "body": {
+            "cart_id": "cart_aebdbf34-e858-4e4d-83e3-0a2f10bdfa59",
+            "version": "9",
+            "state": "pending"
+          }
+        },
+        "final": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": 7
+            },
+            {
+              "InputVersion": 7,
+              "CartVersion": 8,
+              "EffectiveCartVersion": 9
+            }
+          ],
+          "checkout": "93ec579b-b62a-4d04-806d-8d9613c91605",
+          "creates": 2,
+          "deletes": 1,
+          "discovers": 0,
+          "email": "owned@example.invalid",
+          "observes": 1,
+          "protected_unchanged": true,
+          "receipts": 3,
+          "refresh": null,
+          "transfer_receipts": 0,
+          "version": 9
+        },
+        "unchanged_saves_then_replacement_then_save": true,
+        "lost_save_and_restore_responses": true,
+        "same_uuid_per_operation": true,
+        "full_order_flow_executed": false
+      },
+      {
+        "scenario": "continuous",
+        "lang": "zh",
+        "width": 390,
+        "steps": [
+          {
+            "cart": {
+              "id": "cart_10b41f92-37f2-40d2-a89a-74130a98d914",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "en-GB",
+              "version": "6"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "134cd1a3-07f6-4ace-b3be-852af9cf0e65",
+              "creates": 1,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            }
+          },
+          {
+            "cart": {
+              "id": "cart_10b41f92-37f2-40d2-a89a-74130a98d914",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "zh-CN",
+              "version": "7"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                }
+              ],
+              "checkout": "134cd1a3-07f6-4ace-b3be-852af9cf0e65",
+              "creates": 1,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 2,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 7
+            }
+          },
+          {
+            "cart": {
+              "id": "cart_10b41f92-37f2-40d2-a89a-74130a98d914",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "zh-CN",
+              "version": "8"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                },
+                {
+                  "InputVersion": 7,
+                  "CartVersion": 8,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "51ec37bb-2f52-4467-bc12-837234f020b7",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 2,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 8
+            }
+          },
+          {
+            "cart": {
+              "id": "cart_10b41f92-37f2-40d2-a89a-74130a98d914",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "en-GB",
+              "version": "9"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                },
+                {
+                  "InputVersion": 7,
+                  "CartVersion": 8,
+                  "EffectiveCartVersion": 9
+                }
+              ],
+              "checkout": "51ec37bb-2f52-4467-bc12-837234f020b7",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 3,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 9
+            }
+          }
+        ],
+        "observed": {
+          "status": 200,
+          "body": {
+            "cart_id": "cart_10b41f92-37f2-40d2-a89a-74130a98d914",
+            "version": "9",
+            "state": "pending"
+          }
+        },
+        "final": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": 7
+            },
+            {
+              "InputVersion": 7,
+              "CartVersion": 8,
+              "EffectiveCartVersion": 9
+            }
+          ],
+          "checkout": "51ec37bb-2f52-4467-bc12-837234f020b7",
+          "creates": 2,
+          "deletes": 1,
+          "discovers": 0,
+          "email": "owned@example.invalid",
+          "observes": 1,
+          "protected_unchanged": true,
+          "receipts": 3,
+          "refresh": null,
+          "transfer_receipts": 0,
+          "version": 9
+        },
+        "unchanged_saves_then_replacement_then_save": true,
+        "lost_save_and_restore_responses": true,
+        "same_uuid_per_operation": true,
+        "full_order_flow_executed": false
+      },
+      {
+        "scenario": "continuous",
+        "lang": "zh",
+        "width": 1440,
+        "steps": [
+          {
+            "cart": {
+              "id": "cart_84dd3d05-6a0f-4e99-93c1-3d3e94b28a37",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "en-GB",
+              "version": "6"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "8b3c35bf-9504-4ebd-87ff-ea2e81345098",
+              "creates": 1,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            }
+          },
+          {
+            "cart": {
+              "id": "cart_84dd3d05-6a0f-4e99-93c1-3d3e94b28a37",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "zh-CN",
+              "version": "7"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                }
+              ],
+              "checkout": "8b3c35bf-9504-4ebd-87ff-ea2e81345098",
+              "creates": 1,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 2,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 7
+            }
+          },
+          {
+            "cart": {
+              "id": "cart_84dd3d05-6a0f-4e99-93c1-3d3e94b28a37",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "zh-CN",
+              "version": "8"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                },
+                {
+                  "InputVersion": 7,
+                  "CartVersion": 8,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "3ea488fb-2523-45bb-bd3b-0ef1cf725b86",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 2,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 8
+            }
+          },
+          {
+            "cart": {
+              "id": "cart_84dd3d05-6a0f-4e99-93c1-3d3e94b28a37",
+              "region_id": "region",
+              "sales_channel_id": "channel",
+              "currency_code": "eur",
+              "locale": "en-GB",
+              "version": "9"
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                },
+                {
+                  "InputVersion": 7,
+                  "CartVersion": 8,
+                  "EffectiveCartVersion": 9
+                }
+              ],
+              "checkout": "3ea488fb-2523-45bb-bd3b-0ef1cf725b86",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 3,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 9
+            }
+          }
+        ],
+        "observed": {
+          "status": 200,
+          "body": {
+            "cart_id": "cart_84dd3d05-6a0f-4e99-93c1-3d3e94b28a37",
+            "version": "9",
+            "state": "pending"
+          }
+        },
+        "final": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": 7
+            },
+            {
+              "InputVersion": 7,
+              "CartVersion": 8,
+              "EffectiveCartVersion": 9
+            }
+          ],
+          "checkout": "3ea488fb-2523-45bb-bd3b-0ef1cf725b86",
+          "creates": 2,
+          "deletes": 1,
+          "discovers": 0,
+          "email": "owned@example.invalid",
+          "observes": 1,
+          "protected_unchanged": true,
+          "receipts": 3,
+          "refresh": null,
+          "transfer_receipts": 0,
+          "version": 9
+        },
+        "unchanged_saves_then_replacement_then_save": true,
+        "lost_save_and_restore_responses": true,
+        "same_uuid_per_operation": true,
+        "full_order_flow_executed": false
+      }
+    ],
+    "errors": [],
+    "api_mocking": false,
+    "actual_gin_mysql_redis_astro": true
+  }
+}

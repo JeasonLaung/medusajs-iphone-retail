@@ -257,6 +257,10 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		exec(`UPDATE pricing_prices SET amount=121,raw_amount='{"value":"121","precision":100}' WHERE id='add-single'`)
 		c.Status(200)
 	})
+	fixture.POST("/original-price", func(c *gin.Context) {
+		exec("UPDATE pricing_prices SET amount=?,raw_amount=? WHERE id='add-single'", price.Amount, price.Raw)
+		c.Status(200)
+	})
 	fixture.POST("/precision-price", func(c *gin.Context) {
 		exec(`UPDATE pricing_prices SET amount=120,raw_amount='{"value":"120.000000000000000000001","precision":100}' WHERE id='add-single'`)
 		c.Status(200)
