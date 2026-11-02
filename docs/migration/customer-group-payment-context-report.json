@@ -1,0 +1,1156 @@
+{
+  "owner": "2a2d958c9644",
+  "passed": true,
+  "raw_report": "logs/gin-migration/context-payment-2a2d958c9644/report.json",
+  "raw_report_sha256": "1eab7c92ce995641cc0a82dedac8deaafffc4e710df163d4a58f641f3d25f801",
+  "binary_sha256": "b351f7ed6e823fdaacbc54e2e2ac00694e1b91b955abd618aff716a571839ddf",
+  "finished_utc": "2026-11-02T23:55:25.122Z",
+  "actual_gin_mysql_redis_astro": true,
+  "production_http": true,
+  "real_provider_called": false,
+  "membership_change_via_private_sql_fixture": true,
+  "admin_group_ui_retested": false,
+  "full_order_flow_executed": false,
+  "migrations": 107,
+  "case_count": 12,
+  "browser_errors": [],
+  "frozen_source_verified": true,
+  "owned_resources_removed": true,
+  "same_volume_dependency_copy": true,
+  "dependency_lock_sha256": "40240341c50b63140dfb191b5eab1326f398889b9666942b4a3ffe1ea1e30d2e",
+  "source_sha256": {
+    "retail/scripts/test-context-payment-joint.mjs": "e5c947857fdb7c64e22fa15f1d58172700ee6b6170164ff84a8006cbb121815c",
+    "retail/admin/tests/context-payment.native.mjs": "76bbe523be672dcf0f7ef38b1896c12d138d5724bb4148c0205ec81e086366b3",
+    "retail/backend/internal/identity/context_payment_groups_test.go": "fa1ba4ec074138b3181ecc7abfef0b74d5427c2f7ef1d925a9b12da17c995dc0",
+    "retail/backend/internal/identity/context_payment_browser_test.go": "f5a68f8ef62543d2e16d41be06e121c5d768d81e09d68da567a4c2c9ca08c9e8",
+    "retail/backend/internal/identity/context_payment_fixture_test.go": "69c583d33f03ff12815520ae7a1640896e6cdcaaa9556ca3c1d5aa435cf75bd6"
+  },
+  "log_sha256": {
+    "fixture.log": "92f8d7b415b9cc9900353e5a67f7fafbe6a193ad658ed2a9f1a8e37b70deb79b",
+    "browser.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "astro.log": "a8fd05bba57815bc5845d1d84c869f0c5832c1e3cf6c1f2b6d7a2ba1a46cba22"
+  },
+  "cases": [
+    {
+      "scenario": "group-save",
+      "lang": "en",
+      "width": 390,
+      "before": {
+        "version": "7",
+        "unit_price": "100",
+        "total": "121.25",
+        "discount": "12.5"
+      },
+      "recovered": {
+        "version": "8",
+        "unit_price": "120",
+        "total": "158.75",
+        "discount": "0"
+      },
+      "after": {
+        "version": "9",
+        "unit_price": "120",
+        "total": "158.75",
+        "discount": "0"
+      },
+      "real_database_facts": {
+        "account_owners": 1,
+        "attempts": [
+          {
+            "InputVersion": 6,
+            "CartVersion": 7,
+            "EffectiveCartVersion": null
+          },
+          {
+            "InputVersion": 8,
+            "CartVersion": 9,
+            "EffectiveCartVersion": null
+          }
+        ],
+        "checkout": "7d3cd032-77d7-422a-819f-a6d909356f25",
+        "collections": [
+          {
+            "CurrencyCode": "eur",
+            "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+          }
+        ],
+        "creates": 2,
+        "deletes": 1,
+        "discovers": 0,
+        "email": "context-buyer@example.invalid",
+        "live_sessions": 1,
+        "observes": 0,
+        "paypal_creates": 0,
+        "paypal_retirements": 0,
+        "paypal_settlements": 0,
+        "protected_unchanged": true,
+        "provider_events": [
+          {
+            "Kind": "create",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "delete",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "create",
+            "Amount": "158.75",
+            "Currency": "eur"
+          }
+        ],
+        "receipts": 1,
+        "refresh": null,
+        "transfer_receipts": 1,
+        "version": 9
+      },
+      "next_save_requests": [],
+      "frozen_quote_preserved_until_explicit_refresh": true,
+      "compensation_preserves_original_quote": false,
+      "frozen_item_write_denied": true,
+      "original_create_replay_no_duplicate": true,
+      "removed_group_discount_cleared_on_new_save": true,
+      "lost_response_same_operation_recovered": true
+    },
+    {
+      "scenario": "group-restore",
+      "lang": "en",
+      "width": 390,
+      "before": {
+        "version": "7",
+        "unit_price": "100",
+        "total": "121.25",
+        "discount": "12.5"
+      },
+      "recovered": {
+        "version": "8",
+        "unit_price": "100",
+        "total": "121.25",
+        "discount": "12.5"
+      },
+      "after": {
+        "version": "10",
+        "unit_price": "122",
+        "total": "161.25",
+        "discount": "0"
+      },
+      "real_database_facts": {
+        "account_owners": 1,
+        "attempts": [
+          {
+            "InputVersion": 6,
+            "CartVersion": 7,
+            "EffectiveCartVersion": null
+          },
+          {
+            "InputVersion": 7,
+            "CartVersion": 8,
+            "EffectiveCartVersion": null
+          },
+          {
+            "InputVersion": 9,
+            "CartVersion": 10,
+            "EffectiveCartVersion": null
+          }
+        ],
+        "checkout": "888e4cd6-638f-445a-a3c4-fbd5332de9ad",
+        "collections": [
+          {
+            "CurrencyCode": "eur",
+            "RawAmount": "{\"value\":\"161.25\",\"precision\":100}"
+          }
+        ],
+        "creates": 3,
+        "deletes": 2,
+        "discovers": 0,
+        "email": "context-buyer@example.invalid",
+        "live_sessions": 1,
+        "observes": 0,
+        "paypal_creates": 0,
+        "paypal_retirements": 0,
+        "paypal_settlements": 0,
+        "protected_unchanged": true,
+        "provider_events": [
+          {
+            "Kind": "create",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "delete",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "create",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "delete",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "create",
+            "Amount": "161.25",
+            "Currency": "eur"
+          }
+        ],
+        "receipts": 1,
+        "refresh": null,
+        "transfer_receipts": 1,
+        "version": 10
+      },
+      "next_save_requests": [
+        {
+          "key": "37b9ac8a-728b-4600-acaf-91d059349678",
+          "body": {
+            "version": "8",
+            "region_id": "region",
+            "locale": "zh-CN"
+          }
+        }
+      ],
+      "frozen_quote_preserved_until_explicit_refresh": true,
+      "compensation_preserves_original_quote": true,
+      "frozen_item_write_denied": true,
+      "original_create_replay_no_duplicate": true,
+      "removed_group_discount_cleared_on_new_save": true,
+      "lost_response_same_operation_recovered": true
+    },
+    {
+      "scenario": "retired-edits",
+      "lang": "en",
+      "width": 390,
+      "steps": [
+        {
+          "version": "6",
+          "total": "160",
+          "live_sessions": 0,
+          "protected_unchanged": true
+        },
+        {
+          "version": "7",
+          "total": "311.25",
+          "live_sessions": 0,
+          "protected_unchanged": true
+        },
+        {
+          "version": "8",
+          "total": "281",
+          "live_sessions": 0,
+          "protected_unchanged": true
+        },
+        {
+          "version": "9",
+          "total": "281",
+          "live_sessions": 1,
+          "protected_unchanged": true
+        }
+      ],
+      "lost_item_promotion_payment_responses_recovered": true,
+      "requests": [
+        {
+          "kind": "item",
+          "key": "1e3e0d67-20e2-4e82-be82-73b18a2e4bc7",
+          "body": {
+            "version": "6",
+            "quantity": "2"
+          }
+        },
+        {
+          "kind": "item",
+          "key": "1e3e0d67-20e2-4e82-be82-73b18a2e4bc7",
+          "body": {
+            "version": "6",
+            "quantity": "2"
+          }
+        },
+        {
+          "kind": "promo",
+          "key": "8bac41a2-fa5d-4697-9182-a9c581c3d0a4",
+          "body": {
+            "version": "7",
+            "codes": [
+              "OWNED10"
+            ]
+          }
+        },
+        {
+          "kind": "promo",
+          "key": "8bac41a2-fa5d-4697-9182-a9c581c3d0a4",
+          "body": {
+            "version": "7",
+            "codes": [
+              "OWNED10"
+            ]
+          }
+        },
+        {
+          "kind": "payment",
+          "key": "12eb766e-7bce-45bb-94d9-e50091381a3b",
+          "body": {
+            "version": "8"
+          }
+        },
+        {
+          "kind": "payment",
+          "key": "12eb766e-7bce-45bb-94d9-e50091381a3b",
+          "body": {
+            "version": "8"
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "group-save",
+      "lang": "en",
+      "width": 1440,
+      "before": {
+        "version": "7",
+        "unit_price": "100",
+        "total": "121.25",
+        "discount": "12.5"
+      },
+      "recovered": {
+        "version": "8",
+        "unit_price": "120",
+        "total": "158.75",
+        "discount": "0"
+      },
+      "after": {
+        "version": "9",
+        "unit_price": "120",
+        "total": "158.75",
+        "discount": "0"
+      },
+      "real_database_facts": {
+        "account_owners": 1,
+        "attempts": [
+          {
+            "InputVersion": 6,
+            "CartVersion": 7,
+            "EffectiveCartVersion": null
+          },
+          {
+            "InputVersion": 8,
+            "CartVersion": 9,
+            "EffectiveCartVersion": null
+          }
+        ],
+        "checkout": "6991d784-7d10-4c9a-be0a-50b0728a0a10",
+        "collections": [
+          {
+            "CurrencyCode": "eur",
+            "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+          }
+        ],
+        "creates": 2,
+        "deletes": 1,
+        "discovers": 0,
+        "email": "context-buyer@example.invalid",
+        "live_sessions": 1,
+        "observes": 0,
+        "paypal_creates": 0,
+        "paypal_retirements": 0,
+        "paypal_settlements": 0,
+        "protected_unchanged": true,
+        "provider_events": [
+          {
+            "Kind": "create",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "delete",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "create",
+            "Amount": "158.75",
+            "Currency": "eur"
+          }
+        ],
+        "receipts": 1,
+        "refresh": null,
+        "transfer_receipts": 1,
+        "version": 9
+      },
+      "next_save_requests": [],
+      "frozen_quote_preserved_until_explicit_refresh": true,
+      "compensation_preserves_original_quote": false,
+      "frozen_item_write_denied": true,
+      "original_create_replay_no_duplicate": true,
+      "removed_group_discount_cleared_on_new_save": true,
+      "lost_response_same_operation_recovered": true
+    },
+    {
+      "scenario": "group-restore",
+      "lang": "en",
+      "width": 1440,
+      "before": {
+        "version": "7",
+        "unit_price": "100",
+        "total": "121.25",
+        "discount": "12.5"
+      },
+      "recovered": {
+        "version": "8",
+        "unit_price": "100",
+        "total": "121.25",
+        "discount": "12.5"
+      },
+      "after": {
+        "version": "10",
+        "unit_price": "122",
+        "total": "161.25",
+        "discount": "0"
+      },
+      "real_database_facts": {
+        "account_owners": 1,
+        "attempts": [
+          {
+            "InputVersion": 6,
+            "CartVersion": 7,
+            "EffectiveCartVersion": null
+          },
+          {
+            "InputVersion": 7,
+            "CartVersion": 8,
+            "EffectiveCartVersion": null
+          },
+          {
+            "InputVersion": 9,
+            "CartVersion": 10,
+            "EffectiveCartVersion": null
+          }
+        ],
+        "checkout": "4af262d8-c9ea-4c98-8456-9a67c2570d01",
+        "collections": [
+          {
+            "CurrencyCode": "eur",
+            "RawAmount": "{\"value\":\"161.25\",\"precision\":100}"
+          }
+        ],
+        "creates": 3,
+        "deletes": 2,
+        "discovers": 0,
+        "email": "context-buyer@example.invalid",
+        "live_sessions": 1,
+        "observes": 0,
+        "paypal_creates": 0,
+        "paypal_retirements": 0,
+        "paypal_settlements": 0,
+        "protected_unchanged": true,
+        "provider_events": [
+          {
+            "Kind": "create",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "delete",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "create",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "delete",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "create",
+            "Amount": "161.25",
+            "Currency": "eur"
+          }
+        ],
+        "receipts": 1,
+        "refresh": null,
+        "transfer_receipts": 1,
+        "version": 10
+      },
+      "next_save_requests": [
+        {
+          "key": "8c0390db-5020-41a3-8f7a-b1cbc2d34547",
+          "body": {
+            "version": "8",
+            "region_id": "region",
+            "locale": "zh-CN"
+          }
+        }
+      ],
+      "frozen_quote_preserved_until_explicit_refresh": true,
+      "compensation_preserves_original_quote": true,
+      "frozen_item_write_denied": true,
+      "original_create_replay_no_duplicate": true,
+      "removed_group_discount_cleared_on_new_save": true,
+      "lost_response_same_operation_recovered": true
+    },
+    {
+      "scenario": "retired-edits",
+      "lang": "en",
+      "width": 1440,
+      "steps": [
+        {
+          "version": "6",
+          "total": "160",
+          "live_sessions": 0,
+          "protected_unchanged": true
+        },
+        {
+          "version": "7",
+          "total": "311.25",
+          "live_sessions": 0,
+          "protected_unchanged": true
+        },
+        {
+          "version": "8",
+          "total": "281",
+          "live_sessions": 0,
+          "protected_unchanged": true
+        },
+        {
+          "version": "9",
+          "total": "281",
+          "live_sessions": 1,
+          "protected_unchanged": true
+        }
+      ],
+      "lost_item_promotion_payment_responses_recovered": true,
+      "requests": [
+        {
+          "kind": "item",
+          "key": "64293bef-7bca-4a7f-bac0-b61416da86d8",
+          "body": {
+            "version": "6",
+            "quantity": "2"
+          }
+        },
+        {
+          "kind": "item",
+          "key": "64293bef-7bca-4a7f-bac0-b61416da86d8",
+          "body": {
+            "version": "6",
+            "quantity": "2"
+          }
+        },
+        {
+          "kind": "promo",
+          "key": "d66de491-749a-41ac-8be0-095cc788f627",
+          "body": {
+            "version": "7",
+            "codes": [
+              "OWNED10"
+            ]
+          }
+        },
+        {
+          "kind": "promo",
+          "key": "d66de491-749a-41ac-8be0-095cc788f627",
+          "body": {
+            "version": "7",
+            "codes": [
+              "OWNED10"
+            ]
+          }
+        },
+        {
+          "kind": "payment",
+          "key": "d8de8e84-1fee-4aff-b503-1f885011da0f",
+          "body": {
+            "version": "8"
+          }
+        },
+        {
+          "kind": "payment",
+          "key": "d8de8e84-1fee-4aff-b503-1f885011da0f",
+          "body": {
+            "version": "8"
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "group-save",
+      "lang": "zh",
+      "width": 390,
+      "before": {
+        "version": "7",
+        "unit_price": "100",
+        "total": "121.25",
+        "discount": "12.5"
+      },
+      "recovered": {
+        "version": "8",
+        "unit_price": "120",
+        "total": "158.75",
+        "discount": "0"
+      },
+      "after": {
+        "version": "9",
+        "unit_price": "120",
+        "total": "158.75",
+        "discount": "0"
+      },
+      "real_database_facts": {
+        "account_owners": 1,
+        "attempts": [
+          {
+            "InputVersion": 6,
+            "CartVersion": 7,
+            "EffectiveCartVersion": null
+          },
+          {
+            "InputVersion": 8,
+            "CartVersion": 9,
+            "EffectiveCartVersion": null
+          }
+        ],
+        "checkout": "5613d8d8-84d0-43c0-9697-7b1299d0b3e5",
+        "collections": [
+          {
+            "CurrencyCode": "eur",
+            "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+          }
+        ],
+        "creates": 2,
+        "deletes": 1,
+        "discovers": 0,
+        "email": "context-buyer@example.invalid",
+        "live_sessions": 1,
+        "observes": 0,
+        "paypal_creates": 0,
+        "paypal_retirements": 0,
+        "paypal_settlements": 0,
+        "protected_unchanged": true,
+        "provider_events": [
+          {
+            "Kind": "create",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "delete",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "create",
+            "Amount": "158.75",
+            "Currency": "eur"
+          }
+        ],
+        "receipts": 1,
+        "refresh": null,
+        "transfer_receipts": 1,
+        "version": 9
+      },
+      "next_save_requests": [],
+      "frozen_quote_preserved_until_explicit_refresh": true,
+      "compensation_preserves_original_quote": false,
+      "frozen_item_write_denied": true,
+      "original_create_replay_no_duplicate": true,
+      "removed_group_discount_cleared_on_new_save": true,
+      "lost_response_same_operation_recovered": true
+    },
+    {
+      "scenario": "group-restore",
+      "lang": "zh",
+      "width": 390,
+      "before": {
+        "version": "7",
+        "unit_price": "100",
+        "total": "121.25",
+        "discount": "12.5"
+      },
+      "recovered": {
+        "version": "8",
+        "unit_price": "100",
+        "total": "121.25",
+        "discount": "12.5"
+      },
+      "after": {
+        "version": "10",
+        "unit_price": "122",
+        "total": "161.25",
+        "discount": "0"
+      },
+      "real_database_facts": {
+        "account_owners": 1,
+        "attempts": [
+          {
+            "InputVersion": 6,
+            "CartVersion": 7,
+            "EffectiveCartVersion": null
+          },
+          {
+            "InputVersion": 7,
+            "CartVersion": 8,
+            "EffectiveCartVersion": null
+          },
+          {
+            "InputVersion": 9,
+            "CartVersion": 10,
+            "EffectiveCartVersion": null
+          }
+        ],
+        "checkout": "fd14ad88-6ef1-45ed-88ba-b2eaa74cf683",
+        "collections": [
+          {
+            "CurrencyCode": "eur",
+            "RawAmount": "{\"value\":\"161.25\",\"precision\":100}"
+          }
+        ],
+        "creates": 3,
+        "deletes": 2,
+        "discovers": 0,
+        "email": "context-buyer@example.invalid",
+        "live_sessions": 1,
+        "observes": 0,
+        "paypal_creates": 0,
+        "paypal_retirements": 0,
+        "paypal_settlements": 0,
+        "protected_unchanged": true,
+        "provider_events": [
+          {
+            "Kind": "create",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "delete",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "create",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "delete",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "create",
+            "Amount": "161.25",
+            "Currency": "eur"
+          }
+        ],
+        "receipts": 1,
+        "refresh": null,
+        "transfer_receipts": 1,
+        "version": 10
+      },
+      "next_save_requests": [
+        {
+          "key": "e2b3980a-9e46-4f33-8226-db65c7f8bdcd",
+          "body": {
+            "version": "8",
+            "region_id": "region",
+            "locale": "en-GB"
+          }
+        }
+      ],
+      "frozen_quote_preserved_until_explicit_refresh": true,
+      "compensation_preserves_original_quote": true,
+      "frozen_item_write_denied": true,
+      "original_create_replay_no_duplicate": true,
+      "removed_group_discount_cleared_on_new_save": true,
+      "lost_response_same_operation_recovered": true
+    },
+    {
+      "scenario": "retired-edits",
+      "lang": "zh",
+      "width": 390,
+      "steps": [
+        {
+          "version": "6",
+          "total": "160",
+          "live_sessions": 0,
+          "protected_unchanged": true
+        },
+        {
+          "version": "7",
+          "total": "311.25",
+          "live_sessions": 0,
+          "protected_unchanged": true
+        },
+        {
+          "version": "8",
+          "total": "281",
+          "live_sessions": 0,
+          "protected_unchanged": true
+        },
+        {
+          "version": "9",
+          "total": "281",
+          "live_sessions": 1,
+          "protected_unchanged": true
+        }
+      ],
+      "lost_item_promotion_payment_responses_recovered": true,
+      "requests": [
+        {
+          "kind": "item",
+          "key": "f8bdacdf-d63a-43fa-9c67-b2aa10c2abb0",
+          "body": {
+            "version": "6",
+            "quantity": "2"
+          }
+        },
+        {
+          "kind": "item",
+          "key": "f8bdacdf-d63a-43fa-9c67-b2aa10c2abb0",
+          "body": {
+            "version": "6",
+            "quantity": "2"
+          }
+        },
+        {
+          "kind": "promo",
+          "key": "51e4d5d2-f27b-435a-9a44-453ad44af3ea",
+          "body": {
+            "version": "7",
+            "codes": [
+              "OWNED10"
+            ]
+          }
+        },
+        {
+          "kind": "promo",
+          "key": "51e4d5d2-f27b-435a-9a44-453ad44af3ea",
+          "body": {
+            "version": "7",
+            "codes": [
+              "OWNED10"
+            ]
+          }
+        },
+        {
+          "kind": "payment",
+          "key": "bb132256-6cce-45e4-ac3a-b8ec2879b686",
+          "body": {
+            "version": "8"
+          }
+        },
+        {
+          "kind": "payment",
+          "key": "bb132256-6cce-45e4-ac3a-b8ec2879b686",
+          "body": {
+            "version": "8"
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "group-save",
+      "lang": "zh",
+      "width": 1440,
+      "before": {
+        "version": "7",
+        "unit_price": "100",
+        "total": "121.25",
+        "discount": "12.5"
+      },
+      "recovered": {
+        "version": "8",
+        "unit_price": "120",
+        "total": "158.75",
+        "discount": "0"
+      },
+      "after": {
+        "version": "9",
+        "unit_price": "120",
+        "total": "158.75",
+        "discount": "0"
+      },
+      "real_database_facts": {
+        "account_owners": 1,
+        "attempts": [
+          {
+            "InputVersion": 6,
+            "CartVersion": 7,
+            "EffectiveCartVersion": null
+          },
+          {
+            "InputVersion": 8,
+            "CartVersion": 9,
+            "EffectiveCartVersion": null
+          }
+        ],
+        "checkout": "27cf404c-fd54-44d1-a36f-e4a1b57b948e",
+        "collections": [
+          {
+            "CurrencyCode": "eur",
+            "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+          }
+        ],
+        "creates": 2,
+        "deletes": 1,
+        "discovers": 0,
+        "email": "context-buyer@example.invalid",
+        "live_sessions": 1,
+        "observes": 0,
+        "paypal_creates": 0,
+        "paypal_retirements": 0,
+        "paypal_settlements": 0,
+        "protected_unchanged": true,
+        "provider_events": [
+          {
+            "Kind": "create",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "delete",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "create",
+            "Amount": "158.75",
+            "Currency": "eur"
+          }
+        ],
+        "receipts": 1,
+        "refresh": null,
+        "transfer_receipts": 1,
+        "version": 9
+      },
+      "next_save_requests": [],
+      "frozen_quote_preserved_until_explicit_refresh": true,
+      "compensation_preserves_original_quote": false,
+      "frozen_item_write_denied": true,
+      "original_create_replay_no_duplicate": true,
+      "removed_group_discount_cleared_on_new_save": true,
+      "lost_response_same_operation_recovered": true
+    },
+    {
+      "scenario": "group-restore",
+      "lang": "zh",
+      "width": 1440,
+      "before": {
+        "version": "7",
+        "unit_price": "100",
+        "total": "121.25",
+        "discount": "12.5"
+      },
+      "recovered": {
+        "version": "8",
+        "unit_price": "100",
+        "total": "121.25",
+        "discount": "12.5"
+      },
+      "after": {
+        "version": "10",
+        "unit_price": "122",
+        "total": "161.25",
+        "discount": "0"
+      },
+      "real_database_facts": {
+        "account_owners": 1,
+        "attempts": [
+          {
+            "InputVersion": 6,
+            "CartVersion": 7,
+            "EffectiveCartVersion": null
+          },
+          {
+            "InputVersion": 7,
+            "CartVersion": 8,
+            "EffectiveCartVersion": null
+          },
+          {
+            "InputVersion": 9,
+            "CartVersion": 10,
+            "EffectiveCartVersion": null
+          }
+        ],
+        "checkout": "e6206e23-746c-4ca5-a026-1a8787c368ac",
+        "collections": [
+          {
+            "CurrencyCode": "eur",
+            "RawAmount": "{\"value\":\"161.25\",\"precision\":100}"
+          }
+        ],
+        "creates": 3,
+        "deletes": 2,
+        "discovers": 0,
+        "email": "context-buyer@example.invalid",
+        "live_sessions": 1,
+        "observes": 0,
+        "paypal_creates": 0,
+        "paypal_retirements": 0,
+        "paypal_settlements": 0,
+        "protected_unchanged": true,
+        "provider_events": [
+          {
+            "Kind": "create",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "delete",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "create",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "delete",
+            "Amount": "121.25",
+            "Currency": "eur"
+          },
+          {
+            "Kind": "create",
+            "Amount": "161.25",
+            "Currency": "eur"
+          }
+        ],
+        "receipts": 1,
+        "refresh": null,
+        "transfer_receipts": 1,
+        "version": 10
+      },
+      "next_save_requests": [
+        {
+          "key": "0e101e1e-ae2b-47d3-a1aa-e36891fa2ad4",
+          "body": {
+            "version": "8",
+            "region_id": "region",
+            "locale": "en-GB"
+          }
+        }
+      ],
+      "frozen_quote_preserved_until_explicit_refresh": true,
+      "compensation_preserves_original_quote": true,
+      "frozen_item_write_denied": true,
+      "original_create_replay_no_duplicate": true,
+      "removed_group_discount_cleared_on_new_save": true,
+      "lost_response_same_operation_recovered": true
+    },
+    {
+      "scenario": "retired-edits",
+      "lang": "zh",
+      "width": 1440,
+      "steps": [
+        {
+          "version": "6",
+          "total": "160",
+          "live_sessions": 0,
+          "protected_unchanged": true
+        },
+        {
+          "version": "7",
+          "total": "311.25",
+          "live_sessions": 0,
+          "protected_unchanged": true
+        },
+        {
+          "version": "8",
+          "total": "281",
+          "live_sessions": 0,
+          "protected_unchanged": true
+        },
+        {
+          "version": "9",
+          "total": "281",
+          "live_sessions": 1,
+          "protected_unchanged": true
+        }
+      ],
+      "lost_item_promotion_payment_responses_recovered": true,
+      "requests": [
+        {
+          "kind": "item",
+          "key": "9eb84b27-dbc9-4d72-971e-7429d3fc41f6",
+          "body": {
+            "version": "6",
+            "quantity": "2"
+          }
+        },
+        {
+          "kind": "item",
+          "key": "9eb84b27-dbc9-4d72-971e-7429d3fc41f6",
+          "body": {
+            "version": "6",
+            "quantity": "2"
+          }
+        },
+        {
+          "kind": "promo",
+          "key": "652324c5-f7b5-4c4b-9ffa-3763adfbcd23",
+          "body": {
+            "version": "7",
+            "codes": [
+              "OWNED10"
+            ]
+          }
+        },
+        {
+          "kind": "promo",
+          "key": "652324c5-f7b5-4c4b-9ffa-3763adfbcd23",
+          "body": {
+            "version": "7",
+            "codes": [
+              "OWNED10"
+            ]
+          }
+        },
+        {
+          "kind": "payment",
+          "key": "d16a87a7-41a7-4598-99e2-3cbd37f8af11",
+          "body": {
+            "version": "8"
+          }
+        },
+        {
+          "kind": "payment",
+          "key": "d16a87a7-41a7-4598-99e2-3cbd37f8af11",
+          "body": {
+            "version": "8"
+          }
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "go_test_identity": "passed",
+    "go_vet_identity": "passed",
+    "node_syntax": "passed",
+    "git_diff_check": "passed"
+  },
+  "main_preview": {
+    "backend_health": 200,
+    "admin": 200,
+    "store": 200,
+    "checkout_without_possession": 404,
+    "legacy_9001_health": "intentionally stopped before this task",
+    "legacy_9001_app": "intentionally stopped before this task",
+    "api_sha256": "374f69143742e52676d1bd4bd5237b77e44d26080f641db1d2669abedb7161dd",
+    "production_code_changed": false,
+    "recent_service_logs": "no new error; inspected api/admin/storefront"
+  },
+  "prior_failed_runs": [
+    "cfe49adb3710",
+    "6ab5d433e5b6",
+    "6eba0fa452ba",
+    "b983ba839dc0",
+    "d04dc01125c3",
+    "dbc199cbca17"
+  ]
+}

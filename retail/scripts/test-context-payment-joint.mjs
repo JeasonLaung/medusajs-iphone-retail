@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import {randomBytes,createHash} from 'node:crypto'
-import {cp,mkdir,readFile,writeFile,symlink,readdir} from 'node:fs/promises'
+import {cp,mkdir,readFile,writeFile,symlink,readdir,stat,statfs,realpath} from 'node:fs/promises'
 import {createWriteStream} from 'node:fs'
 import {spawn,spawnSync} from 'node:child_process'
 import {createServer} from 'node:net'
@@ -8,10 +8,11 @@ import path from 'node:path'
 import {fileURLToPath} from 'node:url'
 
 const root=fileURLToPath(new URL('../../',import.meta.url)),owner=randomBytes(6).toString('hex')
-const base=path.join(root,'logs/gin-migration/context-payment-'+owner)
-await mkdir(base,{recursive:true})
+const requestedBase=path.join(root,'logs/gin-migration/context-payment-'+owner)
+await mkdir(requestedBase,{recursive:true})
+const base=await realpath(requestedBase)
 const label='eurorefurb.context-payment='+owner,name='eurorefurb-context-'+owner
-const choices=['unchanged','changed','restore','delete-unknown','create-unknown','paid','replacement-paid','replacement-authorized','same-account','unbound-account','unbound-unchanged','unbound-precision','unbound-delete-unknown','unbound-restore','unbound-create-unknown','unbound-receipt-fault','unbound-lost-restore','continuous','currency-save','currency-restore','retired-edits']
+const choices=['unchanged','changed','restore','delete-unknown','create-unknown','paid','replacement-paid','replacement-authorized','same-account','unbound-account','unbound-unchanged','unbound-precision','unbound-delete-unknown','unbound-restore','unbound-create-unknown','unbound-receipt-fault','unbound-lost-restore','continuous','currency-save','currency-restore','retired-edits','group-save','group-restore']
 const args=process.argv.slice(2),matrix=args.includes('--matrix'),requested=[]
 const paypalContext=args.includes('--paypal-context'),paypalOnly=args.includes('--paypal-checkout'),cardBrowser=args.includes('--paypal-card'),walletBrowser=args.includes('--paypal-wallet')||cardBrowser
 assert(!paypalContext||args.length===1,'--paypal-context is an independent context browser subflow')
@@ -50,6 +51,8 @@ async function inventory(dir){
  }}await walk(dir);return result
 }
 try{
+ const disk=await statfs(base);report.build_volume_free_bytes=disk.bavail*disk.bsize
+ assert(report.build_volume_free_bytes>=2*1024**3,'2 GiB free required on the isolated build volume')
  console.log('Freeze source and compile owned runtime fixture.')
  const backend=path.join(base,'backend'),storefront=path.join(base,'storefront')
  await cp(path.join(root,'retail/backend'),backend,{recursive:true,filter:p=>!path.basename(p).startsWith('.env')})
@@ -62,9 +65,33 @@ try{
  await cp(browserSource,path.join(admin,'tests/context-payment.native.mjs'))
  const browserHash=createHash('sha256').update(await readFile(browserSource)).digest('hex')
  await symlink(path.join(root,'retail/admin/node_modules'),path.join(admin,'node_modules'),process.platform==='win32'?'junction':'dir')
- await symlink(path.join(root,'retail/storefront/node_modules'),path.join(storefront,'node_modules'),process.platform==='win32'?'junction':'dir')
+ // Keep build caches owned by this frozen checkout. Linking the entire modules
+ // directory would let Vite write caches into the running storefront checkout.
+ let sourceModules=await realpath(path.join(root,'retail/storefront/node_modules'))
+ const ownedModules=path.join(storefront,'node_modules')
+ // Astro's generated asset imports require the build and dependency real paths
+ // to be on one Windows volume. Evidence folders may be relocated by junction.
+ if(process.platform==='win32'&&path.parse(base).root.toLowerCase()!==path.parse(sourceModules).root.toLowerCase()){
+  const lock=await readFile(path.join(root,'retail/storefront/package-lock.json'))
+  const digest=createHash('sha256').update(lock).digest('hex')
+  const cacheRoot=path.join(path.dirname(base),'context-dependencies-'+digest.slice(0,16)),cache=path.join(cacheRoot,'node_modules'),marker=path.join(cacheRoot,'.owned-dependencies-ready')
+  let ready=false;try{ready=(await readFile(marker,'utf8'))===digest}catch{}
+  if(!ready){
+   await cp(sourceModules,cache,{recursive:true,dereference:true,filter:p=>!['.astro','.vite','.cache','.vite-temp'].includes(path.basename(p))})
+   await writeFile(marker,digest)
+  }
+  sourceModules=cache;report.same_volume_dependency_copy=true;report.dependency_lock_sha256=digest
+ }
+ await mkdir(ownedModules)
+ for(const entry of await readdir(sourceModules,{withFileTypes:true})){
+  if(['.astro','.vite','.cache'].includes(entry.name))continue
+  const source=path.join(sourceModules,entry.name),target=path.join(ownedModules,entry.name)
+  if((await stat(source)).isDirectory())await symlink(source,target,process.platform==='win32'?'junction':'dir')
+  else await cp(source,target)
+ }
  const binary=path.join(base,'identity-linux.test')
- run('go',['-C',backend,'test','-c','-o',binary,'./internal/identity'],{env:{...process.env,GOOS:'linux',GOARCH:'amd64',CGO_ENABLED:'0'}})
+ const goTmp=path.join(base,'go-tmp');await mkdir(goTmp)
+ run('go',['-C',backend,'test','-trimpath','-c','-o',binary,'./internal/identity'],{env:{...process.env,GOOS:'linux',GOARCH:'amd64',CGO_ENABLED:'0',GOTMPDIR:goTmp}})
  if(!paypalOnly)run(process.execPath,['node_modules/astro/bin/astro.mjs','build'],{cwd:storefront,env:{...env,ASTRO_TELEMETRY_DISABLED:'1',PUBLIC_CUSTOMER_CART_TRANSFER_ENABLED:'true'}})
  report.binary_sha256=createHash('sha256').update(await readFile(binary)).digest('hex')
  // Docker Desktop does not publish host ports on an --internal network.

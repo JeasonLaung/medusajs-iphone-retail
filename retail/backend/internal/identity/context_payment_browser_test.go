@@ -248,6 +248,7 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		}
 	})
 	var active sessionstore.CartReference
+	resetGroups := contextGroupFixture(t, db, fixture)
 	protectedFacts := func() string {
 		var all []string
 		for _, table := range []string{"inventory_levels", "inventory_reservations", "orders", "payment_captures", "order_notification_outbox"} {
@@ -272,6 +273,7 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	finish := make(chan struct{}, 1)
 	fixture.POST("/new", func(c *gin.Context) {
 		customerSessions.rateScope.Add(1)
+		resetGroups()
 		exec(`UPDATE pricing_prices SET amount=158.75,raw_amount='{"value":"158.75","precision":100}' WHERE id='add-cad'`)
 		exec("UPDATE pricing_prices SET amount=?,raw_amount=? WHERE id='add-single'", price.Amount, price.Raw)
 		ref, initial := makeCart()

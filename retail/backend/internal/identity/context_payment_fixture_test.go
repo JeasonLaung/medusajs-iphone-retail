@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"database/sql"
 	_ "embed"
+	"io/fs"
 	"os"
 	"strings"
 	"testing"
@@ -66,9 +67,11 @@ func TestOwnedContextPaymentBrowser(t *testing.T) {
 		t.Fatal(err)
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 105 {
+	files, fileErr := fs.Glob(migrations.Files, "*.sql")
+	if err != nil || fileErr != nil || len(files) == 0 || result.Applied != len(files) {
 		t.Fatal("dedicated context fixture migrations", err)
 	}
+	t.Logf("CONTEXT_PAYMENT_MIGRATIONS=%d", result.Applied)
 	for _, statement := range strings.Split(contextPaymentSeed, ";\n") {
 		if strings.TrimSpace(statement) != "" {
 			if err := db.Exec(statement).Error; err != nil {

@@ -126,6 +126,53 @@ async function continuousCase(seed,lang,width,writes){
  await page.screenshot({path:join(output,`continuous-${lang}-${width}.png`)})
  cases.push({scenario:'continuous',lang,width,steps,observed,final,unchanged_saves_then_replacement_then_save:true,lost_save_and_restore_responses:true,same_uuid_per_operation:true,full_order_flow_executed:false});await control('case-done')
 }
+async function groupCase(context,seed,scenario,lang,width,writes){
+ const restoring=scenario==='group-restore',target=lang==='en'?'zh':'en'
+ const amounts=async()=>{const r=await context.request.get(origin+'/api/store/carts/'+seed.cart_id+'/amounts');assert.equal(r.status(),200);return r.json()}
+ await control('group/member')
+ await page.goto(origin+'/dk-'+lang+'/account');await page.getByTestId('email-input').fill(seed.account_email);await page.getByTestId('password-input').fill(seed.password);await page.getByTestId('sign-in-button').click();await expect(page.getByTestId('customer-authenticated')).toBeAttached()
+ assert.equal((await amounts()).lines[0].unit_price,'100')
+ await page.goto(origin+'/dk-'+lang+'/checkout?step=payment');await expect(page.getByTestId('discount-input')).toBeEnabled();await page.getByTestId('discount-input').fill('MEMBER10');await page.getByTestId('discount-apply-button').click();await expect(page.getByTestId('discount-code-tag')).toContainText('MEMBER10')
+ assert.equal((await amounts()).totals.total,'121.25')
+ await expect(page.getByTestId('submit-payment-button')).toBeEnabled();await page.getByTestId('submit-payment-button').click();await expect(page.getByTestId('submit-order-button')).toBeVisible()
+ const original=await journal(paymentKey),before=await amounts(),frozen=await control('facts');assert.equal(original.version,'6');assert.equal(frozen.version,7);assert.equal(frozen.creates,1)
+ await control('group/removed');assert.deepEqual(await amounts(),before)
+ const blocked=await context.request.post(origin+'/api/store/carts/'+seed.cart_id+'/line-items/'+before.lines[0].id,{headers:{Origin:origin,'X-CSRF-Token':seed.csrf,'Idempotency-Key':crypto.randomUUID()},data:{version:'7',quantity:'2'}});assert.equal(blocked.status(),409);assert.deepEqual(await amounts(),before)
+ // Replaying the original create acknowledges its frozen quote; it must not
+ // silently create another channel payment at the new non-member amount.
+ const replay=await context.request.post(origin+'/api/store/carts/'+seed.cart_id+'/payment-attempts',{headers:{Origin:origin,'X-CSRF-Token':seed.csrf,'Idempotency-Key':original.operationID},data:{version:original.version}});assert.equal(replay.status(),200);assert.equal((await control('facts')).creates,1);assert.deepEqual(await amounts(),before)
+ if(restoring)await control('mode/restore')
+ const startURL=origin+'/dk-'+lang+'/about?joint=groups#contact';await page.goto(startURL)
+ let lost=false
+ await page.route('**/context-payment',async route=>{const r=await route.fetch();assert.equal(r.status(),restoring?409:200);if(!restoring&&!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})})
+ const choose=()=>page.getByRole('dialog').getByRole('button',{name:target==='zh'?'Danmark — Chinese Simplified (China)':'Danmark — English (United Kingdom)',exact:true}).click()
+ await open();await choose();await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible();const pending=await journal(contextKey);assert.equal(pending.version,'7')
+ await page.reload();await open()
+ if(restoring){
+  await page.route('**/context-payment/restore',async route=>{const r=await route.fetch();assert.equal(r.status(),200);if(!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})})
+  const restore=()=>page.getByRole('button',{name:lang==='zh'?'恢复之前的设置':'Restore previous preferences',exact:true}).click()
+  await restore();await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible();await page.reload();await open();await restore();await expect.poll(()=>journal(contextKey)).toBeNull();await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page).toHaveURL(startURL)
+ }else{await choose();await expect(page).toHaveURL(origin+'/dk-'+target+'/about?joint=groups#contact')}
+ const recovered=await amounts(),facts=await control('facts');assert.equal(recovered.version,'8');assert.equal(recovered.lines[0].unit_price,restoring?'100':'120');assert.equal(recovered.totals.discount_total,restoring?'12.5':'0');assert.equal(recovered.totals.total,restoring?'121.25':'158.75');assert.equal(facts.deletes,1);assert.equal(facts.creates,restoring?2:1);assert.equal(facts.receipts,restoring?0:1);assert.equal(facts.refresh,null);assert.equal(facts.protected_unchanged,true)
+ assert.equal(await journal(contextKey),null);assert(lost);assert(writes.length>=2);assert(writes.every(w=>w.key===pending.operationID&&JSON.stringify(w.body)===JSON.stringify(writes[0].body)))
+ let nextSaveWrites=[]
+ if(restoring){
+  const binding=await journal(paymentKey);assert.equal(binding.operationID,pending.operationID);assert.equal(binding.version,'7')
+  // Compensation preserves the original authenticated quote. A NEW explicit
+  // save, rather than compensation replay, adopts current membership/prices.
+  await page.unroute('**/context-payment')
+  await page.route('**/context-payment',async route=>{nextSaveWrites.push({key:route.request().headers()['idempotency-key'],body:route.request().postDataJSON()});const r=await route.fetch();assert.equal(r.status(),200);await route.fulfill({response:r})})
+  await open();await choose();await expect(page).toHaveURL(origin+'/dk-'+target+'/about?joint=groups#contact')
+  assert.equal(nextSaveWrites.length,1);assert.notEqual(nextSaveWrites[0].key,pending.operationID);assert.equal(nextSaveWrites[0].body.version,'8');assert.equal(await journal(contextKey),null)
+ }
+ {
+  assert.equal(await journal(paymentKey),null);await page.goto(origin+'/dk-'+target+'/checkout?step=payment');await expect(page.getByTestId('submit-payment-button')).toBeEnabled();await page.getByTestId('submit-payment-button').click();await expect(page.getByTestId('submit-order-button')).toBeVisible();assert.equal((await journal(paymentKey)).version,restoring?'9':'8')
+ }
+ const after=await amounts(),final=await control('facts');assert.equal(after.lines[0].unit_price,restoring?'122':'120');assert.equal(after.totals.discount_total,'0');assert.equal(after.totals.total,restoring?'161.25':'158.75');assert.equal(final.version,restoring?10:9);assert.equal(final.creates,restoring?3:2);assert.equal(final.deletes,restoring?2:1);assert.equal(final.live_sessions,1);assert.equal(final.protected_unchanged,true);assert.equal(final.account_owners,1)
+ assert.deepEqual(final.provider_events,[{Kind:'create',Amount:'121.25',Currency:'eur'},{Kind:'delete',Amount:'121.25',Currency:'eur'},...(restoring?[{Kind:'create',Amount:'121.25',Currency:'eur'},{Kind:'delete',Amount:'121.25',Currency:'eur'}]:[]),{Kind:'create',Amount:restoring?'161.25':'158.75',Currency:'eur'}])
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);await page.screenshot({path:join(output,`${scenario}-${lang}-${width}.png`)})
+ cases.push({scenario,lang,width,before,recovered,after,nextSaveWrites,real_database_facts:final,frozen_quote_preserved_until_explicit_refresh:true,compensation_preserves_original_quote:restoring,frozen_item_write_denied:true,original_create_replay_no_duplicate:true,removed_group_discount_cleared_on_new_save:true,lost_response_same_operation_recovered:true,full_order_flow_executed:false});await control('case-done')
+}
 async function accountCase(context,seed,scenario,lang,width){
  const attach=scenario==='unbound-unchanged',restore=['unbound-restore','unbound-create-unknown'].includes(scenario),unknown=scenario==='unbound-delete-unknown',fault=scenario==='unbound-receipt-fault',changed=scenario.startsWith('unbound-')&&!attach,success=true
  const accountURL=origin+'/dk-'+lang+'/account',transferKey='retail:customer-cart-transfer:v1',inputs=[]
@@ -223,6 +270,7 @@ try{
   const writes=[];page.on('request',r=>{if(r.method()==='POST'&&r.url().includes('/context-payment'))writes.push({path:new URL(r.url()).pathname,key:r.headers()['idempotency-key'],body:r.postDataJSON()})})
   const seed=await control('new'),url=origin+'/dk-'+lang+'/about?joint=payment#contact'
   await context.addCookies([{name:'retail_cart_possession',value:seed.token,url:origin,sameSite:'Strict'},{name:'retail_cart_csrf',value:seed.csrf,url:origin,sameSite:'Strict'}])
+  if(scenario.startsWith('group-')){await groupCase(context,seed,scenario,lang,width,writes);await context.close();continue}
   if(scenario==='retired-edits'){await retiredEditsCase(seed,lang,width);await context.close();continue}
   if(scenario.startsWith('currency-')){await currencyCase(seed,scenario,lang,width,writes);await context.close();continue}
   if(scenario==='continuous'){await continuousCase(seed,lang,width,writes);await context.close();continue}
