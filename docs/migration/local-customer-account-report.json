@@ -1,0 +1,109 @@
+{
+  "task": "Windows isolated native customer account subflow",
+  "date": "2026-11-02",
+  "passed": true,
+  "actual_astro_gin_mysql_redis": true,
+  "real_email_delivery": false,
+  "verification_via_owned_encrypted_intent": true,
+  "main_database_modified": false,
+  "new_paid_order_attachment_tested": false,
+  "runs": [
+    {
+      "owner": "90c84af12fa4",
+      "database": "retail_account_90c84af12fa4",
+      "real_email_delivery": false,
+      "business_api_mocking": false,
+      "main_database_modified": false,
+      "api_sha256": "5d5dc33a337d33a206939bebb363c25978a472650d3789318b5b101197b875a7",
+      "passed": true,
+      "cases": [
+        {
+          "segment": "gb-en",
+          "width": 1440,
+          "registration": true,
+          "unverified_login_denied": true,
+          "encrypted_intent_link_verification": true,
+          "login": true,
+          "empty_own_orders": true,
+          "guest_order_denied": true,
+          "profile_persisted": true,
+          "address_create_read_delete": true,
+          "logout_revoked": true,
+          "relogin": true,
+          "no_overflow": true
+        }
+      ],
+      "browser_errors": 0,
+      "verification_via_owned_encrypted_intent": true,
+      "verified_accounts": 1,
+      "redis_keys_removed": 8,
+      "source_account_counts_before": {
+        "customer_accounts": 0,
+        "customer_verifications": 0,
+        "customer_verification_mail": 0,
+        "customer_account_addresses": 0,
+        "customer_order_ownership": 0
+      },
+      "source_account_counts_after": {
+        "customer_accounts": 0,
+        "customer_verifications": 0,
+        "customer_verification_mail": 0,
+        "customer_account_addresses": 0,
+        "customer_order_ownership": 0
+      },
+      "resources_removed": true,
+      "cleanup_errors": []
+    },
+    {
+      "owner": "5da372cb0b82",
+      "database": "retail_account_5da372cb0b82",
+      "real_email_delivery": false,
+      "business_api_mocking": false,
+      "main_database_modified": false,
+      "api_sha256": "5d5dc33a337d33a206939bebb363c25978a472650d3789318b5b101197b875a7",
+      "passed": true,
+      "cases": [
+        {
+          "segment": "gb-zh",
+          "width": 390,
+          "registration": true,
+          "unverified_login_denied": true,
+          "encrypted_intent_link_verification": true,
+          "login": true,
+          "empty_own_orders": true,
+          "guest_order_denied": true,
+          "profile_persisted": true,
+          "address_create_read_delete": true,
+          "logout_revoked": true,
+          "relogin": true,
+          "no_overflow": true
+        }
+      ],
+      "browser_errors": 0,
+      "verification_via_owned_encrypted_intent": true,
+      "verified_accounts": 1,
+      "redis_keys_removed": 8,
+      "source_account_counts_before": {
+        "customer_accounts": 0,
+        "customer_verifications": 0,
+        "customer_verification_mail": 0,
+        "customer_account_addresses": 0,
+        "customer_order_ownership": 0
+      },
+      "source_account_counts_after": {
+        "customer_accounts": 0,
+        "customer_verifications": 0,
+        "customer_verification_mail": 0,
+        "customer_account_addresses": 0,
+        "customer_order_ownership": 0
+      },
+      "resources_removed": true,
+      "cleanup_errors": []
+    }
+  ],
+  "remaining": [
+    "Actual verification email delivery and receipt",
+    "Authenticated real Mollie purchase and paid order attachment",
+    "Full C01-C11 acceptance"
+  ]
+}
