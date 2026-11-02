@@ -1,0 +1,135 @@
+{
+  "task": "Enable actual local mailbox configuration and preserve independent sending consent",
+  "date": "2026-11-02",
+  "passed": true,
+  "full_C01_C11_complete": false,
+  "main_read_only_ui": {
+    "passed": true,
+    "read_only": true,
+    "mail_sent": false,
+    "notification_mail_writes": 0,
+    "browser_errors": 0,
+    "checks": [
+      {
+        "language": "en",
+        "width": 1440,
+        "accounts_http": 200,
+        "jobs_http": 200,
+        "empty_directory": true,
+        "pending_job_unsent": true,
+        "blank_secret_editor": true,
+        "cancel_without_save": true,
+        "no_horizontal_overflow": true
+      },
+      {
+        "language": "zh",
+        "width": 390,
+        "accounts_http": 200,
+        "jobs_http": 200,
+        "empty_directory": true,
+        "pending_job_unsent": true,
+        "blank_secret_editor": true,
+        "cancel_without_save": true,
+        "no_horizontal_overflow": true
+      }
+    ]
+  },
+  "isolated_mail_regression": {
+    "owner": "61412cfc36dd",
+    "database": "retail_account_61412cfc36dd",
+    "real_email_delivery": false,
+    "business_api_mocking": false,
+    "main_database_modified": false,
+    "api_sha256": "80084eb3e22aa01165c1152764554e2b1b139734a29a2d39dd67c2327ea15ba4",
+    "customer_owner": "61412cfc36dd",
+    "passed": true,
+    "scenario": "mail",
+    "actual_admin_mailbox_save": true,
+    "blank_secret_preserved": true,
+    "customer_registration_verification_login": true,
+    "link_from_dispatched_email": true,
+    "paid_order_existing_outbox": true,
+    "permanent_rejection_admin_retry_then_sent": true,
+    "same_frozen_mail_on_retry": true,
+    "lost_reply_exact_command_recovery": true,
+    "production_dispatchers_separate_processes": true,
+    "isolated_resend_transport": true,
+    "browser_errors": 0,
+    "verified_accounts": 1,
+    "sql_mail_facts": {
+      "verification_sent": 1,
+      "order_sent": 1,
+      "order_retry_audit": 1,
+      "approved_mailbox": 1,
+      "mailbox_receipts": 2
+    },
+    "redis_keys_removed": 11,
+    "source_account_counts_before": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "source_account_counts_after": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "resources_removed": true,
+    "cleanup_errors": []
+  },
+  "configuration_rejections": {
+    "production": true,
+    "missing_merchant_keyring": true,
+    "mail_disabled": true,
+    "wrong_database": true
+  },
+  "main_real_mail_sent": false,
+  "real_resend_credentials_configured": false,
+  "main_verification_worker_enabled": false,
+  "main_order_mail_worker_enabled": false,
+  "checks": [
+    "Go notificationmail/protected and configure command tests/vet",
+    "PowerShell parser",
+    "Python compile",
+    "Main native Admin real bilingual desktop/mobile read-only browser",
+    "Isolated actual customer/Admin mail dispatch and retry with external Resend transport fixture"
+  ],
+  "main_final_verification": {
+    "http": {
+      "api_health": 200,
+      "admin_mailboxes": 200,
+      "storefront_store": 200,
+      "customer_orders": 200
+    },
+    "notification_mailboxes": 0,
+    "customer_verification_mail": 0,
+    "order_mail_deliveries": 0,
+    "order_placed_pending": 1,
+    "order_placed_attempts": 0,
+    "customer_order_ownership": 0,
+    "european_inventory_stock": 50,
+    "european_inventory_reserved": 1,
+    "order_payment_worker_instances": 1,
+    "order_refund_worker_instances": 1,
+    "mail_worker_instances": 0,
+    "recent_service_logs_inspected": true
+  }
+}

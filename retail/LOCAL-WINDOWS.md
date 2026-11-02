@@ -81,3 +81,7 @@ Mollie无法访问loopback webhook，本机test模式省略该参数，通过真
 本机忽略.env当前为 `LOCAL_PREVIEW_REFUNDS_ENABLED=true`、`ORDER_REFUNDS_ENABLED=true`，取代此前退款worker关闭的阶段状态。start.bat以Mollie测试配置显式启用v4退款gate并启动一个原生 `order-refund-worker.exe`；重复启动核实旧PID精确路径后先停再启。PID和日志为 `logs/retail-native/order-refund-worker.*`。此配置会执行今后正式提交的沙箱退款指令，不能将pending显示为成功；邮件worker不随之启动。
 
 `python retail/scripts/test-local-customer-account.py --verify-completed-refund=OWNER` 只恢复已完成真实退款检查点，用当前worker --once核对十表不重复写入，随后清理副本；不重建付款或退款。说明见 `docs/migration/local-refund-runtime.md`。
+
+## 通知邮箱配置入口
+
+当前本机已启用 `NOTIFICATION_MAIL_ENABLED=true`、`LOCAL_PREVIEW_NOTIFICATION_MAIL_ENABLED=true`，新独立持久MERCHANT keyring保存在忽略.env。start.bat校验该配置及已有邮件设置，不创建邮箱、不启动发信worker。可在 `http://127.0.0.1:9200/mailboxes` 配置Resend发信账户、查看订单邮件任务和原失败重试入口；主库目前空邮箱/1条pending订单邮件。注册和订单邮件worker仍关闭，未发送真实邮件。详情及只读启动验收见 `docs/migration/local-mailbox-configuration.md`。

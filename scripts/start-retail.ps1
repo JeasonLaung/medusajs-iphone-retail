@@ -155,6 +155,10 @@ try {
     & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --refunds
     if ($LASTEXITCODE -ne 0) { throw 'Local refund configuration failed.' }
   }
+  if ($env:LOCAL_PREVIEW_NOTIFICATION_MAIL_ENABLED -eq 'true') {
+    & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --notification-mail
+    if ($LASTEXITCODE -ne 0) { throw 'Local notification mailbox configuration failed.' }
+  }
   $binary = Join-Path $logRoot 'retail-api.exe'
   & $go -C (Join-Path $retailRoot 'backend') build -o $binary ./cmd/api
   if ($LASTEXITCODE -ne 0) { throw 'Gin API compilation failed.' }

@@ -15,6 +15,7 @@ import (
 	"github.com/eurorefurb/retail/internal/checkoutconfig"
 	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/platform"
+	"github.com/eurorefurb/retail/internal/protected"
 	driver "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	"gorm.io/gorm"
@@ -31,11 +32,20 @@ func main() {
 	reviews := flag.Bool("reviews", false, "Enable product review reads, customer submissions and Admin moderation in the dedicated local preview")
 	orderPayments := flag.Bool("order-payments", false, "Enable existing customer supplemental payments in the dedicated local Mollie test preview")
 	refunds := flag.Bool("refunds", false, "Enable existing refund commands in the dedicated local Mollie test preview")
+	notificationMail := flag.Bool("notification-mail", false, "Validate explicit notification mailbox management without starting mail workers")
 	flag.Parse()
 	_ = godotenv.Load()
 	cfg, err := driver.ParseDSN(os.Getenv("MYSQL_DSN"))
 	if err != nil || os.Getenv("APP_ENV") != "development" || cfg.Net != "tcp" || cfg.Addr != "127.0.0.1:13307" || cfg.DBName != "eurorefurb_local_trial" {
 		log.Fatal("Requires development environment and the dedicated loopback Windows preview database")
+	}
+	if *notificationMail {
+		if os.Getenv("NOTIFICATION_MAIL_ENABLED") != "true" {
+			log.Fatal("Explicit notification mailbox management configuration required")
+		}
+		if _, err := protected.ParseKeyring(os.Getenv("MERCHANT_KEY_ACTIVE"), os.Getenv("MERCHANT_KEYRING_JSON")); err != nil {
+			log.Fatal("Persistent merchant encryption keyring required; do not replace keys used by saved mailboxes")
+		}
 	}
 	if *payments || *contextPayment || *orderPayments || *refunds {
 		options, e := checkoutconfig.Load(os.Getenv)
@@ -68,6 +78,15 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *notificationMail {
+			var row struct{ Revision uint64 }
+			if e := tx.Raw("SELECT revision FROM notification_mail_settings WHERE id=1 FOR SHARE").Take(&row).Error; e != nil {
+				return e
+			}
+			if row.Revision == 0 {
+				return gorm.ErrInvalidData
+			}
+		}
 		if *refunds {
 			var row struct{ Version int }
 			if e := tx.Raw("SELECT version FROM order_refund_runtime WHERE id=1 FOR UPDATE").Take(&row).Error; e != nil {
@@ -302,5 +321,8 @@ func main() {
 	}
 	if *refunds {
 		log.Print("Local refund command gate enabled; no instructions, refunds or workers created")
+	}
+	if *notificationMail {
+		log.Print("Local notification mailbox management ready; sender credentials and mail workers remain independent")
 	}
 }

@@ -319,3 +319,6 @@ C06 增加 [Mollie 通知消费及独立 worker](mollie-checkout-consumer.md)：
 
 
 2026-11-02 接续：[本机退款独立运行](local-refund-runtime.md)新增严格test/dev/专用库的--refunds配置及start.bat原生退款worker，复用精确PID/路径核对启停，连续两次启动确认退款/补款各一个实例。当前生产worker在原已完成真实退款检查点--once恢复，五项唯一终态/十表指纹不变；四项错误配置拒绝。主指令仍0、库存50/预留1，未为验收制造售后或新退款。原退款关闭描述由该增量取代；真实邮件、生产回调及C01—C11其他闭环继续。
+
+
+2026-11-02 接续：[Windows通知邮箱配置可用](local-mailbox-configuration.md)主/mailboxes实际API及中英桌面/手机只读检查通过，添加编辑器空密钥/取消与原pending任务可见；新持久MERCHANT keyring及显式启动校验已配置，未创建邮箱或启用发信worker。隔离邮箱保存→注册正文链接验证→订单拒绝/同指令重试回归通过，Resend传输仍为替身。运行器显式关闭非付款场景的付款上下文开关，修复继承主配置导致副本启动失败。真实Resend/收件及C10/C01—C11其余缺口继续。

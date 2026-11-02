@@ -609,6 +609,7 @@ def main(language, scenario='account', resume=None):
                    APP_PORT='19100', ADMIN_ORIGIN='http://127.0.0.1:19200',
                    STOREFRONT_ORIGIN='http://127.0.0.1:19300', SESSION_REDIS_PREFIX=prefix,
                    MOLLIE_BACKEND_ORIGIN='http://127.0.0.1:19100', CHECKOUT_PAYMENT_ENABLED='false',
+                   CHECKOUT_CONTEXT_PAYMENT_ENABLED='false',
                    CUSTOMER_AUTH_ENABLED='true', CUSTOMER_VERIFICATION_MAIL_ENABLED='false',
                    NOTIFICATION_MAIL_ENABLED='false', ORDER_MAIL_ENABLED='false',
                    ORDER_PAYMENTS_ENABLED='false', MOLLIE_NOTIFICATIONS_ENABLED='false',
