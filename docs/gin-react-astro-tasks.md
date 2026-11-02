@@ -1,5 +1,7 @@
 # Gin + React + Astro 迁移任务清单
 
+2026-11-02 运行接续：[本机 Redis 空闲后首次503](migration/windows-redis-idle.md)已定位并修复客户端池，原生服务100秒对照通过：旧池首错/次成功、新池首成功；不自动重放会话写入。当前三端使用启动脚本更新后的本机服务。其他 C01—C11 终点继续开放。
+
 2026-11-02 最新：[PayPal 创建子流程](migration/gin-paypal-create.md)已实现钱包/卡入口共用服务端 adapter，并通过局部 HTTP/TLS、金额及故障验证；尚未接主结账/SDK/实收，不关闭 C06。Windows 三端已通过 `start.bat` 启动，专用 Docker MySQL 9.6 已103迁移，本机 Redis；后文旧 Linux 预览状态为历史，以 `retail/LOCAL-WINDOWS.md` 为当前启动说明。继续按 C01—C11 推进，每个子任务验证后 commit/push。
 
 日期：2026-10-26；交接更新：2026-11-02。状态：C01—C11持续进行中，尚未通过完整联合验收。

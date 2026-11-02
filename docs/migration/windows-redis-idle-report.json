@@ -1,0 +1,35 @@
+{
+  "task": "Windows native Redis idle connection readiness",
+  "passed": true,
+  "utc": "2026-11-02T09:21:47.7930838Z",
+  "native_redis_timeout_seconds": 65,
+  "old_pool_idle_seconds": 1800,
+  "new_pool_idle_seconds": 30,
+  "automatic_command_retries": 0,
+  "comparison_idle_seconds": 100,
+  "baseline_first_ping": false,
+  "baseline_second_ping": true,
+  "fixed_first_ping": true,
+  "actual_api_idle_seconds": 100,
+  "actual_api_first_health_status": 200,
+  "new_session_keys_written": 0,
+  "redis_config_changed": false,
+  "database_schema_changed": false,
+  "runtime_restarted_using": "scripts/start-retail.ps1",
+  "checks": [
+    "Windows opt-in TestLocalRedisIdleRehearsal PASS",
+    "go test sessionstore identity customer cart cmd/api PASS",
+    "go vet sessionstore PASS"
+  ],
+  "failed_runs_retained": {
+    "initial": "logs/retail-native/redis-idle-check.log",
+    "reason": "baseline reused initialized MaxRetries=0 and unintentionally enabled default retries",
+    "intermediate": "stopped owned test process 19556 to correct baseline; no app process stopped for test repair"
+  },
+  "sha256": {
+    "retail/backend/internal/sessionstore/config.go": "d9f5e9e0fced5c650b13597eef325c5040eeda22b9daa1566319fe55e54a57d2",
+    "retail/backend/internal/sessionstore/idle_windows_test.go": "f5ae3e4799f328b24dd933fcad028c6a2ff0a1c08281ccd22d39ec6d5cdca9c8",
+    "logs/retail-native/redis-idle-check-final.log": "2b1a1f463e83f5e9a7fcdac08f10fdad92c0fb01f98487d124f268f391cadac4",
+    "logs/retail-native/health-after-idle.json": "6402501ecc1a9719d0585cca48de3b0fa1440ac9198ff083abad79b9b2533b06"
+  }
+}

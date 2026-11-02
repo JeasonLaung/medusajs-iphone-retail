@@ -15,3 +15,7 @@
 进程在后台运行，日志与 PID 保存在 `logs/retail-native/`。再次执行脚本会关闭旧项目监听后重新启动；启动失败会指出对应日志文件。可通过 `RETAIL_NODE_EXE` 指定 Node；当前系统版本过旧时也会检测本机已有的 Codex Node runtime。本次新建后台账号 `admin@eurorefurb.local`，随机密码保存在 Git 忽略的 `.private-files/local/admin-credentials.txt`；原 Medusa 的 `.admin-credentials` 不适用于新后台。
 
 本机已从 `mysql-schema102.sql.gz` 恢复专用库 `eurorefurb_local_trial`，显式执行0103字段迁移，重放确认0条待应用。数据库密码及新本机账户加密密钥仅保存在忽略文件中，旧机的私有包没有恢复；历史加密配置及未携带的上传文件可能不可读取。真实付款、退款及外发邮件保持关闭。换机请携带数据库、对应私有配置及必要文件，不能仅依赖本脚本恢复数据。
+
+## Windows Redis 空闲连接
+
+本机 Redis 的空闲超时为65秒。项目客户端在30秒时退休空闲连接，避免 Windows 闲置后首次请求因旧连接关闭而短暂503；不会自动重试会话写入，也不会修改共享 Redis 的服务器设置。专项说明见 `docs/migration/windows-redis-idle.md`。

@@ -37,6 +37,10 @@ func Open(ctx context.Context, connection, prefix string) (*Store, *redis.Client
 	opts.PoolTimeout = time.Second
 	opts.PoolSize = 8
 	opts.MaxActiveConns = 8
+	// The native Windows Redis closes idle connections after 65 seconds. Unlike
+	// Unix, the client cannot peek for EOF before borrowing a pooled socket on
+	// Windows. Retire idle sockets first instead of retrying session mutations.
+	opts.ConnMaxIdleTime = 30 * time.Second
 	opts.ContextTimeoutEnabled = true
 	opts.Protocol = 2
 	opts.DisableIdentity = true
