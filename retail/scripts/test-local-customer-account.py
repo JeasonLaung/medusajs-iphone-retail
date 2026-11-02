@@ -7,6 +7,9 @@ applications through Admin closing with explicit prices/devices in the copy.
 --scenario=repair or --scenario=exchange continues a copied paid order through
 explicit fixture account ownership, real fulfillment and repair/replacement; never claims ownership
 of an actual guest order in the source preview.
+--scenario=refund creates its own real sandbox payment; pending is reported as
+unfinished, never posted. --resume-refund=OWNER restores an ignored checkpoint
+and reuses the same paid order and durable refund instruction.
 Verification links are read from authenticated encrypted intents in the owned
 copy, never returned by an application endpoint or marked verified with SQL.
 """
@@ -142,12 +145,21 @@ def redis_cleanup(prefix):
         return len(keys)
 
 
-def main(language, scenario='account'):
+def main(language, scenario='account', resume=None):
     buyback = scenario in ('buyback', 'buyback-return')
     exchange = scenario == 'exchange'
-    repair = scenario in ('repair', 'exchange')
+    refund = scenario == 'refund'
+    repair = scenario in ('repair', 'exchange', 'refund')
     admin_required = buyback or repair
     values = config()
+    if resume is not None:
+        if not refund or not re.fullmatch(r'[0-9a-f]{12}', resume):
+            raise RuntimeError('Only an owned refund checkpoint can resume')
+        checkpoint = ROOT / 'logs/retail-native' / ('account-' + resume)
+        checkpoint_report = json.loads((checkpoint / 'report.json').read_text())
+        paid = json.loads((checkpoint / 'refund-new-paid-order.json').read_text())
+        if not re.fullmatch(r'order_[0-9a-f-]{36}', paid.get('order_id', '')) or not paid.get('real_mollie_test_payment'):
+            raise RuntimeError('Owned paid sandbox checkpoint required')
     owner = secrets.token_hex(6)
     database = 'retail_account_' + owner
     prefix = 'eurorefurb:account-' + owner + ':v1:'
@@ -180,22 +192,45 @@ def main(language, scenario='account'):
     report = {'owner': owner, 'database': database, 'real_email_delivery': False,
               'business_api_mocking': False, 'main_database_modified': False,
               'api_sha256': hashlib.sha256((ROOT / 'logs/retail-native/retail-api.exe').read_bytes()).hexdigest()}
+    customer_owner = checkpoint_report.get('customer_owner', resume) if resume else owner
+    report['customer_owner'] = customer_owner
     try:
         # Fail before creating resources when another rehearsal owns these ports.
         for port in ((19100, 19200, 19300) if admin_required else (19100, 19300)):
             with socket.socket() as check:
                 check.bind(('127.0.0.1', port))
         snapshot = '/tmp/account-' + owner + '.sql'
-        docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf',
-               '--single-transaction', '--set-gtid-purged=OFF', '--skip-triggers',
-               '--result-file=' + snapshot, 'eurorefurb_local_trial')
+        if resume:
+            docker('cp', str(checkpoint / 'refund-final.sql'), CONTAINER + ':' + snapshot)
+            shutil.copy2(checkpoint / 'refund-new-paid-order.json', logs / 'refund-new-paid-order.json')
+            report['resumed_paid_checkpoint'] = resume
+        else:
+            docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf',
+                   '--single-transaction', '--set-gtid-purged=OFF', '--skip-triggers',
+                   '--result-file=' + snapshot, 'eurorefurb_local_trial')
         docker('cp', CONTAINER + ':' + snapshot, str(logs / 'snapshot.sql'))
         docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e',
                'CREATE DATABASE ' + database + "; GRANT ALL ON " + database + ".* TO 'retail_local'@'%';")
         created = True
         docker('exec', CONTAINER, 'sh', '-c',
                'mysql --defaults-extra-file=/tmp/local-root.cnf ' + database + ' < ' + snapshot)
-        if repair:
+        if resume:
+            email = sql(database, "SELECT a.email FROM customer_accounts a JOIN customer_order_ownership o ON o.customer_id=a.id WHERE o.order_id='" + paid['order_id'] + "' AND a.verified_at IS NOT NULL")
+            match = re.fullmatch(r'local-account-([0-9a-f]{12})-1@example.invalid', email)
+            if not match:
+                raise RuntimeError('Owned verified checkpoint customer required')
+            customer_owner = match.group(1)
+            report['customer_owner'] = customer_owner
+            facts = sql(database, "SELECT (SELECT COUNT(*) FROM customer_order_ownership WHERE order_id='" + paid['order_id'] + "'),(SELECT COUNT(*) FROM order_refund_operations),(SELECT COUNT(*) FROM device_assignments)").split('\t')
+            if facts not in (['1', '0', '0'], ['1', '1', '1']):
+                raise RuntimeError('Unsupported owned refund checkpoint')
+            existing_refund = facts[1] == '1'
+            if existing_refund:
+                row = sql(database, "SELECT request_id,operation_id FROM order_refund_operations WHERE order_id='" + paid['order_id'] + "'").split('\t')
+                if len(row) != 2 or not re.fullmatch(r'asr_[0-9a-f-]{36}', row[0]) or not re.fullmatch(r'[0-9a-f-]{36}', row[1]):
+                    raise RuntimeError('Owned refund receipt identity mismatch')
+                (logs / 'refund-existing.json').write_text(json.dumps({'request_id': row[0], 'operation_id': row[1]}))
+        if repair and not resume:
             sql(database, "UPDATE customer_after_sales_runtime SET enabled=TRUE WHERE id=1; "
                 "UPDATE after_sales_review_runtime SET enabled=TRUE WHERE id=1; "
                 "UPDATE device_return_runtime SET enabled=TRUE WHERE id=1; "
@@ -207,6 +242,8 @@ def main(language, scenario='account'):
                 "INSERT INTO device_variant_tracking(id,variant_id,inventory_item_id,created_at,updated_at) "
                 "SELECT 'isolated-repair-tracking','variant_01M51RN7H7HPV9RH69T32QMD2Q','iitem_01M51RN7HTPYQ7YFPXABBF8VJ8',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6) "
                 "WHERE NOT EXISTS(SELECT 1 FROM device_variant_tracking WHERE variant_id='variant_01M51RN7H7HPV9RH69T32QMD2Q' AND deleted_at IS NULL);")
+            if refund:
+                sql(database, "UPDATE order_refund_runtime SET enabled=TRUE WHERE id=1 AND version=4")
             if exchange:
                 sql(database, "INSERT INTO devices(id,serial_number,imei,variant_id,source_id,location_id,cost_cents,currency_code,bin,notes,state,category,grade,battery_health,photos,created_at,updated_at) "
                     "VALUES('isolated-exchange-device','CHECKOUT-DEVICE-5','490154203237526','variant_01M51RN7H7HPV9RH69T32QMD2Q','isolated-repair-source','sloc_01M4FBP3NDPZHJKVV3VY682QTN',0,'eur','','','available','sale','S',90,'[]',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
@@ -231,6 +268,16 @@ def main(language, scenario='account'):
                    CUSTOMER_AUTH_ENABLED='true', CUSTOMER_VERIFICATION_MAIL_ENABLED='false',
                    NOTIFICATION_MAIL_ENABLED='false', ORDER_MAIL_ENABLED='false',
                    GIN_API_ORIGIN='http://127.0.0.1:19100')
+        # Real sandbox refunds must use a freshly paid order in this copy,
+        # never the remote payment belonging to the source preview order.
+        env['ORDER_REFUNDS_ENABLED'] = 'true' if refund else 'false'
+        if refund:
+            if not values.get('MOLLIE_API_KEY', '').startswith('test_'):
+                raise RuntimeError('Refund rehearsal requires a Mollie test key')
+            env['CHECKOUT_PAYMENT_ENABLED'] = 'true'
+            worker = logs / 'refund-worker.exe'
+            subprocess.run(['go', 'build', '-o', str(worker), './cmd/process-order-refunds'],
+                           cwd=ROOT / 'retail/backend', check=True, capture_output=True, timeout=120)
         services = [
             ('api', [str(ROOT / 'logs/retail-native/retail-api.exe')], ROOT / 'retail/backend'),
             ('storefront', [str(node), 'node_modules/astro/bin/astro.mjs', 'dev', '--host', '127.0.0.1',
@@ -239,6 +286,8 @@ def main(language, scenario='account'):
             env['ADMIN_TEST_API_TARGET'] = 'http://127.0.0.1:19100'
             services.append(('admin', [str(node), 'node_modules/vite/bin/vite.js', '--host', '127.0.0.1',
                                       '--port', '19200', '--strictPort'], ROOT / 'retail/admin'))
+        if refund:
+            services.append(('refund-worker', [str(worker)], ROOT / 'retail/backend'))
         for label, command, cwd in services:
             stream = open(logs / (label + '.log'), 'wb')
             streams.append(stream)
@@ -262,16 +311,19 @@ def main(language, scenario='account'):
         browser_env = dict(env, ACCOUNT_TEST_OWNER=owner, ACCOUNT_TEST_DB=database,
                            ACCOUNT_TEST_LOGS=str(logs), ACCOUNT_TEST_PYTHON=sys.executable,
                            ACCOUNT_TEST_LANGUAGE=language, ACCOUNT_TEST_SCENARIO=scenario)
+        if resume:
+            browser_env.update(ACCOUNT_TEST_CUSTOMER_OWNER=customer_owner, ACCOUNT_TEST_RESUME_PAID='true',
+                               ACCOUNT_TEST_REFUND_EXISTING='true' if existing_refund else 'false')
         script = 'tests/local-repair.live.mjs' if repair else 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
         result = subprocess.run([str(node), script],
                                 cwd=ROOT / 'retail/storefront', env=browser_env,
-                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=240)
+                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=420 if refund else 240)
         (logs / 'browser.log').write_bytes(result.stdout)
         if result.returncode:
             raise RuntimeError('Account browser check failed; inspect ignored browser.log')
         report.update(json.loads((logs / 'browser-result.json').read_text()))
         report['verified_accounts'] = int(sql(database, "SELECT COUNT(*) FROM customer_accounts "
-             "WHERE email LIKE 'local-account-" + owner + "-%@example.invalid' AND verified_at IS NOT NULL"))
+             "WHERE email LIKE 'local-account-" + customer_owner + "-%@example.invalid' AND verified_at IS NOT NULL"))
         if report['verified_accounts'] != 1:
             raise RuntimeError('Expected exactly one newly verified fixture account')
         if repair:
@@ -281,15 +333,39 @@ def main(language, scenario='account'):
             status = sql(database, "SELECT status FROM after_sales_requests WHERE id='" + request + "'")
             counts = [int(sql(database, "SELECT COUNT(*) FROM " + table + " WHERE request_id='" + request + "'"))
                       for table in ('device_return_receipts', 'device_service_receipts')]
-            expected_counts = [1, 2]
-            if status != 'completed' or counts != expected_counts:
+            expected_counts = [1, 1] if refund else [1, 2]
+            if status != ('processing' if refund and not report.get('refund_completed') else 'completed') or counts != expected_counts:
                 raise RuntimeError('Repair terminal status or receipt counts differ')
             report['sql_status'] = status
             report['sql_device_return_receipts'] = counts[0]
             report['sql_device_service_receipts'] = counts[1]
             report['sql_device_state'] = sql(database, "SELECT state FROM devices WHERE id='isolated-repair-device'")
-            if report['sql_device_state'] != ('available' if exchange else 'shipped'):
+            if report['sql_device_state'] != ('available' if exchange or refund else 'shipped'):
                 raise RuntimeError('Repaired device was not shipped')
+            if refund:
+                order = report['order_id']
+                if not re.fullmatch(r'order_[0-9a-f-]{36}', order) or order == 'order_8bffc6dc-112e-4ed5-8a32-57421bc2ae4d':
+                    raise RuntimeError('Refund must belong to a distinct new sandbox order')
+                checks = {
+                    'refund_instruction': "SELECT COUNT(*) FROM order_refund_operations WHERE order_id='" + order + "' AND state='refunded' AND applied=TRUE AND amount='789.00' AND remote_refund_id IS NOT NULL",
+                    'refund_ledger': "SELECT COUNT(*) FROM payment_refunds r JOIN order_refund_operations o ON r.id=CONCAT('ref_',o.operation_id) WHERE o.order_id='" + order + "' AND r.amount=789",
+                    'negative_transaction': "SELECT COUNT(*) FROM order_transactions WHERE order_id='" + order + "' AND reference='refund' AND amount=-789",
+                    'refunded_summary': "SELECT COUNT(*) FROM order_summaries s JOIN orders o ON o.id=s.order_id AND o.version=s.version WHERE s.order_id='" + order + "' AND JSON_UNQUOTE(JSON_EXTRACT(s.totals,'$.refunded_total'))='789'",
+                    'read_refund_notice': "SELECT COUNT(*) FROM customer_account_notices WHERE resource_id='" + order + "' AND kind='refund.created' AND read_at IS NOT NULL",
+                    'automatic_ownership': "SELECT COUNT(*) FROM customer_order_ownership WHERE order_id='" + order + "' AND store_id='" + values['STOREFRONT_STORE_ID'] + "'",
+                    'source_order_untouched': "SELECT COUNT(*) FROM order_refund_operations WHERE order_id='order_8bffc6dc-112e-4ed5-8a32-57421bc2ae4d'",
+                }
+                if not report.get('refund_completed'):
+                    checks['refund_instruction'] = "SELECT COUNT(*) FROM order_refund_operations WHERE order_id='" + order + "' AND state IN ('pending','queued','processing','uncertain') AND applied=FALSE AND amount='789.00' AND dispatched_at IS NOT NULL AND remote_refund_id IS NOT NULL"
+                    checks.pop('refunded_summary')
+                    checks.pop('read_refund_notice')
+                facts = {name: int(sql(database, query)) for name, query in checks.items()}
+                zero = {'source_order_untouched'}
+                if not report.get('refund_completed'):
+                    zero.update(('refund_ledger', 'negative_transaction'))
+                if any(value != (0 if name in zero else 1) for name, value in facts.items()):
+                    raise RuntimeError('Sandbox refund ledger differs: ' + str(facts))
+                report['sql_refund_facts'] = facts
             if exchange:
                 report['sql_replacement_state'] = sql(database, "SELECT state FROM devices WHERE id='isolated-exchange-device'")
                 if report['sql_replacement_state'] != 'shipped':
@@ -333,12 +409,22 @@ def main(language, scenario='account'):
         for stream in streams:
             stream.close()
         cleanup_errors = []
+        if refund and created:
+            try:
+                # Keep an ignored durable copy even on browser failure: a real
+                # test refund may already exist or still need reconciliation.
+                (logs / 'refund-final.sql').write_bytes(docker('exec', CONTAINER, 'mysqldump',
+                    '--defaults-extra-file=/tmp/local-root.cnf', '--single-transaction',
+                    '--set-gtid-purged=OFF', '--no-tablespaces', database))
+                report['refund_durable_snapshot_retained'] = True
+            except Exception:
+                cleanup_errors.append('refund evidence snapshot')
         try:
             report['redis_keys_removed'] = redis_cleanup(prefix)
         except Exception:
             cleanup_errors.append('Redis cleanup')
         try:
-            if created:
+            if created and (not refund or report.get('refund_durable_snapshot_retained')):
                 docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e',
                        'DROP DATABASE ' + database + "; REVOKE ALL ON " + database + ".* FROM 'retail_local'@'%';")
             docker('exec', CONTAINER, 'rm', '-f', '/tmp/account-' + owner + '.sql')
@@ -374,5 +460,9 @@ if __name__ == '__main__':
         main('en', 'repair')
     elif sys.argv[1:] == ['--scenario=exchange']:
         main('en', 'exchange')
+    elif sys.argv[1:] == ['--scenario=refund']:
+        main('en', 'refund')
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--resume-refund='):
+        main('en', 'refund', sys.argv[1].split('=', 1)[1])
     else:
         raise RuntimeError('Unknown account rehearsal arguments')

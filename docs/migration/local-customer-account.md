@@ -19,6 +19,10 @@ python retail/scripts/test-local-customer-account.py --scenario=buyback-return
 python retail/scripts/test-local-customer-account.py --scenario=repair
 # 同SKU零差额换机，范围见 local-exchange-main.md
 python retail/scripts/test-local-customer-account.py --scenario=exchange
+# 独立新Mollie沙箱付款及退货退款；pending不会标记退款完成。
+python retail/scripts/test-local-customer-account.py --scenario=refund
+# 继续已有付款/退款检查点，具体owner见 local-refund-main.md。
+python retail/scripts/test-local-customer-account.py --resume-refund=d996b8c7712f
 ```
 
 依赖 Windows、现有专用 MySQL 容器及 `/tmp/local-root.cnf`、原生 Redis6379、`logs/retail-native/retail-api.exe`、前台依赖、Chromium1234、Node24与 Python cryptography。可通过 STOREFRONT_TEST_NODE 和 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH 指定现有运行时。脚本只接受既定 development/loopback/专用源数据库配置，19100/19300有占用会提前拒绝。
