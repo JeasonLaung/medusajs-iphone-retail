@@ -44,4 +44,3 @@ try{
  assert.deepEqual(errors,[])
  writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:'product-entry',product_id:productID,handle,generated_sku:sku,actual_admin_product_sku_price_stock:true,exact_price:'129.123456789012345678',stocked_quantity:3,public_inventory_quantity:3,astro_en_zh_purchase_enabled:true,mobile_overflow:false,browser_errors:0,real_payment_created:false},null,2))
 }catch(error){console.error('VISIBLE_DIALOGS',await page?.getByRole('dialog').allTextContents());throw error}finally{await browser.close()}
-
