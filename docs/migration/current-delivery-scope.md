@@ -1,5 +1,7 @@
 # 当前交付范围与端到端验收
 
+2026-11-02 用户纠正执行优先级：先跑通用户可操作的大流程，再处理细节。本机加购503已修复（恢复库 cart.create/access/items 等开关未启用），手动配送 manual_manual 已注册；真实浏览器英国商品→购物车→地址→配送→付款页通过，付款方式仍503、付款至订单未闭合。启动脚本新增限定专用库的显式草稿配置，见 `retail/LOCAL-WINDOWS.md`。PayPal成单未完成修改已暂存，不继续扩展细节来替代主流程交付。
+
 2026-11-02 C06 最新：[PayPal 扣款／授权持久命令](gin-paypal-settlement.md)已接私有 Gin 接口、唯一执行占位、加密收据和丢响应只查恢复；104迁移隔离SQL与原Mollie连续保存中英×390/1440四组真实浏览器回归通过。本机备份后升级104并经启动脚本恢复三端；SDK、webhook、PayPal成单仍待，主付款未开放。下文103及capture待办描述为此前记录。
 
 2026-11-02 C06：[PayPal 认证查询/购物车状态](gin-paypal-observation.md)接固定商户 GET、精确金额/币种与最终 capture 证据，以及原加密观察行；两入口各 pending/authorized/paid 状态通过隔离 Gin HTTP/MySQL/Redis。原 SDK、capture 命令、webhook及 PayPal 成单仍未接通，主未启用，不关闭C06或整期。

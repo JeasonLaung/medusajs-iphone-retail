@@ -18,4 +18,12 @@
 
 ## Windows Redis 空闲连接
 
+## 本机购物主流程配置（2026-11-02）
+
+恢复备份后的运行开关默认关闭，单看健康接口200不能证明能够加购。当前本机 `.env` 设置 `LOCAL_PREVIEW_CART_ENABLED=true`，`start.bat` 会显式运行 `go run ./cmd/configure-local-preview --enable`，仅为 development、127.0.0.1:13307、eurorefurb_local_trial 启用草稿购物车创建/访问/商品/地址/配送/上下文/优惠命令；不改变通用 schema 写入开关，不启用付款、退款、库存预留或发信。缺少迁移或版本不符时启动失败并给出提示。
+
+本机 `MANUAL_SHIPPING_PROVIDER_IDS=manual_manual` 注册原库已有的手动配送渠道。浏览器已从 `/gb-en/products/swappie-iphone-17e` 实际加购至购物车、填写英国地址、选择 Standard Shipping，再进入付款页：商品779欧元、配送10欧元、总计789欧元。此前创建购物车503源于 cart.create/cart.access 关闭，配送空列表源于该手动渠道未注册。
+
+当前付款方式接口仍503，因为本机支付配置关闭；付款至订单尚未跑通，不能宣称整体购物流程完成。优先推进用户可操作主链路，主链路跑通前不继续扩展支付细节。此前未完成的 PayPal 成单修改保存在 Git stash `wip PayPal completion deferred for local main-flow repair`，尚未应用到本机运行代码。
+
 本机 Redis 的空闲超时为65秒。项目客户端在30秒时退休空闲连接，避免 Windows 闲置后首次请求因旧连接关闭而短暂503；不会自动重试会话写入，也不会修改共享 Redis 的服务器设置。专项说明见 `docs/migration/windows-redis-idle.md`。

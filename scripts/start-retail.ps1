@@ -83,6 +83,10 @@ try {
     Start-Sleep -Seconds 1
   }
   Write-Host 'Building current Gin API (native apps/local Redis, no automatic database migration)...'
+  if ($env:LOCAL_PREVIEW_CART_ENABLED -eq 'true') {
+    & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --enable
+    if ($LASTEXITCODE -ne 0) { throw 'Local draft-cart configuration failed.' }
+  }
   $binary = Join-Path $logRoot 'retail-api.exe'
   & $go -C (Join-Path $retailRoot 'backend') build -o $binary ./cmd/api
   if ($LASTEXITCODE -ne 0) { throw 'Gin API compilation failed.' }
