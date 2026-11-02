@@ -505,7 +505,8 @@ def main(language, scenario='account', resume=None):
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
     supplement = scenario == 'supplement'
     payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement')
-    buyback_intake = scenario in ('buyback-intake', 'buyback-intake-return')
+    event_mail = scenario == 'buyback-mail'
+    buyback_intake = scenario in ('buyback-intake', 'buyback-intake-return', 'buyback-mail')
     buyback_return = scenario in ('buyback-return', 'buyback-intake-return')
     buyback = scenario == 'buyback' or buyback_intake or buyback_return
     exchange = scenario in ('exchange', 'supplement')
@@ -656,7 +657,7 @@ def main(language, scenario='account', resume=None):
                    MOLLIE_BACKEND_ORIGIN='http://127.0.0.1:19100', CHECKOUT_PAYMENT_ENABLED='false',
                    CHECKOUT_CONTEXT_PAYMENT_ENABLED='false',
                    CUSTOMER_AUTH_ENABLED='true', CUSTOMER_VERIFICATION_MAIL_ENABLED='false',
-                   NOTIFICATION_MAIL_ENABLED='false', ORDER_MAIL_ENABLED='false',
+                   NOTIFICATION_MAIL_ENABLED='false', ORDER_MAIL_ENABLED='false', CUSTOMER_EVENT_MAIL_ENABLED='false',
                    ORDER_PAYMENTS_ENABLED='false', MOLLIE_NOTIFICATIONS_ENABLED='false',
                    GIN_API_ORIGIN='http://127.0.0.1:19100')
         # Real sandbox refunds must use a freshly paid order in this copy,
@@ -668,7 +669,7 @@ def main(language, scenario='account', resume=None):
             sql(database, 'UPDATE warehouse_management_runtime SET enabled=TRUE WHERE id=1 AND version=1')
         if product_entry:
             sql(database, "UPDATE catalog_command_capabilities SET enabled=TRUE WHERE command='product.create' AND version=1; UPDATE inventory_command_capabilities SET enabled=TRUE WHERE command='inventory.create_level' AND version=1; UPDATE catalog_variant_create_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE catalog_price_edit_runtime SET enabled=TRUE WHERE id=1 AND version=1")
-        if mail:
+        if mail or event_mail:
             env['NOTIFICATION_MAIL_ENABLED'] = 'true'
             # Fresh mailbox encryption belongs only to this disposable database.
             # Imported historical secrets are neither needed nor decrypted.
@@ -714,6 +715,10 @@ def main(language, scenario='account', resume=None):
             worker = logs / 'order-payment-worker.exe'
             subprocess.run(['go', 'build', '-o', str(worker), './cmd/process-order-payments'],
                            cwd=ROOT / 'retail/backend', check=True, capture_output=True, timeout=120)
+        migration = subprocess.run(['go', 'run', './cmd/migrate'], cwd=ROOT / 'retail/backend', env=env, capture_output=True, timeout=180)
+        (logs / 'migration.log').write_bytes(migration.stdout + migration.stderr)
+        if migration.returncode:
+            raise RuntimeError('Owned snapshot migration failed; inspect ignored migration.log')
         services = [
             ('api', [str(api_binary)], ROOT / 'retail/backend'),
             ('storefront', [str(node), 'node_modules/astro/bin/astro.mjs', 'dev', '--host', '127.0.0.1',
@@ -749,7 +754,7 @@ def main(language, scenario='account', resume=None):
         browser_env = dict(env, ACCOUNT_TEST_OWNER=owner, ACCOUNT_TEST_DB=database,
                            ACCOUNT_TEST_LOGS=str(logs), ACCOUNT_TEST_PYTHON=sys.executable,
                            ACCOUNT_TEST_LANGUAGE=language, ACCOUNT_TEST_SCENARIO=scenario)
-        if mail:
+        if mail or event_mail:
             browser_env.update(WINDOWS_MAIL_SUBFLOW='1', WINDOWS_MAIL_FIXTURE=str(fixture))
         if resume and refund:
             browser_env.update(ACCOUNT_TEST_CUSTOMER_OWNER=customer_owner, ACCOUNT_TEST_RESUME_PAID='true',
@@ -1020,6 +1025,8 @@ if __name__ == '__main__':
         main('en', 'buyback')
     elif sys.argv[1:] == ['--scenario=buyback-intake']:
         main('en', 'buyback-intake')
+    elif sys.argv[1:] == ['--scenario=buyback-mail']:
+        main('en', 'buyback-mail')
     elif sys.argv[1:] == ['--scenario=buyback-intake-return']:
         main('en', 'buyback-intake-return')
     elif sys.argv[1:] == ['--scenario=buyback-return']:

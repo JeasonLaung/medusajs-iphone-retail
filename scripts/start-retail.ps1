@@ -42,6 +42,7 @@ function Stop-NativeWorker([string]$name) {
 function Stop-ProjectPorts {
   Stop-NativeWorker 'order-payment-worker'
   Stop-NativeWorker 'order-refund-worker'
+  Stop-NativeWorker 'customer-event-mail-worker'
   # Ask the legacy supervisors to stop first, so they cannot reclaim old ports.
   foreach ($app in @('backend', 'storefront')) {
     & $script:node (Join-Path $PSScriptRoot 'dev-service.cjs') $app stop
@@ -176,6 +177,9 @@ try {
   }
   if ($env:LOCAL_PREVIEW_REFUNDS_ENABLED -eq 'true') {
     Start-NativeWorker 'order-refund-worker' './cmd/process-order-refunds'
+  }
+  if ($env:CUSTOMER_EVENT_MAIL_ENABLED -eq 'true') {
+    Start-NativeWorker 'customer-event-mail-worker' './cmd/send-customer-event-mail'
   }
   Start-LocalApp 'admin' $node @('node_modules/vite/bin/vite.js','--host','127.0.0.1','--port','9200','--strictPort') (Join-Path $retailRoot 'admin') 'http://127.0.0.1:9200'
   Read-Environment (Join-Path $retailRoot 'storefront\.env')

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/eurorefurb/retail/internal/authorization"
+	"github.com/eurorefurb/retail/internal/customernotices"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -317,6 +318,9 @@ func stageBuybackNotice(tx *gorm.DB, account, id, action string, now time.Time) 
 	var unread struct{ ID string }
 	e := tx.Table("customer_account_notices").Select("id").Where("customer_id=? AND kind='buyback.updated' AND resource_id=? AND read_at IS NULL", account, id).Order("created_at DESC,id DESC").Clauses(clause.Locking{Strength: "UPDATE"}).Take(&unread).Error
 	event := "buyback:" + id + ":" + uuid.NewString()
+	if err := customernotices.StageMailTx(tx, account, event, "buyback.updated", id, id, action, now); err != nil {
+		return err
+	}
 	if e == nil {
 		r := tx.Table("customer_account_notices").Where("id=? AND customer_id=? AND read_at IS NULL", unread.ID, account).Updates(map[string]any{"event_key": event, "action": action, "reference": id})
 		if r.Error != nil {

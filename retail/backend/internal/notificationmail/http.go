@@ -17,6 +17,8 @@ import (
 )
 
 func (s Store) Register(group *gin.RouterGroup) {
+	group.GET("/notification-mail/customer-jobs", s.eventJobs)
+	group.POST("/notification-mail/customer-jobs/:id/retry", s.retryEventJob)
 	group.GET("/notification-mail/order-jobs", s.orderJobs)
 	group.POST("/notification-mail/order-jobs/:id/retry", s.retryOrderJob)
 	group.GET("/notification-mail/accounts", s.list)

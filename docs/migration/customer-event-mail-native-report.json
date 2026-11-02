@@ -1,0 +1,139 @@
+{
+  "task": "C10 committed customer event email queue, worker and Admin recovery",
+  "date": "2026-11-03",
+  "full_C01_C11_complete": false,
+  "real_email_delivery": false,
+  "actual_buyback_joint": {
+    "owner": "3d65a7db2cc0",
+    "database": "retail_account_3d65a7db2cc0",
+    "real_email_delivery": false,
+    "business_api_mocking": false,
+    "main_database_modified": false,
+    "api_sha256": "a3a9667b78197353350751e0cddd751ac07795f82185f6b518846a164806a9bb",
+    "customer_owner": "3d65a7db2cc0",
+    "passed": true,
+    "scenario": "buyback-mail",
+    "actual_ui_recycled_intake": true,
+    "sql_seeded_devices": false,
+    "intake_device_id": "dev_a3acd4a0-4eb9-4841-b2f6-f4bdacc76ab4",
+    "intake_source_id": "dsrc_e243925a-884b-4842-a73a-044c3ce13eae",
+    "intake_location_id": "sloc_442f37d7-7fa1-47e0-8768-61e8a67b940a",
+    "intake_photo_url": "/api/store/device-photos/dphoto_d5bc3fe3-2111-4870-b498-f6d194130a24",
+    "business_event_mail_jobs": 5,
+    "event_mail_rejected_retry_sent": true,
+    "event_mail_lost_reply_same_command": true,
+    "event_mail_frozen_message_and_key": true,
+    "event_mail_transport_isolated": true,
+    "event_mail_recipient_sender_ownership_expiry_guards": true,
+    "original_questionnaire": true,
+    "registered_verified_customer": true,
+    "customer_photos_admin_review_shipping_received": true,
+    "device_link_final_offer_decision_closing": true,
+    "closed_state": "paid",
+    "real_transfer": false,
+    "real_carrier": false,
+    "browser_errors": 0,
+    "request_id": "bbr_fe9658a7-dff9-4bfd-9cd0-ec986036bfce",
+    "verified_accounts": 1,
+    "sql_payment_reference": "TRANSFER-JOINT",
+    "sql_return_tracking": "",
+    "sql_terminal_status": "paid",
+    "sql_final_amount": "270.010000000000000000",
+    "sql_closed": true,
+    "sql_private_photos": 3,
+    "sql_device_links": 1,
+    "sql_actual_intake_facts": {
+      "inspection_device": 1,
+      "linked_actual_device": 1,
+      "intake_receipt": 1,
+      "source_receipt": 1,
+      "device_photo": 1,
+      "seeded_device": 0
+    },
+    "redis_keys_removed": 11,
+    "source_product_entry_unchanged": true,
+    "source_account_counts_before": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "source_account_counts_after": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "resources_removed": true,
+    "cleanup_errors": []
+  },
+  "dispatcher_phases": {
+    "event-reject": {
+      "passed": true,
+      "provider_calls": 1,
+      "external_transport_isolated": true
+    },
+    "event-sent": {
+      "passed": true,
+      "provider_calls": 1,
+      "external_transport_isolated": true
+    },
+    "event-drain": {
+      "passed": true,
+      "provider_calls": 4,
+      "external_transport_isolated": true
+    },
+    "event-safety": {
+      "passed": true,
+      "provider_calls": 0,
+      "external_transport_isolated": true
+    }
+  },
+  "main_mailbox_read": {
+    "passed": true,
+    "read_only": true,
+    "mail_sent": false,
+    "mail_writes": 0,
+    "browser_errors": 0,
+    "checks": [
+      {
+        "language": "en",
+        "width": 1440,
+        "customer_jobs_http": 200,
+        "no_horizontal_overflow": true
+      },
+      {
+        "language": "zh",
+        "width": 390,
+        "customer_jobs_http": 200,
+        "no_horizontal_overflow": true
+      }
+    ]
+  },
+  "main_migration": {
+    "applied": 1,
+    "skipped": 104,
+    "backup_retained_in_ignored_logs": true
+  },
+  "main_mail_state": {
+    "event_jobs": 0,
+    "event_deliveries": 0,
+    "prior_order_pending_unattempted": 1
+  }
+}

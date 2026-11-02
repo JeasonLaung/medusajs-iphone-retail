@@ -717,3 +717,25 @@ export async function linkWarehouseDelivery(body:WarehouseDeliveryCommand):Promi
  const d=await request<{id:string;revision:string;replayed:boolean}>(`warehouses/${encodeURIComponent(body.location_id)}/delivery-sets`,{method:'POST',body,csrf},'/api/admin/')
  if(!d||d.id!==body.location_id||!warehouseRevision(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
 }
+
+export type EventMailJob={id:string;resource_id:string;kind:string;action:string;status:'pending'|'sending'|'sent'|'failed';attempts:number;created_at:string;first_attempt_at:string|null;next_attempt_at:string|null;sent_at:string|null;failed_at:string|null;error_code:string|null;retryable:boolean}
+export type EventMailJobs={jobs:EventMailJob[];count:number;limit:number;offset:number}
+export type EventMailRetry={operation_id:string;expected_attempts:number}
+export async function eventMailJobs(offset:number,signal?:AbortSignal):Promise<EventMailJobs>{
+ if(!Number.isSafeInteger(offset)||offset<0||offset>100000)throw new APIError(400,'request.invalid_input')
+ const d=await request<EventMailJobs>(`notification-mail/customer-jobs?offset=${offset}`,{signal},'/api/admin/')
+ if(!d||!Array.isArray(d.jobs)||d.jobs.length>50||d.limit!==50||d.offset!==offset||!Number.isSafeInteger(d.count)||d.count<0)throw new APIError(0,'request.invalid_response')
+ const dates=['first_attempt_at','next_attempt_at','sent_at','failed_at'] as const
+ for(const j of d.jobs){
+  if(!j||typeof j.kind!=='string'||typeof j.action!=='string'||!mailJobID(j.id)||typeof j.resource_id!=='string'||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(j.resource_id)||!['pending','sending','sent','failed'].includes(j.status)||!Number.isSafeInteger(j.attempts)||j.attempts<0||typeof j.created_at!=='string'||!Number.isFinite(Date.parse(j.created_at))||typeof j.retryable!=='boolean'||j.retryable&&j.status!=='failed'||j.error_code!==null&&(typeof j.error_code!=='string'||! /^[a-z_]{1,32}$/.test(j.error_code)))throw new APIError(0,'request.invalid_response')
+  for(const key of dates)if(j[key]!==null&&(typeof j[key]!=='string'||!Number.isFinite(Date.parse(j[key]!))))throw new APIError(0,'request.invalid_response')
+ }
+ if(new Set(d.jobs.map(j=>j.id)).size!==d.jobs.length)throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function retryEventMail(id:string,body:EventMailRetry):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ if(!mailJobID(id))throw new APIError(400,'request.invalid_input')
+ const d=await request<{id:string;replayed:boolean}>(`notification-mail/customer-jobs/${encodeURIComponent(id)}/retry`,{method:'POST',body,csrf},'/api/admin/')
+ if(!d||d.id!==id||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}

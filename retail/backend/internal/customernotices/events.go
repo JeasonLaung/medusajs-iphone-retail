@@ -49,6 +49,9 @@ func EmitOrderTx(tx *gorm.DB, orderID, kind, resource string) error {
 		reference = *to.CustomDisplayID
 	}
 	key := kind + ":" + resource
+	if err := StageMailTx(tx, to.CustomerID, key, kind, orderID, reference, "", time.Now().UTC()); err != nil {
+		return err
+	}
 	var prior []struct{ CustomerID, Kind, ResourceID, Reference, Action string }
 	if tx.Table("customer_account_notices").Where("event_key=?", key).Limit(2).Find(&prior).Error != nil || len(prior) > 1 {
 		return ErrUnavailable

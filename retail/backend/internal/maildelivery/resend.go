@@ -79,12 +79,15 @@ func (s *Resend) Prepare(to, link, locale string) ([]byte, error) {
 	return json.Marshal(request{From: s.from, To: []string{to}, ReplyTo: s.reply, Subject: title, Text: intro + "\n\n" + link + "\n\n" + expiry, HTML: "<h1>" + title + "</h1><p>" + intro + "</p><p><a href=\"" + html.EscapeString(link) + "\">" + action + "</a></p><p>" + expiry + "</p>"})
 }
 func (s *Resend) Send(ctx context.Context, key string, payload []byte) Result {
-	if s == nil || s.client == nil || len(payload) == 0 || len(payload) > 16384 || (!strings.HasPrefix(key, "mail/cv_") && !strings.HasPrefix(key, "mail/op_")) {
+	if s == nil || s.client == nil || len(payload) == 0 || len(payload) > 16384 || (!strings.HasPrefix(key, "mail/cv_") && !strings.HasPrefix(key, "mail/op_") && !strings.HasPrefix(key, "mail/ce_")) {
 		return Result{Code: "invalid_request"}
 	}
 	prefix := "mail/cv_"
 	if strings.HasPrefix(key, "mail/op_") {
 		prefix = "mail/op_"
+	}
+	if strings.HasPrefix(key, "mail/ce_") {
+		prefix = "mail/ce_"
 	}
 	id, err := uuid.Parse(strings.TrimPrefix(key, prefix))
 	if err != nil || id == uuid.Nil || key != prefix+id.String() {

@@ -99,3 +99,5 @@ LOCAL_PREVIEW_WAREHOUSE_MANAGEMENT_ENABLED=true使start.bat显式开启既有仓
 2026-11-03：新增 `python retail/scripts/test-local-customer-account.py --scenario=buyback-intake`，在自有恢复副本以实际后台来源创建、照片上传及回收设备入库替代SQL设备预置，再串联回收验机、270.01 EUR终价接受及付款登记。最终 owner `ee4f2f66a1e6`，报告见 `docs/migration/local-buyback-intake-report.json`。主库目录/设备指纹及客户/回收计数不变，副本/授权/11项Redis键清理，9100/9200/9300服务正常。未真实发信、转账或寄送，C01—C11保持开放。
 
 2026-11-03：`--scenario=buyback-intake-return` 验证实际入库设备关联回收后客户拒绝终价、后台登记退回与确认送达，owner `f3c35a20dc5f`。SQL returned/closed_at/RETURN-JOINT及空付款凭证一致；主库目录/设备指纹不变，自有资源清理。详见 `docs/migration/local-buyback-intake-return-report.json`。
+
+2026-11-03：专用本机库备份至忽略目录 `logs/retail-native/before-customer-event-mail-0105.sql` 后升级105。新增客户业务事件邮件队列与后台“客户业务邮件任务”，恢复入口保留冻结正文和幂等键。`CUSTOMER_EVENT_MAIL_ENABLED=false` 为缺省；仅显式true时start.bat启动专用 `customer-event-mail-worker`，需后台Resend发信账户及持久CUSTOMER/MERCHANT密钥，不因API启动发信。当前主预览worker关闭，业务邮件队列0、投递0，既有订单邮件pending且attempts0。独立场景 `python retail/scripts/test-local-customer-account.py --scenario=buyback-mail` 已验证实际回收5个事件投递/拒绝恢复；只有Resend外部HTTP传输使用自有隔离夹具，不代表真实收件。详见 `docs/migration/gin-customer-event-mail.md`。

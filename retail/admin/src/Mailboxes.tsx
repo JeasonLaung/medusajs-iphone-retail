@@ -4,6 +4,7 @@ import {APIError,mailboxes,saveMailbox} from './api'
 import type {Mailbox,MailboxCommand,MailboxDirectory} from './api'
 import type {Copy} from './i18n'
 import OrderMailJobs from './OrderMailJobs'
+import EventMailJobs from './EventMailJobs'
 import {useAccess} from './Permissions'
 
 type Fields=Pick<MailboxCommand,'name'|'email'|'reply_to'|'api_key'|'webhook_secret'|'enabled'|'registration'>
@@ -66,6 +67,7 @@ export default function Mailboxes({copy,onExpired}:{copy:Copy;onExpired():void})
    ]}/>
   </>}
   <OrderMailJobs copy={copy} onExpired={onExpired}/>
+  <EventMailJobs copy={copy} onExpired={onExpired}/>
   {editor&&state.data&&<Editor key={editor.account?.id??'new'} copy={copy} account={editor.account} revision={state.data.revision} onClose={close} onExpired={onExpired} onSaved={()=>{message.success(copy.mailSaved);close()}}/>}
  </Space></section>
 }
