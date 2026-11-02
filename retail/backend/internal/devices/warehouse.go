@@ -144,6 +144,10 @@ func (h Handler) ReadWarehouseDevices(ctx context.Context, actor identity.User, 
 		if releaseErr == nil {
 			_, releaseEnabled, releaseErr = allocationRuntimeGate(ctx, tx)
 		}
+		inspectionEnabled, e := warehouseInspectionEnabled(tx)
+		if e != nil {
+			return e
+		}
 		for i := range out.Devices {
 			row := &out.Devices[i]
 			if category == "sale" && row.State == "reserved" && releaseErr == nil && releaseEnabled {
@@ -156,6 +160,9 @@ func (h Handler) ReadWarehouseDevices(ctx context.Context, actor identity.User, 
 				return e
 			}
 			row.AllowedActions = []string{}
+			if inspectionEnabled && writeErr == nil && category == "returned" && !row.HasActiveAssignment && (row.State == "inspection" || row.State == "repair") {
+				row.AllowedActions = append(row.AllowedActions, "inspect")
+			}
 			if releaseErr == nil && releaseEnabled && row.Reservation != nil {
 				row.AllowedActions = append(row.AllowedActions, "release_reserved")
 			}

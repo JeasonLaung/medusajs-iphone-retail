@@ -4,9 +4,11 @@ import {APIError,getWarehouseAccess,getWarehouseDevices,commandWarehouseDevice} 
 import type {WarehouseAccess,WarehouseDevice,WarehouseDeviceAction,WarehouseDeviceCommand,WarehouseDevicePage} from './api'
 import type {Copy} from './i18n'
 import WarehouseIntakePicker from './WarehouseIntakePicker'
+import WarehouseInspection from './WarehouseInspection'
 
 export default function WarehouseDevices({copy,onExpired}:{copy:Copy;onExpired():void}){
  const [form]=Form.useForm<{notes:string}>()
+ const [inspection,setInspection]=useState<WarehouseDevice>()
  const [intake,setIntake]=useState(false)
  const {message}=App.useApp(),[attempt,setAttempt]=useState(0),[access,setAccess]=useState<WarehouseAccess>(),[location,setLocation]=useState(''),[category,setCategory]=useState<'sale'|'returned'>('sale'),[q,setQ]=useState(''),[offset,setOffset]=useState(0),[data,setData]=useState<WarehouseDevicePage>(),[loading,setLoading]=useState(true),[error,setError]=useState<unknown>()
  const [editor,setEditor]=useState<{row:WarehouseDevice;action:WarehouseDeviceAction}>(),[command,setCommand]=useState<WarehouseDeviceCommand>(),[saving,setSaving]=useState(false),[saveError,setSaveError]=useState<unknown>()
@@ -39,7 +41,7 @@ export default function WarehouseDevices({copy,onExpired}:{copy:Copy;onExpired()
     {title:'SN',dataIndex:'serial_number'},{title:'IMEI',dataIndex:'imei'},{title:'IMEI 2',dataIndex:'imei2'},{title:'EID',dataIndex:'eid'},{title:'SKU',dataIndex:'variant_title'},
     {title:copy.status,dataIndex:'state'},{title:copy.deviceBin,dataIndex:'bin'},
     {title:copy.devicePhotos,render:(_,row)=><Image.PreviewGroup>{row.photos.map(p=><Image key={p.id} src={p.url} alt={copy.devicePhotos} width={64} height={64} style={{objectFit:'cover'}}/>)}</Image.PreviewGroup>},
-    {title:copy.permissionActions,render:(_,row)=><Space wrap>{row.allowed_actions.map(action=><Button key={action} danger={action==='delete'||action==='retire'} onClick={()=>{form.resetFields();setEditor({row,action});setCommand(undefined);setSaveError(undefined)}}>{copy.deviceCommandNames[action]}</Button>)}</Space>},
+    {title:copy.permissionActions,render:(_,row)=><Space wrap>{row.allowed_actions.map(action=><Button key={action} danger={action==='delete'||action==='retire'} onClick={()=>{if(action==='inspect'){setInspection(row);return}form.resetFields();setEditor({row,action});setCommand(undefined);setSaveError(undefined)}}>{copy.deviceCommandNames[action]}</Button>)}</Space>},
    ]}/>
    <Space><Button disabled={!offset} onClick={()=>setOffset(n=>Math.max(0,n-50))}>{copy.previousWarehousePage}</Button><Typography.Text>{offset+1}–{offset+data.devices.length}</Typography.Text><Button disabled={!data.has_more} onClick={()=>setOffset(n=>n+50)}>{copy.nextWarehousePage}</Button></Space>
   </>}
@@ -53,5 +55,5 @@ export default function WarehouseDevices({copy,onExpired}:{copy:Copy;onExpired()
    </Form>
    {command&&uncertain&&<Button type="primary" loading={saving} onClick={()=>void send(command)}>{copy.retrySave}</Button>}<Button disabled={saving} onClick={close}>{copy.cancel}</Button>
   </Space>}
- </Drawer>{intake&&<WarehouseIntakePicker scope={{locationID:location,category}} copy={copy} onExpired={onExpired} onClose={()=>{setIntake(false);reload()}}/>}</section>
+ </Drawer>{intake&&<WarehouseIntakePicker scope={{locationID:location,category}} copy={copy} onExpired={onExpired} onClose={()=>{setIntake(false);reload()}}/>}{inspection&&<WarehouseInspection location={location} id={inspection.id} copy={copy} onExpired={onExpired} onClose={()=>{setInspection(undefined);reload()}}/>}</section>
 }

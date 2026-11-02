@@ -108,3 +108,8 @@ LOCAL_PREVIEW_WAREHOUSE_MANAGEMENT_ENABLED=true使start.bat显式开启既有仓
 ### 商品图片、选项和 SKU 编辑
 
 `LOCAL_PREVIEW_CATALOG_OPERATIONS_ENABLED=true` 使start.bat显式开启既有商品图片/商品选项/共享选项/SKU编辑/库存关联五项命令。本机忽略配置已开启；只更改专用库命令开关，不改商品、库存关系或ERP序号。后台商品详情已有“管理图片”“管理选项”“编辑 SKU”“SKU 图片”和库存关联入口，共享选项使用`/option-definitions`。验收命令：`python retail/scripts/test-local-customer-account.py --scenario=catalog-operations`，只写自有恢复副本。报告见 `docs/migration/local-catalog-operations.md`。
+
+
+### 仓库退回检测
+
+仓库员工使用`/warehouse-devices`的退回列表“检测处理”，要求明确授权退回读写及对应仓库；沿用现有device_service_runtime，数量库存不随检测增减。独立验证为`--scenario=warehouse-inspection`，使用自有恢复副本并在外层回滚事务补核原机维修约束。参见 `docs/migration/gin-warehouse-inspection.md`。

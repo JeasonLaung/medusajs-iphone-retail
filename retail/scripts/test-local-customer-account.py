@@ -552,9 +552,10 @@ def verify_repair_mail_checkpoint(owner):
 def main(language, scenario='account', resume=None):
     repair_mail = scenario == 'repair-mail'
     intake_warehouse = scenario == 'intake-warehouse'
-    device_entry = scenario == 'device-entry'
+    warehouse_inspection = scenario == 'warehouse-inspection'
+    device_entry = scenario in ('device-entry', 'warehouse-inspection')
     catalog_operations = scenario == 'catalog-operations'
-    product_entry = scenario in ('product-entry', 'device-entry', 'catalog-operations')
+    product_entry = scenario in ('product-entry', 'device-entry', 'catalog-operations', 'warehouse-inspection')
     mail = scenario == 'mail'
     reviews = scenario == 'reviews'
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
@@ -720,6 +721,9 @@ def main(language, scenario='account', resume=None):
         env['ORDER_REFUNDS_ENABLED'] = 'true' if refund else 'false'
         if intake_warehouse:
             sql(database, 'UPDATE warehouse_management_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE warehouse_user_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE warehouse_scope_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE inventory_command_capabilities SET enabled=TRUE WHERE command=\'inventory.create_level\' AND version=1')
+        if warehouse_inspection:
+            sql(database, 'UPDATE warehouse_user_runtime SET enabled=TRUE WHERE id=1; UPDATE warehouse_scope_runtime SET enabled=TRUE WHERE id=1; UPDATE device_service_runtime SET enabled=TRUE WHERE id=1')
+            sql(database, "DELIMITER $$\nCREATE TRIGGER owned_inspection_failure BEFORE INSERT ON warehouse_device_changes FOR EACH ROW BEGIN IF JSON_UNQUOTE(JSON_EXTRACT(NEW.request_json,'$.notes'))='owned-inspection-receipt-rollback' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='owned inspection receipt fixture'; END IF; END$$\nDELIMITER ;")
         if device_entry or buyback_intake:
             sql(database, 'UPDATE warehouse_management_runtime SET enabled=TRUE WHERE id=1 AND version=1')
         if catalog_operations:
@@ -836,6 +840,18 @@ def main(language, scenario='account', resume=None):
         if result.returncode:
             raise RuntimeError('Account browser check failed; inspect ignored browser.log')
         report.update(json.loads((logs / 'browser-result.json').read_text()))
+        if warehouse_inspection:
+            fixture = logs / 'warehouse-inspection.test.exe'
+            built = subprocess.run(['go', 'test', '-c', '-o', str(fixture), './internal/devices'], cwd=ROOT / 'retail/backend', env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=120)
+            (logs / 'inspection-fixture-build.log').write_bytes(built.stdout)
+            if built.returncode:
+                raise RuntimeError('Inspection repair fixture compile failed')
+            checked = subprocess.run([str(fixture), '-test.run=^TestWindowsWarehouseInspectionRepair$', '-test.v'], cwd=ROOT / 'retail/backend', env=dict(browser_env, WINDOWS_INSPECTION_TEST='1'), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=90)
+            (logs / 'inspection-repair.log').write_bytes(checked.stdout)
+            if checked.returncode:
+                raise RuntimeError('Inspection original repair/revocation SQL fixture failed')
+            report['original_repair_and_current_authority_sql_verified'] = True
+
         report['verified_accounts'] = int(sql(database, "SELECT COUNT(*) FROM customer_accounts "
              "WHERE email LIKE 'local-account-" + customer_owner + "-%@example.invalid' AND verified_at IS NOT NULL"))
         if product_entry:
@@ -856,9 +872,18 @@ def main(language, scenario='account', resume=None):
             if not re.fullmatch(r'variant_[0-9a-f-]{36}', variant):
                 raise RuntimeError('Owned intake variant identity invalid')
             facts = sql(database, "SELECT (SELECT COUNT(*) FROM device_tracking_changes WHERE variant_id='" + variant + "'),(SELECT COUNT(*) FROM device_intake_changes WHERE variant_id='" + variant + "'),(SELECT COUNT(*) FROM devices WHERE variant_id='" + variant + "' AND category='sale' AND state='available'),(SELECT COUNT(*) FROM devices WHERE variant_id='" + variant + "' AND category='returned' AND state='inspection'),(SELECT COUNT(*) FROM device_photos)").split('\t')
-            if facts != ['1', '1', '1', '1', '1']:
+            if facts != (['1', '1', '2', '0', '2'] if warehouse_inspection else ['1', '1', '1', '1', '1']):
                 raise RuntimeError('Device intake tracking/batch/states/photo facts differ')
             report['sql_device_facts'] = dict(zip(['tracking_receipt', 'intake_receipt', 'available_sale', 'inspection_returned', 'photos'], map(int, facts)))
+            if warehouse_inspection:
+                device = report['inspection_device_id']
+                if not re.fullmatch(r'dev_[0-9a-f-]{36}', device):
+                    raise RuntimeError('Owned inspected device invalid')
+                facts = sql(database, "SELECT (SELECT COUNT(*) FROM warehouse_device_changes WHERE device_id='"+device+"'),(SELECT COUNT(*) FROM device_events WHERE device_id='"+device+"' AND action='inspect')").split('\t')
+                if facts != ['3','3']:
+                    raise RuntimeError('Expected exactly three inspection receipts/events; failed command must roll back')
+                report['sql_inspection_receipts_and_events'] = [int(v) for v in facts]
+
         if report['verified_accounts'] != (0 if product_entry else 1):
             raise RuntimeError('Expected exactly one newly verified fixture account')
         if payment_context and not (reviews or paid_warehouse or supplement or repair_mail):
@@ -1133,6 +1158,8 @@ if __name__ == '__main__':
         sql(database, "INSERT INTO tax_rates(id,rate,code,name,is_default,is_combinable,tax_region_id,created_at,updated_at) VALUES('isolated-supplement-tax',1,'isolated','Isolated exchange tax',TRUE,FALSE,'txreg_01M4FBP3N26K57MNJK7SJC376H',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-paid-warehouse='):
         verify_paid_warehouse_checkpoint(sys.argv[1].split('=', 1)[1])
+    elif sys.argv[1:] == ['--scenario=warehouse-inspection']:
+        main('en', 'warehouse-inspection')
     elif sys.argv[1:] == ['--scenario=device-entry']:
         main('en', 'device-entry')
     elif sys.argv[1:] == ['--scenario=catalog-operations']:

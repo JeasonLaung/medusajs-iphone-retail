@@ -1,0 +1,139 @@
+{
+  "owner": "481b7a19157b",
+  "database": "retail_account_481b7a19157b",
+  "real_email_delivery": false,
+  "business_api_mocking": false,
+  "main_database_modified": false,
+  "api_sha256": "4284237a57aa54b0bf87e742dc5a4bdfebc4c09c2548f1f163e63f1f99a5c071",
+  "customer_owner": "481b7a19157b",
+  "passed": true,
+  "scenario": "warehouse-inspection",
+  "variant_id": "variant_dfec0294-cc19-4c7b-95b7-ced2ecec70df",
+  "source_name": "Native intake 481b7a19157b",
+  "source_auto_warehouse": true,
+  "tracking_enrolled": true,
+  "photo_uploaded_and_jpeg_read": true,
+  "photos_survive_reload": true,
+  "sale_available_return_inspection": true,
+  "leading_zero_imei": true,
+  "intake_lost_reply_same_command": true,
+  "product_id": "prod_401492a7-81d8-442a-97cc-dd1c83987726",
+  "handle": "native-browser-c7847205-01cf-4662-a081-0d7977cfb253",
+  "generated_sku": "ERP11565",
+  "actual_admin_product_sku_price_stock": true,
+  "exact_price": "129.123456789012345678",
+  "stocked_quantity": 1,
+  "public_inventory_quantity": 1,
+  "warehouse_inspection_actual_employee": true,
+  "inspection_quantity_stock_and_reservations_unchanged": true,
+  "inspection_permission_change_revokes_old_session": true,
+  "inspection_readonly_replay_denied": true,
+  "inspection_device_id": "dev_5f6b5f37-c62c-432f-85f2-0b51c5d2b83b",
+  "inspection_alternate_variant_id": "variant_01M4QRKPCJYW4H7PB66PEYVN60",
+  "inspection_location_id": "sloc_dec64207-8da7-4e52-ad71-f0f4e5e413a7",
+  "inspection_cross_sku_repair": true,
+  "inspection_pass_original_sku": true,
+  "inspection_photos_uploaded": true,
+  "inspection_lost_reply_same_command": true,
+  "inspection_six_concurrent_first_and_replays": true,
+  "inspection_receipt_failure_rolled_back": true,
+  "inspection_altered_stale_external_scope_rejected": true,
+  "inspection_en_zh_mobile": true,
+  "astro_en_zh_purchase_enabled": true,
+  "mobile_overflow": false,
+  "browser_errors": 0,
+  "real_payment_created": false,
+  "original_repair_and_current_authority_sql_verified": true,
+  "verified_accounts": 0,
+  "sql_entry_receipts": {
+    "product": 1,
+    "variant": 1,
+    "price": 1,
+    "stock": 1
+  },
+  "sql_device_facts": {
+    "tracking_receipt": 1,
+    "intake_receipt": 1,
+    "available_sale": 2,
+    "inspection_returned": 0,
+    "photos": 2
+  },
+  "sql_inspection_receipts_and_events": [
+    3,
+    3
+  ],
+  "redis_keys_removed": 6,
+  "source_product_entry_unchanged": true,
+  "source_account_counts_before": {
+    "customer_accounts": 0,
+    "customer_verifications": 0,
+    "customer_verification_mail": 0,
+    "customer_account_addresses": 0,
+    "customer_order_ownership": 0,
+    "buyback_requests": 0,
+    "buyback_prices": 0,
+    "buyback_photo_bytes": 0,
+    "buyback_device_links": 0,
+    "after_sales_requests": 0,
+    "device_return_receipts": 0,
+    "device_service_receipts": 0
+  },
+  "source_account_counts_after": {
+    "customer_accounts": 0,
+    "customer_verifications": 0,
+    "customer_verification_mail": 0,
+    "customer_account_addresses": 0,
+    "customer_order_ownership": 0,
+    "buyback_requests": 0,
+    "buyback_prices": 0,
+    "buyback_photo_bytes": 0,
+    "buyback_device_links": 0,
+    "after_sales_requests": 0,
+    "device_return_receipts": 0,
+    "device_service_receipts": 0
+  },
+  "resources_removed": true,
+  "cleanup_errors": [],
+  "source_catalog_fingerprint_tables": 29,
+  "source_reference": [
+    "medusa-store/apps/backend/src/workflows/device-operations.ts:981",
+    "medusa-store/apps/backend/src/api/warehouse-guards.ts:19"
+  ],
+  "checks": [
+    "devices/identity/server Go tests and devices/server vet",
+    "Admin tsc --noEmit",
+    "Python and JavaScript syntax",
+    "Actual isolated native employee UI, durable receipts/events, original repair SQL rollback fixture"
+  ],
+  "limitations": [
+    "Warehouse device editing and bulk commands remain open.",
+    "This does not close C05, C07 or C01-C11.",
+    "No real payment, email, main business write or quantity stock change for inspection verification."
+  ],
+  "main_read_only_check": {
+    "passed": true,
+    "main_business_writes": 0,
+    "warehouse_users_http": 200,
+    "inspection_route_registered_and_rejects_full_store_actor": 403,
+    "browser_errors": 0
+  },
+  "native_service_http": {
+    "http://127.0.0.1:9100/health": 200,
+    "http://127.0.0.1:9200/warehouse-users": 200,
+    "http://127.0.0.1:9300/gb-en/store": 200,
+    "http://127.0.0.1:9300/gb-en/products/swappie-iphone-17e": 200
+  },
+  "main_counts": {
+    "devices": 0,
+    "device_sources": 2,
+    "warehouse_users": 0,
+    "customer_event_mail": 0,
+    "customer_event_mail_deliveries": 0
+  },
+  "chinese_inspection_drawer_visually_checked": true,
+  "prior_passed_rehearsals": [
+    "bdce8013fdfb",
+    "97cc8b316cfd",
+    "d728ab68a87b"
+  ]
+}
