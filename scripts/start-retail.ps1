@@ -87,6 +87,10 @@ try {
     & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --enable
     if ($LASTEXITCODE -ne 0) { throw 'Local draft-cart configuration failed.' }
   }
+  if ($env:LOCAL_PREVIEW_PAYMENT_ENABLED -eq 'true') {
+    & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --payments
+    if ($LASTEXITCODE -ne 0) { throw 'Local test checkout configuration failed.' }
+  }
   $binary = Join-Path $logRoot 'retail-api.exe'
   & $go -C (Join-Path $retailRoot 'backend') build -o $binary ./cmd/api
   if ($LASTEXITCODE -ne 0) { throw 'Gin API compilation failed.' }

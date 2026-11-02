@@ -1,5 +1,7 @@
 # Gin + React + Astro 迁移任务清单
 
+2026-11-02 最新：按“先主流程后细节”，[Windows真实Mollie测试购物](migration/local-mollie-shopping.md)已通过选品→加购→地址→配送→远程托管付款→认证查询→订单确认→新Admin只读核对。邮件仅入队，其他大流程继续；此前PayPal成单细节仍暂存，不以本轮替代整期验收。
+
 2026-11-02 C06 最新：[PayPal 扣款／授权持久命令](migration/gin-paypal-settlement.md)通过104迁移隔离SQL、并发唯一执行、丢响应只查恢复及原Mollie连续保存四组真实浏览器回归。Windows本机备份后升级104，三端可用；SDK、webhook和PayPal成单记账继续，C01—C11保持进行中。以下103及capture待办为此前记录。
 
 2026-11-02 C06 接续：[PayPal 订单认证 GET 与持久查询证据](migration/gin-paypal-observation.md)已接购物车付款状态；只读查询、授权/实收分离、99条局部pass事件及隔离SQL联合通过。SDK/capture/webhook/成单继续待办，完整业务链留最终统一执行。

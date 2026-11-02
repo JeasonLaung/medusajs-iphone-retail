@@ -1,0 +1,67 @@
+{
+  "task": "Windows real Mollie test shopping main flow",
+  "date": "2026-11-02",
+  "passed": true,
+  "actual_browser": true,
+  "actual_gin_astro_ant_mysql_redis": true,
+  "real_mollie_api": true,
+  "mode": "test",
+  "real_money_paid": false,
+  "api_mocking": false,
+  "order_id": "order_8bffc6dc-112e-4ed5-8a32-57421bc2ae4d",
+  "custom_display_id": "2026110218344757728",
+  "cart_id": "cart_aae1db2c-5345-4eda-86c8-feb189efa647",
+  "currency": "eur",
+  "product": "779",
+  "shipping": "10",
+  "tax": "0",
+  "total": "789",
+  "steps": [
+    "product add",
+    "cart",
+    "UK address",
+    "manual delivery",
+    "payment review",
+    "real Mollie hosted checkout",
+    "Mollie test PayPal Paid",
+    "local authenticated status GET",
+    "local completion",
+    "private order confirmation",
+    "Ant Admin read-only order list/detail"
+  ],
+  "http": {
+    "payment_options": 200,
+    "complete": 200,
+    "return": 303,
+    "payment_status": 200,
+    "create_payment": 200,
+    "confirmation": 200
+  },
+  "sql": {
+    "order_receipts": 1,
+    "captures": 1,
+    "reservations": 1,
+    "transactions": 1,
+    "payment_provider": "pp_mollie-hosted-checkout_mollie",
+    "order_mail_intents": 1
+  },
+  "checks": [
+    "go test ./... (guarded SQL suites skipped)",
+    "go vet payments/checkoutconfig/configure-local-preview",
+    "local configure --payments replay"
+  ],
+  "local_no_webhook": {
+    "loopback_only": true,
+    "explicit": true,
+    "development_only": true,
+    "test_key_only": true
+  },
+  "notifications_sent": false,
+  "full_C01_C11_complete": false,
+  "remaining": [
+    "other main business flows",
+    "actual email receipt",
+    "production webhook and order-number cutover",
+    "native PayPal SDK"
+  ]
+}

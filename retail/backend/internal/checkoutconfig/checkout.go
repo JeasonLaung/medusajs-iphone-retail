@@ -63,7 +63,18 @@ func Load(env func(string) string) (*cart.InitialPaymentOptions, error) {
 			return nil, ErrInvalid
 		}
 	}
-	adapter, err := payments.NewMollieCreateAdapter(payments.MollieCreateConfig{ProviderID: provider, APIKey: env("MOLLIE_API_KEY"), RedirectURL: origin + "/api/mollie-return", BackendURL: backend, RootCAs: roots})
+	localTest := false
+	switch env("MOLLIE_LOCAL_TEST_WITHOUT_WEBHOOK") {
+	case "", "false":
+	case "true":
+		if env("APP_ENV") != "development" {
+			return nil, ErrInvalid
+		}
+		localTest = true
+	default:
+		return nil, ErrInvalid
+	}
+	adapter, err := payments.NewMollieCreateAdapter(payments.MollieCreateConfig{ProviderID: provider, APIKey: env("MOLLIE_API_KEY"), RedirectURL: origin + "/api/mollie-return", BackendURL: backend, RootCAs: roots, LocalTestWithoutWebhook: localTest})
 	if err != nil {
 		return nil, ErrInvalid
 	}

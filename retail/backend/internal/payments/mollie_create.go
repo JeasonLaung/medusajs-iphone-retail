@@ -7,6 +7,7 @@ import (
 	"crypto/x509"
 	"encoding/json"
 	"io"
+	"log"
 	"math/big"
 	"net/http"
 	"net/url"
@@ -36,6 +37,9 @@ type MollieCreateConfig struct {
 	BackendURL    string
 	Description   string
 	ManualCapture bool
+	// Explicit test-key loopback development only. Local return handling still
+	// authenticates provider GET; no browser flag can replace paid evidence.
+	LocalTestWithoutWebhook bool
 	// Optional server-owned trust roots. Nil keeps the platform trust store.
 	RootCAs *x509.CertPool
 }
@@ -104,6 +108,13 @@ func NewMollieCreateAdapter(config MollieCreateConfig) (*MollieCreateAdapter, er
 		return nil, ErrEffectInput
 	}
 	webhook := backend.ResolveReference(&url.URL{Path: "/hooks/payment/" + strings.TrimPrefix(config.ProviderID, "pp_")})
+	webhookURL := webhook.String()
+	if config.LocalTestWithoutWebhook {
+		if !strings.HasPrefix(config.APIKey, "test_") || (backend.Hostname() != "127.0.0.1" && backend.Hostname() != "localhost" && backend.Hostname() != "::1") || (redirect.Hostname() != "127.0.0.1" && redirect.Hostname() != "localhost" && redirect.Hostname() != "::1") {
+			return nil, ErrEffectInput
+		}
+		webhookURL = ""
+	}
 	description := config.Description
 	if description == "" {
 		description = "iPhone retail order"
@@ -115,7 +126,7 @@ func NewMollieCreateAdapter(config MollieCreateConfig) (*MollieCreateAdapter, er
 	if config.ManualCapture {
 		captureMode = "manual"
 	}
-	return &MollieCreateAdapter{transport, redirect, webhook.String(), description, method, captureMode}, nil
+	return &MollieCreateAdapter{transport, redirect, webhookURL, description, method, captureMode}, nil
 }
 
 // The original integration always sends two decimals. Preserve that settlement
@@ -186,9 +197,12 @@ func (a *MollieCreateAdapter) createBody(request SessionRequest) ([]byte, string
 	}
 	body := map[string]any{
 		"amount":      map[string]string{"value": amount, "currency": strings.ToUpper(request.Currency)},
-		"description": a.description, "webhookUrl": a.webhook, "redirectUrl": redirect.String(),
+		"description": a.description, "redirectUrl": redirect.String(),
 		"metadata":    map[string]string{"session_id": request.SessionID, "cart_id": data.CartID},
 		"captureMode": a.captureMode,
+	}
+	if a.webhook != "" {
+		body["webhookUrl"] = a.webhook
 	}
 	if a.method != "" {
 		body["method"] = a.method
@@ -224,6 +238,20 @@ func (a *MollieCreateAdapter) CreateSession(ctx context.Context, request Session
 	// Even a validation/rate error is not automatically retryable. The journal's
 	// uncertain path requires reconciliation, never a new key or blind POST.
 	if resp.StatusCode != http.StatusCreated {
+		// Fixed diagnostic categories only; never log provider response bodies,
+		// merchant credentials or checkout/customer payloads.
+		rejected, _ := io.ReadAll(io.LimitReader(resp.Body, 4096))
+		var problem struct {
+			Field string `json:"field"`
+		}
+		_ = json.Unmarshal(rejected, &problem)
+		field := "other"
+		switch problem.Field {
+		case "webhookUrl", "redirectUrl", "captureMode", "amount", "method", "profileId", "billingAddress", "description":
+			field = problem.Field
+		}
+		log.Printf("Mollie create rejected status=%d field=%s", resp.StatusCode, field)
+		clear(rejected)
 		return CreateUncertain, CreatedSession{}, ErrCreateExecution
 	}
 	raw, err := io.ReadAll(io.LimitReader(resp.Body, int64(protected.MaxPlaintext)+1))

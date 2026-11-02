@@ -1,12 +1,19 @@
-// Explicit local preview configuration; never performs schema migration or
-// enables external payments, refunds, stock reservation or notification jobs.
+// Explicit dedicated local preview configuration. Draft setup is independent
+// from opt-in test checkout; schema migration and mail/refund workers stay separate.
 package main
 
 import (
+	"context"
+	"crypto/sha256"
+	"encoding/json"
 	"flag"
 	"log"
 	"os"
+	"strings"
+	"time"
 
+	"github.com/eurorefurb/retail/internal/checkoutconfig"
+	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/platform"
 	driver "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
@@ -15,11 +22,18 @@ import (
 
 func main() {
 	enable := flag.Bool("enable", false, "Enable draft-cart operations in the dedicated Windows preview database")
+	payments := flag.Bool("payments", false, "Explicitly prepare test-only checkout and local order numbering")
 	flag.Parse()
 	_ = godotenv.Load()
 	cfg, err := driver.ParseDSN(os.Getenv("MYSQL_DSN"))
 	if err != nil || os.Getenv("APP_ENV") != "development" || cfg.Net != "tcp" || cfg.Addr != "127.0.0.1:13307" || cfg.DBName != "eurorefurb_local_trial" {
 		log.Fatal("Requires development environment and the dedicated loopback Windows preview database")
+	}
+	if *payments {
+		options, e := checkoutconfig.Load(os.Getenv)
+		if e != nil || options == nil || !strings.HasPrefix(os.Getenv("MOLLIE_API_KEY"), "test_") || os.Getenv("MOLLIE_LOCAL_TEST_WITHOUT_WEBHOOK") != "true" {
+			log.Fatal("Valid local Mollie test checkout configuration required")
+		}
 	}
 	db, err := platform.Open()
 	if err != nil {
@@ -28,6 +42,56 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *payments {
+			// These development numbers deliberately occupy a separate range.
+			// They are not a production source-sequence cutover or import seed.
+			var allocator struct{ Initialized bool }
+			if e := tx.Raw("SELECT initialized FROM order_number_allocator WHERE id=1 FOR UPDATE").Take(&allocator).Error; e != nil {
+				return e
+			}
+			if !allocator.Initialized {
+				var history []struct {
+					ID              string
+					DisplayID       int64
+					CustomDisplayID *string
+				}
+				if e := tx.Table("orders").Select("id,display_id,custom_display_id").Order("id").Find(&history).Error; e != nil {
+					return e
+				}
+				raw, e := json.Marshal(history)
+				if e != nil {
+					return e
+				}
+				seed := orders.OrderNumberSeed{LastDisplayID: 1000000000, LastTick: time.Now().UTC().UnixMicro() / 10, EvidenceSHA256: sha256.Sum256(raw)}
+				if e := orders.SeedOrderNumbers(context.Background(), tx, seed); e != nil {
+					return e
+				}
+			}
+			for _, table := range []string{"cart_checkout_runtime", "cart_completion_runtime"} {
+				var count int64
+				if e := tx.Table(table).Where("id=1 AND version=1").Count(&count).Error; e != nil {
+					return e
+				}
+				if count != 1 {
+					return gorm.ErrInvalidData
+				}
+				r := tx.Table(table).Where("id=1 AND version=1").Update("enabled", true)
+				if r.Error != nil {
+					return r.Error
+				}
+			}
+			var count int64
+			if e := tx.Table("inventory_command_capabilities").Where("command='inventory.reservations' AND version=1").Count(&count).Error; e != nil {
+				return e
+			}
+			if count != 1 {
+				return gorm.ErrInvalidData
+			}
+			r := tx.Table("inventory_command_capabilities").Where("command='inventory.reservations' AND version=1").Update("enabled", true)
+			if r.Error != nil {
+				return r.Error
+			}
+		}
 		// Lock the known-version settings before changing any of them. Missing or
 		// incompatible schema rolls back the entire configuration operation.
 		for _, table := range []string{"cart_item_runtime", "cart_contact_runtime", "cart_shipping_command_runtime", "cart_context_runtime", "cart_promotion_command_runtime"} {
@@ -74,4 +138,7 @@ func main() {
 		log.Fatal("Draft-cart preview configuration unavailable; apply explicit migrations and run configure-local-preview --enable")
 	}
 	log.Print("Draft-cart preview ready: create/access/items/address/delivery/context/promotions")
+	if *payments {
+		log.Print("Local Mollie test checkout, completion, numbering and stock reservations ready; mail/refund workers unchanged")
+	}
 }

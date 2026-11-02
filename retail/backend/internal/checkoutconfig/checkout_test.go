@@ -9,6 +9,26 @@ func fixture() map[string]string {
 	return map[string]string{"CHECKOUT_PAYMENT_ENABLED": "true", "STOREFRONT_ORIGIN": "http://127.0.0.1:9300", "MOLLIE_BACKEND_ORIGIN": "http://127.0.0.1:9100", "STOREFRONT_STORE_ID": "shop", "MOLLIE_API_KEY": "test_artificial", "PAYMENT_KEY_ACTIVE": "payment-1", "PAYMENT_KEYRING_JSON": `{"payment-1":"` + strings.Repeat("12", 32) + `"}`, "MANUAL_SHIPPING_PROVIDER_IDS": "manual_one,manual_two"}
 }
 
+func TestLocalTestWebhookOmissionRequiresDevelopment(t *testing.T) {
+	for _, mode := range []string{"development", "production", ""} {
+		e := fixture()
+		e["APP_ENV"] = mode
+		e["MOLLIE_LOCAL_TEST_WITHOUT_WEBHOOK"] = "true"
+		_, err := Load(func(k string) string { return e[k] })
+		if (mode == "development") != (err == nil) {
+			t.Fatal("local test mode environment guard", mode, err)
+		}
+	}
+	for _, value := range []string{"1", "TRUE", " true"} {
+		e := fixture()
+		e["APP_ENV"] = "development"
+		e["MOLLIE_LOCAL_TEST_WITHOUT_WEBHOOK"] = value
+		if _, err := Load(func(k string) string { return e[k] }); err != ErrInvalid {
+			t.Fatal("ambiguous test flag")
+		}
+	}
+}
+
 func TestExplicitIndependentNotificationConfiguration(t *testing.T) {
 	for _, flag := range []string{"", "false"} {
 		options, err := Webhooks(func(k string) string {
