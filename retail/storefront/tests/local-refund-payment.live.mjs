@@ -6,7 +6,7 @@ import {resolve} from 'node:path'
 import {expect as baseExpect} from '../../admin/node_modules/@playwright/test/index.mjs'
 const expect=baseExpect.configure({timeout:30000})
 
-export async function prepareLocalRefundPayment({page,context,origin,email,logs}){
+export async function prepareLocalRefundPayment({page,context,origin,email,logs,beforePlaceOrder}){
  assert.equal(origin,'http://127.0.0.1:19300')
  await page.goto(origin+'/gb-en/products/swappie-iphone-17e?v_id=variant_01M51RN7H7HPV9RH69T32QMD2Q')
  await page.getByTestId('add-product-button').click()
@@ -20,6 +20,7 @@ export async function prepareLocalRefundPayment({page,context,origin,email,logs}
  await expect(page).toHaveURL(/step=payment/)
  await page.getByTestId('submit-payment-button').click()
  await expect(page.getByTestId('submit-order-button')).toBeEnabled({timeout:60000})
+ if(beforePlaceOrder)await beforePlaceOrder()
  // Retain the real checkout's cookies and local payment intent for recovery.
  await context.storageState({path:resolve(logs,'refund-payment-state.json')})
  writeFileSync(resolve(logs,'refund-payment-localstorage.json'),JSON.stringify(await page.evaluate(()=>({...localStorage}))))

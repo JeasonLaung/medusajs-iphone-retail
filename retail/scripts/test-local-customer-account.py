@@ -14,6 +14,8 @@ and reuses the same paid order and durable refund instruction.
 to verify a new scoped employee's allocation/release/shipment and customer view.
 --scenario=mail uses actual Admin mailbox commands and production dispatchers
 in separate test processes, replacing only the external Resend transport.
+--scenario=payment-context continues one real sandbox checkout through two
+language saves, lost success responses, refresh recovery and paid completion.
 Verification links are read from authenticated encrypted intents in the owned
 copy (or the captured dispatch body for mail), never returned by an application
 endpoint or marked verified with SQL.
@@ -150,8 +152,56 @@ def redis_cleanup(prefix):
         return len(keys)
 
 
+def payment_context_facts(database, cart_id, order_id):
+    facts = {
+        'context_receipts': int(sql(database, "SELECT COUNT(*) FROM cart_context_operations WHERE cart_id='" + cart_id + "'")),
+        'order_ownership': int(sql(database, "SELECT COUNT(*) FROM customer_order_ownership WHERE order_id='" + order_id + "'")),
+        'completion_receipt': int(sql(database, "SELECT COUNT(*) FROM cart_completion_receipts WHERE cart_id='" + cart_id + "'")),
+        'single_checkout': int(sql(database, "SELECT COUNT(*) FROM cart_checkout_attempts WHERE cart_id='" + cart_id + "'")),
+        'single_create': int(sql(database, "SELECT COUNT(*) FROM payment_effect_journal WHERE scope_id='" + cart_id + "' AND effect_kind='create_session' AND state='succeeded'")),
+        'no_delete': int(sql(database, "SELECT COUNT(*) FROM payment_effect_journal WHERE scope_id='" + cart_id + "' AND effect_kind='delete_session'")),
+        'continuous_completion_binding': int(sql(database, "SELECT COUNT(*) FROM cart_checkout_attempts a JOIN cart_completion_receipts r ON r.cart_id=a.cart_id AND r.operation_id=a.operation_id WHERE a.cart_id='" + cart_id + "' AND a.effective_cart_version=a.cart_version+2 AND r.input_version=a.input_version AND r.completed_version=a.effective_cart_version+1")),
+    }
+    if facts != {'context_receipts': 2, 'order_ownership': 1, 'completion_receipt': 1, 'single_checkout': 1, 'single_create': 1, 'no_delete': 0, 'continuous_completion_binding': 1}:
+        raise RuntimeError('Payment context terminal facts differ: ' + str(facts))
+    return facts
+
+
+def verify_payment_context_checkpoint(owner):
+    config()  # Enforce the same development/loopback source guard.
+    if not re.fullmatch(r'[0-9a-f]{12}', owner):
+        raise RuntimeError('Owned context checkpoint required')
+    logs = ROOT / 'logs/retail-native' / ('account-' + owner)
+    report = json.loads((logs / 'report.json').read_text())
+    browser = json.loads((logs / 'browser-result.json').read_text())
+    if report.get('owner') != owner or not browser.get('passed') or browser.get('scenario') != 'payment-context':
+        raise RuntimeError('Successful owned context browser checkpoint required')
+    cart_id, order_id = browser['cart_id'], browser['order_id']
+    if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
+        raise RuntimeError('Invalid checkpoint identity')
+    database = 'retail_account_' + secrets.token_hex(6)
+    snapshot = '/tmp/' + database + '.sql'
+    created = False
+    try:
+        docker('cp', str(logs / 'payment-context-final.sql'), CONTAINER + ':' + snapshot)
+        docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'CREATE DATABASE ' + database)
+        created = True
+        docker('exec', CONTAINER, 'sh', '-c', 'mysql --defaults-extra-file=/tmp/local-root.cnf ' + database + ' < ' + snapshot)
+        facts = payment_context_facts(database, cart_id, order_id)
+        report['sql_payment_context_facts'] = facts
+        report['checkpoint_sql_verified'] = True
+        report['passed'] = True
+        (logs / 'report.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+        print('Original payment checkpoint SQL verified; no provider calls')
+    finally:
+        if created:
+            docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'DROP DATABASE ' + database)
+        docker('exec', CONTAINER, 'rm', '-f', snapshot)
+
+
 def main(language, scenario='account', resume=None):
     mail = scenario == 'mail'
+    payment_context = scenario == 'payment-context'
     buyback = scenario in ('buyback', 'buyback-return')
     exchange = scenario == 'exchange'
     refund = scenario == 'refund'
@@ -290,10 +340,16 @@ def main(language, scenario='account', resume=None):
             fixture = logs / 'mail-subflow.test.exe'
             subprocess.run(['go', 'test', '-c', '-o', str(fixture), './internal/identity'],
                            cwd=ROOT / 'retail/backend', check=True, capture_output=True, timeout=120)
-        if refund:
+        if refund or payment_context:
             if not values.get('MOLLIE_API_KEY', '').startswith('test_'):
-                raise RuntimeError('Refund rehearsal requires a Mollie test key')
+                raise RuntimeError('Payment rehearsal requires a Mollie test key')
             env['CHECKOUT_PAYMENT_ENABLED'] = 'true'
+        if payment_context:
+            env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'true'
+            if sql(database, 'SELECT version FROM cart_payment_refresh_runtime WHERE id=1') != '1':
+                raise RuntimeError('Payment context runtime version mismatch')
+            sql(database, 'UPDATE cart_payment_refresh_runtime SET enabled=TRUE WHERE id=1 AND version=1')
+        if refund:
             worker = logs / 'refund-worker.exe'
             subprocess.run(['go', 'build', '-o', str(worker), './cmd/process-order-refunds'],
                            cwd=ROOT / 'retail/backend', check=True, capture_output=True, timeout=120)
@@ -335,7 +391,7 @@ def main(language, scenario='account', resume=None):
         if resume:
             browser_env.update(ACCOUNT_TEST_CUSTOMER_OWNER=customer_owner, ACCOUNT_TEST_RESUME_PAID='true',
                                ACCOUNT_TEST_REFUND_EXISTING='true' if existing_refund else 'false')
-        script = 'tests/local-notification-mail.live.mjs' if mail else 'tests/local-repair.live.mjs' if repair else 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
+        script = 'tests/local-payment-context.live.mjs' if payment_context else 'tests/local-notification-mail.live.mjs' if mail else 'tests/local-repair.live.mjs' if repair else 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
         result = subprocess.run([str(node), script],
                                 cwd=ROOT / 'retail/storefront', env=browser_env,
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=420 if refund else 240)
@@ -347,6 +403,12 @@ def main(language, scenario='account', resume=None):
              "WHERE email LIKE 'local-account-" + customer_owner + "-%@example.invalid' AND verified_at IS NOT NULL"))
         if report['verified_accounts'] != 1:
             raise RuntimeError('Expected exactly one newly verified fixture account')
+        if payment_context:
+            cart_id, order_id = report['cart_id'], report['order_id']
+            if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
+                raise RuntimeError('Owned payment context result identity invalid')
+            facts = payment_context_facts(database, cart_id, order_id)
+            report['sql_payment_context_facts'] = facts
         if mail:
             facts = {
                 'verification_sent': int(sql(database, "SELECT COUNT(*) FROM customer_verification_mail WHERE status='sent'")),
@@ -448,6 +510,9 @@ def main(language, scenario='account', resume=None):
             report['sql_device_links'] = int(sql(database, "SELECT COUNT(*) FROM buyback_device_links WHERE request_id='" + request + "'"))
             if report['sql_private_photos'] != 3 or report['sql_device_links'] != 1:
                 raise RuntimeError('Buyback photo/device facts differ')
+    except BaseException:
+        report['passed'] = False
+        raise
     finally:
         for process in reversed(processes):
             if process.poll() is None:
@@ -457,22 +522,24 @@ def main(language, scenario='account', resume=None):
         for stream in streams:
             stream.close()
         cleanup_errors = []
-        if refund and created:
+        if (refund or payment_context) and created:
             try:
                 # Keep an ignored durable copy even on browser failure: a real
-                # test refund may already exist or still need reconciliation.
-                (logs / 'refund-final.sql').write_bytes(docker('exec', CONTAINER, 'mysqldump',
+                # test payment/refund may already exist and need reconciliation.
+                (logs / ('refund-final.sql' if refund else 'payment-context-final.sql')).write_bytes(docker('exec', CONTAINER, 'mysqldump',
                     '--defaults-extra-file=/tmp/local-root.cnf', '--single-transaction',
                     '--set-gtid-purged=OFF', '--no-tablespaces', database))
-                report['refund_durable_snapshot_retained'] = True
+                report['payment_durable_snapshot_retained'] = True
+                if refund:
+                    report['refund_durable_snapshot_retained'] = True
             except Exception:
-                cleanup_errors.append('refund evidence snapshot')
+                cleanup_errors.append('payment evidence snapshot')
         try:
             report['redis_keys_removed'] = redis_cleanup(prefix)
         except Exception:
             cleanup_errors.append('Redis cleanup')
         try:
-            if created and (not refund or report.get('refund_durable_snapshot_retained')):
+            if created and (not (refund or payment_context) or report.get('payment_durable_snapshot_retained')):
                 docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e',
                        'DROP DATABASE ' + database + "; REVOKE ALL ON " + database + ".* FROM 'retail_local'@'%';")
             docker('exec', CONTAINER, 'rm', '-f', '/tmp/account-' + owner + '.sql')
@@ -482,6 +549,8 @@ def main(language, scenario='account', resume=None):
         report['source_account_counts_after'] = source_account_counts()
         report['resources_removed'] = not cleanup_errors
         report['cleanup_errors'] = cleanup_errors
+        if cleanup_errors or report['source_account_counts_after'] != source_counts:
+            report['passed'] = False
         (logs / 'report.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
         print('Account rehearsal evidence: ' + str(logs / 'report.json'))
         if cleanup_errors:
@@ -514,6 +583,10 @@ if __name__ == '__main__':
         main('en', 'warehouse')
     elif sys.argv[1:] == ['--scenario=mail']:
         main('en', 'mail')
+    elif sys.argv[1:] == ['--scenario=payment-context']:
+        main('en', 'payment-context')
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-payment-context='):
+        verify_payment_context_checkpoint(sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--resume-refund='):
         main('en', 'refund', sys.argv[1].split('=', 1)[1])
     else:

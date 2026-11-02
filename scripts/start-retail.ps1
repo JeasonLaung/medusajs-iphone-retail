@@ -91,6 +91,10 @@ try {
     & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --payments
     if ($LASTEXITCODE -ne 0) { throw 'Local test checkout configuration failed.' }
   }
+  if ($env:CHECKOUT_CONTEXT_PAYMENT_ENABLED -eq 'true') {
+    & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --payment-context
+    if ($LASTEXITCODE -ne 0) { throw 'Local payment context configuration failed.' }
+  }
   if ($env:LOCAL_PREVIEW_FULFILLMENT_ENABLED -eq 'true') {
     & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --fulfillment
     if ($LASTEXITCODE -ne 0) { throw 'Local fulfillment configuration failed.' }

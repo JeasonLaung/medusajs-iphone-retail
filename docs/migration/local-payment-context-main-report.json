@@ -1,0 +1,94 @@
+{
+  "task": "Windows real Mollie continuous context save and lost-response recovery",
+  "date": "2026-11-02",
+  "passed": true,
+  "full_C01_C11_complete": false,
+  "run": {
+    "owner": "6d4e233dd255",
+    "database": "retail_account_6d4e233dd255",
+    "real_email_delivery": false,
+    "business_api_mocking": false,
+    "main_database_modified": false,
+    "api_sha256": "5d5dc33a337d33a206939bebb363c25978a472650d3789318b5b101197b875a7",
+    "customer_owner": "6d4e233dd255",
+    "passed": true,
+    "scenario": "payment-context",
+    "cart_id": "cart_d6d719b5-342b-4ba6-86d6-0385b83afee9",
+    "order_id": "order_f9e94559-a93a-425d-976c-72aef0250151",
+    "steps": [
+      {
+        "locale": "zh-CN",
+        "version": "6",
+        "same_payment_intent": true,
+        "total": "789",
+        "exact_retry": true
+      },
+      {
+        "locale": "en",
+        "version": "7",
+        "same_payment_intent": true,
+        "total": "789",
+        "exact_retry": true
+      }
+    ],
+    "real_mollie_test_payment": true,
+    "same_payment_after_two_context_saves": true,
+    "lost_success_response_and_reload_recovery": true,
+    "automatic_order_ownership": true,
+    "browser_errors": 0,
+    "verified_accounts": 1,
+    "payment_durable_snapshot_retained": true,
+    "redis_keys_removed": 20,
+    "source_account_counts_before": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "source_account_counts_after": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "resources_removed": true,
+    "cleanup_errors": [],
+    "sql_payment_context_facts": {
+      "context_receipts": 2,
+      "order_ownership": 1,
+      "completion_receipt": 1,
+      "single_checkout": 1,
+      "single_create": 1,
+      "no_delete": 0,
+      "continuous_completion_binding": 1
+    },
+    "checkpoint_sql_verified": true
+  },
+  "main_configuration": {
+    "checkout_context_payment_enabled": true,
+    "payment_refresh_runtime_version": 1,
+    "configuration_replayed": true,
+    "business_rows_created": false
+  },
+  "limitations": [
+    "English-Chinese-English, 390 width, same amount only",
+    "Changed amount/currency and compensation branches still have isolated-adapter evidence only",
+    "No real email or production webhook verification"
+  ]
+}

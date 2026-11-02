@@ -23,6 +23,7 @@ import (
 func main() {
 	enable := flag.Bool("enable", false, "Enable draft-cart operations in the dedicated Windows preview database")
 	payments := flag.Bool("payments", false, "Explicitly prepare test-only checkout and local order numbering")
+	contextPayment := flag.Bool("payment-context", false, "Enable payment-aware cart context save and recovery in the dedicated local preview")
 	fulfillment := flag.Bool("fulfillment", false, "Enable existing device allocation, packing and parcel commands in the dedicated local preview")
 	buyback := flag.Bool("buyback", false, "Enable existing customer buyback and Admin review commands in the dedicated local preview")
 	afterSales := flag.Bool("after-sales", false, "Enable existing customer requests, Admin review and device receipt/repair return in the dedicated local preview")
@@ -33,10 +34,16 @@ func main() {
 	if err != nil || os.Getenv("APP_ENV") != "development" || cfg.Net != "tcp" || cfg.Addr != "127.0.0.1:13307" || cfg.DBName != "eurorefurb_local_trial" {
 		log.Fatal("Requires development environment and the dedicated loopback Windows preview database")
 	}
-	if *payments {
+	if *payments || *contextPayment {
 		options, e := checkoutconfig.Load(os.Getenv)
 		if e != nil || options == nil || !strings.HasPrefix(os.Getenv("MOLLIE_API_KEY"), "test_") || os.Getenv("MOLLIE_LOCAL_TEST_WITHOUT_WEBHOOK") != "true" {
 			log.Fatal("Valid local Mollie test checkout configuration required")
+		}
+		if *contextPayment {
+			deletes, err := checkoutconfig.ContextPayments(os.Getenv, options)
+			if err != nil || deletes == nil {
+				log.Fatal("Explicit local checkout context payment configuration required")
+			}
 		}
 	}
 	db, err := platform.Open()
@@ -46,6 +53,18 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *contextPayment {
+			var row struct{ Version int }
+			if e := tx.Raw("SELECT version FROM cart_payment_refresh_runtime WHERE id=1 FOR UPDATE").Take(&row).Error; e != nil {
+				return e
+			}
+			if row.Version != 1 {
+				return gorm.ErrInvalidData
+			}
+			if e := tx.Table("cart_payment_refresh_runtime").Where("id=1 AND version=1").Update("enabled", true).Error; e != nil {
+				return e
+			}
+		}
 		if *warehouses {
 			for _, table := range []string{"warehouse_user_runtime", "warehouse_scope_runtime"} {
 				var row struct{ Version int }

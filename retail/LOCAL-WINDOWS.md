@@ -47,3 +47,9 @@ Mollie无法访问loopback webhook，本机test模式省略该参数，通过真
 ## 通知邮件独立验证
 
 `python retail/scripts/test-local-customer-account.py --scenario=mail` 复制本机恢复库，在专有19100/19200/19300及Redis前缀验证实际后台邮箱保存/密钥留空保留、注册邮件链接验证登录和订单失败重试。副本商户密钥临时生成；外部Resend传输由单独测试进程替换，未向外发信，不需要旧机私钥或真实Resend凭据。主环境邮件开关保持原状。详情与真实收件缺口见 `docs/migration/local-notification-mail-main.md`。
+
+## 已创建付款的地区/语言保存
+
+`CHECKOUT_CONTEXT_PAYMENT_ENABLED=true` 独立于普通付款开关，当前本机已显式启用。start.bat 调用 `configure-local-preview --payment-context`，限定既定development专用库及Mollie测试配置，启用版本1的付款恢复runtime；缺少配置拒绝启动，重复执行不修改付款或订单。只启用普通付款时，已付款上下文接口会保持关闭。
+
+`python retail/scripts/test-local-customer-account.py --scenario=payment-context` 在副本验证真实Mollie付款创建后的英→中→英连续保存、成功响应丢失与刷新原操作恢复，再沿同一付款完成订单。保留忽略的最终SQL快照；`--verify-payment-context=OWNER` 可仅恢复快照复核终态并清理，避免因检查条件修正重复付款。真实测试渠道会被调用，详情及未覆盖分支见 `docs/migration/local-payment-context-main.md`。
