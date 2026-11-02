@@ -1,0 +1,320 @@
+{
+  "checked_at": "2026-11-01T10:29:07.620692+00:00",
+  "scope": "Default source SEO and verified public metadata; configured SEO and full migration remain incomplete",
+  "source_sha256": {
+    "retail/storefront/src/lib/seo.ts": "478ddf826ff69750f1b38642faeed79b051d6e8f0af5155d049d212c7d185c1f",
+    "retail/storefront/src/components/layout/seo-head.astro": "fdf11d08d4bcdb61965ae68a2ba8d092e2a5bc39ef5e1c58f612bcdc08e698d9",
+    "retail/storefront/src/layouts/Storefront.astro": "0232b577e82c53eca42771b0687eb2b6f03f5b7ddd278be5f24948346897e3f3",
+    "retail/storefront/src/pages/[countryCode]/index.astro": "f401a5fe980660d094bb36863322bbaf0bbe0712e9cecf81467e7039e558b528",
+    "retail/storefront/src/pages/[countryCode]/store.astro": "e5432205d7c4268fb434be08e2a65e5ed646da96e70693cd331d829dd28adfe5",
+    "retail/storefront/src/lib/product-page.ts": "b29a9178aaa9184c86d3c77594dde22b065ff64b9d01a7a7ec517a8f507da8df",
+    "retail/storefront/src/pages/[countryCode]/products/[handle].astro": "3586e9cb56591ba1552c00de716a65774461fd135b107bab3469314e72e584f7",
+    "retail/storefront/src/pages/[countryCode]/checkout.astro": "83131a796fa9e97b5def62019af1e65e411e0b31500a80659e78361e36c8f03e",
+    "retail/storefront/src/pages/[countryCode]/payment-result.astro": "d32d16e3e327182779eedceb25235c0202aa2f7c3d40a2d185f7cf8a1cc78772",
+    "retail/storefront/src/pages/[countryCode]/sell/iphone/[...steps].astro": "6f331b11f36f5be723c47904d6a73cb2c9c6202f476819eeae872c817de5d61f",
+    "retail/storefront/tests/seo.test.ts": "a620f96be12b05e11208b489ec509058c25fb1d31931fa5c9dc757bf0ade6c9f",
+    "retail/storefront/tests/variants.test.ts": "3d4f8865c2ce1e56150a41b792114cb041aff040fec11c8037656e81ede1ea86",
+    "retail/admin/tests/seo-defaults.native.mjs": "19404f66b308bfbb62009f119aa2383e80560b66ca4df7297f85b0c7439bacb5",
+    "retail/storefront/public/favicon.ico": "bad7e21f4e67caed279713fbc40403721008f67ee7dd9d008e2c3cf212458ecc",
+    "retail/storefront/public/apple-touch-icon.png": "09f8e3d113d86d7b4767554c53a2323e82749138fdf9e05b100751b3667cfc0a"
+  },
+  "source_references": [
+    "medusa-store/apps/storefront/src/lib/data/seo.ts",
+    "medusa-store/apps/storefront/src/modules/common/components/seo-data/index.tsx",
+    "medusa-store/apps/storefront/src/app/layout.tsx"
+  ],
+  "browser": {
+    "report": "logs/gin-migration/seo-defaults-1793528815522/report.json",
+    "report_sha256": "428e09307b8a85024adeb3080cc660d2998f3777fea4394de02365540d1cec07",
+    "cases": 58,
+    "exact_public_comparisons": 16,
+    "comparisons": [
+      {
+        "lang": "en",
+        "path": "",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "en",
+        "path": "/store",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "en",
+        "path": "/about",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "en",
+        "path": "/help",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "en",
+        "path": "/reviews",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "en",
+        "path": "/blog",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "en",
+        "path": "/blog/choose-your-storage",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "en",
+        "path": "/products/swappie-iphone-17e",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "zh",
+        "path": "",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "zh",
+        "path": "/store",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "zh",
+        "path": "/about",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "zh",
+        "path": "/help",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "zh",
+        "path": "/reviews",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "zh",
+        "path": "/blog",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "zh",
+        "path": "/blog/choose-your-storage",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      },
+      {
+        "lang": "zh",
+        "path": "/products/swappie-iphone-17e",
+        "title_description_canonical_languages_og_jsonld_icons_equal": true
+      }
+    ],
+    "page_errors": [],
+    "normalization": "Only localhost/127.0.0.1:8000 and :9300 origins; external origins unchanged",
+    "synthetic_responses": false,
+    "external_https_assets_blocked": true,
+    "private_route_statuses": [
+      {
+        "platform": "source",
+        "lang": "en",
+        "path": "/cart",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "source",
+        "lang": "en",
+        "path": "/account",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "source",
+        "lang": "en",
+        "path": "/checkout",
+        "status": 404,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "source",
+        "lang": "en",
+        "path": "/sell/iphone/model",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "source",
+        "lang": "zh",
+        "path": "/cart",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "source",
+        "lang": "zh",
+        "path": "/account",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "source",
+        "lang": "zh",
+        "path": "/checkout",
+        "status": 404,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "source",
+        "lang": "zh",
+        "path": "/sell/iphone/model",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "astro",
+        "lang": "en",
+        "path": "/cart",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "astro",
+        "lang": "en",
+        "path": "/account",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "astro",
+        "lang": "en",
+        "path": "/checkout",
+        "status": 503,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "astro",
+        "lang": "en",
+        "path": "/sell/iphone/model",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "astro",
+        "lang": "en",
+        "path": "/payment-result",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "astro",
+        "lang": "zh",
+        "path": "/cart",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "astro",
+        "lang": "zh",
+        "path": "/account",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "astro",
+        "lang": "zh",
+        "path": "/checkout",
+        "status": 503,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "astro",
+        "lang": "zh",
+        "path": "/sell/iphone/model",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "platform": "astro",
+        "lang": "zh",
+        "path": "/payment-result",
+        "status": 200,
+        "robots": "noindex, nofollow"
+      }
+    ]
+  },
+  "frontend_tests": {
+    "tests": 209,
+    "pass": 209,
+    "fail": 0,
+    "exit_code": 0,
+    "log_sha256": "5153b191d5b74cdb7e4a85060fefd30f08b492e536130ea74664fd5354907818"
+  },
+  "astro_check": {
+    "files": 451,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 17,
+    "exit_code": 0,
+    "log_sha256": "5eb506a0782f92c44735acb71ed8f60d30e6ac0af81c47ed213e255f3cb9f63a"
+  },
+  "services": {
+    "routes": [
+      {
+        "url": "http://127.0.0.1:9001/health",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9001/app",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9100/health",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-en/store",
+        "status": 200,
+        "product_links": 30,
+        "jsonld_count": 1,
+        "hreflang_count": 3
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-zh/about",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/favicon.ico",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/apple-touch-icon.png",
+        "status": 200
+      }
+    ],
+    "recent_logs": [
+      {
+        "path": "log/gin-preview-mysql/api.log",
+        "lines": 250,
+        "panic_fatal": 0,
+        "unexpected_5xx": 0
+      },
+      {
+        "path": "log/202611011104.log",
+        "lines": 250,
+        "panic_fatal": 0,
+        "unexpected_5xx": 0
+      }
+    ],
+    "goal_complete": false
+  },
+  "icons_source_byte_identical": true,
+  "backend_changed": false,
+  "database_changed": false,
+  "binary_replaced": false,
+  "configured_seo_verified": false,
+  "sitemap_delivered": false,
+  "production_build_validated": false,
+  "full_storefront_accepted": false,
+  "goal_complete": false
+}

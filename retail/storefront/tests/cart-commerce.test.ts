@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {createHash,randomUUID} from 'node:crypto'
-import {createCartCommerce,cartIntentKey,browserCartCommerce} from '../src/lib/cart-commerce.ts'
+import {createCartCommerce,contextIntentKey,cartIntentKey,browserCartCommerce} from '../src/lib/cart-commerce.ts'
 import {CartError,type CartSnapshot,type CartAmounts} from '../src/lib/cart-client.ts'
 
 function fixture(){
@@ -70,4 +70,10 @@ test('definite first version conflict needs a new user click; resumed uncertaint
  uncertain.options.client.addItem=async()=>{throw new CartError('session',401)}
  assert.equal((await createCartCommerce(uncertain.options).addToCart(input)).ok,false)
  assert.equal(uncertain.data.get(cartIntentKey),before)
+})
+
+test('unconfirmed context blocks product addition without changing its journal',async()=>{
+ const f=fixture();f.data.set(contextIntentKey,'pending')
+ assert.equal((await createCartCommerce(f.options).addToCart(input)).ok,false)
+ assert.deepEqual(f.stats(),{posts:0,creations:0,quantity:0});assert.equal(f.data.get(contextIntentKey),'pending')
 })

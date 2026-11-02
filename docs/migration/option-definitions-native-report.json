@@ -1,0 +1,30 @@
+{
+  "exit_code": 0,
+  "migrations": 96,
+  "native_transactions_passed": true,
+  "source_files": 844,
+  "frozen_source_verified": true,
+  "binary_sha256": "d3da84141e83735a0830395e0102f94c6eefb4e74f20249aa957d04b1ce25c8f",
+  "test_log_sha256": "a9da477113cc0df0197dff41d5e6c7c46d91b0b98d682c7dc5a50f8495025941",
+  "owned_database_absent": true,
+  "redis_used": false,
+  "main_mysql_unchanged": true,
+  "real_provider_called": false,
+  "native_browser_verified": false,
+  "original23_regression": false,
+  "goal_complete": false,
+  "owner": "5a900f54abd4",
+  "snapshot": "logs/gin-migration/option-definitions-native-5a900f54abd4",
+  "cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true,
+    "redis_used": false
+  },
+  "native_lock_wait_verified_in_performance_schema": true,
+  "public_http_auth_csrf_verified": false,
+  "ant_browser_verified": false,
+  "physical_full_text_unique_indexes_resolved": false,
+  "post_run_service_check": "logs/gin-migration/option-definitions-96-stage-services.json"
+}

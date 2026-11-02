@@ -1,6 +1,6 @@
 import {useEffect,useRef,useState} from 'react'
 import {browserCartClient,CartError} from '../../lib/cart-client'
-import {browserContactCommands,type ContactState,contactFields} from '../../lib/checkout-contacts'
+import {browserContactCommands,type ContactState,contactFields,hasCompleteContacts} from '../../lib/checkout-contacts'
 import {cartIntentKey,shippingIntentKey} from '../../lib/cart-commerce'
 import {customerClient,type Customer,type Address} from '../../lib/customer-client'
 import type {Region} from '../../lib/regions'
@@ -46,7 +46,7 @@ export default function GinCheckout({region,segment,enabled,customerEnabled}:Pro
     const intent=commands.pending();if(intent&&intent.cartID!==cart.id)throw Error();setCustomer(knownCustomer);controller.current=commands;setState({contacts,view});setRecovery(intent?.kind==='refresh');setPendingSave(intent?.kind==='save')
     const paymentIntent=browserPaymentCommands(api).pending();if(paymentIntent&&paymentIntent.cartID!==cart.id)throw Error()
     const requested=new URL(location.href).searchParams.get('step')
-    const hasContacts=contacts.email&&contacts.shipping_address&&contacts.billing_address&&intent?.kind!=='save'
+    const hasContacts=hasCompleteContacts(contacts)&&intent?.kind!=='save'
     const currentStep:CheckoutStep=hasContacts?(paymentIntent?'review':localStorage.getItem(shippingIntentKey)!==null?'delivery':requested==='address'?'address':(requested==='payment'||requested==='review')&&view.amounts.shipping_methods.length?requested:'delivery'):'address'
     setStep(currentStep);const url=new URL(location.href);url.searchParams.set('step',currentStep);history.replaceState(null,'',url)
    }catch{if(!cancelled)setError(true)}

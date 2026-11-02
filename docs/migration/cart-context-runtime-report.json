@@ -1,0 +1,150 @@
+{
+  "date": "2026-11-01",
+  "scope": "Pre-payment cart context transaction, private HTTP, browser transport and persisted command participant; selector not yet wired",
+  "goal_complete": false,
+  "main_preview_schema": 101,
+  "source_migrations": 102,
+  "main_preview_upgraded": false,
+  "full_sql_owner": "965e8a58a0b9",
+  "full_sql_suites": 23,
+  "full_sql_source_files": 1827,
+  "full_sql_current_sources_verified": true,
+  "focused_sql_owner": "fa417a6cb2b7",
+  "native_foreign_keys": true,
+  "test_resources_cleaned": true,
+  "original_services_preserved": true,
+  "go_all_packages": "passed",
+  "go_vet_related": "passed; final command exit 0",
+  "storefront_tests": 235,
+  "astro_check": {
+    "files": 465,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 17
+  },
+  "sql_verified": [
+    "8 same-operation concurrent attempts yield one fresh receipt",
+    "exact currency quote and tax raw precision",
+    "source custom-priced line deletion",
+    "single-country address copy and multi-country clear",
+    "same-region locale preserves address",
+    "all-table row fingerprints unchanged on rejection and late receipt failure",
+    "gate, locale directory, current version and generation checks",
+    "private HTTP Origin/CSRF/session/foreign ownership, duplicate and unknown JSON",
+    "actual Redis limiter and HTTP429 Retry-After"
+  ],
+  "browser_context_joint_verified": false,
+  "remaining": [
+    "Connect existing selector and preference cookie/route locale source",
+    "Real browser no-cart/with-cart, reload/back/retry, English/Chinese and narrow layout",
+    "Combined shipping/promotion context and item translation parity",
+    "Durable existing provider-session refresh coordination",
+    "Controlled main102 upgrade only after full readiness review",
+    "C01-C11 remaining delivery scope"
+  ],
+  "retained_failures": [
+    {
+      "owner": "79d5b4d5b792",
+      "reason": "Artificial custom line missed required requires_shipping field",
+      "log": "logs/gin-migration/native-sql-local-79d5b4d5b792/CartRuntime.log",
+      "log_sha256": "58aa930e56d8944370ac83fc4556d82eb299332434a9e20d29a4522445bf5841",
+      "cleanup_verified": true
+    },
+    {
+      "owner": "61677ccbcc6d",
+      "reason": "Artificial USD currency precision row missing",
+      "log": "logs/gin-migration/native-sql-local-61677ccbcc6d/CartRuntime.log",
+      "log_sha256": "6a79f55002a4a0979f2a3cdc2a031505343c70b897d0d48d41519ea5ae39c7d3",
+      "cleanup_verified": true
+    },
+    {
+      "owner": "18f45ccdd257",
+      "reason": "Unconfigured-locale test used syntactically invalid value",
+      "log": "logs/gin-migration/native-sql-local-18f45ccdd257/CartRuntime.log",
+      "log_sha256": "cf640d43214f224178193085becb8222713a3e03e8f1d8de7e38f1a095809c83",
+      "cleanup_verified": true
+    },
+    {
+      "owner": "6755e94bc0f3",
+      "reason": "Context command incorrectly forced tax calculation for cleared multi-country address; fixed to original automatic policy",
+      "log": "logs/gin-migration/native-sql-local-6755e94bc0f3/CartRuntime.log",
+      "log_sha256": "d05ba1918f2176142b7e994563c6418e8a8062014ec4537ab470bab4513c26f9",
+      "cleanup_verified": true
+    },
+    {
+      "owner": "7e121148f7ee",
+      "reason": "New HTTP limiter category not registered; fixed with actual Redis 429 test",
+      "log": "logs/gin-migration/native-sql-local-7e121148f7ee/CartRuntime.log",
+      "log_sha256": "ddf0c8f601dd48e1fb26f7c1ad4f8ab86d8b9e0a0013c8d0367fd18091b054ab",
+      "cleanup_verified": true
+    }
+  ],
+  "source_sha256": {
+    "retail/backend/internal/cart/context_command.go": "4c1a05fc6fd2d55408388de4324174244fb1da6bed5ba5a95cf2ebfa49b28567",
+    "retail/backend/internal/cart/context_command_test.go": "ee1e9e80c456c0e7760f60ef241279dc4309856b66a789d92fd76197ab805052",
+    "retail/backend/internal/cart/context_http.go": "5d4a990eef9bb978216698416ffd52ebfa9a35de68cb7889466aa683fc5501c9",
+    "retail/backend/internal/cart/context_plan.go": "de84816eb41d3806c815cfc4eb47558e2075af532f3266ce24d77764f0a2c60e",
+    "retail/backend/internal/cart/http.go": "5615979ed9849ba137ad4fb8f2b848dc0afa69125fbb0dc590aeff2f29e7ab34",
+    "retail/backend/internal/identity/cart_context_http_test.go": "b57479508bc84786bc266b0d3819399a2bae29759eb6eca653194aa466f8f5d9",
+    "retail/backend/internal/identity/cart_context_test.go": "79a943c87bd9b784bbdc0e677ce7c97f481a118fbb0b0b8d77e707450601754c",
+    "retail/backend/internal/sessionstore/cart_scope.go": "49e6dfe415edf25f288782541568cb65b925aa96bf43aa356d43044174954505",
+    "retail/backend/migrations/0102_cart_context.sql": "b5d62c954bf2e325beb6e6330cdcc4d5f8b51c9c69336622b9298ad44433ee34",
+    "retail/scripts/test-native-sql-local.py": "268f41446618987f20def602e0962665a089ac50b8fce6cffe3dfb85ffbd0f3d",
+    "retail/storefront/src/lib/cart-bridge.ts": "8150ab2cb25c3860c785867482ca3fad525c64a31f6465303265c771abb916de",
+    "retail/storefront/src/lib/cart-client.ts": "baeee7035039c4fb8a408f24441de60825728d9e7e67ebdeb5bf8e717acb9fc7",
+    "retail/storefront/src/lib/cart-commerce.ts": "9ada4272420f66597d9e89cf1e5826a7b412f72a6b527c1d9fffb2ee8178b293",
+    "retail/storefront/src/lib/cart-context.ts": "8c9a387819dfe3a8603ec33feb260b5527a89ec08d211ad70a6140f9f0a495cd",
+    "retail/storefront/src/lib/checkout-contacts.ts": "5da01b5a5552ef328216bc7193422efd646efa1f321778daf085ecfe51053ef9",
+    "retail/storefront/src/lib/checkout-payment.ts": "cdc211464d48e6d307d62ad4a10c6f3fe3d0ff77ff8b8a6f5ed517dbcf3bb694",
+    "retail/storefront/src/lib/checkout-promotions.ts": "818e46d7fc0055d4ab5bb2ed1b3b0aa11179e4ccdf110fdc3ac6f6c66eb288fa",
+    "retail/storefront/src/lib/checkout-shipping.ts": "bd47674cb16d91bb2b43ed06321cd6a890f01cdbca7bbc0b98de7144f873292b",
+    "retail/storefront/src/lib/customer-cart-transfer.ts": "db9284ba362d2fb1e808f4e282d7b54a90d3c8d8300b3050ee694b959d1097e6",
+    "retail/storefront/tests/cart-commerce.test.ts": "a44d3d58cba5f84e4a21455fdda7790923221d0cc569f01bb5fc70fbf9185757",
+    "retail/storefront/tests/cart-context-intent.test.ts": "abdb70d1844b44c9d7f1f0687a3dba6eb11e3a1cc736f81315d8b7f3991c7964",
+    "retail/storefront/tests/cart-context.test.ts": "a1df207090d81a62c25a1e1bd6dce4e3aa61e8ea9582923a4ddf5eeb12d69a88",
+    "retail/storefront/tests/checkout-contacts.test.ts": "fa135b8171b29258d002c82f53cd4a853ceab75d62c7be6ca81fa0606f740cc2",
+    "retail/storefront/tests/checkout-payment.test.ts": "cea170e6cf2083c981ac2836a4bdda0bac8c6e09baaca39bb23fc6f6e5d5fdd3",
+    "retail/storefront/tests/checkout-promotions.test.ts": "81bd23d9bf67b8293bfdfc90e9357ee4613ba9364c7870b9f86d509a64badbd5",
+    "retail/storefront/tests/checkout-shipping.test.ts": "16ed823fceae6c78f29ee3d9f749b9211a9281f9dbb40eb53e35a83ebaee689d",
+    "retail/storefront/tests/customer-cart-transfer.test.ts": "328a955b4e002108d7f58952cf8f4e45f38234a93c83934e3077ac20aaa2aa0e"
+  },
+  "evidence_sha256": {
+    "logs/gin-migration/native-sql-local-965e8a58a0b9/manifest.json": "a5ef11dad217010f2af0b5d33a5d4ab0b784b2c4fd7de3e1dd695c08d1959a71",
+    "logs/gin-migration/native-sql-local-965e8a58a0b9/result.json": "62f4fb7a416842c7372e2e5cdb0ecad27d202cab17de4a08f0e3a13f41539642",
+    "logs/gin-migration/native-sql-local-965e8a58a0b9/cleanup.json": "fab32adfe0c95381e147293d7b6c988b757ed4f5d738ea780c4d03ec313115b6",
+    "logs/gin-migration/native-sql-local-965e8a58a0b9/mysql-cleanup.json": "cb57fabbaf097925a808cccc0c0fa638438ec798f04aebd9c23838141ef5a242",
+    "logs/gin-migration/native-sql-local-965e8a58a0b9/CartRuntime.log": "608b7814425617cc4ba3215dd390f64dc46e0c8a8d1015723f964bd06e650d61",
+    "logs/gin-migration/native-sql-local-fa417a6cb2b7/manifest.json": "84c7614f755637f940f187f1e6d9f73fd38a254ea10cdc32157ce36afc4dba64",
+    "logs/gin-migration/native-sql-local-fa417a6cb2b7/diagnostic-CartRuntime-result.json": "58bf0284beb0d635576607333d98823c742b97d429c9551fc61881f8e73e2c78",
+    "logs/gin-migration/native-sql-local-fa417a6cb2b7/CartRuntime.log": "f13115c6082c106488d23f83fd0604e0141a17374b48582e50d49ad7670475c6",
+    "logs/gin-migration/native-sql-local-965e8a58a0b9/context-verification/gin-context-102-go-test.log": "7e1624ba68886d74b316edaef463ac3eb3a5c09ca5bfb8bd6b5c65c078dfaccb",
+    "logs/gin-migration/native-sql-local-965e8a58a0b9/context-verification/gin-context-102-storefront-tests.log": "d195a7500c0556a4bfac26d6ee0621f321ddd70c14b4f8982f91cc029d521944",
+    "logs/gin-migration/native-sql-local-965e8a58a0b9/context-verification/gin-context-102-astro-check.log": "432b623b6d043b13badfa884d37c0b31889955a70acd24296f28a1e0ba08e7c3",
+    "logs/gin-migration/native-sql-local-965e8a58a0b9/context-verification/services.json": "79eaec43a9341be5ccabad2aef3749b3dc8b828160c2f1198d03cd7e9d4a8b18",
+    "logs/gin-migration/native-sql-local-965e8a58a0b9/context-verification/main101-verification.log": "5634630db05985c1caee36f7b5ad7516be66d5b17b9f1d16219ce32b48662a76"
+  },
+  "service_checks": {
+    "http://127.0.0.1:9001/health": {
+      "status": 200
+    },
+    "http://127.0.0.1:9001/app": {
+      "status": 200
+    },
+    "http://127.0.0.1:9100/health": {
+      "status": 200
+    },
+    "http://127.0.0.1:9300/dk-en/store": {
+      "status": 200,
+      "initial_html_product_cards": 30
+    },
+    "http://127.0.0.1:9300/dk-zh/store": {
+      "status": 200,
+      "initial_html_product_cards": 30
+    },
+    "recent_gin_log": {
+      "lines_inspected": 60,
+      "panic_true": 0
+    },
+    "checked_utc": "2026-11-01T12:47:25.694130+00:00"
+  }
+}

@@ -132,6 +132,11 @@ func checkInitialPayments(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	if err != nil || result.State != "ready" || result.CheckoutURL == nil || *result.CheckoutURL != "https://www.mollie.com/checkout/initial" {
 		t.Fatalf("ready replay: %v %s", err, result.State)
 	}
+	previewCalls := calls.Load()
+	checkContextPaymentPreview(t, ctx, db, ref, options)
+	if calls.Load() != previewCalls {
+		t.Fatal("context preview called the provider")
+	}
 	available, optionsErr := cart.ReadPaymentOptions(ctx, db, "shop", ref, options)
 	if optionsErr != nil || !available.AttemptStarted || len(available.Providers) != 0 || available.Version != "5" {
 		t.Fatal("frozen cart exposed another payment initiation")
@@ -214,6 +219,11 @@ func checkInitialPayments(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	checkCheckoutBrowser(t, ctx, db, sessions, options)
 	checkMollieCheckoutConsumer(t, ctx, db, makeCart, options)
 	checkInitialPaymentRecovery(t, ctx, db, makeCart, options)
+	checkCustomerCartTransfer(t, ctx, db, sessions, makeCart, options)
+	checkContextRetainedCheckoutCompletion(t, ctx, db, makeCart, options)
+	checkContextCompensationComplete(t, ctx, db, makeCart, options)
+	checkContextChangedComplete(t, ctx, db, makeCart, options)
+	checkContextPaymentHTTP(t, ctx, db, sessions, makeCart, options)
 	exec("UPDATE cart_checkout_runtime SET enabled=FALSE WHERE id=1")
 	if _, err = cart.StartInitialPayment(ctx, db, "shop", ref, in, options); err != cart.ErrSchema {
 		t.Fatal("disabled initial replay allowed")

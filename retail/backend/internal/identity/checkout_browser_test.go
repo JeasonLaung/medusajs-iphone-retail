@@ -61,6 +61,13 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 	}
 	exec("UPDATE commerce_store_locales SET locale_code='en-GB' WHERE store_id='shop' AND locale_code='en'")
 	defer exec("UPDATE commerce_store_locales SET locale_code='en' WHERE store_id='shop' AND locale_code='en-GB'")
+	if os.Getenv("CHECKOUT_CART_TRANSFER") == "1" {
+		if !fresh || os.Getenv("CHECKOUT_ACCOUNTS") != "1" {
+			t.Fatal("transfer browser requires new-account fresh cart")
+		}
+		exec("UPDATE customer_cart_runtime SET enabled=TRUE WHERE id=1")
+		defer exec("UPDATE customer_cart_runtime SET enabled=FALSE WHERE id=1")
+	}
 	exec("UPDATE cart_completion_runtime SET enabled=TRUE WHERE id=1")
 	defer exec("UPDATE cart_completion_runtime SET enabled=FALSE WHERE id=1")
 	exec("UPDATE cart_promotion_command_runtime SET enabled=TRUE WHERE id=1")
@@ -284,7 +291,11 @@ func checkCheckoutBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessio
 			OrderID          string
 			CompletedVersion uint64
 		}
-		if db.Table("cart_completion_receipts").Where("cart_id=?", f.ID).Take(&receipt).Error != nil || receipt.CompletedVersion != 6 {
+		expectedVersion := uint64(6)
+		if os.Getenv("CHECKOUT_CART_TRANSFER") == "1" {
+			expectedVersion = 7
+		}
+		if db.Table("cart_completion_receipts").Where("cart_id=?", f.ID).Take(&receipt).Error != nil || receipt.CompletedVersion != expectedVersion {
 			t.Fatal("browser completion receipt missing")
 		}
 		orderIDs = append(orderIDs, receipt.OrderID)

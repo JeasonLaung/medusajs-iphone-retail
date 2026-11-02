@@ -99,7 +99,9 @@ test('page composition resolves country, original model and slug without default
  const page=await loadProductPage('https://gin.example','DK-ZH',variantSlug(v)!,new URLSearchParams({v_id:p.variants[1].id,currency_code:'usd'}),upstream(p,url=>requests.push(url.pathname)))
  assert.ok(page);assert.equal(page.region.id,'region');assert.equal(page.requestedVariantID,v.id);assert.equal(page.initialVariant?.id,v.id)
  assert.equal(page.metadata.title,`${p.title} ${v.title}`);assert.equal(page.metadata.canonicalPath,`/dk-zh/products/${variantSlug(v)}`)
- assert.deepEqual(page.metadata.openGraph,{title:'iPhone 13 | EuroRefurb',description:'iPhone 13',images:['/phone.webp']});assert.deepEqual(page.images,v.images)
+ // The source withSEO wrapper overrides the page's OG title with its full
+ // metadata title; customer-driven selection keeps its separate title behavior.
+ assert.deepEqual(page.metadata.openGraph,{title:`${p.title} ${v.title}`,description:'iPhone 13',images:['/phone.webp']});assert.deepEqual(page.images,v.images)
  assert.deepEqual(requests,['/api/store/regions','/api/store/products'])
  const base=await loadProductPage('https://gin.example','dk-en',p.handle,new URLSearchParams('v_id=unknown'),upstream(p))
  assert.ok(base);assert.equal(base.metadata.title,p.title);assert.equal(base.metadata.canonicalPath,`/dk-en/products/${p.handle}`);assert.equal(base.initialVariant?.id,completeVariants(p).find(variantInStock)?.id)

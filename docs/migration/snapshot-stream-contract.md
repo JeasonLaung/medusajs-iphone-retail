@@ -6,7 +6,7 @@
 
 命令显式要求container/user/database/output，不带任何旧库或凭据默认值。只写不存在的Git忽略路径，既有文件或.sha256拒绝覆盖；查询文件亦独占创建并在finally仅清理本次拥有的元数据文件。源记录内容不进入工具输出、Git报告或stderr。数据输出直接从psql流向文件，不将整库读入Python/JavaScript内存。私有文件继承输出目录ACL；生产导出前须保证该目录只供预期操作者访问，本工具不承诺跨平台ACL加固或静态加密。
 
-全部159张计划表在同一psql会话、REPEATABLE READ READ ONLY事务内查询；UTC固定，显式ACCESS SHARE锁保护查询期间表结构，限制5秒锁等待及单语句120秒/进程600秒超时。在输出任何记录前核对全部表的精确列集合、源ordinal_position（保留删列空位）、data_type、udt_name、is_nullable、字符上限、numeric_precision/scale及datetime_precision；schema变化失败。源metadata规范换行hash绑定到Go字段计划，映射生成器亦验证同一源hash，防止替换本地源清单后默许。域约束、默认值、索引、枚举标签顺序/值、collation及其他schema事实仍未由该检查验证。34项排除/重建表不导出。读取包括软删除历史，不做邮箱绑定或账号迁移。
+全部159张计划表在同一psql会话、REPEATABLE READ READ ONLY事务内查询；UTC固定，显式ACCESS SHARE锁保护查询期间表结构，限制5秒锁等待及单语句120秒/进程600秒超时。在输出任何记录前核对全部表的精确列集合、可见列相对顺序、data_type、udt_name、is_nullable、字符上限、numeric_precision/scale及datetime_precision；schema变化失败。2026-10-31 起使用按 ordinal_position 排序后的连续位置，兼容 pg_dump/restore 压缩已删除列留下的物理空位；列换序仍拒绝，不更改固定源清单或字段映射。源metadata规范换行hash绑定到Go字段计划，映射生成器亦验证同一源hash，防止替换本地源清单后默许。域约束、默认值、索引、枚举标签顺序/值、collation及其他schema事实仍未由该检查验证。34项排除/重建表不导出。读取包括软删除历史，不做邮箱绑定或账号迁移。
 
 记录为UTF-8 NDJSON：snapshot头含格式2及规范换行field_plans.json的SHA256，随后159表按固定计划顺序依次table_begin、零至多条[v2 cell记录](cell-record-contract.md)、table_end及同事务COUNT(*)，COMMIT成功后输出snapshot_complete/159。没有排序保证，同表行顺序由数据库给出；文件hash标识本次字节序列，不假定重导出必得相同hash。
 

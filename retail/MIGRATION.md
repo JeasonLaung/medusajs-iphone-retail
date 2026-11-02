@@ -321,3 +321,80 @@ Four newly registered shoppers now continue actual Astro shopping/payment/shipme
 Explicit0086 upgrades refunds to runtime3 without enabling writes. Processing native exchanges can refund their full current negative difference through the original protected payment, exact order ledger and unresolved credit reservations; initial dispatch rechecks the current balance. Existing partial-return refunds remain supported. Native exchange completion requires the current difference to be settled. The existing Ant refund drawer exposes the exchange credit and keeps cancellation/recovery usable after reservation. The opt-in four-new-shopper acceptance scenario is documented in [shopping-exchange-refund-joint.md](../docs/migration/shopping-exchange-refund-joint.md). Positive difference online payment, real channels/mail, continuous-daemon lifecycle and other C01–C11 scope remain open.
 
 Four-new-shopper exchange credit joint acceptance now passes English/Chinese ×390/1440: original capture158.75, current total146.75, one refund12 and negative transaction-12, final difference0, two shipment parcels and five own read notices. Completion is denied before settlement. Separate production --once processes recover a lost POST by GET and reapply saved observation after an atomic late-notice failure.128 source hashes match; full23 SQL suites/86 migrations, Go all/vet, Admin types and15 after-sales browser tests pass. This uses an owned TLS provider fixture; positive difference payment remains open.
+
+
+## Native local snapshot import (2026-10-31)
+
+[Native catalog import](../docs/migration/native-catalog-import.md) and [native history import](../docs/migration/native-history-import.md) now support native loopback PostgreSQL export and explicit transactional import into dedicated native MySQL, without starting Docker. The current 159-table/21,913-row snapshot has verified imports for 110 source tables/21,784 rows: catalog parents, excluded historical customer subjects, orders, inventory, protected historical payments and optional fulfillment/tax and historical carts/device prerequisites. Native rollback, commit, exact replay, last-decimal conflict rollback and unchanged login/ownership fingerprints pass. The [aggregate report](../docs/migration/native-history-import-report.json) records source/implementation/transcript hashes and the actual coverage; default Go tests do not replace opt-in native SQL evidence.
+
+Source logical gaps remain 349 with no physical-FK gaps. All 254 original order reference observations remain immutable; read-only reconciliation finds 32 now resolved and 222 still missing. No source quantities, soft-deletion facts or historical references were repaired. Cart import preserves all 135 historical rows without possession/creation/checkout authority; composite keys, exact replay, amount conflict and existing new ownership rejection were verified in native rollback tests. Current shopper account, checkout/refund and provider worker gates remain off in this dedicated trial; the product page reads imported availability but cannot add to cart yet. Mollie is the current payment acceptance channel per user instruction; real channel credentials/test execution, mail, private files/devices and remaining C01–C11 acceptance are open. This milestone is not full migration acceptance. Original 9001 health/Admin and 8000 storefront remain available; new 9100/9200/9300 services return 200.
+
+Device prerequisite import has committed 2 sources/1,558 SKU tracking rows/0 supply facts and passed the full committed historical replay. Exact replay, microsecond drift, missing parents, both enabled device gates and unchanged identity/quantity fingerprints pass. Two original private buyback images pass confined read/hash reconciliation without mutation or target copying. See [the device prerequisite report](../docs/migration/native-device-prerequisites-report.json). The import uses fixed committed baseline 8d7aed6 plus reviewed overlays and its complete schema86 plan; concurrently edited migration87 is not mixed in, and full schema checks remain required. Source/binary hashes are in [the release report](../docs/migration/native-import-release-report.json).
+
+2026-10-31：[新商品与初始选项组创建](../docs/migration/gin-product-create.md)使用独立默认关闭开关，复用现有 SKU/价格流程。独立本机 MySQL/Redis 和真实 React/Gin/Astro 浏览器联合通过；现有试运行数据库未升级，C03 选项/图片管理、上传和条件价格仍待完成。
+
+2026-10-31：[商品图片管理与上传](../docs/migration/gin-product-images.md)新增独立默认关闭能力和原子公开图片内容存储。真实 MySQL 与 React/Gin/Astro 上传、排序、缩略图、移除及原字节核对通过，SKU 图片关联和仅缩略图引用均受删除保护；SKU 图片关联写入、已有商品选项和条件价格仍待补齐。
+
+2026-10-31：[SKU 图片关联](../docs/migration/gin-variant-images.md)复用 0089 图片能力与回执，新增图库选择/解除和缩略图保留/设置/清空；真实 MySQL 与 React/Gin/Astro 联合通过。同时在 SKU 创建事务中补齐原 iPhone 机型/颜色自动配图及失败整体回滚。已有商品选项、完整变体更新联动及条件价格仍待补齐。
+
+2026-10-31：[已有商品选项管理](../docs/migration/gin-product-options.md)使用 0090 独立默认关闭能力，实现共享组选值、商品专属组选值、SKU 占用保护及原子回执；修正新建商品初始选项的专属标记。完整 90 项迁移的独立本机 MySQL/Redis、真实 React/Gin/Astro 和中英文移动端通过。主试运行实例仍保持 86 项迁移。完整变体更新联动、独立共享定义维护、条件价格与全联合验收仍待完成。
+
+2026-10-31：[已有 SKU 编辑与颜色图库同步](../docs/migration/gin-variant-edit.md)使用 0091 默认关闭能力，承接原基础字段/完整选项、ERP 保留/编号、库存开关及 iPhone 颜色图同步；新建和编辑共用原无选项/历史额外值的组合碰撞规则。真实 MySQL 并发、价格/数量/设备事实保留、图片/库存/编号末尾失败回滚及 React/Gin/Astro 中英文移动端联合通过。主实例仍为 86 项迁移。库存项关系管理、共享定义、条件价格及 C01—C11 全联合仍待完成。
+
+2026-10-31：[SKU 库存项关系管理](../docs/migration/gin-variant-inventory.md)使用 0092 默认关闭能力，在现有库存抽屉内添加 Ant 关联编辑，支持多项/共享/精确用量/明确移除和恢复原关系 ID；保护序列号唯一库存身份，SKU 编辑也拒绝解除其库存管理。真实 MySQL 并发、权限及两类末尾回滚，React/Gin/Astro 丢响应重试/可售数量/中英文移动端联合通过。原试运行库仍为 86 项迁移；共享定义维护、条件价格及 C01—C11 全联合继续开放。
+
+2026-10-31：[商品评价事务与 HTTP](../docs/migration/gin-product-reviews.md)已使用 0094 独立默认关闭读写门，实现普通/本人订单关联提交、当前新客户归属、待审核私有、公开批准统计及有回执的员工审核。真实 MySQL 并发/唯一性/回滚和真实 Redis 客户签名 HTTP 边界已通过；Astro 评价组件、本人订单入口、Ant 审核 UI、历史评价导入及完整浏览器联合尚未完成，主实例仍为 86 项迁移，C01—C11 保持开放。
+
+2026-10-31 商品评价 Astro/Ant 页面接入及验证边界见 ../docs/migration/gin-product-reviews.md；公开页合成 API Chrome 验证、192 项前台测试与类型检查通过，私有提交/审核原生联合及历史导入仍待。主试运行86迁移和门禁未变，当前迁移目标继续进行中。
+
+2026-10-31 商品评价已通过同一新购物客户的真实 Astro/Gin/MySQL/Redis/Ant 连续联合，中英×手机/桌面共四组，包含普通评价、本人已付未发货订单评价、原请求丢响应重试、审核/公开隐私及后续原仓库发货。94 迁移购物车运行时与后置 SQL 通过，完整23组尚未验收；历史评价导入仍待。证据见 ../docs/migration/product-reviews-native-joint-report.json，主库与门禁保持，C01–C11继续开放。
+
+2026-10-31 完整源两条待审历史评价已在独立本机94迁移通过导入、CLI提交/回滚及已提交目标精确回放；不绑定新账号、不启用服务，冲突拒绝及其他事实保留验证通过。证据见 ../docs/migration/product-reviews-history-native-report.json。主库未升级，完整23组及全范围仍开放。
+
+
+2026-11-01：[公开SEO后台与实际联合](../docs/migration/gin-seo-admin.md)新增显式0101、独立seo权限、默认关闭命令及原UUID事务收据，旧角色不自动授权。真实专项并发/回滚/保护行、完整原23组101回归、React/Gin/私有MySQL/Redis/Astro15操作/15收据及中英手机配置输出通过；JSON-LD原始数字文本和script转义保持。主100备份恢复至101的独立演练通过，主预览仍100/PID40152，不启用新门禁或导入旧凭据。主101受控升级/恢复、历史SEO及C01–C11剩余范围继续开放。
+
+
+2026-11-01：[主101实际升级](../docs/migration/local-preview-101-report.json)通过停写新鲜备份/恢复/逆向100精确DDL与数据/重新101幂等演练；主Gin现PID76194，297表/295非journal事实匹配，214FK零孤儿、268原表及共享86不变。原role grants、业务门禁和env保持，主回滚未触发；四SEO文件和58页/16公开元数据严格重跑通过，首轮原Next中文help偶发双JSON-LD保留待查。国家/语言选择器仍onSelect=null，完整有车地区/语言和重新计价、历史SEO及C01–C11其余闭环继续开放。
+
+2026-11-01 接续：[购物车地区/语言事务](../docs/migration/gin-cart-context.md)补齐0102默认关闭 gate、版本/收据与源流程地址及自定义价格行规则，串联本地报价、配送、税和优惠刷新；私有HTTP及前台持久重试参与者已接。原地区弹窗尚未接入，偏好cookie、翻译、已有支付会话及浏览器联合继续未完成；主预览保持101，C01与本期整体不标记完成。
+
+2026-11-01 接续：原地区/语言选择器已接购物车持久事务及独立偏好cookie；[实际Gin/MySQL/Redis/Astro联合](../docs/migration/cart-context-native-report.json)完成中英×390/1440四组有车及四组关闭购物开关的无车验证，16次POST/12唯一收据、丢响应重试/仅重读/刷新后退、精确金额及六保护表全行指纹通过。三端源SHA一致，238测试/Astro467文件0错0警，临时资源已清理。主仍101及旧前台构建；组合配送优惠、翻译/已有支付会话和C01–C11仍开放。
+
+2026-11-01 接续：[地区/配送/优惠/地址表单实际联合](../docs/migration/cart-context-checkout-native-report.json)通过四组中英×390/1440有车和四组关门禁无车验证，16POST/12唯一收据；原结账表单实际补完新地区地址、账单保留、EUR手动/美元自动优惠及精确金额通过。修复首轮实际浏览器发现country-only地址读503：私有草稿允许有界空值，完整提交/配送/付款校验保留，过期payment步骤回到地址。修复后完整原23组SQL c55f563ef828、239前台测试/check、Go全包/vet及三端SHA/清理通过；主仍101/旧Astro，下一步102升级恢复演练与受控更新；支付会话协调及C01–C11未完成。
+
+## 2026-11-01 主预览102运行接续
+
+[102实际报告](../docs/migration/local-preview-102-report.json)：唯一Gin已更新到102并在仅补本地STOREFRONT_ORIGIN后受控重启为42442；二进制7efcc5de…，新鲜停写恢复/逆向101/再102演练15bf79e93807通过。主299表/297非journal与演练一致、215FK零孤儿，共享86及原业务指纹保持；主购物/付款门禁未开启。主地区偏好中英双宽度无车验证通过且业务写0，42商店页/21来源比较与58页/16公开SEO比较通过，保留来源Next首轮重复JSON-LD异常。9300实际是既有Astro dev29403并使用源码HMR；前述部分“旧构建”叙述有误，本批无需重启/构建。已有支付会话与完整C01–C11继续未完成。
+
+2026-11-01 已有付款上下文接续：[内部目标预览](../docs/migration/cart-context-payment-preview-report.json)完成冻结的已激活加密Mollie购物车实际重算与完整事务回滚，原语句顺序保持。真实SQL验证同金额/币种保留会话、改金额/币种计划撤销、精度和全表不变；完整原23组220b1cdad9fb及已有预付款地区/配送/优惠/地址浏览器183c28206e4f通过，源码/日志与清理复核。主102/PID42442未更新、业务门禁/数据保持，现有服务200。尚未接持久上下文/渠道撤销/补偿/最终保存与相关新浏览器流程，整个C01–C11仍未完成。
+
+
+2026-11-01 已有付款上下文接续：[持久准备与真实联合证据](../docs/migration/cart-context-payment-stage-report.json)复用原操作/加密动作表，无新DDL，仅提交target/source和freeze，不改cart/version/原checkout、不认领或调用渠道。修复真实八并发RR当前读与旧快照混用，保留三轮失败证据；专项c363515351b4及全新完整原23组d4cc7037aa68通过，1833源码/二进制/日志SHA核对。原预付款地区/配送/优惠/地址Astro联合cb1a462389b6四组有车+四组关门禁无车、12收据、异常0，三端920/144/645文件核对、自有资源清理。Go/vet通过，主42442/102与299表/215FK/共享86不变，七入口200。未接新HTTP/渠道执行/最终保存；原checkout不可变版本与新有效版本绑定、未知恢复/补偿及C01–C11其余范围继续开放，0103仅已协调预留。
+
+
+2026-11-01 已有付款上下文接续：[提交认领后的有界执行](../docs/migration/cart-context-payment-execution-report.json)复用原执行/取消后事实持久化，保持外部调用期间无SQL锁。真实原生专项677761f57554及完整原23组b840d11908f8通过；验证并发单次、原158.75EUR加密请求、确定失败稳定重试、未知不重删、取消/撤权保留事实、认领/结果写故障与过期租约保护、嵌套/未配置拒绝及原standalone回归。1835源码/二进制/日志SHA、原预付款Astro联合23cef84d56f5四有车+四无车/12收据/异常0、三端922/144/645文件及自有清理核对。Go/vet通过，主42442/102、299表/215FK/共享86不变，七入口200。无新HTTP/真实渠道/主部署，未知核对、补偿、最终保存和有效版本绑定及C01–C11继续开放。
+
+
+2026-11-01 已有付款上下文接续：[不确定删除只读恢复](../docs/migration/cart-context-payment-reconciliation-report.json)绑定原attempt及保存remoteID，活租约不GET，仅terminal unpaid记成功，paid/authorized/open/pending保持冻结，不POST/DELETE。修复首轮339faeb13e78揭示的delete响应与create元数据契约，恢复原加密创建请求并严格对齐身份金额，保留失败证据。专项c8274130f5cc与完整原23组2725668c2708通过；错误身份/金额/权限拒绝、结果写故障可重GET、取消/撤权后已验证事实保存、成功重放无GET及原路径通过。1837源码/binary/日志SHA、原预付款Astro联合499f2e5d7815四有车+四无车/12收据/异常0、三端924/144/645及清理复核。Go/vet通过，主42442/102、299表/215FK/共享86不变，七入口200。尚无独立加密观察全文、新HTTP、补偿或最终保存/有效版本绑定，0103仅预留，全C01–C11继续开放。
+
+
+2026-11-01 已有付款上下文接续：[原上下文补偿准备](../docs/migration/cart-context-compensation-stage-report.json)独立核对原cart/checkout/source，不因新目标报价漂移而阻断恢复；先拒绝未知删除，仅为确认成功删除准备稳定新ID与原加密CREATE请求。补偿提交后禁正常delete stage，无新DDL/渠道调用/业务版本变化。修复首轮5766750ad195的通用request_envelope旧RR快照读取并保留失败；专项9e25d2b2b1a6与完整原23组f1f8bea0eb71通过，六并发唯一/quote drift/末尾回滚/篡改等验证通过。1839源码/binary/日志SHA、原Astro联合0642b3a0516f四有车+四无车/12收据/异常0、三端926/144/645及清理复核，Go/vet通过。主42442/102、299表/215FK/共享86不变，七入口200。替代执行/激活、结果并发绑定、最终保存及新HTTP/UI仍待，0103仅预留，全C01–C11继续开放。
+
+
+2026-11-01 接续：上下文付款补偿已接私有替代 CREATE 执行与同 attempt 的只读观察/有界发现恢复，复用已有事务外有界调用及结果持久化。实际 MySQL 验证提交 claim 后才调用、并发仅一次创建、明确失败同请求重试、未知创建不再 POST、精确身份/金额验证及丢持久化结果恢复；旧 RR 快照下的加密成功结果读取和幂等记录使用当前锁定读取。完整23组原SQL、Go全包/相关vet和原有地区/配送/优惠/地址四组浏览器回归通过，源码/二进制及隔离清理已核验。详见 [替代创建与恢复报告](../docs/migration/cart-context-compensation-execution-report.json)。仍无替代激活、上下文最终保存或新HTTP/UI验收；主预览未更新、未调用真实渠道，0103仅预留，C01—C11继续未完成。
+
+
+2026-11-01 接续：103新增独立effective_cart_version（NULL保留原绑定），原付款input_version/cart_version/会话/请求摘要不改。私有CompleteContextPayment已原子完成金额和币种不变时的上下文保存，保留原支付会话并释放本次操作冻结；连续两次保存后，原会话pending/paid查询、库存/促销/实收/通知成单及Mollie通知消费仍使用正确当前版本。真实SQL验证六并发唯一保存、最终收据故障全表回滚、旧收据重试、篡改/越权拒绝；102已有记录升级103原字段不变、物理过旧版本拒绝及重放通过。完整23组SQL、Go全包/相关vet和原有前付款四组浏览器组合回归已通过，见 [有效版本与保存报告](../docs/migration/cart-context-effective-version-report.json)。新命令尚未接HTTP/Astro；金额改变、替代激活、完整页面联合继续待办。主预览仍102且未更新API，未调用真实渠道，C01—C11未完成。
+
+
+2026-11-01 接续：私有CompleteContextPaymentCompensation已完成原上下文恢复激活。无成功删除时保留原支付会话并推进独立有效版本；确认删除后，仅从已加密认证成功的未付款CREATE结果创建新的immutable checkout_attempt，保留旧attempt和旧会话历史，原集合金额/币种与购物车上下文不变，不伪造目标地区保存收据。真实MySQL验证每类六并发唯一激活、未创建拒绝、最后一步故障全表回滚、改请求/异主重试拒绝、报价漂移恢复、此前已有有效版本后再替代激活、原会话查询/成单和新会话通知成单/同单重试。完整23组SQL、Go全包/相关vet和原有前付款四组浏览器组合回归通过，见 [补偿激活报告](../docs/migration/cart-context-compensation-activation-report.json)。金额变化最终保存、激活前已付款/授权结果恢复、新HTTP/Astro操作闭环仍待继续；新命令未接页面，主预览仍102且API未更新，未调用真实渠道，C01—C11未完成。
+
+
+2026-11-02 接续：金额变化后的私有 CompleteContextPayment 已在所有旧会话删除成功后原子保存目标上下文、同步原支付集合并退出旧 checkout；旧 attempt 保留且不可再付款，空集合只允许已存在历史 checkout、无有效会话/实收且单购物车持有时复用。地址、配送、普通地区修改可继续同步该集合，新付款复用集合并生成新的 immutable attempt。真实 MySQL 验证待删除全表不变、最终收据故障全表回滚、六并发唯一保存、后续版本旧收据恢复及篡改拒绝、新付款 pending/paid 到唯一订单/扣款/库存预留/通知与同单重试。完整原23组103迁移 SQL、Go全包/vet和原付款前中英双宽度浏览器四组合+四关门禁通过；1848份SQL源码及935/144/645三端源码、二进制、日志和自有资源清理核验，详见 [金额变化最终保存报告](../docs/migration/cart-context-changed-complete-report.json)。主预览仍102、API未更新，七入口200、299表/215外键及共享86事实保持，未调用真实支付。币种/精确小数专项、退休后商品/优惠/账户转移金额变化、替代已付款恢复及HTTP/Astro新流程继续开放，C01—C11未完成。
+
+
+2026-11-02 接续：付款上下文新增两个显式启用的私有 POST 接口 context-payment 与 context-payment/restore，共用原 Context 解码、Origin/CSRF/持有凭证和频率限制。服务器从已认证 manifest 选择会话/attempt，浏览器不能指定渠道请求；响应只含 saved/restored/processing/requires_recovery 及保存收据。协调器限制单次外部变更，已持久化未知删除/创建仅观察同次结果；未知删除经 GET 确认取消后才保存，paid 观察保持冻结并拒绝补偿。恢复原付款保留原上下文且不写目标保存收据。CHECKOUT_CONTEXT_PAYMENT_ENABLED 独立默认关闭，复用原 Mollie 商户及 TLS transport，不重读第二份凭据。真实 Gin router/httptest+私有 MySQL/Redis 验证金额不变/变化、确认删除后的替代恢复、丢成功响应原命令重试、未知删除两次 GET 后取消恢复、paid 保持冻结及输入/权限/私有响应契约。完整原23组103迁移 SQL、Go全包/vet和原付款前四组+四关门禁 Astro 浏览器回归通过；1852份SQL源码、939/144/645三端源码、二进制、日志和自有资源清理核验。见 [付款上下文HTTP报告](../docs/migration/cart-context-payment-http-report.json)。Astro bridge、浏览器持久意图和恢复界面尚未接入新接口，本轮浏览器仅证明原流程保留；主预览仍102及原API/关闭开关，七入口200、299表/215外键与共享86事实保持，未调用真实渠道。已付款替代恢复、币种/精确小数等专项及C01—C11完整交付继续开放。
+
+
+2026-11-02 接续：Astro 私有 bridge 已仅放行 context-payment 与 context-payment/restore 两条 POST，保留 Origin/CSRF/持有Cookie/原操作编号边界；仅新路径使用50秒bridge与55秒客户端边界以覆盖45秒后端操作，旧请求时限不变。typed client 严格区分保存收据、恢复与进行中状态，拒绝混车/篡改版本/混合状态/私有附加字段；未自动重试。后端完成结果新增重新授权的当前cart及有效付款原始CREATE描述符，实测保留原付款(version4)、替代付款(version5)或退出付款(null)，不暴露渠道URL、请求或effect材料；零删除恢复也保留原付款标识。六项传输专项、完整245前端测试及Astro检查、Go全包/vet、完整原23组103迁移SQL通过；原付款前四组合+四关门禁浏览器回归通过。1852份SQL源码及939/144/646三端源码、二进制、日志和自有清理核验，见 [付款上下文传输报告](../docs/migration/cart-context-payment-transport-report.json)。主102/API/开关不改，七入口200、299表/215外键及共享86事实保持。付款上下文持久意图、保留原CREATE的前端有效版本兼容、恢复界面和新流程真实浏览器联合仍待；本轮未把新接口挂到页面，不标C01—C11完成。

@@ -1,0 +1,81 @@
+{
+  "exit_code": 0,
+  "migrations": 96,
+  "native_transactions_passed": true,
+  "source_files": 848,
+  "frozen_source_verified": true,
+  "binary_sha256": "6947fe6b12803dfed9bd2069fca0f361c55b0677feffb0dcf2f1ebdcebf7ed18",
+  "test_log_sha256": "75378ee73bb35a93ded5e1a80360d4461f1773f0d3bd3e8de13a50672278e897",
+  "owned_database_absent": true,
+  "redis_used": false,
+  "main_mysql_unchanged": true,
+  "real_provider_called": false,
+  "native_browser_verified": false,
+  "browser": null,
+  "browser_log_sha256": null,
+  "admin_source_files": 0,
+  "astro_joint_verified": false,
+  "storefront_source_files": 0,
+  "original23_regression": false,
+  "goal_complete": false,
+  "owner": "56548f64b7dd",
+  "snapshot": "logs/gin-migration/option-definitions-native-56548f64b7dd",
+  "current_workspace_matches_frozen_backend": true,
+  "cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true,
+    "redis_used": false,
+    "owned_api_terminal": true,
+    "redis_keys_deleted": 0,
+    "owned_astro_terminal": true,
+    "owned_browser_terminal": true,
+    "redis_cleanup_error": null
+  },
+  "prototype": {
+    "actual_trigger_lock_wait_observed": true,
+    "case_and_trailing_space_distinct": true,
+    "concurrent_duplicate_rejected": true,
+    "concurrent_value_duplicate_rejected": true,
+    "database_full_text_comparison": true,
+    "direct_sql_duplicates_rejected": true,
+    "exclusive_to_global_conflict": true,
+    "migration_installed": false,
+    "multi_row_atomic_rejection": true,
+    "null_owner_duplicate_allowed": true,
+    "race_title_rows": 1,
+    "race_value_rows": 1,
+    "repeatable_read_stale_snapshot_rejected": true,
+    "same_long_prefix_distinct_suffix": true,
+    "soft_delete_reuse_restore_conflict": true,
+    "trigger_candidate_only": true,
+    "value_owner_change_conflict": true,
+    "value_trigger_lock_wait_observed": true
+  },
+  "exact_database_rejection": {
+    "error_number": 1644,
+    "message": "option full value uniqueness violation",
+    "other_sql_errors_not_accepted": true
+  },
+  "long_text_test": {
+    "common_prefix_characters": 2000,
+    "common_prefix_utf8_bytes": 6000,
+    "distinct_final_character_preserved": true
+  },
+  "checks": {
+    "go_all_packages_exit_code": 0,
+    "catalog_vet_exit_code": 0
+  },
+  "limits": {
+    "migration_0097_authored": false,
+    "production_triggers_installed": false,
+    "existing_data_upgrade_preflight_verified": false,
+    "migration_parser_supports_triggers": false,
+    "native_browser_rerun_this_turn": false,
+    "original23_rerun_this_turn": false,
+    "main_database_upgraded": false,
+    "physical_unique_hold_resolved": false,
+    "goal_complete": false
+  }
+}

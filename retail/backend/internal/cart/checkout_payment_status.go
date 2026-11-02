@@ -131,7 +131,7 @@ func ObserveInitialPayment(ctx context.Context, db *gorm.DB, store string, ref s
 	if err != nil {
 		return PaymentStatus{}, err
 	}
-	out := PaymentStatus{ref.CartID, strconv.FormatUint(row.CartVersion, 10), statusState(row)}
+	out := PaymentStatus{ref.CartID, strconv.FormatUint(row.currentVersion(), 10), statusState(row)}
 	if candidate == "" {
 		out.State = "requires_review"
 		return out, nil
@@ -176,6 +176,7 @@ func ObserveInitialPayment(ctx context.Context, db *gorm.DB, store string, ref s
 			return err
 		}
 		out.State = statusState(row)
+		out.Version = strconv.FormatUint(row.currentVersion(), 10)
 		return nil
 	}, &sql.TxOptions{Isolation: sql.LevelReadCommitted})
 	return out, err

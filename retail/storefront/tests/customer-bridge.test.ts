@@ -46,7 +46,7 @@ test('customer challenge/login/logout accept only complete correctly scoped cook
  assert.equal((await customerBridge(post('challenge'),config,async()=>response({csrf_token:token},200,[cookie('prelogin')]))).status,200)
  const login=()=>response({customer:{id:'cust_1'},csrf_token:token},200,[clear('prelogin'),cookie('session'),cookie('csrf')])
  assert.equal((await customerBridge(post('login'),config,async()=>login())).headers.getSetCookie().length,3)
- assert.equal((await customerBridge(post('logout'),config,async()=>response({success:true},200,['session','csrf','prelogin'].map(clear)))).status,200)
+ assert.equal((await customerBridge(post('logout'),config,async()=>response({success:true},200,[...['session','csrf','prelogin'].map(clear),...['scope','scope_csrf','possession','csrf'].map(kind=>`retail_cart_${kind}=; Path=/; Max-Age=0; ${kind==='scope'||kind==='possession'?'HttpOnly; ':''}SameSite=Lax`)]))).status,200)
  for(const cookies of [[cookie('session')],[cookie('session'),cookie('csrf')],[cookie('prelogin'),cookie('prelogin')],[cookie('prelogin').replace('Path=/','Path=/; Domain=evil.test')],[cookie('prelogin').replace('SameSite=Lax','SameSite=None')],[cookie('prelogin').replace('HttpOnly; ','')],[cookie('prelogin')+'; Secure=false'],['retail_admin_session='+token+'; Path=/; SameSite=Lax']]){
   assert.equal((await customerBridge(post('challenge'),config,async()=>response({},200,cookies))).status,503)
  }

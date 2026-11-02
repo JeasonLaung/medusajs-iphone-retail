@@ -1,0 +1,222 @@
+[
+  {
+    "options": [],
+    "values": []
+  },
+  {
+    "options": [
+      {
+        "title": " Size ",
+        "values": [
+          {
+            "value": " S "
+          },
+          {
+            "value": "M"
+          }
+        ]
+      }
+    ],
+    "values": [
+      "Size:S",
+      "Size:M"
+    ]
+  },
+  {
+    "options": [
+      {
+        "title": "Size",
+        "values": [
+          {
+            "value": "Shared"
+          }
+        ]
+      },
+      {
+        "title": "Color",
+        "values": [
+          {
+            "value": "Shared"
+          }
+        ]
+      }
+    ],
+    "values": [
+      "Size:Shared",
+      "Color:Shared"
+    ]
+  },
+  {
+    "options": [
+      {
+        "title": "Size",
+        "values": [
+          {
+            "value": "S"
+          },
+          {
+            "value": " S "
+          }
+        ]
+      },
+      {
+        "title": " Size ",
+        "values": [
+          {
+            "value": "S"
+          }
+        ]
+      }
+    ],
+    "values": [
+      "Size:S"
+    ]
+  },
+  {
+    "options": [
+      {
+        "title": " ",
+        "values": [
+          {
+            "value": "Hidden"
+          }
+        ]
+      },
+      {
+        "title": "Size",
+        "values": [
+          {
+            "value": " "
+          },
+          {
+            "value": ""
+          }
+        ]
+      }
+    ],
+    "values": []
+  },
+  {
+    "options": [
+      {
+        "title": "颜色",
+        "values": [
+          {
+            "value": " 白色 "
+          }
+        ]
+      },
+      {
+        "title": "容量",
+        "values": [
+          {
+            "value": "128 GB"
+          }
+        ]
+      }
+    ],
+    "values": [
+      "颜色:白色",
+      "容量:128 GB"
+    ]
+  },
+  {
+    "options": [
+      {
+        "title": "Display:Finish",
+        "values": [
+          {
+            "value": "A:B"
+          }
+        ]
+      }
+    ],
+    "values": [
+      "Display:Finish:A:B"
+    ]
+  },
+  {
+    "options": [
+      {
+        "title": "size",
+        "values": [
+          {
+            "value": "S"
+          }
+        ]
+      },
+      {
+        "title": "Size",
+        "values": [
+          {
+            "value": "s"
+          }
+        ]
+      }
+    ],
+    "values": [
+      "size:S",
+      "Size:s"
+    ]
+  },
+  {
+    "options": [
+      {
+        "title": "﻿Size﻿",
+        "values": [
+          {
+            "value": "﻿S﻿"
+          }
+        ]
+      }
+    ],
+    "values": [
+      "Size:S"
+    ]
+  },
+  {
+    "options": [
+      {
+        "title": "Size",
+        "values": [
+          {
+            "value": "S"
+          }
+        ]
+      }
+    ],
+    "values": [
+      "Size:S"
+    ]
+  },
+  {
+    "options": [
+      {
+        "title": " Size ",
+        "values": [
+          {
+            "value": "　S "
+          }
+        ]
+      }
+    ],
+    "values": [
+      "Size:S"
+    ]
+  },
+  {
+    "options": [
+      {
+        "title": "​Size​",
+        "values": [
+          {
+            "value": "​S​"
+          }
+        ]
+      }
+    ],
+    "values": [
+      "​Size​:​S​"
+    ]
+  }
+]

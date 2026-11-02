@@ -1,0 +1,329 @@
+{
+  "checked_utc": "2026-11-01T11:55:34.784483+00:00",
+  "scope": "Public SEO settings/page management and actual React/Gin/MySQL/Redis/Astro joint; source101 isolated only",
+  "source_sha256": {
+    "retail/backend/migrations/0101_seo_admin.sql": "ba5d7750ddab13af9576c1f0d6832cf3ee3f9b6065a7905eed66d9cd8b0df635",
+    "retail/backend/internal/authorization/model.go": "cdfbbc788f6fc0c4ec96010e101315f98d7f4c5c0870b941b8a79019669418da",
+    "retail/backend/cmd/api/main.go": "ed50882331bd30f1d50a6d2af941c85c135db664c5bb707a39040cd1c73cdf8f",
+    "retail/backend/internal/seo/command_input.go": "3ceec845b002697d4be9aaf88895a237809b075a87aeab41549710d238e937cd",
+    "retail/backend/internal/seo/commands.go": "cd2137632dd12ee00477660649b9d15272a95abb16f5d7c13ebc2515fa95d80c",
+    "retail/backend/internal/seo/admin_http.go": "3ea8be9cb80a6fb8faa88727ae017e980796155a876301817a3beff6df07dc0a",
+    "retail/backend/internal/seo/public.go": "691444d49e98e6f934f198e58d3a7f69eeb785143f9c800ffd23544f60201df7",
+    "retail/backend/internal/seo/command_input_test.go": "ffaca3387e0e6853a9b9f101261b7e9377b02895136ad14edcb810a257d0ce66",
+    "retail/backend/internal/identity/seo_commands_test.go": "264f9573317b292f31dac776c29941dfc676dbadfda0bfb39e181ffb495a3c9a",
+    "retail/backend/internal/identity/seo_publication_test.go": "69e996374613676ffd3f8c35e2ee32f23b2a35faddc376637a84489eea444bb9",
+    "retail/backend/internal/identity/seo_discovery_test.go": "2f284f70dbb1e7b4a6f027b95a2be0ccd60d07f961d70b811771f16862d81404",
+    "retail/backend/internal/schema/plan_test.go": "2785da2184fb142ebb14c7d5db4c49132052d8c336f20d2b76548a097a1658ef",
+    "retail/admin/src/SEO.tsx": "132e1aff65642d85c17cdb9d69fb394c8611dcef3d345ffa32a16776a9bea882",
+    "retail/admin/src/App.tsx": "30405877e8ea61f8a63854a138f2a2b758f29f82614b07b28e8c5e43c3d19c0f",
+    "retail/admin/src/api.ts": "16961a87bb94699bda2d9dde35d0fa63a7417c03a49cf36c82172b1128c73296",
+    "retail/admin/src/i18n.ts": "4aa4f9eaa07e95ddcc0883eed96fde962880d0ecdd2a141c7f36bf165aefcdfe",
+    "retail/storefront/src/lib/seo-config.ts": "d9a0ed0c704bf24487a04be38b9e9f968a025c4caac2acea15962aaf7162b961",
+    "retail/storefront/src/lib/seo.ts": "1ea4c53bcecb314add16fb49f909ee16d1defffcdb01d4ff1e8abcb5b8bebb66",
+    "retail/storefront/src/components/layout/seo-head.astro": "82439b0297fb8ba7dd5b958a0ee29fac59938740372c2ae2f4cef65e1e307c75",
+    "retail/storefront/tests/seo-config.test.ts": "4a71a37f741e434548baf0d23d713e41fb288f7ef243e3028133eeae0de28f69",
+    "retail/admin/tests/seo-admin.native.mjs": "2df610f4ed977bf3c0d48865017ece10f92ff97897dd645f9bb464c73e77e891",
+    "retail/scripts/test-seo-admin-local.py": "409cec71b4b02c2ca6f4580096b0cfc4616a3ef1013516be2d4d5d981be4cd26",
+    "retail/scripts/test-native-sql-local.py": "e96632d9cc21fb3192a24a9b17ecde45a2733761a589ca51014b95231a330da6",
+    "retail/scripts/rehearse-local-preview-101.py": "abecd08b3f2f21a762650ceea167f21f84adecca7406f65d4e2fdd3fa0f43681",
+    "retail/scripts/preview-api.py": "a5637b7b7367e91f4a5109975e2b7a94ce1c017da8f1111d49d7b062a2cb083a",
+    "retail/scripts/verify-local-preview.py": "370a24e76968f65d3e4e35af0485606f6cbe13b99a0af741bed80c6c279dccbe",
+    "retail/scripts/refresh-local-preview.py": "824f4caebff44004c4fbbf3cb5a479cf9c7c8da0e8b5b57479438b7cb9d63ceb",
+    "retail/scripts/seo-101-recovery.py": "84d430cf61311ce7b910e13f11954eb2ff0bcccc34698f921b0c6eccd805f425",
+    "retail/scripts/upgrade-local-preview-101.py": "dbf5040199f9606814bd3138be457e0d206643fca4cfd345a0a54937aeb02b5f"
+  },
+  "evidence_sha256": {
+    "logs/gin-migration/seo-admin-native-9d948cdc1648/manifest.json": "5d16671f060c128a446352a7f8ee91c9e0b657649017f04390ef6dd9c7620e90",
+    "logs/gin-migration/seo-admin-native-9d948cdc1648/result.json": "3ae087dcbfd98907abdd677c1a1d8099f46b83b6cda85e4879179b29e2cb20de",
+    "logs/gin-migration/seo-admin-native-9d948cdc1648/browser-result.json": "c38d063666d0c0fd23ee987276621d792492db06922f8cb588dcb6ef774422c4",
+    "logs/gin-migration/seo-admin-native-9d948cdc1648/cleanup.json": "e8ea0ceb64dadc960b7bc8c0ea5360066459109f9d2a9feeb71bbb2f04073ac3",
+    "logs/gin-migration/seo-admin-native-9d948cdc1648/browser.log": "40d1cc02edf28d4e697e29e25e758adb1b52d9e0f68858b319b1554a1f874d44",
+    "logs/gin-migration/seo-admin-native-9d948cdc1648/seo-admin-zh-mobile.png": "3d39bd85ac37a9721fb31e93e451f11306be7492f8a3893972e334604c63c593",
+    "logs/gin-migration/native-sql-local-9f988321820f/manifest.json": "3a5360688c3680b8c984b44fa9ec74beb0a3dbcee021a6eee0cff770d726e6ee",
+    "logs/gin-migration/native-sql-local-9f988321820f/result.json": "21d68307347774746e924da09d34f35b53782e78da94369cfe633590039c1cc2",
+    "logs/gin-migration/native-sql-local-9f988321820f/mysql-cleanup.json": "cb57fabbaf097925a808cccc0c0fa638438ec798f04aebd9c23838141ef5a242",
+    "logs/gin-migration/native-sql-local-9f988321820f/cleanup.json": "fab32adfe0c95381e147293d7b6c988b757ed4f5d738ea780c4d03ec313115b6",
+    "logs/gin-migration/native-sql-local-cc037f7c016b/manifest.json": "d53f4ca5698c8bcf516c0a428d6be5cdd4ef1295bb4aa870ba748c87a5fc5e8b",
+    "logs/gin-migration/native-sql-local-cc037f7c016b/diagnostic-SEOCommands-result.json": "504aaaa6921579e9cc671e1367e9b0767ff1a58d2dd694ab95beae55d051c41d",
+    "logs/gin-migration/native-sql-local-cc037f7c016b/mysql-cleanup.json": "cb57fabbaf097925a808cccc0c0fa638438ec798f04aebd9c23838141ef5a242",
+    "logs/gin-migration/native-sql-local-cc037f7c016b/cleanup.json": "fab32adfe0c95381e147293d7b6c988b757ed4f5d738ea780c4d03ec313115b6",
+    "logs/gin-migration/preview-101-upgrade-48f068f0a2f4/report.json": "fc27e71ed1bb9d4605b6ddae283b95a53a180141f7507e14678b3715b28ad1b6",
+    "logs/gin-migration/preview-101-upgrade-48f068f0a2f4/backup-fingerprints.json": "dcbe212c95c576b4a6fedc757152526ccf3033b030322698e2c95da2a64baaf1",
+    "logs/gin-migration/preview-101-upgrade-48f068f0a2f4/migrated-fingerprints.json": "5629b8338f293574878fe860833d73a7a5ca4ee230932ec4efb9989eefc78a13",
+    "logs/gin-migration/preview-101-upgrade-48f068f0a2f4/migration-1.log": "0af9df14fce88d2003aa24044441b7502ac9f7349c393e2b6676db5cf4fb9575",
+    "logs/gin-migration/preview-101-upgrade-48f068f0a2f4/migration-2.log": "c31fc4673b629645fa3fd5223ad077fae78c60ba18dcf0eaddd0e8d4c422a687",
+    "logs/gin-migration/seo-admin-native-9d948cdc1648/final-service-health.json": "b234d871de3da4733d3f8c0f85c7b040be496ca819224b3faba4c437a6356bd8",
+    "logs/gin-migration/preview-101-upgrade-f7fd86d9ca70/report.json": "62629722cb423e575a909402eab72b0c4bfa0c00a94984d8fd2203663daf7385",
+    "logs/gin-migration/preview-101-upgrade-f7fd86d9ca70/backup-fingerprints.json": "dcbe212c95c576b4a6fedc757152526ccf3033b030322698e2c95da2a64baaf1",
+    "logs/gin-migration/preview-101-upgrade-f7fd86d9ca70/migrated-fingerprints.json": "bf8eec825a2bada0cb0a372f380de7a0f817c688ea67aff67249ef8f9db03420",
+    "logs/gin-migration/preview-101-upgrade-f7fd86d9ca70/recovery-authority.json": "978271e14c28b65c21042a07a4de15ff8d4b04bd559a88a3f3e0046b490222d4",
+    "logs/gin-migration/preview-101-upgrade-f7fd86d9ca70/recovery-reapply-1.log": "0af9df14fce88d2003aa24044441b7502ac9f7349c393e2b6676db5cf4fb9575",
+    "logs/gin-migration/preview-101-upgrade-f7fd86d9ca70/recovery-reapply-2.log": "c31fc4673b629645fa3fd5223ad077fae78c60ba18dcf0eaddd0e8d4c422a687"
+  },
+  "source_current_matches_browser_freeze": true,
+  "browser_source_files": {
+    "backend": 909,
+    "admin": 140,
+    "storefront": 640
+  },
+  "browser": {
+    "owner": "9d948cdc1648",
+    "migrations": 101,
+    "actual_browser_joint": true,
+    "browser": {
+      "actual_admin_gin_mysql_redis_astro": true,
+      "api_mocking": false,
+      "successful_response_dropped_then_same_operation_recovered": true,
+      "unique_successful_operations": 15,
+      "configured_files": 4,
+      "configured_head_widths": [
+        1440,
+        390
+      ],
+      "configured_noindex_and_external_canonical_sitemap": true,
+      "noindex_removal_republishes": true,
+      "custom_hreflang": true,
+      "page_soft_delete_via_confirmation": true,
+      "jsonld_integer_exact_after_edit": true,
+      "raw_jsonld_xss_escaped": true,
+      "google_verification": true,
+      "analytics_not_enabled": true,
+      "chinese_mobile_admin": true,
+      "unauthenticated_401": true,
+      "origin_csrf_rejections": 3,
+      "query_scope_override_rejected": true,
+      "errors": [],
+      "real_provider_called": false,
+      "goal_complete": false
+    },
+    "sql_receipts": 15,
+    "exact_jsonld_integer_verified": true,
+    "settings_encrypted": true,
+    "source_verified": true,
+    "api_binary_sha256": "f72fec7ebdc0c1c29c54b15dd0d0d13849eaefefce515f545bc03925a45e5378",
+    "test_binary_sha256": "1c42344dc2b0ffcf4e2ee319d3874914c3a1da7c033dfbf4168333e1e3de2398",
+    "real_provider_called": false,
+    "main_mysql_modified": false,
+    "goal_complete": false
+  },
+  "browser_cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "api_terminal": true,
+    "astro_terminal": true,
+    "browser_terminal": true,
+    "redis_cleanup_error": null,
+    "main_mysql_unchanged": true
+  },
+  "full_sql_owner": "9f988321820f",
+  "full_sql_suites": 23,
+  "full_sql_source_files": 1821,
+  "focused_sql_owner": "cc037f7c016b",
+  "focused_scenarios": [
+    "100-to101 upgrade/replay; original33 role grants retained",
+    "six concurrent identical commands: one durable receipt",
+    "encrypted public settings; no plaintext audit payload",
+    "stale revision/changed UUID payload and full path conflicts",
+    "long common-prefix paths remain distinct",
+    "last receipt SQL failure rolls back entire write",
+    "secret/private/held rows excluded or protected before decryption",
+    "soft delete and closed-gate receipt recovery",
+    "revoked writes and warehouse principal denied",
+    "raw JSON-LD integer survives Admin and public API"
+  ],
+  "rehearsal_owner": "48f068f0a2f4",
+  "rehearsal_summary": {
+    "rehearsal_passed": true,
+    "existing_tables_unchanged": 291,
+    "expected_changed_tables": [
+      "authorization_actions",
+      "authorization_runtime_schema",
+      "schema_migration_steps",
+      "schema_migrations"
+    ],
+    "new_tables": [
+      "seo_command_receipts",
+      "seo_command_state"
+    ],
+    "authorization_actions_added": [
+      "seo.read",
+      "seo.write"
+    ],
+    "existing_role_grants_unchanged": true,
+    "authorization_runtime_revision_increment": 1,
+    "foreign_keys_before_migration": {
+      "constraints_checked": 213,
+      "orphan_rows": 0
+    },
+    "foreign_keys_after_migration": {
+      "constraints_checked": 214,
+      "orphan_rows": 0
+    },
+    "cleanup": {
+      "server_terminal": true,
+      "data_removed": true,
+      "socket_removed": true,
+      "private_backup_retained": true
+    }
+  },
+  "validation": {
+    "go_all": {
+      "log": "logs/gin-migration/seo-admin-native-9d948cdc1648/validation-go_all.log",
+      "sha256": "6a84a18716d767bda915db2d73de25c211cb40db063201426d14956cc2caf609"
+    },
+    "go_vet": {
+      "log": "logs/gin-migration/seo-admin-native-9d948cdc1648/validation-go_vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "go_race": {
+      "log": "logs/gin-migration/seo-admin-native-9d948cdc1648/validation-go_race.log",
+      "sha256": "cdd32538f641aeb8228be34409fd87f140887a6c85c04f8017ea9b2ab102cd48"
+    },
+    "admin_types": {
+      "log": "logs/gin-migration/seo-admin-native-9d948cdc1648/validation-admin_types.log",
+      "sha256": "e8bfd4d2e137d4c0fbce29a275eee34bbf66235478599a0a2cd8a2fa8fc59f69"
+    },
+    "astro_check": {
+      "log": "logs/gin-migration/seo-admin-native-9d948cdc1648/validation-astro_check.log",
+      "sha256": "26b9fadf7c5f8a44a46e4134a251377e041e252eeb116ba7b1fdddb5a25d5d71"
+    },
+    "front_tests": {
+      "log": "logs/gin-migration/seo-admin-native-9d948cdc1648/validation-front_tests.log",
+      "sha256": "a292baec9d41c519ce2bbd47139767cbc4a127458e63058951e0cfb2efb99771"
+    }
+  },
+  "prior_browser_attempts": [
+    {
+      "owner": "ce38cd82931e",
+      "not_passed": true,
+      "reason": "Non-searchable Select input covered by selected label",
+      "cleanup_sha256": "e8ea0ceb64dadc960b7bc8c0ea5360066459109f9d2a9feeb71bbb2f04073ac3"
+    },
+    {
+      "owner": "28264719995e",
+      "not_passed": true,
+      "reason": "Select input interception before visible selector correction",
+      "cleanup_sha256": "e8ea0ceb64dadc960b7bc8c0ea5360066459109f9d2a9feeb71bbb2f04073ac3"
+    },
+    {
+      "owner": "aa4d64fa5524",
+      "not_passed": true,
+      "reason": "Test has-locator included outer drawer scope",
+      "cleanup_sha256": "e8ea0ceb64dadc960b7bc8c0ea5360066459109f9d2a9feeb71bbb2f04073ac3"
+    },
+    {
+      "owner": "45e64d0e3fe8",
+      "not_passed": true,
+      "reason": "Virtualized dropdown option needed scrolling",
+      "cleanup_sha256": "e8ea0ceb64dadc960b7bc8c0ea5360066459109f9d2a9feeb71bbb2f04073ac3"
+    },
+    {
+      "owner": "691c3965c5d3",
+      "not_passed": true,
+      "reason": "Test init script reset chosen language on reload",
+      "cleanup_sha256": "e8ea0ceb64dadc960b7bc8c0ea5360066459109f9d2a9feeb71bbb2f04073ac3"
+    },
+    {
+      "owner": "45fffd293bbf",
+      "not_passed": true,
+      "reason": "Ant Chinese two-character accessible name contains spaces",
+      "cleanup_sha256": "e8ea0ceb64dadc960b7bc8c0ea5360066459109f9d2a9feeb71bbb2f04073ac3"
+    }
+  ],
+  "main_preview_readonly_verification": {
+    "checked_utc": "2026-11-01T11:54:38.662687+00:00",
+    "fresh_backup_owner": "9d72f058ad87",
+    "service": {
+      "running": true,
+      "pid": 40152,
+      "health": 200,
+      "schema_migrations": 100
+    },
+    "persistent_tables": 295,
+    "business_tables_equal_to_rehearsal": 293,
+    "migration_journal_execution_times_excluded": true,
+    "migration_checksums_match": true,
+    "original_tables_unchanged": 268,
+    "live_counts_match_dump": true,
+    "foreign_keys_checked": 213,
+    "orphan_rows": 0,
+    "new_gates_default_closed": true,
+    "retained_shared86_all_table_fingerprints_match": true,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "post_cutover_data_verified": true,
+    "goal_complete": false
+  },
+  "main_upgraded_to101": true,
+  "real_provider_called": false,
+  "legacy_credentials_imported": false,
+  "open": [
+    "Main SEO grant/gate/keyring activation not performed",
+    "Historical SEO import/holds and source page filtering/picker behavior not accepted by this joint",
+    "Remaining regional/public page states and all open C01-C11 work remain"
+  ],
+  "goal_complete": false,
+  "final_services": {
+    "store_http": 200,
+    "initial_html_product_cards": 30,
+    "main_gin_schema": 100,
+    "main_gin_pid": 40152,
+    "legacy_recent_log_http_200": true,
+    "gin_recent_seo_http_200": true,
+    "no_panic_in_recent_gin_lines": true,
+    "routes": [
+      {
+        "url": "http://127.0.0.1:9001/health",
+        "status": 200,
+        "bytes": 2
+      },
+      {
+        "url": "http://127.0.0.1:9001/app",
+        "status": 200,
+        "bytes": 725
+      },
+      {
+        "url": "http://127.0.0.1:9100/health",
+        "status": 200,
+        "bytes": 68
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-en/store",
+        "status": 200,
+        "bytes": 313600
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-en/about",
+        "status": 200,
+        "bytes": 116663
+      },
+      {
+        "url": "http://127.0.0.1:9300/robots.txt",
+        "status": 200,
+        "bytes": 162
+      }
+    ]
+  },
+  "recovery_rehearsal_owner": "f7fd86d9ca70",
+  "recovery_rehearsal_summary": {
+    "rollback_rehearsed_exact_data_ddl_objects": true,
+    "recovery_activated_gate_refused": true,
+    "recovery_reapply101_idempotent": true,
+    "foreign_keys_after_recovery": {
+      "constraints_checked": 213,
+      "orphan_rows": 0
+    },
+    "foreign_keys_after_reapply": {
+      "constraints_checked": 214,
+      "orphan_rows": 0
+    },
+    "cleanup": {
+      "server_terminal": true,
+      "data_removed": true,
+      "socket_removed": true,
+      "private_backup_retained": true
+    }
+  },
+  "main_upgrade_report": "docs/migration/local-preview-101-report.json"
+}

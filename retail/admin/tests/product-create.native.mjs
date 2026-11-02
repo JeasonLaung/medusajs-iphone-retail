@@ -1,0 +1,29 @@
+import assert from 'node:assert/strict'
+import {randomUUID} from 'node:crypto'
+import {createServer} from 'vite'
+import {chromium,expect} from '@playwright/test'
+const port=Number(process.env.ADMIN_TEST_PORT),origin=`http://127.0.0.1:${port}`
+if(!process.env.ADMIN_TEST_API_TARGET||!process.env.ADMIN_EMAIL||!process.env.ADMIN_PASSWORD||!port)throw Error('Owned native API, account and port required')
+let server,browser,page
+const errors=[]
+try{
+ server=await createServer({server:{port,strictPort:true,host:'127.0.0.1'},logLevel:'error'});await server.listen()
+ browser=await chromium.launch({headless:true,executablePath:process.env.ADMIN_TEST_BROWSER})
+ const context=await browser.newContext({reducedMotion:'reduce'});await context.addInitScript(()=>localStorage.setItem('eurorefurb.admin.language','en'))
+ page=await context.newPage();page.setDefaultTimeout(15000);page.on('pageerror',e=>errors.push(e.message))
+ await page.goto(origin+'/account');await page.getByLabel('Email',{exact:true}).fill(process.env.ADMIN_EMAIL);await page.getByLabel('Password',{exact:true}).fill(process.env.ADMIN_PASSWORD);await page.getByRole('button',{name:'Sign in',exact:true}).click();await expect(page.getByRole('button',{name:'Sign out',exact:true})).toBeVisible()
+ await page.goto(origin+'/products');await page.getByRole('button',{name:'Create product',exact:true}).click()
+ let editor=page.getByRole('dialog',{name:'Create product',exact:true});const handle='native-browser-'+randomUUID(),title='Native 商品 '+randomUUID().slice(0,8)
+ await editor.getByLabel('Product',{exact:true}).fill(title);await editor.getByLabel('Handle',{exact:true}).fill(handle);const status=editor.getByLabel('Status',{exact:true});await status.focus();await status.press('ArrowDown');await page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden)').getByText('Published',{exact:true}).click()
+ for(const label of ['Sales channels','Shipping profile']){const input=editor.getByLabel(label,{exact:true});if(await editor.locator('.ant-form-item').filter({has:input}).locator('.ant-select-selection-item').count()===0){await input.focus();await input.press('ArrowDown');await input.press('Enter');await input.press('Tab')}}
+ await editor.getByRole('button',{name:'Add option group',exact:true}).click();await editor.getByLabel('Option title',{exact:true}).fill('Storage');const vals=editor.getByLabel('Option values',{exact:true});await vals.fill('128 GB,256 GB,');await vals.press('Tab')
+ await editor.getByRole('button',{name:'Save',exact:true}).click();await expect(editor).toHaveCount(0);await expect(page).toHaveURL(/\/products\/prod_/)
+ const productID=decodeURIComponent(new URL(page.url()).pathname.split('/').at(-1));await expect(page.getByRole('heading',{name:title,exact:true})).toBeVisible()
+ await page.getByRole('button',{name:'Create SKU',exact:true}).click();editor=page.getByRole('dialog',{name:'Create SKU',exact:true});await editor.getByLabel('Variant title',{exact:true}).fill('128 GB');const storage=editor.getByLabel('Storage',{exact:true});await storage.click();await storage.fill('128 GB');await storage.press('Enter');await editor.getByRole('button',{name:'Save',exact:true}).click();await expect(editor).toHaveCount(0)
+ const row=page.getByRole('row').filter({has:page.getByRole('cell',{name:'128 GB',exact:true}).first()}).first();await expect(row.getByText(/^ERP[1-9][0-9]{4,}$/)).toBeVisible();const sku=await row.getByText(/^ERP[1-9][0-9]{4,}$/).innerText()
+ await row.getByRole('button',{name:'View prices',exact:true}).click();await page.getByRole('button',{name:'Add base price',exact:true}).click();editor=page.getByRole('dialog').last();const currency=editor.getByLabel('Currency',{exact:true});await currency.click();await currency.fill('eur');await currency.press('Enter');await editor.getByLabel('Amount',{exact:true}).fill('129.123456789012345678');await editor.getByRole('button',{name:'Save',exact:true}).click();await expect(page.getByRole('cell',{name:'129.123456789012345678',exact:true})).toBeVisible()
+ const regionResponse=await context.request.get(origin+'/api/store/regions');assert.equal(regionResponse.status(),200);const regions=await regionResponse.json();const region=regions.regions.find(r=>r.currency_code==='eur');assert.ok(region);const publicResponse=await context.request.get(origin+'/api/store/products/'+productID+'?region_id='+region.id);assert.equal(publicResponse.status(),200);const publicData=await publicResponse.json();assert.equal(publicData.product.handle,handle);assert.equal(publicData.product.variants[0].sku,sku);assert.equal(publicData.product.variants[0].calculated_price.calculated_amount,'129.123456789012345678');await page.reload();await expect(page.getByText(sku,{exact:true})).toBeVisible()
+ await page.goto(origin+'/products');await page.getByRole('button',{name:'Create product',exact:true}).click();await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false)
+ await context.addInitScript(()=>localStorage.setItem('eurorefurb.admin.language','zh-CN'));await page.reload();await page.getByRole('button',{name:'新建商品',exact:true}).click();await expect(page.getByRole('dialog').getByLabel('商品链接标识',{exact:true})).toBeVisible();assert.deepEqual(errors,[])
+ console.log('PRODUCT_CREATE_NATIVE '+JSON.stringify({real_browser_react_gin_native_mysql_redis:true,api_mocking:false,product_and_initial_options:true,existing_sku_flow:true,generated_sku:sku,exact_base_price:true,public_product_same_sku_and_quote:true,refresh_preserved:true,language_en_zh:true,mobile_no_page_overflow:true,browser_errors:0,product_id:productID}))
+}catch(e){console.error('VISIBLE_DIALOGS',await page?.getByRole('dialog').allTextContents());throw e}finally{await browser?.close();await server?.close()}

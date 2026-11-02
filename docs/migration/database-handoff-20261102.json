@@ -1,0 +1,22 @@
+{
+  "created_utc": "2026-11-01T17:06:39.717117+00:00",
+  "database": "eurorefurb_local_trial",
+  "schema_migrations": 102,
+  "source_migrations": 103,
+  "mysql_version": "9.6.0",
+  "dump_sha256": "aba8a57a3fead57798751600a815050c29261ceef65e4fceeb5283b2294df61a",
+  "dump_bytes": 4414357,
+  "native_foreign_keys": true,
+  "redis_included": false,
+  "no_source_database_mutation": true,
+  "backup_upload_requested": false,
+  "private_runtime_archive": {
+    "file": "runtime-config.private.tar.gz",
+    "sha256": "37a691abb403b006a617dbd20e2fda3e353ec8bb024e1e94b9bbe97e61508555",
+    "bytes": 109941338,
+    "uploaded": false,
+    "compatible_source_migrations": 102
+  },
+  "base_tables": 299,
+  "views": 1
+}

@@ -1,0 +1,167 @@
+{
+  "suites": [
+    {
+      "suite": "PromotionUsage",
+      "exit_code": 0,
+      "log_sha256": "953253e169e459e85630f7a0d43d77ff994328ae31a07b28555026bcb1509354"
+    },
+    {
+      "suite": "PromotionSchema",
+      "exit_code": 0,
+      "log_sha256": "f451faeb54e80d58275e5213a80fca533f07c0b15b1d1f3ad061cd086f4d5ed5"
+    },
+    {
+      "suite": "GeoSchema",
+      "exit_code": 0,
+      "log_sha256": "091027868a5e84fa57ec48a49463ff3e9a349b45aba25089e6bf0db4f2b8a89f"
+    },
+    {
+      "suite": "CartPriceRefresh",
+      "exit_code": 0,
+      "log_sha256": "2f0e19e0f2da970da650c6f00ed746ed3d4a70d3aaf20d0c7a6753ddbc0957de"
+    },
+    {
+      "suite": "CartTaxRefresh",
+      "exit_code": 0,
+      "log_sha256": "8155b698bb64a37505717fe93795d917671d429ee1391171f48852cefb05e79d"
+    },
+    {
+      "suite": "TaxImport",
+      "exit_code": 0,
+      "log_sha256": "bdc7473c941a201fd584f967d335f2a2b3f46531e7ee884d2c2c281c1c295ac2"
+    },
+    {
+      "suite": "TaxSchema",
+      "exit_code": 0,
+      "log_sha256": "769a9249bbbb0ab3373860c5e0b6d490015d3179b2f47f11b0a12d238d88d062"
+    },
+    {
+      "suite": "AdminAuthentication",
+      "exit_code": 0,
+      "log_sha256": "3214c9d3fe046eebae8df7442ad29cc6ace765a9b663fcd7c41cb760ba9d8015"
+    },
+    {
+      "suite": "CatalogSchemaTransition",
+      "exit_code": 0,
+      "log_sha256": "d2996d3864bd606af74797dfafa516ff50cd1f59ec40dfbe6008fe99bc2dc01e"
+    },
+    {
+      "suite": "ProductEdits",
+      "exit_code": 0,
+      "log_sha256": "eec340263bf8fffb9456b51fdcabaee250bea39d24cddef7b1ce3c9799e8db5f"
+    },
+    {
+      "suite": "ProductPrices",
+      "exit_code": 0,
+      "log_sha256": "3572c5dbaee4941bffbc39aed00a7f2430c342c97efd2b0fc3ecc7e7f6d013f5"
+    },
+    {
+      "suite": "ProductInventory",
+      "exit_code": 0,
+      "log_sha256": "68ae54d4e3a0def8e29c3cdb45c39509d8a6d656c424edc405e06de73deb9ee2"
+    },
+    {
+      "suite": "InventoryStockEdits",
+      "exit_code": 0,
+      "log_sha256": "678813bc94ca10e88facc313cc62dc9410a47aa1515f867781d996c480cf90cf"
+    },
+    {
+      "suite": "ReservationTransactions",
+      "exit_code": 0,
+      "log_sha256": "8be7fa12266056eb66e921e71e27ce1d9db3cb2286223350713f770259ae4dff"
+    },
+    {
+      "suite": "OrderSchema",
+      "exit_code": 0,
+      "log_sha256": "070688eb612ffd6185dcdbed39f5deae94d8a667b1e8f3c2ee6b68573cd3a757"
+    },
+    {
+      "suite": "OrderImport",
+      "exit_code": 0,
+      "log_sha256": "2a400db957376bcc24231a6316f67c5d1b03d3a5353730870bc1fa7387bfa57d"
+    },
+    {
+      "suite": "CustomerHistory",
+      "exit_code": 0,
+      "log_sha256": "bd4c0003a613b603ef8add873fbc28b0fd38f46ed42b9154a3b6082f4f349773"
+    },
+    {
+      "suite": "OrderRead",
+      "exit_code": 0,
+      "log_sha256": "ffe04373e071a028e75e2d6d01b41b770a5689221c92222c2543517ab5e3ee2f"
+    },
+    {
+      "suite": "PaymentSchema",
+      "exit_code": 0,
+      "log_sha256": "bab4e50b966df47ddf1cfdc8eacd79dea19876000fe01d091851ed8ac383db42"
+    },
+    {
+      "suite": "PaymentImport",
+      "exit_code": 0,
+      "log_sha256": "9d3acd8db77548f48cecc26a4457e5009bbd528b6a505cef49cda8abcd3cb479"
+    },
+    {
+      "suite": "FulfillmentHistory",
+      "exit_code": 0,
+      "log_sha256": "0c3090c18adea7cea64a0397484a8f9a80dce15ad1aaa102b5ccbc8ce2f1253f"
+    },
+    {
+      "suite": "CartSchema",
+      "exit_code": 0,
+      "log_sha256": "ad0780b7340ca49bf0fe5b761fb1b97830e6d2d97e8adc11c6a3acf79a7f7bff"
+    },
+    {
+      "suite": "CartRuntime",
+      "exit_code": 0,
+      "log_sha256": "24f06c91229ddadb2731c237e6762aed409a8297962ea35a5473405a15db2959"
+    }
+  ],
+  "suite_count": 23,
+  "migrations": 96,
+  "complete_original_sql_regression": true,
+  "production_source_unchanged": true,
+  "frozen_source_verified": true,
+  "binary_sha256": "f868110da275ece982abe8fcf5d50f6b3d09f91f08417a95fe1c6c373f0abe62",
+  "goal_complete": false,
+  "owner": "0d0927367eaf",
+  "controller_exit_code": 0,
+  "snapshot": "logs/gin-migration/native-sql-local-0d0927367eaf",
+  "all_original_suites_passed_without_skip": true,
+  "isolated_mysql": {
+    "version": "9.6.0",
+    "native_foreign_keys": true,
+    "foreign_key_checks": true,
+    "networking_disabled": true,
+    "socket_private": true,
+    "pid": 36542
+  },
+  "cleanup": {
+    "owned_databases_absent": true,
+    "redis_prefix_cleaned": true,
+    "last_deleted_keys": 0,
+    "shared_server_not_restarted": true
+  },
+  "mysql_cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true
+  },
+  "frozen_source_files": 1756,
+  "source_fingerprints_verified": true,
+  "suite_log_fingerprints_verified": true,
+  "main_mysql_upgraded": false,
+  "main_database_migrations": 86,
+  "main_production_gates_enabled": false,
+  "shared_mysql_default_fk_mode_full_regression_passed": false,
+  "shared_options_native_report": "option-definitions-native-report.json",
+  "shared_options_http_browser_verified": false,
+  "real_provider_payments_or_refunds": false,
+  "limitations": [
+    "Private MySQL uses native InnoDB foreign keys; shared SQL-layer mode not proven",
+    "Original23 suites do not call new shared-option commands; separate actual SQL report is required",
+    "Shared option HTTP/Ant browser and metadata remain unverified",
+    "Main86 upgrade/import and C01-C11 remain incomplete"
+  ],
+  "post_run_service_check": "logs/gin-migration/option-definitions-96-stage-services.json"
+}

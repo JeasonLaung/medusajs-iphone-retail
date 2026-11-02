@@ -26,8 +26,14 @@ def columns():
 
 def guard(table):
     # table comes from the reviewed generator; quote values regardless.
-    expected = [{key: column[key] for key in KEYS} for column in columns()[table]]
-    projection = ','.join(key + ('::text AS ' + key if key in ('column_name', 'data_type', 'udt_name', 'is_nullable') else '') for key in KEYS)
+    # pg_dump/restore compacts physical attnum gaps left by dropped columns.
+    # Compare visible column order, retaining every type/nullability/precision
+    # check. Reordering columns still differs; physical slot numbers are not a
+    # business schema change and are never used by the named-cell exporter.
+    expected = [{**{key: column[key] for key in KEYS}, 'ordinal_position': position}
+                for position, column in enumerate(sorted(columns()[table], key=lambda c: c['ordinal_position']), 1)]
+    projection = ','.join('row_number() OVER (ORDER BY ordinal_position) AS ordinal_position' if key == 'ordinal_position'
+                          else key + ('::text AS ' + key if key in ('column_name', 'data_type', 'udt_name', 'is_nullable') else '') for key in KEYS)
     encoded = json.dumps(expected, ensure_ascii=True, separators=(',', ':'))
     return ("DO $$ BEGIN IF (SELECT jsonb_agg(to_jsonb(c) ORDER BY ordinal_position) FROM (SELECT " + projection +
             " FROM information_schema.columns WHERE table_schema='public' AND table_name=" + literal(table) +

@@ -1,0 +1,89 @@
+{
+  "recorded_at": "2026-10-31T11:09:32.344616+00:00",
+  "scope": "Product-review native transactions and Gin HTTP; UI/import/full shopping-review joint pending",
+  "complete_goal": false,
+  "source_fingerprint_scope": "current local file snapshots only, not an immutable release",
+  "source_sha256": {
+    "docs/migration/gin-product-reviews.md": "e229ebbd933607d693c9af7278510c44db29a6ddc1a1ab2c9cffffb7d432e041",
+    "retail/backend/internal/catalog/public_product.go": "7598b778d78b66513ecd2284b15dc80f6b68845b48f7bc76410d180f59061fd3",
+    "retail/backend/internal/customer/product_reviews.go": "62438b715ebc28d2a58de3008705902a0577ecb8c0c13162495cbdbe8b0f47d4",
+    "retail/backend/internal/customer/product_reviews_http.go": "5712e272b919ee413338ba08944dee033660c9ce944442d6665fc081bb1d30dd",
+    "retail/backend/internal/customer/product_reviews_native_test.go": "c3c7059a03a35150731dd2e408c1ce92e9f493ef851912150a17be2308e9f5c9",
+    "retail/backend/internal/productreviews/admin.go": "f63f9db5510138427c364810fe72968c433bd8e9c2caeaf31d0493da811c839c",
+    "retail/backend/internal/productreviews/contract.go": "37562e81b89690dc4e931deebaae81cbbd0dbba57e0ec893e104dc4c9c90acfc",
+    "retail/backend/internal/productreviews/contract_test.go": "28d0fe6f5bd9ed2326a2d8d53043ecd2d2ab02cc3ae60aca48882b45270d3b01",
+    "retail/backend/internal/productreviews/http.go": "88a0adceee8a0cc2c75f35aa277ce02bf0111aaee690e40d8c2631048937f394",
+    "retail/backend/internal/productreviews/native_test.go": "181457aa4b14d32f339dfd9d16ec4c0ffbacb809d4b056f7721433401e6c54d1",
+    "retail/backend/internal/productreviews/orders.go": "04aff83d006d1695f5cbec9cd15d2dcfb8162947811e0a322793b1f722c28420",
+    "retail/backend/internal/productreviews/store.go": "f3d9c45dadd987498fb085e8b12ecacf7c4d7e42ab80b20889ca1f55cabec91c",
+    "retail/backend/migrations/0094_product_reviews.sql": "9c073abec2cf11ea417a2b066334db33a055a14b8a16ecba278b5fc186ce820f"
+  },
+  "integration_file_sha256": {
+    "retail/backend/internal/customer/http.go": "c8814eba014624cb82b239d803c5fbd482dc7c4bc8ddaa6cbe8e415903501318",
+    "retail/backend/internal/server/router.go": "5f27bdd2c71d21e46cda163680bc1ce10c5c5020e87b1a275dcf27614c770cd7"
+  },
+  "evidence_sha256": {
+    "log/native-product-reviews-migrate.log": "a298820ff02f320b3775f29cc1a97aede1002079476445890fb89c6e8b98545c",
+    "log/native-product-reviews-migrate-replay.log": "19313a52422ac94947e9dbc9d7aa12a997e8c65f7cc46e278f0384cc12134b0e",
+    "log/native-product-reviews-transactions.log": "53e72a5c25378ebf5db99bc6395ca975666d0e12f89a635cf521bde486f581ff",
+    "log/native-product-reviews-customer-http.log": "b53f81fd06ff68523c8d2b539400689ddf70073757b834346961ce9015e0f6a4",
+    "log/native-product-reviews-go-test.log": "824fb929c83da61053c273d8d8a4927c04990cd8a5bb951a5d3c790f19689f3e",
+    "log/native-product-reviews-go-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/gin-migration/native-product-reviews-main-health.json": "4b0aa0463b5f74f1f25d1e54bcda6b5a31fce91ff87f3fe7a01b4e0aabcd6b94",
+    "logs/gin-migration/native-product-reviews-main-schema.json": "03e285b5f838b46df724b39bd758c4b7b9ce879e7ad38eb0fc6751ae36e59895",
+    "logs/gin-migration/native-product-reviews-sql-proof.tsv": "88c7f8f982e2fc0cc6bf987241e4adc1e0509dc177ebd7073be9e70852057e64",
+    "logs/gin-migration/native-product-reviews-cleanup.json": "7d3f2b4e02e63e091a8d57b63613b1286ace6667852a86b2af1886d1b0f941a9"
+  },
+  "verification": {
+    "explicit_migrations_applied": 94,
+    "replay_skipped": 94,
+    "core_real_mysql": true,
+    "core_concurrent_same_uuid": 4,
+    "core_concurrent_distinct_uuid": 4,
+    "moderation_concurrent": 4,
+    "late_failure_and_caller_rollback": true,
+    "private_historical_actor_domain": true,
+    "soft_deleted_review_releases_unique_subject": true,
+    "actual_new_account_order_ownership": true,
+    "current_order_version_and_completed_payment": true,
+    "stock_reservation_price_device_payment_all_column_fingerprints_unchanged": true,
+    "customer_gin_in_process_http_real_mysql_redis": true,
+    "signed_bridge_origin_csrf": true,
+    "admin_session_realm_rejected": true,
+    "current_customer_revocation_on_receipt": true,
+    "go_all_packages": true,
+    "go_vet_all_packages": true,
+    "full_23_sql_groups_at_94": false,
+    "actual_browser": false,
+    "source_review_import": false,
+    "astro_review_ui": false,
+    "react_admin_review_ui": false,
+    "full_new_shopping_order_review_joint": false
+  },
+  "main_trial_applied_migrations": 86,
+  "cleanup": {
+    "ports": [
+      {
+        "role": "api_port",
+        "port": 54465,
+        "closed": true
+      },
+      {
+        "role": "storefront_port",
+        "port": 61124,
+        "closed": true
+      }
+    ],
+    "owned_redis_keys_removed": 0,
+    "database_dropped": true,
+    "user_dropped": true,
+    "root_cleanup_exit_code": 0
+  },
+  "remaining": [
+    "Astro original product/order review components and private transport",
+    "Ant product-detail review moderation UI",
+    "Historical source-review import and reconciliation",
+    "Actual new customer shopping/order/review/moderation/public browser joint EN/ZH/mobile",
+    "Full C01-C11 joint acceptance"
+  ]
+}

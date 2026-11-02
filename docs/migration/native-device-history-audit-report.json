@@ -1,0 +1,64 @@
+{
+  "format_version": 1,
+  "date": "2026-10-31",
+  "scope": "Read-only full native source snapshot device identity and original order/after-sales membership audit; no target writes or relaxed reference rules.",
+  "audit": {
+    "snapshot_sha256": "3b8c007f7854ab61b46009df87ba8f3a082dacfb3bf03078b0c16dcede367aab",
+    "devices": 52,
+    "active_devices": 7,
+    "deleted_devices": 45,
+    "assignments": 1,
+    "events": 50,
+    "after_sales_requests": 1,
+    "invalid_active_identities": 0,
+    "noncanonical_active_identities": 0,
+    "duplicate_active_identities": 0,
+    "missing_product_facts": 0,
+    "invalid_assignment_relations": 0,
+    "invalid_after_sales_lines": 0,
+    "photo_references": 0,
+    "missing_references": {
+      "device.location_id": 11,
+      "device.source_id": 44
+    },
+    "missing_on_deleted_rows": {
+      "device.location_id": 11,
+      "device.source_id": 44
+    },
+    "compiled_history_policy_missing": {
+      "device.source_id": 44
+    },
+    "identity_import_ready": false,
+    "complete_import_accepted": false
+  },
+  "source_written": false,
+  "target_written": false,
+  "identities_normalized_in_storage": false,
+  "login_ownership_restored": false,
+  "private_files_read": false,
+  "complete_import_accepted": false,
+  "tests_passed": [
+    "active canonical identity remains unchanged",
+    "product metadata false overrides title radio requirement",
+    "cross-field radio collision rejected",
+    "non-array photo source rejected",
+    "missing product facts reported",
+    "full stream framing and SHA required",
+    "source row/payload budgets enforced",
+    "historical order membership preserved across versions",
+    "self replacement and foreign after-sales relation reported",
+    "duplicate/foreign/missing after-sales lines reported",
+    "actual pinned native snapshot audited"
+  ],
+  "go_vet_passed": true,
+  "transcript_sha256": "3cdc882cd2fdc97400987e24841f1184f43a86e45247753bc6d39f1b0fd272ef",
+  "implementation_sha256_lf": {
+    "retail/backend/cmd/audit-device-history/main.go": "373a8976aaf53ae2d3b2739921bb9d0e7cc3a1164b9b9e1c9d7a89536c222b68",
+    "retail/backend/internal/historyimport/device_audit.go": "920657514ac6f3ba03da9f5492ab9609c582dfda6f445161a309accc802462ab",
+    "retail/backend/internal/historyimport/device_audit_test.go": "f70782dcb35a087b5e22f3a674634c0f05983e464bf87a6e01122f7bc011e7fa",
+    "retail/backend/internal/devices/identity.go": "b397ccf7db294dce67d42a6338f8163fdc7473461cc2bad755a4ea68612ae1b0",
+    "retail/backend/internal/rowimport/stream.go": "3c650e235ee516443b53b639efa67645b17a755691bd0e342df7f64ddf65a946",
+    "retail/backend/internal/rowimport/relationships.go": "0ede1ef7c9a558a3df815fdbec4e25948237a14c1a2f74d4f04d237e1461c755",
+    "retail/backend/internal/rowimport/field_plans.json": "d3bff5f26b890e19f7424888430a638d4e45f6b46766e3643913e6eb670c5b77"
+  }
+}

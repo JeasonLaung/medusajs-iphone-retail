@@ -30,6 +30,6 @@ else if(!props)Astro.response.status=404
 const title='Refurbished iPhones'
 const message=unavailable?(zh?'暂时无法加载商品，请稍后重试。':'Products are temporarily unavailable. Please try again.'):(zh?'未找到页面':'Page not found')
 ---
-<Storefront segment={segment} title={`${props?title:message} | EuroRefurb`} description={props?"Browse the imported iPhone catalog.":undefined} shell={shell} canonicalPath={`/${segment}/store`}>
+<Storefront segment={segment} title={props?title:message} description={props?"Browse the imported iPhone catalog.":undefined} shell={shell} canonicalPath={`/${segment}/store`}>
  {props?<Search {...props} client:load/>:<div class="content-container py-16"><h1>{message}</h1></div>}
 </Storefront>

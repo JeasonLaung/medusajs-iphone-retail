@@ -1,0 +1,164 @@
+{
+  "owner": "91570716d79a",
+  "controller_exit_code": 0,
+  "snapshot": "logs/gin-migration/native-sql-local-91570716d79a",
+  "migrations": 95,
+  "suite_count": 23,
+  "complete_original_sql_regression": true,
+  "all_original_suites_passed_without_skip": true,
+  "isolated_mysql": {
+    "version": "9.6.0",
+    "native_foreign_keys": true,
+    "foreign_key_checks": true,
+    "networking_disabled": true,
+    "socket_private": true,
+    "pid": 26412
+  },
+  "cleanup": {
+    "owned_databases_absent": true,
+    "redis_prefix_cleaned": true,
+    "last_deleted_keys": 0,
+    "shared_server_not_restarted": true
+  },
+  "mysql_cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true
+  },
+  "frozen_source_files": 1754,
+  "source_fingerprints_verified": true,
+  "suite_log_fingerprints_verified": true,
+  "binary_sha256": "15eff5ae23b766a9da736dc2560958571b0402353face44762628e0f699e1a76",
+  "suites": [
+    {
+      "suite": "PromotionUsage",
+      "exit_code": 0,
+      "log_sha256": "59a796356e04eba92af23e8728835eb94a8ed33443a69a98eceebc3d3463570f"
+    },
+    {
+      "suite": "PromotionSchema",
+      "exit_code": 0,
+      "log_sha256": "35513d851f3bc22c7da3316f390a49059890486b19ba366259d4201ad99c4971"
+    },
+    {
+      "suite": "GeoSchema",
+      "exit_code": 0,
+      "log_sha256": "131fbaa6043bf784db72cf4ba2b6961b5617d17b4d8a8f641a701fa87684dead"
+    },
+    {
+      "suite": "CartPriceRefresh",
+      "exit_code": 0,
+      "log_sha256": "d68614151fe7c5c5bd1dd0e9031a6352c743b1662ef7da89fc1c3d4dcf678662"
+    },
+    {
+      "suite": "CartTaxRefresh",
+      "exit_code": 0,
+      "log_sha256": "03ba736adf0a8aa1dea1be82d4139f49a8e0cb9e378bd507e928b96b88b28bbe"
+    },
+    {
+      "suite": "TaxImport",
+      "exit_code": 0,
+      "log_sha256": "b4d4d798aefae7f5046bebee7fa5158b993ae763fadee7867b219a04f45735e0"
+    },
+    {
+      "suite": "TaxSchema",
+      "exit_code": 0,
+      "log_sha256": "21948f3b4d100d2faebf370730b9470d25528989a39edf355c170bf6ff9f299a"
+    },
+    {
+      "suite": "AdminAuthentication",
+      "exit_code": 0,
+      "log_sha256": "ece946a41f6f5cb5a2283ae17d856e54529b2657ee9ef041616633200a2c7ed1"
+    },
+    {
+      "suite": "CatalogSchemaTransition",
+      "exit_code": 0,
+      "log_sha256": "094c12fd17275ee2d4d2012b565d19a4d7857ec85b530ac85db7b14a72fa31d1"
+    },
+    {
+      "suite": "ProductEdits",
+      "exit_code": 0,
+      "log_sha256": "db73b53e4a1e7b20fa4fbb02a62e9098ec3a905359d7187ddced14a5f3ebf397"
+    },
+    {
+      "suite": "ProductPrices",
+      "exit_code": 0,
+      "log_sha256": "0725099bceb1d9155594ec804e809d6691500d2ded99d45f5fd9c9e087b54338"
+    },
+    {
+      "suite": "ProductInventory",
+      "exit_code": 0,
+      "log_sha256": "9b3e9c0e5ef5f34fc1e864dba38e25d76b898cdc5d97d65cae9eb1a430a976fc"
+    },
+    {
+      "suite": "InventoryStockEdits",
+      "exit_code": 0,
+      "log_sha256": "045b3305d8a9c2b4ad4296f098f4c80936e2dddf3c2954a6a0f7eee141e836ae"
+    },
+    {
+      "suite": "ReservationTransactions",
+      "exit_code": 0,
+      "log_sha256": "a65433eb047245792efd3af3da7746bf7e8c9aef6812403fe7ca6666d572bf42"
+    },
+    {
+      "suite": "OrderSchema",
+      "exit_code": 0,
+      "log_sha256": "cd808acb83fcd9336c4b131afefafbc1f0fd7aa16c493a2017405793ab5daa27"
+    },
+    {
+      "suite": "OrderImport",
+      "exit_code": 0,
+      "log_sha256": "3fa5920d3c545c707e991df6134e2ca1e1f84435f618b00277d5da0bb31f90c3"
+    },
+    {
+      "suite": "CustomerHistory",
+      "exit_code": 0,
+      "log_sha256": "df27e1c18f05a37e431a69bb6153f1e2b992da054cea7d3e608bf09b585e4d3c"
+    },
+    {
+      "suite": "OrderRead",
+      "exit_code": 0,
+      "log_sha256": "867032a7af7433986b9d2bc18f481e0bb8f408a62f701181d819c11a9eb795fa"
+    },
+    {
+      "suite": "PaymentSchema",
+      "exit_code": 0,
+      "log_sha256": "92b1812abfe223fdedfbda537582735e99b64233e48b77ada2d030698155d1f3"
+    },
+    {
+      "suite": "PaymentImport",
+      "exit_code": 0,
+      "log_sha256": "11ebafb3f2b37f4721fe74e2208abe7dea467bf9a459b1246fae216218e1bebc"
+    },
+    {
+      "suite": "FulfillmentHistory",
+      "exit_code": 0,
+      "log_sha256": "9f8963254907246f59c137c60d2cdc2a9954bb09ad604752ec65e863e7852585"
+    },
+    {
+      "suite": "CartSchema",
+      "exit_code": 0,
+      "log_sha256": "7a721d5181b69dbf0a4adaecaaf843daa63c9143a9f209f1914e2aec658ea449"
+    },
+    {
+      "suite": "CartRuntime",
+      "exit_code": 0,
+      "log_sha256": "e6bc899c8ae9050d944da768b65d4a0f9ed4a721f572a870c6078c89c0136b25"
+    }
+  ],
+  "main_mysql_upgraded": false,
+  "main_database_migrations": 86,
+  "shared_mysql_default_fk_mode_full_regression_passed": false,
+  "main_production_gates_enabled": false,
+  "real_provider_payments_or_refunds": false,
+  "goal_complete": false,
+  "limitations": [
+    "Private-socket native InnoDB FK mode; not a validation of shared MySQL SQL-layer foreign keys",
+    "Unrouted shared option methods present in frozen sources have no native SQL proof from these original suites",
+    "Static JSON markers in some source tests retain older migration numbers; actual complete plan/assertions and 95 SQL files were verified",
+    "Actual external Mollie and email delivery remain unverified; C01-C11 not complete"
+  ],
+  "post_run_service_check": "logs/gin-migration/native-sql-95-final-services.json",
+  "artifact_retention": "Keep original frozen source tree and identity.test in place; coordinated cart-transfer report generator verifies their actual SHA256"
+}

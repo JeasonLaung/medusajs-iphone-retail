@@ -69,7 +69,8 @@ INSERT INTO product_tag VALUES
         assert records[2]['cells']['metadata']['value_json'] == '{"big": 9007199254740993, "amount": 1.2300}'
         # Parse/execute every generated projection, including the widest tables,
         # against empty artificial source tables with exact pinned column shape.
-        # Dropped-column ordinal gaps are recreated as well, never normalized.
+        # Recreate original dropped-column slots too. The guard compares visible
+        # order, so both this layout and a pg_dump-restored layout are accepted.
         all_plans = builder.plans()
         shape_spec = importlib.util.spec_from_file_location('source_shape_fixture', Path(__file__).with_name('source-shape-sql.py'))
         shape = importlib.util.module_from_spec(shape_spec)

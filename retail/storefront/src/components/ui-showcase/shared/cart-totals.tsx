@@ -1,0 +1,87 @@
+// Source: medusa-store/apps/storefront/src/modules/common/components/cart-totals/index.tsx
+"use client"
+
+// Static demo amounts only; business totals use the existing exact-money layer.
+const convertToLocale = ({amount,currency_code,locale}:{amount:number;currency_code:string;locale:string}) => new Intl.NumberFormat(locale,{style:"currency",currency:currency_code}).format(amount)
+import React from "react"
+import { useAccountCopy } from "../../account/context"
+
+type CartTotalsProps = {
+  totals: {
+    total?: number | null
+    subtotal?: number | null
+    tax_total?: number | null
+    currency_code: string
+    item_subtotal?: number | null
+    shipping_subtotal?: number | null
+    discount_subtotal?: number | null
+  }
+}
+
+const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
+  const { t, locale } = useAccountCopy()
+  const {
+    currency_code,
+    total,
+    tax_total,
+    item_subtotal,
+    shipping_subtotal,
+    discount_subtotal,
+  } = totals
+
+  return (
+    <div>
+      <div className="flex flex-col gap-y-2 txt-medium text-ui-fg-subtle ">
+        <div className="flex items-center justify-between">
+          <span>{t("subtotalExcludingShippingTaxes")}</span>
+          <span data-testid="cart-subtotal" data-value={item_subtotal || 0}>
+            {convertToLocale({ amount: item_subtotal ?? 0, currency_code, locale })}
+          </span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span>{t("shipping")}</span>
+          <span data-testid="cart-shipping" data-value={shipping_subtotal || 0}>
+            {convertToLocale({ amount: shipping_subtotal ?? 0, currency_code, locale })}
+          </span>
+        </div>
+        {!!discount_subtotal && (
+          <div className="flex items-center justify-between">
+            <span>{t("discount")}</span>
+            <span
+              className="text-ui-fg-interactive"
+              data-testid="cart-discount"
+              data-value={discount_subtotal || 0}
+            >
+              -{" "}
+              {convertToLocale({
+                amount: discount_subtotal ?? 0,
+                currency_code,
+                locale,
+              })}
+            </span>
+          </div>
+        )}
+        <div className="flex justify-between">
+          <span className="flex gap-x-1 items-center ">{t("taxes")}</span>
+          <span data-testid="cart-taxes" data-value={tax_total || 0}>
+            {convertToLocale({ amount: tax_total ?? 0, currency_code, locale })}
+          </span>
+        </div>
+      </div>
+      <div className="h-px w-full border-b border-gray-200 my-4" />
+      <div className="flex items-center justify-between text-ui-fg-base mb-2 txt-medium ">
+        <span>{t("total")}</span>
+        <span
+          className="txt-xlarge-plus"
+          data-testid="cart-total"
+          data-value={total || 0}
+        >
+          {convertToLocale({ amount: total ?? 0, currency_code, locale })}
+        </span>
+      </div>
+      <div className="h-px w-full border-b border-gray-200 mt-4" />
+    </div>
+  )
+}
+
+export default CartTotals

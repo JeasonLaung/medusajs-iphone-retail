@@ -29,20 +29,23 @@ type PriceAmountInput struct {
 	Amount           string `json:"amount"`
 }
 type PriceEditContext struct {
-	EffectiveAmount string `json:"effective_amount"`
-	rawAmount       string
-	ProductID       string  `json:"product_id"`
-	VariantID       string  `json:"variant_id"`
-	ID              string  `json:"id"`
-	PriceSetID      string  `json:"price_set_id"`
-	CurrencyCode    string  `json:"currency_code"`
-	Amount          string  `json:"amount"`
-	MinQuantity     *string `json:"min_quantity"`
-	MaxQuantity     *string `json:"max_quantity"`
-	PriceListID     *string `json:"price_list_id"`
-	SharedVariants  int     `json:"shared_variants"`
-	Enabled         bool    `json:"enabled"`
-	Revision        string  `json:"revision"`
+	EffectiveAmount                string  `json:"effective_amount"`
+	EffectiveMinQuantity           *string `json:"effective_min_quantity"`
+	EffectiveMaxQuantity           *string `json:"effective_max_quantity"`
+	rawMinQuantity, rawMaxQuantity *string
+	rawAmount                      string
+	ProductID                      string  `json:"product_id"`
+	VariantID                      string  `json:"variant_id"`
+	ID                             string  `json:"id"`
+	PriceSetID                     string  `json:"price_set_id"`
+	CurrencyCode                   string  `json:"currency_code"`
+	Amount                         string  `json:"amount"`
+	MinQuantity                    *string `json:"min_quantity"`
+	MaxQuantity                    *string `json:"max_quantity"`
+	PriceListID                    *string `json:"price_list_id"`
+	SharedVariants                 int     `json:"shared_variants"`
+	Enabled                        bool    `json:"enabled"`
+	Revision                       string  `json:"revision"`
 }
 
 var priceAmountPattern = regexp.MustCompile(`^(0|[1-9][0-9]{0,19})\.[0-9]{18}$`)
@@ -167,6 +170,22 @@ func loadPriceEdit(tx *gorm.DB, productID, variantID, priceID string, rt priceEd
 	if e != nil {
 		return out, ErrSchema
 	}
+	min, e := configuredQuantity(row.MinQuantity, row.RawMinQuantity)
+	if e != nil {
+		return out, e
+	}
+	max, e := configuredQuantity(row.MaxQuantity, row.RawMaxQuantity)
+	if e != nil {
+		return out, e
+	}
+	if row.MinQuantity != nil {
+		out.EffectiveMinQuantity = &min
+	}
+	if row.MaxQuantity != nil {
+		out.EffectiveMaxQuantity = &max
+	}
+	out.rawMinQuantity = row.RawMinQuantity
+	out.rawMaxQuantity = row.RawMaxQuantity
 	out.EffectiveAmount = effective
 	out.rawAmount = row.RawAmount
 	out.ID = row.ID

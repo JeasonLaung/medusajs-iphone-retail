@@ -58,6 +58,7 @@ async function main(){
  await add('attribute-missing-row',[promo('p',{campaign:{budget:{...budget('use_by_attribute','0'),attribute:'customer_email'}}})],{...ctx,email:'artificial@example.test'},{budget:{attribute:'customer_email',value:'artificial@example.test',found:false,used:''}})
  await add('attribute-boundary',[promo('p',{campaign:{budget:{...budget('use_by_attribute','2'),attribute:'customer_id'}}})],{...ctx,customer_id:'c'},{budget:{attribute:'customer_id',value:'c',found:true,used:'1'}})
  await add('missing-method',[promo('p',{application_method:null})],ctx)
+ await add('context-usd-high-precision-percentage',[promo('context-usd-auto',{application_method:method({type:'percentage',value:'20',allocation:'across'})})],{currency_code:'usd',items:[item('context-line','42.000000000000000000001')]})
  const sources=['services/promotion-module.js','utils/compute-actions/usage.js','utils/compute-actions/line-items.js','utils/compute-actions/shipping-methods.js','utils/compute-actions/buy-get.js']
  const content=JSON.stringify({format_version:1,scope:'Original pure computeActions body with artificial read services; no SQL, registration, adjustment persistence or checkout',sources:sources.map(f=>({file:path.relative(root,path.join(dir,f)).replaceAll('\\','/'),sha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(dir,f),'utf8').replaceAll('\r\n','\n')).digest('hex')})),cases},null,2)+'\n'
  const target=path.join(root,'docs/migration/fixtures/promotion-compute.json')

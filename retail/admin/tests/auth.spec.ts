@@ -817,3 +817,35 @@ for(const mode of ['disabled','malformed','revoked'] as const)test(`refund drawe
  else{grants.splice(grants.indexOf('order.refund.write'),1);await page.reload();await expect(page.getByRole('button',{name:'退款记录与操作',exact:true})).toHaveCount(0)}
  expect(posts).toBe(0)
 })
+
+test('price-list creation preserves selected products across searches',async({page})=>{
+ await fixture(page)
+ const products=['first','second'].map(id=>({id,title:'Product '+id,handle:id,status:'published',thumbnail:null,collection_id:null,created_at:'2026-11-01T00:00:00Z',updated_at:'2026-11-01T00:00:00Z',variant_count:1}))
+ let creations=0
+ await page.route('**/api/admin/price-lists**',route=>{if(route.request().method()==='POST')creations++;return route.fulfill({json:{price_lists:[],count:0,limit:20,offset:0}})})
+ await page.route('**/api/admin/products?**',route=>{const q=new URL(route.request().url()).searchParams;const rows=products.filter(p=>!q.get('q')||p.id===q.get('q'));return route.fulfill({json:{products:rows,count:rows.length,limit:20,offset:0}})})
+ await page.route('**/api/admin/price-list-creation**',route=>{const ids=new URL(route.request().url()).searchParams.getAll('product_id');return route.fulfill({json:{enabled:true,revision:'a'.repeat(64),currencies:['eur'],regions:[],products:ids.map(id=>({id,title:'Product '+id,variants:[{id:'variant-'+id,title:'SKU '+id,sku:null,price_set_id:null,shared_variants:0}]}))}})})
+ await page.goto('/account');await signIn(page);await page.getByRole('menuitem',{name:'价目表',exact:true}).click()
+ await page.getByRole('button',{name:'新建价目表',exact:true}).click()
+ const d=page.getByRole('dialog',{name:'新建价目表',exact:true})
+ await d.getByLabel('标题',{exact:true}).fill('Across searches');await d.getByLabel('说明',{exact:true}).fill('Preserve both selections');await d.getByRole('button',{name:'下一步',exact:true}).click()
+ for(const id of ['first','second']){const search=d.getByLabel('搜索商品',{exact:true});await search.fill(id);await search.press('Enter');await d.getByRole('row').filter({has:page.getByText(id,{exact:true})}).getByRole('checkbox').check()}
+ await expect(d.getByText('已选择 2 / 20',{exact:true})).toBeVisible()
+ await expect(d.getByText('Product first, Product second',{exact:true})).toBeVisible()
+ await d.getByRole('button',{name:'下一步',exact:true}).click();await d.getByRole('button',{name:'添加初始价格',exact:true}).click();await d.getByLabel('商品 / SKU',{exact:true}).press('ArrowDown')
+ expect(creations).toBe(0)
+ await expect(page.locator('.ant-select-dropdown:visible').getByTitle('Product first / SKU first',{exact:true})).toBeVisible();await expect(page.locator('.ant-select-dropdown:visible').getByTitle('Product second / SKU second',{exact:true})).toBeVisible()
+})
+
+test('price-list batch Chinese mobile keeps cancel and original price fields reachable',async({page})=>{
+ await fixture(page)
+ const product={id:'first',title:'Product first',handle:'first',status:'published',thumbnail:null,collection_id:null,created_at:'2026-11-01T00:00:00Z',updated_at:'2026-11-01T00:00:00Z',variant_count:1}
+ const list={id:'list',title:'Batch list',status:'active',type:'sale',starts_at:null,ends_at:null,rules_count:0}
+ await page.route('**/api/admin/price-lists**',route=>{const path=new URL(route.request().url());if(path.pathname.endsWith('/price-batch')){const ids=path.searchParams.getAll('product_id');return route.fulfill({json:{enabled:true,revision:'a'.repeat(64),currencies:['eur'],regions:[],products:ids.map(id=>({id,title:product.title,variants:[{id:'v',title:'SKU',sku:null,price_set_id:'set',shared_variants:1}]})),prices:ids.length?[{id:'price',product_id:'first',variant_id:'v',price_set_id:'set',currency_code:'eur',amount:'7.75',min_quantity:'',max_quantity:'',rules:[]}]:[]}})}return route.fulfill({json:{price_lists:[list],count:1,limit:20,offset:0}})})
+ await page.route('**/api/admin/products?**',route=>route.fulfill({json:{products:[product],count:1,limit:20,offset:0}}))
+ await page.setViewportSize({width:390,height:900});await page.goto('/account');await signIn(page);await page.goto('/price-lists')
+ await page.getByRole('button',{name:'批量编辑价格',exact:true}).click();const d=page.getByRole('dialog',{name:'批量编辑价格',exact:true})
+ await d.getByRole('row').filter({has:page.getByText('first',{exact:true})}).getByRole('checkbox').check();await d.getByRole('button',{name:'下一步',exact:true}).click()
+ await expect(d.getByLabel('金额 price',{exact:true})).toHaveValue('7.75')
+ await expect(d.getByRole('button',{name:'取消',exact:true})).toBeVisible();await d.getByRole('button',{name:'取消',exact:true}).click();await expect(d).toHaveCount(0)
+})

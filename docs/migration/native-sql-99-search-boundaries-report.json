@@ -1,0 +1,161 @@
+{
+  "owner": "d87bbfe447dd",
+  "snapshot": "logs/gin-migration/native-sql-local-d87bbfe447dd",
+  "source_files": 1807,
+  "owned_database_names": 37,
+  "current_source_matches_frozen_input": true,
+  "binary_and_all_logs_sha256_verified": true,
+  "native_result": {
+    "suites": [
+      {
+        "suite": "PromotionUsage",
+        "exit_code": 0,
+        "log_sha256": "b1b691f376a1668b15d8ade42e1dbede5035c848a391d63b5c8ec72ba18c6bdf"
+      },
+      {
+        "suite": "PromotionSchema",
+        "exit_code": 0,
+        "log_sha256": "e458e81994e230425fe33958b9e712e63886908095cc3112c3dee53a1b1178b4"
+      },
+      {
+        "suite": "GeoSchema",
+        "exit_code": 0,
+        "log_sha256": "7f0d2b090f78eeb2ab5d433c6c2ea2f954adc9a3db909b6e8b1d9d829611d176"
+      },
+      {
+        "suite": "CartPriceRefresh",
+        "exit_code": 0,
+        "log_sha256": "559f449a69549f4bf8f1b7d474c0a8d757a754fba01d64b94e58b89b81c91791"
+      },
+      {
+        "suite": "CartTaxRefresh",
+        "exit_code": 0,
+        "log_sha256": "c9922a05ce1c8b9b4e659db6d206ade9517e13c40cade2f213d96469bb483831"
+      },
+      {
+        "suite": "TaxImport",
+        "exit_code": 0,
+        "log_sha256": "c0ee0506c374764e6d35cd402f39e2ec405adce5635aef1d280244f476a2ad07"
+      },
+      {
+        "suite": "TaxSchema",
+        "exit_code": 0,
+        "log_sha256": "d813b5826c9fbf9278cc226c135ee6eaba06f76ad02dc5c610f66aa349e3d053"
+      },
+      {
+        "suite": "AdminAuthentication",
+        "exit_code": 0,
+        "log_sha256": "5bef4bdd9cfc148db7c4af0122a132a781fccbbb3595e6c54ca26738f4a189a3"
+      },
+      {
+        "suite": "CatalogSchemaTransition",
+        "exit_code": 0,
+        "log_sha256": "3cd272578f11f4ca7fac9638a2d824bad006e91d89bcbf207a28d3890a764683"
+      },
+      {
+        "suite": "ProductEdits",
+        "exit_code": 0,
+        "log_sha256": "fd2117c0014019b3c56775ca76581216759250819a856fff7737334fcb34fa80"
+      },
+      {
+        "suite": "ProductPrices",
+        "exit_code": 0,
+        "log_sha256": "6323e8a237fa1c96ff8f365db44e3fc8880b5eea34a3f29cd9b17778286f4dd3"
+      },
+      {
+        "suite": "ProductInventory",
+        "exit_code": 0,
+        "log_sha256": "318c86af2168a723eaf4e1ce2d737236faee1b7389d214dce5d23935536ecdba"
+      },
+      {
+        "suite": "InventoryStockEdits",
+        "exit_code": 0,
+        "log_sha256": "03832cffbc3ec7165c5b23081e7a60adf543796f47dceaf709c5029a21eb2f3a"
+      },
+      {
+        "suite": "ReservationTransactions",
+        "exit_code": 0,
+        "log_sha256": "bdc4c5255d0adc0d12a9d991f56ad85ce017c251b07d3736ff6d37c05000f630"
+      },
+      {
+        "suite": "OrderSchema",
+        "exit_code": 0,
+        "log_sha256": "31ccc05d6bdc877f04571c64cfb2fbdd270dc5172e6ff913def24909da8fec4a"
+      },
+      {
+        "suite": "OrderImport",
+        "exit_code": 0,
+        "log_sha256": "445b0f94e955a094ff8387dfdf58cfdd708e82ff6375155c901766fa94445409"
+      },
+      {
+        "suite": "CustomerHistory",
+        "exit_code": 0,
+        "log_sha256": "ecd2a0a3b5397ca76dfbe9a19437e99274bf5a279442a8e8ba2a6c4cb0165de5"
+      },
+      {
+        "suite": "OrderRead",
+        "exit_code": 0,
+        "log_sha256": "70da88d35dc005c2fb6bde0ce2f559287b1d68ca1d195286c47307aeb932061f"
+      },
+      {
+        "suite": "PaymentSchema",
+        "exit_code": 0,
+        "log_sha256": "8cd601d38d0a39d415776834821961d15d60fc1f8ed0e74a4df31eecc7d869c0"
+      },
+      {
+        "suite": "PaymentImport",
+        "exit_code": 0,
+        "log_sha256": "b5e758b285d3cc51770b9a5caaeb032b5b88cffe769d93302b56ff240f802ba3"
+      },
+      {
+        "suite": "FulfillmentHistory",
+        "exit_code": 0,
+        "log_sha256": "4eaefdbff8cce1fc835b8855219ddd18614cf62debb156f37dcdd07bef4894d7"
+      },
+      {
+        "suite": "CartSchema",
+        "exit_code": 0,
+        "log_sha256": "b3d2639258b18d74dc18c9d46d56aca58e7cb0de0360c167848fbe859731f268"
+      },
+      {
+        "suite": "CartRuntime",
+        "exit_code": 0,
+        "log_sha256": "dada5aa0885755a98577683cc759a708aba4c0f7b37fe987178371a99527e847"
+      }
+    ],
+    "suite_count": 23,
+    "migrations": 99,
+    "complete_original_sql_regression": true,
+    "production_source_unchanged": true,
+    "frozen_source_verified": true,
+    "binary_sha256": "b07f372db5d1bc9497ceb63f63f830a23d4c4267c0e6a9fb2b355c8e1d23bb5f",
+    "goal_complete": false
+  },
+  "mysql_runtime": {
+    "version": "9.6.0",
+    "native_foreign_keys": true,
+    "foreign_key_checks": true,
+    "networking_disabled": true,
+    "socket_private": true,
+    "pid": 41615
+  },
+  "cleanup": {
+    "owned_databases_absent": true,
+    "redis_prefix_cleaned": true,
+    "last_deleted_keys": 0,
+    "shared_server_not_restarted": true
+  },
+  "mysql_cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true
+  },
+  "search_browser_joint_report": "search-option-boundaries-native-report.json",
+  "scope": "Original 23 SQL suites only; separate catalog/Astro joint supplies search evidence",
+  "source_assertions_and_production_gates_unchanged": true,
+  "main_database_migrated": false,
+  "main_binary_updated": false,
+  "real_provider_called": false,
+  "goal_complete": false
+}

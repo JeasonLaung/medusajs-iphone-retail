@@ -21,7 +21,7 @@ func registerPaidOrderPromotions(ctx context.Context, tx *gorm.DB, store string,
 	if initialWhere(tx, ref, in).Take(&attempt).Error != nil {
 		return ErrStorage
 	}
-	version := strconv.FormatUint(attempt.CartVersion, 10)
+	version := strconv.FormatUint(attempt.currentVersion(), 10)
 	readCtx := context.WithValue(ctx, checkoutReadScopeKey{}, checkoutReadScope{tx: tx.Statement.ConnPool, store: store, version: version, operation: in.OperationID, ref: ref})
 	codes, err := ReadPromotionCodes(readCtx, tx, store, ref, version, nil, "add")
 	if err != nil {

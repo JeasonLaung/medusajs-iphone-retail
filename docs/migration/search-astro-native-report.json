@@ -1,0 +1,1241 @@
+{
+  "owner": "f0261619f4c8",
+  "snapshot": "logs/gin-migration/option-definitions-native-f0261619f4c8",
+  "frozen_source_files": {
+    "backend": 885,
+    "admin": 131,
+    "storefront": 597
+  },
+  "snapshot_manifest_sha256": "cba19989d4ec67fffc8aad3c141e6d47ca973341c3d64e14d8a75ed59dc8ed06",
+  "source_and_binaries_verified": true,
+  "native_result": {
+    "exit_code": 0,
+    "migrations": 99,
+    "native_transactions_passed": true,
+    "source_files": 885,
+    "frozen_source_verified": true,
+    "binary_sha256": "9420f963d20578dca6c6233ba8becd7d872a727ce3505c19aa63f2fa25659a01",
+    "test_log_sha256": "651d959ed310d577aa7f0d2fa7dc86d58ff50e610f45a8f7eef3182270b0896a",
+    "owned_database_absent": true,
+    "redis_used": true,
+    "main_mysql_unchanged": true,
+    "real_provider_called": false,
+    "native_browser_verified": true,
+    "browser": {
+      "search": {
+        "real_built_astro": true,
+        "api_mocking": false,
+        "actual_gin_mysql": true,
+        "owned_products": 30,
+        "cases": [
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "quantities",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "verifying",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "the",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "the iphone",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "iphone the",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "iphone pr",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "i13pm",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "iphone unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "i13 unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "\u82f9\u679c",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "quantities",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "verifying",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "the",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "the iphone",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "iphone the",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "iphone pr",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "i13pm",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "iphone unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "i13 unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "\u82f9\u679c",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "quantities",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "verifying",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "the",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "the iphone",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "iphone the",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "iphone pr",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "i13pm",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "iphone unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "i13 unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "\u82f9\u679c",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "quantities",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "verifying",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "the",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "the iphone",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "iphone the",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "iphone pr",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "i13pm",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "iphone unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "i13 unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "\u82f9\u679c",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          }
+        ],
+        "desktop_typing_clear_history": true,
+        "localized_links": true,
+        "mobile_no_overflow": true,
+        "ranking_parity": false
+      },
+      "collection": {
+        "real_gin_mysql_redis_astro": true,
+        "api_mocking": false,
+        "products": 105,
+        "variants": 263,
+        "working_set_limit": 100,
+        "page_size": 12,
+        "last_page_size": 4,
+        "same_sku_and_groups": true,
+        "within_group_or": true,
+        "filtered_products": 53,
+        "latest_before_limit": true,
+        "price_sort_on_source_id_working_set": true,
+        "price_asc_first_amount": "6",
+        "ssr_first_twelve": true,
+        "sort_resets_page": true,
+        "repeated_option_parameters_preserved": true,
+        "localized_product_links": true,
+        "image_decoded": true,
+        "empty_200_unknown_404_invalid_400": true,
+        "en_zh_widths": [
+          1440,
+          390
+        ],
+        "no_body_overflow": true,
+        "actual_api_unavailable_503_and_recovery_200": true,
+        "sql_facts_unchanged": true,
+        "sql_facts_sha256": "b28738a5a17055e66e316635f329b1e5285b7bdc345c0df3382cd4c7763a73c1",
+        "sql_product_variant_price_totals_verified": true
+      },
+      "policy": {
+        "actual_admin_save": true,
+        "actual_origin_csrf_anonymous_denials": true,
+        "same_uuid_response_loss_retry": true,
+        "operation_id": "77da6841-a52d-4bb7-92f4-898f7829d67d",
+        "actual_astro_en_zh_widths": [
+          1440,
+          390
+        ],
+        "periods": [
+          36,
+          21
+        ],
+        "notes_visible": true,
+        "admin_en_desktop_zh_mobile": true,
+        "sql_receipt_count": 1
+      },
+      "scope": {
+        "actual_ant_scope_filters": true,
+        "exclusive_readonly": true,
+        "deleted_readonly": true,
+        "deleted_date_filter": true,
+        "nested_and_or_url_reload": true,
+        "scope_outside_or": true
+      },
+      "regional_price": {
+        "actual_ant_save": true,
+        "region_id": "option-region",
+        "same_uuid_response_loss_retry": true,
+        "operation_id": "783ceba5-d756-4d81-91c3-463f965d3ed9",
+        "public_quote": "123.45",
+        "astro_initial_html": true,
+        "en_zh_widths": [
+          1440,
+          390
+        ],
+        "zero_stock_still_disabled": true,
+        "removal": {
+          "actual_ant_remove": true,
+          "admin_en_desktop_zh_mobile": true,
+          "actual_origin_csrf_anonymous_denials": true,
+          "operation_id": "189674b9-6a00-430f-847c-66cdd21419f6",
+          "price_id": "price_9d3dae68-cfb7-4ebe-980b-0d468be4469b",
+          "same_uuid_response_loss_retry": true,
+          "deleted_detail_404": true,
+          "public_quote_null": true,
+          "astro_initial_html_no_old_price": true,
+          "en_zh_widths": [
+            1440,
+            390
+          ],
+          "purchase_disabled": true,
+          "sql_receipt_price_rule_count": 1
+        },
+        "quantity": {
+          "actual_ant_tier_save": true,
+          "operation_id": "d6a621ac-6f2f-4bd6-a963-75ae833d078f",
+          "price_id": "price_42badb5d-e1c2-49ce-94dd-320c509f65a7",
+          "immutable_bound_retry": true,
+          "astro_bridge_actual_quantities": [
+            {
+              "quantity": "1",
+              "quotes": []
+            },
+            {
+              "quantity": "2",
+              "quotes": [
+                "88.25"
+              ]
+            },
+            {
+              "quantity": "3",
+              "quotes": [
+                "88.25"
+              ]
+            },
+            {
+              "quantity": "4",
+              "quotes": []
+            }
+          ],
+          "quantity_one_page_no_tier_price": true,
+          "en_zh_widths": [
+            1440,
+            390
+          ],
+          "purchase_disabled": true,
+          "admin_en_desktop_zh_mobile": true,
+          "invalid_range_ui_rejected": true,
+          "edit": {
+            "operation_id": "ada48972-76d7-47ea-85c7-e03fbb7f7bf0",
+            "clear_operation_id": "8a492a66-8bed-46ee-a3e6-8e358de09feb",
+            "same_uuid_response_loss_retry": true,
+            "actual_zh_mobile_edit_en_desktop_clear": true,
+            "edited_boundary_quotes": true,
+            "explicit_null_clear": true,
+            "cleared_quantity_one_astro_en_zh": true,
+            "origin_csrf_denied": true,
+            "sql_unique_receipts_count": 2
+          },
+          "sql_receipt_exact_bound_rule_count": 1
+        },
+        "price_list": {
+          "schedule_operation_ids": [
+            "b94b0a12-ca33-4909-b86e-822760f4e93a",
+            "387895c4-d94a-4a15-8d52-82ea3ae77c38"
+          ],
+          "actual_utc_picker_schedule_clear": true,
+          "actual_override_selection": true,
+          "chinese_date_controls": true,
+          "operation_id": "462ef31d-5f69-4092-9fcf-1d091c3ebee3",
+          "draft_operation_id": "fee6e60a-de7b-465c-9816-12f6bf028d38",
+          "actual_ant_active_draft": true,
+          "immutable_retry": true,
+          "unchanged_microseconds": true,
+          "rules_preserved": true,
+          "actual_astro_active_draft_en_zh_widths": [
+            1440,
+            390
+          ],
+          "origin_csrf_anonymous_denied": true,
+          "removal": {
+            "operation_id": "c864eb97-e1a0-430f-9815-fbe68d0f7dd2",
+            "reactivate_operation_id": "64867e82-5930-4542-bb48-297cae81d203",
+            "actual_ant_en_cancel_zh_remove": true,
+            "active_quote_before_remove": "42.75",
+            "fallback_quote": "100",
+            "same_uuid_response_loss_retry": true,
+            "removed_detail_404": true,
+            "actual_astro_en_zh_widths": [
+              1440,
+              390
+            ],
+            "origin_csrf_anonymous_denied": true,
+            "sql_unique_receipt_exact_soft_cascade": true
+          },
+          "membership": {
+            "operation_id": "cc196d72-955e-4b76-8bfe-21d307a205c3",
+            "tier_operation_id": "957267f2-0324-4e25-81ba-1a209128e24f",
+            "price_id": "price_1fafeda1-e5ff-4430-ade7-65f26403860c",
+            "tier_price_id": "price_5673217e-5982-4d76-bc10-6ba58217e0d8",
+            "actual_ant_zh_mobile": true,
+            "same_uuid_response_loss_retry": true,
+            "immutable_list_selection": true,
+            "existing_regional_base_coexists": true,
+            "actual_astro_quantities": {
+              "1": "37.25",
+              "2": "32.5",
+              "3": "32.5",
+              "4": "37.25"
+            },
+            "actual_astro_en_zh_widths": [
+              1440,
+              390
+            ],
+            "zero_stock_disabled": true,
+            "sql_two_unique_receipts_exact_rows_and_base_preserved": true
+          },
+          "creation": {
+            "operation_id": "6f46e095-26d8-4da8-adb1-997daefe55c5",
+            "list_id": "plist_91891a94-99f9-424f-ba5a-de560da6fdee",
+            "actual_ant_wizard": true,
+            "product_selection_across_search": true,
+            "selected_product_ids": [
+              "list-browser-product",
+              "option-browser-product"
+            ],
+            "initial_prices": [
+              {
+                "product_id": "list-browser-product",
+                "variant_id": "list-browser-variant",
+                "currency_code": "eur",
+                "amount": "25.000000000000000000",
+                "region_id": "option-region",
+                "min_quantity": "",
+                "max_quantity": ""
+              },
+              {
+                "product_id": "list-browser-product",
+                "variant_id": "list-browser-variant",
+                "currency_code": "eur",
+                "amount": "15.500000000000000000",
+                "region_id": "option-region",
+                "min_quantity": "2",
+                "max_quantity": "3"
+              },
+              {
+                "product_id": "option-browser-product",
+                "variant_id": "variant_dd79669b-b64f-46c6-a048-16ef904bd749",
+                "currency_code": "eur",
+                "amount": "21.250000000000000000",
+                "region_id": "option-region",
+                "min_quantity": "",
+                "max_quantity": ""
+              }
+            ],
+            "initial_price_count": 3,
+            "same_uuid_response_loss_retry": true,
+            "more_specific_existing_quote": "37.25",
+            "disable_existing_operation_id": "0d589209-dfc2-4d01-b2bb-fe41d1eda27d",
+            "actual_disable_existing_list": true,
+            "actual_astro_quantities": {
+              "1": "25",
+              "2": "15.5",
+              "3": "15.5",
+              "4": "25"
+            },
+            "second_product_quote": "21.25",
+            "actual_astro_en_zh_widths": [
+              1440,
+              390
+            ],
+            "zero_stock_disabled": true,
+            "origin_csrf_anonymous_denied": true,
+            "sql_unique_creation_receipt_three_exact_prices": true,
+            "sql_specific_list_draft_receipt": true
+          },
+          "addition": {
+            "list_id": "plist_91891a94-99f9-424f-ba5a-de560da6fdee",
+            "operation_id": "4f838df9-e253-49c6-a089-b70e6537ae2c",
+            "initial_prices": [
+              {
+                "product_id": "list-browser-product",
+                "variant_id": "list-browser-variant",
+                "currency_code": "eur",
+                "amount": "12.250000000000000000",
+                "region_id": "option-region",
+                "min_quantity": "4",
+                "max_quantity": "5"
+              },
+              {
+                "product_id": "option-browser-product",
+                "variant_id": "variant_94d7ff4f-9b57-4e5a-9b22-b28ab85672c0",
+                "currency_code": "eur",
+                "amount": "17.750000000000000000",
+                "region_id": "option-region",
+                "min_quantity": "",
+                "max_quantity": ""
+              }
+            ],
+            "selected_product_ids": [
+              "list-browser-product",
+              "option-browser-product"
+            ],
+            "actual_existing_list_batch_ui": true,
+            "immutable_response_loss_retry": true,
+            "settings_rules_preserved": true,
+            "old_price_count": 3,
+            "new_price_count": 5,
+            "quantity_quotes": {
+              "1": "25",
+              "2": "15.5",
+              "3": "15.5",
+              "4": "12.25",
+              "5": "12.25",
+              "6": "25"
+            },
+            "second_product_quotes": [
+              "17.75",
+              "21.25"
+            ],
+            "actual_astro_en_zh_widths": [
+              1440,
+              390
+            ],
+            "zero_stock_disabled": true,
+            "origin_csrf_anonymous_denied": true,
+            "sql_one_batch_receipt_two_exact_prices_old_rows_preserved": true
+          },
+          "batch": {
+            "list_id": "plist_94c38c7e-a00f-4dab-a1ee-7aad93d3a4ff",
+            "operation_id": "280d9192-d862-46f0-bb95-36feeb145913",
+            "command": {
+              "operation_id": "280d9192-d862-46f0-bb95-36feeb145913",
+              "expected_revision": "46e734c9da3ff3ff37ed24b8a1b571103cdf66bb9477ff33d1bfcb6c1926ed49",
+              "product_ids": [
+                "list-browser-product",
+                "option-browser-product"
+              ],
+              "create": [
+                {
+                  "product_id": "list-browser-product",
+                  "variant_id": "list-browser-variant",
+                  "currency_code": "eur",
+                  "amount": "8.000000000000000000",
+                  "region_id": "option-region",
+                  "min_quantity": "",
+                  "max_quantity": ""
+                },
+                {
+                  "product_id": "list-browser-product",
+                  "variant_id": "list-browser-variant",
+                  "currency_code": "eur",
+                  "amount": "6.000000000000000000",
+                  "region_id": "option-region",
+                  "min_quantity": "2",
+                  "max_quantity": "3"
+                }
+              ],
+              "update": [
+                {
+                  "id": "price_35dc57c1-4aa5-4f7c-874a-e096631e4fdd",
+                  "product_id": "list-browser-product",
+                  "variant_id": "list-browser-variant",
+                  "amount": "4.125000000000000000",
+                  "min_quantity": "4",
+                  "max_quantity": "5"
+                },
+                {
+                  "id": "price_539701cd-aa87-4151-bc43-2fb576d79e0c",
+                  "product_id": "option-browser-product",
+                  "variant_id": "variant_94d7ff4f-9b57-4e5a-9b22-b28ab85672c0",
+                  "amount": "7.750000000000000000",
+                  "min_quantity": "",
+                  "max_quantity": ""
+                }
+              ],
+              "delete": [
+                {
+                  "id": "price_86f7dbc3-2251-4df5-8735-36e4edcb6551",
+                  "product_id": "list-browser-product",
+                  "variant_id": "list-browser-variant"
+                }
+              ]
+            },
+            "original_base_id": "price_86f7dbc3-2251-4df5-8735-36e4edcb6551",
+            "original_tier_id": "price_35dc57c1-4aa5-4f7c-874a-e096631e4fdd",
+            "original_other_id": "price_539701cd-aa87-4151-bc43-2fb576d79e0c",
+            "actual_ant_mixed_batch": true,
+            "chinese_mobile_readback": true,
+            "undo_removal": true,
+            "immutable_response_loss_retry": true,
+            "updated_ids_rules_preserved": true,
+            "settings_preserved": true,
+            "old_price_count": 3,
+            "new_price_count": 4,
+            "quantity_quotes": {
+              "1": "8",
+              "2": "6",
+              "3": "6",
+              "4": "4.125",
+              "5": "4.125",
+              "6": "8"
+            },
+            "other_product_quote": "7.75",
+            "astro_en_zh_widths": [
+              1440,
+              390
+            ],
+            "zero_stock_disabled": true,
+            "origin_csrf_anonymous_denied": true,
+            "sql_unique_receipt_two_creates_two_updates_one_retained_delete": true
+          },
+          "sql_unique_receipts_count": 4,
+          "sql_exact_unchanged_price_metadata_rule": true
+        },
+        "sql_price_receipt_rule_count": 1
+      },
+      "real_ant_gin_mysql_redis": true,
+      "multi_value_time_filters_url_reload": true,
+      "unchanged_microsecond_boundary_preserved": true,
+      "metadata_merge_retry_and_empty_definition": true,
+      "metadata_zh_mobile_saved": true,
+      "metadata_preserved_after_title_rank_edit": true,
+      "metadata_operation_id": "0355fd8f-2835-484f-b415-31820b2c60f5",
+      "api_mocking": false,
+      "actual_response_dropped": true,
+      "same_operation_retried": true,
+      "created_once": true,
+      "edit_identity_rank_preserved": true,
+      "product_membership_enforced": true,
+      "associated_delete_disabled": true,
+      "unassociated_delete": true,
+      "last_unassociated_value_ui_deleted": true,
+      "value_delete_response_dropped_retried": true,
+      "value_delete_operation_id": "216ae15f-a524-48d6-a756-e1900eaeeffe",
+      "value_delete_definition_id": "opt_db6bb4b1-a3ce-49d0-b14b-878f9448707a",
+      "value_delete_value_id": "optval_67a3e459-4027-459c-8c4a-8826fe664b14",
+      "csrf_origin_auth_checked": true,
+      "language_en_zh": true,
+      "mobile_no_page_overflow": true,
+      "browser_errors": 0,
+      "operation_id": "15ff5e15-c828-4046-b62c-4d47c221eae2",
+      "definition_id": "opt_7e39a38b-3010-404f-a840-a96befe52deb",
+      "astro": {
+        "real_built_astro": true,
+        "related_products_initial_html_and_hydration": true,
+        "related_current_product_excluded": true,
+        "related_exact_price": "8",
+        "related_localized_links": true,
+        "admin_shared_membership_ui": true,
+        "associated_products": 2,
+        "actual_sku_commands": 4,
+        "shared_title_rank_refresh": true,
+        "source_value_ids_preserved": true,
+        "variant_ids_configuration_preserved": true,
+        "initial_html_contains_updated_title": true,
+        "language_en_zh_widths": [
+          1440,
+          390
+        ],
+        "zero_stock_purchase_disabled": true,
+        "commerce_provider_not_exercised": true
+      },
+      "sql_create_receipt_count": 1,
+      "sql_metadata_receipt_count": 1,
+      "sql_value_delete_receipt_count": 1,
+      "sql_value_soft_deleted_preserving_id": true
+    },
+    "browser_log_sha256": "f2c3b25819de4879465c97160687896fa53706ba17ee061120d36205cf4695ac",
+    "admin_source_files": 131,
+    "astro_joint_verified": true,
+    "storefront_source_files": 597,
+    "original23_regression": false,
+    "goal_complete": false
+  },
+  "cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true,
+    "redis_used": true,
+    "owned_api_terminal": true,
+    "redis_keys_deleted": 4,
+    "owned_astro_terminal": true,
+    "owned_browser_terminal": true,
+    "redis_cleanup_error": null
+  },
+  "search": {
+    "real_built_astro": true,
+    "api_mocking": false,
+    "actual_gin_mysql": true,
+    "owned_products": 30,
+    "cases": [
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "quantities",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "verifying",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "the",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "the iphone",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "iphone the",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "iphone pr",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "i13pm",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "iphone unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "i13 unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "\u82f9\u679c",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "quantities",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "verifying",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "the",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "the iphone",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "iphone the",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "iphone pr",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "i13pm",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "iphone unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "i13 unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "\u82f9\u679c",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "quantities",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "verifying",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "the",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "the iphone",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "iphone the",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "iphone pr",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "i13pm",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "iphone unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "i13 unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "\u82f9\u679c",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "quantities",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "verifying",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "the",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "the iphone",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "iphone the",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "iphone pr",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "i13pm",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "iphone unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "i13 unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "\u82f9\u679c",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      }
+    ],
+    "desktop_typing_clear_history": true,
+    "localized_links": true,
+    "mobile_no_overflow": true,
+    "ranking_parity": false
+  },
+  "services": {
+    "at_utc": "2026-11-01T07:27:42.688023+00:00",
+    "urls": {
+      "http://127.0.0.1:9001/health": 200,
+      "http://127.0.0.1:9001/app": 200,
+      "http://127.0.0.1:8000/dk-en/store": 200,
+      "http://127.0.0.1:9100/health": 200,
+      "http://127.0.0.1:9200/products": 200,
+      "http://127.0.0.1:9300/dk-en/store": 200,
+      "http://127.0.0.1:9300/dk-en/products/swappie-iphone-14": 200
+    },
+    "main_mysql_migrations": 86,
+    "main_price_gate_enabled": false
+  },
+  "visual_review": [
+    "search-review-en-1440.png",
+    "search-review-zh-390.png"
+  ],
+  "fixture_has_no_skus_or_prices": true,
+  "source_dictionary_read_only": "source-postgres-lexemes.txt",
+  "source_postgres_version": "16.15",
+  "remaining": [
+    "PostgreSQL complex token classes including hyphenated words, decimal numbers and emails",
+    "ts_rank_cd relevance scoring",
+    "complete C01-C11 acceptance"
+  ],
+  "main_database_migrated": false,
+  "main_binary_updated": false,
+  "real_payment_or_email_called": false,
+  "goal_complete": false
+}

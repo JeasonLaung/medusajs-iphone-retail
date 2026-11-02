@@ -31,7 +31,7 @@ type ContextChange struct {
 // ContextPlan is preparation only. A caller must resolve the target region
 // from trusted storage and implement a complete atomic refresh before exposing
 // a mutation: prices, taxes, promotions, shipping and custom-price deletion.
-// No HTTP endpoint or enabled capability is provided by this planner.
+// SaveContext supplies the pre-payment transaction behind an explicit gate.
 type ContextPlan struct {
 	RegionID, Currency string
 	Locale             ContextField[string]

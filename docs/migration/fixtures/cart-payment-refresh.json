@@ -1,7 +1,7 @@
 {
   "format_version": 1,
   "scope": "Original pure workflow callbacks only; no provider, database, application or compensation executed",
-  "source_file": "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/workflows/refresh-payment-collection.js",
+  "source_file": "@medusajs/core-flows/dist/cart/workflows/refresh-payment-collection.js",
   "source_sha256": "6e154a7b4d628a2fff7df1e8df54fe695bdfa40af6fdabe4fc8cf20dc622e064",
   "cases": [
     {

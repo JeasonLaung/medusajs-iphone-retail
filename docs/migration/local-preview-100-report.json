@@ -1,0 +1,79 @@
+{
+  "checked_utc": "2026-11-01T11:00:44.105567+00:00",
+  "scope": "Actual local99 to100 upgrade and default metadata fallback; configured SEO not accepted",
+  "evidence_sha256": {
+    "retail/scripts/rehearse-local-preview-100.py": "50f11724166f9824444643c800f5e4cd75792a128fb0b85c8ca960b6797e647f",
+    "retail/scripts/upgrade-local-preview-100.py": "b1df6db92ac52147381b0ec94a4c9e336df47f55d1bbc6a388c67c47bf26ffa9",
+    "retail/scripts/preview-api.py": "dcfe4174e80a55d132c2c83bc197cdd26a862e7cfb993b970e480c63f32e59e8",
+    "retail/scripts/verify-local-preview.py": "eeea82cccf9648743a18964371ac868a3814d21c9faea2c1deb6406e7cbfd3c8",
+    "log/gin-preview-mysql/schema-upgrade-100/result.json": "82d188249f0ebe42d4d58e8cc370d2b1f68191f6dcaab4812c38fa73e4f1a40e",
+    "logs/gin-migration/preview-100-upgrade-c85ad7182784/report.json": "c82f721dd7ca4f42c68ea5881c08fcce6633b42867ea32e1e2fa57da2a084c81",
+    "logs/gin-migration/preview-100-upgrade-c85ad7182784/backup-fingerprints.json": "3c4b85bac0c126208b8509ac314bb570693e8028a24052efd398c729d6650330",
+    "logs/gin-migration/preview-100-upgrade-c85ad7182784/migrated-fingerprints.json": "eefc90f138da22134cfc6f87dd271f8574e4f8bf3b7087cd8d0f098a12d12817",
+    "logs/gin-migration/seo-defaults-1793530477712/report.json": "654708b5a5465085cc9b806d48ef1924c2ffc4b78014ce720ba02f33aedd6241"
+  },
+  "actual_upgrade": {
+    "previous_pid": 372,
+    "previous_binary_sha256": "49c21cb9e74dad47412617be116ba4331ceb26203ebff0a53f77d29ee59fe0dc",
+    "new_binary_sha256": "e86c869e6186a994ec45fb71d488576d1a8925a1152d034d096cad61b9156298",
+    "frozen_source_owner": "85413f54d3b3",
+    "old_schema": 99,
+    "target_schema": 100,
+    "configuration_changed": false,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "goal_complete": false,
+    "success": true,
+    "new_pid": 25637,
+    "health": 200,
+    "rehearsal_owner": "c85ad7182784",
+    "old_business_tables_unchanged": 291,
+    "new_tables": [
+      "seo_pages",
+      "seo_settings"
+    ]
+  },
+  "readonly_after_upgrade": {
+    "checked_utc": "2026-11-01T10:51:12.253653+00:00",
+    "fresh_backup_owner": "9d72f058ad87",
+    "service": {
+      "running": true,
+      "pid": 25637,
+      "health": 200,
+      "schema_migrations": 100
+    },
+    "persistent_tables": 295,
+    "business_tables_equal_to_rehearsal": 293,
+    "migration_journal_execution_times_excluded": true,
+    "migration_checksums_match": true,
+    "original_tables_unchanged": 268,
+    "live_counts_match_dump": true,
+    "foreign_keys_checked": 213,
+    "orphan_rows": 0,
+    "new_gates_default_closed": true,
+    "retained_shared86_all_table_fingerprints_match": true,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "post_cutover_data_verified": true,
+    "goal_complete": false
+  },
+  "default_metadata_browser": {
+    "report": "logs/gin-migration/seo-defaults-1793530477712/report.json",
+    "visits": 58,
+    "public_comparisons": 16,
+    "configuration_api_success_proven": false
+  },
+  "shared_mysql_modified": false,
+  "configuration_changed": false,
+  "real_provider_called": false,
+  "full_seo_accepted": false,
+  "goal_complete": false,
+  "known_issue_at_initial_upgrade": "Existing preview omitted STOREFRONT_ORIGIN; deployed Gin SEO Config returned503. Default page fallback passed, but four new SEO file routes503. Local default origin fix is in source with focused SQL passed; complete23 regression and main binary refresh pending.",
+  "resolution": {
+    "report": "seo-artifacts-native-report.json",
+    "owner": "9269d431f503",
+    "new_pid": 32874,
+    "configuration_api_http_status": 200,
+    "file_routes_verified": 4
+  }
+}

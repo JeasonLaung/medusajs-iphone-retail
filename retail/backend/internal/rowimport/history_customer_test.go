@@ -31,6 +31,10 @@ func TestCustomerSubjectBaselineAndNoLoginGrant(t *testing.T) {
 		if _, err := Convert("customer", row); err != ErrHistoryPolicy {
 			t.Fatal("ordinary conversion bypassed historical identity policy")
 		}
+		inspection, err := InspectValues("customer", row)
+		if err != nil || !inspection.RequiresHistoryPolicy || inspection.OrdinaryConvertible || len(inspection.InvalidColumns) != 0 {
+			t.Fatal("diagnostic must classify valid historical customer rows without attempting ordinary conversion")
+		}
 		result, err := h.Convert(row)
 		if err != nil || result.Row.Table != "historical_customer_subjects" || len(result.Row.Columns) != 12 || result.Binding.Disposition != "excluded" || result.Binding.Effect != "customer-account-binding" {
 			t.Fatal("historical customer conversion invalid")

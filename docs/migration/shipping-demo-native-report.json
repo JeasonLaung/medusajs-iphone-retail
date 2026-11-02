@@ -1,0 +1,381 @@
+{
+  "checked_at": "2026-11-01T10:14:32.241193+00:00",
+  "scope": "C01 public fixed official DHL demo and controlled local99 binary refresh; not full migration completion",
+  "source_sha256": {
+    "retail/backend/internal/shippingdemo/dhl.go": "7b7a79de5f6ec27efc8c382765697577044cec394b2dac19e4274d3224cefe81",
+    "retail/backend/internal/shippingdemo/dhl_test.go": "6dcd67bdf42348334d6394c46460d56eaf814d9447b7c4396b63c781ad5f68a5",
+    "retail/backend/internal/server/router.go": "a8a9bce9230a9e51321dd168dc3e0ccbc29397bc58ce95670ca9b5821dc02f3b",
+    "retail/storefront/src/lib/gin-public.ts": "eb7a367d0ecbd48f9577c6593afed0cbd7169917c7a93ad43e71110781e6be87",
+    "retail/storefront/src/lib/shipping-demo.ts": "3573594e477319041addcb369fe9c0fb4e1fb0b0b4cf68973893aef3c60ca163",
+    "retail/storefront/src/components/order/shipping-demo.tsx": "c5c3735ab30d68855ffdee97f890a4fa9ac71f2081eb803c4c0ae66bb0b19987",
+    "retail/storefront/src/components/order/dhl-demo-copy.json": "0cd75bfb8fb50d91c3c82709aa66fa362b20edfb70bc11568a1c9b5c0bbef7c9",
+    "retail/storefront/src/components/account/gin-account.tsx": "d6451b83db3b2bdeba210267228d7a9c652f3c56df9d3d389a9bf72567994428",
+    "retail/storefront/src/pages/[countryCode]/shipping-demo.astro": "acb002d4316cac2a1686cadde693a1d066beb0e47847a60f59f3ec97eaa9d450",
+    "retail/storefront/src/pages/[countryCode]/account/shipping-demo.astro": "2a953882b9c3d08e3cc68b99de95a7552903fd354bfa63b8cf28a7cc3a78017e",
+    "retail/storefront/src/pages/api/store/shipping-demo/dhl.ts": "6cd889b85f5d225790ff2093c54650d903ade80b19fceae0535a96216171ed2a",
+    "retail/storefront/tests/shipping-demo.test.ts": "8993a7796a1dd1103e261eb2301a7bc797ca4c02b752ea7e0c5f3491d6ea77ec",
+    "retail/admin/tests/shipping-demo.native.mjs": "4c053599e0741fa8386b68168dec525da59155c0f9923644187a917287c93e65",
+    "retail/scripts/refresh-local-preview.py": "c3a4b0a2b80a1d304a181ff1a2c5914142fcd8527916059d4146f123dd4c73ac"
+  },
+  "copy_byte_identical": true,
+  "sql": {
+    "owner": "42fb2f0d44d4",
+    "source_files": 1809,
+    "owned_database_names": 37,
+    "result_path": "logs/gin-migration/native-sql-local-42fb2f0d44d4/result.json",
+    "result_sha256": "c3c7489d213636e43b84d8ea062dbc2818fd0a14c93fcae3e38fe781164f822c",
+    "suites": [
+      {
+        "suite": "PromotionUsage",
+        "exit_code": 0,
+        "log_sha256": "57a81e0823a477f70ff4cf97ddfc0a6595c249df7a892420e309ec982ae99778"
+      },
+      {
+        "suite": "PromotionSchema",
+        "exit_code": 0,
+        "log_sha256": "727b08a1ce09dda34234d7fc4b42a564c061bea1f833646a5d59dd9f1aa1b51a"
+      },
+      {
+        "suite": "GeoSchema",
+        "exit_code": 0,
+        "log_sha256": "effb7b1dd63434c466c1fb4536828ebd4aad61a03e7e037f66aefca2d819f727"
+      },
+      {
+        "suite": "CartPriceRefresh",
+        "exit_code": 0,
+        "log_sha256": "5c62c07d8a89381eba64a86659ad35f5c512369efbd85ff3e9466eaded60ffe6"
+      },
+      {
+        "suite": "CartTaxRefresh",
+        "exit_code": 0,
+        "log_sha256": "9bac3a6611d1c70b65dcc804ff27663f64a5e748a71a5776e6ee4805e663bad6"
+      },
+      {
+        "suite": "TaxImport",
+        "exit_code": 0,
+        "log_sha256": "4002a71d51a947850c9f0da48f4cb365db459819e80473b284e1cadc209e0cfd"
+      },
+      {
+        "suite": "TaxSchema",
+        "exit_code": 0,
+        "log_sha256": "a722c536e39008bb2137d1f053a4eded6b414c9fbd11fccac1d53f1890122a9d"
+      },
+      {
+        "suite": "AdminAuthentication",
+        "exit_code": 0,
+        "log_sha256": "03f071838b2372018cc50c0d869389b4de9aa6cf76e0e7a0f067b80867730bce"
+      },
+      {
+        "suite": "CatalogSchemaTransition",
+        "exit_code": 0,
+        "log_sha256": "d6e4240b318090d8a732812e1ccbab2531325207fb8059abd7e74d399e2aa331"
+      },
+      {
+        "suite": "ProductEdits",
+        "exit_code": 0,
+        "log_sha256": "3fe385e674f7c22119639805d8a59ac065efa6f83389ce201a2ca3179291dc87"
+      },
+      {
+        "suite": "ProductPrices",
+        "exit_code": 0,
+        "log_sha256": "663c7d0475df9a2ba362906edecaad21789ee834685c5ed8011872eb71127faa"
+      },
+      {
+        "suite": "ProductInventory",
+        "exit_code": 0,
+        "log_sha256": "c0fd8f391946d8c1c049f93370d866ea114794fa0875f7218a94a6c949480303"
+      },
+      {
+        "suite": "InventoryStockEdits",
+        "exit_code": 0,
+        "log_sha256": "d2b80a7b2b148c1541502a33aefa5fc439dfb7eabadeced24bd82136270d3609"
+      },
+      {
+        "suite": "ReservationTransactions",
+        "exit_code": 0,
+        "log_sha256": "24246acbfb23ddd917bc8bf82a9576522135211bcc6153272e1c9c31b60bb26c"
+      },
+      {
+        "suite": "OrderSchema",
+        "exit_code": 0,
+        "log_sha256": "131d343be660560a65e1bf55f69526a859e979fcfb96ae87d3812bc5a91dadd9"
+      },
+      {
+        "suite": "OrderImport",
+        "exit_code": 0,
+        "log_sha256": "026985315c12ec197b6fd71f960d92121c291143a7599caba30e44d30c85693e"
+      },
+      {
+        "suite": "CustomerHistory",
+        "exit_code": 0,
+        "log_sha256": "0fa19731a001b59cc3eb81261b2bccb239eb51d764b4075b187daabc34dfa534"
+      },
+      {
+        "suite": "OrderRead",
+        "exit_code": 0,
+        "log_sha256": "214452ef1d0d4a15f141f0318728f4c2bee3d406650711e78b661d1a8dc518f9"
+      },
+      {
+        "suite": "PaymentSchema",
+        "exit_code": 0,
+        "log_sha256": "f2b0f3783488c586c745b6ad365fd29b9243c9bf3743a063e7e6e3f44f4f5ade"
+      },
+      {
+        "suite": "PaymentImport",
+        "exit_code": 0,
+        "log_sha256": "9721da2c881818788f672b65b33349363c34182a999952d1e7edecf3508c87f4"
+      },
+      {
+        "suite": "FulfillmentHistory",
+        "exit_code": 0,
+        "log_sha256": "9617e5a6dd4ed8862c74bbad34188c59d812a6c28d5d4f70deb167eb996e33e1"
+      },
+      {
+        "suite": "CartSchema",
+        "exit_code": 0,
+        "log_sha256": "c540760a6591d9b3e9376cdce7d3815fe47155d3c53090999ff7b851a49b0859"
+      },
+      {
+        "suite": "CartRuntime",
+        "exit_code": 0,
+        "log_sha256": "0bba957e5631b811f25a450cc40c28cbfdb818b93f55e77a3ae8310ddcc9ab65"
+      }
+    ],
+    "suite_count": 23,
+    "migrations": 99,
+    "complete_original_sql_regression": true,
+    "production_source_unchanged": true,
+    "frozen_source_verified": true,
+    "binary_sha256": "f74aea9c6085b20202be12f0c6151b7816c3c99b888568b0806e52b6b45b3f0e",
+    "goal_complete": false,
+    "resources_cleanup": {
+      "owned_databases_absent": true,
+      "redis_prefix_cleaned": true,
+      "last_deleted_keys": 0,
+      "shared_server_not_restarted": true
+    },
+    "mysql_cleanup": {
+      "server_terminal": true,
+      "data_removed": true,
+      "socket_removed": true,
+      "main_mysql_unchanged": true
+    }
+  },
+  "binary_refresh": {
+    "owner": "42fb2f0d44d4",
+    "previous_owner": "d87bbfe447dd",
+    "previous_pid": 69436,
+    "previous_binary_sha256": "b4d5b732f3a879506817d01aa0baa2281994807bc2dd54c6426c4b3b3a509283",
+    "new_binary_sha256": "49c21cb9e74dad47412617be116ba4331ceb26203ebff0a53f77d29ee59fe0dc",
+    "sql_result_sha256": "c3c7489d213636e43b84d8ea062dbc2818fd0a14c93fcae3e38fe781164f822c",
+    "schema_migrations": 99,
+    "configuration_changed": false,
+    "schema_changed": false,
+    "success": true,
+    "new_pid": 372,
+    "health": 200
+  },
+  "database_verification": {
+    "checked_utc": "2026-11-01T10:11:20.569290+00:00",
+    "fresh_backup_owner": "9d72f058ad87",
+    "service": {
+      "running": true,
+      "pid": 372,
+      "health": 200,
+      "schema_migrations": 99
+    },
+    "persistent_tables": 293,
+    "business_tables_equal_to_rehearsal": 291,
+    "migration_journal_execution_times_excluded": true,
+    "migration_checksums_match": true,
+    "original_tables_unchanged": 268,
+    "live_counts_match_dump": true,
+    "foreign_keys_checked": 213,
+    "orphan_rows": 0,
+    "new_gates_default_closed": true,
+    "retained_shared86_all_table_fingerprints_match": true,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "post_cutover_data_verified": true,
+    "goal_complete": false
+  },
+  "browser": {
+    "raw_report": "logs/gin-migration/shipping-demo-1793527852451/report.json",
+    "sha256": "f265f6516315d178beaae96b27aa25f190527c109a2809387ba3b4112bf8b1c4",
+    "cases": 8,
+    "comparisons": [
+      {
+        "lang": "en",
+        "width": 390,
+        "displayed_event_text_equal": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "displayed_event_text_equal": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "displayed_event_text_equal": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "displayed_event_text_equal": true
+      }
+    ],
+    "page_errors": [],
+    "business_write_requests": [],
+    "synthetic_responses": false,
+    "transport_abort_for_retry_test": true,
+    "actual_official_sample": true,
+    "external_https_assets_blocked": true
+  },
+  "storefront_tests": {
+    "count": 205,
+    "pass": 205,
+    "fail": 0,
+    "exit_code": 0,
+    "log_sha256": "1f95ae94c4720745496efa9a848c18b6d25c2854e23248b1a27ddd9d45ddde66",
+    "sandbox_first_run": "Two existing loopback HTTP transport tests could not listen in sandbox; rerun with local networking passed all205."
+  },
+  "astro_check": {
+    "files": 448,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 17,
+    "exit_code": 0
+  },
+  "services": {
+    "routes": [
+      {
+        "url": "http://127.0.0.1:9001/health",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9001/app",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9100/health",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9200/products",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-en/store",
+        "status": 200,
+        "initial_html_product_links": 30
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-en/shipping-demo",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-zh/shipping-demo",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-en/account/shipping-demo",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/zz-en/shipping-demo",
+        "status": 404
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-fr/shipping-demo",
+        "status": 404
+      },
+      {
+        "url": "http://127.0.0.1:9300/api/store/shipping-demo/dhl",
+        "status": 200,
+        "no_store": true,
+        "events": 12
+      }
+    ],
+    "recent_logs": [
+      {
+        "path": "log/gin-preview-mysql/api.log",
+        "lines_inspected": 250,
+        "panic_or_fatal_count": 0,
+        "unexpected_http_5xx_count": 0
+      },
+      {
+        "path": "log/202611011104.log",
+        "lines_inspected": 250,
+        "panic_or_fatal_count": 0,
+        "unexpected_http_5xx_count": 0
+      },
+      {
+        "path": "log/gin-local-storefront.log",
+        "lines_inspected": 0,
+        "panic_or_fatal_count": 0,
+        "unexpected_http_5xx_count": 0
+      }
+    ],
+    "business_writes": false,
+    "goal_complete": false
+  },
+  "disk_recovery": {
+    "regenerable_go_cache_before": "22GiB",
+    "remaining_root_owned_cache_left_untouched": true,
+    "business_data_and_evidence_removed": false,
+    "current_free_bytes": 23140122624
+  },
+  "public_astro_route_connected": true,
+  "account_route_connected": true,
+  "authenticated_account_joint_verified": false,
+  "main_auth_gate_remains_closed": true,
+  "production_build_validated": false,
+  "rollback_exercised": false,
+  "full_storefront_accepted": false,
+  "goal_complete": false,
+  "account_closed_gate_browser": {
+    "report": "log/gin-preview-mysql/shipping-demo-account-boundary.json",
+    "sha256": "824150c2e31db32830cb02354866eb646b9030c466872003e4400aa05ca2a52f",
+    "rows": [
+      {
+        "lang": "en",
+        "width": 390,
+        "status": 200,
+        "closed_auth_gate_visible": true,
+        "dhl_queries": 0,
+        "page_errors": 0,
+        "overflow": false
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "status": 200,
+        "closed_auth_gate_visible": true,
+        "dhl_queries": 0,
+        "page_errors": 0,
+        "overflow": false
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "status": 200,
+        "closed_auth_gate_visible": true,
+        "dhl_queries": 0,
+        "page_errors": 0,
+        "overflow": false
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "status": 200,
+        "closed_auth_gate_visible": true,
+        "dhl_queries": 0,
+        "page_errors": 0,
+        "overflow": false
+      }
+    ],
+    "authenticated_account_verified": false,
+    "business_writes": false
+  }
+}

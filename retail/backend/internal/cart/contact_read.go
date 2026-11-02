@@ -62,7 +62,7 @@ func readContactValues(tx *gorm.DB, cart Snapshot) (ContactDetail, error) {
 		var address ContactAddress
 		// Null optional fields become empty input values; never serialize the row.
 		result := tx.Table("cart_addresses").Select("COALESCE(first_name,'') AS first_name,COALESCE(last_name,'') AS last_name,COALESCE(company,'') AS company,COALESCE(address_1,'') AS address1,COALESCE(address_2,'') AS address2,COALESCE(city,'') AS city,COALESCE(country_code,'') AS country,COALESCE(province,'') AS province,COALESCE(postal_code,'') AS postal_code,COALESCE(phone,'') AS phone").Where("id=? AND deleted_at IS NULL", *a.id).Scan(&address)
-		if result.Error != nil || result.RowsAffected != 1 || !validContactAddress(address) {
+		if result.Error != nil || result.RowsAffected != 1 || !validContactAddressValues(address, false) {
 			return ContactDetail{}, ErrSchema
 		}
 		*a.target = &address

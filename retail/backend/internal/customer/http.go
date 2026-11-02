@@ -28,25 +28,30 @@ type HTTPSessions interface {
 	AllowLogin(context.Context, sessionstore.Realm, string) (bool, error)
 }
 type HTTPOptions struct {
-	OrderPayments *orderpayments.Service
-	Sessions      HTTPSessions
-	Ring          *protected.Ring
-	Origin        string
-	Secure        bool
-	BridgeKey     string
-	StoreID       string
+	ManualProviderIDs []string
+	OrderPayments     *orderpayments.Service
+	Sessions          HTTPSessions
+	Ring              *protected.Ring
+	Origin            string
+	Secure            bool
+	BridgeKey         string
+	StoreID           string
 }
 type HTTPHandler struct {
-	orderPayments *orderpayments.Service
-	store         *Store
-	sessions      HTTPSessions
-	origin, host  string
-	secure        bool
-	bridgeSecret  []byte
-	storeID       string
+	manualProviders []string
+	orderPayments   *orderpayments.Service
+	store           *Store
+	sessions        HTTPSessions
+	origin, host    string
+	secure          bool
+	bridgeSecret    []byte
+	storeID         string
 }
 
 func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
+	if len(options.ManualProviderIDs) > 100 {
+		return nil, ErrUnavailable
+	}
 	store, err := New(db, options.Ring, options.Sessions, options.Origin)
 	if err != nil {
 		return nil, ErrUnavailable
@@ -66,7 +71,7 @@ func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
 			return nil, ErrUnavailable
 		}
 	}
-	return &HTTPHandler{orderPayments: options.OrderPayments, store: store, sessions: options.Sessions, origin: options.Origin, host: u.Host, secure: options.Secure, bridgeSecret: key, storeID: options.StoreID}, nil
+	return &HTTPHandler{manualProviders: append([]string(nil), options.ManualProviderIDs...), orderPayments: options.OrderPayments, store: store, sessions: options.Sessions, origin: options.Origin, host: u.Host, secure: options.Secure, bridgeSecret: key, storeID: options.StoreID}, nil
 }
 
 // Register is mounted on /api/store/customer by the production API, even when
@@ -74,10 +79,13 @@ func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
 func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private := group.Group("")
 	private.Use(platform.PrivateResponse)
-	private.Use(h.bridge)
 	private.Use(func(c *gin.Context) {
 		c.Header("Referrer-Policy", "no-referrer")
-		if (c.Request.URL.RawQuery != "" || c.Request.URL.ForceQuery) && !(c.Request.Method == "GET" && (c.FullPath() == "/api/store/customer/orders" || c.FullPath() == "/api/store/customer/notifications" || c.FullPath() == "/api/store/customer/buyback/requests")) {
+		c.Next()
+	})
+	private.Use(h.bridge)
+	private.Use(func(c *gin.Context) {
+		if (c.Request.URL.RawQuery != "" || c.Request.URL.ForceQuery) && !(c.Request.Method == "GET" && (c.FullPath() == "/api/store/customer/product-reviews/purchases" || c.FullPath() == "/api/store/customer/orders" || c.FullPath() == "/api/store/customer/notifications" || c.FullPath() == "/api/store/customer/buyback/requests")) {
 			platform.Fail(c, 404, "not_found", "Resource not found")
 			return
 		}
@@ -88,6 +96,9 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/auth/login", h.LoginAccount)
 	private.POST("/auth/verify", h.VerifyAccount)
 	private.POST("/auth/resend", h.ResendVerification)
+	private.POST("/product-reviews", h.SubmitProductReview)
+	private.GET("/product-reviews/purchases", h.ProductReviewPurchases)
+	private.GET("/orders/:id/product-reviews", h.OrderProductReviews)
 	private.GET("/me", h.Me)
 	private.GET("/notifications", h.ListNotices)
 	private.POST("/notifications", h.MarkNoticesRead)
@@ -105,6 +116,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/orders/:id/after-sales", h.AfterSales)
 	private.POST("/orders/:id/after-sales", h.CreateAfterSales)
 	private.POST("/orders/:id/attach", h.AttachOrder)
+	private.POST("/cart-transfer", h.TransferCart)
 	private.POST("/orders/:id/payments", h.PrepareOrderPayment)
 	private.GET("/orders/:id/payments", h.OrderPaymentContext)
 	private.GET("/orders/:id/payments/:operation_id", h.ReadOrderPayment)
@@ -169,6 +181,8 @@ func customerCSRF(c *gin.Context) string {
 }
 func (h *HTTPHandler) fail(c *gin.Context, err error) {
 	switch {
+	case errors.Is(err, ErrCartConflict):
+		platform.Fail(c, 409, "customer.cart_conflict", "Refresh your cart before continuing sign in")
 	case errors.Is(err, ErrAfterSalesConflict):
 		platform.Fail(c, 409, "customer.after_sales_conflict", "An after-sales request is already open or this operation has changed")
 	case errors.Is(err, ErrOrderMissing):
@@ -453,6 +467,13 @@ func (h *HTTPHandler) LogoutAccount(c *gin.Context) {
 	h.clearCookie(c, "session", true)
 	h.clearCookie(c, "csrf", false)
 	h.clearCookie(c, "prelogin", true)
+	for _, kind := range []string{"scope", "scope_csrf", "possession", "csrf"} {
+		name := "retail_cart_" + kind
+		if h.secure {
+			name = "__Host-" + name
+		}
+		http.SetCookie(c.Writer, &http.Cookie{Name: name, Path: "/", MaxAge: -1, HttpOnly: kind == "scope" || kind == "possession", Secure: h.secure, SameSite: http.SameSiteLaxMode})
+	}
 	c.JSON(200, gin.H{"success": true})
 }
 

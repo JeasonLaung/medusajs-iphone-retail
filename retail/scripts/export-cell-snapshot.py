@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -46,10 +47,29 @@ def program_sql():
     return '\n'.join(statements) + '\n'
 
 
-def export(container, user, database, output):
-    for value in (container, user, database):
+def source_command(container, user, database, host=None, port=None, psql='psql'):
+    for value in (user, database):
         if not re.fullmatch(r'[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,127}', value):
             raise ValueError('Explicit safe source connection identifiers required')
+    options = ['-X', '-w', '-q', '-A', '-t', '-v', 'ON_ERROR_STOP=1', '-U', user, '-d', database]
+    if container is not None:
+        if host is not None or port is not None or not re.fullmatch(r'[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,127}', container):
+            raise ValueError('Choose exactly one explicit source connection')
+        return ['docker', 'exec', '-i', container, 'psql', *options]
+    if host not in ('127.0.0.1', '::1', 'localhost') or type(port) is not int or not 1 <= port <= 65535:
+        raise ValueError('Native source requires an explicit loopback host and port')
+    return [psql, '-h', host, '-p', str(port), *options]
+
+
+def private_file(path, mode='w'):
+    # Source snapshots can include customer and payment history. Never expose
+    # them through the caller's default umask, even while the export is running.
+    return os.fdopen(os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600), mode,
+                     **({} if 'b' in mode else {'encoding': 'utf-8', 'newline': '\n'}))
+
+
+def export(container, user, database, output, *, host=None, port=None, psql='psql'):
+    command = source_command(container, user, database, host, port, psql)
     output = Path(output).resolve()
     if subprocess.run(['git', 'check-ignore', '--quiet', str(output)], cwd=ROOT).returncode:
         raise ValueError('Output must be Git-ignored')
@@ -63,13 +83,15 @@ def export(container, user, database, output):
         raise ValueError('Temporary query path already exists')
     query_owned = False
     try:
-        with script.open('x', encoding='utf-8', newline='\n') as generated:
+        with private_file(script) as generated:
             query_owned = True
             generated.write(program_sql())
-        with script.open('rb') as queries, output.open('xb') as target:
-            result = subprocess.run(['docker', 'exec', '-i', container, 'psql', '-X', '-q', '-A', '-t',
-                                     '-v', 'ON_ERROR_STOP=1', '-U', user, '-d', database],
-                                    stdin=queries, stdout=target, stderr=subprocess.DEVNULL, timeout=600)
+        with script.open('rb') as queries, private_file(output, 'wb') as target:
+            try:
+                result = subprocess.run(command, stdin=queries, stdout=target,
+                                        stderr=subprocess.DEVNULL, timeout=600)
+            except (OSError, subprocess.TimeoutExpired):
+                raise RuntimeError('Read-only source export unavailable or timed out; no completion checksum written') from None
         if result.returncode:
             raise RuntimeError('Read-only cell export failed; partial file retained without completion checksum')
         digest = hashlib.sha256()
@@ -78,7 +100,7 @@ def export(container, user, database, output):
                 digest.update(block)
         # This checksum is transport completeness evidence, not an authenticated
         # origin signature. Go must still verify the full protocol and counts.
-        with output.with_suffix(output.suffix + '.sha256').open('x', encoding='ascii') as checksum:
+        with private_file(output.with_suffix(output.suffix + '.sha256')) as checksum:
             checksum.write(digest.hexdigest() + '\n')
         return digest.hexdigest()
     finally:
@@ -88,9 +110,20 @@ def export(container, user, database, output):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--container', required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument('--container')
+    source.add_argument('--local', action='store_true', help='Use local psql and libpq PGPASSFILE/PGPASSWORD authentication')
+    parser.add_argument('--host')
+    parser.add_argument('--port', type=int)
+    parser.add_argument('--psql', default='psql', help='Native psql executable')
     parser.add_argument('--user', required=True)
     parser.add_argument('--database', required=True)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
-    print(json.dumps({'sha256': export(args.container, args.user, args.database, args.output), 'tables': 159}))
+    try:
+        digest = export(args.container, args.user, args.database, args.output,
+                        host=args.host, port=args.port, psql=args.psql)
+    except (ValueError, RuntimeError, OSError) as error:
+        # Do not print arbitrary OS errors: they can include private file paths.
+        parser.exit(1, (str(error) if isinstance(error, (ValueError, RuntimeError)) else 'Private export file unavailable') + '\n')
+    print(json.dumps({'sha256': digest, 'tables': 159}))

@@ -1,0 +1,202 @@
+{
+  "date": "2026-11-01",
+  "scope": "Region/locale change with existing delivery, currency-dependent manual and automatic promotions, and original checkout draft address completion",
+  "goal_complete": false,
+  "main_preview_schema": 101,
+  "main_preview_refreshed": false,
+  "source_migrations": 102,
+  "browser_owner": "ef52c108ff7e",
+  "full_sql_owner": "c55f563ef828",
+  "full_sql_suites": 23,
+  "full_sql_source_files": 1829,
+  "frozen_and_current_sources_verified": true,
+  "browser_source_files": {
+    "backend": 916,
+    "admin": 143,
+    "storefront": 645
+  },
+  "actual_gin_mysql_redis_astro": true,
+  "api_mocking": false,
+  "normal_checkout_cases": 4,
+  "closed_gate_no_cart_cases": 4,
+  "context_posts": 16,
+  "unique_context_sql_receipts": 12,
+  "browser_errors": 0,
+  "final_cart": {
+    "count": 4,
+    "version": "9",
+    "region": "fixture-region",
+    "currency": "eur",
+    "locale": "en-GB",
+    "shipping_address": null,
+    "billing_preserved": true
+  },
+  "protected_rows": {
+    "inventory_reservations": {
+      "count": 4,
+      "rows_sha256": "d57f11808df3d5c8af5b8fe188a112b52920647cce22aa5f7025b58de22ed4a6"
+    },
+    "inventory_levels": {
+      "count": 4,
+      "rows_sha256": "3142b599879e3b8faf984a918833b1e6c15f73ec3ebae0e9d492efd7807551be"
+    },
+    "cart_payment_collections": {
+      "count": 0,
+      "rows_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "payment_collections": {
+      "count": 2,
+      "rows_sha256": "c9796016435dadd1f9d824bd65005107bf376b105bf32e8357b17c5cdcae8cd4"
+    },
+    "payment_sessions": {
+      "count": 1,
+      "rows_sha256": "a0ab00f710e2a3c3b023c80c4b12d48f3376782ebbe0ccd1eff88915214c7afb"
+    },
+    "orders": {
+      "count": 3,
+      "rows_sha256": "ac9692c05a43d9de61f937113f3692ac2d4fb976a6b0466ede45f40254db6d85"
+    }
+  },
+  "protected_rows_unchanged": true,
+  "storefront_tests": 239,
+  "astro_check": {
+    "files": 467,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 17
+  },
+  "go_all_packages": "passed",
+  "go_vet_related": "passed; tool session74993 exit0",
+  "native_foreign_keys": true,
+  "real_provider_called": false,
+  "main_mysql_modified": false,
+  "regression_found_and_fixed": {
+    "symptom": "GET contacts returned503 after a source-compatible country-only region address; client also rejected a partial address and checkout step selection treated it as complete",
+    "fix": "Bounded partial addresses allowed only in private draft reads; strict complete contact submission and shipping/payment validation retained; incomplete drafts force address step",
+    "actual_browser": "Requested payment step redirects to original address form; country/email/billing retained; new required shipping values filled/submitted through actual UI and read back at version8; region change then version9"
+  },
+  "source_precision_oracle": {
+    "script": "retail/scripts/capture-promotion-compute.cjs",
+    "cases": 20,
+    "new_case": "context-usd-high-precision-percentage",
+    "input_subtotal": "42.000000000000000000001",
+    "percent": 20,
+    "original_discount": "8.4",
+    "expected_usd_total": "36.9600000000000000000011",
+    "note": "Original allocation division precision, not an invented all-precision percentage product"
+  },
+  "sql_verified": [
+    "Same-region locale refresh reprices saved delivery keeping method ID and copied address",
+    "New country removes ineligible delivery and its active tax lines",
+    "Currency-specific manual discount removed and automatic USD20 applied",
+    "Exact source allocator discount and raw residual tax/total",
+    "Multi-country target clears shipping address, taxes and promotions; billing preserved",
+    "Final receipt failure rolls back every base-table row fingerprint",
+    "Exact operation replay applies once",
+    "Stock/payment/order/promotion usage row fingerprints unchanged",
+    "Country-only owned draft readable; incomplete draft shipping rejected without row changes"
+  ],
+  "browser_verified": [
+    "Actual private HTTP cart/item/contact/delivery/promotion setup",
+    "Original selector and existing CSS; en/zh x390/1440",
+    "Same region keeps delivery ID/address and total121.25",
+    "Discarded real successful POST repeats same operation/version/body",
+    "New currency total36.9600000000000000000011 and automatic code confirmed",
+    "Requested payment URL with incomplete country-only draft forces address form",
+    "Country/email and copied billing retained, shipping fields completed via original form",
+    "Return to multi-country EUR: no shipping/tax/discount, total100/version9",
+    "All cart business gates closed no-cart preferences still work"
+  ],
+  "cleanup_browser": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "api_terminal": true,
+    "astro_terminal": true,
+    "browser_terminal": true,
+    "redis_cleanup_error": null,
+    "main_mysql_unchanged": true
+  },
+  "cleanup_sql": {
+    "owned_databases_absent": true,
+    "redis_prefix_cleaned": true,
+    "last_deleted_keys": 0,
+    "shared_server_not_restarted": true
+  },
+  "cleanup_mysql": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true
+  },
+  "retained_attempts": [
+    {
+      "owner": "4796b1361fa7",
+      "outcome": "Test expectation assumed unrestricted percentage multiplication; source oracle proves8.4 allocation; assertion corrected without changing production calculator",
+      "resources_cleaned": true
+    },
+    {
+      "owner": "3b1183afd865",
+      "outcome": "Focused combo SQL passed before adding draft-read assertion; not final runtime fix proof",
+      "resources_cleaned": true
+    },
+    {
+      "owner": "3e1dd4b97262",
+      "outcome": "All23 SQL passed on pre-fix freeze; not final runtime fix proof",
+      "resources_cleaned": true
+    },
+    {
+      "owner": "e54b29a8f8d6",
+      "outcome": "Actual browser exposed country-only draft GET contacts503 after successful region change; fixed and repeated in finalowner",
+      "resources_cleaned": true
+    }
+  ],
+  "remaining": [
+    "Controlled schema101 to102 backup/upgrade/recovery rehearsal and main API/Astro refresh",
+    "Existing provider-backed payment session/context orchestration and customer transfer coordination",
+    "Effective source translation flag/data and enabled translation branch parity",
+    "Full C01-C11 scope including Mollie real sandbox configuration and approved test email receipt"
+  ],
+  "evidence_sha256": {
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/protected-after.json": "929ec4b72db7544ce88ba29e2c8b632beee3d34dcf163ea02008874282b96ff3",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/result.json": "06f03b8236332cecdc3630f33dac42a62532e6d74b42936718bded99662389d7",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/cleanup.json": "e8ea0ceb64dadc960b7bc8c0ea5360066459109f9d2a9feeb71bbb2f04073ac3",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/browser-closed-result.json": "9593ebfbad50c9cae1dfd71089e2ed112242d08198172ff6a9ed9097a21736f8",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/mysql-runtime.json": "7e0b38914f492950ffc7694047dd2ab108e973787a053ddf8b55176356dc3067",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/manifest.json": "71ed32c2efe3c6ce0f62bf506f4c7744491bfebc4fa9d1492d79805070577b2c",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/browser-result.json": "f44a1f377f6c0f6bfd2e0130934607cf1d32636eae7417ddf4ac3804f6d38c38",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/protected-before.json": "929ec4b72db7544ce88ba29e2c8b632beee3d34dcf163ea02008874282b96ff3",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/context-checkout-zh-1440-draft.png": "c334e05e57d1a175815140664f0e02b097ea4f576ac0717c37414573944c9944",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/context-checkout-en-1440-final.png": "69b67235cf5d9413f19b89b4f3a43340afecc1cbbf9199675bfc74a83673bc0a",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/preferences-en-390-initial.png": "635adf9dae8e5da48ef95d8ca9938ca38326289561345e1cab8fb79d9ebcda15",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/context-checkout-zh-390-final.png": "97032a43a399bb25f467e3a07a9b3bd2581fc08e58b41c51cbc34dad88f9fe23",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/preferences-en-1440-initial.png": "13dcf9a40df8bb336cce254409cb6465ca5403fc42d7b92bb9416699151373ae",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/context-checkout-en-390-final.png": "e786175d912064a7802dd2ecec88526bf97528b60c4344e1f2a3295d00adec75",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/preferences-zh-390-initial.png": "3540987d725421e65e3ecc57d93fad95685328ff9652481896b525fd27f0b3b7",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/context-checkout-zh-390-usd.png": "63dffa3e65e9dc1730d7c0a5675f0bf08395360beca81e146003b41642e21722",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/context-checkout-en-1440-usd.png": "0c9abed5b135026ca1aae252bd8bc27262015294f3c9d967a128ea4e7350f9fd",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/context-checkout-en-390-draft.png": "faee3b254027051ce96331a8416551f79e6723cabba4b73dbc64234b7d1378d6",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/context-checkout-zh-390-draft.png": "b6fd6407d2b314e62c9a1ef434865e21a1b8ee5f73838b4e0e0ca3dd423dca2c",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/context-checkout-en-390-usd.png": "7f7d1066ad168fef9b8b2cb29e23ecbdb1e02cc777a5b53553514bcff938b40b",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/preferences-zh-1440-initial.png": "c2dff1e115198ce357c477772925cf57c3460507aa0ad7e60d7173993b0b2b25",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/context-checkout-zh-1440-usd.png": "d5bed03b9ec9f82c2cb847f6568517a2e59033c995021327539d47bbd4b04a86",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/context-checkout-en-1440-draft.png": "c334e05e57d1a175815140664f0e02b097ea4f576ac0717c37414573944c9944",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/context-checkout-zh-1440-final.png": "69b67235cf5d9413f19b89b4f3a43340afecc1cbbf9199675bfc74a83673bc0a",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/executed-runner.py": "f505f8d1dd3ea44a4b74a5cd7aa417f7c181740bc14df38b845068cea9c585c4",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/verification/services.json": "8b8e7a39d95e3e16799a2d23ef584d78fd8aeae62ab939873abd3a661ee2780e",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/verification/storefront-tests.log": "1eb6aa3fc8bf584b337538e2fbe54406ac8c6f9f0587a2741c24fc933e29b466",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/verification/sandbox-listener-restriction.log": "d0cd288b263b3f49b8e4c64ec141a3309550329945f52bf426c293a7953d87ae",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/verification/go-all.log": "5f3751b35a6ef3d81f255bd077a168c105c7177f806b19267e7d90b99cadb387",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/verification/astro-check.log": "bad103ad770c4181a4818a919da2cc4aab6965e5f590f90f9fe9d2786064b597",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/verification/gin-recent.log": "02fd9bfb728571fb8fb62306114efffc1cc0019f0634aa028d003d4f6d7117f9",
+    "logs/gin-migration/cart-context-native-ef52c108ff7e/verification/medusa-recent.log": "9c571d37a75465055f4cf2d63e72260860ce9b6b1eafbd7b11e469a5f74eee71",
+    "logs/gin-migration/native-sql-local-c55f563ef828/manifest.json": "8e2f4cb471181b2a4fd85018e2911617ece183a7ca89a247f6da840487109d44",
+    "logs/gin-migration/native-sql-local-c55f563ef828/result.json": "220994e95ed139cc5ebe90c8c0a7b24e82d9441249795e15cf1bd3306ccb7dec",
+    "logs/gin-migration/native-sql-local-c55f563ef828/cleanup.json": "fab32adfe0c95381e147293d7b6c988b757ed4f5d738ea780c4d03ec313115b6",
+    "logs/gin-migration/native-sql-local-c55f563ef828/mysql-cleanup.json": "cb57fabbaf097925a808cccc0c0fa638438ec798f04aebd9c23838141ef5a242",
+    "logs/gin-migration/native-sql-local-c55f563ef828/mysql-runtime.json": "c95b2e9bf2e43a0ea4d5ec0ae2d4e9d310cdbe94284834eb471d0830d1c6ac0b",
+    "logs/gin-migration/native-sql-local-c55f563ef828/CartRuntime.log": "f7e6558e097ae42cc77a6b619400d1633b69d86b1fb6bad34bc0b5127484392f",
+    "retail/scripts/capture-promotion-compute.cjs": "f026c857ede0c5d64be0d8c929ddd927fb3d8e3f76b8eb70919d41b4faba6c94",
+    "docs/migration/fixtures/promotion-compute.json": "17ead9041e2bc7d02573b4083a50f3009daaeed887c4b676a6dcc08d5087923d"
+  }
+}

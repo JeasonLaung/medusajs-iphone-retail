@@ -1,5 +1,5 @@
 import {CartError,cartCSRFFromCookies,validPromotionCode,type CartClient,type CartPromotions} from './cart-client.ts'
-import {cartIntentKey,cartLockName,contactIntentKey,shippingIntentKey,promotionIntentKey} from './cart-commerce.ts'
+import {contextIntentKey,cartIntentKey,cartLockName,contactIntentKey,shippingIntentKey,promotionIntentKey} from './cart-commerce.ts'
 import {paymentIntentKey} from './checkout-payment.ts'
 import type {ContactState} from './checkout-contacts.ts'
 export type PromotionState=ContactState&{promotions:CartPromotions}
@@ -11,7 +11,7 @@ const version=(v:unknown):v is string=>valid(v,/^[1-9][0-9]{0,19}$/)&&BigInt(v)<
 const codes=(v:unknown):v is string[]=>Array.isArray(v)&&v.length<=100&&v.every(validPromotionCode)&&new TextEncoder().encode(JSON.stringify(v)).length<=16000
 const fail=()=>new CartError('conflict')
 export function createPromotionCommands(o:Options){
- const unblocked=()=>{if([cartIntentKey,contactIntentKey,shippingIntentKey,paymentIntentKey].some(key=>o.storage.getItem(key)!==null))throw fail()}
+ const unblocked=()=>{if([contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,paymentIntentKey].some(key=>o.storage.getItem(key)!==null))throw fail()}
  const pending=():Intent|null=>{
   const raw=o.storage.getItem(promotionIntentKey);if(raw===null)return null
   if(raw.length>32768)throw fail()

@@ -1,3 +1,4 @@
+import ShippingDemo from "../order/shipping-demo"
 import BuybackRequests from "../sell/buyback-requests"
 import CustomerOrders from './orders'
 import AccountOrderDetails from './order-details'
@@ -18,7 +19,7 @@ import Link from './localized-link'
 import type {Customer} from '../../lib/customer-client'
 import {watchCustomer} from '../../lib/customer-events'
 
-function Account({enabled,profile,addresses,orders,orderID,buyback,buybackID,regions}:{enabled:boolean;profile:boolean;addresses:boolean;orders:boolean;orderID:string;buyback:boolean;buybackID:string;regions:Region[]}){
+function Account({enabled,profile,addresses,orders,orderID,buyback,buybackID,regions,shippingDemo}:{enabled:boolean;profile:boolean;addresses:boolean;orders:boolean;orderID:string;buyback:boolean;buybackID:string;regions:Region[];shippingDemo:boolean}){
  const {api,segment}=useAccountContext(),{t}=useAccountCopy()
  const [customer,setCustomer]=useState<Customer|null>(null),[loading,setLoading]=useState(true),[failed,setFailed]=useState(false)
  const [loggingOut,setLoggingOut]=useState(false)
@@ -37,7 +38,7 @@ function Account({enabled,profile,addresses,orders,orderID,buyback,buybackID,reg
  },[enabled,segment])
  return <div className="flex-1 small:py-12" data-testid="account-page"><div className="flex-1 content-container h-full mx-auto bg-white flex flex-col">
   <div className={customer&&!loading&&!failed?'grid grid-cols-1 small:grid-cols-[240px_minmax(0,1fr)] py-12':'py-12'}>
-   {customer&&!loading&&!failed?<div><AccountNav customer={customer} selected={buyback||buybackID?'/account/buyback':orders||orderID?'/account/orders':profile?'/account/profile':addresses?'/account/addresses':'/account'} loggingOut={loggingOut} onLogout={()=>{
+   {customer&&!loading&&!failed?<div><AccountNav customer={customer} selected={shippingDemo?'/account/shipping-demo':buyback||buybackID?'/account/buyback':orders||orderID?'/account/orders':profile?'/account/profile':addresses?'/account/addresses':'/account'} loggingOut={loggingOut} onLogout={()=>{
     if(loggingOut)return
     setLoggingOut(true)
     void api.logout().then(()=>{if(live.current){generation.current++;setCustomer(null)}}).catch(()=>{if(live.current)setFailed(true)}).finally(()=>{if(live.current)setLoggingOut(false)})
@@ -49,12 +50,13 @@ function Account({enabled,profile,addresses,orders,orderID,buyback,buybackID,reg
     {orders?<CustomerOrders key={customer.id}/>:null}
     {orderID?<AccountOrderDetails key={customer.id+orderID} orderID={orderID}/>:null}
     {buyback||buybackID?<BuybackRequests key={customer.id+buybackID} locale={segment.endsWith("-zh")?"zh-CN":"en"} requestId={buybackID||undefined} signedIn/>:null}
-    {!profile&&!addresses&&!orders&&!orderID&&!buyback&&!buybackID?<Overview key={customer.id} customer={customer}/>:null}
+    {shippingDemo?<ShippingDemo segment={segment}/>:null}
+    {!shippingDemo&&!profile&&!addresses&&!orders&&!orderID&&!buyback&&!buybackID?<Overview key={customer.id} customer={customer}/>:null}
    </div>:<LoginTemplate onSuccess={()=>void observe()}/>}
   </div></div>
   <div className="flex flex-col small:flex-row items-end justify-between small:border-t border-gray-200 py-12 gap-8"><div><h3 className="text-xl-semi mb-4">{t('questions')}</h3><span className="txt-medium">{t('helpDescription')}</span></div><div><Link href="/help" className="underline">{t('customerService')}</Link></div></div>
  </div></div>
 }
-export default function GinAccount({segment,enabled,verify=false,profile=false,addresses=false,orders=false,orderID='',buyback=false,buybackID='',regions=[]}:{segment:string;enabled:boolean;verify?:boolean;profile?:boolean;addresses?:boolean;orders?:boolean;orderID?:string;buyback?:boolean;buybackID?:string;regions?:Region[]}){
- return <AccountContext segment={segment}><Theme locale={segment.endsWith('-zh')?'zh-CN':'en-GB'}>{verify?<div className="w-full flex justify-center px-8 py-12"><VerifyAccount/></div>:<Account enabled={enabled} profile={profile} addresses={addresses} orders={orders} orderID={orderID} buyback={buyback} buybackID={buybackID} regions={regions}/>}</Theme></AccountContext>
+export default function GinAccount({segment,enabled,verify=false,profile=false,addresses=false,orders=false,orderID='',buyback=false,buybackID='',regions=[],shippingDemo=false}:{segment:string;enabled:boolean;verify?:boolean;profile?:boolean;addresses?:boolean;orders?:boolean;orderID?:string;buyback?:boolean;buybackID?:string;regions?:Region[];shippingDemo?:boolean}){
+ return <AccountContext segment={segment}><Theme locale={segment.endsWith('-zh')?'zh-CN':'en-GB'}>{verify?<div className="w-full flex justify-center px-8 py-12"><VerifyAccount/></div>:<Account enabled={enabled} profile={profile} addresses={addresses} orders={orders} orderID={orderID} buyback={buyback} buybackID={buybackID} regions={regions} shippingDemo={shippingDemo}/>}</Theme></AccountContext>
 }

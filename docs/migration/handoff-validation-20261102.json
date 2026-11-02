@@ -1,0 +1,32 @@
+{
+  "go_test_all": {
+    "exit_code": 0
+  },
+  "admin_tsc_no_emit": {
+    "exit_code": 0
+  },
+  "storefront_node_tests": {
+    "exit_code": 0,
+    "passed": 254,
+    "failed": 0
+  },
+  "mysql_backup": {
+    "gzip_crc_valid": true,
+    "create_tables": 299,
+    "views": 1,
+    "dump_footer_present": true,
+    "private_archive_readable": true,
+    "compatible_migrations": 102,
+    "uploaded": false
+  },
+  "goal_complete": false,
+  "handoff-go-test.log": {
+    "sha256": "01d3e8b42f1d531e399eca8c037e4b66b05da145e06c6e691b9c3cfb04070331"
+  },
+  "handoff-admin-check.log": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "handoff-storefront-tests.log": {
+    "sha256": "b29310c98c84d99af6aeacd0545530fd9e3ac7aa15273632cc749035fc1cad2a"
+  }
+}

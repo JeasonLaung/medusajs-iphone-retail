@@ -1,0 +1,319 @@
+{
+  "checked_at": "2026-11-01T10:44:04.139346+00:00",
+  "scope": "Public SEO configuration storage/API source plus actual isolated MySQL tests; not deployed public SEO",
+  "source_sha256": {
+    "retail/backend/migrations/0100_public_seo.sql": "d0256a234e4cef0f1c38721d00b82c88b97651a7f9fb2da078e472314f9fea2c",
+    "retail/backend/internal/seo/public.go": "8d69a4de574745cf6b6a7d2ec89ffa9f61ca8cb5a108008b309bac2bfc19bded",
+    "retail/backend/internal/seo/public_test.go": "709ff1f7d79fc47286a1656370ef05c5c63814b06e9866a16cec42f9a0ac7b4a",
+    "retail/backend/internal/identity/seo_publication_test.go": "170ae2dc17fc6d95e94dde6e19c4a91e09e223142c4537e17d0011c8c2bf2f06",
+    "retail/backend/cmd/api/main.go": "cf187e0d8e55351a236d75e4078b3adf1de60744373c13c2969be8123e8e9f6c",
+    "retail/backend/internal/schema/plan_test.go": "1fb2c790a6179e5c346a8341400fb284b25e8b86b905616cdae9f4a94cd72773",
+    "retail/scripts/test-native-sql-local.py": "4184db1cfa7cabf4da47161ae0215ebf1a658b84daa94c5ce8e8aaeb188a8e51",
+    "retail/storefront/src/lib/seo-config.ts": "766a63b20b4807b05af1311e3c695468d231b159043f7d25a8d0456c95aca8ae",
+    "retail/storefront/tests/seo-config.test.ts": "7248c1366281f17b62f521d97d010d04d8d15fa20332a6c73c83653e70cb2a82"
+  },
+  "full_backend_matches_frozen_manifest": true,
+  "focused_sql": {
+    "owner": "cca0488d510a",
+    "result": {
+      "suites": [
+        {
+          "suite": "SEOPublication",
+          "exit_code": 0,
+          "log_sha256": "686326e38d93e28f7c862c5a7630e786297f91663303d1f0bf87dd60388d4775"
+        }
+      ],
+      "suite_count": 1,
+      "migrations": 100,
+      "complete_original_sql_regression": false,
+      "production_source_unchanged": true,
+      "frozen_source_verified": true,
+      "binary_sha256": "061f60115f58c50f2649bdbf3282be76426ab22f2b440c6480eaf951f0c5c3fd",
+      "goal_complete": false
+    },
+    "log_sha256": "686326e38d93e28f7c862c5a7630e786297f91663303d1f0bf87dd60388d4775",
+    "cleanup": {
+      "owned_databases_absent": true,
+      "redis_prefix_cleaned": true,
+      "last_deleted_keys": 0,
+      "shared_server_not_restarted": true
+    },
+    "mysql_cleanup": {
+      "server_terminal": true,
+      "data_removed": true,
+      "socket_removed": true,
+      "main_mysql_unchanged": true
+    },
+    "checks": [
+      "actual99to100 upgrade applied1/skipped99",
+      "fresh100",
+      "replay applied0/skipped100",
+      "default effective storefront origin",
+      "original UTF8 strings and JSON",
+      "nonsecret allowlist only",
+      "encrypted row-bound values",
+      "secret/unlisted/held/deleted excluded",
+      "page public DTO only",
+      "discovery fields only",
+      "duplicate full key/path fail closed",
+      "moved ciphertext fails",
+      "invalid path400/no-store",
+      "invalid envelope503 without secret exposure"
+    ]
+  },
+  "original_sql": {
+    "owner": "85413f54d3b3",
+    "source_files": 1813,
+    "owned_database_names": 39,
+    "result": {
+      "suites": [
+        {
+          "suite": "PromotionUsage",
+          "exit_code": 0,
+          "log_sha256": "5cb0f933d3ca1d51e2aefaf931d4edf6eb8ac7f4da138911414dc1605f515d27"
+        },
+        {
+          "suite": "PromotionSchema",
+          "exit_code": 0,
+          "log_sha256": "e21b7204618d92eeeb7140828f1291d52d116ad2ae39f5f9a467228d33f5214e"
+        },
+        {
+          "suite": "GeoSchema",
+          "exit_code": 0,
+          "log_sha256": "641c64e1a47c042529770e833d4f35db8d39d4f1959425af9f6948ca0cf958dc"
+        },
+        {
+          "suite": "CartPriceRefresh",
+          "exit_code": 0,
+          "log_sha256": "d5469f5455c032225ac5768c9541e278069c7f5f170b2b9b2982ef1af7f6fb73"
+        },
+        {
+          "suite": "CartTaxRefresh",
+          "exit_code": 0,
+          "log_sha256": "6ac6f2265307008e4147699af7b040f04eccee56ff4312e4b74d1a8a42593331"
+        },
+        {
+          "suite": "TaxImport",
+          "exit_code": 0,
+          "log_sha256": "bf6bfff7bf813ae80a4f80c69483dd04ae0bb64a0e05a51af4ed8d357f537de1"
+        },
+        {
+          "suite": "TaxSchema",
+          "exit_code": 0,
+          "log_sha256": "0e54f00b3608be43d65433e236fb2623686e4d869304a23189d14bbe067fd9e4"
+        },
+        {
+          "suite": "AdminAuthentication",
+          "exit_code": 0,
+          "log_sha256": "b4c681a2a47fedbbdd5d01afbd4665f86bacabe6454eb6b94839b9e3cbf875d3"
+        },
+        {
+          "suite": "CatalogSchemaTransition",
+          "exit_code": 0,
+          "log_sha256": "57e10e7a133cf76ec8a8a56e99f31e0de88dc184aff5c3edecf28ec4e54dbf5c"
+        },
+        {
+          "suite": "ProductEdits",
+          "exit_code": 0,
+          "log_sha256": "dca3dc650c9aea762d20c89fcb1faed7e5105939b39a8c3d02325dabc2b2dd8e"
+        },
+        {
+          "suite": "ProductPrices",
+          "exit_code": 0,
+          "log_sha256": "64a54a93a1ae2b7e42e9895d4b6b36fbc7c380ac9fb649c418f598f3b468024b"
+        },
+        {
+          "suite": "ProductInventory",
+          "exit_code": 0,
+          "log_sha256": "14d3f22490b82348b9fbc08f39d56d2741ba702fe8dbff929350033dd985f618"
+        },
+        {
+          "suite": "InventoryStockEdits",
+          "exit_code": 0,
+          "log_sha256": "b9a558bd5cdb9a907f10c613c64b614d2b69dfcc4ce0ef2efb32c5305fdb3d0b"
+        },
+        {
+          "suite": "ReservationTransactions",
+          "exit_code": 0,
+          "log_sha256": "87e94cf238287c338bdce55fee2fe0c1f68a8cc870e0ef1435a301323c1d17aa"
+        },
+        {
+          "suite": "OrderSchema",
+          "exit_code": 0,
+          "log_sha256": "7f7e43dcba1395e37ffc6cb838562441f71489356f86e4d1231e75f9076e0d74"
+        },
+        {
+          "suite": "OrderImport",
+          "exit_code": 0,
+          "log_sha256": "4445bcadd3ea4c389edb7055c96c1983f859dbc592be3339cf3c2412212e4ebd"
+        },
+        {
+          "suite": "CustomerHistory",
+          "exit_code": 0,
+          "log_sha256": "c7f15298f6d86e9c4958ac61666b3c0c7ba7baf173fdbd441de30e6b1a058350"
+        },
+        {
+          "suite": "OrderRead",
+          "exit_code": 0,
+          "log_sha256": "c67b173567a4b134f2affba394b1cbe0437efb35ef51344874897760705e9b44"
+        },
+        {
+          "suite": "PaymentSchema",
+          "exit_code": 0,
+          "log_sha256": "f6bb8188e720c063c21f18b3ed572028efab05fa57555662f4d95efa4fe78a9c"
+        },
+        {
+          "suite": "PaymentImport",
+          "exit_code": 0,
+          "log_sha256": "3a1f78ceaa19b518b3e8085070c563e4f1e4d5d8fc2ff53935ae3828df0a9711"
+        },
+        {
+          "suite": "FulfillmentHistory",
+          "exit_code": 0,
+          "log_sha256": "c79b683e082f0ccf24979f5cbf4a8013b3b3b81525aecdd7cd1a85f904a1d9fa"
+        },
+        {
+          "suite": "CartSchema",
+          "exit_code": 0,
+          "log_sha256": "8d0c50e6046d74b4f23328840a135693e89fa9721992679c67ab75c030c264a8"
+        },
+        {
+          "suite": "CartRuntime",
+          "exit_code": 0,
+          "log_sha256": "bb16b2649890b623f29c70a1c9510a76871a8a7428a003b4b03a732b60dff9e9"
+        }
+      ],
+      "suite_count": 23,
+      "migrations": 100,
+      "complete_original_sql_regression": true,
+      "production_source_unchanged": true,
+      "frozen_source_verified": true,
+      "binary_sha256": "d38ea0b6e7db27f897781738f6e4780c937b7020cfdf42cb2694bbdcc1638980",
+      "goal_complete": false
+    },
+    "result_sha256": "49573d8a77040678af62873f2e0ca80c67b654e3cdbafbc8994d6c2c1e2d8161",
+    "cleanup": {
+      "owned_databases_absent": true,
+      "redis_prefix_cleaned": true,
+      "last_deleted_keys": 0,
+      "shared_server_not_restarted": true
+    },
+    "mysql_cleanup": {
+      "server_terminal": true,
+      "data_removed": true,
+      "socket_removed": true,
+      "main_mysql_unchanged": true
+    }
+  },
+  "go_all_packages": {
+    "exit_code": 0,
+    "log_sha256": "95f21254f8587f08bde265c7ae9aa37566225767aca7539a273a16b9c758ff66",
+    "sql_opt_in_tests_not_counted_as_sql_evidence": true
+  },
+  "go_race": {
+    "packages": [
+      "./internal/seo",
+      "./internal/schema"
+    ],
+    "exit_code": 0,
+    "log_sha256": "d5128a5bc3ad23b9177cddce273372124fb29bc5a94aa35c1fd1f1de2752b6cd"
+  },
+  "go_vet": {
+    "packages": [
+      "./internal/seo",
+      "./cmd/api"
+    ],
+    "exit_code": 0,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "frontend_tests": {
+    "tests": 213,
+    "pass": 213,
+    "fail": 0,
+    "exit_code": 0,
+    "log_sha256": "d2f1902e5236e8ac0218fe4d4fe81f98b69b598f657bf4d6c79e822028094ae3"
+  },
+  "astro_check": {
+    "files": 453,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 17,
+    "exit_code": 0
+  },
+  "main99_verified": {
+    "checked_utc": "2026-11-01T10:41:21.560606+00:00",
+    "fresh_backup_owner": "9d72f058ad87",
+    "service": {
+      "running": true,
+      "pid": 372,
+      "health": 200,
+      "schema_migrations": 99
+    },
+    "persistent_tables": 293,
+    "business_tables_equal_to_rehearsal": 291,
+    "migration_journal_execution_times_excluded": true,
+    "migration_checksums_match": true,
+    "original_tables_unchanged": 268,
+    "live_counts_match_dump": true,
+    "foreign_keys_checked": 213,
+    "orphan_rows": 0,
+    "new_gates_default_closed": true,
+    "retained_shared86_all_table_fingerprints_match": true,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "post_cutover_data_verified": true,
+    "goal_complete": false
+  },
+  "services": {
+    "routes": [
+      {
+        "url": "http://127.0.0.1:9001/health",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9001/app",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9100/health",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-en/store",
+        "status": 200,
+        "initial_html_product_links": 30
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-zh/about",
+        "status": 200
+      }
+    ],
+    "recent_logs": [
+      {
+        "path": "log/gin-preview-mysql/api.log",
+        "lines_inspected": 250,
+        "panic_fatal": 0,
+        "unexpected_5xx": 0
+      },
+      {
+        "path": "log/202611011104.log",
+        "lines_inspected": 250,
+        "panic_fatal": 0,
+        "unexpected_5xx": 0
+      }
+    ],
+    "runtime_schema": 99,
+    "new_seo_runtime_connected": false,
+    "goal_complete": false
+  },
+  "runtime_schema": 99,
+  "runtime_pid": 372,
+  "main100_applied": false,
+  "main_binary_replaced": false,
+  "storefront_config_head_connected": false,
+  "admin_configuration_delivered": false,
+  "configured_browser_joint_verified": false,
+  "source_import_reconciliation_verified": false,
+  "discovery_files_delivered": false,
+  "goal_complete": false
+}

@@ -1,0 +1,74 @@
+{
+  "owner": "113d3c298b16",
+  "migrations": 97,
+  "historical_catalog": {
+    "snapshot_sha256": "3b8c007f7854ab61b46009df87ba8f3a082dacfb3bf03078b0c16dcede367aab",
+    "source_rows": 21913,
+    "catalog_and_dependency_tables": 46,
+    "catalog_and_dependency_rows": 17821,
+    "unresolved_outside_scope": {
+      "device.location_id": 11,
+      "device.source_id": 44,
+      "order_exchange.order_id": 9,
+      "order_exchange_item.item_id": 9,
+      "order_fulfillment.fulfillment_id": 72,
+      "order_fulfillment.order_id": 72,
+      "order_payment_collection.order_id": 17,
+      "order_payment_collection.payment_collection_id": 9,
+      "reservation_item.line_item_id": 72,
+      "return.order_id": 17,
+      "return_item.item_id": 17
+    },
+    "applied": true,
+    "complete_import_accepted": false
+  },
+  "option_and_value_counts": "163\t387",
+  "rollback_empty": true,
+  "rollback_all_target_fields_unchanged": true,
+  "exact_replay_and_conflict_rollback": true,
+  "migration_triggers_installed": true,
+  "frozen_source_verified": true,
+  "real_payments": false,
+  "old_credentials_imported": false,
+  "login_account_and_session_counts": "0\t0\t0",
+  "goal_complete": false,
+  "snapshot": "logs/gin-migration/catalog-native-97-113d3c298b16",
+  "controller_exit_code": 0,
+  "cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true
+  },
+  "mysql_runtime": {
+    "version": "9.6.0",
+    "native_foreign_keys": true,
+    "foreign_key_checks": true,
+    "loopback_only": true
+  },
+  "backend_source_files": 850,
+  "current_workspace_matches": true,
+  "runner_sha256": "aabe928cdd6623a4ead16c862af8026fee6d0b071a3f4711bddca0daf91179e1",
+  "evidence_sha256": {
+    "mysql-server.log": "dbf27d57a0cf789445a5ee52c9db9d5f1f70e42af78a0e09e045ea941307fdfb",
+    "replay-and-conflict.log": "252af68ae4b68f15d562cdcee6aa43a4e48115ff3996ba6d6de0e2369cfed61d",
+    "mysql-initialize.log": "15ec28087952d4445098fd2250c3c5c626c9a8a56d09cffa5c16106a7f2abc1e",
+    "cli-rollback.log": "da9a79b0c14d166c2b16a3f9e9ee269d5eac816d0afc2ca7e086aab47c7d2afa",
+    "migrate.log": "a91f76789aa36645c4407aaa706c60e6d22f79e13b4d73750776ddfe001e4a11",
+    "cli-apply.log": "54106983059c473a72a6f6f7abd582f62c0c7e14b45126a070f54bf0d87ffd3d",
+    "migrate-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mysql-launch.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "catalog.test-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "import-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "manifest_sha256": "a7cbf9473a38b4101312022e738af3720b4aaf9f1109db653f7e60fc316a14a3",
+  "main_database_upgraded": false,
+  "physical_unique_index_hold_resolved": false,
+  "full_storefront_accepted": false,
+  "limits": [
+    "Catalog dependency closure only; unresolved outside-scope source references retained",
+    "No main86 upgrade or import, no real provider/mail, no old credential migration",
+    "Physical source index holds and C01-C11 full delivery remain open"
+  ],
+  "post_run_service_check": "logs/gin-migration/catalog-97-services-final.json"
+}

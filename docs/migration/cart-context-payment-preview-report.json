@@ -1,0 +1,145 @@
+{
+  "checked_utc": "2026-11-01T14:16:17.752987+00:00",
+  "scope": "Required rollback-only post-context payment target computation, not completed provider coordination",
+  "goal_complete": false,
+  "new_schema": false,
+  "source_migrations": 102,
+  "native_preview_fixture": "Real activated encrypted initial Mollie checkout; adapter fixture count unchanged by preview",
+  "preview_verified": [
+    "Unchanged158.75EUR keeps all original sessions",
+    "Changed160EUR plans original session deletion",
+    "Same158.75 withCAD currency plans original session deletion",
+    "Exact42.000000000000000000001 target retained",
+    "Repeated target calculation deterministic",
+    "Every success and rejection leaves all base-table fingerprints identical",
+    "Late tax insert fault rolls back preceding context/item/delivery changes",
+    "Stale version/wrong generation/missing region/missing ring/authorized session refused",
+    "Outer SQL transaction refused",
+    "Original public SaveContext remains frozen after preview"
+  ],
+  "participant_extraction_exact_statement_order_preserved": true,
+  "full_sql_owner": "220b1cdad9fb",
+  "full_sql_suites": 23,
+  "full_sql_source_files": 1831,
+  "focused_sql_owner": "a07816cacd9c",
+  "browser_regression_owner": "183c28206e4f",
+  "browser_regression_scope": "Existing pre-payment context/delivery/promotion/address flow after participant extraction; does not exercise provider coordination or preview through UI",
+  "browser_cases": 4,
+  "closed_gate_no_cart_cases": 4,
+  "browser_errors": 0,
+  "browser_context_receipts": 12,
+  "browser_source_files": {
+    "backend": 918,
+    "admin": 144,
+    "storefront": 645
+  },
+  "sources_and_binary_log_digests_verified": true,
+  "go_all_packages": "passed, tool session83538 exit0",
+  "go_vet_cart_identity_payments": "passed, tool result exit0",
+  "protected_stock_payment_order_rows_unchanged": true,
+  "private_resources_cleaned": true,
+  "main_api_updated": false,
+  "main_schema": 102,
+  "main_pid": 42442,
+  "main_database_verifier": {
+    "checked_utc": "2026-11-01T14:14:31.007160+00:00",
+    "fresh_backup_owner": "9d72f058ad87",
+    "service": {
+      "running": true,
+      "pid": 42442,
+      "health": 200,
+      "schema_migrations": 102
+    },
+    "persistent_tables": 299,
+    "business_tables_equal_to_rehearsal": 297,
+    "migration_journal_execution_times_excluded": true,
+    "migration_checksums_match": true,
+    "original_tables_unchanged": 268,
+    "live_counts_match_dump": true,
+    "foreign_keys_checked": 215,
+    "orphan_rows": 0,
+    "new_gates_default_closed": true,
+    "retained_shared86_all_table_fingerprints_match": true,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "post_cutover_data_verified": true,
+    "goal_complete": false
+  },
+  "no_http_endpoint_added": true,
+  "no_provider_dispatch_or_effect_receipt": true,
+  "public_save_context_payment_connected": false,
+  "real_provider_called": false,
+  "remaining": [
+    "Durable immutable context choice and recomputed target/source binding",
+    "Single final context/payment version and checkout attempt coordination",
+    "Provider delete dispatch, unknown-result reconciliation and compensation",
+    "Existing payment session same-total preservation across final save",
+    "Actual HTTP/browser payment-context joint, cart transfer, translations and wholeC01-C11 acceptance"
+  ],
+  "evidence": [
+    {
+      "path": "logs/gin-migration/native-sql-local-220b1cdad9fb/result.json",
+      "sha256": "7793d1889e88b621f2a1c75b2b13bdb467fecef09342f1a6f48a583325085302"
+    },
+    {
+      "path": "logs/gin-migration/native-sql-local-220b1cdad9fb/manifest.json",
+      "sha256": "d0150fc13dd578d9b746d69ea2f5cadcde55179b7e19850f2d875dee1f88bc32"
+    },
+    {
+      "path": "logs/gin-migration/native-sql-local-220b1cdad9fb/CartRuntime.log",
+      "sha256": "08125a24d7d8b9970ce428ca6918300c722dde963a40d0fb5cfef55ff7cb878c"
+    },
+    {
+      "path": "logs/gin-migration/native-sql-local-220b1cdad9fb/mysql-cleanup.json",
+      "sha256": "cb57fabbaf097925a808cccc0c0fa638438ec798f04aebd9c23838141ef5a242"
+    },
+    {
+      "path": "logs/gin-migration/cart-context-native-183c28206e4f/result.json",
+      "sha256": "6e05eda2bde40af2aabe6bf8be886ee947be73d973e69cbd49a5131740ffe545"
+    },
+    {
+      "path": "logs/gin-migration/cart-context-native-183c28206e4f/manifest.json",
+      "sha256": "71f372f1953db75949d406471c52043ca0786dddcc2f1d6f2515493b2955658f"
+    },
+    {
+      "path": "logs/gin-migration/cart-context-native-183c28206e4f/cleanup.json",
+      "sha256": "e8ea0ceb64dadc960b7bc8c0ea5360066459109f9d2a9feeb71bbb2f04073ac3"
+    },
+    {
+      "path": "logs/gin-migration/cart-context-native-183c28206e4f/browser-result.json",
+      "sha256": "2430bedc71e569c77f1fa81874034d1764bf34debe4201fb5bb68f131f477ca0"
+    },
+    {
+      "path": "logs/gin-migration/cart-context-native-183c28206e4f/browser-closed-result.json",
+      "sha256": "9593ebfbad50c9cae1dfd71089e2ed112242d08198172ff6a9ed9097a21736f8"
+    },
+    {
+      "path": "logs/gin-migration/context-payment-preview-verification/health.json",
+      "sha256": "05c899c536fa501593756e91851a5e53486cae752f91f496a85f3c4548e9d2d8"
+    },
+    {
+      "path": "logs/gin-migration/context-payment-preview-verification/main-database.json",
+      "sha256": "c5b6190d982c696bb5c4f42687b12e00dbc23fa98b8128daa1587022a144d8f1"
+    },
+    {
+      "path": "retail/backend/internal/cart/context_payment_preview.go",
+      "sha256": "4937c70c0559fb29b4d16e725b87f5e8a12b5a1164596746ba8f236e4982399d"
+    },
+    {
+      "path": "retail/backend/internal/cart/context_command.go",
+      "sha256": "7689eead8db9d0fa63723c824efa8bda4b699b29672efc16b76c3b83f9a0aebd"
+    },
+    {
+      "path": "retail/backend/internal/cart/runtime.go",
+      "sha256": "c386b14ceb24875d4d093687720db631f618ce978d66348539876fea242775a8"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_context_payment_preview_test.go",
+      "sha256": "3c4d3a29d2c29acaa3fb2fb2f4b09893d46dd094fb3295f8322b581e22f8dd8c"
+    },
+    {
+      "path": "retail/backend/internal/identity/cart_initial_payment_test.go",
+      "sha256": "ebd52e408b0a14b4a253d59289797bfd5852da3b71fc756e39a064f8235ffa1d"
+    }
+  ]
+}

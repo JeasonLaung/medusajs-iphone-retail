@@ -1,0 +1,113 @@
+{
+  "owner": "708e0dc2ac9c",
+  "snapshot": "logs/gin-migration/option-definitions-native-708e0dc2ac9c",
+  "native_result": {
+    "exit_code": 0,
+    "migrations": 99,
+    "native_transactions_passed": true,
+    "source_files": 885,
+    "frozen_source_verified": true,
+    "binary_sha256": "5935f5c745cbdb95e9b1182572fcfcb406053d27e746761a11fef80239a44e5b",
+    "test_log_sha256": "9ef8b559800e32daca12c65d198389d6eadab55ddfeec144d6a4044c4f08103d",
+    "owned_database_absent": true,
+    "redis_used": false,
+    "main_mysql_unchanged": true,
+    "real_provider_called": false,
+    "native_browser_verified": false,
+    "browser": null,
+    "browser_log_sha256": null,
+    "admin_source_files": 0,
+    "astro_joint_verified": false,
+    "storefront_source_files": 0,
+    "original23_regression": false,
+    "goal_complete": false
+  },
+  "cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true,
+    "redis_used": false,
+    "owned_api_terminal": true,
+    "redis_keys_deleted": 0,
+    "owned_astro_terminal": true,
+    "owned_browser_terminal": true,
+    "redis_cleanup_error": null
+  },
+  "search_native": {
+    "owned_mysql": true,
+    "products": 30,
+    "http_queries": 11,
+    "stemming": true,
+    "stopwords": true,
+    "last_prefix": true,
+    "alias_all_terms": true,
+    "ranking_parity": false
+  },
+  "source_sha256": {
+    "internal/catalog/store_search.go": "4e2ffd07653a205a14facac7f8d61ac1b8ceb5c787c2e1cd4d830fe79af47bcb",
+    "internal/catalog/search_english.go": "a245484e0b2029d0f4fe4b607d13f8789059d5f0a56cefbdc7eea15c35a745f3",
+    "internal/catalog/search_english_test.go": "c80f58e3432677c1ecc6535e2b1e2021068f88d88b049858cea6c0bf14551baf",
+    "internal/catalog/search_english_native_test.go": "4e73eef5258328cc0d4fbc4bb764d75585b1a1e0929a96abc2ec6d3c2ce989aa",
+    "internal/catalog/option_definitions_native_test.go": "56d5f8a573469ffae1e84f7e5381a0cb098cfecba39a6462e11ba7d5acc04d27",
+    "go.mod": "c3148e8110e9633942d571bc801c1a10f542718a554f7465a21a2c391e242f2a",
+    "go.sum": "6441c2f3ad110bf9108a2c6f57c8112235d5e50f624d9abd6054a43e81f6f11a"
+  },
+  "binary_sha256": "5935f5c745cbdb95e9b1182572fcfcb406053d27e746761a11fef80239a44e5b",
+  "native_log_sha256": "9ef8b559800e32daca12c65d198389d6eadab55ddfeec144d6a4044c4f08103d",
+  "go_all_passed": true,
+  "catalog_search_race_passed": true,
+  "catalog_vet_passed": true,
+  "services": {
+    "at": "2026-11-01T07:21:40.170050+00:00",
+    "routes": [
+      {
+        "port": 9001,
+        "path": "/health",
+        "status": 200,
+        "cards": 0
+      },
+      {
+        "port": 9001,
+        "path": "/app",
+        "status": 200,
+        "cards": 0
+      },
+      {
+        "port": 9300,
+        "path": "/dk-en/store",
+        "status": 200,
+        "cards": 30
+      },
+      {
+        "port": 9300,
+        "path": "/dk-zh/store",
+        "status": 200,
+        "cards": 30
+      },
+      {
+        "port": 9100,
+        "path": "/health",
+        "status": 200,
+        "cards": 0
+      },
+      {
+        "port": 9200,
+        "path": "/",
+        "status": 200,
+        "cards": 0
+      },
+      {
+        "port": 8000,
+        "path": "/dk-en/store",
+        "status": 200,
+        "cards": 30
+      }
+    ]
+  },
+  "prior_browser_comparison": "logs/gin-migration/store-source-compare-1793517102498",
+  "browser_verified_after_fix": false,
+  "main_binary_updated": false,
+  "postgres_tokenizer_and_rank_parity": false,
+  "goal_complete": false
+}

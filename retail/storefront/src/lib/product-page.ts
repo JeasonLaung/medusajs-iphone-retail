@@ -33,10 +33,11 @@ export async function loadProductPage(origin: string | undefined, segment: strin
   const requestedVariantID = slugVariant?.id ?? search.get('v_id') ?? undefined
   const pathname = `/${segment.toLowerCase()}/products/${encodeURIComponent(handle)}`
   const initial = initialVariant(product,pathname,search.get('v_id'),requestedVariantID)
+  const title = `${product.title}${slugVariant ? ` ${slugVariant.title}` : ''}`
   return {regions,region,product,requestedVariantID,initialVariant:initial,images:galleryImages(product,pathname,search.get('v_id'),requestedVariantID),metadata:{
-   title:`${product.title}${slugVariant ? ` ${slugVariant.title}` : ''}`,description:product.title,
+   title,description:product.title,
    canonicalPath:`/${segment.toLowerCase()}/products/${encodeURIComponent(variantSlug(slugVariant) ?? product.handle)}`,
-   openGraph:{title:`${product.title} | EuroRefurb`,description:product.title,images:product.thumbnail ? [product.thumbnail] : []},
+   openGraph:{title,description:product.title,images:product.thumbnail ? [product.thumbnail] : []},
   }}
  } catch { throw unavailable() }
 }

@@ -1,0 +1,54 @@
+{
+  "at_utc": "2026-11-01T07:57:19.933776+00:00",
+  "goal_complete": false,
+  "source_postgres": "16.15",
+  "source_position_cases": 95,
+  "source_transaction_read_only": true,
+  "source_business_tables_accessed": false,
+  "position_oracle_pass": true,
+  "go_all_pass": true,
+  "catalog_race_pass": true,
+  "catalog_vet_pass": true,
+  "service_checks": {
+    "at_utc": "2026-11-01T07:55:46.429256+00:00",
+    "urls": {
+      "http://127.0.0.1:9001/health": 200,
+      "http://127.0.0.1:9001/app": 200,
+      "http://127.0.0.1:8000/dk-en/store": 200,
+      "http://127.0.0.1:9100/health": 200,
+      "http://127.0.0.1:9200/products": 200,
+      "http://127.0.0.1:9300/dk-en/store": 200,
+      "http://127.0.0.1:9300/dk-en/products/swappie-iphone-14": 200
+    },
+    "main_mysql_migrations": 86,
+    "main_price_gate_enabled": false
+  },
+  "recent_service_logs": [
+    {
+      "path": "log/202611011104.log",
+      "recent_lines_inspected": 80,
+      "fatal_patterns": 0
+    },
+    {
+      "path": "log/gin-local-api-current.log",
+      "recent_lines_inspected": 80,
+      "fatal_patterns": 0
+    }
+  ],
+  "files_sha256": {
+    "retail/backend/internal/catalog/search_english.go": "d0958c558a89dbd7e5f72ba8a74b984b77fe5b45d68ce08b7f7dbe7975b9c164",
+    "retail/backend/internal/catalog/search_positions_test.go": "dc456fb90ab3a6b079762130d866aaca549da997d88b727f0c2c6893d464c545",
+    "retail/backend/internal/catalog/testdata/search-postgres-positions.json": "62ae41c97d97703cbd8efbb1ab013ac962227ce4419ec8cf15a94c0c332ec8ed",
+    "retail/scripts/capture-search-positions.py": "082a52c1d82b19a86ec598881b50c213c3dbd5997821c35bd23ba0939ebd68c6",
+    "logs/gin-migration/search-positions-source-oracle-20261101.json": "3ee1e2ba44a27bb557698c6ad0ded20bfc32af72891749583866ff1fb0f2c857"
+  },
+  "runtime_updated": false,
+  "new_browser_joint_run": false,
+  "ranking_parity": false,
+  "remaining": [
+    "Weighted vector concatenation and source cover-density scoring",
+    "Position saturation and per-lexeme occurrence limits",
+    "Malformed parser/locale boundaries",
+    "Full C01-C11 acceptance"
+  ]
+}

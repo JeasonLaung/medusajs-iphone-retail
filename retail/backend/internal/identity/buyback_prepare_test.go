@@ -22,8 +22,10 @@ func checkBuybackPreparation(t *testing.T, db *gorm.DB) {
 		}
 	}
 	exec("UPDATE catalog_products SET title='iPhone 13',handle='swappie-iphone-13',status='published' WHERE id='public-a'")
-	exec(`INSERT INTO catalog_option_values(id,value,option_id,created_at,updated_at) VALUES('buyback-256','256 GB','public-storage',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('buyback-1024','1024 GB','public-storage',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
-	exec(`INSERT INTO catalog_product_option_values(id,product_product_option_id,product_option_value_id,created_at,updated_at) VALUES('buyback-member-256','public-membership','buyback-256',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('buyback-member-1024','public-membership','buyback-1024',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+	// The public fixture already owns the full 256 GB value, but has not
+	// admitted it to this product. Reuse that identity when adding membership.
+	exec(`INSERT INTO catalog_option_values(id,value,option_id,created_at,updated_at) VALUES('buyback-1024','1024 GB','public-storage',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+	exec(`INSERT INTO catalog_product_option_values(id,product_product_option_id,product_option_value_id,created_at,updated_at) VALUES('buyback-member-256','public-membership','private-256',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('buyback-member-1024','public-membership','buyback-1024',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 	raw := `{"submission_key":"123e4567-e89b-42d3-a456-426614174000","contact_name":"Customer","phone":"123456","return_address":{"name":"Customer","address_1":"Street 1","city":"City","postal_code":"001","country_code":"dk"},"reference_acknowledged":true,"privacy_acknowledged":true,"items":[{"model":"iphone-13","capacity":"256GB","assessment":{"battery":"90","checks":[true,true,true,true,true],"faults":["none"],"glass":["none"],"screen":"none","frame":"none","back":"none"}}]}`
 	in, e := buyback.ParseSubmission([]byte(raw))
 	if e != nil {
@@ -87,7 +89,7 @@ func checkBuybackPreparation(t *testing.T, db *gorm.DB) {
 		t.Fatal("buyback preparation rollback")
 	}
 	var count int64
-	if db.Table("catalog_option_values").Where("id='buyback-256'").Count(&count).Error != nil || count != 0 {
+	if db.Table("catalog_product_option_values").Where("id='buyback-member-256'").Count(&count).Error != nil || count != 0 {
 		t.Fatal("buyback preparation escaped transaction")
 	}
 	t.Log(`BUYBACK_PREPARE_REHEARSAL {"trusted_catalog":true,"current_rules":true,"multiple_phones":true,"capacity_membership":true,"unconfigured_null":true,"caller_rollback":true,"application_writes":false}`)

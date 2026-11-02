@@ -69,9 +69,11 @@ func Load(source fs.FS) (*Plan, error) {
 // constructs instead of executing a partial plan. No SQL values are logged.
 func splitSQL(input string) ([]string, error) {
 	var statements []string
+	markedTriggers := map[string]bool{}
 	start := 0
 	state := byte(0)
 	hasCode := false
+	compound := false
 	for j := 0; j < len(input); j++ {
 		c := input[j]
 		switch state {
@@ -96,6 +98,40 @@ func splitSQL(input string) ([]string, error) {
 				}
 			}
 		default:
+			// Explicit line markers keep a reviewed trigger body in one journaled
+			// Exec. Markers in strings/comments are ordinary content, never control.
+			if j == 0 || input[j-1] == '\n' {
+				end := strings.IndexByte(input[j:], '\n')
+				if end < 0 {
+					end = len(input) - j
+				}
+				line := strings.TrimSuffix(input[j:j+end], "\r")
+				if line == "-- retail:trigger-begin" {
+					if compound || hasCode {
+						return nil, ErrPlan
+					}
+					compound = true
+					start = j + end
+					j += end - 1
+					continue
+				}
+				if line == "-- retail:trigger-end" {
+					if !compound {
+						return nil, ErrPlan
+					}
+					body := strings.TrimSpace(input[start:j])
+					if !validTriggerBody(body) {
+						return nil, ErrPlan
+					}
+					statements = append(statements, body)
+					markedTriggers[body] = true
+					compound = false
+					hasCode = false
+					start = j + end
+					j += end - 1
+					continue
+				}
+			}
 			if c == '#' {
 				state = 'l'
 				continue
@@ -113,7 +149,7 @@ func splitSQL(input string) ([]string, error) {
 				j++
 				continue
 			}
-			if c == ';' {
+			if c == ';' && !compound {
 				if hasCode {
 					statements = append(statements, input[start:j])
 					hasCode = false
@@ -131,7 +167,7 @@ func splitSQL(input string) ([]string, error) {
 			}
 		}
 	}
-	if state != 0 && state != 'l' {
+	if compound || state != 0 && state != 'l' {
 		return nil, ErrPlan
 	}
 	if hasCode {
@@ -141,9 +177,19 @@ func splitSQL(input string) ([]string, error) {
 	// strings; ANSI_QUOTES must not change the meaning of an accepted plan.
 	for _, stmt := range statements {
 		clean := strings.ToUpper(strings.TrimSpace(stmt))
-		if strings.Contains(clean, "DELIMITER") || strings.Contains(clean, "CREATE PROCEDURE") || strings.Contains(clean, "CREATE FUNCTION") || strings.Contains(clean, "CREATE TRIGGER") || strings.Contains(stmt, "\"") {
+		if strings.Contains(clean, "DELIMITER") || strings.Contains(clean, "CREATE PROCEDURE") || strings.Contains(clean, "CREATE FUNCTION") || strings.Contains(clean, "CREATE TRIGGER") && !markedTriggers[stmt] || strings.Contains(stmt, "\"") {
 			return nil, ErrPlan
 		}
 	}
 	return statements, nil
+}
+
+var triggerHeader = regexp.MustCompile(`(?is)^CREATE TRIGGER [a-z][a-z0-9_]* BEFORE (INSERT|UPDATE) ON [a-z][a-z0-9_]* FOR EACH ROW BEGIN\s`)
+var triggerBegin = regexp.MustCompile(`(?i)\bBEGIN\b`)
+var triggerEnd = regexp.MustCompile(`(?i)\bEND\s*;`)
+
+func validTriggerBody(body string) bool {
+	// One outer compound block only. Nested IF...END IF is supported; nested
+	// BEGIN, routines, custom delimiters and statements after END are rejected.
+	return triggerHeader.MatchString(body) && strings.HasSuffix(body, "END;") && len(triggerBegin.FindAllStringIndex(body, -1)) == 1 && len(triggerEnd.FindAllStringIndex(body, -1)) == 1
 }

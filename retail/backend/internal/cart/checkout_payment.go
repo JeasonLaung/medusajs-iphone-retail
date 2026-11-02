@@ -39,9 +39,24 @@ type initialAttempt struct {
 	NeedsReview                                                         bool
 	Generation                                                          string
 	InputVersion, CartVersion                                           uint64
+	EffectiveCartVersion                                                *uint64
 	CollectionID, SessionID, CartAmount, SettlementAmount, CurrencyCode string
 	RequestSHA256                                                       []byte
 }
+
+// currentVersion preserves immutable CREATE versions while allowing a saved
+// context to retain the same authenticated payment session. Invalid revisions
+// fail current authority checks instead of falling back to the original.
+func (a initialAttempt) currentVersion() uint64 {
+	if a.EffectiveCartVersion == nil {
+		return a.CartVersion
+	}
+	if *a.EffectiveCartVersion < a.CartVersion {
+		return 0
+	}
+	return *a.EffectiveCartVersion
+}
+
 type InitialPaymentResult struct {
 	CartID      string  `json:"cart_id"`
 	Version     string  `json:"version"`
@@ -130,7 +145,7 @@ func stageInitialPayment(ctx context.Context, tx *gorm.DB, store string, ref ses
 	if len(rows) == 1 {
 		row := rows[0]
 		v, _ := strconv.ParseUint(in.Version, 10, 64)
-		if row.InputVersion != v || row.CartVersion != v+1 || current.Version != strconv.FormatUint(row.CartVersion, 10) || subtle.ConstantTimeCompare([]byte(row.Generation), []byte(ref.Generation)) != 1 || len(row.RequestSHA256) != 32 {
+		if row.InputVersion != v || row.CartVersion != v+1 || current.Version != strconv.FormatUint(row.currentVersion(), 10) || subtle.ConstantTimeCompare([]byte(row.Generation), []byte(ref.Generation)) != 1 || len(row.RequestSHA256) != 32 {
 			return fail(ErrConflict)
 		}
 		var freeze struct{ CheckoutAttemptID *string }
@@ -153,13 +168,11 @@ func stageInitialPayment(ctx context.Context, tx *gorm.DB, store string, ref ses
 	if err := shippingContactReady(tx, current); err != nil {
 		return fail(err)
 	}
-	var links []string
-	if tx.Table("cart_payment_collections").Select("payment_collection_id").Where("cart_id=? AND deleted_at IS NULL", current.ID).Clauses(clause.Locking{Strength: "UPDATE"}).Limit(1).Scan(&links).Error != nil {
-		return fail(ErrStorage)
+	collectionID, err := reusablePaymentCollection(ctx, tx, current.ID)
+	if err != nil {
+		return fail(err)
 	}
-	if len(links) != 0 {
-		return fail(ErrConflict)
-	}
+
 	if err := supportedSavedShipping(tx, current.ID, o.ManualProviders); err != nil {
 		return fail(err)
 	}
@@ -207,6 +220,9 @@ func stageInitialPayment(ctx context.Context, tx *gorm.DB, store string, ref ses
 	}
 	version, _ := strconv.ParseUint(in.Version, 10, 64)
 	row := initialAttempt{Generation: ref.Generation, InputVersion: version, CartVersion: version + 1, CollectionID: "paycol_" + uuid.NewString(), SessionID: "payses_" + uuid.NewString(), CartAmount: amounts.Totals["total"], SettlementAmount: settled, CurrencyCode: current.CurrencyCode}
+	if collectionID != "" {
+		row.CollectionID = collectionID
+	}
 	redirect := o.ReturnOrigin + "/api/mollie-return?cart_id=" + url.QueryEscape(current.ID)
 	data, _ := json.Marshal(map[string]string{"cart_id": current.ID, "session_id": row.SessionID, "redirect_url": redirect})
 	context, _ := json.Marshal(map[string]string{"idempotency_key": row.SessionID})
@@ -225,15 +241,26 @@ func stageInitialPayment(ctx context.Context, tx *gorm.DB, store string, ref ses
 		return fail(err)
 	}
 	now := gorm.Expr("UTC_TIMESTAMP(6)")
-	if tx.Table("payment_collections").Create(map[string]any{"id": row.CollectionID, "currency_code": row.CurrencyCode, "amount": scalar, "raw_amount": raw, "status": "not_paid", "created_at": now, "updated_at": now}).Error != nil {
-		return fail(ErrStorage)
+	if collectionID == "" {
+		if tx.Table("payment_collections").Create(map[string]any{"id": row.CollectionID, "currency_code": row.CurrencyCode, "amount": scalar, "raw_amount": raw, "status": "not_paid", "created_at": now, "updated_at": now}).Error != nil {
+			return fail(ErrStorage)
+		}
+	} else {
+		r := tx.Table("payment_collections").Where("id=? AND deleted_at IS NULL", collectionID).Updates(map[string]any{"amount": scalar, "raw_amount": raw, "currency_code": row.CurrencyCode, "updated_at": now})
+		if r.Error != nil || r.RowsAffected != 1 {
+			return fail(ErrStorage)
+		}
 	}
+
 	if tx.Table("payment_sessions").Create(map[string]any{"id": row.SessionID, "payment_collection_id": row.CollectionID, "provider_id": hostedMollie, "currency_code": row.CurrencyCode, "amount": scalar, "raw_amount": raw, "data": protectedData, "context": protectedContext, "status": "pending", "created_at": now, "updated_at": now}).Error != nil {
 		return fail(ErrStorage)
 	}
-	if tx.Table("cart_payment_collections").Create(map[string]any{"cart_id": current.ID, "payment_collection_id": row.CollectionID, "id": "capc_" + uuid.NewString(), "created_at": now, "updated_at": now}).Error != nil {
-		return fail(ErrStorage)
+	if collectionID == "" {
+		if tx.Table("cart_payment_collections").Create(map[string]any{"cart_id": current.ID, "payment_collection_id": row.CollectionID, "id": "capc_" + uuid.NewString(), "created_at": now, "updated_at": now}).Error != nil {
+			return fail(ErrStorage)
+		}
 	}
+
 	if tx.Table("cart_checkout_attempts").Create(map[string]any{"cart_id": current.ID, "operation_id": in.OperationID, "generation": row.Generation, "input_version": row.InputVersion, "cart_version": row.CartVersion, "collection_id": row.CollectionID, "session_id": row.SessionID, "cart_amount": row.CartAmount, "settlement_amount": row.SettlementAmount, "currency_code": row.CurrencyCode, "request_sha256": row.RequestSHA256, "created_at": now}).Error != nil {
 		return fail(ErrStorage)
 	}
@@ -303,7 +330,7 @@ func StartInitialPayment(ctx context.Context, db *gorm.DB, store string, ref ses
 			return InitialPaymentResult{}, err
 		}
 	}
-	out := InitialPaymentResult{CartID: ref.CartID, Version: strconv.FormatUint(row.CartVersion, 10), OperationID: in.OperationID, State: "processing"}
+	out := InitialPaymentResult{CartID: ref.CartID, Version: strconv.FormatUint(row.currentVersion(), 10), OperationID: in.OperationID, State: "processing"}
 	err = db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		// Reauthorize even after a definitive external response. The encrypted fact
 		// was persisted above even if the caller lost authority or canceled.
@@ -312,6 +339,7 @@ func StartInitialPayment(ctx context.Context, db *gorm.DB, store string, ref ses
 		if err != nil {
 			return err
 		}
+		out.Version = strconv.FormatUint(row.currentVersion(), 10)
 		receipt, err = payments.InspectEffect(ctx, tx, key)
 		if err != nil {
 			return err
@@ -331,19 +359,9 @@ func StartInitialPayment(ctx context.Context, db *gorm.DB, store string, ref ses
 			out.State = "requires_review"
 			return nil
 		}
-		var properties struct {
-			Links struct {
-				Checkout struct {
-					Href string `json:"href"`
-				} `json:"checkout"`
-			} `json:"_links"`
-		}
-		if json.Unmarshal(result.Data, &properties) != nil {
-			return ErrStorage
-		}
-		u, err := url.Parse(properties.Links.Checkout.Href)
-		if err != nil || u == nil || u.Scheme != "https" || u.User != nil || u.Opaque != "" || u.Hostname() != "mollie.com" && !strings.HasSuffix(u.Hostname(), ".mollie.com") || u.Port() != "" && u.Port() != "443" {
-			return ErrStorage
+		checkoutURL, err := initialCheckoutURL(result.Data)
+		if err != nil {
+			return err
 		}
 		request, err := payments.ReadSessionRequest(ctx, tx, key, o.Ring)
 		if err != nil {
@@ -372,11 +390,28 @@ func StartInitialPayment(ctx context.Context, db *gorm.DB, store string, ref ses
 			}
 		}
 		out.State = "ready"
-		value := u.String()
-		out.CheckoutURL = &value
+		out.CheckoutURL = &checkoutURL
 		return nil
 	}, &sql.TxOptions{Isolation: sql.LevelReadCommitted})
 	return out, err
+}
+
+func initialCheckoutURL(data json.RawMessage) (string, error) {
+	var properties struct {
+		Links struct {
+			Checkout struct {
+				Href string `json:"href"`
+			} `json:"checkout"`
+		} `json:"_links"`
+	}
+	if json.Unmarshal(data, &properties) != nil {
+		return "", ErrStorage
+	}
+	u, err := url.Parse(properties.Links.Checkout.Href)
+	if err != nil || u == nil || u.Scheme != "https" || u.User != nil || u.Opaque != "" || u.Hostname() != "mollie.com" && !strings.HasSuffix(u.Hostname(), ".mollie.com") || u.Port() != "" && u.Port() != "443" {
+		return "", ErrStorage
+	}
+	return u.String(), nil
 }
 
 // validateInitialBinding authenticates the original frozen request and its

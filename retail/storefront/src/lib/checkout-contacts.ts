@@ -1,5 +1,5 @@
 import {CartError,cartCSRFFromCookies,contactAddress,type CartClient,type CartContactInput,type CartContactDetail,type CartView} from './cart-client.ts'
-import {cartIntentKey,cartLockName,contactIntentKey,shippingIntentKey,promotionIntentKey} from './cart-commerce.ts'
+import {contextIntentKey,cartIntentKey,cartLockName,contactIntentKey,shippingIntentKey,promotionIntentKey} from './cart-commerce.ts'
 export {contactIntentKey} from './cart-commerce.ts'
 type Fields=Omit<CartContactInput,'operationID'|'version'>
 type Intent={cartID:string;version:string;operationID:string;hash:string;kind:'save'|'refresh'}
@@ -7,6 +7,10 @@ type Options={client:Pick<CartClient,'saveContacts'|'retrieveContacts'|'retrieve
 const id=/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/,uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,version=/^[1-9][0-9]{0,19}$/,hash=/^[0-9a-f]{64}$/
 const valid=(v:unknown,re:RegExp):v is string=>typeof v==='string'&&!/[\r\n]/.test(v)&&re.test(v)
 const fail=()=>new CartError('conflict')
+export function hasCompleteContacts(contacts:CartContactDetail):boolean {
+ if(!contacts.email||!contacts.shipping_address||!contacts.billing_address)return false
+ try{contactAddress(contacts.shipping_address);contactAddress(contacts.billing_address);return true}catch{return false}
+}
 export function contactFields(form:FormData):Fields {
  const email=String(form.get('email')??'')
  if(email.trim().toLowerCase()!==String(form.get('confirm_email')??'').trim().toLowerCase())throw new CartError('input')
@@ -33,12 +37,12 @@ export function createContactCommands(o:Options){
   return {contacts,view}
  }
  const recover=()=>o.exclusive(async()=>{
-  if((o.storage.getItem(cartIntentKey)!==null||o.storage.getItem(shippingIntentKey)!==null||o.storage.getItem(promotionIntentKey)!==null))throw fail()
+  if((o.storage.getItem(contextIntentKey)!==null||o.storage.getItem(cartIntentKey)!==null||o.storage.getItem(shippingIntentKey)!==null||o.storage.getItem(promotionIntentKey)!==null))throw fail()
   const intent=pending();if(!intent||intent.kind!=='refresh')throw fail()
   const result=await refresh(intent.cartID,intent.version);o.storage.removeItem(contactIntentKey);return result
  })
  const submit=(cartID:string,currentVersion:string,fields:Fields)=>o.exclusive(async()=>{
-  if((o.storage.getItem(cartIntentKey)!==null||o.storage.getItem(shippingIntentKey)!==null||o.storage.getItem(promotionIntentKey)!==null)||!valid(cartID,id)||!valid(currentVersion,version)||BigInt(currentVersion)>=18446744073709551615n)throw fail()
+  if((o.storage.getItem(contextIntentKey)!==null||o.storage.getItem(cartIntentKey)!==null||o.storage.getItem(shippingIntentKey)!==null||o.storage.getItem(promotionIntentKey)!==null)||!valid(cartID,id)||!valid(currentVersion,version)||BigInt(currentVersion)>=18446744073709551615n)throw fail()
   let intent=pending()
   if(intent&&(intent.cartID!==cartID||intent.kind!=='save'))throw fail()
   const expected=intent?.version??currentVersion

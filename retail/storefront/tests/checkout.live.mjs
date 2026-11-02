@@ -13,6 +13,7 @@ import {setTimeout as delay} from 'node:timers/promises'
 const require=createRequire(new URL('../../admin/package.json',import.meta.url)),{chromium,expect}=require('@playwright/test')
 const target=new URL(process.env.CUSTOMER_ORDERS_TEST_GIN??''),key=process.env.CHECKOUT_FIXTURE_KEY,shop='http://127.0.0.1:19379'
 assert.equal(target.hostname,'127.0.0.1');assert.equal(target.protocol,'http:');assert.equal(target.pathname,'/');assert.ok(target.port);assert.match(key??'',/^[0-9a-f]{64}$/)
+const cartTransfer=process.env.CHECKOUT_CART_TRANSFER==='1'
 const browse=process.env.CHECKOUT_PRODUCT_BROWSE==='1',fresh=process.env.CHECKOUT_FRESH_CART==='1'
 const accounts=process.env.CHECKOUT_ACCOUNTS==='1',fulfillment=process.env.CHECKOUT_FULFILLMENT==='1',repair=process.env.CHECKOUT_REPAIR==='1',exchange=process.env.CHECKOUT_EXCHANGE==='1',refund=process.env.CHECKOUT_REFUND==='1',exchangeRefund=process.env.CHECKOUT_EXCHANGE_REFUND==='1',exchangePayment=process.env.CHECKOUT_EXCHANGE_PAYMENT==='1'
 assert.ok(!exchangeRefund||exchange&&!refund);assert.ok(!fresh||browse);assert.ok(!accounts||fresh);assert.ok(!fulfillment||accounts);assert.ok(!repair||fulfillment);assert.ok(!exchange||fulfillment);assert.ok(!(repair&&exchange));assert.ok(!refund||fulfillment&&!repair&&!exchange)
@@ -46,7 +47,7 @@ try{
    if(request.method()==='POST'&&request.url().endsWith('/complete'))completions.push(request.postDataJSON())
    assert.ok(!/^https?:\/\/(localhost|127\.0\.0\.1):(8000|9001)\//.test(request.url()),'Medusa requested')
   })
-  if(accounts)await registerCheckoutCustomer({page,context,shop,segment,index,control,expect,previousOrder:[...orders].at(-1)})
+  if(accounts&&!cartTransfer)await registerCheckoutCustomer({page,context,shop,segment,index,control,expect,previousOrder:[...orders].at(-1)})
   if(!fresh)await context.addCookies([{name:'retail_cart_possession',value:cart.token,url:shop,httpOnly:true,sameSite:'Lax'},{name:'retail_cart_csrf',value:cart.csrf,url:shop,sameSite:'Lax'}])
   // Only the external hosted payment screen is a test double. The status
   // observer above forwards real business responses; no real provider is called.
@@ -67,6 +68,11 @@ try{
    await expect(page.getByTestId('checkout-button')).toBeVisible()
    await page.reload()
    await expect(page.getByTestId('checkout-button')).toBeVisible()
+   if(cartTransfer){
+    await registerCheckoutCustomer({page,context,shop,segment,index,control,expect,previousOrder:[...orders].at(-1),transferCart:cart.id})
+    await page.goto(shop+`/${segment}/cart`,{waitUntil:'domcontentloaded'})
+    await expect(page.getByTestId('checkout-button')).toBeVisible()
+   }
    await page.getByTestId('checkout-button').click()
   }else await page.goto(shop+`/${segment}/checkout?step=address`)
   await expect(page.getByTestId('shipping-first-name-input')).toBeVisible()
@@ -118,6 +124,7 @@ try{
   assert.equal(replay.status(),200);assert.equal((await replay.json()).order_id,orderID)
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
   if(accounts)await verifyCheckoutAccountOrder({page,context,shop,segment,orderID,index,expect,afterDetail:fulfillment?async()=>{const result=await fulfiller.fulfill(orderID,index);await verifyCheckoutShipment({page,context,shop,orderID,result,expect});if(repair){const request=await requestCheckoutAfterSales({page,orderID,result,segment});const tracking=await fulfiller.repair(orderID,request,result,index);await verifyCheckoutRepair({page,context,shop,orderID,result,request,tracking})}if(refund){const request=await requestCheckoutAfterSales({page,orderID,result,segment,type:"return"});await fulfiller.refund(orderID,request,result,index);await verifyCheckoutRefund({page,context,shop,orderID,result,request,segment})}if(exchange){if(exchangePayment)assert.equal((await control('exchange-tax/30')).status,204);if(exchangeRefund)assert.equal((await control('exchange-tax/15')).status,204);const request=await requestCheckoutAfterSales({page,orderID,result,segment,type:"exchange"});const replacement=await fulfiller.exchange(orderID,request,result,index,exchangePayment?()=>settleCheckoutExchangePayment({page,context,shop,segment,orderID,cart,control,expect}):undefined);await verifyCheckoutExchange({page,context,shop,orderID,result,request,replacement,segment});if(process.env.CHECKOUT_SUPPLEMENT_REFUND==='1')await refundCheckoutSupplement({page,context,shop,orderID,replacement,segment,index,fulfiller,expect});if(exchangeRefund||exchangePayment)assert.equal((await control('exchange-tax/25')).status,204)}}:undefined})
+  if(cartTransfer)await page.screenshot({path:`../../logs/gin-migration/cart-transfer-${segment}-${width}.png`,fullPage:true})
   await context.clearCookies()
   const denied=await context.request.get(shop+`/api/store/orders/${orderID}/confirmation`)
   assert.equal(denied.status(),401)
@@ -125,5 +132,5 @@ try{
  }
  assert.equal(orders.size,4);assert.equal(starts.length,8);assert.equal(completions.length,4);assert.deepEqual(errors,[])
  assert.equal((await control('finish')).status,204)
- console.log('CHECKOUT_JOINT_BROWSER '+JSON.stringify({actual_astro_checkout:true,actual_gin_handlers:true,real_mysql_redis:true,mocked_business_api_responses:false,isolated_provider_adapter_and_hosted_page:true,real_provider_payments:false,preseeded_cart_items:!browse,precreated_empty_cart:browse&&!fresh,anonymous_cart_creation:fresh,registration_verification_login:accounts,paid_order_account_attachment:accounts,account_read_without_cart:accounts,cross_account_denied:accounts,same_browser_account_switch:accounts,logout_denies_order:accounts,product_page_add_cart_checkout:browse,address_delivery_payment_review_result_confirmation:true,pending_before_paid:true,payment_reload_replays_original:true,confirmation_reload:true,completion_replay_same_order:true,unauthenticated_confirmation_denied:true,payment_journal_cleared:true,languages:['en','zh'],widths:[390,1440],unique_orders:4,browser_errors:0,real_email_delivery:false,same_new_order_fulfillment:fulfillment,warehouse_cancel_release_reallocate_repack_ship:fulfillment,lost_release_and_shipment_reply_replayed:fulfillment,customer_actual_device_tracking_and_notice:fulfillment,new_order_repair_request_receipt_inspection_dispatch_completion:repair,own_repair_return_tracking_and_notices:repair,same_new_order_return_refund_worker_and_own_notice:refund,same_new_order_exchange_credit_refund_and_own_notice:exchangeRefund,same_new_order_supplemental_payment_cli_notice_and_replacement:exchangePayment,same_new_order_supplemental_cash_return_refund_completion_denied_by_source_rule:process.env.CHECKOUT_SUPPLEMENT_REFUND==='1',same_new_order_exchange_replacement_shipped:exchange,own_original_and_replacement_device_tracking_notices:exchange}))
+ console.log('CHECKOUT_JOINT_BROWSER '+JSON.stringify({actual_astro_checkout:true,anonymous_cart_login_transfer:cartTransfer,lost_transfer_reply_replays_original:cartTransfer,actual_gin_handlers:true,real_mysql_redis:true,mocked_business_api_responses:false,isolated_provider_adapter_and_hosted_page:true,real_provider_payments:false,preseeded_cart_items:!browse,precreated_empty_cart:browse&&!fresh,anonymous_cart_creation:fresh,registration_verification_login:accounts,paid_order_account_attachment:accounts,account_read_without_cart:accounts,cross_account_denied:accounts,same_browser_account_switch:accounts,logout_denies_order:accounts,product_page_add_cart_checkout:browse,address_delivery_payment_review_result_confirmation:true,pending_before_paid:true,payment_reload_replays_original:true,confirmation_reload:true,completion_replay_same_order:true,unauthenticated_confirmation_denied:true,payment_journal_cleared:true,languages:['en','zh'],widths:[390,1440],unique_orders:4,browser_errors:0,real_email_delivery:false,same_new_order_fulfillment:fulfillment,warehouse_cancel_release_reallocate_repack_ship:fulfillment,lost_release_and_shipment_reply_replayed:fulfillment,customer_actual_device_tracking_and_notice:fulfillment,new_order_repair_request_receipt_inspection_dispatch_completion:repair,own_repair_return_tracking_and_notices:repair,same_new_order_return_refund_worker_and_own_notice:refund,same_new_order_exchange_credit_refund_and_own_notice:exchangeRefund,same_new_order_supplemental_payment_cli_notice_and_replacement:exchangePayment,same_new_order_supplemental_cash_return_refund_completion_denied_by_source_rule:process.env.CHECKOUT_SUPPLEMENT_REFUND==='1',same_new_order_exchange_replacement_shipped:exchange,own_original_and_replacement_device_tracking_notices:exchange}))
 }catch(error){console.error(error);throw error}finally{await fulfiller?.close();await browser?.close();if(app&&app.exitCode===null){app.kill();await once(app,'exit')}}

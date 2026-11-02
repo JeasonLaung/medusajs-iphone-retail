@@ -159,3 +159,44 @@ ProcessMollieNotification只接受普通DB pool、显式商户allowlist与busine
 2026-10-30 与当前全部82份迁移一起验证：更新完整迁移计划断言，并补齐隔离创建响应的唯一远端ID、金额/币种与session/cart metadata。Go全包测试、付款/购物车vet、真实MySQL/Redis购物车专项通过。采用当前工作树（包含0037）重新运行新账号购物联合：中英文、390/1440宽度四组真实Astro→Gin→MySQL/Redis购物、模拟支付、成单、账号归属和SQL回归均通过，见 [账号购物报告](shopping-account-joint-report.json)。支付渠道与邮件最终投递仍是隔离替身，未调用真实支付。
 
 当前只有显式配置的通知接收及可调用的worker函数，未启用启动worker/商户配置加载，未实现业务证据消费、支付单调状态转换、成单、退款/拒付或自动对账授权。若创建响应丢失，尚无remote reference的通知仍按未知处理；候选发现和恢复需后续闭合，不能因这个收件箱就开放生产付款。T032/T033与checkout仍未整体验收。
+
+## 2026-11-01 上下文协调接续与来源定位修正
+
+主预览已更新102，见[实际报告](local-preview-102-report.json)，不改变本节已有内部付款协调组件的公开范围。重新执行来源15组回调发现捕获器将pnpm实例目录哈希固化到fixture路径，依赖重装后仅路径变化即报失败。现改为从实际Medusa backend解析其core-flows依赖，fixture使用包内逻辑路径，仍严格核对源文件SHA。重新捕获前后15组输入/输出及源码SHA `6e154a7b4d628a2fff7df1e8df54fe695bdfa40af6fdabe4fc8cf20dc622e064`完全不变，唯一fixture字段变化为source_file；`--check`及现有Go来源对照/非法事实测试通过。原失败日志保存在`logs/gin-migration/main-102-final/payment-oracle-path-failure.log`；未启动应用/数据库或调用渠道。
+
+当前接线缺口已重新确认：SaveContext在重新计价前拒绝任何活跃payment collection，普通写锁也拒绝checkout_attempt_id冻结。已有StagePaymentRefresh按当前持久cart重新计算目标，不能在未保存的地区选择上直接复用；Complete还会独立递增版本。后续须协调目标上下文、原checkout尝试、渠道删除/不确定查询/补偿与单一最终版本，不能简单移除collection判断或解除冻结。原流程金额和币种均相同时保留session，改变其中任一项才删除session并同步集合；这两条都必须保留。已有付款会话上下文切换、付款冻结购物车转移和完整浏览器联合仍未实现，不据此次工具修正关闭这些缺口。
+
+2026-11-01 目标重算已有[内部回滚预览及真实数据库证据](cart-context-payment-preview-report.json)：独立事务核对原激活checkout的加密绑定，在事务内实际应用目标上下文及原顺序报价/配送/税/优惠，生成精确PaymentRefreshPlan后连同所有临时修改完整回滚。金额及币种均不变保留会话，改任一项才计划撤销；新语句复用已通过原预付款浏览器重跑。完整23组102回归220b1cdad9fb、全基础表不变/末尾故障与主数据保持通过。未公开HTTP、未提交新上下文、未解除冻结/执行渠道，后续持久stage/dispatch/reconcile/compensate/finalize仍待；不能将本内部预览当付款刷新闭环。
+
+
+2026-11-01 已有付款上下文接续：[持久准备与真实联合证据](cart-context-payment-stage-report.json)复用原操作/加密动作表，无新DDL，仅提交target/source和freeze，不改cart/version/原checkout、不认领或调用渠道。修复真实八并发RR当前读与旧快照混用，保留三轮失败证据；专项c363515351b4及全新完整原23组d4cc7037aa68通过，1833源码/二进制/日志SHA核对。原预付款地区/配送/优惠/地址Astro联合cb1a462389b6四组有车+四组关门禁无车、12收据、异常0，三端920/144/645文件核对、自有资源清理。Go/vet通过，主42442/102与299表/215FK/共享86不变，七入口200。未接新HTTP/渠道执行/最终保存；原checkout不可变版本与新有效版本绑定、未知恢复/补偿及C01–C11其余范围继续开放，0103仅已协调预留。
+
+
+2026-11-01 已有付款上下文接续：[提交认领后的有界执行](cart-context-payment-execution-report.json)复用原执行/取消后事实持久化，保持外部调用期间无SQL锁。真实原生专项677761f57554及完整原23组b840d11908f8通过；验证并发单次、原158.75EUR加密请求、确定失败稳定重试、未知不重删、取消/撤权保留事实、认领/结果写故障与过期租约保护、嵌套/未配置拒绝及原standalone回归。1835源码/二进制/日志SHA、原预付款Astro联合23cef84d56f5四有车+四无车/12收据/异常0、三端922/144/645文件及自有清理核对。Go/vet通过，主42442/102、299表/215FK/共享86不变，七入口200。无新HTTP/真实渠道/主部署，未知核对、补偿、最终保存和有效版本绑定及C01–C11继续开放。
+
+
+2026-11-01 已有付款上下文接续：[不确定删除只读恢复](cart-context-payment-reconciliation-report.json)绑定原attempt及保存remoteID，活租约不GET，仅terminal unpaid记成功，paid/authorized/open/pending保持冻结，不POST/DELETE。修复首轮339faeb13e78揭示的delete响应与create元数据契约，恢复原加密创建请求并严格对齐身份金额，保留失败证据。专项c8274130f5cc与完整原23组2725668c2708通过；错误身份/金额/权限拒绝、结果写故障可重GET、取消/撤权后已验证事实保存、成功重放无GET及原路径通过。1837源码/binary/日志SHA、原预付款Astro联合499f2e5d7815四有车+四无车/12收据/异常0、三端924/144/645及清理复核。Go/vet通过，主42442/102、299表/215FK/共享86不变，七入口200。尚无独立加密观察全文、新HTTP、补偿或最终保存/有效版本绑定，0103仅预留，全C01–C11继续开放。
+
+
+2026-11-01 已有付款上下文接续：[原上下文补偿准备](cart-context-compensation-stage-report.json)独立核对原cart/checkout/source，不因新目标报价漂移而阻断恢复；先拒绝未知删除，仅为确认成功删除准备稳定新ID与原加密CREATE请求。补偿提交后禁正常delete stage，无新DDL/渠道调用/业务版本变化。修复首轮5766750ad195的通用request_envelope旧RR快照读取并保留失败；专项9e25d2b2b1a6与完整原23组f1f8bea0eb71通过，六并发唯一/quote drift/末尾回滚/篡改等验证通过。1839源码/binary/日志SHA、原Astro联合0642b3a0516f四有车+四无车/12收据/异常0、三端926/144/645及清理复核，Go/vet通过。主42442/102、299表/215FK/共享86不变，七入口200。替代执行/激活、结果并发绑定、最终保存及新HTTP/UI仍待，0103仅预留，全C01–C11继续开放。
+
+
+2026-11-01 接续：上下文付款补偿已接私有替代 CREATE 执行与同 attempt 的只读观察/有界发现恢复，复用已有事务外有界调用及结果持久化。实际 MySQL 验证提交 claim 后才调用、并发仅一次创建、明确失败同请求重试、未知创建不再 POST、精确身份/金额验证及丢持久化结果恢复；旧 RR 快照下的加密成功结果读取和幂等记录使用当前锁定读取。完整23组原SQL、Go全包/相关vet和原有地区/配送/优惠/地址四组浏览器回归通过，源码/二进制及隔离清理已核验。详见 [替代创建与恢复报告](cart-context-compensation-execution-report.json)。仍无替代激活、上下文最终保存或新HTTP/UI验收；主预览未更新、未调用真实渠道，0103仅预留，C01—C11继续未完成。
+
+
+2026-11-01 接续：103新增独立effective_cart_version（NULL保留原绑定），原付款input_version/cart_version/会话/请求摘要不改。私有CompleteContextPayment已原子完成金额和币种不变时的上下文保存，保留原支付会话并释放本次操作冻结；连续两次保存后，原会话pending/paid查询、库存/促销/实收/通知成单及Mollie通知消费仍使用正确当前版本。真实SQL验证六并发唯一保存、最终收据故障全表回滚、旧收据重试、篡改/越权拒绝；102已有记录升级103原字段不变、物理过旧版本拒绝及重放通过。完整23组SQL、Go全包/相关vet和原有前付款四组浏览器组合回归已通过，见 [有效版本与保存报告](cart-context-effective-version-report.json)。新命令尚未接HTTP/Astro；金额改变、替代激活、完整页面联合继续待办。主预览仍102且未更新API，未调用真实渠道，C01—C11未完成。
+
+
+2026-11-01 接续：私有CompleteContextPaymentCompensation已完成原上下文恢复激活。无成功删除时保留原支付会话并推进独立有效版本；确认删除后，仅从已加密认证成功的未付款CREATE结果创建新的immutable checkout_attempt，保留旧attempt和旧会话历史，原集合金额/币种与购物车上下文不变，不伪造目标地区保存收据。真实MySQL验证每类六并发唯一激活、未创建拒绝、最后一步故障全表回滚、改请求/异主重试拒绝、报价漂移恢复、此前已有有效版本后再替代激活、原会话查询/成单和新会话通知成单/同单重试。完整23组SQL、Go全包/相关vet和原有前付款四组浏览器组合回归通过，见 [补偿激活报告](cart-context-compensation-activation-report.json)。金额变化最终保存、激活前已付款/授权结果恢复、新HTTP/Astro操作闭环仍待继续；新命令未接页面，主预览仍102且API未更新，未调用真实渠道，C01—C11未完成。
+
+
+2026-11-02 接续：金额变化后的私有 CompleteContextPayment 已在所有旧会话删除成功后原子保存目标上下文、同步原支付集合并退出旧 checkout；旧 attempt 保留且不可再付款，空集合只允许已存在历史 checkout、无有效会话/实收且单购物车持有时复用。地址、配送、普通地区修改可继续同步该集合，新付款复用集合并生成新的 immutable attempt。真实 MySQL 验证待删除全表不变、最终收据故障全表回滚、六并发唯一保存、后续版本旧收据恢复及篡改拒绝、新付款 pending/paid 到唯一订单/扣款/库存预留/通知与同单重试。完整原23组103迁移 SQL、Go全包/vet和原付款前中英双宽度浏览器四组合+四关门禁通过；1848份SQL源码及935/144/645三端源码、二进制、日志和自有资源清理核验，详见 [金额变化最终保存报告](cart-context-changed-complete-report.json)。主预览仍102、API未更新，七入口200、299表/215外键及共享86事实保持，未调用真实支付。币种/精确小数专项、退休后商品/优惠/账户转移金额变化、替代已付款恢复及HTTP/Astro新流程继续开放，C01—C11未完成。
+
+
+2026-11-02 接续：付款上下文新增两个显式启用的私有 POST 接口 context-payment 与 context-payment/restore，共用原 Context 解码、Origin/CSRF/持有凭证和频率限制。服务器从已认证 manifest 选择会话/attempt，浏览器不能指定渠道请求；响应只含 saved/restored/processing/requires_recovery 及保存收据。协调器限制单次外部变更，已持久化未知删除/创建仅观察同次结果；未知删除经 GET 确认取消后才保存，paid 观察保持冻结并拒绝补偿。恢复原付款保留原上下文且不写目标保存收据。CHECKOUT_CONTEXT_PAYMENT_ENABLED 独立默认关闭，复用原 Mollie 商户及 TLS transport，不重读第二份凭据。真实 Gin router/httptest+私有 MySQL/Redis 验证金额不变/变化、确认删除后的替代恢复、丢成功响应原命令重试、未知删除两次 GET 后取消恢复、paid 保持冻结及输入/权限/私有响应契约。完整原23组103迁移 SQL、Go全包/vet和原付款前四组+四关门禁 Astro 浏览器回归通过；1852份SQL源码、939/144/645三端源码、二进制、日志和自有资源清理核验。见 [付款上下文HTTP报告](cart-context-payment-http-report.json)。Astro bridge、浏览器持久意图和恢复界面尚未接入新接口，本轮浏览器仅证明原流程保留；主预览仍102及原API/关闭开关，七入口200、299表/215外键与共享86事实保持，未调用真实渠道。已付款替代恢复、币种/精确小数等专项及C01—C11完整交付继续开放。
+
+
+2026-11-02 接续：Astro 私有 bridge 已仅放行 context-payment 与 context-payment/restore 两条 POST，保留 Origin/CSRF/持有Cookie/原操作编号边界；仅新路径使用50秒bridge与55秒客户端边界以覆盖45秒后端操作，旧请求时限不变。typed client 严格区分保存收据、恢复与进行中状态，拒绝混车/篡改版本/混合状态/私有附加字段；未自动重试。后端完成结果新增重新授权的当前cart及有效付款原始CREATE描述符，实测保留原付款(version4)、替代付款(version5)或退出付款(null)，不暴露渠道URL、请求或effect材料；零删除恢复也保留原付款标识。六项传输专项、完整245前端测试及Astro检查、Go全包/vet、完整原23组103迁移SQL通过；原付款前四组合+四关门禁浏览器回归通过。1852份SQL源码及939/144/646三端源码、二进制、日志和自有清理核验，见 [付款上下文传输报告](cart-context-payment-transport-report.json)。主102/API/开关不改，七入口200、299表/215外键及共享86事实保持。付款上下文持久意图、保留原CREATE的前端有效版本兼容、恢复界面和新流程真实浏览器联合仍待；本轮未把新接口挂到页面，不标C01—C11完成。
+
+
+2026-11-02 接续：Astro 已接付款后地区/语言切换与显式恢复入口，复用 commerce 锁和 context journal。先解析原 CREATE，再在发送前持久化目标与原操作；保存/恢复结果与当前 cart、amounts、payment-options 一致后才更新付款绑定并清理意图。保留原 CREATE 输入版本兼容有效版本推进，未知结果、丢响应、读取或浏览器存储失败均沿原命令恢复。253 项前台测试、含新增绑定存储故障的25项专项及470文件 Astro 检查（0错误/0警告）通过；实际本地 Astro 中英×390/1440四组恢复面板验证通过，覆盖等待禁用、失败原编号重试、刷新恢复、URL/Cookie保持及无溢出。页面测试全部写请求被拦截，不能算 Gin/MySQL 连续联合；详见 [付款上下文页面报告](cart-context-payment-ui-report.json)，保留初次类型检查与测试 hydration 失败证据。主预览仍102/原API且新能力关闭，七服务入口200；新流程真实数据库浏览器联合、其他恢复边界和 C01—C11 完整交付继续未完成。

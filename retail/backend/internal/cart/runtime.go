@@ -309,6 +309,13 @@ func lockForPaymentOperation(ctx context.Context, tx *gorm.DB, store string, ref
 		return Snapshot{}, err
 	}
 	checkout := ""
+	if scope, ok := ctx.Value(contextPreviewScopeKey{}).(contextPreviewScope); ok {
+		if scope.tx != tx.Statement.ConnPool || scope.store != store || scope.ref != ref || scope.version != version || operation != "" || ctx.Value(checkoutReadScopeKey{}) != nil {
+			return Snapshot{}, ErrConflict
+		}
+		checkout = scope.checkoutOperation
+		operation = scope.paymentOperation
+	}
 	if scope, ok := ctx.Value(checkoutReadScopeKey{}).(checkoutReadScope); ok {
 		if scope.tx != tx.Statement.ConnPool || scope.store != store || scope.ref != ref || scope.version != version || operation != "" {
 			return Snapshot{}, ErrConflict

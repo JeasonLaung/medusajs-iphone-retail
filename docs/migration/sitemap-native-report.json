@@ -1,0 +1,597 @@
+{
+  "checked_utc": "2026-11-01T11:18:04.268716+00:00",
+  "scope": "Source-compatible public sitemap and minimal Gin directory projection",
+  "source_sha256": {
+    "retail/backend/internal/catalog/store_seo.go": "18cda408c1b3d2b8050add01c06b76fd3ef28df74339a6218bd0d3f77b4fd90f",
+    "retail/backend/internal/server/router.go": "284cb677fb9e0f4bc8823dad949325faf091581231b8e7fc54a022ed12d74e83",
+    "retail/backend/internal/identity/seo_discovery_test.go": "821621493f6d57c9a47f84b712781e6722bf4b2aac2fd4fad6722f6cd34d2224",
+    "retail/scripts/test-native-sql-local.py": "0b7d0b229db76db16806bb8ef5b1826b3033f98dd5dce0a3fcc7576ad0df72a6",
+    "retail/storefront/src/lib/sitemap.ts": "d6076b77bfbba62ff09da11de5747a9166dfcbb877ba12e3c31b8157da92f943",
+    "retail/storefront/src/pages/sitemap.xml.ts": "ee1df79920bb999a41129a458dee2081c128bc2e77f52b34a2b7faf125d83757",
+    "retail/storefront/tests/sitemap.test.ts": "d083364ada558d9c63612e6dea18f4827251f6076e0fabd506ecb7dd6b39cfe1",
+    "retail/admin/tests/sitemap.native.mjs": "1f4bd0a76061d2ae606042976c9405d0bd8f1b031c81c10ac76f8e61c8f0baec"
+  },
+  "evidence_sha256": {
+    "logs/gin-migration/native-sql-local-b36e1b657474/manifest.json": "29b8f09798cbf443d75352413fd9d51f46f0082491f3ddfc3c3b61a25d5779f4",
+    "logs/gin-migration/native-sql-local-b36e1b657474/result.json": "7e10eec8bbb2ec357d458209f93d950bbd63b90ba901f419121c84f625bea9ad",
+    "logs/gin-migration/native-sql-local-b36e1b657474/mysql-cleanup.json": "cb57fabbaf097925a808cccc0c0fa638438ec798f04aebd9c23838141ef5a242",
+    "logs/gin-migration/native-sql-local-b36e1b657474/cleanup.json": "fab32adfe0c95381e147293d7b6c988b757ed4f5d738ea780c4d03ec313115b6",
+    "logs/gin-migration/native-sql-local-b27629c227fb/manifest.json": "12e2316fa60ea7594a924821f902af43ce2d586413f136b1d2aeb62abf827e1b",
+    "logs/gin-migration/native-sql-local-b27629c227fb/diagnostic-SEODiscovery-result.json": "03e0486cbeb8896091ff35dc51373d495550a51e6ea0921463655e76158b748e",
+    "logs/gin-migration/native-sql-local-b27629c227fb/mysql-cleanup.json": "cb57fabbaf097925a808cccc0c0fa638438ec798f04aebd9c23838141ef5a242",
+    "logs/gin-migration/native-sql-local-b27629c227fb/cleanup.json": "fab32adfe0c95381e147293d7b6c988b757ed4f5d738ea780c4d03ec313115b6",
+    "log/gin-preview-mysql/binary-refresh-b36e1b657474/result.json": "0ca1d9162400483d6d726204e7c6e26c72abcb17f4e0d151707f0ee271a7fe96",
+    "logs/gin-migration/sitemap-1793531700511/report.json": "71138eb724a31972f60bb844fe2ef42e8da7580ff98612712c7f9b50da2f16b3",
+    "logs/gin-migration/sitemap-1793531700511/observations.json": "d4594763a5638b68d1c00f31b696f260d8f44219ab4b6ffc6fe6fdbc09a153dd"
+  },
+  "frozen_backend_current_matches": true,
+  "frozen_source_files": 1815,
+  "full_original_sql_suites": 23,
+  "sql_owner": "b36e1b657474",
+  "focused_sql_owner": "b27629c227fb",
+  "focused_scenarios": [
+    "103 public products over100+3 pages",
+    "draft/otherchannel/deleted excluded",
+    "valid source SKU slug only",
+    "softdeleted variant excluded",
+    "microsecond updated_at",
+    "active empty collection included",
+    "no IDs or private metadata",
+    "invalid query400",
+    "disabled channel and missing dependency503"
+  ],
+  "runtime_refresh": {
+    "owner": "b36e1b657474",
+    "previous_owner": "9269d431f503",
+    "previous_pid": 32874,
+    "previous_binary_sha256": "9dafd0cb508bfb77b3e2cac4257975563fca2662e32edc4840edcb2246d30296",
+    "new_binary_sha256": "d0d335a03bc6255924ee42d9f61657ff502a7baf5754d56d3c2bccd2242899c3",
+    "sql_result_sha256": "7e10eec8bbb2ec357d458209f93d950bbd63b90ba901f419121c84f625bea9ad",
+    "schema_migrations": 100,
+    "configuration_changed": false,
+    "schema_changed": false,
+    "success": true,
+    "new_pid": 40152,
+    "health": 200
+  },
+  "browser": {
+    "source_parts": 22,
+    "astro_parts": 22,
+    "source_urls": 21952,
+    "astro_urls": 21952,
+    "loc_lastmod_languages_equal": true,
+    "ordering_compared": false,
+    "invalid_parts_checked": 4,
+    "browser_xml_routes": 2,
+    "observations_sha256": "d4594763a5638b68d1c00f31b696f260d8f44219ab4b6ffc6fe6fdbc09a153dd",
+    "requests": [
+      {
+        "port": 8000,
+        "path": "/sitemap.xml",
+        "status": 200,
+        "bytes": 1672,
+        "sha256": "147ffe95bffc2fe97442c7c7522eb7aee49b9b81b8eb31ff2dd1c5b96cf06c90",
+        "root": "sitemapindex",
+        "urls": 0,
+        "children": 22
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=1",
+        "status": 200,
+        "bytes": 504152,
+        "sha256": "43fc861218cce5e595e30393bd27b65dc54d9e10212bf16e3a6a461df090b6c0",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=2",
+        "status": 200,
+        "bytes": 500140,
+        "sha256": "d7391adb0ee90a894c46335947ce670c5379d3cb7bb676895aed20580ebdbf15",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=3",
+        "status": 200,
+        "bytes": 504886,
+        "sha256": "a9951280ac683f9bbadc6b23e9b33fb2928225c4c433857152eee558493c6868",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=4",
+        "status": 200,
+        "bytes": 504160,
+        "sha256": "1cfa00dbc394a70e26e0e2617efd14e797f49e9a5b0fae8666772008614af3a0",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=5",
+        "status": 200,
+        "bytes": 497276,
+        "sha256": "bcd9a8beed981eab58669be692fccf5c5c5411e5aac7f9876e8a1b715bf18562",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=6",
+        "status": 200,
+        "bytes": 507222,
+        "sha256": "ac5d41320f69e89856bde2f271e312bb0636bef87e528beb49428bc98d8a32a1",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=7",
+        "status": 200,
+        "bytes": 502704,
+        "sha256": "2cac6206719504739877e5011449d840ef9f0d0c3711a6616dda5a7b0bf46c91",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=8",
+        "status": 200,
+        "bytes": 501188,
+        "sha256": "01b2ce552c84e7d4325e1016d494ccedf2dc3d46fdd076551ed6ff14044492ff",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=9",
+        "status": 200,
+        "bytes": 504342,
+        "sha256": "7ed88a64e18f04edf743b3b97afe26751c8487b041b35ec2a405eba6003085e0",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=10",
+        "status": 200,
+        "bytes": 499584,
+        "sha256": "6efaa80efb2324f1549db8e9f703a6b79e6e37cf7226c22ea9ba8a32b9ef6870",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=11",
+        "status": 200,
+        "bytes": 504592,
+        "sha256": "fefbea64e5a5108112082363a130f613b6b5490ddcc6c70451b3352664721985",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=12",
+        "status": 200,
+        "bytes": 506010,
+        "sha256": "c865731ff75b63672cd50fe3139ad8ec6d26415a0ee36c23c8f7841d1dc30a42",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=13",
+        "status": 200,
+        "bytes": 500172,
+        "sha256": "bf461bbac6def20716f15500785452dd4028bc2ddacd2713882161207ef0d080",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=14",
+        "status": 200,
+        "bytes": 505670,
+        "sha256": "3ba11199c459857c041c9ebcbb20311dbdeefc7538a8fb7a30d6843ff23e01da",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=15",
+        "status": 200,
+        "bytes": 503968,
+        "sha256": "4258f88e80e5c0dc4b835f99575714ba20bb488cd8b250a3101e61b0ef63b876",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=16",
+        "status": 200,
+        "bytes": 496872,
+        "sha256": "c510fdd6032def5716441df78d389cac2bb6609a8dea655be084595c2d96139c",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=17",
+        "status": 200,
+        "bytes": 507082,
+        "sha256": "c0cf5550f710715641b173d9ebb24053a0d0fdb347408fbe0f79f558c425d457",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=18",
+        "status": 200,
+        "bytes": 503868,
+        "sha256": "ca76bc9b72eb64fd5e0761bf220d55620f0098d636133b63c57c2357185ffce6",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=19",
+        "status": 200,
+        "bytes": 499460,
+        "sha256": "7ddf9d91ab703b74135ebf1042df7dca92cd1982bd5592348c68506b80e9cbf1",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=20",
+        "status": 200,
+        "bytes": 504906,
+        "sha256": "b533246d422214f7fe57daf067e868c3f359d6510233841d7c2d1d4825255343",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=21",
+        "status": 200,
+        "bytes": 500404,
+        "sha256": "0eef63ece2ca80d8b340740e4f3fa41022b901cbf050dd65d5301e142b1da15d",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 8000,
+        "path": "/sitemap.xml?part=22",
+        "status": 200,
+        "bytes": 481654,
+        "sha256": "ef17a683f4831cc1adc3e07a6819fb5d1283906bf85c73e763db5b2d2f04cf2e",
+        "root": "urlset",
+        "urls": 952,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml",
+        "status": 200,
+        "bytes": 1672,
+        "sha256": "b6556fcf647f278732c9326d5f80608a67496be0792ae3e398bc75439f2e02a0",
+        "root": "sitemapindex",
+        "urls": 0,
+        "children": 22
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=1",
+        "status": 200,
+        "bytes": 504936,
+        "sha256": "570564cb2991cfc01f3f77a43b734cfeae25c04d95cd7b157ea275abe0db3927",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=2",
+        "status": 200,
+        "bytes": 499528,
+        "sha256": "93f81b930404d80ce3e21ae22b48b1ec182d8518b8b51feb6fd8ec25e9f9c502",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=3",
+        "status": 200,
+        "bytes": 504034,
+        "sha256": "d5f6f948348a6654c63b8cb24217e2a9f0020e69912dccd78c11ea7ca0c02d12",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=4",
+        "status": 200,
+        "bytes": 502144,
+        "sha256": "c8f6b0330282d3363f5a1a4acfa9568d7adebf28411a4acb2a6090a5cc9da624",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=5",
+        "status": 200,
+        "bytes": 501928,
+        "sha256": "eeb48d4a5beb6974614a3eb9218adeac10a9abb7bf14651ecde14cef8a4f879b",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=6",
+        "status": 200,
+        "bytes": 507378,
+        "sha256": "1e481905306fc1ec633e67e63c0755dd80320b57d41ca8cb4e3937fdafbd6880",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=7",
+        "status": 200,
+        "bytes": 497516,
+        "sha256": "5cd9330576b0433c85a8bb69c3f0bdca151e14579e80046959eea1555b58d64c",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=8",
+        "status": 200,
+        "bytes": 504188,
+        "sha256": "c5afc7e8a63d49b241ae0c8b175d6cad5603a1959a432d9e492bb1d11b6bdb82",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=9",
+        "status": 200,
+        "bytes": 504658,
+        "sha256": "d50f6e435ea4dddc73abdc106044d383b16d2040a94f2b1208e81cfec55822dc",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=10",
+        "status": 200,
+        "bytes": 499980,
+        "sha256": "4b6119c9aebbe60c16669e50c920ed6f76aaf9f2ee5ccd2bfb4d8e2f440f44b1",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=11",
+        "status": 200,
+        "bytes": 504004,
+        "sha256": "7bb9a6ab7972006e3fc7708153ecc7d504a6bcc4dcdfe0afa190a7a1f0d353b4",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=12",
+        "status": 200,
+        "bytes": 506154,
+        "sha256": "99e2bc097f4ecd18424c14276b666bf4d0a605edee7231edb045c24ce9d86703",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=13",
+        "status": 200,
+        "bytes": 500212,
+        "sha256": "a77d7ff3baefa744e6631813dc9892180a6d4804086b21ca27b63969d961ab9e",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=14",
+        "status": 200,
+        "bytes": 504742,
+        "sha256": "c84131311d38b149145db6d94ef63d446aaf4cf577066b7df8fe3bd7f7b1b59b",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=15",
+        "status": 200,
+        "bytes": 501908,
+        "sha256": "7f81b419a076380c2158c10bfc7f30a0bf43182533be27034259dd87a7710837",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=16",
+        "status": 200,
+        "bytes": 501892,
+        "sha256": "5af1abdce3eb8ac269f019da5a0a20e77610cffb4d4a1ccefadd14bdb48dede2",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=17",
+        "status": 200,
+        "bytes": 506974,
+        "sha256": "9979dccb81716393f27e5264bce1564da248cb49ebe19213929f7ef1e7f938db",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=18",
+        "status": 200,
+        "bytes": 497724,
+        "sha256": "ac800ccd4ab11ebc1337dbc09537fcad48dbdf1d410c074c8eff0f4fde35c874",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=19",
+        "status": 200,
+        "bytes": 503788,
+        "sha256": "2d320aa46b82fafd144fc0f497f411cea997a36376d444f18b94698990180318",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=20",
+        "status": 200,
+        "bytes": 504970,
+        "sha256": "bd1e8593bb9528864f0bff4ed8cb0cba05d5d98b1d51461002a5826cf3f1b4b9",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=21",
+        "status": 200,
+        "bytes": 499644,
+        "sha256": "a708c0eae5f0d989984d8a0a87fb105879f468a5957642cdc2d151009ddcb4e7",
+        "root": "urlset",
+        "urls": 1000,
+        "children": 0
+      },
+      {
+        "port": 9300,
+        "path": "/sitemap.xml?part=22",
+        "status": 200,
+        "bytes": 482010,
+        "sha256": "388c501d90d6477d97181f3860b3a76589b121200913568d2a97484a6fa02a93",
+        "root": "urlset",
+        "urls": 952,
+        "children": 0
+      }
+    ],
+    "errors": [],
+    "api_mocking": false,
+    "business_writes": false,
+    "real_provider_called": false,
+    "configured_overrides_browser_verified": false,
+    "full_seo_accepted": false,
+    "goal_complete": false
+  },
+  "readonly_after_browser": {
+    "checked_utc": "2026-11-01T11:17:03.134409+00:00",
+    "fresh_backup_owner": "9d72f058ad87",
+    "service": {
+      "running": true,
+      "pid": 40152,
+      "health": 200,
+      "schema_migrations": 100
+    },
+    "persistent_tables": 295,
+    "business_tables_equal_to_rehearsal": 293,
+    "migration_journal_execution_times_excluded": true,
+    "migration_checksums_match": true,
+    "original_tables_unchanged": 268,
+    "live_counts_match_dump": true,
+    "foreign_keys_checked": 213,
+    "orphan_rows": 0,
+    "new_gates_default_closed": true,
+    "retained_shared86_all_table_fingerprints_match": true,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "post_cutover_data_verified": true,
+    "goal_complete": false
+  },
+  "checks": {
+    "go_all_packages": true,
+    "catalog_race": true,
+    "catalog_server_vet": true,
+    "storefront_tests": 221,
+    "sitemap_final_tests": 5,
+    "astro_files": 462,
+    "astro_errors": 0,
+    "astro_warnings": 0,
+    "astro_hints": 17
+  },
+  "check_log_sha256": {
+    "/tmp/sitemap-all-go.log": "01e638a450046d9f4fd29febd47c949105ab0cadf0607084faa90f3a5c88853f",
+    "/tmp/sitemap-race.log": "1c4207e781f0739224ae710a24dba806cc3af06b74121ca34c8463a77cd0af35",
+    "/tmp/sitemap-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/sitemap-tests.log": "bc10daa12a3517f02fa89a19274f6b875742e1c414073fb4fd574e6e5e3c9179",
+    "/tmp/sitemap-final-unit.log": "d6a4b6c7292234aeceb88c4f6955c5f35db9c26cbf5135692e5ff690bcfc89d7",
+    "/tmp/sitemap-check-final.log": "85ff7001d3178cdcdef065e25074444c3cabd8f8f29304d9ddc7a713b827234f"
+  },
+  "health_urls_200": [
+    "http://127.0.0.1:9001/health",
+    "http://127.0.0.1:9001/app",
+    "http://127.0.0.1:9100/health",
+    "http://127.0.0.1:9300/dk-en/store",
+    "http://127.0.0.1:9300/sitemap.xml"
+  ],
+  "remaining": [
+    "SEO Admin and configured values through real browser",
+    "historical SEO import and reconciliation",
+    "region interactions and full C01 page states",
+    "C02-C11 remaining workflows and full joint acceptance"
+  ],
+  "real_provider_called": false,
+  "business_writes": false,
+  "full_seo_accepted": false,
+  "goal_complete": false
+}

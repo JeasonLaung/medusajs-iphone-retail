@@ -1,0 +1,42 @@
+{
+  "base_commit": "8d7aed691e0a518d2ec94b2562dcab0751d3e0cd",
+  "schema_source": "complete committed 86-migration plan; no in-progress migration87",
+  "overlaid_sha256_lf": {
+    "retail/backend/cmd/import-catalog/main.go": "d2e61f2864da232fc5d3f39b8ffa11dc2782b5d0b149e3455146f92ae0fde90e",
+    "retail/backend/cmd/import-catalog/main_test.go": "8e4089b706e21c6a0eecf0c8ba6d057634844476e981e52b7818e53118f717f3",
+    "retail/backend/cmd/import-history/main.go": "1d4f78d52bc050517f216e6a894570a78fb2161f64550796b91996b43aff7899",
+    "retail/backend/cmd/import-history/main_test.go": "8e4089b706e21c6a0eecf0c8ba6d057634844476e981e52b7818e53118f717f3",
+    "retail/backend/internal/catalogimport/cart_history.go": "fe5f168e2c71d2b282c151b10c584ee7be6c5db99d5b31d96b33aef4c4968941",
+    "retail/backend/internal/catalogimport/cart_history_test.go": "d918aeef3885d53554a788d97dd2fec579ce92890f841848c9eba5d85dca86b8",
+    "retail/backend/internal/catalogimport/device_prerequisites.go": "c74871327571cacc497aafca9d17b78a2da0ad6a3367fd88450e488785a1e10d",
+    "retail/backend/internal/catalogimport/native_snapshot_test.go": "9563a173b2856d86da9c2b81c734d4198b99ebb96eb17b1ac1f91d9e0c444d53",
+    "retail/backend/internal/catalogimport/snapshot.go": "e283de064655750bd0f85d1dee18fa3462797dd46521eddb5e5851fa73915015",
+    "retail/backend/internal/catalogimport/snapshot_test.go": "3e35a6f61736ed6ea23cec23aba62cdd126627a8bb3dcae04386cc6a5a66e7b4",
+    "retail/backend/internal/historyimport/carts.go": "2c8d7c7367b25e3542ecdf0059af6b48b2a8bb063ec81b4a0c0e99876db35a2f",
+    "retail/backend/internal/historyimport/device_prerequisites.go": "d44088c642341a8be2e2fe7605608356ea8b19b622e92d34807acd6222c1ed5f",
+    "retail/backend/internal/historyimport/device_prerequisites_native_test.go": "a276c4d81ee4957f1af178c146348b62966486a81ec5c6fe1c9e30e917b2d0f0",
+    "retail/backend/internal/historyimport/logistics.go": "1aca5fb8f4854b095ca5bd607760ce7bc9e37a6b00a5851fa29b8bcc11e527f5",
+    "retail/backend/internal/historyimport/native_snapshot_test.go": "b352c193c3819971b1d83a6c799f9cf2f3de2dbc179f919586dec05eae6025b8",
+    "retail/backend/internal/historyimport/snapshot.go": "94a667cd4ff73817f10d6a795f07766e735d2f14f4ce049a4c208d37e4360d79",
+    "retail/backend/internal/historyimport/snapshot_test.go": "6f1170657ce9b54b64b9d31a2f49a9cc6dcc124a7c3754e13e5095ffef5da6dc",
+    "retail/backend/internal/rowimport/history_customer_test.go": "0c0eeaf2e7e5d8892d16bc4c2e1825273e57b9a7da31e82a1d0688d3dbe4e301",
+    "retail/backend/internal/rowimport/inspect.go": "cf859b0f7539742e1042af7582bc79103e30d82eae2a9966f46731948436e025",
+    "retail/backend/internal/rowimport/layout.go": "0c472820a8f89ab7d6b89159b122a192734fd90665b66930281e6d3e37b09403"
+  },
+  "secrets_copied": false,
+  "committed_test_support": [
+    "docs/migration",
+    "retail/scripts"
+  ],
+  "committed_original_contract_sources": [
+    "medusa-store/apps/backend/src/api/buyback-validators.ts",
+    "medusa-store/apps/backend/src/lib/recycled-assessment.ts"
+  ],
+  "binary_sha256": "0b88529fb402273d8c558d2d8eda3fe2c580c1791245fd3009b24130c052d913",
+  "go_all_passed": true,
+  "go_all_transcript_sha256": "8b3d735db88e05b10189b9003f9a68f430d7508a3bca5b7ef0642c80501d58bb",
+  "go_vet_passed": true,
+  "full_native_rollback_passed": true,
+  "full_native_committed_replay_passed": true,
+  "schema_checks_bypassed": false
+}

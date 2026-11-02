@@ -1,0 +1,168 @@
+{
+  "date": "2026-10-31",
+  "migration": 89,
+  "complete_c03_accepted": false,
+  "main_trial_database_changed": false,
+  "source_database_changed": false,
+  "real_payment_or_mail_called": false,
+  "native_sql": {
+    "default_disabled": true,
+    "same_operation_contenders": 4,
+    "one_upload": true,
+    "stale_or_changed_request_rejected": true,
+    "late_receipt_failure_rolls_back_image_asset_and_metadata": true,
+    "standalone_thumbnail_preserved": true,
+    "sku_link_or_thumbnail_blocks_removal": true,
+    "removal_clears_thumbnail_and_public_access": true,
+    "disabled_gate_recovery": true,
+    "current_permission_required_on_replay": true
+  },
+  "browser": {
+    "react_gin_astro_native_mysql_redis": true,
+    "api_mocking": false,
+    "uploaded_byte_sha256_and_mime_equal": true,
+    "url_add_reorder_remove_thumbnail_refresh": true,
+    "astro_gallery_actually_decodes_image": true,
+    "admin_en_zh_and_mobile": true,
+    "script_errors": 0,
+    "nonfatal_ant_css_cleanup_warning": true
+  },
+  "checks": {
+    "full_go_tests": true,
+    "targeted_vet": true,
+    "admin_types": true,
+    "astro_types": true,
+    "storefront_tests": 176,
+    "formats": [
+      "JPEG",
+      "PNG",
+      "WebP"
+    ]
+  },
+  "source_sha256": {
+    "retail/backend/migrations/0089_catalog_product_images.sql": "5ecee33c78f0380531cc323c130ddea1e74755a71cf3017d803771c959ab2a8f",
+    "retail/backend/internal/catalog/images.go": "4de1a768af87ec94df28d2becc9db52cf0a04f73560720def5ce13029e09a4e3",
+    "retail/backend/internal/catalog/images_http.go": "12ecf3054b48395fb8b14a0b028ec4ed4314b4d02d51c393e5ec5171206985c5",
+    "retail/backend/internal/catalog/images_test.go": "0c6a62b35a748bca83616019e8e8036502684cf9506f8663919ce5d86da8e3ae",
+    "retail/backend/internal/catalog/images_native_test.go": "63471285de56594cccd772e4deb221d9ab61539c6348bd4aaabf3228652c3071",
+    "retail/backend/internal/platform/request.go": "bf1bd66fb0d6d3da7cb68b56b513992d033ed5bd4b343217692554e62da189b9",
+    "retail/backend/internal/platform/photo_boundary_test.go": "d66b8bb672980f3a05010f8737f52564f267691fe21205f9009de4408684fa02",
+    "retail/admin/src/ProductImages.tsx": "8d54982e2144b82b76a265311ede44c40f13d6e9314a1a4196f044797bf96939",
+    "retail/admin/src/ProductDetail.tsx": "82750ffaeceb40d560318dc93ff8736e93b37805b994e0d984c0fa90f39997b3",
+    "retail/admin/src/api.ts": "9b8eaeed392252b78969891c07ef5e2ccdaeec2ee49f4d3b4b0bcbc481fe656e",
+    "retail/admin/tests/product-images.native.mjs": "1fb6244f6836be4779090fe89914420ba30ac4eaf3f000ef02ae0bde439250a6",
+    "retail/storefront/src/lib/catalog-image.ts": "385b5f571e1362fb7270f93e2755ca1b5a929abaf996e3d093b7d335ca064661",
+    "retail/storefront/src/pages/api/store/catalog-images/[id].ts": "d0bd9c57c870c6bb1008881b610f9857470ed864de0407091256298d56c4d8a6",
+    "retail/storefront/tests/catalog-image.test.ts": "d7f3f4c4a8046b2aca8222a5be502abfb370a2172e0ceb10be99c7f0954f943f",
+    "retail/backend/go.mod": "afa4b1e3db3ae9781974816296f47d1035e759a99070854f16801fea0f00bec0",
+    "retail/backend/go.sum": "b7b453b4ab139e32157f9af5acc749e3e65bbd81d0f911da540590d3ee1ffad9"
+  },
+  "artifacts": {
+    "sql": {
+      "path": "log/native-product-images-sql.log",
+      "sha256": "5f5262d338bfd1fe18f6aaecb1dc6d2c48dc0725742f8e43e64946de3ee7d39c"
+    },
+    "browser": {
+      "path": "log/native-product-images-browser.log",
+      "sha256": "04d38c22cd911bc2a9a9730493aad6849b269a3f512ea83c9f319f7bf5fbe090"
+    },
+    "full-go": {
+      "path": "log/native-product-images-full-go.log",
+      "sha256": "f7d5c98f3a9216d73e97b4d2ea0435641f6d1bceef55e1561158957d3893413d"
+    },
+    "admin-check": {
+      "path": "log/native-product-images-admin-check.log",
+      "sha256": "e8bfd4d2e137d4c0fbce29a275eee34bbf66235478599a0a2cd8a2fa8fc59f69"
+    },
+    "astro-check": {
+      "path": "log/native-product-images-astro-check.log",
+      "sha256": "960b66b47d2be97610a756ddb952170c660ee065e6df7f7bef0f8096f198cd25"
+    },
+    "storefront-tests": {
+      "path": "log/native-product-images-storefront-tests.log",
+      "sha256": "17ab06e8d2687155433b7c279400d32e039e7803cbb1b6f4a72ceff575decd6f"
+    },
+    "formats": {
+      "path": "log/native-product-images-formats.log",
+      "sha256": "267174d5952ca652a93198e23ba0147d7108e05bb162438bf4ed507001fde649"
+    },
+    "vet": {
+      "path": "log/native-product-images-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "remaining": [
+    "SKU image assignment management",
+    "existing product option management",
+    "conditional prices",
+    "full C01-C11 joint acceptance"
+  ],
+  "owned_fixture_cleanup": {
+    "api_stopped": true,
+    "astro_stopped": true,
+    "redis_keys_removed": 5,
+    "database_and_user_dropped": true
+  },
+  "existing_services": [
+    {
+      "url": "http://127.0.0.1:9001/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9001/app",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8000/dk-en/store",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9100/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9200/products",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/store",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/products/swappie-iphone-15-pro",
+      "status": 200
+    }
+  ],
+  "recent_service_logs": [
+    {
+      "path": "log/gin-branch-medusa-backend.log",
+      "recent_lines": 0,
+      "expected_disabled_cart": 0,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "log/gin-branch-medusa-storefront.log",
+      "recent_lines": 0,
+      "expected_disabled_cart": 0,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "log/gin-local-api-current.log",
+      "recent_lines": 100,
+      "expected_disabled_cart": 5,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "log/gin-local-admin.log",
+      "recent_lines": 11,
+      "expected_disabled_cart": 0,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "retail/storefront/.astro/dev.log",
+      "recent_lines": 50,
+      "expected_disabled_cart": 13,
+      "unexpected_errors": 0
+    }
+  ]
+}

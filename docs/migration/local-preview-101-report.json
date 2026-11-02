@@ -1,0 +1,194 @@
+{
+  "checked_utc": "2026-11-01T12:14:31.942798+00:00",
+  "scope": "Actual local100-to101 Gin upgrade and exact clone recovery/reapply proof",
+  "upgrade": {
+    "previous_pid": 40152,
+    "previous_binary_sha256": "d0d335a03bc6255924ee42d9f61657ff502a7baf5754d56d3c2bccd2242899c3",
+    "new_binary_sha256": "d5fd047feae4d9eb6333cdc801078370b670ff3671c18aac93b32a2ca30c75ea",
+    "frozen_source_owner": "9f988321820f",
+    "sql_result_sha256": "21d68307347774746e924da09d34f35b53782e78da94369cfe633590039c1cc2",
+    "prior_recovery_owner": "f7fd86d9ca70",
+    "old_schema": 100,
+    "target_schema": 101,
+    "configuration_changed": false,
+    "gates_changed": false,
+    "role_grants_changed": false,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "goal_complete": false,
+    "rehearsal_owner": "b2112642257b",
+    "success": true,
+    "new_pid": 76194,
+    "health": 200,
+    "old_tables_unchanged": 291,
+    "new_tables": [
+      "seo_command_receipts",
+      "seo_command_state"
+    ],
+    "data_and_ddl_match_rehearsal": true,
+    "rollback_executed_on_main": false,
+    "rollback_rehearsed_on_clone": true
+  },
+  "readonly_verifier": {
+    "checked_utc": "2026-11-01T12:08:41.097740+00:00",
+    "fresh_backup_owner": "9d72f058ad87",
+    "service": {
+      "running": true,
+      "pid": 76194,
+      "health": 200,
+      "schema_migrations": 101
+    },
+    "persistent_tables": 297,
+    "business_tables_equal_to_rehearsal": 295,
+    "migration_journal_execution_times_excluded": true,
+    "migration_checksums_match": true,
+    "original_tables_unchanged": 268,
+    "live_counts_match_dump": true,
+    "foreign_keys_checked": 214,
+    "orphan_rows": 0,
+    "new_gates_default_closed": true,
+    "retained_shared86_all_table_fingerprints_match": true,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "post_cutover_data_verified": true,
+    "goal_complete": false
+  },
+  "route_health": [
+    {
+      "url": "http://127.0.0.1:9001/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9001/app",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9100/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9100/api/admin/seo/settings",
+      "status": 401
+    },
+    {
+      "url": "http://127.0.0.1:9100/api/store/seo?path=%2Fdk-en%2Fabout",
+      "status": 200,
+      "empty_configuration": true
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/store",
+      "status": 200,
+      "initial_html_models": 30
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-zh/store",
+      "status": 200,
+      "initial_html_models": 30
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/about",
+      "status": 200
+    }
+  ],
+  "fresh_clone_recovery": {
+    "owner": "b2112642257b",
+    "existing_tables_unchanged": 291,
+    "expected_changed_tables": [
+      "authorization_actions",
+      "authorization_runtime_schema",
+      "schema_migration_steps",
+      "schema_migrations"
+    ],
+    "new_tables": [
+      "seo_command_receipts",
+      "seo_command_state"
+    ],
+    "existing_role_grants_unchanged": true,
+    "rollback_rehearsed_exact_data_ddl_objects": true,
+    "recovery_activated_gate_refused": true,
+    "recovery_reapply101_idempotent": true,
+    "foreign_keys_after_recovery": {
+      "constraints_checked": 213,
+      "orphan_rows": 0
+    },
+    "foreign_keys_after_reapply": {
+      "constraints_checked": 214,
+      "orphan_rows": 0
+    },
+    "cleanup": {
+      "server_terminal": true,
+      "data_removed": true,
+      "socket_removed": true,
+      "private_backup_retained": true
+    }
+  },
+  "source_sha256": {
+    "retail/scripts/preview-api.py": "a5637b7b7367e91f4a5109975e2b7a94ce1c017da8f1111d49d7b062a2cb083a",
+    "retail/scripts/verify-local-preview.py": "370a24e76968f65d3e4e35af0485606f6cbe13b99a0af741bed80c6c279dccbe",
+    "retail/scripts/refresh-local-preview.py": "824f4caebff44004c4fbbf3cb5a479cf9c7c8da0e8b5b57479438b7cb9d63ceb",
+    "retail/scripts/seo-101-recovery.py": "84d430cf61311ce7b910e13f11954eb2ff0bcccc34698f921b0c6eccd805f425",
+    "retail/scripts/rehearse-local-preview-101.py": "abecd08b3f2f21a762650ceea167f21f84adecca7406f65d4e2fdd3fa0f43681",
+    "retail/scripts/upgrade-local-preview-101.py": "dbf5040199f9606814bd3138be457e0d206643fca4cfd345a0a54937aeb02b5f",
+    "retail/admin/tests/seo-defaults.native.mjs": "c097f8537e108d987fa339a10217a8246e1c69ee5e149b99128d81697484f1c2"
+  },
+  "evidence_sha256": {
+    "log/gin-preview-mysql/schema-upgrade-101/result.json": "29baefd1e6f20b1ab94af1dddefebb23d23d70e35150d839233338850192e39a",
+    "log/gin-preview-mysql/schema-upgrade-101/previous-cutover.json": "713afb1f116fb4a79baee9ce4e9399dd7f1d5ffc8215d56aa7cb9b8c5ca163e3",
+    "log/gin-preview-mysql/schema-upgrade-101/post-verification.log": "7dcccc5491456fbb764b379d08c0b16e798b7151f692ffabc15534b9eb9ae02d",
+    "log/gin-preview-mysql/schema-upgrade-101/route-health.json": "0240c142301277e85230799eab6563f5b12dd77e2e862f8aca61f80157e507d4",
+    "logs/gin-migration/preview-101-upgrade-b2112642257b/report.json": "bb6b755dfecbbb2329354f06dab9cda42b9b97b4775b5c6d64655b0f7c367ce2",
+    "logs/gin-migration/preview-101-upgrade-b2112642257b/backup-fingerprints.json": "dcbe212c95c576b4a6fedc757152526ccf3033b030322698e2c95da2a64baaf1",
+    "logs/gin-migration/preview-101-upgrade-b2112642257b/migrated-fingerprints.json": "bdc71bee14935e3212940c0e62642bf91b89e393c13f10435b73a63ff5e3b51f",
+    "logs/gin-migration/preview-101-upgrade-b2112642257b/recovery-authority.json": "978271e14c28b65c21042a07a4de15ff8d4b04bd559a88a3f3e0046b490222d4",
+    "logs/gin-migration/preview-101-upgrade-b2112642257b/migration-1.log": "0af9df14fce88d2003aa24044441b7502ac9f7349c393e2b6676db5cf4fb9575",
+    "logs/gin-migration/preview-101-upgrade-b2112642257b/migration-2.log": "c31fc4673b629645fa3fd5223ad077fae78c60ba18dcf0eaddd0e8d4c422a687",
+    "logs/gin-migration/preview-101-upgrade-b2112642257b/recovery-reapply-1.log": "0af9df14fce88d2003aa24044441b7502ac9f7349c393e2b6676db5cf4fb9575",
+    "logs/gin-migration/preview-101-upgrade-b2112642257b/recovery-reapply-2.log": "c31fc4673b629645fa3fd5223ad077fae78c60ba18dcf0eaddd0e8d4c422a687",
+    "logs/gin-migration/seo-defaults-1793535140141/report.json": "1a07a06c10380575a8f00c0b2f33e7a1eb4b0df94fe4a68b059dc6a213c56ae6",
+    "logs/gin-migration/seo-defaults-1793535140141/observations.json": "36d3c78bf43d083256cbb8b75c26f491bf400736fb50e823c0866baf28305385",
+    "logs/gin-migration/seo-artifacts-1793534972336/report.json": "2a8d8d72416348aeab60dba7b38326efdf106fbe420e5440a30ccbf166fe988e",
+    "log/gin-preview-mysql/schema-upgrade-101/default-seo-first-failure.log": "641635060e0240e86bd35e6360dda56deb9ab6afdfec57ce08e836f8d0abe7f6",
+    "log/gin-preview-mysql/schema-upgrade-101/source-jsonld-three-visit-probe.log": "c7f75a1697a92ae1d0640fc4b6703a5642d48760debecf6397100163e7bd8378",
+    "log/gin-preview-mysql/schema-upgrade-101/recent-log-check.json": "065a7abd7f725a33f6bac9f1914c228459dcab60c6ddd09337b22f32eca31781"
+  },
+  "main_business_gates_unchanged_and_closed": true,
+  "main_seo_grants_not_added": true,
+  "main_seo_keyring_not_configured": true,
+  "real_provider_called": false,
+  "goal_complete": false,
+  "browser": {
+    "defaults": {
+      "owner": "seo-defaults-1793535140141",
+      "passed": true,
+      "report_sha256": "1a07a06c10380575a8f00c0b2f33e7a1eb4b0df94fe4a68b059dc6a213c56ae6",
+      "observations_sha256": "36d3c78bf43d083256cbb8b75c26f491bf400736fb50e823c0866baf28305385"
+    },
+    "artifacts": {
+      "owner": "seo-artifacts-1793534972336",
+      "passed": true,
+      "report_sha256": "2a8d8d72416348aeab60dba7b38326efdf106fbe420e5440a30ccbf166fe988e",
+      "observations_sha256": null
+    }
+  },
+  "source_comparison_discrepancy": {
+    "first_run_passed": false,
+    "path": "/dk-zh/help",
+    "field": "jsonld",
+    "source_count": 2,
+    "astro_count": 1,
+    "three_independent_source_visits_server_and_dom_count": 1,
+    "unchanged_strict_assertions_full_repeat_passed": true,
+    "cause_unresolved": true,
+    "normalization_did_not_deduplicate": true
+  },
+  "recent_logs": {
+    "recent_gin_panic": false,
+    "recent_5xx_routes": [
+      "/api/store/cart",
+      "/api/store/product-reviews"
+    ],
+    "expected_closed_cart_and_reviews_only": true,
+    "cart_gate": false,
+    "review_read_write_gates": false
+  }
+}

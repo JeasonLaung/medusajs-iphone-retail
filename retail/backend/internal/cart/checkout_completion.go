@@ -170,6 +170,9 @@ func completePaidOrder(ctx context.Context, tx *gorm.DB, store string, ref sessi
 	if tx.Exec("INSERT INTO cart_completion_receipts(cart_id,operation_id,generation,input_version,completed_version,order_id,payment_id,capture_id,completed_at) VALUES(?,?,?,?,?,?,?,?,UTC_TIMESTAMP(6))", ref.CartID, in.OperationID, ref.Generation, version, next, staged.Snapshot.OrderID, ledger.PaymentID, ledger.CaptureID).Error != nil {
 		return ErrStorage
 	}
+	if err := attachCompletedCartCustomer(tx, ref, staged.Snapshot.OrderID); err != nil {
+		return err
+	}
 	*result = CompletionResult{staged.Snapshot.OrderID, strconv.FormatUint(next, 10), false}
 	return nil
 }

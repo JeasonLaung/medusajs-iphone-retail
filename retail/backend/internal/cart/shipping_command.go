@@ -43,7 +43,7 @@ func shippingContactReady(tx *gorm.DB, current Snapshot) error {
 	if err != nil {
 		return err
 	}
-	if detail.Email == "" || detail.Shipping == nil || detail.Billing == nil {
+	if detail.Email == "" || detail.Shipping == nil || detail.Billing == nil || !validContactAddress(*detail.Shipping) || !validContactAddress(*detail.Billing) {
 		return ErrInput
 	}
 	return nil
@@ -120,13 +120,10 @@ func SaveShipping(ctx context.Context, db *gorm.DB, store string, ref sessionsto
 		}
 		// Refuse an attached payment before any method/amount changes. A subsequent
 		// iteration will coordinate its provider invalidation rather than delete it.
-		var links []string
-		if tx.Table("cart_payment_collections").Select("payment_collection_id").Where("cart_id=? AND deleted_at IS NULL", current.ID).Clauses(clause.Locking{Strength: "UPDATE"}).Limit(1).Scan(&links).Error != nil {
-			return ErrSchema
+		if _, err := reusablePaymentCollection(ctx, tx, current.ID); err != nil {
+			return err
 		}
-		if len(links) > 0 {
-			return ErrConflict
-		}
+
 		if err := supportedSavedShipping(tx, current.ID, manualProviders); err != nil {
 			return err
 		}
@@ -150,6 +147,9 @@ func SaveShipping(ctx context.Context, db *gorm.DB, store string, ref sessionsto
 			return err
 		}
 		if _, err := assembleAmounts(tx, current); err != nil {
+			return err
+		}
+		if err := syncEmptyPaymentCollection(ctx, tx, store, ref, in.Version); err != nil {
 			return err
 		}
 		if r := tx.Exec("UPDATE cart_ownership SET version=version+1,updated_at=UTC_TIMESTAMP(6) WHERE cart_id=? AND version=?", current.ID, version); r.Error != nil || r.RowsAffected != 1 {

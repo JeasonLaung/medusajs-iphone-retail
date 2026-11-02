@@ -16,7 +16,6 @@ import (
 	"github.com/eurorefurb/retail/internal/sessionstore"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 type PromotionCommand struct {
@@ -147,13 +146,10 @@ func SavePromotions(ctx context.Context, db *gorm.DB, store string, ref sessions
 		if current.Version != in.Version {
 			return ErrConflict
 		}
-		var links []string
-		if tx.Table("cart_payment_collections").Select("payment_collection_id").Where("cart_id=? AND deleted_at IS NULL", current.ID).Clauses(clause.Locking{Strength: "UPDATE"}).Limit(1).Scan(&links).Error != nil {
-			return ErrSchema
+		if _, err := reusablePaymentCollection(ctx, tx, current.ID); err != nil {
+			return err
 		}
-		if len(links) > 0 {
-			return ErrConflict
-		}
+
 		if err := supportedSavedShipping(tx, current.ID, manualProviders); err != nil {
 			return err
 		}
@@ -174,6 +170,9 @@ func SavePromotions(ctx context.Context, db *gorm.DB, store string, ref sessions
 			return err
 		}
 		if _, err := assembleAmounts(tx, current); err != nil {
+			return err
+		}
+		if err := syncEmptyPaymentCollection(ctx, tx, store, ref, in.Version); err != nil {
 			return err
 		}
 		if r := tx.Exec("UPDATE cart_ownership SET version=version+1,updated_at=UTC_TIMESTAMP(6) WHERE cart_id=? AND version=?", current.ID, version); r.Error != nil || r.RowsAffected != 1 {

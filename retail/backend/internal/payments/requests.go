@@ -17,6 +17,7 @@ import (
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/totals"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 var (
@@ -211,7 +212,7 @@ func StageSessionRequest(ctx context.Context, tx *gorm.DB, key EffectKey, ring *
 	}
 	defer cancel()
 	var saved struct{ RequestEnvelope []byte }
-	if effectWhere(q, key).Select("request_envelope").Take(&saved).Error != nil {
+	if effectWhere(q, key).Select("request_envelope").Clauses(clause.Locking{Strength: "UPDATE"}).Take(&saved).Error != nil {
 		return fail(ErrEffectStorage)
 	}
 	if saved.RequestEnvelope != nil {
@@ -244,7 +245,9 @@ func ReadSessionRequest(ctx context.Context, tx *gorm.DB, key EffectKey, ring *p
 		return SessionRequest{}, err
 	}
 	var saved struct{ RequestEnvelope []byte }
-	if effectWhere(q, key).Select("request_envelope").Take(&saved).Error != nil {
+	// Keep this read current, like lockEffect above. An RR snapshot may predate
+	// the transaction that committed this newly discovered protected request.
+	if effectWhere(q, key).Select("request_envelope").Clauses(clause.Locking{Strength: "UPDATE"}).Take(&saved).Error != nil {
 		return SessionRequest{}, ErrEffectStorage
 	}
 	return openSessionRequest(key, ring, saved.RequestEnvelope)

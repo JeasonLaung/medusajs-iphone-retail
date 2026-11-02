@@ -52,7 +52,7 @@ func StagePaidOrderAndStock(ctx context.Context, tx *gorm.DB, store string, ref 
 	if initialWhere(tx, ref, in).Clauses(clause.Locking{Strength: "SHARE"}).Take(&attempt).Error != nil {
 		return PaidOrderStock{}, ErrStorage
 	}
-	version := strconv.FormatUint(attempt.CartVersion, 10)
+	version := strconv.FormatUint(attempt.currentVersion(), 10)
 	readCtx := context.WithValue(ctx, checkoutReadScopeKey{}, checkoutReadScope{tx: sqlTx, store: store, version: version, operation: in.OperationID, ref: ref})
 	var selected []string
 	if tx.Table("cart_shipping_methods").Select("shipping_option_id").Where("cart_id=? AND deleted_at IS NULL AND shipping_option_id IS NOT NULL", ref.CartID).Clauses(clause.Locking{Strength: "SHARE"}).Order("id").Limit(101).Scan(&selected).Error != nil || len(selected) > 100 {

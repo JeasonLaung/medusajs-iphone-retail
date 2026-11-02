@@ -27,6 +27,7 @@ import (
 	"github.com/eurorefurb/retail/internal/promotion"
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/schema"
+	"github.com/eurorefurb/retail/internal/seo"
 	"github.com/eurorefurb/retail/internal/server"
 	"github.com/eurorefurb/retail/internal/sessionstore"
 	"github.com/eurorefurb/retail/internal/tax"
@@ -110,12 +111,16 @@ func main() {
 		log.Fatal("Explicit checkout payment origins, independent keyring and Mollie credentials required")
 	}
 	var cartOptions []cart.HTTPOptions
+	contextDeletes, err := checkoutconfig.ContextPayments(os.Getenv, initialPayment)
+	if err != nil {
+		log.Fatal("Explicit checkout context payment configuration required")
+	}
+	manualProviders := []string{}
+	if raw := os.Getenv("MANUAL_SHIPPING_PROVIDER_IDS"); raw != "" {
+		manualProviders = strings.Split(raw, ",")
+	}
 	if origin := os.Getenv("STOREFRONT_ORIGIN"); origin != "" {
-		manualProviders := []string{}
-		if raw := os.Getenv("MANUAL_SHIPPING_PROVIDER_IDS"); raw != "" {
-			manualProviders = strings.Split(raw, ",")
-		}
-		cartOptions = append(cartOptions, cart.HTTPOptions{InitialPayment: initialPayment, ManualProviderIDs: manualProviders, Sessions: sessions, Origin: origin, StoreID: os.Getenv("STOREFRONT_STORE_ID"), Secure: os.Getenv("SESSION_SECURE") == "true"})
+		cartOptions = append(cartOptions, cart.HTTPOptions{InitialPayment: initialPayment, ContextPaymentDeletes: contextDeletes, ManualProviderIDs: manualProviders, Sessions: sessions, Origin: origin, StoreID: os.Getenv("STOREFRONT_STORE_ID"), Secure: os.Getenv("SESSION_SECURE") == "true"})
 	}
 	webhooks, err := checkoutconfig.Webhooks(os.Getenv, initialPayment)
 	if err != nil {
@@ -147,7 +152,7 @@ func main() {
 		if keyErr != nil {
 			log.Fatal("Explicit customer encryption keyring required")
 		}
-		customers, err = customer.NewHTTP(db, customer.HTTPOptions{OrderPayments: orderPaymentOptions, Sessions: sessions, Ring: ring, Origin: os.Getenv("STOREFRONT_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true", BridgeKey: os.Getenv("CUSTOMER_BRIDGE_KEY"), StoreID: os.Getenv("STOREFRONT_STORE_ID")})
+		customers, err = customer.NewHTTP(db, customer.HTTPOptions{ManualProviderIDs: manualProviders, OrderPayments: orderPaymentOptions, Sessions: sessions, Ring: ring, Origin: os.Getenv("STOREFRONT_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true", BridgeKey: os.Getenv("CUSTOMER_BRIDGE_KEY"), StoreID: os.Getenv("STOREFRONT_STORE_ID")})
 		if err != nil {
 			log.Fatal("Customer origin and secure cookie configuration invalid")
 		}
@@ -173,6 +178,22 @@ func main() {
 		log.Fatal("NOTIFICATION_MAIL_ENABLED must be true or false")
 	}
 
+	var seoRing *protected.Ring
+	if os.Getenv("MERCHANT_KEY_ACTIVE") != "" || os.Getenv("MERCHANT_KEYRING_JSON") != "" {
+		seoRing, err = protected.ParseKeyring(os.Getenv("MERCHANT_KEY_ACTIVE"), os.Getenv("MERCHANT_KEYRING_JSON"))
+		if err != nil {
+			log.Fatal("Explicit merchant keyring required for SEO publication")
+		}
+	}
+	seoStore := seo.Store{DB: db, Ring: seoRing, Origin: os.Getenv("STOREFRONT_ORIGIN")}
+	seoStore.Register(router.Group("/api/store"))
+	seoAuth, err := identity.NewWithOptions(db, identity.Options{Sessions: sessions, Origin: os.Getenv("ADMIN_ORIGIN"), Secure: os.Getenv("SESSION_SECURE") == "true"})
+	if err != nil {
+		log.Fatal("SEO administration authentication unavailable")
+	}
+	seoPrivate := router.Group("/api/admin")
+	seoPrivate.Use(seoAuth.Require)
+	seoStore.RegisterAdmin(seoPrivate)
 	srv := &http.Server{Addr: net.JoinHostPort(bind, port), Handler: router, ReadHeaderTimeout: 10 * time.Second, ReadTimeout: 30 * time.Second, WriteTimeout: 30 * time.Second, IdleTimeout: 60 * time.Second}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"os"
 	"testing"
 
 	"github.com/eurorefurb/retail/internal/customer"
@@ -19,7 +20,7 @@ import (
 // Registration, verification, login and order attachment use production HTTP.
 func mountCheckoutAccounts(t *testing.T, db *gorm.DB, sessions *sessionstore.Store, ring *protected.Ring, router *gin.Engine, fixture *gin.RouterGroup, key, origin string, client *redis.Client, supplemental *orderpayments.Service) {
 	t.Helper()
-	h, e := customer.NewHTTP(db, customer.HTTPOptions{Sessions: sessions, Ring: ring, Origin: origin, BridgeKey: key, StoreID: "shop", OrderPayments: supplemental})
+	h, e := customer.NewHTTP(db, customer.HTTPOptions{ManualProviderIDs: []string{"delivery-provider"}, Sessions: sessions, Ring: ring, Origin: origin, BridgeKey: key, StoreID: "shop", OrderPayments: supplemental})
 	if e != nil {
 		t.Fatal("checkout customer handler unavailable")
 	}
@@ -79,9 +80,20 @@ func checkCheckoutAccountReceipts(t *testing.T, db *gorm.DB, orderIDs []string) 
 		if db.Table("customer_order_ownership own").Joins("JOIN customer_accounts a ON a.id=own.customer_id AND a.verified_at IS NOT NULL").Joins("JOIN orders o ON o.id=own.order_id AND o.email=a.email").Where("own.order_id=?", id).Count(&count).Error != nil || count != 1 {
 			t.Fatal("checkout account ownership differs")
 		}
-		if db.Table("audit_events").Where("resource_id=? AND action='customer.order.attach'", id).Count(&count).Error != nil || count != 1 {
+		wantAudit := int64(1)
+		if os.Getenv("CHECKOUT_CART_TRANSFER") == "1" {
+			wantAudit = 0
+			if db.Table("customer_cart_ownership c").Joins("JOIN customer_order_ownership o ON o.cart_id=c.cart_id AND o.customer_id=c.customer_id AND o.store_id=c.store_id").Joins("JOIN cart_completion_receipts r ON r.cart_id=c.cart_id AND r.generation=c.generation AND r.order_id=o.order_id").Where("o.order_id=?", id).Count(&count).Error != nil || count != 1 {
+				t.Fatal("completion did not consume transferred cart owner")
+			}
+		}
+		if db.Table("audit_events").Where("resource_id=? AND action='customer.order.attach'", id).Count(&count).Error != nil || count != wantAudit {
 			t.Fatal("checkout attachment audit differs")
 		}
+	}
+	if os.Getenv("CHECKOUT_CART_TRANSFER") == "1" {
+		t.Log(`CHECKOUT_CART_TRANSFER_JOINT_SQL {"four_new_account_cart_bindings":true,"atomic_order_owners":true,"manual_attachment_audits":0,"source_legacy_accounts_used":false}`)
+		return
 	}
 	t.Log(`CHECKOUT_ACCOUNT_JOINT_SQL {"four_verified_new_owners":true,"one_attachment_audit_per_order":true,"old_accounts_used":false}`)
 }

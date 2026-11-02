@@ -1,0 +1,63 @@
+{
+  "exit_code": 0,
+  "migrations": 96,
+  "native_transactions_passed": true,
+  "source_files": 844,
+  "frozen_source_verified": true,
+  "binary_sha256": "fbf1b453e089f5c4d077354cd8bde49e98233ee28ada53cb45864defd6dbf632",
+  "test_log_sha256": "6b22eae6250b4b9177073670b142a552fdedfd6fba6efb4346391f66da38b407",
+  "owned_database_absent": true,
+  "redis_used": true,
+  "main_mysql_unchanged": true,
+  "real_provider_called": false,
+  "native_browser_verified": true,
+  "browser": {
+    "real_ant_gin_mysql_redis": true,
+    "api_mocking": false,
+    "actual_response_dropped": true,
+    "same_operation_retried": true,
+    "created_once": true,
+    "edit_identity_rank_preserved": true,
+    "product_membership_enforced": true,
+    "associated_delete_disabled": true,
+    "unassociated_delete": true,
+    "csrf_origin_auth_checked": true,
+    "language_en_zh": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0,
+    "operation_id": "9136993b-727e-4692-b4f8-c5144f6b833a",
+    "definition_id": "opt_6e847022-8758-4061-98a7-0af55c9db8e3",
+    "sql_create_receipt_count": 1
+  },
+  "browser_log_sha256": "a416f3db8b02e9d58107c8c8e878bca99d8a1d80e98343d07cf22cd758c8f1ff",
+  "admin_source_files": 118,
+  "original23_regression": false,
+  "goal_complete": false,
+  "owner": "c0f75e1a4097",
+  "snapshot": "logs/gin-migration/option-definitions-native-c0f75e1a4097",
+  "cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true,
+    "redis_used": true,
+    "owned_api_terminal": true,
+    "redis_keys_deleted": 4,
+    "redis_cleanup_error": null
+  },
+  "api_binary_sha256": "df114b53031ff249092119441ff823c84e050076451bb28f6208f354b0e5d973",
+  "source_matches_current_workspace": true,
+  "screenshot_sha256": "8b282b1d1b5ddb26553e2b21348c6bd6d32856615c3a429e55d95c06fafeabb8",
+  "admin_type_check": {
+    "exit_code": 0,
+    "session": 71633
+  },
+  "limits": {
+    "astro_joint_verified": false,
+    "physical_unique_indexes_completed": false,
+    "metadata_and_source_filters_completed": false,
+    "main_database_upgraded": false,
+    "C03_complete": false,
+    "full_goal_complete": false
+  }
+}

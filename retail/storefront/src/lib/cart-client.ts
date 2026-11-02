@@ -26,7 +26,10 @@ export type CartView = {amounts:CartAmounts;items:CartViewItem[]}
 export type ContactAddress={first_name:string;last_name:string;company:string;address_1:string;address_2:string;city:string;country_code:string;province:string;postal_code:string;phone:string}
 export type CartContactDetail={cart_id:string;version:string;email:string;shipping_address:ContactAddress|null;billing_address:ContactAddress|null}
 export type CartContactInput={operationID:string;version:string;email:string;shipping_address:ContactAddress;billing_address:ContactAddress}
+export type CartContextInput={operationID:string;version:string;regionID:string;locale:string}
 export type CartContactReceipt={cart_id:string;version:string;replayed:boolean}
+export type ContextPaymentCompletion={cart:CartSnapshot;payment:{operation_id:string;version:string}|null}
+export type ContextPaymentProgress={state:'saved';receipt:CartContactReceipt;completion:ContextPaymentCompletion}|{state:'restored';completion:ContextPaymentCompletion}|{state:'processing'|'requires_recovery'}
 export type DeliveryOption={id:string;profile_id:string;name:string;description:string;kind:'shipping'|'pickup';amount:string;is_tax_inclusive:boolean;insufficient_inventory:boolean}
 export type DeliveryOptions={cart_id:string;version:string;currency_code:string;options:DeliveryOption[];selected_option_ids:string[];complete:boolean}
 export type ShippingInput={operationID:string;version:string;optionID:string}
@@ -42,13 +45,17 @@ export type CartCompletion={cart_id:string;order_id:string;version:string}
 export type PaymentStatus={cart_id:string;version:string;state:'pending'|'authorized'|'paid_pending_order'|'failed'|'requires_review'}
 const contactLimits={first_name:160,last_name:160,company:160,address_1:512,address_2:512,city:160,country_code:2,province:191,postal_code:64,phone:64} as const
 export function contactAddress(value:unknown):ContactAddress {
+ return contactAddressValues(value,true)
+}
+// Country-only context drafts must reach the form; submissions remain complete.
+function contactAddressValues(value:unknown,complete:boolean):ContactAddress {
  const v=record(value),out:Record<string,string>={}
  for(const [key,max] of Object.entries(contactLimits)){
   const text=v[key]
   if(typeof text!=='string'||[...text].length>max||/[\x00-\x1f\x7f]/.test(text))throw protocol()
   out[key]=text
  }
- if(!/^[a-z]{2}$/.test(out.country_code)||['first_name','last_name','address_1','city','postal_code'].some(k=>!out[k].trim()))throw protocol()
+ if(!/^[a-z]{2}$/.test(out.country_code)||complete&&['first_name','last_name','address_1','city','postal_code'].some(k=>!out[k].trim()))throw protocol()
  return out as ContactAddress
 }
 function contactEmail(value:unknown):string {
@@ -172,8 +179,8 @@ export class CartClient {
   this.fetcher = options.fetcher; this.readScopeCSRF = options.readScopeCSRF
  }
 
- private async request(path: string, method: 'GET' | 'POST', body?: string, headers: Record<string,string> = {}, maxBytes = 65536, unprocessable:'region'|'item'='region'): Promise<{status: number; value: unknown}> {
-  const controller = new AbortController(), timer = setTimeout(() => controller.abort(),12000)
+ private async request(path: string, method: 'GET' | 'POST', body?: string, headers: Record<string,string> = {}, maxBytes = 65536, unprocessable:'region'|'item'='region',timeoutMS=12000): Promise<{status: number; value: unknown}> {
+  const controller = new AbortController(), timer = setTimeout(() => controller.abort(),timeoutMS)
   const write = method === 'POST'
   try {
    const response = await this.fetcher(path,{method,credentials:'same-origin',cache:'no-store',redirect:'error',signal:controller.signal,headers:{Accept:'application/json',...(write ? {'Content-Type':'application/json'} : {}),...headers},...(body === undefined ? {} : {body})})
@@ -291,7 +298,7 @@ export class CartClient {
   const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/payment-attempts`,'POST',JSON.stringify({version}),{'X-CSRF-Token':csrfToken,'Idempotency-Key':operationID},65536,'item')
   try{
    const v=record(value);keys(v,['cart_id','version','operation_id','state','checkout_url'])
-   if(status!==200||v.cart_id!==id||v.operation_id!==operationID||!matches(v.version,versionPattern)||BigInt(v.version)!==BigInt(version)+1n||!['ready','processing','requires_review'].includes(String(v.state)))throw protocol()
+   if(status!==200||v.cart_id!==id||v.operation_id!==operationID||!matches(v.version,versionPattern)||BigInt(v.version)<BigInt(version)+1n||BigInt(v.version)>18446744073709551615n||!['ready','processing','requires_review'].includes(String(v.state)))throw protocol()
    if(v.state==='ready'){
     if(typeof v.checkout_url!=='string'||v.checkout_url.length>8192||/[\x00-\x20\x7f\\]/.test(v.checkout_url))throw protocol()
     const url=new URL(v.checkout_url)
@@ -389,6 +396,51 @@ export class CartClient {
   return {cart_id:id,version:v.version,currency_code:v.currency_code,options,selected_option_ids,complete:v.complete}
  }
 
+ async saveContext(id:string,input:CartContextInput,authorization:{csrfToken:string}):Promise<CartContactReceipt>{
+  const {operationID,version}=input,{csrfToken}=authorization
+  let payload:unknown
+  try{
+   if(!matches(id,idPattern)||!matches(operationID,uuidPattern)||!matches(version,versionPattern)||BigInt(version)>=18446744073709551615n||!matches(csrfToken,tokenPattern))throw protocol()
+   if(!matches(input.regionID,idPattern)||input.locale.length>35||!matches(input.locale,localePattern))throw protocol()
+   payload={version,region_id:input.regionID,locale:input.locale}
+  }catch{throw new CartError('input')}
+  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/context`,'POST',JSON.stringify(payload),{'X-CSRF-Token':csrfToken,'Idempotency-Key':operationID},65536,'region')
+  try{
+   const v=record(value);keys(v,['cart_id','version','replayed'])
+   if(status!==200||v.cart_id!==id||!matches(v.version,versionPattern)||BigInt(v.version)!==BigInt(version)+1n||typeof v.replayed!=='boolean')throw protocol()
+   return {cart_id:id,version:v.version,replayed:v.replayed}
+  }catch{throw new CartError('protocol',status,true)}
+ }
+ // No provider/session/attempt locator is sent by the browser. The server
+ // resolves those from the original durable operation on every retry.
+ async contextPayment(id:string,input:CartContextInput,authorization:{csrfToken:string},restore=false):Promise<ContextPaymentProgress>{
+  const {operationID,version,regionID,locale}=input,{csrfToken}=authorization
+  if(typeof restore!=='boolean'||!matches(id,idPattern)||!matches(operationID,uuidPattern)||!matches(version,versionPattern)||BigInt(version)>=18446744073709551615n||!matches(regionID,idPattern)||typeof locale!=='string'||locale.length>35||!matches(locale,localePattern)||!matches(csrfToken,tokenPattern))throw new CartError('input')
+  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/context-payment${restore?'/restore':''}`,'POST',JSON.stringify({version,region_id:regionID,locale}),{'X-CSRF-Token':csrfToken,'Idempotency-Key':operationID},65536,'region',55000)
+  try{
+   const v=record(value)
+   if(status!==200)throw protocol()
+   const completed=():ContextPaymentCompletion=>{
+    const c=record(v.completion);keys(c,['cart','payment']);const cart=snapshot(c.cart)
+    if(cart.id!==id||BigInt(cart.version)<BigInt(version)+1n)throw protocol()
+    let payment:ContextPaymentCompletion['payment']=null
+    if(c.payment!==null){const p=record(c.payment);keys(p,['operation_id','version']);if(!matches(p.operation_id,uuidPattern)||!matches(p.version,versionPattern)||BigInt(p.version)>=BigInt(cart.version))throw protocol();payment={operation_id:p.operation_id,version:p.version}}
+    return {cart,payment}
+   }
+   if(v.state==='saved'){
+    if(restore)throw protocol()
+    keys(v,['state','receipt','completion']);const r=record(v.receipt);keys(r,['cart_id','version','replayed'])
+    if(r.cart_id!==id||!matches(r.version,versionPattern)||BigInt(r.version)!==BigInt(version)+1n||typeof r.replayed!=='boolean')throw protocol()
+    const completion=completed()
+    if(completion.cart.region_id!==regionID||completion.cart.locale!==locale)throw protocol()
+    return {state:'saved',receipt:{cart_id:id,version:r.version,replayed:r.replayed},completion}
+   }
+   if(v.state==='restored'&&restore){keys(v,['state','completion']);return {state:'restored',completion:completed()}}
+   keys(v,['state'])
+   if(v.state==='processing'||v.state==='requires_recovery')return {state:v.state}
+   throw protocol()
+  }catch{throw new CartError('protocol',status,true)}
+ }
  async saveContacts(id:string,input:CartContactInput,authorization:{csrfToken:string}):Promise<CartContactReceipt>{
   const {operationID,version}=input,{csrfToken}=authorization
   let payload:unknown
@@ -410,7 +462,7 @@ export class CartClient {
   catch(err){if(err instanceof CartError&&(err.status===401||err.status===404))return null;throw err}
   const v=record(response.value);keys(v,['cart_id','version','email','shipping_address','billing_address'])
   if(response.status!==200||v.cart_id!==id||!matches(v.version,versionPattern)||BigInt(v.version)>18446744073709551615n)throw protocol()
-  return {cart_id:id,version:v.version,email:v.email===''?'':contactEmail(v.email),shipping_address:v.shipping_address===null?null:contactAddress(v.shipping_address),billing_address:v.billing_address===null?null:contactAddress(v.billing_address)}
+  return {cart_id:id,version:v.version,email:v.email===''?'':contactEmail(v.email),shipping_address:v.shipping_address===null?null:contactAddressValues(v.shipping_address,false),billing_address:v.billing_address===null?null:contactAddressValues(v.billing_address,false)}
  }
 
  // Only explicit 401/404 means the ID is no longer accessible. Dependency,

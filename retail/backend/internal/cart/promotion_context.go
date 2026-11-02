@@ -54,6 +54,20 @@ func ReadPromotionContext(ctx context.Context, tx *gorm.DB, store string, ref se
 	}
 	delete(out, "customer_id")
 	out["customer"] = nil
+	owner, err := readCartCustomer(tx, ref)
+	if err != nil {
+		return failed, err
+	}
+	if owner != nil {
+		// New account identity is explicit. Legacy customers and their groups
+		// must never be inherited through a matching email address.
+		var account struct{ ID, Email string }
+		if tx.Table("customer_accounts").Select("id,email").Where("id=?", owner.CustomerID).Take(&account).Error != nil {
+			return failed, ErrStorage
+		}
+		out["customer_id"] = account.ID
+		out["customer"] = map[string]any{"id": account.ID, "email": account.Email, "groups": []any{}}
+	}
 	out["items"], out["shipping_methods"] = targets.Items, targets.ShippingMethods
 	// Match the original graph's selected order amounts; do not accidentally
 	// widen its rule surface by serializing the entire AmountDetail DTO.

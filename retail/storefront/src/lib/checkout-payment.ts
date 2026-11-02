@@ -1,5 +1,5 @@
 import {CartError,cartCSRFFromCookies,type CartClient} from './cart-client.ts'
-import {cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey,cartLockName} from './cart-commerce.ts'
+import {contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey,cartLockName,customerCartIntentKey} from './cart-commerce.ts'
 export const paymentIntentKey='retail:checkout-payment-intent:v1'
 type Intent={cartID:string;version:string;operationID:string}
 type Options={client:Pick<CartClient,'startPayment'>;storage:Pick<Storage,'getItem'|'setItem'>;readCSRF:()=>string|undefined;uuid:()=>string;exclusive:<T>(action:()=>Promise<T>)=>Promise<T>}
@@ -7,19 +7,20 @@ const id=/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/,uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-
 const valid=(v:unknown,re:RegExp):v is string=>typeof v==='string'&&!/[\r\n]/.test(v)&&re.test(v)
 const version=(v:unknown):v is string=>valid(v,/^[1-9][0-9]{0,19}$/)&&BigInt(v)<18446744073709551615n
 const fail=()=>new CartError('conflict')
+export function readPaymentIntent(storage:Pick<Storage,'getItem'>):Intent|null{
+ const raw=storage.getItem(paymentIntentKey);if(raw===null)return null
+ if(raw.length>1024)throw fail()
+ let v:Intent;try{v=JSON.parse(raw)}catch{throw fail()}
+ if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==3||!valid(v.cartID,id)||!valid(v.operationID,uuid)||!version(v.version))throw fail()
+ return v
+}
 // Persist only the original intention, before dispatch. Neither provider URLs,
 // customer data nor credentials belong in this journal. A timed-out request can
 // already have frozen the cart: retry its original version and operation ID.
 export function createPaymentCommands(o:Options){
- const pending=():Intent|null=>{
-  const raw=o.storage.getItem(paymentIntentKey);if(raw===null)return null
-  if(raw.length>1024)throw fail()
-  let v:Intent;try{v=JSON.parse(raw)}catch{throw fail()}
-  if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==3||!valid(v.cartID,id)||!valid(v.operationID,uuid)||!version(v.version))throw fail()
-  return v
- }
+ const pending=()=>readPaymentIntent(o.storage)
  const submit=(cartID:string,currentVersion:string)=>o.exclusive(async()=>{
-  if(!valid(cartID,id)||!version(currentVersion)||[cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey].some(k=>o.storage.getItem(k)!==null))throw fail()
+  if(!valid(cartID,id)||!version(currentVersion)||[contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey,customerCartIntentKey].some(k=>o.storage.getItem(k)!==null))throw fail()
   let intent=pending()
   if(intent&&intent.cartID!==cartID)throw fail()
   const csrfToken=o.readCSRF();if(!valid(csrfToken,/^[0-9a-f]{64}$/))throw new CartError('csrf')

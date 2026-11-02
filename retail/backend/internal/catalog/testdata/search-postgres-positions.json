@@ -1,0 +1,1202 @@
+[
+  {
+    "input": "quantities",
+    "vector": "'quantiti':1",
+    "positions": [
+      {
+        "term": "quantiti",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "verifying",
+    "vector": "'verifi':1",
+    "positions": [
+      {
+        "term": "verifi",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "the",
+    "vector": "",
+    "positions": []
+  },
+  {
+    "input": "iPhone 13 Pro Max",
+    "vector": "'13':2 'iphon':1 'max':4 'pro':3",
+    "positions": [
+      {
+        "term": "iphon",
+        "position": 1
+      },
+      {
+        "term": "13",
+        "position": 2
+      },
+      {
+        "term": "pro",
+        "position": 3
+      },
+      {
+        "term": "max",
+        "position": 4
+      }
+    ]
+  },
+  {
+    "input": "iPhone17e",
+    "vector": "'iphone17e':1",
+    "positions": [
+      {
+        "term": "iphone17e",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "phones128",
+    "vector": "'phones128':1",
+    "positions": [
+      {
+        "term": "phones128",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "128phones",
+    "vector": "'128phones':1",
+    "positions": [
+      {
+        "term": "128phones",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "space-gray",
+    "vector": "'gray':3 'space':2 'space-gray':1",
+    "positions": [
+      {
+        "term": "space-gray",
+        "position": 1
+      },
+      {
+        "term": "space",
+        "position": 2
+      },
+      {
+        "term": "gray",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "space gray",
+    "vector": "'gray':2 'space':1",
+    "positions": [
+      {
+        "term": "space",
+        "position": 1
+      },
+      {
+        "term": "gray",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "verified-quantities",
+    "vector": "'quantiti':3 'verifi':2 'verified-quant':1",
+    "positions": [
+      {
+        "term": "verified-quant",
+        "position": 1
+      },
+      {
+        "term": "verifi",
+        "position": 2
+      },
+      {
+        "term": "quantiti",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "up-to-date",
+    "vector": "'date':4 'up-to-d':1",
+    "positions": [
+      {
+        "term": "up-to-d",
+        "position": 1
+      },
+      {
+        "term": "date",
+        "position": 4
+      }
+    ]
+  },
+  {
+    "input": "foo-beta1",
+    "vector": "'beta1':3 'foo':2 'foo-beta1':1",
+    "positions": [
+      {
+        "term": "foo-beta1",
+        "position": 1
+      },
+      {
+        "term": "foo",
+        "position": 2
+      },
+      {
+        "term": "beta1",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "128-GB",
+    "vector": "'128':1 'gb':2",
+    "positions": [
+      {
+        "term": "128",
+        "position": 1
+      },
+      {
+        "term": "gb",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "123-456",
+    "vector": "'-456':2 '123':1",
+    "positions": [
+      {
+        "term": "123",
+        "position": 1
+      },
+      {
+        "term": "-456",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "-123",
+    "vector": "'-123':1",
+    "positions": [
+      {
+        "term": "-123",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "+123",
+    "vector": "'+123':1",
+    "positions": [
+      {
+        "term": "+123",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "1.5",
+    "vector": "'1.5':1",
+    "positions": [
+      {
+        "term": "1.5",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "6.1 inches",
+    "vector": "'6.1':1 'inch':2",
+    "positions": [
+      {
+        "term": "6.1",
+        "position": 1
+      },
+      {
+        "term": "inch",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "-1.5",
+    "vector": "'-1.5':1",
+    "positions": [
+      {
+        "term": "-1.5",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "+1.5",
+    "vector": "'+1.5':1",
+    "positions": [
+      {
+        "term": "+1.5",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "1.2e3",
+    "vector": "'1.2e3':1",
+    "positions": [
+      {
+        "term": "1.2e3",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "-1.2e-3",
+    "vector": "'-1.2e-3':1",
+    "positions": [
+      {
+        "term": "-1.2e-3",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "8.3.0",
+    "vector": "'8.3.0':1",
+    "positions": [
+      {
+        "term": "8.3.0",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "a@example.test",
+    "vector": "'a@example.test':1",
+    "positions": [
+      {
+        "term": "a@example.test",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "A.B-c_d@example.test",
+    "vector": "'a.b-c_d@example.test':1",
+    "positions": [
+      {
+        "term": "a.b-c_d@example.test",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "a+b@example.test",
+    "vector": "'b@example.test':2",
+    "positions": [
+      {
+        "term": "b@example.test",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "iPhone's",
+    "vector": "'iphon':1",
+    "positions": [
+      {
+        "term": "iphon",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "苹果手机",
+    "vector": "'苹果手机':1",
+    "positions": [
+      {
+        "term": "苹果手机",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "蓝色-钛金属",
+    "vector": "'蓝色':2 '蓝色-钛金属':1 '钛金属':3",
+    "positions": [
+      {
+        "term": "蓝色-钛金属",
+        "position": 1
+      },
+      {
+        "term": "蓝色",
+        "position": 2
+      },
+      {
+        "term": "钛金属",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "example.com",
+    "vector": "'example.com':1",
+    "positions": [
+      {
+        "term": "example.com",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "EXAMPLE.COM",
+    "vector": "'example.com':1",
+    "positions": [
+      {
+        "term": "example.com",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "example.com/path/index.html",
+    "vector": "'/path/index.html':3 'example.com':2 'example.com/path/index.html':1",
+    "positions": [
+      {
+        "term": "example.com/path/index.html",
+        "position": 1
+      },
+      {
+        "term": "example.com",
+        "position": 2
+      },
+      {
+        "term": "/path/index.html",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "http://example.com/stuff/index.html",
+    "vector": "'/stuff/index.html':3 'example.com':2 'example.com/stuff/index.html':1",
+    "positions": [
+      {
+        "term": "example.com/stuff/index.html",
+        "position": 1
+      },
+      {
+        "term": "example.com",
+        "position": 2
+      },
+      {
+        "term": "/stuff/index.html",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "https://example.com",
+    "vector": "'example.com':1",
+    "positions": [
+      {
+        "term": "example.com",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "https://example.com/",
+    "vector": "'example.com':1",
+    "positions": [
+      {
+        "term": "example.com",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "ftp://example.com/files",
+    "vector": "'/files':3 'example.com':2 'example.com/files':1",
+    "positions": [
+      {
+        "term": "example.com/files",
+        "position": 1
+      },
+      {
+        "term": "example.com",
+        "position": 2
+      },
+      {
+        "term": "/files",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "https://example.com:8080/a-b?q=phones#top",
+    "vector": "'/a-b?q=phones#top':3 'example.com:8080':2 'example.com:8080/a-b?q=phones#top':1",
+    "positions": [
+      {
+        "term": "example.com:8080/a-b?q=phones#top",
+        "position": 1
+      },
+      {
+        "term": "example.com:8080",
+        "position": 2
+      },
+      {
+        "term": "/a-b?q=phones#top",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "www.example.com/a%20b",
+    "vector": "'/a%20b':3 'www.example.com':2 'www.example.com/a%20b':1",
+    "positions": [
+      {
+        "term": "www.example.com/a%20b",
+        "position": 1
+      },
+      {
+        "term": "www.example.com",
+        "position": 2
+      },
+      {
+        "term": "/a%20b",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "/usr/local/foo.txt",
+    "vector": "'/usr/local/foo.txt':1",
+    "positions": [
+      {
+        "term": "/usr/local/foo.txt",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "foo.txt",
+    "vector": "'foo.txt':1",
+    "positions": [
+      {
+        "term": "foo.txt",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "foo/bar",
+    "vector": "'foo/bar':1",
+    "positions": [
+      {
+        "term": "foo/bar",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "./foo.txt",
+    "vector": "'./foo.txt':1",
+    "positions": [
+      {
+        "term": "./foo.txt",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "../foo.txt",
+    "vector": "'../foo.txt':1",
+    "positions": [
+      {
+        "term": "../foo.txt",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "C:/catalog/phones.txt",
+    "vector": "'/catalog/phones.txt':2 'c':1",
+    "positions": [
+      {
+        "term": "c",
+        "position": 1
+      },
+      {
+        "term": "/catalog/phones.txt",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "example.co.uk",
+    "vector": "'example.co.uk':1",
+    "positions": [
+      {
+        "term": "example.co.uk",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "127.0.0.1",
+    "vector": "'127.0.0.1':1",
+    "positions": [
+      {
+        "term": "127.0.0.1",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "http://127.0.0.1:9300/dk-en/store",
+    "vector": "'127.0.0.1':1 '9300/dk-en/store':2",
+    "positions": [
+      {
+        "term": "127.0.0.1",
+        "position": 1
+      },
+      {
+        "term": "9300/dk-en/store",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "file_name.txt",
+    "vector": "'file_name.txt':1",
+    "positions": [
+      {
+        "term": "file_name.txt",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "foo_bar",
+    "vector": "'bar':2 'foo':1",
+    "positions": [
+      {
+        "term": "foo",
+        "position": 1
+      },
+      {
+        "term": "bar",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "foo-bar.txt",
+    "vector": "'foo-bar.txt':1",
+    "positions": [
+      {
+        "term": "foo-bar.txt",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "a@localhost",
+    "vector": "'localhost':2",
+    "positions": [
+      {
+        "term": "localhost",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "name@example.com.",
+    "vector": "'name@example.com':1",
+    "positions": [
+      {
+        "term": "name@example.com",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "https://example.com?a=1",
+    "vector": "'1':3 'example.com':1",
+    "positions": [
+      {
+        "term": "example.com",
+        "position": 1
+      },
+      {
+        "term": "1",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "https://example.com/#phone",
+    "vector": "'/#phone':3 'example.com':2 'example.com/#phone':1",
+    "positions": [
+      {
+        "term": "example.com/#phone",
+        "position": 1
+      },
+      {
+        "term": "example.com",
+        "position": 2
+      },
+      {
+        "term": "/#phone",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "<b>verified</b>",
+    "vector": "'verifi':1",
+    "positions": [
+      {
+        "term": "verifi",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "<a href=\"secret.html\">phones</a>",
+    "vector": "'phone':1",
+    "positions": [
+      {
+        "term": "phone",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "<!-- hidden quantity -->visible",
+    "vector": "'visibl':1",
+    "positions": [
+      {
+        "term": "visibl",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "<?xml version=\"1.0\"?>visible",
+    "vector": "'visibl':1",
+    "positions": [
+      {
+        "term": "visibl",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "&amp;",
+    "vector": "",
+    "positions": []
+  },
+  {
+    "input": "&#123;",
+    "vector": "",
+    "positions": []
+  },
+  {
+    "input": "&#xA0;",
+    "vector": "",
+    "positions": []
+  },
+  {
+    "input": "<5 phones",
+    "vector": "'5':1 'phone':2",
+    "positions": [
+      {
+        "term": "5",
+        "position": 1
+      },
+      {
+        "term": "phone",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "<tag data-value='hidden'>visible</tag>",
+    "vector": "'visibl':1",
+    "positions": [
+      {
+        "term": "visibl",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "unfinished <b title=\"hidden\"",
+    "vector": "'b':2 'hidden':4 'titl':3 'unfinish':1",
+    "positions": [
+      {
+        "term": "unfinish",
+        "position": 1
+      },
+      {
+        "term": "b",
+        "position": 2
+      },
+      {
+        "term": "titl",
+        "position": 3
+      },
+      {
+        "term": "hidden",
+        "position": 4
+      }
+    ]
+  },
+  {
+    "input": "a &notanentity; b",
+    "vector": "'b':2",
+    "positions": [
+      {
+        "term": "b",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "foo.html/path",
+    "vector": "'/path':3 'foo.html':2 'foo.html/path':1",
+    "positions": [
+      {
+        "term": "foo.html/path",
+        "position": 1
+      },
+      {
+        "term": "foo.html",
+        "position": 2
+      },
+      {
+        "term": "/path",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "https://example.com/a_b/phone-13",
+    "vector": "'/a_b/phone-13':3 'example.com':2 'example.com/a_b/phone-13':1",
+    "positions": [
+      {
+        "term": "example.com/a_b/phone-13",
+        "position": 1
+      },
+      {
+        "term": "example.com",
+        "position": 2
+      },
+      {
+        "term": "/a_b/phone-13",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "(https://example.com/a)",
+    "vector": "'/a)':3 'example.com':2 'example.com/a)':1",
+    "positions": [
+      {
+        "term": "example.com/a)",
+        "position": 1
+      },
+      {
+        "term": "example.com",
+        "position": 2
+      },
+      {
+        "term": "/a)",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "http://example.com/phones?x=1&y=2",
+    "vector": "'/phones?x=1&y=2':3 'example.com':2 'example.com/phones?x=1&y=2':1",
+    "positions": [
+      {
+        "term": "example.com/phones?x=1&y=2",
+        "position": 1
+      },
+      {
+        "term": "example.com",
+        "position": 2
+      },
+      {
+        "term": "/phones?x=1&y=2",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "http://example.com:abc/path",
+    "vector": "'abc/path':2 'example.com':1",
+    "positions": [
+      {
+        "term": "example.com",
+        "position": 1
+      },
+      {
+        "term": "abc/path",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "<:tag>word</:tag>",
+    "vector": "'tag':2 'word':1",
+    "positions": [
+      {
+        "term": "word",
+        "position": 1
+      },
+      {
+        "term": "tag",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "<1tag>word</1tag>",
+    "vector": "'/1tag':3 '1tag':1 'word':2",
+    "positions": [
+      {
+        "term": "1tag",
+        "position": 1
+      },
+      {
+        "term": "word",
+        "position": 2
+      },
+      {
+        "term": "/1tag",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "<script>hidden quantity</script>visible",
+    "vector": "'visibl':1",
+    "positions": [
+      {
+        "term": "visibl",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "<style>hidden quantity</style>visible",
+    "vector": "'visibl':1",
+    "positions": [
+      {
+        "term": "visibl",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "<script>hidden quantity",
+    "vector": "",
+    "positions": []
+  },
+  {
+    "input": "<stylex>hidden</stylex>visible",
+    "vector": "'hidden':1 'visibl':2",
+    "positions": [
+      {
+        "term": "hidden",
+        "position": 1
+      },
+      {
+        "term": "visibl",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "<script type=\"text/javascript\">hidden</script>visible",
+    "vector": "'visibl':1",
+    "positions": [
+      {
+        "term": "visibl",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "<script>one<style>two</style>three</script>four",
+    "vector": "'four':2 'three':1",
+    "positions": [
+      {
+        "term": "three",
+        "position": 1
+      },
+      {
+        "term": "four",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "<b title=\">\">visible</b>",
+    "vector": "'visibl':1",
+    "positions": [
+      {
+        "term": "visibl",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "a@example.com:123",
+    "vector": "'a@example.com:123':1",
+    "positions": [
+      {
+        "term": "a@example.com:123",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "http://example.com:8080",
+    "vector": "'example.com:8080':1",
+    "positions": [
+      {
+        "term": "example.com:8080",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "//example.com/path",
+    "vector": "'/example.com/path':1",
+    "positions": [
+      {
+        "term": "/example.com/path",
+        "position": 1
+      }
+    ]
+  },
+  {
+    "input": "https://m.example.com/a\\b",
+    "vector": "'/a':3 'b':4 'm.example.com':2 'm.example.com/a':1",
+    "positions": [
+      {
+        "term": "m.example.com/a",
+        "position": 1
+      },
+      {
+        "term": "m.example.com",
+        "position": 2
+      },
+      {
+        "term": "/a",
+        "position": 3
+      },
+      {
+        "term": "b",
+        "position": 4
+      }
+    ]
+  },
+  {
+    "input": "example.com/路径",
+    "vector": "'example.com':1 '路径':2",
+    "positions": [
+      {
+        "term": "example.com",
+        "position": 1
+      },
+      {
+        "term": "路径",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "the iphone and pro the",
+    "vector": "'iphon':2 'pro':4",
+    "positions": [
+      {
+        "term": "iphon",
+        "position": 2
+      },
+      {
+        "term": "pro",
+        "position": 4
+      }
+    ]
+  },
+  {
+    "input": "iphone <b>and</b> pro",
+    "vector": "'iphon':1 'pro':3",
+    "positions": [
+      {
+        "term": "iphon",
+        "position": 1
+      },
+      {
+        "term": "pro",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "iphone &amp; pro",
+    "vector": "'iphon':1 'pro':2",
+    "positions": [
+      {
+        "term": "iphon",
+        "position": 1
+      },
+      {
+        "term": "pro",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "the-space-and-gray",
+    "vector": "'gray':5 'space':3 'the-space-and-gray':1",
+    "positions": [
+      {
+        "term": "the-space-and-gray",
+        "position": 1
+      },
+      {
+        "term": "space",
+        "position": 3
+      },
+      {
+        "term": "gray",
+        "position": 5
+      }
+    ]
+  },
+  {
+    "input": "iphone https://catalog.example.test/phones pro",
+    "vector": "'/phones':4 'catalog.example.test':3 'catalog.example.test/phones':2 'iphon':1 'pro':5",
+    "positions": [
+      {
+        "term": "iphon",
+        "position": 1
+      },
+      {
+        "term": "catalog.example.test/phones",
+        "position": 2
+      },
+      {
+        "term": "catalog.example.test",
+        "position": 3
+      },
+      {
+        "term": "/phones",
+        "position": 4
+      },
+      {
+        "term": "pro",
+        "position": 5
+      }
+    ]
+  },
+  {
+    "input": "iphone /usr/local/phones.txt pro",
+    "vector": "'/usr/local/phones.txt':2 'iphon':1 'pro':3",
+    "positions": [
+      {
+        "term": "iphon",
+        "position": 1
+      },
+      {
+        "term": "/usr/local/phones.txt",
+        "position": 2
+      },
+      {
+        "term": "pro",
+        "position": 3
+      }
+    ]
+  },
+  {
+    "input": "iphone <script>hidden word</script> pro",
+    "vector": "'iphon':1 'pro':2",
+    "positions": [
+      {
+        "term": "iphon",
+        "position": 1
+      },
+      {
+        "term": "pro",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "iphone <style>hidden word</style> pro",
+    "vector": "'iphon':1 'pro':2",
+    "positions": [
+      {
+        "term": "iphon",
+        "position": 1
+      },
+      {
+        "term": "pro",
+        "position": 2
+      }
+    ]
+  },
+  {
+    "input": "iphone the the pro",
+    "vector": "'iphon':1 'pro':4",
+    "positions": [
+      {
+        "term": "iphon",
+        "position": 1
+      },
+      {
+        "term": "pro",
+        "position": 4
+      }
+    ]
+  },
+  {
+    "input": "the and",
+    "vector": "",
+    "positions": []
+  },
+  {
+    "input": "iphone iphone iphone",
+    "vector": "'iphon':1,2,3",
+    "positions": [
+      {
+        "term": "iphon",
+        "position": 1
+      },
+      {
+        "term": "iphon",
+        "position": 2
+      },
+      {
+        "term": "iphon",
+        "position": 3
+      }
+    ]
+  }
+]

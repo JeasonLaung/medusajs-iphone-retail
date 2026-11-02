@@ -47,6 +47,13 @@ type ContactResult struct {
 }
 
 func validContactAddress(a ContactAddress) bool {
+	return validContactAddressValues(a, true)
+}
+
+// Context changes may leave a country-only draft for the address form to fill.
+// Reads accept that draft; submitted contacts and checkout still require all
+// mandatory fields. Both paths enforce the same bounds and country format.
+func validContactAddressValues(a ContactAddress, complete bool) bool {
 	for _, field := range []struct {
 		value    string
 		max      int
@@ -56,7 +63,7 @@ func validContactAddress(a ContactAddress) bool {
 		{a.Address1, 512, true}, {a.Address2, 512, false}, {a.City, 160, true},
 		{a.Province, 191, false}, {a.PostalCode, 64, true}, {a.Phone, 64, false},
 	} {
-		if !utf8.ValidString(field.value) || utf8.RuneCountInString(field.value) > field.max || strings.ContainsFunc(field.value, func(r rune) bool { return r < 32 || r == 127 }) || field.required && strings.TrimSpace(field.value) == "" {
+		if !utf8.ValidString(field.value) || utf8.RuneCountInString(field.value) > field.max || strings.ContainsFunc(field.value, func(r rune) bool { return r < 32 || r == 127 }) || complete && field.required && strings.TrimSpace(field.value) == "" {
 			return false
 		}
 	}
@@ -153,13 +160,10 @@ func SaveContacts(ctx context.Context, db *gorm.DB, store string, ref sessionsto
 		}
 		// Refuse an attached payment before any address/amount changes. A subsequent
 		// iteration will coordinate its provider invalidation rather than delete it.
-		var links []string
-		if tx.Table("cart_payment_collections").Select("payment_collection_id").Where("cart_id=? AND deleted_at IS NULL", current.ID).Clauses(clause.Locking{Strength: "UPDATE"}).Limit(1).Scan(&links).Error != nil {
-			return ErrSchema
+		if _, err := reusablePaymentCollection(ctx, tx, current.ID); err != nil {
+			return err
 		}
-		if len(links) > 0 {
-			return ErrConflict
-		}
+
 		if err := supportedSavedShipping(tx, current.ID, manualProviders); err != nil {
 			return err
 		}
@@ -193,6 +197,9 @@ func SaveContacts(ctx context.Context, db *gorm.DB, store string, ref sessionsto
 			return err
 		}
 		if _, err := assembleAmounts(tx, current); err != nil {
+			return err
+		}
+		if err := syncEmptyPaymentCollection(ctx, tx, store, ref, in.Version); err != nil {
 			return err
 		}
 		if r := tx.Exec("UPDATE cart_ownership SET version=version+1,updated_at=UTC_TIMESTAMP(6) WHERE cart_id=? AND version=?", current.ID, version); r.Error != nil || r.RowsAffected != 1 {

@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import {CartClient,CartError,validPromotionCode,type CartContactDetail,type CartView,type CartPromotions,type PromotionInput} from '../src/lib/cart-client.ts'
 import {createPromotionCommands} from '../src/lib/checkout-promotions.ts'
-import {cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey} from '../src/lib/cart-commerce.ts'
+import {contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey} from '../src/lib/cart-commerce.ts'
 import {paymentIntentKey,createPaymentCommands} from '../src/lib/checkout-payment.ts'
 import {cartBridge} from '../src/lib/cart-bridge.ts'
 const operation='12345678-1234-4234-8234-123456789012',csrf='a'.repeat(64)
@@ -52,7 +52,7 @@ test('acknowledged promotion writes recover reads only and refuse mixed snapshot
 })
 test('other checkout journals block discounts; uncertain discounts block payment; known rejection clears only its intent',async()=>{
  const oversized=fixture();await assert.rejects(oversized.commands.submit('cart','2',Array(100).fill('a'.repeat(191))));assert.equal(oversized.data.size,0);assert.equal(oversized.calls.length,0)
- for(const key of [cartIntentKey,contactIntentKey,shippingIntentKey,paymentIntentKey]){const f=fixture();f.data.set(key,'pending');await assert.rejects(f.commands.submit('cart','2',[]));assert.equal(f.calls.length,0)}
+ for(const key of [contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,paymentIntentKey]){const f=fixture();f.data.set(key,'pending');await assert.rejects(f.commands.submit('cart','2',[]));assert.equal(f.calls.length,0)}
  const f=fixture();f.lose(true);await assert.rejects(f.commands.submit('cart','2',[]))
  let payments=0
  const payment=createPaymentCommands({client:{startPayment:async()=>{payments++;throw Error()}},storage:f.storage,readCSRF:()=>csrf,uuid:()=>operation,exclusive:async action=>action()})

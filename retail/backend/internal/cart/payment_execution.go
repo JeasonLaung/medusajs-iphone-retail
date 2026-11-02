@@ -68,6 +68,12 @@ func ExecutePaymentRefreshSession(ctx context.Context, db *gorm.DB, store string
 	if err != nil {
 		return PaymentExecution{}, err
 	}
+	return executeClaimedPaymentDelete(ctx, db, execution, key, request, adapter)
+}
+
+// executeClaimedPaymentDelete is shared by standalone and context refresh.
+// Callers must have committed the exact claim before entering this function.
+func executeClaimedPaymentDelete(ctx context.Context, db *gorm.DB, execution PaymentExecution, key payments.EffectKey, request payments.SessionRequest, adapter payments.DeleteSessionAdapter) (PaymentExecution, error) {
 	if !execution.Receipt.Dispatch {
 		return execution, nil
 	}
@@ -87,7 +93,7 @@ func ExecutePaymentRefreshSession(ctx context.Context, db *gorm.DB, store string
 	savedCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
 	defer cancel()
 	var saved payments.EffectReceipt
-	err = db.WithContext(savedCtx).Transaction(func(tx *gorm.DB) error {
+	err := db.WithContext(savedCtx).Transaction(func(tx *gorm.DB) error {
 		var err error
 		saved, err = payments.RecordEffect(savedCtx, tx, key, execution.Receipt.AttemptID, string(outcome))
 		return err

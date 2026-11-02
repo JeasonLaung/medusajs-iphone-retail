@@ -1,7 +1,10 @@
 // Execute original pure workflow callbacks over artificial facts only.
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict'),{createRequire}=require('node:module')
-const root=path.resolve(__dirname,'../..'),store=path.join(root,'medusa-store/node_modules/.pnpm')
-const file=path.join(store,fs.readdirSync(store).find(p=>p.startsWith('@medusajs+core-flows@')),'node_modules/@medusajs/core-flows/dist/cart/workflows/refresh-payment-collection.js')
+const root=path.resolve(__dirname,'../..')
+const backend=createRequire(path.join(root,'medusa-store/apps/backend/package.json'))
+const flows=createRequire(backend.resolve('@medusajs/medusa/core-flows'))
+const sourceFile='@medusajs/core-flows/dist/cart/workflows/refresh-payment-collection.js'
+const file=path.join(path.dirname(flows.resolve('@medusajs/core-flows')),'cart/workflows/refresh-payment-collection.js')
 const source=fs.readFileSync(file,'utf8'),utils=createRequire(file)('@medusajs/framework/utils')
 function callback(marker,signature,endMarker='\n    });'){const start=source.indexOf(signature,source.indexOf(marker)),end=source.indexOf(endMarker,start);assert.ok(start>0&&end>start);return new Function('utils_1','return '+source.slice(start,end)+'\n}')(utils)}
 const should=callback('const shouldExecute =','({ input }) => {')
@@ -34,7 +37,7 @@ add('id-unchanged',false,true,'235','eur',c())
 add('id-currency-change',false,true,'235','usd',c())
 add('no-execute-amount-change',false,false,'200','eur',c())
 add('equal-currency-change-independent-execute',false,false,'235','usd',c())
-const output={format_version:1,scope:'Original pure workflow callbacks only; no provider, database, application or compensation executed',source_file:path.relative(root,file).replaceAll('\\','/'),source_sha256:crypto.createHash('sha256').update(source.replaceAll('\r\n','\n')).digest('hex'),cases}
+const output={format_version:1,scope:'Original pure workflow callbacks only; no provider, database, application or compensation executed',source_file:sourceFile,source_sha256:crypto.createHash('sha256').update(source.replaceAll('\r\n','\n')).digest('hex'),cases}
 const target=path.join(root,'docs/migration/fixtures/cart-payment-refresh.json'),content=JSON.stringify(output,null,2)+'\n'
 assert.ok(process.argv.length<=3&&(!process.argv[2]||process.argv[2]==='--check'))
 if(process.argv[2])assert.equal(fs.readFileSync(target,'utf8').replaceAll('\r\n','\n'),content)

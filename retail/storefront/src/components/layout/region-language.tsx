@@ -37,13 +37,16 @@ function CountryFlag({ country }: { country: string }) {
   ) : <ReactCountryFlag countryCode={country.toUpperCase()} svg style={{ width: 28, height: 20 }} aria-hidden="true" />
 }
 
-export default function RegionLanguage({ regions, locales, locale,segment,onSelect }: {
+export default function RegionLanguage({ regions, locales, locale,segment,onSelect,onRestore,canRestore }: {
   regions: Region[], locales: Locale[], locale: string | null,segment:string,
   onSelect:((target:PreferenceTarget)=>Promise<void>)|null,
+  onRestore?:()=>Promise<void>,canRestore?:()=>boolean,
 }) {
   const copy = getLayoutCopy(locale)
   const [open, setOpen] = useState(false)
   const [error, setError] = useState(false)
+  const [recovery,setRecovery]=useState(false)
+  const [retryChoice,setRetryChoice]=useState<{country:string;language:string}|null>(null)
   const [pending, startTransition] = useTransition()
   const routeSegment = segment
   const countryCode = routeCountry(routeSegment)
@@ -64,6 +67,7 @@ export default function RegionLanguage({ regions, locales, locale,segment,onSele
 
   function select(country: string, language: string) {
     setError(false)
+    setRetryChoice({country,language})
     startTransition(async () => {
       try {
         if(!onSelect)throw Error("Preferences unavailable")
@@ -72,13 +76,22 @@ export default function RegionLanguage({ regions, locales, locale,segment,onSele
         setOpen(false)
       } catch {
         setError(true)
+        setRecovery(canRestore?.()??false)
         return
       }
     })
   }
 
+  function restore(){
+    setError(false)
+    startTransition(async()=>{
+      try{if(!onRestore)throw Error('Preferences unavailable');await onRestore();setRecovery(false);setOpen(false)}
+      catch{setError(true);setRecovery(canRestore?.()??false)}
+    })
+  }
+
   return <>
-    <button className={styles.trigger} onClick={() => { setError(false); setOpen(true) }} aria-label={copy.preferences} aria-haspopup="dialog" aria-expanded={open}>
+    <button className={styles.trigger} onClick={() => { setError(false); setRecovery(canRestore?.()??false);setOpen(true) }} aria-label={copy.preferences} aria-haspopup="dialog" aria-expanded={open}>
       <CountryFlag country={countryCode} />
       <span>{languageName}</span>
     </button>
@@ -90,6 +103,13 @@ export default function RegionLanguage({ regions, locales, locale,segment,onSele
           <button onClick={() => setOpen(false)} aria-label={copy.closeRegion}><XMark aria-hidden="true" width={20} height={20} className="inline-block align-middle shrink-0" /></button>
         </div>
         {error && <p role="alert" className={styles.error}>{copy.error}</p>}
+        {recovery&&<div className={styles.recovery} aria-live="polite" aria-busy={pending}>
+          <p>{copy.pendingPreference}</p>
+          <div>
+            {retryChoice&&<button type="button" disabled={pending} onClick={()=>select(retryChoice.country,retryChoice.language)}>{copy.retryPreference}</button>}
+            {onRestore&&<button type="button" disabled={pending} onClick={restore}>{copy.restorePreference}</button>}
+          </div>
+        </div>}
         <ul className={styles.list} aria-busy={pending}>
           {countries.map((entry) => {
             const country = entry.iso_2!

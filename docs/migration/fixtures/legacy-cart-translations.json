@@ -1,0 +1,117 @@
+{
+  "format_version": 1,
+  "scope": "Installed source callback with controlled translation flag and artificial query/cart services; not effective legacy runtime flag, real translated rows or Gin translation implementation",
+  "source_sha256": {
+    "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_@medusajs+framework@2.21.2_@medusajs+cli@2.21.2_@types+node_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/steps/update-cart-items-translations.js": "f9e7f498dc22cb3f87ef77902ad4f5c14a4df31d5d110df3cd8e1f4f64dc1945",
+    "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_@medusajs+framework@2.21.2_@medusajs+cli@2.21.2_@types+node_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/common/utils/apply-translations-to-items.js": "48f433da202c488555de27205ce16898f6e76456c13edb7d69d3ad55aa77ac8d",
+    "medusa-store/node_modules/.pnpm/@medusajs+core-flows@2.21.2_@medusajs+framework@2.21.2_@medusajs+cli@2.21.2_@types+node_62cb461b1a4eb98ea2b738852cae2328/node_modules/@medusajs/core-flows/dist/cart/workflows/refresh-cart-items.js": "3e2869fcc796ee10ff7ba0cdd8567f6ef5d41d22818d23777e1e1b604cbc4687"
+  },
+  "cases": [
+    {
+      "name": "disabled-with-variant",
+      "service_resolutions": 0,
+      "compensation": []
+    },
+    {
+      "name": "disabled-without-variant",
+      "service_resolutions": 0,
+      "compensation": []
+    },
+    {
+      "name": "disabled-empty",
+      "service_resolutions": 0,
+      "compensation": []
+    },
+    {
+      "name": "enabled-translated-snapshot-and-compensation",
+      "queries": [
+        {
+          "query": {
+            "entity": "variants",
+            "filters": {
+              "id": [
+                "variant-sample"
+              ]
+            },
+            "fields": [
+              "id",
+              "title",
+              "sku",
+              "manage_inventory",
+              "allow_backorder",
+              "requires_shipping",
+              "is_discountable",
+              "variant_option_values",
+              "barcode",
+              "thumbnail",
+              "product.id",
+              "product.title",
+              "product.description",
+              "product.status",
+              "product.subtitle",
+              "product.thumbnail",
+              "product.type.value",
+              "product.type.id",
+              "product.collection.id",
+              "product.collection.title",
+              "product.handle",
+              "product.discountable",
+              "product.is_giftcard",
+              "product.shipping_profile.id",
+              "inventory_items.inventory_item_id",
+              "inventory_items.required_quantity",
+              "inventory_items.inventory.id",
+              "inventory_items.inventory.requires_shipping",
+              "inventory_items.inventory.location_levels.id",
+              "inventory_items.inventory.location_levels.stocked_quantity",
+              "inventory_items.inventory.location_levels.reserved_quantity",
+              "inventory_items.inventory.location_levels.location_id",
+              "inventory_items.inventory.location_levels.raw_stocked_quantity",
+              "inventory_items.inventory.location_levels.raw_reserved_quantity",
+              "inventory_items.inventory.location_levels.stock_locations.id",
+              "inventory_items.inventory.location_levels.stock_locations.name",
+              "inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
+              "inventory_items.inventory.location_levels.stock_locations.sales_channels.name"
+            ]
+          },
+          "options": {
+            "locale": "zh-CN"
+          }
+        }
+      ],
+      "writes": [
+        [
+          {
+            "id": "line-sample",
+            "title": "Translated product",
+            "subtitle": "Saved subtitle",
+            "product_title": "Translated product",
+            "product_description": null,
+            "product_subtitle": "Translated subtitle",
+            "product_type": "Saved type",
+            "product_collection": "Saved collection",
+            "product_handle": "translated-handle",
+            "variant_title": "Translated variant"
+          }
+        ],
+        [
+          {
+            "id": "line-sample",
+            "title": "Saved title",
+            "subtitle": "Saved subtitle",
+            "product_title": "Saved product",
+            "product_description": null,
+            "product_subtitle": "Saved product subtitle",
+            "product_type": "Saved type",
+            "product_collection": "Saved collection",
+            "product_handle": "saved-handle",
+            "variant_title": "Saved variant"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "missing-variant-preserves-snapshot"
+    }
+  ]
+}

@@ -21,6 +21,10 @@ const Orders = lazy(() => import('./Orders'))
 const OrderDetail = lazy(() => import('./OrderDetail'))
 const Products = lazy(() => import('./Products'))
 const ProductDetail = lazy(() => import('./ProductDetail'))
+const BuyPolicies = lazy(() => import('./BuyPolicies'))
+const SEO = lazy(() => import('./SEO'))
+const PriceLists = lazy(() => import('./PriceLists'))
+const OptionDefinitions = lazy(() => import('./OptionDefinitions'))
 
 type Session = { status: 'loading' } | { status: 'anonymous'; expired?: boolean } | { status: 'authenticated'; user: User } | { status: 'error'; error: unknown }
 
@@ -85,6 +89,13 @@ function WorkspaceContent({ copy, session, onSession }: { copy: Copy; session: E
   const warehouseInventoryPage = location.pathname === '/warehouse-inventory'
   const warehouseUsersPage = location.pathname === '/warehouse-users'
   const warehousePage = location.pathname === '/warehouses'
+  const priceListsPage = location.pathname === '/price-lists'
+  const priceListsLabel = copy.language==='语言'?'价目表':'Price lists'
+  const seoPage = location.pathname === '/seo'
+  const policyPage = location.pathname === '/buy-policies'
+  const policyLabel = copy.name==='姓名'?'购买保障':'Purchase policies'
+  const optionDefinitionsPage = location.pathname === '/option-definitions'
+  const optionDefinitionsLabel = copy.language==='语言'?'共享选项':'Shared options'
   const productPage = location.pathname === '/products' || location.pathname.startsWith('/products/')
   const [drawer, setDrawer] = useState(false)
   const [pending, setPending] = useState(false)
@@ -113,14 +124,19 @@ function WorkspaceContent({ copy, session, onSession }: { copy: Copy; session: E
       else setError(error)
     } finally { busy.current = false; setPending(false) }
   }
-  const menu = <Menu selectedKeys={[warehouseFulfillmentsPage?'warehouse-fulfillments':buybackPage?'buyback':orderPage?'orders':productPage?'products':warehouseDevicesPage?'warehouse-devices':warehouseInventoryPage?'warehouse-inventory':warehouseUsersPage?'warehouse-users':warehousePage?'warehouses':mailboxPage?'mailboxes':authorizationPage?'authorization':'account']} items={[...(access.scope==='warehouse'?[{key:'warehouse-inventory',label:copy.scopedInventory},{key:'warehouse-devices',label:copy.scopedDevices},{key:'warehouse-fulfillments',label:warehouseFulfillmentsLabel}]:[]),...(access.can('buyback.read')?[{key:'buyback',label:buybackLabel}]:[]),...(access.can('order.read')?[{key:'orders',label:copy.orders}]:[]),...(access.can('product.read')?[{key:'products',label:copy.products}]:[]),...(access.can('authorization.read','warehouse.read')?[{key:'warehouse-users',label:copy.warehouseUsers}]:[]),...(access.can('warehouse.read')?[{key:'warehouses',label:copy.warehouses}]:[]),...(access.can('mail.read')?[{key:'mailboxes',label:copy.mailboxes}]:[]),...(access.can('authorization.read')?[{key:'authorization',label:copy.authorization}]:[]),{ key: 'account', icon: <UserOutlined />, label: copy.account }]} onClick={({key}) => { navigate(`/${key}`); setDrawer(false) }} />
+  const menu = <Menu selectedKeys={[seoPage?'seo':priceListsPage?'price-lists':policyPage?'buy-policies':optionDefinitionsPage?'option-definitions':warehouseFulfillmentsPage?'warehouse-fulfillments':buybackPage?'buyback':orderPage?'orders':productPage?'products':warehouseDevicesPage?'warehouse-devices':warehouseInventoryPage?'warehouse-inventory':warehouseUsersPage?'warehouse-users':warehousePage?'warehouses':mailboxPage?'mailboxes':authorizationPage?'authorization':'account']} items={[...(access.can('seo.read')?[{key:'seo',label:'SEO'}]:[]),...(access.can('price.read')?[{key:'price-lists',label:priceListsLabel}]:[]),...(access.can('store.policies.read')?[{key:'buy-policies',label:policyLabel}]:[]),...(access.scope==='warehouse'?[{key:'warehouse-inventory',label:copy.scopedInventory},{key:'warehouse-devices',label:copy.scopedDevices},{key:'warehouse-fulfillments',label:warehouseFulfillmentsLabel}]:[]),...(access.can('buyback.read')?[{key:'buyback',label:buybackLabel}]:[]),...(access.can('order.read')?[{key:'orders',label:copy.orders}]:[]),...(access.can('product.read')?[{key:'products',label:copy.products}]:[]),...(access.can('product.read','product.write')?[{key:'option-definitions',label:optionDefinitionsLabel}]:[]),...(access.can('authorization.read','warehouse.read')?[{key:'warehouse-users',label:copy.warehouseUsers}]:[]),...(access.can('warehouse.read')?[{key:'warehouses',label:copy.warehouses}]:[]),...(access.can('mail.read')?[{key:'mailboxes',label:copy.mailboxes}]:[]),...(access.can('authorization.read')?[{key:'authorization',label:copy.authorization}]:[]),{ key: 'account', icon: <UserOutlined />, label: copy.account }]} onClick={({key}) => { navigate(`/${key}`); setDrawer(false) }} />
   return <Layout className="workspace">
     <Layout.Sider className="desktop-nav" width={208} theme="light"><nav aria-label={copy.admin}>{menu}</nav></Layout.Sider>
     <Drawer open={drawer} onClose={() => setDrawer(false)} title={copy.admin} placement="left" width={256}>{menu}</Drawer>
     <Layout.Content className="workspace-content">
-      <div className="page-toolbar"><Button className="mobile-nav" icon={<MenuOutlined />} aria-label={copy.navigation} onClick={() => setDrawer(true)} /><Typography.Title level={2}>{warehouseFulfillmentsPage?warehouseFulfillmentsLabel:buybackPage?buybackLabel:orderPage?copy.orders:productPage?copy.products:warehouseDevicesPage?copy.scopedDevices:warehouseInventoryPage?copy.scopedInventory:warehouseUsersPage?copy.warehouseUsers:warehousePage?copy.warehouses:mailboxPage?copy.mailboxes:authorizationPage?copy.authorization:copy.account}</Typography.Title><Button aria-label={copy.logout} disabled={pending} loading={pending} onClick={logout}>{copy.logout}</Button></div>
+      <div className="page-toolbar"><Button className="mobile-nav" icon={<MenuOutlined />} aria-label={copy.navigation} onClick={() => setDrawer(true)} /><Typography.Title level={2}>{seoPage?'SEO':priceListsPage?priceListsLabel:policyPage?policyLabel:optionDefinitionsPage?optionDefinitionsLabel:warehouseFulfillmentsPage?warehouseFulfillmentsLabel:buybackPage?buybackLabel:orderPage?copy.orders:productPage?copy.products:warehouseDevicesPage?copy.scopedDevices:warehouseInventoryPage?copy.scopedInventory:warehouseUsersPage?copy.warehouseUsers:warehousePage?copy.warehouses:mailboxPage?copy.mailboxes:authorizationPage?copy.authorization:copy.account}</Typography.Title><Button aria-label={copy.logout} disabled={pending} loading={pending} onClick={logout}>{copy.logout}</Button></div>
       {error !== undefined && <div className="request-error"><ErrorNotice error={error} copy={copy} /></div>}
       <Routes>
+        <Route path="/price-lists" element={<Suspense fallback={<Spin/>}><RequireAction action="price.read" copy={copy}><PriceLists copy={copy} onExpired={onExpired}/></RequireAction></Suspense>}/>
+
+        <Route path="/seo" element={<Suspense fallback={<Spin/>}><RequireAction action="seo.read" copy={copy}><SEO copy={copy} onExpired={onExpired}/></RequireAction></Suspense>}/>
+        <Route path="/buy-policies" element={<Suspense fallback={<Spin/>}><RequireAction action="store.policies.read" copy={copy}><BuyPolicies copy={copy} onExpired={onExpired}/></RequireAction></Suspense>}/>
+        <Route path="/option-definitions" element={<Suspense fallback={<Spin/>}><RequireAction action="product.write" copy={copy}><OptionDefinitions copy={copy} onExpired={onExpired}/></RequireAction></Suspense>}/>
  <Route path="/buyback" element={<Suspense fallback={<Spin/>}><RequireAction action="buyback.read" copy={copy}><Buybacks copy={copy} onExpired={onExpired}/></RequireAction></Suspense>}/>
         <Route path="/warehouse-devices" element={<Suspense fallback={<Spin/>}><WarehouseDevices copy={copy} onExpired={onExpired}/></Suspense>}/>
         <Route path="/warehouse-inventory" element={<Suspense fallback={<Spin/>}><WarehouseInventory copy={copy} onExpired={onExpired}/></Suspense>}/>
@@ -146,6 +162,14 @@ function WorkspaceContent({ copy, session, onSession }: { copy: Copy; session: E
 }
 
 export default function AdminApp() {
+  const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReducedMotion(query.matches)
+    update()
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
   const [language, setLanguage] = useState<Language>(() => {
     try { return localStorage.getItem('eurorefurb.admin.language') === 'en' ? 'en' : 'zh-CN' } catch { return 'zh-CN' }
   })
@@ -167,6 +191,7 @@ export default function AdminApp() {
     return () => controller.abort()
   }, [attempt])
   return <ConfigProvider locale={language === 'en' ? enGB : zhCN} theme={{ token: {
+    motion: !reducedMotion,
     colorPrimary: '#1677FF', colorInfo: '#1677FF', colorSuccess: '#52C41A', colorWarning: '#FA8C16', colorError: '#F5222D',
     colorBgLayout: '#F8F8F8', colorBgContainer: '#FFFFFF', colorText: '#000000E0', colorTextSecondary: '#000000A6',
     colorBorder: '#D9D9D9', colorSplit: '#0505050F', borderRadius: 6, fontFamily: 'system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif',

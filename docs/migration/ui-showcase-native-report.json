@@ -1,0 +1,242 @@
+{
+  "checked_utc": "2026-11-01T09:52:03.183517+00:00",
+  "route": "/[countryCode]/ui",
+  "source": "medusa-store/apps/storefront/src/modules/ui-showcase",
+  "evidence": "logs/gin-migration/ui-showcase-1793526602132/report.json",
+  "evidence_sha256": "4cc1c0732a660d9598926043eedd8d294ca684cf2b357611e2f389053a8ead00",
+  "runtime": "Actual Next8000 / Astro9300 / Gin9100 / dedicated persistent MySQL99",
+  "actual_browser_cases": 8,
+  "comparisons": [
+    {
+      "lang": "en",
+      "width": 390,
+      "section_headings_equal": true,
+      "shared_initial_text_equal": true
+    },
+    {
+      "lang": "en",
+      "width": 1440,
+      "section_headings_equal": true,
+      "shared_initial_text_equal": true
+    },
+    {
+      "lang": "zh",
+      "width": 390,
+      "section_headings_equal": true,
+      "shared_initial_text_equal": true
+    },
+    {
+      "lang": "zh",
+      "width": 1440,
+      "section_headings_equal": true,
+      "shared_initial_text_equal": true
+    }
+  ],
+  "languages": [
+    "en",
+    "zh"
+  ],
+  "widths": [
+    390,
+    1440
+  ],
+  "sections": [
+    "actions",
+    "forms",
+    "shared",
+    "commerce",
+    "feedback",
+    "data",
+    "overlays"
+  ],
+  "interactions": {
+    "country_search": true,
+    "local_valid_png_thumbnail_decoded": true,
+    "rating": true,
+    "native_select": true,
+    "radio_checkbox_disabled": true,
+    "pagination_and_timeline": true,
+    "form_validation_success_reset": true,
+    "both_dialogs_focus_and_escape": true,
+    "reload_resets_selection": true,
+    "horizontal_overflow": false
+  },
+  "browser_errors": [],
+  "business_write_requests": [],
+  "source_development_diagnostic_posts": [],
+  "api_mocking": false,
+  "external_https_assets_blocked": true,
+  "css_and_i18n_byte_identical_to_source": true,
+  "database_verification": {
+    "checked_utc": "2026-11-01T09:43:27.267677+00:00",
+    "fresh_backup_owner": "9d72f058ad87",
+    "service": {
+      "running": true,
+      "pid": 69436,
+      "health": 200,
+      "schema_migrations": 99
+    },
+    "persistent_tables": 293,
+    "business_tables_equal_to_rehearsal": 291,
+    "migration_journal_execution_times_excluded": true,
+    "migration_checksums_match": true,
+    "original_tables_unchanged": 268,
+    "live_counts_match_dump": true,
+    "foreign_keys_checked": 213,
+    "orphan_rows": 0,
+    "new_gates_default_closed": true,
+    "retained_shared86_all_table_fingerprints_match": true,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "post_cutover_data_verified": true,
+    "goal_complete": false
+  },
+  "navigation_verification": {
+    "rows": [
+      {
+        "lang": "en",
+        "width": 390,
+        "header_keyboard_entry": true,
+        "breadcrumb_home": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "header_keyboard_entry": true,
+        "breadcrumb_home": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "header_keyboard_entry": true,
+        "breadcrumb_home": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "header_keyboard_entry": true,
+        "breadcrumb_home": true
+      }
+    ],
+    "errors": []
+  },
+  "services_verification": {
+    "checked_utc": "2026-11-01T09:45:40.947834+00:00",
+    "routes": [
+      {
+        "port": 9001,
+        "path": "/health",
+        "status": 200
+      },
+      {
+        "port": 9001,
+        "path": "/app",
+        "status": 200
+      },
+      {
+        "port": 8000,
+        "path": "/dk-en/store",
+        "status": 200
+      },
+      {
+        "port": 9100,
+        "path": "/health",
+        "status": 200
+      },
+      {
+        "port": 9200,
+        "path": "/products",
+        "status": 200
+      },
+      {
+        "port": 9300,
+        "path": "/dk-en/ui",
+        "status": 200
+      },
+      {
+        "port": 9300,
+        "path": "/dk-zh/ui",
+        "status": 200
+      },
+      {
+        "port": 9300,
+        "path": "/dk-en/reviews",
+        "status": 200
+      },
+      {
+        "port": 9300,
+        "path": "/dk-en/store",
+        "status": 200
+      },
+      {
+        "port": 9300,
+        "path": "/zz-en/ui",
+        "status": 404
+      },
+      {
+        "port": 9300,
+        "path": "/dk-fr/ui",
+        "status": 404
+      }
+    ],
+    "logs": [
+      {
+        "file": "log/gin-preview-mysql/api.log",
+        "panic_fatal": 0,
+        "unexpected_5xx": 0,
+        "known_disabled_gate_503_excluded": true
+      },
+      {
+        "file": "log/gin-preview-mysql/mysql.log",
+        "panic_fatal": 0,
+        "unexpected_5xx": 0,
+        "known_disabled_gate_503_excluded": true
+      },
+      {
+        "file": "log/202611011104.log",
+        "panic_fatal": 0,
+        "unexpected_5xx": 0,
+        "known_disabled_gate_503_excluded": true
+      }
+    ],
+    "existing_store_has_30_ssr_cards": true,
+    "reviews_not_given_demo_robots": true
+  },
+  "checks": {
+    "astro_check": "0 errors, 0 warnings, 17 hints (7 existing and 10 copied Headless UI deprecations)",
+    "node_syntax": true,
+    "diff_whitespace": true,
+    "production_build_validated": false
+  },
+  "source_sha256": {
+    "retail/storefront/src/components/ui-showcase/i18n.ts": "cf6ec22dfa3c0ccd07083f4b8be3474a26caddb3f7b04ae3ad47afebc994a2a6",
+    "retail/storefront/src/components/ui-showcase/icons/eye-off.tsx": "33db8d4056e9ed2789428782d0c09c2d4462bec7daf31ad4eb0da30bde304bd4",
+    "retail/storefront/src/components/ui-showcase/icons/eye.tsx": "7af7b66d1cc58b4ea9ba71a40b2bb38c4a2ddc5deefeeb283522c5fb4ada5803",
+    "retail/storefront/src/components/ui-showcase/icons/index.tsx": "00c13202c233e1ec6eb4b72ba7e05fa693035d223a0274beecf056561935095b",
+    "retail/storefront/src/components/ui-showcase/icons/x.tsx": "8ea8409f8ae064126131e1649c25ddc352577431ea1164d1c8b83844e919d4da",
+    "retail/storefront/src/components/ui-showcase/index.tsx": "bea2c61b21c7327f3a2f03f8e29eb503a7ab45caba446232738237c6a4956671",
+    "retail/storefront/src/components/ui-showcase/shared/cart-totals.tsx": "2629ba6d1e38cdb4f91bdf71b0e7aba4f6806d1a2e3f6119ed1c3fe23ceacac0",
+    "retail/storefront/src/components/ui-showcase/shared/checkbox.tsx": "f30ce1cc4a04390d2fdabee979ae80481e2f7b4a9fff78d788891792f6a1b648",
+    "retail/storefront/src/components/ui-showcase/shared/filter-radio-group.tsx": "6b6d584afdb015b8f57322af237d98392047dea528e0368b02b965d4001b6927",
+    "retail/storefront/src/components/ui-showcase/shared/grade-badge.module.css": "5afe48b2b8d1b28b94af767aa42587b93166b3316f5f7af255d6469f78e83178",
+    "retail/storefront/src/components/ui-showcase/shared/grade-badge.tsx": "9c3bb468725217b268e3bdc73d8922cd48fdff1fcfd761fb7691fc31d234e5d6",
+    "retail/storefront/src/components/ui-showcase/shared/input.tsx": "7ecef96ee9fa4e1aea1a92f0e3e1c643b92cd680ed97128b37f5b242ca6a17c9",
+    "retail/storefront/src/components/ui-showcase/shared/interactive-link.tsx": "f39a416594a4027ccde52c203cfae80132df6ff15213132ddef81b8957401e68",
+    "retail/storefront/src/components/ui-showcase/shared/modal-context.tsx": "dfe15c7bc1b4a9835cba8d0d402a76588105081dfd93e07eb724d6679a43a93d",
+    "retail/storefront/src/components/ui-showcase/shared/modal.tsx": "9c7ec471ee10a12e71c207c987d8f54296403b003a7bcb59f48b5751dad2717b",
+    "retail/storefront/src/components/ui-showcase/shared/native-select.tsx": "541f4948080933835f16390d5d669bb284373f680b44aa7aabf26d53fa4da5f3",
+    "retail/storefront/src/components/ui-showcase/shared/ui.tsx": "d6d876cb9d6b4c6ecec54a948815a90ab59559fe5289a51f2ca9b207ba1eb323",
+    "retail/storefront/src/components/ui-showcase/showcase.tsx": "2a543b68d00a798dc4e9d511d10cd759b8a5980baa08117ca6a7031b0d4c7c02",
+    "retail/storefront/src/components/ui-showcase/styles.module.css": "509dbb010bce4b10c301080f3414f60cf2b9efc096fa5a5021026008672ac7da",
+    "retail/storefront/src/pages/[countryCode]/ui.astro": "921dd91bafb2a664d724c8ffd83ab3c041a9d29cfe4a6141bc0ac550e87f7c2e",
+    "retail/storefront/src/layouts/Storefront.astro": "1cae9ed3ff9df6ca583ed6a0a40fb4bf5a638d4f1c9e6040c522a5f07f2bbd5f",
+    "retail/admin/tests/ui-showcase.native.mjs": "434566809f47ffda73e887d65c377544f0ca5dc4d6f1b146bffe34541c639b69"
+  },
+  "backend_code_or_binary_changed": false,
+  "runtime_gates_changed": false,
+  "database_migrations_added": false,
+  "real_provider_called": false,
+  "pixel_complete_acceptance": false,
+  "full_storefront_accepted": false,
+  "goal_complete": false
+}

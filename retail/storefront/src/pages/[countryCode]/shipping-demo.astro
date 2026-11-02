@@ -1,0 +1,15 @@
+---
+import {GIN_API_ORIGIN} from 'astro:env/server'
+import Storefront from '../../layouts/Storefront.astro'
+import ShippingDemo from '../../components/order/shipping-demo'
+import {loadPublicPage} from '../../lib/public-page'
+const segment=(Astro.params.countryCode??'').toLowerCase()
+let shell:Awaited<ReturnType<typeof loadPublicPage>>=null,unavailable=false
+try{shell=await loadPublicPage(GIN_API_ORIGIN,segment)}catch{unavailable=true}
+if(unavailable)Astro.response.status=503
+else if(!shell)Astro.response.status=404
+const error=unavailable?(segment.endsWith('-zh')?'页面暂时无法加载，请稍后重试。':'This page is temporarily unavailable. Please try again.'):(segment.endsWith('-zh')?'未找到页面':'Page not found')
+---
+<Storefront segment={segment} title={shell?'Shipping demo':error} canonicalPath={shell?`/${segment}/shipping-demo`:undefined} robots="noindex, nofollow" shell={shell??undefined}>
+ {shell?<ShippingDemo segment={segment} client:load/>:<div class="content-container py-16"><h1>{error}</h1></div>}
+</Storefront>

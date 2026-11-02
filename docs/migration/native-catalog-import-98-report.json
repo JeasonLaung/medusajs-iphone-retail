@@ -1,0 +1,70 @@
+{
+  "owner": "ebaa29d5389b",
+  "migrations": 98,
+  "historical_catalog": {
+    "snapshot_sha256": "3b8c007f7854ab61b46009df87ba8f3a082dacfb3bf03078b0c16dcede367aab",
+    "source_rows": 21913,
+    "catalog_and_dependency_tables": 46,
+    "catalog_and_dependency_rows": 17821,
+    "unresolved_outside_scope": {
+      "device.location_id": 11,
+      "device.source_id": 44,
+      "order_exchange.order_id": 9,
+      "order_exchange_item.item_id": 9,
+      "order_fulfillment.fulfillment_id": 72,
+      "order_fulfillment.order_id": 72,
+      "order_payment_collection.order_id": 17,
+      "order_payment_collection.payment_collection_id": 9,
+      "reservation_item.line_item_id": 72,
+      "return.order_id": 17,
+      "return_item.item_id": 17
+    },
+    "applied": true,
+    "complete_import_accepted": false
+  },
+  "option_and_value_counts": "163\t387",
+  "rollback_empty": true,
+  "rollback_all_target_fields_unchanged": true,
+  "exact_replay_and_conflict_rollback": true,
+  "migration_triggers_installed": true,
+  "frozen_source_verified": true,
+  "real_payments": false,
+  "old_credentials_imported": false,
+  "login_account_and_session_counts": "0\t0\t0",
+  "goal_complete": false,
+  "snapshot": "logs/gin-migration/catalog-native-98-ebaa29d5389b",
+  "controller_exit_code": 0,
+  "cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true
+  },
+  "current_workspace_matches": true,
+  "verified_source_files": {
+    "backend": 855
+  },
+  "manifest_sha256": "e98b7d6bf445013639d98cba91c74a05f00ef27e26bffc076dbc4f296be36840",
+  "evidence_sha256": {
+    "mysql-server.log": "5564e73ed4915857f7cb20444eabcfe9d03aaa2eec55b471d5b052cc9fa463d8",
+    "replay-and-conflict.log": "b9200e30850c8d997b000e5db45b4eed0ab7eaf675c42b189d1097e5529cb3cd",
+    "mysql-initialize.log": "dc177101d9077b79ba7320d0d750f2c05a374c672a52e51d9d4979a2c06c66e2",
+    "cli-rollback.log": "da9a79b0c14d166c2b16a3f9e9ee269d5eac816d0afc2ca7e086aab47c7d2afa",
+    "migrate.log": "cfd9c06879abe0680bffe4be0be3c1de6b1e16fc749e8a0bd06a95a2665b667e",
+    "mysql-runtime.json": "5a449ffda057e96bb7c6c6608520930e7fafce95ed5bff1e1ced09c39d3ed90e",
+    "cli-apply.log": "54106983059c473a72a6f6f7abd582f62c0c7e14b45126a070f54bf0d87ffd3d",
+    "migrate-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mysql-launch.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "catalog.test-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "import-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "main_database_upgraded": false,
+  "main_database_migrations": 86,
+  "full_storefront_accepted": false,
+  "limits": [
+    "Isolated local native database evidence; main database remains at 86.",
+    "No real payment or real recipient email exercised.",
+    "Original 23 suites are separately recorded in native-sql-98-report.json.",
+    "Historical references outside catalog closure and the remaining C01–C11 requirements remain open."
+  ]
+}

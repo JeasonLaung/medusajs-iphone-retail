@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import {CartClient,CartError,type PaymentAttempt} from '../src/lib/cart-client.ts'
 import {cartBridge} from '../src/lib/cart-bridge.ts'
 import {createPaymentCommands,paymentIntentKey,clearCompletedPayment} from '../src/lib/checkout-payment.ts'
-import {cartIntentKey,contactIntentKey,shippingIntentKey} from '../src/lib/cart-commerce.ts'
+import {contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey} from '../src/lib/cart-commerce.ts'
 const operationID='12345678-1234-4234-8234-123456789012',csrf='a'.repeat(64)
 const receipt=(extra:Record<string,unknown>={})=>({cart_id:'cart',version:'9007199254740993124',operation_id:operationID,state:'ready',checkout_url:'https://www.mollie.com/checkout/owned',...extra})
 const reply=(v:unknown,status=200)=>Response.json(v,{status,headers:{'Cache-Control':'private, no-store'}})
@@ -16,8 +16,12 @@ test('payment initiation sends only saved version and operation, without price o
  assert.equal((await client.startPayment('cart',{version:'9007199254740993123',operationID},{csrfToken:csrf})).state,'ready')
  for(const state of ['processing','requires_review'])assert.equal((await new CartClient({readScopeCSRF:()=>undefined,fetcher:async()=>reply(receipt({state,checkout_url:null}))}).startPayment('cart',{version:'9007199254740993123',operationID},{csrfToken:csrf})).state,state)
 })
+test('retained checkout resumes with its original CREATE identity and current effective cart version',async()=>{
+ const api=new CartClient({readScopeCSRF:()=>undefined,fetcher:async()=>reply(receipt({version:'9007199254740993126'}))})
+ assert.equal((await api.startPayment('cart',{version:'9007199254740993123',operationID},{csrfToken:csrf})).version,'9007199254740993126')
+})
 test('malformed, mixed-cart and unsafe payment responses remain uncertain',async()=>{
- const bodies=[receipt({cart_id:'foreign'}),receipt({operation_id:'foreign'}),receipt({version:'9007199254740993125'}),receipt({version:9007199254740992}),receipt({state:'paid'}),receipt({private_key:'private'}),receipt({state:'processing'}),receipt({checkout_url:null})]
+ const bodies=[receipt({cart_id:'foreign'}),receipt({operation_id:'foreign'}),receipt({version:'9007199254740993123'}),receipt({version:'18446744073709551616'}),receipt({version:9007199254740992}),receipt({state:'paid'}),receipt({private_key:'private'}),receipt({state:'processing'}),receipt({checkout_url:null})]
  for(const checkout_url of ['http://mollie.com/','https://mollie.com.evil.test/','https://evil.test/?next=https://mollie.com','https://user:pass@www.mollie.com/','https://www.mollie.com:9443/','https://www.mollie.com/\n','https://www.mollie.com\\@evil.test/'])bodies.push(receipt({checkout_url}))
  for(const body of bodies)await assert.rejects(new CartClient({readScopeCSRF:()=>undefined,fetcher:async()=>reply(body)}).startPayment('cart',{version:'9007199254740993123',operationID},{csrfToken:csrf}),e=>e instanceof CartError&&e.uncertain)
  for(const fetcher of [async()=>reply({},503),async()=>{throw Error('network')}])await assert.rejects(new CartClient({readScopeCSRF:()=>undefined,fetcher}).startPayment('cart',{version:'2',operationID},{csrfToken:csrf}),e=>e instanceof CartError&&e.uncertain)
@@ -36,7 +40,7 @@ test('network loss and repeated submissions reuse original pre-freeze payment ve
 })
 test('pending contact, cart and shipping writes block initiation; malformed journals never dispatch',async()=>{
  const f=fixture()
- for(const key of [cartIntentKey,contactIntentKey,shippingIntentKey]){f.data.set(key,'pending');await assert.rejects(f.commands.submit('cart','2'));f.data.delete(key)}
+ for(const key of [contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey]){f.data.set(key,'pending');await assert.rejects(f.commands.submit('cart','2'));f.data.delete(key)}
  for(const raw of ['{','null','[]',JSON.stringify({cartID:'cart',version:'2',operationID,checkout_url:'https://evil.test'}),JSON.stringify({cartID:'cart',version:'18446744073709551615',operationID})]){f.data.set(paymentIntentKey,raw);await assert.rejects(f.commands.submit('cart','2'))}
  assert.equal(f.calls.length,0);assert.equal(f.ids(),0)
 })

@@ -1,0 +1,130 @@
+{
+  "format_version": 1,
+  "date": "2026-10-31",
+  "scope": "Native loopback dedicated MySQL device prerequisites: rollback, commit and committed full-history replay; not device identity import or full migration acceptance.",
+  "source_snapshot_sha256": "3b8c007f7854ab61b46009df87ba8f3a082dacfb3bf03078b0c16dcede367aab",
+  "source_tables": [
+    "device_source",
+    "device_variant",
+    "device_supply"
+  ],
+  "source_rows": 2,
+  "tracking_rows": 1558,
+  "supply_rows": 0,
+  "total_rows": 1560,
+  "full_stream_verified": true,
+  "native_rollback_passed": true,
+  "same_snapshot_replay_unchanged": true,
+  "timestamp_microsecond_drift_rejected": true,
+  "missing_parent_rejected": true,
+  "enabled_identity_gate_rejected": true,
+  "enabled_command_gate_rejected": true,
+  "device_identity_and_quantity_fingerprints_unchanged_inside_transaction": true,
+  "complete_rollback_fingerprints_unchanged": true,
+  "applied": true,
+  "complete_import_accepted": false,
+  "target_schema_migrations": 86,
+  "workspace_migration_87_in_progress_not_applied": true,
+  "go_all_passed": true,
+  "go_all_note": "The complete default Go suite passed in the fixed committed schema86 release with reviewed importer overlays. Other opt-in SQL suites skip by default.",
+  "go_vet_passed": true,
+  "private_photo_audit": {
+    "source_snapshot_sha256": "3b8c007f7854ab61b46009df87ba8f3a082dacfb3bf03078b0c16dcede367aab",
+    "source_photos": 2,
+    "matched_local_objects": 2,
+    "total_bytes": 61440,
+    "mime_counts": {
+      "image/webp": 2
+    },
+    "source_mutated": false,
+    "private_bytes_imported": false,
+    "public_urls_created": false,
+    "metadata_and_devices_imported": false
+  },
+  "transcript_sha256": {
+    "native-device-prerequisites-rollback-test.log": "0a2b80ef42e0ada5f47a13d29122eeb6e9f99b7e018dde8d14b64746880e2f1a",
+    "native-buyback-private-read-test.log": "02ad5718b971b24a4a75a1fc9edad56f8fc083b9a4aba2f6db1685b79b824665",
+    "native-device-prerequisites-full-rollback-test.log": "e3148bd3212a72ee39951abbae57427ddd736ddac94894ff228ae0b0a0ed2832",
+    "native-device-prerequisites-committed-replay-test.log": "779dd04f207b62a5e10ee2ca5cd2b3c2acaecfb734459e0c3e676063db9f842d"
+  },
+  "implementation_sha256_lf": {
+    "retail/backend/internal/catalogimport/cart_history.go": "fe5f168e2c71d2b282c151b10c584ee7be6c5db99d5b31d96b33aef4c4968941",
+    "retail/backend/internal/catalogimport/cart_history_test.go": "d918aeef3885d53554a788d97dd2fec579ce92890f841848c9eba5d85dca86b8",
+    "retail/backend/internal/catalogimport/device_prerequisites.go": "c74871327571cacc497aafca9d17b78a2da0ad6a3367fd88450e488785a1e10d",
+    "retail/backend/internal/historyimport/device_prerequisites.go": "d44088c642341a8be2e2fe7605608356ea8b19b622e92d34807acd6222c1ed5f",
+    "retail/backend/internal/historyimport/device_prerequisites_native_test.go": "a276c4d81ee4957f1af178c146348b62966486a81ec5c6fe1c9e30e917b2d0f0",
+    "retail/backend/internal/historyimport/native_snapshot_test.go": "b352c193c3819971b1d83a6c799f9cf2f3de2dbc179f919586dec05eae6025b8",
+    "retail/backend/internal/historyimport/snapshot.go": "94a667cd4ff73817f10d6a795f07766e735d2f14f4ce049a4c208d37e4360d79",
+    "retail/backend/cmd/import-history/main.go": "1d4f78d52bc050517f216e6a894570a78fb2161f64550796b91996b43aff7899",
+    "retail/backend/internal/rowimport/layout.go": "0c472820a8f89ab7d6b89159b122a192734fd90665b66930281e6d3e37b09403",
+    "retail/backend/internal/rowimport/field_plans.json": "d3bff5f26b890e19f7424888430a638d4e45f6b46766e3643913e6eb670c5b77",
+    "retail/backend/migrations/0055_device_identity.sql": "cb20e04e4fc8fb73800df3edf71e099521e45d81b9b0d9a5fd54fa96e9c6e6ba"
+  },
+  "go_transcript_sha256": "8b3d735db88e05b10189b9003f9a68f430d7508a3bca5b7ef0642c80501d58bb",
+  "real_provider_called": false,
+  "mail_sent": false,
+  "workers_launched": false,
+  "historical_cart_shared_writer_native_replay_rows": 135,
+  "historical_cart_shared_writer_decimal_conflict_rejected": true,
+  "service_checks": [
+    {
+      "url": "http://127.0.0.1:9001/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9001/app",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8000/dk-en/store",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9100/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9200/",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/store",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/products/swappie-iphone-15-pro",
+      "status": 200
+    }
+  ],
+  "recent_service_log_review": [
+    {
+      "path": "log/gin-local-api-current.log",
+      "recent_lines_reviewed": 150,
+      "error_severity_markers": 0
+    },
+    {
+      "path": "log/gin-local-admin.log",
+      "recent_lines_reviewed": 8,
+      "error_severity_markers": 0
+    },
+    {
+      "path": "retail/storefront/.astro/dev.log",
+      "recent_lines_reviewed": 40,
+      "error_severity_markers": 0
+    },
+    {
+      "path": "log/202610311113.log",
+      "recent_lines_reviewed": 150,
+      "error_severity_markers": 0
+    }
+  ],
+  "full_history_committed_replay_passed": true,
+  "release_report": "native-import-release-report.json",
+  "final_commit_report": {
+    "source_rows": 2,
+    "tracking_rows": 1558,
+    "supply_rows": 0,
+    "device_identities_imported": false,
+    "commands_enabled": false
+  }
+}

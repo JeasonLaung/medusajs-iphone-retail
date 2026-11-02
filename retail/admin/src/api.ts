@@ -295,7 +295,7 @@ export async function getOrderFulfillments(id:string,signal?:AbortSignal):Promis
 }
 
 
-export const ACTIONS=['authorization.read','authorization.write','buyback.read','buyback.write','device.enroll','device.intake','device.read','device.source.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.after_sales.write','order.allocation.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','order.refund.write','price.read','price.write','product.read','product.write','warehouse.allocation.write','warehouse.intake.read','warehouse.intake.write','warehouse.read','warehouse.return.read','warehouse.return.write','warehouse.shipment.write','warehouse.write'] as const
+export const ACTIONS=['authorization.read','authorization.write','buyback.read','buyback.write','device.enroll','device.intake','device.read','device.source.write','inventory.read','inventory.stock.write','mail.read','mail.write','order.after_sales.write','order.allocation.write','order.amount.read','order.fulfillment.read','order.payment.read','order.read','order.refund.write','price.read','price.write','product.read','product.write','seo.read','seo.write','store.policies.read','store.policies.write','warehouse.allocation.write','warehouse.intake.read','warehouse.intake.write','warehouse.read','warehouse.return.read','warehouse.return.write','warehouse.shipment.write','warehouse.write'] as const
 export type Action=typeof ACTIONS[number]
 export type ManagedRole={id:string;name:string;enabled:boolean;actions:Action[]}
 export type ManagedMember={user_id:string;name:string;enabled:boolean;kind:'employee'|'warehouse'|'supplier';roles:string[]}
@@ -436,10 +436,11 @@ export async function warehouseIntakeVariants(scope:WarehouseIntakeScope,q:strin
 }
 
 export type PriceAmountEdit={operation_id:string;expected_revision:string;amount:string}
-export type PriceEditContext={effective_amount:string;product_id:string;variant_id:string;id:string;price_set_id:string;currency_code:string;amount:string;min_quantity:string|null;max_quantity:string|null;price_list_id:string|null;shared_variants:number;enabled:boolean;revision:string}
+export type PriceEditContext={effective_min_quantity?:string|null;effective_max_quantity?:string|null;effective_amount:string;product_id:string;variant_id:string;id:string;price_set_id:string;currency_code:string;amount:string;min_quantity:string|null;max_quantity:string|null;price_list_id:string|null;shared_variants:number;enabled:boolean;revision:string}
 const priceEditPath=(product:string,variant:string,price:string)=>`products/${encodeURIComponent(product)}/variants/${encodeURIComponent(variant)}/prices/${encodeURIComponent(price)}`
 export async function readPriceEdit(product:string,variant:string,price:string,signal:AbortSignal):Promise<PriceEditContext>{
  const d=await request<PriceEditContext>(priceEditPath(product,variant,price),{signal},'/api/admin/')
+ for(const bound of [d?.effective_min_quantity,d?.effective_max_quantity])if(bound!==undefined&&bound!==null&&(typeof bound!=='string'||bound.length>1024||!/^(0|[1-9]\d*)(\.\d+)?$/.test(bound)))throw new APIError(0,'request.invalid_response')
  if(!d||d.product_id!==product||d.variant_id!==variant||d.id!==price||typeof d.effective_amount!=='string'||d.effective_amount.length>1024||!/^(0|[1-9]\d*)(\.\d+)?$/.test(d.effective_amount)||typeof d.price_set_id!=='string'||typeof d.currency_code!=='string'||!decimalText(d.amount)||!nullableDecimal(d.min_quantity)||!nullableDecimal(d.max_quantity)||!nullableText(d.price_list_id)||!Number.isSafeInteger(d.shared_variants)||d.shared_variants<1||typeof d.enabled!=='boolean'||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision))throw new APIError(0,'request.invalid_response')
  return d
 }
@@ -449,12 +450,33 @@ export async function editPriceAmount(product:string,variant:string,price:string
  if(!d||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
 }
 
-export type PriceCreateContext={product_id:string;variant_id:string;price_set_id:string|null;currencies:string[];existing_base_currencies:string[];shared_variants:number;enabled:boolean;revision:string}
-export type PriceCreateInput=PriceAmountEdit&{currency_code:string}
+export function validPriceQuantityBounds(min?:string|null,max?:string|null):boolean{
+ const valid=(v:string|null|undefined)=>!v||/^[1-9][0-9]{0,19}$/.test(v)
+ return valid(min)&&valid(max)&&(!min||!max||BigInt(min)<=BigInt(max))
+}
+export type PriceQuantityInput={operation_id:string;expected_revision:string;min_quantity:string|null;max_quantity:string|null}
+export async function editPriceQuantity(product:string,variant:string,price:string,body:PriceQuantityInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{revision:string;replayed:boolean}>(priceEditPath(product,variant,price)+'/quantity',{method:'POST',body,csrf},'/api/admin/')
+ if(!d||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}
+
+export type PriceRemoveInput={operation_id:string;expected_revision:string}
+export async function removePrice(product:string,variant:string,price:string,body:PriceRemoveInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{revision:string;replayed:boolean}>(priceEditPath(product,variant,price)+'/remove',{method:'POST',body,csrf},'/api/admin/')
+ if(!d||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}
+
+export type PriceCreateContext={price_lists?:{id:string;title:string;status:'active'|'draft';type:'sale'|'override'}[];regions?:{id:string;name:string;currency_code:string}[];existing_region_prices?:{region_id:string;currency_code:string}[];product_id:string;variant_id:string;price_set_id:string|null;currencies:string[];existing_base_currencies:string[];shared_variants:number;enabled:boolean;revision:string}
+export type PriceCreateInput=PriceAmountEdit&{price_list_id?:string;currency_code:string;region_id?:string;min_quantity?:string;max_quantity?:string}
 export async function readPriceCreate(product:string,variant:string,signal:AbortSignal):Promise<PriceCreateContext>{
  const d=await request<PriceCreateContext>(`products/${encodeURIComponent(product)}/variants/${encodeURIComponent(variant)}/price-creation`,{signal},'/api/admin/')
  const codes=(v:unknown):v is string[]=>Array.isArray(v)&&v.length<=1000&&v.every(c=>typeof c==='string'&&/^[a-z]{3}$/.test(c))&&new Set(v).size===v.length
  if(!d||d.product_id!==product||d.variant_id!==variant||!nullableText(d.price_set_id)||!codes(d.currencies)||!codes(d.existing_base_currencies)||!Number.isSafeInteger(d.shared_variants)||d.shared_variants<0||typeof d.enabled!=='boolean'||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision))throw new APIError(0,'request.invalid_response')
+ if(d.regions!==undefined&&(!Array.isArray(d.regions)||d.regions.length>1000||d.regions.some(r=>!r||typeof r.id!=='string'||!r.id||typeof r.name!=='string'||!codes([r.currency_code]))||new Set(d.regions.map(r=>r.id)).size!==d.regions.length))throw new APIError(0,'request.invalid_response')
+ if(d.price_lists!==undefined&&(!Array.isArray(d.price_lists)||d.price_lists.length>1000||d.price_lists.some(l=>!l||typeof l.id!=='string'||!l.id||typeof l.title!=='string'||!['active','draft'].includes(l.status)||!['sale','override'].includes(l.type))||new Set(d.price_lists.map(l=>l.id)).size!==d.price_lists.length))throw new APIError(0,'request.invalid_response')
+ if(d.existing_region_prices!==undefined&&(!Array.isArray(d.existing_region_prices)||d.existing_region_prices.length>10000||d.existing_region_prices.some(r=>!r||typeof r.region_id!=='string'||!r.region_id||!codes([r.currency_code]))))throw new APIError(0,'request.invalid_response')
  return d
 }
 export async function createBasePrice(product:string,variant:string,body:PriceCreateInput):Promise<void>{
@@ -587,4 +609,98 @@ export async function replaceDevice(o:string,r:string,a:string,body:ReplacementI
  const d=await request<ReplacementResult>(replacementPath(o,r,a),{method:'POST',body,csrf},'/api/admin/')
  if(!d||d.device_id!==body.device_id||![d.assignment_id,d.exchange_id,d.return_id,d.item_id].every(warehouseID)||!Number.isInteger(d.order_version)||d.order_version<1||typeof d.pending_difference!=='string'||!/^-?(0|[1-9]\d*)(\.\d+)?$/.test(d.pending_difference)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
  return d
+}
+
+export type ProductCreateInput={operation_id:string;title:string;handle:string;subtitle:string|null;description:string|null;status:ProductDetail['status'];sales_channel_ids:string[];shipping_profile_id:string;collection_id:string|null;type_id:string|null;category_ids:string[];image_urls:string[];options:{title:string;values:string[]}[]}
+export type ProductCreateChoice={id:string;name:string}
+export type ProductCreateContext={enabled:boolean;channels:ProductCreateChoice[];shipping_profiles:ProductCreateChoice[];collections:ProductCreateChoice[];types:ProductCreateChoice[];categories:ProductCreateChoice[]}
+export async function readProductCreate(signal?:AbortSignal):Promise<ProductCreateContext>{
+ const d=await request<ProductCreateContext>('products/creation',{signal},'/api/admin/')
+ if(!d||typeof d.enabled!=='boolean')throw new APIError(0,'request.invalid_response')
+ for(const key of ['channels','shipping_profiles','collections','types','categories'] as const){const rows=d[key];if(!Array.isArray(rows)||rows.length>1000||rows.some(row=>!row||!warehouseID(row.id)||typeof row.name!=='string')||new Set(rows.map(row=>row.id)).size!==rows.length)throw new APIError(0,'request.invalid_response')}
+ return d
+}
+export async function createProduct(body:ProductCreateInput):Promise<string>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{id:string;revision:string;replayed:boolean}>('products',{method:'POST',csrf,body},'/api/admin/')
+ if(!d||!/^prod_[0-9a-f-]{36}$/.test(d.id)||!/^[0-9a-f]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+ return d.id
+}
+
+export type ProductImageContext={product_id:string;enabled:boolean;revision:string;thumbnail:string|null;images:(ProductImage&{variant_uses:number})[]}
+export type ProductImageInput={operation_id:string;expected_revision:string;images:{id:string|null;url:string}[];thumbnail_index:number|null;upload:{filename:string;mime_type:string;content:string}|null}
+export async function readProductImages(id:string,signal?:AbortSignal):Promise<ProductImageContext>{
+ const d=await request<ProductImageContext>(`products/${encodeURIComponent(id)}/images`,{signal},'/api/admin/')
+ if(!d||d.product_id!==id||typeof d.enabled!=='boolean'||!(typeof d.revision==='string'&&/^[a-f0-9]{64}$/.test(d.revision))||d.thumbnail!==null&&typeof d.thumbnail!=='string'||!Array.isArray(d.images)||d.images.length>1000||d.images.some(i=>!i||!warehouseID(i.id)||typeof i.url!=='string'||!Number.isInteger(i.rank)||!Number.isSafeInteger(i.variant_uses)||i.variant_uses<0)||new Set(d.images.map(i=>i.id)).size!==d.images.length)throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function saveProductImages(id:string,body:ProductImageInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{revision:string;replayed:boolean}>(`products/${encodeURIComponent(id)}/images`,{method:'POST',csrf,body},'/api/admin/')
+ if(!d||!(typeof d.revision==='string'&&/^[a-f0-9]{64}$/.test(d.revision))||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}
+
+export type VariantImageContext={product_id:string;variant_id:string;enabled:boolean;revision:string;thumbnail:string|null;images:ProductImage[];selected_ids:string[]}
+export type VariantImageInput={operation_id:string;expected_revision:string;image_ids:string[];thumbnail_image_id:string|null;keep_thumbnail:boolean}
+export async function readVariantImages(p:string,v:string,signal?:AbortSignal):Promise<VariantImageContext>{
+ const d=await request<VariantImageContext>(`products/${encodeURIComponent(p)}/variants/${encodeURIComponent(v)}/images`,{signal},'/api/admin/')
+ if(!d||d.product_id!==p||d.variant_id!==v||typeof d.enabled!=='boolean'||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||d.thumbnail!==null&&typeof d.thumbnail!=='string'||!Array.isArray(d.images)||d.images.length>1000||d.images.some(i=>!i||!warehouseID(i.id)||typeof i.url!=='string'||!Number.isInteger(i.rank))||new Set(d.images.map(i=>i.id)).size!==d.images.length||!Array.isArray(d.selected_ids)||d.selected_ids.some(id=>!d.images.some(i=>i.id===id))||new Set(d.selected_ids).size!==d.selected_ids.length)throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function saveVariantImages(p:string,v:string,body:VariantImageInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{revision:string;replayed:boolean}>(`products/${encodeURIComponent(p)}/variants/${encodeURIComponent(v)}/images`,{method:'POST',csrf,body},'/api/admin/')
+ if(!d||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}
+
+export type OptionSelection={id:string|null;title:string;values:{id:string|null;value:string}[]}
+export type ManagedOption={id:string;title:string;is_exclusive:boolean;selected:boolean;values:{id:string;value:string;rank:number|null;selected:boolean;used:boolean}[]}
+export type ProductOptionsContext={product_id:string;enabled:boolean;revision:string;options:ManagedOption[]}
+export type ProductOptionsInput={operation_id:string;expected_revision:string;options:OptionSelection[]}
+export async function readProductOptions(id:string,signal?:AbortSignal):Promise<ProductOptionsContext>{
+ const d=await request<ProductOptionsContext>(`products/${encodeURIComponent(id)}/options`,{signal},'/api/admin/')
+ if(!d||d.product_id!==id||typeof d.enabled!=='boolean'||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||!Array.isArray(d.options)||d.options.length>1000||d.options.some(o=>!o||!warehouseID(o.id)||typeof o.title!=='string'||typeof o.is_exclusive!=='boolean'||typeof o.selected!=='boolean'||!Array.isArray(o.values)||o.values.length>10000||o.values.some(v=>!v||!warehouseID(v.id)||typeof v.value!=='string'||v.rank!==null&&!Number.isSafeInteger(v.rank)||typeof v.selected!=='boolean'||typeof v.used!=='boolean')||new Set(o.values.map(v=>v.id)).size!==o.values.length)||new Set(d.options.map(o=>o.id)).size!==d.options.length)throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function saveProductOptions(id:string,body:ProductOptionsInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{revision:string;replayed:boolean}>(`products/${encodeURIComponent(id)}/options`,{method:'POST',csrf,body},'/api/admin/')
+ if(!d||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}
+
+export type VariantFields={title:string;sku:string|null;barcode:string|null;ean:string|null;upc:string|null;material:string|null;hs_code:string|null;mid_code:string|null;origin_country:string|null;weight:number|null;length:number|null;height:number|null;width:number|null;manage_inventory:boolean;allow_backorder:boolean}
+export type VariantEditContext={product_id:string;variant_id:string;enabled:boolean;revision:string;variant:VariantFields;options:ProductOption[];selected_ids:string[];inventory_links:number}
+export type VariantEditInput=VariantFields&{operation_id:string;expected_revision:string;option_value_ids:string[]}
+export async function readVariantEdit(p:string,v:string,signal?:AbortSignal):Promise<VariantEditContext>{
+ const d=await request<VariantEditContext>(`products/${encodeURIComponent(p)}/variants/${encodeURIComponent(v)}/edit`,{signal},'/api/admin/')
+ const value=d?.variant
+ if(!d||d.product_id!==p||d.variant_id!==v||typeof d.enabled!=='boolean'||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||!value||typeof value.title!=='string'||typeof value.manage_inventory!=='boolean'||typeof value.allow_backorder!=='boolean'||(['sku','barcode','ean','upc','material','hs_code','mid_code','origin_country'] as const).some(k=>value[k]!==null&&typeof value[k]!=='string')||(['weight','length','height','width'] as const).some(k=>value[k]!==null&&(typeof value[k]!=='number'||!Number.isFinite(value[k])))||!Array.isArray(d.options)||d.options.length>1000||d.options.some(o=>!o||!warehouseID(o.id)||typeof o.title!=='string'||!Array.isArray(o.values)||o.values.some(x=>!x||!warehouseID(x.id)||typeof x.value!=='string'))||!Array.isArray(d.selected_ids)||d.selected_ids.some(x=>!warehouseID(x))||new Set(d.selected_ids).size!==d.selected_ids.length||!Number.isSafeInteger(d.inventory_links)||d.inventory_links<0||d.inventory_links>1000)throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function saveVariantEdit(p:string,v:string,body:VariantEditInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{revision:string;replayed:boolean}>(`products/${encodeURIComponent(p)}/variants/${encodeURIComponent(v)}/edit`,{method:'POST',csrf,body},'/api/admin/')
+ if(!d||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}
+
+export type InventoryRequirement={inventory_item_id:string;required_quantity:string}
+export type InventoryLinkChoice={id:string;sku:string|null;title:string|null;unit_of_measure:string|null;device_bound:boolean}
+export type InventoryLinksContext={product_id:string;variant_id:string;enabled:boolean;revision:string;manage_inventory:boolean;device_inventory_item_id:string|null;items:(InventoryRequirement&{link_id:string;sku:string|null;title:string|null;unit_of_measure:string|null;available:boolean;updated_at:string})[]}
+export type InventoryLinksInput={operation_id:string;expected_revision:string;items:InventoryRequirement[]}
+const inventoryLinksPath=(p:string,v:string)=>`products/${encodeURIComponent(p)}/variants/${encodeURIComponent(v)}/inventory-items`
+const inventoryLabelFields=(i:{sku:unknown;title:unknown;unit_of_measure:unknown})=>[i.sku,i.title,i.unit_of_measure].every(x=>x===null||typeof x==='string')
+export async function readInventoryLinks(p:string,v:string,signal?:AbortSignal):Promise<InventoryLinksContext>{
+ const d=await request<InventoryLinksContext>(inventoryLinksPath(p,v),{signal},'/api/admin/')
+ if(!d||d.product_id!==p||d.variant_id!==v||typeof d.enabled!=='boolean'||typeof d.manage_inventory!=='boolean'||!(/^[a-f0-9]{64}$/).test(d.revision)||d.device_inventory_item_id!==null&&!warehouseID(d.device_inventory_item_id)||!Array.isArray(d.items)||d.items.length>1000||d.items.some(i=>!i||!warehouseID(i.inventory_item_id)||!warehouseID(i.link_id)||typeof i.required_quantity!=='string'||!/^\d{1,20}(\.\d{1,18})?$/.test(i.required_quantity)||!inventoryLabelFields(i)||typeof i.available!=='boolean'||typeof i.updated_at!=='string')||new Set(d.items.map(i=>i.inventory_item_id)).size!==d.items.length)throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function inventoryLinkChoices(p:string,v:string,q:string,offset:number,signal?:AbortSignal):Promise<{items:InventoryLinkChoice[];offset:number;limit:number;has_more:boolean}>{
+ const d=await request<{items:InventoryLinkChoice[];offset:number;limit:number;has_more:boolean}>(inventoryLinksPath(p,v)+'/choices?'+new URLSearchParams({q,offset:String(offset)}),{signal},'/api/admin/')
+ if(!d||d.offset!==offset||d.limit!==50||typeof d.has_more!=='boolean'||!Array.isArray(d.items)||d.items.length>50||d.items.some(i=>!i||!warehouseID(i.id)||!inventoryLabelFields(i)||typeof i.device_bound!=='boolean')||new Set(d.items.map(i=>i.id)).size!==d.items.length)throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function saveInventoryLinks(p:string,v:string,body:InventoryLinksInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{revision:string;replayed:boolean}>(inventoryLinksPath(p,v),{method:'POST',csrf,body},'/api/admin/')
+ if(!d||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
 }

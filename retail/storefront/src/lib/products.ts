@@ -1,3 +1,4 @@
+import {publicImageURL} from './public-image-url.ts'
 import {publicJSON,PUBLIC_NOT_FOUND} from './gin-public.ts'
 import {amountParts,compareAmounts,differenceAmounts,formatAmount,percentageDecrease} from './money.ts'
 import {projectProductDisplay,projectVariantDisplay,type ProductDisplay,type VariantDisplay} from './product-display.ts'
@@ -24,7 +25,7 @@ export type Product = {
  thumbnail: string | null; collection_id: string | null; options: Option[]; images: Image[]; variants: Variant[]
  display: ProductDisplay
 }
-export type ProductQuery = {limit?: number; offset?: number; q?: string; handle?: string; category_id?: string; collection_id?: string; region_id?: string; quantity?: string; order?: '-created_at'; option_value_id?: string[]}
+export type ProductQuery = {limit?: number; offset?: number; q?: string; handle?: string; category_id?: string; collection_id?: string; region_id?: string; quantity?: string; order?: '-created_at'; option_value_id?: string[]; related_to?: string}
 export type PriceContext = Pick<ProductQuery,'region_id' | 'quantity'>
 export type ProductPage = {products: Product[]; count: number; limit: number; offset: number; capabilities: {pricing: boolean; availability: true; checkout: false}}
 const unavailable = () => new Error('Store products unavailable')
@@ -39,7 +40,7 @@ function list(v: unknown, max: number): unknown[] { if (!Array.isArray(v) || v.l
 function unique(values: string[]): void { if (new Set(values).size !== values.length) throw unavailable() }
 function quantity(v: unknown): string | null { if (v === null) return null; const s = text(v); if (s.length > 128 || !/^(0|[1-9][0-9]*)$/.test(s)) throw unavailable(); return s }
 function amount(v: unknown): string { const s = text(v); amountParts(s); return s }
-function image(input: unknown): Image { const v = object(input); return {id:id(v.id),url:text(v.url),rank:integer(v.rank)} }
+function image(input: unknown): Image { const v = object(input); return {id:id(v.id),url:publicImageURL(text(v.url)),rank:integer(v.rank)} }
 function quote(input: unknown): Quote | null {
  if (input === null) return null
  const v = object(input), kind = object(v.calculated_price).price_list_type
@@ -85,12 +86,12 @@ function product(input: unknown, pricing: boolean, requested: bigint, consume: (
   for (const im of variantImages) if (!images.some(parent=>parent.id === im.id && parent.url === im.url && parent.rank === im.rank)) throw unavailable()
   const price = quote(v.calculated_price)
   if (price !== null && (!pricing || !complete)) throw unavailable()
-  const out = {id:id(v.id),title:text(v.title),sku:nullableText(v.sku),thumbnail:nullableText(v.thumbnail),variant_rank:rank(v.variant_rank),options:choices,images:variantImages,configuration_complete:complete,calculated_price:price,manage_inventory:bool(v.manage_inventory),allow_backorder:bool(v.allow_backorder),inventory_quantity:quantity(v.inventory_quantity)}
+  const out = {id:id(v.id),title:text(v.title),sku:nullableText(v.sku),thumbnail:v.thumbnail === null ? null : publicImageURL(text(v.thumbnail)),variant_rank:rank(v.variant_rank),options:choices,images:variantImages,configuration_complete:complete,calculated_price:price,manage_inventory:bool(v.manage_inventory),allow_backorder:bool(v.allow_backorder),inventory_quantity:quantity(v.inventory_quantity)}
   consume(choices.length + variantImages.length)
   return {...out,display:projectVariantDisplay(v.display),availability:availability(v.availability,out,requested)}
  })
  unique(variants.map(v=>v.id)); consume(options.length + images.length + variants.length)
- return {id:id(p.id),title:text(p.title),handle:text(p.handle),subtitle:nullableText(p.subtitle),description:nullableText(p.description),thumbnail:nullableText(p.thumbnail),collection_id:p.collection_id === null ? null : id(p.collection_id),options,images,variants,display:projectProductDisplay(p.display)}
+ return {id:id(p.id),title:text(p.title),handle:text(p.handle),subtitle:nullableText(p.subtitle),description:nullableText(p.description),thumbnail:p.thumbnail === null ? null : publicImageURL(text(p.thumbnail)),collection_id:p.collection_id === null ? null : id(p.collection_id),options,images,variants,display:projectProductDisplay(p.display)}
 }
 function capabilities(input: unknown, pricing: boolean): ProductPage['capabilities'] {
  const v = object(input)
@@ -99,7 +100,7 @@ function capabilities(input: unknown, pricing: boolean): ProductPage['capabiliti
 }
 function query(input: ProductQuery, detail = false): {params: URLSearchParams; limit: number; offset: number; pricing: boolean; requested: bigint} {
  const q = object(input), params = new URLSearchParams()
- const allowed = detail ? ['region_id','quantity'] : ['limit','offset','q','handle','category_id','collection_id','region_id','quantity','order','option_value_id']
+ const allowed = detail ? ['region_id','quantity'] : ['limit','offset','q','handle','category_id','collection_id','region_id','quantity','order','option_value_id','related_to']
  for (const [key,value] of Object.entries(q)) {
   if (!allowed.includes(key)) throw unavailable()
   if (value === undefined) continue

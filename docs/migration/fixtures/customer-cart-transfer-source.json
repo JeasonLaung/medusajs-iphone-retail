@@ -1,0 +1,96 @@
+{
+  "format_version": 1,
+  "scope": "Original pure callbacks and checked workflow call sites only; no SQL/provider/application execution.",
+  "sources": {
+    "transfer-cart-customer": {
+      "sha256": "8742e1f9507fa53e422fdb7d8049112bcea87b378948c0c49252b0ca16d05bef",
+      "installed_copies": 2
+    },
+    "refresh-cart-items": {
+      "sha256": "3e2869fcc796ee10ff7ba0cdd8567f6ef5d41d22818d23777e1e1b604cbc4687",
+      "installed_copies": 2
+    },
+    "refresh-payment-collection": {
+      "sha256": "6e154a7b4d628a2fff7df1e8df54fe695bdfa40af6fdabe4fc8cf20dc622e064",
+      "installed_copies": 2
+    }
+  },
+  "transfer_cases": [
+    {
+      "name": "anonymous",
+      "transfer": true,
+      "update": [
+        {
+          "id": "cart-a",
+          "customer_id": "new-account",
+          "email": "new-account@example.invalid"
+        }
+      ]
+    },
+    {
+      "name": "same-account-edited-checkout-email",
+      "transfer": false,
+      "update": []
+    },
+    {
+      "name": "different-account",
+      "transfer": true,
+      "update": [
+        {
+          "id": "cart-a",
+          "customer_id": "new-account",
+          "email": "new-account@example.invalid"
+        }
+      ]
+    },
+    {
+      "name": "anonymous-with-payment-collection",
+      "transfer": true,
+      "update": [
+        {
+          "id": "cart-a",
+          "customer_id": "new-account",
+          "email": "new-account@example.invalid"
+        }
+      ]
+    },
+    {
+      "name": "same-account-with-payment-collection",
+      "transfer": false,
+      "update": []
+    }
+  ],
+  "payment_cases": [
+    {
+      "name": "same-amount-and-currency-keeps-session",
+      "amount": "158.75",
+      "collection_amount": "158.750",
+      "currency": "eur",
+      "invalidate_sessions": false
+    },
+    {
+      "name": "new-account-discount-invalidates-session",
+      "amount": "148.75",
+      "collection_amount": "158.75",
+      "currency": "eur",
+      "invalidate_sessions": true
+    },
+    {
+      "name": "currency-change-invalidates-session",
+      "amount": "158.75",
+      "collection_amount": "158.75",
+      "currency": "usd",
+      "invalidate_sessions": true
+    },
+    {
+      "name": "sub-cent-change-invalidates-session",
+      "amount": "158.750000000000000000001",
+      "collection_amount": "158.75",
+      "currency": "eur",
+      "invalidate_sessions": true
+    }
+  ],
+  "native_gap": "Current native transfer rejects any attached collection and all frozen checkout attempts. Original refresh only invalidates sessions when exact amount or currency changes; integrating native durable provider coordination remains required.",
+  "workflow_runtime_verified": false,
+  "native_payment_transfer_complete": false
+}

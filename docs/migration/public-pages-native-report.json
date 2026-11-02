@@ -1,0 +1,264 @@
+{
+  "checked_utc": "2026-11-01T09:32:26.050275+00:00",
+  "runtime": "Actual localhost Next8000 and Astro9300 with Gin9100 and persistent local99 MySQL",
+  "change": "Restore source public reviews route using existing Information component, and align public-page/article titles; no CSS, translation, provider gate or database changes",
+  "evidence": "logs/gin-migration/public-pages-1793525413219/report.json",
+  "evidence_sha256": "de37b4185c282c48179ac7b0baab9e38b6fd8b0c76df6e243852db82934af003",
+  "pages": 56,
+  "comparison_cases": 28,
+  "paths": [
+    "about",
+    "blog",
+    "blog/before-you-order",
+    "blog/choose-your-storage",
+    "blog/compare-iphone-configurations",
+    "help",
+    "reviews"
+  ],
+  "languages": [
+    "en",
+    "zh"
+  ],
+  "widths": [
+    390,
+    1440
+  ],
+  "text_links_titles_descriptions_equal": true,
+  "astro_canonical_paths_verified": true,
+  "browser_errors": [],
+  "horizontal_overflow": false,
+  "navigation": {
+    "source": [
+      {
+        "lang": "en",
+        "width": 390,
+        "reviews_from_header": true,
+        "mobile_keyboard": true,
+        "return_to_store": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "reviews_from_header": true,
+        "mobile_keyboard": false,
+        "return_to_store": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "reviews_from_header": true,
+        "mobile_keyboard": true,
+        "return_to_store": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "reviews_from_header": true,
+        "mobile_keyboard": false,
+        "return_to_store": true
+      }
+    ],
+    "astro": [
+      {
+        "lang": "en",
+        "width": 390,
+        "reviews_from_header": true,
+        "mobile_keyboard": true,
+        "return_to_store": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "reviews_from_header": true,
+        "mobile_keyboard": false,
+        "return_to_store": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "reviews_from_header": true,
+        "mobile_keyboard": true,
+        "return_to_store": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "reviews_from_header": true,
+        "mobile_keyboard": false,
+        "return_to_store": true
+      }
+    ]
+  },
+  "initial_html_and_404_boundaries": [
+    {
+      "path": "/dk-en/reviews",
+      "status": 200
+    },
+    {
+      "path": "/dk-zh/reviews",
+      "status": 200
+    },
+    {
+      "path": "/zz-en/reviews",
+      "status": 404
+    },
+    {
+      "path": "/dk-fr/reviews",
+      "status": 404
+    },
+    {
+      "path": "/dk-en/unknown-public-page",
+      "status": 404
+    },
+    {
+      "path": "/dk-en/blog/missing-article",
+      "status": 404
+    }
+  ],
+  "unchanged_information_css_matches_source": true,
+  "raw_heading_geometry_differences": [
+    {
+      "lang": "zh",
+      "width": 390,
+      "path": "about",
+      "text_equal": true,
+      "links_equal": true,
+      "title_equal": true,
+      "heading_geometry_equal": false,
+      "heading_geometry_same_document_locale": true,
+      "description_equal": true
+    },
+    {
+      "lang": "zh",
+      "width": 390,
+      "path": "blog",
+      "text_equal": true,
+      "links_equal": true,
+      "title_equal": true,
+      "heading_geometry_equal": false,
+      "heading_geometry_same_document_locale": true,
+      "description_equal": true
+    },
+    {
+      "lang": "zh",
+      "width": 390,
+      "path": "blog/before-you-order",
+      "text_equal": true,
+      "links_equal": true,
+      "title_equal": true,
+      "heading_geometry_equal": false,
+      "heading_geometry_same_document_locale": true,
+      "description_equal": true
+    },
+    {
+      "lang": "zh",
+      "width": 1440,
+      "path": "blog",
+      "text_equal": true,
+      "links_equal": true,
+      "title_equal": true,
+      "heading_geometry_equal": false,
+      "heading_geometry_same_document_locale": true,
+      "description_equal": true
+    }
+  ],
+  "locale_diagnostic": {
+    "source_document_lang": "en even on Chinese pages",
+    "astro_document_lang": "zh-CN on Chinese pages",
+    "actual_source_chinese_fallback": ".PingFangUIDisplaySC-Semibold",
+    "actual_astro_chinese_fallback": "PingFangSC-Semibold",
+    "same_document_locale_geometry_equal_all_28": true,
+    "diagnostic_dom_locale_restored": true,
+    "production_css_or_language_changed": false,
+    "external_https_assets_blocked_in_both_browsers": true,
+    "pixel_complete_acceptance": false
+  },
+  "checks": {
+    "astro_check": "0 errors, 0 warnings, 7 existing hints",
+    "node_syntax": true,
+    "diff_whitespace": true,
+    "production_build_run_in_live_checkout": false
+  },
+  "services": {
+    "checked_utc": "2026-11-01T09:28:51.855613+00:00",
+    "routes": [
+      {
+        "port": 9001,
+        "path": "/health",
+        "status": 200
+      },
+      {
+        "port": 9001,
+        "path": "/app",
+        "status": 200
+      },
+      {
+        "port": 8000,
+        "path": "/dk-en/store",
+        "status": 200
+      },
+      {
+        "port": 9100,
+        "path": "/health",
+        "status": 200
+      },
+      {
+        "port": 9200,
+        "path": "/products",
+        "status": 200
+      },
+      {
+        "port": 9300,
+        "path": "/dk-en/reviews",
+        "status": 200
+      },
+      {
+        "port": 9300,
+        "path": "/dk-zh/reviews",
+        "status": 200
+      },
+      {
+        "port": 9300,
+        "path": "/dk-en/store",
+        "status": 200
+      }
+    ],
+    "logs": [
+      {
+        "file": "log/gin-preview-mysql/api.log",
+        "panic_fatal": 0,
+        "unexpected_5xx": 0,
+        "known_disabled_gate_503": 191
+      },
+      {
+        "file": "log/gin-preview-mysql/mysql.log",
+        "panic_fatal": 0,
+        "unexpected_5xx": 0,
+        "known_disabled_gate_503": 0
+      },
+      {
+        "file": "log/202611011104.log",
+        "panic_fatal": 0,
+        "unexpected_5xx": 0,
+        "known_disabled_gate_503": 0
+      }
+    ]
+  },
+  "source_sha256": {
+    "retail/storefront/src/components/information/index.tsx": "246415abf8a3c030f1bc4220fb6184414a7d9a0bdb864484b6f35c7af066320c",
+    "retail/storefront/src/pages/[countryCode]/[page].astro": "5780259404d87e32f00b5e0f42fee40c8573b97516159d1eed391ff0df496cda",
+    "retail/storefront/src/pages/[countryCode]/blog/[slug].astro": "850a49f8a32cdb33d2eaefb2262624183add53cb23b661977d5dc676823777fd",
+    "retail/storefront/src/components/information/styles.module.css": "e80c78f65c7cdd66c614150bb7182775eefd91088968287997b71cb98cdbbe5b",
+    "retail/storefront/src/components/layout/i18n.ts": "32678cf8322cf1ceed0103942750f2c25815afcd4d8bab65dad0216b600d339a",
+    "retail/storefront/src/layouts/Storefront.astro": "6a8f73b24a305a4935076f76eddd37aad7545bf58e79c4a8ff0e1e33aca6cabe",
+    "retail/admin/tests/public-pages.native.mjs": "d9297c9d2c8d6d8158fca17035cdf68872ef685d5ab078b210a50eedbd8e5a4d"
+  },
+  "still_missing_public_routes": [
+    "/[countryCode]/ui",
+    "/[countryCode]/shipping-demo"
+  ],
+  "business_writes": false,
+  "real_provider_called": false,
+  "full_storefront_accepted": false,
+  "goal_complete": false
+}

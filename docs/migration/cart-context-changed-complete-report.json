@@ -1,0 +1,150 @@
+{
+  "checked_utc": "2026-11-01T16:14:38.674425+00:00",
+  "scope": "Changed-total context final save, retirement and same original collection reuse through subsequent paid order",
+  "goal_complete": false,
+  "source_migrations": 103,
+  "new_schema_this_increment": false,
+  "main_schema": 102,
+  "main_api_updated": false,
+  "real_provider_called": false,
+  "private_command": "CompleteContextPayment",
+  "sql_checks": {
+    "real_mysql": true,
+    "confirmed_deletion_required": true,
+    "pending_all_tables_unchanged": true,
+    "late_receipt_all_tables_rollback": true,
+    "historical_replay_after_draft_edits": true,
+    "changed_receipt_refused": true,
+    "concurrent_saves": 6,
+    "one_save": true,
+    "original_checkout_immutable": true,
+    "old_checkout_retired": true,
+    "same_collection_reused": true,
+    "contact_shipping_context_after_retirement": true,
+    "new_amount": "160",
+    "new_checkout_once": true,
+    "pending_and_paid_observation": true,
+    "unique_new_order_capture_reservations_outbox": true,
+    "completed_version": 11,
+    "artificial_provider_only": true,
+    "http_connected": false
+  },
+  "full_sql_owner": "14d827c8dcb6",
+  "full_sql_suites": 23,
+  "full_sql_source_files": 1848,
+  "browser_regression_owner": "d7b0662d5432",
+  "browser_regression_scope": "Existing pre-payment region, delivery, promotion and address flow; new payment context command is not HTTP/browser connected",
+  "browser_cases": 4,
+  "closed_gate_cases": 4,
+  "browser_errors": 0,
+  "browser_context_receipts": 12,
+  "browser_source_files": {
+    "backend": 935,
+    "admin": 144,
+    "storefront": 645
+  },
+  "current_source_and_frozen_binary_and_logs_verified": true,
+  "owned_resources_cleaned": true,
+  "go_all_packages": "passed: session84912 exit0",
+  "go_vet_all": "passed: session36695 exit0",
+  "main_verification": {
+    "checked_utc": "2026-11-01T16:11:13.296392+00:00",
+    "fresh_backup_owner": "9d72f058ad87",
+    "service": {
+      "running": true,
+      "pid": 42442,
+      "health": 200,
+      "schema_migrations": 102
+    },
+    "persistent_tables": 299,
+    "business_tables_equal_to_rehearsal": 297,
+    "migration_journal_execution_times_excluded": true,
+    "migration_checksums_match": true,
+    "original_tables_unchanged": 268,
+    "live_counts_match_dump": true,
+    "foreign_keys_checked": 215,
+    "orphan_rows": 0,
+    "new_gates_default_closed": true,
+    "retained_shared86_all_table_fingerprints_match": true,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "post_cutover_data_verified": true,
+    "goal_complete": false
+  },
+  "health": {
+    "checked_utc": "2026-11-01T16:12:54.400678+00:00",
+    "checks": [
+      {
+        "url": "http://127.0.0.1:9001/health",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9001/app",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:8000/dk-en/store",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9100/health",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9200/",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-en/store",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-en/about",
+        "status": 200
+      }
+    ]
+  },
+  "recent_logs": [
+    {
+      "path": "log/gin-preview-mysql/api.log",
+      "lines_checked": 100,
+      "fatal_or_panic": []
+    },
+    {
+      "path": "log/202611011104.log",
+      "lines_checked": 100,
+      "fatal_or_panic": []
+    }
+  ],
+  "earlier_failures_preserved": [
+    {
+      "owner": "04ce0bf02ddc",
+      "reason": "Existing dangling collection rejection returned schema rather than conflict; reuse now requires historical checkout and zero current sessions"
+    },
+    {
+      "owner": "8a26bb0c39d6",
+      "reason": "New test variable redeclaration; compile failed before resources start; corrected and rerun from fresh snapshot"
+    }
+  ],
+  "remaining": [
+    "Currency-change and exact fractional target final-save acceptance",
+    "Ordinary item/promotion/customer transfer amount changes after checkout retirement",
+    "Already paid/authorized replacement recovery before activation",
+    "Private HTTP/Astro payment context and compensation retry/recovery flow",
+    "Main103 rehearsal and controlled rollout",
+    "Full C01-C11 acceptance"
+  ],
+  "evidence_sha256": {
+    "logs/gin-migration/native-sql-local-14d827c8dcb6/manifest.json": "fb6df41cd49707159c7d92084d31f4061b79c69761f73c105b433db1f072f6fe",
+    "logs/gin-migration/native-sql-local-14d827c8dcb6/result.json": "b6ab2412c42ee367082428c10188df29e5cae0c63ce373f8174fa486ebdde375",
+    "logs/gin-migration/native-sql-local-14d827c8dcb6/cleanup.json": "fab32adfe0c95381e147293d7b6c988b757ed4f5d738ea780c4d03ec313115b6",
+    "logs/gin-migration/native-sql-local-14d827c8dcb6/mysql-cleanup.json": "cb57fabbaf097925a808cccc0c0fa638438ec798f04aebd9c23838141ef5a242",
+    "logs/gin-migration/native-sql-local-14d827c8dcb6/CartRuntime.log": "7adb73c6c48e48c226dd38978b9a08379250cb8cec18db6f41b9c1fdcb271edc",
+    "logs/gin-migration/cart-context-native-d7b0662d5432/manifest.json": "0518d2bfeb4b3e570f55858e9eedfd747256e86fc9c0770917fa0b5c69a4143d",
+    "logs/gin-migration/cart-context-native-d7b0662d5432/result.json": "b6ee38dea198e3d2da536319977b7cbd7254998f334153e7999fd801f045d9e1",
+    "logs/gin-migration/cart-context-native-d7b0662d5432/cleanup.json": "e8ea0ceb64dadc960b7bc8c0ea5360066459109f9d2a9feeb71bbb2f04073ac3",
+    "logs/gin-migration/context-changed-complete-verification/main-database.json": "ff9c398211b9c10be177ad32b173180a27e0a96b471ec37a6f36ca1360c46a40",
+    "logs/gin-migration/context-changed-complete-verification/health.json": "3be29a80ab68ae6b950e844b6bc5f83abfd2f18170ae6e0871985b37da1b1627",
+    "logs/gin-migration/context-changed-complete-verification/recent-logs.json": "0d4f47437bf10611d3c71c5886602320c5c4141134ab5a4f08adfa3a566081f4"
+  }
+}

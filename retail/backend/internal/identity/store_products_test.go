@@ -25,7 +25,9 @@ func checkStoreProducts(t *testing.T, db *gorm.DB, router http.Handler) {
 	exec(`UPDATE catalog_products SET subtitle='Subtitle',description='Description',metadata='{"private":"product-secret"}' WHERE id='public-a'`)
 	exec(`INSERT INTO catalog_variants(id,product_id,title,sku,allow_backorder,manage_inventory,variant_rank,metadata,created_at,updated_at) VALUES('public-v','public-a','128 GB','000123',FALSE,TRUE,1,'{"private":"variant-secret"}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('public-v-incomplete','public-a','Invalid',NULL,FALSE,TRUE,2,NULL,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('public-v-deleted','public-a','Deleted',NULL,FALSE,TRUE,0,NULL,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 	exec(`UPDATE catalog_variants SET deleted_at=UTC_TIMESTAMP(6) WHERE id='public-v-deleted'`)
-	exec(`INSERT INTO catalog_options(id,title,is_exclusive,created_at,updated_at) VALUES('public-storage','Storage',FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
+	// This independent public-product fixture owns its option; the shared
+	// Storage definition from seedReviewedCatalogFixture remains unchanged.
+	exec(`INSERT INTO catalog_options(id,title,is_exclusive,created_at,updated_at) VALUES('public-storage','Storage',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 	exec(`INSERT INTO catalog_option_values(id,value,option_id,created_at,updated_at) VALUES('public-128','128 GB','public-storage',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('private-256','256 GB','public-storage',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 	exec(`INSERT INTO catalog_product_options(id,product_id,product_option_id,created_at,updated_at) VALUES('public-membership','public-a','public-storage',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)
 	exec(`INSERT INTO catalog_product_option_values(id,product_product_option_id,product_option_value_id,created_at,updated_at) VALUES('public-value','public-membership','public-128',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`)

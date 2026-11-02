@@ -1,0 +1,110 @@
+{
+  "exit_code": 0,
+  "migrations": 99,
+  "native_transactions_passed": true,
+  "source_files": 879,
+  "frozen_source_verified": true,
+  "binary_sha256": "4ca6ba4a7efdce5da57c8e2b5422b41cf47931f1c44f8dc75c281073cbff8bbb",
+  "test_log_sha256": "4177a640a3c2cdeda3999b46fee8733cfbe193611ee2c2dc4fe083671bb80791",
+  "owned_database_absent": true,
+  "redis_used": false,
+  "main_mysql_unchanged": true,
+  "real_provider_called": false,
+  "native_browser_verified": false,
+  "browser": null,
+  "browser_log_sha256": null,
+  "admin_source_files": 0,
+  "astro_joint_verified": false,
+  "storefront_source_files": 0,
+  "original23_regression": false,
+  "goal_complete": false,
+  "generated_at_utc": "2026-11-01T06:06:25.056631+00:00",
+  "snapshot": "logs/gin-migration/option-definitions-native-f917aa581387",
+  "manifest_sha256": "f4f65755e8ac942360d6a31a97a22cd8e08f4d0b4a7d137050097db5607cee9d",
+  "workspace_and_snapshot_sources_verified": 879,
+  "native_batch": {
+    "mixed_create_update_delete": true,
+    "default_closed": true,
+    "late_full_rollback": true,
+    "concurrent_attempts": 6,
+    "one_receipt": true,
+    "same_condition_replacement": true,
+    "bounds_swap": true,
+    "exact_raw_and_updated_ids": true,
+    "deleted_rule_retained": true,
+    "list_settings_preserved": true,
+    "shared_sku_boundary_quotes": true,
+    "final_duplicate_rollback": true,
+    "historical_duplicate_amount_edit": true,
+    "stale_changed_membership_revoked_deleted_denied": true
+  },
+  "cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true,
+    "redis_used": false,
+    "owned_api_terminal": true,
+    "redis_keys_deleted": 0,
+    "owned_astro_terminal": true,
+    "owned_browser_terminal": true,
+    "redis_cleanup_error": null
+  },
+  "services": {
+    "at_utc": "2026-11-01T06:05:42.036235+00:00",
+    "urls": {
+      "http://127.0.0.1:9001/health": 200,
+      "http://127.0.0.1:9001/app": 200,
+      "http://127.0.0.1:8000/dk-en/store": 200,
+      "http://127.0.0.1:9100/health": 200,
+      "http://127.0.0.1:9200/products": 200,
+      "http://127.0.0.1:9300/dk-en/store": 200,
+      "http://127.0.0.1:9300/dk-en/products/swappie-iphone-14": 200
+    },
+    "main_mysql_migrations": 86,
+    "main_price_gate_enabled": false
+  },
+  "recent_service_logs": [
+    {
+      "path": "log/gin-local-api-current.log",
+      "recent_lines": 150,
+      "panic_fatal_bind_errors": 0
+    },
+    {
+      "path": "log/gin-local-admin.log",
+      "recent_lines": 15,
+      "panic_fatal_bind_errors": 0
+    },
+    {
+      "path": "log/gin-local-storefront.log",
+      "recent_lines": 0,
+      "panic_fatal_bind_errors": 0
+    }
+  ],
+  "validation": {
+    "go": {
+      "sha256": "2aa93083659bb77e93bc1fdec220b166c029d7e5ebdb6aa5ee15eb1abc7f0e10",
+      "full_packages": true
+    },
+    "vet": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "full_packages": true
+    }
+  },
+  "source_reference_sha256": {
+    "medusa-store/apps/backend/node_modules/@medusajs/dashboard/src/routes/price-lists/common/utils.ts": "4ec01bb4cfe8a074c93571ad7c311c6a61e2a85be0ebb07ce50d9b6b4621a51b",
+    "medusa-store/apps/backend/node_modules/@medusajs/dashboard/src/routes/price-lists/price-list-prices-edit/components/price-list-prices-edit-form/price-list-prices-edit-form.tsx": "b1f24f28786081fb13d8a3b9c57edd156b7cccfa84c3ec4f815115441df9bfc8"
+  },
+  "evidence_sha256": {
+    "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cleanup.json": "d351492bae58b4769e3a2b454a30c8733adafd22afa09d7f3b17db7829975849",
+    "native-test.log": "4177a640a3c2cdeda3999b46fee8733cfbe193611ee2c2dc4fe083671bb80791"
+  },
+  "limits": [
+    "Internal command only; no new HTTP route or Admin editor yet. No batch-browser or Astro joint claim.",
+    "Original23 SQL regression and historical import not rerun for this freeze.",
+    "Main database remains86, price gate closed; prior main Gin binary retained.",
+    "No provider/real payment/refund/mail operation, old credential import, or source account binding.",
+    "C03 and C01-C11 remain incomplete."
+  ]
+}

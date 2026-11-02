@@ -7,6 +7,11 @@ import {loadFooterData} from '../../../lib/footer-data'
 import ImageGallery from '../../../components/products/image-gallery'
 import GinProductActions from '../../../components/products/gin-product-actions'
 import ProductDetails from '../../../components/products/product-details'
+import RelatedProducts from '../../../components/products/related-products'
+import {loadRelatedProducts} from '../../../lib/related-products'
+import type {Product} from '../../../lib/products'
+import ProductReviews from '../../../components/products/product-reviews'
+import {loadProductReviews,type ProductReviewPage} from '../../../lib/product-reviews'
 import PageEntryScroll from '../../../components/cart/page-entry-scroll'
 import {getProductCopy} from '../../../components/products/i18n'
 import Breadcrumbs from '../../../components/layout/breadcrumbs'
@@ -18,10 +23,14 @@ const zh=segment.endsWith('-zh')
 let data:ProductPageData|null=null
 let shell:StorefrontProps['shell']
 let unavailable=false
+let initialReviews:ProductReviewPage|null=null
+let related:Product[]=[]
 try {
  data=await loadProductPage(GIN_API_ORIGIN,segment,handle,Astro.url.searchParams)
  if(data){
-  const [locales,footer]=await Promise.all([loadLocales(GIN_API_ORIGIN),loadFooterData(GIN_API_ORIGIN)])
+  const [locales,footer,reviews,recommendations]=await Promise.all([loadLocales(GIN_API_ORIGIN),loadFooterData(GIN_API_ORIGIN),loadProductReviews(GIN_API_ORIGIN,data.product.id).catch(()=>null),loadRelatedProducts(GIN_API_ORIGIN,data.product,data.region.id).catch(()=>[])])
+  initialReviews=reviews
+  related=recommendations
   shell={regions:data.regions,locales,footer}
  }
 } catch {unavailable=true}
@@ -30,7 +39,7 @@ else if(!data)Astro.response.status=404
 const message=unavailable?(zh?'暂时无法加载商品，请稍后重试。':'Products are temporarily unavailable. Please try again.'):(zh?'未找到商品':'Product not found')
 const copy=getProductCopy(segment)
 ---
-<Storefront segment={segment} title={data&&!unavailable?`${data.metadata.title} | EuroRefurb`:message} description={data?.metadata.description} canonicalPath={data?.metadata.canonicalPath} openGraph={data?.metadata.openGraph} shell={shell}>
+<Storefront segment={segment} title={data&&!unavailable?data.metadata.title:message} description={data?.metadata.description} canonicalPath={data?.metadata.canonicalPath} openGraph={data?.metadata.openGraph} shell={shell}>
  {data&&!unavailable ? <div class={styles.page}>
   <PageEntryScroll client:load/>
   <Breadcrumbs segment={segment} items={[{label:copy.back,href:'/store'},{label:data.product.title}]}/>
@@ -44,5 +53,7 @@ const copy=getProductCopy(segment)
    </section>
   </div>
   <ProductDetails product={data.product} locale={segment}/>
+  <ProductReviews productId={data.product.id} locale={segment} initialPage={initialReviews} client:load/>
+  <RelatedProducts products={related} segment={segment} client:load/>
  </div> : <div class={styles.page}><h1>{message}</h1></div>}
 </Storefront>

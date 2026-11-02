@@ -1,13 +1,26 @@
 import { useEffect, useState } from 'react'
 import { Alert, Button, Empty, Form, Input, Select, Space, Table, Tag, Typography } from 'antd'
-import { Link, useSearchParams } from 'react-router-dom'
-import { APIError, listProducts } from './api'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { APIError, listProducts, readProductCreate } from './api'
 import type { ProductList, ProductSummary } from './api'
 import type { Copy } from './i18n'
+import ProductCreate from './ProductCreate'
+import {useAccess} from './Permissions'
 
 type Filters = { q?: string; status?: string; sort?: string }
 export default function Products({ copy, onExpired }: { copy:Copy; onExpired():void }) {
   const [params,setParams]=useSearchParams()
+  const [creating,setCreating]=useState(false)
+  const access=useAccess(),navigate=useNavigate()
+  const [creationSupported,setCreationSupported]=useState(false)
+  const canCreate=access.can('product.read','product.write')
+  useEffect(()=>{
+    const controller=new AbortController();setCreationSupported(false)
+    if(canCreate)readProductCreate(controller.signal).then(()=>{if(!controller.signal.aborted)setCreationSupported(true)}).catch(error=>{
+      if(!controller.signal.aborted&&error instanceof APIError&&error.status===401)onExpired()
+    })
+    return()=>controller.abort()
+  },[canCreate,onExpired])
   const key=params.toString()
   const [form]=Form.useForm<Filters>()
   const [state,setState]=useState<{loading:boolean;data?:ProductList;error?:unknown}>({loading:true})
@@ -37,6 +50,8 @@ export default function Products({ copy, onExpired }: { copy:Copy; onExpired():v
     setParams(next)
   }
   return <section className="account-panel" aria-label={copy.products}>
+    {canCreate&&creationSupported&&<Button type="primary" onClick={()=>setCreating(true)}>{copy.language==='语言'?'新建商品':'Create product'}</Button>}
+    {creating&&<ProductCreate copy={copy} onClose={()=>setCreating(false)} onExpired={onExpired} onCreated={id=>{setCreating(false);navigate(`/products/${encodeURIComponent(id)}`)}}/>}
     <Form form={form} layout="inline" onFinish={apply} className="product-filters">
       <Form.Item name="q" label={copy.search}><Input maxLength={200} allowClear /></Form.Item>
       <Form.Item name="status" label={copy.status}><Select allowClear style={{minWidth:120}} options={Object.entries(statuses).map(([value,label])=>({value,label}))} /></Form.Item>

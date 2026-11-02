@@ -8,6 +8,7 @@ import (
 
 	"github.com/eurorefurb/retail/internal/protected"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 // CreatedSession is private verified adapter output, not customer input. Data
@@ -99,7 +100,7 @@ func RecordSessionCreation(ctx context.Context, tx *gorm.DB, key EffectKey, atte
 		return EffectReceipt{}, err
 	}
 	var stored struct{ ResultEnvelope []byte }
-	if effectWhere(q, key).Select("result_envelope").Take(&stored).Error != nil {
+	if effectWhere(q, key).Select("result_envelope").Clauses(clause.Locking{Strength: "UPDATE"}).Take(&stored).Error != nil {
 		return EffectReceipt{}, ErrEffectStorage
 	}
 	if stored.ResultEnvelope != nil {
@@ -154,7 +155,7 @@ func ReadSessionCreation(ctx context.Context, tx *gorm.DB, key EffectKey, ring *
 		return CreatedSession{}, ErrEffectConflict
 	}
 	var stored struct{ ResultEnvelope []byte }
-	if effectWhere(q, key).Select("result_envelope").Take(&stored).Error != nil {
+	if effectWhere(q, key).Select("result_envelope").Clauses(clause.Locking{Strength: "UPDATE"}).Take(&stored).Error != nil {
 		return CreatedSession{}, ErrEffectStorage
 	}
 	saved, err := openCreation(key, ring, stored.ResultEnvelope)

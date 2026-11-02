@@ -1,0 +1,129 @@
+{
+  "exit_code": 0,
+  "migrations": 96,
+  "native_transactions_passed": true,
+  "source_files": 844,
+  "frozen_source_verified": true,
+  "binary_sha256": "d55cfd5b151f76585265484ca14a4ab5d057f8ee3536c73fb3b9c2e4ff84be35",
+  "test_log_sha256": "364f1dc94050dda392d524e4f9bd999fc53e951bb746be25305a83d35ec5d098",
+  "owned_database_absent": true,
+  "redis_used": true,
+  "main_mysql_unchanged": true,
+  "real_provider_called": false,
+  "native_browser_verified": true,
+  "browser": {
+    "real_ant_gin_mysql_redis": true,
+    "api_mocking": false,
+    "actual_response_dropped": true,
+    "same_operation_retried": true,
+    "created_once": true,
+    "edit_identity_rank_preserved": true,
+    "product_membership_enforced": true,
+    "associated_delete_disabled": true,
+    "unassociated_delete": true,
+    "csrf_origin_auth_checked": true,
+    "language_en_zh": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0,
+    "operation_id": "f09c898a-1626-4c6a-a01f-2a99f2fb8223",
+    "definition_id": "opt_5032a59d-6a51-459f-b9a5-2dc95fc7679f",
+    "astro": {
+      "real_built_astro": true,
+      "admin_shared_membership_ui": true,
+      "associated_products": 2,
+      "actual_sku_commands": 4,
+      "shared_title_rank_refresh": true,
+      "source_value_ids_preserved": true,
+      "variant_ids_configuration_preserved": true,
+      "initial_html_contains_updated_title": true,
+      "language_en_zh_widths": [
+        1440,
+        390
+      ],
+      "zero_stock_purchase_disabled": true,
+      "commerce_provider_not_exercised": true
+    },
+    "sql_create_receipt_count": 1
+  },
+  "browser_log_sha256": "d0d2b4d4deb6d3aed9a8a0c5f1b2c5614acf69e4ce1377f93ddcfafb8391ec9a",
+  "admin_source_files": 119,
+  "astro_joint_verified": true,
+  "storefront_source_files": 593,
+  "original23_regression": false,
+  "goal_complete": false,
+  "owner": "11d8ebdfe7ad",
+  "snapshot": "logs/gin-migration/option-definitions-native-11d8ebdfe7ad",
+  "cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true,
+    "redis_used": true,
+    "owned_api_terminal": true,
+    "redis_keys_deleted": 4,
+    "owned_astro_terminal": true,
+    "owned_browser_terminal": true,
+    "redis_cleanup_error": null
+  },
+  "api_binary_sha256": "5ec11635f797697f4b42bc693fd64ab2cd196cb47a03c157c05e96dc140b02eb",
+  "current_workspace_matches_frozen_source": true,
+  "source_counts": {
+    "backend": 844,
+    "admin": 119,
+    "storefront": 593
+  },
+  "runner_sha256": "9e22edd5bc84bfea90417e119f93fdebb2d0641e6f3340b640a557d1e3f09eae",
+  "artifacts_sha256": {
+    "astro-build.log": "62e458cf9a4b24d3a8a43d70f3bcbae0717dd053d2b469efe5be708402885881",
+    "astro.log": "4842e2e580ca295dbd2c6ef80649068998c5098e6b20127f88ee1ed7b5b17f75",
+    "api.log": "cf75596497e91b9b30da443bfffa801f9ff2693bdc0b24ea15c3d0910e253144",
+    "shared-options-astro-zh-mobile.png": "2d6750a76929db9ebbf5bdd82f7e5139be59fb39c4958804fabea7fc619676e9",
+    "shared-options-astro-zh-mobile-viewport.png": "c8eba747a697e9c1bbfd0216decd6095f427de6ff0de52d12714175aadc49873",
+    "shared-options-zh-mobile.png": "03b2df466df60a0e598d07813ea48e9d428062d7fa8d9212c66114c175fa51b2"
+  },
+  "reduced_motion_regression": {
+    "api_mocking": false,
+    "login_not_required": true,
+    "public_language_selection_only": true,
+    "cases": [
+      {
+        "reducedMotion": "no-preference",
+        "width": 1440,
+        "mouse_language_selection": true,
+        "browser_errors": 0
+      },
+      {
+        "reducedMotion": "no-preference",
+        "width": 390,
+        "mouse_language_selection": true,
+        "browser_errors": 0
+      },
+      {
+        "reducedMotion": "reduce",
+        "width": 1440,
+        "mouse_language_selection": true,
+        "browser_errors": 0
+      },
+      {
+        "reducedMotion": "reduce",
+        "width": 390,
+        "mouse_language_selection": true,
+        "browser_errors": 0
+      }
+    ]
+  },
+  "reduced_motion_log_sha256": "3c2672e86983bc6ba6d1b091d878825d5fb7d37b1aea6688d556fcd62eb86dac",
+  "admin_type_check": {
+    "exit_code": 0,
+    "session": 90939
+  },
+  "limits": {
+    "main_database_upgraded": false,
+    "payment_or_mail_exercised": false,
+    "priced_stocked_checkout_verified": false,
+    "metadata_filters_and_standalone_value_delete_ui_complete": false,
+    "physical_unique_indexes_completed": false,
+    "C03_complete": false,
+    "goal_complete": false
+  }
+}

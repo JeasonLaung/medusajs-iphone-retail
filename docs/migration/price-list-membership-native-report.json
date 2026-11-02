@@ -1,0 +1,398 @@
+{
+  "exit_code": 0,
+  "migrations": 99,
+  "native_transactions_passed": true,
+  "source_files": 870,
+  "frozen_source_verified": true,
+  "binary_sha256": "d2e475ae8efdb40ed6c01f50ae4a7e7a806950b2e1228d276fe0b091dc6e0d07",
+  "test_log_sha256": "2bcaf2aeb5855fb8f01f7678aad08f8f2ef90c5cd55be7b6be307b5664016403",
+  "owned_database_absent": true,
+  "redis_used": true,
+  "main_mysql_unchanged": true,
+  "real_provider_called": false,
+  "native_browser_verified": true,
+  "browser": {
+    "policy": {
+      "actual_admin_save": true,
+      "actual_origin_csrf_anonymous_denials": true,
+      "same_uuid_response_loss_retry": true,
+      "operation_id": "6c1aff5b-12e3-4d58-be99-4eccf97cf091",
+      "actual_astro_en_zh_widths": [
+        1440,
+        390
+      ],
+      "periods": [
+        36,
+        21
+      ],
+      "notes_visible": true,
+      "admin_en_desktop_zh_mobile": true,
+      "sql_receipt_count": 1
+    },
+    "scope": {
+      "actual_ant_scope_filters": true,
+      "exclusive_readonly": true,
+      "deleted_readonly": true,
+      "deleted_date_filter": true,
+      "nested_and_or_url_reload": true,
+      "scope_outside_or": true
+    },
+    "regional_price": {
+      "actual_ant_save": true,
+      "region_id": "option-region",
+      "same_uuid_response_loss_retry": true,
+      "operation_id": "c6c084ae-16f2-4b4e-b959-71ee41a4821c",
+      "public_quote": "123.45",
+      "astro_initial_html": true,
+      "en_zh_widths": [
+        1440,
+        390
+      ],
+      "zero_stock_still_disabled": true,
+      "removal": {
+        "actual_ant_remove": true,
+        "admin_en_desktop_zh_mobile": true,
+        "actual_origin_csrf_anonymous_denials": true,
+        "operation_id": "4ce7e7ef-aadc-41c4-84c7-f820880ea32b",
+        "price_id": "price_527c0d6b-b02d-45ee-8ee0-6f269a23f3c8",
+        "same_uuid_response_loss_retry": true,
+        "deleted_detail_404": true,
+        "public_quote_null": true,
+        "astro_initial_html_no_old_price": true,
+        "en_zh_widths": [
+          1440,
+          390
+        ],
+        "purchase_disabled": true,
+        "sql_receipt_price_rule_count": 1
+      },
+      "quantity": {
+        "actual_ant_tier_save": true,
+        "operation_id": "e1042c01-c168-4dfd-a09a-b60d7a252051",
+        "price_id": "price_d71e26e5-cb8c-407d-972b-5afeed90cd1a",
+        "immutable_bound_retry": true,
+        "astro_bridge_actual_quantities": [
+          {
+            "quantity": "1",
+            "quotes": []
+          },
+          {
+            "quantity": "2",
+            "quotes": [
+              "88.25"
+            ]
+          },
+          {
+            "quantity": "3",
+            "quotes": [
+              "88.25"
+            ]
+          },
+          {
+            "quantity": "4",
+            "quotes": []
+          }
+        ],
+        "quantity_one_page_no_tier_price": true,
+        "en_zh_widths": [
+          1440,
+          390
+        ],
+        "purchase_disabled": true,
+        "admin_en_desktop_zh_mobile": true,
+        "invalid_range_ui_rejected": true,
+        "edit": {
+          "operation_id": "e36676b8-bf65-45a3-ab30-a9bad133a0ea",
+          "clear_operation_id": "4506eb9e-c155-4e88-915d-154d559ba43f",
+          "same_uuid_response_loss_retry": true,
+          "actual_zh_mobile_edit_en_desktop_clear": true,
+          "edited_boundary_quotes": true,
+          "explicit_null_clear": true,
+          "cleared_quantity_one_astro_en_zh": true,
+          "origin_csrf_denied": true,
+          "sql_unique_receipts_count": 2
+        },
+        "sql_receipt_exact_bound_rule_count": 1
+      },
+      "price_list": {
+        "schedule_operation_ids": [
+          "8ce30ccd-f9a6-4963-9503-350546256077",
+          "89a625b8-f61f-47aa-8445-82c5ca5dc86f"
+        ],
+        "actual_utc_picker_schedule_clear": true,
+        "actual_override_selection": true,
+        "chinese_date_controls": true,
+        "operation_id": "46df0814-c8f0-46d4-8a95-252785439b19",
+        "draft_operation_id": "4db637ea-282c-4b3c-a32e-4f864004b6eb",
+        "actual_ant_active_draft": true,
+        "immutable_retry": true,
+        "unchanged_microseconds": true,
+        "rules_preserved": true,
+        "actual_astro_active_draft_en_zh_widths": [
+          1440,
+          390
+        ],
+        "origin_csrf_anonymous_denied": true,
+        "removal": {
+          "operation_id": "f9796ca5-0371-40ed-9f9b-a3645fe6ffdf",
+          "reactivate_operation_id": "f8841fad-9cd0-4aa7-aa1d-553813a2df30",
+          "actual_ant_en_cancel_zh_remove": true,
+          "active_quote_before_remove": "42.75",
+          "fallback_quote": "100",
+          "same_uuid_response_loss_retry": true,
+          "removed_detail_404": true,
+          "actual_astro_en_zh_widths": [
+            1440,
+            390
+          ],
+          "origin_csrf_anonymous_denied": true,
+          "sql_unique_receipt_exact_soft_cascade": true
+        },
+        "membership": {
+          "operation_id": "2a66f687-3583-4f81-9c5e-d86d0b0c5325",
+          "tier_operation_id": "af0ce149-610d-4c9b-914b-8b0358ae4954",
+          "price_id": "price_0b896c46-a177-4568-9293-34ddc21f1e0f",
+          "tier_price_id": "price_35b5df35-cee2-4d12-b132-a80aa4658265",
+          "actual_ant_zh_mobile": true,
+          "same_uuid_response_loss_retry": true,
+          "immutable_list_selection": true,
+          "existing_regional_base_coexists": true,
+          "actual_astro_quantities": {
+            "1": "37.25",
+            "2": "32.5",
+            "3": "32.5",
+            "4": "37.25"
+          },
+          "actual_astro_en_zh_widths": [
+            1440,
+            390
+          ],
+          "zero_stock_disabled": true,
+          "sql_two_unique_receipts_exact_rows_and_base_preserved": true
+        },
+        "sql_unique_receipts_count": 4,
+        "sql_exact_unchanged_price_metadata_rule": true
+      },
+      "sql_price_receipt_rule_count": 1
+    },
+    "real_ant_gin_mysql_redis": true,
+    "multi_value_time_filters_url_reload": true,
+    "unchanged_microsecond_boundary_preserved": true,
+    "metadata_merge_retry_and_empty_definition": true,
+    "metadata_zh_mobile_saved": true,
+    "metadata_preserved_after_title_rank_edit": true,
+    "metadata_operation_id": "ac94dba3-3f4e-4001-b5cf-a28b8426653f",
+    "api_mocking": false,
+    "actual_response_dropped": true,
+    "same_operation_retried": true,
+    "created_once": true,
+    "edit_identity_rank_preserved": true,
+    "product_membership_enforced": true,
+    "associated_delete_disabled": true,
+    "unassociated_delete": true,
+    "last_unassociated_value_ui_deleted": true,
+    "value_delete_response_dropped_retried": true,
+    "value_delete_operation_id": "241625a5-673c-4902-94af-5d406549270b",
+    "value_delete_definition_id": "opt_fd002cf1-ac74-4597-bba1-ccf974610bc8",
+    "value_delete_value_id": "optval_34d6d8ef-7e7b-490d-a3f5-0b9b94583d48",
+    "csrf_origin_auth_checked": true,
+    "language_en_zh": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0,
+    "operation_id": "2216e802-f7ee-4c80-9b29-5fb829f3fa5e",
+    "definition_id": "opt_222bbdd4-097f-4243-8056-41ab9e68378d",
+    "astro": {
+      "real_built_astro": true,
+      "admin_shared_membership_ui": true,
+      "associated_products": 2,
+      "actual_sku_commands": 4,
+      "shared_title_rank_refresh": true,
+      "source_value_ids_preserved": true,
+      "variant_ids_configuration_preserved": true,
+      "initial_html_contains_updated_title": true,
+      "language_en_zh_widths": [
+        1440,
+        390
+      ],
+      "zero_stock_purchase_disabled": true,
+      "commerce_provider_not_exercised": true
+    },
+    "sql_create_receipt_count": 1,
+    "sql_metadata_receipt_count": 1,
+    "sql_value_delete_receipt_count": 1,
+    "sql_value_soft_deleted_preserving_id": true
+  },
+  "browser_log_sha256": "a1ae9540a7b8fcd5cea80892a204843f960a4165fcf9ea99962519793af4c0cd",
+  "admin_source_files": 126,
+  "astro_joint_verified": true,
+  "storefront_source_files": 593,
+  "original23_regression": false,
+  "goal_complete": false,
+  "snapshot": "logs/gin-migration/option-definitions-native-152de90c0abe",
+  "generated_at_utc": "2026-11-01T05:01:40.611605+00:00",
+  "manifest_sha256": "90634edb526fddb9ccbd6ce916d6751bc4fcd525f06d8d11b89ad5b1407af6e3",
+  "verified_sources": {
+    "backend": {
+      "files": 870,
+      "workspace_and_snapshot_match": true
+    },
+    "admin": {
+      "files": 126,
+      "workspace_and_snapshot_match": true
+    },
+    "storefront": {
+      "files": 593,
+      "workspace_and_snapshot_match": true
+    }
+  },
+  "price_list_membership_native": {
+    "default_closed": true,
+    "missing_list_denied": true,
+    "list_rule_revision": true,
+    "late_rollback": true,
+    "concurrent_attempts": 6,
+    "single_price_and_receipt": true,
+    "exact_amount_region_bounds": true,
+    "duplicate_scoped_to_list": true,
+    "changed_list_retry_denied": true,
+    "draft_ignored": true,
+    "scheduled_ignored": true,
+    "shared_sku_quotes": true,
+    "base_preserved": true,
+    "revoked_replay_denied": true,
+    "deleted_list_replay_denied": true
+  },
+  "cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true,
+    "redis_used": true,
+    "owned_api_terminal": true,
+    "redis_keys_deleted": 4,
+    "owned_astro_terminal": true,
+    "owned_browser_terminal": true,
+    "redis_cleanup_error": null
+  },
+  "services": {
+    "at_utc": "2026-11-01T05:01:39.595329+00:00",
+    "urls": {
+      "http://127.0.0.1:9001/health": 200,
+      "http://127.0.0.1:9001/app": 200,
+      "http://127.0.0.1:8000/dk-en/store": 200,
+      "http://127.0.0.1:9100/health": 200,
+      "http://127.0.0.1:9200/products": 200,
+      "http://127.0.0.1:9300/dk-en/store": 200,
+      "http://127.0.0.1:9300/dk-en/products/swappie-iphone-14": 200
+    },
+    "main_mysql_migrations": 86,
+    "main_price_gate_enabled": false
+  },
+  "validation": {
+    "go_all_packages": true,
+    "go_vet_all_packages": true,
+    "admin_tsc": true,
+    "original_base_price_ui_regression": true,
+    "go_log_sha256": "e916aa900f0e8207c68727cf84d4e5acfa255645118cfc2829578e7d264150a4",
+    "vet_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tsc_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "base-ui_log_sha256": "7c46e2f7524aecfbd1a4670e9e1275f229edfbfc8fcea35be1863ed0708bbfa2"
+  },
+  "evidence_sha256": {
+    "regional-price-admin-en.png": "991e55b41f22c543ca2773d26f0a45e449fec7201453e51b1d7d0fffd3ca367f",
+    "price-removal-confirm-en-1440.png": "3621ee4aeb95af5e286f198dd9c377c89c2d8bba78e890fa2a3c49014e859bac",
+    "price-removed-admin-en.png": "b6a67e6fbb7086d902cb61a26978af1b7d1de8f82ce4d95fbe07e2dca34cdd19",
+    "quantity-price-saved-en.png": "d54a308c3d69d6a8fbc36e5b224910b325198dfdf6a2b8f314bfa08576da7f12",
+    "price-list-active-astro-zh-390.png": "ef30c17b80875f63774daac04f2257a6064a55058b6e92a7721fd7cdfa1596de",
+    "mysql-server.log": "4629f81fd4ae77efd7403fa07f99ac22547b9bdcfb5f933e7f611b0b08139609",
+    "browser.log": "a1ae9540a7b8fcd5cea80892a204843f960a4165fcf9ea99962519793af4c0cd",
+    "api.log": "e95d12ccfb1f44db1474140d534ffd301a9221721d8b998f385c067287cb3124",
+    "price-list-member-astro-en-390.png": "22efd90ecb9d0f3976af3b20630b86fbc911f93adcc3591aaa31431560eeed20",
+    "shared-option-metadata-zh-mobile.png": "d5455e80ec1abf6502ee082942008f03ea65b4855eaf714e7e2bb4f8b9418fd7",
+    "option-scopes-en.png": "e67afc1f51352252e52a5f930bf89af89b040d4482a2d1e9cffb061bf171cdc7",
+    "price-list-active-astro-zh-1440.png": "159de2486a41e799a5684cc8ac175356ff5f81d930820f275b0bc182774f1813",
+    "shared-options-astro-zh-mobile-viewport.png": "597c7150adc9003eb4f1f7bc40b7fd322596d18135aec9c34ce7f164ec3a2f04",
+    "quantity-price-invalid-zh-390.png": "77087a12b8fea8479a0cb172bdb086879db86f4ac945700a1433f721e39172f8",
+    "price-list-active-astro-en-1440.png": "dc936f56482bb6be529dbf4ad381a392571fb27d40004b6dae93b8ed8d9ecbc4",
+    "shared-options-astro-zh-mobile.png": "fba0ef7c9b15885f7ad69a0d5990ea720db7d310a1467a361120ffcbb6ccbe1b",
+    "price-removed-astro-zh-390.png": "450325ebf7c862ad9ba71aade2d57475b05deff098118a30c52d9784d4a45bdf",
+    "regional-price-astro-en-390.png": "3ff27f96e88afcffe0e2088aec70010d9c526e8b9af46ee35e369d606478823b",
+    "purchase-policies-en-1440.png": "c107f6b9666c292a90f5130d67ce2aed3cb878acd609fe96221ebb97a352e1c3",
+    "mysql-initialize.log": "2a8cdbe2293da2e616693c05662265913b1e0932e420e0bf7afa3fc835f22833",
+    "quantity-cleared-astro-en-390.png": "e909ab2313de8bd1c54b90a458ec38f499e10a12bfe8db8231b602a021b1f489",
+    "price-list-removed-astro-zh-1440.png": "1fb22e935cc46ddbca94877cb8c6e253780a69988122ea85a6a4c62d2fc6d697",
+    "price-list-member-zh-390.png": "73d0f79d399d6a921190e2a20ad66544606b13816e90f6d3310bdd4d95848c87",
+    "price-list-removed-astro-en-1440.png": "422989fb24afb87f52667a7efc0b6730d02c0d1552e2ebfd2d292c39eec78cde",
+    "price-list-removed-astro-en-390.png": "501ec6d6d1221eb449179833609f7624fc1e47ac7d458912b809219842389ca8",
+    "purchase-policies-zh-1440.png": "ed3e9ccd00ef99007f70694199f2b4de7fa53cee98a7bd9b0049598d184517f4",
+    "purchase-policies-en-390.png": "21c8a316bd4d085d1b035796c454ccbdf6948461ca3c53720722575baf96b676",
+    "price-removed-astro-zh-1440.png": "b26eaa054a0e0f260e73e69c8be7478f2c195948f80074df155a27c768260239",
+    "price-list-remove-zh-390.png": "609add942e4c862fe7a40ab41724adb67da5d8fa17785a2444fad41306a9093c",
+    "astro.log": "b6490c62c39a5c77033b9f876259affd927e3a0a857a5f181d0abdc8a9e29c1b",
+    "price-removed-astro-en-1440.png": "b500f9d899fc27449b2a1bc2f23e999ec2c383f544e35bc0f25b058705a0f759",
+    "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cleanup.json": "ff3d697dcdd42847081b779369e09925b47e06d2fa3db220fd83ab6c798cab8d",
+    "quantity-edit-zh-390.png": "ac7e1892b6105e8824de2980ae7a147f39ed209568318aad5a4bab6ca29b7cfa",
+    "api-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "price-list-member-astro-zh-390.png": "9369c3d5edee5375e4460cbe4e7dbc972cf0c8823c5c91d764e12ee5fb258898",
+    "price-list-scheduled-en-1440.png": "ad51e393e4b077028ea6c08847d38c6ef43c71fddb04e4ff22611f70df8ce7ec",
+    "price-list-active-astro-en-390.png": "7355f4a1d3de05bf36a3d3ea5c27adccb10e9618bbfb435f84461d2517e3ac8d",
+    "price-list-member-astro-en-1440.png": "2f28e9965deded46692b5ad93ea9847e3c7e28a7dc5eaaab72137f9f70472e57",
+    "quantity-price-create-en.png": "d286b10e1cdd931ce97619f0a560e1ba71ae6261652179fe67ec84087de8bf42",
+    "astro-build.log": "affcfacb57fad7fb25838e8336f576c05b6416268335ae0c625bc15a7015f469",
+    "price-list-member-astro-zh-1440.png": "cb922b800ac74e7605c2693f0385b7137f4a5c172ce58404e7ecd35db9d69b2c",
+    "price-list-edit-zh-390.png": "f6d8c6dfe7da833b223f6e1cba3ea13ca381ca6f67b981680a6d97c98ea2bc1b",
+    "price-removal-confirm-zh-390.png": "cd5d6ee171e506d02f0db6fec919c03751631c5860be410f54239269a1b98671",
+    "purchase-policies-admin-en.png": "5dddf02cfb3dfe04fb8794d2e11302dc1a582e7901ab7da345fab0a863105651",
+    "quantity-cleared-astro-en-1440.png": "a3015cfb50270e936776450770325a0d4329e82da5d02ac1c5161b206ae41b3d",
+    "price-list-removed-astro-zh-390.png": "3dce415fdf2347eab4b7b1770c1d19899184a53b439293ceb6510a1b6c1f88d9",
+    "regional-price-astro-zh-1440.png": "7740157699922ee05dd3dfb7a2d588fd53587b349e6014c303696456454791fb",
+    "regional-price-astro-zh-390.png": "96010fc57e881200df63ad11add94720eaa07541858255098ed0f92ec8504e4b",
+    "price-removed-astro-en-390.png": "50b83302d5415377dc35fe50b541b237e399534425574f92f3ce93a872517de1",
+    "mysql-launch.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "regional-price-astro-en-1440.png": "0e9ff8e9b55839743287d9fe1470f8b99e8f9ff09e04b053f86d4ed0856d37b2",
+    "shared-options-zh-mobile.png": "8247e1f466b940bd40a46fb942c3e813c3bd0a34c5e5d00d24661f52c5c0fb4b",
+    "quantity-cleared-astro-zh-390.png": "9a50d2a0fac49cbab1559b2a6e416c4e46220607ca05eb65c6635144cd589422",
+    "quantity-cleared-astro-zh-1440.png": "9512a95451ab27be24f733bd1c685b788b9dff04a82212c7481bf5f1b4d9576a",
+    "price-list-remove-en-1440.png": "8cf605a991e46e397542483eb88e8c4a44f3e45b518cb21234b5aa40ea2db8d0",
+    "shared-option-values-zh-mobile.png": "289a83e6031f2ce1daed53e55134f2c433ec2a926d7d2e2aeb2ce827fce8b6f2",
+    "purchase-policies-zh-390.png": "98be49bbfd72ce9fd33a896c14f94286467f95bb694763277b6e4862a228769e",
+    "purchase-policies-admin-zh-mobile.png": "37f4fd9fcc0fd0db4fd4e6dfbc983a5103e36669dfa56299b1cacb3c410caf0f",
+    "native-test.log": "2bcaf2aeb5855fb8f01f7678aad08f8f2ef90c5cd55be7b6be307b5664016403"
+  },
+  "source_reference_sha256": {
+    "medusa-store/apps/backend/node_modules/@medusajs/dashboard/src/routes/price-lists/price-list-prices-add/components/price-list-prices-add-form/price-list-prices-add-form.tsx": "7652f40783c0167b1899b2bea128fcdf7eac0104bca92b864f4a7c0cb3e4b6b3",
+    "medusa-store/apps/backend/node_modules/@medusajs/dashboard/src/routes/price-lists/common/components/quantity-price-form/quantity-price-form.tsx": "bc667cfe3db51ce8da77196ac74008b005b1f2b262b56b71b04784ac315e4163",
+    "retail/scripts/test-option-definitions-local.py": "eb421de470abdd803372576b884c5abb9d290c780726103eac4e041d7140021b"
+  },
+  "visual_review": {
+    "manually_inspected": [
+      "price-list-member-zh-390.png",
+      "price-list-member-astro-zh-390.png"
+    ]
+  },
+  "earlier_failed_owned_runs": [
+    {
+      "owner": "c55a3136e45f",
+      "reason": "Native test fixture used noncanonical amount; corrected fixture, not production validation.",
+      "cleanup_verified": true
+    },
+    {
+      "owner": "762d999e6215",
+      "reason": "Browser init script restores English on navigation; test now uses actual language control before Chinese price action.",
+      "cleanup_verified": true
+    },
+    {
+      "owner": "2079d75d1e21",
+      "reason": "Native and browser passed; controller expected short decimal raw strings instead of canonical 18-place command values. Corrected exact SQL expectation and reran from fresh database.",
+      "cleanup_verified": true
+    }
+  ],
+  "limits": [
+    "Per-SKU creation into an existing list; source multi-product batch create/replace and full list creation remain open.",
+    "No real transaction or email; synthetic zero-stock product does not prove checkout.",
+    "Original23 report for99 is historical previous freeze; these suites and historical import were not rerun for this increment.",
+    "Main database remains86, price write gate closed and prior main Gin binary.",
+    "C03 and C01-C11 remain incomplete."
+  ]
+}

@@ -77,7 +77,16 @@ func checkCustomerHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions 
 		if response.Header().Get("Cache-Control") != "private, no-store" || response.Header().Get("Referrer-Policy") != "no-referrer" {
 			t.Fatal("private customer response cache/referrer boundary missing")
 		}
+		cartClears := 0
 		for _, cookie := range response.Result().Cookies() {
+			if strings.HasPrefix(cookie.Name, "__Host-retail_cart_") {
+				kind := strings.TrimPrefix(cookie.Name, "__Host-retail_cart_")
+				if method != "POST" || path != "/auth/logout" || response.Code != 200 || (kind != "scope" && kind != "scope_csrf" && kind != "possession" && kind != "csrf") || cookie.Value != "" || cookie.MaxAge >= 0 || cookie.Path != "/" || cookie.Domain != "" || !cookie.Secure || cookie.SameSite != http.SameSiteLaxMode || cookie.HttpOnly != (kind == "scope" || kind == "possession") {
+					t.Fatal("logout cart deletion boundary differs")
+				}
+				cartClears++
+				continue
+			}
 			if !strings.HasPrefix(cookie.Name, "__Host-retail_customer_") || cookie.Path != "/" || cookie.Domain != "" || !cookie.Secure || cookie.SameSite != http.SameSiteLaxMode || cookie.HttpOnly != (cookie.Name != "__Host-retail_customer_csrf") {
 				t.Fatal("customer cookie security or namespace differs")
 			}
@@ -86,6 +95,9 @@ func checkCustomerHTTP(t *testing.T, ctx context.Context, db *gorm.DB, sessions 
 			} else {
 				jar[cookie.Name] = cookie
 			}
+		}
+		if method == "POST" && path == "/auth/logout" && response.Code == 200 && cartClears != 4 {
+			t.Fatal("logout did not clear current cart")
 		}
 		return response
 	}

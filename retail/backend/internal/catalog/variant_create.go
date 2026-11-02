@@ -215,8 +215,8 @@ func (h Handler) CreateVariant(ctx context.Context, actor identity.User, p strin
 		if !rt.Enabled {
 			return ErrSchema
 		}
-		var product struct{ ID, Title string }
-		if e = tx.Table("catalog_products").Select("id,title").Clauses(clause.Locking{Strength: "UPDATE"}).Where("id=? AND deleted_at IS NULL", p).Take(&product).Error; e != nil {
+		var product struct{ ID, Title, Handle string }
+		if e = tx.Table("catalog_products").Select("id,title,handle").Clauses(clause.Locking{Strength: "UPDATE"}).Where("id=? AND deleted_at IS NULL", p).Take(&product).Error; e != nil {
 			return e
 		}
 		before, variants, values, e := loadVariantCreate(tx, p, rt)
@@ -260,7 +260,8 @@ func (h Handler) CreateVariant(ctx context.Context, actor identity.User, p strin
 				return ErrPriceInput
 			}
 		}
-		// Compare complete sets, never just titles or a subset of option dimensions.
+		// Input selects every current dimension. Match the source collision rule,
+		// including another historical SKU that has additional stale values.
 		existing := map[string][]string{}
 		for _, v := range variants {
 			existing[v.ID] = []string{}
@@ -270,20 +271,8 @@ func (h Handler) CreateVariant(ctx context.Context, actor identity.User, p strin
 		}
 		ids := append([]string{}, in.OptionValueIDs...)
 		sort.Strings(ids)
-		for _, set := range existing {
-			sort.Strings(set)
-			if len(set) == len(ids) {
-				same := true
-				for i := range set {
-					if set[i] != ids[i] {
-						same = false
-						break
-					}
-				}
-				if same {
-					return ErrEditConflict
-				}
-			}
+		if variantOptionCollision(ids, existing) {
+			return ErrEditConflict
 		}
 		// Synchronize the persistent high water mark with imported and deleted ERP
 		// codes. Explicit ERP codes reserve their number exactly as in the source.
@@ -323,6 +312,10 @@ func (h Handler) CreateVariant(ctx context.Context, actor identity.User, p strin
 				return ErrSchema
 			}
 		}
+		if e := attachCreatedVariantImages(tx, p, id, iphoneVariantImageKey(product.Handle, product.Title, before.Options, selected)); e != nil {
+			return e
+		}
+
 		if tx.Exec("INSERT INTO inventory_items(id,sku,title,requires_shipping,created_at,updated_at) VALUES(?,?,?,TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", item, sku, inventoryCreateTitle(product.Title, in.Title)).Error != nil {
 			return ErrSchema
 		}

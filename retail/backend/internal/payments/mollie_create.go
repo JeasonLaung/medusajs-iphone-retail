@@ -51,6 +51,15 @@ type MollieCreateAdapter struct {
 	captureMode string
 }
 
+// CancellationAdapter is registered only by explicit context-payment config.
+// Share the authenticated merchant and server-owned TLS roots with checkout.
+func (a *MollieCreateAdapter) CancellationAdapter() (DeleteSessionAdapter, error) {
+	if a == nil || a.transport == nil {
+		return nil, ErrEffectInput
+	}
+	return a.transport, nil
+}
+
 func mollieHTTPURL(raw string) (*url.URL, error) {
 	u, err := url.Parse(raw)
 	if err != nil || u == nil || !u.IsAbs() || u.Opaque != "" || u.Hostname() == "" || u.User != nil ||

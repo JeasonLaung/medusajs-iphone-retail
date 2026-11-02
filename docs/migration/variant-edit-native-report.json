@@ -1,0 +1,174 @@
+{
+  "date": "2026-10-31",
+  "schema_migrations": 91,
+  "complete_c03_accepted": false,
+  "main_trial_database_changed": false,
+  "main_trial_migrations": 86,
+  "source_database_changed": false,
+  "real_payment_or_mail_called": false,
+  "docker_used": false,
+  "sql": {
+    "native_mysql": true,
+    "same_operation_contenders": 4,
+    "one_fresh_operation": true,
+    "full_source_core_fields_editable": true,
+    "zero_dimensions_and_leading_zero_codes_preserved": true,
+    "cleared_erp_retains_identity": true,
+    "global_active_code_uniqueness": true,
+    "complete_product_options_and_membership_checked": true,
+    "foreign_product_or_sku_rejected": true,
+    "cross_sku_replay_rejected": true,
+    "stale_revision_rejected": true,
+    "other_sku_unchanged": true,
+    "source_multiple_zero_dimensional_skus_create_and_edit": true,
+    "source_collision_with_additional_historical_value_rejected": true,
+    "exact_price_quantity_raw_reservation_device_facts_digest_unchanged": true,
+    "color_gallery_and_thumbnail_synchronized": true,
+    "no_matching_color_preserves_current_gallery": true,
+    "late_receipt_failure_rolls_back_fields_options_images_counter": true,
+    "inventory_off_detaches_without_deleting_old_item": true,
+    "inventory_enable_conflict_does_not_take_existing_stock": true,
+    "inventory_enable_new_unique_code_creates_default_item": true,
+    "late_enable_receipt_failure_rolls_back_new_item_and_link": true,
+    "disabled_gate_receipt_recovery": true,
+    "current_permission_checked_on_replay": true
+  },
+  "browser": {
+    "real_react_gin_astro_native_mysql_redis": true,
+    "api_mocking": false,
+    "all_source_core_fields_saved": true,
+    "option_color_and_storage_edit": true,
+    "erp_identity_retained": true,
+    "zero_dimension_and_leading_zero_codes_preserved": true,
+    "other_sku_unchanged": true,
+    "repeat_receipt": true,
+    "duplicate_combination_409": true,
+    "public_same_sku_options_and_exact_price": true,
+    "public_color_images_and_thumbnail": true,
+    "astro_selected_webp_decodes": true,
+    "astro_webp_sha256_equal": true,
+    "refresh_en_zh_390px": true,
+    "drawer_within_mobile_viewport": true,
+    "script_errors": 0
+  },
+  "checks": {
+    "full_go_tests": true,
+    "full_go_vet": true,
+    "admin_types": true,
+    "git_diff_check": true
+  },
+  "source_sha256": {
+    "retail/backend/migrations/0091_catalog_variant_edit.sql": "602921a1e106f2b3dd58c4f4c1bdabbf54433079e858c4918ff0513e6a5c77e0",
+    "retail/backend/internal/catalog/variant_edit.go": "8bbddfc9498883389da0045a08a0c18eea503c305dbe1a94c6de62e9a231b9a2",
+    "retail/backend/internal/catalog/variant_edit_http.go": "73bc728e43de659ce78a66f399b0c881dbfa3109470f2595a4b03841c94f1ce7",
+    "retail/backend/internal/catalog/variant_edit_test.go": "657be6423565e3afbadd10f3ca565af5e4c3f9be149f1233d3981596502f9048",
+    "retail/backend/internal/catalog/variant_edit_native_test.go": "362cf55bce28683f22b2a15d7b9d04d45c4b5a670ed0b1e617ec58bb668ac44a",
+    "retail/backend/internal/catalog/variant_create.go": "3bbfd23aa1bb5038e58a574f690daf2a44ab96fb41b96e21b2a177e895548468",
+    "retail/admin/src/VariantEdit.tsx": "9d01b53004e9b4a11681fe3429b3b3de8542a86e0d7cfa72b2ae89a1c5754aa1",
+    "retail/admin/src/ProductDetail.tsx": "1bb9902aa56b6241a0253fdb73866fbaf3c4138ef6db49102dc11d27f9e2aba5",
+    "retail/admin/src/api.ts": "7ccf4caccd4dd16002a42ca9a72202ce24fc4f0a489a4f27f0375e689fa61640",
+    "retail/admin/tests/variant-edit.native.mjs": "131bddc48f501bc81a4041563eed71d34d52df48a9bd0751ab318d990786211b"
+  },
+  "artifacts": {
+    "sql": {
+      "path": "log/native-variant-edit-transactions.log",
+      "sha256": "90f04b94cf363c6f52a4963bdd1ac7242cede3b762aa45d5b17fb83edec075f6"
+    },
+    "browser": {
+      "path": "log/native-variant-edit-browser.log",
+      "sha256": "1695527bb1c3aa91b2171fcdfbc01b549c32774204d9cffde2f5e1148eed4a2f"
+    },
+    "full-go": {
+      "path": "log/native-variant-edit-all-go.log",
+      "sha256": "c094d2e27e885224485688321a00f5b97aaeb8b56cddc93efa18455c84591439"
+    },
+    "vet": {
+      "path": "log/native-variant-edit-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "admin-check": {
+      "path": "log/native-variant-edit-admin-check.log",
+      "sha256": "e8bfd4d2e137d4c0fbce29a275eee34bbf66235478599a0a2cd8a2fa8fc59f69"
+    },
+    "zh-mobile": {
+      "path": "log/native-variant-edit-zh-mobile.png",
+      "sha256": "3658f8a33a7dceb4506cc4cd1886a1d463a980badb1772e0ecd08dffff4b0ab8"
+    }
+  },
+  "owned_fixture_cleanup": {
+    "api_stopped": true,
+    "astro_stopped": true,
+    "redis_keys_removed": 6,
+    "owned_model_assets_removed": true,
+    "fixture_public_symlink_restored": true,
+    "database_and_user_dropped": true
+  },
+  "existing_services": [
+    {
+      "url": "http://127.0.0.1:9001/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9001/app",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8000/dk-en/store",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9100/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9200/products",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/store",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/products/swappie-iphone-15-pro",
+      "status": 200
+    }
+  ],
+  "recent_service_logs": [
+    {
+      "path": "log/gin-branch-medusa-backend.log",
+      "recent_lines": 0,
+      "expected_disabled_cart": 0,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "log/gin-branch-medusa-storefront.log",
+      "recent_lines": 0,
+      "expected_disabled_cart": 0,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "log/gin-local-api-current.log",
+      "recent_lines": 100,
+      "expected_disabled_cart": 6,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "log/gin-local-admin.log",
+      "recent_lines": 14,
+      "expected_disabled_cart": 0,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "retail/storefront/.astro/dev.log",
+      "recent_lines": 60,
+      "expected_disabled_cart": 15,
+      "unexpected_errors": 0
+    }
+  ],
+  "remaining": [
+    "inventory item relationship management",
+    "independent shared option definition editing",
+    "conditional pricing",
+    "full C01-C11 joint acceptance"
+  ]
+}

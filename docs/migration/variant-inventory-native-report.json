@@ -1,0 +1,156 @@
+{
+  "date": "2026-10-31",
+  "schema_migrations": 93,
+  "feature_migration": 92,
+  "c03_complete": false,
+  "whole_delivery_complete": false,
+  "main_trial_database_changed_by_this_increment": false,
+  "main_trial_migrations": 86,
+  "source_database_changed": false,
+  "real_payment_or_mail_called": false,
+  "docker_used": false,
+  "sql": {
+    "native_mysql": true,
+    "same_operation_contenders": 4,
+    "one_fresh_operation": true,
+    "exact_18_decimal_quantity": true,
+    "multiple_and_shared_items": true,
+    "empty_state_explicit_unlink": true,
+    "restore_original_relationship_id_and_created_at": true,
+    "audit_retains_pre_restore_deleted_state": true,
+    "update_and_restore_late_failures_roll_back": true,
+    "item_level_raw_reservation_device_tracking_price_facts_preserved": true,
+    "device_identity_unique_quantity_one": true,
+    "retired_parent_does_not_release_active_tracking": true,
+    "core_sku_edit_cannot_detach_device_inventory": true,
+    "literal_search_and_52_item_pagination": true,
+    "unavailable_item_retained_for_explicit_review": true,
+    "stale_foreign_cross_sku_replay_rejected": true,
+    "closed_capability_receipt_recovery": true,
+    "scoped_warehouse_rejected": true,
+    "current_permission_on_replay": true,
+    "generic_inventory_writes_enabled": false
+  },
+  "browser": {
+    "real_browser_react_gin_astro_mysql_redis": true,
+    "api_mocking": false,
+    "exact_18_decimal_use": true,
+    "lost_success_response_retry_same_command": true,
+    "add_shared_item": true,
+    "selected_labels_preserved_during_search": true,
+    "public_quantity_6_to_2": true,
+    "exact_price_preserved": true,
+    "astro_available_then_out_of_stock": true,
+    "astro_purchase_island_hydrated": true,
+    "no_failed_script_responses": true,
+    "explicit_unlink_restore_same_id": true,
+    "physical_quantities_reservations_unchanged": true,
+    "current_csrf_enforced": true,
+    "strict_search_queries": true,
+    "english_chinese_mobile": true,
+    "browser_errors": 0
+  },
+  "checks": {
+    "full_go_tests": true,
+    "full_go_vet": true,
+    "admin_types": true,
+    "diff_check": true,
+    "mobile_visual_inspection": true
+  },
+  "source_sha256_at_report": {
+    "retail/backend/migrations/0092_catalog_variant_inventory.sql": "c11d3cb7f23b62929e6cbfd114acab020e2e2a2ec9d631400b09518514d13449",
+    "retail/backend/internal/catalog/variant_inventory.go": "ab13271c440f7fb3f674accc2dd490aa7e440bd6d8f923f69139a701527c4cf9",
+    "retail/backend/internal/catalog/variant_inventory_http.go": "09c9a53da27ba9e7ad6c38cc5297e88b5b6583c0b4a5aceebd428f5ca106dd32",
+    "retail/backend/internal/catalog/variant_inventory_test.go": "3822d85e5d94102128c70b5cf01065adbcbd492d4b4f4d924ab1488bb0201c67",
+    "retail/backend/internal/catalog/variant_inventory_native_test.go": "b6b13df996a99df2c171c7821b1e748d93e920cbe9741372b33b0a97a9236c8b",
+    "retail/backend/internal/catalog/variant_edit.go": "c4223baa85357f30a8903998d3d0a3c3af1b48fa42406119eeaa709fa43d72ba",
+    "retail/backend/internal/catalog/variant_edit_http.go": "7d9652b29ec128ddd570589c459a2961e27b7398ff5cc88c3f8bce0dc01e41d3",
+    "retail/admin/src/VariantInventoryItems.tsx": "000506524c75adfc0cf7ee3cd9286fda579cb309e70713757fc510ff4fe07b18",
+    "retail/admin/src/VariantInventory.tsx": "745b76104a8e2fdc7fe85d369e1aee8679551e2b556a4c2da45c64993f104201",
+    "retail/admin/src/VariantEdit.tsx": "e0665e668dd105acd75eb8eacab1ac1a87d4d0800b44d82d9bf9d14d416b2e07",
+    "retail/admin/tests/variant-inventory.native.mjs": "78c0a65195e76cef32465a0bb23b638edf80f970c81f32dd8ee7a49f46450855"
+  },
+  "artifacts": {
+    "sql": {
+      "path": "log/native-inventory-links-transactions.log",
+      "sha256": "3a6cb05747267c71e5fef3ff3d98aafca8e83970b0ba1f44fac4261ed4a91f0e"
+    },
+    "browser": {
+      "path": "log/native-inventory-links-browser.log",
+      "sha256": "3d32237fbfea45acab14811edd9a5023a4d0dafaadb4f0e08344bafce5b263da"
+    },
+    "sku_edit_regression": {
+      "path": "log/native-inventory-links-variant-edit-regression.log",
+      "sha256": "158492e48e7a819f29464409a7105693139ffc405b962b5d4e2b47b9d3b482ac"
+    },
+    "full_go": {
+      "path": "log/native-inventory-links-go-test.log",
+      "sha256": "a7b3fa40e4dd708cc2611727ffc9c803811c80634a6c01ff2585a96a7ac80c17"
+    },
+    "vet": {
+      "path": "log/native-inventory-links-go-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "mobile": {
+      "path": "log/native-variant-inventory-zh-mobile.png",
+      "sha256": "0f703f3c84457eac79565f57f30af064e51860caca93bdfda4275ad1585fc21d"
+    },
+    "main_health": {
+      "path": "logs/gin-migration/native-inventory-links-main-health.json",
+      "sha256": "619ca43e59bedc0af0dd363f06f88850881c3fe9d12c6be3dcf3ffb3c656e3d7"
+    },
+    "cleanup": {
+      "path": "logs/gin-migration/native-inventory-links-cleanup.json",
+      "sha256": "6e3352a1d063276583cbbcb38f7589416e4dff6f25fea708b3ad62bc72652b8d"
+    },
+    "sql_proof": {
+      "path": "logs/gin-migration/native-inventory-links-sql-proof.tsv",
+      "sha256": "350875aea79f58ec1121c0b0e9ffdc865f568cebb2048cbe259a00c5076870ca"
+    }
+  },
+  "main_health": {
+    "http": {
+      "http://127.0.0.1:9001/health": 200,
+      "http://127.0.0.1:9001/app": 200,
+      "http://127.0.0.1:8000/dk-en/store": 200,
+      "http://127.0.0.1:9100/health": 200,
+      "http://127.0.0.1:9200/products": 200,
+      "http://127.0.0.1:9300/dk-en/store": 200,
+      "http://127.0.0.1:9300/dk-en/products/swappie-iphone-15-pro": 200
+    },
+    "logs": {
+      "log/gin-local-api-current.log": {
+        "recent_lines": 200,
+        "unexpected_errors": 0,
+        "expected_closed_cart": 8
+      },
+      "log/gin-local-admin.log": {
+        "recent_lines": 15,
+        "unexpected_errors": 0,
+        "expected_closed_cart": 0
+      },
+      "retail/storefront/.astro/dev.log": {
+        "recent_lines": 65,
+        "unexpected_errors": 0,
+        "expected_closed_cart": 16
+      },
+      "log/202610311113.log": {
+        "recent_lines": 200,
+        "unexpected_errors": 0,
+        "combined_original_development_services": true
+      }
+    },
+    "main_trial_migrations": 86
+  },
+  "cleanup": {
+    "api_stopped": true,
+    "astro_stopped": true,
+    "redis_owned_prefix_cleaned": true,
+    "redis_keys_removed": 6,
+    "database_dropped": true,
+    "fixture_public_symlink_preserved": true,
+    "database_user_dropped": true,
+    "api_port_closed": true,
+    "storefront_port_closed": true
+  }
+}

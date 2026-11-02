@@ -1,0 +1,156 @@
+{
+  "checked_utc": "2026-11-01T16:29:47.068433+00:00",
+  "scope": "Opt-in owned-cart HTTP context save and original-context restoration with bounded server-selected payment orchestration",
+  "goal_complete": false,
+  "source_migrations": 103,
+  "new_schema_this_increment": false,
+  "main_schema": 102,
+  "main_api_updated": false,
+  "main_feature_enabled": false,
+  "routes": [
+    "POST /api/store/carts/:id/context-payment",
+    "POST /api/store/carts/:id/context-payment/restore"
+  ],
+  "independent_configuration": "CHECKOUT_CONTEXT_PAYMENT_ENABLED=true plus existing checkout configuration and SQL runtime gates",
+  "same_merchant_and_tls_roots": true,
+  "browser_cannot_select_payment_session_attempt_or_remote_candidate": true,
+  "response_states": [
+    "saved",
+    "restored",
+    "processing",
+    "requires_recovery"
+  ],
+  "http_checks": {
+    "real_gin_mysql_redis": true,
+    "unchanged_and_changed_save": true,
+    "restore_deleted_session": true,
+    "lost_response_exact_retry": true,
+    "no_repeated_mutation": true,
+    "unknown_delete_get_recovery": true,
+    "paid_observation_keeps_frozen": true,
+    "possession_csrf_origin_strict_input": true,
+    "private_response_no_protected_material": true,
+    "no_false_target_receipt": true,
+    "artificial_provider_only": true,
+    "astro_connected": false
+  },
+  "http_transport": "Gin router through httptest with actual private MySQL and Redis; not a deployed TCP endpoint or Astro bridge",
+  "full_sql_owner": "96852c2320bd",
+  "full_sql_suites": 23,
+  "full_sql_source_files": 1852,
+  "browser_regression_owner": "24c9226b3672",
+  "browser_regression_scope": "Existing pre-payment region/delivery/promotion/address flow only; new payment-context routes not yet exposed by Astro bridge or UI",
+  "browser_cases": 4,
+  "closed_gate_cases": 4,
+  "browser_errors": 0,
+  "browser_context_receipts": 12,
+  "browser_source_files": {
+    "backend": 939,
+    "admin": 144,
+    "storefront": 645
+  },
+  "sources_binary_and_logs_verified": true,
+  "owned_resources_cleaned": true,
+  "go_all_packages": "passed session66297 exit0",
+  "go_vet_all": "passed session58132 exit0",
+  "main_verification": {
+    "checked_utc": "2026-11-01T16:26:33.748682+00:00",
+    "fresh_backup_owner": "9d72f058ad87",
+    "service": {
+      "running": true,
+      "pid": 42442,
+      "health": 200,
+      "schema_migrations": 102
+    },
+    "persistent_tables": 299,
+    "business_tables_equal_to_rehearsal": 297,
+    "migration_journal_execution_times_excluded": true,
+    "migration_checksums_match": true,
+    "original_tables_unchanged": 268,
+    "live_counts_match_dump": true,
+    "foreign_keys_checked": 215,
+    "orphan_rows": 0,
+    "new_gates_default_closed": true,
+    "retained_shared86_all_table_fingerprints_match": true,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "post_cutover_data_verified": true,
+    "goal_complete": false
+  },
+  "health": {
+    "checked_utc": "2026-11-01T16:27:16.628220+00:00",
+    "checks": [
+      {
+        "url": "http://127.0.0.1:9001/health",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9001/app",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:8000/dk-en/store",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9100/health",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9200/",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-en/store",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-en/about",
+        "status": 200
+      }
+    ]
+  },
+  "recent_logs": [
+    {
+      "path": "log/gin-preview-mysql/api.log",
+      "lines_checked": 100,
+      "fatal_or_panic": []
+    },
+    {
+      "path": "log/202611011104.log",
+      "lines_checked": 100,
+      "fatal_or_panic": []
+    }
+  ],
+  "earlier_failure": {
+    "owner": "df096ddf9fe4",
+    "reason": "Committed uncertain deletion also returned opaque provider error; orchestration now accepts only the specific expected error paired with persisted uncertain receipt, then exact-attempt read recovery. Storage/protection failures still return errors."
+  },
+  "disk_recovery": "Transparent compression of completed non-running test binaries; original paths and SHA256 preserved, no evidence or running output deleted",
+  "real_provider_called": false,
+  "new_flow_browser_verified": false,
+  "remaining": [
+    "Astro bridge whitelist, bounded timeouts, typed client and durable context/payment intents",
+    "User-visible restoration and retry UI with real browser joint acceptance",
+    "Concurrent orchestration response/acknowledgement handling",
+    "Already paid/authorized replacement recovery before activation",
+    "Currency/raw amount and post-retirement item/promotion/customer-transfer acceptance",
+    "Main103 clone/rehearsal and controlled rollout",
+    "Full C01-C11 acceptance"
+  ],
+  "evidence_sha256": {
+    "logs/gin-migration/native-sql-local-96852c2320bd/manifest.json": "08a7a8e495268e9207d66ba65b93d7647fb1f381f3f4ed540819dc04c4dc6c44",
+    "logs/gin-migration/native-sql-local-96852c2320bd/result.json": "392a0c345755c31724f6a5efbb808daf48b2396a6c46d8c00dcfad464832dd37",
+    "logs/gin-migration/native-sql-local-96852c2320bd/cleanup.json": "fab32adfe0c95381e147293d7b6c988b757ed4f5d738ea780c4d03ec313115b6",
+    "logs/gin-migration/native-sql-local-96852c2320bd/mysql-cleanup.json": "cb57fabbaf097925a808cccc0c0fa638438ec798f04aebd9c23838141ef5a242",
+    "logs/gin-migration/native-sql-local-96852c2320bd/CartRuntime.log": "f5532f19783cfecd0a56397d309f4773ee808a57f48d1d89ab487f0d94ea3f75",
+    "logs/gin-migration/cart-context-native-24c9226b3672/manifest.json": "fd0b88ee1e10bbd73be6a113bb380abf160de5d24380bf021fe91f5c5d3c2a7d",
+    "logs/gin-migration/cart-context-native-24c9226b3672/result.json": "ae3f8b9582605fae5894da5c809e0c0ea0f450d7724c2629cf84a8d2d1e93a5f",
+    "logs/gin-migration/cart-context-native-24c9226b3672/cleanup.json": "e8ea0ceb64dadc960b7bc8c0ea5360066459109f9d2a9feeb71bbb2f04073ac3",
+    "logs/gin-migration/context-payment-http-verification/main-database.json": "3563e7a79467bc7be8eff7a16810fc01bc3b8424eb4f54b98662b1a90e05b721",
+    "logs/gin-migration/context-payment-http-verification/health.json": "88abccc4adec7711e401a63a38142ed8b0c3b3e075569d5f19ae0abc6016bd72",
+    "logs/gin-migration/context-payment-http-verification/recent-logs.json": "0d4f47437bf10611d3c71c5886602320c5c4141134ab5a4f08adfa3a566081f4",
+    "logs/gin-migration/evidence-transparent-compression-context-http-20261102.json": "091648a5d8ed7f251d57eb15666bbe9f8cb84fc4ce6bc2e4f4ec12e6d461f634",
+    "logs/gin-migration/evidence-transparent-compression-context-http-catalog-20261102.json": "2193da25186acc3899fe0cefc9343792896e0ff32739daa18f5536c57b027272"
+  }
+}

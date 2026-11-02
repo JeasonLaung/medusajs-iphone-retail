@@ -49,7 +49,7 @@ func TestPrepareOwnedBrowserAPI(t *testing.T) {
 		t.Fatal("fixture plan invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 88 {
+	if err != nil || result.Applied != 103 {
 		t.Fatal("fixture migrations failed")
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte("artificial-browser-password"), bcrypt.DefaultCost)
@@ -196,7 +196,9 @@ func TestPrepareCartItemBrowserFixture(t *testing.T) {
 		`INSERT INTO catalog_products(id,title,handle,is_giftcard,status,discountable,created_at,updated_at,metadata) VALUES('browser-add-product','Browser phone','browser-add-product',FALSE,'published',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),'{"private":"must-not-escape"}')`,
 		`INSERT INTO catalog_product_channels(product_id,sales_channel_id,id,created_at,updated_at) VALUES('browser-add-product','fixture-channel','browser-add-channel',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
 		`INSERT INTO catalog_variants(id,product_id,title,sku,manage_inventory,allow_backorder,created_at,updated_at) VALUES('browser-add-v','browser-add-product','128 GB','0000999999999999999',TRUE,FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
-		`INSERT INTO catalog_options(id,title,is_exclusive,created_at,updated_at) VALUES('browser-add-storage','Storage',FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		// The additional product owns this distinct definition, alongside the
+		// original shared Storage group seeded for fixture-v.
+		`INSERT INTO catalog_options(id,title,is_exclusive,created_at,updated_at) VALUES('browser-add-storage','Storage',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
 		`INSERT INTO catalog_option_values(id,value,option_id,created_at,updated_at) VALUES('browser-add-128','128 GB','browser-add-storage',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
 		`INSERT INTO catalog_product_options(id,product_id,product_option_id,created_at,updated_at) VALUES('browser-add-membership','browser-add-product','browser-add-storage',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
 		`INSERT INTO catalog_product_option_values(id,product_product_option_id,product_option_value_id,created_at,updated_at) VALUES('browser-add-value','browser-add-membership','browser-add-128',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,

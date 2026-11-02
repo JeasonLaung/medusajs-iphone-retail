@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import {CartClient,CartError,type CartContactDetail,type CartView,type DeliveryOptions,type ShippingInput} from '../src/lib/cart-client.ts'
 import {createShippingCommands,shippingIntentKey} from '../src/lib/checkout-shipping.ts'
-import {cartIntentKey,contactIntentKey} from '../src/lib/cart-commerce.ts'
+import {contextIntentKey,cartIntentKey,contactIntentKey} from '../src/lib/cart-commerce.ts'
 import {cartBridge} from '../src/lib/cart-bridge.ts'
 const key='12345678-1234-4234-8234-123456789012',csrf='a'.repeat(64)
 const option={id:'delivery',profile_id:'default',name:'Delivery',description:'Tracked',kind:'shipping' as const,amount:'9007199254740993123.01',is_tax_inclusive:false,insufficient_inventory:false}
@@ -42,7 +42,7 @@ test('uncertain shipping keeps the exact operation and refuses a different choic
 test('acknowledged shipping recovers reads only, and cross-tab contact/item intents block writes',async()=>{
  const f=fixture();f.failRead(true);await assert.rejects(f.commands.submit('cart','2','delivery'));assert.equal(f.commands.pending()?.kind,'refresh')
  f.failRead(false);await f.commands.recover();assert.equal(f.calls.length,1);assert.equal(f.data.size,0)
- for(const k of [cartIntentKey,contactIntentKey]){f.data.set(k,'pending');await assert.rejects(f.commands.submit('cart','3','delivery'));assert.equal(f.calls.length,1);f.data.delete(k)}
+ for(const k of [contextIntentKey,cartIntentKey,contactIntentKey]){f.data.set(k,'pending');await assert.rejects(f.commands.submit('cart','3','delivery'));assert.equal(f.calls.length,1);f.data.delete(k)}
  f.mismatch();await assert.rejects(f.commands.submit('cart','3','delivery'));assert.equal(f.commands.pending()?.kind,'refresh')
 })
 test('malformed or foreign shipping journals send no request',async()=>{

@@ -14,6 +14,11 @@
 .languages button:hover { color: #002394; text-decoration: underline; }
 .languages button:disabled { opacity: .5; cursor: wait; }
 .error { padding: 16px 0; font-size: 13px; }
+.recovery { margin: 16px 0; padding: 16px; background: #F8F8F8; color: #000000E0; font-size: 13px; line-height: 1.5; }
+.recovery > div { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 8px; }
+.recovery button { min-height: 44px; color: #1677FF; text-decoration: underline; }
+.recovery button:hover { color: #0958D9; }
+.recovery button:disabled { color: #000000A6; cursor: wait; }
 .dialog button:focus-visible, .trigger:focus-visible { outline: 2px solid #0066cc; outline-offset: 1px; }
 @media (max-width: 1050px) { .trigger span { display: none; } }
 @media (max-width: 799px) { .trigger { padding: 0 8px; } }

@@ -1,8 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {CartClient,CartError,type CartView,type CartContactDetail,type CartContactInput} from '../src/lib/cart-client.ts'
-import {createContactCommands,contactFields,contactIntentKey} from '../src/lib/checkout-contacts.ts'
-import {cartIntentKey} from '../src/lib/cart-commerce.ts'
+import {CartClient,CartError,contactAddress,type CartView,type CartContactDetail,type CartContactInput} from '../src/lib/cart-client.ts'
+import {createContactCommands,contactFields,contactIntentKey,hasCompleteContacts} from '../src/lib/checkout-contacts.ts'
+import {contextIntentKey,cartIntentKey} from '../src/lib/cart-commerce.ts'
 const address={first_name:'New',last_name:'Customer',company:'',address_1:'Private street 1',address_2:'',city:'Copenhagen',country_code:'dk',province:'',postal_code:'0012',phone:'+45 11'}
 const fields={email:'customer@example.invalid',shipping_address:address,billing_address:{...address}}
 const key='12345678-1234-4234-8234-123456789012',csrf='a'.repeat(64)
@@ -25,6 +25,22 @@ test('contact reads preserve absence versus outage and project only copied priva
  assert.equal(await new CartClient({readScopeCSRF:()=>undefined,fetcher:async()=>reply({},401)}).retrieveContacts('cart'),null)
  await assert.rejects(new CartClient({readScopeCSRF:()=>undefined,fetcher:async()=>reply({},503)}).retrieveContacts('cart'),e=>e instanceof CartError&&e.status===503)
  await assert.rejects(new CartClient({readScopeCSRF:()=>undefined,fetcher:async()=>reply({...detail,shipping_address:{...address,postal_code:12}})}).retrieveContacts('cart'))
+})
+test('country-only context draft reads populate the form while address submissions stay complete',async()=>{
+ const draft=Object.fromEntries(Object.keys(address).map(key=>[key,key==='country_code'?'fr':'']))
+ const detail={cart_id:'cart',version:'7',email:fields.email,shipping_address:draft,billing_address:address}
+ const client=new CartClient({readScopeCSRF:()=>undefined,fetcher:async()=>reply(detail)})
+ assert.deepEqual(await client.retrieveContacts('cart'),detail)
+ assert.equal(hasCompleteContacts(detail as CartContactDetail),false)
+ assert.equal(hasCompleteContacts({...detail,shipping_address:address}),true)
+ assert.throws(()=>contactAddress(draft))
+ let calls=0
+ const write=new CartClient({readScopeCSRF:()=>undefined,fetcher:async()=>{calls++;return reply({})}})
+ await assert.rejects(write.saveContacts('cart',{...fields,operationID:key,version:'7',shipping_address:draft as typeof address},{csrfToken:csrf}))
+ assert.equal(calls,0)
+ for(const invalid of [{...draft,country_code:'FR'},{...draft,first_name:'x'.repeat(161)},{...draft,address_1:'bad\naddress'}]){
+  await assert.rejects(new CartClient({readScopeCSRF:()=>undefined,fetcher:async()=>reply({...detail,shipping_address:invalid})}).retrieveContacts('cart'))
+ }
 })
 function fixture(){
  const data=new Map<string,string>(),calls:CartContactInput[]=[];let failWrite=false,failRead=false
@@ -56,4 +72,10 @@ test('form uses same billing copies, requires email confirmation and preserves p
  const result=contactFields(form);assert.deepEqual(result.billing_address,address);assert.notEqual(result.billing_address,result.shipping_address);assert.equal(result.shipping_address.postal_code,'0012')
  form.set('confirm_email','other@example.invalid');assert.throws(()=>contactFields(form))
  form.set('confirm_email',fields.email);form.delete('same_as_billing');assert.throws(()=>contactFields(form))
+})
+
+test('unconfirmed context blocks contact writes and acknowledged contact reads',async()=>{
+ const f=fixture();f.data.set(contextIntentKey,'pending')
+ await assert.rejects(f.commands.submit('cart','2',fields));await assert.rejects(f.commands.recover());assert.equal(f.calls.length,0)
+ assert.equal(f.data.get(contextIntentKey),'pending')
 })

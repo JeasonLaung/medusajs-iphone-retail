@@ -1,0 +1,30 @@
+{
+  "migrations": 95,
+  "goal_complete": false,
+  "passed_sql_suites": 22,
+  "failed_sql_suite": "CartRuntime",
+  "failure": "empty cart transfer customer service unavailable",
+  "all_sql_suites_passed": false,
+  "source_changes_since_first_failure": [
+    "retail/backend/internal/identity/customer_cart_transfer_test.go"
+  ],
+  "production_source_changed_since_first_failure": false,
+  "cleanup": {
+    "owned_databases_absent": true,
+    "redis_prefix_cleaned": true,
+    "last_deleted_keys": 16,
+    "shared_server_not_restarted": true
+  },
+  "mysql_cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true
+  },
+  "log_sha256": "59229486456ead4989b71856d18f3c6ab4a24712ccd399f57a81344a757a64cb",
+  "snapshot": "logs/gin-migration/native-sql-local-b8f5208912d3",
+  "binary_retention": "Completed test binary removed after fingerprint verification to preserve development disk headroom; immutable source snapshot, logs and SHA retained.",
+  "binary_cleanup_receipt": "logs/gin-migration/owned-sql-binary-cleanup.json",
+  "source_retention": "Byte-verified frozen source archive retained as frozen-sources.tar.gz under snapshot; tar -xzf restores original file paths. Logs, manifests and SHA remain uncompressed.",
+  "source_archive_receipts": "logs/gin-migration/owned-sql-source-archives.json"
+}

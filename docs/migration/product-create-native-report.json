@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-31",
+  "migration": 88,
+  "complete_c03_accepted": false,
+  "native_dedicated_mysql_redis": true,
+  "trial_database_changed": false,
+  "source_database_changed": false,
+  "real_payment_or_email_called": false,
+  "checks": {
+    "default_disabled": true,
+    "concurrent_same_operation_requests": 4,
+    "created_once": true,
+    "changed_replay_rejected": true,
+    "duplicate_handle_rejected": true,
+    "missing_parent_rejected": true,
+    "revoked_permission_replay_rejected": true,
+    "disabled_gate_receipt_recovery": true,
+    "late_failure_all_children_rollback": true,
+    "strict_bounded_duplicate_key_decoder": true,
+    "real_browser_no_api_mocking": true,
+    "product_options_sku_exact_price_public_quote": true,
+    "actual_astro_page_same_data": true,
+    "zero_stock_explained_no_purchase": true,
+    "english_chinese_mobile": true,
+    "browser_errors": 0,
+    "full_go_tests": true,
+    "admin_types": true,
+    "targeted_go_vet": true
+  },
+  "artifacts": {
+    "tests": {
+      "path": "log/native-product-create-tests.log",
+      "sha256": "d8aa92130dff695f01c1c934c34ffcb0690ac9fa8b71a6cd40c989de554cf08c"
+    },
+    "full-go": {
+      "path": "log/native-product-create-full-go.log",
+      "sha256": "0e440365d6897e411ba2232750c76eb0d1ba9f5c5bfdf89826f87d53f10cad5e"
+    },
+    "admin-check": {
+      "path": "log/native-product-create-admin-check.log",
+      "sha256": "e8bfd4d2e137d4c0fbce29a275eee34bbf66235478599a0a2cd8a2fa8fc59f69"
+    },
+    "vet": {
+      "path": "log/native-product-create-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "browser": {
+      "path": "log/native-product-create-browser.log",
+      "sha256": "318f8efafa29f058c4a846cd65ce7dee4ae533bc14e3377c23be11ae7bee1b01"
+    },
+    "storefront-browser": {
+      "path": "log/native-product-create-storefront-browser.log",
+      "sha256": "6bc82a764040c332a3ad11f8e43b083121291cd0f3e342ce42a31d41f4bc384e"
+    }
+  },
+  "source_sha256": {
+    "retail/backend/migrations/0088_catalog_product_creation.sql": "54a6be5af6c7035cdcae6617982067ec3531e73a300407ef783c7a870ec16e5c",
+    "retail/backend/internal/catalog/product_create.go": "387ff48677b57f25ee83b5aa262a0e0ae735320033d44af9d66adb2e5dbd9f56",
+    "retail/backend/internal/catalog/product_create_http.go": "6e435d82743cfb998dad52ed2a1b60da50d8afcbb45277de680596ba057a3d20",
+    "retail/backend/internal/catalog/product_create_test.go": "a2f30f81395e38fea2dc2ffaf4793504f087045bef49e2f2d45e0bc4ec5e43fd",
+    "retail/backend/internal/catalog/product_create_native_test.go": "23ff5f37621d2db7baba880faae7a854359daa670ebe01835e5ec2efb591304b",
+    "retail/admin/src/ProductCreate.tsx": "4ea722a4d44d3a2759ef316d82aee8ffc282c2ff0665ad2527d209db12f3752a",
+    "retail/admin/src/Products.tsx": "7ec938f2d89af6e1918dbc2bb2e622f097defe710ec579886611e9fe5e1dfdad",
+    "retail/admin/src/api.ts": "9c551c77549dc13519bc2a4b9df88e7bd5cb0938b3cf45a622f8bbcbadb7ddc8",
+    "retail/admin/tests/product-create.native.mjs": "9c32fded051a849ef392e188c971bc1579585b782ca2ce9aae0677dc28dd3a28",
+    "retail/admin/tests/product-create-storefront.native.mjs": "6dd1f10bd72c9d46375a375527ee493f1555a18753da4e889177512ecba8a3ff"
+  },
+  "remaining": [
+    "existing product option/image management and file upload",
+    "conditional pricing management",
+    "full C01-C11 joint acceptance"
+  ],
+  "owned_fixture_cleanup": {
+    "api_stopped": true,
+    "astro_stopped": true,
+    "redis_keys_removed": 11,
+    "database_and_limited_user_dropped": true
+  },
+  "existing_services": [
+    {
+      "url": "http://127.0.0.1:9001/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9001/app",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8000/dk-en/store",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9100/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9200/products",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/store",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/products/swappie-iphone-15-pro",
+      "status": 200
+    }
+  ],
+  "recent_log_review": [
+    {
+      "path": "log/gin-branch-medusa-backend.log",
+      "recent_lines": 0,
+      "expected_read_only_cart_unavailable": 0,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "log/gin-branch-medusa-storefront.log",
+      "recent_lines": 0,
+      "expected_read_only_cart_unavailable": 0,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "log/gin-local-api-current.log",
+      "recent_lines": 100,
+      "expected_read_only_cart_unavailable": 4,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "log/gin-local-admin.log",
+      "recent_lines": 9,
+      "expected_read_only_cart_unavailable": 0,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "retail/storefront/.astro/dev.log",
+      "recent_lines": 47,
+      "expected_read_only_cart_unavailable": 12,
+      "unexpected_errors": 0
+    }
+  ]
+}

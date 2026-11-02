@@ -1,0 +1,10 @@
+{
+  "zh": {
+    "title": "DHL 官方接口演示", "notice": "实际调用 DHL 标准接口，使用公开 demo-key。以下为 DHL 返回的固定模拟响应，不表示此订单的真实运输状态。",
+    "requested": "请求示例单号", "returned": "DHL 响应单号", "checked": "接口查询时间", "source": "DHL 官方接口说明", "loading": "正在向 DHL 查询…", "error": "DHL 查询失败，请重试", "refresh": "重新查询", "status": "DHL 返回状态", "timezone": "节点时间按 DHL 原始响应显示，未转换时区。"
+  },
+  "en": {
+    "title": "DHL official API demo", "notice": "Calls the standard DHL API using the public demo-key. DHL returns a fixed mock response; it does not describe this order's real journey.",
+    "requested": "Requested sample number", "returned": "Number returned by DHL", "checked": "API checked at", "source": "Official DHL API documentation", "loading": "Querying DHL…", "error": "DHL query failed. Please retry.", "refresh": "Query again", "status": "Status returned by DHL", "timezone": "Event timestamps are displayed as returned by DHL, without timezone conversion."
+  }
+}

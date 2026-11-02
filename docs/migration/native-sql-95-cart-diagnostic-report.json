@@ -1,0 +1,31 @@
+{
+  "migrations": 95,
+  "scope": "Focused original CartRuntime diagnosis after empty-cart tax semantics correction",
+  "snapshot": "logs/gin-migration/native-sql-local-531cbc5779d9",
+  "suite_count": 1,
+  "passed": true,
+  "complete_original_sql_regression": false,
+  "goal_complete": false,
+  "customer_cart_transfer_marker": true,
+  "cleanup": {
+    "owned_databases_absent": true,
+    "redis_prefix_cleaned": true,
+    "last_deleted_keys": 0,
+    "shared_server_not_restarted": true
+  },
+  "mysql_cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true
+  },
+  "log_sha256": "7545c5b5267c487e9ebdf06391718e793f7ab55aa11e438c80ad989fb1e3e14c",
+  "full23_required": true,
+  "default_go_test_exit_code": 0,
+  "go_vet_exit_code": 0,
+  "default_go_log_sha256": {
+    "test": "4e31acc46d65f22d7a7316d2b231457ad4fca414ef266a7264b8bbe8074dcc12",
+    "vet": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "binary_retention": "SHA in binary-cleanup.json, frozen source and logs retained; completed executable removed for disk headroom."
+}

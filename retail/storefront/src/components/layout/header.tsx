@@ -15,8 +15,8 @@ import { getLayoutCopy } from "./i18n"
 import styles from "./header.module.css"
 
 type Identity={isLoggedIn:false;notification?:never}|{isLoggedIn:true;notification:ReactNode}
-export type HeaderProps=Identity & {regions:Region[];locales:Locale[];locale:string|null;cartCount:string;segment:string;pathname:string;onSelect:((target:PreferenceTarget)=>Promise<void>)|null}
-export default function StoreHeader({regions,locales,locale,cartCount,isLoggedIn,notification,segment,pathname,onSelect}:HeaderProps) {
+export type HeaderProps=Identity & {regions:Region[];locales:Locale[];locale:string|null;cartCount:string;segment:string;pathname:string;onSelect:((target:PreferenceTarget)=>Promise<void>)|null;onRestore?:()=>Promise<void>;canRestore?:()=>boolean}
+export default function StoreHeader({regions,locales,locale,cartCount,isLoggedIn,notification,segment,pathname,onSelect,onRestore,canRestore}:HeaderProps) {
   if(!/^(0|[1-9][0-9]{0,191})$/.test(cartCount)||/[\r\n]/.test(cartCount))throw Error('Invalid cart count')
   const count=BigInt(cartCount)
   const copy = getLayoutCopy(locale)
@@ -66,7 +66,7 @@ export default function StoreHeader({regions,locales,locale,cartCount,isLoggedIn
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><path d="M1 2h3l3 15h13l3-11H5" /><circle cx="9" cy="21" r="1" /><circle cx="19" cy="21" r="1" /></svg>
             {count > 0n && <span className={styles.count} aria-hidden="true">{count > 99n ? "99+" : cartCount}</span>}
           </LocalizedClientLink>
-          <RegionLanguage regions={regions} locales={locales} locale={locale} segment={segment} onSelect={onSelect} />
+          <RegionLanguage regions={regions} locales={locales} locale={locale} segment={segment} onSelect={onSelect} onRestore={onRestore} canRestore={canRestore} />
           <Popover className={styles.mobile}>
             <PopoverButton className={styles.iconButton} aria-label={copy.menu} data-testid="nav-menu-button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>

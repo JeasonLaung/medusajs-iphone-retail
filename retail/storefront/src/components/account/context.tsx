@@ -4,7 +4,7 @@ import {getAccountCopy} from './i18n'
 const Context=createContext<{segment:string;api:ReturnType<typeof customerClient>}|null>(null)
 export function AccountContext({segment,children}:{segment:string;children:ReactNode}){
  const api=useRef<ReturnType<typeof customerClient>|null>(null)
- if(!api.current)api.current=customerClient()
+ if(!api.current)api.current=customerClient(fetch,import.meta.env.PUBLIC_CUSTOMER_CART_TRANSFER_ENABLED==='true')
  useEffect(()=>()=>api.current?.clear(),[])
  return <Context.Provider value={{segment,api:api.current}}>{children}</Context.Provider>
 }

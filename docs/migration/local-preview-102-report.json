@@ -1,0 +1,306 @@
+{
+  "checked_utc": "2026-11-01T13:56:28.443151+00:00",
+  "scope": "Actual local101-to102 upgrade, exact clone recovery/reapply and current main Astro browser regression",
+  "upgrade": {
+    "previous_pid": 76194,
+    "previous_binary_sha256": "d5fd047feae4d9eb6333cdc801078370b670ff3671c18aac93b32a2ca30c75ea",
+    "new_binary_sha256": "7efcc5de4f089ce3e4418186e8edf5c6ea282a2dff6744f357bd2f3215b30a89",
+    "frozen_source_owner": "c55f563ef828",
+    "sql_result_sha256": "220994e95ed139cc5ebe90c8c0a7b24e82d9441249795e15cf1bd3306ccb7dec",
+    "prior_recovery_owner": "572e0dcddb19",
+    "old_schema": 101,
+    "target_schema": 102,
+    "configuration_changed": false,
+    "gates_changed": false,
+    "role_grants_changed": false,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "goal_complete": false,
+    "rehearsal_owner": "15bf79e93807",
+    "success": true,
+    "new_pid": 37803,
+    "health": 200,
+    "old_tables_unchanged": 295,
+    "new_tables": [
+      "cart_context_operations",
+      "cart_context_runtime"
+    ],
+    "data_and_ddl_match_rehearsal": true,
+    "rollback_executed_on_main": false,
+    "rollback_rehearsed_on_clone": true
+  },
+  "subsequent_local_origin_fix": {
+    "success": true,
+    "previous_pid": 37803,
+    "service": {
+      "running": true,
+      "pid": 42442,
+      "health": 200,
+      "schema_migrations": 102
+    },
+    "only_changed_key": "STOREFRONT_ORIGIN",
+    "origin": "http://127.0.0.1:9300",
+    "previous_config_sha256": "0f505d41d64f57bd6566e0694f2119c1883ea81696c14ed112e37b1a56f0eaae",
+    "new_config_sha256": "fafef451f4c3ba210a93bfd74f7b8b14c09cddaa02e88cb07d826bc80728ecb4",
+    "binary_sha256": "7efcc5de4f089ce3e4418186e8edf5c6ea282a2dff6744f357bd2f3215b30a89",
+    "schema_changed": false,
+    "gates_changed": false,
+    "business_writes": false,
+    "real_provider_called": false,
+    "anonymous_cart_http": 401,
+    "rollback_executed": false
+  },
+  "readonly_verifier": {
+    "checked_utc": "2026-11-01T13:53:34.812837+00:00",
+    "fresh_backup_owner": "9d72f058ad87",
+    "service": {
+      "running": true,
+      "pid": 42442,
+      "health": 200,
+      "schema_migrations": 102
+    },
+    "persistent_tables": 299,
+    "business_tables_equal_to_rehearsal": 297,
+    "migration_journal_execution_times_excluded": true,
+    "migration_checksums_match": true,
+    "original_tables_unchanged": 268,
+    "live_counts_match_dump": true,
+    "foreign_keys_checked": 215,
+    "orphan_rows": 0,
+    "new_gates_default_closed": true,
+    "retained_shared86_all_table_fingerprints_match": true,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "post_cutover_data_verified": true,
+    "goal_complete": false
+  },
+  "health_and_runtime": {
+    "checked_utc": "2026-11-01T13:55:03.790587+00:00",
+    "route_health": [
+      {
+        "url": "http://127.0.0.1:9001/health",
+        "status": 200,
+        "bytes": 2
+      },
+      {
+        "url": "http://127.0.0.1:9001/app",
+        "status": 200,
+        "bytes": 725
+      },
+      {
+        "url": "http://127.0.0.1:8000/dk-en/store",
+        "status": 200,
+        "bytes": 346814
+      },
+      {
+        "url": "http://127.0.0.1:9100/health",
+        "status": 200,
+        "bytes": 68
+      },
+      {
+        "url": "http://127.0.0.1:9200",
+        "status": 200,
+        "bytes": 629
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-en/about",
+        "status": 200,
+        "bytes": 116662
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-en/store",
+        "status": 200,
+        "bytes": 313601,
+        "ssr_cards": 30,
+        "unique_product_links": 30
+      },
+      {
+        "url": "http://127.0.0.1:9300/dk-zh/store",
+        "status": 200,
+        "bytes": 313493,
+        "ssr_cards": 30,
+        "unique_product_links": 30
+      }
+    ],
+    "recent_logs": {
+      "log/gin-preview-mysql/api.log": {
+        "recent_lines": 100,
+        "fatal_or_panic": []
+      },
+      "log/202611011104.log": {
+        "recent_lines": 100,
+        "fatal_or_panic": []
+      }
+    },
+    "astro": {
+      "pid": 29403,
+      "mode": "dev",
+      "source_hmr": true,
+      "restarted": false,
+      "command": "/opt/homebrew/Cellar/node/26.3.1/bin/node /Users/Jeason/Desktop/code/medusajs-iphone-retail/retail/storefront/node_modules/astro/bin/astro.mjs dev --port 9300 --host 127.0.0.1 --json"
+    }
+  },
+  "current_backend_matches_frozen_runtime_go_sql_files": 478,
+  "store_browser": {
+    "visits": 42,
+    "comparisons": 21,
+    "models_default": 30,
+    "same_sets_order_text_images": true,
+    "browser_errors": 0,
+    "horizontal_overflow": false,
+    "source_pixel_accepted": false
+  },
+  "preferences_browser": {
+    "cases": 4,
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "widths": [
+      390,
+      1440
+    ],
+    "fresh_anonymous_contexts": true,
+    "business_writes": false,
+    "query_hash_cookie_reload_back_and_escape": true,
+    "api_mocking": false
+  },
+  "seo_default_browser": {
+    "visits": 58,
+    "public_comparisons": 16,
+    "passed": true,
+    "prior_failure_retained": true,
+    "prior_failure": "Original Next zh/help transient duplicate JSON-LD; cause remains unresolved, strict new run passed"
+  },
+  "retained_preference_failure": {
+    "symptom": "Main Gin anonymous current cart503 blocked no-cart preferences",
+    "cause": "Main Gin STOREFRONT_ORIGIN absent; handler unconfigured",
+    "fix": "Only add explicit local9300 origin and controlled restart sole Gin; no database or gates change",
+    "main_rollback_executed": false
+  },
+  "historical_runtime_correction": "9300 is the existing Astro dev PID29403 with source HMR. Prior narrative describing an old static build was incorrect; historical reports and frozen hashes retained. No9300 restart/build was needed or performed.",
+  "evidence": [
+    {
+      "path": "log/gin-preview-mysql/schema-upgrade-102/result.json",
+      "sha256": "205f1ee5613804d9ccd7d1b25c567e73b9f0f32040218fad87fa46c6ba4cc4b9"
+    },
+    {
+      "path": "log/gin-preview-mysql/origin-fix-102/result.json",
+      "sha256": "ad694aff2cf9fca7dbffef9765a16631402c363ef56fc6dc43a4c13b7b991784"
+    },
+    {
+      "path": "logs/gin-migration/main-102-final/post-cutover-verification.json",
+      "sha256": "4381a183ff8d70a535a0831e66054fb2d2c727b36a9ba9cb0669eb87965fc1e4"
+    },
+    {
+      "path": "logs/gin-migration/preview-102-upgrade-15bf79e93807/report.json",
+      "sha256": "d95ea48ea3180b515d2a1ac84567a499cfdc0542d46a9a12a8ee1a340e9889fd"
+    },
+    {
+      "path": "logs/gin-migration/main-102-final/report.json",
+      "sha256": "3ccbbb8ae842c7b58126bff225cd3cb18e74f0847caeb03b4e41423b89d942fe"
+    },
+    {
+      "path": "logs/gin-migration/store-source-compare-1793540988050/result.json",
+      "sha256": "91dcbdf921952002fc5e7dc8de64394c175b2b522724770c82082cba0612fcbf"
+    },
+    {
+      "path": "logs/gin-migration/preferences-preview-1793541203539/report.json",
+      "sha256": "6aba79431121a076de1619cbe602c8f56b1f47eb5846cf8b725c20c7747d2264"
+    },
+    {
+      "path": "logs/gin-migration/seo-defaults-1793541202765/report.json",
+      "sha256": "212c7fcf10826448ad0b3fd024f8a7c443257b1cb2b10f08433314cb1b88b50a"
+    },
+    {
+      "path": "logs/gin-migration/seo-artifacts-1793540965403/report.json",
+      "sha256": "2a8d8d72416348aeab60dba7b38326efdf106fbe420e5440a30ccbf166fe988e"
+    },
+    {
+      "path": "logs/gin-migration/preferences-preview-1793541024308/failure.json",
+      "sha256": "c2c6891060b481c5a9a737dbaaa8d0aae2c7d5938416f6371c1998d9bcd503de"
+    },
+    {
+      "path": "logs/gin-migration/seo-defaults-1793540965161/observations.json",
+      "sha256": "4352db1bfda2e34c09a1296094d5ad244cc4dc24c8cc2e339dc201527d86d17e"
+    },
+    {
+      "path": "retail/admin/tests/preferences-preview.native.mjs",
+      "sha256": "e5abbae78853db6423eb5d988d132a940a1a19dddaaebe55fcf09c6a243abdf4"
+    },
+    {
+      "path": "logs/gin-migration/main-102-final/cart-gates.json",
+      "sha256": "615b213ad93228b9ae5c65425618718026f31fb50db808003278457ab81ddf0a"
+    },
+    {
+      "path": "logs/gin-migration/main-102-final/payment-oracle-path-fix.json",
+      "sha256": "d44040713d3b9039818e20c45c966946902966f0ac7529b02ffab1252508d47a"
+    }
+  ],
+  "real_provider_called": false,
+  "shared_mysql_modified": false,
+  "commerce_gates_enabled": false,
+  "goal_complete": false,
+  "remaining": [
+    "Existing payment session coordination for context changes and cart transfer",
+    "Enabled translation semantics and historical SEO/data remaining audits",
+    "Whole C01-C11 functionality and complete joint acceptance"
+  ],
+  "explicit_cart_gates": {
+    "cart_commands": [
+      [
+        "cart.access",
+        "1",
+        "0"
+      ],
+      [
+        "cart.create",
+        "1",
+        "0"
+      ]
+    ],
+    "runtimes": {
+      "cart_context_runtime": [
+        [
+          "1",
+          "0"
+        ]
+      ],
+      "cart_checkout_runtime": [
+        [
+          "1",
+          "0"
+        ]
+      ],
+      "cart_payment_refresh_runtime": [
+        [
+          "1",
+          "0"
+        ]
+      ],
+      "cart_completion_runtime": [
+        [
+          "1",
+          "0"
+        ]
+      ],
+      "customer_cart_runtime": [
+        [
+          "1",
+          "0"
+        ]
+      ]
+    },
+    "business_gates_closed": true,
+    "business_writes": false
+  },
+  "payment_oracle_locator_fix": {
+    "passed": true,
+    "cases_unchanged": 15,
+    "original_source_sha256": "6e154a7b4d628a2fff7df1e8df54fe695bdfa40af6fdabe4fc8cf20dc622e064",
+    "only_fixture_field_changed": "source_file",
+    "source_resolved_from_actual_backend_dependencies": true,
+    "no_application_database_or_provider": true,
+    "go_original_callback_and_invalid_facts_tests": "passed"
+  }
+}

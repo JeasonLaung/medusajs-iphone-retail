@@ -54,7 +54,9 @@ func checkWarehouseIntake(t *testing.T, db *gorm.DB, actor identity.User, call f
 			t.Fatal("variant picker leaks relations")
 		}
 	}
-	exec("INSERT INTO catalog_options(id,title,is_exclusive,created_at,updated_at) VALUES('warehouse-search-color','Color',FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('warehouse-search-capacity','Storage',FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
+	// Search-specific product definitions must not duplicate shared names
+	// from other fixtures in this database. Preserve their independent IDs.
+	exec("INSERT INTO catalog_options(id,title,is_exclusive,created_at,updated_at) VALUES('warehouse-search-color','Color',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('warehouse-search-capacity','Storage',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
 	exec("INSERT INTO catalog_option_values(id,value,option_id,created_at,updated_at) VALUES('warehouse-search-blue','Blue','warehouse-search-color',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('warehouse-search-128','128 GB','warehouse-search-capacity',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
 	exec("INSERT INTO catalog_variant_options(variant_id,option_value_id) VALUES('intake-v','warehouse-search-blue'),('intake-v','warehouse-search-128')")
 	for _, query := range []string{"i14+B+85+128GB+%E8%93%9D%E8%89%B2", "IPHONE+14+128+85%25+%E8%93%9D"} {

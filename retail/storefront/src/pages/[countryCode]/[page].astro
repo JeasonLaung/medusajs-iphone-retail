@@ -14,7 +14,7 @@ const locale=segment.endsWith('-zh')?'zh-CN':'en'
 const copy=getLayoutCopy(locale),home=getHomeCopy(locale)
 let shell:Awaited<ReturnType<typeof loadPublicPage>>=null
 let unavailable=false
-if(page==='about'||page==='help'||page==='blog'){
+if(page==='about'||page==='help'||page==='blog'||page==='reviews'){
  try{shell=await loadPublicPage(GIN_API_ORIGIN,segment)}catch{unavailable=true}
 }
 let service:Awaited<ReturnType<typeof loadServiceContacts>>=[],serviceFailed=false
@@ -24,11 +24,11 @@ if(shell&&page==='help'){
 if(unavailable)Astro.response.status=503
 else if(!shell)Astro.response.status=404
 const error=unavailable?(locale==='en'?'This page is temporarily unavailable. Please try again.':'页面暂时无法加载，请稍后重试。'):(locale==='en'?'Page not found':'未找到页面')
-const title=page==='about'?copy.about:page==='help'?copy.help:home.blogTitle
-const description=page==='about'?copy.aboutDescription:page==='help'?copy.helpDescription:home.blogDescription
+const title=page==='about'?copy.about:page==='help'?copy.help:page==='reviews'?copy.reviews:home.blogTitle
+const description=page==='about'?copy.aboutDescription:page==='help'?copy.helpDescription:page==='reviews'?copy.reviewsDescription:home.blogDescription
 ---
-<Storefront segment={segment} title={shell?`${title} | EuroRefurb`:error} description={shell?description:undefined} canonicalPath={shell?`/${segment}/${page}`:undefined} shell={shell??undefined}>
- {shell ? page==='blog'?<Journal segment={segment}/>:<Information kind={page==='help'?'help':'about'} segment={segment}>
+<Storefront segment={segment} title={shell?title:error} description={shell?description:undefined} canonicalPath={shell?`/${segment}/${page}`:undefined} shell={shell??undefined}>
+ {shell ? page==='blog'?<Journal segment={segment}/>:<Information kind={page==='help'?'help':page==='reviews'?'reviews':'about'} segment={segment}>
   {page==='help'&&<CustomerService contacts={service} locale={locale} failed={serviceFailed} client:load/>}
  </Information> : <div class="content-container py-16"><h1>{error}</h1></div>}
 </Storefront>

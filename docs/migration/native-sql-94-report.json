@@ -1,0 +1,54 @@
+{
+  "format_version": 1,
+  "scope": "Complete frozen 94-migration source, original 23 owned SQL suites on isolated native MySQL with InnoDB foreign keys",
+  "goal_complete": false,
+  "snapshot": "logs/gin-migration/native-sql-local-a5621ad026e4",
+  "source_file_count": 1743,
+  "source_and_test_log_fingerprints_verified": true,
+  "production_source_unchanged": true,
+  "original_assertions_preserved": true,
+  "migrations": 94,
+  "suite_count": 23,
+  "all_suites_passed": true,
+  "skipped": 0,
+  "database_names": 37,
+  "mysql": {
+    "version": "9.6.0",
+    "native_foreign_keys": true,
+    "foreign_key_checks": true,
+    "networking_disabled": true,
+    "socket_private": true,
+    "pid": 19190
+  },
+  "cleanup": {
+    "owned_databases_absent": true,
+    "redis_prefix_cleaned": true,
+    "last_deleted_keys": 0,
+    "shared_server_not_restarted": true
+  },
+  "mysql_cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true
+  },
+  "evidence_sha256": {
+    "manifest.json": "5318fbe760f3e2c13364bf7e5d4ed22de6d1ba27078c6779e1b4643be214c9fe",
+    "result.json": "cbb3c7b5a52af092f64486749c23e985829d0ac96eee87085c6ebd86d7b2d033",
+    "mysql-runtime.json": "7158af2c9b9308e267075fef75435840a10db02fa137810021e29f23568e6cbb",
+    "cleanup.json": "fab32adfe0c95381e147293d7b6c988b757ed4f5d738ea780c4d03ec313115b6",
+    "mysql-cleanup.json": "cb57fabbaf097925a808cccc0c0fa638438ec798f04aebd9c23838141ef5a242",
+    "mysql-server.log": "2da3e11e7af931f3234a355b5327fbc9d790952f21c69bec2fb00a7ba481dd7b"
+  },
+  "shared_main_3306_default_mode_full_suite_passed": false,
+  "shared_default_mode_failure_evidence": "logs/gin-migration/native-sql-local-41d3d64a4bf9/tax-native-diagnostic.log",
+  "upstream_related_bug": "https://bugs.mysql.com/bug.php?id=121438",
+  "real_provider_called": false,
+  "mail_sent": false,
+  "main_schema_upgraded": false,
+  "warning": "Some original test log summary JSON contains old historical migration numbers; actual current source assertions and snapshot migration count are 94. Those stale static summaries are not used as the applied migration evidence.",
+  "binary_retention": "Completed test binary removed after fingerprint verification to preserve development disk headroom; immutable source snapshot, logs and SHA retained.",
+  "binary_cleanup_receipt": "logs/gin-migration/owned-sql-binary-cleanup.json",
+  "source_retention": "Byte-verified frozen source archive retained as frozen-sources.tar.gz under snapshot; tar -xzf restores original file paths. Logs, manifests and SHA remain uncompressed.",
+  "source_archive_receipts": "logs/gin-migration/owned-sql-source-archives.json"
+}

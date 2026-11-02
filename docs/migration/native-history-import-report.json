@@ -1,0 +1,264 @@
+{
+  "format_version": 1,
+  "date": "2026-10-31",
+  "scope": "Native loopback PostgreSQL v2 snapshot into dedicated native MySQL; reviewed catalog, historical customers/orders/inventory, optional protected payments, fulfillment/tax, historical carts and device prerequisites. This is not full migration acceptance.",
+  "source_snapshot_sha256": "3b8c007f7854ab61b46009df87ba8f3a082dacfb3bf03078b0c16dcede367aab",
+  "source_counts": {
+    "tables": 159,
+    "rows": 21913,
+    "fields": 190286,
+    "sql_null_fields": 68274,
+    "ordinary_convertible_rows": 21870,
+    "protected_rows": 37,
+    "history_policy_rows": 39,
+    "invalid_rows": 0
+  },
+  "source_logical_reference_gaps": 349,
+  "source_physical_reference_gaps": 0,
+  "verified_imported_source_tables": 110,
+  "verified_imported_source_rows": 21784,
+  "final_commit_report": {
+    "snapshot_sha256": "3b8c007f7854ab61b46009df87ba8f3a082dacfb3bf03078b0c16dcede367aab",
+    "catalog": {
+      "snapshot_sha256": "3b8c007f7854ab61b46009df87ba8f3a082dacfb3bf03078b0c16dcede367aab",
+      "source_rows": 21913,
+      "catalog_and_dependency_tables": 46,
+      "catalog_and_dependency_rows": 17821,
+      "unresolved_outside_scope": {
+        "device.location_id": 11,
+        "device.source_id": 44,
+        "order_exchange.order_id": 9,
+        "order_exchange_item.item_id": 9,
+        "order_fulfillment.fulfillment_id": 72,
+        "order_fulfillment.order_id": 72,
+        "order_payment_collection.order_id": 17,
+        "order_payment_collection.payment_collection_id": 9,
+        "reservation_item.line_item_id": 72,
+        "return.order_id": 17,
+        "return_item.item_id": 17
+      },
+      "applied": true,
+      "complete_import_accepted": false
+    },
+    "order_rows": 324,
+    "historical_customer_rows": 4,
+    "inventory_rows": 1710,
+    "payment_history_source_rows": 74,
+    "payment_history_staged": true,
+    "payment_reference_holds": 0,
+    "preserved_deleted_reservation_missing_line_items": 72,
+    "order_reference_holds": 222,
+    "inventory_quantity_holds": 0,
+    "target_verified": true,
+    "applied": true,
+    "complete_import_accepted": false,
+    "logistics": {
+      "fulfillment_rows": 148,
+      "fulfillment_reference_holds": 0,
+      "tax_rows": 8,
+      "tax_reference_holds": 0
+    },
+    "cart_history_source_rows": 135,
+    "carts": {
+      "rows": 135,
+      "runtime_authority_restored": false
+    },
+    "device_prerequisite_source_rows": 1560,
+    "device_prerequisites": {
+      "source_rows": 2,
+      "tracking_rows": 1558,
+      "supply_rows": 0,
+      "device_identities_imported": false,
+      "commands_enabled": false
+    }
+  },
+  "current_order_reference_audit": {
+    "read_only": true,
+    "immutable_observations": 254,
+    "now_resolved": 32,
+    "still_missing": 222,
+    "observations_released_or_deleted": false,
+    "by_parent": [
+      {
+        "parent_table": "carts",
+        "parent_column": "id",
+        "immutable_observations": 9,
+        "now_resolved": 9,
+        "still_missing": 0
+      },
+      {
+        "parent_table": "fulfillments",
+        "parent_column": "id",
+        "immutable_observations": 78,
+        "now_resolved": 6,
+        "still_missing": 72
+      },
+      {
+        "parent_table": "order_line_items",
+        "parent_column": "id",
+        "immutable_observations": 26,
+        "now_resolved": 0,
+        "still_missing": 26
+      },
+      {
+        "parent_table": "orders",
+        "parent_column": "id",
+        "immutable_observations": 115,
+        "now_resolved": 0,
+        "still_missing": 115
+      },
+      {
+        "parent_table": "payment_collections",
+        "parent_column": "id",
+        "immutable_observations": 26,
+        "now_resolved": 17,
+        "still_missing": 9
+      }
+    ]
+  },
+  "same_snapshot_replay_unchanged": true,
+  "decimal_last_place_conflict_rejected": true,
+  "conflict_changes_always_rolled_back": true,
+  "login_and_ownership_fingerprints_unchanged": true,
+  "old_accounts_or_sessions_restored": false,
+  "go_all_passed": true,
+  "go_all_note": "Complete default Go suite passed for the fixed schema86 import release; unrelated opt-in SQL suites skip. Native transcripts establish real-DB coverage.",
+  "go_vet_passed": true,
+  "python_export_tests_passed": 7,
+  "native_postgresql_metadata_guard_tests_passed": 10,
+  "service_checks": [
+    {
+      "url": "http://127.0.0.1:9001/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9001/app",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8000/dk-en/store",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9100/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9200/",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/store",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/products/swappie-iphone-15-pro",
+      "status": 200
+    }
+  ],
+  "recent_service_log_review": [
+    {
+      "path": "log/gin-local-api-current.log",
+      "recent_lines_reviewed": 150,
+      "error_severity_markers": 0
+    },
+    {
+      "path": "log/gin-local-admin.log",
+      "recent_lines_reviewed": 8,
+      "error_severity_markers": 0
+    },
+    {
+      "path": "retail/storefront/.astro/dev.log",
+      "recent_lines_reviewed": 40,
+      "error_severity_markers": 0
+    },
+    {
+      "path": "log/202610311113.log",
+      "recent_lines_reviewed": 150,
+      "error_severity_markers": 0
+    }
+  ],
+  "browser_observations": [
+    "English product list contains imported catalog and prices",
+    "English product detail reports Available to order from imported inventory; cart remains disabled"
+  ],
+  "payment_channel_for_current_acceptance": "Mollie",
+  "real_provider_payment_or_refund_called": false,
+  "mail_sent": false,
+  "workers_launched": false,
+  "complete_import_accepted": false,
+  "open_work": [
+    "remaining snapshot domains and private file reconciliation",
+    "source logical gaps and remaining target dependencies",
+    "native checkout enablement and complete current shopper flow",
+    "Mollie test configuration and actual channel acceptance",
+    "approved test recipient and real mail acceptance",
+    "remaining C01-C11 joint acceptance"
+  ],
+  "transcript_sha256": {
+    "native-catalog-replay-test.log": "af63dbc2e80103fc92c6d72b6443dda9ba60e6be9c3e4e0e65f05dd9cfa99a56",
+    "native-history-replay-test.log": "c0332068d7f9d4697bd55ceaa98813ed665ba0c43837542fb51f4e2695a457cd",
+    "native-history-committed-replay-test.log": "d380d556516d68b9712ac71548c2791927bb4a8a732c163358b6b3d8083316bd",
+    "native-payment-history-rollback-test.log": "f40aa807021830220fec1dcb850b1a0bfb07bafa811faf1214f07e75caceb07c",
+    "native-payment-history-committed-replay-test.log": "40016d93a80a8815ab537f269c210d8327eca4367044597953ead017079cc22b",
+    "native-logistics-history-rollback-test.log": "1fc6ba0eef4732ecf0a3d316d120533ca11d62093cfc09da77c4c59065251e85",
+    "native-logistics-history-committed-replay-test.log": "79682f5d3753839c92c550b0e48a52b165294f9de751c3d6f883c5c2cce8d88a",
+    "native-cart-history-rollback-test.log": "6d19f8b794dd5fd8f7d89118905c7d027b0a078bedcd29b1f83fba26a56c1731",
+    "native-cart-history-committed-replay-test.log": "819ef7958e4acff13fd9eb233f70031e7afb439f88381b434bae4b7c851274fb",
+    "native-device-prerequisites-full-rollback-test.log": "e3148bd3212a72ee39951abbae57427ddd736ddac94894ff228ae0b0a0ed2832",
+    "native-device-prerequisites-committed-replay-test.log": "779dd04f207b62a5e10ee2ca5cd2b3c2acaecfb734459e0c3e676063db9f842d"
+  },
+  "go_transcript_sha256": "8b3d735db88e05b10189b9003f9a68f430d7508a3bca5b7ef0642c80501d58bb",
+  "implementation_sha256_lf": {
+    "retail/backend/cmd/import-catalog/main.go": "d2e61f2864da232fc5d3f39b8ffa11dc2782b5d0b149e3455146f92ae0fde90e",
+    "retail/backend/cmd/import-catalog/main_test.go": "8e4089b706e21c6a0eecf0c8ba6d057634844476e981e52b7818e53118f717f3",
+    "retail/backend/cmd/import-history/main.go": "1d4f78d52bc050517f216e6a894570a78fb2161f64550796b91996b43aff7899",
+    "retail/backend/cmd/import-history/main_test.go": "8e4089b706e21c6a0eecf0c8ba6d057634844476e981e52b7818e53118f717f3",
+    "retail/backend/internal/catalogimport/cart_history.go": "fe5f168e2c71d2b282c151b10c584ee7be6c5db99d5b31d96b33aef4c4968941",
+    "retail/backend/internal/catalogimport/cart_history_test.go": "d918aeef3885d53554a788d97dd2fec579ce92890f841848c9eba5d85dca86b8",
+    "retail/backend/internal/catalogimport/device_prerequisites.go": "c74871327571cacc497aafca9d17b78a2da0ad6a3367fd88450e488785a1e10d",
+    "retail/backend/internal/catalogimport/native_snapshot_test.go": "9563a173b2856d86da9c2b81c734d4198b99ebb96eb17b1ac1f91d9e0c444d53",
+    "retail/backend/internal/catalogimport/snapshot.go": "e283de064655750bd0f85d1dee18fa3462797dd46521eddb5e5851fa73915015",
+    "retail/backend/internal/catalogimport/snapshot_test.go": "3e35a6f61736ed6ea23cec23aba62cdd126627a8bb3dcae04386cc6a5a66e7b4",
+    "retail/backend/internal/historyimport/carts.go": "2c8d7c7367b25e3542ecdf0059af6b48b2a8bb063ec81b4a0c0e99876db35a2f",
+    "retail/backend/internal/historyimport/device_prerequisites.go": "d44088c642341a8be2e2fe7605608356ea8b19b622e92d34807acd6222c1ed5f",
+    "retail/backend/internal/historyimport/device_prerequisites_native_test.go": "a276c4d81ee4957f1af178c146348b62966486a81ec5c6fe1c9e30e917b2d0f0",
+    "retail/backend/internal/historyimport/logistics.go": "1aca5fb8f4854b095ca5bd607760ce7bc9e37a6b00a5851fa29b8bcc11e527f5",
+    "retail/backend/internal/historyimport/native_snapshot_test.go": "b352c193c3819971b1d83a6c799f9cf2f3de2dbc179f919586dec05eae6025b8",
+    "retail/backend/internal/historyimport/snapshot.go": "94a667cd4ff73817f10d6a795f07766e735d2f14f4ce049a4c208d37e4360d79",
+    "retail/backend/internal/historyimport/snapshot_test.go": "6f1170657ce9b54b64b9d31a2f49a9cc6dcc124a7c3754e13e5095ffef5da6dc",
+    "retail/backend/internal/rowimport/history_customer_test.go": "0c0eeaf2e7e5d8892d16bc4c2e1825273e57b9a7da31e82a1d0688d3dbe4e301",
+    "retail/backend/internal/rowimport/inspect.go": "cf859b0f7539742e1042af7582bc79103e30d82eae2a9966f46731948436e025",
+    "retail/backend/internal/rowimport/layout.go": "0c472820a8f89ab7d6b89159b122a192734fd90665b66930281e6d3e37b09403"
+  },
+  "historical_cart_rows": 135,
+  "historical_cart_tables": 10,
+  "cart_runtime_authority_restored": false,
+  "owned_historical_cart_conflict_rejected": true,
+  "cart_last_place_decimal_conflict_rejected": true,
+  "committed_phase_implementation_sha256_lf": {
+    "retail/backend/cmd/import-catalog/main.go": "d2e61f2864da232fc5d3f39b8ffa11dc2782b5d0b149e3455146f92ae0fde90e",
+    "retail/backend/cmd/import-catalog/main_test.go": "8e4089b706e21c6a0eecf0c8ba6d057634844476e981e52b7818e53118f717f3",
+    "retail/backend/cmd/import-history/main.go": "1d4f78d52bc050517f216e6a894570a78fb2161f64550796b91996b43aff7899",
+    "retail/backend/cmd/import-history/main_test.go": "8e4089b706e21c6a0eecf0c8ba6d057634844476e981e52b7818e53118f717f3",
+    "retail/backend/internal/catalogimport/cart_history.go": "fe5f168e2c71d2b282c151b10c584ee7be6c5db99d5b31d96b33aef4c4968941",
+    "retail/backend/internal/catalogimport/cart_history_test.go": "d918aeef3885d53554a788d97dd2fec579ce92890f841848c9eba5d85dca86b8",
+    "retail/backend/internal/catalogimport/device_prerequisites.go": "c74871327571cacc497aafca9d17b78a2da0ad6a3367fd88450e488785a1e10d",
+    "retail/backend/internal/catalogimport/native_snapshot_test.go": "9563a173b2856d86da9c2b81c734d4198b99ebb96eb17b1ac1f91d9e0c444d53",
+    "retail/backend/internal/catalogimport/snapshot.go": "e283de064655750bd0f85d1dee18fa3462797dd46521eddb5e5851fa73915015",
+    "retail/backend/internal/catalogimport/snapshot_test.go": "3e35a6f61736ed6ea23cec23aba62cdd126627a8bb3dcae04386cc6a5a66e7b4",
+    "retail/backend/internal/historyimport/carts.go": "2c8d7c7367b25e3542ecdf0059af6b48b2a8bb063ec81b4a0c0e99876db35a2f",
+    "retail/backend/internal/historyimport/device_prerequisites.go": "d44088c642341a8be2e2fe7605608356ea8b19b622e92d34807acd6222c1ed5f",
+    "retail/backend/internal/historyimport/device_prerequisites_native_test.go": "a276c4d81ee4957f1af178c146348b62966486a81ec5c6fe1c9e30e917b2d0f0",
+    "retail/backend/internal/historyimport/logistics.go": "1aca5fb8f4854b095ca5bd607760ce7bc9e37a6b00a5851fa29b8bcc11e527f5",
+    "retail/backend/internal/historyimport/native_snapshot_test.go": "b352c193c3819971b1d83a6c799f9cf2f3de2dbc179f919586dec05eae6025b8",
+    "retail/backend/internal/historyimport/snapshot.go": "94a667cd4ff73817f10d6a795f07766e735d2f14f4ce049a4c208d37e4360d79",
+    "retail/backend/internal/historyimport/snapshot_test.go": "6f1170657ce9b54b64b9d31a2f49a9cc6dcc124a7c3754e13e5095ffef5da6dc",
+    "retail/backend/internal/rowimport/history_customer_test.go": "0c0eeaf2e7e5d8892d16bc4c2e1825273e57b9a7da31e82a1d0688d3dbe4e301",
+    "retail/backend/internal/rowimport/inspect.go": "cf859b0f7539742e1042af7582bc79103e30d82eae2a9966f46731948436e025",
+    "retail/backend/internal/rowimport/layout.go": "0c472820a8f89ab7d6b89159b122a192734fd90665b66930281e6d3e37b09403"
+  },
+  "evidence_scope_note": "The committed 110-table phase uses fixed commit 8d7aed6 plus reviewed importer overlays and its complete 86-migration schema. Workspace order runtime v2/migration87 is still in progress; it is not mixed into this release. No schema-version check is bypassed.",
+  "device_prerequisite_report": "native-device-prerequisites-report.json",
+  "release_report": "native-import-release-report.json"
+}

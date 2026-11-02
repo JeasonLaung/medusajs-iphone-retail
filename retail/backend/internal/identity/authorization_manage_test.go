@@ -21,7 +21,7 @@ func checkAuthorizationManagement(t *testing.T, db *gorm.DB, actor identity.User
 	directory := func() authorization.Directory {
 		t.Helper()
 		var d authorization.Directory
-		if json.Unmarshal(get("/api/admin/authorization", 200), &d) != nil || len(d.Actions) != 31 || len(d.Members) == 0 {
+		if json.Unmarshal(get("/api/admin/authorization", 200), &d) != nil || len(d.Actions) != 35 || len(d.Members) == 0 {
 			t.Fatal("permission directory invalid")
 		}
 		return d

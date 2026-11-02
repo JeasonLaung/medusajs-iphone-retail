@@ -1,0 +1,1495 @@
+[
+  {
+    "input": "example.com",
+    "terms": [
+      "example.com"
+    ],
+    "tokens": [
+      {
+        "kind": "host",
+        "text": "example.com",
+        "lexemes": [
+          "example.com"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "EXAMPLE.COM",
+    "terms": [
+      "example.com"
+    ],
+    "tokens": [
+      {
+        "kind": "host",
+        "text": "EXAMPLE.COM",
+        "lexemes": [
+          "example.com"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "example.com/path/index.html",
+    "terms": [
+      "example.com/path/index.html",
+      "example.com",
+      "/path/index.html"
+    ],
+    "tokens": [
+      {
+        "kind": "url",
+        "text": "example.com/path/index.html",
+        "lexemes": [
+          "example.com/path/index.html"
+        ]
+      },
+      {
+        "kind": "host",
+        "text": "example.com",
+        "lexemes": [
+          "example.com"
+        ]
+      },
+      {
+        "kind": "url_path",
+        "text": "/path/index.html",
+        "lexemes": [
+          "/path/index.html"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "http://example.com/stuff/index.html",
+    "terms": [
+      "example.com/stuff/index.html",
+      "example.com",
+      "/stuff/index.html"
+    ],
+    "tokens": [
+      {
+        "kind": "protocol",
+        "text": "http://",
+        "lexemes": null
+      },
+      {
+        "kind": "url",
+        "text": "example.com/stuff/index.html",
+        "lexemes": [
+          "example.com/stuff/index.html"
+        ]
+      },
+      {
+        "kind": "host",
+        "text": "example.com",
+        "lexemes": [
+          "example.com"
+        ]
+      },
+      {
+        "kind": "url_path",
+        "text": "/stuff/index.html",
+        "lexemes": [
+          "/stuff/index.html"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "https://example.com",
+    "terms": [
+      "example.com"
+    ],
+    "tokens": [
+      {
+        "kind": "protocol",
+        "text": "https://",
+        "lexemes": null
+      },
+      {
+        "kind": "host",
+        "text": "example.com",
+        "lexemes": [
+          "example.com"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "https://example.com/",
+    "terms": [
+      "example.com"
+    ],
+    "tokens": [
+      {
+        "kind": "protocol",
+        "text": "https://",
+        "lexemes": null
+      },
+      {
+        "kind": "host",
+        "text": "example.com",
+        "lexemes": [
+          "example.com"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "/",
+        "lexemes": null
+      }
+    ]
+  },
+  {
+    "input": "ftp://example.com/files",
+    "terms": [
+      "example.com/files",
+      "example.com",
+      "/files"
+    ],
+    "tokens": [
+      {
+        "kind": "protocol",
+        "text": "ftp://",
+        "lexemes": null
+      },
+      {
+        "kind": "url",
+        "text": "example.com/files",
+        "lexemes": [
+          "example.com/files"
+        ]
+      },
+      {
+        "kind": "host",
+        "text": "example.com",
+        "lexemes": [
+          "example.com"
+        ]
+      },
+      {
+        "kind": "url_path",
+        "text": "/files",
+        "lexemes": [
+          "/files"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "https://example.com:8080/a-b?q=phones#top",
+    "terms": [
+      "example.com:8080/a-b?q=phones#top",
+      "example.com:8080",
+      "/a-b?q=phones#top"
+    ],
+    "tokens": [
+      {
+        "kind": "protocol",
+        "text": "https://",
+        "lexemes": null
+      },
+      {
+        "kind": "url",
+        "text": "example.com:8080/a-b?q=phones#top",
+        "lexemes": [
+          "example.com:8080/a-b?q=phones#top"
+        ]
+      },
+      {
+        "kind": "host",
+        "text": "example.com:8080",
+        "lexemes": [
+          "example.com:8080"
+        ]
+      },
+      {
+        "kind": "url_path",
+        "text": "/a-b?q=phones#top",
+        "lexemes": [
+          "/a-b?q=phones#top"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "www.example.com/a%20b",
+    "terms": [
+      "www.example.com/a%20b",
+      "www.example.com",
+      "/a%20b"
+    ],
+    "tokens": [
+      {
+        "kind": "url",
+        "text": "www.example.com/a%20b",
+        "lexemes": [
+          "www.example.com/a%20b"
+        ]
+      },
+      {
+        "kind": "host",
+        "text": "www.example.com",
+        "lexemes": [
+          "www.example.com"
+        ]
+      },
+      {
+        "kind": "url_path",
+        "text": "/a%20b",
+        "lexemes": [
+          "/a%20b"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "/usr/local/foo.txt",
+    "terms": [
+      "/usr/local/foo.txt"
+    ],
+    "tokens": [
+      {
+        "kind": "file",
+        "text": "/usr/local/foo.txt",
+        "lexemes": [
+          "/usr/local/foo.txt"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "foo.txt",
+    "terms": [
+      "foo.txt"
+    ],
+    "tokens": [
+      {
+        "kind": "host",
+        "text": "foo.txt",
+        "lexemes": [
+          "foo.txt"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "foo/bar",
+    "terms": [
+      "foo/bar"
+    ],
+    "tokens": [
+      {
+        "kind": "file",
+        "text": "foo/bar",
+        "lexemes": [
+          "foo/bar"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "./foo.txt",
+    "terms": [
+      "./foo.txt"
+    ],
+    "tokens": [
+      {
+        "kind": "file",
+        "text": "./foo.txt",
+        "lexemes": [
+          "./foo.txt"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "../foo.txt",
+    "terms": [
+      "../foo.txt"
+    ],
+    "tokens": [
+      {
+        "kind": "file",
+        "text": "../foo.txt",
+        "lexemes": [
+          "../foo.txt"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "C:/catalog/phones.txt",
+    "terms": [
+      "c",
+      "/catalog/phones.txt"
+    ],
+    "tokens": [
+      {
+        "kind": "asciiword",
+        "text": "C",
+        "lexemes": [
+          "c"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": ":",
+        "lexemes": null
+      },
+      {
+        "kind": "file",
+        "text": "/catalog/phones.txt",
+        "lexemes": [
+          "/catalog/phones.txt"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "example.co.uk",
+    "terms": [
+      "example.co.uk"
+    ],
+    "tokens": [
+      {
+        "kind": "host",
+        "text": "example.co.uk",
+        "lexemes": [
+          "example.co.uk"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "127.0.0.1",
+    "terms": [
+      "127.0.0.1"
+    ],
+    "tokens": [
+      {
+        "kind": "version",
+        "text": "127.0.0.1",
+        "lexemes": [
+          "127.0.0.1"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "http://127.0.0.1:9300/dk-en/store",
+    "terms": [
+      "127.0.0.1",
+      "9300/dk-en/store"
+    ],
+    "tokens": [
+      {
+        "kind": "protocol",
+        "text": "http://",
+        "lexemes": null
+      },
+      {
+        "kind": "version",
+        "text": "127.0.0.1",
+        "lexemes": [
+          "127.0.0.1"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": ":",
+        "lexemes": null
+      },
+      {
+        "kind": "file",
+        "text": "9300/dk-en/store",
+        "lexemes": [
+          "9300/dk-en/store"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "file_name.txt",
+    "terms": [
+      "file_name.txt"
+    ],
+    "tokens": [
+      {
+        "kind": "host",
+        "text": "file_name.txt",
+        "lexemes": [
+          "file_name.txt"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "foo_bar",
+    "terms": [
+      "foo",
+      "bar"
+    ],
+    "tokens": [
+      {
+        "kind": "asciiword",
+        "text": "foo",
+        "lexemes": [
+          "foo"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "_",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "bar",
+        "lexemes": [
+          "bar"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "foo-bar.txt",
+    "terms": [
+      "foo-bar.txt"
+    ],
+    "tokens": [
+      {
+        "kind": "host",
+        "text": "foo-bar.txt",
+        "lexemes": [
+          "foo-bar.txt"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "a@localhost",
+    "terms": [
+      "localhost"
+    ],
+    "tokens": [
+      {
+        "kind": "asciiword",
+        "text": "a",
+        "lexemes": []
+      },
+      {
+        "kind": "blank",
+        "text": "@",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "localhost",
+        "lexemes": [
+          "localhost"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "name@example.com.",
+    "terms": [
+      "name@example.com"
+    ],
+    "tokens": [
+      {
+        "kind": "email",
+        "text": "name@example.com",
+        "lexemes": [
+          "name@example.com"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": ".",
+        "lexemes": null
+      }
+    ]
+  },
+  {
+    "input": "https://example.com?a=1",
+    "terms": [
+      "example.com",
+      "1"
+    ],
+    "tokens": [
+      {
+        "kind": "protocol",
+        "text": "https://",
+        "lexemes": null
+      },
+      {
+        "kind": "host",
+        "text": "example.com",
+        "lexemes": [
+          "example.com"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "?",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "a",
+        "lexemes": []
+      },
+      {
+        "kind": "blank",
+        "text": "=",
+        "lexemes": null
+      },
+      {
+        "kind": "uint",
+        "text": "1",
+        "lexemes": [
+          "1"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "https://example.com/#phone",
+    "terms": [
+      "example.com/#phone",
+      "example.com",
+      "/#phone"
+    ],
+    "tokens": [
+      {
+        "kind": "protocol",
+        "text": "https://",
+        "lexemes": null
+      },
+      {
+        "kind": "url",
+        "text": "example.com/#phone",
+        "lexemes": [
+          "example.com/#phone"
+        ]
+      },
+      {
+        "kind": "host",
+        "text": "example.com",
+        "lexemes": [
+          "example.com"
+        ]
+      },
+      {
+        "kind": "url_path",
+        "text": "/#phone",
+        "lexemes": [
+          "/#phone"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "<b>verified</b>",
+    "terms": [
+      "verifi"
+    ],
+    "tokens": [
+      {
+        "kind": "tag",
+        "text": "<b>",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "verified",
+        "lexemes": [
+          "verifi"
+        ]
+      },
+      {
+        "kind": "tag",
+        "text": "</b>",
+        "lexemes": null
+      }
+    ]
+  },
+  {
+    "input": "<a href=\"secret.html\">phones</a>",
+    "terms": [
+      "phone"
+    ],
+    "tokens": [
+      {
+        "kind": "tag",
+        "text": "<a href=\"secret.html\">",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "phones",
+        "lexemes": [
+          "phone"
+        ]
+      },
+      {
+        "kind": "tag",
+        "text": "</a>",
+        "lexemes": null
+      }
+    ]
+  },
+  {
+    "input": "<!-- hidden quantity -->visible",
+    "terms": [
+      "visibl"
+    ],
+    "tokens": [
+      {
+        "kind": "tag",
+        "text": "<!-- hidden quantity -->",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "visible",
+        "lexemes": [
+          "visibl"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "<?xml version=\"1.0\"?>visible",
+    "terms": [
+      "visibl"
+    ],
+    "tokens": [
+      {
+        "kind": "tag",
+        "text": "<?xml version=\"1.0\"?>",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "visible",
+        "lexemes": [
+          "visibl"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "&amp;",
+    "terms": [],
+    "tokens": [
+      {
+        "kind": "entity",
+        "text": "&amp;",
+        "lexemes": null
+      }
+    ]
+  },
+  {
+    "input": "&#123;",
+    "terms": [],
+    "tokens": [
+      {
+        "kind": "entity",
+        "text": "&#123;",
+        "lexemes": null
+      }
+    ]
+  },
+  {
+    "input": "&#xA0;",
+    "terms": [],
+    "tokens": [
+      {
+        "kind": "entity",
+        "text": "&#xA0;",
+        "lexemes": null
+      }
+    ]
+  },
+  {
+    "input": "<5 phones",
+    "terms": [
+      "5",
+      "phone"
+    ],
+    "tokens": [
+      {
+        "kind": "blank",
+        "text": "<",
+        "lexemes": null
+      },
+      {
+        "kind": "uint",
+        "text": "5",
+        "lexemes": [
+          "5"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": " ",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "phones",
+        "lexemes": [
+          "phone"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "<tag data-value='hidden'>visible</tag>",
+    "terms": [
+      "visibl"
+    ],
+    "tokens": [
+      {
+        "kind": "tag",
+        "text": "<tag data-value='hidden'>",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "visible",
+        "lexemes": [
+          "visibl"
+        ]
+      },
+      {
+        "kind": "tag",
+        "text": "</tag>",
+        "lexemes": null
+      }
+    ]
+  },
+  {
+    "input": "unfinished <b title=\"hidden\"",
+    "terms": [
+      "unfinish",
+      "b",
+      "titl",
+      "hidden"
+    ],
+    "tokens": [
+      {
+        "kind": "asciiword",
+        "text": "unfinished",
+        "lexemes": [
+          "unfinish"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": " ",
+        "lexemes": null
+      },
+      {
+        "kind": "blank",
+        "text": "<",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "b",
+        "lexemes": [
+          "b"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": " ",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "title",
+        "lexemes": [
+          "titl"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "=\"",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "hidden",
+        "lexemes": [
+          "hidden"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "\"",
+        "lexemes": null
+      }
+    ]
+  },
+  {
+    "input": "a &notanentity; b",
+    "terms": [
+      "b"
+    ],
+    "tokens": [
+      {
+        "kind": "asciiword",
+        "text": "a",
+        "lexemes": []
+      },
+      {
+        "kind": "blank",
+        "text": " ",
+        "lexemes": null
+      },
+      {
+        "kind": "entity",
+        "text": "&notanentity;",
+        "lexemes": null
+      },
+      {
+        "kind": "blank",
+        "text": " ",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "b",
+        "lexemes": [
+          "b"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "foo.html/path",
+    "terms": [
+      "foo.html/path",
+      "foo.html",
+      "/path"
+    ],
+    "tokens": [
+      {
+        "kind": "url",
+        "text": "foo.html/path",
+        "lexemes": [
+          "foo.html/path"
+        ]
+      },
+      {
+        "kind": "host",
+        "text": "foo.html",
+        "lexemes": [
+          "foo.html"
+        ]
+      },
+      {
+        "kind": "url_path",
+        "text": "/path",
+        "lexemes": [
+          "/path"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "https://example.com/a_b/phone-13",
+    "terms": [
+      "example.com/a_b/phone-13",
+      "example.com",
+      "/a_b/phone-13"
+    ],
+    "tokens": [
+      {
+        "kind": "protocol",
+        "text": "https://",
+        "lexemes": null
+      },
+      {
+        "kind": "url",
+        "text": "example.com/a_b/phone-13",
+        "lexemes": [
+          "example.com/a_b/phone-13"
+        ]
+      },
+      {
+        "kind": "host",
+        "text": "example.com",
+        "lexemes": [
+          "example.com"
+        ]
+      },
+      {
+        "kind": "url_path",
+        "text": "/a_b/phone-13",
+        "lexemes": [
+          "/a_b/phone-13"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "(https://example.com/a)",
+    "terms": [
+      "example.com/a)",
+      "example.com",
+      "/a)"
+    ],
+    "tokens": [
+      {
+        "kind": "blank",
+        "text": "(",
+        "lexemes": null
+      },
+      {
+        "kind": "protocol",
+        "text": "https://",
+        "lexemes": null
+      },
+      {
+        "kind": "url",
+        "text": "example.com/a)",
+        "lexemes": [
+          "example.com/a)"
+        ]
+      },
+      {
+        "kind": "host",
+        "text": "example.com",
+        "lexemes": [
+          "example.com"
+        ]
+      },
+      {
+        "kind": "url_path",
+        "text": "/a)",
+        "lexemes": [
+          "/a)"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "http://example.com/phones?x=1&y=2",
+    "terms": [
+      "example.com/phones?x=1&y=2",
+      "example.com",
+      "/phones?x=1&y=2"
+    ],
+    "tokens": [
+      {
+        "kind": "protocol",
+        "text": "http://",
+        "lexemes": null
+      },
+      {
+        "kind": "url",
+        "text": "example.com/phones?x=1&y=2",
+        "lexemes": [
+          "example.com/phones?x=1&y=2"
+        ]
+      },
+      {
+        "kind": "host",
+        "text": "example.com",
+        "lexemes": [
+          "example.com"
+        ]
+      },
+      {
+        "kind": "url_path",
+        "text": "/phones?x=1&y=2",
+        "lexemes": [
+          "/phones?x=1&y=2"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "http://example.com:abc/path",
+    "terms": [
+      "example.com",
+      "abc/path"
+    ],
+    "tokens": [
+      {
+        "kind": "protocol",
+        "text": "http://",
+        "lexemes": null
+      },
+      {
+        "kind": "host",
+        "text": "example.com",
+        "lexemes": [
+          "example.com"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": ":",
+        "lexemes": null
+      },
+      {
+        "kind": "file",
+        "text": "abc/path",
+        "lexemes": [
+          "abc/path"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "<:tag>word</:tag>",
+    "terms": [
+      "word",
+      "tag"
+    ],
+    "tokens": [
+      {
+        "kind": "tag",
+        "text": "<:tag>",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "word",
+        "lexemes": [
+          "word"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "<",
+        "lexemes": null
+      },
+      {
+        "kind": "blank",
+        "text": "/:",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "tag",
+        "lexemes": [
+          "tag"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": ">",
+        "lexemes": null
+      }
+    ]
+  },
+  {
+    "input": "<1tag>word</1tag>",
+    "terms": [
+      "1tag",
+      "word",
+      "/1tag"
+    ],
+    "tokens": [
+      {
+        "kind": "blank",
+        "text": "<",
+        "lexemes": null
+      },
+      {
+        "kind": "numword",
+        "text": "1tag",
+        "lexemes": [
+          "1tag"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": ">",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "word",
+        "lexemes": [
+          "word"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "<",
+        "lexemes": null
+      },
+      {
+        "kind": "file",
+        "text": "/1tag",
+        "lexemes": [
+          "/1tag"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": ">",
+        "lexemes": null
+      }
+    ]
+  },
+  {
+    "input": "<script>hidden quantity</script>visible",
+    "terms": [
+      "visibl"
+    ],
+    "tokens": [
+      {
+        "kind": "tag",
+        "text": "<script>",
+        "lexemes": null
+      },
+      {
+        "kind": "blank",
+        "text": "hidden quantity",
+        "lexemes": null
+      },
+      {
+        "kind": "tag",
+        "text": "</script>",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "visible",
+        "lexemes": [
+          "visibl"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "<style>hidden quantity</style>visible",
+    "terms": [
+      "visibl"
+    ],
+    "tokens": [
+      {
+        "kind": "tag",
+        "text": "<style>",
+        "lexemes": null
+      },
+      {
+        "kind": "blank",
+        "text": "hidden quantity",
+        "lexemes": null
+      },
+      {
+        "kind": "tag",
+        "text": "</style>",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "visible",
+        "lexemes": [
+          "visibl"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "<script>hidden quantity",
+    "terms": [],
+    "tokens": [
+      {
+        "kind": "tag",
+        "text": "<script>",
+        "lexemes": null
+      },
+      {
+        "kind": "blank",
+        "text": "hidden quantity",
+        "lexemes": null
+      }
+    ]
+  },
+  {
+    "input": "<stylex>hidden</stylex>visible",
+    "terms": [
+      "hidden",
+      "visibl"
+    ],
+    "tokens": [
+      {
+        "kind": "tag",
+        "text": "<stylex>",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "hidden",
+        "lexemes": [
+          "hidden"
+        ]
+      },
+      {
+        "kind": "tag",
+        "text": "</stylex>",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "visible",
+        "lexemes": [
+          "visibl"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "<script type=\"text/javascript\">hidden</script>visible",
+    "terms": [
+      "visibl"
+    ],
+    "tokens": [
+      {
+        "kind": "tag",
+        "text": "<script type=\"text/javascript\">",
+        "lexemes": null
+      },
+      {
+        "kind": "blank",
+        "text": "hidden",
+        "lexemes": null
+      },
+      {
+        "kind": "tag",
+        "text": "</script>",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "visible",
+        "lexemes": [
+          "visibl"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "<script>one<style>two</style>three</script>four",
+    "terms": [
+      "three",
+      "four"
+    ],
+    "tokens": [
+      {
+        "kind": "tag",
+        "text": "<script>",
+        "lexemes": null
+      },
+      {
+        "kind": "blank",
+        "text": "one",
+        "lexemes": null
+      },
+      {
+        "kind": "tag",
+        "text": "<style>",
+        "lexemes": null
+      },
+      {
+        "kind": "blank",
+        "text": "two",
+        "lexemes": null
+      },
+      {
+        "kind": "tag",
+        "text": "</style>",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "three",
+        "lexemes": [
+          "three"
+        ]
+      },
+      {
+        "kind": "tag",
+        "text": "</script>",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "four",
+        "lexemes": [
+          "four"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "<b title=\">\">visible</b>",
+    "terms": [
+      "visibl"
+    ],
+    "tokens": [
+      {
+        "kind": "tag",
+        "text": "<b title=\">\">",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "visible",
+        "lexemes": [
+          "visibl"
+        ]
+      },
+      {
+        "kind": "tag",
+        "text": "</b>",
+        "lexemes": null
+      }
+    ]
+  },
+  {
+    "input": "a@example.com:123",
+    "terms": [
+      "a@example.com:123"
+    ],
+    "tokens": [
+      {
+        "kind": "email",
+        "text": "a@example.com:123",
+        "lexemes": [
+          "a@example.com:123"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "http://example.com:8080",
+    "terms": [
+      "example.com:8080"
+    ],
+    "tokens": [
+      {
+        "kind": "protocol",
+        "text": "http://",
+        "lexemes": null
+      },
+      {
+        "kind": "host",
+        "text": "example.com:8080",
+        "lexemes": [
+          "example.com:8080"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "//example.com/path",
+    "terms": [
+      "/example.com/path"
+    ],
+    "tokens": [
+      {
+        "kind": "blank",
+        "text": "/",
+        "lexemes": null
+      },
+      {
+        "kind": "file",
+        "text": "/example.com/path",
+        "lexemes": [
+          "/example.com/path"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "https://m.example.com/a\\b",
+    "terms": [
+      "m.example.com/a",
+      "m.example.com",
+      "/a",
+      "b"
+    ],
+    "tokens": [
+      {
+        "kind": "protocol",
+        "text": "https://",
+        "lexemes": null
+      },
+      {
+        "kind": "url",
+        "text": "m.example.com/a",
+        "lexemes": [
+          "m.example.com/a"
+        ]
+      },
+      {
+        "kind": "host",
+        "text": "m.example.com",
+        "lexemes": [
+          "m.example.com"
+        ]
+      },
+      {
+        "kind": "url_path",
+        "text": "/a",
+        "lexemes": [
+          "/a"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "\\",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "b",
+        "lexemes": [
+          "b"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "example.com/路径",
+    "terms": [
+      "example.com",
+      "路径"
+    ],
+    "tokens": [
+      {
+        "kind": "host",
+        "text": "example.com",
+        "lexemes": [
+          "example.com"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "/",
+        "lexemes": null
+      },
+      {
+        "kind": "word",
+        "text": "路径",
+        "lexemes": [
+          "路径"
+        ]
+      }
+    ]
+  }
+]

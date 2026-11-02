@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/eurorefurb/retail/internal/sessionstore"
 	"github.com/gin-gonic/gin"
@@ -28,22 +29,24 @@ type HTTPSessions interface {
 }
 
 type HTTPOptions struct {
-	Sessions          HTTPSessions
-	Origin            string
-	StoreID           string
-	Secure            bool
-	ManualProviderIDs []string
-	InitialPayment    *InitialPaymentOptions
+	Sessions              HTTPSessions
+	Origin                string
+	StoreID               string
+	Secure                bool
+	ManualProviderIDs     []string
+	InitialPayment        *InitialPaymentOptions
+	ContextPaymentDeletes *payments.DeleteAdapters
 }
 
 type HTTPHandler struct {
-	db              *gorm.DB
-	sessions        HTTPSessions
-	origin          string
-	store           string
-	secure          bool
-	manualProviders []string
-	initialPayment  *InitialPaymentOptions
+	db                    *gorm.DB
+	sessions              HTTPSessions
+	origin                string
+	store                 string
+	secure                bool
+	manualProviders       []string
+	initialPayment        *InitialPaymentOptions
+	contextPaymentDeletes *payments.DeleteAdapters
 }
 
 func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
@@ -73,7 +76,10 @@ func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
 		}
 		initial = &copied
 	}
-	return &HTTPHandler{db: db, sessions: options.Sessions, origin: options.Origin, store: options.StoreID, secure: options.Secure, initialPayment: initial, manualProviders: append([]string(nil), options.ManualProviderIDs...)}, nil
+	if options.ContextPaymentDeletes != nil && initial == nil {
+		return nil, ErrConfiguration
+	}
+	return &HTTPHandler{db: db, sessions: options.Sessions, origin: options.Origin, store: options.StoreID, secure: options.Secure, initialPayment: initial, contextPaymentDeletes: options.ContextPaymentDeletes, manualProviders: append([]string(nil), options.ManualProviderIDs...)}, nil
 }
 
 // An unconfigured handler keeps these routes closed. Public catalog capability
@@ -98,6 +104,9 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/carts/:id/complete", h.Complete)
 	private.GET("/carts/:id/contacts", h.ContactDetail)
 	private.POST("/carts/:id/contacts", h.Contacts)
+	private.POST("/carts/:id/context", h.Context)
+	private.POST("/carts/:id/context-payment", h.ContextPayment)
+	private.POST("/carts/:id/context-payment/restore", h.ContextPaymentRestore)
 	private.POST("/carts/:id/line-items", h.AddItem)
 	private.POST("/carts/:id/line-items/:line", h.SetItem)
 }

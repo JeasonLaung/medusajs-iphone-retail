@@ -1,3 +1,4 @@
+import {publicImageURL} from '../../lib/public-image-url.ts'
 import type {SearchClient} from 'instantsearch.js'
 import {publicJSON} from '../../lib/gin-public.ts'
 import {amountParts} from '../../lib/money.ts'
@@ -55,7 +56,7 @@ export function algoliaResult(r:NativeResult,request:Request){
  // Include the numeric facet even though the API intentionally returns raw
  // decimal distribution data instead of decimal strings as object keys.
  facets[price]={}
- const hits=r.hits.map(h=>({objectID:h.id,id:h.id,title:h.title,handle:h.handle,thumbnail:h.thumbnail,...Object.fromEntries(attributes.map(a=>[a,h.values[a]])),color_options:h.colors.map(c=>c.name),color_hexes:h.colors.map(c=>c.hex),model_storage_options:h.model_storage_options,stocked_storage_options:h.stocked_storage_options,stocked_color_options:h.stocked_color_options,__gin_price:h.price,...h.price?{[price]:displayNumber(h.price.min),[priceAttribute('max_price',currency)]:displayNumber(h.price.max),[priceAttribute('original_price',currency)]:h.price.original===null?null:displayNumber(h.price.original),[priceAttribute('on_sale',currency)]:h.price.on_sale}:{}}))
+ const hits=r.hits.map(h=>({objectID:h.id,id:h.id,title:h.title,handle:h.handle,thumbnail:h.thumbnail === null ? null : publicImageURL(h.thumbnail),...Object.fromEntries(attributes.map(a=>[a,h.values[a]])),color_options:h.colors.map(c=>c.name),color_hexes:h.colors.map(c=>c.hex),model_storage_options:h.model_storage_options,stocked_storage_options:h.stocked_storage_options,stocked_color_options:h.stocked_color_options,__gin_price:h.price,...h.price?{[price]:displayNumber(h.price.min),[priceAttribute('max_price',currency)]:displayNumber(h.price.max),[priceAttribute('original_price',currency)]:h.price.original===null?null:displayNumber(h.price.original),[priceAttribute('on_sale',currency)]:h.price.on_sale}:{}}))
  return {hits:p.hitsPerPage===0?[]:hits,nbHits:r.count,page:(p.page??0),nbPages:p.hitsPerPage===0?0:Math.ceil(r.count/(p.hitsPerPage??20)),hitsPerPage:p.hitsPerPage??20,processingTimeMS:0,query:p.query??'',params:'',index:request.indexName,facets,facets_stats:amounts.length?{[price]:{min:amounts[0],max:amounts[amounts.length-1],avg:sum/amounts.length,sum}}:{},exhaustiveNbHits:true,exhaustiveFacetsCount:true,renderingContent:{},__gin_distribution:amounts}
 }
 export function createSearchClient(regionID:string,currency:string,origin?:string,fetcher:typeof fetch=fetch,observe?:(results:NativeResult[])=>void):SearchClient{

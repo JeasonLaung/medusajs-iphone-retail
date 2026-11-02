@@ -121,6 +121,7 @@ func checkMollieCheckoutConsumer(t *testing.T, ctx context.Context, db *gorm.DB,
 		return out + reserved + state + fmt.Sprint(allocator)
 	}
 	ref, in := start()
+	checkContextPaymentComplete(t, ctx, db, ref, in, o)
 	trackedCart = ref.CartID
 	for _, s := range []string{"pending", "authorized"} {
 		attempt := notify(ref, s)

@@ -3,23 +3,23 @@
   "scope": "Original pure computeActions body with artificial read services; no SQL, registration, adjustment persistence or checkout",
   "sources": [
     {
-      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/services/promotion-module.js",
+      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2_@medusajs+framework@2.21.2_@medusajs+cli@2.21.2_@types+node@_5f5263ad3cd0eb49ddd3d24aaeaeb292/node_modules/@medusajs/promotion/dist/services/promotion-module.js",
       "sha256": "cb1eaec98335f68e91377548998b498167652ccecf9a3874bbb0192964cb13f1"
     },
     {
-      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/usage.js",
+      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2_@medusajs+framework@2.21.2_@medusajs+cli@2.21.2_@types+node@_5f5263ad3cd0eb49ddd3d24aaeaeb292/node_modules/@medusajs/promotion/dist/utils/compute-actions/usage.js",
       "sha256": "819328d0e7c3b855f95b6b9a4e640cc9fabc4572343796d63ebe34abe8506af8"
     },
     {
-      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/line-items.js",
+      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2_@medusajs+framework@2.21.2_@medusajs+cli@2.21.2_@types+node@_5f5263ad3cd0eb49ddd3d24aaeaeb292/node_modules/@medusajs/promotion/dist/utils/compute-actions/line-items.js",
       "sha256": "c43baa69baf44b6888bfece03aba4162c530e7739a9103c6153ddad3b887c6c3"
     },
     {
-      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/shipping-methods.js",
+      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2_@medusajs+framework@2.21.2_@medusajs+cli@2.21.2_@types+node@_5f5263ad3cd0eb49ddd3d24aaeaeb292/node_modules/@medusajs/promotion/dist/utils/compute-actions/shipping-methods.js",
       "sha256": "d2f2803a44513074f633f4606695af132da520c532b5efe9856064be9dd5d405"
     },
     {
-      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2__8d7b0843e3e994912dbd75f941a7e94b/node_modules/@medusajs/promotion/dist/utils/compute-actions/buy-get.js",
+      "file": "medusa-store/node_modules/.pnpm/@medusajs+promotion@2.21.2_@medusajs+framework@2.21.2_@medusajs+cli@2.21.2_@types+node@_5f5263ad3cd0eb49ddd3d24aaeaeb292/node_modules/@medusajs/promotion/dist/utils/compute-actions/buy-get.js",
       "sha256": "f5f1e7fce022b4868ab047ca44270a6a154f444ff380f303c570b939a3da2a47"
     }
   ],
@@ -1448,6 +1448,53 @@
       "expected": {
         "actions": [],
         "discounts": {}
+      }
+    },
+    {
+      "name": "context-usd-high-precision-percentage",
+      "promotions": [
+        {
+          "id": "context-usd-auto",
+          "code": "context-usd-auto",
+          "type": "standard",
+          "used": 0,
+          "is_tax_inclusive": false,
+          "application_method": {
+            "type": "percentage",
+            "target_type": "items",
+            "value": "20",
+            "allocation": "across"
+          }
+        }
+      ],
+      "context": {
+        "currency_code": "usd",
+        "items": [
+          {
+            "id": "context-line",
+            "subtotal": "42.000000000000000000001",
+            "quantity": 1,
+            "original_total": "42.000000000000000000001",
+            "product_id": "phone"
+          }
+        ]
+      },
+      "attributeUsages": {},
+      "expected": {
+        "actions": [
+          {
+            "Action": "addItemAdjustment",
+            "Code": "context-usd-auto",
+            "PromotionID": "context-usd-auto",
+            "ItemID": "context-line",
+            "ShippingMethodID": "",
+            "Amount": "8.4",
+            "TaxInclusive": false
+          }
+        ],
+        "discounts": {
+          "context-line": "8.4"
+        }
       }
     }
   ]

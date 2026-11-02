@@ -1,0 +1,62 @@
+{
+  "checked_at": "2026-11-01T10:02:49.200929+00:00",
+  "scope": "DHL official fixed-sample source implementation; not runtime delivery or C01 completion",
+  "source_sha256": {
+    "retail/backend/internal/shippingdemo/dhl.go": "7b7a79de5f6ec27efc8c382765697577044cec394b2dac19e4274d3224cefe81",
+    "retail/backend/internal/shippingdemo/dhl_test.go": "6dcd67bdf42348334d6394c46460d56eaf814d9447b7c4396b63c781ad5f68a5",
+    "retail/backend/internal/server/router.go": "a8a9bce9230a9e51321dd168dc3e0ccbc29397bc58ce95670ca9b5821dc02f3b",
+    "retail/storefront/src/components/order/shipping-demo.tsx": "4842ef4a8b451a6ba4a62fa17e3642ece9ee1728db77e93843eba7066c86b1c4",
+    "retail/storefront/src/components/order/dhl-demo-copy.json": "0cd75bfb8fb50d91c3c82709aa66fa362b20edfb70bc11568a1c9b5c0bbef7c9"
+  },
+  "source_reference": "medusa-store/apps/backend/src/lib/dhl-official-demo.ts",
+  "copy_byte_identical": true,
+  "go_test": {
+    "command": "DHL_DEMO_LIVE_TEST=1 go test -race -count=1 -v ./internal/shippingdemo ./internal/server",
+    "exit_code": 0,
+    "official_sample_network_test": "passed; 12 events; only fixed public sample",
+    "checks": [
+      "30 second cache and exact expiry",
+      "20 concurrent viewers share upstream request",
+      "waiting viewer cancellation",
+      "malformed and trailing JSON rejected",
+      "failure retry",
+      "upstream HTTP failures",
+      "production 404 without network access",
+      "no-store responses",
+      "caller query cannot replace sample tracking number",
+      "failure response does not expose upstream detail",
+      "15 second timeout and no redirects"
+    ]
+  },
+  "go_vet": {
+    "packages": [
+      "./internal/shippingdemo",
+      "./internal/server"
+    ],
+    "exit_code": 0
+  },
+  "astro_check": {
+    "exit_code": 0,
+    "files": 443,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 17
+  },
+  "current_services": {
+    "9001/health": 200,
+    "9001/app": 200,
+    "9100/health": 200,
+    "9300/dk-en/store": 200,
+    "9300/dk-zh/ui": 200,
+    "store_initial_html_product_links": 30
+  },
+  "disk_free_bytes": 628613120,
+  "complete_sql_regression_minimum_free_bytes": 2147483648,
+  "main_binary_replaced": false,
+  "schema_changed": false,
+  "business_writes": false,
+  "public_astro_route_connected": false,
+  "account_demo_connected": false,
+  "browser_joint_verified": false,
+  "goal_complete": false
+}

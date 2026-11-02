@@ -1,0 +1,43 @@
+{
+  "format_version": 1,
+  "scope": "Frozen95 initial native SQL regression; incomplete, CartRuntime failed after22 passes",
+  "goal_complete": false,
+  "migrations": 95,
+  "snapshot": "logs/gin-migration/native-sql-local-5358054eb901",
+  "source_file_count": 1748,
+  "source_fingerprints_verified": true,
+  "passed_sql_suites": 22,
+  "failed_sql_suite": "CartRuntime",
+  "failure": "cart stock unavailable after CART_INITIAL_RECOVERY_REHEARSAL; no CUSTOMER_CART_TRANSFER_REHEARSAL pass marker",
+  "new_transfer_accepted": false,
+  "all_sql_suites_passed": false,
+  "default_go_test_exit_code": 0,
+  "go_vet_exit_code": 0,
+  "cleanup": {
+    "owned_databases_absent": true,
+    "redis_prefix_cleaned": true,
+    "last_deleted_keys": 16,
+    "shared_server_not_restarted": true
+  },
+  "mysql_cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true
+  },
+  "main_database_written": false,
+  "evidence_sha256": {
+    "manifest.json": "7d6916d1e77ef9aa69c2fc831b6e0c6da494c7728f7da8752a0e86019852517f",
+    "progress.json": "aac9d3544a5baecdcdec4647465b38e05ef47dedc41d3644ac1150f9a92073e9",
+    "CartRuntime.log": "70e77de6bacf2806e9298c9c69f28ae96b39b8937f045d73e3709515a90ca60e",
+    "cleanup.json": "907fe36add5dfde7c0c0b1d890b8189fd2508063bd1b6e169625e71849e3dca2",
+    "mysql-cleanup.json": "cb57fabbaf097925a808cccc0c0fa638438ec798f04aebd9c23838141ef5a242",
+    "mysql-runtime.json": "cabd968006e2bd9b62b0e0cf4f6b58b02e483bdc2a8c36ae200896048384a3ea",
+    "default-go-test.log": "26942106bd00691678f8770088e35a8129e037d88773e07d11e087a8eba969be",
+    "default-go-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "binary_retention": "Completed test binary removed after fingerprint verification to preserve development disk headroom; immutable source snapshot, logs and SHA retained.",
+  "binary_cleanup_receipt": "logs/gin-migration/owned-sql-binary-cleanup.json",
+  "source_retention": "Byte-verified frozen source archive retained as frozen-sources.tar.gz under snapshot; tar -xzf restores original file paths. Logs, manifests and SHA remain uncompressed.",
+  "source_archive_receipts": "logs/gin-migration/owned-sql-source-archives.json"
+}

@@ -29,7 +29,7 @@ func TestOwnedCartRuntime(t *testing.T) {
 		t.Skip("owned MySQL/Redis required")
 	}
 	duration := 100 * time.Second
-	if os.Getenv("CHECKOUT_FULFILLMENT") == "1" {
+	if os.Getenv("CHECKOUT_FULFILLMENT") == "1" || os.Getenv("CHECKOUT_CART_TRANSFER") == "1" {
 		duration = 6 * time.Minute
 	}
 	if os.Getenv("CHECKOUT_REFUND") == "1" || os.Getenv("CHECKOUT_REPAIR") == "1" || os.Getenv("CHECKOUT_EXCHANGE") == "1" {
@@ -62,7 +62,7 @@ func TestOwnedCartRuntime(t *testing.T) {
 		t.Fatal("cart runtime migration plan unavailable")
 	}
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 88 {
+	if err != nil || r.Applied != 103 {
 		t.Fatal("cart runtime migration failed")
 	}
 	exec := func(query string, args ...any) {
@@ -335,10 +335,11 @@ func TestOwnedCartRuntime(t *testing.T) {
 	checkCartPaymentCreationExecution(t, ctx, gdb)
 	checkCartItems(t, ctx, gdb, sessions)
 	checkCartContacts(t, ctx, gdb, sessions)
+	checkCartContext(t, ctx, gdb, sessions)
 	checkCartHTTP(t, ctx, gdb, sessions, redisClient)
 	exec(`UPDATE cart_command_capabilities SET enabled=FALSE WHERE command='cart.access'`)
 	if _, err := cart.Inspect(ctx, gdb, "shop", separate.Reference); err != cart.ErrSchema {
 		t.Fatal("disabled access capability accepted")
 	}
-	t.Log(`CART_RUNTIME_REHEARSAL {"migrations":88,"atomic_cart_authority_receipt":true,"anonymous_only":true,"real_redis_to_mysql_binding":true,"concurrent_creates":8,"fresh_create":1,"scoped_idempotency":true,"changed_request_rejected":true,"current_authority_on_replay":true,"legacy_id_denied":true,"cross_store_denied":true,"closed_deleted_customer_bound_denied":true,"region_currency_locale_validated":true,"receipt_failure_atomic":true,"autocommit_nested_create_rejected":true,"mysql_lock_wait_observed":true,"stale_version_rejected":true,"caller_rollback_preserved":true,"stale_redis_generation_denied":true,"disabled_capability_denied":true,"http_integrated":false,"checkout_integrated":false}`)
+	t.Log(`CART_RUNTIME_REHEARSAL {"migrations":96,"atomic_cart_authority_receipt":true,"anonymous_only":true,"real_redis_to_mysql_binding":true,"concurrent_creates":8,"fresh_create":1,"scoped_idempotency":true,"changed_request_rejected":true,"current_authority_on_replay":true,"legacy_id_denied":true,"cross_store_denied":true,"closed_deleted_customer_bound_denied":true,"region_currency_locale_validated":true,"receipt_failure_atomic":true,"autocommit_nested_create_rejected":true,"mysql_lock_wait_observed":true,"stale_version_rejected":true,"caller_rollback_preserved":true,"stale_redis_generation_denied":true,"disabled_capability_denied":true,"http_integrated":false,"checkout_integrated":false}`)
 }

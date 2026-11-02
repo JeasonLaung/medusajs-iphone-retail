@@ -1,0 +1,62 @@
+{
+  "format_version": 1,
+  "recorded_at": "2026-10-31T12:30:27.138423+00:00",
+  "scope": "Historical product reviews from complete actual source, isolated native MySQL only",
+  "goal_complete": false,
+  "native": {
+    "source_sha256": "3b8c007f7854ab61b46009df87ba8f3a082dacfb3bf03078b0c16dcede367aab",
+    "migrations": 94,
+    "empty_and_committed_replay": true,
+    "cli_rollback_and_apply": true,
+    "actual_source_reviews": 2,
+    "goal_complete": false,
+    "complete_import_accepted": false,
+    "real_payments": false,
+    "real_mail": false
+  },
+  "source_statuses": {
+    "pending": 2,
+    "approved": 0,
+    "rejected": 0
+  },
+  "migration_apply": "Applied 94, skipped 0 migrations",
+  "checks": [
+    "full source SHA and compiled row/reference validation",
+    "empty-target import and exact replay",
+    "actual CLI rollback then commit",
+    "committed-target replay",
+    "closed runtime required",
+    "rating range, missing product/customer/order parents rejected",
+    "new account binding and changed moderation/content rejected",
+    "inventory/reservation/price/device/payment/auth facts unchanged",
+    "full caller rollback restored fingerprint"
+  ],
+  "cleanup": {
+    "owned_database_absent": true,
+    "owned_users_absent": true
+  },
+  "go_all_packages_exit": 0,
+  "go_vet_exit": 0,
+  "main_trial_database_changed": false,
+  "main_trial_runtime_gates_changed": false,
+  "remaining": [
+    "main trial database upgrade/import and release acceptance",
+    "all 23 native SQL suites on current migration plan",
+    "remaining C01-C11 closure",
+    "real Mollie sandbox and permitted mail delivery"
+  ],
+  "evidence_sha256": {
+    "logs/gin-migration/product-review-history-2e09bbe3e202/native-committed-target.log": "876adf7ec242656bf19ec66894da53b4e9daa61c8ad9391d6524167db40d2f03",
+    "logs/gin-migration/product-review-history-2e09bbe3e202/native-empty-target.log": "ccd31c623d41231e9e5adf2e289f2b36ae502d3ba6d41893fdee7846c9f5a1eb",
+    "logs/gin-migration/product-review-history-2e09bbe3e202/cli-rollback.log": "2fe0eaf863062754aea71d1cd5a2512b6e1b10b0bdf1927f52bf9e7fe1e02385",
+    "logs/gin-migration/product-review-history-2e09bbe3e202/migrate.log": "a298820ff02f320b3775f29cc1a97aede1002079476445890fb89c6e8b98545c",
+    "logs/gin-migration/product-review-history-2e09bbe3e202/cli-apply.log": "cad9c650462c2d7efbcc9da498fc14e7411664657b5ed80b83d16e0b0fec14ed",
+    "logs/gin-migration/product-review-history-2e09bbe3e202/resources.json": "9d7c98efbe1fc482b40111816bf6ecf6164e6d46bbaaa68aa7b23a835272a7c8",
+    "logs/gin-migration/product-review-history-2e09bbe3e202/result.json": "838ed86c303a304bbbe8a1063344c75088bc069cdffc5b66846c7001de966f4a",
+    "logs/gin-migration/product-review-history-2e09bbe3e202/cleanup.json": "e226592b11aeabc74565848447cb9fb82cff35d08ebf72140424987d3ac0dd13",
+    "log/product-review-history-go-test.log": "36a02f6ccee07855b256c772a0b61b992193cfb3791493478ff5e99d6740a311",
+    "log/product-review-history-go-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "services_evidence": "logs/gin-migration/product-reviews-native-services.json",
+  "services_sha256": "30f359b3a8d461d2f7954fbb69140128f46ddd2f41a738ded7762e4d5f7e7441"
+}

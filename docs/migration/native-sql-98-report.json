@@ -1,0 +1,160 @@
+{
+  "suites": [
+    {
+      "suite": "PromotionUsage",
+      "exit_code": 0,
+      "log_sha256": "35891f1e0a727f68369cdcffccb13afa1578f28ce9d53126c70ad96e58c002f3"
+    },
+    {
+      "suite": "PromotionSchema",
+      "exit_code": 0,
+      "log_sha256": "f12bd661e7360dd447fa063c04f9c5633f12cdf37b043dd58227af89b6883aaf"
+    },
+    {
+      "suite": "GeoSchema",
+      "exit_code": 0,
+      "log_sha256": "3639780dbf1badd60476d3a1216ccc623b9bfce78dcf392eabc545459acce0cb"
+    },
+    {
+      "suite": "CartPriceRefresh",
+      "exit_code": 0,
+      "log_sha256": "5c62c07d8a89381eba64a86659ad35f5c512369efbd85ff3e9466eaded60ffe6"
+    },
+    {
+      "suite": "CartTaxRefresh",
+      "exit_code": 0,
+      "log_sha256": "ca5331d5aab343e972c48c3b9ea0c5badbc6f5f29c0cfc8d34e2734b0047a2e1"
+    },
+    {
+      "suite": "TaxImport",
+      "exit_code": 0,
+      "log_sha256": "5d055e516406667d08cccca9dae2091178facc3bc278e0f83da89cfc40976ddb"
+    },
+    {
+      "suite": "TaxSchema",
+      "exit_code": 0,
+      "log_sha256": "a427e3d690288482757dfa0e2b103a97797f4a75ccff8b41545c56292db565e9"
+    },
+    {
+      "suite": "AdminAuthentication",
+      "exit_code": 0,
+      "log_sha256": "f5722530a9b1f239a3313a4c63d20e25d7535b3c9080e85366cdd8c2b416080d"
+    },
+    {
+      "suite": "CatalogSchemaTransition",
+      "exit_code": 0,
+      "log_sha256": "4541c95534f5b6ef87060cf777c6f319dcb86653c35d4dd25d82f03439b9c498"
+    },
+    {
+      "suite": "ProductEdits",
+      "exit_code": 0,
+      "log_sha256": "76cb560cc5cb6650de9e4cb8bc69c29db3302a26762594b07ec4e4aa717117bd"
+    },
+    {
+      "suite": "ProductPrices",
+      "exit_code": 0,
+      "log_sha256": "a0d32aaa76f65a5b51054d1abf57a1e9feb07a5516dfa25482468bb49129a63a"
+    },
+    {
+      "suite": "ProductInventory",
+      "exit_code": 0,
+      "log_sha256": "6f6875c80bdbe70889e9445de3616425a1788ffc67779e976518937665a30b6c"
+    },
+    {
+      "suite": "InventoryStockEdits",
+      "exit_code": 0,
+      "log_sha256": "17185bb3a5c31f2ff3e53d67d6db24674bc87e0821fdd66469e9582a57aa0410"
+    },
+    {
+      "suite": "ReservationTransactions",
+      "exit_code": 0,
+      "log_sha256": "70514060d07c9d8ce57e5b7fcde3e38b5f6fd8d5546fd3ad51e99a718231531f"
+    },
+    {
+      "suite": "OrderSchema",
+      "exit_code": 0,
+      "log_sha256": "27096de9a3312eb6f7cba4ecb0c543114efbbee8b9000f361401363f695d3bf7"
+    },
+    {
+      "suite": "OrderImport",
+      "exit_code": 0,
+      "log_sha256": "b4387958af28e6cd401647a5c7c6025a3b85bc2876fa71657330e25168c7ae41"
+    },
+    {
+      "suite": "CustomerHistory",
+      "exit_code": 0,
+      "log_sha256": "8d98c8aeb5559f680920e8f00896e49c6b69ed88156192e6e4b74ad10481bb8c"
+    },
+    {
+      "suite": "OrderRead",
+      "exit_code": 0,
+      "log_sha256": "755e3ac0454ab29e3513f42734d781b1ea44ecfc80eb6bf189543d6181302080"
+    },
+    {
+      "suite": "PaymentSchema",
+      "exit_code": 0,
+      "log_sha256": "f6bb8188e720c063c21f18b3ed572028efab05fa57555662f4d95efa4fe78a9c"
+    },
+    {
+      "suite": "PaymentImport",
+      "exit_code": 0,
+      "log_sha256": "e6297f89248700564008bbdcd73426d8bc02d3132fe70fdaa39040bd3f6fa6fd"
+    },
+    {
+      "suite": "FulfillmentHistory",
+      "exit_code": 0,
+      "log_sha256": "e033050c0c8873f78adc5e67e0cddb62efcf18ca95af06617235e4c39c8d3df6"
+    },
+    {
+      "suite": "CartSchema",
+      "exit_code": 0,
+      "log_sha256": "1e32f0530dd30a8509b68784ce562c4b35b23f67d41f5cb9aeeedfc61498ab2e"
+    },
+    {
+      "suite": "CartRuntime",
+      "exit_code": 0,
+      "log_sha256": "ba27a2257d7620d12d7f067832d73cf26d538d2c82d4f5b11adc221fd15bca3d"
+    }
+  ],
+  "suite_count": 23,
+  "migrations": 98,
+  "complete_original_sql_regression": true,
+  "production_source_unchanged": true,
+  "frozen_source_verified": true,
+  "binary_sha256": "9eb3e62e11239201fe42cdbd55de6dcdde8d6c9677abd6b3575c07cc3093997b",
+  "goal_complete": false,
+  "owner": "c1e9ae06dca1",
+  "snapshot": "logs/gin-migration/native-sql-local-c1e9ae06dca1",
+  "controller_exit_code": 0,
+  "cleanup": {
+    "owned_databases_absent": true,
+    "redis_prefix_cleaned": true,
+    "last_deleted_keys": 0,
+    "shared_server_not_restarted": true
+  },
+  "mysql_cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true
+  },
+  "mysql_runtime": {
+    "version": "9.6.0",
+    "native_foreign_keys": true,
+    "foreign_key_checks": true,
+    "networking_disabled": true,
+    "socket_private": true,
+    "pid": 39733
+  },
+  "frozen_source_files": 1767,
+  "current_workspace_matches": true,
+  "all_original_suites_passed_without_skip": true,
+  "main_database_migrations": 86,
+  "main_database_upgraded": false,
+  "real_providers_called": false,
+  "limitations": [
+    "Shared default SQL-layer FK mode not proven; private MySQL uses native InnoDB foreign keys",
+    "Policy commands and browser acceptance covered by separate native joint",
+    "Main86 and C01-C11 full delivery remain open"
+  ]
+}

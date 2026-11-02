@@ -1,0 +1,1898 @@
+{
+  "owner": "37384c5731ba",
+  "snapshot": "logs/gin-migration/option-definitions-native-37384c5731ba",
+  "frozen_source_files": {
+    "backend": 887,
+    "admin": 131,
+    "storefront": 597
+  },
+  "snapshot_manifest_sha256": "1eb483dc34a0ab5af685caf8d292b246adc596fc72e872927a503470da121f0f",
+  "source_and_binaries_verified": true,
+  "native_result": {
+    "exit_code": 0,
+    "migrations": 99,
+    "native_transactions_passed": true,
+    "source_files": 887,
+    "frozen_source_verified": true,
+    "binary_sha256": "65495cb4ed4b8a6df4ab8ad8afdfc612072f732cb808b3b98299a40d685d3df9",
+    "test_log_sha256": "67e24bcb6e1870a4090e8c2861a19e8c94efb2c7a64aec7f302ab0dbd10533ff",
+    "owned_database_absent": true,
+    "redis_used": true,
+    "main_mysql_unchanged": true,
+    "real_provider_called": false,
+    "native_browser_verified": true,
+    "browser": {
+      "search": {
+        "real_built_astro": true,
+        "api_mocking": false,
+        "actual_gin_mysql": true,
+        "owned_products": 30,
+        "cases": [
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "quantities",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "verifying",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "the",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "the iphone",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "iphone the",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "iphone pr",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "i13pm",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "iphone unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "i13 unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "\u82f9\u679c",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "space-gray",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "space gray",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "6.1",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "6 1",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "a@example.test",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "a example test",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "phone128",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "phones128",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "1.2e3",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "query": "8.3.0",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "quantities",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "verifying",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "the",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "the iphone",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "iphone the",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "iphone pr",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "i13pm",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "iphone unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "i13 unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "\u82f9\u679c",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "space-gray",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "space gray",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "6.1",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "6 1",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "a@example.test",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "a example test",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "phone128",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "phones128",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "1.2e3",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "query": "8.3.0",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "quantities",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "verifying",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "the",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "the iphone",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "iphone the",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "iphone pr",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "i13pm",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "iphone unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "i13 unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "\u82f9\u679c",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "space-gray",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "space gray",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "6.1",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "6 1",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "a@example.test",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "a example test",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "phone128",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "phones128",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "1.2e3",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "query": "8.3.0",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "quantities",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "verifying",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "the",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "the iphone",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "iphone the",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "iphone pr",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "i13pm",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "iphone unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "i13 unfindable",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "\u82f9\u679c",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "space-gray",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "space gray",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "6.1",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "6 1",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "a@example.test",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "a example test",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "phone128",
+            "count": 0,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "phones128",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "1.2e3",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "query": "8.3.0",
+            "count": 30,
+            "ssr": true,
+            "hydration": true
+          }
+        ],
+        "desktop_typing_clear_history": true,
+        "localized_links": true,
+        "mobile_no_overflow": true,
+        "ranking_parity": false
+      },
+      "collection": {
+        "real_gin_mysql_redis_astro": true,
+        "api_mocking": false,
+        "products": 105,
+        "variants": 263,
+        "working_set_limit": 100,
+        "page_size": 12,
+        "last_page_size": 4,
+        "same_sku_and_groups": true,
+        "within_group_or": true,
+        "filtered_products": 53,
+        "latest_before_limit": true,
+        "price_sort_on_source_id_working_set": true,
+        "price_asc_first_amount": "6",
+        "ssr_first_twelve": true,
+        "sort_resets_page": true,
+        "repeated_option_parameters_preserved": true,
+        "localized_product_links": true,
+        "image_decoded": true,
+        "empty_200_unknown_404_invalid_400": true,
+        "en_zh_widths": [
+          1440,
+          390
+        ],
+        "no_body_overflow": true,
+        "actual_api_unavailable_503_and_recovery_200": true,
+        "sql_facts_unchanged": true,
+        "sql_facts_sha256": "b66295043839bd3b052ed0d3b33f8d79141cb325c84158324240a1b7e2f5ed55",
+        "sql_product_variant_price_totals_verified": true
+      },
+      "policy": {
+        "actual_admin_save": true,
+        "actual_origin_csrf_anonymous_denials": true,
+        "same_uuid_response_loss_retry": true,
+        "operation_id": "1b37f814-db85-4d45-bbf6-a8cf0896ec4b",
+        "actual_astro_en_zh_widths": [
+          1440,
+          390
+        ],
+        "periods": [
+          36,
+          21
+        ],
+        "notes_visible": true,
+        "admin_en_desktop_zh_mobile": true,
+        "sql_receipt_count": 1
+      },
+      "scope": {
+        "actual_ant_scope_filters": true,
+        "exclusive_readonly": true,
+        "deleted_readonly": true,
+        "deleted_date_filter": true,
+        "nested_and_or_url_reload": true,
+        "scope_outside_or": true
+      },
+      "regional_price": {
+        "actual_ant_save": true,
+        "region_id": "option-region",
+        "same_uuid_response_loss_retry": true,
+        "operation_id": "b44404ba-373a-42d4-931f-16e62a01231a",
+        "public_quote": "123.45",
+        "astro_initial_html": true,
+        "en_zh_widths": [
+          1440,
+          390
+        ],
+        "zero_stock_still_disabled": true,
+        "removal": {
+          "actual_ant_remove": true,
+          "admin_en_desktop_zh_mobile": true,
+          "actual_origin_csrf_anonymous_denials": true,
+          "operation_id": "ac180845-2927-4847-9d1e-7ae5ecbc8ff4",
+          "price_id": "price_814ad045-3b85-4ad9-895e-c82314d966bd",
+          "same_uuid_response_loss_retry": true,
+          "deleted_detail_404": true,
+          "public_quote_null": true,
+          "astro_initial_html_no_old_price": true,
+          "en_zh_widths": [
+            1440,
+            390
+          ],
+          "purchase_disabled": true,
+          "sql_receipt_price_rule_count": 1
+        },
+        "quantity": {
+          "actual_ant_tier_save": true,
+          "operation_id": "9dfca65c-a218-4fc1-b5f6-23e159ad8f09",
+          "price_id": "price_08aa1105-da0e-45bf-80c0-ad0dd3be1292",
+          "immutable_bound_retry": true,
+          "astro_bridge_actual_quantities": [
+            {
+              "quantity": "1",
+              "quotes": []
+            },
+            {
+              "quantity": "2",
+              "quotes": [
+                "88.25"
+              ]
+            },
+            {
+              "quantity": "3",
+              "quotes": [
+                "88.25"
+              ]
+            },
+            {
+              "quantity": "4",
+              "quotes": []
+            }
+          ],
+          "quantity_one_page_no_tier_price": true,
+          "en_zh_widths": [
+            1440,
+            390
+          ],
+          "purchase_disabled": true,
+          "admin_en_desktop_zh_mobile": true,
+          "invalid_range_ui_rejected": true,
+          "edit": {
+            "operation_id": "be614aea-e00c-400b-94aa-8b686bab845c",
+            "clear_operation_id": "a2913b7c-063f-48a7-b75a-ecd74c091c74",
+            "same_uuid_response_loss_retry": true,
+            "actual_zh_mobile_edit_en_desktop_clear": true,
+            "edited_boundary_quotes": true,
+            "explicit_null_clear": true,
+            "cleared_quantity_one_astro_en_zh": true,
+            "origin_csrf_denied": true,
+            "sql_unique_receipts_count": 2
+          },
+          "sql_receipt_exact_bound_rule_count": 1
+        },
+        "price_list": {
+          "schedule_operation_ids": [
+            "3b25313d-c5ea-48f0-a0aa-0fcb6e9d731e",
+            "6ce920fd-4e9c-4fc2-89cf-df075c1051bb"
+          ],
+          "actual_utc_picker_schedule_clear": true,
+          "actual_override_selection": true,
+          "chinese_date_controls": true,
+          "operation_id": "298867d4-9082-4a05-83b6-92b11240e06e",
+          "draft_operation_id": "7ca09f6c-90ce-480e-8a2b-5a757e8a3af3",
+          "actual_ant_active_draft": true,
+          "immutable_retry": true,
+          "unchanged_microseconds": true,
+          "rules_preserved": true,
+          "actual_astro_active_draft_en_zh_widths": [
+            1440,
+            390
+          ],
+          "origin_csrf_anonymous_denied": true,
+          "removal": {
+            "operation_id": "261be8c5-745a-4f14-944e-6f2c127e10e4",
+            "reactivate_operation_id": "19abac2a-7190-4b80-9628-d11423d22c7e",
+            "actual_ant_en_cancel_zh_remove": true,
+            "active_quote_before_remove": "42.75",
+            "fallback_quote": "100",
+            "same_uuid_response_loss_retry": true,
+            "removed_detail_404": true,
+            "actual_astro_en_zh_widths": [
+              1440,
+              390
+            ],
+            "origin_csrf_anonymous_denied": true,
+            "sql_unique_receipt_exact_soft_cascade": true
+          },
+          "membership": {
+            "operation_id": "b4fbbd1d-11af-464e-9838-94cba1de6b15",
+            "tier_operation_id": "18352472-2609-4839-ac0a-8bec96befde4",
+            "price_id": "price_d261061a-e48b-449b-87fd-f15679340964",
+            "tier_price_id": "price_ada053cc-2637-418c-8c06-c97583dec463",
+            "actual_ant_zh_mobile": true,
+            "same_uuid_response_loss_retry": true,
+            "immutable_list_selection": true,
+            "existing_regional_base_coexists": true,
+            "actual_astro_quantities": {
+              "1": "37.25",
+              "2": "32.5",
+              "3": "32.5",
+              "4": "37.25"
+            },
+            "actual_astro_en_zh_widths": [
+              1440,
+              390
+            ],
+            "zero_stock_disabled": true,
+            "sql_two_unique_receipts_exact_rows_and_base_preserved": true
+          },
+          "creation": {
+            "operation_id": "401d34de-bccd-4bde-8674-571b16229240",
+            "list_id": "plist_e38d3032-d018-4990-99a6-f5cad9c08db2",
+            "actual_ant_wizard": true,
+            "product_selection_across_search": true,
+            "selected_product_ids": [
+              "list-browser-product",
+              "option-browser-product"
+            ],
+            "initial_prices": [
+              {
+                "product_id": "list-browser-product",
+                "variant_id": "list-browser-variant",
+                "currency_code": "eur",
+                "amount": "25.000000000000000000",
+                "region_id": "option-region",
+                "min_quantity": "",
+                "max_quantity": ""
+              },
+              {
+                "product_id": "list-browser-product",
+                "variant_id": "list-browser-variant",
+                "currency_code": "eur",
+                "amount": "15.500000000000000000",
+                "region_id": "option-region",
+                "min_quantity": "2",
+                "max_quantity": "3"
+              },
+              {
+                "product_id": "option-browser-product",
+                "variant_id": "variant_79055a6a-6793-46ce-8352-3f0252ed53b9",
+                "currency_code": "eur",
+                "amount": "21.250000000000000000",
+                "region_id": "option-region",
+                "min_quantity": "",
+                "max_quantity": ""
+              }
+            ],
+            "initial_price_count": 3,
+            "same_uuid_response_loss_retry": true,
+            "more_specific_existing_quote": "37.25",
+            "disable_existing_operation_id": "33cf81ea-07ce-4a90-8667-e8e462cbbb67",
+            "actual_disable_existing_list": true,
+            "actual_astro_quantities": {
+              "1": "25",
+              "2": "15.5",
+              "3": "15.5",
+              "4": "25"
+            },
+            "second_product_quote": "21.25",
+            "actual_astro_en_zh_widths": [
+              1440,
+              390
+            ],
+            "zero_stock_disabled": true,
+            "origin_csrf_anonymous_denied": true,
+            "sql_unique_creation_receipt_three_exact_prices": true,
+            "sql_specific_list_draft_receipt": true
+          },
+          "addition": {
+            "list_id": "plist_e38d3032-d018-4990-99a6-f5cad9c08db2",
+            "operation_id": "f5625647-7881-417a-b8ba-2645998f1743",
+            "initial_prices": [
+              {
+                "product_id": "list-browser-product",
+                "variant_id": "list-browser-variant",
+                "currency_code": "eur",
+                "amount": "12.250000000000000000",
+                "region_id": "option-region",
+                "min_quantity": "4",
+                "max_quantity": "5"
+              },
+              {
+                "product_id": "option-browser-product",
+                "variant_id": "variant_d0803eb4-85dc-4122-85b7-4c6a25076820",
+                "currency_code": "eur",
+                "amount": "17.750000000000000000",
+                "region_id": "option-region",
+                "min_quantity": "",
+                "max_quantity": ""
+              }
+            ],
+            "selected_product_ids": [
+              "list-browser-product",
+              "option-browser-product"
+            ],
+            "actual_existing_list_batch_ui": true,
+            "immutable_response_loss_retry": true,
+            "settings_rules_preserved": true,
+            "old_price_count": 3,
+            "new_price_count": 5,
+            "quantity_quotes": {
+              "1": "25",
+              "2": "15.5",
+              "3": "15.5",
+              "4": "12.25",
+              "5": "12.25",
+              "6": "25"
+            },
+            "second_product_quotes": [
+              "17.75",
+              "21.25"
+            ],
+            "actual_astro_en_zh_widths": [
+              1440,
+              390
+            ],
+            "zero_stock_disabled": true,
+            "origin_csrf_anonymous_denied": true,
+            "sql_one_batch_receipt_two_exact_prices_old_rows_preserved": true
+          },
+          "batch": {
+            "list_id": "plist_0e29391b-b47b-4aa9-a8e0-46b3d49eaf9b",
+            "operation_id": "fa3dcf0f-e408-4399-a3a4-c19a7d5982f7",
+            "command": {
+              "operation_id": "fa3dcf0f-e408-4399-a3a4-c19a7d5982f7",
+              "expected_revision": "1924d1b01f12fbb78224e06c7a20d8736748ee62d8a9bb85568284f9b1eeb19f",
+              "product_ids": [
+                "list-browser-product",
+                "option-browser-product"
+              ],
+              "create": [
+                {
+                  "product_id": "list-browser-product",
+                  "variant_id": "list-browser-variant",
+                  "currency_code": "eur",
+                  "amount": "8.000000000000000000",
+                  "region_id": "option-region",
+                  "min_quantity": "",
+                  "max_quantity": ""
+                },
+                {
+                  "product_id": "list-browser-product",
+                  "variant_id": "list-browser-variant",
+                  "currency_code": "eur",
+                  "amount": "6.000000000000000000",
+                  "region_id": "option-region",
+                  "min_quantity": "2",
+                  "max_quantity": "3"
+                }
+              ],
+              "update": [
+                {
+                  "id": "price_b9cad3cb-ad00-4106-aeb9-6e484446fe0c",
+                  "product_id": "list-browser-product",
+                  "variant_id": "list-browser-variant",
+                  "amount": "4.125000000000000000",
+                  "min_quantity": "4",
+                  "max_quantity": "5"
+                },
+                {
+                  "id": "price_c0966ff5-27cf-4737-8bb6-1f5d93616180",
+                  "product_id": "option-browser-product",
+                  "variant_id": "variant_d0803eb4-85dc-4122-85b7-4c6a25076820",
+                  "amount": "7.750000000000000000",
+                  "min_quantity": "",
+                  "max_quantity": ""
+                }
+              ],
+              "delete": [
+                {
+                  "id": "price_4315997a-19cf-480f-93dc-74e0dd1b586a",
+                  "product_id": "list-browser-product",
+                  "variant_id": "list-browser-variant"
+                }
+              ]
+            },
+            "original_base_id": "price_4315997a-19cf-480f-93dc-74e0dd1b586a",
+            "original_tier_id": "price_b9cad3cb-ad00-4106-aeb9-6e484446fe0c",
+            "original_other_id": "price_c0966ff5-27cf-4737-8bb6-1f5d93616180",
+            "actual_ant_mixed_batch": true,
+            "chinese_mobile_readback": true,
+            "undo_removal": true,
+            "immutable_response_loss_retry": true,
+            "updated_ids_rules_preserved": true,
+            "settings_preserved": true,
+            "old_price_count": 3,
+            "new_price_count": 4,
+            "quantity_quotes": {
+              "1": "8",
+              "2": "6",
+              "3": "6",
+              "4": "4.125",
+              "5": "4.125",
+              "6": "8"
+            },
+            "other_product_quote": "7.75",
+            "astro_en_zh_widths": [
+              1440,
+              390
+            ],
+            "zero_stock_disabled": true,
+            "origin_csrf_anonymous_denied": true,
+            "sql_unique_receipt_two_creates_two_updates_one_retained_delete": true
+          },
+          "sql_unique_receipts_count": 4,
+          "sql_exact_unchanged_price_metadata_rule": true
+        },
+        "sql_price_receipt_rule_count": 1
+      },
+      "real_ant_gin_mysql_redis": true,
+      "multi_value_time_filters_url_reload": true,
+      "unchanged_microsecond_boundary_preserved": true,
+      "metadata_merge_retry_and_empty_definition": true,
+      "metadata_zh_mobile_saved": true,
+      "metadata_preserved_after_title_rank_edit": true,
+      "metadata_operation_id": "4b261c7e-39d3-498a-8ba6-b278efdf48fe",
+      "api_mocking": false,
+      "actual_response_dropped": true,
+      "same_operation_retried": true,
+      "created_once": true,
+      "edit_identity_rank_preserved": true,
+      "product_membership_enforced": true,
+      "associated_delete_disabled": true,
+      "unassociated_delete": true,
+      "last_unassociated_value_ui_deleted": true,
+      "value_delete_response_dropped_retried": true,
+      "value_delete_operation_id": "458a5470-a7bd-4ae1-a66f-245bc78b937d",
+      "value_delete_definition_id": "opt_54e4c400-7c1d-4224-8e8c-ea2328edbfbe",
+      "value_delete_value_id": "optval_27877ed4-0eb6-4b14-b377-c7fbeefaf1b4",
+      "csrf_origin_auth_checked": true,
+      "language_en_zh": true,
+      "mobile_no_page_overflow": true,
+      "browser_errors": 0,
+      "operation_id": "4b97dac1-c17e-4b80-824c-2efbc971a66c",
+      "definition_id": "opt_58a91508-72cb-43d4-b7e8-e8646d22bcd0",
+      "astro": {
+        "real_built_astro": true,
+        "related_products_initial_html_and_hydration": true,
+        "related_current_product_excluded": true,
+        "related_exact_price": "8",
+        "related_localized_links": true,
+        "admin_shared_membership_ui": true,
+        "associated_products": 2,
+        "actual_sku_commands": 4,
+        "shared_title_rank_refresh": true,
+        "source_value_ids_preserved": true,
+        "variant_ids_configuration_preserved": true,
+        "initial_html_contains_updated_title": true,
+        "language_en_zh_widths": [
+          1440,
+          390
+        ],
+        "zero_stock_purchase_disabled": true,
+        "commerce_provider_not_exercised": true
+      },
+      "sql_create_receipt_count": 1,
+      "sql_metadata_receipt_count": 1,
+      "sql_value_delete_receipt_count": 1,
+      "sql_value_soft_deleted_preserving_id": true
+    },
+    "browser_log_sha256": "1505e3dd869ef9f923b874585dda12a4475605ba4321a9b11c95d842dd8d22f2",
+    "admin_source_files": 131,
+    "astro_joint_verified": true,
+    "storefront_source_files": 597,
+    "original23_regression": false,
+    "goal_complete": false
+  },
+  "native_search": {
+    "owned_mysql": true,
+    "products": 30,
+    "http_queries": 21,
+    "stemming": true,
+    "stopwords": true,
+    "last_prefix": true,
+    "alias_all_terms": true,
+    "complex_lexemes": true,
+    "ranking_parity": false
+  },
+  "cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true,
+    "redis_used": true,
+    "owned_api_terminal": true,
+    "redis_keys_deleted": 4,
+    "owned_astro_terminal": true,
+    "owned_browser_terminal": true,
+    "redis_cleanup_error": null
+  },
+  "source_postgres_version": "16.15",
+  "oracle_cases": 29,
+  "oracle_read_only": true,
+  "source_business_tables_accessed": false,
+  "oracle_evidence_sha256": "4e7781f4271e099526fdba7ae5922836f9c0fa24f56dfeb485f9119378cc07d6",
+  "go_all_passed": true,
+  "search_race_passed": true,
+  "catalog_vet_passed": true,
+  "search": {
+    "real_built_astro": true,
+    "api_mocking": false,
+    "actual_gin_mysql": true,
+    "owned_products": 30,
+    "cases": [
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "quantities",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "verifying",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "the",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "the iphone",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "iphone the",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "iphone pr",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "i13pm",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "iphone unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "i13 unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "\u82f9\u679c",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "space-gray",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "space gray",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "6.1",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "6 1",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "a@example.test",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "a example test",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "phone128",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "phones128",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "1.2e3",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "query": "8.3.0",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "quantities",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "verifying",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "the",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "the iphone",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "iphone the",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "iphone pr",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "i13pm",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "iphone unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "i13 unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "\u82f9\u679c",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "space-gray",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "space gray",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "6.1",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "6 1",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "a@example.test",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "a example test",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "phone128",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "phones128",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "1.2e3",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "query": "8.3.0",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "quantities",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "verifying",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "the",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "the iphone",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "iphone the",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "iphone pr",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "i13pm",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "iphone unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "i13 unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "\u82f9\u679c",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "space-gray",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "space gray",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "6.1",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "6 1",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "a@example.test",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "a example test",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "phone128",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "phones128",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "1.2e3",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 1440,
+        "query": "8.3.0",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "quantities",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "verifying",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "the",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "the iphone",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "iphone the",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "iphone pr",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "i13pm",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "iphone unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "i13 unfindable",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "\u82f9\u679c",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "space-gray",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "space gray",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "6.1",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "6 1",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "a@example.test",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "a example test",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "phone128",
+        "count": 0,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "phones128",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "1.2e3",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      },
+      {
+        "lang": "zh",
+        "width": 390,
+        "query": "8.3.0",
+        "count": 30,
+        "ssr": true,
+        "hydration": true
+      }
+    ],
+    "desktop_typing_clear_history": true,
+    "localized_links": true,
+    "mobile_no_overflow": true,
+    "ranking_parity": false
+  },
+  "services": {
+    "at_utc": "2026-11-01T07:34:55.300955+00:00",
+    "urls": {
+      "http://127.0.0.1:9001/health": 200,
+      "http://127.0.0.1:9001/app": 200,
+      "http://127.0.0.1:8000/dk-en/store": 200,
+      "http://127.0.0.1:9100/health": 200,
+      "http://127.0.0.1:9200/products": 200,
+      "http://127.0.0.1:9300/dk-en/store": 200,
+      "http://127.0.0.1:9300/dk-en/products/swappie-iphone-14": 200
+    },
+    "main_mysql_migrations": 86,
+    "main_price_gate_enabled": false
+  },
+  "visual_review": [
+    "search-review-en-1440.png",
+    "search-review-zh-390.png"
+  ],
+  "fixture_has_no_skus_or_prices": true,
+  "remaining": [
+    "URL/host/path/file and markup/entity token classes and additional parser boundaries",
+    "ts_rank_cd coverage-density relevance scoring",
+    "full C01-C11 acceptance"
+  ],
+  "main_database_migrated": false,
+  "main_binary_updated": false,
+  "real_payment_or_email_called": false,
+  "goal_complete": false
+}

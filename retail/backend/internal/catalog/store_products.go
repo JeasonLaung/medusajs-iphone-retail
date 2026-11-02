@@ -18,6 +18,7 @@ type storeProductQuery struct {
 	limit, offset                        int
 	search, handle, collection, category string
 	region, quantity                     string
+	related                              string
 	order                                string
 	optionValues                         []string
 }
@@ -91,6 +92,11 @@ func parseStoreProducts(raw string, detail bool) (storeProductQuery, error) {
 			} else {
 				q.handle = v
 			}
+		case "related_to":
+			if !validProductID(v) {
+				return q, errListQuery
+			}
+			q.related = v
 		case "collection_id", "category_id":
 			if !validProductID(v) {
 				return q, errListQuery
@@ -103,6 +109,11 @@ func parseStoreProducts(raw string, detail bool) (storeProductQuery, error) {
 		default:
 			return q, errListQuery
 		}
+	}
+	// Recommendations use the source candidate window; callers cannot widen it
+	// or combine a different product selection with the trusted source product.
+	if q.related != "" && (q.limit != 50 || q.offset != 0 || q.search != "" || q.handle != "" || q.collection != "" || q.category != "" || len(q.optionValues) != 0) {
+		return q, errListQuery
 	}
 	if values.Has("quantity") && q.region == "" {
 		return q, errListQuery
@@ -170,8 +181,29 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 		if e != nil {
 			return e
 		}
+		var relatedCollection *string
+		if q.related != "" {
+			var source struct {
+				ID           string
+				CollectionID *string
+			}
+			if e := publicProducts(tx, channel).Select("p.id,(SELECT col.id FROM catalog_collections col WHERE col.id=p.collection_id AND col.deleted_at IS NULL) AS collection_id").Where("p.id=?", q.related).Take(&source).Error; e != nil {
+				return e
+			}
+			relatedCollection = source.CollectionID
+		}
 		base := func() *gorm.DB {
 			db := publicProducts(tx, channel)
+			if q.related != "" {
+				db = db.Where("p.is_giftcard=FALSE")
+				if relatedCollection != nil {
+					db = db.Where("p.collection_id=?", *relatedCollection)
+				}
+				// Empty source tags impose no filter. Otherwise match any active
+				// shared tag, AND the collection constraint, as the source does.
+				tags := "SELECT source.tag_id FROM catalog_product_tags source JOIN catalog_tags tag ON tag.id=source.tag_id AND tag.deleted_at IS NULL WHERE source.product_id=?"
+				db = db.Where("(NOT EXISTS ("+tags+") OR EXISTS (SELECT 1 FROM catalog_product_tags candidate WHERE candidate.product_id=p.id AND candidate.tag_id IN ("+tags+")))", q.related, q.related)
+			}
 			if detail {
 				db = db.Where("p.id=?", c.Param("id"))
 			}

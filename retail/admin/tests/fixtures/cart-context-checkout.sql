@@ -1,0 +1,25 @@
+-- Artificial owned browser data, applied only by test-cart-context-local.py.
+UPDATE cart_contact_runtime SET enabled=TRUE WHERE id=1;
+UPDATE cart_shipping_command_runtime SET enabled=TRUE WHERE id=1;
+UPDATE cart_promotion_command_runtime SET enabled=TRUE WHERE id=1;
+UPDATE pricing_prices SET amount=100,raw_amount='{"value":"100","precision":100}' WHERE id='browser-add-single';
+INSERT INTO tax_regions(id,country_code,provider_id,created_at,updated_at) VALUES('context-dk-tax','dk','tp_system',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO tax_rates(id,rate,name,code,is_default,is_combinable,tax_region_id,created_at,updated_at) VALUES('context-dk-rate',25,'DK VAT','DK',TRUE,FALSE,'context-dk-tax',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO fulfillment_sets(id,name,type,created_at,updated_at) VALUES('context-delivery-set','Owned delivery','shipping',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO fulfillment_providers(id,is_enabled,created_at,updated_at) VALUES('context-delivery-provider',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO fulfillment_shipping_profiles(id,name,type,created_at,updated_at) VALUES('context-delivery-profile','Owned delivery','default',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO catalog_product_shipping_profiles(product_id,shipping_profile_id,id,created_at,updated_at) VALUES('browser-add-product','context-delivery-profile','context-product-profile',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO fulfillment_option_types(id,label,code,created_at,updated_at) VALUES('context-delivery-type','Owned shipping','owned',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO fulfillment_service_zones(id,name,fulfillment_set_id,created_at,updated_at) VALUES('context-delivery-zone','Denmark','context-delivery-set',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO fulfillment_geo_zones(id,type,country_code,service_zone_id,created_at,updated_at) VALUES('context-delivery-geo','country','dk','context-delivery-zone',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO fulfillment_location_sets(stock_location_id,fulfillment_set_id,id,created_at,updated_at) VALUES('browser-add-location','context-delivery-set','context-delivery-location',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO fulfillment_location_providers(stock_location_id,fulfillment_provider_id,id,created_at,updated_at) VALUES('browser-add-location','context-delivery-provider','context-delivery-location-provider',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO pricing_price_sets(id,created_at,updated_at) VALUES('context-delivery-prices',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO pricing_prices(id,price_set_id,currency_code,amount,raw_amount,rules_count,created_at,updated_at) VALUES('context-delivery-eur','context-delivery-prices','eur',7,'{"value":"7","precision":100}',0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO fulfillment_shipping_options(id,name,price_type,service_zone_id,provider_id,shipping_profile_id,shipping_option_type_id,created_at,updated_at) VALUES('context-delivery-option','Owned delivery','flat','context-delivery-zone','context-delivery-provider','context-delivery-profile','context-delivery-type',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO fulfillment_option_price_sets(shipping_option_id,price_set_id,id,created_at,updated_at) VALUES('context-delivery-option','context-delivery-prices','context-delivery-option-price',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO promotions(id,code,is_automatic,type,status,is_tax_inclusive,used,created_at,updated_at) VALUES('context-eur-promo','CONTEXT_EUR10',FALSE,'standard','active',FALSE,0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('context-usd-auto','CONTEXT_USD20',TRUE,'standard','active',FALSE,0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO promotion_application_methods(id,promotion_id,type,target_type,allocation,value,raw_value,created_at,updated_at) VALUES('context-eur-method','context-eur-promo','percentage','items','across',10,'{"value":"10","precision":100}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('context-usd-method','context-usd-auto','percentage','items','across',20,'{"value":"20","precision":100}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO promotion_rules(id,attribute,operator,created_at,updated_at) VALUES('context-eur-rule','currency_code','eq',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('context-usd-rule','currency_code','eq',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO promotion_rule_values(id,promotion_rule_id,value,created_at,updated_at) VALUES('context-eur-value','context-eur-rule','eur',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('context-usd-value','context-usd-rule','usd',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO promotion_order_rules(promotion_id,promotion_rule_id) VALUES('context-eur-promo','context-eur-rule'),('context-usd-auto','context-usd-rule');

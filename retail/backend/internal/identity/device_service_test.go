@@ -51,7 +51,9 @@ func checkDeviceService(t *testing.T, db *gorm.DB, actor identity.User, call fun
 	call("POST", path, body(in), 503)
 	exec("UPDATE device_service_runtime SET enabled=TRUE WHERE id=1")
 	defer exec("UPDATE device_service_runtime SET enabled=FALSE WHERE id=1")
-	exec("INSERT INTO catalog_options(id,title,is_exclusive,created_at,updated_at) VALUES('service-grade','Condition',FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('service-battery','Battery',FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
+	// This service SKU owns separate definitions from the intake fixture;
+	// identical display names therefore use the source exclusive semantics.
+	exec("INSERT INTO catalog_options(id,title,is_exclusive,created_at,updated_at) VALUES('service-grade','Condition',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('service-battery','Battery',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
 	exec("INSERT INTO catalog_option_values(id,value,option_id,created_at,updated_at) VALUES('service-grade-b','B','service-grade',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)),('service-battery-85','85%','service-battery',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
 	exec("INSERT INTO catalog_variant_options(variant_id,option_value_id) VALUES('allocation-v','service-grade-b'),('allocation-v','service-battery-85')")
 	exec("INSERT INTO catalog_variants(id,product_id,title,sku,manage_inventory,allow_backorder,created_at,updated_at) VALUES('service-other-v','allocation-product','Alternate inspected SKU','SERVICE-OTHER',TRUE,FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")

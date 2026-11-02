@@ -1,0 +1,192 @@
+{
+  "checked_utc": "2026-11-01T09:16:30.184918+00:00",
+  "branch": "codex/gin-react-astro",
+  "scope": "Actual local preview cutover and read-only storefront regression; not C01-C11 completion",
+  "fresh_backup_owner": "9d72f058ad87",
+  "database": {
+    "checked_utc": "2026-11-01T09:13:12.215186+00:00",
+    "fresh_backup_owner": "9d72f058ad87",
+    "service": {
+      "running": true,
+      "pid": 65339,
+      "health": 200,
+      "schema_migrations": 99
+    },
+    "persistent_tables": 293,
+    "business_tables_equal_to_rehearsal": 291,
+    "migration_journal_execution_times_excluded": true,
+    "migration_checksums_match": true,
+    "original_tables_unchanged": 268,
+    "live_counts_match_dump": true,
+    "foreign_keys_checked": 213,
+    "orphan_rows": 0,
+    "new_gates_default_closed": true,
+    "retained_shared86_all_table_fingerprints_match": true,
+    "shared_mysql_modified": false,
+    "real_provider_called": false,
+    "post_cutover_data_verified": true,
+    "goal_complete": false
+  },
+  "storefront": {
+    "comparison_report": "logs/gin-migration/store-source-compare-1793524258310/result.json",
+    "comparison_report_sha256": "91dcbdf921952002fc5e7dc8de64394c175b2b522724770c82082cba0612fcbf",
+    "actual_browser_pages": 42,
+    "comparison_cases": 21,
+    "all_model_sets_order_text_images_match": true,
+    "all_screen_widths_without_overflow": true,
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "widths": [
+      390,
+      768,
+      1440
+    ],
+    "pixel_complete_acceptance": false,
+    "actual_initial_html": {
+      "actual_astro_html": true,
+      "javascript_required_for_initial_products": false,
+      "cases": [
+        {
+          "lang": "en",
+          "query": "",
+          "status": 200,
+          "ssr_cards": 30,
+          "distinct_product_links": 30
+        },
+        {
+          "lang": "en",
+          "query": "?q=iPhone%2013",
+          "status": 200,
+          "ssr_cards": 4,
+          "distinct_product_links": 4
+        },
+        {
+          "lang": "en",
+          "query": "?q=quantities",
+          "status": 200,
+          "ssr_cards": 30,
+          "distinct_product_links": 30
+        },
+        {
+          "lang": "en",
+          "query": "?q=verifying",
+          "status": 200,
+          "ssr_cards": 30,
+          "distinct_product_links": 30
+        },
+        {
+          "lang": "en",
+          "query": "?q=the",
+          "status": 200,
+          "ssr_cards": 0,
+          "distinct_product_links": 0
+        },
+        {
+          "lang": "zh",
+          "query": "",
+          "status": 200,
+          "ssr_cards": 30,
+          "distinct_product_links": 30
+        },
+        {
+          "lang": "zh",
+          "query": "?q=iPhone%2013",
+          "status": 200,
+          "ssr_cards": 4,
+          "distinct_product_links": 4
+        },
+        {
+          "lang": "zh",
+          "query": "?q=quantities",
+          "status": 200,
+          "ssr_cards": 30,
+          "distinct_product_links": 30
+        },
+        {
+          "lang": "zh",
+          "query": "?q=verifying",
+          "status": 200,
+          "ssr_cards": 30,
+          "distinct_product_links": 30
+        },
+        {
+          "lang": "zh",
+          "query": "?q=the",
+          "status": 200,
+          "ssr_cards": 0,
+          "distinct_product_links": 0
+        }
+      ]
+    },
+    "detail_report": "logs/gin-migration/local-preview-1793524483739/report.json",
+    "detail_report_sha256": "f60ffaf6976a593a7597b3e8dd289c20562ca077cdfb3cb22108b3d85051239e",
+    "all_30_details_in_both_languages_http_200": true,
+    "admin_login_rendered": true,
+    "authenticated_admin_business_acceptance": false
+  },
+  "services": [
+    {
+      "port": 9001,
+      "path": "/health",
+      "status": 200
+    },
+    {
+      "port": 9001,
+      "path": "/app",
+      "status": 200
+    },
+    {
+      "port": 8000,
+      "path": "/dk-en/store",
+      "status": 200
+    },
+    {
+      "port": 9100,
+      "path": "/health",
+      "status": 200
+    },
+    {
+      "port": 9200,
+      "path": "/products",
+      "status": 200
+    },
+    {
+      "port": 9300,
+      "path": "/dk-en/about",
+      "status": 200
+    },
+    {
+      "port": 9300,
+      "path": "/dk-en/store",
+      "status": 200
+    },
+    {
+      "port": 9300,
+      "path": "/dk-zh/store",
+      "status": 200
+    }
+  ],
+  "recent_logs": {
+    "panic_or_fatal_events": 0,
+    "unexpected_http_5xx": 0,
+    "expected_disabled_gate_503": {
+      "/api/store/cart": 35,
+      "/api/store/product-reviews": 64
+    }
+  },
+  "management": {
+    "mysql_init_stop_start_status_verified": true,
+    "api_idempotent_start_pid": 65339,
+    "api_controlled_restart_pid": 69436,
+    "api_restart_health": 200,
+    "shared_database_restarted": false,
+    "original_backend_env_and_binary_retained": true,
+    "rollback_executed": false,
+    "autostart_after_os_reboot": false
+  },
+  "real_provider_called": false,
+  "runtime_gates_changed": false,
+  "goal_complete": false
+}

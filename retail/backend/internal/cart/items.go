@@ -272,6 +272,9 @@ func mutateItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore
 				}
 			}
 		}
+		if err := syncEmptyPaymentCollection(ctx, tx, store, ref, in.Version); err != nil {
+			return err
+		}
 		next := strconv.FormatUint(version+1, 10)
 		if r := tx.Exec("UPDATE cart_ownership SET version=version+1,updated_at=UTC_TIMESTAMP(6) WHERE cart_id=? AND version=?", cart.ID, version); r.Error != nil || r.RowsAffected != 1 {
 			return ErrConflict

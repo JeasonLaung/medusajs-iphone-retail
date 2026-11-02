@@ -1,6 +1,9 @@
 import {useEffect,useState} from 'react'
 import Header,{type HeaderProps} from './header'
 import {browserCartClient} from '../../lib/cart-client'
+import {browserContextCommands} from '../../lib/cart-context'
+import {PaymentContextRestored} from '../../lib/payment-context'
+import {savePreference,writeBrowserLocale} from '../../lib/preference-save'
 import {customerClient} from '../../lib/customer-client'
 import {watchCustomer} from '../../lib/customer-events'
 import NotificationBell from '../notifications/notification-bell'
@@ -41,5 +44,10 @@ export default function GinHeader({commerceEnabled,customerEnabled=false,...prop
  },[commerceEnabled,props.segment])
  const identity=customerEnabled?(signedIn?{isLoggedIn:true as const,notification:<NotificationBell key={signedIn} locale={props.locale} segment={props.segment}/>}:{isLoggedIn:false as const}):(props.isLoggedIn?{isLoggedIn:true as const,notification:props.notification}:{isLoggedIn:false as const})
  const {isLoggedIn:_isLoggedIn,notification:_notification,...base}=props
- return <Header {...base} {...identity} cartCount={commerceEnabled?count:props.cartCount}/>
+ return <Header {...base} {...identity} cartCount={commerceEnabled?count:props.cartCount} onSelect={commerceEnabled?async target=>{try{await savePreference(target,{
+  apply:async choice=>{const cart=await browserContextCommands(browserCartClient()).apply(choice);if(cart)window.dispatchEvent(new Event('retail:cart-changed'))},
+  writeLocale:writeBrowserLocale,navigate:path=>window.location.assign(path),
+ })}catch(error){if(error instanceof PaymentContextRestored){window.dispatchEvent(new Event('retail:cart-changed'));return}throw error}}:props.onSelect}
+ onRestore={commerceEnabled?async()=>{await browserContextCommands(browserCartClient()).restore();window.dispatchEvent(new Event('retail:cart-changed'))}:props.onRestore}
+ canRestore={commerceEnabled?()=>{try{return browserContextCommands(browserCartClient()).canRestore()}catch{return false}}:props.canRestore}/>
 }

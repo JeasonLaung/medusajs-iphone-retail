@@ -1,0 +1,90 @@
+{
+  "recorded_at": "2026-11-01T17:00:30.408555+00:00",
+  "scope": "Astro durable payment-context commands and recovery UI",
+  "goal_complete": false,
+  "source_sha256": {
+    "retail/storefront/src/lib/payment-context.ts": "6f83c08d09ecb58656bb8b10fbfd6a99c0a55cd6679db6fa448d9c327761bef3",
+    "retail/storefront/src/lib/cart-context.ts": "1412878ca1bd9546e2ece5aeb8f817648652c7cc2d8a315a2aa4b74baeb37a10",
+    "retail/storefront/src/lib/checkout-payment.ts": "2ae548bae58e2d6bae56076a818adef0d1ab307e90ce468498b010738ed22b7e",
+    "retail/storefront/src/lib/cart-client.ts": "62d8f8e4a16e78edc17c71d42bb1f6ed79deef3903d09cadd8dfb4899694183b",
+    "retail/storefront/src/components/layout/gin-header.tsx": "4df13fe5d941873051e2b6d8326bc8f4183026b65d2e8ce74ae4905bbce63fb8",
+    "retail/storefront/src/components/layout/header.tsx": "b72fbdb97e4c9ee7def106d78b007af10b5db5443c3478f2327509c1f4790c06",
+    "retail/storefront/src/components/layout/region-language.tsx": "e3c05624d397c7ea35a852d06f8edfe3fe67eade35c0a4ed05fd18e7fe36f021",
+    "retail/storefront/src/components/layout/region-language.module.css": "af1b54c2255955686a34a27e10e9c93440300c6fda225e79e008d64b64c1a022",
+    "retail/storefront/src/components/layout/i18n.ts": "0b182004d6c43b71ff7e80f0c5ca734c1ff82bf4daf2edb7bed4fe84ba964821",
+    "retail/storefront/tests/payment-context.test.ts": "97c544700970f335da455d22b01b7c332d39251451f63670de7382789e6e48de",
+    "retail/storefront/tests/checkout-payment.test.ts": "9a54e1abde7a1e6321252e314ee8518effcf247c91e4c2924490afcb9d6e0af0",
+    "retail/admin/tests/payment-context-recovery-ui.browser.mjs": "f264450c8405b6a5cc3dc9fb477506b6ebcd80f83d8aa3f020ddc1be52abb323"
+  },
+  "evidence_sha256": {
+    "payment-context-astro-check-fixed.log": "7a7e695f9a4b593a6fd1abe8ec1c41878c03f80abf10e73c49769052bd206fd2",
+    "payment-context-targeted-tests.log": "3fb1c8bf3682ea5cc73a0c2ed5a2cf60745eb5edd05aedddd8613b2ae173366e",
+    "recovery-en-390.png": "ace3faffaef7bbbea442b0a168bf54c8e24433c0a370b84a7acdf9b3fce5a257",
+    "payment-context-storefront-tests.log": "e5f8af74535634208b0378be8f38f5e7d0f9c8110cff69e96ef240ce326267bc",
+    "result.json": "a125a05dabaf79efeb1faff364cee446c53f9b31677d92105d731847219e7488",
+    "payment-context-recovery-ui.log": "da75e0174d87d8c58a91b7e00ada9201799215e38ae9f9d685f7733307f5c876",
+    "payment-context-recovery-ui-fixed.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "recovery-en-1440.png": "696e2dc8623257b375b119ee30778885ffb2ddc66606de9401ba2b4031fb5fa2",
+    "recovery-zh-1440.png": "09a1b1221fca6a3c811f9aaa143e1912c607bd9d4a247a6226163fd9cdfa36e8",
+    "recovery-zh-390.png": "37010b951c2ce869285e742f6fa7cd133aed421ca8f157262b2fcd1da6d14b7e",
+    "payment-context-astro-check.log": "1a0e779e794697674290fa9e46ccdafdb08075cfffe438dc80d9843dff15d5ba"
+  },
+  "validation": {
+    "full_frontend_tests_before_additional_storage_case": 253,
+    "targeted_tests_including_additional_storage_case": 25,
+    "astro_files_checked": 470,
+    "astro_errors": 0,
+    "astro_warnings": 0,
+    "astro_hints": 18,
+    "browser": {
+      "rendered_astro": true,
+      "api_writes_intercepted": true,
+      "actual_database_joint": false,
+      "cases": [
+        {
+          "lang": "en",
+          "width": 390,
+          "pending_disabled": true,
+          "reload_preserves_restore": true,
+          "same_command_retry": true,
+          "navigation_cookie_preserved": true
+        },
+        {
+          "lang": "en",
+          "width": 1440,
+          "pending_disabled": true,
+          "reload_preserves_restore": true,
+          "same_command_retry": true,
+          "navigation_cookie_preserved": true
+        },
+        {
+          "lang": "zh",
+          "width": 390,
+          "pending_disabled": true,
+          "reload_preserves_restore": true,
+          "same_command_retry": true,
+          "navigation_cookie_preserved": true
+        },
+        {
+          "lang": "zh",
+          "width": 1440,
+          "pending_disabled": true,
+          "reload_preserves_restore": true,
+          "same_command_retry": true,
+          "navigation_cookie_preserved": true
+        }
+      ],
+      "errors": []
+    }
+  },
+  "failed_checks_preserved": {
+    "astro": "initial missing union narrowing; fixed completion property guard",
+    "browser": "initial refresh click preceded Astro hydration; test now waits for island hydration"
+  },
+  "limits": [
+    "Browser commerce writes aborted; not an actual database joint acceptance",
+    "Main Gin API remains schema 102 with new payment-context capability disabled",
+    "No real provider or mail calls; full C01-C11 acceptance incomplete"
+  ],
+  "next": "Run rendered Astro save and restore through isolated production Gin handlers with real owned MySQL/Redis and artificial payment adapter"
+}

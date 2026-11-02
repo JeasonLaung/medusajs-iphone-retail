@@ -1,0 +1,116 @@
+{
+  "exit_code": 0,
+  "migrations": 96,
+  "native_transactions_passed": true,
+  "source_files": 844,
+  "frozen_source_verified": true,
+  "binary_sha256": "c138282d89ffe5c6c341dd386b89080abddb98c79986753c853216df2c2b0295",
+  "test_log_sha256": "ab5631a5a0b505bcdc302142b4734daf318a7bbe524a4830f262970fab44c0fc",
+  "owned_database_absent": true,
+  "redis_used": true,
+  "main_mysql_unchanged": true,
+  "real_provider_called": false,
+  "native_browser_verified": true,
+  "browser": {
+    "real_ant_gin_mysql_redis": true,
+    "api_mocking": false,
+    "actual_response_dropped": true,
+    "same_operation_retried": true,
+    "created_once": true,
+    "edit_identity_rank_preserved": true,
+    "product_membership_enforced": true,
+    "associated_delete_disabled": true,
+    "unassociated_delete": true,
+    "last_unassociated_value_ui_deleted": true,
+    "value_delete_response_dropped_retried": true,
+    "value_delete_operation_id": "a8f7af34-b5dd-450f-a44c-95a182fc455b",
+    "value_delete_definition_id": "opt_4611bddb-95ec-4304-9df2-9aaa1400498c",
+    "value_delete_value_id": "optval_a38b4ca5-4162-43a1-af73-8bf895a4f996",
+    "csrf_origin_auth_checked": true,
+    "language_en_zh": true,
+    "mobile_no_page_overflow": true,
+    "browser_errors": 0,
+    "operation_id": "7f643b29-1fba-4e8f-9e9a-4bd322443797",
+    "definition_id": "opt_f5b98b39-0c9a-4159-8481-a85e288b0c16",
+    "astro": {
+      "real_built_astro": true,
+      "admin_shared_membership_ui": true,
+      "associated_products": 2,
+      "actual_sku_commands": 4,
+      "shared_title_rank_refresh": true,
+      "source_value_ids_preserved": true,
+      "variant_ids_configuration_preserved": true,
+      "initial_html_contains_updated_title": true,
+      "language_en_zh_widths": [
+        1440,
+        390
+      ],
+      "zero_stock_purchase_disabled": true,
+      "commerce_provider_not_exercised": true
+    },
+    "sql_create_receipt_count": 1,
+    "sql_value_delete_receipt_count": 1,
+    "sql_value_soft_deleted_preserving_id": true
+  },
+  "browser_log_sha256": "a8e0d0ca56639a5c1fb5b8f7318b462cb3f6ea472177bc93e17b96d1e497a6b9",
+  "admin_source_files": 119,
+  "astro_joint_verified": true,
+  "storefront_source_files": 593,
+  "original23_regression": false,
+  "goal_complete": false,
+  "owner": "8fbf38f3b52d",
+  "snapshot": "logs/gin-migration/option-definitions-native-8fbf38f3b52d",
+  "source_counts": {
+    "backend": 844,
+    "admin": 119,
+    "storefront": 593
+  },
+  "current_workspace_matches_frozen_source": true,
+  "cleanup": {
+    "server_terminal": true,
+    "data_removed": true,
+    "socket_removed": true,
+    "main_mysql_unchanged": true,
+    "redis_used": true,
+    "owned_api_terminal": true,
+    "redis_keys_deleted": 4,
+    "owned_astro_terminal": true,
+    "owned_browser_terminal": true,
+    "redis_cleanup_error": null
+  },
+  "api_binary_sha256": "7926f2b9ee73b32ed69d126c53e4aa6ccdfbcfbbd03bc5ca0e34a779fb8a9840",
+  "source_provenance_sha256": {
+    "medusa-store/apps/backend/node_modules/@medusajs/dashboard/src/routes/product-options/common/hooks/use-delete-product-option-value-action.tsx": "8c19affcfa3b2ec1fb3cedfa23a94b29d7300950392682289e1dd769b1050a2b",
+    "medusa-store/apps/backend/node_modules/@medusajs/dashboard/src/routes/product-options/product-option-detail/components/product-option-values-section/product-option-value-row-actions.tsx": "5f93f1a5868b30ccd7457911645c5ec8fabb00eaafeb5f16289cdd14967ea5eb"
+  },
+  "runner_sha256": "d1fa04cfb822f938f1ef329bfe37ca3993f8abf51f479a96a88dd46f15b6df05",
+  "artifacts_sha256": {
+    "astro-build.log": "087021f75fa429a83e89a6d3bd21456f2a7d7ee5652c8cae24d681771115af82",
+    "api.log": "041fa3afb3321a2d8a21b0e94462236fd15d25e7ced1464a28d946fc7c61dc98",
+    "astro.log": "e2d66f8a7fab216641363775da820e7e29076f5fa21c1713d00f2589360f8cfd",
+    "shared-option-values-zh-mobile.png": "cd7a7682053f768de1a4743174f40a952203ad8e53301078265ecc98819a0dc7",
+    "shared-options-astro-zh-mobile-viewport.png": "98ff3e54f4bdcf0392ca0798ad22589a84f178a18e2776baa32ca32a3f472d29"
+  },
+  "additional_browser_assertions": {
+    "empty_definition_accepts_new_value_with_new_id": true,
+    "associated_value_delete_buttons_disabled": true,
+    "chinese_mobile_nested_table_no_page_overflow": true
+  },
+  "admin_type_check": {
+    "exit_code": 0,
+    "session": 78391
+  },
+  "client_tests": {
+    "pass": 3,
+    "fail": 0
+  },
+  "limits": {
+    "metadata_and_source_filters_completed": false,
+    "physical_unique_indexes_completed": false,
+    "main_database_upgraded": false,
+    "priced_stocked_checkout_verified": false,
+    "real_provider_called": false,
+    "C03_complete": false,
+    "goal_complete": false
+  }
+}

@@ -11,7 +11,6 @@ import (
 	"sort"
 	"strings"
 	"time"
-	"unicode"
 	"unicode/utf8"
 
 	"github.com/eurorefurb/retail/internal/platform"
@@ -139,9 +138,14 @@ func parseSearch(raw []byte) (StoreSearchRequest, error) {
 			if !attrs[attr] || len(values) < 1 || len(values) > 32 {
 				return r, errListQuery
 			}
+			maxLength := 191
+			if attr == "option_values" {
+				// Current option editors allow title(100) + ':' + value(500).
+				maxLength = 601
+			}
 			seen := map[string]bool{}
 			for _, v := range values {
-				if v == "" || !searchTextOK(v, 191) || seen[v] {
+				if v == "" || !searchTextOK(v, maxLength) || seen[v] {
 					return r, errListQuery
 				}
 				seen[v] = true
@@ -235,6 +239,35 @@ func addSearchValue(m map[string][]string, key, value string) {
 	}
 	m[key] = append(m[key], value)
 }
+
+// ECMAScript String.trim whitespace: FEFF is included, NEL (0085) is not.
+// Source option text identity uses that exact set rather than Go TrimSpace.
+const searchOptionWhitespace = "\t\n\v\f\r \u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeff"
+
+// Match the source index's trimmed title:value identity and insertion order.
+func searchOptionValues(options []AdminOption) []string {
+	values := []string{}
+	seen := map[string]bool{}
+	for _, option := range options {
+		title := strings.Trim(option.Title, searchOptionWhitespace)
+		if title == "" {
+			continue
+		}
+		for _, v := range option.Values {
+			value := strings.Trim(v.Value, searchOptionWhitespace)
+			if value == "" {
+				continue
+			}
+			entry := title + ":" + value
+			if !seen[entry] {
+				seen[entry] = true
+				values = append(values, entry)
+			}
+		}
+	}
+	return values
+}
+
 func searchStrings(m map[string]any, key string) []string {
 	out := []string{}
 	if a, ok := m[key].([]any); ok {
@@ -346,12 +379,10 @@ func searchProjection(tx *gorm.DB, products []StoreProduct) ([]StoreSearchHit, e
 				}
 			}
 		}
+		hit.Values["option_values"] = searchOptionValues(p.Options)
 		titles := map[string]string{}
 		for _, o := range p.Options {
 			titles[o.ID] = strings.ToLower(strings.TrimSpace(o.Title))
-			for _, v := range o.Values {
-				addSearchValue(hit.Values, "option_values", v.Value)
-			}
 		}
 		for _, v := range p.Variants {
 			stock := false
@@ -468,36 +499,15 @@ func searchMatches(hit StoreSearchHit, q StoreSearchQuery, skip string, price bo
 	}
 	return true
 }
-func searchTerms(s string) []string {
-	return strings.FieldsFunc(strings.ToLower(s), func(r rune) bool { return !unicode.IsLetter(r) && !unicode.IsNumber(r) })
-}
 
-// Keyword prototype: all complete words plus a last-word prefix. PostgreSQL
-// English stemming and ts_rank_cd parity remain a separate acceptance gate.
-func searchRank(h StoreSearchHit, query string) (int, bool) {
+// Match the source English AND/prefix query and default cover-density rank.
+func searchRank(h StoreSearchHit, query string) (float32, bool) {
 	expanded := normalizeSearchQuery(query)
 	terms := searchTerms(expanded)
 	if len(terms) == 0 {
 		return 0, strings.TrimSpace(query) == ""
 	}
-	fields := []string{h.Title, strings.Join(h.Values["option_values"], " "), h.description}
-	weights := []int{3, 2, 1}
-	rank := 0
-	for i, term := range terms {
-		found := false
-		for f, text := range fields {
-			for _, word := range searchTerms(text) {
-				if word == term || expanded == query && i == len(terms)-1 && strings.HasPrefix(word, term) {
-					found = true
-					rank += weights[f]
-				}
-			}
-		}
-		if !found {
-			return 0, false
-		}
-	}
-	return rank, true
+	return searchCoverRank(searchVector(h), terms, expanded == query)
 }
 
 var searchModelQuery = regexp.MustCompile(`(?i)\bi(?:phone)?\s*(\d{1,2})(?:\s*(pro\s*max|pm|pro|plus|mini|p|e))?\b`)
@@ -514,7 +524,7 @@ func normalizeSearchQuery(query string) string {
 func evaluateSearch(hits []StoreSearchHit, q StoreSearchQuery, currency string) StoreSearchResult {
 	r := StoreSearchResult{Key: q.Key, Query: q.Query, Currency: currency, Hits: []StoreSearchHit{}, Page: q.Page, Limit: q.Limit, Facets: map[string][]SearchFacet{}, CatalogFacets: map[string][]SearchFacet{}, PriceDistribution: []string{}}
 	candidates := []StoreSearchHit{}
-	rank := map[string]int{}
+	rank := map[string]float32{}
 	facets := map[string]map[string]int{}
 	catalog := map[string]map[string]int{}
 	for _, a := range searchAttributes {
@@ -591,7 +601,11 @@ func evaluateSearch(hits []StoreSearchHit, q StoreSearchQuery, currency string) 
 				cmp = -cmp
 			}
 		case "relevance":
-			cmp = rank[b.ID] - rank[a.ID]
+			if rank[a.ID] > rank[b.ID] {
+				cmp = -1
+			} else if rank[a.ID] < rank[b.ID] {
+				cmp = 1
+			}
 		default:
 			cmp = b.created.Compare(a.created)
 		}

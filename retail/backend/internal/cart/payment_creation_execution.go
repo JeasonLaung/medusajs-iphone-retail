@@ -58,6 +58,11 @@ func ExecutePaymentCompensationSession(ctx context.Context, db *gorm.DB, store s
 	if err != nil {
 		return PaymentExecution{}, err
 	}
+	return executeClaimedPaymentCreate(ctx, db, execution, key, request, adapter, ring)
+}
+
+// Callers commit the exact claim before entering this shared executor.
+func executeClaimedPaymentCreate(ctx context.Context, db *gorm.DB, execution PaymentExecution, key payments.EffectKey, request payments.SessionRequest, adapter payments.CreateSessionAdapter, ring *protected.Ring) (PaymentExecution, error) {
 	if !execution.Receipt.Dispatch {
 		return execution, nil
 	}
@@ -76,7 +81,7 @@ func ExecutePaymentCompensationSession(ctx context.Context, db *gorm.DB, store s
 	savedCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
 	defer cancel()
 	var saved payments.EffectReceipt
-	err = db.WithContext(savedCtx).Transaction(func(tx *gorm.DB) error {
+	err := db.WithContext(savedCtx).Transaction(func(tx *gorm.DB) error {
 		var err error
 		if outcome == payments.CreateSucceeded {
 			saved, err = payments.RecordSessionCreation(savedCtx, tx, key, execution.Receipt.AttemptID, ring, response)

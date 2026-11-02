@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict'
 
 const password='fixture-checkout-new-account-password'
-export async function registerCheckoutCustomer({page,context,shop,segment,index,control,expect,previousOrder}){
+export async function registerCheckoutCustomer({page,context,shop,segment,index,control,expect,previousOrder,transferCart}){
  assert.equal((await control('case/'+index)).status,204)
- const email=`checkout-${index}@example.invalid`,statuses=[]
+ const email=`checkout-${index}@example.invalid`,statuses=[],transferDiagnostics=[]
+ if(transferCart)page.on('response',async r=>{const path=new URL(r.url()).pathname;if(path==='/api/store/cart'||path==='/api/store/customer/cart-transfer'||path==='/api/store/customer/auth/login'){let body;try{body=await r.json()}catch{};transferDiagnostics.push({path,status:r.status(),cart:body?.cart?.id,version:body?.cart?.version,customer:body?.customer?.id,verified:!!body?.customer?.verified_at,error:body?.error?.code})}})
  page.on('response',r=>{if(r.url().includes('/customer/auth/'))statuses.push({path:new URL(r.url()).pathname,status:r.status()})})
  await page.goto(shop+`/${segment}/account`,{waitUntil:'domcontentloaded'})
  await expect(page.getByTestId('login-page')).toBeVisible()
@@ -31,9 +32,33 @@ export async function registerCheckoutCustomer({page,context,shop,segment,index,
  await page.goto(shop+`/${segment}/account/orders`,{waitUntil:'domcontentloaded'})
  await page.getByTestId('email-input').fill(email)
  await page.getByTestId('password-input').fill(password)
+ let transferInputs=[],lostTransfer=false
+ if(transferCart)await page.route(shop+'/api/store/customer/cart-transfer',async route=>{
+  const input=route.request().postDataJSON(),response=await route.fetch()
+  assert.equal(response.status(),200);transferInputs.push(input)
+  const receipt=await response.json();assert.equal(receipt.cart_id,transferCart)
+  if(!lostTransfer){lostTransfer=true;await route.abort('failed');return}
+  assert.deepEqual(input,transferInputs[0]);assert.equal(receipt.replayed,true)
+  await route.fulfill({response})
+ })
  const login=page.waitForResponse(r=>r.url().endsWith('/customer/auth/login'))
  await page.getByTestId('sign-in-button').click()
  assert.equal((await login).status(),200)
+ if(transferCart){
+  await expect(page.getByTestId('login-error-message')).toBeVisible()
+  const pending=await page.evaluate(()=>JSON.parse(localStorage.getItem('retail:customer-cart-transfer:v1')))
+  assert.ok(pending,JSON.stringify({transferDiagnostics,transferInputs,storageKeys:await page.evaluate(()=>Object.keys(localStorage))}));
+  assert.equal(pending.cart,transferCart);assert.deepEqual(pending.command,transferInputs[0])
+  const retried=page.waitForResponse(r=>r.url().endsWith('/customer/cart-transfer'))
+  await page.getByTestId('sign-in-button').click()
+  assert.equal((await retried).status(),200)
+  await expect.poll(()=>page.evaluate(()=>localStorage.getItem('retail:customer-cart-transfer:v1'))).toBe(null)
+  assert.equal(transferInputs.length,2)
+  const current=await context.request.get(shop+'/api/store/cart');assert.equal(current.status(),200)
+  const snapshot=(await current.json()).cart;assert.equal(snapshot.id,transferCart);assert.equal(snapshot.version,'3')
+  const amounts=await context.request.get(shop+`/api/store/carts/${transferCart}/amounts`);assert.equal(amounts.status(),200);assert.equal((await amounts.json()).lines.length,1)
+  await page.unroute(shop+'/api/store/customer/cart-transfer')
+ }
  await expect(page.getByTestId('customer-authenticated')).toBeVisible()
  await expect(page.getByTestId('no-orders-container')).toBeVisible()
  if(previousOrder)assert.equal((await context.request.get(shop+'/api/store/customer/orders/'+previousOrder)).status(),404)

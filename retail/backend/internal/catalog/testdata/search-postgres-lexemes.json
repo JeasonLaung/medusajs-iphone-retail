@@ -1,0 +1,651 @@
+[
+  {
+    "input": "quantities",
+    "terms": [
+      "quantiti"
+    ],
+    "tokens": [
+      {
+        "kind": "asciiword",
+        "text": "quantities",
+        "lexemes": [
+          "quantiti"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "verifying",
+    "terms": [
+      "verifi"
+    ],
+    "tokens": [
+      {
+        "kind": "asciiword",
+        "text": "verifying",
+        "lexemes": [
+          "verifi"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "the",
+    "terms": [],
+    "tokens": [
+      {
+        "kind": "asciiword",
+        "text": "the",
+        "lexemes": []
+      }
+    ]
+  },
+  {
+    "input": "iPhone 13 Pro Max",
+    "terms": [
+      "iphon",
+      "13",
+      "pro",
+      "max"
+    ],
+    "tokens": [
+      {
+        "kind": "asciiword",
+        "text": "iPhone",
+        "lexemes": [
+          "iphon"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": " ",
+        "lexemes": null
+      },
+      {
+        "kind": "uint",
+        "text": "13",
+        "lexemes": [
+          "13"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": " ",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "Pro",
+        "lexemes": [
+          "pro"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": " ",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "Max",
+        "lexemes": [
+          "max"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "iPhone17e",
+    "terms": [
+      "iphone17e"
+    ],
+    "tokens": [
+      {
+        "kind": "numword",
+        "text": "iPhone17e",
+        "lexemes": [
+          "iphone17e"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "phones128",
+    "terms": [
+      "phones128"
+    ],
+    "tokens": [
+      {
+        "kind": "numword",
+        "text": "phones128",
+        "lexemes": [
+          "phones128"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "128phones",
+    "terms": [
+      "128phones"
+    ],
+    "tokens": [
+      {
+        "kind": "numword",
+        "text": "128phones",
+        "lexemes": [
+          "128phones"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "space-gray",
+    "terms": [
+      "space-gray",
+      "space",
+      "gray"
+    ],
+    "tokens": [
+      {
+        "kind": "asciihword",
+        "text": "space-gray",
+        "lexemes": [
+          "space-gray"
+        ]
+      },
+      {
+        "kind": "hword_asciipart",
+        "text": "space",
+        "lexemes": [
+          "space"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "-",
+        "lexemes": null
+      },
+      {
+        "kind": "hword_asciipart",
+        "text": "gray",
+        "lexemes": [
+          "gray"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "space gray",
+    "terms": [
+      "space",
+      "gray"
+    ],
+    "tokens": [
+      {
+        "kind": "asciiword",
+        "text": "space",
+        "lexemes": [
+          "space"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": " ",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "gray",
+        "lexemes": [
+          "gray"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "verified-quantities",
+    "terms": [
+      "verified-quant",
+      "verifi",
+      "quantiti"
+    ],
+    "tokens": [
+      {
+        "kind": "asciihword",
+        "text": "verified-quantities",
+        "lexemes": [
+          "verified-quant"
+        ]
+      },
+      {
+        "kind": "hword_asciipart",
+        "text": "verified",
+        "lexemes": [
+          "verifi"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "-",
+        "lexemes": null
+      },
+      {
+        "kind": "hword_asciipart",
+        "text": "quantities",
+        "lexemes": [
+          "quantiti"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "up-to-date",
+    "terms": [
+      "up-to-d",
+      "date"
+    ],
+    "tokens": [
+      {
+        "kind": "asciihword",
+        "text": "up-to-date",
+        "lexemes": [
+          "up-to-d"
+        ]
+      },
+      {
+        "kind": "hword_asciipart",
+        "text": "up",
+        "lexemes": []
+      },
+      {
+        "kind": "blank",
+        "text": "-",
+        "lexemes": null
+      },
+      {
+        "kind": "hword_asciipart",
+        "text": "to",
+        "lexemes": []
+      },
+      {
+        "kind": "blank",
+        "text": "-",
+        "lexemes": null
+      },
+      {
+        "kind": "hword_asciipart",
+        "text": "date",
+        "lexemes": [
+          "date"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "foo-beta1",
+    "terms": [
+      "foo-beta1",
+      "foo",
+      "beta1"
+    ],
+    "tokens": [
+      {
+        "kind": "numhword",
+        "text": "foo-beta1",
+        "lexemes": [
+          "foo-beta1"
+        ]
+      },
+      {
+        "kind": "hword_asciipart",
+        "text": "foo",
+        "lexemes": [
+          "foo"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "-",
+        "lexemes": null
+      },
+      {
+        "kind": "hword_numpart",
+        "text": "beta1",
+        "lexemes": [
+          "beta1"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "128-GB",
+    "terms": [
+      "128",
+      "gb"
+    ],
+    "tokens": [
+      {
+        "kind": "uint",
+        "text": "128",
+        "lexemes": [
+          "128"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "-",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "GB",
+        "lexemes": [
+          "gb"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "123-456",
+    "terms": [
+      "123",
+      "-456"
+    ],
+    "tokens": [
+      {
+        "kind": "uint",
+        "text": "123",
+        "lexemes": [
+          "123"
+        ]
+      },
+      {
+        "kind": "int",
+        "text": "-456",
+        "lexemes": [
+          "-456"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "-123",
+    "terms": [
+      "-123"
+    ],
+    "tokens": [
+      {
+        "kind": "int",
+        "text": "-123",
+        "lexemes": [
+          "-123"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "+123",
+    "terms": [
+      "+123"
+    ],
+    "tokens": [
+      {
+        "kind": "int",
+        "text": "+123",
+        "lexemes": [
+          "+123"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "1.5",
+    "terms": [
+      "1.5"
+    ],
+    "tokens": [
+      {
+        "kind": "float",
+        "text": "1.5",
+        "lexemes": [
+          "1.5"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "6.1 inches",
+    "terms": [
+      "6.1",
+      "inch"
+    ],
+    "tokens": [
+      {
+        "kind": "float",
+        "text": "6.1",
+        "lexemes": [
+          "6.1"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": " ",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "inches",
+        "lexemes": [
+          "inch"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "-1.5",
+    "terms": [
+      "-1.5"
+    ],
+    "tokens": [
+      {
+        "kind": "float",
+        "text": "-1.5",
+        "lexemes": [
+          "-1.5"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "+1.5",
+    "terms": [
+      "+1.5"
+    ],
+    "tokens": [
+      {
+        "kind": "float",
+        "text": "+1.5",
+        "lexemes": [
+          "+1.5"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "1.2e3",
+    "terms": [
+      "1.2e3"
+    ],
+    "tokens": [
+      {
+        "kind": "sfloat",
+        "text": "1.2e3",
+        "lexemes": [
+          "1.2e3"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "-1.2e-3",
+    "terms": [
+      "-1.2e-3"
+    ],
+    "tokens": [
+      {
+        "kind": "sfloat",
+        "text": "-1.2e-3",
+        "lexemes": [
+          "-1.2e-3"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "8.3.0",
+    "terms": [
+      "8.3.0"
+    ],
+    "tokens": [
+      {
+        "kind": "version",
+        "text": "8.3.0",
+        "lexemes": [
+          "8.3.0"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "a@example.test",
+    "terms": [
+      "a@example.test"
+    ],
+    "tokens": [
+      {
+        "kind": "email",
+        "text": "a@example.test",
+        "lexemes": [
+          "a@example.test"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "A.B-c_d@example.test",
+    "terms": [
+      "a.b-c_d@example.test"
+    ],
+    "tokens": [
+      {
+        "kind": "email",
+        "text": "A.B-c_d@example.test",
+        "lexemes": [
+          "a.b-c_d@example.test"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "a+b@example.test",
+    "terms": [
+      "b@example.test"
+    ],
+    "tokens": [
+      {
+        "kind": "asciiword",
+        "text": "a",
+        "lexemes": []
+      },
+      {
+        "kind": "blank",
+        "text": "+",
+        "lexemes": null
+      },
+      {
+        "kind": "email",
+        "text": "b@example.test",
+        "lexemes": [
+          "b@example.test"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "iPhone's",
+    "terms": [
+      "iphon"
+    ],
+    "tokens": [
+      {
+        "kind": "asciiword",
+        "text": "iPhone",
+        "lexemes": [
+          "iphon"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "'",
+        "lexemes": null
+      },
+      {
+        "kind": "asciiword",
+        "text": "s",
+        "lexemes": []
+      }
+    ]
+  },
+  {
+    "input": "苹果手机",
+    "terms": [
+      "苹果手机"
+    ],
+    "tokens": [
+      {
+        "kind": "word",
+        "text": "苹果手机",
+        "lexemes": [
+          "苹果手机"
+        ]
+      }
+    ]
+  },
+  {
+    "input": "蓝色-钛金属",
+    "terms": [
+      "蓝色-钛金属",
+      "蓝色",
+      "钛金属"
+    ],
+    "tokens": [
+      {
+        "kind": "hword",
+        "text": "蓝色-钛金属",
+        "lexemes": [
+          "蓝色-钛金属"
+        ]
+      },
+      {
+        "kind": "hword_part",
+        "text": "蓝色",
+        "lexemes": [
+          "蓝色"
+        ]
+      },
+      {
+        "kind": "blank",
+        "text": "-",
+        "lexemes": null
+      },
+      {
+        "kind": "hword_part",
+        "text": "钛金属",
+        "lexemes": [
+          "钛金属"
+        ]
+      }
+    ]
+  }
+]

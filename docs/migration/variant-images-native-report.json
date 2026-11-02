@@ -1,0 +1,155 @@
+{
+  "date": "2026-10-31",
+  "schema_migrations": 89,
+  "additional_sql_migration": false,
+  "complete_c03_accepted": false,
+  "main_trial_database_changed": false,
+  "source_database_changed": false,
+  "real_payment_or_mail_called": false,
+  "sql": {
+    "native_mysql": true,
+    "same_operation_contenders": 4,
+    "one_active_assignment": true,
+    "foreign_product_image_or_sku_rejected": true,
+    "operation_bound_to_variant": true,
+    "stale_revision_rejected": true,
+    "other_sku_unchanged": true,
+    "independent_thumbnail_preserved": true,
+    "late_receipt_failure_rolls_back_links_and_thumbnail": true,
+    "unlink_keeps_thumbnail_until_explicit_clear": true,
+    "gallery_removal_only_after_unlink_and_clear": true,
+    "historical_links_soft_deleted": true,
+    "disabled_gate_recovery": true,
+    "current_permission_checked_on_replay": true,
+    "iphone_model_color_auto_images_on_sku_creation": true,
+    "iphone_product_red_alias": true,
+    "auto_images_replay_no_duplicate": true,
+    "late_sku_failure_rolls_back_images_inventory_and_receipt": true
+  },
+  "browser": {
+    "real_react_gin_astro_native_mysql_redis": true,
+    "api_mocking": false,
+    "sku_gallery_thumbnail_refresh": true,
+    "public_variant_same_images": true,
+    "astro_gallery_decodes_selected_webp": true,
+    "astro_webp_sha256_equal": true,
+    "unlink_clear_then_product_image_remove": true,
+    "removed_asset_404_remaining_asset_200": true,
+    "admin_en_zh_mobile": true,
+    "script_errors": 0
+  },
+  "checks": {
+    "full_go_tests": true,
+    "targeted_vet": true,
+    "admin_types": true
+  },
+  "source_sha256": {
+    "retail/backend/internal/catalog/variant_images.go": "9d3d8f06568a0a6332275b70b1a4701a5096eff127f32aef9430dec4c66d552c",
+    "retail/backend/internal/catalog/variant_images_test.go": "76a5e8412b255be108e1e99ee1d5e592e45b0be5f6d1d25abacad11b4b83922e",
+    "retail/backend/internal/catalog/variant_images_native_test.go": "3311bcdff93953cf3a582540919dff02467228efcf1b95fd6e1a23e273d18fb4",
+    "retail/backend/internal/catalog/images_http.go": "a837118806a552bdfb7b1159a4e62867e48d13c6e7027bd15522942758b49145",
+    "retail/backend/internal/catalog/iphone_images.go": "c6d80b95376f4b30d4a0a9a01d0304314bd7b8dd4b0a3080f53f4707c84410a4",
+    "retail/backend/internal/catalog/iphone_images_test.go": "bbc8a42e1dc62d757ff2e9e1f741d52fc9d5dd5235af437586292d2448c7e85d",
+    "retail/backend/internal/catalog/variant_create.go": "768c766e49d2b9acca2164c89c2d7565a6f4afa37bab781c88131a020199e5f5",
+    "retail/admin/src/VariantImages.tsx": "0c353921a44d5854ae0661859046dd5e0b01ddf7e7650f9f2666e9884b3d3ed5",
+    "retail/admin/src/ProductDetail.tsx": "28e29af45b0b570b3afd764b2aa77ab00dd11383020b2143a7ed7574798ce7db",
+    "retail/admin/src/api.ts": "4f608d6a13b9552f9cd9b51eff05285e618e9779f42eb51d107f18ddd971135e",
+    "retail/admin/tests/variant-images.native.mjs": "07b52f9c67b02af1910a7ad13be18c8f1bbbe486ec90f3e0d6d2b5108d079ee2"
+  },
+  "artifacts": {
+    "sql": {
+      "path": "log/native-variant-images-sql.log",
+      "sha256": "d7ff12bb10aa9388aba6258cfd920cacd90183fe5ad38f7cebcea966a7ccda70"
+    },
+    "browser": {
+      "path": "log/native-variant-images-browser.log",
+      "sha256": "01fee81fe67e6f40359cdaa06168f07a663f6555755f98f92c8d930470caead9"
+    },
+    "full-go": {
+      "path": "log/native-variant-images-full-go.log",
+      "sha256": "d7fc241ca7344f6a8470036593bc3195e62a5a9b2457ac181b30944032392b44"
+    },
+    "admin-check": {
+      "path": "log/native-variant-images-admin-check.log",
+      "sha256": "e8bfd4d2e137d4c0fbce29a275eee34bbf66235478599a0a2cd8a2fa8fc59f69"
+    },
+    "vet": {
+      "path": "log/native-variant-images-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "remaining": [
+    "existing product option editing",
+    "complete variant updating and source image resynchronization on color changes",
+    "conditional pricing",
+    "full C01-C11 joint acceptance"
+  ],
+  "owned_fixture_cleanup": {
+    "api_stopped": true,
+    "astro_stopped": true,
+    "redis_keys_removed": 4,
+    "database_and_user_dropped": true
+  },
+  "existing_services": [
+    {
+      "url": "http://127.0.0.1:9001/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9001/app",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8000/dk-en/store",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9100/health",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9200/products",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/store",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:9300/dk-en/products/swappie-iphone-15-pro",
+      "status": 200
+    }
+  ],
+  "recent_service_logs": [
+    {
+      "path": "log/gin-branch-medusa-backend.log",
+      "recent_lines": 0,
+      "expected_disabled_cart": 0,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "log/gin-branch-medusa-storefront.log",
+      "recent_lines": 0,
+      "expected_disabled_cart": 0,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "log/gin-local-api-current.log",
+      "recent_lines": 100,
+      "expected_disabled_cart": 5,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "log/gin-local-admin.log",
+      "recent_lines": 12,
+      "expected_disabled_cart": 0,
+      "unexpected_errors": 0
+    },
+    {
+      "path": "retail/storefront/.astro/dev.log",
+      "recent_lines": 52,
+      "expected_disabled_cart": 13,
+      "unexpected_errors": 0
+    }
+  ]
+}

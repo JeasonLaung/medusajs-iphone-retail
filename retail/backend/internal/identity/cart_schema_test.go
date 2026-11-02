@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"io/fs"
 	"os"
+	"reflect"
 	"regexp"
 	"testing"
 	"testing/fstest"
@@ -58,11 +59,11 @@ func TestOwnedCartSchema(t *testing.T) {
 	}
 	db, gdb := open("cart_schema_fresh")
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 88 || schema.CheckApplied(ctx, db, plan) != nil || cart.Ready(ctx, gdb) != nil {
+	if err != nil || r.Applied != 103 || schema.CheckApplied(ctx, db, plan) != nil || cart.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh cart schema failed")
 	}
 	r, err = schema.Apply(ctx, db, plan)
-	if err != nil || r.Skipped != 88 {
+	if err != nil || r.Skipped != 103 {
 		t.Fatal("cart schema replay changed facts")
 	}
 	ddl, err := migrations.Files.ReadFile("0025_cart_relational.sql")
@@ -188,6 +189,58 @@ func TestOwnedCartSchema(t *testing.T) {
 	if blocked.QueryRowContext(ctx, "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name IN ('cart_line_items','cart_runtime_schema')").Scan(&kept) != nil || kept != 0 {
 		t.Fatal("cart guard created partial domain")
 	}
+	// Rehearse 102 -> 103 with an existing immutable checkout row. The new
+	// column starts NULL, leaves all original fields intact and rejects a
+	// revision below its original cart version at the physical SQL boundary.
+	priorFiles := fstest.MapFS{}
+	for _, entry := range entries {
+		if entry.Name() < "0103" {
+			b, _ := fs.ReadFile(migrations.Files, entry.Name())
+			priorFiles[entry.Name()] = &fstest.MapFile{Data: b}
+		}
+	}
+	priorPlan, err := schema.Load(priorFiles)
+	if err != nil {
+		t.Fatal(err)
+	}
+	upgrade, upgradeGDB := open("cart_checkout_version_upgrade")
+	if r, err := schema.Apply(ctx, upgrade, priorPlan); err != nil || r.Applied != 102 {
+		t.Fatal("checkout preceding102 plan", err)
+	}
+	for _, query := range []string{
+		`INSERT INTO commerce_stores(id,name,created_at,updated_at) VALUES('version-store','Artificial',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO carts(id,currency_code,created_at,updated_at) VALUES('version-cart','eur',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO cart_ownership(cart_id,store_id,generation,version,active,created_at,updated_at) VALUES('version-cart','version-store',REPEAT('a',64),5,TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))`,
+		`INSERT INTO cart_checkout_attempts(cart_id,operation_id,generation,input_version,cart_version,collection_id,session_id,cart_amount,settlement_amount,currency_code,request_sha256,created_at) VALUES('version-cart','11111111-1111-4111-8111-111111111111',REPEAT('a',64),4,5,'version-collection','version-session','158.750000000000000000001','158.75','eur',REPEAT('x',32),UTC_TIMESTAMP(6))`,
+	} {
+		if _, err := upgrade.ExecContext(ctx, query); err != nil {
+			t.Fatal("checkout version upgrade fixture", err)
+		}
+	}
+	var original, after map[string]any
+	if upgradeGDB.Table("cart_checkout_attempts").Take(&original).Error != nil {
+		t.Fatal("checkout upgrade before")
+	}
+	if r, err := schema.Apply(ctx, upgrade, plan); err != nil || r.Applied != 1 || r.Skipped != 102 || schema.CheckApplied(ctx, upgrade, plan) != nil {
+		t.Fatal("checkout103 upgrade", err)
+	}
+	if upgradeGDB.Table("cart_checkout_attempts").Take(&after).Error != nil || after["effective_cart_version"] != nil {
+		t.Fatal("checkout upgrade default revision")
+	}
+	delete(after, "effective_cart_version")
+	if !reflect.DeepEqual(original, after) {
+		t.Fatal("checkout upgrade changed immutable fields")
+	}
+	if _, err := upgrade.ExecContext(ctx, "UPDATE cart_checkout_attempts SET effective_cart_version=4"); err == nil {
+		t.Fatal("checkout revision below immutable version accepted")
+	}
+	if _, err := upgrade.ExecContext(ctx, "UPDATE cart_checkout_attempts SET effective_cart_version=7"); err != nil {
+		t.Fatal("checkout revision advancement rejected", err)
+	}
+	if r, err := schema.Apply(ctx, upgrade, plan); err != nil || r.Applied != 0 || r.Skipped != 103 {
+		t.Fatal("checkout103 replay", err)
+	}
+	t.Log(`CHECKOUT_EFFECTIVE_VERSION_UPGRADE {"real_mysql":true,"from":102,"to":103,"original_fields_unchanged":true,"nullable_original_binding":true,"physical_stale_revision_refused":true,"replay_unchanged":true}`)
 	result := map[string]any{"migrations": 32, "tables": 10, "source_columns": 136, "exact_money_tax_and_string_ids": true, "json_numeric_lexeme_preserved": true, "physical_fk_cascade_and_set_null": true, "invalid_boolean_json_negative_amount_rejected": true, "composite_identity_preserved": true, "unresolved_semantic_references_preserved": true, "existing_tables_preserved": true, "replay_unchanged": true, "schema_drift_rejected": true, "writes_enabled": false, "possession_restored": false, "checkout_integrated": false}
 	b, _ := json.Marshal(result)
 	t.Log("CART_SCHEMA_REHEARSAL " + string(b))

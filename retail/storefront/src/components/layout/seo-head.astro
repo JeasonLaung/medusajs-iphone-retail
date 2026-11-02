@@ -1,0 +1,25 @@
+---
+import {defaultSEO,jsonLD,jsonLDText,type SeoDefaults} from '../../lib/seo'
+import {loadSEOConfig,configuredSEO} from '../../lib/seo-config'
+import {GIN_API_ORIGIN} from 'astro:env/server'
+interface Props extends SeoDefaults {}
+let seo:ReturnType<typeof configuredSEO>={...defaultSEO(Astro.url,Astro.props,Astro.response.status),googleVerification:undefined,measurement:undefined,structuredJSON:undefined}
+// SEO availability never determines whether commerce can render.
+try{seo=configuredSEO(Astro.url,Astro.props,await loadSEOConfig(GIN_API_ORIGIN,Astro.url.pathname),Astro.response.status)}catch{}
+const analytics=seo.measurement?`(()=>{const start=()=>{if(document.getElementById('seo-ga4-loader'))return;window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){window.dataLayer.push(arguments)};window.gtag('js',new Date());window.gtag('config',${JSON.stringify(seo.measurement)});const script=document.createElement('script');script.id='seo-ga4-loader';script.async=true;script.src='https://www.googletagmanager.com/gtag/js?id='+${JSON.stringify(seo.measurement)};document.head.appendChild(script)};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start()})();`:undefined
+---
+<title>{seo.title}</title>
+<meta name="application-name" content="EuroRefurb"/>
+{seo.googleVerification&&<meta name="google-site-verification" content={seo.googleVerification}/>}
+<link rel="icon" href="/favicon.ico"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+{seo.description&&<meta name="description" content={seo.description}/>}
+{seo.robots&&<meta name="robots" content={seo.robots}/>}
+<link rel="canonical" href={seo.canonical}/>
+{seo.languages.map(({lang,href})=><link rel="alternate" hreflang={lang} href={href}/>)}
+<meta property="og:title" content={seo.openGraph.title}/>
+{seo.openGraph.description&&<meta property="og:description" content={seo.openGraph.description}/>}
+<meta property="og:url" content={seo.openGraph.url}/>
+{seo.openGraph.images.map(url=><meta property="og:image" content={url}/>)}
+<script type="application/ld+json" is:inline set:html={seo.structuredJSON?jsonLDText(seo.structuredJSON):jsonLD(seo.structured)}/>
+{analytics&&<script id="seo-ga4" is:inline set:html={analytics}/>}

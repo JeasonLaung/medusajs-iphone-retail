@@ -1,0 +1,28 @@
+{
+  "format_version": 1,
+  "scope": "Catalog dependency closure only; see native-history-import-report.json for subsequent domain work.",
+  "source_snapshot_sha256": "3b8c007f7854ab61b46009df87ba8f3a082dacfb3bf03078b0c16dcede367aab",
+  "catalog_source_tables": 46,
+  "catalog_source_rows": 17821,
+  "rollback_verified": true,
+  "apply_verified": true,
+  "same_snapshot_replay_all_business_and_aux_fields_unchanged": true,
+  "uncommitted_target_edit_conflict_rejected_and_rolled_back": true,
+  "source_global_logical_reference_gaps": 349,
+  "complete_import_accepted": false,
+  "native_replay_transcript_sha256": "af63dbc2e80103fc92c6d72b6443dda9ba60e6be9c3e4e0e65f05dd9cfa99a56",
+  "implementation_sha256_lf": {
+    "retail/backend/cmd/import-catalog/main.go": "d2e61f2864da232fc5d3f39b8ffa11dc2782b5d0b149e3455146f92ae0fde90e",
+    "retail/backend/cmd/import-catalog/main_test.go": "8e4089b706e21c6a0eecf0c8ba6d057634844476e981e52b7818e53118f717f3",
+    "retail/backend/internal/catalogimport/native_snapshot_test.go": "9563a173b2856d86da9c2b81c734d4198b99ebb96eb17b1ac1f91d9e0c444d53",
+    "retail/backend/internal/catalogimport/snapshot.go": "e283de064655750bd0f85d1dee18fa3462797dd46521eddb5e5851fa73915015",
+    "retail/backend/internal/catalogimport/snapshot_test.go": "3e35a6f61736ed6ea23cec23aba62cdd126627a8bb3dcae04386cc6a5a66e7b4",
+    "retail/backend/internal/rowimport/history_customer_test.go": "0c0eeaf2e7e5d8892d16bc4c2e1825273e57b9a7da31e82a1d0688d3dbe4e301",
+    "retail/backend/internal/rowimport/inspect.go": "cf859b0f7539742e1042af7582bc79103e30d82eae2a9966f46731948436e025",
+    "retail/backend/internal/rowimport/layout.go": "0c472820a8f89ab7d6b89159b122a192734fd90665b66930281e6d3e37b09403",
+    "retail/scripts/export-cell-snapshot.py": "f6fbd7021b77188268d230e0ab4951fee9b5799acef4dfe24e4a06ddb0bba618",
+    "retail/scripts/source-shape-sql.py": "dbbdd559d02bb14abcdcecdf8d1db7af2dde1f5e18e7e7fb4dbc987e45532f52",
+    "retail/scripts/test-native-source-shape.py": "9ebba55f6e8febcca215f0ad952e0196eda4c649ef3a1654caa76ada0816a859",
+    "retail/scripts/test-snapshot-export.py": "c968d404dd47dbf49b91b12eb02a5ab8624acb04d81894ebaa133359fd6276c5"
+  }
+}

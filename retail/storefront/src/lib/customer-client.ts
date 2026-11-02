@@ -1,3 +1,5 @@
+import {browserTransferCustomerCart,customerCartIntentKey} from './customer-cart-transfer.ts'
+import {reviewID,reviewPurchases,orderReviewContext,reviewReceipt,type ReviewSubmission} from './product-reviews.ts'
 import {paymentContext,paymentReceipt,paymentOrderID,paymentUUID,type PaymentInput} from './order-payments.ts'
 import {orderConfirmationProjection,type OrderConfirmation} from './cart-client.ts'
 import {orderListProjection,type CustomerOrderList} from './customer-orders.ts'
@@ -60,7 +62,7 @@ function photoError(e:unknown):string{
  }
  return 'BUYBACK_REQUEST_FAILED'
 }
-export function customerClient(fetcher:typeof fetch=fetch){
+export function customerClient(fetcher:typeof fetch=fetch,cartTransferEnabled=false){
  let pending:{email:string;password:string;country:string;locale:string}|null=null
  async function call(path:string,body?:Record<string,unknown>,csrf?:string,expectedStatus?:number):Promise<any>{
   const response=await fetcher(root+path,{method:body?'POST':'GET',credentials:'same-origin',cache:'no-store',redirect:'error',headers:body?{'Content-Type':'application/json',...(csrf?{'X-CSRF-Token':csrf}:{})}:undefined,body:body?JSON.stringify(body):undefined})
@@ -94,6 +96,18 @@ export function customerClient(fetcher:typeof fetch=fetch){
   return {request}
  }
  return {
+  async reviewPurchases(productID:string,offset=0){
+   if(!reviewID(productID)||!Number.isSafeInteger(offset)||offset<0||offset>100000)throw new CustomerError(400)
+   return reviewPurchases(await call('/product-reviews/purchases?'+new URLSearchParams({product_id:productID,offset:String(offset)}),undefined,undefined,200),offset)
+  },
+  async orderReviews(id:string){
+   if(!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(id))throw new CustomerError(400)
+   return orderReviewContext(await call('/orders/'+id+'/product-reviews',undefined,undefined,200))
+  },
+  async submitReview(input:ReviewSubmission){
+   if(!reviewID(input.product_id)||!Number.isInteger(input.rating)||input.rating<1||input.rating>5||typeof input.title!=='string'||typeof input.content!=='string'||input.title.trim().length<2||input.title.trim().length>120||input.content.trim().length<10||input.content.trim().length>3000||!(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(input.operation_id))||input.order_id!==undefined&&!/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/.test(input.order_id))throw new CustomerError(400)
+   return reviewReceipt(await call('/product-reviews',input,sessionCSRF(),201))
+  },
   async buybackRequest(id:string){return buybackResult(()=>buybackRequest(id))},
   async updateBuybackRequest(id:string,input:BuybackCommand){return buybackResult(()=>buybackRequest(id,input))},
   async buybackRequests(offset=0){return buybackResult(async()=>{
@@ -190,11 +204,11 @@ export function customerClient(fetcher:typeof fetch=fetch){
    if(!result||Object.keys(result).length!==1||result.order_id!==id)throw new CustomerError(503)
   },
   async current():Promise<Customer|null>{
-   try{return customerProjection((await call('/me')).customer)}catch(error){if(error instanceof CustomerError&&error.status===401)return null;throw error}
+   try{const customer=customerProjection((await call('/me')).customer);if(cartTransferEnabled&&typeof window!=='undefined'&&window.localStorage.getItem(customerCartIntentKey)!==null)await browserTransferCustomerCart(customer.id,fetcher,command=>call('/cart-transfer',command,sessionCSRF(),200));return customer}catch(error){if(error instanceof CustomerError&&error.status===401)return null;throw error}
   },
   async login(_previous:AuthState,form:FormData,segment:string):Promise<AuthState>{
    const input=identity(form,segment)
-   try{await write('login',{email:input.email,password:input.password});pending=null;customerChanged();return {state:'success'}}catch(error){
+   try{const result=await write('login',{email:input.email,password:input.password});pending=null;if(cartTransferEnabled){const customer=customerProjection(result.customer);await browserTransferCustomerCart(customer.id,fetcher,command=>call('/cart-transfer',command,sessionCSRF(),200))};customerChanged();return {state:'success'}}catch(error){
     if(error instanceof CustomerError&&error.verification){pending=input;return {state:'verification_required',email:input.email,delivery:'pending'}}
     pending=null;return {state:'error'}
    }
@@ -210,7 +224,7 @@ export function customerClient(fetcher:typeof fetch=fetch){
   async resend(){if(!pending)return {success:false};try{await write('resend',pending);return {success:true}}catch{return {success:false}}},
   async verify(token:string){if(!/^[0-9a-f]{64}$/.test(token))return {success:false};try{await write('verify',{token});return {success:true}}catch{return {success:false}}},
   async logout(){
-   await call('/auth/logout',{},sessionCSRF());pending=null;customerChanged()
+   await call('/auth/logout',{},sessionCSRF());pending=null;customerChanged();if(typeof window!=='undefined'){window.localStorage.removeItem(customerCartIntentKey);window.dispatchEvent(new Event('retail:cart-changed'))}
   },
   async updateProfile(fields:{first_name?:string;last_name?:string;phone?:string}){
    const input:Record<string,string>={}

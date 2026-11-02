@@ -5,7 +5,7 @@ import Link from '../products/localized-link'
 import {getLayoutCopy} from '../layout/i18n'
 import styles from './styles.module.css'
 
-export default function Information({kind,segment,children}:{kind:'about'|'help';segment:string;children?:import('react').ReactNode}){
+export default function Information({kind,segment,children}:{kind:'about'|'help'|'reviews';segment:string;children?:import('react').ReactNode}){
  const copy=getLayoutCopy(segment.endsWith('-zh')?'zh-CN':'en')
  return <div className={`${styles.page} ${kind==='help'?styles.help:''}`}><div className={styles.container}>
   <p className={styles.eyebrow}>{copy[kind]}</p><h1>{copy[`${kind}Title`]}</h1><p className={styles.description}>{copy[`${kind}Description`]}</p>
