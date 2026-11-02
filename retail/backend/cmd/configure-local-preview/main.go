@@ -23,6 +23,7 @@ import (
 func main() {
 	enable := flag.Bool("enable", false, "Enable draft-cart operations in the dedicated Windows preview database")
 	payments := flag.Bool("payments", false, "Explicitly prepare test-only checkout and local order numbering")
+	fulfillment := flag.Bool("fulfillment", false, "Enable existing device allocation, packing and parcel commands in the dedicated local preview")
 	flag.Parse()
 	_ = godotenv.Load()
 	cfg, err := driver.ParseDSN(os.Getenv("MYSQL_DSN"))
@@ -42,6 +43,30 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *fulfillment {
+			var revision uint64
+			if e := tx.Raw("SELECT revision FROM device_runtime_schema WHERE id=1 FOR UPDATE").Scan(&revision).Error; e != nil {
+				return e
+			}
+			if revision == 0 {
+				return gorm.ErrInvalidData
+			}
+			for _, table := range []string{"order_device_allocation_runtime", "order_device_packing_runtime", "order_device_parcel_runtime"} {
+				var count int64
+				if e := tx.Table(table).Where("id=1 AND version=1").Count(&count).Error; e != nil {
+					return e
+				}
+				if count != 1 {
+					return gorm.ErrInvalidData
+				}
+				if e := tx.Table(table).Where("id=1 AND version=1").Update("enabled", true).Error; e != nil {
+					return e
+				}
+			}
+			if e := tx.Table("device_runtime_schema").Where("id=1").Updates(map[string]any{"identity_enabled": true, "commands_enabled": true}).Error; e != nil {
+				return e
+			}
+		}
 		if *payments {
 			// These development numbers deliberately occupy a separate range.
 			// They are not a production source-sequence cutover or import seed.
@@ -140,5 +165,8 @@ func main() {
 	log.Print("Draft-cart preview ready: create/access/items/address/delivery/context/promotions")
 	if *payments {
 		log.Print("Local Mollie test checkout, completion, numbering and stock reservations ready; mail/refund workers unchanged")
+	}
+	if *fulfillment {
+		log.Print("Local device allocation, packing and shipment registration enabled; no devices, stock or orders changed")
 	}
 }

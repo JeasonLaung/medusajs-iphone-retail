@@ -1,5 +1,7 @@
 # Windows 本机启动
 
+本机还设置 `LOCAL_PREVIEW_FULFILLMENT_ENABLED=true`：start.bat显式开启现有设备配货、装包和登记发货操作。配置本身不生成设备或修改库存；仍需原界面登记有效的可售设备，并满足实收、SKU、仓库和身份校验。已在独立订单副本通过平台Admin配货/装包/发货验证，主订单保持未发货，见 `docs/migration/local-fulfillment-main.md`。
+
 **2026-11-02最新：本机现已开启用户提供test key的Mollie测试付款，并完成购物至订单确认/后台读取。** 下文早期“付款关闭/付款方式503”属于此前排障记录；当前测试付款配置与范围见文末。
 
 仓库根目录双击 `start.bat`，启动当前 Gin / React Admin / Astro。MySQL 按用户要求使用 Docker；Redis 使用本机服务，不启动旧 Medusa。原启动入口保留为 `start-medusa.bat`。
