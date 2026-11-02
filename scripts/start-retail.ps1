@@ -132,6 +132,10 @@ try {
     & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --payments
     if ($LASTEXITCODE -ne 0) { throw 'Local test checkout configuration failed.' }
   }
+  if ($env:LOCAL_PREVIEW_CUSTOMER_CART_ENABLED -eq 'true') {
+    & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --customer-cart
+    if ($LASTEXITCODE -ne 0) { throw 'Local login cart-transfer configuration failed.' }
+  }
   if ($env:CHECKOUT_CONTEXT_PAYMENT_ENABLED -eq 'true') {
     & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --payment-context
     if ($LASTEXITCODE -ne 0) { throw 'Local payment context configuration failed.' }
@@ -187,6 +191,9 @@ try {
   }
   Start-LocalApp 'admin' $node @('node_modules/vite/bin/vite.js','--host','127.0.0.1','--port','9200','--strictPort') (Join-Path $retailRoot 'admin') 'http://127.0.0.1:9200'
   Read-Environment (Join-Path $retailRoot 'storefront\.env')
+  if ($env:LOCAL_PREVIEW_CUSTOMER_CART_ENABLED -eq 'true') {
+    $env:PUBLIC_CUSTOMER_CART_TRANSFER_ENABLED = 'true'
+  }
   Start-LocalApp 'storefront' $node @('node_modules/astro/bin/astro.mjs','dev','--host','127.0.0.1','--port','9300') (Join-Path $retailRoot 'storefront') 'http://127.0.0.1:9300/dk-en/store'
   Write-Host 'Admin: http://127.0.0.1:9200'
   Write-Host 'Store: http://127.0.0.1:9300/dk-zh/store'

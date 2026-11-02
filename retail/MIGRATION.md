@@ -1,5 +1,7 @@
 # 迁移实现状态
 
+2026-11-03：C02/C06[本机登录购物车接管](../docs/migration/local-customer-cart-login.md)修复前台开关与恢复库runtime不一致；start.bat显式配置已接，真实Astro/Gin/MySQL/Redis中英手机/桌面原车接管、丢响应刷新恢复和退出/另一浏览器能力边界通过。已有订单账务与主业务数据不变，整体继续开放。
+
 2026-11-03：C09[无序列号申请退款](../docs/migration/gin-non-device-refund.md)已接通实际客户申请、Ant审核/退款、正式账务/通知和中英文客户查询；14组业务条件、晚发货拒绝、记账回滚/六并发恢复通过。仅退款渠道响应人工模拟，主数据不变，整体仍未完成。
 
 2026-11-03：C06[PayPal已扣款成单](../docs/migration/gin-paypal-completion.md)完成钱包/卡原渠道证据及本地订单/库存预留/实收/出站事务，独立Gin HTTP/MySQL/Redis通过；SDK、webhook、真实PayPal及C01—C11其余验收继续未完成。

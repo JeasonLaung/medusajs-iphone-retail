@@ -1,0 +1,113 @@
+{
+  "owner": "604a7ea46c16",
+  "database": "retail_account_604a7ea46c16",
+  "real_email_delivery": false,
+  "business_api_mocking": false,
+  "main_database_modified": false,
+  "api_sha256": "61bb1892b61d944ecfa3bf884811ceb687256bdb5a5b746aa182a93ae845c50d",
+  "customer_owner": "790ce0fc9e71",
+  "resumed_paid_checkpoint": "790ce0fc9e71",
+  "passed": true,
+  "scenario": "cart-login",
+  "verified_accounts": 1,
+  "cases": [
+    {
+      "segment": "gb-en",
+      "width": 390,
+      "cart_id": "cart_92648659-8ca1-461e-b115-c49eaa65b665",
+      "version_before": "2",
+      "version_after": "3",
+      "disabled_gate_reproduced": true,
+      "lost_success_response_recovered": true,
+      "same_uuid_payload": true,
+      "items_and_amounts_preserved": true,
+      "logout_cleared_capabilities": true
+    },
+    {
+      "segment": "gb-zh",
+      "width": 1440,
+      "cart_id": "cart_c5f58f97-99ed-4ffd-abf5-d2dd0d0c006a",
+      "version_before": "2",
+      "version_after": "3",
+      "disabled_gate_reproduced": false,
+      "lost_success_response_recovered": true,
+      "same_uuid_payload": true,
+      "items_and_amounts_preserved": true,
+      "logout_cleared_capabilities": true
+    }
+  ],
+  "cross_browser_without_cart_capability_denied": true,
+  "provider_called": false,
+  "sql_cart_login_facts": {
+    "unique_owned_carts": 2,
+    "unique_transfer_receipts": 2,
+    "original_financial_and_inventory_unchanged": true
+  },
+  "payment_durable_snapshot_retained": true,
+  "redis_keys_removed": 13,
+  "source_product_entry_unchanged": true,
+  "source_account_counts_before": {
+    "customer_accounts": 0,
+    "customer_verifications": 0,
+    "customer_verification_mail": 0,
+    "customer_account_addresses": 0,
+    "customer_order_ownership": 0,
+    "buyback_requests": 0,
+    "buyback_prices": 0,
+    "buyback_photo_bytes": 0,
+    "buyback_device_links": 0,
+    "after_sales_requests": 0,
+    "device_return_receipts": 0,
+    "device_service_receipts": 0
+  },
+  "source_account_counts_after": {
+    "customer_accounts": 0,
+    "customer_verifications": 0,
+    "customer_verification_mail": 0,
+    "customer_account_addresses": 0,
+    "customer_order_ownership": 0,
+    "buyback_requests": 0,
+    "buyback_prices": 0,
+    "buyback_photo_bytes": 0,
+    "buyback_device_links": 0,
+    "after_sales_requests": 0,
+    "device_return_receipts": 0,
+    "device_service_receipts": 0
+  },
+  "resources_removed": true,
+  "cleanup_errors": [],
+  "main_runtime": {
+    "http://127.0.0.1:9100/health": 200,
+    "http://127.0.0.1:9200/orders": 200,
+    "http://127.0.0.1:9300/gb-en/store": 200,
+    "http://127.0.0.1:9300/gb-en/account": 200,
+    "http://127.0.0.1:9300/gb-zh/account": 200
+  },
+  "main_runtime_configuration": {
+    "customer_cart_runtime_version": 1,
+    "enabled": true,
+    "dedicated_startup_command_rerun_passed": true,
+    "existing_main_cart_ownership": 0,
+    "existing_main_cart_receipts": 0,
+    "main_business_data_unchanged": true
+  },
+  "source_sha256": {
+    "retail/backend/cmd/configure-local-preview/main.go": "023b5271b8cac9af615928be0725caf5473074d02611bcb86b95ab9ef69f1a4d",
+    "retail/backend/.env.example": "64558ad2377bee1530ca5228e855a763a7e4a79c179dff0a38cfacb2ab99eee2",
+    "scripts/start-retail.ps1": "73ee065fc2ef988b486f8a9ba92b092d2991d4ab02f987f0a4585df8c753845d",
+    "retail/scripts/test-local-customer-account.py": "55707b772701f661994ebdbfe03276de424002a6797df251f2ac7645a4a668cb",
+    "retail/storefront/tests/local-customer-cart-login.live.mjs": "8367b4bbeaaa554a4f3daff3742fdac01fa6ce631356b1339f8159c9c01e9dd0"
+  },
+  "validation": {
+    "go_packages": [
+      "./cmd/configure-local-preview",
+      "./internal/cart",
+      "./internal/customer"
+    ],
+    "go_vet_configure_local_preview": true,
+    "powershell_parse": true,
+    "python_js_syntax": true,
+    "diff_check": true,
+    "full_shopping_flow_repeated": false
+  }
+}

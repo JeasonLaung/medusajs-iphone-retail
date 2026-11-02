@@ -26,6 +26,7 @@ func main() {
 	enable := flag.Bool("enable", false, "Enable draft-cart operations in the dedicated Windows preview database")
 	payments := flag.Bool("payments", false, "Explicitly prepare test-only checkout and local order numbering")
 	contextPayment := flag.Bool("payment-context", false, "Enable payment-aware cart context save and recovery in the dedicated local preview")
+	customerCart := flag.Bool("customer-cart", false, "Enable current possessed-cart transfer on customer login in the dedicated local preview")
 	fulfillment := flag.Bool("fulfillment", false, "Enable existing device allocation, packing and parcel commands in the dedicated local preview")
 	buyback := flag.Bool("buyback", false, "Enable existing customer buyback and Admin review commands in the dedicated local preview")
 	afterSales := flag.Bool("after-sales", false, "Enable existing customer requests, Admin review and device receipt/repair return in the dedicated local preview")
@@ -39,6 +40,9 @@ func main() {
 	warehouseManagement := flag.Bool("warehouse-management", false, "Enable existing warehouse management and validate device entry in the dedicated local preview")
 	flag.Parse()
 	_ = godotenv.Load()
+	if *customerCart && os.Getenv("CUSTOMER_AUTH_ENABLED") != "true" {
+		log.Fatal("Customer login must be explicitly enabled before cart transfer")
+	}
 	cfg, err := driver.ParseDSN(os.Getenv("MYSQL_DSN"))
 	if err != nil || os.Getenv("APP_ENV") != "development" || cfg.Net != "tcp" || cfg.Addr != "127.0.0.1:13307" || cfg.DBName != "eurorefurb_local_trial" {
 		log.Fatal("Requires development environment and the dedicated loopback Windows preview database")
@@ -82,6 +86,18 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *customerCart {
+			var row struct{ Version int }
+			if e := tx.Raw("SELECT version FROM customer_cart_runtime WHERE id=1 FOR UPDATE").Take(&row).Error; e != nil {
+				return e
+			}
+			if row.Version != 1 {
+				return gorm.ErrInvalidData
+			}
+			if e := tx.Table("customer_cart_runtime").Where("id=1 AND version=1").Update("enabled", true).Error; e != nil {
+				return e
+			}
+		}
 		if *catalogOperations {
 			for _, command := range []string{"product.images", "product.options", "product.option-definitions", "variant.edit", "variant.inventory"} {
 				var row struct{ Version int }
@@ -364,6 +380,9 @@ func main() {
 		log.Fatal("Draft-cart preview configuration unavailable; apply explicit migrations and run configure-local-preview --enable")
 	}
 	log.Print("Draft-cart preview ready: create/access/items/address/delivery/context/promotions")
+	if *customerCart {
+		log.Print("Local customer login cart transfer enabled; no ownership, orders, payments or inventory changed")
+	}
 	if *payments {
 		log.Print("Local Mollie test checkout, completion, numbering and stock reservations ready; mail/refund workers unchanged")
 	}

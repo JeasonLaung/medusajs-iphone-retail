@@ -1,5 +1,7 @@
 # Windows 本机启动
 
+2026-11-03：[登录时接管购物车](../docs/migration/local-customer-cart-login.md)已修复前台开关开启但数据库runtime关闭造成的503。本机 backend `.env` 设置 `LOCAL_PREVIEW_CUSTOMER_CART_ENABLED=true` 后，start.bat 显式启用已安装的v1 runtime并为Astro设置匹配开关；下次直接启动同样生效。只接管当前持有的购物车，不按邮箱继承其他车或历史订单，不创建账号或支付。仅更换前台 PUBLIC 开关不能代替数据库配置。
+
 2026-11-03：具备销售设备读写权限的仓库员工，在“仓库设备→销售”可勾选pending设备并“批量设为可售”（跨页最多200台）。当前仓库、来源、配置及销售历史限制保持；任一失败整批不保存，数量库存不变。实际本机隔离验收见[说明](../docs/migration/gin-warehouse-batch-available.md)。
 
 本机还设置 `LOCAL_PREVIEW_FULFILLMENT_ENABLED=true`：start.bat显式开启现有设备配货、装包和登记发货操作。配置本身不生成设备或修改库存；仍需原界面登记有效的可售设备，并满足实收、SKU、仓库和身份校验。已在独立订单副本通过平台Admin配货/装包/发货验证，主订单保持未发货，见 `docs/migration/local-fulfillment-main.md`。
