@@ -12,6 +12,8 @@ of an actual guest order in the source preview.
 --scenario=refund creates its own real sandbox payment; pending is reported as
 unfinished, never posted. --resume-refund=OWNER restores an ignored checkpoint
 and reuses the same paid order and durable refund instruction.
+--refund-mail-from-checkpoint=OWNER also verifies refund/completion event delivery
+and Admin retry with an isolated external mail transport; no new refund is sent.
 --scenario=warehouse uses the copied paid order and explicit fixture ownership
 to verify a new scoped employee's allocation/release/shipment and customer view.
 --warehouse-from-checkpoint=OWNER instead continues an actual paid customer's
@@ -553,6 +555,9 @@ def main(language, scenario='account', resume=None):
     cart_login = scenario == 'cart-login'
     non_device_refund = scenario == 'non-device-refund'
     repair_mail = scenario == 'repair-mail'
+    refund_mail = scenario == 'refund-mail'
+    if refund_mail and resume is None:
+        raise RuntimeError('Refund mail requires an existing pending refund checkpoint')
     intake_warehouse = scenario == 'intake-warehouse'
     warehouse_batch = scenario == 'warehouse-batch'
     warehouse_edit = scenario == 'warehouse-edit'
@@ -565,14 +570,14 @@ def main(language, scenario='account', resume=None):
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
     supplement = scenario == 'supplement'
     payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail', 'non-device-refund', 'cart-login')
-    event_mail = scenario in ('buyback-mail', 'repair-mail')
+    event_mail = scenario in ('buyback-mail', 'repair-mail', 'refund-mail')
     buyback_intake = scenario in ('buyback-intake', 'buyback-intake-return', 'buyback-mail')
     buyback_return = scenario in ('buyback-return', 'buyback-intake-return')
     buyback = scenario == 'buyback' or buyback_intake or buyback_return
     exchange = scenario in ('exchange', 'supplement')
-    refund = scenario == 'refund'
+    refund = scenario in ('refund', 'refund-mail')
     warehouse = scenario in ('warehouse', 'paid-warehouse', 'intake-warehouse')
-    repair = scenario in ('repair', 'exchange', 'refund', 'warehouse', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail')
+    repair = scenario in ('repair', 'exchange', 'refund', 'refund-mail', 'warehouse', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail')
     admin_required = buyback or repair or mail or reviews or product_entry or non_device_refund
     values = config()
     api_binary = Path(os.environ.get('ACCOUNT_TEST_API_BINARY') or ROOT / 'logs/retail-native/retail-api.exe').resolve()
@@ -676,6 +681,16 @@ def main(language, scenario='account', resume=None):
                 if len(row) != 2 or not re.fullmatch(r'asr_[0-9a-f-]{36}', row[0]) or not re.fullmatch(r'[0-9a-f-]{36}', row[1]):
                     raise RuntimeError('Owned refund receipt identity mismatch')
                 (logs / 'refund-existing.json').write_text(json.dumps({'request_id': row[0], 'operation_id': row[1]}))
+            if refund_mail:
+                pending = sql(database, "SELECT remote_refund_id,state,applied,dispatched_at IS NOT NULL FROM order_refund_operations WHERE order_id='" + paid['order_id'] + "'").split('\t')
+                if not existing_refund or len(pending) != 4 or not re.fullmatch(r're_[A-Za-z0-9]+', pending[0]) or pending[1] not in ('pending', 'queued', 'processing') or pending[2:] != ['0', '1']:
+                    raise RuntimeError('Refund mail only observes a dispatched original pending refund')
+                report['original_remote_refund_id'] = pending[0]
+                report['no_new_refund_instruction'] = True
+                protected_refund_tables = ['payments', 'payment_captures', 'inventory_levels', 'inventory_reservations', 'device_assignments', 'customer_order_ownership', 'fulfillments', 'fulfillment_items']
+                def refund_protected_fingerprint():
+                    return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', database, *protected_refund_tables)).hexdigest()
+                refund_protected_before = refund_protected_fingerprint()
         if repair and not intake_warehouse and (not resume or paid_warehouse or supplement or repair_mail):
             sql(database, "UPDATE customer_after_sales_runtime SET enabled=TRUE WHERE id=1; "
                 "UPDATE after_sales_review_runtime SET enabled=TRUE WHERE id=1; "
@@ -1046,6 +1061,21 @@ def main(language, scenario='account', resume=None):
             if mail_facts != ['after_sales.completed\tsent\t1', 'after_sales.processing\tsent\t1', 'shipment.created\tsent\t1']:
                 raise RuntimeError('Order and repair mail SQL facts differ: ' + str(mail_facts))
             report['sql_customer_event_mail'] = mail_facts
+        if refund_mail:
+            if refund_protected_fingerprint() != refund_protected_before:
+                raise RuntimeError('Original payment, inventory, fulfillment or ownership changed')
+            report['protected_payment_inventory_fulfillment_ownership_unchanged'] = True
+            if not report.get('refund_completed'):
+                raise RuntimeError('Original channel refund has not completed')
+            order = paid['order_id']
+            mail_facts = sql(database, "SELECT kind,status,COUNT(*) FROM customer_event_mail WHERE resource_id='" + order + "' GROUP BY kind,status ORDER BY kind,status").splitlines()
+            if mail_facts != ['after_sales.completed\tsent\t1', 'refund.created\tsent\t1']:
+                raise RuntimeError('Refund event mail SQL facts differ: ' + str(mail_facts))
+            receipts = sql(database, "SELECT (SELECT COUNT(*) FROM customer_event_mail_deliveries WHERE sent_at IS NOT NULL AND provider_id IS NOT NULL AND request_envelope IS NOT NULL),(SELECT COUNT(*) FROM audit_events WHERE action='customer_event_mail.retry'),(SELECT COUNT(*) FROM order_refund_operations WHERE order_id='" + order + "' AND remote_refund_id='" + report['original_remote_refund_id'] + "' AND applied=TRUE)").split('\t')
+            if receipts != ['2', '1', '1']:
+                raise RuntimeError('Refund mail delivery, retry or original instruction changed')
+            report['sql_customer_event_mail'] = mail_facts
+            report['sql_mail_receipts'] = dict(sent_deliveries=2, retry_receipts=1, original_refund_preserved=True)
         if repair and not warehouse:
             request = report['request_id']
             if not re.fullmatch(r'[A-Za-z0-9_-]{1,191}', request):
@@ -1229,6 +1259,8 @@ if __name__ == '__main__':
         main('en', 'intake-warehouse', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--warehouse-from-checkpoint='):
         main('en', 'paid-warehouse', sys.argv[1].split('=', 1)[1])
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--refund-mail-from-checkpoint='):
+        main('en', 'refund-mail', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--repair-mail-from-checkpoint='):
         main('en', 'repair-mail', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-repair-mail='):

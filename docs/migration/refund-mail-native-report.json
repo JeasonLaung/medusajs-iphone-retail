@@ -1,0 +1,71 @@
+{
+  "owner": "ea172a00f5ad",
+  "api_sha256": "4ea91aab832ba0641d998c375df3eb144e48ec0423ead5157491e814b45dd953",
+  "scenario": "refund-mail",
+  "resumed_paid_checkpoint": "d996b8c7712f",
+  "original_remote_refund_id": "re_kM2DLostBExnPFCouZzYJ",
+  "no_new_refund_instruction": true,
+  "passed": true,
+  "business_api_mocking": false,
+  "main_database_modified": false,
+  "real_email_delivery": false,
+  "business_event_mail_jobs": 2,
+  "event_mail_rejected_retry_sent": true,
+  "event_mail_lost_reply_same_command": true,
+  "event_mail_frozen_message_and_key": true,
+  "event_mail_transport_isolated": true,
+  "event_mail_recipient_sender_ownership_expiry_guards": false,
+  "order_id": "order_755fe4e6-906f-434c-8dfc-450105a71286",
+  "request_id": "asr_2fb4d40d-db74-4712-b4b0-1a85ff0af80c",
+  "refund_completed": true,
+  "refund_state": "refunded",
+  "existing_refund_checkpoint_continuation": true,
+  "actual_device_allocation_packing_shipping": false,
+  "new_paid_order_attachment_tested": false,
+  "browser_errors": 0,
+  "protected_payment_inventory_fulfillment_ownership_unchanged": true,
+  "sql_customer_event_mail": [
+    "after_sales.completed\tsent\t1",
+    "refund.created\tsent\t1"
+  ],
+  "sql_mail_receipts": {
+    "sent_deliveries": 2,
+    "retry_receipts": 1,
+    "original_refund_preserved": true
+  },
+  "sql_refund_facts": {
+    "refund_instruction": 1,
+    "refund_ledger": 1,
+    "negative_transaction": 1,
+    "refunded_summary": 1,
+    "read_refund_notice": 1,
+    "automatic_ownership": 1,
+    "source_order_untouched": 0
+  },
+  "payment_durable_snapshot_retained": true,
+  "resources_removed": true,
+  "cleanup_errors": [],
+  "mail_dispatch": {
+    "event-reject": {
+      "concurrent_claims": true,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-reject",
+      "provider_calls": 1
+    },
+    "event-sent": {
+      "concurrent_claims": true,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-sent",
+      "provider_calls": 1
+    },
+    "event-drain": {
+      "concurrent_claims": false,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-drain",
+      "provider_calls": 1
+    }
+  }
+}
