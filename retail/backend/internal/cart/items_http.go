@@ -125,9 +125,9 @@ func (h *HTTPHandler) item(c *gin.Context, set bool) {
 	}
 	var result AddItemResult
 	if set {
-		result, err = SetItem(ctx, h.db, h.store, ref, c.Param("line"), command)
+		result, err = SetItem(ctx, h.db, h.store, ref, c.Param("line"), command, h.manualProviders)
 	} else {
-		result, err = AddItem(ctx, h.db, h.store, ref, command)
+		result, err = AddItem(ctx, h.db, h.store, ref, command, h.manualProviders)
 	}
 	if err != nil {
 		cartHTTPError(c, err)

@@ -163,7 +163,9 @@ func SavePromotions(ctx context.Context, db *gorm.DB, store string, ref sessions
 		if _, err := RefreshManualShippingMethods(ctx, tx, store, ref, in.Version, manualProviders, at); err != nil {
 			return err
 		}
-		if _, err := RefreshSystemTaxes(ctx, tx, store, ref, in.Version, true); err != nil {
+		// Refreshing a coupon does not require checkout's completed address. Match
+		// the normal cart refresh, which clears tax lines without a country.
+		if _, err := RefreshSystemTaxes(ctx, tx, store, ref, in.Version, false); err != nil {
 			return err
 		}
 		if _, err := RefreshPromotions(ctx, tx, store, ref, in.Version, PromotionRefresh{At: at, Codes: in.Codes, Action: "replace"}); err != nil {

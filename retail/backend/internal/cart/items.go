@@ -62,22 +62,34 @@ func sqlAmount(value string) (string, string, error) {
 
 // AddItem owns one atomic draft mutation. Resolve possession and CSRF before
 // calling; store/ref are trusted server context. No inventory reservation,
-// payment, event, worker or provider call occurs here. Tax/promo/shipping rule
-// selection and payable checkout remain separate, unaccepted capabilities.
-func AddItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, in AddItemCommand) (AddItemResult, error) {
-	return mutateItem(ctx, db, store, ref, in, "add", "")
+// payment, event, worker or provider call occurs here. Current prices, saved
+// manual shipping, taxes and promotions refresh atomically with the item.
+func AddItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, in AddItemCommand, providers ...[]string) (AddItemResult, error) {
+	return mutateItem(ctx, db, store, ref, in, "add", "", providers...)
 }
 
 // SetItem replaces the absolute quantity; zero is an explicit removal. The
 // immutable receipt namespace is shared with AddItem, with a distinct digest.
-func SetItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, lineID string, in AddItemCommand) (AddItemResult, error) {
+func SetItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, lineID string, in AddItemCommand, providers ...[]string) (AddItemResult, error) {
 	if !idPattern.MatchString(lineID) || in.VariantID != "" {
 		return AddItemResult{}, ErrInput
 	}
-	return mutateItem(ctx, db, store, ref, in, "set", lineID)
+	return mutateItem(ctx, db, store, ref, in, "set", lineID, providers...)
 }
 
-func mutateItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, in AddItemCommand, mode, target string) (AddItemResult, error) {
+func mutateItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, in AddItemCommand, mode, target string, providers ...[]string) (AddItemResult, error) {
+	if len(providers) > 1 {
+		return AddItemResult{}, ErrInput
+	}
+	var manualProviders []string
+	if len(providers) == 1 {
+		manualProviders = providers[0]
+	}
+	for _, provider := range manualProviders {
+		if !idPattern.MatchString(provider) {
+			return AddItemResult{}, ErrInput
+		}
+	}
 	id, err := uuid.Parse(in.OperationID)
 	version, e := strconv.ParseUint(in.Version, 10, 64)
 	quantity, f := strconv.ParseInt(in.Quantity, 10, 64)
@@ -275,6 +287,25 @@ func mutateItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore
 					return ErrStorage
 				}
 			}
+		}
+		// A quantity or member-price change invalidates the saved shipping, tax and
+		// discount amounts too. Reuse the original refresh participants before the
+		// enclosing receipt/version commits; a replay returns above without refresh.
+		at := time.Now().UTC()
+		if _, err := RefreshItemSnapshots(ctx, tx, store, ref, in.Version); err != nil {
+			return err
+		}
+		if _, err := RefreshItemPrices(ctx, tx, store, ref, in.Version, at); err != nil {
+			return err
+		}
+		if _, err := RefreshManualShippingMethods(ctx, tx, store, ref, in.Version, manualProviders, at); err != nil {
+			return err
+		}
+		if _, err := RefreshSystemTaxes(ctx, tx, store, ref, in.Version, false); err != nil {
+			return err
+		}
+		if _, err := RefreshPromotions(ctx, tx, store, ref, in.Version, PromotionRefresh{At: at}); err != nil {
+			return err
 		}
 		if err := syncEmptyPaymentCollection(ctx, tx, store, ref, in.Version); err != nil {
 			return err

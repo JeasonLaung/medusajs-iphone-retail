@@ -933,6 +933,14 @@ def main(language, scenario='account', resume=None):
             raise RuntimeError('Owned snapshot migration failed; inspect ignored migration.log')
         if customer_groups:
             sql(database, 'UPDATE customer_group_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE customer_cart_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE catalog_price_edit_runtime SET enabled=TRUE WHERE id=1 AND version=1')
+            # Owned coupon fixture only. The trigger attaches its rule value to
+            # the group actually created through Admin, without mocking APIs.
+            sql(database, "UPDATE cart_promotion_command_runtime SET enabled=TRUE WHERE id=1 AND version=1; "
+                "INSERT INTO promotions(id,code,is_automatic,type,status,is_tax_inclusive,used,created_at,updated_at) VALUES('group_coupon_fixture','OWNED_GROUP_525',FALSE,'standard','active',FALSE,0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)); "
+                "INSERT INTO promotion_application_methods(id,promotion_id,type,target_type,allocation,value,raw_value,currency_code,created_at,updated_at) VALUES('group_coupon_method','group_coupon_fixture','fixed','items','across',5.25,'{\"value\":\"5.25\",\"precision\":100}','eur',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)); "
+                "INSERT INTO promotion_rules(id,attribute,operator,created_at,updated_at) VALUES('group_coupon_rule','customer.groups.id','in',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)); "
+                "INSERT INTO promotion_order_rules(promotion_id,promotion_rule_id) VALUES('group_coupon_fixture','group_coupon_rule'); "
+                "CREATE TRIGGER owned_group_coupon_value AFTER INSERT ON customer_groups FOR EACH ROW INSERT INTO promotion_rule_values(id,promotion_rule_id,value,created_at,updated_at) SELECT CONCAT('group_coupon_',NEW.id),'group_coupon_rule',NEW.id,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6) WHERE NEW.name LIKE 'Verified members %'")
             # The source snapshot has no collection for this model. Seed an
             # explicit disposable catalog fixture, never a production change.
             sql(database, "INSERT INTO catalog_collections(id,title,handle,created_at,updated_at) VALUES('group_catalog_fixture','Group catalog fixture','group-catalog-fixture',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)); UPDATE catalog_products SET collection_id='group_catalog_fixture' WHERE id='prod_01M4QRKR57T5S95XA5QDPHWN9E'")
@@ -1031,6 +1039,7 @@ def main(language, scenario='account', resume=None):
         if customer_groups:
             script = 'tests/local-customer-groups.live.mjs'
             sql(database, "CREATE TRIGGER owned_group_receipt_failure BEFORE INSERT ON customer_group_commands FOR EACH ROW SET NEW.operation_id=IF(NEW.operation_id='00000000-0000-4000-8000-000000000001',NULL,NEW.operation_id)")
+            sql(database, "CREATE TRIGGER owned_group_item_receipt_failure BEFORE INSERT ON cart_item_operations FOR EACH ROW SET NEW.operation_id=IF(NEW.operation_id='00000000-0000-4000-8000-000000000002',NULL,NEW.operation_id)")
         if warehouse_batch:
             sql(database, "CREATE TRIGGER owned_batch_receipt_failure BEFORE INSERT ON warehouse_device_changes FOR EACH ROW SET NEW.operation_id=IF(NEW.operation_id='00000000-0000-4000-8000-000000000001',NULL,NEW.operation_id)")
         result = subprocess.run([str(node), script],
@@ -1172,6 +1181,15 @@ def main(language, scenario='account', resume=None):
             if facts != ['1','0','3','4']:
                 raise RuntimeError('Customer group terminal facts differ: '+str(facts))
             report['sql_group_facts'] = dict(active_group=1, members_after_removal=0, immutable_commands=3, revision=4)
+            if report.get('group_coupon'):
+                cart_id = report['cart_id']
+                operation = report['group_coupon']['operation_id']
+                if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'[0-9a-f-]{36}', operation):
+                    raise RuntimeError('Invalid owned group coupon command')
+                facts = sql(database, "SELECT (SELECT COUNT(*) FROM cart_promotion_command_operations WHERE cart_id='"+cart_id+"'),(SELECT COUNT(*) FROM cart_promotion_command_operations WHERE cart_id='"+cart_id+"' AND operation_id='"+operation+"'),(SELECT COUNT(*) FROM cart_promotions WHERE cart_id='"+cart_id+"' AND deleted_at IS NULL),(SELECT COUNT(*) FROM cart_line_adjustments a JOIN cart_line_items i ON i.id=a.item_id WHERE i.cart_id='"+cart_id+"' AND a.deleted_at IS NULL),(SELECT used FROM promotions WHERE id='group_coupon_fixture')").split('\t')
+                if facts != ['3','1','0','0','0']:
+                    raise RuntimeError('Group coupon receipts, removal or budget differ: '+str(facts))
+                report['sql_group_coupon_facts'] = dict(commands=3, member_apply_receipt=1, active_links_after_removal=0, active_adjustments_after_removal=0, promotion_used=0)
             if report.get('new_cart_cases'):
                 for case in report['new_cart_cases']:
                     cart_id = case['cart_id']
