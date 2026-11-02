@@ -28,5 +28,14 @@
   },
   "handoff-storefront-tests.log": {
     "sha256": "b29310c98c84d99af6aeacd0545530fd9e3ac7aa15273632cc749035fc1cad2a"
+  },
+  "final_service_check": {
+    "9100_health": 200,
+    "9300_store": 200,
+    "9300_about": 200,
+    "9001": "no_listener",
+    "8000": "no_listener",
+    "9200": "no_listener",
+    "outage_reported": true
   }
 }
