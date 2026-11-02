@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import {transferCustomerCart,customerCartIntentKey} from '../src/lib/customer-cart-transfer.ts'
 import {contextIntentKey} from '../src/lib/cart-commerce.ts'
+import {paymentIntentKey} from '../src/lib/checkout-payment.ts'
 import {customerClient} from '../src/lib/customer-client.ts'
 import {customerBridge} from '../src/lib/customer-bridge.ts'
 const op='a8230181-a32c-4127-838b-92b7c033ef01'
@@ -83,4 +84,24 @@ test('pending context prevents customer ownership transfer before any private re
  const saved=storage();saved.setItem(contextIntentKey,'pending');let reads=0,sends=0
  await assert.rejects(transferCustomerCart({account:'cust_new',storage:saved,uuid:()=>op,exclusive:async work=>work(),current:async()=>{reads++;return cart},send:async()=>{sends++;throw Error('must not send')}}))
  assert.equal(reads,0);assert.equal(sends,0);assert.equal(saved.getItem(contextIntentKey),'pending')
+})
+
+test('a frozen checkout permits same-account acknowledgment while retaining its original CREATE journal',async()=>{
+ const saved=storage(),payment=JSON.stringify({cartID:cart.id,version:'4',operationID:op})
+ saved.setItem(paymentIntentKey,payment);let sends=0
+ const options={account:'cust_new',storage:saved,uuid:()=>op,exclusive:async<T>(work:()=>Promise<T>)=>work(),current:async()=>({...cart,version:'5'}),paymentOptions:async()=>({cart_id:cart.id,version:'5',providers:[],attempt_started:true}),send:async()=>{sends++;return {cart_id:cart.id,version:'5',replayed:false}}}
+ await transferCustomerCart(options)
+ assert.equal(sends,1);assert.equal(saved.getItem(paymentIntentKey),payment);assert.equal(saved.getItem(customerCartIntentKey),null)
+ for(const paymentOptions of [async()=>null,async()=>({cart_id:cart.id,version:'5',providers:[],attempt_started:false}),async()=>({cart_id:cart.id,version:'6',providers:[],attempt_started:true})])await assert.rejects(transferCustomerCart({...options,paymentOptions}))
+ assert.equal(sends,1)
+ await assert.rejects(transferCustomerCart({...options,current:async()=>cart}))
+ saved.setItem(paymentIntentKey,'invalid');await assert.rejects(transferCustomerCart(options));assert.equal(sends,1)
+})
+
+test('lost same-account acknowledgment keeps transfer UUID and the immutable payment journal through retry',async()=>{
+ const saved=storage(),payment=JSON.stringify({cartID:cart.id,version:'4',operationID:op}),sent:unknown[]=[];let lost=true
+ saved.setItem(paymentIntentKey,payment)
+ const options={account:'cust_new',storage:saved,uuid:()=>op,exclusive:async<T>(work:()=>Promise<T>)=>work(),current:async()=>({...cart,version:'6'}),paymentOptions:async()=>({cart_id:cart.id,version:'6',providers:[],attempt_started:true}),send:async(command:unknown)=>{sent.push(command);if(lost)throw Error('lost');return {cart_id:cart.id,version:'6',replayed:true}}}
+ await assert.rejects(transferCustomerCart(options));assert(saved.getItem(customerCartIntentKey));lost=false
+ await transferCustomerCart(options);assert.deepEqual(sent,[{operation_id:op,version:'6'},{operation_id:op,version:'6'}]);assert.equal(saved.getItem(paymentIntentKey),payment)
 })

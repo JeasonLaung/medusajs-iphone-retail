@@ -13,14 +13,17 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
 	"github.com/eurorefurb/retail/internal/cart"
 	"github.com/eurorefurb/retail/internal/catalog"
+	"github.com/eurorefurb/retail/internal/customer"
 	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/sessionstore"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -32,6 +35,19 @@ type contextBrowserProvider struct {
 	creates, deletes, observes, discovers int
 	status                                map[string]string
 	drift                                 func()
+}
+
+// Independent browser cases receive independent rate-limit keys while keeping
+// the real Redis limiter, its eight-attempt limit and TTL. Session/CSRF keys
+// still use the original store. Reusing one loopback IP across the whole matrix
+// must not consume a later case's fresh fixture budget.
+type contextBrowserCustomerSessions struct {
+	*sessionstore.Store
+	rateScope atomic.Uint64
+}
+
+func (s *contextBrowserCustomerSessions) AllowLogin(ctx context.Context, realm sessionstore.Realm, identity string) (bool, error) {
+	return s.Store.AllowLogin(ctx, realm, strconv.FormatUint(s.rateScope.Load(), 10)+":"+identity)
 }
 
 func (p *contextBrowserProvider) CreateSession(_ context.Context, r payments.SessionRequest) (payments.CreateOutcome, payments.CreatedSession, error) {
@@ -138,6 +154,26 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	router := gin.New()
 	_ = router.SetTrustedProxies(nil)
 	shop.Register(router.Group("/api/store"))
+	accounts, err := customer.New(db, options.Ring, sessions, origin)
+	if err != nil {
+		t.Fatal(err)
+	}
+	customerSessions := &contextBrowserCustomerSessions{Store: sessions}
+	customerHTTP, err := customer.NewHTTP(db, customer.HTTPOptions{Sessions: customerSessions, Ring: options.Ring, Origin: origin, StoreID: "shop", BridgeKey: key, ManualProviderIDs: options.ManualProviders})
+	if err != nil {
+		t.Fatal(err)
+	}
+	customerHTTP.Register(router.Group("/api/store/customer"))
+	exec("UPDATE customer_cart_runtime SET enabled=TRUE WHERE id=1")
+	defer exec("UPDATE customer_cart_runtime SET enabled=FALSE WHERE id=1")
+	const password = "context-owned-customer-password"
+	for _, email := range []string{"context-buyer@example.invalid", "context-other@example.invalid"} {
+		a, e := accounts.Register(ctx, customer.Registration{Email: email, Password: password, FirstName: "Owned", LastName: "Buyer", Country: "dk", Locale: "en"})
+		if e != nil {
+			t.Fatal(e)
+		}
+		exec("UPDATE customer_accounts SET verified_at=UTC_TIMESTAMP(6) WHERE id=?", a.ID)
+	}
 	public := router.Group("/api/store")
 	catalogue := catalog.StoreHandler{DB: db, StoreID: "shop"}
 	public.GET("/regions", (catalog.Handler{DB: db}).Regions)
@@ -176,6 +212,7 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	completed := 0
 	finish := make(chan struct{}, 1)
 	fixture.POST("/new", func(c *gin.Context) {
+		customerSessions.rateScope.Add(1)
 		exec("UPDATE pricing_prices SET amount=?,raw_amount=? WHERE id='add-single'", price.Amount, price.Raw)
 		ref, initial := makeCart()
 		active = ref
@@ -191,7 +228,7 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		adapter.observes = 0
 		adapter.discovers = 0
 		adapter.mu.Unlock()
-		c.JSON(200, gin.H{"cart_id": ref.CartID, "token": issued.Token, "csrf": issued.CSRF, "version": initial.Version})
+		c.JSON(200, gin.H{"cart_id": ref.CartID, "token": issued.Token, "csrf": issued.CSRF, "version": initial.Version, "account_email": "context-buyer@example.invalid", "other_email": "context-other@example.invalid", "password": password})
 	})
 	fixture.POST("/mode/:mode", func(c *gin.Context) {
 		mode := c.Param("mode")
@@ -218,6 +255,24 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	})
 	fixture.POST("/price", func(c *gin.Context) {
 		exec(`UPDATE pricing_prices SET amount=121,raw_amount='{"value":"121","precision":100}' WHERE id='add-single'`)
+		c.Status(200)
+	})
+	fixture.POST("/edited-email", func(c *gin.Context) {
+		address := cart.ContactAddress{FirstName: "Owned", LastName: "Buyer", Address1: "Test street 1", City: "Copenhagen", PostalCode: "0012", Country: "dk", Phone: "+45 111"}
+		_, e := cart.SaveContacts(ctx, db, "shop", active, cart.ContactCommand{OperationID: uuid.NewString(), Version: "5", Email: "edited-checkout@example.invalid", Shipping: address, Billing: address}, options.ManualProviders)
+		if e != nil {
+			t.Error("owned contact edit", e)
+			c.Status(503)
+			return
+		}
+		c.Status(200)
+	})
+	fixture.POST("/frozen-transfer-audit", func(c *gin.Context) {
+		if err := auditFrozenCustomerTransfer(ctx, db, accounts, sessions, active, options.ManualProviders); err != nil {
+			t.Error("frozen transfer audit", err)
+			c.Status(503)
+			return
+		}
 		c.Status(200)
 	})
 	fixture.POST("/stage", func(c *gin.Context) {
@@ -251,6 +306,11 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		}
 		var receipts int64
 		db.Table("cart_context_operations").Where("cart_id=?", active.CartID).Count(&receipts)
+		var transferReceipts, accountOwners int64
+		db.Table("customer_cart_operations").Where("cart_id=?", active.CartID).Count(&transferReceipts)
+		db.Table("customer_cart_ownership").Where("cart_id=?", active.CartID).Count(&accountOwners)
+		var email string
+		db.Table("carts").Select("email").Where("id=?", active.CartID).Scan(&email)
 		var attempts []struct {
 			InputVersion, CartVersion uint64
 			EffectiveCartVersion      *uint64
@@ -258,7 +318,7 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		db.Table("cart_checkout_attempts").Where("cart_id=?", active.CartID).Order("created_at").Find(&attempts)
 		adapter.mu.Lock()
 		defer adapter.mu.Unlock()
-		c.JSON(200, gin.H{"version": owner.Version, "checkout": owner.CheckoutAttemptID, "refresh": owner.PaymentRefreshOperationID, "receipts": receipts, "attempts": attempts, "creates": adapter.creates, "deletes": adapter.deletes, "observes": adapter.observes, "discovers": adapter.discovers, "protected_unchanged": protectedFacts() == baseline})
+		c.JSON(200, gin.H{"version": owner.Version, "checkout": owner.CheckoutAttemptID, "refresh": owner.PaymentRefreshOperationID, "receipts": receipts, "attempts": attempts, "creates": adapter.creates, "deletes": adapter.deletes, "observes": adapter.observes, "discovers": adapter.discovers, "protected_unchanged": protectedFacts() == baseline, "transfer_receipts": transferReceipts, "account_owners": accountOwners, "email": email})
 	})
 	fixture.POST("/case-done", func(c *gin.Context) { completed++; c.Status(200) })
 	fixture.POST("/finish", func(c *gin.Context) { finish <- struct{}{}; c.Status(200) })

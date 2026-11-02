@@ -4,6 +4,8 @@
 
 ## 最新换机交接（2026-11-02，覆盖后文历史运行状态）
 
+2026-11-02 同账户冻结结账重登：原已归属客户可在重新验证双凭证后确认同一cart，保留版本、编辑后的邮箱、冻结金额和CREATE日志；首次匿名已有付款归属仍待协调。前端19项局部测试、Astro470文件0错0警告及Go cart/customer/identity通过；真实10状态英文390px与同账户中英×390/1440从头四组合通过，含丢响应自动重放、外账户/匿名首次绑定拒绝、收据末尾故障全表回滚、六并发唯一收据、停用/付款刷新冻结拒绝。见[接续说明](migration/gin-customer-cart-transfer.md)及[报告](migration/customer-frozen-cart-transfer-report.json)。隔离资源清理；原服务/主预览仍接续前离线，完整业务全链未运行，C01—C11继续开放。
+
 2026-11-02 替代付款恢复：修复未知CREATE查询已付款/仅授权后无法接回原付款绑定的冲突；无需已失效的收银台链接，保持原始CREATE凭据和版本，授权不当实收，付款查询继续独立保存认证证据。八状态英文390px局部浏览器→Gin→MySQL/Redis通过（含两新增状态的丢成功响应重放），无重复CREATE，保护表不变；Go cart/payments/identity检查通过。见[专项说明](migration/context-payment-subflow.md)及[报告](migration/replacement-payment-recovery-report.json)。没有执行成单或完整交易全链；账户转移、跨币种/精确小数、矩阵与最终联合仍开放。
 
 2026-11-02 用户明确验证节奏：各子任务完成时按业务细分运行局部接口/状态/页面验证，并单独commit/push；完整业务流程在大任务结束时统一运行一次，不在每次修改后重复全链。已新增[付款设置独立子流程](migration/context-payment-subflow.md)：固定人工基线及密钥控制接口，六状态英文390px的实际Astro→Gin→MySQL9.6/Redis通过，包括保存/恢复丢响应、未知DELETE/CREATE只读恢复及已付原会话保持冻结。库存/订单/实收/通知指纹不变，冻结源码与资源清理通过。未运行全语言尺寸矩阵或完整交易链；跨币种、替代会话已付与账户转移仍待，不标整体完成。

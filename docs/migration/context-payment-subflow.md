@@ -28,6 +28,9 @@ node retail/scripts/test-context-payment-joint.mjs
 # 替代会话已付款/仅授权恢复（不进入订单、配货等后续流程）
 node retail/scripts/test-context-payment-joint.mjs --scenario replacement-paid
 node retail/scripts/test-context-payment-joint.mjs --scenario replacement-authorized
+# 已绑定同客户重登/匿名已有付款首次绑定拒绝
+node retail/scripts/test-context-payment-joint.mjs --scenario same-account
+node retail/scripts/test-context-payment-joint.mjs --scenario unbound-account
 # 仅需要检查本项语言/尺寸组合时使用，仍非完整交易链路
 node retail/scripts/test-context-payment-joint.mjs --scenario restore --matrix
 ```

@@ -91,7 +91,21 @@ func TransferCustomer(ctx context.Context, db *gorm.DB, store string, ref sessio
 		if err != nil {
 			return err
 		}
-		current, err := lockCurrent(ctx, tx, store, channel, ref, "UPDATE")
+		// Lock the durable owner before account authentication, as every other
+		// cart writer does. An existing checkout may be inspected here only to
+		// acknowledge the SAME already-bound customer without refreshing facts.
+		var frozen struct{ CheckoutAttemptID *string }
+		if err := tx.Table("cart_ownership").Select("checkout_attempt_id").Where("cart_id=?", ref.CartID).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&frozen).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return ErrDenied
+			}
+			return ErrStorage
+		}
+		checkout := ""
+		if frozen.CheckoutAttemptID != nil {
+			checkout = *frozen.CheckoutAttemptID
+		}
+		current, err := lockCurrentAuthority(ctx, tx, store, channel, ref, "UPDATE", "", checkout)
 		if err != nil {
 			return err
 		}
@@ -109,6 +123,11 @@ func TransferCustomer(ctx context.Context, db *gorm.DB, store string, ref sessio
 		}
 		if owner != nil && owner.CustomerID != account {
 			return ErrDenied
+		}
+		if owner == nil && frozen.CheckoutAttemptID != nil {
+			// First attachment can change customer-qualified prices/promotions.
+			// It still needs durable provider refresh coordination, not a bypass.
+			return ErrConflict
 		}
 		var receipt struct {
 			CustomerID, Generation      string

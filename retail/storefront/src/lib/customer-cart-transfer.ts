@@ -1,5 +1,5 @@
-import {paymentIntentKey} from './checkout-payment.ts'
-import {CartClient,type CartSnapshot} from './cart-client.ts'
+import {paymentIntentKey,readPaymentIntent} from './checkout-payment.ts'
+import {CartClient,type CartSnapshot,type CheckoutPaymentOptions} from './cart-client.ts'
 import {contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey,cartLockName,customerCartIntentKey} from './cart-commerce.ts'
 
 export {customerCartIntentKey} from './cart-commerce.ts'
@@ -8,6 +8,7 @@ type Intent={account:string;cart:string;command:Command}
 type Options={
  account:string
  current:()=>Promise<CartSnapshot|null>
+ paymentOptions?:(id:string)=>Promise<CheckoutPaymentOptions|null>
  send:(command:Command)=>Promise<unknown>
  storage:Pick<Storage,'getItem'|'setItem'|'removeItem'>
  uuid:()=>string
@@ -29,9 +30,17 @@ function parse(raw:string):Intent {
 export async function transferCustomerCart(o:Options):Promise<void> {
  if(!canonical(o.account,id))throw fail()
  await o.exclusive(async()=>{
-  for(const key of [contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey,paymentIntentKey])if(o.storage.getItem(key)!==null)throw fail()
+  for(const key of [contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey])if(o.storage.getItem(key)!==null)throw fail()
   const raw=o.storage.getItem(customerCartIntentKey),current=await o.current()
-  if(!current){if(raw!==null)throw fail();return}
+  const payment=readPaymentIntent(o.storage)
+  if(!current){if(raw!==null||payment!==null)throw fail();return}
+  if(payment){
+   if(payment.cartID!==current.id||BigInt(payment.version)+1n>BigInt(current.version)||!o.paymentOptions)throw fail()
+   const options=await o.paymentOptions(current.id)
+   if(!options||options.cart_id!==current.id||options.version!==current.version||!options.attempt_started)throw fail()
+   // Only the server can acknowledge the same bound customer. The CREATE
+   // journal remains intact; an unbound or different account is rejected there.
+  }
   const intent=raw===null?{account:o.account,cart:current.id,command:{operation_id:o.uuid(),version:current.version}}:parse(raw)
   if(intent.account!==o.account||intent.cart!==current.id||BigInt(current.version)<BigInt(intent.command.version))throw fail()
   const encoded=JSON.stringify(intent);parse(encoded)
@@ -61,6 +70,6 @@ export async function browserTransferCustomerCart(account:string,fetcher:typeof 
   return
  }
  if(typeof window==='undefined'||!navigator.locks)throw fail()
- await transferCustomerCart({account,current:()=>client.current(),send,storage:window.localStorage,uuid:()=>crypto.randomUUID(),exclusive:work=>navigator.locks.request(cartLockName,work)})
+ await transferCustomerCart({account,current:()=>client.current(),paymentOptions:id=>client.paymentOptions(id),send,storage:window.localStorage,uuid:()=>crypto.randomUUID(),exclusive:work=>navigator.locks.request(cartLockName,work)})
  window.dispatchEvent(new Event('retail:cart-changed'))
 }

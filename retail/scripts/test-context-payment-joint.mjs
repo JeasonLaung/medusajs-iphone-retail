@@ -11,7 +11,7 @@ const root=fileURLToPath(new URL('../../',import.meta.url)),owner=randomBytes(6)
 const base=path.join(root,'logs/gin-migration/context-payment-'+owner)
 await mkdir(base,{recursive:true})
 const label='eurorefurb.context-payment='+owner,name='eurorefurb-context-'+owner
-const choices=['unchanged','changed','restore','delete-unknown','create-unknown','paid','replacement-paid','replacement-authorized']
+const choices=['unchanged','changed','restore','delete-unknown','create-unknown','paid','replacement-paid','replacement-authorized','same-account','unbound-account']
 const args=process.argv.slice(2),matrix=args.includes('--matrix'),index=args.indexOf('--scenario')
 const selected=index<0?choices:[args[index+1]]
 assert(selected.every(s=>choices.includes(s))&&args.every((a,i)=>a==='--matrix'||a==='--scenario'||(i>0&&args[i-1]==='--scenario')),'Use [--scenario name] [--matrix]')
@@ -55,7 +55,7 @@ try{
  await symlink(path.join(root,'retail/storefront/node_modules'),path.join(storefront,'node_modules'),process.platform==='win32'?'junction':'dir')
  const binary=path.join(base,'identity-linux.test')
  run('go',['-C',backend,'test','-c','-o',binary,'./internal/identity'],{env:{...process.env,GOOS:'linux',GOARCH:'amd64',CGO_ENABLED:'0'}})
- run(process.execPath,['node_modules/astro/bin/astro.mjs','build'],{cwd:storefront,env:{...env,ASTRO_TELEMETRY_DISABLED:'1'}})
+ run(process.execPath,['node_modules/astro/bin/astro.mjs','build'],{cwd:storefront,env:{...env,ASTRO_TELEMETRY_DISABLED:'1',PUBLIC_CUSTOMER_CART_TRANSFER_ENABLED:'true'}})
  report.binary_sha256=createHash('sha256').update(await readFile(binary)).digest('hex')
  // Docker Desktop does not publish host ports on an --internal network.
  // Use an owned bridge and publish only the Gin fixture to host loopback.
@@ -82,7 +82,7 @@ try{
  const fixture=launch('docker',['exec','-w','/work/retail/backend/internal/identity','-e','GIN_MODE=release','-e','CONTEXT_PAYMENT_BROWSER=1','-e','CONTEXT_PAYMENT_CASE_COUNT='+caseCount,'-e','CONTEXT_PAYMENT_ORIGIN='+origin,'-e','CONTEXT_PAYMENT_KEY='+key,mysql,'/tmp/identity.test','-test.run','^TestOwnedContextPaymentBrowser$','-test.v','-test.timeout','12m'],root,env,'fixture.log')
  // Private fixture route readiness uses an authenticated harmless facts read.
  for(let i=0;i<180;i++){if(fixture.exitCode!==null)throw Error('Fixture exited before browser; inspect fixture.log');try{const r=await fetch(api+'/__fixture/facts',{headers:{'X-Fixture-Key':key},signal:AbortSignal.timeout(1000)});if(r.status===503)break}catch{}await pause(500);if(i===179)throw Error('Fixture HTTP not ready')}
- const astro=launch(process.execPath,['scripts/start.mjs'],storefront,{...env,HOST:'127.0.0.1',PORT:String(port),GIN_API_ORIGIN:api,STOREFRONT_ORIGIN:origin,ASTRO_TELEMETRY_DISABLED:'1'},'astro.log')
+ const astro=launch(process.execPath,['scripts/start.mjs'],storefront,{...env,HOST:'127.0.0.1',PORT:String(port),GIN_API_ORIGIN:api,STOREFRONT_ORIGIN:origin,CUSTOMER_BRIDGE_KEY:key,ASTRO_TELEMETRY_DISABLED:'1'},'astro.log')
  await ready(origin+'/dk-en/about',astro)
  console.log('Run actual browser save/restore cases against owned services.')
  const browser=launch(process.execPath,['tests/context-payment.native.mjs'],admin,{...env,...(process.env.CONTEXT_BROWSER_EXECUTABLE?{CONTEXT_BROWSER_EXECUTABLE:process.env.CONTEXT_BROWSER_EXECUTABLE}:{}),CONTEXT_ASTRO_ORIGIN:origin,CONTEXT_API_ORIGIN:api,CONTEXT_FIXTURE_KEY:key,CONTEXT_BROWSER_OUTPUT:base,CONTEXT_SCENARIOS:JSON.stringify(selected),CONTEXT_MATRIX:matrix?'1':'0'},'browser.log')

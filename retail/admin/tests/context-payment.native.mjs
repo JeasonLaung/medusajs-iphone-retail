@@ -13,6 +13,54 @@ async function control(path,body){const r=await fetch(api+'/__fixture/'+path,{me
 async function open(){await page.locator('astro-island[component-url*="gin-header"]:not([ssr])').waitFor({state:'attached'});await page.getByRole('button',{name:/^(Country and language|国家与语言)$/,exact:true}).click();await expect(page.getByRole('dialog')).toBeVisible()}
 async function journal(k){return page.evaluate(k=>JSON.parse(localStorage.getItem(k)),k)}
 async function current(){return page.evaluate(async()=>{const r=await fetch('/api/store/cart');if(!r.ok)throw Error('cart '+r.status);return r.json()})}
+async function accountCase(context,seed,scenario,lang,width){
+ const accountURL=origin+'/dk-'+lang+'/account',transferKey='retail:customer-cart-transfer:v1',inputs=[]
+ async function login(email){
+  await page.goto(accountURL);await expect(page.getByTestId('login-page')).toBeVisible()
+  await page.getByTestId('email-input').fill(email);await page.getByTestId('password-input').fill(seed.password)
+  await page.getByTestId('sign-in-button').click()
+ }
+ if(scenario==='same-account'){
+  await login(seed.account_email);await expect(page.getByTestId('customer-authenticated')).toBeAttached()
+  await control('edited-email')
+  // Preserve cart possession and the payment journal: no logout operation is
+  // issued, since production logout deliberately clears both capabilities.
+  await context.clearCookies({name:'retail_customer_session'});await context.clearCookies({name:'retail_customer_csrf'})
+ }
+ await page.goto(origin+'/dk-'+lang+'/checkout?step=payment')
+ await expect(page.getByTestId('submit-payment-button')).toBeEnabled();await page.getByTestId('submit-payment-button').click()
+ await expect(page.getByTestId('submit-order-button')).toBeVisible()
+ const payment=await journal(paymentKey),before=await control('facts')
+ assert.equal(before.creates,1);assert.equal(before.deletes,0)
+ await control('price') // A no-op must not refresh prices or invalidate payment.
+ let lost=false
+ await page.route('**/customer/cart-transfer',async route=>{
+  inputs.push(route.request().postDataJSON());const r=await route.fetch()
+  assert.equal(r.status(),scenario==='same-account'?200:409)
+  if(scenario==='same-account'&&!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})
+ })
+ await login(seed.account_email);await expect(page.getByTestId('login-error-message')).toBeVisible()
+ if(scenario==='same-account'){
+  const pending=await journal(transferKey);assert(pending);assert.equal(pending.command.version,String(before.version))
+  await page.reload()
+  await expect(page.getByTestId('customer-authenticated')).toBeAttached()
+  assert.equal(inputs.length,2);assert.deepEqual(inputs[0],inputs[1]);assert.equal(await journal(transferKey),null)
+  await context.clearCookies({name:'retail_customer_session'});await context.clearCookies({name:'retail_customer_csrf'})
+  await page.unroute('**/customer/cart-transfer')
+  await login(seed.other_email);await expect(page.getByTestId('login-error-message')).toBeVisible()
+ }
+ const after=await control('facts')
+ assert.equal(after.version,before.version);assert.equal(after.checkout,before.checkout);assert.equal(after.refresh,null)
+ assert.equal(after.account_owners,scenario==='same-account'?1:0)
+ assert.equal(after.transfer_receipts,before.transfer_receipts+(scenario==='same-account'?1:0))
+ assert.equal(after.email,scenario==='same-account'?'edited-checkout@example.invalid':'owned@example.invalid')
+ assert.equal(after.creates,1);assert.equal(after.deletes,0);assert.equal(after.protected_unchanged,true)
+ assert.deepEqual(await journal(paymentKey),payment);assert.deepEqual(after.attempts,before.attempts)
+ if(scenario==='same-account')await control('frozen-transfer-audit')
+ await page.screenshot({path:join(output,`${scenario}-${lang}-${width}.png`)})
+ cases.push({scenario,lang,width,real_database_facts:after,payment_journal_unchanged:true,same_account_lost_response_replayed:lost,foreign_or_unbound_denied:true})
+ await control('case-done')
+}
 try{
  const matrix=process.env.CONTEXT_MATRIX==='1',scenarios=JSON.parse(process.env.CONTEXT_SCENARIOS)
  for(const lang of matrix?['en','zh']:['en'])for(const width of matrix?[390,1440]:[390])for(const scenario of scenarios){
@@ -22,6 +70,7 @@ try{
   const writes=[];page.on('request',r=>{if(r.method()==='POST'&&r.url().includes('/context-payment'))writes.push({path:new URL(r.url()).pathname,key:r.headers()['idempotency-key'],body:r.postDataJSON()})})
   const seed=await control('new'),url=origin+'/dk-'+lang+'/about?joint=payment#contact'
   await context.addCookies([{name:'retail_cart_possession',value:seed.token,url:origin,sameSite:'Strict'},{name:'retail_cart_csrf',value:seed.csrf,url:origin,sameSite:'Strict'}])
+  if(scenario==='same-account'||scenario==='unbound-account'){await accountCase(context,seed,scenario,lang,width);await context.close();continue}
   await page.goto(origin+'/dk-'+lang+'/checkout?step=payment')
   await expect(page.getByTestId('submit-payment-button')).toBeEnabled()
   await page.getByTestId('submit-payment-button').click()
