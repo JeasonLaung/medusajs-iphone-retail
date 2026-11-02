@@ -30,7 +30,7 @@ export async function prepareLocalRefundPayment({page,context,origin,email,logs,
  await page.getByRole('button',{name:/PayPal/}).click({timeout:60000})
  await page.locator('input[name="final_state"][value="paid"]').check({timeout:60000})
  await page.getByRole('button',{name:/Continue/}).click()
- await page.waitForURL(origin+'/gb-en/order/**/confirmed',{timeout:90000})
+ await page.waitForURL(url=>url.origin===origin&&/^\/gb-(en|zh)\/order\/order_[0-9a-f-]+\/confirmed$/.test(url.pathname),{timeout:90000})
  await expect(page.getByTestId('order-complete-container')).toBeVisible()
  const orderID=new URL(page.url()).pathname.split('/').at(-2)
  assert.match(orderID,/^order_[0-9a-f-]{36}$/)

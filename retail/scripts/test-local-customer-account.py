@@ -16,6 +16,10 @@ to verify a new scoped employee's allocation/release/shipment and customer view.
 in separate test processes, replacing only the external Resend transport.
 --scenario=payment-context continues one real sandbox checkout through two
 language saves, lost success responses, refresh recovery and paid completion.
+--scenario=payment-context-changed additionally reprices only the copy, retires
+the prior checkout, and completes a fresh sandbox attempt at the new amount.
+--resume-changed-context=OWNER reads an already completed owned checkpoint;
+it never creates another remote payment.
 Verification links are read from authenticated encrypted intents in the owned
 copy (or the captured dispatch body for mail), never returned by an application
 endpoint or marked verified with SQL.
@@ -167,6 +171,51 @@ def payment_context_facts(database, cart_id, order_id):
     return facts
 
 
+def changed_payment_context_facts(database, cart_id, order_id):
+    facts = {
+        'context_receipts': int(sql(database, "SELECT COUNT(*) FROM cart_context_operations WHERE cart_id='" + cart_id + "'")),
+        'checkout_attempts': int(sql(database, "SELECT COUNT(*) FROM cart_checkout_attempts WHERE cart_id='" + cart_id + "'")),
+        'create_effects': int(sql(database, "SELECT COUNT(*) FROM payment_effect_journal WHERE scope_id='" + cart_id + "' AND effect_kind='create_session' AND state='succeeded'")),
+        'delete_effects': int(sql(database, "SELECT COUNT(*) FROM payment_effect_journal WHERE scope_id='" + cart_id + "' AND effect_kind='delete_session' AND state='succeeded'")),
+        'new_amount_completion': int(sql(database, "SELECT COUNT(*) FROM cart_completion_receipts r JOIN cart_checkout_attempts a ON a.cart_id=r.cart_id AND a.operation_id=r.operation_id WHERE r.cart_id='" + cart_id + "' AND a.settlement_amount='790'")),
+        'order_ownership': int(sql(database, "SELECT COUNT(*) FROM customer_order_ownership WHERE order_id='" + order_id + "'")),
+    }
+    if facts != {'context_receipts': 3, 'checkout_attempts': 2, 'create_effects': 2, 'delete_effects': 1, 'new_amount_completion': 1, 'order_ownership': 1}:
+        raise RuntimeError('Changed payment context facts differ: ' + str(facts))
+    return facts
+
+
+def change_context_price(database):
+    # sql() only accepts disposable owned database names. This artificial price
+    # is never installed in the preview source or exposed as a business command.
+    if sql(database, "SELECT COUNT(*) FROM pricing_prices WHERE id='price_01M593ZTMR4ZGW8KZJEVN74TBC' AND amount=779 AND deleted_at IS NULL") != '1':
+        raise RuntimeError('Expected original isolated SKU price')
+    sql(database, "UPDATE pricing_prices SET amount=780,raw_amount='{\"value\":\"780\",\"precision\":20}' WHERE id='price_01M593ZTMR4ZGW8KZJEVN74TBC'")
+
+
+def observe_context_payments(database, cart_id):
+    key = config().get('MOLLIE_API_KEY', '')
+    if not key.startswith('test_'):
+        raise RuntimeError('Context observation requires sandbox configuration')
+    rows = sql(database, "SELECT remote_id FROM mollie_payment_references WHERE scope_id='" + cart_id + "' ORDER BY created_at,remote_id").splitlines()
+    if len(rows) != 2 or any(not re.fullmatch(r'tr_[A-Za-z0-9_]{1,120}', row) for row in rows):
+        raise RuntimeError('Expected two retained sandbox payment references')
+    observations = []
+    for remote in rows:
+        request = urllib.request.Request('https://api.mollie.com/v2/payments/' + remote, headers={'Authorization': 'Bearer ' + key})
+        with urllib.request.urlopen(request, timeout=20) as response:
+            body = json.load(response)
+        if body.get('mode') != 'test' or body.get('metadata', {}).get('cart_id') != cart_id:
+            raise RuntimeError('Sandbox payment scope mismatch')
+        observations.append({'status': body.get('status'), 'amount': body.get('amount'), 'is_cancelable': body.get('isCancelable')})
+    old, new = observations
+    if old['amount'] != {'value': '789.00', 'currency': 'EUR'} or new['amount'] != {'value': '790.00', 'currency': 'EUR'} or new['status'] != 'paid':
+        raise RuntimeError('Changed sandbox amount/status mismatch')
+    if old['status'] not in ('canceled', 'expired', 'failed') and not (old['status'] == 'open' and old['is_cancelable'] is False):
+        raise RuntimeError('Retired checkout requires reconciliation')
+    return observations
+
+
 def verify_payment_context_checkpoint(owner):
     config()  # Enforce the same development/loopback source guard.
     if not re.fullmatch(r'[0-9a-f]{12}', owner):
@@ -174,7 +223,7 @@ def verify_payment_context_checkpoint(owner):
     logs = ROOT / 'logs/retail-native' / ('account-' + owner)
     report = json.loads((logs / 'report.json').read_text())
     browser = json.loads((logs / 'browser-result.json').read_text())
-    if report.get('owner') != owner or not browser.get('passed') or browser.get('scenario') != 'payment-context':
+    if report.get('owner') != owner or not browser.get('passed') or browser.get('scenario') not in ('payment-context', 'payment-context-changed'):
         raise RuntimeError('Successful owned context browser checkpoint required')
     cart_id, order_id = browser['cart_id'], browser['order_id']
     if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
@@ -187,12 +236,14 @@ def verify_payment_context_checkpoint(owner):
         docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'CREATE DATABASE ' + database)
         created = True
         docker('exec', CONTAINER, 'sh', '-c', 'mysql --defaults-extra-file=/tmp/local-root.cnf ' + database + ' < ' + snapshot)
-        facts = payment_context_facts(database, cart_id, order_id)
+        facts = changed_payment_context_facts(database, cart_id, order_id) if browser['scenario'] == 'payment-context-changed' else payment_context_facts(database, cart_id, order_id)
+        if browser['scenario'] == 'payment-context-changed':
+            report['provider_observations'] = observe_context_payments(database, cart_id)
         report['sql_payment_context_facts'] = facts
         report['checkpoint_sql_verified'] = True
         report['passed'] = True
         (logs / 'report.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
-        print('Original payment checkpoint SQL verified; no provider calls')
+        print('Original payment checkpoint verified; no provider mutations')
     finally:
         if created:
             docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'DROP DATABASE ' + database)
@@ -201,7 +252,7 @@ def verify_payment_context_checkpoint(owner):
 
 def main(language, scenario='account', resume=None):
     mail = scenario == 'mail'
-    payment_context = scenario == 'payment-context'
+    payment_context = scenario in ('payment-context', 'payment-context-changed')
     buyback = scenario in ('buyback', 'buyback-return')
     exchange = scenario == 'exchange'
     refund = scenario == 'refund'
@@ -210,13 +261,20 @@ def main(language, scenario='account', resume=None):
     admin_required = buyback or repair or mail
     values = config()
     if resume is not None:
-        if not refund or not re.fullmatch(r'[0-9a-f]{12}', resume):
-            raise RuntimeError('Only an owned refund checkpoint can resume')
+        if not (refund or payment_context) or not re.fullmatch(r'[0-9a-f]{12}', resume):
+            raise RuntimeError('Only an owned payment checkpoint can resume')
         checkpoint = ROOT / 'logs/retail-native' / ('account-' + resume)
         checkpoint_report = json.loads((checkpoint / 'report.json').read_text())
-        paid = json.loads((checkpoint / 'refund-new-paid-order.json').read_text())
-        if not re.fullmatch(r'order_[0-9a-f-]{36}', paid.get('order_id', '')) or not paid.get('real_mollie_test_payment'):
-            raise RuntimeError('Owned paid sandbox checkpoint required')
+        if refund:
+            paid = json.loads((checkpoint / 'refund-new-paid-order.json').read_text())
+            if not re.fullmatch(r'order_[0-9a-f-]{36}', paid.get('order_id', '')) or not paid.get('real_mollie_test_payment'):
+                raise RuntimeError('Owned paid sandbox checkpoint required')
+        else:
+            state = json.loads((checkpoint / 'refund-payment-localstorage.json').read_text())
+            intent = json.loads(state['retail:checkout-payment-intent:v1'])
+            if not re.fullmatch(r'cart_[0-9a-f-]{36}', intent.get('cartID', '')):
+                raise RuntimeError('Owned checkout intent required')
+            paid = {'cart_id': intent['cartID']}
     owner = secrets.token_hex(6)
     database = 'retail_account_' + owner
     prefix = 'eurorefurb:account-' + owner + ':v1:'
@@ -258,8 +316,11 @@ def main(language, scenario='account', resume=None):
                 check.bind(('127.0.0.1', port))
         snapshot = '/tmp/account-' + owner + '.sql'
         if resume:
-            docker('cp', str(checkpoint / 'refund-final.sql'), CONTAINER + ':' + snapshot)
-            shutil.copy2(checkpoint / 'refund-new-paid-order.json', logs / 'refund-new-paid-order.json')
+            docker('cp', str(checkpoint / ('refund-final.sql' if refund else 'payment-context-final.sql')), CONTAINER + ':' + snapshot)
+            if refund:
+                shutil.copy2(checkpoint / 'refund-new-paid-order.json', logs / 'refund-new-paid-order.json')
+            else:
+                shutil.copy2(checkpoint / 'refund-payment-localstorage.json', logs / 'refund-payment-localstorage.json')
             report['resumed_paid_checkpoint'] = resume
         else:
             docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf',
@@ -272,6 +333,11 @@ def main(language, scenario='account', resume=None):
         docker('exec', CONTAINER, 'sh', '-c',
                'mysql --defaults-extra-file=/tmp/local-root.cnf ' + database + ' < ' + snapshot)
         if resume:
+            if payment_context:
+                paid['order_id'] = sql(database, "SELECT order_id FROM cart_completion_receipts WHERE cart_id='" + paid['cart_id'] + "'")
+                if not re.fullmatch(r'order_[0-9a-f-]{36}', paid['order_id']):
+                    raise RuntimeError('Context checkpoint must already be completed; no new payment is created')
+                (logs / 'context-resume.json').write_text(json.dumps(paid))
             email = sql(database, "SELECT a.email FROM customer_accounts a JOIN customer_order_ownership o ON o.customer_id=a.id WHERE o.order_id='" + paid['order_id'] + "' AND a.verified_at IS NOT NULL")
             match = re.fullmatch(r'local-account-([0-9a-f]{12})-1@example.invalid', email)
             if not match:
@@ -279,7 +345,7 @@ def main(language, scenario='account', resume=None):
             customer_owner = match.group(1)
             report['customer_owner'] = customer_owner
             facts = sql(database, "SELECT (SELECT COUNT(*) FROM customer_order_ownership WHERE order_id='" + paid['order_id'] + "'),(SELECT COUNT(*) FROM order_refund_operations),(SELECT COUNT(*) FROM device_assignments)").split('\t')
-            if facts not in (['1', '0', '0'], ['1', '1', '1']):
+            if facts not in (['1', '0', '0'], ['1', '1', '1']) or payment_context and facts != ['1', '0', '0']:
                 raise RuntimeError('Unsupported owned refund checkpoint')
             existing_refund = facts[1] == '1'
             if existing_refund:
@@ -388,10 +454,13 @@ def main(language, scenario='account', resume=None):
                            ACCOUNT_TEST_LANGUAGE=language, ACCOUNT_TEST_SCENARIO=scenario)
         if mail:
             browser_env.update(WINDOWS_MAIL_SUBFLOW='1', WINDOWS_MAIL_FIXTURE=str(fixture))
-        if resume:
+        if resume and refund:
             browser_env.update(ACCOUNT_TEST_CUSTOMER_OWNER=customer_owner, ACCOUNT_TEST_RESUME_PAID='true',
                                ACCOUNT_TEST_REFUND_EXISTING='true' if existing_refund else 'false')
         script = 'tests/local-payment-context.live.mjs' if payment_context else 'tests/local-notification-mail.live.mjs' if mail else 'tests/local-repair.live.mjs' if repair else 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
+        if resume and payment_context:
+            browser_env['ACCOUNT_TEST_CUSTOMER_OWNER'] = customer_owner
+            script = 'tests/local-payment-context-resume.live.mjs'
         result = subprocess.run([str(node), script],
                                 cwd=ROOT / 'retail/storefront', env=browser_env,
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=420 if refund else 240)
@@ -407,7 +476,10 @@ def main(language, scenario='account', resume=None):
             cart_id, order_id = report['cart_id'], report['order_id']
             if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
                 raise RuntimeError('Owned payment context result identity invalid')
-            facts = payment_context_facts(database, cart_id, order_id)
+            if scenario == 'payment-context-changed':
+                facts = changed_payment_context_facts(database, cart_id, order_id)
+            else:
+                facts = payment_context_facts(database, cart_id, order_id)
             report['sql_payment_context_facts'] = facts
         if mail:
             facts = {
@@ -585,8 +657,14 @@ if __name__ == '__main__':
         main('en', 'mail')
     elif sys.argv[1:] == ['--scenario=payment-context']:
         main('en', 'payment-context')
+    elif sys.argv[1:] == ['--scenario=payment-context-changed']:
+        main('en', 'payment-context-changed')
+    elif len(sys.argv) == 3 and sys.argv[1] == '--change-context-price':
+        change_context_price(sys.argv[2])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-payment-context='):
         verify_payment_context_checkpoint(sys.argv[1].split('=', 1)[1])
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--resume-changed-context='):
+        main('en', 'payment-context-changed', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--resume-refund='):
         main('en', 'refund', sys.argv[1].split('=', 1)[1])
     else:

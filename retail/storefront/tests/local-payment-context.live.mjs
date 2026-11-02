@@ -6,6 +6,7 @@ import {chromium,expect as baseExpect} from '../../admin/node_modules/@playwrigh
 import {prepareLocalRefundPayment} from './local-refund-payment.live.mjs'
 const expect=baseExpect.configure({timeout:30000}),origin='http://127.0.0.1:19300'
 const owner=process.env.ACCOUNT_TEST_OWNER,logs=process.env.ACCOUNT_TEST_LOGS
+const changed=process.env.ACCOUNT_TEST_SCENARIO==='payment-context-changed'
 assert.match(owner??'',/^[0-9a-f]{12}$/)
 const email=`local-account-${owner}-1@example.invalid`,password='isolated-account-'+owner+'-password'
 const browser=await chromium.launch({headless:true,executablePath:resolve(process.env.LOCALAPPDATA,'ms-playwright/chromium-1234/chrome-win64/chrome.exe')})
@@ -37,7 +38,8 @@ try{
    await expect(page.getByRole('dialog')).toBeVisible()
   }
   const current=async()=>{const r=await context.request.get(origin+'/api/store/cart');assert.equal(r.status(),200);return (await r.json()).cart}
-  for(const target of ['zh','en']){
+  for(const [index,target] of (changed?['zh','en','zh']:['zh','en']).entries()){
+   if(index===2)execFileSync(process.env.ACCOUNT_TEST_PYTHON,[resolve('../scripts/test-local-customer-account.py'),'--change-context-price',process.env.ACCOUNT_TEST_DB],{stdio:'pipe'})
    const requests=[]
    await page.route('**/context-payment',async route=>{
     requests.push({body:route.request().postDataJSON(),key:route.request().headers()['idempotency-key']})
@@ -56,17 +58,24 @@ try{
     await expect(page).toHaveURL(origin+'/gb-'+target+'/about?context=live#contact')
     await expect(page.getByRole('dialog')).toHaveCount(0)
     assert.equal(requests.length,2);assert.deepEqual(requests[0],requests[1])
-    assert.deepEqual(await journal(paymentKey),original);assert.equal(await journal(contextKey),null)
+    if(index===2)assert.equal(await journal(paymentKey),null);else assert.deepEqual(await journal(paymentKey),original)
+    assert.equal(await journal(contextKey),null)
     const after=await current();assert.equal(after.id,cartID);assert.equal(BigInt(after.version),BigInt(before.version)+1n)
     const amounts=await context.request.get(origin+'/api/store/carts/'+cartID+'/amounts');assert.equal(amounts.status(),200)
-    const priced=await amounts.json();assert.equal(priced.totals.total,'789');assert.equal(priced.currency_code,'eur')
-    steps.push({locale:after.locale,version:after.version,same_payment_intent:true,total:priced.totals.total,exact_retry:true})
+    const priced=await amounts.json();assert.equal(priced.totals.total,index===2?'790':'789');assert.equal(priced.currency_code,'eur')
+    steps.push({locale:after.locale,version:after.version,same_payment_intent:index!==2,total:priced.totals.total,exact_retry:true})
    }finally{await page.unrouteAll({behavior:'wait'})}
   }
-  await page.goto(origin+'/gb-en/checkout?step=payment');await expect(page.getByTestId('submit-order-button')).toBeEnabled()
-  assert.deepEqual(await journal(paymentKey),original)
+  await page.goto(origin+'/gb-en/checkout?step=payment')
+  if(changed){
+   await expect(page.getByTestId('submit-payment-button')).toBeEnabled();await page.getByTestId('submit-payment-button').click()
+   await expect(page.getByTestId('submit-order-button')).toBeEnabled({timeout:60000})
+   assert.notEqual((await journal(paymentKey)).operationID,original.operationID)
+  }else{
+   await expect(page.getByTestId('submit-order-button')).toBeEnabled();assert.deepEqual(await journal(paymentKey),original)
+  }
  }})
- assert.equal(steps.length,2);assert.deepEqual(errors,[])
+ assert.equal(steps.length,changed?3:2);assert.deepEqual(errors,[])
  await page.screenshot({path:resolve(logs,'context-owned-order.png'),fullPage:true})
- writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:'payment-context',cart_id:cartID,order_id:orderID,steps,real_mollie_test_payment:true,same_payment_after_two_context_saves:true,lost_success_response_and_reload_recovery:true,automatic_order_ownership:true,browser_errors:0,real_email_delivery:false},null,2))
+ writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:changed?'payment-context-changed':'payment-context',cart_id:cartID,order_id:orderID,steps,real_mollie_test_payment:true,same_payment_after_two_context_saves:true,changed_amount_retires_old_and_creates_new:changed,lost_success_response_and_reload_recovery:true,automatic_order_ownership:true,browser_errors:0,real_email_delivery:false},null,2))
 }catch(e){for(const p of browser.contexts().flatMap(c=>c.pages())){console.error('FAILURE',p.url(),await p.locator('body').innerText().catch(()=>''));await p.screenshot({path:resolve(logs,'context-failure.png'),fullPage:true}).catch(()=>{})}throw e}finally{await browser.close()}

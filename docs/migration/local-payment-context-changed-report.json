@@ -1,0 +1,133 @@
+{
+  "task": "Windows real Mollie changed amount context and completed checkpoint recovery",
+  "date": "2026-11-02",
+  "passed": true,
+  "full_C01_C11_complete": false,
+  "initial_run": {
+    "owner": "45125dbbd79e",
+    "database": "retail_account_45125dbbd79e",
+    "real_email_delivery": false,
+    "business_api_mocking": false,
+    "main_database_modified": false,
+    "api_sha256": "1df2f233c88906dc2594dddda739f50743abc7c5e9cb22c7ee7a264c3b9fbf86",
+    "customer_owner": "45125dbbd79e",
+    "passed": false,
+    "payment_durable_snapshot_retained": true,
+    "redis_keys_removed": 20,
+    "source_account_counts_before": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "source_account_counts_after": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "resources_removed": true,
+    "cleanup_errors": []
+  },
+  "verified_completed_checkpoint": {
+    "owner": "5c264b9bc904",
+    "database": "retail_account_5c264b9bc904",
+    "real_email_delivery": false,
+    "business_api_mocking": false,
+    "main_database_modified": false,
+    "api_sha256": "1df2f233c88906dc2594dddda739f50743abc7c5e9cb22c7ee7a264c3b9fbf86",
+    "customer_owner": "45125dbbd79e",
+    "resumed_paid_checkpoint": "45125dbbd79e",
+    "passed": true,
+    "scenario": "payment-context-changed",
+    "cart_id": "cart_a954a4e8-64d6-49f4-b3c4-574015da98a9",
+    "order_id": "order_b4bb6399-e899-4789-9708-67da7c65f3c7",
+    "real_mollie_test_payment": true,
+    "completed_checkpoint_customer_read": true,
+    "no_new_remote_payment_on_resume": true,
+    "browser_errors": 0,
+    "verified_accounts": 1,
+    "sql_payment_context_facts": {
+      "context_receipts": 3,
+      "checkout_attempts": 2,
+      "create_effects": 2,
+      "delete_effects": 1,
+      "new_amount_completion": 1,
+      "order_ownership": 1
+    },
+    "payment_durable_snapshot_retained": true,
+    "redis_keys_removed": 4,
+    "source_account_counts_before": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "source_account_counts_after": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "resources_removed": true,
+    "cleanup_errors": [],
+    "provider_observations": [
+      {
+        "status": "open",
+        "amount": {
+          "value": "789.00",
+          "currency": "EUR"
+        },
+        "is_cancelable": false
+      },
+      {
+        "status": "paid",
+        "amount": {
+          "value": "790.00",
+          "currency": "EUR"
+        },
+        "is_cancelable": null
+      }
+    ],
+    "checkpoint_sql_verified": true
+  },
+  "initial_failure": "Browser waited for gb-en confirmed path; actual gb-zh confirmation and complete were successful",
+  "limitations": [
+    "Old 789 EUR payment remains open and explicitly noncancelable; only locally retired",
+    "No remote-cancel or partial-effect compensation claim",
+    "Original run has no successful browser-result; recovery checks actual owned order and SQL",
+    "No production webhook or duplicate remote-payment reconciliation acceptance"
+  ]
+}
