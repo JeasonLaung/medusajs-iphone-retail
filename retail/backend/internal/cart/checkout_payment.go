@@ -32,6 +32,7 @@ type InitialPaymentOptions struct {
 type InitialPaymentCommand struct {
 	OperationID string
 	Version     string
+	ProviderID  string
 }
 type initialAttempt struct {
 	Activated                                                           bool
@@ -58,11 +59,13 @@ func (a initialAttempt) currentVersion() uint64 {
 }
 
 type InitialPaymentResult struct {
-	CartID      string  `json:"cart_id"`
-	Version     string  `json:"version"`
-	OperationID string  `json:"operation_id"`
-	State       string  `json:"state"`
-	CheckoutURL *string `json:"checkout_url"`
+	CartID          string  `json:"cart_id"`
+	Version         string  `json:"version"`
+	OperationID     string  `json:"operation_id"`
+	State           string  `json:"state"`
+	CheckoutURL     *string `json:"checkout_url"`
+	ProviderID      string  `json:"provider_id,omitempty"`
+	ProviderOrderID *string `json:"provider_order_id,omitempty"`
 }
 
 func initialOptions(o InitialPaymentOptions) error {
@@ -93,8 +96,11 @@ func initialReady(ctx context.Context, tx *gorm.DB) error {
 	return nil
 }
 func initialProvider(tx *gorm.DB, current Snapshot) error {
+	return initialProviderID(tx, current, hostedMollie)
+}
+func initialProviderID(tx *gorm.DB, current Snapshot, provider string) error {
 	var ids []string
-	r := tx.Table("payment_providers p").Select("p.id").Joins("JOIN commerce_region_payment_providers r ON r.payment_provider_id=p.id AND r.deleted_at IS NULL").Where("p.id=? AND p.is_enabled=TRUE AND p.deleted_at IS NULL AND r.region_id=?", hostedMollie, current.RegionID).Clauses(clause.Locking{Strength: "SHARE"}).Limit(2).Scan(&ids)
+	r := tx.Table("payment_providers p").Select("p.id").Joins("JOIN commerce_region_payment_providers r ON r.payment_provider_id=p.id AND r.deleted_at IS NULL").Where("p.id=? AND p.is_enabled=TRUE AND p.deleted_at IS NULL AND r.region_id=?", provider, current.RegionID).Clauses(clause.Locking{Strength: "SHARE"}).Limit(2).Scan(&ids)
 	if r.Error != nil {
 		return ErrStorage
 	}
@@ -135,15 +141,26 @@ func stageInitialPayment(ctx context.Context, tx *gorm.DB, store string, ref ses
 	if err != nil {
 		return fail(err)
 	}
-	if err := initialProvider(tx, current); err != nil {
-		return fail(err)
-	}
 	var rows []initialAttempt
 	if initialWhere(tx, ref, in).Clauses(clause.Locking{Strength: "UPDATE"}).Limit(1).Scan(&rows).Error != nil {
 		return fail(ErrStorage)
 	}
 	if len(rows) == 1 {
 		row := rows[0]
+		request, readErr := payments.ReadSessionRequest(ctx, tx, initialKey(ref, in, row), o.Ring)
+		if readErr != nil {
+			return fail(readErr)
+		}
+		selected := in.ProviderID
+		if selected == "" {
+			selected = hostedMollie
+		}
+		if selected != request.ProviderID {
+			return fail(ErrConflict)
+		}
+		if err := initialSelectedProvider(tx, current, request.ProviderID, o); err != nil {
+			return fail(err)
+		}
 		v, _ := strconv.ParseUint(in.Version, 10, 64)
 		if row.InputVersion != v || row.CartVersion != v+1 || current.Version != strconv.FormatUint(row.currentVersion(), 10) || subtle.ConstantTimeCompare([]byte(row.Generation), []byte(ref.Generation)) != 1 || len(row.RequestSHA256) != 32 {
 			return fail(ErrConflict)
@@ -164,6 +181,13 @@ func stageInitialPayment(ctx context.Context, tx *gorm.DB, store string, ref ses
 	}
 	if current.Version != in.Version {
 		return fail(ErrConflict)
+	}
+	provider := in.ProviderID
+	if provider == "" {
+		provider = hostedMollie
+	}
+	if err := initialSelectedProvider(tx, current, provider, o); err != nil {
+		return fail(err)
 	}
 	if err := shippingContactReady(tx, current); err != nil {
 		return fail(err)
@@ -210,7 +234,7 @@ func stageInitialPayment(ctx context.Context, tx *gorm.DB, store string, ref ses
 	if len(amounts.Lines) == 0 {
 		return fail(ErrInput)
 	}
-	settled, err := payments.MollieSettlementAmount(amounts.Totals["total"])
+	settled, err := initialSettlement(provider, amounts.Totals["total"], current.CurrencyCode)
 	if err != nil {
 		return fail(ErrConfiguration)
 	}
@@ -225,8 +249,11 @@ func stageInitialPayment(ctx context.Context, tx *gorm.DB, store string, ref ses
 	}
 	redirect := o.ReturnOrigin + "/api/mollie-return?cart_id=" + url.QueryEscape(current.ID)
 	data, _ := json.Marshal(map[string]string{"cart_id": current.ID, "session_id": row.SessionID, "redirect_url": redirect})
+	if provider != hostedMollie {
+		data, _ = json.Marshal(map[string]string{"cart_id": current.ID, "session_id": row.SessionID})
+	}
 	context, _ := json.Marshal(map[string]string{"idempotency_key": row.SessionID})
-	request := payments.SessionRequest{ProviderID: hostedMollie, CollectionID: row.CollectionID, SessionID: row.SessionID, Amount: settled, Currency: current.CurrencyCode, Data: data, Context: context}
+	request := payments.SessionRequest{ProviderID: provider, CollectionID: row.CollectionID, SessionID: row.SessionID, Amount: settled, Currency: current.CurrencyCode, Data: data, Context: context}
 	key, _, err := payments.StageSessionRequest(ctx, tx, payments.EffectKey{ScopeID: current.ID, OperationID: in.OperationID, Kind: "create_session", ResourceID: row.SessionID}, o.Ring, request)
 	if err != nil {
 		return fail(err)
@@ -252,7 +279,7 @@ func stageInitialPayment(ctx context.Context, tx *gorm.DB, store string, ref ses
 		}
 	}
 
-	if tx.Table("payment_sessions").Create(map[string]any{"id": row.SessionID, "payment_collection_id": row.CollectionID, "provider_id": hostedMollie, "currency_code": row.CurrencyCode, "amount": scalar, "raw_amount": raw, "data": protectedData, "context": protectedContext, "status": "pending", "created_at": now, "updated_at": now}).Error != nil {
+	if tx.Table("payment_sessions").Create(map[string]any{"id": row.SessionID, "payment_collection_id": row.CollectionID, "provider_id": provider, "currency_code": row.CurrencyCode, "amount": scalar, "raw_amount": raw, "data": protectedData, "context": protectedContext, "status": "pending", "created_at": now, "updated_at": now}).Error != nil {
 		return fail(ErrStorage)
 	}
 	if collectionID == "" {
@@ -359,13 +386,23 @@ func StartInitialPayment(ctx context.Context, db *gorm.DB, store string, ref ses
 			out.State = "requires_review"
 			return nil
 		}
-		checkoutURL, err := initialCheckoutURL(result.Data)
-		if err != nil {
-			return err
-		}
 		request, err := payments.ReadSessionRequest(ctx, tx, key, o.Ring)
 		if err != nil {
 			return err
+		}
+		var checkoutURL, orderID *string
+		if request.ProviderID == hostedMollie {
+			value, e := initialCheckoutURL(result.Data)
+			if e != nil {
+				return e
+			}
+			checkoutURL = &value
+		} else {
+			value, e := payments.PayPalCreatedOrderID(request, result)
+			if e != nil {
+				return ErrStorage
+			}
+			orderID = &value
 		}
 		var local struct{ Status string }
 		if tx.Table("payment_sessions").Select("status").Where("id=? AND payment_collection_id=? AND deleted_at IS NULL", row.SessionID, row.CollectionID).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&local).Error != nil {
@@ -390,7 +427,12 @@ func StartInitialPayment(ctx context.Context, db *gorm.DB, store string, ref ses
 			}
 		}
 		out.State = "ready"
-		out.CheckoutURL = &checkoutURL
+		out.CheckoutURL = checkoutURL
+		if orderID != nil {
+			out.State = "sdk_ready"
+			out.ProviderID = request.ProviderID
+			out.ProviderOrderID = orderID
+		}
 		return nil
 	}, &sql.TxOptions{Isolation: sql.LevelReadCommitted})
 	return out, err
@@ -426,7 +468,7 @@ func validateInitialBinding(ctx context.Context, tx *gorm.DB, ref sessionstore.C
 		CartID    string `json:"cart_id"`
 		SessionID string `json:"session_id"`
 	}
-	if json.Unmarshal(request.Data, &metadata) != nil || metadata.CartID != ref.CartID || metadata.SessionID != row.SessionID || request.SessionID != row.SessionID || request.CollectionID != row.CollectionID || request.ProviderID != hostedMollie || request.Amount != row.SettlementAmount || request.Currency != row.CurrencyCode {
+	if json.Unmarshal(request.Data, &metadata) != nil || metadata.CartID != ref.CartID || metadata.SessionID != row.SessionID || request.SessionID != row.SessionID || request.CollectionID != row.CollectionID || !initialKnownProvider(request.ProviderID) || request.Amount != row.SettlementAmount || request.Currency != row.CurrencyCode {
 		return payments.EffectKey{}, ErrConflict
 	}
 	var owners []string
@@ -439,7 +481,7 @@ func validateInitialBinding(ctx context.Context, tx *gorm.DB, ref sessionstore.C
 	}
 	var binding struct{ CollectionID, SessionID, ProviderID, CurrencyCode, Amount, RawAmount, SessionCurrency, SessionAmount, SessionRaw string }
 	r := tx.Table("cart_payment_collections l").Select("c.id AS collection_id,s.id AS session_id,s.provider_id,c.currency_code,CAST(c.amount AS CHAR) AS amount,c.raw_amount,s.currency_code AS session_currency,CAST(s.amount AS CHAR) AS session_amount,s.raw_amount AS session_raw").Joins("JOIN payment_collections c ON c.id=l.payment_collection_id AND c.deleted_at IS NULL").Joins("JOIN payment_sessions s ON s.payment_collection_id=c.id AND s.id=? AND s.deleted_at IS NULL", row.SessionID).Where("l.cart_id=? AND l.payment_collection_id=? AND l.deleted_at IS NULL", ref.CartID, row.CollectionID).Clauses(clause.Locking{Strength: "SHARE"}).Scan(&binding)
-	if r.Error != nil || r.RowsAffected != 1 || binding.ProviderID != hostedMollie || binding.CurrencyCode != row.CurrencyCode || binding.SessionCurrency != row.CurrencyCode {
+	if r.Error != nil || r.RowsAffected != 1 || binding.ProviderID != request.ProviderID || binding.CurrencyCode != row.CurrencyCode || binding.SessionCurrency != row.CurrencyCode {
 		return payments.EffectKey{}, ErrConflict
 	}
 	for _, pair := range [][2]string{{binding.Amount, binding.RawAmount}, {binding.SessionAmount, binding.SessionRaw}} {

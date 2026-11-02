@@ -1,5 +1,7 @@
 # 当前交付范围与端到端验收
 
+2026-11-02 C06：[PayPal 购物车付款创建与持久收据](gin-paypal-checkout.md)已接可选渠道命令、原加密 effect/冻结版本和 SDK 订单 ID 投影。独立 Gin HTTP/MySQL/Redis 四状态与六路并发重放通过，单车 CREATE 一次；原 Mollie 金额不变/同车连续保存恢复中英×390/1440八组回归通过。主结账仍未开放 PayPal，SDK/capture/GET/webhook/取消恢复继续待办，不关闭 C06 或整期。
+
 2026-11-02 本机运行接续：[Windows Redis 空闲连接修复](windows-redis-idle.md)已通过原生服务100秒旧/新连接池对照及 sessionstore/identity/customer/cart/cmd-api 局部回归；保留写入不自动重试。三端通过现有启动脚本更新，不改数据库、共享 Redis 配置和业务门禁。
 
 2026-11-02 最新接续：[PayPal 渠道订单创建子流程](gin-paypal-create.md)已新增双入口服务端 OAuth/Orders v2 adapter，局部 HTTP/TLS、精确金额和未知结果不重发验证通过。未接主结账、SDK 按钮/卡表单、capture/webhook 或数据库联合，不代表 PayPal 可付款或 C06 完成。当前 Windows 预览使用专用 Docker MySQL 9.6（103 迁移）和本机 Redis，启动见 `retail/LOCAL-WINDOWS.md`；下文 Linux 主预览 102/离线描述均为历史。C01—C11 保持未完成。

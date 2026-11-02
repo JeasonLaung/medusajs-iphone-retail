@@ -107,5 +107,9 @@ func TestOwnedContextPaymentBrowser(t *testing.T) {
 		}
 		return ref, cart.InitialPaymentCommand{OperationID: uuid.NewString(), Version: "4"}
 	}
-	checkContextPaymentBrowser(t, ctx, db, sessions, makeCart, options)
+	if os.Getenv("PAYPAL_CHECKOUT_REHEARSAL") == "1" {
+		checkPayPalCheckout(t, ctx, db, sessions, makeCart, options)
+	} else {
+		checkContextPaymentBrowser(t, ctx, db, sessions, makeCart, options)
+	}
 }

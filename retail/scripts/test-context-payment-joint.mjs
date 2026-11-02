@@ -13,8 +13,11 @@ await mkdir(base,{recursive:true})
 const label='eurorefurb.context-payment='+owner,name='eurorefurb-context-'+owner
 const choices=['unchanged','changed','restore','delete-unknown','create-unknown','paid','replacement-paid','replacement-authorized','same-account','unbound-account','unbound-unchanged','unbound-precision','unbound-delete-unknown','unbound-restore','unbound-create-unknown','unbound-receipt-fault','unbound-lost-restore','continuous','currency-save','currency-restore','retired-edits']
 const args=process.argv.slice(2),matrix=args.includes('--matrix'),requested=[]
+const paypalOnly=args.includes('--paypal-checkout')
+assert(!paypalOnly||args.length===1,'--paypal-checkout is an independent HTTP/SQL subflow')
 for(let i=0;i<args.length;i++){
  if(args[i]==='--matrix')continue
+ if(args[i]==='--paypal-checkout')continue
  assert.equal(args[i],'--scenario','Use [--scenario name]... [--matrix]')
  assert(choices.includes(args[++i]),'Unknown or missing scenario')
  requested.push(args[i])
@@ -60,7 +63,7 @@ try{
  await symlink(path.join(root,'retail/storefront/node_modules'),path.join(storefront,'node_modules'),process.platform==='win32'?'junction':'dir')
  const binary=path.join(base,'identity-linux.test')
  run('go',['-C',backend,'test','-c','-o',binary,'./internal/identity'],{env:{...process.env,GOOS:'linux',GOARCH:'amd64',CGO_ENABLED:'0'}})
- run(process.execPath,['node_modules/astro/bin/astro.mjs','build'],{cwd:storefront,env:{...env,ASTRO_TELEMETRY_DISABLED:'1',PUBLIC_CUSTOMER_CART_TRANSFER_ENABLED:'true'}})
+ if(!paypalOnly)run(process.execPath,['node_modules/astro/bin/astro.mjs','build'],{cwd:storefront,env:{...env,ASTRO_TELEMETRY_DISABLED:'1',PUBLIC_CUSTOMER_CART_TRANSFER_ENABLED:'true'}})
  report.binary_sha256=createHash('sha256').update(await readFile(binary)).digest('hex')
  // Docker Desktop does not publish host ports on an --internal network.
  // Use an owned bridge and publish only the Gin fixture to host loopback.
@@ -84,7 +87,13 @@ try{
  run('docker',['cp',binary,mysql+':/tmp/identity.test']);run('docker',['exec',mysql,'chmod','700','/tmp/identity.test'])
  run('docker',['exec',mysql,'mkdir','-p','/work/retail/backend/internal/identity','/work/docs/migration'])
  run('docker',['cp',path.join(root,'docs/migration/fixtures'),mysql+':/work/docs/migration/fixtures'])
- const fixture=launch('docker',['exec','-w','/work/retail/backend/internal/identity','-e','GIN_MODE=release','-e','CONTEXT_PAYMENT_BROWSER=1','-e','CONTEXT_PAYMENT_CASE_COUNT='+caseCount,'-e','CONTEXT_PAYMENT_ORIGIN='+origin,'-e','CONTEXT_PAYMENT_KEY='+key,mysql,'/tmp/identity.test','-test.run','^TestOwnedContextPaymentBrowser$','-test.v','-test.timeout','12m'],root,env,'fixture.log')
+ const fixture=launch('docker',['exec','-w','/work/retail/backend/internal/identity','-e','GIN_MODE=release','-e','CONTEXT_PAYMENT_BROWSER=1',...(paypalOnly?['-e','PAYPAL_CHECKOUT_REHEARSAL=1']:[]),'-e','CONTEXT_PAYMENT_CASE_COUNT='+caseCount,'-e','CONTEXT_PAYMENT_ORIGIN='+origin,'-e','CONTEXT_PAYMENT_KEY='+key,mysql,'/tmp/identity.test','-test.run','^TestOwnedContextPaymentBrowser$','-test.v','-test.timeout','12m'],root,env,'fixture.log')
+ if(paypalOnly){
+  assert.equal(await new Promise((resolve,reject)=>{fixture.once('exit',resolve);fixture.once('error',reject)}),0,'PayPal HTTP/SQL subflow failed; inspect fixture.log')
+  assert((await readFile(path.join(base,'fixture.log'),'utf8')).includes('PAYPAL_CHECKOUT_SQL:'))
+  assert.deepEqual(await inventory(path.join(root,'retail/backend')),backendHashes)
+  Object.assign(report,{passed:true,subflow:'paypal-checkout',actual_gin_mysql_redis_astro:false,actual_gin_http_mysql_redis:true,astro_executed:false,frozen_source_verified:true,source_sha256:{backend:backendHashes}})
+ }else{
  // Private fixture route readiness uses an authenticated harmless facts read.
  for(let i=0;i<180;i++){if(fixture.exitCode!==null)throw Error('Fixture exited before browser; inspect fixture.log');try{const r=await fetch(api+'/__fixture/facts',{headers:{'X-Fixture-Key':key},signal:AbortSignal.timeout(1000)});if(r.status===503)break}catch{}await pause(500);if(i===179)throw Error('Fixture HTTP not ready')}
  const astro=launch(process.execPath,['scripts/start.mjs'],storefront,{...env,HOST:'127.0.0.1',PORT:String(port),GIN_API_ORIGIN:api,STOREFRONT_ORIGIN:origin,CUSTOMER_BRIDGE_KEY:key,ASTRO_TELEMETRY_DISABLED:'1'},'astro.log')
@@ -102,6 +111,7 @@ try{
  assert.deepEqual(await inventory(path.join(root,'retail/backend')),backendHashes);assert.deepEqual(await inventory(path.join(root,'retail/storefront')),storefrontHashes)
  assert.equal(createHash('sha256').update(await readFile(browserSource)).digest('hex'),browserHash)
  Object.assign(report,{passed:true,browser:result,frozen_source_verified:true,source_sha256:{backend:backendHashes,storefront:storefrontHashes,browser:browserHash}})
+ }
 }catch(e){failed=e;report.passed=false;console.error(e.message)}finally{
  for(const p of processes.reverse())if(p.exitCode===null){p.kill();await Promise.race([new Promise(r=>p.once('exit',r)),pause(5000)])}
  for(const id of containers.reverse()){

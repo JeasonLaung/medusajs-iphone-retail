@@ -1,0 +1,81 @@
+{
+  "task": "C06 PayPal cart checkout creation and durable effect",
+  "passed": true,
+  "actual_gin_http_mysql_redis": true,
+  "real_provider_called": false,
+  "paypal_browser_sdk_executed": false,
+  "full_business_flow": false,
+  "main_paypal_enabled": false,
+  "sql": {
+    "owner": "909f3089e39d",
+    "scenarios": [
+      "wallet/success",
+      "wallet/uncertain",
+      "card/success",
+      "card/uncertain"
+    ],
+    "concurrent_replays_per_cart": 6,
+    "create_calls_per_cart": 1,
+    "owned_resources_removed": true,
+    "report_sha256": "171cc05efe1b2e5032bfa57c3a2228e9635eb98678e115cb27d323d19acbf37d",
+    "inventory_order_cash_notification_unchanged": true,
+    "binary": "fe0a1f4d1cb3318e0a11298a67dd01f6d301cfec1f2dbefc534d06dce16555a7"
+  },
+  "mollie_regression": {
+    "owner": "9dfdb0fa60f0",
+    "report_sha256": "f5e6096797b06376eb6b9dd73922c4edcc59c95a7997ade1c4970b3ef4b8430a",
+    "binary": "41166759978530426e7fb448d688be4a63d36df498951e3459e115cfda37fe10",
+    "cases": [
+      {
+        "scenario": "unchanged",
+        "language": "en",
+        "width": 390
+      },
+      {
+        "scenario": "continuous",
+        "language": "en",
+        "width": 390
+      },
+      {
+        "scenario": "unchanged",
+        "language": "en",
+        "width": 1440
+      },
+      {
+        "scenario": "continuous",
+        "language": "en",
+        "width": 1440
+      },
+      {
+        "scenario": "unchanged",
+        "language": "zh",
+        "width": 390
+      },
+      {
+        "scenario": "continuous",
+        "language": "zh",
+        "width": 390
+      },
+      {
+        "scenario": "unchanged",
+        "language": "zh",
+        "width": 1440
+      },
+      {
+        "scenario": "continuous",
+        "language": "zh",
+        "width": 1440
+      }
+    ],
+    "owned_resources_removed": true,
+    "case_count": 8,
+    "errors": []
+  },
+  "failed_browser_run_retained": "79d16867900d: same URL assertion completed before async intent cleanup; corrected polling and reran all 8",
+  "remaining": [
+    "original PayPal SDK wallet/card integration",
+    "config and client tokens",
+    "authenticated capture and observation",
+    "webhooks/refunds/unknown recovery/context cancellation"
+  ]
+}

@@ -300,7 +300,9 @@ try{
    if(scenario==='unchanged')assert.deepEqual(await journal(paymentKey),{cartID:seed.cart_id,version:'4',operationID:initial})
    else assert.equal(await journal(paymentKey),null)
   }
-  assert.equal(await journal(contextKey),null)
+  // In the Chinese matrix the target URL can equal the current URL. The URL
+  // assertion then finishes before the async save clears its durable intent.
+  await expect.poll(()=>journal(contextKey)).toBeNull()
   const facts=await control('facts');assert.equal(facts.protected_unchanged,true);assert.equal(facts.version,6);assert.equal(facts.refresh,null)
   assert.equal(facts.creates,restoring?2:1)
   assert.equal(facts.deletes,scenario==='unchanged'?0:1)

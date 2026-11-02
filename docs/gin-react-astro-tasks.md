@@ -1,5 +1,7 @@
 # Gin + React + Astro 迁移任务清单
 
+2026-11-02 C06 接续：[PayPal 创建接购物车持久收据](migration/gin-paypal-checkout.md)通过隔离 Gin HTTP/MySQL/Redis 四状态、六路同编号重放及原 Mollie 连续保存八组页面回归。保留未配置 PayPal 的主服务；原 SDK、capture/观察/webhook及未知恢复继续，C01—C11 未完成。
+
 2026-11-02 运行接续：[本机 Redis 空闲后首次503](migration/windows-redis-idle.md)已定位并修复客户端池，原生服务100秒对照通过：旧池首错/次成功、新池首成功；不自动重放会话写入。当前三端使用启动脚本更新后的本机服务。其他 C01—C11 终点继续开放。
 
 2026-11-02 最新：[PayPal 创建子流程](migration/gin-paypal-create.md)已实现钱包/卡入口共用服务端 adapter，并通过局部 HTTP/TLS、金额及故障验证；尚未接主结账/SDK/实收，不关闭 C06。Windows 三端已通过 `start.bat` 启动，专用 Docker MySQL 9.6 已103迁移，本机 Redis；后文旧 Linux 预览状态为历史，以 `retail/LOCAL-WINDOWS.md` 为当前启动说明。继续按 C01—C11 推进，每个子任务验证后 commit/push。

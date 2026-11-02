@@ -22,6 +22,36 @@ var paypalMerchant = regexp.MustCompile(`^[A-Z0-9]{13}$`)
 var paypalOrderID = regexp.MustCompile(`^[A-Z0-9]{17}$`)
 var paypalAccessToken = regexp.MustCompile(`^[A-Za-z0-9._~+/-]+$`)
 
+func PayPalSettlementAmount(amount, currency string) (string, error) {
+	return paypalAmount(amount, currency)
+}
+
+// PayPalCreatedOrderID projects only the SDK identifier from protected adapter
+// output. It grants no payment status and never exposes the full provider order.
+func PayPalCreatedOrderID(request SessionRequest, result CreatedSession) (string, error) {
+	if (request.ProviderID != "pp_paypal_paypal" && request.ProviderID != "pp_paypal_card_paypal_card") || result.Status != "pending" {
+		return "", ErrEffectInput
+	}
+	raw, e := requestObject(result.Data, false)
+	if e != nil {
+		return "", e
+	}
+	var data struct {
+		SessionID string `json:"session_id"`
+		CartID    string `json:"cart_id"`
+		PayPal    struct {
+			OrderID string `json:"order_id"`
+		} `json:"paypal"`
+	}
+	var original struct {
+		CartID string `json:"cart_id"`
+	}
+	if json.Unmarshal(raw, &data) != nil || json.Unmarshal(request.Data, &original) != nil || data.CartID != original.CartID || data.SessionID != request.SessionID || !paypalOrderID.MatchString(data.PayPal.OrderID) {
+		return "", ErrEffectInput
+	}
+	return data.PayPal.OrderID, nil
+}
+
 // PayPalCreateConfig is trusted merchant configuration. Orders are created for
 // the original wallet/card SDK flow, not captured or marked paid by this adapter.
 // No API base URL, merchant, credential or intent is taken from customer input.

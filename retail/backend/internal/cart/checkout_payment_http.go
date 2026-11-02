@@ -28,6 +28,9 @@ func (h *HTTPHandler) InitialPayment(c *gin.Context) {
 	d := json.NewDecoder(c.Request.Body)
 	var in InitialPaymentCommand
 	err = contactObject(d, func(name string) error {
+		if name == "provider_id" {
+			return contactString(d, &in.ProviderID)
+		}
 		if name != "version" {
 			return ErrInput
 		}
