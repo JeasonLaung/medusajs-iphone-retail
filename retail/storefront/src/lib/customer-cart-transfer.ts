@@ -1,4 +1,4 @@
-import {paymentIntentKey,readPaymentIntent} from './checkout-payment.ts'
+import {paymentIntentKey,readPaymentIntent,bindPaymentIntent} from './checkout-payment.ts'
 import {CartClient,type CartSnapshot,type CheckoutPaymentOptions} from './cart-client.ts'
 import {contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey,cartLockName,customerCartIntentKey} from './cart-commerce.ts'
 
@@ -67,7 +67,7 @@ export async function transferCustomerCart(o:Options):Promise<void> {
    const methods=await o.paymentOptions?.(intent.cart)
    if(!methods||methods.cart_id!==intent.cart||methods.version!==fresh.version||methods.attempt_started!==(binding!==null))throw fail()
    if(o.storage.getItem(customerCartIntentKey)!==encoded||o.storage.getItem(paymentIntentKey)!==paymentRaw)throw fail()
-   const nextPayment=binding===null?null:JSON.stringify({cartID:intent.cart,version:binding.version,operationID:binding.operation_id})
+   const nextPayment=binding===null?null:JSON.stringify(bindPaymentIntent(intent.cart,binding,methods,payment))
    if(nextPayment===null)o.storage.removeItem(paymentIntentKey)
    else o.storage.setItem(paymentIntentKey,nextPayment)
    if(o.storage.getItem(paymentIntentKey)!==nextPayment)throw fail()

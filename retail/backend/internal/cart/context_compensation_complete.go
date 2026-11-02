@@ -205,10 +205,19 @@ func CompleteContextPaymentCompensation(ctx context.Context, db *gorm.DB, store 
 		// Validate the resulting current checkout with the normal consumer path
 		// in this same transaction. Any failure rolls back every activation write.
 		inputVersion := in.Version
+		createKey := initialKey(ref, InitialPaymentCommand{OperationID: checkout}, original)
 		if len(operation.Replacements) == 0 {
 			inputVersion = strconv.FormatUint(original.InputVersion, 10)
+		} else {
+			createKey = operation.Replacements[0].Create
 		}
-		if _, _, err := stageInitialPayment(ctx, tx, store, ref, InitialPaymentCommand{OperationID: nextCheckout, Version: inputVersion}, options); err != nil {
+		// Replay the authenticated original/replacement provider. An omitted
+		// provider selects hosted Mollie and cannot validate a PayPal checkout.
+		request, err := payments.ReadSessionRequest(ctx, tx, createKey, options.Ring)
+		if err != nil {
+			return err
+		}
+		if _, _, err := stageInitialPayment(ctx, tx, store, ref, InitialPaymentCommand{OperationID: nextCheckout, Version: inputVersion, ProviderID: request.ProviderID}, options); err != nil {
 			return err
 		}
 		result = PaymentCompensation{in.OperationID, "completed", strconv.FormatUint(version+1, 10), operation.Replacements, false}

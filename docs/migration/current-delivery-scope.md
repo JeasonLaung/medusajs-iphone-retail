@@ -1,5 +1,7 @@
 # 当前交付范围与端到端验收
 
+2026-11-03：C02/C06[PayPal付款上下文保存/恢复及登录接管](astro-paypal-context.md)修复原创建重放及绑定重建遗漏provider、正式恢复末步默认Mollie的409。独立105环境12组钱包/卡×保存/恢复/登录×英窄/中宽丢响应重放通过，原UUID/输入版本/provider和158.75EUR保持，CREATE=1、零扣款；原Mollie连续四组回归通过。金额/币种变化的PayPal退役、真实沙箱/3DS/webhook仍待，C01—C11开放。
+
 2026-11-03：C06[PayPal卡支付至订单确认](astro-paypal-card.md)已接原托管CardFields、服务端短期client token、账单地址及正式扣款/成单。独立105环境中英×390/1440四组私有接口拒绝、无效表单/取消/错订单零扣款及创建/扣款/成单丢响应恢复通过；钱包四组回归通过。SDK和渠道为人工模拟，真实PayPal沙箱、3DS及webhook仍待，主未启用PayPal，不关闭C06或整期。
 
 2026-11-03：C06[PayPal钱包前台至订单确认](astro-paypal-wallet.md)已接可选配置、原付款复核页SDK按钮和正式扣款/查询/成单。独立105环境中英×390/1440四组创建/扣款/成单丢响应恢复及取消/错订单拒绝通过；原Mollie连续保存四组回归通过。外部SDK和渠道为人工模拟，真实PayPal沙箱、卡字段、webhook仍待，主继续Mollie，不关闭C06或C01—C11。

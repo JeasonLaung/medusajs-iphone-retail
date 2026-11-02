@@ -1,0 +1,2613 @@
+{
+  "scope": "C02/C06 original payment identity through context save/restore and first customer attachment; C01-C11 remain open",
+  "real_paypal_sandbox_verified": false,
+  "external_sdk_and_provider_artificial": true,
+  "changed_amount_or_currency_paypal_retirement_verified": false,
+  "storefront_unit_tests": {
+    "passed": 265,
+    "failed": 0
+  },
+  "astro_check": {
+    "errors": 0,
+    "warnings": 0,
+    "hints": 29
+  },
+  "backend_packages": [
+    "payments",
+    "cart",
+    "checkoutconfig",
+    "identity",
+    "cmd/api"
+  ],
+  "runs": {
+    "paypal_context": {
+      "owner": "d121dacf1a2c",
+      "passed": true,
+      "owned_resources_removed": true,
+      "frozen_source_verified": true,
+      "binary_sha256": "ae926f7e542e5edb25a56fb850f9c18cae5f10e6cc2860e88a5ba967223c7d23",
+      "finished_utc": "2026-11-02T19:59:45.642Z",
+      "browser": {
+        "cases": [
+          {
+            "provider": "pp_paypal_paypal",
+            "scenario": "save",
+            "lang": "en",
+            "width": 390,
+            "original": {
+              "cartID": "cart_5ef3d3db-ad14-479b-933e-966414a7c69f",
+              "version": "4",
+              "operationID": "68b2a6cd-3ba8-4523-ae8a-df2bf02580d7",
+              "providerID": "pp_paypal_paypal"
+            },
+            "writes": [
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "zh-CN"
+                },
+                "operationID": "1b6f36e7-04f2-4650-a372-10bfbc829d52"
+              },
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "zh-CN"
+                },
+                "operationID": "1b6f36e7-04f2-4650-a372-10bfbc829d52"
+              }
+            ],
+            "creates": [
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "68b2a6cd-3ba8-4523-ae8a-df2bf02580d7"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "68b2a6cd-3ba8-4523-ae8a-df2bf02580d7"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "68b2a6cd-3ba8-4523-ae8a-df2bf02580d7"
+              }
+            ],
+            "before": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "68b2a6cd-3ba8-4523-ae8a-df2bf02580d7",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 5
+            },
+            "after": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "68b2a6cd-3ba8-4523-ae8a-df2bf02580d7",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "lost_response_recovered": true,
+            "external_sdk_provider_artificial": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "provider": "pp_paypal_paypal",
+            "scenario": "save",
+            "lang": "zh",
+            "width": 1440,
+            "original": {
+              "cartID": "cart_69d51070-526a-4c2c-9927-f9c6fc4d7830",
+              "version": "4",
+              "operationID": "a8c3ae56-e21f-466d-9f9c-26ab722ba577",
+              "providerID": "pp_paypal_paypal"
+            },
+            "writes": [
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "en-GB"
+                },
+                "operationID": "9c27eeb3-e9a7-4094-b358-6dc35385a3be"
+              },
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "en-GB"
+                },
+                "operationID": "9c27eeb3-e9a7-4094-b358-6dc35385a3be"
+              }
+            ],
+            "creates": [
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "a8c3ae56-e21f-466d-9f9c-26ab722ba577"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "a8c3ae56-e21f-466d-9f9c-26ab722ba577"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "a8c3ae56-e21f-466d-9f9c-26ab722ba577"
+              }
+            ],
+            "before": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "a8c3ae56-e21f-466d-9f9c-26ab722ba577",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 5
+            },
+            "after": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "a8c3ae56-e21f-466d-9f9c-26ab722ba577",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "lost_response_recovered": true,
+            "external_sdk_provider_artificial": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "provider": "pp_paypal_paypal",
+            "scenario": "restore",
+            "lang": "en",
+            "width": 390,
+            "original": {
+              "cartID": "cart_02b79a5c-a163-4f2a-a597-0d923c447138",
+              "version": "4",
+              "operationID": "283b7b4b-03e7-4412-aad9-565a69dda2a6",
+              "providerID": "pp_paypal_paypal"
+            },
+            "writes": [
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "zh-CN"
+                },
+                "operationID": "da06df6e-bcbd-445d-bc74-b023a6c2c2dc"
+              },
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "zh-CN"
+                },
+                "operationID": "da06df6e-bcbd-445d-bc74-b023a6c2c2dc"
+              },
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "zh-CN"
+                },
+                "operationID": "da06df6e-bcbd-445d-bc74-b023a6c2c2dc"
+              }
+            ],
+            "creates": [
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "283b7b4b-03e7-4412-aad9-565a69dda2a6"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "283b7b4b-03e7-4412-aad9-565a69dda2a6"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "283b7b4b-03e7-4412-aad9-565a69dda2a6"
+              }
+            ],
+            "before": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "283b7b4b-03e7-4412-aad9-565a69dda2a6",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 5
+            },
+            "after": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "283b7b4b-03e7-4412-aad9-565a69dda2a6",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "lost_response_recovered": true,
+            "external_sdk_provider_artificial": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "provider": "pp_paypal_paypal",
+            "scenario": "restore",
+            "lang": "zh",
+            "width": 1440,
+            "original": {
+              "cartID": "cart_ece769b4-2765-428b-8ce1-b85a0dfff8b1",
+              "version": "4",
+              "operationID": "19218ef9-bcec-4bab-bcb3-f1d9f36c4c3f",
+              "providerID": "pp_paypal_paypal"
+            },
+            "writes": [
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "en-GB"
+                },
+                "operationID": "ffa9ba8f-b712-4c44-a279-b876c0e074ee"
+              },
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "en-GB"
+                },
+                "operationID": "ffa9ba8f-b712-4c44-a279-b876c0e074ee"
+              },
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "en-GB"
+                },
+                "operationID": "ffa9ba8f-b712-4c44-a279-b876c0e074ee"
+              }
+            ],
+            "creates": [
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "19218ef9-bcec-4bab-bcb3-f1d9f36c4c3f"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "19218ef9-bcec-4bab-bcb3-f1d9f36c4c3f"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "19218ef9-bcec-4bab-bcb3-f1d9f36c4c3f"
+              }
+            ],
+            "before": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "19218ef9-bcec-4bab-bcb3-f1d9f36c4c3f",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 5
+            },
+            "after": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "19218ef9-bcec-4bab-bcb3-f1d9f36c4c3f",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "lost_response_recovered": true,
+            "external_sdk_provider_artificial": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "provider": "pp_paypal_paypal",
+            "scenario": "login",
+            "lang": "en",
+            "width": 390,
+            "original": {
+              "cartID": "cart_43a53f9d-b12f-4290-ad9f-92d24a8cdb12",
+              "version": "4",
+              "operationID": "8cc10e7f-83c7-42ed-b07c-f374dd51408d",
+              "providerID": "pp_paypal_paypal"
+            },
+            "writes": [
+              {
+                "operation_id": "004d8af1-deea-4416-988b-7e550c1a117b",
+                "version": "5"
+              },
+              {
+                "operation_id": "004d8af1-deea-4416-988b-7e550c1a117b",
+                "version": "5"
+              }
+            ],
+            "creates": [
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "8cc10e7f-83c7-42ed-b07c-f374dd51408d"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "8cc10e7f-83c7-42ed-b07c-f374dd51408d"
+              }
+            ],
+            "before": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "8cc10e7f-83c7-42ed-b07c-f374dd51408d",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 5
+            },
+            "after": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "8cc10e7f-83c7-42ed-b07c-f374dd51408d",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "context-buyer@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 1,
+              "version": 6
+            },
+            "lost_response_recovered": true,
+            "external_sdk_provider_artificial": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "provider": "pp_paypal_paypal",
+            "scenario": "login",
+            "lang": "zh",
+            "width": 1440,
+            "original": {
+              "cartID": "cart_d2856fc4-6eba-4ac0-91db-65841c54455e",
+              "version": "4",
+              "operationID": "74f8daa9-698d-48c0-98bf-3154c1189a24",
+              "providerID": "pp_paypal_paypal"
+            },
+            "writes": [
+              {
+                "operation_id": "0440324b-0ee9-4bd7-8a19-4b87dbe192cb",
+                "version": "5"
+              },
+              {
+                "operation_id": "0440324b-0ee9-4bd7-8a19-4b87dbe192cb",
+                "version": "5"
+              }
+            ],
+            "creates": [
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "74f8daa9-698d-48c0-98bf-3154c1189a24"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                },
+                "key": "74f8daa9-698d-48c0-98bf-3154c1189a24"
+              }
+            ],
+            "before": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "74f8daa9-698d-48c0-98bf-3154c1189a24",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 5
+            },
+            "after": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "74f8daa9-698d-48c0-98bf-3154c1189a24",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "context-buyer@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 1,
+              "version": 6
+            },
+            "lost_response_recovered": true,
+            "external_sdk_provider_artificial": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "provider": "pp_paypal_card_paypal_card",
+            "scenario": "save",
+            "lang": "en",
+            "width": 390,
+            "original": {
+              "cartID": "cart_86a3761d-840f-4546-80f5-a76c0a91403c",
+              "version": "4",
+              "operationID": "3e16f100-4333-4dee-b9a8-0d9fc79c057a",
+              "providerID": "pp_paypal_card_paypal_card"
+            },
+            "writes": [
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "zh-CN"
+                },
+                "operationID": "7cc9f335-c641-4bf6-8d53-0ed47cae2d13"
+              },
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "zh-CN"
+                },
+                "operationID": "7cc9f335-c641-4bf6-8d53-0ed47cae2d13"
+              }
+            ],
+            "creates": [
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "3e16f100-4333-4dee-b9a8-0d9fc79c057a"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "3e16f100-4333-4dee-b9a8-0d9fc79c057a"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "3e16f100-4333-4dee-b9a8-0d9fc79c057a"
+              }
+            ],
+            "before": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "3e16f100-4333-4dee-b9a8-0d9fc79c057a",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 5
+            },
+            "after": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "3e16f100-4333-4dee-b9a8-0d9fc79c057a",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "lost_response_recovered": true,
+            "external_sdk_provider_artificial": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "provider": "pp_paypal_card_paypal_card",
+            "scenario": "save",
+            "lang": "zh",
+            "width": 1440,
+            "original": {
+              "cartID": "cart_46b8f6af-bccd-4aa9-b417-45be7b0803ce",
+              "version": "4",
+              "operationID": "4216588d-f345-4794-8c57-63f7d3d28660",
+              "providerID": "pp_paypal_card_paypal_card"
+            },
+            "writes": [
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "en-GB"
+                },
+                "operationID": "e161c41d-ade5-4cc9-ab4f-9d9b8c6ab755"
+              },
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "en-GB"
+                },
+                "operationID": "e161c41d-ade5-4cc9-ab4f-9d9b8c6ab755"
+              }
+            ],
+            "creates": [
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "4216588d-f345-4794-8c57-63f7d3d28660"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "4216588d-f345-4794-8c57-63f7d3d28660"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "4216588d-f345-4794-8c57-63f7d3d28660"
+              }
+            ],
+            "before": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "4216588d-f345-4794-8c57-63f7d3d28660",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 5
+            },
+            "after": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "4216588d-f345-4794-8c57-63f7d3d28660",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "lost_response_recovered": true,
+            "external_sdk_provider_artificial": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "provider": "pp_paypal_card_paypal_card",
+            "scenario": "restore",
+            "lang": "en",
+            "width": 390,
+            "original": {
+              "cartID": "cart_a97360e5-22f2-432c-9fdf-32204ad9c5b6",
+              "version": "4",
+              "operationID": "f1529943-4507-4f02-a0d1-d2787d64a4c9",
+              "providerID": "pp_paypal_card_paypal_card"
+            },
+            "writes": [
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "zh-CN"
+                },
+                "operationID": "96ec7fb9-19c9-4144-a7de-5d53fc73b5cc"
+              },
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "zh-CN"
+                },
+                "operationID": "96ec7fb9-19c9-4144-a7de-5d53fc73b5cc"
+              },
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "zh-CN"
+                },
+                "operationID": "96ec7fb9-19c9-4144-a7de-5d53fc73b5cc"
+              }
+            ],
+            "creates": [
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "f1529943-4507-4f02-a0d1-d2787d64a4c9"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "f1529943-4507-4f02-a0d1-d2787d64a4c9"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "f1529943-4507-4f02-a0d1-d2787d64a4c9"
+              }
+            ],
+            "before": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "f1529943-4507-4f02-a0d1-d2787d64a4c9",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 5
+            },
+            "after": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "f1529943-4507-4f02-a0d1-d2787d64a4c9",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "lost_response_recovered": true,
+            "external_sdk_provider_artificial": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "provider": "pp_paypal_card_paypal_card",
+            "scenario": "restore",
+            "lang": "zh",
+            "width": 1440,
+            "original": {
+              "cartID": "cart_7590d38b-3b87-400a-b3d0-4a058d7c0a56",
+              "version": "4",
+              "operationID": "49579a31-4d9c-4922-bd4f-e231ab7ad922",
+              "providerID": "pp_paypal_card_paypal_card"
+            },
+            "writes": [
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "en-GB"
+                },
+                "operationID": "eacbc011-dd96-4c62-ad9b-361645c7c804"
+              },
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "en-GB"
+                },
+                "operationID": "eacbc011-dd96-4c62-ad9b-361645c7c804"
+              },
+              {
+                "body": {
+                  "version": "5",
+                  "region_id": "region",
+                  "locale": "en-GB"
+                },
+                "operationID": "eacbc011-dd96-4c62-ad9b-361645c7c804"
+              }
+            ],
+            "creates": [
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "49579a31-4d9c-4922-bd4f-e231ab7ad922"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "49579a31-4d9c-4922-bd4f-e231ab7ad922"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "49579a31-4d9c-4922-bd4f-e231ab7ad922"
+              }
+            ],
+            "before": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "49579a31-4d9c-4922-bd4f-e231ab7ad922",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 5
+            },
+            "after": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "49579a31-4d9c-4922-bd4f-e231ab7ad922",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "lost_response_recovered": true,
+            "external_sdk_provider_artificial": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "provider": "pp_paypal_card_paypal_card",
+            "scenario": "login",
+            "lang": "en",
+            "width": 390,
+            "original": {
+              "cartID": "cart_28aaaff2-e69f-4f8f-84b5-93a3a0eadc47",
+              "version": "4",
+              "operationID": "187ba882-f356-4c07-84fb-26afe1b80f6c",
+              "providerID": "pp_paypal_card_paypal_card"
+            },
+            "writes": [
+              {
+                "operation_id": "b344962a-9dcc-49b5-a79b-a7a12893cd72",
+                "version": "5"
+              },
+              {
+                "operation_id": "b344962a-9dcc-49b5-a79b-a7a12893cd72",
+                "version": "5"
+              }
+            ],
+            "creates": [
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "187ba882-f356-4c07-84fb-26afe1b80f6c"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "187ba882-f356-4c07-84fb-26afe1b80f6c"
+              }
+            ],
+            "before": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "187ba882-f356-4c07-84fb-26afe1b80f6c",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 5
+            },
+            "after": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "187ba882-f356-4c07-84fb-26afe1b80f6c",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "context-buyer@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 1,
+              "version": 6
+            },
+            "lost_response_recovered": true,
+            "external_sdk_provider_artificial": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "provider": "pp_paypal_card_paypal_card",
+            "scenario": "login",
+            "lang": "zh",
+            "width": 1440,
+            "original": {
+              "cartID": "cart_db57ec36-efc8-45ff-9735-ac254b149af9",
+              "version": "4",
+              "operationID": "16b4ec62-0ff3-40f0-b10e-7dfc85439ec3",
+              "providerID": "pp_paypal_card_paypal_card"
+            },
+            "writes": [
+              {
+                "operation_id": "65adacb2-44a1-4011-8842-352197a2595e",
+                "version": "5"
+              },
+              {
+                "operation_id": "65adacb2-44a1-4011-8842-352197a2595e",
+                "version": "5"
+              }
+            ],
+            "creates": [
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "16b4ec62-0ff3-40f0-b10e-7dfc85439ec3"
+              },
+              {
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                },
+                "key": "16b4ec62-0ff3-40f0-b10e-7dfc85439ec3"
+              }
+            ],
+            "before": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "16b4ec62-0ff3-40f0-b10e-7dfc85439ec3",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 5
+            },
+            "after": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "16b4ec62-0ff3-40f0-b10e-7dfc85439ec3",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 0,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "context-buyer@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "paypal_creates": 1,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": null,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 1,
+              "version": 6
+            },
+            "lost_response_recovered": true,
+            "external_sdk_provider_artificial": true,
+            "full_order_flow_executed": false
+          }
+        ],
+        "errors": []
+      }
+    },
+    "mollie_continuous_regression": {
+      "owner": "4e934f080425",
+      "passed": true,
+      "owned_resources_removed": true,
+      "frozen_source_verified": true,
+      "binary_sha256": "496deab0d8bdb57f44cb682c0b98c2150d6e7181e3d3b857d183b585412dfa75",
+      "finished_utc": "2026-11-02T19:57:38.178Z",
+      "browser": {
+        "cases": [
+          {
+            "scenario": "continuous",
+            "lang": "en",
+            "width": 390,
+            "steps": [
+              {
+                "cart": {
+                  "id": "cart_0ae81311-f308-460a-b6bc-3bbffbaf7658",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "zh-CN",
+                  "version": "6"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 6
+                    }
+                  ],
+                  "checkout": "a32f0581-b698-4aeb-8dda-e9652266d1a1",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 1,
+                  "deletes": 0,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 1,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 6
+                }
+              },
+              {
+                "cart": {
+                  "id": "cart_0ae81311-f308-460a-b6bc-3bbffbaf7658",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "en-GB",
+                  "version": "7"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 7
+                    }
+                  ],
+                  "checkout": "a32f0581-b698-4aeb-8dda-e9652266d1a1",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 1,
+                  "deletes": 0,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 2,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 7
+                }
+              },
+              {
+                "cart": {
+                  "id": "cart_0ae81311-f308-460a-b6bc-3bbffbaf7658",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "en-GB",
+                  "version": "8"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 7
+                    },
+                    {
+                      "InputVersion": 7,
+                      "CartVersion": 8,
+                      "EffectiveCartVersion": null
+                    }
+                  ],
+                  "checkout": "60ccf3ca-ac50-4275-ac1c-5450194c3d89",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 2,
+                  "deletes": 1,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "delete",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 2,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 8
+                }
+              },
+              {
+                "cart": {
+                  "id": "cart_0ae81311-f308-460a-b6bc-3bbffbaf7658",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "zh-CN",
+                  "version": "9"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 7
+                    },
+                    {
+                      "InputVersion": 7,
+                      "CartVersion": 8,
+                      "EffectiveCartVersion": 9
+                    }
+                  ],
+                  "checkout": "60ccf3ca-ac50-4275-ac1c-5450194c3d89",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 2,
+                  "deletes": 1,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "delete",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 3,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 9
+                }
+              }
+            ],
+            "observed": {
+              "status": 200,
+              "body": {
+                "cart_id": "cart_0ae81311-f308-460a-b6bc-3bbffbaf7658",
+                "version": "9",
+                "state": "pending"
+              }
+            },
+            "final": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                },
+                {
+                  "InputVersion": 7,
+                  "CartVersion": 8,
+                  "EffectiveCartVersion": 9
+                }
+              ],
+              "checkout": "60ccf3ca-ac50-4275-ac1c-5450194c3d89",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 1,
+              "paypal_creates": 0,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 3,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 9
+            },
+            "unchanged_saves_then_replacement_then_save": true,
+            "lost_save_and_restore_responses": true,
+            "same_uuid_per_operation": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "scenario": "continuous",
+            "lang": "en",
+            "width": 1440,
+            "steps": [
+              {
+                "cart": {
+                  "id": "cart_b2586a7d-bfeb-4fff-8a42-ef06ececbf4c",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "zh-CN",
+                  "version": "6"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 6
+                    }
+                  ],
+                  "checkout": "8408ed8c-2989-415b-bebe-30e190b2bf1b",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 1,
+                  "deletes": 0,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 1,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 6
+                }
+              },
+              {
+                "cart": {
+                  "id": "cart_b2586a7d-bfeb-4fff-8a42-ef06ececbf4c",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "en-GB",
+                  "version": "7"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 7
+                    }
+                  ],
+                  "checkout": "8408ed8c-2989-415b-bebe-30e190b2bf1b",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 1,
+                  "deletes": 0,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 2,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 7
+                }
+              },
+              {
+                "cart": {
+                  "id": "cart_b2586a7d-bfeb-4fff-8a42-ef06ececbf4c",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "en-GB",
+                  "version": "8"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 7
+                    },
+                    {
+                      "InputVersion": 7,
+                      "CartVersion": 8,
+                      "EffectiveCartVersion": null
+                    }
+                  ],
+                  "checkout": "05c5f28a-9199-4d5e-adc5-41e2c73b63f3",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 2,
+                  "deletes": 1,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "delete",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 2,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 8
+                }
+              },
+              {
+                "cart": {
+                  "id": "cart_b2586a7d-bfeb-4fff-8a42-ef06ececbf4c",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "zh-CN",
+                  "version": "9"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 7
+                    },
+                    {
+                      "InputVersion": 7,
+                      "CartVersion": 8,
+                      "EffectiveCartVersion": 9
+                    }
+                  ],
+                  "checkout": "05c5f28a-9199-4d5e-adc5-41e2c73b63f3",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 2,
+                  "deletes": 1,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "delete",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 3,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 9
+                }
+              }
+            ],
+            "observed": {
+              "status": 200,
+              "body": {
+                "cart_id": "cart_b2586a7d-bfeb-4fff-8a42-ef06ececbf4c",
+                "version": "9",
+                "state": "pending"
+              }
+            },
+            "final": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                },
+                {
+                  "InputVersion": 7,
+                  "CartVersion": 8,
+                  "EffectiveCartVersion": 9
+                }
+              ],
+              "checkout": "05c5f28a-9199-4d5e-adc5-41e2c73b63f3",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 1,
+              "paypal_creates": 0,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 3,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 9
+            },
+            "unchanged_saves_then_replacement_then_save": true,
+            "lost_save_and_restore_responses": true,
+            "same_uuid_per_operation": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "scenario": "continuous",
+            "lang": "zh",
+            "width": 390,
+            "steps": [
+              {
+                "cart": {
+                  "id": "cart_50664433-e352-4b00-9e27-f79f1a12f50a",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "en-GB",
+                  "version": "6"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 6
+                    }
+                  ],
+                  "checkout": "c33c9a7e-d12f-44e8-b837-e75a9e4dd759",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 1,
+                  "deletes": 0,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 1,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 6
+                }
+              },
+              {
+                "cart": {
+                  "id": "cart_50664433-e352-4b00-9e27-f79f1a12f50a",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "zh-CN",
+                  "version": "7"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 7
+                    }
+                  ],
+                  "checkout": "c33c9a7e-d12f-44e8-b837-e75a9e4dd759",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 1,
+                  "deletes": 0,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 2,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 7
+                }
+              },
+              {
+                "cart": {
+                  "id": "cart_50664433-e352-4b00-9e27-f79f1a12f50a",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "zh-CN",
+                  "version": "8"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 7
+                    },
+                    {
+                      "InputVersion": 7,
+                      "CartVersion": 8,
+                      "EffectiveCartVersion": null
+                    }
+                  ],
+                  "checkout": "d64f8b25-3277-48fd-98f8-86f6bcd9ff4a",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 2,
+                  "deletes": 1,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "delete",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 2,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 8
+                }
+              },
+              {
+                "cart": {
+                  "id": "cart_50664433-e352-4b00-9e27-f79f1a12f50a",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "en-GB",
+                  "version": "9"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 7
+                    },
+                    {
+                      "InputVersion": 7,
+                      "CartVersion": 8,
+                      "EffectiveCartVersion": 9
+                    }
+                  ],
+                  "checkout": "d64f8b25-3277-48fd-98f8-86f6bcd9ff4a",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 2,
+                  "deletes": 1,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "delete",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 3,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 9
+                }
+              }
+            ],
+            "observed": {
+              "status": 200,
+              "body": {
+                "cart_id": "cart_50664433-e352-4b00-9e27-f79f1a12f50a",
+                "version": "9",
+                "state": "pending"
+              }
+            },
+            "final": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                },
+                {
+                  "InputVersion": 7,
+                  "CartVersion": 8,
+                  "EffectiveCartVersion": 9
+                }
+              ],
+              "checkout": "d64f8b25-3277-48fd-98f8-86f6bcd9ff4a",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 1,
+              "paypal_creates": 0,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 3,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 9
+            },
+            "unchanged_saves_then_replacement_then_save": true,
+            "lost_save_and_restore_responses": true,
+            "same_uuid_per_operation": true,
+            "full_order_flow_executed": false
+          },
+          {
+            "scenario": "continuous",
+            "lang": "zh",
+            "width": 1440,
+            "steps": [
+              {
+                "cart": {
+                  "id": "cart_f4a40e26-88b5-4c1a-be80-d96baf5939b6",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "en-GB",
+                  "version": "6"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 6
+                    }
+                  ],
+                  "checkout": "68de4752-4636-4455-bd81-de2edb4af640",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 1,
+                  "deletes": 0,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 1,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 6
+                }
+              },
+              {
+                "cart": {
+                  "id": "cart_f4a40e26-88b5-4c1a-be80-d96baf5939b6",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "zh-CN",
+                  "version": "7"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 7
+                    }
+                  ],
+                  "checkout": "68de4752-4636-4455-bd81-de2edb4af640",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 1,
+                  "deletes": 0,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 2,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 7
+                }
+              },
+              {
+                "cart": {
+                  "id": "cart_f4a40e26-88b5-4c1a-be80-d96baf5939b6",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "zh-CN",
+                  "version": "8"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 7
+                    },
+                    {
+                      "InputVersion": 7,
+                      "CartVersion": 8,
+                      "EffectiveCartVersion": null
+                    }
+                  ],
+                  "checkout": "db3b50ba-3e58-4951-ae95-7436d0c8119d",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 2,
+                  "deletes": 1,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "delete",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 2,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 8
+                }
+              },
+              {
+                "cart": {
+                  "id": "cart_f4a40e26-88b5-4c1a-be80-d96baf5939b6",
+                  "region_id": "region",
+                  "sales_channel_id": "channel",
+                  "currency_code": "eur",
+                  "locale": "en-GB",
+                  "version": "9"
+                },
+                "facts": {
+                  "account_owners": 0,
+                  "attempts": [
+                    {
+                      "InputVersion": 4,
+                      "CartVersion": 5,
+                      "EffectiveCartVersion": 7
+                    },
+                    {
+                      "InputVersion": 7,
+                      "CartVersion": 8,
+                      "EffectiveCartVersion": 9
+                    }
+                  ],
+                  "checkout": "db3b50ba-3e58-4951-ae95-7436d0c8119d",
+                  "collections": [
+                    {
+                      "CurrencyCode": "eur",
+                      "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                    }
+                  ],
+                  "creates": 2,
+                  "deletes": 1,
+                  "discovers": 0,
+                  "email": "owned@example.invalid",
+                  "live_sessions": 1,
+                  "observes": 0,
+                  "paypal_creates": 0,
+                  "paypal_settlements": 0,
+                  "protected_unchanged": true,
+                  "provider_events": [
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "delete",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    },
+                    {
+                      "Kind": "create",
+                      "Amount": "158.75",
+                      "Currency": "eur"
+                    }
+                  ],
+                  "receipts": 3,
+                  "refresh": null,
+                  "transfer_receipts": 0,
+                  "version": 9
+                }
+              }
+            ],
+            "observed": {
+              "status": 200,
+              "body": {
+                "cart_id": "cart_f4a40e26-88b5-4c1a-be80-d96baf5939b6",
+                "version": "9",
+                "state": "pending"
+              }
+            },
+            "final": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 7
+                },
+                {
+                  "InputVersion": 7,
+                  "CartVersion": 8,
+                  "EffectiveCartVersion": 9
+                }
+              ],
+              "checkout": "db3b50ba-3e58-4951-ae95-7436d0c8119d",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"158.75\",\"precision\":100}"
+                }
+              ],
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 1,
+              "paypal_creates": 0,
+              "paypal_settlements": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 3,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 9
+            },
+            "unchanged_saves_then_replacement_then_save": true,
+            "lost_save_and_restore_responses": true,
+            "same_uuid_per_operation": true,
+            "full_order_flow_executed": false
+          }
+        ],
+        "errors": [],
+        "api_mocking": false,
+        "actual_gin_mysql_redis_astro": true
+      }
+    }
+  },
+  "main_service_checks": {
+    "9100/health": 200,
+    "9200/": 200,
+    "9300/gb-en/store": 200,
+    "9300/gb-en/checkout?step=payment without possession": 404,
+    "legacy_9001": "intentionally stopped"
+  },
+  "failed_attempts": [
+    {
+      "owner": "5dc7a7fea17e",
+      "reason": "native PayPal restore replay omitted original provider and returned 409; production fix verified by final run"
+    },
+    {
+      "owner": "135d78dfdec0",
+      "reason": "artificial iframe default width caused narrow viewport overflow; fixed external SDK fixture sizing, production styles unchanged"
+    }
+  ]
+}

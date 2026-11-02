@@ -1,4 +1,4 @@
-import {CartError,cartCSRFFromCookies,type CartClient,type PayPalProviderID} from './cart-client.ts'
+import {CartError,cartCSRFFromCookies,type CartClient,type PayPalProviderID,type CheckoutPaymentOptions} from './cart-client.ts'
 import {contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey,cartLockName,customerCartIntentKey} from './cart-commerce.ts'
 export const paymentIntentKey='retail:checkout-payment-intent:v1'
 type Intent={cartID:string;version:string;operationID:string;providerID?:PayPalProviderID}
@@ -13,6 +13,14 @@ export function readPaymentIntent(storage:Pick<Storage,'getItem'>):Intent|null{
  let v:Intent;try{v=JSON.parse(raw)}catch{throw fail()}
  if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).some(k=>!['cartID','version','operationID','providerID'].includes(k))||Object.keys(v).length!==(v.providerID===undefined?3:4)||v.providerID!==undefined&&v.providerID!=='pp_paypal_paypal'&&v.providerID!=='pp_paypal_card_paypal_card'||!valid(v.cartID,id)||!valid(v.operationID,uuid)||!version(v.version))throw fail()
  return v
+}
+// Rebuild only from the authorized server binding and matching current method.
+// Absence of a PayPal projection means legacy hosted Mollie, never a fallback
+// from a known PayPal intent after a partial/mixed response.
+export function bindPaymentIntent(cartID:string,binding:{version:string;operation_id:string},options:CheckoutPaymentOptions,previous:Intent|null):Intent{
+ const provider=options.active_provider?.id
+ if(!valid(cartID,id)||!version(binding.version)||!valid(binding.operation_id,uuid)||options.cart_id!==cartID||!options.attempt_started||provider!==undefined&&provider!=='pp_paypal_paypal'&&provider!=='pp_paypal_card_paypal_card'||previous&&(previous.cartID!==cartID||previous.providerID!==provider))throw fail()
+ return {cartID,version:binding.version,operationID:binding.operation_id,...(provider?{providerID:provider}:{})}
 }
 // Persist only the original intention, before dispatch. Neither provider URLs,
 // customer data nor credentials belong in this journal. A timed-out request can

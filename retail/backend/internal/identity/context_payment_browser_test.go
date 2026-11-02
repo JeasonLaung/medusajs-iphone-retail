@@ -144,10 +144,23 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		exec(`UPDATE pricing_prices SET amount=122,raw_amount='{"value":"122","precision":100}' WHERE id='add-single'`)
 		exec(`UPDATE pricing_prices SET amount=159.75,raw_amount='{"value":"159.75","precision":100}' WHERE id='add-cad'`)
 	}
+	paypalContext := os.Getenv("PAYPAL_CONTEXT_BROWSER") == "1"
+	paypal := &paypalCheckoutProvider{calls: map[string]int{}}
+	if paypalContext {
+		for _, id := range []string{"pp_paypal_paypal", "pp_paypal_card_paypal_card"} {
+			exec("INSERT INTO payment_providers(id,is_enabled,created_at,updated_at) VALUES(?,TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", id)
+			exec("INSERT INTO commerce_region_payment_providers(id,region_id,payment_provider_id,created_at,updated_at) VALUES(?,'region',?,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", "context-"+id, id)
+		}
+	}
 	configured := options
 	configured.ReturnOrigin = origin
 	var err error
-	configured.Adapters, err = payments.NewCreateAdapters(map[string]payments.CreateSessionAdapter{"pp_mollie-hosted-checkout_mollie": adapter})
+	entries := map[string]payments.CreateSessionAdapter{"pp_mollie-hosted-checkout_mollie": adapter}
+	if paypalContext {
+		entries["pp_paypal_paypal"] = paypal
+		entries["pp_paypal_card_paypal_card"] = paypal
+	}
+	configured.Adapters, err = payments.NewCreateAdapters(entries)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -225,6 +238,14 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		exec("UPDATE pricing_prices SET amount=?,raw_amount=? WHERE id='add-single'", price.Amount, price.Raw)
 		ref, initial := makeCart()
 		active = ref
+		if paypalContext {
+			paypal.mu.Lock()
+			paypal.calls = map[string]int{}
+			paypal.status = ""
+			paypal.settlements = 0
+			paypal.orderID = strings.ToUpper(strings.ReplaceAll(uuid.NewString(), "-", ""))[:17]
+			paypal.mu.Unlock()
+		}
 		issued, e := sessions.IssueCart(ctx, ref)
 		if e != nil {
 			c.Status(503)
@@ -403,8 +424,37 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		}
 		adapter.mu.Lock()
 		defer adapter.mu.Unlock()
-		c.JSON(200, gin.H{"version": owner.Version, "checkout": owner.CheckoutAttemptID, "refresh": owner.PaymentRefreshOperationID, "receipts": receipts, "attempts": attempts, "creates": adapter.creates, "deletes": adapter.deletes, "observes": adapter.observes, "discovers": adapter.discovers, "protected_unchanged": protectedFacts() == baseline, "transfer_receipts": transferReceipts, "account_owners": accountOwners, "email": email, "collections": collections, "live_sessions": liveSessions, "provider_events": adapter.events})
+		c.JSON(200, gin.H{"version": owner.Version, "checkout": owner.CheckoutAttemptID, "refresh": owner.PaymentRefreshOperationID, "receipts": receipts, "attempts": attempts, "paypal_creates": func() int {
+			paypal.mu.Lock()
+			defer paypal.mu.Unlock()
+			n := 0
+			for _, v := range paypal.calls {
+				n += v
+			}
+			return n
+		}(), "paypal_settlements": paypal.settlements, "creates": adapter.creates, "deletes": adapter.deletes, "observes": adapter.observes, "discovers": adapter.discovers, "protected_unchanged": protectedFacts() == baseline, "transfer_receipts": transferReceipts, "account_owners": accountOwners, "email": email, "collections": collections, "live_sessions": liveSessions, "provider_events": adapter.events})
 	})
+	if paypalContext {
+		fixture.POST("/stage-paypal-context", func(c *gin.Context) {
+			var in struct {
+				OperationID string `json:"operation_id"`
+				Version     string `json:"version"`
+				RegionID    string `json:"region_id"`
+				Locale      string `json:"locale"`
+			}
+			if c.ShouldBindJSON(&in) != nil {
+				c.Status(400)
+				return
+			}
+			op, e := cart.StageContextPayment(ctx, db, "shop", active, cart.ContextCommand{OperationID: in.OperationID, Version: in.Version, RegionID: in.RegionID, Locale: in.Locale}, configured)
+			if e != nil {
+				t.Error("owned PayPal stage", e)
+				c.Status(503)
+				return
+			}
+			c.JSON(200, gin.H{"effects": len(op.Effects), "state": op.State})
+		})
+	}
 	fixture.POST("/case-done", func(c *gin.Context) { completed++; c.Status(200) })
 	fixture.POST("/finish", func(c *gin.Context) { finish <- struct{}{}; c.Status(200) })
 	listener, err := net.Listen("tcp", "0.0.0.0:9100")

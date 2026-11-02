@@ -1,14 +1,14 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {createPaymentContextCommands,PaymentContextWaiting} from '../src/lib/payment-context.ts'
-import {CartError,type CartClient,type ContextPaymentProgress,type CartSnapshot} from '../src/lib/cart-client.ts'
+import {CartError,type CartClient,type ContextPaymentProgress,type CartSnapshot,type PayPalProviderID} from '../src/lib/cart-client.ts'
 import {paymentIntentKey} from '../src/lib/checkout-payment.ts'
 import {contextIntentKey,contactIntentKey} from '../src/lib/cart-commerce.ts'
 
 const originalID='12345678-1234-4234-8234-123456789012',operationID='22345678-1234-4234-8234-123456789012'
 const choice={regionID:'region',currency:'eur',locale:'zh-CN'},csrf='a'.repeat(64)
-function fixture(retain=false){
- const original={cartID:'cart',version:'4',operationID:originalID}
+function fixture(retain=false,providerID?:PayPalProviderID){
+ const original={cartID:'cart',version:'4',operationID:originalID,...(providerID?{providerID}:{})}
  const data=new Map<string,string>([[paymentIntentKey,JSON.stringify(original)]])
  let cart:CartSnapshot={id:'cart',region_id:'region',currency_code:'eur',locale:'en',sales_channel_id:'channel',version:'5'}
  let payment:{operation_id:string;version:string}|null={operation_id:originalID,version:'4'}
@@ -18,7 +18,7 @@ function fixture(retain=false){
  const storage={getItem:(key:string)=>data.get(key)??null,setItem:(key:string,value:string)=>{if(writeFailure)throw Error('storage');data.set(key,value)},removeItem:(key:string)=>{if(removeFailure&&key===contextIntentKey)throw Error('storage');data.delete(key)}}
  const client:Pick<CartClient,'current'|'startPayment'|'contextPayment'|'retrieveAmounts'|'paymentOptions'>={
   current:async()=>{if(readFailure)throw Error('read');return {...cart}},
-  startPayment:async(_id,input)=>{starts++;assert.deepEqual(input,{operationID:originalID,version:'4'});return {cart_id:'cart',version:cart.version,operation_id:originalID,state:'ready',checkout_url:'https://www.mollie.com/checkout/owned'}},
+  startPayment:async(_id,input)=>{starts++;assert.deepEqual(input,{operationID:originalID,version:'4',...(providerID?{providerID}:{})});return {cart_id:'cart',version:cart.version,operation_id:originalID,state:providerID?'sdk_ready':'ready',checkout_url:providerID?null:'https://www.mollie.com/checkout/owned',...(providerID?{provider_id:providerID,provider_order_id:'5O190127TN364715T'}:{})}},
   contextPayment:async(_id,input,_auth,restore=false)=>{
    assert.ok(data.has(contextIntentKey));calls.push({version:input.version,operationID:input.operationID,restore})
    if(processing)return {state:'requires_recovery'}
@@ -30,7 +30,7 @@ function fixture(retain=false){
    return result
   },
   retrieveAmounts:async()=>({cart_id:'cart',version:mixedVersion?'7':cart.version,currency_code:cart.currency_code,totals:{},lines:[],shipping_methods:[],pricing_recalculated:false,checkout:false}),
-  paymentOptions:async()=>({cart_id:'cart',version:cart.version,attempt_started:payment!==null,providers:payment?[]:[{id:'pp_mollie-hosted-checkout_mollie'}]}),
+  paymentOptions:async()=>({cart_id:'cart',version:cart.version,attempt_started:payment!==null,providers:payment?[]:[{id:'pp_mollie-hosted-checkout_mollie'}],...(payment&&providerID?{active_provider:{id:providerID,paypal:{client_id:'artificial_client',currency:'EUR',intent:'capture',environment:'sandbox'}}}:{})}),
  }
  const make=()=>createPaymentContextCommands({client,storage,readCSRF:()=>csrf,uuid:()=>{ids++;return operationID},exclusive:async work=>work()})
  return {data,storage,client,make,calls,original,ids:()=>ids,starts:()=>starts,mutations:()=>mutations,lose:(v:boolean)=>{loseResponse=v},readFail:(v:boolean)=>{readFailure=v},mixed:(v:boolean)=>{mixedVersion=v},removeFail:(v:boolean)=>{removeFailure=v},writeFail:(v:boolean)=>{writeFailure=v},processing:(v:boolean)=>{processing=v}}
@@ -108,4 +108,20 @@ test('invalid storage, competing commands, changed target and non-durable writes
  }
  const f=fixture();f.processing(true);await assert.rejects(f.make().apply(choice))
  const count=f.calls.length;await assert.rejects(f.make().apply({...choice,locale:'en'}));assert.equal(f.calls.length,count)
+})
+
+test('PayPal saved and restored bindings keep server-verified provider and original retry identity',async()=>{
+ for(const provider of ['pp_paypal_paypal','pp_paypal_card_paypal_card'] as const){
+  const f=fixture(true,provider);f.lose(true);await assert.rejects(f.make().apply(choice));f.lose(false);await f.make().apply(choice)
+  assert.deepEqual(JSON.parse(f.data.get(paymentIntentKey)!),f.original);assert.equal(f.starts(),1)
+  const r=fixture(true,provider);r.processing(true);await assert.rejects(r.make().apply(choice));r.processing(false);await r.make().restore()
+  assert.deepEqual(JSON.parse(r.data.get(paymentIntentKey)!),{cartID:'cart',version:'5',operationID,providerID:provider})
+ }
+})
+test('missing or switched PayPal projection cannot rewrite a known provider as hosted Mollie',async()=>{
+ for(const active_provider of [undefined,{id:'pp_paypal_card_paypal_card' as const}]){
+  const f=fixture(true,'pp_paypal_paypal'),read=f.client.paymentOptions
+  f.client.paymentOptions=async id=>({...((await read(id))!),active_provider})
+  await assert.rejects(f.make().apply(choice));assert.deepEqual(JSON.parse(f.data.get(paymentIntentKey)!),f.original);assert(f.data.has(contextIntentKey))
+ }
 })

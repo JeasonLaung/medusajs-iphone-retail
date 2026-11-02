@@ -22,6 +22,16 @@ test('payment transfer clears or rebinds CREATE only after checking the server c
  }
 })
 const op='a8230181-a32c-4127-838b-92b7c033ef01'
+test('coordinated login preserves both PayPal methods and rejects a mixed provider projection',async()=>{
+ for(const providerID of ['pp_paypal_paypal','pp_paypal_card_paypal_card'] as const)for(const mixed of [false,true]){
+  const saved=storage(),payment={cartID:cart.id,version:'3',operationID:op,providerID}
+  saved.setItem(paymentIntentKey,JSON.stringify(payment));let posted=false
+  const options={account:'cust_new',storage:saved,uuid:()=>op,exclusive:async<T>(work:()=>Promise<T>)=>work(),current:async()=>({...cart,version:posted?'5':'4'}),paymentOptions:async()=>({cart_id:cart.id,version:posted?'5':'4',providers:[],attempt_started:true,...(!posted||!mixed?{active_provider:{id:providerID,paypal:{client_id:'artificial_client',currency:'EUR',intent:'capture' as const,environment:'sandbox' as const}}}:{})}),send:async()=>{posted=true;return {state:'saved',completion:{cart:{...cart,version:'5'},payment:{operation_id:op,version:'3'}}}}}
+  if(mixed){await assert.rejects(transferCustomerCart(options));assert(saved.getItem(customerCartIntentKey))}
+  else{await transferCustomerCart(options);assert.equal(saved.getItem(customerCartIntentKey),null)}
+  assert.deepEqual(JSON.parse(saved.getItem(paymentIntentKey)!),payment)
+ }
+})
 const cart={id:'cart_test',region_id:'region',sales_channel_id:'channel',currency_code:'eur',locale:'en',version:'4'}
 function storage(){const values=new Map<string,string>();return {getItem:(k:string)=>values.get(k)??null,setItem:(k:string,v:string)=>{values.set(k,v)},removeItem:(k:string)=>{values.delete(k)}}}
 test('lost transfer response keeps original operation/version, refreshes current cart and removes only its journal',async()=>{

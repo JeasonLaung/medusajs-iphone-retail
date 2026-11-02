@@ -1,6 +1,6 @@
 import {CartError,type CartClient,type CartSnapshot} from './cart-client.ts'
 import {contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey,customerCartIntentKey} from './cart-commerce.ts'
-import {paymentIntentKey,readPaymentIntent} from './checkout-payment.ts'
+import {paymentIntentKey,readPaymentIntent,bindPaymentIntent} from './checkout-payment.ts'
 
 type Choice={regionID:string;currency:string;locale:string}
 type Intent=Choice&{cartID:string;version:string;operationID:string;kind:'payment-save'|'payment-restore'}
@@ -55,7 +55,7 @@ export function createPaymentContextCommands(o:Options){
   if(!current||!amounts||!options||current.id!==intent.cartID||current.id!==cart.id||current.version!==cart.version||current.region_id!==cart.region_id||current.sales_channel_id!==cart.sales_channel_id||current.currency_code!==cart.currency_code||current.locale!==cart.locale||amounts.cart_id!==cart.id||amounts.version!==cart.version||amounts.currency_code!==cart.currency_code||options.cart_id!==cart.id||options.version!==cart.version||options.attempt_started!==(payment!==null))throw fail()
   if(result.state==='saved'&&(cart.region_id!==intent.regionID||cart.currency_code!==intent.currency||cart.locale!==intent.locale))throw fail()
   if(payment){
-   const raw=JSON.stringify({cartID:cart.id,version:payment.version,operationID:payment.operation_id})
+   const raw=JSON.stringify(bindPaymentIntent(cart.id,payment,options,readPaymentIntent(o.storage)))
    o.storage.setItem(paymentIntentKey,raw);if(o.storage.getItem(paymentIntentKey)!==raw)throw fail()
   }else{
    o.storage.removeItem(paymentIntentKey);if(o.storage.getItem(paymentIntentKey)!==null)throw fail()
@@ -74,8 +74,8 @@ export function createPaymentContextCommands(o:Options){
    const before=await o.client.current();if(!before||before.id!==original.cartID)throw fail()
    // Resolve the already approved initial CREATE before starting another
    // operation. Its unknown result must not be replaced by a new CREATE.
-   const payment=await o.client.startPayment(original.cartID,{operationID:original.operationID,version:original.version},{csrfToken:csrf()})
-   if(payment.state!=='ready')throw new PaymentContextWaiting(payment.state==='processing'?'processing':'requires_recovery')
+   const payment=await o.client.startPayment(original.cartID,{operationID:original.operationID,version:original.version,...(original.providerID?{providerID:original.providerID}:{})},{csrfToken:csrf()})
+   if(payment.state!=='ready'&&payment.state!=='sdk_ready')throw new PaymentContextWaiting(payment.state==='processing'?'processing':'requires_recovery')
    const cart=await o.client.current();if(!cart||cart.id!==original.cartID||!version(cart.version))throw fail()
    // Project Choice explicitly: the caller's navigation/location is not part
    // of the private operation journal or the server command.

@@ -13,18 +13,19 @@ await mkdir(base,{recursive:true})
 const label='eurorefurb.context-payment='+owner,name='eurorefurb-context-'+owner
 const choices=['unchanged','changed','restore','delete-unknown','create-unknown','paid','replacement-paid','replacement-authorized','same-account','unbound-account','unbound-unchanged','unbound-precision','unbound-delete-unknown','unbound-restore','unbound-create-unknown','unbound-receipt-fault','unbound-lost-restore','continuous','currency-save','currency-restore','retired-edits']
 const args=process.argv.slice(2),matrix=args.includes('--matrix'),requested=[]
-const paypalOnly=args.includes('--paypal-checkout'),cardBrowser=args.includes('--paypal-card'),walletBrowser=args.includes('--paypal-wallet')||cardBrowser
+const paypalContext=args.includes('--paypal-context'),paypalOnly=args.includes('--paypal-checkout'),cardBrowser=args.includes('--paypal-card'),walletBrowser=args.includes('--paypal-wallet')||cardBrowser
+assert(!paypalContext||args.length===1,'--paypal-context is an independent context browser subflow')
 assert(!walletBrowser||args.length===1,'--paypal-wallet is an independent wallet browser subflow')
 assert(!paypalOnly||args.length===1,'--paypal-checkout is an independent HTTP/SQL subflow')
 for(let i=0;i<args.length;i++){
  if(args[i]==='--matrix')continue
- if(args[i]==='--paypal-checkout'||args[i]==='--paypal-wallet'||args[i]==='--paypal-card')continue
+ if(args[i]==='--paypal-context'||args[i]==='--paypal-checkout'||args[i]==='--paypal-wallet'||args[i]==='--paypal-card')continue
  assert.equal(args[i],'--scenario','Use [--scenario name]... [--matrix]')
  assert(choices.includes(args[++i]),'Unknown or missing scenario')
  requested.push(args[i])
 }
 const selected=requested.length?[...new Set(requested)]:choices
-const caseCount=walletBrowser?4:selected.length*(matrix?4:1)
+const caseCount=paypalContext?12:walletBrowser?4:selected.length*(matrix?4:1)
 const pause=ms=>new Promise(r=>setTimeout(r,ms)),containers=[],processes=[]
 let network,failed,volume
 function run(cmd,args,opts={}){
@@ -57,7 +58,7 @@ try{
  assert.deepEqual(await inventory(path.join(root,'retail/backend')),backendHashes)
  assert.deepEqual(await inventory(path.join(root,'retail/storefront')),storefrontHashes)
  const admin=path.join(base,'admin');await mkdir(path.join(admin,'tests'),{recursive:true})
- const browserSource=path.join(root,walletBrowser?(cardBrowser?'retail/admin/tests/paypal-card.native.mjs':'retail/admin/tests/paypal-wallet.native.mjs'):'retail/admin/tests/context-payment.native.mjs')
+ const browserSource=path.join(root,paypalContext?'retail/admin/tests/paypal-context.native.mjs':walletBrowser?(cardBrowser?'retail/admin/tests/paypal-card.native.mjs':'retail/admin/tests/paypal-wallet.native.mjs'):'retail/admin/tests/context-payment.native.mjs')
  await cp(browserSource,path.join(admin,'tests/context-payment.native.mjs'))
  const browserHash=createHash('sha256').update(await readFile(browserSource)).digest('hex')
  await symlink(path.join(root,'retail/admin/node_modules'),path.join(admin,'node_modules'),process.platform==='win32'?'junction':'dir')
@@ -88,7 +89,7 @@ try{
  run('docker',['cp',binary,mysql+':/tmp/identity.test']);run('docker',['exec',mysql,'chmod','700','/tmp/identity.test'])
  run('docker',['exec',mysql,'mkdir','-p','/work/retail/backend/internal/identity','/work/docs/migration'])
  run('docker',['cp',path.join(root,'docs/migration/fixtures'),mysql+':/work/docs/migration/fixtures'])
- const fixture=launch('docker',['exec','-w','/work/retail/backend/internal/identity','-e','GIN_MODE=release','-e','CONTEXT_PAYMENT_BROWSER=1',...(paypalOnly?['-e','PAYPAL_CHECKOUT_REHEARSAL=1']:[]),...(walletBrowser?['-e','PAYPAL_WALLET_BROWSER=1']:[]),...(cardBrowser?['-e','PAYPAL_CARD_BROWSER=1']:[]),'-e','CONTEXT_PAYMENT_CASE_COUNT='+caseCount,'-e','CONTEXT_PAYMENT_ORIGIN='+origin,'-e','CONTEXT_PAYMENT_KEY='+key,mysql,'/tmp/identity.test','-test.run','^TestOwnedContextPaymentBrowser$','-test.v','-test.timeout','12m'],root,env,'fixture.log')
+ const fixture=launch('docker',['exec','-w','/work/retail/backend/internal/identity','-e','GIN_MODE=release','-e','CONTEXT_PAYMENT_BROWSER=1',...(paypalOnly?['-e','PAYPAL_CHECKOUT_REHEARSAL=1']:[]),...(walletBrowser?['-e','PAYPAL_WALLET_BROWSER=1']:[]),...(cardBrowser?['-e','PAYPAL_CARD_BROWSER=1']:[]),...(paypalContext?['-e','PAYPAL_CONTEXT_BROWSER=1']:[]),'-e','CONTEXT_PAYMENT_CASE_COUNT='+caseCount,'-e','CONTEXT_PAYMENT_ORIGIN='+origin,'-e','CONTEXT_PAYMENT_KEY='+key,mysql,'/tmp/identity.test','-test.run','^TestOwnedContextPaymentBrowser$','-test.v','-test.timeout','12m'],root,env,'fixture.log')
  if(paypalOnly){
   assert.equal(await new Promise((resolve,reject)=>{fixture.once('exit',resolve);fixture.once('error',reject)}),0,'PayPal HTTP/SQL subflow failed; inspect fixture.log')
   assert((await readFile(path.join(base,'fixture.log'),'utf8')).includes('PAYPAL_CHECKOUT_SQL:'))
