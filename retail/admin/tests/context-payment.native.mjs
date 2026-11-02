@@ -14,7 +14,7 @@ async function open(){await page.locator('astro-island[component-url*="gin-heade
 async function journal(k){return page.evaluate(k=>JSON.parse(localStorage.getItem(k)),k)}
 async function current(){return page.evaluate(async()=>{const r=await fetch('/api/store/cart');if(!r.ok)throw Error('cart '+r.status);return r.json()})}
 async function accountCase(context,seed,scenario,lang,width){
- const attach=scenario==='unbound-unchanged',success=scenario==='same-account'||attach
+ const attach=scenario==='unbound-unchanged',restore=['unbound-restore','unbound-create-unknown'].includes(scenario),unknown=scenario==='unbound-delete-unknown',fault=scenario==='unbound-receipt-fault',changed=scenario.startsWith('unbound-')&&!attach,success=true
  const accountURL=origin+'/dk-'+lang+'/account',transferKey='retail:customer-cart-transfer:v1',inputs=[]
  async function login(email){
   await page.goto(accountURL);await expect(page.getByTestId('login-page')).toBeVisible()
@@ -36,13 +36,48 @@ async function accountCase(context,seed,scenario,lang,width){
  if(attach)await control('first-attachment-audit')
  if(scenario==='unbound-precision')await control('precision-price')
  else if(!attach)await control('price') // A same-account no-op must not refresh prices.
+ if(restore)await control('mode/'+(scenario==='unbound-restore'?'restore':'create-unknown'))
+ if(unknown)await control('mode/delete-unknown')
+ if(fault)await control('transfer-receipt-fault/yes')
  let lost=false
  await page.route('**/customer/cart-transfer',async route=>{
   inputs.push(route.request().postDataJSON());const r=await route.fetch()
-  assert.equal(r.status(),success?200:409)
-  if(success&&!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})
+  assert.equal(r.status(),restore||fault?503:200)
+  if(!restore&&!unknown&&!fault&&!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})
  })
  await login(seed.account_email);await expect(page.getByTestId('login-error-message')).toBeVisible()
+ if(scenario==='unbound-lost-restore'){
+  const original=await journal(transferKey);assert(original)
+  await page.route('**/customer/cart-transfer/restore',async route=>{inputs.push(route.request().postDataJSON());const r=await route.fetch();assert.equal(r.status(),200);assert.equal((await r.json()).state,'saved');await route.fulfill({response:r})})
+  await page.getByTestId('customer-cart-restore').click();await expect(page.getByTestId('customer-authenticated')).toBeAttached()
+  const after=await control('facts');assert.equal(after.version,before.version+1);assert.equal(after.account_owners,1);assert.equal(after.transfer_receipts,1);assert.equal(after.deletes,1);assert.equal(after.creates,1);assert.equal(after.checkout,null);assert.equal(after.refresh,null);assert.equal(after.protected_unchanged,true)
+  assert.equal(await journal(paymentKey),null);assert.equal(await journal(transferKey),null);assert.equal(inputs.length,2);assert.deepEqual(inputs[0],inputs[1])
+  cases.push({scenario,lang,width,real_database_facts:after,lost_success_restore_acknowledged:true});await control('case-done');return
+ }
+ if(restore||unknown||fault){
+  const frozen=await control('facts');assert.equal(frozen.version,before.version);assert.equal(frozen.account_owners,0);assert.equal(frozen.transfer_receipts,0);assert.equal(frozen.deletes,1);assert(frozen.refresh)
+  const original=await journal(transferKey);assert(original)
+  await control('transfer-scope-audit',original.command)
+  await page.reload();await expect(page.getByTestId('customer-cart-restore')).toBeVisible()
+  assert.equal((await control('facts')).deletes,1)
+  if(unknown||fault){await page.unroute('**/customer/cart-transfer');if(fault)await control('transfer-receipt-fault/no');else await control('mode/canceled');await page.reload()}
+  else{
+   await page.getByTestId('customer-cart-restore').click()
+   if(scenario==='unbound-create-unknown'){
+    await expect(page.getByTestId('customer-cart-restore')).toBeEnabled();await expect(page.getByRole('alert').last()).toBeVisible()
+    assert.equal((await control('facts')).creates,2)
+    await page.reload();await expect(page.getByTestId('customer-cart-restore')).toBeEnabled()
+    assert.equal((await control('facts')).creates,2);await control('mode/normal');await page.getByTestId('customer-cart-restore').click()
+   }
+  }
+  await expect(page.getByTestId('customer-authenticated')).toBeAttached()
+  const after=await control('facts');assert.equal(after.version,before.version+1);assert.equal(after.refresh,null);assert.equal(after.protected_unchanged,true);assert.equal(after.deletes,1)
+  assert.equal(after.account_owners,restore?0:1);assert.equal(after.transfer_receipts,restore?0:1);assert.equal(after.creates,restore?2:1)
+  assert.equal(after.email,restore?'owned@example.invalid':seed.account_email);assert.equal(await journal(transferKey),null)
+  if(restore){const rebound=await journal(paymentKey);assert.equal(rebound.operationID,original.command.operation_id);assert.equal(rebound.version,'5');assert(after.checkout)}else{assert.equal(await journal(paymentKey),null);assert.equal(after.checkout,null)}
+  assert(inputs.every(input=>JSON.stringify(input)===JSON.stringify(inputs[0])))
+  await page.screenshot({path:join(output,`${scenario}-${lang}-${width}.png`)});cases.push({scenario,lang,width,real_database_facts:after,same_uuid_payload:true,restored_original_cart:restore});await control('case-done');return
+ }
  if(success){
   const pending=await journal(transferKey);assert(pending);assert.equal(pending.command.version,String(before.version))
   await page.reload()
@@ -53,17 +88,17 @@ async function accountCase(context,seed,scenario,lang,width){
   await login(seed.other_email);await expect(page.getByTestId('login-error-message')).toBeVisible()
  }
  const after=await control('facts')
- assert.equal(after.version,before.version+(attach?1:0));assert.equal(after.checkout,before.checkout);assert.equal(after.refresh,null)
+ assert.equal(after.version,before.version+(attach||changed?1:0));assert.equal(after.checkout,changed?null:before.checkout);assert.equal(after.refresh,null)
  assert.equal(after.account_owners,success?1:0)
  assert.equal(after.transfer_receipts,before.transfer_receipts+(success?1:0))
- assert.equal(after.email,scenario==='same-account'?'edited-checkout@example.invalid':attach?seed.account_email:'owned@example.invalid')
- assert.equal(after.creates,1);assert.equal(after.deletes,0);assert.equal(after.protected_unchanged,true)
- assert.deepEqual(await journal(paymentKey),payment)
+ assert.equal(after.email,scenario==='same-account'?'edited-checkout@example.invalid':attach||changed?seed.account_email:'owned@example.invalid')
+ assert.equal(after.creates,1);assert.equal(after.deletes,changed?1:0);assert.equal(after.protected_unchanged,true)
+ assert.deepEqual(await journal(paymentKey),changed?null:payment)
  if(attach){assert.equal(after.attempts[0].InputVersion,4);assert.equal(after.attempts[0].CartVersion,5);assert.equal(after.attempts[0].EffectiveCartVersion,6)}
  else assert.deepEqual(after.attempts,before.attempts)
  if(scenario==='same-account')await control('frozen-transfer-audit')
  await page.screenshot({path:join(output,`${scenario}-${lang}-${width}.png`)})
- cases.push({scenario,lang,width,real_database_facts:after,payment_journal_unchanged:true,same_account_lost_response_replayed:lost,foreign_or_unbound_denied:true})
+ cases.push({scenario,lang,width,real_database_facts:after,payment_journal_unchanged:!changed,lost_response_replayed:lost,foreign_account_denied:true})
  await control('case-done')
 }
 try{

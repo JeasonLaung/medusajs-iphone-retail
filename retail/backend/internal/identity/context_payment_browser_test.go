@@ -159,7 +159,7 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		t.Fatal(err)
 	}
 	customerSessions := &contextBrowserCustomerSessions{Store: sessions}
-	customerHTTP, err := customer.NewHTTP(db, customer.HTTPOptions{InitialPayment: &configured, Sessions: customerSessions, Ring: options.Ring, Origin: origin, StoreID: "shop", BridgeKey: key, ManualProviderIDs: options.ManualProviders})
+	customerHTTP, err := customer.NewHTTP(db, customer.HTTPOptions{ContextPaymentDeletes: deletes, InitialPayment: &configured, Sessions: customerSessions, Ring: options.Ring, Origin: origin, StoreID: "shop", BridgeKey: key, ManualProviderIDs: options.ManualProviders})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -282,6 +282,55 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	fixture.POST("/first-attachment-audit", func(c *gin.Context) {
 		if err := auditFirstPaymentAttachment(ctx, db, accounts, sessions, active, configured); err != nil {
 			t.Error("first attachment audit", err)
+			c.Status(503)
+			return
+		}
+		c.Status(200)
+	})
+	fixture.POST("/transfer-receipt-fault/:enabled", func(c *gin.Context) {
+		if c.Param("enabled") == "yes" {
+			exec("CREATE TRIGGER transfer_receipt_fault BEFORE INSERT ON customer_cart_operations FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='owned transfer rollback'")
+		} else {
+			exec("DROP TRIGGER transfer_receipt_fault")
+		}
+		c.Status(200)
+	})
+	fixture.POST("/transfer-scope-audit", func(c *gin.Context) {
+		var in cart.CustomerTransferCommand
+		if c.ShouldBindJSON(&in) != nil {
+			c.Status(400)
+			return
+		}
+		login, e := accounts.Login(ctx, "context-other@example.invalid", password)
+		if e != nil {
+			t.Error(e)
+			c.Status(503)
+			return
+		}
+		defer sessions.Revoke(context.WithoutCancel(ctx), sessionstore.Customer, login.Session.Token)
+		possession, e := sessions.IssueCart(ctx, active)
+		if e != nil {
+			t.Error(e)
+			c.Status(503)
+			return
+		}
+		defer sessions.RevokeCart(context.WithoutCancel(ctx), possession.Token)
+		before, e := transferTableFingerprint(db)
+		if e != nil {
+			t.Error(e)
+			c.Status(503)
+			return
+		}
+		_, foreign := accounts.ContinuePaymentCart(ctx, login.Session.Token, possession.Token, "shop", in, configured, deletes, false)
+		var current struct{ RegionID, Locale string }
+		if db.Table("carts").Where("id=?", active.CartID).Take(&current).Error != nil {
+			c.Status(503)
+			return
+		}
+		_, plain := cart.ContinueContextPayment(ctx, db, "shop", active, cart.ContextCommand{OperationID: in.OperationID, Version: in.Version, RegionID: current.RegionID, Locale: current.Locale}, configured, deletes)
+		after, e := transferTableFingerprint(db)
+		if foreign == nil || plain == nil || e != nil || before != after {
+			t.Error("transfer scope bypass or mutation", foreign, plain, e)
 			c.Status(503)
 			return
 		}

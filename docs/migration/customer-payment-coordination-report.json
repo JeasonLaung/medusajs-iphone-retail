@@ -1,0 +1,652 @@
+{
+  "actual_gin_mysql_redis_astro": true,
+  "real_provider_called": false,
+  "validation_scope": "Fixed cart/payment/customer subflows only; full business flow deferred to overall migration completion",
+  "runs": [
+    {
+      "owner": "39605ae0cb9a",
+      "passed": true,
+      "finished_utc": "2026-11-02T08:16:19.796Z",
+      "binary_sha256": "23f8fdedf8e6455c0c0e94ba6ae1df1dcaac8964098ced4dd967adf68ce27140",
+      "frozen_source_verified": true,
+      "owned_resources_removed": true,
+      "report_sha256": "b7faeb92491ee2a4e03c86f323f43eb0c2ee956a412ba083e41e87b655751b56",
+      "browser": {
+        "cases": [
+          {
+            "lang": "en",
+            "width": 390,
+            "scenario": "unchanged",
+            "real_database_facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "74a54ae8-8f8c-49ec-842e-86f562b9fe64",
+              "creates": 1,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "context_posts": 2,
+            "same_uuid_payload": true,
+            "lost_success_response": true,
+            "refresh_recovery": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "scenario": "changed",
+            "real_database_facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "context_posts": 2,
+            "same_uuid_payload": true,
+            "lost_success_response": true,
+            "refresh_recovery": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "scenario": "restore",
+            "real_database_facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                },
+                {
+                  "InputVersion": 5,
+                  "CartVersion": 6,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "09f0c2eb-905f-41fd-b172-d6dabdd0e870",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "context_posts": 3,
+            "same_uuid_payload": true,
+            "lost_success_response": true,
+            "refresh_recovery": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "scenario": "delete-unknown",
+            "real_database_facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 3,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "context_posts": 3,
+            "same_uuid_payload": true,
+            "lost_success_response": false,
+            "refresh_recovery": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "scenario": "create-unknown",
+            "real_database_facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                },
+                {
+                  "InputVersion": 5,
+                  "CartVersion": 6,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "44a92eb4-18ea-40b7-96cd-8bf9f84981dc",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 3,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "context_posts": 4,
+            "same_uuid_payload": true,
+            "lost_success_response": false,
+            "refresh_recovery": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "scenario": "paid",
+            "real_database_facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "d1532a8b-1d32-4355-b708-549cb26d820a",
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 2,
+              "protected_unchanged": true,
+              "receipts": 0,
+              "refresh": "5e854454-6c44-4926-af7a-02b2de2f592a",
+              "transfer_receipts": 0,
+              "version": 5
+            },
+            "paid_keeps_frozen": true,
+            "same_uuid_payload": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "scenario": "replacement-paid",
+            "real_database_facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                },
+                {
+                  "InputVersion": 5,
+                  "CartVersion": 6,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "74523326-ed47-467b-ac2f-6dc0c885de37",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 3,
+              "email": "owned@example.invalid",
+              "observes": 1,
+              "protected_unchanged": true,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "context_posts": 5,
+            "same_uuid_payload": true,
+            "lost_success_response": true,
+            "refresh_recovery": true
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "scenario": "replacement-authorized",
+            "real_database_facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                },
+                {
+                  "InputVersion": 5,
+                  "CartVersion": 6,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "15e3d0b2-7191-4bb5-85bc-6384f74a6ac5",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 3,
+              "email": "owned@example.invalid",
+              "observes": 1,
+              "protected_unchanged": true,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "context_posts": 5,
+            "same_uuid_payload": true,
+            "lost_success_response": true,
+            "refresh_recovery": true
+          },
+          {
+            "scenario": "same-account",
+            "lang": "en",
+            "width": 390,
+            "real_database_facts": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 6,
+                  "CartVersion": 7,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "040cd433-c0f5-4579-9a20-66e9e3c54603",
+              "creates": 1,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "edited-checkout@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 2,
+              "version": 7
+            },
+            "payment_journal_unchanged": true,
+            "lost_response_replayed": true,
+            "foreign_account_denied": true
+          },
+          {
+            "scenario": "unbound-account",
+            "lang": "en",
+            "width": 390,
+            "real_database_facts": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "context-buyer@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 1,
+              "version": 6
+            },
+            "payment_journal_unchanged": false,
+            "lost_response_replayed": true,
+            "foreign_account_denied": true
+          },
+          {
+            "scenario": "unbound-unchanged",
+            "lang": "en",
+            "width": 390,
+            "real_database_facts": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": 6
+                }
+              ],
+              "checkout": "991292ab-82c6-4019-b4fc-3a974f9d83f4",
+              "creates": 1,
+              "deletes": 0,
+              "discovers": 0,
+              "email": "context-buyer@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 1,
+              "version": 6
+            },
+            "payment_journal_unchanged": true,
+            "lost_response_replayed": true,
+            "foreign_account_denied": true
+          },
+          {
+            "scenario": "unbound-precision",
+            "lang": "en",
+            "width": 390,
+            "real_database_facts": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "context-buyer@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 1,
+              "version": 6
+            },
+            "payment_journal_unchanged": false,
+            "lost_response_replayed": true,
+            "foreign_account_denied": true
+          },
+          {
+            "scenario": "unbound-delete-unknown",
+            "lang": "en",
+            "width": 390,
+            "real_database_facts": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "context-buyer@example.invalid",
+              "observes": 3,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 1,
+              "version": 6
+            },
+            "same_uuid_payload": true,
+            "restored_original_cart": false
+          },
+          {
+            "scenario": "unbound-restore",
+            "lang": "en",
+            "width": 390,
+            "real_database_facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                },
+                {
+                  "InputVersion": 5,
+                  "CartVersion": 6,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "a8c1ecf9-9678-4442-a8c6-f2c62dcf25a3",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "same_uuid_payload": true,
+            "restored_original_cart": true
+          },
+          {
+            "scenario": "unbound-create-unknown",
+            "lang": "en",
+            "width": 390,
+            "real_database_facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                },
+                {
+                  "InputVersion": 5,
+                  "CartVersion": 6,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "effd7fa9-7e0f-4219-b2bf-0542ba9b2b15",
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 3,
+              "email": "owned@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 0,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            },
+            "same_uuid_payload": true,
+            "restored_original_cart": true
+          },
+          {
+            "scenario": "unbound-receipt-fault",
+            "lang": "en",
+            "width": 390,
+            "real_database_facts": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "context-buyer@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 1,
+              "version": 6
+            },
+            "same_uuid_payload": true,
+            "restored_original_cart": false
+          }
+        ],
+        "errors": [],
+        "api_mocking": false,
+        "actual_gin_mysql_redis_astro": true
+      }
+    },
+    {
+      "owner": "d2071b3e7749",
+      "passed": true,
+      "finished_utc": "2026-11-02T08:18:22.486Z",
+      "binary_sha256": "2aa4ba2617e3db079807d0def5ed93f4bf5a20dd451763ff689f1f5c2d68806f",
+      "frozen_source_verified": true,
+      "owned_resources_removed": true,
+      "report_sha256": "d588a46d30ded18f8da57ed5c8bafd068c560de9f39aae3dba9143384ef998e3",
+      "browser": {
+        "cases": [
+          {
+            "scenario": "unbound-lost-restore",
+            "lang": "en",
+            "width": 390,
+            "real_database_facts": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "context-buyer@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 1,
+              "version": 6
+            },
+            "lost_success_restore_acknowledged": true
+          },
+          {
+            "scenario": "unbound-lost-restore",
+            "lang": "en",
+            "width": 1440,
+            "real_database_facts": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "context-buyer@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 1,
+              "version": 6
+            },
+            "lost_success_restore_acknowledged": true
+          },
+          {
+            "scenario": "unbound-lost-restore",
+            "lang": "zh",
+            "width": 390,
+            "real_database_facts": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "context-buyer@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 1,
+              "version": 6
+            },
+            "lost_success_restore_acknowledged": true
+          },
+          {
+            "scenario": "unbound-lost-restore",
+            "lang": "zh",
+            "width": 1440,
+            "real_database_facts": {
+              "account_owners": 1,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "context-buyer@example.invalid",
+              "observes": 0,
+              "protected_unchanged": true,
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 1,
+              "version": 6
+            },
+            "lost_success_restore_acknowledged": true
+          }
+        ],
+        "errors": [],
+        "api_mocking": false,
+        "actual_gin_mysql_redis_astro": true
+      }
+    }
+  ],
+  "targeted_frontend_tests": 27,
+  "go_packages": [
+    "internal/cart",
+    "internal/customer",
+    "internal/identity",
+    "cmd/api"
+  ],
+  "main_preview": "Previously offline; 9001 health/app and 9300 account remain unavailable",
+  "migration_complete": false
+}

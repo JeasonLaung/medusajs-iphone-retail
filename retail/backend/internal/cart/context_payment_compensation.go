@@ -60,6 +60,9 @@ func contextPaymentOriginal(ctx context.Context, tx *gorm.DB, store string, ref 
 	if current.Version != in.Version {
 		return fail(ErrConflict)
 	}
+	if err := validateCustomerPaymentScope(ctx, tx, ref); err != nil {
+		return fail(err)
+	}
 	if err := validateContextPaymentCheckout(ctx, tx, ref, current, *owner.CheckoutAttemptID, options); err != nil {
 		return fail(err)
 	}
@@ -88,8 +91,7 @@ func contextPaymentOriginal(ctx context.Context, tx *gorm.DB, store string, ref 
 	if subtle.ConstantTimeCompare(digest[:], row.ManifestSHA256) != 1 || d.Decode(&manifest) != nil || d.Decode(new(any)) != io.EOF || manifest.Format != 2 || len(manifest.Effects) > 100 {
 		return fail(ErrStorage)
 	}
-	request, _ := json.Marshal(in)
-	requestSHA := sha256.Sum256(request)
+	requestSHA := contextRequestDigest(ctx, in)
 	version, _ := strconv.ParseUint(in.Version, 10, 64)
 	if row.State != "staged" || row.ResultVersion != nil || row.Generation != ref.Generation || row.CartVersion != version || manifest.RequestSHA256 != requestSHA || manifest.Target.CartID != ref.CartID || manifest.Target.Version != in.Version || manifest.Target.CheckoutOperationID != *owner.CheckoutAttemptID {
 		return fail(ErrConflict)

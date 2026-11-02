@@ -48,8 +48,7 @@ func CompleteContextPaymentCompensation(ctx context.Context, db *gorm.DB, store 
 		return PaymentCompensation{}, err
 	}
 	version, _ := strconv.ParseUint(in.Version, 10, 64)
-	raw, _ := json.Marshal(in)
-	digest := sha256.Sum256(raw)
+	digest := contextRequestDigest(ctx, in)
 	var result PaymentCompensation
 	err := db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		if err := paymentOperationReady(ctx, tx, PaymentRefreshCommand{OperationID: in.OperationID, Version: in.Version}); err != nil {
@@ -81,6 +80,9 @@ func CompleteContextPaymentCompensation(ctx context.Context, db *gorm.DB, store 
 		}
 		where := func() *gorm.DB {
 			return compensationWhere(tx, ref, PaymentRefreshCommand{OperationID: in.OperationID}).Clauses(clause.Locking{Strength: "UPDATE"})
+		}
+		if err := validateCustomerPaymentScope(ctx, tx, ref); err != nil {
+			return err
 		}
 		var sizes []struct{ Bytes int64 }
 		if where().Select("OCTET_LENGTH(manifest_json) AS bytes").Scan(&sizes).Error != nil || len(sizes) > 1 || len(sizes) == 1 && sizes[0].Bytes > 1<<20 {

@@ -122,6 +122,9 @@ func previewContextPayment(ctx context.Context, tx *gorm.DB, store string, ref s
 		return fail(err)
 	}
 	workCtx := context.WithValue(ctx, contextPreviewScopeKey{}, contextPreviewScope{tx: tx.Statement.ConnPool, store: store, version: in.Version, checkoutOperation: checkout, paymentOperation: paymentOperation, ref: ref})
+	if err := applyCustomerPaymentTarget(workCtx, tx, ref); err != nil {
+		return fail(err)
+	}
 	plan, err := resolveContextPlan(workCtx, tx, store, current, in)
 	if err != nil {
 		return fail(err)

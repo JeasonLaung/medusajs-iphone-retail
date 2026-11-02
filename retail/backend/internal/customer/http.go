@@ -14,6 +14,7 @@ import (
 
 	"github.com/eurorefurb/retail/internal/cart"
 	"github.com/eurorefurb/retail/internal/orderpayments"
+	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/sessionstore"
@@ -29,26 +30,28 @@ type HTTPSessions interface {
 	AllowLogin(context.Context, sessionstore.Realm, string) (bool, error)
 }
 type HTTPOptions struct {
-	InitialPayment    *cart.InitialPaymentOptions
-	ManualProviderIDs []string
-	OrderPayments     *orderpayments.Service
-	Sessions          HTTPSessions
-	Ring              *protected.Ring
-	Origin            string
-	Secure            bool
-	BridgeKey         string
-	StoreID           string
+	ContextPaymentDeletes *payments.DeleteAdapters
+	InitialPayment        *cart.InitialPaymentOptions
+	ManualProviderIDs     []string
+	OrderPayments         *orderpayments.Service
+	Sessions              HTTPSessions
+	Ring                  *protected.Ring
+	Origin                string
+	Secure                bool
+	BridgeKey             string
+	StoreID               string
 }
 type HTTPHandler struct {
-	initialPayment  *cart.InitialPaymentOptions
-	manualProviders []string
-	orderPayments   *orderpayments.Service
-	store           *Store
-	sessions        HTTPSessions
-	origin, host    string
-	secure          bool
-	bridgeSecret    []byte
-	storeID         string
+	contextPaymentDeletes *payments.DeleteAdapters
+	initialPayment        *cart.InitialPaymentOptions
+	manualProviders       []string
+	orderPayments         *orderpayments.Service
+	store                 *Store
+	sessions              HTTPSessions
+	origin, host          string
+	secure                bool
+	bridgeSecret          []byte
+	storeID               string
 }
 
 func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
@@ -74,7 +77,7 @@ func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
 			return nil, ErrUnavailable
 		}
 	}
-	return &HTTPHandler{initialPayment: options.InitialPayment, manualProviders: append([]string(nil), options.ManualProviderIDs...), orderPayments: options.OrderPayments, store: store, sessions: options.Sessions, origin: options.Origin, host: u.Host, secure: options.Secure, bridgeSecret: key, storeID: options.StoreID}, nil
+	return &HTTPHandler{contextPaymentDeletes: options.ContextPaymentDeletes, initialPayment: options.InitialPayment, manualProviders: append([]string(nil), options.ManualProviderIDs...), orderPayments: options.OrderPayments, store: store, sessions: options.Sessions, origin: options.Origin, host: u.Host, secure: options.Secure, bridgeSecret: key, storeID: options.StoreID}, nil
 }
 
 // Register is mounted on /api/store/customer by the production API, even when
@@ -120,6 +123,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/orders/:id/after-sales", h.CreateAfterSales)
 	private.POST("/orders/:id/attach", h.AttachOrder)
 	private.POST("/cart-transfer", h.TransferCart)
+	private.POST("/cart-transfer/restore", h.RestoreCartTransfer)
 	private.POST("/orders/:id/payments", h.PrepareOrderPayment)
 	private.GET("/orders/:id/payments", h.OrderPaymentContext)
 	private.GET("/orders/:id/payments/:operation_id", h.ReadOrderPayment)

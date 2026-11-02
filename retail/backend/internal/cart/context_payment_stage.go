@@ -89,8 +89,10 @@ func stageContextPayment(ctx context.Context, tx *gorm.DB, store string, ref ses
 	if current.Version != in.Version {
 		return fail(ErrConflict)
 	}
-	request, _ := json.Marshal(in)
-	digest := sha256.Sum256(request)
+	if err := validateCustomerPaymentScope(ctx, tx, ref); err != nil {
+		return fail(err)
+	}
+	digest := contextRequestDigest(ctx, in)
 	where := func() *gorm.DB {
 		return tx.Table("cart_payment_refresh_operations").Where("cart_id=? AND operation_id=?", ref.CartID, in.OperationID)
 	}

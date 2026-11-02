@@ -8,6 +8,7 @@ import {
 } from "./ui"
 
 import VerificationNotice from "./verification-notice"
+import CartTransferRecovery from './cart-transfer-recovery'
 import { useAccountCopy } from "./context"
 
 import { useCustomerActions } from "./context"
@@ -73,6 +74,7 @@ const Login = ({ setCurrentView, onSuccess }: Props) => {
           {t("signIn")}
         </SubmitButton>
       </form>
+      {message?.state === "error" && <CartTransferRecovery onSuccess={onSuccess}/>}
       <span className="text-center text-ui-fg-base text-small-regular mt-6">
         {t("notMember")}{" "}
         <Button

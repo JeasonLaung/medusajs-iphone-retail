@@ -5,6 +5,22 @@ import {contextIntentKey} from '../src/lib/cart-commerce.ts'
 import {paymentIntentKey} from '../src/lib/checkout-payment.ts'
 import {customerClient} from '../src/lib/customer-client.ts'
 import {customerBridge} from '../src/lib/customer-bridge.ts'
+
+test('queued recovery cannot create a second operation after the first recovery clears its journal',async()=>{
+ const saved=storage();let reads=0,sends=0
+ await transferCustomerCart({account:'cust_new',resumeOnly:true,storage:saved,uuid:()=>{throw Error('must not mint')},exclusive:async work=>work(),current:async()=>{reads++;return cart},send:async()=>{sends++;throw Error('must not send')}})
+ assert.equal(reads,0);assert.equal(sends,0)
+})
+
+test('payment transfer clears or rebinds CREATE only after checking the server completion and fresh cart',async()=>{
+ for(const restoring of [false,true]){
+  const saved=storage();saved.setItem(paymentIntentKey,JSON.stringify({cartID:cart.id,version:'3',operationID:op}));saved.setItem(customerCartIntentKey,JSON.stringify({account:'cust_new',cart:cart.id,command:{operation_id:op,version:'4'}}))
+  let posted=false
+  await transferCustomerCart({account:'cust_new',restore:restoring,storage:saved,uuid:()=>{throw Error('must not mint')},exclusive:async work=>work(),current:async()=>({...cart,version:posted?'5':'4'}),paymentOptions:async()=>({cart_id:cart.id,version:posted?'5':'4',providers:[],attempt_started:!posted||restoring}),send:async(command,restore)=>{assert.equal(restore,restoring?true:undefined);posted=true;return {state:restoring?'restored':'saved',completion:{cart:{...cart,version:'5'},payment:restoring?{operation_id:op,version:'4'}:null}}}})
+  assert.equal(saved.getItem(customerCartIntentKey),null)
+  assert.deepEqual(saved.getItem(paymentIntentKey)===null?null:JSON.parse(saved.getItem(paymentIntentKey)!),restoring?{cartID:cart.id,version:'4',operationID:op}:null)
+ }
+})
 const op='a8230181-a32c-4127-838b-92b7c033ef01'
 const cart={id:'cart_test',region_id:'region',sales_channel_id:'channel',currency_code:'eur',locale:'en',version:'4'}
 function storage(){const values=new Map<string,string>();return {getItem:(k:string)=>values.get(k)??null,setItem:(k:string,v:string)=>{values.set(k,v)},removeItem:(k:string)=>{values.delete(k)}}}

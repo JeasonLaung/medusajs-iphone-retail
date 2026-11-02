@@ -2,9 +2,7 @@ package cart
 
 import (
 	"context"
-	"crypto/sha256"
 	"crypto/subtle"
-	"encoding/json"
 	"reflect"
 	"strconv"
 
@@ -23,8 +21,7 @@ func CompleteContextPayment(ctx context.Context, db *gorm.DB, store string, ref 
 		return ContextResult{}, err
 	}
 	version, _ := strconv.ParseUint(in.Version, 10, 64)
-	raw, _ := json.Marshal(in)
-	digest := sha256.Sum256(raw)
+	digest := contextRequestDigest(ctx, in)
 	var result ContextResult
 	err := db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		if err := paymentOperationReady(ctx, tx, PaymentRefreshCommand{OperationID: in.OperationID, Version: in.Version}); err != nil {
@@ -59,6 +56,9 @@ func CompleteContextPayment(ctx context.Context, db *gorm.DB, store string, ref 
 			RequestSHA256 []byte
 			ResultVersion uint64
 		}
+		if err := validateCustomerPaymentScope(ctx, tx, ref); err != nil {
+			return err
+		}
 		if tx.Table("cart_context_operations").Where("cart_id=? AND operation_id=?", ref.CartID, in.OperationID).Clauses(clause.Locking{Strength: "UPDATE"}).Limit(1).Find(&receipts).Error != nil {
 			return ErrStorage
 		}
@@ -92,6 +92,9 @@ func CompleteContextPayment(ctx context.Context, db *gorm.DB, store string, ref 
 			}
 		}
 		workCtx := context.WithValue(ctx, contextPreviewScopeKey{}, contextPreviewScope{tx: tx.Statement.ConnPool, store: store, version: in.Version, checkoutOperation: checkout, paymentOperation: in.OperationID, ref: ref})
+		if err := applyCustomerPaymentTarget(workCtx, tx, ref); err != nil {
+			return err
+		}
 		plan, err := resolveContextPlan(workCtx, tx, store, current, in)
 		if err != nil {
 			return err
@@ -141,6 +144,9 @@ func CompleteContextPayment(ctx context.Context, db *gorm.DB, store string, ref 
 		}
 		if tx.Exec("INSERT INTO cart_context_operations(cart_id,operation_id,generation,request_sha256,result_version,created_at) VALUES(?,?,?,?,?,UTC_TIMESTAMP(6))", ref.CartID, in.OperationID, ref.Generation, digest[:], version+1).Error != nil {
 			return ErrStorage
+		}
+		if err := saveCustomerPaymentReceipt(ctx, tx, ref, in); err != nil {
+			return err
 		}
 		result = ContextResult{ref.CartID, strconv.FormatUint(version+1, 10), false}
 		return nil

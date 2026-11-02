@@ -6,6 +6,7 @@ import (
 	"errors"
 
 	"github.com/eurorefurb/retail/internal/cart"
+	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/sessionstore"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -78,4 +79,56 @@ func (s *Store) TransferCart(ctx context.Context, token, possession, store strin
 		return failed, ErrUnavailable
 	}
 	return result, nil
+}
+
+func (s *Store) ContinuePaymentCart(ctx context.Context, token, possession, store string, in cart.CustomerTransferCommand, options cart.InitialPaymentOptions, deletes *payments.DeleteAdapters, restore bool) (cart.ContextPaymentProgress, error) {
+	failed := cart.ContextPaymentProgress{}
+	if !tokenOK(token) || !tokenOK(possession) {
+		return failed, ErrUnauthorized
+	}
+	if !s.ready() {
+		return failed, ErrUnavailable
+	}
+	resolver, ok := s.sessions.(orderPossession)
+	if !ok {
+		return failed, ErrUnavailable
+	}
+	principal, err := s.sessions.Resolve(ctx, sessionstore.Customer, token)
+	if err != nil {
+		return failed, customerSessionError(err)
+	}
+	ref, err := resolver.ResolveCart(ctx, possession)
+	if err != nil {
+		return failed, customerSessionError(err)
+	}
+	if ref.StoreID != store {
+		return failed, ErrUnauthorized
+	}
+
+	authenticate := func(tx *gorm.DB) (string, string, error) {
+		var account record
+		r := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id=?", principal.UserID).Take(&account)
+		if r.Error != nil {
+			authFailure := ErrUnavailable
+			if errors.Is(r.Error, gorm.ErrRecordNotFound) {
+				authFailure = ErrUnauthorized
+			}
+			return "", "", authFailure
+		}
+		fresh, e := s.sessions.Resolve(ctx, sessionstore.Customer, token)
+		if e != nil {
+			authFailure := customerSessionError(e)
+			return "", "", authFailure
+		}
+		current, e := resolver.ResolveCart(ctx, possession)
+		if e != nil {
+			authFailure := customerSessionError(e)
+			return "", "", authFailure
+		}
+		if fresh.UserID != account.ID || current != ref || !account.Enabled || account.VerifiedAt == nil || account.AuthVersion == 0 || subtle.ConstantTimeCompare([]byte(fresh.Version), []byte(version(account))) != 1 {
+			return "", "", ErrUnauthorized
+		}
+		return account.ID, account.Email, nil
+	}
+	return cart.ContinueCustomerPaymentTransfer(ctx, s.db, store, ref, in, options, deletes, authenticate, restore)
 }

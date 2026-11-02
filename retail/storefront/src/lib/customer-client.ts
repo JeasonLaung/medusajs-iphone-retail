@@ -203,12 +203,13 @@ export function customerClient(fetcher:typeof fetch=fetch,cartTransferEnabled=fa
    const result=await call('/orders/'+id+'/attach',{},sessionCSRF())
    if(!result||Object.keys(result).length!==1||result.order_id!==id)throw new CustomerError(503)
   },
+  async restoreCartTransfer(){ const customer=customerProjection((await call('/me')).customer);await browserTransferCustomerCart(customer.id,fetcher,(command)=>call('/cart-transfer/restore',command,sessionCSRF(),200),true);customerChanged() },
   async current():Promise<Customer|null>{
-   try{const customer=customerProjection((await call('/me')).customer);if(cartTransferEnabled&&typeof window!=='undefined'&&window.localStorage.getItem(customerCartIntentKey)!==null)await browserTransferCustomerCart(customer.id,fetcher,command=>call('/cart-transfer',command,sessionCSRF(),200));return customer}catch(error){if(error instanceof CustomerError&&error.status===401)return null;throw error}
+   try{const customer=customerProjection((await call('/me')).customer);if(cartTransferEnabled&&typeof window!=='undefined'&&window.localStorage.getItem(customerCartIntentKey)!==null)await browserTransferCustomerCart(customer.id,fetcher,(command,restore)=>call(restore?'/cart-transfer/restore':'/cart-transfer',command,sessionCSRF(),200),false,true);return customer}catch(error){if(error instanceof CustomerError&&error.status===401)return null;throw error}
   },
   async login(_previous:AuthState,form:FormData,segment:string):Promise<AuthState>{
    const input=identity(form,segment)
-   try{const result=await write('login',{email:input.email,password:input.password});pending=null;if(cartTransferEnabled){const customer=customerProjection(result.customer);await browserTransferCustomerCart(customer.id,fetcher,command=>call('/cart-transfer',command,sessionCSRF(),200))};customerChanged();return {state:'success'}}catch(error){
+   try{const result=await write('login',{email:input.email,password:input.password});pending=null;if(cartTransferEnabled){const customer=customerProjection(result.customer);await browserTransferCustomerCart(customer.id,fetcher,(command,restore)=>call(restore?'/cart-transfer/restore':'/cart-transfer',command,sessionCSRF(),200))};customerChanged();return {state:'success'}}catch(error){
     if(error instanceof CustomerError&&error.verification){pending=input;return {state:'verification_required',email:input.email,delivery:'pending'}}
     pending=null;return {state:'error'}
    }

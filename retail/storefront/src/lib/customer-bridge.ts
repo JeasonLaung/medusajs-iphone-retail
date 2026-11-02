@@ -28,7 +28,7 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
  const orderList=request.method==='GET'&&path===root+'/orders',orderRead=request.method==='GET'&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}(/progress|/devices|/after-sales)?$').test(path),orderAttach=post&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/attach$').test(path)
  const paymentBase=root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/payments',paymentID='[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}'
  const paymentPrepare=post&&new RegExp('^'+paymentBase+'$').test(path),paymentContext=request.method==='GET'&&new RegExp('^'+paymentBase+'$').test(path),paymentRead=request.method==='GET'&&new RegExp('^'+paymentBase+'/'+paymentID+'$').test(path),paymentCancel=post&&new RegExp('^'+paymentBase+'/'+paymentID+'/cancel$').test(path)
- const cartTransfer=post&&path===root+'/cart-transfer'
+ const cartTransfer=post&&(path===root+'/cart-transfer'||path===root+'/cart-transfer/restore')
  const afterSalesWrite=post&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/after-sales$').test(path)
  const reviewCreate=post&&path===root+'/product-reviews',reviewPurchases=request.method==='GET'&&path===root+'/product-reviews/purchases'
  const reviewOrder=request.method==='GET'&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/product-reviews$').test(path)
@@ -72,7 +72,7 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
   headers.set('Content-Type','application/json')
   try{body=await bytes(request.body,buybackPhotoWrite?(4<<20)+8192:16384)}catch{return failure(413)}
  }
- const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000)
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),cartTransfer?50000:10000)
  try{
   if(config.bridgeKey!==undefined){
    const proof=customerProof(config.bridgeKey,config.clientAddress??'',request.method,target,headers,body)

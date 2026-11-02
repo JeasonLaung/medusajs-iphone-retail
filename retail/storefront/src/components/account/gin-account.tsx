@@ -1,4 +1,5 @@
 import ShippingDemo from "../order/shipping-demo"
+import CartTransferRecovery from './cart-transfer-recovery'
 import BuybackRequests from "../sell/buyback-requests"
 import CustomerOrders from './orders'
 import AccountOrderDetails from './order-details'
@@ -53,6 +54,7 @@ function Account({enabled,profile,addresses,orders,orderID,buyback,buybackID,reg
     {shippingDemo?<ShippingDemo segment={segment}/>:null}
     {!shippingDemo&&!profile&&!addresses&&!orders&&!orderID&&!buyback&&!buybackID?<Overview key={customer.id} customer={customer}/>:null}
    </div>:<LoginTemplate onSuccess={()=>void observe()}/>}
+   {failed&&<CartTransferRecovery onSuccess={()=>void observe()}/>}
   </div></div>
   <div className="flex flex-col small:flex-row items-end justify-between small:border-t border-gray-200 py-12 gap-8"><div><h3 className="text-xl-semi mb-4">{t('questions')}</h3><span className="txt-medium">{t('helpDescription')}</span></div><div><Link href="/help" className="underline">{t('customerService')}</Link></div></div>
  </div></div>
