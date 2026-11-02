@@ -1,0 +1,3 @@
+# Migration checksums cover the exact SQL bytes embedded in the Go executable.
+# Keep them identical on Windows and Unix; existing database journals use LF.
+retail/backend/migrations/*.sql text eol=lf
