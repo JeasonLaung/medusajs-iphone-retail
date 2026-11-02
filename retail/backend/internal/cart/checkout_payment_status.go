@@ -21,7 +21,7 @@ type PaymentStatus struct {
 	State   string `json:"state"`
 }
 
-func currentInitialCommand(ctx context.Context, tx *gorm.DB, store string, ref sessionstore.CartReference) (InitialPaymentCommand, error) {
+func currentInitialCommand(ctx context.Context, tx *gorm.DB, store string, ref sessionstore.CartReference, ring *protected.Ring) (InitialPaymentCommand, error) {
 	if !refOK(store, ref) {
 		return InitialPaymentCommand{}, ErrDenied
 	}
@@ -49,7 +49,13 @@ func currentInitialCommand(ctx context.Context, tx *gorm.DB, store string, ref s
 	if tx.Table("cart_checkout_attempts").Where("cart_id=? AND operation_id=?", ref.CartID, *owner.CheckoutAttemptID).Clauses(clause.Locking{Strength: "SHARE"}).Take(&row).Error != nil {
 		return InitialPaymentCommand{}, ErrStorage
 	}
-	return InitialPaymentCommand{OperationID: *owner.CheckoutAttemptID, Version: strconv.FormatUint(row.InputVersion, 10)}, nil
+	in := InitialPaymentCommand{OperationID: *owner.CheckoutAttemptID, Version: strconv.FormatUint(row.InputVersion, 10)}
+	request, err := payments.ReadSessionRequest(ctx, tx, initialKey(ref, in, row), ring)
+	if err != nil {
+		return InitialPaymentCommand{}, err
+	}
+	in.ProviderID = request.ProviderID
+	return in, nil
 }
 func observationContext(id string) protected.Context {
 	return protected.Context{Purpose: "checkout-observation-v1", Table: "cart_checkout_observations", Column: "result_envelope", Row: id}
@@ -94,7 +100,7 @@ func ObserveInitialPayment(ctx context.Context, db *gorm.DB, store string, ref s
 	var candidate string
 	err := db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var err error
-		in, err = currentInitialCommand(ctx, tx, store, ref)
+		in, err = currentInitialCommand(ctx, tx, store, ref, o.Ring)
 		if err != nil {
 			return err
 		}
@@ -112,6 +118,18 @@ func ObserveInitialPayment(ctx context.Context, db *gorm.DB, store string, ref s
 		}
 		created, err := payments.ReadSessionCreation(ctx, tx, key, o.Ring)
 		if err != nil {
+			return err
+		}
+		request, err = payments.ReadSessionRequest(ctx, tx, key, o.Ring)
+		if err != nil {
+			return err
+		}
+		if request.ProviderID != hostedMollie {
+			candidate, err = payments.PayPalCreatedOrderID(request, created)
+			if err != nil {
+				return err
+			}
+			observer, err = o.Adapters.Observer(request.ProviderID)
 			return err
 		}
 		var identity struct {
@@ -142,7 +160,7 @@ func ObserveInitialPayment(ctx context.Context, db *gorm.DB, store string, ref s
 	if err != nil {
 		return PaymentStatus{}, err
 	}
-	if err = payments.ValidateMollieObservation(request, candidate, observed); err != nil {
+	if err = validateInitialObservation(request, candidate, observed); err != nil {
 		return PaymentStatus{}, err
 	}
 	id := uuid.NewString()

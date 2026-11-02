@@ -26,3 +26,10 @@ func initialSettlement(provider, amount, currency string) (string, error) {
 	}
 	return "", ErrConfiguration
 }
+
+func validateInitialObservation(request payments.SessionRequest, id string, observed payments.SessionObservation) error {
+	if request.ProviderID == hostedMollie {
+		return payments.ValidateMollieObservation(request, id, observed)
+	}
+	return payments.ValidatePayPalObservation(request, id, observed)
+}

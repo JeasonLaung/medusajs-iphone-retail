@@ -23,6 +23,42 @@ type paypalCheckoutProvider struct {
 	mu        sync.Mutex
 	calls     map[string]int
 	uncertain bool
+	status    string
+}
+
+func (p *paypalCheckoutProvider) ObserveSession(_ context.Context, r payments.SessionRequest, id string) (payments.SessionObservation, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	var input struct {
+		Cart string `json:"cart_id"`
+	}
+	_ = json.Unmarshal(r.Data, &input)
+	state := p.status
+	if state == "" {
+		state = "pending"
+	}
+	intent := "CAPTURE"
+	if state == "authorized" {
+		intent = "AUTHORIZE"
+	}
+	unit := map[string]any{"reference_id": "default", "custom_id": input.Cart, "invoice_id": r.SessionID, "amount": map[string]string{"value": r.Amount, "currency_code": strings.ToUpper(r.Currency)}, "payee": map[string]string{"merchant_id": "ABC1234567890"}}
+	order := map[string]any{"id": id, "status": "APPROVED", "intent": intent, "purchase_units": []any{unit}}
+	local, action := "pending", "pending"
+	transaction := map[string]any{"id": "7B123456789012345", "amount": unit["amount"]}
+	if state == "authorized" {
+		transaction["status"] = "CREATED"
+		unit["payments"] = map[string]any{"authorizations": []any{transaction}}
+		local, action = "authorized", "authorized"
+	}
+	if state == "paid" {
+		order["status"] = "COMPLETED"
+		transaction["status"] = "COMPLETED"
+		transaction["final_capture"] = true
+		unit["payments"] = map[string]any{"captures": []any{transaction}}
+		local, action = "authorized", "successful"
+	}
+	data, _ := json.Marshal(map[string]any{"session_id": r.SessionID, "cart_id": input.Cart, "merchant_id": "ABC1234567890", "intent": intent, "paypal": map[string]any{"order_id": id, "order": order}})
+	return payments.SessionObservation{PaymentID: id, ProviderStatus: state, Action: action, Amount: r.Amount, Currency: r.Currency, Session: payments.CreatedSession{Status: local, Data: data}}, nil
 }
 
 func (p *paypalCheckoutProvider) CreateSession(_ context.Context, r payments.SessionRequest) (payments.CreateOutcome, payments.CreatedSession, error) {
@@ -213,6 +249,36 @@ func checkPayPalCheckout(t *testing.T, ctx context.Context, db *gorm.DB, session
 					t.Fatal(e)
 				}
 				// Creation does not authorize mutations or money/order facts.
+				if !unknown {
+					for _, step := range []struct{ remote, want string }{{"pending", "pending"}, {"authorized", "authorized"}, {"paid", "paid_pending_order"}} {
+						adapter.mu.Lock()
+						adapter.status = step.remote
+						adapter.mu.Unlock()
+						req, _ := http.NewRequestWithContext(ctx, "POST", server.URL+"/api/store/carts/"+ref.CartID+"/payment-status", strings.NewReader("{}"))
+						req.Header.Set("Origin", origin)
+						req.Header.Set("Content-Type", "application/json")
+						req.Header.Set("X-CSRF-Token", issued.CSRF)
+						req.AddCookie(&http.Cookie{Name: "retail_cart_possession", Value: issued.Token})
+						resp, err := server.Client().Do(req)
+						if err != nil {
+							t.Fatal(err)
+						}
+						raw, _ := io.ReadAll(resp.Body)
+						resp.Body.Close()
+						var status cart.PaymentStatus
+						if resp.StatusCode != 200 || json.Unmarshal(raw, &status) != nil || status.State != step.want || status.Version != "5" {
+							t.Fatalf("observed status %d %s", resp.StatusCode, raw)
+						}
+					}
+					var observations int64
+					db.Table("cart_checkout_observations").Where("cart_id=?", ref.CartID).Count(&observations)
+					if observations != 3 {
+						t.Fatal("missing durable observations")
+					}
+					if _, err := cart.CompleteCurrentPaidOrder(ctx, db, "shop", ref, configured); err == nil {
+						t.Fatal("PayPal completed through Mollie ledger before its own completion integration")
+					}
+				}
 				if _, e = cart.AddItem(ctx, db, "shop", ref, cart.AddItemCommand{OperationID: uuid.NewString(), Version: "5", VariantID: "add-v", Quantity: "1"}); e == nil {
 					t.Fatal("frozen PayPal cart editable")
 				}

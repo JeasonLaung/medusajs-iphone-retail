@@ -1,0 +1,55 @@
+{
+  "task": "C06 PayPal authenticated observation and durable cart evidence",
+  "passed": true,
+  "actual_gin_http_mysql_redis": true,
+  "actual_local_tls_oauth_get": true,
+  "real_paypal_requests": false,
+  "main_paypal_enabled": false,
+  "full_business_flow": false,
+  "tests_pass_events_including_parents": 99,
+  "sql": {
+    "protected_stock_order_cash_notification_facts_unchanged": true,
+    "create_scenarios": 4,
+    "statuses": [
+      "pending",
+      "authorized",
+      "paid_pending_order"
+    ],
+    "owner": "ec7440fe1c84",
+    "report_sha256": "844115e1c9cc6d9d433dbfc6efef1db65578f2755c51f9191a59bcbaf2e35a38",
+    "binary": "056e88f2c5597c736276d31ff8aac77c4a1342468eb5482df80f9e8995fe7892",
+    "resources_removed": true,
+    "observations_per_successful_cart": 3
+  },
+  "mollie_browser": {
+    "cases": [
+      {
+        "scenario": "replacement-paid",
+        "language": "en",
+        "width": 390
+      },
+      {
+        "scenario": "replacement-authorized",
+        "language": "en",
+        "width": 390
+      },
+      {
+        "scenario": "continuous",
+        "language": "en",
+        "width": 390
+      }
+    ],
+    "resources_removed": true,
+    "owner": "fed26a9c8dda",
+    "report_sha256": "690e837c9f32e54e10055bfd4883561055b2f050102a58c8c5a5505d010f5ffa",
+    "errors": []
+  },
+  "remaining": [
+    "original SDK wallet/card UI",
+    "client config/token",
+    "durable capture/authorize commands",
+    "webhook/unknown create recovery",
+    "cancellation/refunds",
+    "PayPal-specific order ledger completion"
+  ]
+}

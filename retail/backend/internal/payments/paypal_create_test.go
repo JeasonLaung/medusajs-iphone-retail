@@ -277,6 +277,10 @@ func TestPayPalCreateActualTLSHostAndRedirect(t *testing.T) {
 						io.WriteString(w, `{"access_token":"artificial","token_type":"Bearer","expires_in":3600}`)
 						return
 					}
+					if r.Method == "GET" {
+						_ = json.NewEncoder(w).Encode(paypalObservedFixture("paid"))
+						return
+					}
 					w.WriteHeader(201)
 					_ = json.NewEncoder(w).Encode(paypalOrder())
 				}))
@@ -311,6 +315,14 @@ func TestPayPalCreateActualTLSHostAndRedirect(t *testing.T) {
 				}
 				if !valid && (status != CreateUncertain || e == nil || calls > 1) {
 					t.Fatal("untrusted host or redirect accepted", status, e, calls)
+				}
+				before := calls
+				observed, e := a.ObserveSession(context.Background(), paypalRequest(), "5O190127TN364715T")
+				if valid && (e != nil || observed.ProviderStatus != "paid" || calls != before+2) {
+					t.Fatal("valid TLS GET evidence failed", e)
+				}
+				if !valid && (e == nil || calls > before+1) {
+					t.Fatal("TLS GET trusted invalid hostname/root/redirect")
 				}
 			})
 		}
