@@ -550,6 +550,7 @@ def verify_repair_mail_checkpoint(owner):
 
 
 def main(language, scenario='account', resume=None):
+    non_device_refund = scenario == 'non-device-refund'
     repair_mail = scenario == 'repair-mail'
     intake_warehouse = scenario == 'intake-warehouse'
     warehouse_batch = scenario == 'warehouse-batch'
@@ -562,7 +563,7 @@ def main(language, scenario='account', resume=None):
     reviews = scenario == 'reviews'
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
     supplement = scenario == 'supplement'
-    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail')
+    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail', 'non-device-refund')
     event_mail = scenario in ('buyback-mail', 'repair-mail')
     buyback_intake = scenario in ('buyback-intake', 'buyback-intake-return', 'buyback-mail')
     buyback_return = scenario in ('buyback-return', 'buyback-intake-return')
@@ -571,7 +572,7 @@ def main(language, scenario='account', resume=None):
     refund = scenario == 'refund'
     warehouse = scenario in ('warehouse', 'paid-warehouse', 'intake-warehouse')
     repair = scenario in ('repair', 'exchange', 'refund', 'warehouse', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail')
-    admin_required = buyback or repair or mail or reviews or product_entry
+    admin_required = buyback or repair or mail or reviews or product_entry or non_device_refund
     values = config()
     api_binary = Path(os.environ.get('ACCOUNT_TEST_API_BINARY') or ROOT / 'logs/retail-native/retail-api.exe').resolve()
     if not api_binary.is_relative_to((ROOT / 'logs/retail-native').resolve()) or api_binary.suffix != '.exe' or not api_binary.is_file():
@@ -581,7 +582,7 @@ def main(language, scenario='account', resume=None):
             raise RuntimeError('Only an owned payment checkpoint can resume')
         checkpoint = ROOT / 'logs/retail-native' / ('account-' + resume)
         checkpoint_report = json.loads((checkpoint / 'report.json').read_text())
-        if (paid_warehouse or supplement or repair_mail) and (not checkpoint_report.get('passed') or not checkpoint_report.get('payment_durable_snapshot_retained')):
+        if (paid_warehouse or supplement or repair_mail or non_device_refund) and (not checkpoint_report.get('passed') or not checkpoint_report.get('payment_durable_snapshot_retained')):
             raise RuntimeError('Fulfillment continuation requires a verified durable paid checkpoint')
         if refund:
             paid = json.loads((checkpoint / 'refund-new-paid-order.json').read_text())
@@ -624,7 +625,7 @@ def main(language, scenario='account', resume=None):
     source_counts = source_account_counts()
     def entry_source_fingerprint():
         return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', 'eurorefurb_local_trial', 'catalog_products', 'catalog_variants', 'pricing_prices', 'inventory_levels', 'catalog_product_edits', 'catalog_variant_creations', 'catalog_price_edits', 'inventory_level_creations', 'inventory_locations', 'device_sources', 'devices', 'device_variant_tracking', 'device_photos', 'device_tracking_changes', 'device_source_changes', 'device_intake_changes', 'catalog_images', 'catalog_image_assets', 'catalog_variant_inventory_items', 'catalog_variant_images', 'catalog_options', 'catalog_option_values', 'catalog_product_options', 'catalog_product_option_values', 'catalog_variant_options', 'catalog_image_edits', 'catalog_option_edits', 'catalog_variant_edits', 'catalog_inventory_edits')).hexdigest()
-    entry_source_before = entry_source_fingerprint() if product_entry or buyback_intake else None
+    entry_source_before = entry_source_fingerprint() if product_entry or buyback_intake or non_device_refund else None
     report = {'owner': owner, 'database': database, 'real_email_delivery': False,
               'business_api_mocking': False, 'main_database_modified': False,
               'api_sha256': hashlib.sha256(api_binary.read_bytes()).hexdigest()}
@@ -720,7 +721,17 @@ def main(language, scenario='account', resume=None):
                    GIN_API_ORIGIN='http://127.0.0.1:19100')
         # Real sandbox refunds must use a freshly paid order in this copy,
         # never the remote payment belonging to the source preview order.
-        env['ORDER_REFUNDS_ENABLED'] = 'true' if refund else 'false'
+        env['ORDER_REFUNDS_ENABLED'] = 'true' if refund or non_device_refund else 'false'
+        if non_device_refund:
+            sql(database, 'UPDATE customer_after_sales_runtime SET enabled=TRUE WHERE id=1; UPDATE after_sales_review_runtime SET enabled=TRUE WHERE id=1; UPDATE order_refund_runtime SET enabled=TRUE WHERE id=1 AND version=4')
+            sql(database, "DELIMITER $$\nCREATE TRIGGER owned_non_device_ledger_failure BEFORE INSERT ON customer_account_notices FOR EACH ROW BEGIN IF NEW.kind='refund.created' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='owned non-device ledger failure'; END IF; END$$\nDELIMITER ;")
+            fixture = logs / 'non-device-refund.test.exe'
+            subprocess.run(['go', 'test', '-c', '-o', str(fixture), './internal/refunds'],
+                           cwd=ROOT / 'retail/backend', check=True, capture_output=True, timeout=120)
+            protected_tables = ['inventory_levels', 'inventory_reservations', 'devices', 'device_assignments', 'fulfillments', 'fulfillment_items', 'order_fulfillments', 'returns']
+            def non_device_stock_fingerprint():
+                return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', database, *protected_tables)).hexdigest()
+            non_device_stock_before = non_device_stock_fingerprint()
         if intake_warehouse:
             sql(database, 'UPDATE warehouse_management_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE warehouse_user_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE warehouse_scope_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE inventory_command_capabilities SET enabled=TRUE WHERE command=\'inventory.create_level\' AND version=1')
         if warehouse_edit:
@@ -762,6 +773,8 @@ def main(language, scenario='account', resume=None):
                 return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', database, *protected_tables)).hexdigest()
             review_before = protected_fingerprint()
             env['CHECKOUT_PAYMENT_ENABLED'] = 'false'
+            env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'false'
+        if non_device_refund:
             env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'false'
         if paid_warehouse or repair_mail:
             env['CHECKOUT_PAYMENT_ENABLED'] = 'false'
@@ -822,6 +835,8 @@ def main(language, scenario='account', resume=None):
                            ACCOUNT_TEST_LANGUAGE=language, ACCOUNT_TEST_SCENARIO=scenario)
         if mail or event_mail:
             browser_env.update(WINDOWS_MAIL_SUBFLOW='1', WINDOWS_MAIL_FIXTURE=str(fixture))
+        if non_device_refund:
+            browser_env.update(WINDOWS_NON_DEVICE_REFUND='1', WINDOWS_NON_DEVICE_FIXTURE=str(fixture))
         if resume and refund:
             browser_env.update(ACCOUNT_TEST_CUSTOMER_OWNER=customer_owner, ACCOUNT_TEST_RESUME_PAID='true',
                                ACCOUNT_TEST_REFUND_EXISTING='true' if existing_refund else 'false')
@@ -836,6 +851,8 @@ def main(language, scenario='account', resume=None):
             script = 'tests/local-product-entry.live.mjs'
         if reviews:
             script = 'tests/local-product-reviews.live.mjs'
+        if non_device_refund:
+            script = 'tests/local-non-device-refund.live.mjs'
         if paid_warehouse or supplement or repair_mail:
             script = 'tests/local-repair.live.mjs'
         if warehouse_batch:
@@ -928,7 +945,7 @@ def main(language, scenario='account', resume=None):
 
         if report['verified_accounts'] != (0 if product_entry else 1):
             raise RuntimeError('Expected exactly one newly verified fixture account')
-        if payment_context and not (reviews or paid_warehouse or supplement or repair_mail):
+        if payment_context and not (reviews or paid_warehouse or supplement or repair_mail or non_device_refund):
             cart_id, order_id = report['cart_id'], report['order_id']
             if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
                 raise RuntimeError('Owned payment context result identity invalid')
@@ -945,6 +962,13 @@ def main(language, scenario='account', resume=None):
             if facts != ['1', '1', '4'] or protected_fingerprint() != review_before:
                 raise RuntimeError('Review terminal facts or protected business fingerprint differ')
             report['sql_review_facts'] = {'approved_verified_review': 1, 'submission_receipt': 1, 'moderation_receipts': 4, 'protected_business_unchanged': True}
+        if non_device_refund:
+            facts = sql(database, "SELECT (SELECT COUNT(*) FROM order_refund_operations WHERE applied=TRUE AND state='refunded'),(SELECT COUNT(*) FROM payment_refunds WHERE amount=789),(SELECT COUNT(*) FROM order_transactions WHERE reference='refund' AND amount=-789),(SELECT COUNT(*) FROM after_sales_requests WHERE type='return' AND status='completed')").split('\t')
+            if facts != ['1', '1', '1', '1'] or non_device_stock_fingerprint() != non_device_stock_before:
+                raise RuntimeError('Non-device refund ledger or stock/fulfillment invariant failed: ' + str(facts))
+            report['sql_non_device_facts'] = dict(applied_refund=1, payment_refund=1, negative_order_transaction=1, completed_return=1, inventory_and_fulfillment_unchanged=True)
+            report['channel_refund_simulated'] = True
+            report['real_mollie_refund_created'] = False
         if mail:
             facts = {
                 'verification_sent': int(sql(database, "SELECT COUNT(*) FROM customer_verification_mail WHERE status='sent'")),
@@ -1129,7 +1153,7 @@ def main(language, scenario='account', resume=None):
             docker('exec', CONTAINER, 'rm', '-f', '/tmp/account-' + owner + '.sql')
         except Exception:
             cleanup_errors.append('database cleanup')
-        if product_entry or buyback_intake:
+        if product_entry or buyback_intake or non_device_refund:
             report['source_product_entry_unchanged'] = entry_source_fingerprint() == entry_source_before
             if not report['source_product_entry_unchanged']:
                 report['passed'] = False
@@ -1230,6 +1254,8 @@ if __name__ == '__main__':
         main('en', 'payment-context-changed', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--reviews-from-checkpoint='):
         main('en', 'reviews', sys.argv[1].split('=', 1)[1])
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--non-device-refund-from-checkpoint='):
+        main('en', 'non-device-refund', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--resume-refund='):
         main('en', 'refund', sys.argv[1].split('=', 1)[1])
     else:

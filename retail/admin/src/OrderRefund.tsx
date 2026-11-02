@@ -21,7 +21,7 @@ export default function OrderRefund({order,requestID,onClose,onExpired,draft,onD
  const labels:Record<string,string>=zh?{pending:'等待发送',uncertain:'等待核实',queued:'已排队',processing:'渠道处理中',refunded:'渠道已退款',failed:'已失败',canceled:'已取消'}:{pending:'Awaiting dispatch',uncertain:'Awaiting reconciliation',queued:'Queued',processing:'Processing',refunded:'Provider refunded',failed:'Failed',canceled:'Canceled'}
  return <Drawer open width={760} title={exchange?(zh?'换机差额退款':'Exchange balance refund'):(zh?'退货退款':'Return refund')} onClose={()=>{if(!blocked)onClose()}} closable={!blocked} maskClosable={!blocked} keyboard={!blocked}>
  <Space direction="vertical" size={16} className="full-width">
- <Typography.Paragraph type="secondary">{zh?'核对原付款和实际退回、检测的设备。接受指令后由后台处理，只有“已记账”代表本地退款入账。':'Verify the original payment and the received, inspected devices. Accepted instructions are processed in the background; only “Posted” confirms the local refund ledger.'}</Typography.Paragraph>
+ <Typography.Paragraph type="secondary">{zh?'核对原付款；选择了序列号设备的申请需先收回设备。退款不会自动收货、释放库存预留或取消发货。接受指令后由后台处理，只有“已记账”代表本地退款入账。':'Verify the original payment. Requests with selected serial-number devices require those devices to be received first. A refund does not receive goods, release stock reservations or cancel shipments. Accepted instructions are processed in the background; only “Posted” confirms the local refund ledger.'}</Typography.Paragraph>
  {error&&<Alert type="error" message={zh?'退款记录暂不可用，请重新读取并核对权限。':'Refund records unavailable. Reload and verify permissions.'}/>}
  {!data||!payments?error?null:<Spin/>:<>
  {exchange&&<Alert type="info" message={(zh?'当前可退换机差额：':'Available exchange credit: ')+(data.exchange_credit??'—')+(zh?'。仅可退回完整的当前差额。':'. Refund the full current credit.')} />}

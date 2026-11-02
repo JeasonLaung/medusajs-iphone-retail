@@ -87,7 +87,7 @@ func (s Service) Run(ctx context.Context, id string) (Result, error) {
 				}
 				return ErrUnavailable
 			}
-			if e := returned(tx, row.OrderID, row.RequestID); e != nil {
+			if e := returned(ctx, tx, row.OrderID, row.RequestID); e != nil {
 				return e
 			}
 			if e := exchangeAmount(tx, row); e != nil {

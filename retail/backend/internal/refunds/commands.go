@@ -175,7 +175,7 @@ func (s Service) Prepare(ctx context.Context, actor identity.User, in Input) (Re
 		if ord.Version < 1 || ord.Status == "canceled" || ord.IsDraftOrder {
 			return ErrConflict
 		}
-		if e := returned(tx, in.OrderID, in.RequestID); e != nil {
+		if e := returned(ctx, tx, in.OrderID, in.RequestID); e != nil {
 			return e
 		}
 		var used int64
@@ -263,8 +263,9 @@ func (s Service) Prepare(ctx context.Context, actor identity.User, in Input) (Re
 	return out, e
 }
 
-// returned checks every explicitly selected original device, with no ownership inference.
-func returned(tx *gorm.DB, o, r string) error {
+// returned checks explicitly selected original devices. Returns without devices
+// follow the source native-order refund path; they do not fabricate stock receipt.
+func returned(ctx context.Context, tx *gorm.DB, o, r string) error {
 	var req struct{ Type, Status, Items string }
 	if tx.Table("after_sales_requests").Where("id=? AND order_id=? AND deleted_at IS NULL", r, o).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&req).Error != nil || (req.Type != "return" && req.Type != "exchange") || req.Status != "processing" {
 		return ErrConflict
@@ -280,8 +281,22 @@ func returned(tx *gorm.DB, o, r string) error {
 		return ErrConflict
 	}
 	seen := map[string]bool{}
+	seenLines := map[string]bool{}
 	for _, l := range items.Lines {
-		if !idPattern.MatchString(l.ItemID) || l.Quantity < 1 || l.Quantity != len(l.DeviceIDs) {
+		if !idPattern.MatchString(l.ItemID) || seenLines[l.ItemID] || l.Quantity < 1 || l.Quantity > 10000 {
+			return ErrConflict
+		}
+		seenLines[l.ItemID] = true
+		if len(l.DeviceIDs) == 0 {
+			if req.Type != "return" {
+				return ErrConflict
+			}
+			if e := nonDeviceReturn(ctx, tx, o, l.ItemID, l.Quantity); e != nil {
+				return e
+			}
+			continue
+		}
+		if l.Quantity != len(l.DeviceIDs) {
 			return ErrConflict
 		}
 		for _, d := range l.DeviceIDs {
