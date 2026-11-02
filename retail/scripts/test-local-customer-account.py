@@ -632,6 +632,9 @@ def verify_buyback_return_mail_checkpoint(owner):
 
 
 def main(language, scenario='account', resume=None):
+    customer_groups = scenario == 'customer-groups'
+    if customer_groups and resume is None:
+        raise RuntimeError('Customer groups require a verified account checkpoint')
     rejection_mail = scenario == 'rejection-mail'
     if rejection_mail and resume is None:
         raise RuntimeError('After-sales rejection requires a verified paid checkpoint')
@@ -658,7 +661,7 @@ def main(language, scenario='account', resume=None):
     reviews = scenario == 'reviews'
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
     supplement = scenario == 'supplement'
-    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail', 'non-device-refund', 'cart-login', 'delivery-mail', 'cancellation', 'rejection-mail')
+    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail', 'non-device-refund', 'cart-login', 'delivery-mail', 'cancellation', 'rejection-mail', 'customer-groups')
     buyback_return_mail = scenario == 'buyback-return-mail'
     event_mail = scenario in ('buyback-mail', 'buyback-return-mail', 'repair-mail', 'refund-mail', 'delivery-mail', 'cancellation', 'rejection-mail')
     buyback_intake = scenario in ('buyback-intake', 'buyback-intake-return', 'buyback-mail', 'buyback-return-mail')
@@ -668,7 +671,7 @@ def main(language, scenario='account', resume=None):
     refund = scenario in ('refund', 'refund-mail')
     warehouse = scenario in ('warehouse', 'paid-warehouse', 'intake-warehouse')
     repair = scenario in ('repair', 'exchange', 'refund', 'refund-mail', 'warehouse', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail')
-    admin_required = buyback or repair or mail or reviews or product_entry or non_device_refund or delivery_mail or cancellation or rejection_mail
+    admin_required = buyback or repair or mail or reviews or product_entry or non_device_refund or delivery_mail or cancellation or rejection_mail or customer_groups
     values = config()
     api_binary = Path(os.environ.get('ACCOUNT_TEST_API_BINARY') or ROOT / 'logs/retail-native/retail-api.exe').resolve()
     if not api_binary.is_relative_to((ROOT / 'logs/retail-native').resolve()) or api_binary.suffix != '.exe' or not api_binary.is_file():
@@ -678,7 +681,7 @@ def main(language, scenario='account', resume=None):
             raise RuntimeError('Only an owned payment checkpoint can resume')
         checkpoint = ROOT / 'logs/retail-native' / ('account-' + resume)
         checkpoint_report = json.loads((checkpoint / 'report.json').read_text())
-        if (paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail or cancellation or rejection_mail) and (not checkpoint_report.get('passed') or not checkpoint_report.get('payment_durable_snapshot_retained')):
+        if (paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail or cancellation or rejection_mail or customer_groups) and (not checkpoint_report.get('passed') or not checkpoint_report.get('payment_durable_snapshot_retained')):
             raise RuntimeError('Fulfillment continuation requires a verified durable paid checkpoint')
         if refund:
             paid = json.loads((checkpoint / 'refund-new-paid-order.json').read_text())
@@ -928,6 +931,13 @@ def main(language, scenario='account', resume=None):
         (logs / 'migration.log').write_bytes(migration.stdout + migration.stderr)
         if migration.returncode:
             raise RuntimeError('Owned snapshot migration failed; inspect ignored migration.log')
+        if customer_groups:
+            sql(database, 'UPDATE customer_group_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE customer_cart_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE catalog_price_edit_runtime SET enabled=TRUE WHERE id=1 AND version=1')
+            env.update(CHECKOUT_PAYMENT_ENABLED='false', CHECKOUT_CONTEXT_PAYMENT_ENABLED='false', ORDER_REFUNDS_ENABLED='false', PUBLIC_CUSTOMER_CART_TRANSFER_ENABLED='true')
+            group_protected = ['orders','order_items','order_summaries','payments','payment_captures','payment_refunds','order_transactions','customer_order_ownership','inventory_levels','inventory_reservations','devices','device_assignments','fulfillments','order_fulfillments','cart_completion_receipts']
+            def group_financial_fingerprint():
+                return hashlib.sha256(docker('exec',CONTAINER,'mysqldump','--defaults-extra-file=/tmp/local-root.cnf','--set-gtid-purged=OFF','--no-create-info','--skip-comments','--skip-dump-date','--skip-triggers',database,*group_protected)).hexdigest()
+            group_before = group_financial_fingerprint()
         if cancellation:
             cancellation_immutable = ['payments','payment_captures','cart_completion_receipts','customer_order_ownership','cart_checkout_attempts','payment_effect_journal','order_line_items','order_line_tax_lines','order_shipping_methods','order_shipping_tax_lines','devices','device_assignments','device_events','fulfillments','fulfillment_items','order_fulfillments']
             def cancellation_fingerprint():
@@ -1015,6 +1025,9 @@ def main(language, scenario='account', resume=None):
             # Only the disposable database's root fixture can install faults;
             # the production API account intentionally has no TRIGGER grant.
             sql(database, "CREATE TRIGGER owned_rejection_notice_failure BEFORE INSERT ON customer_account_notices FOR EACH ROW SET NEW.id=IF(NEW.kind='after_sales.rejected' AND EXISTS(SELECT 1 FROM after_sales_reviews WHERE operation_id='00000000-0000-4000-8000-000000000001'),NULL,NEW.id)")
+        if customer_groups:
+            script = 'tests/local-customer-groups.live.mjs'
+            sql(database, "CREATE TRIGGER owned_group_receipt_failure BEFORE INSERT ON customer_group_commands FOR EACH ROW SET NEW.operation_id=IF(NEW.operation_id='00000000-0000-4000-8000-000000000001',NULL,NEW.operation_id)")
         if warehouse_batch:
             sql(database, "CREATE TRIGGER owned_batch_receipt_failure BEFORE INSERT ON warehouse_device_changes FOR EACH ROW SET NEW.operation_id=IF(NEW.operation_id='00000000-0000-4000-8000-000000000001',NULL,NEW.operation_id)")
         result = subprocess.run([str(node), script],
@@ -1024,6 +1037,17 @@ def main(language, scenario='account', resume=None):
         if result.returncode:
             raise RuntimeError('Account browser check failed; inspect ignored browser.log')
         report.update(json.loads((logs / 'browser-result.json').read_text()))
+        if customer_groups:
+            fixture = logs / 'customer-groups.test.exe'
+            built = subprocess.run(['go', 'test', '-c', '-o', str(fixture), './internal/customergroups'], cwd=ROOT / 'retail/backend', env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=120)
+            (logs / 'group-fixture-build.log').write_bytes(built.stdout)
+            if built.returncode:
+                raise RuntimeError('Customer group fixture compile failed')
+            checked = subprocess.run([str(fixture), '-test.run=^TestWindowsCustomerGroupGuards$', '-test.v'], cwd=ROOT / 'retail/backend', env=dict(browser_env, WINDOWS_CUSTOMER_GROUPS='1'), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=120)
+            (logs / 'group-guards.log').write_bytes(checked.stdout)
+            if checked.returncode:
+                raise RuntimeError('Customer group guards failed; inspect ignored group-guards.log')
+            report['group_guards'] = json.loads((logs / 'group-guards.json').read_text())
         if warehouse_batch:
             fixture = logs / 'warehouse-batch.test.exe'
             built = subprocess.run(['go', 'test', '-c', '-o', str(fixture), './internal/devices'], cwd=ROOT / 'retail/backend', env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=120)
@@ -1105,7 +1129,7 @@ def main(language, scenario='account', resume=None):
 
         if report['verified_accounts'] != (0 if product_entry else 1):
             raise RuntimeError('Expected exactly one newly verified fixture account')
-        if payment_context and not (reviews or paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail or cancellation or rejection_mail):
+        if payment_context and not (reviews or paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail or cancellation or rejection_mail or customer_groups):
             cart_id, order_id = report['cart_id'], report['order_id']
             if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
                 raise RuntimeError('Owned payment context result identity invalid')
@@ -1135,6 +1159,17 @@ def main(language, scenario='account', resume=None):
                 raise RuntimeError('After-sales rejection terminal facts or protected facts differ: '+str(facts))
             report['sql_rejection_facts'] = dict(rejected_request=1, review_receipt=1, customer_notice=1, sent_mail=1, sent_delivery=1)
             report['original_order_payments_inventory_devices_fulfillment_unchanged'] = True
+        if customer_groups:
+            if group_financial_fingerprint() != group_before:
+                raise RuntimeError('Customer group rehearsal changed protected original business facts')
+            group_id = report['group_id']
+            if not re.fullmatch(r'cgrp_[0-9a-f-]{36}', group_id):
+                raise RuntimeError('Invalid owned group identity')
+            facts = sql(database, "SELECT (SELECT COUNT(*) FROM customer_groups WHERE id='"+group_id+"' AND deleted_at IS NULL),(SELECT COUNT(*) FROM customer_group_members WHERE group_id='"+group_id+"'),(SELECT COUNT(*) FROM customer_group_commands WHERE group_id='"+group_id+"'),(SELECT revision FROM customer_group_runtime WHERE id=1)").split('\t')
+            if facts != ['1','0','3','4']:
+                raise RuntimeError('Customer group terminal facts differ: '+str(facts))
+            report['sql_group_facts'] = dict(active_group=1, members_after_removal=0, immutable_commands=3, revision=4)
+            report['original_order_payment_inventory_devices_fulfillment_unchanged'] = True
         if cart_login:
             if cart_login_financial_fingerprint() != cart_login_financial_before:
                 raise RuntimeError('Cart login changed protected financial/ownership/inventory facts')
@@ -1436,6 +1471,8 @@ if __name__ == '__main__':
         main('en', 'cancellation', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--rejection-mail-from-checkpoint='):
         main('en', 'rejection-mail', sys.argv[1].split('=', 1)[1])
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--customer-groups-from-checkpoint='):
+        main('en', 'customer-groups', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 5 and sys.argv[1] == '--cancellation-fault':
         database, order, phase = sys.argv[2:]
         if not re.fullmatch(DB_PATTERN, database) or not re.fullmatch(r'order_[0-9a-f-]{36}', order) or phase not in ('refund-on','refund-off','cancel-on','cancel-off'):

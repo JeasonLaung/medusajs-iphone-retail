@@ -28,13 +28,14 @@ export async function removePriceList(id:string,body:PriceListRemoveCommand){
 
 export type InitialListPrice={product_id:string;variant_id:string;currency_code:string;amount:string;region_id:string;min_quantity:string;max_quantity:string}
 export type PriceListCreateCommand=PriceListCommand&{product_ids:string[];customer_group_ids:string[];prices:InitialListPrice[]}
-export type PriceListCreateContext={enabled:boolean;revision:string;currencies:string[];regions:{id:string;name:string;currency_code:string}[];products:{id:string;title:string;variants:{id:string;title:string;sku:string|null;price_set_id:string|null;shared_variants:number}[]}[]}
+export type PriceListCreateContext={customer_groups:{id:string;name:string;members:number}[];enabled:boolean;revision:string;currencies:string[];regions:{id:string;name:string;currency_code:string}[];products:{id:string;title:string;variants:{id:string;title:string;sku:string|null;price_set_id:string|null;shared_variants:number}[]}[]}
 export async function readPriceListCreate(products:string[],signal:AbortSignal,listID?:string):Promise<PriceListCreateContext>{
  const q=new URLSearchParams();products.forEach(id=>q.append('product_id',id))
  const d=await request<PriceListCreateContext>((listID?'price-lists/'+encodeURIComponent(listID)+'/price-addition':'price-list-creation')+(q.size?'?'+q:''),{signal},'/api/admin/')
  return validatePriceListCreateContext(d,products)
 }
 function validatePriceListCreateContext(d:PriceListCreateContext,products:string[]){
+ if(!Array.isArray(d?.customer_groups)||d.customer_groups.length>1000||!d.customer_groups.every(g=>g&&typeof g.id==='string'&&typeof g.name==='string'))throw new APIError(0,'request.invalid_response')
  const codes=(v:unknown):v is string[]=>Array.isArray(v)&&v.length<=1000&&v.every(c=>typeof c==='string'&&/^[a-z]{3}$/.test(c))&&new Set(v).size===v.length
  if(!d||typeof d.enabled!=='boolean'||!rev(d.revision)||!codes(d.currencies)||!Array.isArray(d.regions)||d.regions.length>1000||!d.regions.every(r=>r&&typeof r.id==='string'&&typeof r.name==='string'&&codes([r.currency_code]))||new Set(d.regions.map(r=>r.id)).size!==d.regions.length||!Array.isArray(d.products)||d.products.length!==products.length||!d.products.every(p=>p&&products.includes(p.id)&&typeof p.title==='string'&&Array.isArray(p.variants)&&p.variants.length<=500&&p.variants.every(v=>v&&typeof v.id==='string'&&typeof v.title==='string'&&(v.sku===null||typeof v.sku==='string')&&(v.price_set_id===null||typeof v.price_set_id==='string')&&Number.isSafeInteger(v.shared_variants)&&v.shared_variants>=0))||new Set(d.products.map(p=>p.id)).size!==products.length)throw new APIError(0,'request.invalid_response')
  const variants=d.products.flatMap(p=>p.variants);if(variants.length>500||new Set(variants.map(v=>v.id)).size!==variants.length)throw new APIError(0,'request.invalid_response');return d

@@ -80,8 +80,12 @@ func RefreshItemPrices(ctx context.Context, tx *gorm.DB, store string, ref sessi
 	}
 	sort.Slice(quantities, func(i, j int) bool { return quantities[i] < quantities[j] })
 	quotes := map[int64]map[string]*pricing.Quote{}
+	customerGroups, err := pricingCustomerGroups(tx, ref)
+	if err != nil {
+		return PriceRefreshResult{}, err
+	}
 	for _, q := range quantities {
-		quotes[q], err = pricing.Read(tx, groups[q], pricing.Context{Region: cart.RegionID, Currency: cart.CurrencyCode, Channel: cart.SalesChannelID, Quantity: strconv.FormatInt(q, 10)}, at.UTC())
+		quotes[q], err = pricing.Read(tx, groups[q], pricing.Context{Region: cart.RegionID, Currency: cart.CurrencyCode, Channel: cart.SalesChannelID, Quantity: strconv.FormatInt(q, 10), CustomerGroups: customerGroups}, at.UTC())
 		if err != nil {
 			return PriceRefreshResult{}, ErrItemUnavailable
 		}

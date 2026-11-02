@@ -75,7 +75,11 @@ func readManualShippingQuotes(ctx context.Context, tx *gorm.DB, store string, re
 	for _, group := range groups {
 		profiles = append(profiles, group.ProfileID)
 	}
-	quotes, err := fulfillment.ReadManualFlatQuotes(current, selection, profiles, manualProviderIDs, pricing.Context{Channel: cart.SalesChannelID, Region: cart.RegionID, Currency: cart.CurrencyCode}, at.UTC())
+	customerGroups, err := pricingCustomerGroups(tx, ref)
+	if err != nil {
+		return nil, err
+	}
+	quotes, err := fulfillment.ReadManualFlatQuotes(current, selection, profiles, manualProviderIDs, pricing.Context{Channel: cart.SalesChannelID, Region: cart.RegionID, Currency: cart.CurrencyCode, CustomerGroups: customerGroups}, at.UTC())
 	if err != nil {
 		return nil, err
 	}

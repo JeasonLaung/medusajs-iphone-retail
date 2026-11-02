@@ -24,6 +24,7 @@ import (
 
 func main() {
 	enable := flag.Bool("enable", false, "Enable draft-cart operations in the dedicated Windows preview database")
+	customerGroups := flag.Bool("customer-groups", false, "Enable explicit group management for new verified customers in the dedicated local preview")
 	payments := flag.Bool("payments", false, "Explicitly prepare test-only checkout and local order numbering")
 	contextPayment := flag.Bool("payment-context", false, "Enable payment-aware cart context save and recovery in the dedicated local preview")
 	customerCart := flag.Bool("customer-cart", false, "Enable current possessed-cart transfer on customer login in the dedicated local preview")
@@ -90,6 +91,15 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *customerGroups {
+			var group struct{ Version int }
+			if tx.Table("customer_group_runtime").Select("version").Where("id=1").Take(&group).Error != nil || group.Version != 1 {
+				return gorm.ErrInvalidDB
+			}
+			if tx.Exec("UPDATE customer_group_runtime SET enabled=TRUE WHERE id=1 AND version=1").Error != nil {
+				return gorm.ErrInvalidDB
+			}
+		}
 		if *customerCart {
 			var row struct{ Version int }
 			if e := tx.Raw("SELECT version FROM customer_cart_runtime WHERE id=1 FOR UPDATE").Take(&row).Error; e != nil {

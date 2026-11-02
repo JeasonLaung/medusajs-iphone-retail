@@ -126,6 +126,7 @@ func verifyPriceListCreate(t *testing.T, db *gorm.DB, actor identity.User) {
 	}
 	group := in
 	group.OperationID = uuid.NewString()
+	exec("INSERT INTO customer_groups(id,name,created_at,updated_at) VALUES('native-vip','Native VIP',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
 	group.ExpectedRevision = read().Revision
 	group.Title = "Group fixture"
 	group.CustomerGroupIDs = []string{"native-vip"}

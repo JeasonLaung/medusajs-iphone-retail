@@ -11,6 +11,7 @@ import (
 	"github.com/eurorefurb/retail/internal/cart"
 	"github.com/eurorefurb/retail/internal/catalog"
 	"github.com/eurorefurb/retail/internal/customer"
+	"github.com/eurorefurb/retail/internal/customergroups"
 	"github.com/eurorefurb/retail/internal/devices"
 	"github.com/eurorefurb/retail/internal/fulfillment"
 	"github.com/eurorefurb/retail/internal/identity"
@@ -186,6 +187,10 @@ func routerWithHandlers(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	private.POST("/device-photos", authorization.Handler{DB: db}.Require(authorization.DeviceRead, authorization.DeviceIntake, authorization.ProductRead, authorization.InventoryRead, authorization.WarehouseRead), (devices.Handler{DB: db}).PhotoUploadHTTP)
 	private.POST("/auth/logout", auth.Logout)
 	access := authorization.Handler{DB: db}
+	groups := customergroups.Handler{DB: db}
+	private.GET("/customer-groups", groups.HTTP)
+	private.POST("/customer-groups", groups.HTTP)
+	private.GET("/customer-group-accounts", groups.AccountsHTTP)
 	private.GET("/auth/permissions", access.Snapshot)
 	private.GET("/warehouse/access", access.WarehouseSnapshot)
 	private.GET("/products/:id/variants/:variant_id/device-intake", (devices.Handler{DB: db}).IntakeContextHTTP)

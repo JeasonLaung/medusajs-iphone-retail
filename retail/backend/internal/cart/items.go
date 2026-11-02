@@ -241,7 +241,11 @@ func mutateItem(ctx context.Context, db *gorm.DB, store string, ref sessionstore
 			// Preserve saved tax/adjustment history. The removed parent is
 			// excluded from amount reads; no orphan relation is reattached.
 		} else {
-			quotes, err := pricing.Read(tx, []string{in.VariantID}, pricing.Context{Region: cart.RegionID, Currency: cart.CurrencyCode, Channel: channel, Quantity: strconv.FormatInt(total, 10)}, time.Now().UTC())
+			customerGroups, err := pricingCustomerGroups(tx, ref)
+			if err != nil {
+				return err
+			}
+			quotes, err := pricing.Read(tx, []string{in.VariantID}, pricing.Context{Region: cart.RegionID, Currency: cart.CurrencyCode, Channel: channel, Quantity: strconv.FormatInt(total, 10), CustomerGroups: customerGroups}, time.Now().UTC())
 			if err != nil || quotes[in.VariantID] == nil {
 				return ErrItemUnavailable
 			}

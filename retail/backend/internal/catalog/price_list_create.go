@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/eurorefurb/retail/internal/authorization"
+	"github.com/eurorefurb/retail/internal/customergroups"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/gin-gonic/gin"
@@ -50,11 +51,12 @@ type PriceListCreateProduct struct {
 	Variants []PriceListCreateVariant `json:"variants"`
 }
 type PriceListCreateContext struct {
-	Enabled    bool                     `json:"enabled"`
-	Revision   string                   `json:"revision"`
-	Products   []PriceListCreateProduct `json:"products"`
-	Currencies []string                 `json:"currencies"`
-	Regions    []PriceRegion            `json:"regions"`
+	CustomerGroups []customergroups.Group   `json:"customer_groups"`
+	Enabled        bool                     `json:"enabled"`
+	Revision       string                   `json:"revision"`
+	Products       []PriceListCreateProduct `json:"products"`
+	Currencies     []string                 `json:"currencies"`
+	Regions        []PriceRegion            `json:"regions"`
 }
 type PriceListCreateResult struct {
 	ID       string `json:"id"`
@@ -168,6 +170,11 @@ func decodePriceListCreate(r io.Reader) (PriceListCreateInput, error) {
 }
 func loadPriceListCreate(tx *gorm.DB, ids []string, rt priceEditRuntime) (PriceListCreateContext, error) {
 	out := PriceListCreateContext{Enabled: rt.Enabled, Products: []PriceListCreateProduct{}, Currencies: []string{}, Regions: []PriceRegion{}}
+	var err error
+	out.CustomerGroups, err = customergroups.ActiveTx(tx)
+	if err != nil {
+		return out, err
+	}
 	if tx.Table("commerce_currencies").Where("deleted_at IS NULL AND code REGEXP '^[a-z]{3}$'").Order("code").Limit(1001).Pluck("code", &out.Currencies).Error != nil || len(out.Currencies) > 1000 {
 		return out, ErrSchema
 	}
@@ -176,7 +183,7 @@ func loadPriceListCreate(tx *gorm.DB, ids []string, rt priceEditRuntime) (PriceL
 	}
 	sorted := append([]string{}, ids...)
 	sort.Strings(sorted)
-	versions := []any{rt.Revision, out.Currencies, out.Regions}
+	versions := []any{rt.Revision, out.Currencies, out.Regions, out.CustomerGroups}
 	total := 0
 	for _, id := range sorted {
 		var product struct {
@@ -333,6 +340,17 @@ func (h Handler) CreatePriceList(ctx context.Context, actor identity.User, in Pr
 		}
 		if before.Revision != in.ExpectedRevision {
 			return ErrEditConflict
+		}
+		for _, id := range in.CustomerGroupIDs {
+			found := false
+			for _, group := range before.CustomerGroups {
+				if group.ID == id {
+					found = true
+				}
+			}
+			if !found {
+				return ErrPriceInput
+			}
 		}
 		id := "plist_" + uuid.NewString()
 		starts, _ := priceListTime(in.StartsAt)

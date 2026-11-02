@@ -1,0 +1,35 @@
+import {useEffect,useRef,useState} from 'react'
+import {Alert,Button,Drawer,Form,Input,Popconfirm,Space,Spin,Table,Typography} from 'antd'
+import {APIError} from './api'
+import {useAccess} from './Permissions'
+import {readCustomerGroups,readGroupAccounts,changeCustomerGroup,type GroupDirectory,type CustomerGroup,type GroupAccount,type GroupCommand} from './customer-groups-api'
+
+export default function CustomerGroups({onExpired}:{onExpired():void}){
+ const zh=document.documentElement.lang.startsWith('zh'),access=useAccess(),[data,setData]=useState<GroupDirectory>(),[error,setError]=useState(''),[reload,setReload]=useState(0)
+ const [editing,setEditing]=useState<CustomerGroup|'new'>(),[members,setMembers]=useState<CustomerGroup>(),[mode,setMode]=useState<'add_members'|'remove_members'>('add_members'),[q,setQ]=useState(''),[query,setQuery]=useState(''),[offset,setOffset]=useState(0),[accounts,setAccounts]=useState<{accounts:GroupAccount[];count:number}>(),[selected,setSelected]=useState<string[]>([]),[pending,setPending]=useState<GroupCommand>(),[saving,setSaving]=useState(false),busy=useRef(false),[form]=Form.useForm<{name:string}>()
+ const write=access.can('authorization.write','price.write'),locked=saving||!!pending,loadError=zh?'客户组暂不可用':'Customer groups unavailable'
+ useEffect(()=>{const c=new AbortController();setData(undefined);readCustomerGroups(c.signal).then(setData).catch(e=>{if(!c.signal.aborted){if(e instanceof APIError&&e.status===401)onExpired();else setError(loadError)}});return()=>c.abort()},[reload,onExpired,loadError])
+ useEffect(()=>{if(!members)return;const c=new AbortController();setAccounts(undefined);readGroupAccounts(query,mode==='remove_members'?members.id:'',offset,c.signal).then(setAccounts).catch(e=>{if(!c.signal.aborted){if(e instanceof APIError&&e.status===401)onExpired();else setError(loadError)}});return()=>c.abort()},[members,mode,query,offset,reload,onExpired,loadError])
+ async function save(body:GroupCommand){if(busy.current)return;busy.current=true;setSaving(true);setPending(body);setError('');try{await changeCustomerGroup(body);setPending(undefined);setEditing(undefined);setSelected([]);setReload(n=>n+1)}catch(e){if(e instanceof APIError&&[400,401,403,409].includes(e.status)){setPending(undefined);setError(zh?'记录或权限已变化，请重新读取后再操作。':'Records or permissions changed. Reload before trying again.');if(e.status===401)onExpired()}else setError(zh?'保存结果尚未确认，请重试原操作。':'Save result is unconfirmed. Retry the same operation.')}finally{busy.current=false;setSaving(false)}}
+ function command(kind:GroupCommand['kind'],group_id='',name='',customer_ids:string[]=[]){if(!data)return;void save({operation_id:crypto.randomUUID(),expected_revision:data.revision,kind,group_id,name,customer_ids})}
+ return <Space direction="vertical" size={24} className="full-width">
+ <Typography.Paragraph type="secondary">{zh?'仅管理本系统新建并验证的客户账户。价目表通过客户组限定适用范围，旧客户不会按邮箱自动加入。':'Manage newly verified accounts. Price lists can target these groups. Historical customers are never joined by matching email.'}</Typography.Paragraph>
+ {error&&<Alert showIcon type={pending?'warning':'error'} message={error} action={pending?<Button loading={saving} onClick={()=>void save(pending)}>{zh?'重试原操作':'Retry same operation'}</Button>:<Button onClick={()=>{setError('');setReload(n=>n+1)}}>{zh?'重新读取':'Reload'}</Button>}/>}
+ {data&&!data.enabled&&<Alert showIcon type="warning" message={zh?'客户组管理尚未启用':'Customer group management is disabled'}/>}
+ <Button type="primary" disabled={!data?.enabled||!write||locked} onClick={()=>{form.resetFields();setEditing('new')}}>{zh?'创建客户组':'Create customer group'}</Button>
+ {!data?<Spin/>:<Table<CustomerGroup> rowKey="id" dataSource={data.groups} scroll={{x:650}} columns={[{title:zh?'客户组':'Customer group',dataIndex:'name'},{title:zh?'成员数':'Members',dataIndex:'members'},{title:'ID',dataIndex:'id'},{title:zh?'操作':'Actions',render:(_,g)=><Space wrap><Button disabled={locked} onClick={()=>{setMembers(g);setMode('remove_members');setQuery('');setQ('');setOffset(0);setSelected([])}}>{zh?'查看成员':'View members'}</Button><Button disabled={!write||!data.enabled||locked} onClick={()=>{form.setFieldsValue({name:g.name});setEditing(g)}}>{zh?'修改名称':'Rename'}</Button><Popconfirm title={zh?'删除客户组？相关组价格将不再匹配。':'Delete group? Its group prices will no longer match.'} onConfirm={()=>command('delete',g.id)}><Button danger disabled={!write||!data.enabled||locked}>{zh?'删除':'Delete'}</Button></Popconfirm></Space>}]} pagination={{pageSize:20,showSizeChanger:false}}/>}
+ <Drawer open={!!editing} title={editing==='new'?(zh?'创建客户组':'Create customer group'):(zh?'修改客户组名称':'Rename customer group')} onClose={()=>{if(!locked)setEditing(undefined)}} maskClosable={!locked} closable={!locked} width="min(500px,100vw)">
+ {error&&<Alert showIcon type={pending?'warning':'error'} message={error}/>}
+ <Form form={form} layout="vertical" disabled={locked} onFinish={v=>command(editing==='new'?'create':'rename',editing&&editing!=='new'?editing.id:'',v.name.trim())}><Form.Item name="name" label={zh?'客户组名称':'Group name'} rules={[{required:true,whitespace:true}]}><Input maxLength={255}/></Form.Item><Button type="primary" htmlType="submit" disabled={!data?.enabled||locked}>{zh?'保存':'Save'}</Button></Form>
+ {pending&&<Button loading={saving} onClick={()=>void save(pending)}>{zh?'重试原操作':'Retry same operation'}</Button>}
+ </Drawer>
+ <Drawer open={!!members} title={(zh?'客户组成员：':'Group members: ')+(members?.name??'')} onClose={()=>{if(!locked)setMembers(undefined)}} maskClosable={!locked} closable={!locked} width="min(800px,100vw)">
+ {error&&<Alert showIcon type={pending?'warning':'error'} message={error}/>}
+ <Space direction="vertical" size={16} className="full-width"><Space wrap><Button disabled={locked} onClick={()=>{setMode('remove_members');setSelected([]);setOffset(0)}}>{zh?'当前成员':'Current members'}</Button><Button disabled={!write||locked} onClick={()=>{setMode('add_members');setSelected([]);setOffset(0)}}>{zh?'添加成员':'Add members'}</Button></Space>
+ <Input.Search aria-label={zh?'搜索客户邮箱或 ID':'Search account email or ID'} value={q} disabled={locked} onChange={e=>setQ(e.target.value)} onSearch={v=>{setQuery(v);setOffset(0)}}/>
+ {!accounts?<Spin/>:<Table<GroupAccount> rowKey="id" dataSource={accounts.accounts} scroll={{x:500}} rowSelection={write?{selectedRowKeys:selected,preserveSelectedRowKeys:true,onChange:keys=>{if(keys.length<=100)setSelected(keys.map(String))},getCheckboxProps:()=>({disabled:locked})}:undefined} columns={[{title:zh?'邮箱':'Email',dataIndex:'email'},{title:'ID',dataIndex:'id'}]} pagination={{pageSize:20,current:offset/20+1,total:accounts.count,showSizeChanger:false,onChange:p=>setOffset((p-1)*20)}}/>}
+ <Button type="primary" disabled={!write||!data?.enabled||locked||!selected.length} onClick={()=>members&&command(mode,members.id,'',selected)}>{mode==='add_members'?(zh?'添加所选成员':'Add selected members'):(zh?'移除所选成员':'Remove selected members')} ({selected.length})</Button>
+ {pending&&<Button loading={saving} onClick={()=>void save(pending)}>{zh?'重试原操作':'Retry same operation'}</Button>}
+ </Space></Drawer>
+ </Space>
+}

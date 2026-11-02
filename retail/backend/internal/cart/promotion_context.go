@@ -65,8 +65,16 @@ func ReadPromotionContext(ctx context.Context, tx *gorm.DB, store string, ref se
 		if tx.Table("customer_accounts").Select("id,email").Where("id=?", owner.CustomerID).Take(&account).Error != nil {
 			return failed, ErrStorage
 		}
+		groupIDs, err := pricingCustomerGroups(tx, ref)
+		if err != nil {
+			return failed, err
+		}
+		groups := []any{}
+		for _, id := range groupIDs {
+			groups = append(groups, map[string]any{"id": id})
+		}
 		out["customer_id"] = account.ID
-		out["customer"] = map[string]any{"id": account.ID, "email": account.Email, "groups": []any{}}
+		out["customer"] = map[string]any{"id": account.ID, "email": account.Email, "groups": groups}
 	}
 	out["items"], out["shipping_methods"] = targets.Items, targets.ShippingMethods
 	// Match the original graph's selected order amounts; do not accidentally
