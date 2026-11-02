@@ -303,3 +303,5 @@ C06 增加 [Mollie 通知消费及独立 worker](mollie-checkout-consumer.md)：
 2026-11-02 Windows连续付款上下文接续：[真实Mollie连续保存与恢复](local-payment-context-main.md)完成已登录客户创建付款后英→中→英两次上下文保存、各自丢成功响应/刷新原命令恢复，再沿同一真实沙箱付款成单并自动归属。SQL核对两收据/单checkout/单create effect/零delete/单成单及有效版本7，快照重放复核不重复付款；修复本机独立上下文开关与恢复runtime关闭导致503，接start.bat显式配置并重放。资源清理、主三服务恢复。金额变化/补偿及生产通知等缺口仍开放，不关闭C01—C11。
 
 2026-11-02 Windows金额变化上下文接续：[真实Mollie变价与已成单检查点恢复](local-payment-context-changed.md)在副本779→780价格下完成第三次上下文丢响应恢复、旧绑定退役及790 EUR新付款成单。首轮英文URL等待误报由中文确认页事实纠正，恢复专有检查点实际本人订单读取与SQL核对通过，无新远端写入；认证GET见旧789 open/isCancelable=false、新790 paid，不能冒称远端取消。原/恢复资源清理。可取消DELETE、未知取消、补偿恢复与生产对账继续开放，C01—C11未关闭。
+
+2026-11-02 Windows上下文补偿接续：[真实Mollie部分执行后恢复](local-payment-context-restore.md)在副本注入最终收据约束失败，核对版本7及冻结仍保留；实际刷新恢复原设置并创建原789 EUR替代付款，丢成功响应/刷新原操作恢复后版本只前进8，继续真实Paid成单/自动归属。SQL补偿1/create2/delete1/目标保存收据仍2/唯一成单核对通过，检查点复核只读渠道GET；旧open不可取消仍仅本地退役，未知取消/创建发现及生产对账继续开放。主库十二表不变，资源清理完成，C01—C11未关闭。

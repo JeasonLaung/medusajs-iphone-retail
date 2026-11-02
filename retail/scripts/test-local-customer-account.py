@@ -20,6 +20,9 @@ language saves, lost success responses, refresh recovery and paid completion.
 the prior checkout, and completes a fresh sandbox attempt at the new amount.
 --resume-changed-context=OWNER reads an already completed owned checkpoint;
 it never creates another remote payment.
+--scenario=payment-context-restore injects a final SQL save failure only in the
+copy after retiring a payment, then restores original settings and a replacement
+sandbox checkout through the actual UI, including lost restore replies.
 Verification links are read from authenticated encrypted intents in the owned
 copy (or the captured dispatch body for mail), never returned by an application
 endpoint or marked verified with SQL.
@@ -193,7 +196,42 @@ def change_context_price(database):
     sql(database, "UPDATE pricing_prices SET amount=780,raw_amount='{\"value\":\"780\",\"precision\":20}' WHERE id='price_01M593ZTMR4ZGW8KZJEVN74TBC'")
 
 
-def observe_context_payments(database, cart_id):
+def context_restore_fault(database, cart_id, action):
+    if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id):
+        raise RuntimeError('Owned context cart required')
+    # First validate the disposable DB guard, even for trigger removal.
+    if sql(database, "SELECT COUNT(*) FROM cart_ownership WHERE cart_id='" + cart_id + "'") != '1':
+        raise RuntimeError('Owned context cart missing')
+    if action == 'prepare':
+        change_context_price(database)
+        sql(database, "CREATE TRIGGER isolated_context_save_fault BEFORE INSERT ON cart_context_operations FOR EACH ROW SET NEW.result_version=IF(NEW.cart_id='" + cart_id + "',NULL,NEW.result_version)")
+    elif action == 'check':
+        row = sql(database, "SELECT version,payment_refresh_operation_id IS NOT NULL,checkout_attempt_id IS NOT NULL,(SELECT COUNT(*) FROM cart_context_operations WHERE cart_id='" + cart_id + "'),(SELECT COUNT(*) FROM payment_effect_journal WHERE scope_id='" + cart_id + "' AND effect_kind='delete_session' AND state='succeeded') FROM cart_ownership WHERE cart_id='" + cart_id + "'")
+        if row.split('\t') != ['7', '1', '1', '2', '1']:
+            raise RuntimeError('Expected frozen original context after durable delete')
+    elif action == 'clear':
+        sql(database, 'DROP TRIGGER IF EXISTS isolated_context_save_fault')
+        sql(database, "UPDATE pricing_prices SET amount=779,raw_amount='{\"value\":\"779\",\"precision\":20}' WHERE id='price_01M593ZTMR4ZGW8KZJEVN74TBC'")
+    else:
+        raise RuntimeError('Unknown context fault action')
+
+
+def restored_payment_context_facts(database, cart_id, order_id):
+    facts = {
+        'context_receipts': int(sql(database, "SELECT COUNT(*) FROM cart_context_operations WHERE cart_id='" + cart_id + "'")),
+        'completed_compensation': int(sql(database, "SELECT COUNT(*) FROM cart_payment_refresh_compensations WHERE cart_id='" + cart_id + "' AND state='completed' AND result_version=8")),
+        'checkout_attempts': int(sql(database, "SELECT COUNT(*) FROM cart_checkout_attempts WHERE cart_id='" + cart_id + "'")),
+        'create_effects': int(sql(database, "SELECT COUNT(*) FROM payment_effect_journal WHERE scope_id='" + cart_id + "' AND effect_kind='create_session' AND state='succeeded'")),
+        'delete_effects': int(sql(database, "SELECT COUNT(*) FROM payment_effect_journal WHERE scope_id='" + cart_id + "' AND effect_kind='delete_session' AND state='succeeded'")),
+        'replacement_completion': int(sql(database, "SELECT COUNT(*) FROM cart_completion_receipts r JOIN cart_checkout_attempts a ON a.cart_id=r.cart_id AND a.operation_id=r.operation_id WHERE r.cart_id='" + cart_id + "' AND a.input_version=7 AND a.cart_version=8 AND a.settlement_amount='789' AND r.completed_version=9")),
+        'order_ownership': int(sql(database, "SELECT COUNT(*) FROM customer_order_ownership WHERE order_id='" + order_id + "'")),
+    }
+    if facts != {'context_receipts': 2, 'completed_compensation': 1, 'checkout_attempts': 2, 'create_effects': 2, 'delete_effects': 1, 'replacement_completion': 1, 'order_ownership': 1}:
+        raise RuntimeError('Restored payment context facts differ: ' + str(facts))
+    return facts
+
+
+def observe_context_payments(database, cart_id, expected_new='790.00'):
     key = config().get('MOLLIE_API_KEY', '')
     if not key.startswith('test_'):
         raise RuntimeError('Context observation requires sandbox configuration')
@@ -209,7 +247,7 @@ def observe_context_payments(database, cart_id):
             raise RuntimeError('Sandbox payment scope mismatch')
         observations.append({'status': body.get('status'), 'amount': body.get('amount'), 'is_cancelable': body.get('isCancelable')})
     old, new = observations
-    if old['amount'] != {'value': '789.00', 'currency': 'EUR'} or new['amount'] != {'value': '790.00', 'currency': 'EUR'} or new['status'] != 'paid':
+    if old['amount'] != {'value': '789.00', 'currency': 'EUR'} or new['amount'] != {'value': expected_new, 'currency': 'EUR'} or new['status'] != 'paid':
         raise RuntimeError('Changed sandbox amount/status mismatch')
     if old['status'] not in ('canceled', 'expired', 'failed') and not (old['status'] == 'open' and old['is_cancelable'] is False):
         raise RuntimeError('Retired checkout requires reconciliation')
@@ -223,7 +261,7 @@ def verify_payment_context_checkpoint(owner):
     logs = ROOT / 'logs/retail-native' / ('account-' + owner)
     report = json.loads((logs / 'report.json').read_text())
     browser = json.loads((logs / 'browser-result.json').read_text())
-    if report.get('owner') != owner or not browser.get('passed') or browser.get('scenario') not in ('payment-context', 'payment-context-changed'):
+    if report.get('owner') != owner or not browser.get('passed') or browser.get('scenario') not in ('payment-context', 'payment-context-changed', 'payment-context-restore'):
         raise RuntimeError('Successful owned context browser checkpoint required')
     cart_id, order_id = browser['cart_id'], browser['order_id']
     if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
@@ -236,9 +274,14 @@ def verify_payment_context_checkpoint(owner):
         docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'CREATE DATABASE ' + database)
         created = True
         docker('exec', CONTAINER, 'sh', '-c', 'mysql --defaults-extra-file=/tmp/local-root.cnf ' + database + ' < ' + snapshot)
-        facts = changed_payment_context_facts(database, cart_id, order_id) if browser['scenario'] == 'payment-context-changed' else payment_context_facts(database, cart_id, order_id)
-        if browser['scenario'] == 'payment-context-changed':
+        if browser['scenario'] == 'payment-context-restore':
+            facts = restored_payment_context_facts(database, cart_id, order_id)
+            report['provider_observations'] = observe_context_payments(database, cart_id, '789.00')
+        elif browser['scenario'] == 'payment-context-changed':
+            facts = changed_payment_context_facts(database, cart_id, order_id)
             report['provider_observations'] = observe_context_payments(database, cart_id)
+        else:
+            facts = payment_context_facts(database, cart_id, order_id)
         report['sql_payment_context_facts'] = facts
         report['checkpoint_sql_verified'] = True
         report['passed'] = True
@@ -252,7 +295,7 @@ def verify_payment_context_checkpoint(owner):
 
 def main(language, scenario='account', resume=None):
     mail = scenario == 'mail'
-    payment_context = scenario in ('payment-context', 'payment-context-changed')
+    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore')
     buyback = scenario in ('buyback', 'buyback-return')
     exchange = scenario == 'exchange'
     refund = scenario == 'refund'
@@ -478,6 +521,9 @@ def main(language, scenario='account', resume=None):
                 raise RuntimeError('Owned payment context result identity invalid')
             if scenario == 'payment-context-changed':
                 facts = changed_payment_context_facts(database, cart_id, order_id)
+            elif scenario == 'payment-context-restore':
+                facts = restored_payment_context_facts(database, cart_id, order_id)
+                report['provider_observations'] = observe_context_payments(database, cart_id, '789.00')
             else:
                 facts = payment_context_facts(database, cart_id, order_id)
             report['sql_payment_context_facts'] = facts
@@ -659,6 +705,10 @@ if __name__ == '__main__':
         main('en', 'payment-context')
     elif sys.argv[1:] == ['--scenario=payment-context-changed']:
         main('en', 'payment-context-changed')
+    elif sys.argv[1:] == ['--scenario=payment-context-restore']:
+        main('en', 'payment-context-restore')
+    elif len(sys.argv) == 5 and sys.argv[1] == '--context-restore-fault':
+        context_restore_fault(sys.argv[2], sys.argv[3], sys.argv[4])
     elif len(sys.argv) == 3 and sys.argv[1] == '--change-context-price':
         change_context_price(sys.argv[2])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-payment-context='):

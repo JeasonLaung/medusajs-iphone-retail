@@ -55,3 +55,5 @@ Mollie无法访问loopback webhook，本机test模式省略该参数，通过真
 `python retail/scripts/test-local-customer-account.py --scenario=payment-context` 在副本验证真实Mollie付款创建后的英→中→英连续保存、成功响应丢失与刷新原操作恢复，再沿同一付款完成订单。保留忽略的最终SQL快照；`--verify-payment-context=OWNER` 可仅恢复快照复核终态并清理，避免因检查条件修正重复付款。真实测试渠道会被调用，详情及未覆盖分支见 `docs/migration/local-payment-context-main.md`。
 
 `--scenario=payment-context-changed` 增加副本价格变化、旧会话退役与790 EUR新付款成单；`--resume-changed-context=OWNER` 从已有成单检查点验证本人订单，不再付款。该分支的 `--verify-payment-context=OWNER` 还会认证GET核对两条远端引用；不发起渠道写入。旧open且不可取消的Mollie链接只是本地退役，不能宣称远端取消或免除对账。见 `docs/migration/local-payment-context-changed.md`。
+
+`--scenario=payment-context-restore` 在副本注入最终保存SQL约束失败，实际验证旧会话已处理后刷新、恢复原设置与替代付款、丢恢复响应再刷新，以及替代付款789 EUR成单。可用相同 `--verify-payment-context=OWNER` 复核保留检查点，包含只读渠道GET。测试故障触发器仅限副本指定购物车，主价格/单据不变。见 `docs/migration/local-payment-context-restore.md`。

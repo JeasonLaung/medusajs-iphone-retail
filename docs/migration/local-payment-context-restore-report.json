@@ -1,0 +1,117 @@
+{
+  "task": "Windows real Mollie partial-execution context compensation and lost restore response recovery",
+  "date": "2026-11-02",
+  "passed": true,
+  "full_C01_C11_complete": false,
+  "run": {
+    "owner": "790ce0fc9e71",
+    "database": "retail_account_790ce0fc9e71",
+    "real_email_delivery": false,
+    "business_api_mocking": false,
+    "main_database_modified": false,
+    "api_sha256": "1df2f233c88906dc2594dddda739f50743abc7c5e9cb22c7ee7a264c3b9fbf86",
+    "customer_owner": "790ce0fc9e71",
+    "passed": true,
+    "scenario": "payment-context-restore",
+    "cart_id": "cart_7d1c4909-3faf-4a98-aa45-af83d5155981",
+    "order_id": "order_2f0cb924-7757-418e-87b3-542ede6b250a",
+    "steps": [
+      {
+        "locale": "zh-CN",
+        "version": "6",
+        "same_payment_intent": true,
+        "total": "789",
+        "exact_retry": true
+      },
+      {
+        "locale": "en",
+        "version": "7",
+        "same_payment_intent": true,
+        "total": "789",
+        "exact_retry": true
+      },
+      {
+        "restore": true,
+        "version": "8",
+        "locale": "en",
+        "failed_target_not_saved": true,
+        "exact_retry": true,
+        "replacement_bound": true
+      }
+    ],
+    "real_mollie_test_payment": true,
+    "same_payment_after_two_context_saves": true,
+    "changed_amount_retires_old_and_creates_new": false,
+    "failed_final_save_compensated": true,
+    "lost_success_response_and_reload_recovery": true,
+    "automatic_order_ownership": true,
+    "browser_errors": 0,
+    "verified_accounts": 1,
+    "provider_observations": [
+      {
+        "status": "open",
+        "amount": {
+          "value": "789.00",
+          "currency": "EUR"
+        },
+        "is_cancelable": false
+      },
+      {
+        "status": "paid",
+        "amount": {
+          "value": "789.00",
+          "currency": "EUR"
+        },
+        "is_cancelable": null
+      }
+    ],
+    "sql_payment_context_facts": {
+      "context_receipts": 2,
+      "completed_compensation": 1,
+      "checkout_attempts": 2,
+      "create_effects": 2,
+      "delete_effects": 1,
+      "replacement_completion": 1,
+      "order_ownership": 1
+    },
+    "payment_durable_snapshot_retained": true,
+    "redis_keys_removed": 20,
+    "source_account_counts_before": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "source_account_counts_after": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "resources_removed": true,
+    "cleanup_errors": [],
+    "checkpoint_sql_verified": true
+  },
+  "failure_injection": "Owned cart-only SQL constraint violation at final context receipt, after durable payment delete effect",
+  "limitations": [
+    "Old remote payment open/isCancelable=false, locally retired only",
+    "Unknown cancellation/create discovery and production webhook not exercised",
+    "English account and 390 width only"
+  ]
+}

@@ -7,6 +7,7 @@ import {prepareLocalRefundPayment} from './local-refund-payment.live.mjs'
 const expect=baseExpect.configure({timeout:30000}),origin='http://127.0.0.1:19300'
 const owner=process.env.ACCOUNT_TEST_OWNER,logs=process.env.ACCOUNT_TEST_LOGS
 const changed=process.env.ACCOUNT_TEST_SCENARIO==='payment-context-changed'
+const restoring=process.env.ACCOUNT_TEST_SCENARIO==='payment-context-restore'
 assert.match(owner??'',/^[0-9a-f]{12}$/)
 const email=`local-account-${owner}-1@example.invalid`,password='isolated-account-'+owner+'-password'
 const browser=await chromium.launch({headless:true,executablePath:resolve(process.env.LOCALAPPDATA,'ms-playwright/chromium-1234/chrome-win64/chrome.exe')})
@@ -66,16 +67,48 @@ try{
     steps.push({locale:after.locale,version:after.version,same_payment_intent:index!==2,total:priced.totals.total,exact_retry:true})
    }finally{await page.unrouteAll({behavior:'wait'})}
   }
+  if(restoring){
+   const fixture=action=>execFileSync(process.env.ACCOUNT_TEST_PYTHON,[resolve('../scripts/test-local-customer-account.py'),'--context-restore-fault',process.env.ACCOUNT_TEST_DB,cartID,action],{stdio:'pipe'})
+   fixture('prepare')
+   await page.goto(origin+'/gb-en/about?context=restore#contact');await open()
+   const failure=page.waitForResponse(r=>r.url().endsWith('/context-payment')&&r.request().method()==='POST')
+   await page.getByRole('dialog').getByRole('button',{name:/^United Kingdom — /}).filter({hasText:'中文'}).click()
+   assert.equal((await failure).status(),503)
+   await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible()
+   const pending=await journal(contextKey);assert.equal(pending.kind,'payment-save');assert.equal(pending.version,'7')
+   assert.deepEqual(await journal(paymentKey),original);fixture('check')
+   const requests=[]
+   await page.route('**/context-payment/restore',async route=>{
+    requests.push({body:route.request().postDataJSON(),key:route.request().headers()['idempotency-key']})
+    const response=await route.fetch();assert.equal(response.status(),200)
+    if(requests.length===1)await route.abort('failed');else await route.fulfill({response})
+   })
+   try{
+    await page.reload();assert.deepEqual(await journal(contextKey),pending);await open()
+    const restore=()=>page.getByRole('dialog').getByRole('button',{name:/^(Restore previous preferences|恢复之前的设置)$/,exact:true}).click()
+    await restore();await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible()
+    assert.equal((await journal(contextKey)).kind,'payment-restore')
+    await page.reload();await open();await restore();await expect(page.getByRole('dialog')).toHaveCount(0)
+    assert.equal(page.url(),origin+'/gb-en/about?context=restore#contact')
+    assert.equal(requests.length,2);assert.deepEqual(requests[0],requests[1])
+    assert.equal(await journal(contextKey),null)
+    assert.deepEqual(await journal(paymentKey),{cartID,version:'7',operationID:pending.operationID})
+    const after=await current();assert.equal(after.locale,'en');assert.equal(after.version,'8')
+    steps.push({restore:true,version:after.version,locale:after.locale,failed_target_not_saved:true,exact_retry:true,replacement_bound:true})
+   }finally{await page.unrouteAll({behavior:'wait'});fixture('clear')}
+  }
   await page.goto(origin+'/gb-en/checkout?step=payment')
   if(changed){
    await expect(page.getByTestId('submit-payment-button')).toBeEnabled();await page.getByTestId('submit-payment-button').click()
    await expect(page.getByTestId('submit-order-button')).toBeEnabled({timeout:60000})
    assert.notEqual((await journal(paymentKey)).operationID,original.operationID)
+  }else if(restoring){
+   await expect(page.getByTestId('submit-order-button')).toBeEnabled();assert.notEqual((await journal(paymentKey)).operationID,original.operationID)
   }else{
    await expect(page.getByTestId('submit-order-button')).toBeEnabled();assert.deepEqual(await journal(paymentKey),original)
   }
  }})
- assert.equal(steps.length,changed?3:2);assert.deepEqual(errors,[])
+ assert.equal(steps.length,changed||restoring?3:2);assert.deepEqual(errors,[])
  await page.screenshot({path:resolve(logs,'context-owned-order.png'),fullPage:true})
- writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:changed?'payment-context-changed':'payment-context',cart_id:cartID,order_id:orderID,steps,real_mollie_test_payment:true,same_payment_after_two_context_saves:true,changed_amount_retires_old_and_creates_new:changed,lost_success_response_and_reload_recovery:true,automatic_order_ownership:true,browser_errors:0,real_email_delivery:false},null,2))
+ writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:restoring?'payment-context-restore':changed?'payment-context-changed':'payment-context',cart_id:cartID,order_id:orderID,steps,real_mollie_test_payment:true,same_payment_after_two_context_saves:true,changed_amount_retires_old_and_creates_new:changed,failed_final_save_compensated:restoring,lost_success_response_and_reload_recovery:true,automatic_order_ownership:true,browser_errors:0,real_email_delivery:false},null,2))
 }catch(e){for(const p of browser.contexts().flatMap(c=>c.pages())){console.error('FAILURE',p.url(),await p.locator('body').innerText().catch(()=>''));await p.screenshot({path:resolve(logs,'context-failure.png'),fullPage:true}).catch(()=>{})}throw e}finally{await browser.close()}
