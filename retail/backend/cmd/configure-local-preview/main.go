@@ -33,6 +33,7 @@ func main() {
 	warehouses := flag.Bool("warehouse-users", false, "Enable warehouse account management and scoped access in the dedicated local preview")
 	reviews := flag.Bool("reviews", false, "Enable product review reads, customer submissions and Admin moderation in the dedicated local preview")
 	orderPayments := flag.Bool("order-payments", false, "Enable existing customer supplemental payments in the dedicated local Mollie test preview")
+	cancellation := flag.Bool("order-cancellation", false, "Enable native captured-order cancellation in the dedicated local preview")
 	refunds := flag.Bool("refunds", false, "Enable existing refund commands in the dedicated local Mollie test preview")
 	notificationMail := flag.Bool("notification-mail", false, "Validate explicit notification mailbox management without starting mail workers")
 	productEntry := flag.Bool("product-entry", false, "Enable existing product, SKU, price and initial inventory entry in the dedicated local preview")
@@ -54,6 +55,9 @@ func main() {
 		if _, err := protected.ParseKeyring(os.Getenv("MERCHANT_KEY_ACTIVE"), os.Getenv("MERCHANT_KEYRING_JSON")); err != nil {
 			log.Fatal("Persistent merchant encryption keyring required; do not replace keys used by saved mailboxes")
 		}
+	}
+	if *cancellation && !*refunds {
+		log.Fatal("Order cancellation requires explicit --refunds")
 	}
 	if *payments || *contextPayment || *orderPayments || *refunds {
 		options, e := checkoutconfig.Load(os.Getenv)
@@ -171,10 +175,19 @@ func main() {
 			if e := tx.Raw("SELECT version FROM order_refund_runtime WHERE id=1 FOR UPDATE").Take(&row).Error; e != nil {
 				return e
 			}
-			if row.Version != 4 {
+			if row.Version != 5 {
 				return gorm.ErrInvalidData
 			}
-			if e := tx.Table("order_refund_runtime").Where("id=1 AND version=4").Update("enabled", true).Error; e != nil {
+			if e := tx.Table("order_refund_runtime").Where("id=1 AND version=5").Update("enabled", true).Error; e != nil {
+				return e
+			}
+		}
+		if *cancellation {
+			var row struct{ Version int }
+			if tx.Table("order_cancellation_runtime").Where("id=1").Clauses(clause.Locking{Strength: "UPDATE"}).Take(&row).Error != nil || row.Version != 1 {
+				return gorm.ErrInvalidData
+			}
+			if e := tx.Table("order_cancellation_runtime").Where("id=1 AND version=1").Update("enabled", true).Error; e != nil {
 				return e
 			}
 		}
@@ -403,6 +416,9 @@ func main() {
 	}
 	if *refunds {
 		log.Print("Local refund command gate enabled; no instructions, refunds or workers created")
+	}
+	if *cancellation {
+		log.Print("Local captured-order cancellation enabled; no instructions or refunds created")
 	}
 	if *notificationMail {
 		log.Print("Local notification mailbox management ready; sender credentials and mail workers remain independent")

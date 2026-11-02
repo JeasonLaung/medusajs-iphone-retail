@@ -182,6 +182,11 @@ func loadAllocationAt(tx *gorm.DB, orderID, itemID string, revision uint64, enab
 	}
 	out.Version = order.Version
 	out.OrderActive = !order.IsDraftOrder && order.Status != "draft" && order.Status != "canceled" && order.CanceledAt == nil
+	canceling, cancelErr := orders.CancellationPendingTx(tx, orderID)
+	if cancelErr != nil {
+		return out, cancelErr
+	}
+	out.OrderActive = out.OrderActive && !canceling
 	var line struct {
 		ID, VariantID, Quantity, FulfilledQuantity string
 		UpdatedAt                                  time.Time

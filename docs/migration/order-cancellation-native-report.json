@@ -1,0 +1,162 @@
+{
+  "owner": "6f178b2b6c98",
+  "real_email_delivery": false,
+  "business_api_mocking": false,
+  "main_database_modified": false,
+  "api_sha256": "3c41fe76ca4e0b6558fe6b9e46b103dc2a749126b11e3cb91170f37e5320ca19",
+  "customer_owner": "790ce0fc9e71",
+  "resumed_paid_checkpoint": "790ce0fc9e71",
+  "passed": true,
+  "scenario": "cancellation",
+  "order_id": "order_2f0cb924-7757-418e-87b3-542ede6b250a",
+  "operation_id": "6268f2cd-84f5-463b-88f2-da2359a75c21",
+  "phases": {
+    "guards": {
+      "gets": 0,
+      "passed": true,
+      "phase": "guards",
+      "posts": 0,
+      "six_concurrent_executions": false
+    },
+    "failed": {
+      "gets": 0,
+      "passed": true,
+      "phase": "failed",
+      "posts": 1,
+      "six_concurrent_executions": true
+    },
+    "lost": {
+      "gets": 0,
+      "passed": true,
+      "phase": "lost",
+      "posts": 1,
+      "six_concurrent_executions": true
+    },
+    "pending": {
+      "gets": 1,
+      "passed": true,
+      "phase": "pending",
+      "posts": 0,
+      "six_concurrent_executions": true
+    },
+    "refunded": {
+      "gets": 1,
+      "passed": true,
+      "phase": "refunded",
+      "posts": 0,
+      "six_concurrent_executions": true
+    },
+    "apply": {
+      "gets": 0,
+      "passed": true,
+      "phase": "apply",
+      "posts": 0,
+      "six_concurrent_executions": true
+    },
+    "devices": {
+      "gets": 0,
+      "passed": true,
+      "phase": "devices",
+      "posts": 0,
+      "six_concurrent_executions": false
+    },
+    "finish-failure": {
+      "gets": 0,
+      "passed": true,
+      "phase": "finish-failure",
+      "posts": 0,
+      "six_concurrent_executions": false
+    },
+    "finish": {
+      "gets": 0,
+      "passed": true,
+      "phase": "finish",
+      "posts": 0,
+      "six_concurrent_executions": true
+    }
+  },
+  "business_event_mail_jobs": 2,
+  "event_mail_rejected_retry_sent": true,
+  "event_mail_lost_reply_same_command": true,
+  "event_mail_frozen_message_and_key": true,
+  "event_mail_transport_isolated": true,
+  "event_mail_recipient_sender_ownership_expiry_guards": false,
+  "six_concurrent_admissions_one_root_one_child": true,
+  "lost_root_and_retry_replies_recovered": true,
+  "failed_refund_explicit_successor": true,
+  "uncertain_refund_get_only": true,
+  "verified_refund_cached_after_ledger_rollback": true,
+  "stock_and_cancel_reason_atomic": true,
+  "customer_en_zh_mobile": true,
+  "admin_en_zh": true,
+  "no_new_checkout_or_payment": true,
+  "browser_errors": 0,
+  "verified_accounts": 1,
+  "protected_original_item_versions_payments_capture_ownership_physical_stock_devices_fulfillment_unchanged": true,
+  "sql_cancellation_facts": {
+    "status": "canceled",
+    "version": 2,
+    "terminal_roots": 1,
+    "refunds": 1,
+    "refund_credit_lines": 1,
+    "refund_transactions": 1,
+    "sent_mail": 2,
+    "release_receipts": 1,
+    "original_reservations_released": 1,
+    "pending_difference": "0"
+  },
+  "payment_durable_snapshot_retained": true,
+  "resources_removed": true,
+  "cleanup_errors": [],
+  "external_refund_transport": "isolated test adapter; no new Mollie payment or refund",
+  "device_release_fixture": "Artificial reserved/packed/shipped rows, transaction rolled back; not device intake acceptance",
+  "regressions": [
+    {
+      "owner": "1f7cd2924af2",
+      "api_sha256": "46f67dd7c0e9a6f3739272b72f5ae627fd670e56442462a5643fe920dc069b66",
+      "passed": true,
+      "resources_removed": true,
+      "cleanup_errors": [],
+      "scope": "non-device after-sales refund"
+    },
+    {
+      "owner": "9d37b8f8f83f",
+      "api_sha256": "3c41fe76ca4e0b6558fe6b9e46b103dc2a749126b11e3cb91170f37e5320ca19",
+      "passed": true,
+      "resources_removed": true,
+      "cleanup_errors": [],
+      "scope": "parcel delivery"
+    }
+  ],
+  "validation": {
+    "go_test_all": true,
+    "go_vet_refunds_orders_payments": true,
+    "admin_typescript_no_emit": true,
+    "python_compile": true,
+    "live_fixture_javascript_syntax": true,
+    "git_diff_check": true,
+    "final_currency_and_version_guards": "Targeted Go packages plus final native cancellation and delivery checkpoints; ordinary refund regression uses previous API hash shown above"
+  },
+  "main_preview": {
+    "api_sha256": "3c41fe76ca4e0b6558fe6b9e46b103dc2a749126b11e3cb91170f37e5320ca19",
+    "schema_migrations_applied": 106,
+    "cancellation_runtime": "1:enabled",
+    "refund_runtime": "5:enabled",
+    "cancellation_roots": 0,
+    "http_200": [
+      "http://127.0.0.1:9100/health",
+      "http://127.0.0.1:9200",
+      "http://127.0.0.1:9300/gb-en/store",
+      "http://127.0.0.1:9300/gb-en/account/orders"
+    ],
+    "legacy_medusa_9001": "intentionally stopped; /health and /app unavailable",
+    "recent_service_error_logs": "empty"
+  },
+  "remaining": [
+    "Uncaptured/authorized payment cancellation coordinator",
+    "New cancellation workflow real-provider acceptance",
+    "PayPal refunds and additional delivery providers",
+    "Real external mail delivery",
+    "C01-C11 migration and final full-flow acceptance"
+  ]
+}

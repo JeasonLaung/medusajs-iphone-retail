@@ -279,3 +279,50 @@ func TestMollieRefundUsesExplicitOriginalProviderRegistry(t *testing.T) {
 		t.Fatal("unconfigured refund provider enabled")
 	}
 }
+
+func TestMollieCancellationRefundHasSeparatePurpose(t *testing.T) {
+	for _, mode := range []string{"valid", "cross-purpose", "mixed-input"} {
+		t.Run(mode, func(t *testing.T) {
+			adapter, _ := NewMollieCreateAdapter(mollieCreateConfig())
+			in := refundFixtureRequest()
+			in.RequestID = ""
+			in.CancellationID = "00000000-0000-4000-8000-000000000001"
+			if mode == "mixed-input" {
+				in.RequestID = "asr_owned"
+			}
+			calls := 0
+			adapter.transport.client.Transport = mollieTransport(func(r *http.Request) (*http.Response, error) {
+				calls++
+				if r.Method == http.MethodGet {
+					return refundResponse(r, 200, refundParent()), nil
+				}
+				if r.Method != http.MethodPost || r.Header.Get("Idempotency-Key") != in.OperationID {
+					t.Fatal("cancellation refund lost identity")
+				}
+				var body struct {
+					Description string
+					Metadata    map[string]string
+				}
+				if json.NewDecoder(r.Body).Decode(&body) != nil || body.Description != "order-cancellation:"+in.CancellationID || body.Metadata["order_cancellation_id"] != in.CancellationID || body.Metadata["after_sales_request_id"] != "" {
+					t.Fatal("cancellation fabricated an after-sales purpose")
+				}
+				response := refundFixture(in, "pending")
+				if mode == "cross-purpose" {
+					response["metadata"] = map[string]string{"refund_operation_id": in.OperationID, "order_id": in.OrderID, "after_sales_request_id": in.CancellationID}
+				}
+				return refundResponse(r, 201, response), nil
+			})
+			out, err := adapter.CreateRefund(t.Context(), in)
+			if mode == "valid" {
+				if err != nil || out.Status != "pending" || calls != 2 {
+					t.Fatal("valid cancellation refund rejected", err)
+				}
+			} else if err == nil {
+				t.Fatal("cross-purpose refund accepted")
+			}
+			if mode == "mixed-input" && calls != 0 {
+				t.Fatal("mixed purposes reached provider")
+			}
+		})
+	}
+}

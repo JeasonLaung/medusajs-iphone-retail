@@ -31,6 +31,7 @@ type RefundRequest struct {
 	OperationID     string         `json:"operation_id"`
 	OrderID         string         `json:"order_id"`
 	RequestID       string         `json:"request_id"`
+	CancellationID  string         `json:"cancellation_id,omitempty"`
 	Amount          string         `json:"amount"`
 }
 
@@ -73,7 +74,7 @@ func refundBoundary(out *RefundObservation, err *error) {
 	}
 }
 func (a *MollieCreateAdapter) refundInput(in RefundRequest) (string, error) {
-	if a == nil || a.transport == nil || a.transport.client == nil || !molliePaymentID.MatchString(in.RemotePaymentID) || !effectID.MatchString(in.OrderID) || !effectID.MatchString(in.RequestID) || !refundDecimal.MatchString(in.Amount) {
+	if a == nil || a.transport == nil || a.transport.client == nil || !molliePaymentID.MatchString(in.RemotePaymentID) || !effectID.MatchString(in.OrderID) || !validRefundPurpose(in) || !refundDecimal.MatchString(in.Amount) {
 		return "", ErrRefundExecution
 	}
 	id, e := uuid.Parse(in.OperationID)
@@ -94,8 +95,21 @@ func (a *MollieCreateAdapter) refundInput(in RefundRequest) (string, error) {
 	}
 	return amount, nil
 }
+func validRefundPurpose(in RefundRequest) bool {
+	if in.CancellationID == "" {
+		return effectID.MatchString(in.RequestID)
+	}
+	id, err := uuid.Parse(in.CancellationID)
+	return in.RequestID == "" && err == nil && id.Version() == 4 && id.String() == in.CancellationID
+}
 func refundMetadata(in RefundRequest) map[string]string {
-	return map[string]string{"refund_operation_id": in.OperationID, "order_id": in.OrderID, "after_sales_request_id": in.RequestID}
+	out := map[string]string{"refund_operation_id": in.OperationID, "order_id": in.OrderID}
+	if in.CancellationID != "" {
+		out["order_cancellation_id"] = in.CancellationID
+	} else {
+		out["after_sales_request_id"] = in.RequestID
+	}
+	return out
 }
 func (a *MollieCreateAdapter) refundJSON(ctx context.Context, method, path string, body []byte, key string, status int) (json.RawMessage, error) {
 	req, e := http.NewRequestWithContext(ctx, method, "https://api.mollie.com/v2/payments/"+path, bytes.NewReader(body))
@@ -134,9 +148,10 @@ func (a *MollieCreateAdapter) verifyRefund(raw json.RawMessage, in RefundRequest
 		PaymentID                  string `json:"paymentId"`
 		Amount                     struct{ Value, Currency string }
 		Metadata                   struct {
-			OperationID string `json:"refund_operation_id"`
-			OrderID     string `json:"order_id"`
-			RequestID   string `json:"after_sales_request_id"`
+			OperationID    string `json:"refund_operation_id"`
+			OrderID        string `json:"order_id"`
+			RequestID      string `json:"after_sales_request_id"`
+			CancellationID string `json:"order_cancellation_id"`
 		}
 		CreatedAt string `json:"createdAt"`
 	}
@@ -146,7 +161,7 @@ func (a *MollieCreateAdapter) verifyRefund(raw json.RawMessage, in RefundRequest
 	amount, e := totals.Resolve(totals.Number{Decimal: v.Amount.Value})
 	want, e2 := totals.Resolve(totals.Number{Decimal: in.Amount})
 	created, e3 := time.Parse(time.RFC3339Nano, v.CreatedAt)
-	if e != nil || e2 != nil || e3 != nil || created.IsZero() || v.Resource != "refund" || !mollieRefundID.MatchString(v.ID) || expected != "" && v.ID != expected || v.PaymentID != in.RemotePaymentID || v.Mode != strings.SplitN(a.transport.apiKey, "_", 2)[0] || v.Amount.Currency != strings.ToUpper(in.Session.Currency) || amount != want || v.Metadata.OperationID != in.OperationID || v.Metadata.OrderID != in.OrderID || v.Metadata.RequestID != in.RequestID {
+	if e != nil || e2 != nil || e3 != nil || created.IsZero() || v.Resource != "refund" || !mollieRefundID.MatchString(v.ID) || expected != "" && v.ID != expected || v.PaymentID != in.RemotePaymentID || v.Mode != strings.SplitN(a.transport.apiKey, "_", 2)[0] || v.Amount.Currency != strings.ToUpper(in.Session.Currency) || amount != want || v.Metadata.OperationID != in.OperationID || v.Metadata.OrderID != in.OrderID || v.Metadata.RequestID != in.RequestID || v.Metadata.CancellationID != in.CancellationID {
 		return RefundObservation{}, ErrRefundExecution
 	}
 	switch v.Status {
@@ -187,7 +202,11 @@ func (a *MollieCreateAdapter) CreateRefund(ctx context.Context, in RefundRequest
 	if e != nil || !ok || n.Cmp(requested) < 0 || n.Cmp(total) > 0 {
 		return out, ErrRefundExecution
 	}
-	body, _ := json.Marshal(map[string]any{"amount": map[string]string{"value": amount, "currency": strings.ToUpper(in.Session.Currency)}, "description": "after-sales:" + in.RequestID, "metadata": refundMetadata(in)})
+	description := "after-sales:" + in.RequestID
+	if in.CancellationID != "" {
+		description = "order-cancellation:" + in.CancellationID
+	}
+	body, _ := json.Marshal(map[string]any{"amount": map[string]string{"value": amount, "currency": strings.ToUpper(in.Session.Currency)}, "description": description, "metadata": refundMetadata(in)})
 	defer clear(body)
 	raw, e := a.refundJSON(ctx, http.MethodPost, in.RemotePaymentID+"/refunds", body, in.OperationID, http.StatusCreated)
 	if e != nil {

@@ -215,6 +215,9 @@ func routerWithHandlers(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 		refund = refundOptions[0]
 	}
 	refundHandler := refunds.NewHTTP(refunds.Service{DB: db, StoreID: refund.StoreID, Ring: refund.Ring, Adapters: refund.Adapters}, refund.Enabled)
+	private.GET("/orders/:id/cancellation", refundHandler.CancellationHTTP)
+	private.POST("/orders/:id/cancellation", refundHandler.CancellationHTTP)
+	private.POST("/orders/:id/cancellation/refunds/:refund_operation_id/retry", refundHandler.CancellationHTTP)
 	private.GET("/orders/:id/after-sales/:request_id/refunds", refundHandler.HTTP)
 	private.POST("/orders/:id/after-sales/:request_id/refunds", refundHandler.HTTP)
 	private.POST("/orders/:id/after-sales/:request_id/refunds/:operation_id/cancel", refundHandler.HTTP)

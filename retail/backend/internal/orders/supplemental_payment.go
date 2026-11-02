@@ -44,6 +44,9 @@ func ReadSupplementalPaymentTx(ctx context.Context, tx *gorm.DB, id string, expe
 	if order.Version != expected || order.IsDraftOrder || order.CanceledAt != nil || order.Status == "draft" || order.Status == "canceled" || order.Status == "archived" {
 		return out, ErrVersionConflict
 	}
+	if err := EnsureNoPendingCancellationTx(tx, id); err != nil {
+		return out, err
+	}
 	current := currentAmountReads(tx)
 	var changes []struct{ ID string }
 	if current.Table("order_changes").Select("id").Where("order_id=? AND status IN ('pending','requested') AND deleted_at IS NULL", id).Limit(1).Find(&changes).Error != nil {
@@ -141,6 +144,13 @@ func EnsureNoPendingPaymentTx(tx *gorm.DB, id string) error {
 	if _, ok := tx.Statement.ConnPool.(gorm.TxCommitter); !ok {
 		return ErrSchema
 	}
+	if err := EnsureNoPendingCancellationTx(tx, id); err != nil {
+		return err
+	}
+	return ensureNoPendingSupplementTx(tx, id)
+}
+
+func ensureNoPendingSupplementTx(tx *gorm.DB, id string) error {
 	var holds []struct{ OperationID string }
 	if tx.Table("order_payment_operations").Select("operation_id").Where("active_order=?", id).Limit(1).Clauses(clause.Locking{Strength: "SHARE"}).Find(&holds).Error != nil {
 		return ErrSchema

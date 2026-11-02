@@ -23,7 +23,7 @@ type warehouseReservation struct {
 // An empty assignment selects the sole active unpacked reservation. Replay
 // selects the original canceled assignment; it cannot bind to a later sale.
 func readWarehouseReservation(tx *gorm.DB, row WarehouseDevice, assignment string) (*warehouseReservation, error) {
-	query := tx.Table("device_assignments a").Select("a.id,a.device_id,a.order_id,a.item_id,a.source_id,a.status,a.fulfillment_id,a.updated_at").Joins("JOIN device_sources s ON s.id=a.source_id AND s.location_id=? AND s.deleted_at IS NULL", row.LocationID).Joins("JOIN orders o ON o.id=a.order_id AND o.deleted_at IS NULL AND o.status NOT IN ('draft','canceled') AND o.is_draft_order=FALSE AND o.canceled_at IS NULL").Where("a.device_id=? AND a.source_id=? AND a.deleted_at IS NULL", row.ID, row.SourceID)
+	query := tx.Table("device_assignments a").Select("a.id,a.device_id,a.order_id,a.item_id,a.source_id,a.status,a.fulfillment_id,a.updated_at").Joins("JOIN device_sources s ON s.id=a.source_id AND s.location_id=? AND s.deleted_at IS NULL", row.LocationID).Joins("JOIN orders o ON o.id=a.order_id AND o.deleted_at IS NULL AND o.status NOT IN ('draft','canceled') AND o.is_draft_order=FALSE AND o.canceled_at IS NULL AND NOT EXISTS(SELECT 1 FROM order_cancellations oc WHERE oc.order_id=o.id AND oc.completed_at IS NULL)").Where("a.device_id=? AND a.source_id=? AND a.deleted_at IS NULL", row.ID, row.SourceID)
 	if assignment == "" {
 		query = query.Where("a.status IN ('reserved','packed','shipped') AND NOT EXISTS (SELECT 1 FROM device_assignments x WHERE x.device_id=a.device_id AND x.id<>a.id AND x.status IN ('reserved','packed','shipped') AND x.deleted_at IS NULL)")
 	} else {

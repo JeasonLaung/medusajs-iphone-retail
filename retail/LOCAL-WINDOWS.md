@@ -1,5 +1,7 @@
 # Windows 本机启动
 
+2026-11-03：[已收款原生订单取消](../docs/migration/gin-order-cancellation.md)新增显式 0106 迁移及取消 runtime。迁移后从 backend 执行 `go run ./cmd/configure-local-preview --refunds --order-cancellation`；继续使用现有退款 worker 和 start.bat。未捕获付款、无法证明原付款来源的历史订单仍拒绝，不能靠修改状态跳过资金核验。
+
 2026-11-03：[登录时接管购物车](../docs/migration/local-customer-cart-login.md)已修复前台开关开启但数据库runtime关闭造成的503。本机 backend `.env` 设置 `LOCAL_PREVIEW_CUSTOMER_CART_ENABLED=true` 后，start.bat 显式启用已安装的v1 runtime并为Astro设置匹配开关；下次直接启动同样生效。只接管当前持有的购物车，不按邮箱继承其他车或历史订单，不创建账号或支付。仅更换前台 PUBLIC 开关不能代替数据库配置。
 
 2026-11-03：具备销售设备读写权限的仓库员工，在“仓库设备→销售”可勾选pending设备并“批量设为可售”（跨页最多200台）。当前仓库、来源、配置及销售历史限制保持；任一失败整批不保存，数量库存不变。实际本机隔离验收见[说明](../docs/migration/gin-warehouse-batch-available.md)。

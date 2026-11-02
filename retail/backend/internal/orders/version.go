@@ -22,6 +22,21 @@ var ErrVersionConflict = errors.New("order version changed or conflicting snapsh
 // Snapshot rows in every prior version remain immutable. Non-versioned tax and
 // product snapshots remain shared; later new-item tax rows use a new item ID.
 func AdvanceVersionTx(ctx context.Context, tx *gorm.DB, orderID string, expected int) (int, error) {
+	return advanceVersionTx(ctx, tx, orderID, expected, "")
+}
+
+// AdvanceCancellationVersionTx is an internal participant for the owner of an
+// admitted cancellation. It preserves historical snapshots while allowing only
+// this exact durable cancellation to add its refund credit in a new version.
+func AdvanceCancellationVersionTx(ctx context.Context, tx *gorm.DB, orderID string, expected int, operationID string) (int, error) {
+	id, err := uuid.Parse(operationID)
+	if err != nil || id.Version() != 4 || id.String() != operationID {
+		return 0, ErrVersionConflict
+	}
+	return advanceVersionTx(ctx, tx, orderID, expected, operationID)
+}
+
+func advanceVersionTx(ctx context.Context, tx *gorm.DB, orderID string, expected int, cancellationID string) (int, error) {
 	if !checkoutID.MatchString(orderID) || expected < 1 || expected >= 2147483647 {
 		return 0, ErrVersionConflict
 	}
@@ -42,8 +57,18 @@ func AdvanceVersionTx(ctx context.Context, tx *gorm.DB, orderID string, expected
 	}
 	// Pending, externally uncertain and verified-but-unapplied money freezes
 	// the amount version, including when the optional feature is later disabled.
-	if e := EnsureNoPendingPaymentTx(tx, orderID); e != nil {
-		return 0, e
+	if cancellationID == "" {
+		if e := EnsureNoPendingPaymentTx(tx, orderID); e != nil {
+			return 0, e
+		}
+	} else {
+		var roots []struct{ OperationID string }
+		if tx.Raw("SELECT operation_id FROM order_cancellations WHERE operation_id=? AND order_id=? AND expected_version=? AND completed_at IS NULL FOR SHARE", cancellationID, orderID, expected).Scan(&roots).Error != nil || len(roots) != 1 {
+			return 0, ErrVersionConflict
+		}
+		if e := ensureNoPendingSupplementTx(tx, orderID); e != nil {
+			return 0, e
+		}
 	}
 	before, e := ReadAmountSnapshot(tx, orderID)
 	if e != nil {

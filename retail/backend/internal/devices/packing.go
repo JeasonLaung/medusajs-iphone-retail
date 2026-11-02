@@ -16,6 +16,7 @@ import (
 	"github.com/eurorefurb/retail/internal/fulfillment"
 	"github.com/eurorefurb/retail/internal/identity"
 	"github.com/eurorefurb/retail/internal/inventory"
+	"github.com/eurorefurb/retail/internal/orders"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -135,6 +136,11 @@ func loadPacking(tx *gorm.DB, o string, rev uint64, enabled bool) (PackingContex
 	facts.Version = order.Version
 	facts.AddressID = order.ShippingAddressID
 	out.OrderActive = !order.IsDraftOrder && order.Status != "draft" && order.Status != "canceled" && order.CanceledAt == nil
+	canceling, cancelErr := orders.CancellationPendingTx(tx, o)
+	if cancelErr != nil {
+		return out, facts, cancelErr
+	}
+	out.OrderActive = out.OrderActive && !canceling
 	if order.ShippingAddressID != nil {
 		facts.Address = map[string]any{}
 		if tx.Table("order_addresses").Where("id=? AND deleted_at IS NULL", *order.ShippingAddressID).Clauses(clause.Locking{Strength: "SHARE"}).Take(&facts.Address).Error != nil {

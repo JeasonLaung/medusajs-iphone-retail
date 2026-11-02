@@ -61,6 +61,7 @@ type Service struct {
 	Adapters *payments.CreateAdapters
 }
 type operation struct {
+	CancellationID                                                                          *string
 	PreviousOperationID                                                                     *string
 	CanceledAt                                                                              *time.Time
 	CanceledBy                                                                              *string
@@ -93,7 +94,7 @@ func gate(tx *gorm.DB) error {
 		Version int
 		Enabled bool
 	}
-	if tx.Table("order_refund_runtime").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&r).Error != nil || r.Version != 4 || !r.Enabled {
+	if tx.Table("order_refund_runtime").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&r).Error != nil || r.Version != 5 || !r.Enabled {
 		return ErrUnavailable
 	}
 	return nil
@@ -122,7 +123,11 @@ func (s Service) request(ctx context.Context, tx *gorm.DB, r operation) (payment
 			return payments.RefundRequest{}, e
 		}
 	}
-	return payments.RefundRequest{Session: req, RemotePaymentID: r.RemotePaymentID, OperationID: r.OperationID, OrderID: r.OrderID, RequestID: r.RequestID, Amount: r.Amount}, nil
+	cancellationID := ""
+	if r.CancellationID != nil {
+		cancellationID = *r.CancellationID
+	}
+	return payments.RefundRequest{Session: req, RemotePaymentID: r.RemotePaymentID, OperationID: r.OperationID, OrderID: r.OrderID, RequestID: r.RequestID, CancellationID: cancellationID, Amount: r.Amount}, nil
 }
 
 // Prepare reserves captured money and binds one immutable instruction per return.

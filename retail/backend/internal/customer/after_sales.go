@@ -105,6 +105,12 @@ func (s *Store) orderTransaction(ctx context.Context, token, orderID string, wri
 				return business
 			}
 		}
+		if write {
+			if err := orders.EnsureNoPendingCancellationTx(tx, orderID); err != nil {
+				business = ErrAfterSalesConflict
+				return business
+			}
+		}
 		order, e := cart.ReadAccountConfirmation(ctx, tx, account, orderID)
 		if e != nil {
 			if errors.Is(e, cart.ErrDenied) {

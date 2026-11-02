@@ -12,6 +12,7 @@ import OrderAfterSales from './OrderAfterSales'
 import OrderAmounts from './OrderAmounts'
 import OrderPayments from './OrderPayments'
 import OrderFulfillments from './OrderFulfillments'
+import OrderCancellation from './OrderCancellation'
 
 export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void}) {
   const access=useAccess()
@@ -40,6 +41,7 @@ export default function OrderDetail({copy,onExpired}:{copy:Copy;onExpired():void
       {state.loading?<Spin />:state.error!==undefined?<Space direction="vertical"><Alert type="error" showIcon message={state.error instanceof APIError && state.error.status===404?copy.orderNotFound:copy.unavailable} /><Button onClick={()=>setAttempt(n=>n+1)}>{copy.retry}</Button></Space>:order&&<>
         <Typography.Title level={3}>{order.custom_display_id??order.display_id??order.id}</Typography.Title>
         {access.can('order.allocation.write','order.payment.read','device.read','order.fulfillment.read')&&<Button onClick={()=>setPacking(true)}>{copy.orderPacking}</Button>}
+        {access.can('order.read','order.payment.read','order.after_sales.write','order.refund.write','order.allocation.write','order.fulfillment.read')&&<OrderCancellation id={order.id} onExpired={onExpired} onChanged={()=>setAttempt(n=>n+1)}/>}
         <Descriptions column={{xs:1,sm:2,lg:3}} items={[
           {key:'status',label:copy.status,children:<Tag color={order.status==='completed'?'success':order.status==='requires_action'?'warning':undefined}>{statuses[order.status]??order.status}</Tag>},
           {key:'email',label:copy.email,children:order.email??'—'},

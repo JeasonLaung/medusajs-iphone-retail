@@ -80,7 +80,7 @@ func (s Service) Run(ctx context.Context, id string) (Result, error) {
 			return ErrUnavailable
 		}
 		post = row.DispatchedAt == nil
-		if post {
+		if post && row.CancellationID == nil {
 			if e := orders.EnsureNoPendingPaymentTx(tx, row.OrderID); e != nil {
 				if errors.Is(e, orders.ErrVersionConflict) {
 					return ErrConflict
@@ -91,6 +91,11 @@ func (s Service) Run(ctx context.Context, id string) (Result, error) {
 				return e
 			}
 			if e := exchangeAmount(tx, row); e != nil {
+				return e
+			}
+		}
+		if post && row.CancellationID != nil {
+			if e := cancellationRefundReady(ctx, tx, row); e != nil {
 				return e
 			}
 		}
@@ -248,7 +253,11 @@ func (s Service) apply(ctx context.Context, tx *gorm.DB, r *operation) error {
 	}
 	refundID := "ref_" + r.OperationID
 	now := gorm.Expr("UTC_TIMESTAMP(6)")
-	if tx.Table("payment_refunds").Create(map[string]any{"id": refundID, "payment_id": r.PaymentID, "amount": scalar, "raw_amount": raw, "note": "after-sales:" + r.RequestID, "created_by": r.ActorID, "created_at": now, "updated_at": now}).Error != nil {
+	note := "after-sales:" + r.RequestID
+	if r.CancellationID != nil {
+		note = "order-cancellation:" + *r.CancellationID
+	}
+	if tx.Table("payment_refunds").Create(map[string]any{"id": refundID, "payment_id": r.PaymentID, "amount": scalar, "raw_amount": raw, "note": note, "created_by": r.ActorID, "created_at": now, "updated_at": now}).Error != nil {
 		return ErrUnavailable
 	}
 	var ord struct{ Version int }

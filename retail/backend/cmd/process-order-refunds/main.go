@@ -52,7 +52,7 @@ func main() {
 	service := refunds.Service{DB: db, StoreID: options.StoreID, Ring: options.Ring, Adapters: options.Adapters}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
-	cursor := ""
+	cursor, cancellationCursor := "", ""
 	failed := false
 	for {
 		run, cancel := context.WithTimeout(ctx, 7*time.Minute)
@@ -64,6 +64,12 @@ func main() {
 			log.Print("Refund work unavailable; durable instructions retained")
 		} else if result.Selected > 0 {
 			log.Printf("Refund instructions selected=%d processed=%d failed=%d", result.Selected, result.Processed, result.Failed)
+		}
+		cancellations, nextCancellation, cancellationErr := service.RunCancellationsDue(ctx, cancellationCursor)
+		cancellationCursor = nextCancellation
+		if cancellationErr != nil || cancellations.Failed > 0 {
+			failed = true
+			log.Print("Order cancellation work incomplete; durable instructions retained")
 		}
 		if once {
 			break

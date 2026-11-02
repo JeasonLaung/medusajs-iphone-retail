@@ -630,6 +630,9 @@ def verify_buyback_return_mail_checkpoint(owner):
 
 
 def main(language, scenario='account', resume=None):
+    cancellation = scenario == 'cancellation'
+    if cancellation and resume is None:
+        raise RuntimeError('Cancellation requires a verified paid checkpoint')
     delivery_mail = scenario == 'delivery-mail'
     if delivery_mail and resume is None:
         raise RuntimeError('Delivery requires an owned shipped checkpoint')
@@ -650,9 +653,9 @@ def main(language, scenario='account', resume=None):
     reviews = scenario == 'reviews'
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
     supplement = scenario == 'supplement'
-    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail', 'non-device-refund', 'cart-login', 'delivery-mail')
+    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail', 'non-device-refund', 'cart-login', 'delivery-mail', 'cancellation')
     buyback_return_mail = scenario == 'buyback-return-mail'
-    event_mail = scenario in ('buyback-mail', 'buyback-return-mail', 'repair-mail', 'refund-mail', 'delivery-mail')
+    event_mail = scenario in ('buyback-mail', 'buyback-return-mail', 'repair-mail', 'refund-mail', 'delivery-mail', 'cancellation')
     buyback_intake = scenario in ('buyback-intake', 'buyback-intake-return', 'buyback-mail', 'buyback-return-mail')
     buyback_return = scenario in ('buyback-return', 'buyback-intake-return', 'buyback-return-mail')
     buyback = scenario == 'buyback' or buyback_intake or buyback_return
@@ -660,7 +663,7 @@ def main(language, scenario='account', resume=None):
     refund = scenario in ('refund', 'refund-mail')
     warehouse = scenario in ('warehouse', 'paid-warehouse', 'intake-warehouse')
     repair = scenario in ('repair', 'exchange', 'refund', 'refund-mail', 'warehouse', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail')
-    admin_required = buyback or repair or mail or reviews or product_entry or non_device_refund or delivery_mail
+    admin_required = buyback or repair or mail or reviews or product_entry or non_device_refund or delivery_mail or cancellation
     values = config()
     api_binary = Path(os.environ.get('ACCOUNT_TEST_API_BINARY') or ROOT / 'logs/retail-native/retail-api.exe').resolve()
     if not api_binary.is_relative_to((ROOT / 'logs/retail-native').resolve()) or api_binary.suffix != '.exe' or not api_binary.is_file():
@@ -670,7 +673,7 @@ def main(language, scenario='account', resume=None):
             raise RuntimeError('Only an owned payment checkpoint can resume')
         checkpoint = ROOT / 'logs/retail-native' / ('account-' + resume)
         checkpoint_report = json.loads((checkpoint / 'report.json').read_text())
-        if (paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail) and (not checkpoint_report.get('passed') or not checkpoint_report.get('payment_durable_snapshot_retained')):
+        if (paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail or cancellation) and (not checkpoint_report.get('passed') or not checkpoint_report.get('payment_durable_snapshot_retained')):
             raise RuntimeError('Fulfillment continuation requires a verified durable paid checkpoint')
         if refund:
             paid = json.loads((checkpoint / 'refund-new-paid-order.json').read_text())
@@ -789,7 +792,7 @@ def main(language, scenario='account', resume=None):
                 "SELECT 'isolated-repair-tracking','variant_01M51RN7H7HPV9RH69T32QMD2Q','iitem_01M51RN7HTPYQ7YFPXABBF8VJ8',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6) "
                 "WHERE NOT EXISTS(SELECT 1 FROM device_variant_tracking WHERE variant_id='variant_01M51RN7H7HPV9RH69T32QMD2Q' AND deleted_at IS NULL);")
             if refund:
-                sql(database, "UPDATE order_refund_runtime SET enabled=TRUE WHERE id=1 AND version=4")
+                sql(database, "UPDATE order_refund_runtime SET enabled=TRUE WHERE id=1 AND version IN (4,5)")
             if warehouse:
                 sql(database, "UPDATE warehouse_user_runtime SET enabled=TRUE WHERE id=1 AND version=1; "
                     "UPDATE warehouse_scope_runtime SET enabled=TRUE WHERE id=1 AND version=1")
@@ -833,7 +836,7 @@ def main(language, scenario='account', resume=None):
                 return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', database, *financial_tables)).hexdigest()
             cart_login_financial_before = cart_login_financial_fingerprint()
         if non_device_refund:
-            sql(database, 'UPDATE customer_after_sales_runtime SET enabled=TRUE WHERE id=1; UPDATE after_sales_review_runtime SET enabled=TRUE WHERE id=1; UPDATE order_refund_runtime SET enabled=TRUE WHERE id=1 AND version=4')
+            sql(database, 'UPDATE customer_after_sales_runtime SET enabled=TRUE WHERE id=1; UPDATE after_sales_review_runtime SET enabled=TRUE WHERE id=1; UPDATE order_refund_runtime SET enabled=TRUE WHERE id=1 AND version IN (4,5)')
             sql(database, "DELIMITER $$\nCREATE TRIGGER owned_non_device_ledger_failure BEFORE INSERT ON customer_account_notices FOR EACH ROW BEGIN IF NEW.kind='refund.created' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='owned non-device ledger failure'; END IF; END$$\nDELIMITER ;")
             fixture = logs / 'non-device-refund.test.exe'
             subprocess.run(['go', 'test', '-c', '-o', str(fixture), './internal/refunds'],
@@ -886,7 +889,7 @@ def main(language, scenario='account', resume=None):
             env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'false'
         if non_device_refund:
             env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'false'
-        if paid_warehouse or repair_mail or delivery_mail:
+        if paid_warehouse or repair_mail or delivery_mail or cancellation:
             env['CHECKOUT_PAYMENT_ENABLED'] = 'false'
             env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'false'
             stock_before = sql(database, "SELECT stocked_quantity,reserved_quantity FROM inventory_levels WHERE inventory_item_id='iitem_01M51RN7HTPYQ7YFPXABBF8VJ8' AND location_id='sloc_01M4FBP3NDPZHJKVV3VY682QTN' AND deleted_at IS NULL").split('\t')
@@ -913,6 +916,20 @@ def main(language, scenario='account', resume=None):
         (logs / 'migration.log').write_bytes(migration.stdout + migration.stderr)
         if migration.returncode:
             raise RuntimeError('Owned snapshot migration failed; inspect ignored migration.log')
+        if cancellation:
+            cancellation_immutable = ['payments','payment_captures','cart_completion_receipts','customer_order_ownership','cart_checkout_attempts','payment_effect_journal','order_line_items','order_line_tax_lines','order_shipping_methods','order_shipping_tax_lines','devices','device_assignments','device_events','fulfillments','fulfillment_items','order_fulfillments']
+            def cancellation_fingerprint():
+                digest = hashlib.sha256(docker('exec',CONTAINER,'mysqldump','--defaults-extra-file=/tmp/local-root.cnf','--set-gtid-purged=OFF','--no-create-info','--skip-comments','--skip-dump-date','--skip-triggers',database,*cancellation_immutable))
+                # New cancellation version may be added; all original versions remain immutable.
+                for table in ['order_items','order_credit_lines','order_shipping_versions','order_line_adjustments','order_shipping_adjustments']:
+                    digest.update(sql(database, 'SELECT * FROM '+table+' WHERE version=1 ORDER BY id').encode())
+                digest.update(sql(database,'SELECT id,stocked_quantity,raw_stocked_quantity,incoming_quantity,raw_incoming_quantity,deleted_at FROM inventory_levels ORDER BY id').encode())
+                return digest.hexdigest()
+            cancellation_before = cancellation_fingerprint()
+            cancellation_bindings = sql(database,"SELECT r.id,r.quantity,r.inventory_item_id,r.location_id FROM inventory_reservations r WHERE r.deleted_at IS NULL AND EXISTS(SELECT 1 FROM order_items i WHERE i.order_id='"+paid['order_id']+"' AND i.item_id=r.line_item_id AND i.deleted_at IS NULL) ORDER BY r.id").splitlines()
+        if cancellation:
+            sql(database, 'UPDATE order_cancellation_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE order_refund_runtime SET enabled=TRUE WHERE id=1 AND version=5')
+            env.update(CHECKOUT_PAYMENT_ENABLED='true', CHECKOUT_CONTEXT_PAYMENT_ENABLED='false', ORDER_REFUNDS_ENABLED='true')
         if delivery_mail:
             sql(database, "CREATE TRIGGER owned_delivery_receipt_failure BEFORE INSERT ON order_device_parcel_operations FOR EACH ROW SET NEW.operation_id=IF(NEW.operation_id='00000000-0000-4000-8000-000000000001',NULL,NEW.operation_id)")
         services = [
@@ -957,7 +974,7 @@ def main(language, scenario='account', resume=None):
         if resume and refund:
             browser_env.update(ACCOUNT_TEST_CUSTOMER_OWNER=customer_owner, ACCOUNT_TEST_RESUME_PAID='true',
                                ACCOUNT_TEST_REFUND_EXISTING='true' if existing_refund else 'false')
-        if paid_warehouse or supplement or repair_mail or delivery_mail:
+        if paid_warehouse or supplement or repair_mail or delivery_mail or cancellation:
             browser_env.update(ACCOUNT_TEST_CUSTOMER_OWNER=customer_owner, ACCOUNT_TEST_RESUME_PAID='true')
             (logs / 'refund-new-paid-order.json').write_text(json.dumps(paid))
         script = 'tests/local-payment-context.live.mjs' if payment_context else 'tests/local-notification-mail.live.mjs' if mail else 'tests/local-repair.live.mjs' if repair else 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
@@ -974,6 +991,9 @@ def main(language, scenario='account', resume=None):
             script = 'tests/local-customer-cart-login.live.mjs'
         if paid_warehouse or supplement or repair_mail:
             script = 'tests/local-repair.live.mjs'
+        if cancellation:
+            script = 'tests/local-order-cancellation.live.mjs'
+            browser_env.update(WINDOWS_ORDER_CANCELLATION='1', WINDOWS_CANCELLATION_FIXTURE=str(fixture))
         if delivery_mail:
             script = 'tests/local-parcel-delivery.live.mjs'
             browser_env.update(WINDOWS_PARCEL_DELIVERY='1', WINDOWS_PARCEL_DELIVERY_FIXTURE=str(guard_fixture))
@@ -1067,7 +1087,7 @@ def main(language, scenario='account', resume=None):
 
         if report['verified_accounts'] != (0 if product_entry else 1):
             raise RuntimeError('Expected exactly one newly verified fixture account')
-        if payment_context and not (reviews or paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail):
+        if payment_context and not (reviews or paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail or cancellation):
             cart_id, order_id = report['cart_id'], report['order_id']
             if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
                 raise RuntimeError('Owned payment context result identity invalid')
@@ -1148,6 +1168,22 @@ def main(language, scenario='account', resume=None):
                 report['paid_checkpoint_financial_and_ownership_unchanged'] = True
                 report['stock_before'] = stock_before
                 report['stock_after'] = [stock_before[0] if intake_warehouse else expected_stock, expected_reserved]
+        if cancellation:
+            if cancellation_fingerprint() != cancellation_before:
+                raise RuntimeError('Cancellation changed protected payments, product snapshots, original versions, physical stock, devices or fulfillment')
+            report['protected_original_item_versions_payments_capture_ownership_physical_stock_devices_fulfillment_unchanged'] = True
+            order = paid['order_id']
+            facts = sql(database,"SELECT (SELECT CONCAT(status,':',version) FROM orders WHERE id='"+order+"'),(SELECT COUNT(*) FROM order_cancellations WHERE order_id='"+order+"' AND completed_at IS NOT NULL),(SELECT COUNT(*) FROM payment_refunds f JOIN order_refund_operations r ON f.id=CONCAT('ref_',r.operation_id) WHERE r.order_id='"+order+"' AND r.cancellation_id IS NOT NULL),(SELECT COUNT(*) FROM order_credit_lines WHERE order_id='"+order+"' AND reference='order_cancellation' AND amount=789),(SELECT COUNT(*) FROM order_transactions WHERE order_id='"+order+"' AND reference='refund' AND amount=-789),(SELECT COUNT(*) FROM customer_event_mail WHERE resource_id='"+order+"' AND kind IN ('refund.created','order.canceled') AND status='sent'),(SELECT COUNT(*) FROM inventory_reservation_operations WHERE owner_id='"+order+"' AND kind='release')").split('\t')
+            if facts != ['canceled:2','1','1','1','1','2','1']:
+                raise RuntimeError('Cancellation terminal SQL facts differ: '+str(facts))
+            for binding in cancellation_bindings:
+                reservation,quantity,inventory_item,location=binding.split('\t')
+                if sql(database,"SELECT COUNT(*) FROM inventory_reservations WHERE id='"+reservation+"' AND deleted_at IS NOT NULL")!='1':
+                    raise RuntimeError('Original order reservation was not released')
+            totals=sql(database,"SELECT JSON_UNQUOTE(JSON_EXTRACT(totals,'$.pending_difference')),JSON_UNQUOTE(JSON_EXTRACT(totals,'$.transaction_total')),JSON_UNQUOTE(JSON_EXTRACT(totals,'$.credit_line_total')) FROM order_summaries WHERE order_id='"+order+"' AND version=2 AND deleted_at IS NULL").split('\t')
+            if list(map(Decimal,totals)) != [Decimal(0),Decimal(0),Decimal(789)]:
+                raise RuntimeError('Cancellation credit and cash summary disagree')
+            report['sql_cancellation_facts'] = dict(status='canceled',version=2,terminal_roots=1,refunds=1,refund_credit_lines=1,refund_transactions=1,sent_mail=2,release_receipts=1,original_reservations_released=len(cancellation_bindings),pending_difference='0')
         if delivery_mail:
             if parcel_delivery_fingerprint(database) != delivery_protected_before or int(sql(database, 'SELECT revision FROM device_runtime_schema WHERE id=1')) != delivery_revision_before + 1:
                 raise RuntimeError('Delivery changed protected payment, stock, device, tracking or order facts')
@@ -1372,6 +1408,23 @@ if __name__ == '__main__':
         main('en', 'intake-warehouse', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--warehouse-from-checkpoint='):
         main('en', 'paid-warehouse', sys.argv[1].split('=', 1)[1])
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--cancellation-from-checkpoint='):
+        main('en', 'cancellation', sys.argv[1].split('=', 1)[1])
+    elif len(sys.argv) == 5 and sys.argv[1] == '--cancellation-fault':
+        database, order, phase = sys.argv[2:]
+        if not re.fullmatch(DB_PATTERN, database) or not re.fullmatch(r'order_[0-9a-f-]{36}', order) or phase not in ('refund-on','refund-off','cancel-on','cancel-off'):
+            raise RuntimeError('Owned cancellation fault target required')
+        config()
+        owner = database.removeprefix('retail_account_')
+        if not (ROOT / 'logs/retail-native' / ('account-' + owner) / 'snapshot.sql').is_file():
+            raise RuntimeError('Owned snapshot required')
+        trigger = 'owned_cancellation_refund_failure' if phase.startswith('refund') else 'owned_order_cancellation_failure'
+        if phase.endswith('off'):
+            sql(database, 'DROP TRIGGER IF EXISTS ' + trigger)
+        elif phase == 'refund-on':
+            sql(database, "CREATE TRIGGER "+trigger+" BEFORE INSERT ON customer_account_notices FOR EACH ROW SET NEW.kind=IF(NEW.resource_id='"+order+"' AND NEW.kind='refund.created',NULL,NEW.kind)")
+        else:
+            sql(database, "CREATE TRIGGER "+trigger+" BEFORE UPDATE ON orders FOR EACH ROW SET NEW.status=IF(NEW.id='"+order+"' AND NEW.status='canceled',NULL,NEW.status)")
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--delivery-from-checkpoint='):
         main('en', 'delivery-mail', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--refund-mail-from-checkpoint='):
