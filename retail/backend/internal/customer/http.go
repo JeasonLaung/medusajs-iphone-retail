@@ -12,6 +12,7 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/eurorefurb/retail/internal/cart"
 	"github.com/eurorefurb/retail/internal/orderpayments"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/eurorefurb/retail/internal/protected"
@@ -28,6 +29,7 @@ type HTTPSessions interface {
 	AllowLogin(context.Context, sessionstore.Realm, string) (bool, error)
 }
 type HTTPOptions struct {
+	InitialPayment    *cart.InitialPaymentOptions
 	ManualProviderIDs []string
 	OrderPayments     *orderpayments.Service
 	Sessions          HTTPSessions
@@ -38,6 +40,7 @@ type HTTPOptions struct {
 	StoreID           string
 }
 type HTTPHandler struct {
+	initialPayment  *cart.InitialPaymentOptions
 	manualProviders []string
 	orderPayments   *orderpayments.Service
 	store           *Store
@@ -71,7 +74,7 @@ func NewHTTP(db *gorm.DB, options HTTPOptions) (*HTTPHandler, error) {
 			return nil, ErrUnavailable
 		}
 	}
-	return &HTTPHandler{manualProviders: append([]string(nil), options.ManualProviderIDs...), orderPayments: options.OrderPayments, store: store, sessions: options.Sessions, origin: options.Origin, host: u.Host, secure: options.Secure, bridgeSecret: key, storeID: options.StoreID}, nil
+	return &HTTPHandler{initialPayment: options.InitialPayment, manualProviders: append([]string(nil), options.ManualProviderIDs...), orderPayments: options.OrderPayments, store: store, sessions: options.Sessions, origin: options.Origin, host: u.Host, secure: options.Secure, bridgeSecret: key, storeID: options.StoreID}, nil
 }
 
 // Register is mounted on /api/store/customer by the production API, even when

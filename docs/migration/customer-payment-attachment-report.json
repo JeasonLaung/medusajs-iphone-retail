@@ -1,0 +1,407 @@
+{
+  "owner": "d3c4735679f7",
+  "passed": true,
+  "finished_utc": "2026-11-02T07:47:02.363Z",
+  "binary_sha256": "1a5acf700372d06ddae71b430e4d1ccf498ac00ebaa7c74e780603cbedf67e33",
+  "actual_gin_mysql_redis_astro": true,
+  "real_provider_called": false,
+  "frozen_source_verified": true,
+  "owned_resources_removed": true,
+  "local_report_sha256": "3d1e5fb6b04393b082ef5c87181293c5bcd09caa434cdc38e768612e0e0426ff",
+  "browser": {
+    "cases": [
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "unchanged",
+        "real_database_facts": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": 6
+            }
+          ],
+          "checkout": "296fe22c-7e70-44f5-be0b-c141baca39d5",
+          "creates": 1,
+          "deletes": 0,
+          "discovers": 0,
+          "email": "owned@example.invalid",
+          "observes": 0,
+          "protected_unchanged": true,
+          "receipts": 1,
+          "refresh": null,
+          "transfer_receipts": 0,
+          "version": 6
+        },
+        "context_posts": 2,
+        "same_uuid_payload": true,
+        "lost_success_response": true,
+        "refresh_recovery": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "changed",
+        "real_database_facts": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": null,
+          "creates": 1,
+          "deletes": 1,
+          "discovers": 0,
+          "email": "owned@example.invalid",
+          "observes": 0,
+          "protected_unchanged": true,
+          "receipts": 1,
+          "refresh": null,
+          "transfer_receipts": 0,
+          "version": 6
+        },
+        "context_posts": 2,
+        "same_uuid_payload": true,
+        "lost_success_response": true,
+        "refresh_recovery": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "restore",
+        "real_database_facts": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            },
+            {
+              "InputVersion": 5,
+              "CartVersion": 6,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": "d66754b7-d360-4823-a83d-1d9cc70ce007",
+          "creates": 2,
+          "deletes": 1,
+          "discovers": 0,
+          "email": "owned@example.invalid",
+          "observes": 0,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": null,
+          "transfer_receipts": 0,
+          "version": 6
+        },
+        "context_posts": 3,
+        "same_uuid_payload": true,
+        "lost_success_response": true,
+        "refresh_recovery": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "delete-unknown",
+        "real_database_facts": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": null,
+          "creates": 1,
+          "deletes": 1,
+          "discovers": 0,
+          "email": "owned@example.invalid",
+          "observes": 3,
+          "protected_unchanged": true,
+          "receipts": 1,
+          "refresh": null,
+          "transfer_receipts": 0,
+          "version": 6
+        },
+        "context_posts": 3,
+        "same_uuid_payload": true,
+        "lost_success_response": false,
+        "refresh_recovery": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "create-unknown",
+        "real_database_facts": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            },
+            {
+              "InputVersion": 5,
+              "CartVersion": 6,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": "3c4026b2-ec4a-4664-b7d9-472008f6ce26",
+          "creates": 2,
+          "deletes": 1,
+          "discovers": 3,
+          "email": "owned@example.invalid",
+          "observes": 0,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": null,
+          "transfer_receipts": 0,
+          "version": 6
+        },
+        "context_posts": 4,
+        "same_uuid_payload": true,
+        "lost_success_response": false,
+        "refresh_recovery": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "paid",
+        "real_database_facts": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": "36feda9c-c778-446a-b4d2-6eb6d250c149",
+          "creates": 1,
+          "deletes": 1,
+          "discovers": 0,
+          "email": "owned@example.invalid",
+          "observes": 2,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": "6774db08-ff4f-49cf-8cfa-1fd850cf1c4c",
+          "transfer_receipts": 0,
+          "version": 5
+        },
+        "paid_keeps_frozen": true,
+        "same_uuid_payload": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "replacement-paid",
+        "real_database_facts": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            },
+            {
+              "InputVersion": 5,
+              "CartVersion": 6,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": "a266f705-0457-4b96-b167-a254d85d3e01",
+          "creates": 2,
+          "deletes": 1,
+          "discovers": 3,
+          "email": "owned@example.invalid",
+          "observes": 1,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": null,
+          "transfer_receipts": 0,
+          "version": 6
+        },
+        "context_posts": 5,
+        "same_uuid_payload": true,
+        "lost_success_response": true,
+        "refresh_recovery": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "replacement-authorized",
+        "real_database_facts": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            },
+            {
+              "InputVersion": 5,
+              "CartVersion": 6,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": "aaec4a7e-060e-4e95-8054-c37e3fd98bff",
+          "creates": 2,
+          "deletes": 1,
+          "discovers": 3,
+          "email": "owned@example.invalid",
+          "observes": 1,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": null,
+          "transfer_receipts": 0,
+          "version": 6
+        },
+        "context_posts": 5,
+        "same_uuid_payload": true,
+        "lost_success_response": true,
+        "refresh_recovery": true
+      },
+      {
+        "scenario": "same-account",
+        "lang": "en",
+        "width": 390,
+        "real_database_facts": {
+          "account_owners": 1,
+          "attempts": [
+            {
+              "InputVersion": 6,
+              "CartVersion": 7,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": "066009c6-0cfb-4a75-83a3-3e2f22aff7a3",
+          "creates": 1,
+          "deletes": 0,
+          "discovers": 0,
+          "email": "edited-checkout@example.invalid",
+          "observes": 0,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": null,
+          "transfer_receipts": 2,
+          "version": 7
+        },
+        "payment_journal_unchanged": true,
+        "same_account_lost_response_replayed": true,
+        "foreign_or_unbound_denied": true
+      },
+      {
+        "scenario": "unbound-account",
+        "lang": "en",
+        "width": 390,
+        "real_database_facts": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": "0bfaa5fd-682a-4c48-beb8-3af8f81bd04f",
+          "creates": 1,
+          "deletes": 0,
+          "discovers": 0,
+          "email": "owned@example.invalid",
+          "observes": 0,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": null,
+          "transfer_receipts": 0,
+          "version": 5
+        },
+        "payment_journal_unchanged": true,
+        "same_account_lost_response_replayed": false,
+        "foreign_or_unbound_denied": true
+      },
+      {
+        "scenario": "unbound-unchanged",
+        "lang": "en",
+        "width": 390,
+        "real_database_facts": {
+          "account_owners": 1,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": 6
+            }
+          ],
+          "checkout": "a3163876-6460-40fa-af2a-9cda6c57fbfe",
+          "creates": 1,
+          "deletes": 0,
+          "discovers": 0,
+          "email": "context-buyer@example.invalid",
+          "observes": 0,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": null,
+          "transfer_receipts": 1,
+          "version": 6
+        },
+        "payment_journal_unchanged": true,
+        "same_account_lost_response_replayed": true,
+        "foreign_or_unbound_denied": true
+      },
+      {
+        "scenario": "unbound-precision",
+        "lang": "en",
+        "width": 390,
+        "real_database_facts": {
+          "account_owners": 0,
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": "0384ae18-02c0-4dd1-8041-923d391971c8",
+          "creates": 1,
+          "deletes": 0,
+          "discovers": 0,
+          "email": "owned@example.invalid",
+          "observes": 0,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": null,
+          "transfer_receipts": 0,
+          "version": 5
+        },
+        "payment_journal_unchanged": true,
+        "same_account_lost_response_replayed": false,
+        "foreign_or_unbound_denied": true
+      }
+    ],
+    "errors": [],
+    "api_mocking": false,
+    "actual_gin_mysql_redis_astro": true
+  },
+  "checks": {
+    "first_attachment_receipt_failure_all_table_rollback": true,
+    "new_customer_qualified_discount_all_table_rollback": true,
+    "paid_attempt_rejected": true,
+    "sub_cent_changed_amount_rejected": true,
+    "original_create_versions_retained": true,
+    "payment_journal_retained": true
+  },
+  "limits": {
+    "full_business_chain": false,
+    "language": "en",
+    "width": 390,
+    "changed_amount_provider_coordination": "still incomplete",
+    "order_completion": false
+  }
+}

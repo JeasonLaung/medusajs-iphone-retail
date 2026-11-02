@@ -31,6 +31,9 @@ node retail/scripts/test-context-payment-joint.mjs --scenario replacement-author
 # 已绑定同客户重登/匿名已有付款首次绑定拒绝
 node retail/scripts/test-context-payment-joint.mjs --scenario same-account
 node retail/scripts/test-context-payment-joint.mjs --scenario unbound-account
+# 匿名已有付款首次绑定：相同精确金额保留，低于分的变化拒绝
+node retail/scripts/test-context-payment-joint.mjs --scenario unbound-unchanged
+node retail/scripts/test-context-payment-joint.mjs --scenario unbound-precision
 # 仅需要检查本项语言/尺寸组合时使用，仍非完整交易链路
 node retail/scripts/test-context-payment-joint.mjs --scenario restore --matrix
 ```

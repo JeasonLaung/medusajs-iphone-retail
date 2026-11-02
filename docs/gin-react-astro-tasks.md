@@ -4,6 +4,8 @@
 
 ## 最新换机交接（2026-11-02，覆盖后文历史运行状态）
 
+2026-11-02 匿名已有付款首次账户绑定（金额不变分支）：接入正式客户HTTP与原付款配置，在同一事务内先校验原CREATE/唯一未付会话，再保存新归属、刷新价格/税/客户优惠并精确比较金额/币种；完全相同才保留原付款并更新effective版本。真实12状态英文390px局部联合通过，新增登录丢响应重放/完整付款日志保留、低于分的差异拒绝、仅客户归属后才生效的自动优惠全表回滚、收据末尾故障全表回滚及已付拒绝；Go cart/customer/identity/cmd-api检查通过。见[说明](migration/gin-customer-cart-transfer.md)与[报告](migration/customer-payment-attachment-report.json)。变化金额的渠道删除/未知恢复/补偿及跨设备合并仍缺，不把金额不变分支当整个转移闭环；完整业务全链仍留收尾一次验证，原服务/主预览仍接续前离线。
+
 2026-11-02 同账户冻结结账重登：原已归属客户可在重新验证双凭证后确认同一cart，保留版本、编辑后的邮箱、冻结金额和CREATE日志；首次匿名已有付款归属仍待协调。前端19项局部测试、Astro470文件0错0警告及Go cart/customer/identity通过；真实10状态英文390px与同账户中英×390/1440从头四组合通过，含丢响应自动重放、外账户/匿名首次绑定拒绝、收据末尾故障全表回滚、六并发唯一收据、停用/付款刷新冻结拒绝。见[接续说明](migration/gin-customer-cart-transfer.md)及[报告](migration/customer-frozen-cart-transfer-report.json)。隔离资源清理；原服务/主预览仍接续前离线，完整业务全链未运行，C01—C11继续开放。
 
 2026-11-02 替代付款恢复：修复未知CREATE查询已付款/仅授权后无法接回原付款绑定的冲突；无需已失效的收银台链接，保持原始CREATE凭据和版本，授权不当实收，付款查询继续独立保存认证证据。八状态英文390px局部浏览器→Gin→MySQL/Redis通过（含两新增状态的丢成功响应重放），无重复CREATE，保护表不变；Go cart/payments/identity检查通过。见[专项说明](migration/context-payment-subflow.md)及[报告](migration/replacement-payment-recovery-report.json)。没有执行成单或完整交易全链；账户转移、跨币种/精确小数、矩阵与最终联合仍开放。

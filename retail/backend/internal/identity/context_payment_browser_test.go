@@ -159,7 +159,7 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		t.Fatal(err)
 	}
 	customerSessions := &contextBrowserCustomerSessions{Store: sessions}
-	customerHTTP, err := customer.NewHTTP(db, customer.HTTPOptions{Sessions: customerSessions, Ring: options.Ring, Origin: origin, StoreID: "shop", BridgeKey: key, ManualProviderIDs: options.ManualProviders})
+	customerHTTP, err := customer.NewHTTP(db, customer.HTTPOptions{InitialPayment: &configured, Sessions: customerSessions, Ring: options.Ring, Origin: origin, StoreID: "shop", BridgeKey: key, ManualProviderIDs: options.ManualProviders})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -257,6 +257,10 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		exec(`UPDATE pricing_prices SET amount=121,raw_amount='{"value":"121","precision":100}' WHERE id='add-single'`)
 		c.Status(200)
 	})
+	fixture.POST("/precision-price", func(c *gin.Context) {
+		exec(`UPDATE pricing_prices SET amount=120,raw_amount='{"value":"120.000000000000000000001","precision":100}' WHERE id='add-single'`)
+		c.Status(200)
+	})
 	fixture.POST("/edited-email", func(c *gin.Context) {
 		address := cart.ContactAddress{FirstName: "Owned", LastName: "Buyer", Address1: "Test street 1", City: "Copenhagen", PostalCode: "0012", Country: "dk", Phone: "+45 111"}
 		_, e := cart.SaveContacts(ctx, db, "shop", active, cart.ContactCommand{OperationID: uuid.NewString(), Version: "5", Email: "edited-checkout@example.invalid", Shipping: address, Billing: address}, options.ManualProviders)
@@ -270,6 +274,14 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	fixture.POST("/frozen-transfer-audit", func(c *gin.Context) {
 		if err := auditFrozenCustomerTransfer(ctx, db, accounts, sessions, active, options.ManualProviders); err != nil {
 			t.Error("frozen transfer audit", err)
+			c.Status(503)
+			return
+		}
+		c.Status(200)
+	})
+	fixture.POST("/first-attachment-audit", func(c *gin.Context) {
+		if err := auditFirstPaymentAttachment(ctx, db, accounts, sessions, active, configured); err != nil {
+			t.Error("first attachment audit", err)
 			c.Status(503)
 			return
 		}

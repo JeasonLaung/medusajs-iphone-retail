@@ -55,11 +55,11 @@ func readCartCustomer(tx *gorm.DB, ref sessionstore.CartReference) (*cartCustome
 // trusted, server-side account/session check, executed AFTER the cart row lock;
 // it must lock the verified new account and recheck both capabilities. No account
 // ID, email, store or generation from a browser is accepted as ownership proof.
-func TransferCustomer(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, in CustomerTransferCommand, providers []string, authenticate func(*gorm.DB) (string, string, error)) (ContactResult, error) {
+func TransferCustomer(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, in CustomerTransferCommand, providers []string, authenticate func(*gorm.DB) (string, string, error), paymentOptions ...InitialPaymentOptions) (ContactResult, error) {
 	failed := ContactResult{}
 	op, e := uuid.Parse(in.OperationID)
 	version, v := strconv.ParseUint(in.Version, 10, 64)
-	if e != nil || op.Version() != 4 || op.String() != in.OperationID || v != nil || version == 0 || version == ^uint64(0) || strconv.FormatUint(version, 10) != in.Version || !refOK(store, ref) || db == nil || db.Statement == nil || authenticate == nil || len(providers) > 100 {
+	if e != nil || op.Version() != 4 || op.String() != in.OperationID || v != nil || version == 0 || version == ^uint64(0) || strconv.FormatUint(version, 10) != in.Version || !refOK(store, ref) || db == nil || db.Statement == nil || authenticate == nil || len(providers) > 100 || len(paymentOptions) > 1 {
 		return failed, ErrInput
 	}
 	if _, nested := db.Statement.ConnPool.(gorm.TxCommitter); nested {
@@ -124,11 +124,6 @@ func TransferCustomer(ctx context.Context, db *gorm.DB, store string, ref sessio
 		if owner != nil && owner.CustomerID != account {
 			return ErrDenied
 		}
-		if owner == nil && frozen.CheckoutAttemptID != nil {
-			// First attachment can change customer-qualified prices/promotions.
-			// It still needs durable provider refresh coordination, not a bypass.
-			return ErrConflict
-		}
 		var receipt struct {
 			CustomerID, Generation      string
 			InputVersion, ResultVersion uint64
@@ -153,8 +148,20 @@ func TransferCustomer(ctx context.Context, db *gorm.DB, store string, ref sessio
 		}
 		next := version
 		if owner == nil {
-			if _, err := reusablePaymentCollection(ctx, tx, current.ID); err != nil {
-				return err
+			workCtx := ctx
+			frozenPayment := frozen.CheckoutAttemptID != nil
+			if frozenPayment {
+				if len(paymentOptions) != 1 {
+					return ErrConflict
+				}
+				if err := validateCustomerTransferPayment(ctx, tx, store, ref, current, checkout, paymentOptions[0]); err != nil {
+					return err
+				}
+				workCtx = context.WithValue(ctx, contextPreviewScopeKey{}, contextPreviewScope{tx: tx.Statement.ConnPool, store: store, version: in.Version, checkoutOperation: checkout, ref: ref})
+			} else {
+				if _, err := reusablePaymentCollection(ctx, tx, current.ID); err != nil {
+					return err
+				}
 			}
 
 			if err := supportedSavedShipping(tx, current.ID, providers); err != nil {
@@ -167,29 +174,46 @@ func TransferCustomer(ctx context.Context, db *gorm.DB, store string, ref sessio
 				return ErrStorage
 			}
 			at := time.Now().UTC()
-			if _, err := RefreshItemSnapshots(ctx, tx, store, ref, in.Version); err != nil {
+			if _, err := RefreshItemSnapshots(workCtx, tx, store, ref, in.Version); err != nil {
 				return err
 			}
-			if _, err := RefreshItemPrices(ctx, tx, store, ref, in.Version, at); err != nil {
+			if _, err := RefreshItemPrices(workCtx, tx, store, ref, in.Version, at); err != nil {
 				return err
 			}
-			if _, err := RefreshManualShippingMethods(ctx, tx, store, ref, in.Version, providers, at); err != nil {
+			if _, err := RefreshManualShippingMethods(workCtx, tx, store, ref, in.Version, providers, at); err != nil {
 				return err
 			}
 			// Medusa force_refresh selects updateTaxLines, whose separate
 			// force_tax_calculation remains unset. Without a shipping country it
 			// clears old lines; it must not force a country-less calculation.
-			if _, err := RefreshSystemTaxes(ctx, tx, store, ref, in.Version, false); err != nil {
+			if _, err := RefreshSystemTaxes(workCtx, tx, store, ref, in.Version, false); err != nil {
 				return err
 			}
-			if _, err := RefreshPromotions(ctx, tx, store, ref, in.Version, PromotionRefresh{At: at}); err != nil {
+			if _, err := RefreshPromotions(workCtx, tx, store, ref, in.Version, PromotionRefresh{At: at}); err != nil {
 				return err
 			}
 			if _, err := assembleAmounts(tx, current); err != nil {
 				return err
 			}
-			if err := syncEmptyPaymentCollection(ctx, tx, store, ref, in.Version); err != nil {
-				return err
+			if frozenPayment {
+				payment, err := PreparePaymentRefresh(workCtx, tx, store, ref, in.Version)
+				if err != nil {
+					return err
+				}
+				// Exact amounts, not provider-rounded cents, decide retention.
+				// Changed targets must roll back ownership/email and all refresh
+				// writes until durable delete/compensation coordination is ready.
+				if payment.CollectionID == "" || payment.UpdateCollection || payment.Changed || len(payment.DeleteSessionIDs) != 0 {
+					return ErrConflict
+				}
+				r := tx.Table("cart_checkout_attempts").Where("cart_id=? AND operation_id=? AND activated=TRUE AND COALESCE(effective_cart_version,cart_version)=?", ref.CartID, checkout, version).Update("effective_cart_version", version+1)
+				if r.Error != nil || r.RowsAffected != 1 {
+					return ErrConflict
+				}
+			} else {
+				if err := syncEmptyPaymentCollection(ctx, tx, store, ref, in.Version); err != nil {
+					return err
+				}
 			}
 			if r := tx.Exec("UPDATE cart_ownership SET version=version+1,updated_at=UTC_TIMESTAMP(6) WHERE cart_id=? AND version=?", current.ID, version); r.Error != nil || r.RowsAffected != 1 {
 				return ErrConflict

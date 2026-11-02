@@ -15,7 +15,7 @@ var ErrCartConflict = errors.New("customer cart transfer unavailable")
 
 // TransferCart requires both the current new-account session and possession of
 // the current cart. It never finds carts, customers or orders by email.
-func (s *Store) TransferCart(ctx context.Context, token, possession, store string, in cart.CustomerTransferCommand, providers []string) (cart.ContactResult, error) {
+func (s *Store) TransferCart(ctx context.Context, token, possession, store string, in cart.CustomerTransferCommand, providers []string, paymentOptions ...cart.InitialPaymentOptions) (cart.ContactResult, error) {
 	failed := cart.ContactResult{}
 	if !tokenOK(token) || !tokenOK(possession) {
 		return failed, ErrUnauthorized
@@ -64,7 +64,7 @@ func (s *Store) TransferCart(ctx context.Context, token, possession, store strin
 			return "", "", authErr
 		}
 		return account.ID, account.Email, nil
-	})
+	}, paymentOptions...)
 	if authErr != nil {
 		return failed, authErr
 	}

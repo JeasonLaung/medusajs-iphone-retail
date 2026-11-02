@@ -34,7 +34,11 @@ func (h *HTTPHandler) TransferCart(c *gin.Context) {
 		h.fail(c, ErrUnauthorized)
 		return
 	}
-	out, err := h.store.TransferCart(ctx, token, possession, h.storeID, cart.CustomerTransferCommand{OperationID: input["operation_id"], Version: input["version"]}, h.manualProviders)
+	var paymentOptions []cart.InitialPaymentOptions
+	if h.initialPayment != nil {
+		paymentOptions = append(paymentOptions, *h.initialPayment)
+	}
+	out, err := h.store.TransferCart(ctx, token, possession, h.storeID, cart.CustomerTransferCommand{OperationID: input["operation_id"], Version: input["version"]}, h.manualProviders, paymentOptions...)
 	if err != nil {
 		h.fail(c, err)
 		return
