@@ -496,7 +496,61 @@ def verify_intake_delivery_checkpoint(owner):
     print('Intake delivery checkpoint verified: ' + owner)
 
 
+def verify_repair_mail_checkpoint(owner):
+    config()
+    if not re.fullmatch(r'[0-9a-f]{12}', owner):
+        raise RuntimeError('Owned repair email checkpoint required')
+    logs = ROOT / 'logs/retail-native' / ('account-' + owner)
+    browser = json.loads((logs / 'browser-result.json').read_text(encoding='utf-8'))
+    run = json.loads((logs / 'report.json').read_text(encoding='utf-8'))
+    if not browser.get('passed') or browser.get('scenario') != 'repair-mail' or not run.get('payment_durable_snapshot_retained') or not run.get('resources_removed'):
+        raise RuntimeError('Finished browser and cleaned durable repair email checkpoint required')
+    order, request = browser['order_id'], browser['request_id']
+    if not re.fullmatch(r'order_[0-9a-f-]{36}', order) or not re.fullmatch(r'asr_[0-9a-f-]{36}', request):
+        raise RuntimeError('Invalid owned repair email identities')
+    fingerprints, facts = [], None
+    for name in ('snapshot.sql', 'payment-context-final.sql'):
+        database = 'retail_account_' + secrets.token_hex(6)
+        snapshot = '/tmp/repair-mail-verify-' + database + '.sql'
+        created = False
+        try:
+            docker('cp', str(logs / name), CONTAINER + ':' + snapshot)
+            docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'CREATE DATABASE ' + database)
+            created = True
+            docker('exec', CONTAINER, 'sh', '-c', 'mysql --defaults-extra-file=/tmp/local-root.cnf ' + database + ' < ' + snapshot)
+            fingerprints.append(warehouse_payment_fingerprint(database))
+            if name == 'payment-context-final.sql':
+                kinds = sql(database, "SELECT kind,status,COUNT(*) FROM customer_event_mail WHERE resource_id='" + order + "' GROUP BY kind,status ORDER BY kind,status").splitlines()
+                if kinds != ['after_sales.completed\tsent\t1', 'after_sales.processing\tsent\t1', 'shipment.created\tsent\t1']:
+                    raise RuntimeError('Persisted customer event email facts differ: ' + str(kinds))
+                checks = {
+                    'completed_repair': "SELECT COUNT(*) FROM after_sales_requests WHERE id='" + request + "' AND order_id='" + order + "' AND type='repair' AND status='completed'",
+                    'return_receipt': "SELECT COUNT(*) FROM device_return_receipts WHERE request_id='" + request + "'",
+                    'service_receipts': "SELECT COUNT(*) FROM device_service_receipts WHERE request_id='" + request + "'",
+                    'shipped_original_device': "SELECT COUNT(*) FROM devices WHERE id='isolated-repair-device' AND state='shipped'",
+                    'sent_event_rows': "SELECT COUNT(*) FROM customer_event_mail WHERE resource_id='" + order + "' AND status='sent'",
+                    'sent_deliveries': "SELECT COUNT(*) FROM customer_event_mail_deliveries WHERE sent_at IS NOT NULL AND provider_id IS NOT NULL AND request_envelope IS NOT NULL",
+                    'retry_receipt': "SELECT COUNT(*) FROM audit_events WHERE action='customer_event_mail.retry'",
+                    'private_ownership': "SELECT COUNT(*) FROM customer_order_ownership WHERE order_id='" + order + "'",
+                }
+                facts = {key: int(sql(database, query)) for key, query in checks.items()}
+                if facts != dict(completed_repair=1, return_receipt=1, service_receipts=2, shipped_original_device=1, sent_event_rows=3, sent_deliveries=3, retry_receipt=1, private_ownership=1):
+                    raise RuntimeError('Repair mail terminal SQL facts differ: ' + str(facts))
+        finally:
+            if created:
+                docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'DROP DATABASE ' + database)
+            docker('exec', CONTAINER, 'rm', '-f', snapshot)
+    if fingerprints[0] != fingerprints[1]:
+        raise RuntimeError('Original payment, order or ownership changed during repair mail continuation')
+    report = dict(passed=True, owner=owner, order_id=order, sql_facts=facts,
+                  payment_order_ownership_unchanged=True, no_business_or_remote_payment_replayed=True,
+                  verification_resources_removed=True)
+    (logs / 'repair-mail-verification.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+    print('Repair mail durable checkpoint verified: ' + owner)
+
+
 def main(language, scenario='account', resume=None):
+    repair_mail = scenario == 'repair-mail'
     intake_warehouse = scenario == 'intake-warehouse'
     device_entry = scenario == 'device-entry'
     product_entry = scenario in ('product-entry', 'device-entry')
@@ -504,15 +558,15 @@ def main(language, scenario='account', resume=None):
     reviews = scenario == 'reviews'
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
     supplement = scenario == 'supplement'
-    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement')
-    event_mail = scenario == 'buyback-mail'
+    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail')
+    event_mail = scenario in ('buyback-mail', 'repair-mail')
     buyback_intake = scenario in ('buyback-intake', 'buyback-intake-return', 'buyback-mail')
     buyback_return = scenario in ('buyback-return', 'buyback-intake-return')
     buyback = scenario == 'buyback' or buyback_intake or buyback_return
     exchange = scenario in ('exchange', 'supplement')
     refund = scenario == 'refund'
     warehouse = scenario in ('warehouse', 'paid-warehouse', 'intake-warehouse')
-    repair = scenario in ('repair', 'exchange', 'refund', 'warehouse', 'paid-warehouse', 'intake-warehouse', 'supplement')
+    repair = scenario in ('repair', 'exchange', 'refund', 'warehouse', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail')
     admin_required = buyback or repair or mail or reviews or product_entry
     values = config()
     api_binary = Path(os.environ.get('ACCOUNT_TEST_API_BINARY') or ROOT / 'logs/retail-native/retail-api.exe').resolve()
@@ -523,7 +577,7 @@ def main(language, scenario='account', resume=None):
             raise RuntimeError('Only an owned payment checkpoint can resume')
         checkpoint = ROOT / 'logs/retail-native' / ('account-' + resume)
         checkpoint_report = json.loads((checkpoint / 'report.json').read_text())
-        if (paid_warehouse or supplement) and (not checkpoint_report.get('passed') or not checkpoint_report.get('payment_durable_snapshot_retained')):
+        if (paid_warehouse or supplement or repair_mail) and (not checkpoint_report.get('passed') or not checkpoint_report.get('payment_durable_snapshot_retained')):
             raise RuntimeError('Fulfillment continuation requires a verified durable paid checkpoint')
         if refund:
             paid = json.loads((checkpoint / 'refund-new-paid-order.json').read_text())
@@ -616,7 +670,7 @@ def main(language, scenario='account', resume=None):
                 if len(row) != 2 or not re.fullmatch(r'asr_[0-9a-f-]{36}', row[0]) or not re.fullmatch(r'[0-9a-f-]{36}', row[1]):
                     raise RuntimeError('Owned refund receipt identity mismatch')
                 (logs / 'refund-existing.json').write_text(json.dumps({'request_id': row[0], 'operation_id': row[1]}))
-        if repair and not intake_warehouse and (not resume or paid_warehouse or supplement):
+        if repair and not intake_warehouse and (not resume or paid_warehouse or supplement or repair_mail):
             sql(database, "UPDATE customer_after_sales_runtime SET enabled=TRUE WHERE id=1; "
                 "UPDATE after_sales_review_runtime SET enabled=TRUE WHERE id=1; "
                 "UPDATE device_return_runtime SET enabled=TRUE WHERE id=1; "
@@ -697,7 +751,7 @@ def main(language, scenario='account', resume=None):
             review_before = protected_fingerprint()
             env['CHECKOUT_PAYMENT_ENABLED'] = 'false'
             env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'false'
-        if paid_warehouse:
+        if paid_warehouse or repair_mail:
             env['CHECKOUT_PAYMENT_ENABLED'] = 'false'
             env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'false'
             stock_before = sql(database, "SELECT stocked_quantity,reserved_quantity FROM inventory_levels WHERE inventory_item_id='iitem_01M51RN7HTPYQ7YFPXABBF8VJ8' AND location_id='sloc_01M4FBP3NDPZHJKVV3VY682QTN' AND deleted_at IS NULL").split('\t')
@@ -759,7 +813,7 @@ def main(language, scenario='account', resume=None):
         if resume and refund:
             browser_env.update(ACCOUNT_TEST_CUSTOMER_OWNER=customer_owner, ACCOUNT_TEST_RESUME_PAID='true',
                                ACCOUNT_TEST_REFUND_EXISTING='true' if existing_refund else 'false')
-        if paid_warehouse or supplement:
+        if paid_warehouse or supplement or repair_mail:
             browser_env.update(ACCOUNT_TEST_CUSTOMER_OWNER=customer_owner, ACCOUNT_TEST_RESUME_PAID='true')
             (logs / 'refund-new-paid-order.json').write_text(json.dumps(paid))
         script = 'tests/local-payment-context.live.mjs' if payment_context else 'tests/local-notification-mail.live.mjs' if mail else 'tests/local-repair.live.mjs' if repair else 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
@@ -770,7 +824,7 @@ def main(language, scenario='account', resume=None):
             script = 'tests/local-product-entry.live.mjs'
         if reviews:
             script = 'tests/local-product-reviews.live.mjs'
-        if paid_warehouse or supplement:
+        if paid_warehouse or supplement or repair_mail:
             script = 'tests/local-repair.live.mjs'
         result = subprocess.run([str(node), script],
                                 cwd=ROOT / 'retail/storefront', env=browser_env,
@@ -799,7 +853,7 @@ def main(language, scenario='account', resume=None):
             report['sql_device_facts'] = dict(zip(['tracking_receipt', 'intake_receipt', 'available_sale', 'inspection_returned', 'photos'], map(int, facts)))
         if report['verified_accounts'] != (0 if product_entry else 1):
             raise RuntimeError('Expected exactly one newly verified fixture account')
-        if payment_context and not (reviews or paid_warehouse or supplement):
+        if payment_context and not (reviews or paid_warehouse or supplement or repair_mail):
             cart_id, order_id = report['cart_id'], report['order_id']
             if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
                 raise RuntimeError('Owned payment context result identity invalid')
@@ -862,6 +916,14 @@ def main(language, scenario='account', resume=None):
                 report['paid_checkpoint_financial_and_ownership_unchanged'] = True
                 report['stock_before'] = stock_before
                 report['stock_after'] = [stock_before[0] if intake_warehouse else expected_stock, expected_reserved]
+        if repair_mail:
+            if payment_fingerprint() != payment_before:
+                raise RuntimeError('Order payment or account ownership changed during repair mail rehearsal')
+            report['paid_checkpoint_financial_and_ownership_unchanged'] = True
+            mail_facts = sql(database, "SELECT kind,status,COUNT(*) FROM customer_event_mail GROUP BY kind,status ORDER BY kind,status").splitlines()
+            if mail_facts != ['after_sales.completed\tsent\t1', 'after_sales.processing\tsent\t1', 'shipment.created\tsent\t1']:
+                raise RuntimeError('Order and repair mail SQL facts differ: ' + str(mail_facts))
+            report['sql_customer_event_mail'] = mail_facts
         if repair and not warehouse:
             request = report['request_id']
             if not re.fullmatch(r'[A-Za-z0-9_-]{1,191}', request):
@@ -1045,6 +1107,10 @@ if __name__ == '__main__':
         main('en', 'intake-warehouse', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--warehouse-from-checkpoint='):
         main('en', 'paid-warehouse', sys.argv[1].split('=', 1)[1])
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--repair-mail-from-checkpoint='):
+        main('en', 'repair-mail', sys.argv[1].split('=', 1)[1])
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-repair-mail='):
+        verify_repair_mail_checkpoint(sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--supplement-from-checkpoint='):
         main('en', 'supplement', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-supplement='):

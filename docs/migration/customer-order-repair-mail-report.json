@@ -1,0 +1,91 @@
+{
+  "task": "C10 actual paid-order shipment and customer repair events through email recovery",
+  "date": "2026-11-03",
+  "passed": true,
+  "full_C01_C11_complete": false,
+  "source_paid_checkpoint": "790ce0fc9e71",
+  "owner": "d6584b4f9b67",
+  "api_sha256": "a3a9667b78197353350751e0cddd751ac07795f82185f6b518846a164806a9bb",
+  "browser": {
+    "passed": true,
+    "business_event_mail_jobs": 3,
+    "event_mail_rejected_retry_sent": true,
+    "event_mail_lost_reply_same_command": true,
+    "event_mail_frozen_message_and_key": true,
+    "event_mail_transport_isolated": true,
+    "event_mail_recipient_sender_ownership_expiry_guards": false,
+    "real_email_delivery": false,
+    "scenario": "repair-mail",
+    "request_id": "asr_be08639b-50ef-49b5-92ff-9414f8c00546",
+    "order_id": "order_2f0cb924-7757-418e-87b3-542ede6b250a",
+    "explicit_fixture_ownership": false,
+    "new_paid_order_attachment_tested": true,
+    "real_mollie_sandbox_supplement": false,
+    "real_mollie_sandbox_refund": false,
+    "refund_completed": false,
+    "pending_refund_completion_denied": false,
+    "actual_device_allocation_packing_shipping": true,
+    "customer_request_admin_receipt_inspection_dispatch_completion": true,
+    "customer_repair_tracking": true,
+    "customer_original_and_replacement_tracking": false,
+    "lost_reply_original_command_recovery": true,
+    "browser_errors": 0,
+    "real_mail_transfer_carrier": false
+  },
+  "sql_checkpoint_verification": {
+    "passed": true,
+    "owner": "d6584b4f9b67",
+    "order_id": "order_2f0cb924-7757-418e-87b3-542ede6b250a",
+    "sql_facts": {
+      "completed_repair": 1,
+      "return_receipt": 1,
+      "service_receipts": 2,
+      "shipped_original_device": 1,
+      "sent_event_rows": 3,
+      "sent_deliveries": 3,
+      "retry_receipt": 1,
+      "private_ownership": 1
+    },
+    "payment_order_ownership_unchanged": true,
+    "no_business_or_remote_payment_replayed": true,
+    "verification_resources_removed": true
+  },
+  "dispatcher_phases": {
+    "event-reject": {
+      "concurrent_claims": true,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-reject",
+      "provider_calls": 1
+    },
+    "event-sent": {
+      "concurrent_claims": true,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-sent",
+      "provider_calls": 1
+    },
+    "event-drain": {
+      "concurrent_claims": false,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-drain",
+      "provider_calls": 2
+    }
+  },
+  "initial_runner_summary_failure": "KeyError cart_id after passed browser; source failure report preserved; verified from retained SQL without replay",
+  "resources_removed": true,
+  "redis_keys_removed": 8,
+  "main_source_counts_unchanged": true,
+  "main_current_facts": {
+    "devices": 0,
+    "sources": 2,
+    "event_mail": 0,
+    "original_order_mail_pending_unattempted": 1,
+    "stock": 50,
+    "reserved": 1
+  },
+  "real_email_delivery": false,
+  "new_remote_payment_created": false,
+  "fixture_devices_used": true
+}

@@ -54,6 +54,17 @@ func TestWindowsCustomerEventMail(t *testing.T) {
 	}
 	store := customermail.Store{DB: db, Ring: ring}
 	phase := os.Getenv("WINDOWS_MAIL_PHASE")
+	recipientOwner := os.Getenv("WINDOWS_MAIL_RECIPIENT_OWNER")
+	if recipientOwner == "" {
+		recipientOwner = owner
+	}
+	if !regexp.MustCompile(`^[0-9a-f]{12}$`).MatchString(recipientOwner) {
+		t.Fatal("owned recipient required")
+	}
+	resource := os.Getenv("WINDOWS_MAIL_RESOURCE")
+	if resource != "" && !regexp.MustCompile(`^(bbr|order)_[0-9a-f-]{36}$`).MatchString(resource) {
+		t.Fatal("owned mail resource required")
+	}
 	var calls atomic.Int32
 	prior := http.DefaultTransport
 	defer func() { http.DefaultTransport = prior }()
@@ -71,13 +82,17 @@ func TestWindowsCustomerEventMail(t *testing.T) {
 			To            []string
 			Subject, Text string
 		}
-		if json.Unmarshal(body, &message) != nil || len(message.To) != 1 || message.To[0] != "local-account-"+owner+"-1@example.invalid" || message.Subject == "" || !strings.Contains(message.Text, "bbr_") {
+		if json.Unmarshal(body, &message) != nil || len(message.To) != 1 || message.To[0] != "local-account-"+recipientOwner+"-1@example.invalid" || message.Subject == "" {
 			return nil, errors.New("wrong event recipient or resource")
 		}
 		key := r.Header.Get("Idempotency-Key")
 		id, e := uuid.Parse(strings.TrimPrefix(key, "mail/ce_"))
 		if e != nil || key != "mail/ce_"+id.String() {
 			return nil, errors.New("wrong event key")
+		}
+		var event struct{ ResourceID, Reference string }
+		if db.Table("customer_event_mail").Where("id=?", id.String()).Take(&event).Error != nil || resource != "" && event.ResourceID != resource || !strings.Contains(message.Text, event.Reference) {
+			return nil, errors.New("wrong resource reference")
 		}
 		if phase == "event-reject" {
 			if os.WriteFile(filepath.Join(logs, "frozen-event-mail.json"), body, 0600) != nil || os.WriteFile(filepath.Join(logs, "frozen-event-key.txt"), []byte(key), 0600) != nil {
