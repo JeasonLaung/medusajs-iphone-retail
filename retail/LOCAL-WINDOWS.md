@@ -97,3 +97,5 @@ LOCAL_PREVIEW_WAREHOUSE_MANAGEMENT_ENABLED=true使start.bat显式开启既有仓
 仓库表“配置配送”可显式关联已有配送方案；新设备来源自动建仓后，还需按实际服务区域配置此关系，才可按对应订单方案装包。不会自动改变其他仓库配置。使用`--intake-warehouse-from-checkpoint=OWNER`从已付款检查点验证实际入库到发货，`--verify-intake-delivery=OWNER`仅恢复完成快照核对当前配送关联服务，不重走支付或配货。
 
 2026-11-03：新增 `python retail/scripts/test-local-customer-account.py --scenario=buyback-intake`，在自有恢复副本以实际后台来源创建、照片上传及回收设备入库替代SQL设备预置，再串联回收验机、270.01 EUR终价接受及付款登记。最终 owner `ee4f2f66a1e6`，报告见 `docs/migration/local-buyback-intake-report.json`。主库目录/设备指纹及客户/回收计数不变，副本/授权/11项Redis键清理，9100/9200/9300服务正常。未真实发信、转账或寄送，C01—C11保持开放。
+
+2026-11-03：`--scenario=buyback-intake-return` 验证实际入库设备关联回收后客户拒绝终价、后台登记退回与确认送达，owner `f3c35a20dc5f`。SQL returned/closed_at/RETURN-JOINT及空付款凭证一致；主库目录/设备指纹不变，自有资源清理。详见 `docs/migration/local-buyback-intake-return-report.json`。

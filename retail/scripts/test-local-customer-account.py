@@ -4,7 +4,7 @@ Requires the running dedicated MySQL container, native Redis, Go-built preview
 API, frontend dependencies, Node >=22 and Python cryptography. No mail is sent.
 --scenario=buyback and --scenario=buyback-return independently rehearse customer
 applications through Admin closing with explicit prices/devices in the copy.
---scenario=buyback-intake replaces the seeded device/source with actual Admin
+--scenario=buyback-intake / buyback-intake-return replace the seeded device/source with actual Admin
 source creation, photo upload and recycled device intake before inspection.
 --scenario=repair or --scenario=exchange continues a copied paid order through
 explicit fixture account ownership, real fulfillment and repair/replacement; never claims ownership
@@ -505,8 +505,9 @@ def main(language, scenario='account', resume=None):
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
     supplement = scenario == 'supplement'
     payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement')
-    buyback_intake = scenario == 'buyback-intake'
-    buyback = scenario in ('buyback', 'buyback-return', 'buyback-intake')
+    buyback_intake = scenario in ('buyback-intake', 'buyback-intake-return')
+    buyback_return = scenario in ('buyback-return', 'buyback-intake-return')
+    buyback = scenario == 'buyback' or buyback_intake or buyback_return
     exchange = scenario in ('exchange', 'supplement')
     refund = scenario == 'refund'
     warehouse = scenario in ('warehouse', 'paid-warehouse', 'intake-warehouse')
@@ -923,9 +924,13 @@ def main(language, scenario='account', resume=None):
                 raise RuntimeError('Unexpected owned request ID')
             rows = sql(database, "SELECT status,CAST(final_amount AS CHAR),payment_reference,return_tracking,closed_at IS NOT NULL "
                        "FROM buyback_requests WHERE id='" + request + "'").split('\t')
-            expected = 'returned' if scenario == 'buyback-return' else 'paid'
+            expected = 'returned' if buyback_return else 'paid'
             if rows[0] != expected or rows[-1] != '1' or float(rows[1]) != 270.01:
                 raise RuntimeError('Buyback SQL terminal state differs')
+            if rows[2:4] != (['', 'RETURN-JOINT'] if buyback_return else ['TRANSFER-JOINT', '']):
+                raise RuntimeError('Buyback payment reference or return tracking differs')
+            report['sql_payment_reference'] = rows[2]
+            report['sql_return_tracking'] = rows[3]
             report['sql_terminal_status'] = rows[0]
             report['sql_final_amount'] = rows[1]
             report['sql_closed'] = True
@@ -1015,6 +1020,8 @@ if __name__ == '__main__':
         main('en', 'buyback')
     elif sys.argv[1:] == ['--scenario=buyback-intake']:
         main('en', 'buyback-intake')
+    elif sys.argv[1:] == ['--scenario=buyback-intake-return']:
+        main('en', 'buyback-intake-return')
     elif sys.argv[1:] == ['--scenario=buyback-return']:
         main('en', 'buyback-return')
     elif sys.argv[1:] == ['--scenario=repair']:

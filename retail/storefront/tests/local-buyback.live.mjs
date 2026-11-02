@@ -10,8 +10,8 @@ import {chromium,expect as baseExpect} from '../../admin/node_modules/@playwrigh
 const expect=baseExpect.configure({timeout:15000}),origin='http://127.0.0.1:19300',adminOrigin='http://127.0.0.1:19200'
 const logs=process.env.ACCOUNT_TEST_LOGS,owner=process.env.ACCOUNT_TEST_OWNER,password='isolated-account-'+owner+'-password',email=`local-account-${owner}-1@example.invalid`
 assert.match(owner??'',/^[0-9a-f]{12}$/)
-const output=pathToFileURL(logs+'/'),errors=[],returning=process.env.ACCOUNT_TEST_SCENARIO==='buyback-return',shop=origin,segment='gb-en',index=1
-const actualIntake=process.env.ACCOUNT_TEST_SCENARIO==='buyback-intake'
+const output=pathToFileURL(logs+'/'),errors=[],returning=['buyback-return','buyback-intake-return'].includes(process.env.ACCOUNT_TEST_SCENARIO),shop=origin,segment='gb-en',index=1
+const actualIntake=['buyback-intake','buyback-intake-return'].includes(process.env.ACCOUNT_TEST_SCENARIO)
 let intakeFacts={},deviceID='isolated-buyback-device'
 const browser=await chromium.launch({headless:true,executablePath:resolve(process.env.LOCALAPPDATA,'ms-playwright/chromium-1234/chrome-win64/chrome.exe')})
 try{
