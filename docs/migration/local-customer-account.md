@@ -12,6 +12,9 @@
 python retail/scripts/test-local-customer-account.py
 # 仅重跑受影响语言
 python retail/scripts/test-local-customer-account.py --language=zh
+# 回收主流程作为独立场景，详细范围见 local-buyback-main.md
+python retail/scripts/test-local-customer-account.py --scenario=buyback
+python retail/scripts/test-local-customer-account.py --scenario=buyback-return
 ```
 
 依赖 Windows、现有专用 MySQL 容器及 `/tmp/local-root.cnf`、原生 Redis6379、`logs/retail-native/retail-api.exe`、前台依赖、Chromium1234、Node24与 Python cryptography。可通过 STOREFRONT_TEST_NODE 和 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH 指定现有运行时。脚本只接受既定 development/loopback/专用源数据库配置，19100/19300有占用会提前拒绝。

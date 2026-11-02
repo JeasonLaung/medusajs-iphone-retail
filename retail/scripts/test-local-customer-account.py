@@ -2,6 +2,8 @@
 
 Requires the running dedicated MySQL container, native Redis, Go-built preview
 API, frontend dependencies, Node >=22 and Python cryptography. No mail is sent.
+--scenario=buyback and --scenario=buyback-return independently rehearse customer
+applications through Admin closing with explicit prices/devices in the copy.
 Verification links are read from authenticated encrypted intents in the owned
 copy, never returned by an application endpoint or marked verified with SQL.
 """
@@ -56,7 +58,8 @@ def sql(database, statement):
 
 def source_account_counts():
     tables = ('customer_accounts', 'customer_verifications', 'customer_verification_mail',
-              'customer_account_addresses', 'customer_order_ownership')
+              'customer_account_addresses', 'customer_order_ownership', 'buyback_requests',
+              'buyback_prices', 'buyback_photo_bytes', 'buyback_device_links')
     statement = 'SELECT ' + ','.join('(SELECT COUNT(*) FROM ' + table + ')' for table in tables)
     values = docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf',
                     '--batch', '--skip-column-names', 'eurorefurb_local_trial', '-e', statement)
@@ -125,7 +128,8 @@ def redis_cleanup(prefix):
         return len(keys)
 
 
-def main(language):
+def main(language, scenario='account'):
+    buyback = scenario in ('buyback', 'buyback-return')
     values = config()
     owner = secrets.token_hex(6)
     database = 'retail_account_' + owner
@@ -161,7 +165,7 @@ def main(language):
               'api_sha256': hashlib.sha256((ROOT / 'logs/retail-native/retail-api.exe').read_bytes()).hexdigest()}
     try:
         # Fail before creating resources when another rehearsal owns these ports.
-        for port in (19100, 19300):
+        for port in ((19100, 19200, 19300) if buyback else (19100, 19300)):
             with socket.socket() as check:
                 check.bind(('127.0.0.1', port))
         snapshot = '/tmp/account-' + owner + '.sql'
@@ -174,6 +178,19 @@ def main(language):
         created = True
         docker('exec', CONTAINER, 'sh', '-c',
                'mysql --defaults-extra-file=/tmp/local-root.cnf ' + database + ' < ' + snapshot)
+        if buyback:
+            sql(database, "UPDATE buyback_request_runtime SET enabled=TRUE WHERE id=1 AND version=1; "
+                "UPDATE buyback_admin_runtime SET enabled=TRUE WHERE id=1 AND version=1; "
+                "INSERT INTO buyback_prices(id,product_id,capacity,amount,raw_amount,currency_code,created_at,updated_at) "
+                "SELECT 'isolated-account-buyback-price',id,'256GB',294,'{\"value\":\"294\",\"precision\":100}','eur',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6) "
+                "FROM catalog_products WHERE handle='swappie-iphone-13' AND deleted_at IS NULL; "
+                "INSERT INTO device_sources(id,name,type,location_id,created_at,updated_at) VALUES"
+                "('isolated-buyback-source','Isolated buyback fixture','self','sloc_01M4FBP3NDPZHJKVV3VY682QTN',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)); "
+                "INSERT INTO devices(id,serial_number,imei,variant_id,source_id,location_id,cost_cents,currency_code,bin,notes,state,category,photos,created_at,updated_at) "
+                "SELECT 'isolated-buyback-device','SN-JOINT','000000000000001',v.id,'isolated-buyback-source','sloc_01M4FBP3NDPZHJKVV3VY682QTN',0,'eur','','','inspection','recycled','[]',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6) "
+                "FROM catalog_variants v JOIN catalog_products p ON p.id=v.product_id JOIN catalog_variant_options vo ON vo.variant_id=v.id "
+                "JOIN catalog_option_values ov ON ov.id=vo.option_value_id WHERE p.handle='swappie-iphone-13' "
+                "AND REPLACE(ov.value,' ','')='256GB' AND v.deleted_at IS NULL ORDER BY v.id LIMIT 1;")
         env = dict(os.environ, **values)
         env.update(MYSQL_DSN=values['MYSQL_DSN'].replace('/eurorefurb_local_trial?', '/' + database + '?'),
                    APP_PORT='19100', ADMIN_ORIGIN='http://127.0.0.1:19200',
@@ -182,15 +199,23 @@ def main(language):
                    CUSTOMER_AUTH_ENABLED='true', CUSTOMER_VERIFICATION_MAIL_ENABLED='false',
                    NOTIFICATION_MAIL_ENABLED='false', ORDER_MAIL_ENABLED='false',
                    GIN_API_ORIGIN='http://127.0.0.1:19100')
-        for label, command, cwd in [
+        services = [
             ('api', [str(ROOT / 'logs/retail-native/retail-api.exe')], ROOT / 'retail/backend'),
             ('storefront', [str(node), 'node_modules/astro/bin/astro.mjs', 'dev', '--host', '127.0.0.1',
-                            '--port', '19300'], storefront)]:
+                            '--port', '19300'], storefront)]
+        if buyback:
+            env['ADMIN_TEST_API_TARGET'] = 'http://127.0.0.1:19100'
+            services.append(('admin', [str(node), 'node_modules/vite/bin/vite.js', '--host', '127.0.0.1',
+                                      '--port', '19200', '--strictPort'], ROOT / 'retail/admin'))
+        for label, command, cwd in services:
             stream = open(logs / (label + '.log'), 'wb')
             streams.append(stream)
             processes.append(subprocess.Popen(command, cwd=cwd, env=env, stdout=stream, stderr=stream,
                                                creationflags=subprocess.CREATE_NO_WINDOW))
-        for url in ('http://127.0.0.1:19100/health', 'http://127.0.0.1:19300/gb-en/account'):
+        urls = ['http://127.0.0.1:19100/health', 'http://127.0.0.1:19300/gb-en/account']
+        if buyback:
+            urls.append('http://127.0.0.1:19200')
+        for url in urls:
             for _ in range(90):
                 if any(p.poll() is not None for p in processes):
                     raise RuntimeError('Owned service exited; inspect ignored service logs')
@@ -204,8 +229,9 @@ def main(language):
                 raise RuntimeError('Owned service startup timeout')
         browser_env = dict(env, ACCOUNT_TEST_OWNER=owner, ACCOUNT_TEST_DB=database,
                            ACCOUNT_TEST_LOGS=str(logs), ACCOUNT_TEST_PYTHON=sys.executable,
-                           ACCOUNT_TEST_LANGUAGE=language)
-        result = subprocess.run([str(node), 'tests/local-customer-account.live.mjs'],
+                           ACCOUNT_TEST_LANGUAGE=language, ACCOUNT_TEST_SCENARIO=scenario)
+        script = 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
+        result = subprocess.run([str(node), script],
                                 cwd=ROOT / 'retail/storefront', env=browser_env,
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=240)
         (logs / 'browser.log').write_bytes(result.stdout)
@@ -216,6 +242,22 @@ def main(language):
              "WHERE email LIKE 'local-account-" + owner + "-%@example.invalid' AND verified_at IS NOT NULL"))
         if report['verified_accounts'] != 1:
             raise RuntimeError('Expected exactly one newly verified fixture account')
+        if buyback:
+            request = report['request_id']
+            if not re.fullmatch(r'bbr_[0-9a-f-]{36}', request):
+                raise RuntimeError('Unexpected owned request ID')
+            rows = sql(database, "SELECT status,CAST(final_amount AS CHAR),payment_reference,return_tracking,closed_at IS NOT NULL "
+                       "FROM buyback_requests WHERE id='" + request + "'").split('\t')
+            expected = 'returned' if scenario == 'buyback-return' else 'paid'
+            if rows[0] != expected or rows[-1] != '1' or float(rows[1]) != 270.01:
+                raise RuntimeError('Buyback SQL terminal state differs')
+            report['sql_terminal_status'] = rows[0]
+            report['sql_final_amount'] = rows[1]
+            report['sql_closed'] = True
+            report['sql_private_photos'] = int(sql(database, 'SELECT COUNT(*) FROM buyback_photo_bytes'))
+            report['sql_device_links'] = int(sql(database, "SELECT COUNT(*) FROM buyback_device_links WHERE request_id='" + request + "'"))
+            if report['sql_private_photos'] != 3 or report['sql_device_links'] != 1:
+                raise RuntimeError('Buyback photo/device facts differ')
     finally:
         for process in reversed(processes):
             if process.poll() is None:
@@ -256,5 +298,9 @@ if __name__ == '__main__':
             main(language)
     elif sys.argv[1:] in (['--language=en'], ['--language=zh']):
         main(sys.argv[1].split('=')[1])
+    elif sys.argv[1:] == ['--scenario=buyback']:
+        main('en', 'buyback')
+    elif sys.argv[1:] == ['--scenario=buyback-return']:
+        main('en', 'buyback-return')
     else:
         raise RuntimeError('Unknown account rehearsal arguments')

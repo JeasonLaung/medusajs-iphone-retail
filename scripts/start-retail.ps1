@@ -95,6 +95,10 @@ try {
     & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --fulfillment
     if ($LASTEXITCODE -ne 0) { throw 'Local fulfillment configuration failed.' }
   }
+  if ($env:LOCAL_PREVIEW_BUYBACK_ENABLED -eq 'true') {
+    & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --buyback
+    if ($LASTEXITCODE -ne 0) { throw 'Local buyback configuration failed.' }
+  }
   $binary = Join-Path $logRoot 'retail-api.exe'
   & $go -C (Join-Path $retailRoot 'backend') build -o $binary ./cmd/api
   if ($LASTEXITCODE -ne 0) { throw 'Gin API compilation failed.' }

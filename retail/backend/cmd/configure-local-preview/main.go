@@ -24,6 +24,7 @@ func main() {
 	enable := flag.Bool("enable", false, "Enable draft-cart operations in the dedicated Windows preview database")
 	payments := flag.Bool("payments", false, "Explicitly prepare test-only checkout and local order numbering")
 	fulfillment := flag.Bool("fulfillment", false, "Enable existing device allocation, packing and parcel commands in the dedicated local preview")
+	buyback := flag.Bool("buyback", false, "Enable existing customer buyback and Admin review commands in the dedicated local preview")
 	flag.Parse()
 	_ = godotenv.Load()
 	cfg, err := driver.ParseDSN(os.Getenv("MYSQL_DSN"))
@@ -43,6 +44,22 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *buyback {
+			for _, table := range []string{"buyback_request_runtime", "buyback_admin_runtime"} {
+				var row struct {
+					Version int
+				}
+				if e := tx.Raw("SELECT version FROM " + table + " WHERE id=1 FOR UPDATE").Take(&row).Error; e != nil {
+					return e
+				}
+				if row.Version != 1 {
+					return gorm.ErrInvalidData
+				}
+				if e := tx.Table(table).Where("id=1 AND version=1").Update("enabled", true).Error; e != nil {
+					return e
+				}
+			}
+		}
 		if *fulfillment {
 			var revision uint64
 			if e := tx.Raw("SELECT revision FROM device_runtime_schema WHERE id=1 FOR UPDATE").Scan(&revision).Error; e != nil {
@@ -168,5 +185,8 @@ func main() {
 	}
 	if *fulfillment {
 		log.Print("Local device allocation, packing and shipment registration enabled; no devices, stock or orders changed")
+	}
+	if *buyback {
+		log.Print("Local buyback applications and Admin processing enabled; no prices, devices, mail or transfers created")
 	}
 }
