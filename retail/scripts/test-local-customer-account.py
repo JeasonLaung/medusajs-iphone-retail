@@ -4,6 +4,8 @@ Requires the running dedicated MySQL container, native Redis, Go-built preview
 API, frontend dependencies, Node >=22 and Python cryptography. No mail is sent.
 --scenario=buyback and --scenario=buyback-return independently rehearse customer
 applications through Admin closing with explicit prices/devices in the copy.
+--scenario=buyback-intake replaces the seeded device/source with actual Admin
+source creation, photo upload and recycled device intake before inspection.
 --scenario=repair or --scenario=exchange continues a copied paid order through
 explicit fixture account ownership, real fulfillment and repair/replacement; never claims ownership
 of an actual guest order in the source preview.
@@ -503,7 +505,8 @@ def main(language, scenario='account', resume=None):
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
     supplement = scenario == 'supplement'
     payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement')
-    buyback = scenario in ('buyback', 'buyback-return')
+    buyback_intake = scenario == 'buyback-intake'
+    buyback = scenario in ('buyback', 'buyback-return', 'buyback-intake')
     exchange = scenario in ('exchange', 'supplement')
     refund = scenario == 'refund'
     warehouse = scenario in ('warehouse', 'paid-warehouse', 'intake-warehouse')
@@ -561,7 +564,7 @@ def main(language, scenario='account', resume=None):
     source_counts = source_account_counts()
     def entry_source_fingerprint():
         return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', 'eurorefurb_local_trial', 'catalog_products', 'catalog_variants', 'pricing_prices', 'inventory_levels', 'catalog_product_edits', 'catalog_variant_creations', 'catalog_price_edits', 'inventory_level_creations', 'inventory_locations', 'device_sources', 'devices', 'device_variant_tracking', 'device_photos', 'device_tracking_changes', 'device_source_changes', 'device_intake_changes')).hexdigest()
-    entry_source_before = entry_source_fingerprint() if product_entry else None
+    entry_source_before = entry_source_fingerprint() if product_entry or buyback_intake else None
     report = {'owner': owner, 'database': database, 'real_email_delivery': False,
               'business_api_mocking': False, 'main_database_modified': False,
               'api_sha256': hashlib.sha256(api_binary.read_bytes()).hexdigest()}
@@ -636,8 +639,9 @@ def main(language, scenario='account', resume=None):
                 "UPDATE buyback_admin_runtime SET enabled=TRUE WHERE id=1 AND version=1; "
                 "INSERT INTO buyback_prices(id,product_id,capacity,amount,raw_amount,currency_code,created_at,updated_at) "
                 "SELECT 'isolated-account-buyback-price',id,'256GB',294,'{\"value\":\"294\",\"precision\":100}','eur',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6) "
-                "FROM catalog_products WHERE handle='swappie-iphone-13' AND deleted_at IS NULL; "
-                "INSERT INTO device_sources(id,name,type,location_id,created_at,updated_at) VALUES"
+                "FROM catalog_products WHERE handle='swappie-iphone-13' AND deleted_at IS NULL; ")
+            if not buyback_intake:
+                sql(database, "INSERT INTO device_sources(id,name,type,location_id,created_at,updated_at) VALUES"
                 "('isolated-buyback-source','Isolated buyback fixture','self','sloc_01M4FBP3NDPZHJKVV3VY682QTN',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)); "
                 "INSERT INTO devices(id,serial_number,imei,variant_id,source_id,location_id,cost_cents,currency_code,bin,notes,state,category,photos,created_at,updated_at) "
                 "SELECT 'isolated-buyback-device','SN-JOINT','000000000000001',v.id,'isolated-buyback-source','sloc_01M4FBP3NDPZHJKVV3VY682QTN',0,'eur','','','inspection','recycled','[]',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6) "
@@ -659,7 +663,7 @@ def main(language, scenario='account', resume=None):
         env['ORDER_REFUNDS_ENABLED'] = 'true' if refund else 'false'
         if intake_warehouse:
             sql(database, 'UPDATE warehouse_management_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE warehouse_user_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE warehouse_scope_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE inventory_command_capabilities SET enabled=TRUE WHERE command=\'inventory.create_level\' AND version=1')
-        if device_entry:
+        if device_entry or buyback_intake:
             sql(database, 'UPDATE warehouse_management_runtime SET enabled=TRUE WHERE id=1 AND version=1')
         if product_entry:
             sql(database, "UPDATE catalog_command_capabilities SET enabled=TRUE WHERE command='product.create' AND version=1; UPDATE inventory_command_capabilities SET enabled=TRUE WHERE command='inventory.create_level' AND version=1; UPDATE catalog_variant_create_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE catalog_price_edit_runtime SET enabled=TRUE WHERE id=1 AND version=1")
@@ -929,6 +933,20 @@ def main(language, scenario='account', resume=None):
             report['sql_device_links'] = int(sql(database, "SELECT COUNT(*) FROM buyback_device_links WHERE request_id='" + request + "'"))
             if report['sql_private_photos'] != 3 or report['sql_device_links'] != 1:
                 raise RuntimeError('Buyback photo/device facts differ')
+            if buyback_intake:
+                device, source, location = (report[key] for key in ('intake_device_id', 'intake_source_id', 'intake_location_id'))
+                if not all(re.fullmatch(prefix + r'_[0-9a-f-]{36}', value) for prefix, value in (('dev', device), ('dsrc', source), ('sloc', location))):
+                    raise RuntimeError('Unexpected actual intake identities')
+                facts = sql(database, "SELECT "
+                    "(SELECT COUNT(*) FROM devices WHERE id='" + device + "' AND source_id='" + source + "' AND location_id='" + location + "' AND serial_number='SN-JOINT' AND imei='000000000000001' AND category='recycled' AND state='inspection' AND JSON_LENGTH(photos)=1),"
+                    "(SELECT COUNT(*) FROM buyback_device_links WHERE request_id='" + request + "' AND device_id='" + device + "' AND deleted_at IS NULL),"
+                    "(SELECT COUNT(*) FROM device_intake_changes),"
+                    "(SELECT COUNT(*) FROM device_source_changes),"
+                    "(SELECT COUNT(*) FROM device_photos),"
+                    "(SELECT COUNT(*) FROM devices WHERE id='isolated-buyback-device')").split('\t')
+                if list(map(int, facts)) != [1, 1, 1, 1, 1, 0]:
+                    raise RuntimeError('Actual buyback intake facts differ: ' + str(facts))
+                report['sql_actual_intake_facts'] = dict(zip(['inspection_device', 'linked_actual_device', 'intake_receipt', 'source_receipt', 'device_photo', 'seeded_device'], map(int, facts)))
     except BaseException:
         report['passed'] = False
         raise
@@ -964,7 +982,7 @@ def main(language, scenario='account', resume=None):
             docker('exec', CONTAINER, 'rm', '-f', '/tmp/account-' + owner + '.sql')
         except Exception:
             cleanup_errors.append('database cleanup')
-        if product_entry:
+        if product_entry or buyback_intake:
             report['source_product_entry_unchanged'] = entry_source_fingerprint() == entry_source_before
             if not report['source_product_entry_unchanged']:
                 report['passed'] = False
@@ -995,6 +1013,8 @@ if __name__ == '__main__':
         main(sys.argv[1].split('=')[1])
     elif sys.argv[1:] == ['--scenario=buyback']:
         main('en', 'buyback')
+    elif sys.argv[1:] == ['--scenario=buyback-intake']:
+        main('en', 'buyback-intake')
     elif sys.argv[1:] == ['--scenario=buyback-return']:
         main('en', 'buyback-return')
     elif sys.argv[1:] == ['--scenario=repair']:

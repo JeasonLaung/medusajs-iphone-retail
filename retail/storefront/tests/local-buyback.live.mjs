@@ -1,5 +1,6 @@
 // Native Windows buyback main flow; reuses the established joint scenarios.
 import assert from 'node:assert/strict'
+import {intakeBuybackDevice} from './local-buyback-intake.live.mjs'
 import {execFileSync} from 'node:child_process'
 import {readFileSync,writeFileSync} from 'node:fs'
 import {mkdir} from 'node:fs/promises'
@@ -10,6 +11,8 @@ const expect=baseExpect.configure({timeout:15000}),origin='http://127.0.0.1:1930
 const logs=process.env.ACCOUNT_TEST_LOGS,owner=process.env.ACCOUNT_TEST_OWNER,password='isolated-account-'+owner+'-password',email=`local-account-${owner}-1@example.invalid`
 assert.match(owner??'',/^[0-9a-f]{12}$/)
 const output=pathToFileURL(logs+'/'),errors=[],returning=process.env.ACCOUNT_TEST_SCENARIO==='buyback-return',shop=origin,segment='gb-en',index=1
+const actualIntake=process.env.ACCOUNT_TEST_SCENARIO==='buyback-intake'
+let intakeFacts={},deviceID='isolated-buyback-device'
 const browser=await chromium.launch({headless:true,executablePath:resolve(process.env.LOCALAPPDATA,'ms-playwright/chromium-1234/chrome-win64/chrome.exe')})
 try{
  const context=await browser.newContext({viewport:{width:390,height:900},reducedMotion:'reduce'}),page=await context.newPage()
@@ -131,10 +134,11 @@ try{
  await admin.bringToFront();await drawer.getByRole('button',{name:'Refresh request',exact:true}).click();await drawer.getByRole('button',{name:'Mark received',exact:true}).click();await admin.locator('.ant-modal:visible').getByRole('button',{name:'Confirm',exact:true}).click();await expect(admin.getByRole('dialog')).toHaveCount(1)
  await page.reload();await expect(page.getByText('Received / inspecting',{exact:true}).first()).toBeVisible()
  await expect(drawer.getByRole('button',{name:'Send final offer',exact:true})).toBeDisabled()
+ if(actualIntake){intakeFacts=await intakeBuybackDevice({context,origin:adminOrigin,owner,expect,png,errors});deviceID=intakeFacts.intake_device_id;await admin.bringToFront();await drawer.getByRole('button',{name:'Refresh request',exact:true}).click()}
  await drawer.getByRole('button',{name:'Link inspection device',exact:true}).click()
  modal=admin.locator('.ant-modal:visible');await expect(modal.getByRole('combobox')).toBeEnabled();await admin.bringToFront();await modal.getByRole('combobox').focus();await modal.getByRole('combobox').press('ArrowDown');await modal.getByRole('combobox').press('Enter');await modal.getByRole('button',{name:'Confirm',exact:true}).click();await expect(admin.locator('.ant-modal:visible')).toHaveCount(0)
- await expect(drawer.getByText('Linked device: isolated-buyback-device',{exact:true})).toBeVisible()
- await page.bringToFront();const linked=await read('buyback/requests/'+id);assert.equal(linked.body.request.items[0].device_id,'isolated-buyback-device');assert.equal(linked.body.request.status,'received')
+ await expect(drawer.getByText('Linked device: '+deviceID,{exact:true})).toBeVisible()
+ await page.bringToFront();const linked=await read('buyback/requests/'+id);assert.equal(linked.body.request.items[0].device_id,deviceID);assert.equal(linked.body.request.status,'received')
  const linkedNotices=await read('notifications?offset=0');assert.equal(linkedNotices.body.notifications.filter(n=>n.action==='link_device').length,0)
  await admin.bringToFront();await drawer.getByRole('button',{name:'Send final offer',exact:true}).click();modal=admin.locator('.ant-modal:visible');await modal.getByRole('button',{name:'Confirm',exact:true}).click();await expect(modal.locator('.ant-form-item-explain-error')).toHaveCount(2)
  await modal.getByLabel('Amount (EUR)',{exact:true}).fill('270.01');await modal.getByLabel('Inspection notes',{exact:true}).fill('Display inspected; minor frame wear.');await modal.getByRole('button',{name:'Confirm',exact:true}).click();await expect(admin.locator('.ant-modal:visible')).toHaveCount(0)
@@ -146,7 +150,7 @@ try{
  await page.screenshot({path:fileURLToPath(new URL('final-offer-customer-mobile.png',output)),fullPage:true})
  await page.getByRole('button',{name:returning?'Decline and request return':'Accept final offer',exact:true}).click();await page.getByRole('dialog').getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0)
  await page.reload();await expect(page.getByText(returning?'Return requested':'Accepted / awaiting payment',{exact:true}).first()).toBeVisible()
- const accepted=await read('buyback/requests/'+id);assert.equal(accepted.body.request.final_amount,270.01);assert.equal(accepted.body.request.items[0].device_id,'isolated-buyback-device')
+ const accepted=await read('buyback/requests/'+id);assert.equal(accepted.body.request.final_amount,270.01);assert.equal(accepted.body.request.items[0].device_id,deviceID)
  await admin.bringToFront();await drawer.getByRole('button',{name:'Refresh request',exact:true}).click();await expect(drawer.getByText(returning?'Return requested':'Accepted / awaiting payment',{exact:true}).first()).toBeVisible();await expect(drawer.getByRole('button',{name:'Send final offer',exact:true})).toHaveCount(0)
 
  if(returning){
@@ -163,5 +167,5 @@ try{
  await admin.bringToFront();await drawer.getByRole('button',{name:'Refresh request',exact:true}).click();await expect(drawer.getByText(returning?'Returned':'Paid',{exact:true}).first()).toBeVisible();await expect(drawer.getByRole('button',{name:'Record completed payment',exact:true})).toHaveCount(0)
 
  assert.deepEqual(errors,[])
- writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:returning?'buyback-return':'buyback',original_questionnaire:true,registered_verified_customer:true,customer_photos_admin_review_shipping_received:true,device_link_final_offer_decision_closing:true,closed_state:returning?'returned':'paid',real_transfer:false,real_carrier:false,real_email_delivery:false,business_api_mocking:false,browser_errors:0,request_id:id},null,2))
+ writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:process.env.ACCOUNT_TEST_SCENARIO,...intakeFacts,original_questionnaire:true,registered_verified_customer:true,customer_photos_admin_review_shipping_received:true,device_link_final_offer_decision_closing:true,closed_state:returning?'returned':'paid',real_transfer:false,real_carrier:false,real_email_delivery:false,business_api_mocking:false,browser_errors:0,request_id:id},null,2))
 }catch(e){for(const [i,p]of browser.contexts().flatMap(c=>c.pages()).entries()){await p.screenshot({path:resolve(logs,`failure-${i}.png`),fullPage:true}).catch(()=>{});console.error('FAILURE',p.url(),await p.locator('body').innerText().catch(()=>''))}throw e}finally{await browser.close()}
