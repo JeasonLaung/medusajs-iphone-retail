@@ -1,3 +1,4 @@
+import {verifyWarehouseBatch} from './local-warehouse-batch.live.mjs'
 import assert from 'node:assert/strict'
 import {verifyWarehouseDeviceEdit} from './local-warehouse-edit.live.mjs'
 import {verifyWarehouseInspection} from './local-warehouse-inspection.live.mjs'
@@ -6,10 +7,10 @@ import {randomUUID} from 'node:crypto'
 import {readFileSync,writeFileSync} from 'node:fs'
 import {resolve} from 'node:path'
 import {chromium,expect} from '../../admin/node_modules/@playwright/test/index.mjs'
-const origin='http://127.0.0.1:19200',logs=process.env.ACCOUNT_TEST_LOGS,deviceEntry=['device-entry','warehouse-inspection','warehouse-edit'].includes(process.env.ACCOUNT_TEST_SCENARIO),stockQuantity=deviceEntry?1:3
+const origin='http://127.0.0.1:19200',logs=process.env.ACCOUNT_TEST_LOGS,deviceEntry=['device-entry','warehouse-inspection','warehouse-edit','warehouse-batch'].includes(process.env.ACCOUNT_TEST_SCENARIO),stockQuantity=deviceEntry?1:3
 const catalogOperations=process.env.ACCOUNT_TEST_SCENARIO==='catalog-operations'
 let deviceFacts={},catalogFacts={}
-if(!logs||!['product-entry','device-entry','catalog-operations','warehouse-inspection','warehouse-edit'].includes(process.env.ACCOUNT_TEST_SCENARIO))throw Error('Owned product-entry runner required')
+if(!logs||!['product-entry','device-entry','catalog-operations','warehouse-inspection','warehouse-edit','warehouse-batch'].includes(process.env.ACCOUNT_TEST_SCENARIO))throw Error('Owned product-entry runner required')
 const credentials=readFileSync(resolve('../../.private-files/local/admin-credentials.txt'),'utf8')
 const credential=name=>credentials.split(/\r?\n/).find(line=>new RegExp('^'+name+'\\s*[:=]','i').test(line))?.replace(/^[^:=]+[:=]\s*/,'').trim()
 const errors=[],browser=await chromium.launch({headless:true,executablePath:resolve(process.env.LOCALAPPDATA,'ms-playwright/chromium-1234/chrome-win64/chrome.exe')})
@@ -83,6 +84,7 @@ try{
  await editor.getByRole('button',{name:'Save',exact:true}).click();await expect(editor).toHaveCount(0)
  const stocked=await context.request.get(origin+'/api/store/products/'+productID+'?region_id='+region.id);const stockedData=(await stocked.json()).product
  assert.equal(String(stockedData.variants[0].inventory_quantity),String(stockQuantity))
+ if(process.env.ACCOUNT_TEST_SCENARIO==='warehouse-batch')catalogFacts=await verifyWarehouseBatch({browser,admin:page,origin,owner:process.env.ACCOUNT_TEST_OWNER,sourceName:deviceFacts.source_name,errors,logs,productID,variantID:stockedData.variants[0].id})
  if(process.env.ACCOUNT_TEST_SCENARIO==='warehouse-edit')catalogFacts=await verifyWarehouseDeviceEdit({browser,admin:page,origin,owner:process.env.ACCOUNT_TEST_OWNER,sourceName:deviceFacts.source_name,errors,logs,sku,productID,variantID:stockedData.variants[0].id})
  if(process.env.ACCOUNT_TEST_SCENARIO==='warehouse-inspection')catalogFacts=await verifyWarehouseInspection({browser,admin:page,origin,owner:process.env.ACCOUNT_TEST_OWNER,sourceName:deviceFacts.source_name,errors,logs,sku,productID,variantID:stockedData.variants[0].id})
  if(catalogOperations)catalogFacts=await verifyCatalogOperations({page,context,origin,productID,variantID:stockedData.variants[0].id,region,sku})

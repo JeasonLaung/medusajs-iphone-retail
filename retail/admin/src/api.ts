@@ -413,6 +413,12 @@ export type WarehouseDeviceAction='edit'|'inspect'|'activate'|'make_available'|'
 export type WarehouseDevice=RecentDevice&{variant_id:string;variant_title:string|null;source_id:string;bin:string;revision:string;allowed_actions:WarehouseDeviceAction[]}
 export type WarehouseDevicePage={location_id:string;category:'sale'|'returned';devices:WarehouseDevice[];offset:number;limit:50;has_more:boolean}
 export type WarehouseDeviceCommand={operation_id:string;expected_revision:string;action:WarehouseDeviceAction;notes?:string}
+export type WarehouseBatchInput={operation_id:string;devices:{id:string;expected_revision:string}[]}
+export async function makeWarehouseBatchAvailable(location:string,body:WarehouseBatchInput):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{ids:string[];state:string;replayed:boolean}>(`warehouse/locations/${encodeURIComponent(location)}/device-batches/make-available`,{method:'POST',body,csrf},'/api/admin/')
+ if(!d||d.state!=='available'||typeof d.replayed!=='boolean'||!Array.isArray(d.ids)||d.ids.length!==body.devices.length||d.ids.some((id,i)=>id!==body.devices[i].id))throw new APIError(0,'request.invalid_response')
+}
 export async function getWarehouseDevices(location:string,category:'sale'|'returned',offset:number,q:string,signal?:AbortSignal):Promise<WarehouseDevicePage>{
  const d=await request<WarehouseDevicePage>(`warehouse/locations/${encodeURIComponent(location)}/devices/${category}?offset=${offset}&q=${encodeURIComponent(q)}`,{signal},'/api/admin/')
  if(!d||d.location_id!==location||d.category!==category||d.offset!==offset||d.limit!==50||typeof d.has_more!=='boolean'||!Array.isArray(d.devices)||d.devices.length>50||new Set(d.devices.map(r=>r.id)).size!==d.devices.length)throw new APIError(0,'request.invalid_response')

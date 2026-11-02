@@ -178,6 +178,7 @@ func routerWithHandlers(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 
 	private.GET("/warehouse/locations/:location_id/devices/:category", (devices.Handler{DB: db}).WarehouseDevicesHTTP)
 	private.POST("/warehouse/locations/:location_id/devices/:category/:device_id", (devices.Handler{DB: db}).WarehouseDeviceCommandHTTP)
+	private.POST("/warehouse/locations/:location_id/device-batches/make-available", (devices.Handler{DB: db}).WarehouseBatchAvailableHTTP)
 	private.GET("/warehouse/locations/:location_id/devices/:category/:device_id/edit", (devices.Handler{DB: db}).WarehouseEditHTTP)
 	private.POST("/warehouse/locations/:location_id/devices/:category/:device_id/edit", (devices.Handler{DB: db}).WarehouseEditHTTP)
 	private.GET("/warehouse/locations/:location_id/devices/:category/:device_id/inspection", (devices.Handler{DB: db}).WarehouseInspectionHTTP)

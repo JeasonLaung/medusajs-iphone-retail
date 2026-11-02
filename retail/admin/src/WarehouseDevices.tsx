@@ -6,15 +6,18 @@ import type {Copy} from './i18n'
 import WarehouseIntakePicker from './WarehouseIntakePicker'
 import WarehouseInspection from './WarehouseInspection'
 import WarehouseDeviceEdit from './WarehouseDeviceEdit'
+import WarehouseBatchAvailable from './WarehouseBatchAvailable'
 
 export default function WarehouseDevices({copy,onExpired}:{copy:Copy;onExpired():void}){
  const [form]=Form.useForm<{notes:string}>()
  const [editing,setEditing]=useState<WarehouseDevice>()
  const [inspection,setInspection]=useState<WarehouseDevice>()
  const [intake,setIntake]=useState(false)
+ const [selected,setSelected]=useState<WarehouseDevice[]>([]),[batch,setBatch]=useState<WarehouseDevice[]>()
  const {message}=App.useApp(),[attempt,setAttempt]=useState(0),[access,setAccess]=useState<WarehouseAccess>(),[location,setLocation]=useState(''),[category,setCategory]=useState<'sale'|'returned'>('sale'),[q,setQ]=useState(''),[offset,setOffset]=useState(0),[data,setData]=useState<WarehouseDevicePage>(),[loading,setLoading]=useState(true),[error,setError]=useState<unknown>()
  const [editor,setEditor]=useState<{row:WarehouseDevice;action:WarehouseDeviceAction}>(),[command,setCommand]=useState<WarehouseDeviceCommand>(),[saving,setSaving]=useState(false),[saveError,setSaveError]=useState<unknown>()
  const reload=()=>setAttempt(n=>n+1)
+ useEffect(()=>{setSelected([])},[location,category,q,attempt])
  useEffect(()=>{
   const abort=new AbortController();setLoading(true);setError(undefined);setData(undefined)
   const run=async()=>{try{
@@ -38,8 +41,9 @@ export default function WarehouseDevices({copy,onExpired}:{copy:Copy;onExpired()
   <Typography.Paragraph type="secondary">{copy.scopedDevicesInfo}</Typography.Paragraph>
   <Space wrap>{location&&access?.actions.includes(category==='sale'?'warehouse.intake.write':'warehouse.return.write')&&<Button type="primary" onClick={()=>setIntake(true)}>{copy.deviceIntake}</Button>}<Button onClick={reload}>{copy.reload}</Button><Radio.Group aria-label={copy.stockLocation} value={location} onChange={e=>{setLocation(e.target.value);setOffset(0)}} options={access?.locations.map(l=>({value:l.id,label:l.name}))}/><Radio.Group aria-label={copy.deviceCategory} value={category} onChange={e=>{setCategory(e.target.value);setOffset(0)}} options={categories.map(c=>({value:c,label:c==='sale'?copy.deviceSale:copy.deviceReturned}))}/></Space>
   <Input.Search aria-label={copy.deviceExactSearch} placeholder={copy.deviceExactSearch} maxLength={100} allowClear onSearch={value=>{setQ(value.trim());setOffset(0)}}/>
+  {category==='sale'&&access?.actions.includes('warehouse.intake.write')&&<Space wrap><Button disabled={!selected.length} onClick={()=>setBatch([...selected])}>{copy.language==='语言'?'批量设为可售':'Make selected devices available'}</Button><Typography.Text type="secondary">{selected.length}/200</Typography.Text></Space>}
   {!access?.locations.length?<Alert type="info" showIcon message={copy.noWarehouseScope}/>:data&&<>
-   <Table<WarehouseDevice> rowKey="id" dataSource={data.devices} pagination={false} scroll={{x:1000}} columns={[
+   <Table<WarehouseDevice> rowKey="id" dataSource={data.devices} pagination={false} scroll={{x:1000}} rowSelection={category==='sale'&&access?.actions.includes('warehouse.intake.write')?{selectedRowKeys:selected.map(d=>d.id),preserveSelectedRowKeys:true,onChange:(_,rows)=>setSelected(rows),getCheckboxProps:row=>({disabled:!row.allowed_actions.includes('make_available')||selected.length>=200&&!selected.some(d=>d.id===row.id)})}:undefined} columns={[
     {title:'SN',dataIndex:'serial_number'},{title:'IMEI',dataIndex:'imei'},{title:'IMEI 2',dataIndex:'imei2'},{title:'EID',dataIndex:'eid'},{title:'SKU',dataIndex:'variant_title'},
     {title:copy.status,dataIndex:'state'},{title:copy.deviceBin,dataIndex:'bin'},
     {title:copy.devicePhotos,render:(_,row)=><Image.PreviewGroup>{row.photos.map(p=><Image key={p.id} src={p.url} alt={copy.devicePhotos} width={64} height={64} style={{objectFit:'cover'}}/>)}</Image.PreviewGroup>},
@@ -47,7 +51,7 @@ export default function WarehouseDevices({copy,onExpired}:{copy:Copy;onExpired()
    ]}/>
    <Space><Button disabled={!offset} onClick={()=>setOffset(n=>Math.max(0,n-50))}>{copy.previousWarehousePage}</Button><Typography.Text>{offset+1}–{offset+data.devices.length}</Typography.Text><Button disabled={!data.has_more} onClick={()=>setOffset(n=>n+50)}>{copy.nextWarehousePage}</Button></Space>
   </>}
- </Space><Drawer open={!!editor} title={editor?copy.deviceCommandNames[editor.action]:''} width={480} closable={!saving} maskClosable={!saving} keyboard={!saving} onClose={close}>
+ </Space>{batch&&<WarehouseBatchAvailable location={location} devices={batch} copy={copy} onExpired={onExpired} onClose={()=>{setBatch(undefined);reload()}} onSaved={()=>{setBatch(undefined);void message.success(copy.deviceCommandSaved);reload()}}/>}<Drawer open={!!editor} title={editor?copy.deviceCommandNames[editor.action]:''} width={480} closable={!saving} maskClosable={!saving} keyboard={!saving} onClose={close}>
   {editor&&<Space direction="vertical" size={24} className="full-width"><Typography.Text>{editor.row.serial_number}</Typography.Text><Typography.Paragraph>{copy.deviceCommandConfirm}</Typography.Paragraph>
    {editor.action==='release_reserved'&&<Alert type="info" showIcon message={copy.language==='语言'?'只解除此设备尚未装包的预配，恢复设备可售；数量库存和订单预留保持不变。':'Release only this device’s unpacked reservation and make it available. Quantity stock and order reservations remain unchanged.'}/>}
    {saveError!==undefined&&<Alert type="error" showIcon message={uncertain?copy.saveUncertain:copy.deviceIntakeConflict}/>}

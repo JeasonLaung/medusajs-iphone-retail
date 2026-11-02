@@ -1,5 +1,7 @@
 # 仓库设备分类列表与生命周期操作
 
+2026-11-03：原make_available的多台语义已接独立[批量可售入口](gin-warehouse-batch-available.md)，复用本页单台校验并以外层事务保证整批提交。
+
 本批承接原 `warehouse_intake` 与 `warehouse_return` 的分类读/写，以及设备 `activate`、`make_available`、`retire`、`delete`。不将设备总模块、仓库入库或配货履约宣布完成；整个现有前台闭环的范围不变。
 
 新 React 菜单“仓库设备”使用 Ant Radio、Table、Input.Search、Image.PreviewGroup、Drawer 和反馈组件。只选择当前获授权的仓库和销售/退回类别；回收不在仓库员工可操作类别中。列表每页50，按完整SN/IMEI/IMEI2/EID搜索，保留前导零。展示设备标识、SKU名称、状态、库位、照片；不返回成本、备注、客户、订单、分配记录、来源名称或其他仓库的数据。

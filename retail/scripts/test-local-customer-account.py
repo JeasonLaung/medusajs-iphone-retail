@@ -552,11 +552,12 @@ def verify_repair_mail_checkpoint(owner):
 def main(language, scenario='account', resume=None):
     repair_mail = scenario == 'repair-mail'
     intake_warehouse = scenario == 'intake-warehouse'
+    warehouse_batch = scenario == 'warehouse-batch'
     warehouse_edit = scenario == 'warehouse-edit'
     warehouse_inspection = scenario == 'warehouse-inspection'
-    device_entry = scenario in ('device-entry', 'warehouse-inspection', 'warehouse-edit')
+    device_entry = scenario in ('device-entry', 'warehouse-inspection', 'warehouse-edit', 'warehouse-batch')
     catalog_operations = scenario == 'catalog-operations'
-    product_entry = scenario in ('product-entry', 'device-entry', 'catalog-operations', 'warehouse-inspection', 'warehouse-edit')
+    product_entry = scenario in ('product-entry', 'device-entry', 'catalog-operations', 'warehouse-inspection', 'warehouse-edit', 'warehouse-batch')
     mail = scenario == 'mail'
     reviews = scenario == 'reviews'
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
@@ -837,6 +838,8 @@ def main(language, scenario='account', resume=None):
             script = 'tests/local-product-reviews.live.mjs'
         if paid_warehouse or supplement or repair_mail:
             script = 'tests/local-repair.live.mjs'
+        if warehouse_batch:
+            sql(database, "CREATE TRIGGER owned_batch_receipt_failure BEFORE INSERT ON warehouse_device_changes FOR EACH ROW SET NEW.operation_id=IF(NEW.operation_id='00000000-0000-4000-8000-000000000001',NULL,NEW.operation_id)")
         result = subprocess.run([str(node), script],
                                 cwd=ROOT / 'retail/storefront', env=browser_env,
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=420 if refund else 240)
@@ -844,6 +847,22 @@ def main(language, scenario='account', resume=None):
         if result.returncode:
             raise RuntimeError('Account browser check failed; inspect ignored browser.log')
         report.update(json.loads((logs / 'browser-result.json').read_text()))
+        if warehouse_batch:
+            fixture = logs / 'warehouse-batch.test.exe'
+            built = subprocess.run(['go', 'test', '-c', '-o', str(fixture), './internal/devices'], cwd=ROOT / 'retail/backend', env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=120)
+            (logs / 'batch-fixture-build.log').write_bytes(built.stdout)
+            if built.returncode:
+                raise RuntimeError('Batch fixture compile failed')
+            checked = subprocess.run([str(fixture), '-test.run=^TestWindowsWarehouseBatchLimit$', '-test.v'], cwd=ROOT / 'retail/backend', env=dict(browser_env, WINDOWS_DEVICE_BATCH_TEST='1'), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=120)
+            (logs / 'batch-limit.log').write_bytes(checked.stdout)
+            if checked.returncode:
+                raise RuntimeError('Batch 200-device fixture failed')
+            report['batch_200_limit_and_moved_replay_sql_verified'] = True
+        if warehouse_batch:
+            facts = sql(database, "SELECT (SELECT COUNT(*) FROM warehouse_device_changes WHERE JSON_EXTRACT(request_json,'$.devices') IS NOT NULL),(SELECT COUNT(*) FROM device_events WHERE action='make_available')").split('\t')
+            if facts != ['2','4']:
+                raise RuntimeError('Batch receipts/events differ: '+str(facts))
+            report['sql_batch_receipts_device_events'] = [int(v) for v in facts]
         if warehouse_edit:
             fixture = logs / 'warehouse-edit.test.exe'
             built = subprocess.run(['go', 'test', '-c', '-o', str(fixture), './internal/devices'], cwd=ROOT / 'retail/backend', env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=120)
@@ -887,7 +906,7 @@ def main(language, scenario='account', resume=None):
             if not re.fullmatch(r'variant_[0-9a-f-]{36}', variant):
                 raise RuntimeError('Owned intake variant identity invalid')
             facts = sql(database, "SELECT (SELECT COUNT(*) FROM device_tracking_changes WHERE variant_id='" + variant + "'),(SELECT COUNT(*) FROM device_intake_changes WHERE variant_id='" + variant + "'),(SELECT COUNT(*) FROM devices WHERE variant_id='" + variant + "' AND category='sale' AND state='available'),(SELECT COUNT(*) FROM devices WHERE variant_id='" + variant + "' AND category='returned' AND state='inspection'),(SELECT COUNT(*) FROM device_photos)").split('\t')
-            if facts != (['1', '1', '2', '0', '2'] if warehouse_inspection else ['1', '1', '1', '1', '1']):
+            if facts != (['1', '1', '2', '0', '2'] if warehouse_inspection else ['1','1','2','0','1'] if warehouse_batch else ['1', '1', '1', '1', '1']):
                 raise RuntimeError('Device intake tracking/batch/states/photo facts differ')
             report['sql_device_facts'] = dict(zip(['tracking_receipt', 'intake_receipt', 'available_sale', 'inspection_returned', 'photos'], map(int, facts)))
             if warehouse_edit:
@@ -1181,6 +1200,8 @@ if __name__ == '__main__':
         sql(database, "INSERT INTO tax_rates(id,rate,code,name,is_default,is_combinable,tax_region_id,created_at,updated_at) VALUES('isolated-supplement-tax',1,'isolated','Isolated exchange tax',TRUE,FALSE,'txreg_01M4FBP3N26K57MNJK7SJC376H',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-paid-warehouse='):
         verify_paid_warehouse_checkpoint(sys.argv[1].split('=', 1)[1])
+    elif sys.argv[1:] == ['--scenario=warehouse-batch']:
+        main('en', 'warehouse-batch')
     elif sys.argv[1:] == ['--scenario=warehouse-edit']:
         main('en', 'warehouse-edit')
     elif sys.argv[1:] == ['--scenario=warehouse-inspection']:
