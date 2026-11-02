@@ -1,5 +1,7 @@
 # 当前交付范围与端到端验收
 
+2026-11-03：C02/C06[PayPal金额/币种变化与本地会话退役](gin-paypal-context-retirement.md)沿用原插件本地清理行为，增加原商户订单GET核验、扣款发送记录的当前锁定读取及原渠道补偿。独立105环境钱包/卡并发旧快照检查两组、28组实际页面及Mollie八组回归通过；旧快照漏读已实际复现并修复。没有远端订单取消、真实PayPal沙箱/3DS/webhook或主PayPal启用，C01—C11继续开放。
+
 2026-11-03：C02/C06[PayPal付款上下文保存/恢复及登录接管](astro-paypal-context.md)修复原创建重放及绑定重建遗漏provider、正式恢复末步默认Mollie的409。独立105环境12组钱包/卡×保存/恢复/登录×英窄/中宽丢响应重放通过，原UUID/输入版本/provider和158.75EUR保持，CREATE=1、零扣款；原Mollie连续四组回归通过。金额/币种变化的PayPal退役、真实沙箱/3DS/webhook仍待，C01—C11开放。
 
 2026-11-03：C06[PayPal卡支付至订单确认](astro-paypal-card.md)已接原托管CardFields、服务端短期client token、账单地址及正式扣款/成单。独立105环境中英×390/1440四组私有接口拒绝、无效表单/取消/错订单零扣款及创建/扣款/成单丢响应恢复通过；钱包四组回归通过。SDK和渠道为人工模拟，真实PayPal沙箱、3DS及webhook仍待，主未启用PayPal，不关闭C06或整期。

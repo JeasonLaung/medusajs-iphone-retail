@@ -13,9 +13,9 @@ import (
 
 // ReconcileContextPaymentSession observes only the saved remote identity of an
 // exact uncertain delete attempt. It cannot dispatch DELETE/POST, complete a
-// context or release a freeze. Live leases are left alone. Only terminal unpaid
-// evidence proves the old session can be discarded; paid/authorized/open or
-// pending observations remain uncertain and require further coordination.
+// context or release a freeze. Live leases are left alone. Mollie requires
+// terminal unpaid evidence; PayPal permits its original local-only retirement
+// after verified absence of transaction history under the settlement freeze.
 func ReconcileContextPaymentSession(ctx context.Context, db *gorm.DB, store string, ref sessionstore.CartReference, in ContextCommand, sessionID, attemptID string, options InitialPaymentOptions) (PaymentExecution, error) {
 	if err := contextPaymentInput(db, store, ref, in, options); err != nil {
 		return PaymentExecution{}, err
@@ -26,7 +26,10 @@ func ReconcileContextPaymentSession(ctx context.Context, db *gorm.DB, store stri
 	var deletion payments.SessionRequest
 	var observer payments.SessionObserver
 	var remote struct {
-		ID string `json:"id"`
+		ID     string `json:"id"`
+		PayPal struct {
+			ID string `json:"order_id"`
+		} `json:"paypal"`
 	}
 	err := db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		operation, err := stageContextPayment(ctx, tx, store, ref, in, options)
@@ -68,7 +71,13 @@ func ReconcileContextPaymentSession(ctx context.Context, db *gorm.DB, store stri
 		if execution.Receipt.State != "uncertain" {
 			return nil
 		}
-		if json.Unmarshal(deletion.Data, &remote) != nil || remote.ID == "" {
+		if json.Unmarshal(deletion.Data, &remote) != nil {
+			return ErrStorage
+		}
+		if deletion.ProviderID != hostedMollie {
+			remote.ID = remote.PayPal.ID
+		}
+		if remote.ID == "" {
 			return ErrStorage
 		}
 		// A delete request contains the provider RESPONSE, not the original
@@ -110,13 +119,23 @@ func ReconcileContextPaymentSession(ctx context.Context, db *gorm.DB, store stri
 	if err != nil {
 		return execution, err
 	}
-	if err = payments.ValidateMollieObservation(request, remote.ID, observed); err != nil {
-		return execution, err
-	}
-	switch observed.ProviderStatus {
-	case "canceled", "expired", "failed":
-	default:
-		return execution, nil
+	if request.ProviderID == hostedMollie {
+		if err = payments.ValidateMollieObservation(request, remote.ID, observed); err != nil {
+			return execution, err
+		}
+		switch observed.ProviderStatus {
+		case "canceled", "expired", "failed":
+		default:
+			return execution, nil
+		}
+	} else {
+		outcome, err := payments.PayPalRetirementOutcome(request, remote.ID, observed)
+		if err != nil {
+			return execution, err
+		}
+		if outcome != payments.DeleteSucceeded {
+			return execution, nil
+		}
 	}
 	// Save the verified fact even if authority/cancellation changes during GET.
 	// This exact-attempt write grants no cart completion or fresh dispatch.

@@ -167,7 +167,11 @@ func CompleteContextPaymentCompensation(ctx context.Context, db *gorm.DB, store 
 			// a checkout link. Rebind it without classifying either as cash:
 			// the normal observer must persist fresh, verified paid evidence.
 			if created.Status != "authorized" {
-				if _, err := initialCheckoutURL(created.Data); err != nil {
+				if request.ProviderID == hostedMollie {
+					if _, err := initialCheckoutURL(created.Data); err != nil {
+						return err
+					}
+				} else if _, err := payments.PayPalCreatedOrderID(request, created); err != nil {
 					return err
 				}
 			}

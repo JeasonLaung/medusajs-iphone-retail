@@ -192,6 +192,25 @@ func validateContextPaymentCheckout(ctx context.Context, tx *gorm.DB, ref sessio
 	if err != nil {
 		return err
 	}
+	request, err := payments.ReadSessionRequest(ctx, tx, key, options.Ring)
+	if err != nil {
+		return err
+	}
+	if request.ProviderID != hostedMollie {
+		// The owner lock serializes this check with the settlement claim.
+		// After staging, the refresh freeze rejects every new settlement.
+		// An existing dispatch can still finish outside SQL, even if the
+		// last local observation was pending: never retire that session.
+		var claims []string
+		// A consistent count could use an RR snapshot established before
+		// waiting for owner authority and miss a newly committed dispatch.
+		if tx.Table("cart_paypal_settlements").Select("session_id").Where("session_id=?", row.SessionID).Clauses(clause.Locking{Strength: "SHARE"}).Limit(1).Scan(&claims).Error != nil {
+			return ErrStorage
+		}
+		if len(claims) != 0 {
+			return ErrConflict
+		}
+	}
 	created, err := payments.ReadSessionCreation(ctx, tx, key, options.Ring)
 	if err != nil {
 		return err

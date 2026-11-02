@@ -44,3 +44,33 @@ func TestContextCancellationRequiresExplicitConfiguration(t *testing.T) {
 		t.Fatal("foreign provider registered")
 	}
 }
+
+func TestContextRetirementUsesOnlyExplicitPayPalCreators(t *testing.T) {
+	for _, enabled := range []string{"PAYPAL_WALLET_ENABLED", "PAYPAL_CARD_ENABLED"} {
+		env := fixture()
+		for k, v := range map[string]string{enabled: "true", "CHECKOUT_CONTEXT_PAYMENT_ENABLED": "true", "PAYPAL_CLIENT_ID": "artificial_client", "PAYPAL_CLIENT_SECRET": "artificial_secret", "PAYPAL_MERCHANT_ID": "ABC1234567890", "PAYPAL_ENVIRONMENT": "sandbox", "PAYPAL_INTENT": "CAPTURE"} {
+			env[k] = v
+		}
+		get := func(k string) string { return env[k] }
+		initial, err := Load(get)
+		if err != nil {
+			t.Fatal(err)
+		}
+		// Configuration reuses the creator and does not read another credential.
+		out, err := ContextPayments(func(k string) string {
+			if k != "CHECKOUT_CONTEXT_PAYMENT_ENABLED" {
+				t.Fatal("retirement reread credentials")
+			}
+			return env[k]
+		}, initial)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for flag, id := range map[string]string{"PAYPAL_WALLET_ENABLED": "pp_paypal_paypal", "PAYPAL_CARD_ENABLED": "pp_paypal_card_paypal_card"} {
+			_, err := out.Lookup(id)
+			if (err == nil) != (flag == enabled) {
+				t.Fatal("implicit/missing retirement", flag, err)
+			}
+		}
+	}
+}

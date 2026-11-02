@@ -141,7 +141,12 @@ func ReconcileContextCompensationSession(ctx context.Context, db *gorm.DB, store
 	if candidateID == "" {
 		candidateID = observed.PaymentID
 	}
-	if err = payments.ValidateMollieObservation(request, candidateID, observed); err != nil {
+	if request.ProviderID == hostedMollie {
+		err = payments.ValidateMollieObservation(request, candidateID, observed)
+	} else {
+		err = payments.ValidatePayPalObservation(request, candidateID, observed)
+	}
+	if err != nil {
 		return execution, err
 	}
 	savedCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)

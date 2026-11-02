@@ -42,6 +42,38 @@ type contextProviderEvent struct {
 	Kind, Amount, Currency string
 }
 
+type contextPayPalRetirer struct {
+	provider *paypalCheckoutProvider
+	mode     *contextBrowserProvider
+	calls    int
+}
+
+func (p *contextPayPalRetirer) DeleteSession(ctx context.Context, r payments.SessionRequest) (payments.DeleteOutcome, error) {
+	p.calls++
+	id, err := payments.PayPalCreatedOrderID(r, payments.CreatedSession{Status: "pending", Data: r.Data})
+	if err != nil {
+		return payments.DeleteUncertain, err
+	}
+	observed, err := p.provider.ObserveSession(ctx, r, id)
+	if err != nil {
+		return payments.DeleteUncertain, err
+	}
+	out, err := payments.PayPalRetirementOutcome(r, id, observed)
+	p.mode.mu.Lock()
+	mode := p.mode.mode
+	p.mode.mu.Unlock()
+	if mode == "restore" && out == payments.DeleteSucceeded {
+		p.provider.mu.Lock()
+		p.provider.orderID = strings.ToUpper(strings.ReplaceAll(uuid.NewString(), "-", ""))[:17]
+		p.provider.mu.Unlock()
+		p.mode.drift()
+	}
+	if mode == "delete-unknown" {
+		return payments.DeleteUncertain, payments.ErrDeleteExecution
+	}
+	return out, err
+}
+
 // Independent browser cases receive independent rate-limit keys while keeping
 // the real Redis limiter, its eight-attempt limit and TTL. Session/CSRF keys
 // still use the original store. Reusing one loopback IP across the whole matrix
@@ -146,6 +178,7 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	}
 	paypalContext := os.Getenv("PAYPAL_CONTEXT_BROWSER") == "1"
 	paypal := &paypalCheckoutProvider{calls: map[string]int{}}
+	retirer := &contextPayPalRetirer{provider: paypal, mode: adapter}
 	if paypalContext {
 		for _, id := range []string{"pp_paypal_paypal", "pp_paypal_card_paypal_card"} {
 			exec("INSERT INTO payment_providers(id,is_enabled,created_at,updated_at) VALUES(?,TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))", id)
@@ -164,7 +197,12 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	if err != nil {
 		t.Fatal(err)
 	}
-	deletes, err := payments.NewDeleteAdapters(map[string]payments.DeleteSessionAdapter{"pp_mollie-hosted-checkout_mollie": adapter})
+	deleteEntries := map[string]payments.DeleteSessionAdapter{"pp_mollie-hosted-checkout_mollie": adapter}
+	if paypalContext {
+		deleteEntries["pp_paypal_paypal"] = retirer
+		deleteEntries["pp_paypal_card_paypal_card"] = retirer
+	}
+	deletes, err := payments.NewDeleteAdapters(deleteEntries)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -239,6 +277,7 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		ref, initial := makeCart()
 		active = ref
 		if paypalContext {
+			retirer.calls = 0
 			paypal.mu.Lock()
 			paypal.calls = map[string]int{}
 			paypal.status = ""
@@ -432,8 +471,83 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 				n += v
 			}
 			return n
-		}(), "paypal_settlements": paypal.settlements, "creates": adapter.creates, "deletes": adapter.deletes, "observes": adapter.observes, "discovers": adapter.discovers, "protected_unchanged": protectedFacts() == baseline, "transfer_receipts": transferReceipts, "account_owners": accountOwners, "email": email, "collections": collections, "live_sessions": liveSessions, "provider_events": adapter.events})
+		}(), "paypal_retirements": retirer.calls, "paypal_settlements": paypal.settlements, "creates": adapter.creates, "deletes": adapter.deletes, "observes": adapter.observes, "discovers": adapter.discovers, "protected_unchanged": protectedFacts() == baseline, "transfer_receipts": transferReceipts, "account_owners": accountOwners, "email": email, "collections": collections, "live_sessions": liveSessions, "provider_events": adapter.events})
 	})
+	if paypalContext {
+		fixture.POST("/paypal-dispatch-audit", func(c *gin.Context) {
+			for _, provider := range []string{"pp_paypal_paypal", "pp_paypal_card_paypal_card"} {
+				ref, in := makeCart()
+				in.ProviderID = provider
+				a := &paypalCheckoutProvider{calls: map[string]int{}, lostSettlement: true}
+				cfg := configured
+				cfg.Adapters, _ = payments.NewCreateAdapters(map[string]payments.CreateSessionAdapter{"pp_mollie-hosted-checkout_mollie": adapter, provider: a})
+				if _, err := cart.StartInitialPayment(ctx, db, "shop", ref, in, cfg); err != nil {
+					t.Error("claim audit start", err)
+					c.Status(503)
+					return
+				}
+				// Hold only this caller just before its first owner lock:
+				// metadata reads have already established an RR snapshot.
+				// A real settlement commits in the gap, then the staged
+				// command must observe that new claim using a current read.
+				marker := struct{ Label string }{"owned-retirement-race"}
+				reached, release := make(chan struct{}), make(chan struct{})
+				var once sync.Once
+				callback := "owned_paypal_retirement_barrier"
+				if err := db.Callback().Query().Before("gorm:query").Register(callback, func(tx *gorm.DB) {
+					if tx.Statement.Context.Value(marker) == true && tx.Statement.Table == "cart_ownership" {
+						once.Do(func() {
+							close(reached)
+							select {
+							case <-release:
+							case <-ctx.Done():
+							}
+						})
+					}
+				}); err != nil {
+					t.Error(err)
+					c.Status(503)
+					return
+				}
+				cmd := cart.ContextCommand{OperationID: uuid.NewString(), Version: "5", RegionID: "region", Locale: "zh-CN"}
+				resultCh := make(chan error, 1)
+				go func() {
+					_, err := cart.StageContextPayment(context.WithValue(ctx, marker, true), db, "shop", ref, cmd, cfg)
+					resultCh <- err
+				}()
+				select {
+				case <-reached:
+				case <-time.After(10 * time.Second):
+					close(release)
+					db.Callback().Query().Remove(callback)
+					t.Error("owner barrier not reached")
+					c.Status(503)
+					return
+				}
+				result, settleErr := cart.SettlePayPal(ctx, db, "shop", ref, cfg)
+				close(release)
+				stageErr := <-resultCh
+				db.Callback().Query().Remove(callback)
+				if settleErr != nil || result.State != "requires_review" {
+					t.Error("claim audit expected unknown settlement", result, settleErr)
+					c.Status(503)
+					return
+				}
+				if stageErr != cart.ErrConflict {
+					t.Error("claim audit missed concurrently committed settlement", stageErr)
+					c.Status(503)
+					return
+				}
+				var count int64
+				if db.Table("cart_payment_refresh_operations").Where("cart_id=?", ref.CartID).Count(&count).Error != nil || count != 0 {
+					t.Error("claim audit staged effects")
+					c.Status(503)
+					return
+				}
+			}
+			c.JSON(200, gin.H{"blocked": 2, "settlement_claims_preserved": true})
+		})
+	}
 	if paypalContext {
 		fixture.POST("/stage-paypal-context", func(c *gin.Context) {
 			var in struct {

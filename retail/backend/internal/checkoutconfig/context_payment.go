@@ -34,7 +34,23 @@ func ContextPayments(env func(string) string, payment *cart.InitialPaymentOption
 	if err != nil {
 		return nil, ErrInvalid
 	}
-	adapters, err := payments.NewDeleteAdapters(map[string]payments.DeleteSessionAdapter{provider: adapter})
+	entries := map[string]payments.DeleteSessionAdapter{provider: adapter}
+	for _, id := range []string{"pp_paypal_paypal", "pp_paypal_card_paypal_card"} {
+		creator, err := payment.Adapters.Lookup(id)
+		if err != nil {
+			continue // only explicitly configured PayPal methods participate
+		}
+		paypal, ok := creator.(*payments.PayPalCreateAdapter)
+		if !ok {
+			return nil, ErrInvalid
+		}
+		retirement, err := paypal.RetirementAdapter()
+		if err != nil {
+			return nil, ErrInvalid
+		}
+		entries[id] = retirement
+	}
+	adapters, err := payments.NewDeleteAdapters(entries)
 	if err != nil {
 		return nil, ErrInvalid
 	}

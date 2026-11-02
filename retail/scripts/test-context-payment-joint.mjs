@@ -25,7 +25,7 @@ for(let i=0;i<args.length;i++){
  requested.push(args[i])
 }
 const selected=requested.length?[...new Set(requested)]:choices
-const caseCount=paypalContext?12:walletBrowser?4:selected.length*(matrix?4:1)
+const caseCount=paypalContext?28:walletBrowser?4:selected.length*(matrix?4:1)
 const pause=ms=>new Promise(r=>setTimeout(r,ms)),containers=[],processes=[]
 let network,failed,volume
 function run(cmd,args,opts={}){

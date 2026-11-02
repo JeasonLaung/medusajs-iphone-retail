@@ -6,10 +6,12 @@ import {chromium,expect} from '@playwright/test'
 const origin=process.env.CONTEXT_ASTRO_ORIGIN,api=process.env.CONTEXT_API_ORIGIN,key=process.env.CONTEXT_FIXTURE_KEY,output=process.env.CONTEXT_BROWSER_OUTPUT
 assert(/^http:\/\/127\.0\.0\.1:\d+$/.test(origin)&&/^http:\/\/127\.0\.0\.1:\d+$/.test(api)&&key?.length===64&&output)
 const browser=await chromium.launch({headless:true,...(process.env.CONTEXT_BROWSER_EXECUTABLE?{executablePath:process.env.CONTEXT_BROWSER_EXECUTABLE}:{})})
+let dispatchAudit
 const cases=[],errors=[],paymentKey='retail:checkout-payment-intent:v1',contextKey='retail:cart-context-intent:v1',transferKey='retail:customer-cart-transfer:v1'
-async function control(path,body){const r=await fetch(api+'/__fixture/'+path,{method:path==='facts'?'GET':'POST',headers:{'X-Fixture-Key':key,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});assert.equal(r.status,200,'fixture '+path);return ['facts','new','stage-paypal-context'].includes(path)?r.json():null}
+async function control(path,body){const r=await fetch(api+'/__fixture/'+path,{method:path==='facts'?'GET':'POST',headers:{'X-Fixture-Key':key,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});assert.equal(r.status,200,'fixture '+path);return ['facts','new','stage-paypal-context','paypal-dispatch-audit'].includes(path)?r.json():null}
 try{
- for(const provider of ['pp_paypal_paypal','pp_paypal_card_paypal_card'])for(const scenario of ['save','restore','login'])for(const [lang,width] of [['en',390],['zh',1440]]){
+ dispatchAudit=await control('paypal-dispatch-audit');assert.deepEqual(dispatchAudit,{blocked:2,settlement_claims_preserved:true})
+ for(const provider of ['pp_paypal_paypal','pp_paypal_card_paypal_card'])for(const scenario of ['save','restore','login','amount','currency','replacement','uncertain'])for(const [lang,width] of [['en',390],['zh',1440]]){
   const seed=await control('new'),context=await browser.newContext({viewport:{width,height:1000}}),page=await context.newPage(),creates=[],writes=[]
   page.on('pageerror',e=>errors.push(e.message))
   await context.addCookies([{name:'retail_cart_possession',value:seed.token,url:origin,sameSite:'Strict'},{name:'retail_cart_csrf',value:seed.csrf,url:origin,sameSite:'Strict'}])
@@ -23,6 +25,36 @@ try{
   if(provider==='pp_paypal_card_paypal_card')await expect(page.getByTestId('paypal-card-submit')).toBeEnabled()
   const original=await page.evaluate(k=>JSON.parse(localStorage.getItem(k)),paymentKey),before=await control('facts')
   assert.equal(original.providerID,provider);assert.equal(before.paypal_creates,1);assert.equal(before.version,5)
+  if(['amount','currency','replacement','uncertain'].includes(scenario)){
+   const replacing=scenario==='replacement',currency=scenario==='currency',unknown=scenario==='uncertain'
+   if(!currency)await control('price')
+   if(replacing)await control('mode/restore')
+   if(unknown)await control('mode/delete-unknown')
+   const target=lang==='en'?'zh':'en',about=origin+'/dk-'+lang+'/about?context=retirement#contact'
+   const open=async()=>{await page.locator('astro-island[component-url*="gin-header"]:not([ssr])').waitFor({state:'attached'});await page.getByRole('button',{name:/^(Country and language|国家与语言)$/,exact:true}).click();await expect(page.getByRole('dialog')).toBeVisible()}
+   const choice=currency?'Canada — '+(lang==='zh'?'Chinese Simplified (China)':'English (United Kingdom)'):target==='zh'?'Danmark — Chinese Simplified (China)':'Danmark — English (United Kingdom)'
+   const choose=()=>page.getByRole('dialog').getByRole('button',{name:choice,exact:true}).click()
+   let lost=false
+   await page.route('**/context-payment',async route=>{writes.push({body:route.request().postDataJSON(),key:route.request().headers()['idempotency-key']});const r=await route.fetch();if(replacing){assert.equal(r.status(),409);await route.fulfill({response:r});return}assert.equal(r.status(),200);if(!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})})
+   await page.goto(about);await open();await choose();await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible()
+   const pending=await page.evaluate(k=>JSON.parse(localStorage.getItem(k)),contextKey)
+   assert.equal(pending.version,'5');assert.equal((await control('facts')).paypal_retirements,1)
+   if(replacing){
+    await page.route('**/context-payment/restore',async route=>{writes.push({body:route.request().postDataJSON(),key:route.request().headers()['idempotency-key']});const r=await route.fetch();assert.equal(r.status(),200);if(!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})})
+    await page.reload();await open();await page.getByRole('dialog').getByRole('button',{name:/^(Restore previous preferences|恢复之前的设置)$/,exact:true}).click();await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible()
+    await page.reload();await open();await page.getByRole('dialog').getByRole('button',{name:/^(Restore previous preferences|恢复之前的设置)$/,exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);assert.equal(page.url(),about)
+   }else{await page.reload();await open();await choose();await expect(page).toHaveURL(currency?origin+'/ca-'+lang+'/about?context=retirement#contact':origin+'/dk-'+target+'/about?context=retirement#contact')}
+   assert(lost);assert.equal(await page.evaluate(k=>localStorage.getItem(k),contextKey),null)
+   assert(writes.every(w=>w.key===pending.operationID&&JSON.stringify(w.body)===JSON.stringify(writes[0].body)))
+   const rebound=await page.evaluate(k=>JSON.parse(localStorage.getItem(k)),paymentKey)
+   if(replacing){assert.deepEqual(rebound,{cartID:seed.cart_id,version:'5',operationID:pending.operationID,providerID:provider});await page.goto(origin+'/dk-'+lang+'/checkout?step=payment');await expect(page.getByTestId(provider==='pp_paypal_paypal'?'paypal-wallet':'paypal-card')).toBeVisible();if(provider==='pp_paypal_card_paypal_card')await expect(page.getByTestId('paypal-card-submit')).toBeEnabled()}
+   else assert.equal(rebound,null)
+   const after=await control('facts');assert.equal(after.version,6);assert.equal(after.refresh,null);assert.equal(after.checkout,replacing?pending.operationID:null);assert.equal(after.paypal_creates,replacing?2:1);assert.equal(after.paypal_retirements,1);assert.equal(after.paypal_settlements,0);assert.equal(after.protected_unchanged,true);assert.equal(after.live_sessions,replacing?1:0);assert.equal(after.creates,0);assert.equal(after.deletes,0)
+   assert.equal(after.collections[0].CurrencyCode,currency?'cad':'eur');assert.equal(JSON.parse(after.collections[0].RawAmount).value,currency||replacing?'158.75':'160')
+   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true)
+   await page.screenshot({path:join(output,`paypal-context-${provider}-${scenario}-${lang}-${width}.png`)})
+   cases.push({provider,scenario,lang,width,original,rebound,writes,before,after,lost_response_recovered:true,external_sdk_provider_artificial:true,full_order_flow_executed:false});await control('case-done');await context.close();continue
+  }
   let lost=false,staged=false
   if(scenario==='login'){
    await page.route('**/customer/cart-transfer',async route=>{writes.push(route.request().postDataJSON());const r=await route.fetch();assert.equal(r.status(),200);if(!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})})
@@ -63,5 +95,5 @@ try{
   await page.screenshot({path:join(output,`paypal-context-${provider}-${scenario}-${lang}-${width}.png`)})
   cases.push({provider,scenario,lang,width,original,writes,creates,before,after,lost_response_recovered:true,external_sdk_provider_artificial:true,full_order_flow_executed:false});await control('case-done');await context.close()
  }
-}finally{await browser.close();await writeFile(join(output,'browser-result.json'),JSON.stringify({cases,errors},null,2)+'\n')}
+}finally{await browser.close();await writeFile(join(output,'browser-result.json'),JSON.stringify({dispatchAudit,cases,errors},null,2)+'\n')}
 assert.deepEqual(errors,[])
