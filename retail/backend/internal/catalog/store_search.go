@@ -171,6 +171,10 @@ func parseSearch(raw []byte) (StoreSearchRequest, error) {
 
 func (h StoreHandler) Search(c *gin.Context) {
 	c.Header("Cache-Control", "no-store")
+	if h.CustomerGroups != nil {
+		c.Header("Cache-Control", "private, no-store")
+		c.Header("Vary", "Cookie, Origin")
+	}
 	raw, e := io.ReadAll(http.MaxBytesReader(c.Writer, c.Request.Body, 65536))
 	q, err := parseSearch(raw)
 	if e != nil || err != nil || c.Request.URL.RawQuery != "" {
@@ -183,6 +187,14 @@ func (h StoreHandler) Search(c *gin.Context) {
 	}
 	results := []StoreSearchResult{}
 	err = h.DB.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
+		var groups []string
+		if h.CustomerGroups != nil {
+			var err error
+			groups, err = h.CustomerGroups(tx)
+			if err != nil {
+				return err
+			}
+		}
 		channel, e := h.channel(tx)
 		if e != nil {
 			return e
@@ -191,6 +203,7 @@ func (h StoreHandler) Search(c *gin.Context) {
 		if e != nil {
 			return e
 		}
+		context.CustomerGroups = groups
 		products := []StoreProduct{}
 		// Never return partial facets when a resource bound is reached.
 		if e = publicProducts(tx, channel).Select("p.id,p.title,p.handle,p.subtitle,p.description,p.thumbnail").Order("p.id").Limit(1001).Scan(&products).Error; e != nil {
@@ -219,10 +232,14 @@ func (h StoreHandler) Search(c *gin.Context) {
 			results = append(results, evaluateSearch(hits, query, context.Currency))
 		}
 		return nil
-	}, &sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true})
+	}, &sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: h.CustomerGroups == nil})
 	if err != nil {
 		taxonomyFailure(c, err)
 		return
+	}
+	if h.CustomerGroups != nil {
+		c.Header("Cache-Control", "private, no-store")
+		c.Header("Vary", "Cookie, Origin")
 	}
 	c.JSON(200, gin.H{"results": results})
 }

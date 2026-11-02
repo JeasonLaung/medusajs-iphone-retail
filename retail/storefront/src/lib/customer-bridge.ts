@@ -32,6 +32,9 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
  const afterSalesWrite=post&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/after-sales$').test(path)
  const reviewCreate=post&&path===root+'/product-reviews',reviewPurchases=request.method==='GET'&&path===root+'/product-reviews/purchases'
  const reviewOrder=request.method==='GET'&&new RegExp('^'+root+'/orders/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/product-reviews$').test(path)
+ const catalogRead=request.method==='GET'&&(path===root+'/products'||new RegExp('^'+root+'/products/[A-Za-z0-9][A-Za-z0-9_-]{0,190}$').test(path))
+ const catalogSearch=post&&path===root+'/search'
+ const catalogQueryOK=catalogRead&&url.search.length<=8192&&[...url.searchParams.keys()].every(key=>['limit','offset','q','handle','category_id','collection_id','region_id','quantity','order','option_value_id','related_to'].includes(key)&&(key==='option_value_id'||url.searchParams.getAll(key).length===1))
  let reviewQueryOK=false
  if(reviewPurchases){try{const q=reviewQuery(url.searchParams);reviewQueryOK=!url.searchParams.has('limit')&&url.searchParams.size>=1&&q.limit===5}catch{/* Reject before upstream transport. */}}
  const notices=path===root+'/notifications'
@@ -42,10 +45,10 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
  const buybackPhotoWrite=post&&new RegExp('^'+root+'/buyback/requests/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/photos$').test(path)
  const buybackPhotoRead=request.method==='GET'&&new RegExp('^'+root+'/buyback/requests/[A-Za-z0-9][A-Za-z0-9_-]{0,190}/photos/[A-Za-z0-9][A-Za-z0-9_-]{0,190}$').test(path)
  const target=path+url.search
- const queryOK=reviewQueryOK||(orderList||buybackList||notices&&request.method==='GET')&&/^\?offset=(0|[1-9][0-9]{0,5})$/.test(url.search)&&Number(url.searchParams.get('offset'))<=100000
+ const queryOK=catalogQueryOK||reviewQueryOK||(orderList||buybackList||notices&&request.method==='GET')&&/^\?offset=(0|[1-9][0-9]{0,5})$/.test(url.search)&&Number(url.searchParams.get('offset'))<=100000
  if(reviewPurchases&&!reviewQueryOK)return failure(404)
  const address=path===root+'/addresses',addressWrite=new RegExp('^'+root+'/addresses/addr_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(/delete)?$').test(path)
- if((url.href.includes('?')&&!queryOK)||!(post&&(writes.has(path)||path===root+'/me'||address||addressWrite||orderAttach||cartTransfer||afterSalesWrite||paymentPrepare||paymentCancel||notices||buybackCreate||buybackPhotoWrite||buybackCommand||reviewCreate)||request.method==='GET'&&(path===root+'/me'||address||orderList||orderRead||paymentContext||paymentRead||notices||buybackList||buybackRead||buybackPhotoRead||reviewPurchases||reviewOrder)))return failure(404)
+ if((url.href.includes('?')&&!queryOK)||!(post&&(catalogSearch||writes.has(path)||path===root+'/me'||address||addressWrite||orderAttach||cartTransfer||afterSalesWrite||paymentPrepare||paymentCancel||notices||buybackCreate||buybackPhotoWrite||buybackCommand||reviewCreate)||request.method==='GET'&&(catalogRead||path===root+'/me'||address||orderList||orderRead||paymentContext||paymentRead||notices||buybackList||buybackRead||buybackPhotoRead||reviewPurchases||reviewOrder)))return failure(404)
  let upstream:URL,shop:URL
  try{upstream=origin(config.ginOrigin,true);shop=origin(config.storefrontOrigin)}catch{return failure(503)}
  if(url.origin!==shop.origin||request.headers.get('sec-fetch-site')==='cross-site'||request.headers.has('origin')&&request.headers.get('origin')!==shop.origin||post&&request.headers.get('origin')!==shop.origin)return failure(403)
@@ -70,7 +73,7 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
   const csrf=request.headers.get('x-csrf-token')
   if(csrf!==null){if(!/^[0-9a-f]{64}$/.test(csrf))return failure(400);headers.set('X-CSRF-Token',csrf)}
   headers.set('Content-Type','application/json')
-  try{body=await bytes(request.body,buybackPhotoWrite?(4<<20)+8192:16384)}catch{return failure(413)}
+  try{body=await bytes(request.body,buybackPhotoWrite?(4<<20)+8192:catalogSearch?65536:16384)}catch{return failure(413)}
  }
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),cartTransfer?50000:10000)
  try{
@@ -85,7 +88,7 @@ export async function customerBridge(request:Request,config:CustomerBridgeConfig
   const accepted=((afterSalesWrite||buybackCreate||buybackPhotoWrite||reviewCreate)&&status===201)||[200,202,400,401,403,404,409,413,415,429,503].includes(status)
   if(!accepted){await response.body?.cancel().catch(()=>{});return failure(503)}
   if(response.headers.get('cache-control')!=='private, no-store'||response.headers.get('content-type')?.split(';',1)[0].trim().toLowerCase()!=='application/json')throw new Error()
-  const data=await bytes(response.body,buybackPhotoRead?(4<<20)+8192:orderList||orderRead||buybackList||buybackRead||buybackCommand||reviewPurchases||reviewOrder?4*1024*1024:65536),parsed=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(data))
+  const data=await bytes(response.body,catalogRead||catalogSearch?8*1024*1024:buybackPhotoRead?(4<<20)+8192:orderList||orderRead||buybackList||buybackRead||buybackCommand||reviewPurchases||reviewOrder?4*1024*1024:65536),parsed=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(data))
   if(!parsed||typeof parsed!=='object'||Array.isArray(parsed))throw new Error()
   const success=status===200||status===202||(afterSalesWrite||buybackCreate||buybackPhotoWrite||reviewCreate)&&status===201,issued=new Map<string,boolean>()
   for(const cookie of response.headers.getSetCookie()){

@@ -62,11 +62,13 @@ type runtime struct {
 type Handler struct{ DB *gorm.DB }
 
 func installed(tx *gorm.DB) (bool, error) {
-	var n int64
-	if tx == nil || tx.Table("schema_migrations").Where("version=?", "0107_customer_groups.sql").Count(&n).Error != nil || n > 1 {
+	// A current read avoids establishing an RR price snapshot before waiting
+	// for membership locks. A newly admitted group must see its committed prices.
+	var versions []string
+	if tx == nil || tx.Table("schema_migrations").Select("version").Where("version=?", "0107_customer_groups.sql").Clauses(clause.Locking{Strength: "SHARE"}).Scan(&versions).Error != nil || len(versions) > 1 {
 		return false, ErrUnavailable
 	}
-	return n == 1, nil
+	return len(versions) == 1, nil
 }
 func lock(tx *gorm.DB, strength string) (runtime, error) {
 	var r runtime

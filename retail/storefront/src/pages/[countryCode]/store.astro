@@ -8,6 +8,10 @@ import Search,{type StoreSearchProps} from '../../components/search'
 import {createSearchClient,type NativeResult,displayNumber} from '../../components/search/client'
 import {loadPublicPage} from '../../lib/public-page'
 import {loadBuyPolicies} from '../../lib/buy-policies'
+import {catalogForRequest} from '../../lib/customer-catalog-server'
+const catalogFetch=catalogForRequest(Astro.request,()=>Astro.clientAddress)
+Astro.response.headers.set('Cache-Control','private, no-store')
+Astro.response.headers.set('Vary','Cookie')
 const segment=(Astro.params.countryCode??'').toLowerCase(),zh=segment.endsWith('-zh')
 let props:StoreSearchProps|undefined,shell:StorefrontProps['shell'],unavailable=false
 try {
@@ -15,7 +19,7 @@ try {
  if(shell){
   const region=shell.regions.find(r=>r.countries.some(c=>c.iso_2===segment.slice(0,2)))!
   const received:NativeResult[]=[]
-  const serverClient=createSearchClient(region.id,region.currency_code,GIN_API_ORIGIN,fetch,r=>received.push(...r))
+  const serverClient=createSearchClient(region.id,region.currency_code,GIN_API_ORIGIN,catalogFetch,r=>received.push(...r))
   props={segment,regionID:region.id,currencyCode:region.currency_code,requestUrl:Astro.url.href,policies:await loadBuyPolicies(GIN_API_ORIGIN),searchData:{options:{},distribution:{key:'',prices:[]}}}
   const serverState=await getServerState(React.createElement(Search,{...props,serverClient}),{renderToString})
   const first=received[0]

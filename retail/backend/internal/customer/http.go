@@ -91,7 +91,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	})
 	private.Use(h.bridge)
 	private.Use(func(c *gin.Context) {
-		if (c.Request.URL.RawQuery != "" || c.Request.URL.ForceQuery) && !(c.Request.Method == "GET" && (c.FullPath() == "/api/store/customer/product-reviews/purchases" || c.FullPath() == "/api/store/customer/orders" || c.FullPath() == "/api/store/customer/notifications" || c.FullPath() == "/api/store/customer/buyback/requests")) {
+		if (c.Request.URL.RawQuery != "" || c.Request.URL.ForceQuery) && !(c.Request.Method == "GET" && (c.FullPath() == "/api/store/customer/products" || c.FullPath() == "/api/store/customer/products/:id" || c.FullPath() == "/api/store/customer/product-reviews/purchases" || c.FullPath() == "/api/store/customer/orders" || c.FullPath() == "/api/store/customer/notifications" || c.FullPath() == "/api/store/customer/buyback/requests")) {
 			platform.Fail(c, 404, "not_found", "Resource not found")
 			return
 		}
@@ -106,6 +106,9 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.GET("/product-reviews/purchases", h.ProductReviewPurchases)
 	private.GET("/orders/:id/product-reviews", h.OrderProductReviews)
 	private.GET("/me", h.Me)
+	private.GET("/products", h.Catalog)
+	private.GET("/products/:id", h.Catalog)
+	private.POST("/search", h.Catalog)
 	private.GET("/notifications", h.ListNotices)
 	private.POST("/notifications", h.MarkNoticesRead)
 	private.POST("/buyback/requests", h.CreateBuyback)

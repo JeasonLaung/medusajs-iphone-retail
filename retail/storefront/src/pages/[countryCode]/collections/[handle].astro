@@ -4,12 +4,16 @@ import Storefront from '../../../layouts/Storefront.astro'
 import Collection from '../../../components/collections'
 import {loadPublicPage} from '../../../lib/public-page'
 import {parseCollectionQuery,loadCollectionPage,type CollectionPage} from '../../../lib/collection-page'
+import {catalogForRequest} from '../../../lib/customer-catalog-server'
+const catalogFetch=catalogForRequest(Astro.request,()=>Astro.clientAddress)
+Astro.response.headers.set('Cache-Control','private, no-store')
+Astro.response.headers.set('Vary','Cookie')
 const segment=(Astro.params.countryCode??'').toLowerCase(),handle=Astro.params.handle??'',zh=segment.endsWith('-zh')
 let shell:Awaited<ReturnType<typeof loadPublicPage>>=null,data:CollectionPage|null=null,invalid=false,unavailable=false
 let query:ReturnType<typeof parseCollectionQuery>|undefined
 try{query=parseCollectionQuery(Astro.url.searchParams)}catch{invalid=true}
 try{
- if(!invalid){shell=await loadPublicPage(GIN_API_ORIGIN,segment);if(shell){const region=shell.regions.find(r=>r.countries.some(c=>c.iso_2===segment.slice(0,2)))!;data=await loadCollectionPage(GIN_API_ORIGIN,handle,region,query!)}}
+ if(!invalid){shell=await loadPublicPage(GIN_API_ORIGIN,segment);if(shell){const region=shell.regions.find(r=>r.countries.some(c=>c.iso_2===segment.slice(0,2)))!;data=await loadCollectionPage(GIN_API_ORIGIN,handle,region,query!,catalogFetch)}}
 }catch{unavailable=true}
 if(invalid)Astro.response.status=400
 else if(unavailable)Astro.response.status=503

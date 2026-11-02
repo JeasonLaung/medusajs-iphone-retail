@@ -1,8 +1,10 @@
 import type {APIRoute} from 'astro'
 import {GIN_API_ORIGIN} from 'astro:env/server'
 import {publicJSON} from '../../../lib/gin-public'
-export const POST:APIRoute=async({request})=>{
- const headers={'Content-Type':'application/json','Cache-Control':'no-store'}
+import {catalogForRequest} from '../../../lib/customer-catalog-server'
+export const POST:APIRoute=async(context)=>{
+ const {request}=context
+ const headers={'Content-Type':'application/json','Cache-Control':'private, no-store','Vary':'Cookie'}
  let body:unknown
  try{
   if(!request.body)throw new Error()
@@ -11,9 +13,7 @@ export const POST:APIRoute=async({request})=>{
   const data=new Uint8Array(size);let offset=0;for(const chunk of chunks){data.set(chunk,offset);offset+=chunk.byteLength}body=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(data))
  }catch{return new Response('{"error":"Invalid search request"}',{status:400,headers})}
  try{
-  // Fixed public destination only: browser cookies/auth and upstream headers
-  // never cross this bridge. Gin remains responsible for catalog scope.
-  const result=await publicJSON(GIN_API_ORIGIN,'/api/store/search',8*1024*1024,fetch,false,body)
+  const result=await publicJSON(GIN_API_ORIGIN,'/api/store/search',8*1024*1024,catalogForRequest(request,()=>context.clientAddress),false,body)
   return new Response(JSON.stringify(result),{status:200,headers})
  }catch{return new Response('{"error":"Search unavailable"}',{status:503,headers})}
 }

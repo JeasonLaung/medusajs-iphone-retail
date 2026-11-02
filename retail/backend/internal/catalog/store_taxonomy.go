@@ -16,6 +16,8 @@ import (
 type StoreHandler struct {
 	DB      *gorm.DB
 	StoreID string
+	// Set only by the authenticated customer route; public routes remain anonymous.
+	CustomerGroups func(*gorm.DB) ([]string, error)
 }
 
 var errStoreScope = errors.New("store catalog unavailable")

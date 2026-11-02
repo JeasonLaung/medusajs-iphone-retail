@@ -2,6 +2,7 @@
 import {GIN_API_ORIGIN,STOREFRONT_ORIGIN} from 'astro:env/server'
 import Storefront,{type Props as StorefrontProps} from '../../../layouts/Storefront.astro'
 import {loadProductPage,type ProductPageData} from '../../../lib/product-page'
+import {catalogForRequest} from '../../../lib/customer-catalog-server'
 import {loadLocales} from '../../../lib/locales'
 import {loadFooterData} from '../../../lib/footer-data'
 import ImageGallery from '../../../components/products/image-gallery'
@@ -25,10 +26,13 @@ let shell:StorefrontProps['shell']
 let unavailable=false
 let initialReviews:ProductReviewPage|null=null
 let related:Product[]=[]
+const catalogFetch=catalogForRequest(Astro.request,()=>Astro.clientAddress)
+Astro.response.headers.set('Cache-Control','private, no-store')
+Astro.response.headers.set('Vary','Cookie')
 try {
- data=await loadProductPage(GIN_API_ORIGIN,segment,handle,Astro.url.searchParams)
+ data=await loadProductPage(GIN_API_ORIGIN,segment,handle,Astro.url.searchParams,catalogFetch)
  if(data){
-  const [locales,footer,reviews,recommendations]=await Promise.all([loadLocales(GIN_API_ORIGIN),loadFooterData(GIN_API_ORIGIN),loadProductReviews(GIN_API_ORIGIN,data.product.id).catch(()=>null),loadRelatedProducts(GIN_API_ORIGIN,data.product,data.region.id).catch(()=>[])])
+  const [locales,footer,reviews,recommendations]=await Promise.all([loadLocales(GIN_API_ORIGIN),loadFooterData(GIN_API_ORIGIN),loadProductReviews(GIN_API_ORIGIN,data.product.id).catch(()=>null),loadRelatedProducts(GIN_API_ORIGIN,data.product,data.region.id,catalogFetch).catch(()=>[])])
   initialReviews=reviews
   related=recommendations
   shell={regions:data.regions,locales,footer}

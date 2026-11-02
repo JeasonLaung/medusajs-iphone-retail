@@ -933,6 +933,9 @@ def main(language, scenario='account', resume=None):
             raise RuntimeError('Owned snapshot migration failed; inspect ignored migration.log')
         if customer_groups:
             sql(database, 'UPDATE customer_group_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE customer_cart_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE catalog_price_edit_runtime SET enabled=TRUE WHERE id=1 AND version=1')
+            # The source snapshot has no collection for this model. Seed an
+            # explicit disposable catalog fixture, never a production change.
+            sql(database, "INSERT INTO catalog_collections(id,title,handle,created_at,updated_at) VALUES('group_catalog_fixture','Group catalog fixture','group-catalog-fixture',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)); UPDATE catalog_products SET collection_id='group_catalog_fixture' WHERE id='prod_01M4QRKR57T5S95XA5QDPHWN9E'")
             env.update(CHECKOUT_PAYMENT_ENABLED='false', CHECKOUT_CONTEXT_PAYMENT_ENABLED='false', ORDER_REFUNDS_ENABLED='false', PUBLIC_CUSTOMER_CART_TRANSFER_ENABLED='true')
             group_protected = ['orders','order_items','order_summaries','payments','payment_captures','payment_refunds','order_transactions','customer_order_ownership','inventory_levels','inventory_reservations','devices','device_assignments','fulfillments','order_fulfillments','cart_completion_receipts']
             def group_financial_fingerprint():

@@ -160,6 +160,10 @@ func (h StoreHandler) Products(c *gin.Context) { h.products(c, false) }
 func (h StoreHandler) Product(c *gin.Context)  { h.products(c, true) }
 func (h StoreHandler) products(c *gin.Context, detail bool) {
 	c.Header("Cache-Control", "no-store")
+	if h.CustomerGroups != nil {
+		c.Header("Cache-Control", "private, no-store")
+		c.Header("Vary", "Cookie, Origin")
+	}
 	q, err := parseStoreProducts(c.Request.URL.RawQuery, detail)
 	if err != nil || detail && !validProductID(c.Param("id")) {
 		platform.Fail(c, 400, "catalog.invalid_query", "Invalid product query")
@@ -173,6 +177,14 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 	var count int64
 	var priceContext *pricing.Context
 	err = h.DB.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
+		var groups []string
+		if h.CustomerGroups != nil {
+			var err error
+			groups, err = h.CustomerGroups(tx)
+			if err != nil {
+				return err
+			}
+		}
 		channel, e := h.channel(tx)
 		if e != nil {
 			return e
@@ -180,6 +192,9 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 		priceContext, e = h.publicPriceContext(tx, channel, q.region, q.quantity)
 		if e != nil {
 			return e
+		}
+		if priceContext != nil {
+			priceContext.CustomerGroups = groups
 		}
 		var relatedCollection *string
 		if q.related != "" {
@@ -261,12 +276,17 @@ func (h StoreHandler) products(c *gin.Context, detail bool) {
 			return e
 		}
 		return projectPublicOffers(tx, products, channel, q.quantity, priceContext, time.Now().UTC())
-	}, &sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true})
+	}, &sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: h.CustomerGroups == nil})
 	if err != nil {
 		taxonomyFailure(c, err)
 		return
 	}
-	c.Header("Cache-Control", "public, max-age=0, must-revalidate")
+	if h.CustomerGroups == nil {
+		c.Header("Cache-Control", "public, max-age=0, must-revalidate")
+	} else {
+		c.Header("Cache-Control", "private, no-store")
+		c.Header("Vary", "Cookie, Origin")
+	}
 	capabilities := gin.H{"pricing": priceContext != nil, "availability": true, "checkout": false}
 	if detail {
 		c.JSON(200, gin.H{"product": products[0], "capabilities": capabilities})
