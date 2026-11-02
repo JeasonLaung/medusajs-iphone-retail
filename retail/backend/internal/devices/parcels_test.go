@@ -24,4 +24,11 @@ func TestParcelWire(t *testing.T) {
 	if _, e := decodeParcel(strings.NewReader(cancel)); e != nil {
 		t.Fatal("valid cancellation", e)
 	}
+	deliver := strings.Replace(cancel, `"action":"cancel"`, `"action":"deliver"`, 1)
+	if _, e := decodeParcel(strings.NewReader(deliver)); e != nil {
+		t.Fatal("valid delivery", e)
+	}
+	if _, e := decodeParcel(strings.NewReader(strings.Replace(base, `"action":"ship"`, `"action":"deliver"`, 1))); e == nil {
+		t.Fatal("delivery must not rewrite tracking")
+	}
 }

@@ -89,7 +89,7 @@ type ParcelResult struct {
 	AssignmentIDs []string `json:"assignment_ids"`
 	Replayed      bool     `json:"replayed"`
 }
-type parcelLine struct{ ID, ItemID, VariantID, Quantity, FulfilledQuantity, ShippedQuantity string }
+type parcelLine struct{ ID, ItemID, VariantID, Quantity, FulfilledQuantity, ShippedQuantity, DeliveredQuantity string }
 type parcelFacts struct {
 	Packing packingFacts
 	Record  ParcelRecord
@@ -102,7 +102,7 @@ func validParcel(in ParcelInput) bool {
 	if e != nil || id.Version() != 4 || id.String() != in.OperationID || e2 != nil || len(rev) != 32 || hex.EncodeToString(rev) != in.ExpectedRevision {
 		return false
 	}
-	if in.Action == "cancel" {
+	if in.Action == "cancel" || in.Action == "deliver" {
 		return in.TrackingNumber == "" && in.TrackingURL == ""
 	}
 	if in.Action != "ship" || !utf8.ValidString(in.TrackingNumber) || utf8.RuneCountInString(in.TrackingNumber) < 1 || utf8.RuneCountInString(in.TrackingNumber) > 200 || strings.TrimSpace(in.TrackingNumber) != in.TrackingNumber || strings.IndexFunc(in.TrackingNumber, unicode.IsControl) >= 0 || len(in.TrackingURL) > 2048 || !utf8.ValidString(in.TrackingURL) || strings.IndexFunc(in.TrackingURL, unicode.IsControl) >= 0 {
@@ -238,7 +238,7 @@ func loadParcel(tx *gorm.DB, o, f string, rev uint64, enabled bool) (ParcelConte
 			continue
 		}
 		var line parcelLine
-		e = tx.Table("order_items i").Select("i.id,i.item_id,l.variant_id,i.quantity,i.fulfilled_quantity,i.shipped_quantity").Joins("JOIN order_line_items l ON l.id=i.item_id AND l.deleted_at IS NULL").Where("i.order_id=? AND i.item_id=? AND i.version=? AND i.deleted_at IS NULL", o, *item.ItemID, p.Version).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&line).Error
+		e = tx.Table("order_items i").Select("i.id,i.item_id,l.variant_id,i.quantity,i.fulfilled_quantity,i.shipped_quantity,i.delivered_quantity").Joins("JOIN order_line_items l ON l.id=i.item_id AND l.deleted_at IS NULL").Where("i.order_id=? AND i.item_id=? AND i.version=? AND i.deleted_at IS NULL", o, *item.ItemID, p.Version).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&line).Error
 		if e != nil {
 			out.Supported = false
 			continue
@@ -450,6 +450,9 @@ func (h Handler) changeParcel(ctx context.Context, actor identity.User, o, f, lo
 		}
 		if !errors.Is(e, gorm.ErrRecordNotFound) {
 			return e
+		}
+		if in.Action == "deliver" {
+			return finishParcelDelivery(tx, actor, o, f, in, request, before, facts, rev, enabled, &result)
 		}
 		if !before.OrderActive || !before.Supported || before.Status != "packed" || before.Revision != in.ExpectedRevision || len(before.Items) == 0 || len(before.Devices) == 0 {
 			return ErrConflict

@@ -1,0 +1,98 @@
+{
+  "owner": "fc8a8658f2c5",
+  "api_sha256": "5a964ed05462c8c2e1310ca57301f3cfbbc277227977da6e5790e3fc46ba8ea1",
+  "scenario": "delivery-mail",
+  "resumed_paid_checkpoint": "a27835e587f6",
+  "passed": true,
+  "order_id": "order_2f0cb924-7757-418e-87b3-542ede6b250a",
+  "fulfillment_id": "ful_11ea45a7-4cc7-495f-85cd-57acfffa0331",
+  "operation_id": "54cf52a4-48a1-4b3d-bc15-4907795ea898",
+  "business_event_mail_jobs": 1,
+  "event_mail_rejected_retry_sent": true,
+  "event_mail_lost_reply_same_command": true,
+  "event_mail_frozen_message_and_key": true,
+  "event_mail_transport_isolated": true,
+  "real_email_delivery": false,
+  "business_api_mocking": false,
+  "main_database_modified": false,
+  "guards": {
+    "late_receipt_failure_atomic": true,
+    "new_delivery_effects": 0,
+    "over_delivery_canceled_returned_disabled_account_and_gate_denied": true,
+    "passed": true,
+    "protected_facts_unchanged": true,
+    "stale_tracking_foreign_order_denied": true
+  },
+  "six_concurrent_one_fresh_five_replayed": true,
+  "lost_response_same_command": true,
+  "customer_en_zh_mobile": true,
+  "admin_en_zh": true,
+  "original_tracking_retained": true,
+  "no_payment_or_shipment_replayed": true,
+  "browser_errors": 0,
+  "protected_payment_stock_device_tracking_order_unchanged": true,
+  "sql_delivery_facts": {
+    "delivered_parcels": 1,
+    "delivered_quantity": 1,
+    "sent_mail": 1,
+    "sent_deliveries": 1,
+    "retry_receipts": 1
+  },
+  "payment_durable_snapshot_retained": true,
+  "resources_removed": true,
+  "cleanup_errors": [],
+  "mail_dispatch": {
+    "event-reject": {
+      "concurrent_claims": true,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-reject",
+      "provider_calls": 1
+    },
+    "event-sent": {
+      "concurrent_claims": true,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-sent",
+      "provider_calls": 1
+    },
+    "event-drain": {
+      "concurrent_claims": false,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-drain",
+      "provider_calls": 0
+    }
+  },
+  "validation": {
+    "go_test_all": true,
+    "go_vet_devices_orders_customernotices": true,
+    "admin_tsc_no_emit": true,
+    "python_compile": true,
+    "node_syntax": true,
+    "original_23_SQL_suites_replayed": false
+  },
+  "main_preview": {
+    "api_health": 200,
+    "admin": 200,
+    "storefront_store": 200,
+    "storefront_account_orders": 200,
+    "api_sha256": "5a964ed05462c8c2e1310ca57301f3cfbbc277227977da6e5790e3fc46ba8ea1",
+    "legacy_medusa_9001": "intentionally stopped"
+  },
+  "retained_failed_runs": {
+    "35b1ca49e280": "Fixture tried creating a MySQL trigger with application credentials; moved owned fault trigger creation to existing root harness. No delivery occurred.",
+    "190a62c919af": "Delivery, concurrency and retry passed; test init script reset language on reload.",
+    "67283c2248ad": "Delivery and Chinese state passed; test close locator did not account for Ant Chinese button spacing.",
+    "7b6e2151b577": "Delivery and bilingual customer views passed; test English restore was accidentally conditional and mailbox helper stayed Chinese."
+  },
+  "source_sha256": {
+    "retail/backend/internal/devices/parcel_delivery.go": "bf04cce6b7718460e722dc0ccca85b6fa5f0643191ce8b7f141533111e7a1fcf",
+    "retail/backend/internal/devices/parcels.go": "b7d8288752c076c93dd8e1832a858b290f7f2110e665efe628807094b61a90ba",
+    "retail/admin/src/OrderParcel.tsx": "2a5a74043bef901ef1ef714dd878f05a26c588485d89f43e44388b8351808e00",
+    "retail/admin/src/api.ts": "523ecc5574961bebaa4a583d633c783cdbc34f074939f4e56d6d3917bd56f099",
+    "retail/backend/internal/identity/windows_parcel_delivery_test.go": "78481e6676e390c978169d0f77b50123c5bd4796d8a09c0b64edb51065dde4d7",
+    "retail/storefront/tests/local-parcel-delivery.live.mjs": "232d74787da0f8d1479b616ada2bb56d5b6f11a981cc66a79093cfbea9d1ac3b",
+    "retail/scripts/test-local-customer-account.py": "49a4a1cecebd05d05b182c7bdde47c939e6dc17ca0c077c3f7524668349a579d"
+  }
+}

@@ -545,7 +545,7 @@ export async function saveOrderPacking(order:string,body:AllocationInput):Promis
  return d.fulfillment_id
 }
 
-export type ParcelInput={operation_id:string;expected_revision:string;action:'ship'|'cancel';tracking_number:string;tracking_url:string}
+export type ParcelInput={operation_id:string;expected_revision:string;action:'ship'|'cancel'|'deliver';tracking_number:string;tracking_url:string}
 export type ParcelContext={order_id:string;fulfillment_id:string;enabled:boolean;order_active:boolean;supported:boolean;status:string;location_id:string;revision:string;devices:{assignment_id:string;device_id:string;serial_number:string;item_id:string;status:string}[];items:{id:string;item_id:string|null;title:string;quantity:string}[];labels:{id:string;tracking_number:string;tracking_url:string;label_url:string}[]}
 const parcelPath=(o:string,f:string)=>`orders/${encodeURIComponent(o)}/fulfillments/${encodeURIComponent(f)}/operations`
 export async function readOrderParcel(order:string,parcel:string,signal:AbortSignal):Promise<ParcelContext>{
