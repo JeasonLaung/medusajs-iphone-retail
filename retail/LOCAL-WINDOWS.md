@@ -113,3 +113,8 @@ LOCAL_PREVIEW_WAREHOUSE_MANAGEMENT_ENABLED=true使start.bat显式开启既有仓
 ### 仓库退回检测
 
 仓库员工使用`/warehouse-devices`的退回列表“检测处理”，要求明确授权退回读写及对应仓库；沿用现有device_service_runtime，数量库存不随检测增减。独立验证为`--scenario=warehouse-inspection`，使用自有恢复副本并在外层回滚事务补核原机维修约束。参见 `docs/migration/gin-warehouse-inspection.md`。
+
+
+### 仓库设备编辑
+
+有对应分类读写权限的仓库员工可在`/warehouse-devices`使用“编辑设备”，仅授权内仓库及自有来源；序列号固定、号码跨字段查重，编辑不改数量库存。独立验证为`--scenario=warehouse-edit`，需以ACCOUNT_TEST_API_BINARY指定当前自有API。参见 `docs/migration/gin-warehouse-device-edit.md`。

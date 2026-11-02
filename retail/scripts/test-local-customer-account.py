@@ -552,10 +552,11 @@ def verify_repair_mail_checkpoint(owner):
 def main(language, scenario='account', resume=None):
     repair_mail = scenario == 'repair-mail'
     intake_warehouse = scenario == 'intake-warehouse'
+    warehouse_edit = scenario == 'warehouse-edit'
     warehouse_inspection = scenario == 'warehouse-inspection'
-    device_entry = scenario in ('device-entry', 'warehouse-inspection')
+    device_entry = scenario in ('device-entry', 'warehouse-inspection', 'warehouse-edit')
     catalog_operations = scenario == 'catalog-operations'
-    product_entry = scenario in ('product-entry', 'device-entry', 'catalog-operations', 'warehouse-inspection')
+    product_entry = scenario in ('product-entry', 'device-entry', 'catalog-operations', 'warehouse-inspection', 'warehouse-edit')
     mail = scenario == 'mail'
     reviews = scenario == 'reviews'
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
@@ -721,6 +722,9 @@ def main(language, scenario='account', resume=None):
         env['ORDER_REFUNDS_ENABLED'] = 'true' if refund else 'false'
         if intake_warehouse:
             sql(database, 'UPDATE warehouse_management_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE warehouse_user_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE warehouse_scope_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE inventory_command_capabilities SET enabled=TRUE WHERE command=\'inventory.create_level\' AND version=1')
+        if warehouse_edit:
+            sql(database, 'UPDATE warehouse_user_runtime SET enabled=TRUE WHERE id=1; UPDATE warehouse_scope_runtime SET enabled=TRUE WHERE id=1')
+            sql(database, "DELIMITER $$\nCREATE TRIGGER owned_edit_failure BEFORE INSERT ON warehouse_device_changes FOR EACH ROW BEGIN IF JSON_UNQUOTE(JSON_EXTRACT(NEW.request_json,'$.fields.notes'))='owned-edit-receipt-rollback' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='owned edit receipt fixture'; END IF; END$$\nDELIMITER ;")
         if warehouse_inspection:
             sql(database, 'UPDATE warehouse_user_runtime SET enabled=TRUE WHERE id=1; UPDATE warehouse_scope_runtime SET enabled=TRUE WHERE id=1; UPDATE device_service_runtime SET enabled=TRUE WHERE id=1')
             sql(database, "DELIMITER $$\nCREATE TRIGGER owned_inspection_failure BEFORE INSERT ON warehouse_device_changes FOR EACH ROW BEGIN IF JSON_UNQUOTE(JSON_EXTRACT(NEW.request_json,'$.notes'))='owned-inspection-receipt-rollback' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='owned inspection receipt fixture'; END IF; END$$\nDELIMITER ;")
@@ -840,6 +844,17 @@ def main(language, scenario='account', resume=None):
         if result.returncode:
             raise RuntimeError('Account browser check failed; inspect ignored browser.log')
         report.update(json.loads((logs / 'browser-result.json').read_text()))
+        if warehouse_edit:
+            fixture = logs / 'warehouse-edit.test.exe'
+            built = subprocess.run(['go', 'test', '-c', '-o', str(fixture), './internal/devices'], cwd=ROOT / 'retail/backend', env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=120)
+            (logs / 'edit-fixture-build.log').write_bytes(built.stdout)
+            if built.returncode:
+                raise RuntimeError('Device edit fixture compile failed')
+            checked = subprocess.run([str(fixture), '-test.run=^TestWindowsWarehouseEditAllocation$', '-test.v'], cwd=ROOT / 'retail/backend', env=dict(browser_env, WINDOWS_DEVICE_EDIT_TEST='1'), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=90)
+            (logs / 'edit-allocation.log').write_bytes(checked.stdout)
+            if checked.returncode:
+                raise RuntimeError('Device edit allocation/move fixture failed')
+            report['allocated_device_and_cross_warehouse_sql_verified'] = True
         if warehouse_inspection:
             fixture = logs / 'warehouse-inspection.test.exe'
             built = subprocess.run(['go', 'test', '-c', '-o', str(fixture), './internal/devices'], cwd=ROOT / 'retail/backend', env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=120)
@@ -875,6 +890,14 @@ def main(language, scenario='account', resume=None):
             if facts != (['1', '1', '2', '0', '2'] if warehouse_inspection else ['1', '1', '1', '1', '1']):
                 raise RuntimeError('Device intake tracking/batch/states/photo facts differ')
             report['sql_device_facts'] = dict(zip(['tracking_receipt', 'intake_receipt', 'available_sale', 'inspection_returned', 'photos'], map(int, facts)))
+            if warehouse_edit:
+                device = report['edit_device_id']
+                if not re.fullmatch(r'dev_[0-9a-f-]{36}', device):
+                    raise RuntimeError('Owned edited device invalid')
+                facts = sql(database, "SELECT (SELECT COUNT(*) FROM warehouse_device_changes WHERE device_id='"+device+"'),(SELECT COUNT(*) FROM device_events WHERE device_id='"+device+"' AND action='update'),(SELECT COUNT(*) FROM device_identity_claims WHERE device_id='"+device+"'),(SELECT COUNT(*) FROM device_identity_claims WHERE device_id='"+device+"' AND value='000000000000081')").split('\t')
+                if facts != ['2','2','3','0']:
+                    raise RuntimeError('Expected unique edit events/receipts and replaced identity claims: ' + str(facts))
+                report['sql_edit_receipts_events_claims_old_claims'] = [int(v) for v in facts]
             if warehouse_inspection:
                 device = report['inspection_device_id']
                 if not re.fullmatch(r'dev_[0-9a-f-]{36}', device):
@@ -1158,6 +1181,8 @@ if __name__ == '__main__':
         sql(database, "INSERT INTO tax_rates(id,rate,code,name,is_default,is_combinable,tax_region_id,created_at,updated_at) VALUES('isolated-supplement-tax',1,'isolated','Isolated exchange tax',TRUE,FALSE,'txreg_01M4FBP3N26K57MNJK7SJC376H',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-paid-warehouse='):
         verify_paid_warehouse_checkpoint(sys.argv[1].split('=', 1)[1])
+    elif sys.argv[1:] == ['--scenario=warehouse-edit']:
+        main('en', 'warehouse-edit')
     elif sys.argv[1:] == ['--scenario=warehouse-inspection']:
         main('en', 'warehouse-inspection')
     elif sys.argv[1:] == ['--scenario=device-entry']:

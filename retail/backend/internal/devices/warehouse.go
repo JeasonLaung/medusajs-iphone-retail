@@ -160,6 +160,9 @@ func (h Handler) ReadWarehouseDevices(ctx context.Context, actor identity.User, 
 				return e
 			}
 			row.AllowedActions = []string{}
+			if writeErr == nil {
+				row.AllowedActions = append(row.AllowedActions, "edit")
+			}
 			if inspectionEnabled && writeErr == nil && category == "returned" && !row.HasActiveAssignment && (row.State == "inspection" || row.State == "repair") {
 				row.AllowedActions = append(row.AllowedActions, "inspect")
 			}

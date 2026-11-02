@@ -1,0 +1,144 @@
+{
+  "owner": "fb795a7a2539",
+  "database": "retail_account_fb795a7a2539",
+  "real_email_delivery": false,
+  "business_api_mocking": false,
+  "main_database_modified": false,
+  "api_sha256": "584834116913beb7c6c70c217ada54fb49f086082a269e18c725e2b39a542c3e",
+  "customer_owner": "fb795a7a2539",
+  "passed": true,
+  "scenario": "warehouse-edit",
+  "variant_id": "variant_ece55979-7463-4e5c-9145-cdb0d090b7a7",
+  "source_name": "Native intake fb795a7a2539",
+  "source_auto_warehouse": true,
+  "tracking_enrolled": true,
+  "photo_uploaded_and_jpeg_read": true,
+  "photos_survive_reload": true,
+  "sale_available_return_inspection": true,
+  "leading_zero_imei": true,
+  "intake_lost_reply_same_command": true,
+  "product_id": "prod_0168c23a-49eb-475e-b214-47fb3c326e77",
+  "handle": "native-browser-fa112c72-895d-4557-96c9-4de4aa6136cb",
+  "generated_sku": "ERP11565",
+  "actual_admin_product_sku_price_stock": true,
+  "exact_price": "129.123456789012345678",
+  "stocked_quantity": 1,
+  "public_inventory_quantity": 1,
+  "warehouse_edit_actual_employee": true,
+  "edit_device_id": "dev_bb5c69c8-b072-48f7-bd1d-e9f404d67fe0",
+  "edit_location_id": "sloc_a17f9355-a89a-4637-8f11-6f8ab1288aec",
+  "edit_identity_updated_serial_preserved": true,
+  "edit_cost_bin_notes_photos": true,
+  "edit_six_first_concurrent_unique": true,
+  "edit_lost_response_same_command": true,
+  "edit_duplicate_imei_external_scope_state_rejected": true,
+  "edit_last_receipt_failure_rolled_back": true,
+  "edit_permission_revoke_session_and_receipt": true,
+  "edit_en_zh_mobile": true,
+  "edit_quantity_stock_reservations_unchanged": true,
+  "astro_en_zh_purchase_enabled": true,
+  "mobile_overflow": false,
+  "browser_errors": 0,
+  "real_payment_created": false,
+  "allocated_device_and_cross_warehouse_sql_verified": true,
+  "verified_accounts": 0,
+  "sql_entry_receipts": {
+    "product": 1,
+    "variant": 1,
+    "price": 1,
+    "stock": 1
+  },
+  "sql_device_facts": {
+    "tracking_receipt": 1,
+    "intake_receipt": 1,
+    "available_sale": 1,
+    "inspection_returned": 1,
+    "photos": 1
+  },
+  "sql_edit_receipts_events_claims_old_claims": [
+    2,
+    2,
+    3,
+    0
+  ],
+  "redis_keys_removed": 6,
+  "source_product_entry_unchanged": true,
+  "source_account_counts_before": {
+    "customer_accounts": 0,
+    "customer_verifications": 0,
+    "customer_verification_mail": 0,
+    "customer_account_addresses": 0,
+    "customer_order_ownership": 0,
+    "buyback_requests": 0,
+    "buyback_prices": 0,
+    "buyback_photo_bytes": 0,
+    "buyback_device_links": 0,
+    "after_sales_requests": 0,
+    "device_return_receipts": 0,
+    "device_service_receipts": 0
+  },
+  "source_account_counts_after": {
+    "customer_accounts": 0,
+    "customer_verifications": 0,
+    "customer_verification_mail": 0,
+    "customer_account_addresses": 0,
+    "customer_order_ownership": 0,
+    "buyback_requests": 0,
+    "buyback_prices": 0,
+    "buyback_photo_bytes": 0,
+    "buyback_device_links": 0,
+    "after_sales_requests": 0,
+    "device_return_receipts": 0,
+    "device_service_receipts": 0
+  },
+  "resources_removed": true,
+  "cleanup_errors": [],
+  "source_catalog_fingerprint_tables": 29,
+  "checks": [
+    "devices/identity/server Go tests",
+    "devices/server go vet",
+    "Admin tsc --noEmit",
+    "Python/JavaScript syntax",
+    "Actual native React/Gin/MySQL/Redis/Astro employee browser",
+    "Rollback SQL active allocation and authorized move checks"
+  ],
+  "prior_passed_rehearsals": [
+    "c12b6889c3b4",
+    "0198da0572dd"
+  ],
+  "failed_rehearsal": {
+    "ba81d1dd436a": "Supplemental supplier fixture violated existing one-source-per-location SQL uniqueness; use own additional warehouse instead."
+  },
+  "limitations": [
+    "No complete C01-C11 acceptance claim.",
+    "Bulk commands and formal historical data/files reconciliation remain.",
+    "No quantity stock, reservations, main business changes, remote payment or email in this verification."
+  ],
+  "inspection_regression": {
+    "owner": "7d5b5d9ee913",
+    "passed": true,
+    "resources_removed": true,
+    "source_product_entry_unchanged": true
+  },
+  "main_read_only_check": {
+    "passed": true,
+    "main_business_writes": 0,
+    "warehouse_users_http": 200,
+    "edit_route_registered_rejects_full_store_actor": 403,
+    "browser_errors": 0
+  },
+  "native_http": {
+    "http://127.0.0.1:9100/health": 200,
+    "http://127.0.0.1:9200/warehouse-users": 200,
+    "http://127.0.0.1:9300/gb-en/store": 200,
+    "http://127.0.0.1:9300/gb-en/products/swappie-iphone-17e": 200
+  },
+  "main_counts": {
+    "devices": 0,
+    "device_sources": 2,
+    "warehouse_users": 0,
+    "customer_event_mail": 0,
+    "customer_event_mail_deliveries": 0
+  },
+  "chinese_form_visual_review": true
+}
