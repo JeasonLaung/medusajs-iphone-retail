@@ -12,8 +12,11 @@ unfinished, never posted. --resume-refund=OWNER restores an ignored checkpoint
 and reuses the same paid order and durable refund instruction.
 --scenario=warehouse uses the copied paid order and explicit fixture ownership
 to verify a new scoped employee's allocation/release/shipment and customer view.
+--scenario=mail uses actual Admin mailbox commands and production dispatchers
+in separate test processes, replacing only the external Resend transport.
 Verification links are read from authenticated encrypted intents in the owned
-copy, never returned by an application endpoint or marked verified with SQL.
+copy (or the captured dispatch body for mail), never returned by an application
+endpoint or marked verified with SQL.
 """
 import json
 import hashlib
@@ -148,12 +151,13 @@ def redis_cleanup(prefix):
 
 
 def main(language, scenario='account', resume=None):
+    mail = scenario == 'mail'
     buyback = scenario in ('buyback', 'buyback-return')
     exchange = scenario == 'exchange'
     refund = scenario == 'refund'
     warehouse = scenario == 'warehouse'
     repair = scenario in ('repair', 'exchange', 'refund', 'warehouse')
-    admin_required = buyback or repair
+    admin_required = buyback or repair or mail
     values = config()
     if resume is not None:
         if not refund or not re.fullmatch(r'[0-9a-f]{12}', resume):
@@ -277,6 +281,15 @@ def main(language, scenario='account', resume=None):
         # Real sandbox refunds must use a freshly paid order in this copy,
         # never the remote payment belonging to the source preview order.
         env['ORDER_REFUNDS_ENABLED'] = 'true' if refund else 'false'
+        if mail:
+            env['NOTIFICATION_MAIL_ENABLED'] = 'true'
+            # Fresh mailbox encryption belongs only to this disposable database.
+            # Imported historical secrets are neither needed nor decrypted.
+            env['MERCHANT_KEY_ACTIVE'] = 'isolated-mail'
+            env['MERCHANT_KEYRING_JSON'] = json.dumps({'isolated-mail': secrets.token_hex(32)})
+            fixture = logs / 'mail-subflow.test.exe'
+            subprocess.run(['go', 'test', '-c', '-o', str(fixture), './internal/identity'],
+                           cwd=ROOT / 'retail/backend', check=True, capture_output=True, timeout=120)
         if refund:
             if not values.get('MOLLIE_API_KEY', '').startswith('test_'):
                 raise RuntimeError('Refund rehearsal requires a Mollie test key')
@@ -317,10 +330,12 @@ def main(language, scenario='account', resume=None):
         browser_env = dict(env, ACCOUNT_TEST_OWNER=owner, ACCOUNT_TEST_DB=database,
                            ACCOUNT_TEST_LOGS=str(logs), ACCOUNT_TEST_PYTHON=sys.executable,
                            ACCOUNT_TEST_LANGUAGE=language, ACCOUNT_TEST_SCENARIO=scenario)
+        if mail:
+            browser_env.update(WINDOWS_MAIL_SUBFLOW='1', WINDOWS_MAIL_FIXTURE=str(fixture))
         if resume:
             browser_env.update(ACCOUNT_TEST_CUSTOMER_OWNER=customer_owner, ACCOUNT_TEST_RESUME_PAID='true',
                                ACCOUNT_TEST_REFUND_EXISTING='true' if existing_refund else 'false')
-        script = 'tests/local-repair.live.mjs' if repair else 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
+        script = 'tests/local-notification-mail.live.mjs' if mail else 'tests/local-repair.live.mjs' if repair else 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
         result = subprocess.run([str(node), script],
                                 cwd=ROOT / 'retail/storefront', env=browser_env,
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=420 if refund else 240)
@@ -332,6 +347,17 @@ def main(language, scenario='account', resume=None):
              "WHERE email LIKE 'local-account-" + customer_owner + "-%@example.invalid' AND verified_at IS NOT NULL"))
         if report['verified_accounts'] != 1:
             raise RuntimeError('Expected exactly one newly verified fixture account')
+        if mail:
+            facts = {
+                'verification_sent': int(sql(database, "SELECT COUNT(*) FROM customer_verification_mail WHERE status='sent'")),
+                'order_sent': int(sql(database, "SELECT COUNT(*) FROM order_notification_outbox WHERE event='order.placed' AND status='sent'")),
+                'order_retry_audit': int(sql(database, "SELECT COUNT(*) FROM audit_events WHERE action='order_mail.retry'")),
+                'approved_mailbox': int(sql(database, "SELECT COUNT(*) FROM notification_mail_accounts")),
+                'mailbox_receipts': int(sql(database, "SELECT COUNT(*) FROM notification_mail_commands")),
+            }
+            if facts != {'verification_sent': 1, 'order_sent': 1, 'order_retry_audit': 1, 'approved_mailbox': 1, 'mailbox_receipts': 2}:
+                raise RuntimeError('Mail terminal facts differ: ' + str(facts))
+            report['sql_mail_facts'] = facts
         if warehouse:
             order = report['order_id']
             if not re.fullmatch(r'order_[0-9a-f-]{36}', order):
@@ -486,6 +512,8 @@ if __name__ == '__main__':
         main('en', 'refund')
     elif sys.argv[1:] == ['--scenario=warehouse']:
         main('en', 'warehouse')
+    elif sys.argv[1:] == ['--scenario=mail']:
+        main('en', 'mail')
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--resume-refund='):
         main('en', 'refund', sys.argv[1].split('=', 1)[1])
     else:

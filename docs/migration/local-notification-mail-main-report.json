@@ -1,0 +1,73 @@
+{
+  "task": "Windows notification mailbox, registration and paid-order email recovery",
+  "date": "2026-11-02",
+  "passed": true,
+  "full_C01_C11_complete": false,
+  "run": {
+    "owner": "a60942464724",
+    "database": "retail_account_a60942464724",
+    "real_email_delivery": false,
+    "business_api_mocking": false,
+    "main_database_modified": false,
+    "api_sha256": "5d5dc33a337d33a206939bebb363c25978a472650d3789318b5b101197b875a7",
+    "customer_owner": "a60942464724",
+    "passed": true,
+    "scenario": "mail",
+    "actual_admin_mailbox_save": true,
+    "blank_secret_preserved": true,
+    "customer_registration_verification_login": true,
+    "link_from_dispatched_email": true,
+    "paid_order_existing_outbox": true,
+    "permanent_rejection_admin_retry_then_sent": true,
+    "same_frozen_mail_on_retry": true,
+    "lost_reply_exact_command_recovery": true,
+    "production_dispatchers_separate_processes": true,
+    "isolated_resend_transport": true,
+    "browser_errors": 0,
+    "verified_accounts": 1,
+    "sql_mail_facts": {
+      "verification_sent": 1,
+      "order_sent": 1,
+      "order_retry_audit": 1,
+      "approved_mailbox": 1,
+      "mailbox_receipts": 2
+    },
+    "redis_keys_removed": 11,
+    "source_account_counts_before": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "source_account_counts_after": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "resources_removed": true,
+    "cleanup_errors": []
+  },
+  "limitations": [
+    "Only external Resend HTTP transport replaced; no real email delivery",
+    "Production dispatch Stores called from gated test processes; worker CLI not tested here",
+    "Buyback and after-sales inbox events do not prove C10 automatic email delivery",
+    "Main notification mail gate and workers unchanged"
+  ]
+}

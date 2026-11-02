@@ -43,3 +43,7 @@
 本机忽略的 `.env` 现配置 `CHECKOUT_PAYMENT_ENABLED=true`、`MOLLIE_LOCAL_TEST_WITHOUT_WEBHOOK=true`、`LOCAL_PREVIEW_PAYMENT_ENABLED=true`、真实 Mollie test key 和独立持久 PAYMENT keyring。start.bat 显式执行 `configure-local-preview --payments`，只允许专用 development/127.0.0.1:13307/eurorefurb_local_trial；启用本地成单与库存预留并初始化独立测试编号，重复执行不重置编号。退款、外发邮件和后台worker仍关闭。
 
 Mollie无法访问loopback webhook，本机test模式省略该参数，通过真实收银台返回后的服务端认证查询确认。live key或非本机地址不能使用该配置。已实测订单 `2026110218344757728`（789欧元），详情及限制见 `docs/migration/local-mollie-shopping.md`。生产编号切换与webhook需要独立正式配置。
+
+## 通知邮件独立验证
+
+`python retail/scripts/test-local-customer-account.py --scenario=mail` 复制本机恢复库，在专有19100/19200/19300及Redis前缀验证实际后台邮箱保存/密钥留空保留、注册邮件链接验证登录和订单失败重试。副本商户密钥临时生成；外部Resend传输由单独测试进程替换，未向外发信，不需要旧机私钥或真实Resend凭据。主环境邮件开关保持原状。详情与真实收件缺口见 `docs/migration/local-notification-mail-main.md`。
