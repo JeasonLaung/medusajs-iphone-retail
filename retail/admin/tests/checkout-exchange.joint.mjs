@@ -4,7 +4,7 @@ import {expect} from '@playwright/test'
 import {fileURLToPath} from 'node:url'
 import {lostReply} from './checkout-repair.joint.mjs'
 
-export async function exchangeCheckoutOrder({page,origin,orderID,request,result,index,pack,warehouse,parcel,retryLost,settlePayment}){
+export async function exchangeCheckoutOrder({page,origin,orderID,request,result,index,pack,warehouse,parcel,retryLost,settlePayment,dispatchReplacement}){
  await page.goto(origin+'/orders/'+orderID)
  const panel=page.getByTestId('order-after-sales');await expect(panel.getByText('Pending',{exact:true})).toBeVisible()
  await panel.getByRole('button',{name:'Save',exact:true}).click();await page.getByRole('button',{name:'Confirm update',exact:true}).click();await expect(panel.locator('.ant-tag')).toHaveText('Processing')
@@ -31,10 +31,13 @@ export async function exchangeCheckoutOrder({page,origin,orderID,request,result,
   await unpaid.getByRole('button',{name:'Cancel',exact:true}).click()
   await settlePayment(native)
  }
- await page.reload();const shipped=await pack(sn),d=await parcel(shipped),shipping=d.getByTestId('warehouse-shipment')
+ await page.reload();let shipped
+ if(dispatchReplacement){shipped=await dispatchReplacement(sn,tracking)}else{
+ const packed=await pack(sn);shipped=packed;const d=await parcel(shipped),shipping=d.getByTestId('warehouse-shipment')
  await shipping.getByLabel('Tracking number',{exact:true}).fill(tracking);await shipping.getByLabel('Tracking URL',{exact:true}).fill('https://tracking.example.invalid/'+tracking)
  await retryLost(warehouse,'**/shipment',()=>shipping.getByRole('button',{name:'Ship entire parcel',exact:true}).click(),shipping,()=>expect(d.getByText(tracking,{exact:true})).toBeVisible())
  await expect(shipping.getByRole('button',{name:'Ship entire parcel',exact:true})).toBeDisabled()
+ }
  // Inspect the physically received original independently; no quantity restock
  // or additional payment is manufactured by the rehearsal.
  await page.reload();await panel.getByRole('button',{name:'Receive device',exact:true}).click();await page.getByRole('dialog').getByRole('button',{name:'Service device',exact:true}).click();service=page.getByRole('dialog').last()
@@ -58,7 +61,7 @@ export async function exchangeCheckoutOrder({page,origin,orderID,request,result,
  return {sn,tracking,shipped,...native}
 }
 
-export async function verifyCheckoutExchange({page,context,shop,orderID,result,request,replacement,segment}){
+export async function verifyCheckoutExchange({page,context,shop,orderID,result,request,replacement,segment,expectedUnread}){
  await page.reload();await expect(page.getByTestId('shipment')).toHaveCount(2)
  for(const tracking of [result.tracking,replacement.tracking]){const shipment=page.getByTestId('shipment').filter({hasText:tracking});await expect(shipment).toBeVisible();await expect(shipment.locator('a')).toHaveAttribute('href','https://tracking.example.invalid/'+tracking)}
  const section=page.getByTestId('after-sales-section');await section.getByRole('button').first().click();await expect(section).toContainText(request.copy.completedRequest);await expect(section.getByTestId('repair-return')).toHaveCount(0)
@@ -67,7 +70,7 @@ export async function verifyCheckoutExchange({page,context,shop,orderID,result,r
  assert.equal(original.status,'returned');assert.equal(original.tracking_number,result.tracking);assert.equal(next.status,'shipped');assert.equal(next.replacement_of,original.assignment_id);assert.equal(next.tracking_number,replacement.tracking);assert.equal(next.item_id,replacement.item_id)
  await section.getByRole('checkbox').first().check();await expect(section.getByText(new RegExp(replacement.sn))).toBeVisible();await expect(section.getByText(new RegExp(result.sn))).toHaveCount(0)
  const notices=await (await context.request.get(shop+'/api/store/customer/notifications?offset=0')).json();const credit=process.env.CHECKOUT_EXCHANGE_REFUND==='1',payment=process.env.CHECKOUT_EXCHANGE_PAYMENT==='1';assert.equal(notices.count,credit||payment?5:4);assert.deepEqual(notices.notifications.map(n=>n.kind).sort(),['after_sales.completed','after_sales.processing',...(credit?['refund.created']:[]),...(payment?['payment.received']:[]),'shipment.created','shipment.created']);if(credit)await expect(page.getByTestId('timeline-refund')).toHaveCount(1)
- await expect(page.getByTestId('notification-badge')).toHaveText(credit||payment?'4':'3');await page.getByTestId('notification-bell').click();const zh=segment.endsWith('-zh'),dialog=page.getByRole('dialog')
+ await expect(page.getByTestId('notification-badge')).toHaveText(expectedUnread===undefined?(credit||payment?'4':'3'):String(expectedUnread));await page.getByTestId('notification-bell').click();const zh=segment.endsWith('-zh'),dialog=page.getByRole('dialog')
  await dialog.getByRole('button',{name:zh?'全部已读':'Mark all as read',exact:true}).click();await expect(page.getByTestId('notification-badge')).toHaveCount(0);await dialog.getByRole('button',{name:zh?'关闭消息通知':'Close notifications',exact:true}).click()
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
  await page.getByTestId('shipment').last().scrollIntoViewIfNeeded();await page.screenshot({path:fileURLToPath(new URL('../../../logs/gin-migration/'+(payment?'exchange-payment':credit?'exchange-refund':'exchange')+'-customer-'+(zh?'zh':'en')+'-'+page.viewportSize().width+'.png',import.meta.url))})

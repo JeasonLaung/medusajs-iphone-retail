@@ -291,3 +291,5 @@ C06 增加 [Mollie 通知消费及独立 worker](mollie-checkout-consumer.md)：
 2026-11-02 Windows回收接续：[原生回收主流程](local-buyback-main.md)完成独立恢复库中的申请、照片重拍/审核、寄件收货、检测设备关联、最终报价及接受后登记打款/拒绝后登记退回两分支。无API模拟，SQL终态/金额/照片/关联核对通过，自有资源清理；主库仅显式启用原申请/后台runtime，start.bat保留开关，不编造报价或设备。真实邮件、转账、承运商证明及完整C01—C11保持开放。
 
 2026-11-02 Windows维修接续：[原机维修主流程](local-repair-main.md)在真实Mollie测试订单副本、明确测试归属和设备夹具上，通过真实配货发货、本人维修申请、后台收机/检测/寄回/完成和本人双物流/通知查询；SQL核对completed、1收机/2处理收据、设备shipped，自有资源清理。主本机启用四个售后runtime并接start.bat，不开退款worker、不改主订单设备。实际邮件、承运商、已登录真实付款后归属及退货/换机仍待；读取偶发503保留待查，C01—C11开放。
+
+2026-11-02 Windows换机接续：[同SKU零差额换机主流程](local-exchange-main.md)复用原生售后及独立运行器，完成客户申请、收回原机、原生exchange/return及替换订单行、替换机装包发货、原机检测available、售后completed及本人双物流/四通知。SQL核对1原生exchange/1 received return/1替换关联/2已发包裹，pending_difference=0、paid_total=789、refunded_total=0；主库12表计数未变、自有资源清理。补款/退差、退货退款、真实邮件及完整C01—C11继续开放。

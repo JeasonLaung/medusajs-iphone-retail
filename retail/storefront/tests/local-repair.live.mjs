@@ -1,4 +1,4 @@
-// Native Windows buyback main flow; reuses the established joint scenarios.
+// Native Windows repair/exchange subflows; reuse established joint scenarios.
 import assert from 'node:assert/strict'
 import {execFileSync} from 'node:child_process'
 import {readFileSync,writeFileSync} from 'node:fs'
@@ -8,9 +8,11 @@ import {pathToFileURL,fileURLToPath} from 'node:url'
 import {chromium,expect as baseExpect} from '../../admin/node_modules/@playwright/test/index.mjs'
 const expect=baseExpect.configure({timeout:15000}),origin='http://127.0.0.1:19300',adminOrigin='http://127.0.0.1:19200'
 import {requestCheckoutAfterSales,repairCheckoutOrder,verifyCheckoutRepair} from '../../admin/tests/checkout-repair.joint.mjs'
+import {exchangeCheckoutOrder,verifyCheckoutExchange} from '../../admin/tests/checkout-exchange.joint.mjs'
 const logs=process.env.ACCOUNT_TEST_LOGS,owner=process.env.ACCOUNT_TEST_OWNER,password='isolated-account-'+owner+'-password',email=`local-account-${owner}-1@example.invalid`
 assert.match(owner??'',/^[0-9a-f]{12}$/)
 const output=pathToFileURL(logs+'/'),errors=[],returning=process.env.ACCOUNT_TEST_SCENARIO==='buyback-return',shop=origin,segment='gb-en',index=1
+const exchange=process.env.ACCOUNT_TEST_SCENARIO==='exchange'
 const browser=await chromium.launch({headless:true,executablePath:resolve(process.env.LOCALAPPDATA,'ms-playwright/chromium-1234/chrome-win64/chrome.exe')})
 try{
  const context=await browser.newContext({viewport:{width:390,height:900},reducedMotion:'reduce'}),page=await context.newPage()
@@ -61,8 +63,10 @@ try{
  await admin.getByRole('button',{name:'Allocate devices',exact:true}).click()
  let dialog=admin.getByRole('dialog')
  await dialog.getByRole('row').filter({hasText:sn}).getByRole('checkbox').check()
+ const allocation=admin.waitForResponse(r=>r.request().method()==='POST'&&r.url().endsWith('/allocation'))
  await dialog.getByRole('button',{name:'Save device reservation',exact:true}).click()
- await expect(dialog.getByRole('checkbox').first()).toBeChecked()
+ assert.equal((await allocation).status(),200)
+ await expect(dialog.getByText('isolated-repair-device',{exact:true})).toBeVisible()
  await dialog.getByRole('button',{name:'Cancel',exact:true}).click()
  await admin.getByRole('button',{name:'Create device parcel',exact:true}).click()
  dialog=admin.getByRole('dialog');await dialog.getByRole('row').filter({hasText:sn}).getByRole('checkbox').check()
@@ -71,6 +75,7 @@ try{
  await dialog.getByRole('button',{name:/^Cancel$/}).click()
  await admin.getByRole('button',{name:'Parcel operations',exact:true}).click()
  dialog=admin.getByRole('dialog');await dialog.getByLabel('Tracking number',{exact:true}).fill(tracking)
+ await dialog.getByLabel('Tracking URL',{exact:true}).fill('https://tracking.example.invalid/'+tracking)
  await dialog.getByRole('button',{name:'Ship entire parcel',exact:true}).click()
  await expect(dialog.getByText('Parcel operation saved',{exact:true})).toBeVisible()
  await admin.reload()
@@ -78,9 +83,32 @@ try{
  await expect(page.getByTestId('order-details-container')).toBeVisible()
  await expect(page.getByTestId('shipment')).toContainText(tracking)
  const result={sn,tracking}
- const request=await requestCheckoutAfterSales({page,orderID,result,segment:'gb-en',type:'repair'})
+ const request=await requestCheckoutAfterSales({page,orderID,result,segment:'gb-en',type:exchange?'exchange':'repair'})
+ if(exchange){
+ const dispatchReplacement=async(nextSN,nextTracking)=>{
+  await admin.getByRole('button',{name:'Create device parcel',exact:true}).click()
+  const packing=admin.getByRole('dialog')
+  await packing.getByRole('row').filter({hasText:nextSN}).getByRole('checkbox').check()
+  await packing.getByRole('button',{name:'Pack and deduct stock',exact:true}).click()
+  await expect(packing.getByText('Parcel created',{exact:true})).toBeVisible()
+  const fulfillment=(await packing.locator('.ant-alert-description').innerText()).trim()
+  assert.match(fulfillment,/^ful_/)
+  await packing.getByRole('button',{name:'Cancel',exact:true}).click()
+  const parcel=admin.locator(`[data-fulfillment-id="${fulfillment}"]`)
+  await parcel.getByRole('button',{name:'Parcel operations',exact:true}).click()
+  const shipping=admin.getByRole('dialog')
+  await shipping.getByLabel('Tracking number',{exact:true}).fill(nextTracking)
+  await shipping.getByLabel('Tracking URL',{exact:true}).fill('https://tracking.example.invalid/'+nextTracking)
+  await shipping.getByRole('button',{name:'Ship entire parcel',exact:true}).click()
+  await expect(shipping.getByText('Parcel operation saved',{exact:true})).toBeVisible()
+  return fulfillment
+ }
+ const replacement=await exchangeCheckoutOrder({page:admin,origin:adminOrigin,orderID,request,result,index:1,dispatchReplacement})
+ await verifyCheckoutExchange({page,context,shop:origin,orderID,result,request,replacement,segment:'gb-en',expectedUnread:4})
+ }else{
  const returned=await repairCheckoutOrder({page:admin,origin:adminOrigin,orderID,request,result,index:1})
  await verifyCheckoutRepair({page,context,shop:origin,orderID,result,request,tracking:returned,expectedUnread:3})
+ }
  assert.deepEqual(errors,[])
- writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:'repair',request_id:request.id,order_id:orderID,explicit_fixture_ownership:true,new_paid_order_attachment_tested:false,actual_device_allocation_packing_shipping:true,customer_request_admin_receipt_inspection_dispatch_completion:true,customer_repair_tracking:true,lost_reply_original_command_recovery:true,browser_errors:0,real_mail_transfer_carrier:false},null,2))
+ writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:exchange?'exchange':'repair',request_id:request.id,order_id:orderID,explicit_fixture_ownership:true,new_paid_order_attachment_tested:false,actual_device_allocation_packing_shipping:true,customer_request_admin_receipt_inspection_dispatch_completion:true,customer_repair_tracking:!exchange,customer_original_and_replacement_tracking:exchange,lost_reply_original_command_recovery:true,browser_errors:0,real_mail_transfer_carrier:false},null,2))
 }catch(e){for(const [i,p]of browser.contexts().flatMap(c=>c.pages()).entries()){await p.screenshot({path:resolve(logs,`failure-${i}.png`),fullPage:true}).catch(()=>{});console.error('FAILURE',p.url(),await p.locator('body').innerText().catch(()=>''))}throw e}finally{await browser.close()}

@@ -4,8 +4,8 @@ Requires the running dedicated MySQL container, native Redis, Go-built preview
 API, frontend dependencies, Node >=22 and Python cryptography. No mail is sent.
 --scenario=buyback and --scenario=buyback-return independently rehearse customer
 applications through Admin closing with explicit prices/devices in the copy.
---scenario=repair continues a copied paid order through explicit fixture account
-ownership, real fulfillment and original-device repair; never claims ownership
+--scenario=repair or --scenario=exchange continues a copied paid order through
+explicit fixture account ownership, real fulfillment and repair/replacement; never claims ownership
 of an actual guest order in the source preview.
 Verification links are read from authenticated encrypted intents in the owned
 copy, never returned by an application endpoint or marked verified with SQL.
@@ -144,7 +144,8 @@ def redis_cleanup(prefix):
 
 def main(language, scenario='account'):
     buyback = scenario in ('buyback', 'buyback-return')
-    repair = scenario == 'repair'
+    exchange = scenario == 'exchange'
+    repair = scenario in ('repair', 'exchange')
     admin_required = buyback or repair
     values = config()
     owner = secrets.token_hex(6)
@@ -206,6 +207,9 @@ def main(language, scenario='account'):
                 "INSERT INTO device_variant_tracking(id,variant_id,inventory_item_id,created_at,updated_at) "
                 "SELECT 'isolated-repair-tracking','variant_01M51RN7H7HPV9RH69T32QMD2Q','iitem_01M51RN7HTPYQ7YFPXABBF8VJ8',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6) "
                 "WHERE NOT EXISTS(SELECT 1 FROM device_variant_tracking WHERE variant_id='variant_01M51RN7H7HPV9RH69T32QMD2Q' AND deleted_at IS NULL);")
+            if exchange:
+                sql(database, "INSERT INTO devices(id,serial_number,imei,variant_id,source_id,location_id,cost_cents,currency_code,bin,notes,state,category,grade,battery_health,photos,created_at,updated_at) "
+                    "VALUES('isolated-exchange-device','CHECKOUT-DEVICE-5','490154203237526','variant_01M51RN7H7HPV9RH69T32QMD2Q','isolated-repair-source','sloc_01M4FBP3NDPZHJKVV3VY682QTN',0,'eur','','','available','sale','S',90,'[]',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
         if buyback:
             sql(database, "UPDATE buyback_request_runtime SET enabled=TRUE WHERE id=1 AND version=1; "
                 "UPDATE buyback_admin_runtime SET enabled=TRUE WHERE id=1 AND version=1; "
@@ -277,14 +281,33 @@ def main(language, scenario='account'):
             status = sql(database, "SELECT status FROM after_sales_requests WHERE id='" + request + "'")
             counts = [int(sql(database, "SELECT COUNT(*) FROM " + table + " WHERE request_id='" + request + "'"))
                       for table in ('device_return_receipts', 'device_service_receipts')]
-            if status != 'completed' or counts != [1, 2]:
+            expected_counts = [1, 2]
+            if status != 'completed' or counts != expected_counts:
                 raise RuntimeError('Repair terminal status or receipt counts differ')
             report['sql_status'] = status
             report['sql_device_return_receipts'] = counts[0]
             report['sql_device_service_receipts'] = counts[1]
             report['sql_device_state'] = sql(database, "SELECT state FROM devices WHERE id='isolated-repair-device'")
-            if report['sql_device_state'] != 'shipped':
+            if report['sql_device_state'] != ('available' if exchange else 'shipped'):
                 raise RuntimeError('Repaired device was not shipped')
+            if exchange:
+                report['sql_replacement_state'] = sql(database, "SELECT state FROM devices WHERE id='isolated-exchange-device'")
+                if report['sql_replacement_state'] != 'shipped':
+                    raise RuntimeError('Replacement was not shipped')
+                order = report['order_id']
+                if not re.fullmatch(r'order_[0-9a-f-]{36}', order):
+                    raise RuntimeError('Unexpected copied order ID')
+                checks = {
+                    'exchange': "SELECT COUNT(*) FROM order_exchanges WHERE order_id='" + order + "' AND deleted_at IS NULL",
+                    'received_return': "SELECT COUNT(*) FROM returns WHERE order_id='" + order + "' AND status='received' AND deleted_at IS NULL",
+                    'replacement_link': "SELECT COUNT(*) FROM device_assignments a JOIN device_assignments old ON old.id=a.replacement_of AND old.order_id=a.order_id WHERE a.order_id='" + order + "' AND a.device_id='isolated-exchange-device' AND a.status='shipped' AND old.device_id='isolated-repair-device' AND old.status='returned' AND a.item_id<>old.item_id",
+                    'shipped_parcels': "SELECT COUNT(*) FROM order_fulfillments l JOIN fulfillments f ON f.id=l.fulfillment_id WHERE l.order_id='" + order + "' AND f.shipped_at IS NOT NULL AND f.canceled_at IS NULL",
+                    'settled_summary': "SELECT COUNT(*) FROM order_summaries s JOIN orders o ON o.id=s.order_id AND o.version=s.version WHERE s.order_id='" + order + "' AND JSON_UNQUOTE(JSON_EXTRACT(s.totals,'$.pending_difference'))='0' AND JSON_UNQUOTE(JSON_EXTRACT(s.totals,'$.paid_total'))='789' AND JSON_UNQUOTE(JSON_EXTRACT(s.totals,'$.refunded_total'))='0'",
+                }
+                facts = {name: int(sql(database, query)) for name, query in checks.items()}
+                if facts != {'exchange': 1, 'received_return': 1, 'replacement_link': 1, 'shipped_parcels': 2, 'settled_summary': 1}:
+                    raise RuntimeError('Native exchange ledger or balance differs: ' + str(facts))
+                report['sql_exchange_facts'] = facts
         if buyback:
             request = report['request_id']
             if not re.fullmatch(r'bbr_[0-9a-f-]{36}', request):
@@ -349,5 +372,7 @@ if __name__ == '__main__':
         main('en', 'buyback-return')
     elif sys.argv[1:] == ['--scenario=repair']:
         main('en', 'repair')
+    elif sys.argv[1:] == ['--scenario=exchange']:
+        main('en', 'exchange')
     else:
         raise RuntimeError('Unknown account rehearsal arguments')
