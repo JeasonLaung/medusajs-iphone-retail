@@ -39,6 +39,8 @@ node retail/scripts/test-context-payment-joint.mjs --scenario unbound-precision
 node retail/scripts/test-context-payment-joint.mjs --scenario continuous
 # 跨币种：相同数字总额也要取消旧币种付款；失败后恢复原币种
 node retail/scripts/test-context-payment-joint.mjs --scenario currency-save --scenario currency-restore
+# 旧付款退出后：原购物车数量→优惠→新付款（各命令均注入丢响应）
+node retail/scripts/test-context-payment-joint.mjs --scenario retired-edits
 # 一次选择多个受影响的场景，共用一次编译及隔离服务
 node retail/scripts/test-context-payment-joint.mjs --scenario unbound-account --scenario unbound-delete-unknown
 # 仅需要检查本项语言/尺寸组合时使用，仍非完整交易链路

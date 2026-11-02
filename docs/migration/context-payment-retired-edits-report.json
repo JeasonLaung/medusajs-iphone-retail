@@ -1,0 +1,2168 @@
+{
+  "owner": "e4aab8ec7745",
+  "passed": true,
+  "finished_utc": "2026-11-02T08:42:46.715Z",
+  "binary_sha256": "864afa4232c414a636038fc00159e7736d9641fb6c555839f4fa3c2e19f5268a",
+  "local_report_sha256": "1ca0fa58a5cc51a900c1c954b512df6c29d78d4921b2b7b974c705b0713928e5",
+  "actual_gin_mysql_redis_astro": true,
+  "real_provider_called": false,
+  "frozen_source_verified": true,
+  "owned_resources_removed": true,
+  "validation_scope": "Retired checkout: quantity, promotion and fresh payment with lost-response replay; no full order flow",
+  "targeted_frontend_tests": 21,
+  "browser": {
+    "cases": [
+      {
+        "scenario": "retired-edits",
+        "lang": "en",
+        "width": 390,
+        "steps": [
+          {
+            "amounts": {
+              "cart_id": "cart_812cfbba-f4e6-4275-99b1-a4a1a1d7f711",
+              "version": "6",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "0",
+                "discount_tax_total": "0",
+                "discount_total": "0",
+                "item_discount_total": "0",
+                "item_subtotal": "121",
+                "item_tax_total": "30.25",
+                "item_total": "151.25",
+                "original_item_subtotal": "121",
+                "original_item_tax_total": "30.25",
+                "original_item_total": "151.25",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "128",
+                "original_tax_total": "32",
+                "original_total": "160",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "128",
+                "tax_total": "32",
+                "total": "160"
+              },
+              "lines": [
+                {
+                  "id": "cali_145f16b3-e6f5-44dc-81f0-cb400f1c4676",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "1",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "121",
+                    "original_tax_total": "30.25",
+                    "original_total": "151.25",
+                    "subtotal": "121",
+                    "tax_total": "30.25",
+                    "total": "151.25"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_e77acdca-8c91-4c2a-bf7d-e15294dd4741",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"160\",\"precision\":100}"
+                }
+              ],
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 0,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            }
+          },
+          {
+            "amounts": {
+              "cart_id": "cart_812cfbba-f4e6-4275-99b1-a4a1a1d7f711",
+              "version": "7",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "0",
+                "discount_tax_total": "0",
+                "discount_total": "0",
+                "item_discount_total": "0",
+                "item_subtotal": "242",
+                "item_tax_total": "60.5",
+                "item_total": "302.5",
+                "original_item_subtotal": "242",
+                "original_item_tax_total": "60.5",
+                "original_item_total": "302.5",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "249",
+                "original_tax_total": "62.25",
+                "original_total": "311.25",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "249",
+                "tax_total": "62.25",
+                "total": "311.25"
+              },
+              "lines": [
+                {
+                  "id": "cali_145f16b3-e6f5-44dc-81f0-cb400f1c4676",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "2",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "242",
+                    "original_tax_total": "60.5",
+                    "original_total": "302.5",
+                    "subtotal": "242",
+                    "tax_total": "60.5",
+                    "total": "302.5"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_e77acdca-8c91-4c2a-bf7d-e15294dd4741",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"311.25\",\"precision\":100}"
+                }
+              ],
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 0,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 7
+            }
+          },
+          {
+            "amounts": {
+              "cart_id": "cart_812cfbba-f4e6-4275-99b1-a4a1a1d7f711",
+              "version": "8",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "24.2",
+                "discount_tax_total": "6.05",
+                "discount_total": "30.25",
+                "item_discount_total": "30.25",
+                "item_subtotal": "242",
+                "item_tax_total": "54.45",
+                "item_total": "272.25",
+                "original_item_subtotal": "242",
+                "original_item_tax_total": "60.5",
+                "original_item_total": "302.5",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "249",
+                "original_tax_total": "62.25",
+                "original_total": "311.25",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "249",
+                "tax_total": "56.2",
+                "total": "281"
+              },
+              "lines": [
+                {
+                  "id": "cali_145f16b3-e6f5-44dc-81f0-cb400f1c4676",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "2",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "24.2",
+                    "discount_tax_total": "6.05",
+                    "discount_total": "30.25",
+                    "original_subtotal": "242",
+                    "original_tax_total": "60.5",
+                    "original_total": "302.5",
+                    "subtotal": "242",
+                    "tax_total": "54.45",
+                    "total": "272.25"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_e77acdca-8c91-4c2a-bf7d-e15294dd4741",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"281\",\"precision\":100}"
+                }
+              ],
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 0,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 8
+            }
+          },
+          {
+            "amounts": {
+              "cart_id": "cart_812cfbba-f4e6-4275-99b1-a4a1a1d7f711",
+              "version": "9",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "24.2",
+                "discount_tax_total": "6.05",
+                "discount_total": "30.25",
+                "item_discount_total": "30.25",
+                "item_subtotal": "242",
+                "item_tax_total": "54.45",
+                "item_total": "272.25",
+                "original_item_subtotal": "242",
+                "original_item_tax_total": "60.5",
+                "original_item_total": "302.5",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "249",
+                "original_tax_total": "62.25",
+                "original_total": "311.25",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "249",
+                "tax_total": "56.2",
+                "total": "281"
+              },
+              "lines": [
+                {
+                  "id": "cali_145f16b3-e6f5-44dc-81f0-cb400f1c4676",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "2",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "24.2",
+                    "discount_tax_total": "6.05",
+                    "discount_total": "30.25",
+                    "original_subtotal": "242",
+                    "original_tax_total": "60.5",
+                    "original_total": "302.5",
+                    "subtotal": "242",
+                    "tax_total": "54.45",
+                    "total": "272.25"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_e77acdca-8c91-4c2a-bf7d-e15294dd4741",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                },
+                {
+                  "InputVersion": 8,
+                  "CartVersion": 9,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "78d5746f-d059-4678-82a7-3bdb459f7b54",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"281\",\"precision\":100}"
+                }
+              ],
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "create",
+                  "Amount": "281",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 9
+            }
+          }
+        ],
+        "requests": [
+          {
+            "kind": "item",
+            "key": "d95f31b3-8c87-4a54-a2f2-4cf4d4f741bd",
+            "body": {
+              "version": "6",
+              "quantity": "2"
+            }
+          },
+          {
+            "kind": "item",
+            "key": "d95f31b3-8c87-4a54-a2f2-4cf4d4f741bd",
+            "body": {
+              "version": "6",
+              "quantity": "2"
+            }
+          },
+          {
+            "kind": "promo",
+            "key": "85904a7b-8a5d-40cd-a4e5-61e5e3fdccdd",
+            "body": {
+              "version": "7",
+              "codes": [
+                "OWNED10"
+              ]
+            }
+          },
+          {
+            "kind": "promo",
+            "key": "85904a7b-8a5d-40cd-a4e5-61e5e3fdccdd",
+            "body": {
+              "version": "7",
+              "codes": [
+                "OWNED10"
+              ]
+            }
+          },
+          {
+            "kind": "payment",
+            "key": "78d5746f-d059-4678-82a7-3bdb459f7b54",
+            "body": {
+              "version": "8"
+            }
+          },
+          {
+            "kind": "payment",
+            "key": "78d5746f-d059-4678-82a7-3bdb459f7b54",
+            "body": {
+              "version": "8"
+            }
+          }
+        ],
+        "lost_item_promotion_payment_responses": true,
+        "same_uuid_per_command": true,
+        "full_order_flow_executed": false
+      },
+      {
+        "scenario": "retired-edits",
+        "lang": "en",
+        "width": 1440,
+        "steps": [
+          {
+            "amounts": {
+              "cart_id": "cart_51bd93e1-db99-47fb-a35d-5aa7d490fc3a",
+              "version": "6",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "0",
+                "discount_tax_total": "0",
+                "discount_total": "0",
+                "item_discount_total": "0",
+                "item_subtotal": "121",
+                "item_tax_total": "30.25",
+                "item_total": "151.25",
+                "original_item_subtotal": "121",
+                "original_item_tax_total": "30.25",
+                "original_item_total": "151.25",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "128",
+                "original_tax_total": "32",
+                "original_total": "160",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "128",
+                "tax_total": "32",
+                "total": "160"
+              },
+              "lines": [
+                {
+                  "id": "cali_a9d89933-b2b2-486a-9429-cf9206c439ce",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "1",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "121",
+                    "original_tax_total": "30.25",
+                    "original_total": "151.25",
+                    "subtotal": "121",
+                    "tax_total": "30.25",
+                    "total": "151.25"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_54f0a4b0-24ba-4356-9d41-a22fde31efa2",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"160\",\"precision\":100}"
+                }
+              ],
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 0,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            }
+          },
+          {
+            "amounts": {
+              "cart_id": "cart_51bd93e1-db99-47fb-a35d-5aa7d490fc3a",
+              "version": "7",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "0",
+                "discount_tax_total": "0",
+                "discount_total": "0",
+                "item_discount_total": "0",
+                "item_subtotal": "242",
+                "item_tax_total": "60.5",
+                "item_total": "302.5",
+                "original_item_subtotal": "242",
+                "original_item_tax_total": "60.5",
+                "original_item_total": "302.5",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "249",
+                "original_tax_total": "62.25",
+                "original_total": "311.25",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "249",
+                "tax_total": "62.25",
+                "total": "311.25"
+              },
+              "lines": [
+                {
+                  "id": "cali_a9d89933-b2b2-486a-9429-cf9206c439ce",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "2",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "242",
+                    "original_tax_total": "60.5",
+                    "original_total": "302.5",
+                    "subtotal": "242",
+                    "tax_total": "60.5",
+                    "total": "302.5"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_54f0a4b0-24ba-4356-9d41-a22fde31efa2",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"311.25\",\"precision\":100}"
+                }
+              ],
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 0,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 7
+            }
+          },
+          {
+            "amounts": {
+              "cart_id": "cart_51bd93e1-db99-47fb-a35d-5aa7d490fc3a",
+              "version": "8",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "24.2",
+                "discount_tax_total": "6.05",
+                "discount_total": "30.25",
+                "item_discount_total": "30.25",
+                "item_subtotal": "242",
+                "item_tax_total": "54.45",
+                "item_total": "272.25",
+                "original_item_subtotal": "242",
+                "original_item_tax_total": "60.5",
+                "original_item_total": "302.5",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "249",
+                "original_tax_total": "62.25",
+                "original_total": "311.25",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "249",
+                "tax_total": "56.2",
+                "total": "281"
+              },
+              "lines": [
+                {
+                  "id": "cali_a9d89933-b2b2-486a-9429-cf9206c439ce",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "2",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "24.2",
+                    "discount_tax_total": "6.05",
+                    "discount_total": "30.25",
+                    "original_subtotal": "242",
+                    "original_tax_total": "60.5",
+                    "original_total": "302.5",
+                    "subtotal": "242",
+                    "tax_total": "54.45",
+                    "total": "272.25"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_54f0a4b0-24ba-4356-9d41-a22fde31efa2",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"281\",\"precision\":100}"
+                }
+              ],
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 0,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 8
+            }
+          },
+          {
+            "amounts": {
+              "cart_id": "cart_51bd93e1-db99-47fb-a35d-5aa7d490fc3a",
+              "version": "9",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "24.2",
+                "discount_tax_total": "6.05",
+                "discount_total": "30.25",
+                "item_discount_total": "30.25",
+                "item_subtotal": "242",
+                "item_tax_total": "54.45",
+                "item_total": "272.25",
+                "original_item_subtotal": "242",
+                "original_item_tax_total": "60.5",
+                "original_item_total": "302.5",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "249",
+                "original_tax_total": "62.25",
+                "original_total": "311.25",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "249",
+                "tax_total": "56.2",
+                "total": "281"
+              },
+              "lines": [
+                {
+                  "id": "cali_a9d89933-b2b2-486a-9429-cf9206c439ce",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "2",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "24.2",
+                    "discount_tax_total": "6.05",
+                    "discount_total": "30.25",
+                    "original_subtotal": "242",
+                    "original_tax_total": "60.5",
+                    "original_total": "302.5",
+                    "subtotal": "242",
+                    "tax_total": "54.45",
+                    "total": "272.25"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_54f0a4b0-24ba-4356-9d41-a22fde31efa2",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                },
+                {
+                  "InputVersion": 8,
+                  "CartVersion": 9,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "59c24069-a93d-4117-b407-14154996cd03",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"281\",\"precision\":100}"
+                }
+              ],
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "create",
+                  "Amount": "281",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 9
+            }
+          }
+        ],
+        "requests": [
+          {
+            "kind": "item",
+            "key": "8d0cfb75-d2df-49e4-9457-14c5a494759a",
+            "body": {
+              "version": "6",
+              "quantity": "2"
+            }
+          },
+          {
+            "kind": "item",
+            "key": "8d0cfb75-d2df-49e4-9457-14c5a494759a",
+            "body": {
+              "version": "6",
+              "quantity": "2"
+            }
+          },
+          {
+            "kind": "promo",
+            "key": "d9b485da-627a-41b8-8ba7-7e660b1ac6af",
+            "body": {
+              "version": "7",
+              "codes": [
+                "OWNED10"
+              ]
+            }
+          },
+          {
+            "kind": "promo",
+            "key": "d9b485da-627a-41b8-8ba7-7e660b1ac6af",
+            "body": {
+              "version": "7",
+              "codes": [
+                "OWNED10"
+              ]
+            }
+          },
+          {
+            "kind": "payment",
+            "key": "59c24069-a93d-4117-b407-14154996cd03",
+            "body": {
+              "version": "8"
+            }
+          },
+          {
+            "kind": "payment",
+            "key": "59c24069-a93d-4117-b407-14154996cd03",
+            "body": {
+              "version": "8"
+            }
+          }
+        ],
+        "lost_item_promotion_payment_responses": true,
+        "same_uuid_per_command": true,
+        "full_order_flow_executed": false
+      },
+      {
+        "scenario": "retired-edits",
+        "lang": "zh",
+        "width": 390,
+        "steps": [
+          {
+            "amounts": {
+              "cart_id": "cart_97a67bd5-fc81-4bbc-930c-5f760adecd47",
+              "version": "6",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "0",
+                "discount_tax_total": "0",
+                "discount_total": "0",
+                "item_discount_total": "0",
+                "item_subtotal": "121",
+                "item_tax_total": "30.25",
+                "item_total": "151.25",
+                "original_item_subtotal": "121",
+                "original_item_tax_total": "30.25",
+                "original_item_total": "151.25",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "128",
+                "original_tax_total": "32",
+                "original_total": "160",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "128",
+                "tax_total": "32",
+                "total": "160"
+              },
+              "lines": [
+                {
+                  "id": "cali_fe37de3a-6662-4840-85bf-1356385851f9",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "1",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "121",
+                    "original_tax_total": "30.25",
+                    "original_total": "151.25",
+                    "subtotal": "121",
+                    "tax_total": "30.25",
+                    "total": "151.25"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_e2f80112-ed52-4355-baea-be7eb153bb13",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"160\",\"precision\":100}"
+                }
+              ],
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 0,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            }
+          },
+          {
+            "amounts": {
+              "cart_id": "cart_97a67bd5-fc81-4bbc-930c-5f760adecd47",
+              "version": "7",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "0",
+                "discount_tax_total": "0",
+                "discount_total": "0",
+                "item_discount_total": "0",
+                "item_subtotal": "242",
+                "item_tax_total": "60.5",
+                "item_total": "302.5",
+                "original_item_subtotal": "242",
+                "original_item_tax_total": "60.5",
+                "original_item_total": "302.5",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "249",
+                "original_tax_total": "62.25",
+                "original_total": "311.25",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "249",
+                "tax_total": "62.25",
+                "total": "311.25"
+              },
+              "lines": [
+                {
+                  "id": "cali_fe37de3a-6662-4840-85bf-1356385851f9",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "2",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "242",
+                    "original_tax_total": "60.5",
+                    "original_total": "302.5",
+                    "subtotal": "242",
+                    "tax_total": "60.5",
+                    "total": "302.5"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_e2f80112-ed52-4355-baea-be7eb153bb13",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"311.25\",\"precision\":100}"
+                }
+              ],
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 0,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 7
+            }
+          },
+          {
+            "amounts": {
+              "cart_id": "cart_97a67bd5-fc81-4bbc-930c-5f760adecd47",
+              "version": "8",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "24.2",
+                "discount_tax_total": "6.05",
+                "discount_total": "30.25",
+                "item_discount_total": "30.25",
+                "item_subtotal": "242",
+                "item_tax_total": "54.45",
+                "item_total": "272.25",
+                "original_item_subtotal": "242",
+                "original_item_tax_total": "60.5",
+                "original_item_total": "302.5",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "249",
+                "original_tax_total": "62.25",
+                "original_total": "311.25",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "249",
+                "tax_total": "56.2",
+                "total": "281"
+              },
+              "lines": [
+                {
+                  "id": "cali_fe37de3a-6662-4840-85bf-1356385851f9",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "2",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "24.2",
+                    "discount_tax_total": "6.05",
+                    "discount_total": "30.25",
+                    "original_subtotal": "242",
+                    "original_tax_total": "60.5",
+                    "original_total": "302.5",
+                    "subtotal": "242",
+                    "tax_total": "54.45",
+                    "total": "272.25"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_e2f80112-ed52-4355-baea-be7eb153bb13",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"281\",\"precision\":100}"
+                }
+              ],
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 0,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 8
+            }
+          },
+          {
+            "amounts": {
+              "cart_id": "cart_97a67bd5-fc81-4bbc-930c-5f760adecd47",
+              "version": "9",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "24.2",
+                "discount_tax_total": "6.05",
+                "discount_total": "30.25",
+                "item_discount_total": "30.25",
+                "item_subtotal": "242",
+                "item_tax_total": "54.45",
+                "item_total": "272.25",
+                "original_item_subtotal": "242",
+                "original_item_tax_total": "60.5",
+                "original_item_total": "302.5",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "249",
+                "original_tax_total": "62.25",
+                "original_total": "311.25",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "249",
+                "tax_total": "56.2",
+                "total": "281"
+              },
+              "lines": [
+                {
+                  "id": "cali_fe37de3a-6662-4840-85bf-1356385851f9",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "2",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "24.2",
+                    "discount_tax_total": "6.05",
+                    "discount_total": "30.25",
+                    "original_subtotal": "242",
+                    "original_tax_total": "60.5",
+                    "original_total": "302.5",
+                    "subtotal": "242",
+                    "tax_total": "54.45",
+                    "total": "272.25"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_e2f80112-ed52-4355-baea-be7eb153bb13",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                },
+                {
+                  "InputVersion": 8,
+                  "CartVersion": 9,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "e9ec1a28-e17a-4322-a5be-4edcf153acf3",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"281\",\"precision\":100}"
+                }
+              ],
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "create",
+                  "Amount": "281",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 9
+            }
+          }
+        ],
+        "requests": [
+          {
+            "kind": "item",
+            "key": "d77d9de7-996c-4b0a-a5a7-3b0dadd5d4ce",
+            "body": {
+              "version": "6",
+              "quantity": "2"
+            }
+          },
+          {
+            "kind": "item",
+            "key": "d77d9de7-996c-4b0a-a5a7-3b0dadd5d4ce",
+            "body": {
+              "version": "6",
+              "quantity": "2"
+            }
+          },
+          {
+            "kind": "promo",
+            "key": "1c2d1ad6-28ed-40a8-82c5-de67eb054185",
+            "body": {
+              "version": "7",
+              "codes": [
+                "OWNED10"
+              ]
+            }
+          },
+          {
+            "kind": "promo",
+            "key": "1c2d1ad6-28ed-40a8-82c5-de67eb054185",
+            "body": {
+              "version": "7",
+              "codes": [
+                "OWNED10"
+              ]
+            }
+          },
+          {
+            "kind": "payment",
+            "key": "e9ec1a28-e17a-4322-a5be-4edcf153acf3",
+            "body": {
+              "version": "8"
+            }
+          },
+          {
+            "kind": "payment",
+            "key": "e9ec1a28-e17a-4322-a5be-4edcf153acf3",
+            "body": {
+              "version": "8"
+            }
+          }
+        ],
+        "lost_item_promotion_payment_responses": true,
+        "same_uuid_per_command": true,
+        "full_order_flow_executed": false
+      },
+      {
+        "scenario": "retired-edits",
+        "lang": "zh",
+        "width": 1440,
+        "steps": [
+          {
+            "amounts": {
+              "cart_id": "cart_88926342-9359-4dbb-b9dd-109e6728d300",
+              "version": "6",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "0",
+                "discount_tax_total": "0",
+                "discount_total": "0",
+                "item_discount_total": "0",
+                "item_subtotal": "121",
+                "item_tax_total": "30.25",
+                "item_total": "151.25",
+                "original_item_subtotal": "121",
+                "original_item_tax_total": "30.25",
+                "original_item_total": "151.25",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "128",
+                "original_tax_total": "32",
+                "original_total": "160",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "128",
+                "tax_total": "32",
+                "total": "160"
+              },
+              "lines": [
+                {
+                  "id": "cali_3d841579-5a78-4e66-bfb7-8cc016c7ac56",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "1",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "121",
+                    "original_tax_total": "30.25",
+                    "original_total": "151.25",
+                    "subtotal": "121",
+                    "tax_total": "30.25",
+                    "total": "151.25"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_9589f611-73d2-4462-aa60-e3cc74fed302",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"160\",\"precision\":100}"
+                }
+              ],
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 0,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 6
+            }
+          },
+          {
+            "amounts": {
+              "cart_id": "cart_88926342-9359-4dbb-b9dd-109e6728d300",
+              "version": "7",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "0",
+                "discount_tax_total": "0",
+                "discount_total": "0",
+                "item_discount_total": "0",
+                "item_subtotal": "242",
+                "item_tax_total": "60.5",
+                "item_total": "302.5",
+                "original_item_subtotal": "242",
+                "original_item_tax_total": "60.5",
+                "original_item_total": "302.5",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "249",
+                "original_tax_total": "62.25",
+                "original_total": "311.25",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "249",
+                "tax_total": "62.25",
+                "total": "311.25"
+              },
+              "lines": [
+                {
+                  "id": "cali_3d841579-5a78-4e66-bfb7-8cc016c7ac56",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "2",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "242",
+                    "original_tax_total": "60.5",
+                    "original_total": "302.5",
+                    "subtotal": "242",
+                    "tax_total": "60.5",
+                    "total": "302.5"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_9589f611-73d2-4462-aa60-e3cc74fed302",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"311.25\",\"precision\":100}"
+                }
+              ],
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 0,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 7
+            }
+          },
+          {
+            "amounts": {
+              "cart_id": "cart_88926342-9359-4dbb-b9dd-109e6728d300",
+              "version": "8",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "24.2",
+                "discount_tax_total": "6.05",
+                "discount_total": "30.25",
+                "item_discount_total": "30.25",
+                "item_subtotal": "242",
+                "item_tax_total": "54.45",
+                "item_total": "272.25",
+                "original_item_subtotal": "242",
+                "original_item_tax_total": "60.5",
+                "original_item_total": "302.5",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "249",
+                "original_tax_total": "62.25",
+                "original_total": "311.25",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "249",
+                "tax_total": "56.2",
+                "total": "281"
+              },
+              "lines": [
+                {
+                  "id": "cali_3d841579-5a78-4e66-bfb7-8cc016c7ac56",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "2",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "24.2",
+                    "discount_tax_total": "6.05",
+                    "discount_total": "30.25",
+                    "original_subtotal": "242",
+                    "original_tax_total": "60.5",
+                    "original_total": "302.5",
+                    "subtotal": "242",
+                    "tax_total": "54.45",
+                    "total": "272.25"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_9589f611-73d2-4462-aa60-e3cc74fed302",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": null,
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"281\",\"precision\":100}"
+                }
+              ],
+              "creates": 1,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 0,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 8
+            }
+          },
+          {
+            "amounts": {
+              "cart_id": "cart_88926342-9359-4dbb-b9dd-109e6728d300",
+              "version": "9",
+              "currency_code": "eur",
+              "totals": {
+                "credit_line_subtotal": "0",
+                "credit_line_tax_total": "0",
+                "credit_line_total": "0",
+                "discount_subtotal": "24.2",
+                "discount_tax_total": "6.05",
+                "discount_total": "30.25",
+                "item_discount_total": "30.25",
+                "item_subtotal": "242",
+                "item_tax_total": "54.45",
+                "item_total": "272.25",
+                "original_item_subtotal": "242",
+                "original_item_tax_total": "60.5",
+                "original_item_total": "302.5",
+                "original_shipping_subtotal": "7",
+                "original_shipping_tax_total": "1.75",
+                "original_shipping_total": "8.75",
+                "original_subtotal": "249",
+                "original_tax_total": "62.25",
+                "original_total": "311.25",
+                "shipping_discount_total": "0",
+                "shipping_subtotal": "7",
+                "shipping_tax_total": "1.75",
+                "shipping_total": "8.75",
+                "subtotal": "249",
+                "tax_total": "56.2",
+                "total": "281"
+              },
+              "lines": [
+                {
+                  "id": "cali_3d841579-5a78-4e66-bfb7-8cc016c7ac56",
+                  "variant_id": "add-v",
+                  "unit_price": "121",
+                  "quantity": "2",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "24.2",
+                    "discount_tax_total": "6.05",
+                    "discount_total": "30.25",
+                    "original_subtotal": "242",
+                    "original_tax_total": "60.5",
+                    "original_total": "302.5",
+                    "subtotal": "242",
+                    "tax_total": "54.45",
+                    "total": "272.25"
+                  }
+                }
+              ],
+              "shipping_methods": [
+                {
+                  "id": "casm_9589f611-73d2-4462-aa60-e3cc74fed302",
+                  "name": "Standard",
+                  "amount": "7",
+                  "is_tax_inclusive": false,
+                  "totals": {
+                    "discount_subtotal": "0",
+                    "discount_tax_total": "0",
+                    "discount_total": "0",
+                    "original_subtotal": "7",
+                    "original_tax_total": "1.75",
+                    "original_total": "8.75",
+                    "subtotal": "7",
+                    "tax_total": "1.75",
+                    "total": "8.75"
+                  }
+                }
+              ],
+              "pricing_recalculated": false,
+              "checkout": false
+            },
+            "facts": {
+              "account_owners": 0,
+              "attempts": [
+                {
+                  "InputVersion": 4,
+                  "CartVersion": 5,
+                  "EffectiveCartVersion": null
+                },
+                {
+                  "InputVersion": 8,
+                  "CartVersion": 9,
+                  "EffectiveCartVersion": null
+                }
+              ],
+              "checkout": "8692f37d-1338-4b42-92bc-bdcb74688a53",
+              "collections": [
+                {
+                  "CurrencyCode": "eur",
+                  "RawAmount": "{\"value\":\"281\",\"precision\":100}"
+                }
+              ],
+              "creates": 2,
+              "deletes": 1,
+              "discovers": 0,
+              "email": "owned@example.invalid",
+              "live_sessions": 1,
+              "observes": 0,
+              "protected_unchanged": true,
+              "provider_events": [
+                {
+                  "Kind": "create",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "delete",
+                  "Amount": "158.75",
+                  "Currency": "eur"
+                },
+                {
+                  "Kind": "create",
+                  "Amount": "281",
+                  "Currency": "eur"
+                }
+              ],
+              "receipts": 1,
+              "refresh": null,
+              "transfer_receipts": 0,
+              "version": 9
+            }
+          }
+        ],
+        "requests": [
+          {
+            "kind": "item",
+            "key": "d9eb57a9-c735-4c99-b462-e73472014f76",
+            "body": {
+              "version": "6",
+              "quantity": "2"
+            }
+          },
+          {
+            "kind": "item",
+            "key": "d9eb57a9-c735-4c99-b462-e73472014f76",
+            "body": {
+              "version": "6",
+              "quantity": "2"
+            }
+          },
+          {
+            "kind": "promo",
+            "key": "8acd01ef-7964-440b-9f77-50e2a478f871",
+            "body": {
+              "version": "7",
+              "codes": [
+                "OWNED10"
+              ]
+            }
+          },
+          {
+            "kind": "promo",
+            "key": "8acd01ef-7964-440b-9f77-50e2a478f871",
+            "body": {
+              "version": "7",
+              "codes": [
+                "OWNED10"
+              ]
+            }
+          },
+          {
+            "kind": "payment",
+            "key": "8692f37d-1338-4b42-92bc-bdcb74688a53",
+            "body": {
+              "version": "8"
+            }
+          },
+          {
+            "kind": "payment",
+            "key": "8692f37d-1338-4b42-92bc-bdcb74688a53",
+            "body": {
+              "version": "8"
+            }
+          }
+        ],
+        "lost_item_promotion_payment_responses": true,
+        "same_uuid_per_command": true,
+        "full_order_flow_executed": false
+      }
+    ],
+    "errors": [],
+    "api_mocking": false,
+    "actual_gin_mysql_redis_astro": true
+  },
+  "earlier_test_corrections": {
+    "wrong_fault_injection_path": "8ea205ace0cd",
+    "automatic_checkout_resume_expectation": "8cf5c9bbff56"
+  }
+}

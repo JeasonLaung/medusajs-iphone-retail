@@ -11,7 +11,7 @@ const root=fileURLToPath(new URL('../../',import.meta.url)),owner=randomBytes(6)
 const base=path.join(root,'logs/gin-migration/context-payment-'+owner)
 await mkdir(base,{recursive:true})
 const label='eurorefurb.context-payment='+owner,name='eurorefurb-context-'+owner
-const choices=['unchanged','changed','restore','delete-unknown','create-unknown','paid','replacement-paid','replacement-authorized','same-account','unbound-account','unbound-unchanged','unbound-precision','unbound-delete-unknown','unbound-restore','unbound-create-unknown','unbound-receipt-fault','unbound-lost-restore','continuous','currency-save','currency-restore']
+const choices=['unchanged','changed','restore','delete-unknown','create-unknown','paid','replacement-paid','replacement-authorized','same-account','unbound-account','unbound-unchanged','unbound-precision','unbound-delete-unknown','unbound-restore','unbound-create-unknown','unbound-receipt-fault','unbound-lost-restore','continuous','currency-save','currency-restore','retired-edits']
 const args=process.argv.slice(2),matrix=args.includes('--matrix'),requested=[]
 for(let i=0;i<args.length;i++){
  if(args[i]==='--matrix')continue

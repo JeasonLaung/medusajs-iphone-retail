@@ -13,6 +13,39 @@ async function control(path,body){const r=await fetch(api+'/__fixture/'+path,{me
 async function open(){await page.locator('astro-island[component-url*="gin-header"]:not([ssr])').waitFor({state:'attached'});await page.getByRole('button',{name:/^(Country and language|国家与语言)$/,exact:true}).click();await expect(page.getByRole('dialog')).toBeVisible()}
 async function journal(k){return page.evaluate(k=>JSON.parse(localStorage.getItem(k)),k)}
 async function current(){return page.evaluate(async()=>{const r=await fetch('/api/store/cart');if(!r.ok)throw Error('cart '+r.status);return r.json()})}
+async function retiredEditsCase(seed,lang,width){
+ const target=lang==='en'?'zh':'en',segment='dk-'+target,steps=[],requests=[]
+ const amounts=()=>page.evaluate(async id=>{const r=await fetch(`/api/store/carts/${id}/amounts`);if(!r.ok)throw Error('amounts '+r.status);return r.json()},seed.cart_id)
+ const check=async(version,total)=>{
+  const a=await amounts(),f=await control('facts');assert.equal(a.version,String(version));assert.equal(a.totals.total,total);assert.equal(f.version,version);assert.equal(f.protected_unchanged,true);assert.equal(f.collections.length,1);assert.equal(JSON.parse(f.collections[0].RawAmount).value,total);assert.equal(f.collections[0].CurrencyCode,'eur');assert.equal(f.deletes,1)
+  steps.push({amounts:a,facts:f});return f
+ }
+ await page.goto(origin+'/dk-'+lang+'/checkout?step=payment');await expect(page.getByTestId('submit-payment-button')).toBeEnabled();await page.getByTestId('submit-payment-button').click();await expect(page.getByTestId('submit-order-button')).toBeVisible()
+ const original=await journal(paymentKey)
+ await control('price');await page.goto(origin+'/dk-'+lang+'/about');await open();await page.getByRole('dialog').getByRole('button',{name:target==='zh'?'Danmark — Chinese Simplified (China)':'Danmark — English (United Kingdom)',exact:true}).click();await expect(page).toHaveURL(origin+'/'+segment+'/about')
+ assert.equal(await journal(paymentKey),null);assert.equal((await check(6,'160')).checkout,null)
+ let lostItem=false
+ await page.route('**/line-items/*',async route=>{requests.push({kind:'item',key:route.request().headers()['idempotency-key'],body:route.request().postDataJSON()});const r=await route.fetch();assert.equal(r.status(),200);if(!lostItem){lostItem=true;await route.abort('failed')}else await route.fulfill({response:r})})
+ await page.goto(origin+'/'+segment+'/cart');await expect(page.getByTestId('product-select-button')).toBeEnabled();await page.getByTestId('product-select-button').fill('2');await page.getByTestId('product-select-button').press('Enter');await expect(page.getByTestId('cart-recover-button')).toBeVisible()
+ await page.reload();await expect(page.getByTestId('cart-recover-button')).toBeEnabled();await page.getByTestId('cart-recover-button').click();await expect(page.getByTestId('product-select-button')).toHaveValue('2');await expect(page.getByTestId('cart-recover-button')).toHaveCount(0)
+ assert.equal((await check(7,'311.25')).live_sessions,0);assert.equal(await journal('retail.cart.intent.v1'),null)
+ let lostPromo=false
+ await page.route('**/promotions',async route=>{if(route.request().method()!=='POST'){await route.continue();return}requests.push({kind:'promo',key:route.request().headers()['idempotency-key'],body:route.request().postDataJSON()});const r=await route.fetch();assert.equal(r.status(),200);if(!lostPromo){lostPromo=true;await route.abort('failed')}else await route.fulfill({response:r})})
+ await page.goto(origin+'/'+segment+'/checkout?step=payment');await expect(page.getByTestId('discount-input')).toBeEnabled();await page.getByTestId('discount-input').fill('OWNED10');await page.getByTestId('discount-apply-button').click();await expect(page.getByTestId('discount-recover')).toBeVisible()
+ await page.reload();await expect(page.getByTestId('discount-recover')).toBeEnabled();await page.getByTestId('discount-recover').click();await expect(page.getByTestId('discount-code-tag')).toContainText('OWNED10');await expect(page.getByTestId('discount-recover')).toHaveCount(0)
+ assert.equal((await check(8,'281')).live_sessions,0);assert.equal(await journal('retail:checkout-promotion-intent:v1'),null)
+ let lostPayment=false
+ await page.route('**/payment-attempts',async route=>{requests.push({kind:'payment',key:route.request().headers()['idempotency-key'],body:route.request().postDataJSON()});const r=await route.fetch();assert.equal(r.status(),200);if(!lostPayment){lostPayment=true;await route.abort('failed')}else await route.fulfill({response:r})})
+ await expect(page.getByTestId('submit-payment-button')).toBeEnabled();await page.getByTestId('submit-payment-button').click()
+ await expect(page.getByTestId('payment-recover')).toBeVisible();const pending=await journal(paymentKey);assert.equal(pending.version,'8');assert.notEqual(pending.operationID,original.operationID)
+ // Existing checkout automatically resumes its persisted payment command.
+ await page.reload();await expect(page.getByTestId('submit-order-button')).toBeVisible()
+ const final=await check(9,'281');assert.equal(final.creates,2);assert.equal(final.live_sessions,1);assert.equal(final.checkout,pending.operationID);assert.equal(final.attempts[0].InputVersion,4);assert.equal(final.attempts[0].CartVersion,5);assert.equal(final.attempts[1].InputVersion,8);assert.equal(final.attempts[1].CartVersion,9)
+ assert.deepEqual(final.provider_events,[{Kind:'create',Amount:'158.75',Currency:'eur'},{Kind:'delete',Amount:'158.75',Currency:'eur'},{Kind:'create',Amount:'281',Currency:'eur'}])
+ for(const kind of ['item','promo','payment']){const group=requests.filter(r=>r.kind===kind);assert(group.length>=2,kind+' must replay');assert(group.every(r=>r.key===group[0].key&&JSON.stringify(r.body)===JSON.stringify(group[0].body)))}
+ await page.screenshot({path:join(output,`retired-edits-${lang}-${width}.png`)})
+ cases.push({scenario:'retired-edits',lang,width,steps,requests,lost_item_promotion_payment_responses:true,same_uuid_per_command:true,full_order_flow_executed:false});await control('case-done')
+}
 async function currencyCase(seed,scenario,lang,width,writes){
  const restoring=scenario==='currency-restore',target=lang==='zh'?'Chinese Simplified (China)':'English (United Kingdom)'
  await page.goto(origin+'/dk-'+lang+'/checkout?step=payment');await expect(page.getByTestId('submit-payment-button')).toBeEnabled();await page.getByTestId('submit-payment-button').click();await expect(page.getByTestId('submit-order-button')).toBeVisible()
@@ -190,6 +223,7 @@ try{
   const writes=[];page.on('request',r=>{if(r.method()==='POST'&&r.url().includes('/context-payment'))writes.push({path:new URL(r.url()).pathname,key:r.headers()['idempotency-key'],body:r.postDataJSON()})})
   const seed=await control('new'),url=origin+'/dk-'+lang+'/about?joint=payment#contact'
   await context.addCookies([{name:'retail_cart_possession',value:seed.token,url:origin,sameSite:'Strict'},{name:'retail_cart_csrf',value:seed.csrf,url:origin,sameSite:'Strict'}])
+  if(scenario==='retired-edits'){await retiredEditsCase(seed,lang,width);await context.close();continue}
   if(scenario.startsWith('currency-')){await currencyCase(seed,scenario,lang,width,writes);await context.close();continue}
   if(scenario==='continuous'){await continuousCase(seed,lang,width,writes);await context.close();continue}
   if(scenario==='same-account'||scenario.startsWith('unbound-')){await accountCase(context,seed,scenario,lang,width);await context.close();continue}

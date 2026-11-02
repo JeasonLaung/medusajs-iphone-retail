@@ -47,4 +47,7 @@ INSERT INTO commerce_region_payment_providers(region_id,payment_provider_id,id,c
 UPDATE cart_item_runtime SET enabled=TRUE WHERE id=1;
 UPDATE cart_contact_runtime SET enabled=TRUE WHERE id=1;
 UPDATE cart_shipping_command_runtime SET enabled=TRUE WHERE id=1;
+INSERT INTO promotions(id,code,is_automatic,type,status,is_tax_inclusive,used,created_at,updated_at) VALUES('context-manual-offer','OWNED10',FALSE,'standard','active',FALSE,0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO promotion_application_methods(id,promotion_id,type,target_type,allocation,value,raw_value,created_at,updated_at) VALUES('context-manual-method','context-manual-offer','percentage','items','across',10,'{"value":"10","precision":100}',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+UPDATE cart_promotion_command_runtime SET enabled=TRUE WHERE id=1;
 UPDATE cart_checkout_runtime SET enabled=TRUE WHERE id=1;
