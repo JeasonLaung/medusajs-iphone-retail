@@ -1,0 +1,112 @@
+{
+  "owner": "2ddee8eeb4d6",
+  "real_email_delivery": false,
+  "business_api_mocking": false,
+  "main_database_modified": false,
+  "api_sha256": "3c41fe76ca4e0b6558fe6b9e46b103dc2a749126b11e3cb91170f37e5320ca19",
+  "customer_owner": "790ce0fc9e71",
+  "resumed_paid_checkpoint": "790ce0fc9e71",
+  "passed": true,
+  "scenario": "rejection-mail",
+  "order_id": "order_2f0cb924-7757-418e-87b3-542ede6b250a",
+  "request_id": "asr_5960b1de-c2de-4abc-a84d-299ddbe5b4b7",
+  "operation_id": "b5f8dea3-6f68-4451-9c99-815c9e6d0845",
+  "customer_submission_lost_reply_recovered": true,
+  "six_concurrent_review_replies_identical": true,
+  "review_lost_reply_same_command": true,
+  "changed_payload_and_new_terminal_command_denied": true,
+  "customer_en_zh_mobile": true,
+  "admin_en_zh": true,
+  "business_event_mail_jobs": 1,
+  "event_mail_rejected_retry_sent": true,
+  "event_mail_lost_reply_same_command": true,
+  "event_mail_frozen_message_and_key": true,
+  "event_mail_transport_isolated": true,
+  "event_mail_recipient_sender_ownership_expiry_guards": false,
+  "guards": {
+    "all_guard_transactions_rolled_back": true,
+    "guard_cases": 6,
+    "late_notice_failure_rolls_back_review_status_receipt_mail": true,
+    "passed": true
+  },
+  "no_new_payment_refund_or_shipment": true,
+  "browser_errors": 0,
+  "verified_accounts": 1,
+  "sql_rejection_facts": {
+    "rejected_request": 1,
+    "review_receipt": 1,
+    "customer_notice": 1,
+    "sent_mail": 1,
+    "sent_delivery": 1
+  },
+  "original_order_payments_inventory_devices_fulfillment_unchanged": true,
+  "payment_durable_snapshot_retained": true,
+  "resources_removed": true,
+  "cleanup_errors": [],
+  "source_account_counts_unchanged": true,
+  "mail_dispatch": {
+    "event-reject": {
+      "concurrent_claims": true,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-reject",
+      "provider_calls": 1
+    },
+    "event-sent": {
+      "concurrent_claims": true,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-sent",
+      "provider_calls": 1
+    },
+    "event-drain": {
+      "concurrent_claims": false,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-drain",
+      "provider_calls": 0
+    }
+  },
+  "validation": {
+    "go_test_customer_customernotices_maildelivery_identity": true,
+    "python_compile": true,
+    "javascript_syntax": true,
+    "visual_review_customer_zh_390_and_admin_zh": true,
+    "git_diff_check": true
+  },
+  "previous_rehearsals": [
+    {
+      "owner": "da2669aea0ba",
+      "issue": "Trigger privilege intentionally unavailable to API user; moved fault setup to owned harness connection",
+      "resources_removed": true
+    },
+    {
+      "owner": "a8a0c3a2cf26",
+      "issue": "Browser script needed explicit order navigation after Admin login",
+      "resources_removed": true
+    },
+    {
+      "owner": "c545dc4699cc",
+      "issue": "Ant Select label matches container and combobox; scoped selector corrected",
+      "resources_removed": true
+    }
+  ],
+  "limitations": [
+    "Only external Resend transport is simulated; no real email delivery",
+    "Recipient/sender/ownership/expiry guards not rerun in this checkpoint",
+    "Old fixture image and review availability are outside this acceptance scope",
+    "C01-C11 overall migration remains open"
+  ],
+  "main_preview": {
+    "http_200": [
+      "http://127.0.0.1:9100/health",
+      "http://127.0.0.1:9200",
+      "http://127.0.0.1:9300/gb-en/account/orders",
+      "http://127.0.0.1:9300/gb-zh/account/orders"
+    ],
+    "legacy_9001": "intentionally stopped; /health and /app unavailable",
+    "isolated_ports_19100_19200_19300": "no remaining listener",
+    "recent_api_error_panic_scan": "none",
+    "runtime_code_changed": false
+  }
+}

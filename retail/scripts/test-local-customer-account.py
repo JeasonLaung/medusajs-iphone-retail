@@ -16,6 +16,8 @@ unfinished, never posted. --resume-refund=OWNER restores an ignored checkpoint
 and reuses the same paid order and durable refund instruction.
 --refund-mail-from-checkpoint=OWNER also verifies refund/completion event delivery
 and Admin retry with an isolated external mail transport; no new refund is sent.
+--rejection-mail-from-checkpoint=OWNER verifies actual customer submission,
+Admin rejection and customer/mail recovery without another payment or refund.
 --scenario=warehouse uses the copied paid order and explicit fixture ownership
 to verify a new scoped employee's allocation/release/shipment and customer view.
 --warehouse-from-checkpoint=OWNER instead continues an actual paid customer's
@@ -630,6 +632,9 @@ def verify_buyback_return_mail_checkpoint(owner):
 
 
 def main(language, scenario='account', resume=None):
+    rejection_mail = scenario == 'rejection-mail'
+    if rejection_mail and resume is None:
+        raise RuntimeError('After-sales rejection requires a verified paid checkpoint')
     cancellation = scenario == 'cancellation'
     if cancellation and resume is None:
         raise RuntimeError('Cancellation requires a verified paid checkpoint')
@@ -653,9 +658,9 @@ def main(language, scenario='account', resume=None):
     reviews = scenario == 'reviews'
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
     supplement = scenario == 'supplement'
-    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail', 'non-device-refund', 'cart-login', 'delivery-mail', 'cancellation')
+    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail', 'non-device-refund', 'cart-login', 'delivery-mail', 'cancellation', 'rejection-mail')
     buyback_return_mail = scenario == 'buyback-return-mail'
-    event_mail = scenario in ('buyback-mail', 'buyback-return-mail', 'repair-mail', 'refund-mail', 'delivery-mail', 'cancellation')
+    event_mail = scenario in ('buyback-mail', 'buyback-return-mail', 'repair-mail', 'refund-mail', 'delivery-mail', 'cancellation', 'rejection-mail')
     buyback_intake = scenario in ('buyback-intake', 'buyback-intake-return', 'buyback-mail', 'buyback-return-mail')
     buyback_return = scenario in ('buyback-return', 'buyback-intake-return', 'buyback-return-mail')
     buyback = scenario == 'buyback' or buyback_intake or buyback_return
@@ -663,7 +668,7 @@ def main(language, scenario='account', resume=None):
     refund = scenario in ('refund', 'refund-mail')
     warehouse = scenario in ('warehouse', 'paid-warehouse', 'intake-warehouse')
     repair = scenario in ('repair', 'exchange', 'refund', 'refund-mail', 'warehouse', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail')
-    admin_required = buyback or repair or mail or reviews or product_entry or non_device_refund or delivery_mail or cancellation
+    admin_required = buyback or repair or mail or reviews or product_entry or non_device_refund or delivery_mail or cancellation or rejection_mail
     values = config()
     api_binary = Path(os.environ.get('ACCOUNT_TEST_API_BINARY') or ROOT / 'logs/retail-native/retail-api.exe').resolve()
     if not api_binary.is_relative_to((ROOT / 'logs/retail-native').resolve()) or api_binary.suffix != '.exe' or not api_binary.is_file():
@@ -673,7 +678,7 @@ def main(language, scenario='account', resume=None):
             raise RuntimeError('Only an owned payment checkpoint can resume')
         checkpoint = ROOT / 'logs/retail-native' / ('account-' + resume)
         checkpoint_report = json.loads((checkpoint / 'report.json').read_text())
-        if (paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail or cancellation) and (not checkpoint_report.get('passed') or not checkpoint_report.get('payment_durable_snapshot_retained')):
+        if (paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail or cancellation or rejection_mail) and (not checkpoint_report.get('passed') or not checkpoint_report.get('payment_durable_snapshot_retained')):
             raise RuntimeError('Fulfillment continuation requires a verified durable paid checkpoint')
         if refund:
             paid = json.loads((checkpoint / 'refund-new-paid-order.json').read_text())
@@ -889,6 +894,13 @@ def main(language, scenario='account', resume=None):
             env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'false'
         if non_device_refund:
             env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'false'
+        if rejection_mail:
+            sql(database, 'UPDATE customer_after_sales_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE after_sales_review_runtime SET enabled=TRUE WHERE id=1 AND version=1')
+            env.update(CHECKOUT_PAYMENT_ENABLED='false', CHECKOUT_CONTEXT_PAYMENT_ENABLED='false', ORDER_REFUNDS_ENABLED='false')
+            rejection_immutable = ['orders','order_items','order_line_items','order_summaries','order_credit_lines','payments','payment_captures','payment_refunds','payment_sessions','payment_collections','order_transactions','order_refund_operations','order_payment_operations','cart_checkout_attempts','cart_completion_receipts','payment_effect_journal','customer_order_ownership','inventory_levels','inventory_reservations','devices','device_assignments','device_events','fulfillments','fulfillment_items','order_fulfillments']
+            def rejection_fingerprint():
+                return hashlib.sha256(docker('exec',CONTAINER,'mysqldump','--defaults-extra-file=/tmp/local-root.cnf','--set-gtid-purged=OFF','--no-create-info','--skip-comments','--skip-dump-date','--skip-triggers',database,*rejection_immutable)).hexdigest()
+            rejection_before = rejection_fingerprint()
         if paid_warehouse or repair_mail or delivery_mail or cancellation:
             env['CHECKOUT_PAYMENT_ENABLED'] = 'false'
             env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'false'
@@ -997,6 +1009,12 @@ def main(language, scenario='account', resume=None):
         if delivery_mail:
             script = 'tests/local-parcel-delivery.live.mjs'
             browser_env.update(WINDOWS_PARCEL_DELIVERY='1', WINDOWS_PARCEL_DELIVERY_FIXTURE=str(guard_fixture))
+        if rejection_mail:
+            script = 'tests/local-after-sales-rejection.live.mjs'
+            browser_env.update(WINDOWS_AFTER_SALES_REJECTION='1')
+            # Only the disposable database's root fixture can install faults;
+            # the production API account intentionally has no TRIGGER grant.
+            sql(database, "CREATE TRIGGER owned_rejection_notice_failure BEFORE INSERT ON customer_account_notices FOR EACH ROW SET NEW.id=IF(NEW.kind='after_sales.rejected' AND EXISTS(SELECT 1 FROM after_sales_reviews WHERE operation_id='00000000-0000-4000-8000-000000000001'),NULL,NEW.id)")
         if warehouse_batch:
             sql(database, "CREATE TRIGGER owned_batch_receipt_failure BEFORE INSERT ON warehouse_device_changes FOR EACH ROW SET NEW.operation_id=IF(NEW.operation_id='00000000-0000-4000-8000-000000000001',NULL,NEW.operation_id)")
         result = subprocess.run([str(node), script],
@@ -1087,7 +1105,7 @@ def main(language, scenario='account', resume=None):
 
         if report['verified_accounts'] != (0 if product_entry else 1):
             raise RuntimeError('Expected exactly one newly verified fixture account')
-        if payment_context and not (reviews or paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail or cancellation):
+        if payment_context and not (reviews or paid_warehouse or supplement or repair_mail or non_device_refund or cart_login or delivery_mail or cancellation or rejection_mail):
             cart_id, order_id = report['cart_id'], report['order_id']
             if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
                 raise RuntimeError('Owned payment context result identity invalid')
@@ -1111,6 +1129,12 @@ def main(language, scenario='account', resume=None):
             report['sql_non_device_facts'] = dict(applied_refund=1, payment_refund=1, negative_order_transaction=1, completed_return=1, inventory_and_fulfillment_unchanged=True)
             report['channel_refund_simulated'] = True
             report['real_mollie_refund_created'] = False
+        if rejection_mail:
+            facts = sql(database, "SELECT (SELECT COUNT(*) FROM after_sales_requests WHERE status='rejected'),(SELECT COUNT(*) FROM after_sales_reviews WHERE before_status='pending' AND after_status='rejected'),(SELECT COUNT(*) FROM customer_account_notices WHERE kind='after_sales.rejected'),(SELECT COUNT(*) FROM customer_event_mail WHERE kind='after_sales.rejected' AND status='sent'),(SELECT COUNT(*) FROM customer_event_mail_deliveries WHERE sent_at IS NOT NULL)").split('\t')
+            if facts != ['1','1','1','1','1'] or rejection_fingerprint() != rejection_before:
+                raise RuntimeError('After-sales rejection terminal facts or protected facts differ: '+str(facts))
+            report['sql_rejection_facts'] = dict(rejected_request=1, review_receipt=1, customer_notice=1, sent_mail=1, sent_delivery=1)
+            report['original_order_payments_inventory_devices_fulfillment_unchanged'] = True
         if cart_login:
             if cart_login_financial_fingerprint() != cart_login_financial_before:
                 raise RuntimeError('Cart login changed protected financial/ownership/inventory facts')
@@ -1410,6 +1434,8 @@ if __name__ == '__main__':
         main('en', 'paid-warehouse', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--cancellation-from-checkpoint='):
         main('en', 'cancellation', sys.argv[1].split('=', 1)[1])
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--rejection-mail-from-checkpoint='):
+        main('en', 'rejection-mail', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 5 and sys.argv[1] == '--cancellation-fault':
         database, order, phase = sys.argv[2:]
         if not re.fullmatch(DB_PATTERN, database) or not re.fullmatch(r'order_[0-9a-f-]{36}', order) or phase not in ('refund-on','refund-off','cancel-on','cancel-off'):
