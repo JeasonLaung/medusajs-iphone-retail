@@ -65,7 +65,7 @@ func ReadPaymentOptions(ctx context.Context, db *gorm.DB, store string, ref sess
 			}
 			defer clear(request.Data)
 			defer clear(request.Context)
-			if request.ProviderID == "pp_paypal_paypal" {
+			if request.ProviderID == "pp_paypal_paypal" || request.ProviderID == "pp_paypal_card_paypal_card" {
 				p, e := sdkPaymentProvider(o, request.ProviderID, request.Currency)
 				if e != nil {
 					return e
@@ -74,7 +74,7 @@ func ReadPaymentOptions(ctx context.Context, db *gorm.DB, store string, ref sess
 			}
 			return nil
 		}
-		for _, id := range []string{hostedMollie, "pp_paypal_paypal"} {
+		for _, id := range []string{hostedMollie, "pp_paypal_paypal", "pp_paypal_card_paypal_card"} {
 			if _, e := o.Adapters.Lookup(id); e != nil {
 				continue
 			}
@@ -85,7 +85,7 @@ func ReadPaymentOptions(ctx context.Context, db *gorm.DB, store string, ref sess
 			}
 			p, e := sdkPaymentProvider(o, id, current.CurrencyCode)
 			if e != nil {
-				if id == "pp_paypal_paypal" {
+				if id != hostedMollie {
 					continue // Unsupported wallet currency must not hide hosted Mollie.
 				}
 				return e

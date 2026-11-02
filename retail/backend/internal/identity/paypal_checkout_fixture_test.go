@@ -25,9 +25,17 @@ type paypalCheckoutProvider struct {
 	uncertain      bool
 	status         string
 	settlements    int
+	tokens         int
 	lostSettlement bool
 	intent         string
 	orderID        string
+}
+
+func (p *paypalCheckoutProvider) ClientToken(context.Context) (payments.PayPalClientToken, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.tokens++
+	return payments.PayPalClientToken{ClientToken: "artificial.browser-token"}, nil
 }
 
 func (p *paypalCheckoutProvider) SDKConfiguration(currency string) (payments.PayPalSDKConfig, error) {

@@ -4,7 +4,7 @@ import {ginPrivateTransport} from './gin-private-transport.ts'
 export type CartBridgeConfig={ginOrigin:string|undefined;storefrontOrigin:string|undefined}
 const id='[A-Za-z0-9][A-Za-z0-9_-]{0,190}'
 const read=new RegExp(`^/api/store/(?:orders/${id}/confirmation|cart|carts/${id}(?:/(?:amounts|view|contacts|delivery-options|payment-options|promotions))?)$`)
-const write=new RegExp(`^/api/store/(?:cart-sessions|carts|carts/${id}/(?:context|context-payment(?:/restore)?|contacts|promotions|shipping-methods|payment-attempts|paypal-settlement|payment-status|complete|line-items(?:/${id})?))$`)
+const write=new RegExp(`^/api/store/(?:cart-sessions|carts|carts/${id}/(?:context|context-payment(?:/restore)?|contacts|promotions|shipping-methods|payment-attempts|paypal-settlement|paypal-client-token|payment-status|complete|line-items(?:/${id})?))$`)
 const paymentContext=new RegExp(`^/api/store/carts/${id}/context-payment(?:/restore)?$`)
 const privateHeaders={'Cache-Control':'private, no-store','Content-Type':'application/json','X-Content-Type-Options':'nosniff','Vary':'Cookie, Origin','Referrer-Policy':'no-referrer'}
 const failure=(status:number)=>new Response('{"error":"Cart request unavailable"}',{status,headers:privateHeaders})

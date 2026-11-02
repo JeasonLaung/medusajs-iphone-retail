@@ -1,0 +1,459 @@
+{
+  "scope": "C06 native PayPal Card Fields to original settlement and order confirmation; C01-C11 remain open",
+  "real_paypal_sandbox_verified": false,
+  "external_sdk_and_provider_artificial": true,
+  "storefront_unit_tests": {
+    "passed": 262,
+    "failed": 0
+  },
+  "astro_check": {
+    "errors": 0,
+    "warnings": 0,
+    "hints": 29
+  },
+  "backend_packages": [
+    "payments",
+    "cart",
+    "checkoutconfig",
+    "identity",
+    "cmd/api"
+  ],
+  "runs": {
+    "card": {
+      "owner": "7984ec2eb3e1",
+      "passed": true,
+      "owned_resources_removed": true,
+      "frozen_source_verified": true,
+      "binary_sha256": "4801cd51177438efc111153d930a28cae1962e565d109437e56b2dcfeb9e7079",
+      "finished_utc": "2026-11-02T19:41:02.801Z",
+      "browser": {
+        "cases": [
+          {
+            "lang": "en",
+            "width": 390,
+            "facts": {
+              "captures": 1,
+              "cash": {
+                "ProviderID": "pp_paypal_card_paypal_card",
+                "CurrencyCode": "eur",
+                "Amount": "158.750000000000000000"
+              },
+              "creates": 1,
+              "order_id": "order_7d4e1f9b-3618-46aa-bd81-7ce735b12b35",
+              "orders": 1,
+              "receipts": 1,
+              "settlements": 1,
+              "tokens": 1
+            },
+            "writes": [
+              {
+                "kind": "create",
+                "key": "01125f42-a49d-46fe-be6d-6af0a0e95509",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                }
+              },
+              {
+                "kind": "create",
+                "key": "01125f42-a49d-46fe-be6d-6af0a0e95509",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                }
+              },
+              {
+                "kind": "settle",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              }
+            ],
+            "lost_create_settlement_completion": true,
+            "cancel_wrong_order_invalid_form_no_capture": true,
+            "external_sdk_provider_artificial": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "facts": {
+              "captures": 1,
+              "cash": {
+                "ProviderID": "pp_paypal_card_paypal_card",
+                "CurrencyCode": "eur",
+                "Amount": "158.750000000000000000"
+              },
+              "creates": 1,
+              "order_id": "order_c213f751-37b7-488a-abad-158b36b1043b",
+              "orders": 1,
+              "receipts": 1,
+              "settlements": 1,
+              "tokens": 1
+            },
+            "writes": [
+              {
+                "kind": "create",
+                "key": "57729463-52b9-4f09-a226-e76265f85a11",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                }
+              },
+              {
+                "kind": "create",
+                "key": "57729463-52b9-4f09-a226-e76265f85a11",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                }
+              },
+              {
+                "kind": "settle",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              }
+            ],
+            "lost_create_settlement_completion": true,
+            "cancel_wrong_order_invalid_form_no_capture": true,
+            "external_sdk_provider_artificial": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "facts": {
+              "captures": 1,
+              "cash": {
+                "ProviderID": "pp_paypal_card_paypal_card",
+                "CurrencyCode": "eur",
+                "Amount": "158.750000000000000000"
+              },
+              "creates": 1,
+              "order_id": "order_de22bb9f-0a67-438e-b96c-6d9b8b5307b6",
+              "orders": 1,
+              "receipts": 1,
+              "settlements": 1,
+              "tokens": 1
+            },
+            "writes": [
+              {
+                "kind": "create",
+                "key": "01ab2cd4-faa2-49af-bdc0-e5b963af9fcb",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                }
+              },
+              {
+                "kind": "create",
+                "key": "01ab2cd4-faa2-49af-bdc0-e5b963af9fcb",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                }
+              },
+              {
+                "kind": "settle",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              }
+            ],
+            "lost_create_settlement_completion": true,
+            "cancel_wrong_order_invalid_form_no_capture": true,
+            "external_sdk_provider_artificial": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "facts": {
+              "captures": 1,
+              "cash": {
+                "ProviderID": "pp_paypal_card_paypal_card",
+                "CurrencyCode": "eur",
+                "Amount": "158.750000000000000000"
+              },
+              "creates": 1,
+              "order_id": "order_57b45759-1c5c-4625-810c-0218e10adc00",
+              "orders": 1,
+              "receipts": 1,
+              "settlements": 1,
+              "tokens": 1
+            },
+            "writes": [
+              {
+                "kind": "create",
+                "key": "0e3e3a7d-e4e5-4bd2-82a1-35fd5b5eebf1",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                }
+              },
+              {
+                "kind": "create",
+                "key": "0e3e3a7d-e4e5-4bd2-82a1-35fd5b5eebf1",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_card_paypal_card"
+                }
+              },
+              {
+                "kind": "settle",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              }
+            ],
+            "lost_create_settlement_completion": true,
+            "cancel_wrong_order_invalid_form_no_capture": true,
+            "external_sdk_provider_artificial": true
+          }
+        ],
+        "errors": []
+      },
+      "source_tree_sha256": "8acae3fcab0c3063d7bf6985dc2f30d3883e99b1f988a403b6d3a60431593f4d"
+    },
+    "wallet_regression": {
+      "owner": "c6f4eac8f54e",
+      "passed": true,
+      "owned_resources_removed": true,
+      "frozen_source_verified": true,
+      "binary_sha256": "e8ab97e52adad67fa0487eaec5b7770ffd4e5ac9b0ffa8b19a4eb418c47a8234",
+      "finished_utc": "2026-11-02T19:41:26.180Z",
+      "browser": {
+        "cases": [
+          {
+            "lang": "en",
+            "width": 390,
+            "facts": {
+              "captures": 1,
+              "cash": {
+                "ProviderID": "pp_paypal_paypal",
+                "CurrencyCode": "eur",
+                "Amount": "158.750000000000000000"
+              },
+              "creates": 1,
+              "order_id": "order_17b370e5-3e46-498d-8243-4a6ac045f6ef",
+              "orders": 1,
+              "receipts": 1,
+              "settlements": 1,
+              "tokens": 0
+            },
+            "writes": [
+              {
+                "kind": "create",
+                "key": "4174beb3-bc9b-4d7b-ac1d-18cb1d6d1d9d",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                }
+              },
+              {
+                "kind": "create",
+                "key": "4174beb3-bc9b-4d7b-ac1d-18cb1d6d1d9d",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                }
+              },
+              {
+                "kind": "settle",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              }
+            ],
+            "lost_create_settlement_completion": true,
+            "cancel_wrong_order_no_capture": true,
+            "external_sdk_provider_artificial": true
+          },
+          {
+            "lang": "en",
+            "width": 1440,
+            "facts": {
+              "captures": 1,
+              "cash": {
+                "ProviderID": "pp_paypal_paypal",
+                "CurrencyCode": "eur",
+                "Amount": "158.750000000000000000"
+              },
+              "creates": 1,
+              "order_id": "order_5c0a32f2-86b5-41c6-99df-c5f85f40e40d",
+              "orders": 1,
+              "receipts": 1,
+              "settlements": 1,
+              "tokens": 0
+            },
+            "writes": [
+              {
+                "kind": "create",
+                "key": "45aed130-676f-444f-8a90-00c038e83641",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                }
+              },
+              {
+                "kind": "create",
+                "key": "45aed130-676f-444f-8a90-00c038e83641",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                }
+              },
+              {
+                "kind": "settle",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              }
+            ],
+            "lost_create_settlement_completion": true,
+            "cancel_wrong_order_no_capture": true,
+            "external_sdk_provider_artificial": true
+          },
+          {
+            "lang": "zh",
+            "width": 390,
+            "facts": {
+              "captures": 1,
+              "cash": {
+                "ProviderID": "pp_paypal_paypal",
+                "CurrencyCode": "eur",
+                "Amount": "158.750000000000000000"
+              },
+              "creates": 1,
+              "order_id": "order_5beb868c-562c-4f40-b133-d68dbcbe1744",
+              "orders": 1,
+              "receipts": 1,
+              "settlements": 1,
+              "tokens": 0
+            },
+            "writes": [
+              {
+                "kind": "create",
+                "key": "10e7c4e7-b997-4ce4-8151-c9919bafd7da",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                }
+              },
+              {
+                "kind": "create",
+                "key": "10e7c4e7-b997-4ce4-8151-c9919bafd7da",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                }
+              },
+              {
+                "kind": "settle",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              }
+            ],
+            "lost_create_settlement_completion": true,
+            "cancel_wrong_order_no_capture": true,
+            "external_sdk_provider_artificial": true
+          },
+          {
+            "lang": "zh",
+            "width": 1440,
+            "facts": {
+              "captures": 1,
+              "cash": {
+                "ProviderID": "pp_paypal_paypal",
+                "CurrencyCode": "eur",
+                "Amount": "158.750000000000000000"
+              },
+              "creates": 1,
+              "order_id": "order_a999ae70-51d4-4a5c-bff3-aefe39c62feb",
+              "orders": 1,
+              "receipts": 1,
+              "settlements": 1,
+              "tokens": 0
+            },
+            "writes": [
+              {
+                "kind": "create",
+                "key": "2c559f11-1c35-446d-9cf7-ccd673dc4208",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                }
+              },
+              {
+                "kind": "create",
+                "key": "2c559f11-1c35-446d-9cf7-ccd673dc4208",
+                "body": {
+                  "version": "4",
+                  "provider_id": "pp_paypal_paypal"
+                }
+              },
+              {
+                "kind": "settle",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              },
+              {
+                "kind": "complete",
+                "body": {}
+              }
+            ],
+            "lost_create_settlement_completion": true,
+            "cancel_wrong_order_no_capture": true,
+            "external_sdk_provider_artificial": true
+          }
+        ],
+        "errors": []
+      },
+      "source_tree_sha256": "04dd9bff31dccc44e6b4c1fdfe2e4ac876ea0d43ea8bceab7c302bf23b556a5e"
+    }
+  }
+}

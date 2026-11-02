@@ -25,6 +25,7 @@ import (
 // Starts at the saved address/shipping checkpoint. Only the external SDK and
 // provider are artificial; cart HTTP, completion, stock and cash use real SQL.
 func checkPayPalWalletBrowser(t *testing.T, ctx context.Context, db *gorm.DB, sessions *sessionstore.Store, makeCart func() (sessionstore.CartReference, cart.InitialPaymentCommand), options cart.InitialPaymentOptions) {
+	cardMode := os.Getenv("PAYPAL_CARD_BROWSER") == "1"
 	origin, key := os.Getenv("CONTEXT_PAYMENT_ORIGIN"), os.Getenv("CONTEXT_PAYMENT_KEY")
 	if !strings.HasPrefix(origin, "http://127.0.0.1:") || len(key) != 64 {
 		t.Fatal("owned wallet origin/key")
@@ -45,12 +46,20 @@ func checkPayPalWalletBrowser(t *testing.T, ctx context.Context, db *gorm.DB, se
 	exec("UPDATE commerce_store_locales SET locale_code='en-GB' WHERE store_id='shop' AND locale_code='en'")
 	exec("INSERT INTO payment_providers(id,is_enabled,created_at,updated_at) VALUES('pp_paypal_paypal',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
 	exec("INSERT INTO commerce_region_payment_providers(id,region_id,payment_provider_id,created_at,updated_at) VALUES('wallet-binding','region','pp_paypal_paypal',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
+	if cardMode {
+		exec("INSERT INTO payment_providers(id,is_enabled,created_at,updated_at) VALUES('pp_paypal_card_paypal_card',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
+		exec("INSERT INTO commerce_region_payment_providers(id,region_id,payment_provider_id,created_at,updated_at) VALUES('card-binding','region','pp_paypal_card_paypal_card',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
+	}
 	wallet := &paypalCheckoutProvider{calls: map[string]int{}}
 	mollie := &contextBrowserProvider{status: map[string]string{}}
 	configured := options
 	configured.ReturnOrigin = origin
 	var err error
-	configured.Adapters, err = payments.NewCreateAdapters(map[string]payments.CreateSessionAdapter{"pp_mollie-hosted-checkout_mollie": mollie, "pp_paypal_paypal": wallet})
+	entries := map[string]payments.CreateSessionAdapter{"pp_mollie-hosted-checkout_mollie": mollie, "pp_paypal_paypal": wallet}
+	if cardMode {
+		entries["pp_paypal_card_paypal_card"] = wallet
+	}
+	configured.Adapters, err = payments.NewCreateAdapters(entries)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -88,6 +97,7 @@ func checkPayPalWalletBrowser(t *testing.T, ctx context.Context, db *gorm.DB, se
 		wallet.mu.Lock()
 		wallet.calls = map[string]int{}
 		wallet.settlements = 0
+		wallet.tokens = 0
 		wallet.status = ""
 		wallet.orderID = strings.ToUpper(strings.ReplaceAll(uuid.NewString(), "-", ""))[:17]
 		wallet.mu.Unlock()
@@ -118,7 +128,7 @@ func checkPayPalWalletBrowser(t *testing.T, ctx context.Context, db *gorm.DB, se
 		for _, n := range wallet.calls {
 			creates += n
 		}
-		c.JSON(200, gin.H{"creates": creates, "settlements": wallet.settlements, "order_id": order.OrderID, "orders": count("order_carts", "cart_id=?", active.CartID), "receipts": count("cart_completion_receipts", "cart_id=?", active.CartID), "captures": count("payment_captures c", "c.payment_id IN (SELECT p.id FROM payments p JOIN order_payment_collections l ON l.payment_collection_id=p.payment_collection_id WHERE l.order_id=?)", order.OrderID), "cash": cash})
+		c.JSON(200, gin.H{"creates": creates, "settlements": wallet.settlements, "tokens": wallet.tokens, "order_id": order.OrderID, "orders": count("order_carts", "cart_id=?", active.CartID), "receipts": count("cart_completion_receipts", "cart_id=?", active.CartID), "captures": count("payment_captures c", "c.payment_id IN (SELECT p.id FROM payments p JOIN order_payment_collections l ON l.payment_collection_id=p.payment_collection_id WHERE l.order_id=?)", order.OrderID), "cash": cash})
 	})
 	fixture.POST("/case-done", func(c *gin.Context) { completed++; c.Status(200) })
 	fixture.POST("/finish", func(c *gin.Context) { finish <- struct{}{}; c.Status(200) })

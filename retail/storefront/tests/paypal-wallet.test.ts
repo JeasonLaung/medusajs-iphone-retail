@@ -24,3 +24,15 @@ test('wallet SDK options reject private configuration and conflicting providers'
  assert.equal((await read(options))?.providers[0].paypal?.currency,'EUR')
  for(const body of [{...options,providers:[{id:wallet,paypal:{...paypal,client_secret:'private'}}]},{...options,providers:[options.providers[0],options.providers[0]]},{...options,active_provider:options.providers[0]},{...options,providers:[{id:wallet,paypal:{...paypal,currency:'eur'}}]}])await assert.rejects(read(body))
 })
+
+test('card initiation binds SDK order to card provider and token endpoint projects only browser token',async()=>{
+ const card='pp_paypal_card_paypal_card' as const
+ const c=new CartClient({readScopeCSRF:()=>undefined,fetcher:async(path,init)=>{
+  if(String(path).endsWith('/paypal-client-token')){assert.equal(init?.body,'{}');return reply({client_token:'artificial.browser-token'})}
+  assert.equal(JSON.parse(String(init?.body)).provider_id,card)
+  return reply({cart_id:'cart',version:'5',operation_id:operationID,state:'sdk_ready',checkout_url:null,provider_id:card,provider_order_id:'5O190127TN364715T'})
+ }})
+ assert.equal((await c.startPayment('cart',{version:'4',operationID,providerID:card},{csrfToken:csrf})).provider_id,card)
+ assert.equal(await c.paypalClientToken('cart',{csrfToken:csrf}),'artificial.browser-token')
+ for(const body of [{client_token:'valid',access_token:'private'},{client_token:''},{client_token:'bad\nheader'}])await assert.rejects(new CartClient({readScopeCSRF:()=>undefined,fetcher:async()=>reply(body)}).paypalClientToken('cart',{csrfToken:csrf}))
+})

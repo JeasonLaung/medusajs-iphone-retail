@@ -11,7 +11,7 @@ func TestPayPalWalletExplicitConfiguration(t *testing.T) {
 		env := fixture()
 		env["PAYPAL_WALLET_ENABLED"] = flag
 		o, err := Load(func(k string) string {
-			if strings.HasPrefix(k, "PAYPAL_") && k != "PAYPAL_WALLET_ENABLED" {
+			if strings.HasPrefix(k, "PAYPAL_") && k != "PAYPAL_WALLET_ENABLED" && k != "PAYPAL_CARD_ENABLED" {
 				t.Fatal("disabled wallet read credentials")
 			}
 			return env[k]
@@ -55,5 +55,26 @@ func TestPayPalWalletExplicitConfiguration(t *testing.T) {
 		if _, err := Load(func(k string) string { return env[k] }); err != ErrInvalid {
 			t.Fatal("ambiguous wallet enablement")
 		}
+	}
+}
+
+func TestPayPalCardIndependentRegistration(t *testing.T) {
+	env := fixture()
+	for k, v := range map[string]string{"PAYPAL_CARD_ENABLED": "true", "PAYPAL_CLIENT_ID": "artificial_client", "PAYPAL_CLIENT_SECRET": "artificial_secret", "PAYPAL_MERCHANT_ID": "ABC1234567890", "PAYPAL_ENVIRONMENT": "sandbox", "PAYPAL_INTENT": "CAPTURE"} {
+		env[k] = v
+	}
+	o, err := Load(func(k string) string { return env[k] })
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = o.Adapters.Lookup("pp_paypal_card_paypal_card"); err != nil {
+		t.Fatal(err)
+	}
+	if _, err = o.Adapters.Lookup("pp_paypal_paypal"); err == nil {
+		t.Fatal("card flag enabled wallet")
+	}
+	env["PAYPAL_CARD_ENABLED"] = "TRUE"
+	if _, err = Load(func(k string) string { return env[k] }); err != ErrInvalid {
+		t.Fatal("ambiguous card flag")
 	}
 }

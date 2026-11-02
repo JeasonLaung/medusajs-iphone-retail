@@ -1,7 +1,7 @@
-import {CartError,cartCSRFFromCookies,type CartClient} from './cart-client.ts'
+import {CartError,cartCSRFFromCookies,type CartClient,type PayPalProviderID} from './cart-client.ts'
 import {contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey,cartLockName,customerCartIntentKey} from './cart-commerce.ts'
 export const paymentIntentKey='retail:checkout-payment-intent:v1'
-type Intent={cartID:string;version:string;operationID:string;providerID?:'pp_paypal_paypal'}
+type Intent={cartID:string;version:string;operationID:string;providerID?:PayPalProviderID}
 type Options={client:Pick<CartClient,'startPayment'>;storage:Pick<Storage,'getItem'|'setItem'>;readCSRF:()=>string|undefined;uuid:()=>string;exclusive:<T>(action:()=>Promise<T>)=>Promise<T>}
 const id=/^[A-Za-z0-9][A-Za-z0-9_-]{0,190}$/,uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
 const valid=(v:unknown,re:RegExp):v is string=>typeof v==='string'&&!/[\r\n]/.test(v)&&re.test(v)
@@ -11,7 +11,7 @@ export function readPaymentIntent(storage:Pick<Storage,'getItem'>):Intent|null{
  const raw=storage.getItem(paymentIntentKey);if(raw===null)return null
  if(raw.length>1024)throw fail()
  let v:Intent;try{v=JSON.parse(raw)}catch{throw fail()}
- if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).some(k=>!['cartID','version','operationID','providerID'].includes(k))||Object.keys(v).length!==(v.providerID===undefined?3:4)||v.providerID!==undefined&&v.providerID!=='pp_paypal_paypal'||!valid(v.cartID,id)||!valid(v.operationID,uuid)||!version(v.version))throw fail()
+ if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).some(k=>!['cartID','version','operationID','providerID'].includes(k))||Object.keys(v).length!==(v.providerID===undefined?3:4)||v.providerID!==undefined&&v.providerID!=='pp_paypal_paypal'&&v.providerID!=='pp_paypal_card_paypal_card'||!valid(v.cartID,id)||!valid(v.operationID,uuid)||!version(v.version))throw fail()
  return v
 }
 // Persist only the original intention, before dispatch. Neither provider URLs,
@@ -19,10 +19,10 @@ export function readPaymentIntent(storage:Pick<Storage,'getItem'>):Intent|null{
 // already have frozen the cart: retry its original version and operation ID.
 export function createPaymentCommands(o:Options){
  const pending=()=>readPaymentIntent(o.storage)
- const submit=(cartID:string,currentVersion:string,providerID?:'pp_paypal_paypal')=>o.exclusive(async()=>{
+ const submit=(cartID:string,currentVersion:string,providerID?:PayPalProviderID)=>o.exclusive(async()=>{
   if(!valid(cartID,id)||!version(currentVersion)||[contextIntentKey,cartIntentKey,contactIntentKey,shippingIntentKey,promotionIntentKey,customerCartIntentKey].some(k=>o.storage.getItem(k)!==null))throw fail()
   let intent=pending()
-  if(providerID!==undefined&&providerID!=='pp_paypal_paypal'||intent&&(intent.cartID!==cartID||intent.providerID!==providerID))throw fail()
+  if(providerID!==undefined&&providerID!=='pp_paypal_paypal'&&providerID!=='pp_paypal_card_paypal_card'||intent&&(intent.cartID!==cartID||intent.providerID!==providerID))throw fail()
   const csrfToken=o.readCSRF();if(!valid(csrfToken,/^[0-9a-f]{64}$/))throw new CartError('csrf')
   if(!intent){
    intent={cartID,version:currentVersion,operationID:o.uuid(),...(providerID?{providerID}:{})};if(!valid(intent.operationID,uuid))throw fail()
