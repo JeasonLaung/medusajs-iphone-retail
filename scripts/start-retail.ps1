@@ -21,22 +21,27 @@ function Test-NodeVersion([string]$exe) {
   return ([int]$Matches[1] -gt 22 -or ([int]$Matches[1] -eq 22 -and ([int]$Matches[2] -gt 23 -or ([int]$Matches[2] -eq 23 -and [int]$Matches[3] -ge 4))))
 }
 
-function Stop-ProjectPorts {
-  # This worker has no TCP listener. Validate its exact executable before
-  # stopping the recorded process; never terminate an unrelated reused PID.
-  $workerPidPath = Join-Path $logRoot 'order-payment-worker.pid'
+function Stop-NativeWorker([string]$name) {
+  # Workers have no TCP listener. Validate the exact executable before stopping
+  # the recorded process; never terminate an unrelated reused PID.
+  $workerPidPath = Join-Path $logRoot "$name.pid"
   if (Test-Path -LiteralPath $workerPidPath) {
     $workerPIDValue = 0
-    if (-not [int]::TryParse(([IO.File]::ReadAllText($workerPidPath)).Trim(), [ref]$workerPIDValue) -or $workerPIDValue -le 4) { throw 'Invalid order-payment worker PID record.' }
+    if (-not [int]::TryParse(([IO.File]::ReadAllText($workerPidPath)).Trim(), [ref]$workerPIDValue) -or $workerPIDValue -le 4) { throw "Invalid $name PID record." }
     $previousWorker = Get-Process -Id $workerPIDValue -ErrorAction SilentlyContinue
     if ($previousWorker) {
-      $expectedExecutable = [IO.Path]::GetFullPath((Join-Path $logRoot 'order-payment-worker.exe'))
-      if (-not [string]::Equals($previousWorker.Path, $expectedExecutable, [StringComparison]::OrdinalIgnoreCase)) { throw 'Recorded order-payment worker PID belongs to another executable.' }
+      $expectedExecutable = [IO.Path]::GetFullPath((Join-Path $logRoot "$name.exe"))
+      if (-not [string]::Equals($previousWorker.Path, $expectedExecutable, [StringComparison]::OrdinalIgnoreCase)) { throw "Recorded $name PID belongs to another executable." }
       Stop-Process -Id $workerPIDValue -Force -ErrorAction Stop
       $previousWorker.WaitForExit()
     }
     Remove-Item -LiteralPath $workerPidPath
   }
+}
+
+function Stop-ProjectPorts {
+  Stop-NativeWorker 'order-payment-worker'
+  Stop-NativeWorker 'order-refund-worker'
   # Ask the legacy supervisors to stop first, so they cannot reclaim old ports.
   foreach ($app in @('backend', 'storefront')) {
     & $script:node (Join-Path $PSScriptRoot 'dev-service.cjs') $app stop
@@ -57,6 +62,18 @@ function Stop-ProjectPorts {
     Start-Sleep -Milliseconds 500
   }
   throw 'Previous project ports are still occupied.'
+}
+
+function Start-NativeWorker([string]$name,[string]$command) {
+  $workerBinary = Join-Path $logRoot "$name.exe"
+  & $script:go -C (Join-Path $retailRoot 'backend') build -o $workerBinary $command
+  if ($LASTEXITCODE -ne 0) { throw "$name compilation failed." }
+  $worker = Start-Process -FilePath $workerBinary -WorkingDirectory (Join-Path $retailRoot 'backend') -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $logRoot "$name.out.log") -RedirectStandardError (Join-Path $logRoot "$name.err.log")
+  Set-Content -LiteralPath (Join-Path $logRoot "$name.pid") -Value $worker.Id
+  Start-Sleep -Seconds 2
+  $worker.Refresh()
+  if ($worker.HasExited) { throw "$name exited. Inspect its native logs." }
+  Write-Host "Native $name ready."
 }
 
 function Start-LocalApp([string]$name,[string]$exe,[string[]]$arguments,[string]$directory,[string]$url) {
@@ -134,20 +151,19 @@ try {
     & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --order-payments
     if ($LASTEXITCODE -ne 0) { throw 'Local supplemental payment configuration failed.' }
   }
+  if ($env:LOCAL_PREVIEW_REFUNDS_ENABLED -eq 'true') {
+    & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --refunds
+    if ($LASTEXITCODE -ne 0) { throw 'Local refund configuration failed.' }
+  }
   $binary = Join-Path $logRoot 'retail-api.exe'
   & $go -C (Join-Path $retailRoot 'backend') build -o $binary ./cmd/api
   if ($LASTEXITCODE -ne 0) { throw 'Gin API compilation failed.' }
   Start-LocalApp 'api' $binary @() (Join-Path $retailRoot 'backend') 'http://127.0.0.1:9100/health'
   if ($env:LOCAL_PREVIEW_ORDER_PAYMENTS_ENABLED -eq 'true') {
-    $workerBinary = Join-Path $logRoot 'order-payment-worker.exe'
-    & $go -C (Join-Path $retailRoot 'backend') build -o $workerBinary ./cmd/process-order-payments
-    if ($LASTEXITCODE -ne 0) { throw 'Supplemental payment worker compilation failed.' }
-    $paymentWorker = Start-Process -FilePath $workerBinary -WorkingDirectory (Join-Path $retailRoot 'backend') -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $logRoot 'order-payment-worker.out.log') -RedirectStandardError (Join-Path $logRoot 'order-payment-worker.err.log')
-    Set-Content -LiteralPath (Join-Path $logRoot 'order-payment-worker.pid') -Value $paymentWorker.Id
-    Start-Sleep -Seconds 2
-    $paymentWorker.Refresh()
-    if ($paymentWorker.HasExited) { throw 'Supplemental payment worker exited. Inspect its native logs.' }
-    Write-Host 'Native supplemental payment worker ready.'
+    Start-NativeWorker 'order-payment-worker' './cmd/process-order-payments'
+  }
+  if ($env:LOCAL_PREVIEW_REFUNDS_ENABLED -eq 'true') {
+    Start-NativeWorker 'order-refund-worker' './cmd/process-order-refunds'
   }
   Start-LocalApp 'admin' $node @('node_modules/vite/bin/vite.js','--host','127.0.0.1','--port','9200','--strictPort') (Join-Path $retailRoot 'admin') 'http://127.0.0.1:9200'
   Read-Environment (Join-Path $retailRoot 'storefront\.env')

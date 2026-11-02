@@ -30,13 +30,14 @@ func main() {
 	warehouses := flag.Bool("warehouse-users", false, "Enable warehouse account management and scoped access in the dedicated local preview")
 	reviews := flag.Bool("reviews", false, "Enable product review reads, customer submissions and Admin moderation in the dedicated local preview")
 	orderPayments := flag.Bool("order-payments", false, "Enable existing customer supplemental payments in the dedicated local Mollie test preview")
+	refunds := flag.Bool("refunds", false, "Enable existing refund commands in the dedicated local Mollie test preview")
 	flag.Parse()
 	_ = godotenv.Load()
 	cfg, err := driver.ParseDSN(os.Getenv("MYSQL_DSN"))
 	if err != nil || os.Getenv("APP_ENV") != "development" || cfg.Net != "tcp" || cfg.Addr != "127.0.0.1:13307" || cfg.DBName != "eurorefurb_local_trial" {
 		log.Fatal("Requires development environment and the dedicated loopback Windows preview database")
 	}
-	if *payments || *contextPayment || *orderPayments {
+	if *payments || *contextPayment || *orderPayments || *refunds {
 		options, e := checkoutconfig.Load(os.Getenv)
 		if e != nil || options == nil || !strings.HasPrefix(os.Getenv("MOLLIE_API_KEY"), "test_") || os.Getenv("MOLLIE_LOCAL_TEST_WITHOUT_WEBHOOK") != "true" {
 			log.Fatal("Valid local Mollie test checkout configuration required")
@@ -53,6 +54,12 @@ func main() {
 				log.Fatal("Explicit local order payment and notification configuration required")
 			}
 		}
+		if *refunds {
+			options, err := checkoutconfig.Refunds(os.Getenv, options)
+			if err != nil || !options.Enabled {
+				log.Fatal("Explicit local refund configuration required")
+			}
+		}
 	}
 	db, err := platform.Open()
 	if err != nil {
@@ -61,6 +68,18 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *refunds {
+			var row struct{ Version int }
+			if e := tx.Raw("SELECT version FROM order_refund_runtime WHERE id=1 FOR UPDATE").Take(&row).Error; e != nil {
+				return e
+			}
+			if row.Version != 4 {
+				return gorm.ErrInvalidData
+			}
+			if e := tx.Table("order_refund_runtime").Where("id=1 AND version=4").Update("enabled", true).Error; e != nil {
+				return e
+			}
+		}
 		if *orderPayments {
 			for _, table := range []string{"order_payment_runtime", "mollie_notification_runtime"} {
 				var row struct{ Version int }
@@ -280,5 +299,8 @@ func main() {
 	}
 	if *orderPayments {
 		log.Print("Local customer supplemental payment and observation gates enabled; no instructions, payments or workers created")
+	}
+	if *refunds {
+		log.Print("Local refund command gate enabled; no instructions, refunds or workers created")
 	}
 }

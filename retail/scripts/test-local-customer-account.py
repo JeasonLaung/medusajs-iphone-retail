@@ -410,6 +410,56 @@ def verify_supplement_checkpoint(owner):
     print('Real supplement checkpoint and worker restart verified: ' + owner)
 
 
+def verify_completed_refund_checkpoint(owner):
+    values = config()
+    if not re.fullmatch(r'[0-9a-f]{12}', owner) or not values.get('MOLLIE_API_KEY', '').startswith('test_'):
+        raise RuntimeError('Owned local test refund checkpoint required')
+    logs = ROOT / 'logs/retail-native' / ('account-' + owner)
+    run = json.loads((logs / 'report.json').read_text())
+    order = run.get('order_id', '')
+    if not run.get('passed') or not run.get('refund_completed') or not run.get('real_mollie_sandbox_refund') or not re.fullmatch(r'order_[0-9a-f-]{36}', order):
+        raise RuntimeError('Completed real sandbox refund evidence required')
+    worker = logs / 'current-refund-worker.exe'
+    subprocess.run(['go', 'build', '-o', str(worker), './cmd/process-order-refunds'],
+                   cwd=ROOT / 'retail/backend', check=True, capture_output=True, timeout=120)
+    database = 'retail_account_' + secrets.token_hex(6)
+    snapshot = '/tmp/refund-verify-' + database + '.sql'
+    created = False
+    try:
+        docker('cp', str(logs / 'refund-final.sql'), CONTAINER + ':' + snapshot)
+        docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e',
+               'CREATE DATABASE ' + database + "; GRANT ALL ON " + database + ".* TO 'retail_local'@'%';")
+        created = True
+        docker('exec', CONTAINER, 'sh', '-c', 'mysql --defaults-extra-file=/tmp/local-root.cnf ' + database + ' < ' + snapshot)
+        facts = sql(database, "SELECT (SELECT COUNT(*) FROM order_refund_operations WHERE order_id='" + order + "' AND state='refunded' AND applied=TRUE AND amount='789.00'),(SELECT COUNT(*) FROM order_transactions WHERE order_id='" + order + "' AND amount=-789 AND reference='refund'),(SELECT COUNT(*) FROM customer_account_notices WHERE resource_id='" + order + "' AND kind='refund.created'),(SELECT COUNT(*) FROM after_sales_requests WHERE order_id='" + order + "' AND status='completed' AND type='return'),(SELECT COUNT(*) FROM customer_order_ownership WHERE order_id='" + order + "')").split('\t')
+        if facts != ['1'] * 5:
+            raise RuntimeError('Completed refund checkpoint facts differ')
+        tables = ['orders', 'order_items', 'payments', 'payment_captures', 'payment_refunds', 'order_transactions', 'order_refund_operations', 'inventory_levels', 'device_assignments', 'customer_account_notices']
+        def fingerprint():
+            return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', database, *tables)).hexdigest()
+        before = fingerprint()
+        env = dict(os.environ, **values)
+        env.update(MYSQL_DSN=values['MYSQL_DSN'].replace('/eurorefurb_local_trial?', '/' + database + '?'),
+                   STOREFRONT_ORIGIN='http://127.0.0.1:19300', MOLLIE_BACKEND_ORIGIN='http://127.0.0.1:19100',
+                   CHECKOUT_PAYMENT_ENABLED='true', ORDER_REFUNDS_ENABLED='true')
+        result = subprocess.run([str(worker), '--once'], cwd=ROOT / 'retail/backend', env=env,
+                                capture_output=True, timeout=90)
+        (logs / 'completed-refund-worker-restart.log').write_bytes(result.stdout + result.stderr)
+        if result.returncode or fingerprint() != before:
+            raise RuntimeError('Completed refund worker restart changed protected facts')
+        verification = {'passed': True, 'owner': owner, 'order_id': order,
+                        'worker_sha256': hashlib.sha256(worker.read_bytes()).hexdigest(),
+                        'five_unique_terminal_facts': facts, 'current_worker_restart_once': True,
+                        'protected_ten_tables_unchanged': True, 'business_commands_replayed': False}
+    finally:
+        if created:
+            docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'DROP DATABASE ' + database + "; REVOKE ALL ON " + database + ".* FROM 'retail_local'@'%';")
+        docker('exec', CONTAINER, 'rm', '-f', snapshot)
+    verification['verification_resources_removed'] = True
+    (logs / 'completed-refund-worker-verification.json').write_text(json.dumps(verification, indent=2))
+    print('Completed real refund and current worker restart verified: ' + owner)
+
+
 def main(language, scenario='account', resume=None):
     mail = scenario == 'mail'
     reviews = scenario == 'reviews'
@@ -880,6 +930,8 @@ if __name__ == '__main__':
         main('en', 'supplement', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-supplement='):
         verify_supplement_checkpoint(sys.argv[1].split('=', 1)[1])
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-completed-refund='):
+        verify_completed_refund_checkpoint(sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 3 and sys.argv[1] == '--supplement-tax':
         database = sys.argv[2]
         if not re.fullmatch(r'retail_account_[0-9a-f]{12}', database):

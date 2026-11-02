@@ -75,3 +75,9 @@ Mollie无法访问loopback webhook，本机test模式省略该参数，通过真
 本机忽略.env显式配置 `ORDER_PAYMENTS_ENABLED=true`、`MOLLIE_NOTIFICATIONS_ENABLED=true`、`LOCAL_PREVIEW_ORDER_PAYMENTS_ENABLED=true`。start.bat调用专用库限定的 `configure-local-preview --order-payments`，构建并启动一个原生补款worker；再次启动会核对精确可执行路径并停止记录的旧worker，防止没有端口的后台进程重复运行。示例默认false，退款/邮件不随此启动。worker PID与日志位于 `logs/retail-native/order-payment-worker.*`。
 
 `--supplement-from-checkpoint=OWNER` 从已付款原客户订单继续真实发货/换机/差额Mollie沙箱付款/替换机发货；会产生一笔新的沙箱补款。`--verify-supplement=OWNER` 只恢复该次保留检查点并运行完成状态worker一次验证无重复账务，不重跑交易。细节和限制见 `docs/migration/local-exchange-supplement-main.md`。
+
+## 本机退款worker
+
+本机忽略.env当前为 `LOCAL_PREVIEW_REFUNDS_ENABLED=true`、`ORDER_REFUNDS_ENABLED=true`，取代此前退款worker关闭的阶段状态。start.bat以Mollie测试配置显式启用v4退款gate并启动一个原生 `order-refund-worker.exe`；重复启动核实旧PID精确路径后先停再启。PID和日志为 `logs/retail-native/order-refund-worker.*`。此配置会执行今后正式提交的沙箱退款指令，不能将pending显示为成功；邮件worker不随之启动。
+
+`python retail/scripts/test-local-customer-account.py --verify-completed-refund=OWNER` 只恢复已完成真实退款检查点，用当前worker --once核对十表不重复写入，随后清理副本；不重建付款或退款。说明见 `docs/migration/local-refund-runtime.md`。

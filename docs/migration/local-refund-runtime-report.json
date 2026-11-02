@@ -1,0 +1,67 @@
+{
+  "task": "Explicit native Windows refund runtime and single worker lifecycle",
+  "date": "2026-11-02",
+  "passed": true,
+  "full_C01_C11_complete": false,
+  "completed_refund_checkpoint_verification": {
+    "passed": true,
+    "owner": "d9bf3fae2419",
+    "order_id": "order_755fe4e6-906f-434c-8dfc-450105a71286",
+    "worker_sha256": "40fdfa6bcb52eb6fbf4d79dfac3d9b12ff1925650941fb14fea3bb48816fe20f",
+    "five_unique_terminal_facts": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "current_worker_restart_once": true,
+    "protected_ten_tables_unchanged": true,
+    "business_commands_replayed": false,
+    "verification_resources_removed": true
+  },
+  "configuration_rejections": {
+    "production": true,
+    "live_key": true,
+    "refund_disabled": true,
+    "wrong_database": true
+  },
+  "new_refund_created": false,
+  "completed_refund_reissued": false,
+  "two_repeated_starts": {
+    "old_refund_and_payment_pids_exited": true,
+    "refund_workers_alive": 1,
+    "supplement_workers_alive": 1
+  },
+  "checks": [
+    "Go checkoutconfig/refunds tests and vet",
+    "Configure local preview/refund worker compile and vet",
+    "PowerShell parse",
+    "Python compile",
+    "Completed real sandbox refund snapshot/current worker --once",
+    "Native start and repeated-start lifecycle",
+    "Admin actual challenge login and read-only after-sales HTTP200"
+  ],
+  "absent_request_refund_read": {
+    "http_status": 409,
+    "error_code": "refunds.unavailable",
+    "existing_behavior_preserved": true
+  },
+  "main_services": {
+    "http://127.0.0.1:9100/health": 200,
+    "http://127.0.0.1:9200/": 200,
+    "http://127.0.0.1:9300/gb-en/account/orders": 200,
+    "http://127.0.0.1:9300/gb-en/store": 200
+  },
+  "main_database_after": {
+    "refund_runtime_version": 4,
+    "refund_runtime_enabled": true,
+    "refund_instruction_count": 0,
+    "supplement_instruction_count": 0,
+    "customer_order_ownership_count": 0,
+    "stocked_quantity": "50",
+    "reserved_quantity": "1"
+  },
+  "temporary_test_ports_closed": true,
+  "recent_service_logs_without_unresolved_outage": true
+}
