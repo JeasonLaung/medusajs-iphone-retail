@@ -67,6 +67,20 @@ def main():
         if any(sha(ROOT / 'retail/storefront' / n) != h for n, h in storefront_files.items()):
             raise RuntimeError('Storefront source changed during copy')
         (storefront / 'node_modules').symlink_to(ROOT / 'retail/storefront/node_modules', target_is_directory=True)
+    elif args.browser:
+        # Admin packages the migrated public catalog images and their exact URL
+        # allowlist. Freeze these dependencies even without an Astro rehearsal.
+        for relative in ['src/lib/public-image-url.ts', 'public/swappie']:
+            source = ROOT / 'retail/storefront' / relative
+            target = storefront / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if source.is_dir():
+                shutil.copytree(source, target)
+            else:
+                shutil.copy2(source, target)
+        storefront_files = {str(p.relative_to(storefront)): sha(p) for p in storefront.rglob('*') if p.is_file()}
+        if any(sha(ROOT / 'retail/storefront' / n) != h for n, h in storefront_files.items()):
+            raise RuntimeError('Catalog image dependencies changed during copy')
     def frozen():
         actual = {str(p.relative_to(backend)): sha(p) for p in backend.rglob('*') if p.is_file()}
         if actual != files:

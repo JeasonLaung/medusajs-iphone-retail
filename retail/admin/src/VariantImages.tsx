@@ -1,3 +1,4 @@
+import {catalogImageURL} from './catalog-image-url'
 import {useEffect,useRef,useState} from 'react'
 import {Alert,Button,Checkbox,Drawer,Empty,Image,Radio,Space,Spin,Typography} from 'antd'
 import {APIError,readVariantImages,saveVariantImages} from './api'
@@ -18,7 +19,7 @@ export default function VariantImages({productID,variant,copy,onClose,onSaved,on
    <Radio.Group value={thumb} disabled={disabled} onChange={e=>setThumb(e.target.value)} className="full-width"><Space direction="vertical" size={16} className="full-width">
     <Radio value="none">{text.none}</Radio>{context.thumbnail&&<Radio value="keep">{text.keep}</Radio>}
     {context.images.length===0&&<Empty description={copy.noImages}/>}
-    {context.images.map((image,i)=><Space key={image.id} wrap><Image src={image.url} width={88} height={88} style={{objectFit:'contain'}}/><Checkbox disabled={disabled} checked={selected.includes(image.id)} onChange={e=>{setSelected(ids=>e.target.checked?[...ids,image.id]:ids.filter(id=>id!==image.id));if(!e.target.checked&&thumb===image.id)setThumb('none')}}>{text.image} {i+1}</Checkbox><Radio value={image.id} disabled={disabled||!selected.includes(image.id)}>{text.thumbnail} {i+1}</Radio></Space>)}
+    {context.images.map((image,i)=><Space key={image.id} wrap><Image src={catalogImageURL(image.url)} width={88} height={88} style={{objectFit:'contain'}}/><Checkbox disabled={disabled} checked={selected.includes(image.id)} onChange={e=>{setSelected(ids=>e.target.checked?[...ids,image.id]:ids.filter(id=>id!==image.id));if(!e.target.checked&&thumb===image.id)setThumb('none')}}>{text.image} {i+1}</Checkbox><Radio value={image.id} disabled={disabled||!selected.includes(image.id)}>{text.thumbnail} {i+1}</Radio></Space>)}
    </Space></Radio.Group>
    {!attempt&&context.enabled&&<Button type="primary" disabled={disabled} loading={saving} onClick={()=>void save({operation_id:crypto.randomUUID(),expected_revision:context.revision,image_ids:selected,thumbnail_image_id:thumb!=='none'&&thumb!=='keep'?thumb:null,keep_thumbnail:thumb==='keep'})}>{copy.save}</Button>}
    {attempt&&error==='uncertain'&&<Button type="primary" loading={saving} onClick={()=>void save(attempt)}>{copy.retrySave}</Button>}

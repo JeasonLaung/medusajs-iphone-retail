@@ -1,0 +1,195 @@
+{
+  "passed": true,
+  "read_only": true,
+  "business_writes": 0,
+  "browser_errors": 0,
+  "product_id": "prod_01M4QRKR57T5S95XA5QDPHWN9E",
+  "variant_id": "variant_01M4QRKR735DVY34JY8X2DC05E",
+  "assets": [
+    {
+      "path": "/swappie/swappie-iphone-11-pro-gold.png",
+      "sha256": "fa7ce751d6dccefb8ebaba2ae6a5c85a15a285986c7a131bd3581eb63170894b",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-11-purple.png",
+      "sha256": "5dad78829e1c55015f43e2cc849faf7b85062bcc5e0b00ec3489cfcc2d78d577",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-12-black.png",
+      "sha256": "3d43a478e79c7608539c70b467da842475abf57b96910f2b013f46b1c6c82e3b",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-12-mini-red.png",
+      "sha256": "0685ed9c4a276dc3cb3315a5ba725d87cbef56b8a7951105fec31b6afefc35a7",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-12-pro-graphite.png",
+      "sha256": "c2c4df6ad20c72cdb49c55fe9fead4f4527806f33a23de10949557a8d008f5ab",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-12-pro-max-graphite.png",
+      "sha256": "c2c4df6ad20c72cdb49c55fe9fead4f4527806f33a23de10949557a8d008f5ab",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-13-midnight.png",
+      "sha256": "91d18f8cd46ead9634136ed3dcebf0ec276e13468fb2a75d17b9d1902f844692",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-13-mini-green.png",
+      "sha256": "be652be590ef31b6692d02c8d44296ae6785aae9a91f610bcbc35a1a47e2eee6",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-13-pro-gold.png",
+      "sha256": "b01aadf4a0ac7dfbbbe31a281361995ca545fb89763c39261230c2b75ca1fbad",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-13-pro-max-sierra-blue.png",
+      "sha256": "f93bc4a5161447776929631e820d4b3a07d4197c8da0f912271fdeace581baea",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-14-midnight.png",
+      "sha256": "9b0b006c165faed9dccbf3f2d24fd3ff33f8d8a0d0349e84d8e1085323d21247",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-14-plus-midnight.png",
+      "sha256": "9b0b006c165faed9dccbf3f2d24fd3ff33f8d8a0d0349e84d8e1085323d21247",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-14-pro-gold.png",
+      "sha256": "87ce7eb6521d41357133153f9d50139d740fb2660f09fc3d767573df1028b3c6",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-14-pro-max-deep-purple.png",
+      "sha256": "6f4605db736a17b7b2e4c14eeada40eb06d04f02ad59e97d00a20e86e5c743d0",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-15-black.png",
+      "sha256": "e0ef6db140afd656d31af8d722e0e75e7f4a6b3e4b816e8edd52aded23bb0d67",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-15-plus-blue.png",
+      "sha256": "f23a0b7e2c3cd6103f6d1c2f338cc477ae8b8b27c9a97981d41de3514a363c4a",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-15-pro-max-natural-titanium.png",
+      "sha256": "2babd737448fc42f48578aaf599dfb0e8eb90930ebf3fbd0d612061b4de799e3",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-15-pro-natural-titanium.png",
+      "sha256": "2babd737448fc42f48578aaf599dfb0e8eb90930ebf3fbd0d612061b4de799e3",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-16-black.png",
+      "sha256": "3c085999ee1cb319acd25801b25a1706e1831272856150795743db498ae53843",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-16-plus-ultramarine.png",
+      "sha256": "4e5c491fbd894a4cdd3bbc9882a91f693cd8aa9211b364187a25e321b3c39e7a",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-16-pro-black-titanium.png",
+      "sha256": "4101998f988a733607b5de92ed0ea5c68fb1be835ca42ea4a42e06d075846d5e",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-16-pro-max-desert-titanium.png",
+      "sha256": "817c0f5a279d7642fad116b99d43cc73a3924c4e49d5184aa30fc98fac449ac4",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-16e-black.png",
+      "sha256": "70eecf5cc6e65fc6b81af438cb92d3705873d49520df7086fa87aa5c01da1da7",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-17-black.png",
+      "sha256": "ed45bd7a7f25250a6f6a0b5ae567b329768be21ce0fb46405ae223abae3a75fb",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-17-pro-deep-blue.png",
+      "sha256": "ceaf2ab4fcb38f7803463d858fbe703519d9a306b592e20acd77d9caf7c3273c",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-17-pro-max-deep-blue.png",
+      "sha256": "ceaf2ab4fcb38f7803463d858fbe703519d9a306b592e20acd77d9caf7c3273c",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-17e-soft-pink.png",
+      "sha256": "0e7a9d3e3831d0ef5fd2c442dc5af039639d8e495dbdb04fb063063e068ee726",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-air-space-black.png",
+      "sha256": "8fb3fea31aa61033003b6266735abcdd3fde81f4983b0e5b24c821c21e555722",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-se-2020-black.png",
+      "sha256": "977243575c8b6e3c7dca1c0bb169f944b4f39a7fd7f1267a07e18f1724971259",
+      "admin_and_store_identical": true
+    },
+    {
+      "path": "/swappie/swappie-iphone-se-2022-midnight.png",
+      "sha256": "77d4610b63681fb7e34807b44c042153797978f386163f7c1b50d7678eaa558e",
+      "admin_and_store_identical": true
+    }
+  ],
+  "unrelated_urls_preserved": 8,
+  "checks": [
+    {
+      "language": "en",
+      "width": 1440,
+      "editors_enabled": true,
+      "no_horizontal_overflow": true,
+      "catalog_and_editor_images_decoded": true
+    },
+    {
+      "language": "zh",
+      "width": 390,
+      "editors_enabled": true,
+      "no_horizontal_overflow": true,
+      "catalog_and_editor_images_decoded": true
+    }
+  ],
+  "release_bundle_images_identical": 30,
+  "release_unique_png_files": 26,
+  "verified_at": "2026-11-02T18:03:29.630976+00:00",
+  "services": {
+    "http://127.0.0.1:9100/health": 200,
+    "http://127.0.0.1:9200/account": 200,
+    "http://127.0.0.1:9300/gb-en/store": 200,
+    "http://127.0.0.1:9300/gb-en/products/swappie-iphone-17e": 200
+  },
+  "source_sha256": {
+    "retail/admin/src/catalog-image-url.ts": "9d541aad49d139c08e13022b1b250ff0523901d939ee1e8dafb84e1ba95c0e8c",
+    "retail/admin/src/ProductDetail.tsx": "c561416c19e813965eb28c0638a80466d023e714fa9df716b848dc0825ea9fb3",
+    "retail/admin/src/ProductImages.tsx": "8245b86d86b7cb80a1d96ef3f1fb5c0a69a57c6d3692c24e2749446a401fef49",
+    "retail/admin/src/VariantImages.tsx": "fd849e37f952657be555ca4b3f36d158d78abf3e29e1c09f09404e28184f734e",
+    "retail/admin/tests/local-catalog-read.live.mjs": "58a9e631318f867025d65945904cb9a46b46019da7b7944620ca37ea7a35c1cb",
+    "retail/scripts/test-option-definitions-local.py": "dd5dcfd30ebb30c8678d524963ad2d75d3d6212f521bda13456e60ecb5b17cec",
+    "retail/storefront/src/lib/public-image-url.ts": "089423188d63e0441f0b9f88b8bdd36c28232836ec67d055b18db46b6c2f6c2d"
+  }
+}

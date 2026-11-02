@@ -16,9 +16,10 @@ import ProductImages from './ProductImages'
 import VariantImages from './VariantImages'
 import ProductOptions from './ProductOptions'
 import VariantEdit from './VariantEdit'
+import {catalogImageURL} from './catalog-image-url'
 
 // Render text from the database as text; do not inject description HTML.
-function imageURL(value:string){try{const url=new URL(value,location.origin);return ['http:','https:'].includes(url.protocol)&&!url.username&&!url.password?url.href:undefined}catch{return undefined}}
+function imageURL(value:string){try{const url=new URL(catalogImageURL(value),location.origin);return ['http:','https:'].includes(url.protocol)&&!url.username&&!url.password?url.href:undefined}catch{return undefined}}
 function CatalogImage({url,alt,size,copy}:{url:string;alt:string;size:number;copy:Copy}) {
   const [failed,setFailed]=useState(false)
   const src=imageURL(url)
