@@ -30,6 +30,10 @@ type paypalCheckoutProvider struct {
 	orderID        string
 }
 
+func (p *paypalCheckoutProvider) SDKConfiguration(currency string) (payments.PayPalSDKConfig, error) {
+	return payments.PayPalSDKConfig{ClientID: "artificial_client", Currency: strings.ToUpper(currency), Intent: strings.ToLower(p.SettlementIntent()), Environment: "sandbox"}, nil
+}
+
 func (p *paypalCheckoutProvider) SettlementIntent() string {
 	if p.intent == "" {
 		return "CAPTURE"

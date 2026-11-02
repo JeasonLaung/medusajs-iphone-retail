@@ -39,8 +39,10 @@ export type PromotionInput={operationID:string;version:string;codes:string[]}
 export function validPromotionCode(value:unknown):value is string{
  return typeof value==='string'&&value.length>0&&new TextEncoder().encode(value).length<=191&&!/[\x00-\x1f\x7f\uD800-\uDFFF]/u.test(value)
 }
-export type CheckoutPaymentOptions={cart_id:string;version:string;providers:{id:'pp_mollie-hosted-checkout_mollie'}[];attempt_started:boolean}
-export type PaymentAttempt={cart_id:string;version:string;operation_id:string;state:'ready'|'processing'|'requires_review';checkout_url:string|null}
+export type PayPalSDKConfig={client_id:string;currency:string;intent:'capture'|'authorize';environment:'sandbox'|'live'}
+export type PaymentProvider={id:'pp_mollie-hosted-checkout_mollie'|'pp_paypal_paypal';paypal?:PayPalSDKConfig}
+export type CheckoutPaymentOptions={cart_id:string;version:string;providers:PaymentProvider[];attempt_started:boolean;active_provider?:PaymentProvider}
+export type PaymentAttempt={cart_id:string;version:string;operation_id:string;state:'ready'|'sdk_ready'|'processing'|'requires_review';checkout_url:string|null;provider_id?:'pp_paypal_paypal';provider_order_id?:string}
 export type CartCompletion={cart_id:string;order_id:string;version:string}
 export type PaymentStatus={cart_id:string;version:string;state:'pending'|'authorized'|'paid_pending_order'|'failed'|'requires_review'}
 const contactLimits={first_name:160,last_name:160,company:160,address_1:512,address_2:512,city:160,country_code:2,province:191,postal_code:64,phone:64} as const
@@ -286,20 +288,27 @@ export class CartClient {
   let response:{status:number;value:unknown}
   try{response=await this.request(`/api/store/carts/${encodeURIComponent(id)}/payment-options`,'GET')}
   catch(error){if(error instanceof CartError&&(error.status===401||error.status===404))return null;throw error}
-  const {status,value}=response,v=record(value);keys(v,['cart_id','version','providers','attempt_started'])
-  if(status!==200||v.cart_id!==id||!matches(v.version,versionPattern)||BigInt(v.version)>18446744073709551615n||typeof v.attempt_started!=='boolean'||!Array.isArray(v.providers)||v.providers.length>1||v.attempt_started&&v.providers.length!==0)throw protocol()
-  for(const item of v.providers){const p=record(item);keys(p,['id']);if(p.id!=='pp_mollie-hosted-checkout_mollie')throw protocol()}
+  const {status,value}=response,v=record(value);keys(v,['cart_id','version','providers','attempt_started'],['active_provider'])
+  if(status!==200||v.cart_id!==id||!matches(v.version,versionPattern)||BigInt(v.version)>18446744073709551615n||typeof v.attempt_started!=='boolean'||!Array.isArray(v.providers)||v.providers.length>2||v.attempt_started&&v.providers.length!==0||!v.attempt_started&&v.active_provider!==undefined)throw protocol()
+  const seen=new Set<string>()
+  const provider=(item:unknown)=>{const p=record(item);keys(p,['id'],['paypal']);if(p.id!=='pp_mollie-hosted-checkout_mollie'&&p.id!=='pp_paypal_paypal'||seen.has(String(p.id)))throw protocol();seen.add(String(p.id));if(p.id==='pp_paypal_paypal'){const sdk=record(p.paypal);keys(sdk,['client_id','currency','intent','environment']);if(!matches(sdk.client_id,/^[A-Za-z0-9_-]{1,256}$/)||!matches(sdk.currency,/^[A-Z]{3}$/)||!['capture','authorize'].includes(String(sdk.intent))||!['sandbox','live'].includes(String(sdk.environment)))throw protocol()}else if(p.paypal!==undefined)throw protocol()}
+  for(const item of v.providers)provider(item)
+  if(v.active_provider!==undefined){provider(v.active_provider);if(record(v.active_provider).id!=='pp_paypal_paypal')throw protocol()}
   return v as CheckoutPaymentOptions
  }
 
- async startPayment(id:string,input:{operationID:string;version:string},authorization:{csrfToken:string}):Promise<PaymentAttempt>{
+ async startPayment(id:string,input:{operationID:string;version:string;providerID?:'pp_paypal_paypal'},authorization:{csrfToken:string}):Promise<PaymentAttempt>{
   const {operationID,version}=input,{csrfToken}=authorization
   if(!matches(id,idPattern)||!matches(operationID,uuidPattern)||!matches(version,versionPattern)||BigInt(version)>=18446744073709551615n||!matches(csrfToken,tokenPattern))throw new CartError('input')
-  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/payment-attempts`,'POST',JSON.stringify({version}),{'X-CSRF-Token':csrfToken,'Idempotency-Key':operationID},65536,'item')
+  if(input.providerID!==undefined&&input.providerID!=='pp_paypal_paypal')throw new CartError('input')
+  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/payment-attempts`,'POST',JSON.stringify({version,...(input.providerID?{provider_id:input.providerID}:{})}),{'X-CSRF-Token':csrfToken,'Idempotency-Key':operationID},65536,'item')
   try{
-   const v=record(value);keys(v,['cart_id','version','operation_id','state','checkout_url'])
-   if(status!==200||v.cart_id!==id||v.operation_id!==operationID||!matches(v.version,versionPattern)||BigInt(v.version)<BigInt(version)+1n||BigInt(v.version)>18446744073709551615n||!['ready','processing','requires_review'].includes(String(v.state)))throw protocol()
+   const v=record(value);keys(v,['cart_id','version','operation_id','state','checkout_url'],['provider_id','provider_order_id'])
+   if(status!==200||v.cart_id!==id||v.operation_id!==operationID||!matches(v.version,versionPattern)||BigInt(v.version)<BigInt(version)+1n||BigInt(v.version)>18446744073709551615n||!['ready','sdk_ready','processing','requires_review'].includes(String(v.state)))throw protocol()
+   if(v.state==='sdk_ready'){if(input.providerID!=='pp_paypal_paypal'||v.provider_id!==input.providerID||!matches(v.provider_order_id,/^[A-Z0-9]{17}$/)||v.checkout_url!==null)throw protocol()}
+   else if(v.provider_id!==undefined||v.provider_order_id!==undefined)throw protocol()
    if(v.state==='ready'){
+    if(input.providerID!==undefined)throw protocol()
     if(typeof v.checkout_url!=='string'||v.checkout_url.length>8192||/[\x00-\x20\x7f\\]/.test(v.checkout_url))throw protocol()
     const url=new URL(v.checkout_url)
     if(url.protocol!=='https:'||url.username||url.password||url.hostname!=='mollie.com'&&!url.hostname.endsWith('.mollie.com')||url.port!==''&&url.port!=='443')throw protocol()
@@ -331,9 +340,15 @@ export class CartClient {
  }
 
  async paymentStatus(id:string,authorization:{csrfToken:string}):Promise<PaymentStatus>{
+  return this.readPaymentStatus(id,authorization,false)
+ }
+ async settlePayPal(id:string,authorization:{csrfToken:string}):Promise<PaymentStatus>{
+  return this.readPaymentStatus(id,authorization,true)
+ }
+ private async readPaymentStatus(id:string,authorization:{csrfToken:string},settle:boolean):Promise<PaymentStatus>{
   const {csrfToken}=authorization
   if(!matches(id,idPattern)||!matches(csrfToken,tokenPattern))throw new CartError('input')
-  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/payment-status`,'POST','{}',{'X-CSRF-Token':csrfToken})
+  const {status,value}=await this.request(`/api/store/carts/${encodeURIComponent(id)}/${settle?'paypal-settlement':'payment-status'}`,'POST','{}',{'X-CSRF-Token':csrfToken})
   const v=record(value);keys(v,['cart_id','version','state'])
   if(status!==200||v.cart_id!==id||!matches(v.version,versionPattern)||BigInt(v.version)>18446744073709551615n||!['pending','authorized','paid_pending_order','failed','requires_review'].includes(String(v.state)))throw protocol()
   return {cart_id:id,version:v.version,state:v.state as PaymentStatus['state']}

@@ -78,7 +78,19 @@ func Load(env func(string) string) (*cart.InitialPaymentOptions, error) {
 	if err != nil {
 		return nil, ErrInvalid
 	}
-	adapters, err := payments.NewCreateAdapters(map[string]payments.CreateSessionAdapter{provider: adapter})
+	entries := map[string]payments.CreateSessionAdapter{provider: adapter}
+	switch env("PAYPAL_WALLET_ENABLED") {
+	case "", "false":
+	case "true":
+		paypal, e := payments.NewPayPalCreateAdapter(payments.PayPalCreateConfig{ProviderID: "pp_paypal_paypal", ClientID: env("PAYPAL_CLIENT_ID"), ClientSecret: env("PAYPAL_CLIENT_SECRET"), MerchantID: env("PAYPAL_MERCHANT_ID"), Environment: env("PAYPAL_ENVIRONMENT"), Intent: env("PAYPAL_INTENT"), ReturnURL: origin + "/api/paypal-return", CancelURL: origin + "/api/paypal-return"})
+		if e != nil {
+			return nil, ErrInvalid
+		}
+		entries["pp_paypal_paypal"] = paypal
+	default:
+		return nil, ErrInvalid
+	}
+	adapters, err := payments.NewCreateAdapters(entries)
 	if err != nil {
 		return nil, ErrInvalid
 	}

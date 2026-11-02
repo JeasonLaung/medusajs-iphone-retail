@@ -3,20 +3,24 @@ package cart
 import (
 	"context"
 	"database/sql"
+	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/sessionstore"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
+	"strconv"
 )
 
 type PaymentProvider struct {
-	ID string `json:"id"`
+	ID     string                    `json:"id"`
+	PayPal *payments.PayPalSDKConfig `json:"paypal,omitempty"`
 }
 type PaymentOptions struct {
 	CartID         string            `json:"cart_id"`
 	Version        string            `json:"version"`
 	Providers      []PaymentProvider `json:"providers"`
 	AttemptStarted bool              `json:"attempt_started"`
+	ActiveProvider *PaymentProvider  `json:"active_provider,omitempty"`
 }
 
 // A private projection of configured code AND current region bindings. An
@@ -50,19 +54,74 @@ func ReadPaymentOptions(ctx context.Context, db *gorm.DB, store string, ref sess
 		}
 		out = PaymentOptions{CartID: current.ID, Version: current.Version, Providers: []PaymentProvider{}, AttemptStarted: owner.CheckoutAttemptID != nil}
 		if out.AttemptStarted {
+			var row initialAttempt
+			if tx.Table("cart_checkout_attempts").Where("cart_id=? AND operation_id=?", ref.CartID, *owner.CheckoutAttemptID).Clauses(clause.Locking{Strength: "SHARE"}).Take(&row).Error != nil {
+				return ErrStorage
+			}
+			in := InitialPaymentCommand{OperationID: *owner.CheckoutAttemptID, Version: strconv.FormatUint(row.InputVersion, 10)}
+			request, e := payments.ReadSessionRequest(ctx, tx, initialKey(ref, in, row), o.Ring)
+			if e != nil {
+				return e
+			}
+			defer clear(request.Data)
+			defer clear(request.Context)
+			if request.ProviderID == "pp_paypal_paypal" {
+				p, e := sdkPaymentProvider(o, request.ProviderID, request.Currency)
+				if e != nil {
+					return e
+				}
+				out.ActiveProvider = &p
+			}
 			return nil
 		}
-		if err = initialProvider(tx, current); err == ErrConfiguration {
-			return nil
-		} else if err != nil {
-			return err
+		for _, id := range []string{hostedMollie, "pp_paypal_paypal"} {
+			if _, e := o.Adapters.Lookup(id); e != nil {
+				continue
+			}
+			if e := initialProviderID(tx, current, id); e == ErrConfiguration {
+				continue
+			} else if e != nil {
+				return e
+			}
+			p, e := sdkPaymentProvider(o, id, current.CurrencyCode)
+			if e != nil {
+				if id == "pp_paypal_paypal" {
+					continue // Unsupported wallet currency must not hide hosted Mollie.
+				}
+				return e
+			}
+			out.Providers = append(out.Providers, p)
 		}
-		out.Providers = append(out.Providers, PaymentProvider{ID: hostedMollie})
 		return nil
-	}, &sql.TxOptions{Isolation: sql.LevelReadCommitted, ReadOnly: true})
+		// Protected request reads take a current receipt lock. MySQL rejects that
+		// lock in READ ONLY transactions; this handler still performs no mutations.
+	}, &sql.TxOptions{Isolation: sql.LevelReadCommitted})
 	if err != nil {
 		return PaymentOptions{}, sanitize(err)
 	}
 	return out, nil
+}
+
+func sdkPaymentProvider(o InitialPaymentOptions, id, currency string) (PaymentProvider, error) {
+	p := PaymentProvider{ID: id}
+	if id == hostedMollie {
+		return p, nil
+	}
+	a, e := o.Adapters.Lookup(id)
+	if e != nil {
+		return p, ErrConfiguration
+	}
+	sdk, ok := a.(interface {
+		SDKConfiguration(string) (payments.PayPalSDKConfig, error)
+	})
+	if !ok {
+		return p, ErrConfiguration
+	}
+	c, e := sdk.SDKConfiguration(currency)
+	if e != nil {
+		return p, ErrConfiguration
+	}
+	p.PayPal = &c
+	return p, nil
 }
 func (h *HTTPHandler) PaymentOptions(c *gin.Context) { h.detail(c, "payment-options", false) }

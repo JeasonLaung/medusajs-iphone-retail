@@ -81,6 +81,7 @@ export function paymentTitle(id: string, locale: string, fallback?: string) {
   const copy = getCheckoutCopy(locale)
   if (id === "pp_mollie-hosted-checkout_mollie") return "Mollie"
   if (id === "pp_system_default") return copy.manualPayment
+  if (id === "pp_paypal_paypal") return "PayPal"
   if (id === "pp_paypal_card_paypal_card") return copy.cardPaypal
   if (id === "pp_mollie-card_mollie") return copy.cardMollie
   if (id === "pp_mollie-paypal_mollie") return copy.paypalMollie
