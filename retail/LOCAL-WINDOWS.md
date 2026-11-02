@@ -63,3 +63,7 @@ Mollie无法访问loopback webhook，本机test模式省略该参数，通过真
 `LOCAL_PREVIEW_REVIEWS_ENABLED=true` 由start.bat调用 `configure-local-preview --reviews`，限定既定development专用库及版本1，启用评价读取/客户提交/后台审核，不创建或批准任何评价；SQL即时生效。示例默认false。
 
 `python retail/scripts/test-local-customer-account.py --reviews-from-checkpoint=OWNER` 恢复已有真实已付款订单的专有SQL检查点，实际验证本人订单提交、重复拒绝、后台审核和中英公开展示，副本结账入口关闭，不再付款。检查前后九张交易/库存/价格保护表一致，导出指纹排除全实例GTID元信息。见 `docs/migration/local-product-reviews-main.md`。
+
+## 已付款检查点继续仓库发货
+
+`python retail/scripts/test-local-customer-account.py --warehouse-from-checkpoint=OWNER` 从已真实付款、原客户归属、尚未配货的检查点继续管理员装包与仓库员工调整/释放/发货、客户物流和通知。付款创建关闭，不再调用渠道，也不重新建立订单归属。预留按源副本的实际基数净减1，保留其他订单占用。`--verify-paid-warehouse=OWNER` 对该次执行保留的前后SQL独立核对，不重放业务命令。见 `docs/migration/local-paid-warehouse-main.md`。

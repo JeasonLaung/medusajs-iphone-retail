@@ -18,7 +18,7 @@ assert.match(owner??'',/^[0-9a-f]{12}$/)
 const output=pathToFileURL(logs+'/'),errors=[],returning=process.env.ACCOUNT_TEST_SCENARIO==='buyback-return',shop=origin,segment='gb-en',index=1
 const exchange=process.env.ACCOUNT_TEST_SCENARIO==='exchange'
 const refund=process.env.ACCOUNT_TEST_SCENARIO==='refund'
-const warehouse=process.env.ACCOUNT_TEST_SCENARIO==='warehouse'
+const warehouse=['warehouse','paid-warehouse'].includes(process.env.ACCOUNT_TEST_SCENARIO)
 const resumePaid=process.env.ACCOUNT_TEST_RESUME_PAID==='true'
 const existingRefund=process.env.ACCOUNT_TEST_REFUND_EXISTING==='true'
 let refundCompleted=false,refundState
@@ -62,7 +62,7 @@ try{
 
  const orderID=resumePaid?JSON.parse(readFileSync(resolve(logs,'refund-new-paid-order.json'),'utf8')).order_id:refund?await prepareLocalRefundPayment({page,context,origin,email,logs}):'order_8bffc6dc-112e-4ed5-8a32-57421bc2ae4d',sn='ISOLATED-REPAIR-001',tracking='ISOLATED-REPAIR-OUTBOUND-001'
  if(resumePaid)assert.equal((await context.request.get(origin+'/api/store/customer/orders/'+orderID)).status(),200)
- if(!refund)execFileSync(process.env.ACCOUNT_TEST_PYTHON,[resolve('../scripts/test-local-customer-account.py'),'--prepare-repair-owner',process.env.ACCOUNT_TEST_DB,email],{stdio:'pipe'})
+ if(!refund&&!resumePaid)execFileSync(process.env.ACCOUNT_TEST_PYTHON,[resolve('../scripts/test-local-customer-account.py'),'--prepare-repair-owner',process.env.ACCOUNT_TEST_DB,email],{stdio:'pipe'})
  const credentials=readFileSync(resolve('../../.private-files/local/admin-credentials.txt'),'utf8')
  const credential=name=>credentials.split(/\r?\n/).find(x=>new RegExp('^'+name+'\\s*[:=]','i').test(x))?.replace(/^[^:=]+[:=]\s*/,'').trim()
  const admin=await context.newPage();admin.on('pageerror',e=>errors.push(e.message));await admin.setViewportSize({width:1440,height:1000})
@@ -86,7 +86,7 @@ try{
  await page.goto(origin+'/gb-en/account/orders/details/'+orderID)
  await verifyCheckoutShipment({page,context,shop:origin,orderID,result,expect})
  assert.deepEqual(errors,[])
- writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:'warehouse',order_id:orderID,explicit_fixture_ownership:true,new_paid_order_attachment_tested:false,...result,customer_tracking_and_notice:true,browser_errors:0,real_mail_transfer_carrier:false},null,2))
+ writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:resumePaid?'paid-warehouse':'warehouse',order_id:orderID,explicit_fixture_ownership:!resumePaid,new_paid_order_attachment_tested:resumePaid,paid_checkpoint_continuation:resumePaid,...result,customer_tracking_and_notice:true,browser_errors:0,real_mail_transfer_carrier:false},null,2))
  }else{
  await admin.getByRole('button',{name:'Create device parcel',exact:true}).click()
  dialog=admin.getByRole('dialog');await dialog.getByRole('row').filter({hasText:sn}).getByRole('checkbox').check()

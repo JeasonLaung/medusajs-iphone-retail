@@ -12,6 +12,10 @@ unfinished, never posted. --resume-refund=OWNER restores an ignored checkpoint
 and reuses the same paid order and durable refund instruction.
 --scenario=warehouse uses the copied paid order and explicit fixture ownership
 to verify a new scoped employee's allocation/release/shipment and customer view.
+--warehouse-from-checkpoint=OWNER instead continues an actual paid customer's
+original order and ownership, with payment creation disabled. The independent
+--verify-paid-warehouse=OWNER checks retained before/after SQL without replaying
+checkout, payment or warehouse commands.
 --scenario=mail uses actual Admin mailbox commands and production dispatchers
 in separate test processes, replacing only the external Resend transport.
 --scenario=payment-context continues one real sandbox checkout through two
@@ -29,6 +33,7 @@ endpoint or marked verified with SQL.
 """
 import json
 import hashlib
+from decimal import Decimal
 import os
 from pathlib import Path
 import re
@@ -293,15 +298,71 @@ def verify_payment_context_checkpoint(owner):
         docker('exec', CONTAINER, 'rm', '-f', snapshot)
 
 
+def warehouse_payment_fingerprint(database):
+    immutable = ['payments', 'payment_captures', 'order_transactions', 'cart_completion_receipts',
+                 'customer_order_ownership', 'cart_checkout_attempts', 'payment_effect_journal']
+    digest = hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf',
+        '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', database, *immutable))
+    # Fulfillment legitimately changes these quantities and timestamps. Protect
+    # every other order/item column, including prices, versions and identities.
+    for table, excluded in [('orders', {'updated_at'}), ('order_items', {
+            'updated_at', 'fulfilled_quantity', 'raw_fulfilled_quantity', 'shipped_quantity', 'raw_shipped_quantity'})]:
+        columns = sql(database, "SELECT COLUMN_NAME FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='" + table + "' ORDER BY ORDINAL_POSITION").splitlines()
+        if not columns or any(not re.fullmatch(r'[a-z0-9_]+', c) for c in columns):
+            raise RuntimeError('Unexpected order projection schema')
+        projection = ','.join("IFNULL(HEX(`" + c + "`),'NULL')" for c in columns if c not in excluded)
+        digest.update(sql(database, 'SELECT ' + projection + ' FROM `' + table + '` ORDER BY id').encode())
+    return digest.hexdigest()
+
+
+def verify_paid_warehouse_checkpoint(owner):
+    config()  # Enforce the existing dedicated local source guard.
+    if not re.fullmatch(r'[0-9a-f]{12}', owner):
+        raise RuntimeError('Owned warehouse checkpoint required')
+    logs = ROOT / 'logs/retail-native' / ('account-' + owner)
+    browser = json.loads((logs / 'browser-result.json').read_text())
+    if not browser.get('passed') or browser.get('scenario') != 'paid-warehouse' or not browser.get('paid_checkpoint_continuation'):
+        raise RuntimeError('Completed actual paid-order warehouse browser scenario required')
+    order = browser['order_id']
+    if not re.fullmatch(r'order_[0-9a-f-]{36}', order):
+        raise RuntimeError('Owned order identity required')
+    fingerprints, stocks, facts = [], [], None
+    for name in ['snapshot.sql', 'payment-context-final.sql']:
+        database = 'retail_account_' + secrets.token_hex(6)
+        snapshot = '/tmp/warehouse-verify-' + database + '.sql'
+        created = False
+        try:
+            docker('cp', str(logs / name), CONTAINER + ':' + snapshot)
+            docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'CREATE DATABASE ' + database)
+            created = True
+            docker('exec', CONTAINER, 'sh', '-c', 'mysql --defaults-extra-file=/tmp/local-root.cnf ' + database + ' < ' + snapshot)
+            fingerprints.append(warehouse_payment_fingerprint(database))
+            stocks.append(sql(database, "SELECT stocked_quantity,reserved_quantity FROM inventory_levels WHERE inventory_item_id='iitem_01M51RN7HTPYQ7YFPXABBF8VJ8' AND location_id='sloc_01M4FBP3NDPZHJKVV3VY682QTN' AND deleted_at IS NULL").split('\t'))
+            if name == 'payment-context-final.sql':
+                facts = sql(database, "SELECT (SELECT COUNT(*) FROM order_fulfillments o JOIN fulfillments f ON f.id=o.fulfillment_id WHERE o.order_id='" + order + "' AND f.canceled_at IS NOT NULL),(SELECT COUNT(*) FROM order_fulfillments o JOIN fulfillments f ON f.id=o.fulfillment_id WHERE o.order_id='" + order + "' AND f.canceled_at IS NULL AND f.shipped_at IS NOT NULL),(SELECT COUNT(*) FROM order_items WHERE order_id='" + order + "' AND quantity=1 AND fulfilled_quantity=1 AND shipped_quantity=1),(SELECT COUNT(*) FROM device_assignments a JOIN devices d ON d.id=a.device_id WHERE a.order_id='" + order + "' AND a.status='shipped' AND d.id='isolated-repair-device' AND d.state='shipped'),(SELECT COUNT(*) FROM devices WHERE id='isolated-exchange-device' AND state='available'),(SELECT COUNT(*) FROM admin_users WHERE email='local-warehouse-" + owner + "@example.invalid')").split('\t')
+        finally:
+            if created:
+                docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'DROP DATABASE ' + database)
+            docker('exec', CONTAINER, 'rm', '-f', snapshot)
+    if fingerprints[0] != fingerprints[1] or facts != ['1'] * 6 or any(Decimal(a) - Decimal(b) != 1 for a, b in zip(*stocks)):
+        raise RuntimeError('Paid warehouse checkpoint financial, identity, shipment or stock invariant differs')
+    result = {'passed': True, 'owner': owner, 'order_id': order, 'financial_ownership_and_order_identity_sha256': fingerprints[0],
+              'stock_before': stocks[0], 'stock_after': stocks[1], 'sql_terminal_facts': facts,
+              'replayed_business_commands': False, 'provider_calls': False, 'verification_databases_removed': True}
+    (logs / 'warehouse-checkpoint-verification.json').write_text(json.dumps(result, indent=2))
+    print('Paid warehouse checkpoint SQL verified: ' + owner)
+
+
 def main(language, scenario='account', resume=None):
     mail = scenario == 'mail'
     reviews = scenario == 'reviews'
-    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews')
+    paid_warehouse = scenario == 'paid-warehouse'
+    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse')
     buyback = scenario in ('buyback', 'buyback-return')
     exchange = scenario == 'exchange'
     refund = scenario == 'refund'
-    warehouse = scenario == 'warehouse'
-    repair = scenario in ('repair', 'exchange', 'refund', 'warehouse')
+    warehouse = scenario in ('warehouse', 'paid-warehouse')
+    repair = scenario in ('repair', 'exchange', 'refund', 'warehouse', 'paid-warehouse')
     admin_required = buyback or repair or mail or reviews
     values = config()
     if resume is not None:
@@ -309,6 +370,8 @@ def main(language, scenario='account', resume=None):
             raise RuntimeError('Only an owned payment checkpoint can resume')
         checkpoint = ROOT / 'logs/retail-native' / ('account-' + resume)
         checkpoint_report = json.loads((checkpoint / 'report.json').read_text())
+        if paid_warehouse and (not checkpoint_report.get('passed') or not checkpoint_report.get('payment_durable_snapshot_retained')):
+            raise RuntimeError('Warehouse continuation requires a verified durable paid checkpoint')
         if refund:
             paid = json.loads((checkpoint / 'refund-new-paid-order.json').read_text())
             if not re.fullmatch(r'order_[0-9a-f-]{36}', paid.get('order_id', '')) or not paid.get('real_mollie_test_payment'):
@@ -397,7 +460,7 @@ def main(language, scenario='account', resume=None):
                 if len(row) != 2 or not re.fullmatch(r'asr_[0-9a-f-]{36}', row[0]) or not re.fullmatch(r'[0-9a-f-]{36}', row[1]):
                     raise RuntimeError('Owned refund receipt identity mismatch')
                 (logs / 'refund-existing.json').write_text(json.dumps({'request_id': row[0], 'operation_id': row[1]}))
-        if repair and not resume:
+        if repair and (not resume or paid_warehouse):
             sql(database, "UPDATE customer_after_sales_runtime SET enabled=TRUE WHERE id=1; "
                 "UPDATE after_sales_review_runtime SET enabled=TRUE WHERE id=1; "
                 "UPDATE device_return_runtime SET enabled=TRUE WHERE id=1; "
@@ -469,6 +532,13 @@ def main(language, scenario='account', resume=None):
             review_before = protected_fingerprint()
             env['CHECKOUT_PAYMENT_ENABLED'] = 'false'
             env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'false'
+        if paid_warehouse:
+            env['CHECKOUT_PAYMENT_ENABLED'] = 'false'
+            env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'false'
+            stock_before = sql(database, "SELECT stocked_quantity,reserved_quantity FROM inventory_levels WHERE inventory_item_id='iitem_01M51RN7HTPYQ7YFPXABBF8VJ8' AND location_id='sloc_01M4FBP3NDPZHJKVV3VY682QTN' AND deleted_at IS NULL").split('\t')
+            def payment_fingerprint():
+                return warehouse_payment_fingerprint(database)
+            payment_before = payment_fingerprint()
         if refund:
             worker = logs / 'refund-worker.exe'
             subprocess.run(['go', 'build', '-o', str(worker), './cmd/process-order-refunds'],
@@ -511,12 +581,17 @@ def main(language, scenario='account', resume=None):
         if resume and refund:
             browser_env.update(ACCOUNT_TEST_CUSTOMER_OWNER=customer_owner, ACCOUNT_TEST_RESUME_PAID='true',
                                ACCOUNT_TEST_REFUND_EXISTING='true' if existing_refund else 'false')
+        if paid_warehouse:
+            browser_env.update(ACCOUNT_TEST_CUSTOMER_OWNER=customer_owner, ACCOUNT_TEST_RESUME_PAID='true')
+            (logs / 'refund-new-paid-order.json').write_text(json.dumps(paid))
         script = 'tests/local-payment-context.live.mjs' if payment_context else 'tests/local-notification-mail.live.mjs' if mail else 'tests/local-repair.live.mjs' if repair else 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
         if resume and payment_context:
             browser_env['ACCOUNT_TEST_CUSTOMER_OWNER'] = customer_owner
             script = 'tests/local-payment-context-resume.live.mjs'
         if reviews:
             script = 'tests/local-product-reviews.live.mjs'
+        if paid_warehouse:
+            script = 'tests/local-repair.live.mjs'
         result = subprocess.run([str(node), script],
                                 cwd=ROOT / 'retail/storefront', env=browser_env,
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=420 if refund else 240)
@@ -528,7 +603,7 @@ def main(language, scenario='account', resume=None):
              "WHERE email LIKE 'local-account-" + customer_owner + "-%@example.invalid' AND verified_at IS NOT NULL"))
         if report['verified_accounts'] != 1:
             raise RuntimeError('Expected exactly one newly verified fixture account')
-        if payment_context and not reviews:
+        if payment_context and not (reviews or paid_warehouse):
             cart_id, order_id = report['cart_id'], report['order_id']
             if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
                 raise RuntimeError('Owned payment context result identity invalid')
@@ -560,18 +635,26 @@ def main(language, scenario='account', resume=None):
             order = report['order_id']
             if not re.fullmatch(r'order_[0-9a-f-]{36}', order):
                 raise RuntimeError('Unexpected fixture order')
+            expected_stock = str(Decimal(stock_before[0]) - 1) if paid_warehouse else '49'
+            expected_reserved = str(Decimal(stock_before[1]) - 1) if paid_warehouse else '0'
             checks = {
                 'warehouse_user': "SELECT COUNT(*) FROM admin_users WHERE email='local-warehouse-" + owner + "@example.invalid'",
                 'canceled_parcel': "SELECT COUNT(*) FROM order_fulfillments o JOIN fulfillments f ON f.id=o.fulfillment_id WHERE o.order_id='" + order + "' AND f.canceled_at IS NOT NULL",
                 'shipped_parcel': "SELECT COUNT(*) FROM order_fulfillments o JOIN fulfillments f ON f.id=o.fulfillment_id WHERE o.order_id='" + order + "' AND f.canceled_at IS NULL AND f.shipped_at IS NOT NULL",
                 'shipped_device': "SELECT COUNT(*) FROM device_assignments a JOIN devices d ON d.id=a.device_id WHERE a.order_id='" + order + "' AND a.status='shipped' AND d.id='isolated-repair-device' AND d.state='shipped'",
                 'unused_replacement': "SELECT COUNT(*) FROM devices WHERE id='isolated-exchange-device' AND state='available'",
-                'stock_once': "SELECT COUNT(*) FROM inventory_levels WHERE inventory_item_id='iitem_01M51RN7HTPYQ7YFPXABBF8VJ8' AND location_id='sloc_01M4FBP3NDPZHJKVV3VY682QTN' AND stocked_quantity=49 AND reserved_quantity=0 AND deleted_at IS NULL",
+                'stock_once': "SELECT COUNT(*) FROM inventory_levels WHERE inventory_item_id='iitem_01M51RN7HTPYQ7YFPXABBF8VJ8' AND location_id='sloc_01M4FBP3NDPZHJKVV3VY682QTN' AND stocked_quantity=" + expected_stock + " AND reserved_quantity=" + expected_reserved + " AND deleted_at IS NULL",
             }
             facts = {name: int(sql(database, query)) for name, query in checks.items()}
             if any(value != 1 for value in facts.values()):
                 raise RuntimeError('Warehouse terminal facts differ: ' + str(facts))
             report['sql_warehouse_facts'] = facts
+            if paid_warehouse:
+                if payment_fingerprint() != payment_before:
+                    raise RuntimeError('Paid order, ownership or payment facts changed during fulfillment')
+                report['paid_checkpoint_financial_and_ownership_unchanged'] = True
+                report['stock_before'] = stock_before
+                report['stock_after'] = [expected_stock, expected_reserved]
         if repair and not warehouse:
             request = report['request_id']
             if not re.fullmatch(r'[A-Za-z0-9_-]{1,191}', request):
@@ -717,6 +800,10 @@ if __name__ == '__main__':
         main('en', 'refund')
     elif sys.argv[1:] == ['--scenario=warehouse']:
         main('en', 'warehouse')
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--warehouse-from-checkpoint='):
+        main('en', 'paid-warehouse', sys.argv[1].split('=', 1)[1])
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-paid-warehouse='):
+        verify_paid_warehouse_checkpoint(sys.argv[1].split('=', 1)[1])
     elif sys.argv[1:] == ['--scenario=mail']:
         main('en', 'mail')
     elif sys.argv[1:] == ['--scenario=payment-context']:
