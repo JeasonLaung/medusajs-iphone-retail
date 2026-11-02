@@ -4,6 +4,8 @@
 
 ## 最新换机交接（2026-11-02，覆盖后文历史运行状态）
 
+2026-11-02 替代付款恢复：修复未知CREATE查询已付款/仅授权后无法接回原付款绑定的冲突；无需已失效的收银台链接，保持原始CREATE凭据和版本，授权不当实收，付款查询继续独立保存认证证据。八状态英文390px局部浏览器→Gin→MySQL/Redis通过（含两新增状态的丢成功响应重放），无重复CREATE，保护表不变；Go cart/payments/identity检查通过。见[专项说明](migration/context-payment-subflow.md)及[报告](migration/replacement-payment-recovery-report.json)。没有执行成单或完整交易全链；账户转移、跨币种/精确小数、矩阵与最终联合仍开放。
+
 2026-11-02 用户明确验证节奏：各子任务完成时按业务细分运行局部接口/状态/页面验证，并单独commit/push；完整业务流程在大任务结束时统一运行一次，不在每次修改后重复全链。已新增[付款设置独立子流程](migration/context-payment-subflow.md)：固定人工基线及密钥控制接口，六状态英文390px的实际Astro→Gin→MySQL9.6/Redis通过，包括保存/恢复丢响应、未知DELETE/CREATE只读恢复及已付原会话保持冻结。库存/订单/实收/通知指纹不变，冻结源码与资源清理通过。未运行全语言尺寸矩阵或完整交易链；跨币种、替代会话已付与账户转移仍待，不标整体完成。
 
 2026-11-02 Windows接续：[102→103字段升级](migration/schema103-windows-rehearsal.md)已在用户提供备份的独立MySQL 9.6恢复副本通过：首次1/102、重复0/103，297张业务表45,278行原字段保持一致，结构仅新增预期字段/CHECK，容器/数据卷清理通过。修复Windows CRLF引发的迁移校验和不匹配，固定SQL检出LF；不恢复私钥、不升级已有业务实例。全包额外检查发现promotion fixture计数滞后，另项处理；原服务未启动，付款连续联合及C01—C11继续开放。每完成一项任务后commit并push。

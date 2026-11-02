@@ -23,8 +23,11 @@
 ```sh
 # 日常单场景；另有 changed / restore / delete-unknown / create-unknown / paid
 node retail/scripts/test-context-payment-joint.mjs --scenario unchanged
-# 本项六种业务状态，默认英文390px，独立于完整交易回归
+# 本项全部业务状态，默认英文390px，独立于完整交易回归
 node retail/scripts/test-context-payment-joint.mjs
+# 替代会话已付款/仅授权恢复（不进入订单、配货等后续流程）
+node retail/scripts/test-context-payment-joint.mjs --scenario replacement-paid
+node retail/scripts/test-context-payment-joint.mjs --scenario replacement-authorized
 # 仅需要检查本项语言/尺寸组合时使用，仍非完整交易链路
 node retail/scripts/test-context-payment-joint.mjs --scenario restore --matrix
 ```
@@ -45,3 +48,11 @@ node retail/scripts/test-context-payment-joint.mjs --scenario restore --matrix
 六场景均核对库存、预留、订单、实收和通知表指纹不变。相关前端21项局部测试、Go identity包编译/普通测试通过。专用SQL fixture执行并不依赖完整CartRuntime回归。
 
 本次没有运行中英×390/1440矩阵或完整业务链；跨币种/精确小数、替代会话已付款恢复、账户归属与跨设备合并等仍按交付清单继续。本项不宣称C01—C11全部完成。9001/8000/主预览原本无监听，此项不恢复私钥或启动主业务实例。
+
+## 替代会话已付款/仅授权恢复（2026-11-02 后续任务）
+
+未知CREATE经渠道查询确认替代会话已付款或已授权时，旧激活逻辑只接受pending/requires_more，导致恢复始终冲突。现在允许认证过的authorized创建结果接回原购物车的付款绑定；paid与authorized在渠道适配器中均映射为此本地会话状态。它们可能已经没有checkout链接，因此该分支不再要求收银台URL。
+
+恢复只释放本次设置操作的冻结并保留付款绑定，不保存用户取消的目标设置，不将授权当实收，也不依据创建结果直接生成订单。现有付款查询仍须通过服务端渠道读取、金额/币种/购物车/会话校验及加密证据落库，才能区分paid_pending_order与authorized。再次准备付款返回requires_review，不返回旧收银台链接或额外CREATE；订单完成仍由现有独立入口处理。
+
+[本项去敏报告](replacement-payment-recovery-report.json)记录局部浏览器与原生SQL验证：新增两个场景均经历未知CREATE、刷新发现、恢复成功响应丢失及同UUID重放，最终版本6、无目标保存收据、两次CREATE（原始+替代）、一次DELETE。付款查询分别断言paid_pending_order/authorized，再次准备仍无额外CREATE。六个已有场景同时回归；库存、预留、订单、实收、通知指纹全部不变。未在本项执行订单完成或完整业务链，中英/尺寸矩阵及真实渠道沙箱仍待后续验收。

@@ -16,6 +16,7 @@ async function current(){return page.evaluate(async()=>{const r=await fetch('/ap
 try{
  const matrix=process.env.CONTEXT_MATRIX==='1',scenarios=JSON.parse(process.env.CONTEXT_SCENARIOS)
  for(const lang of matrix?['en','zh']:['en'])for(const width of matrix?[390,1440]:[390])for(const scenario of scenarios){
+  const replacement=scenario.startsWith('replacement-'),restoring=['restore','create-unknown'].includes(scenario)||replacement
   const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'})
   page=await context.newPage();page.setDefaultTimeout(20000);page.on('pageerror',e=>errors.push(e.message))
   const writes=[];page.on('request',r=>{if(r.method()==='POST'&&r.url().includes('/context-payment'))writes.push({path:new URL(r.url()).pathname,key:r.headers()['idempotency-key'],body:r.postDataJSON()})})
@@ -29,7 +30,7 @@ try{
   assert.equal(initialIntent.version,'4')
   await page.goto(url)
   if(scenario!=='unchanged')await control('price')
-  if(['restore','delete-unknown','create-unknown','paid'].includes(scenario))await control('mode/'+(scenario==='paid'?'delete-unknown':scenario))
+  if(['restore','delete-unknown','create-unknown','paid'].includes(scenario)||replacement)await control('mode/'+(replacement?'create-unknown':scenario==='paid'?'delete-unknown':scenario))
   let lost=false
   if(['unchanged','changed'].includes(scenario))await page.route('**/context-payment',async route=>{const r=await route.fetch();assert.equal(r.status(),200);if(!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})})
   await open();await page.getByRole('dialog').getByRole('button',{name:'Danmark — Chinese Simplified (China)',exact:true}).click()
@@ -39,23 +40,39 @@ try{
   await page.reload();await open()
   const restore=page.getByRole('button',{name:lang==='zh'?'恢复之前的设置':'Restore previous preferences',exact:true})
   await expect(restore).toBeVisible()
-  if(scenario==='restore'||scenario==='create-unknown'){
+  if(restoring){
    if(scenario==='restore')await page.route('**/context-payment/restore',async route=>{const r=await route.fetch();assert.equal(r.status(),200);if(!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})})
    await restore.click()
    if(scenario==='restore'){
     await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible();await page.reload();await open();await restore.click()
    }
-   if(scenario==='create-unknown'){
+   if(scenario==='create-unknown'||replacement){
     await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible()
     assert.equal((await journal(contextKey)).kind,'payment-restore')
     const uncertain=await control('facts');assert.equal(uncertain.creates,2);assert.equal(uncertain.deletes,1)
     await page.reload();await open();await restore.click();await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible()
     assert.equal((await control('facts')).creates,2)
-    await control('mode/normal');await restore.click()
+    await control('mode/'+(replacement?scenario:'normal'))
+    if(replacement)await page.route('**/context-payment/restore',async route=>{const r=await route.fetch();assert.equal(r.status(),200);if(!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})})
+    await restore.click()
+    if(replacement){await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible();await page.reload();await open();await restore.click()}
    }
    await expect(page.getByRole('dialog')).toHaveCount(0)
    assert.equal(page.url(),url)
    const binding=await journal(paymentKey);assert.equal(binding.operationID,pending.operationID);assert.equal(binding.version,'5')
+   if(replacement){
+    const observed=await page.evaluate(async id=>{const csrf=decodeURIComponent(document.cookie.split('; ').find(s=>s.startsWith('retail_cart_csrf=')).split('=')[1]);const r=await fetch(`/api/store/carts/${id}/payment-status`,{method:'POST',headers:{'X-CSRF-Token':csrf,'Content-Type':'application/json'},body:'{}'});return {status:r.status,body:await r.json()}},seed.cart_id)
+    assert.equal(observed.status,200)
+    assert.equal(observed.body.state,scenario==='replacement-paid'?'paid_pending_order':'authorized')
+    // Replaying the payment preparation cannot offer an already paid checkout
+    // URL or dispatch another CREATE. Order completion is a separate boundary.
+    await page.goto(origin+'/dk-'+lang+'/checkout?step=payment')
+    await expect(page.getByTestId('payment-recover')).toBeVisible()
+    await expect(page.getByTestId('submit-order-button')).toHaveCount(0)
+    await page.getByTestId('payment-recover').click()
+    await expect(page.getByTestId('payment-method-error-message')).toBeVisible()
+    await expect(page.getByTestId('submit-order-button')).toHaveCount(0)
+   }
   }else if(scenario==='paid'){
    await control('mode/paid')
    await page.getByRole('dialog').getByRole('button',{name:'Danmark — Chinese Simplified (China)',exact:true}).click()
@@ -80,9 +97,9 @@ try{
   }
   assert.equal(await journal(contextKey),null)
   const facts=await control('facts');assert.equal(facts.protected_unchanged,true);assert.equal(facts.version,6);assert.equal(facts.refresh,null)
-  assert.equal(facts.creates,['restore','create-unknown'].includes(scenario)?2:1)
+  assert.equal(facts.creates,restoring?2:1)
   assert.equal(facts.deletes,scenario==='unchanged'?0:1)
-  assert.equal(facts.receipts,['restore','create-unknown'].includes(scenario)?0:1)
+  assert.equal(facts.receipts,restoring?0:1)
   assert.equal(facts.attempts[0].InputVersion,4);assert.equal(facts.attempts[0].CartVersion,5)
   if(scenario==='unchanged')assert.equal(facts.attempts[0].EffectiveCartVersion,6)
   assert(writes.length>=2);assert.equal(new Set(writes.map(w=>w.key)).size,1);assert(writes.every(w=>JSON.stringify(w.body)===JSON.stringify(writes[0].body)))

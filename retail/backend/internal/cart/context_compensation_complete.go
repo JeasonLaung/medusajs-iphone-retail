@@ -39,7 +39,7 @@ func readContextPaymentOperation(tx *gorm.DB, ref sessionstore.CartReference, op
 }
 
 // CompleteContextPaymentCompensation restores the ORIGINAL context. Only a
-// succeeded, authenticated unpaid replacement can become a new checkout. Its
+// succeeded, authenticated live replacement can become a new checkout. Its
 // CREATE operation/session/digest and input/cart versions form a new immutable
 // attempt; the old attempt is retained. Zero deleted sessions keep the original
 // checkout with a new effective revision. No provider is called or cash assumed.
@@ -158,11 +158,16 @@ func CompleteContextPaymentCompensation(ctx context.Context, db *gorm.DB, store 
 			if err != nil {
 				return err
 			}
-			if created.Status != "pending" && created.Status != "requires_more" {
+			if created.Status != "pending" && created.Status != "requires_more" && created.Status != "authorized" {
 				return ErrConflict
 			}
-			if _, err := initialCheckoutURL(created.Data); err != nil {
-				return err
+			// Discovery may find an already paid/authorized replacement without
+			// a checkout link. Rebind it without classifying either as cash:
+			// the normal observer must persist fresh, verified paid evidence.
+			if created.Status != "authorized" {
+				if _, err := initialCheckoutURL(created.Data); err != nil {
+					return err
+				}
 			}
 			request.Data = created.Data
 			data, protectedContext, err := payments.SealSessionFields(options.Ring, request)

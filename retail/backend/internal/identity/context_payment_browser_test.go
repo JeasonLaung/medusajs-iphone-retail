@@ -62,9 +62,16 @@ func (p *contextBrowserProvider) observation(r payments.SessionRequest, id strin
 	if status == "" {
 		status = "pending"
 	}
-	action := map[string]string{"pending": "pending", "canceled": "canceled", "paid": "successful"}[status]
-	local := map[string]string{"pending": "pending", "canceled": "canceled", "paid": "authorized"}[status]
+	action := map[string]string{"pending": "pending", "canceled": "canceled", "paid": "successful", "authorized": "authorized"}[status]
+	local := map[string]string{"pending": "pending", "canceled": "canceled", "paid": "authorized", "authorized": "authorized"}[status]
 	raw, _ := json.Marshal(map[string]any{"id": id, "status": status, "amount": map[string]string{"value": r.Amount, "currency": strings.ToUpper(r.Currency)}, "metadata": map[string]string{"session_id": r.SessionID, "cart_id": inScope(r)}, "_links": map[string]any{"checkout": map[string]string{"href": "https://www.mollie.com/checkout/contextjoint"}}})
+	if status == "paid" || status == "authorized" {
+		// Completed provider sessions need not retain a checkout link.
+		var data map[string]any
+		_ = json.Unmarshal(raw, &data)
+		delete(data, "_links")
+		raw, _ = json.Marshal(data)
+	}
 	return payments.SessionObservation{PaymentID: id, ProviderStatus: status, Action: action, Amount: r.Amount, Currency: r.Currency, Session: payments.CreatedSession{Status: local, Data: raw}}
 }
 func (p *contextBrowserProvider) ObserveSession(_ context.Context, r payments.SessionRequest, id string) (payments.SessionObservation, error) {
@@ -188,7 +195,7 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	})
 	fixture.POST("/mode/:mode", func(c *gin.Context) {
 		mode := c.Param("mode")
-		if mode != "normal" && mode != "restore" && mode != "delete-unknown" && mode != "create-unknown" && mode != "canceled" && mode != "paid" {
+		if mode != "normal" && mode != "restore" && mode != "delete-unknown" && mode != "create-unknown" && mode != "canceled" && mode != "paid" && mode != "replacement-paid" && mode != "replacement-authorized" {
 			c.Status(400)
 			return
 		}
@@ -197,6 +204,13 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		if mode == "canceled" || mode == "paid" {
 			for id := range adapter.status {
 				adapter.status[id] = mode
+			}
+		}
+		if mode == "replacement-paid" || mode == "replacement-authorized" {
+			for id, status := range adapter.status {
+				if status == "pending" {
+					adapter.status[id] = strings.TrimPrefix(mode, "replacement-")
+				}
 			}
 		}
 		adapter.mu.Unlock()

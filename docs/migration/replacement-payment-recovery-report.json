@@ -1,0 +1,264 @@
+{
+  "owner": "11ddb60a7869",
+  "finished_utc": "2026-11-02T07:16:29.337Z",
+  "passed": true,
+  "binary_sha256": "69a46e98bde23ec0ce7db9827d9a6f5ae778bff433db8c1b5569f3ce6ea477f0",
+  "actual_gin_mysql_redis_astro": true,
+  "real_provider_called": false,
+  "frozen_source_verified": true,
+  "owned_resources_removed": true,
+  "full_local_report_sha256": "2126bb5a9231aa52be7d50abc4a62caef2885526d3a2353c0fcc4ead7c6b813e",
+  "browser": {
+    "cases": [
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "unchanged",
+        "real_database_facts": {
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": 6
+            }
+          ],
+          "checkout": "87d7276f-0b44-4410-886d-3ce27421d904",
+          "creates": 1,
+          "deletes": 0,
+          "discovers": 0,
+          "observes": 0,
+          "protected_unchanged": true,
+          "receipts": 1,
+          "refresh": null,
+          "version": 6
+        },
+        "context_posts": 2,
+        "same_uuid_payload": true,
+        "lost_success_response": true,
+        "refresh_recovery": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "changed",
+        "real_database_facts": {
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": null,
+          "creates": 1,
+          "deletes": 1,
+          "discovers": 0,
+          "observes": 0,
+          "protected_unchanged": true,
+          "receipts": 1,
+          "refresh": null,
+          "version": 6
+        },
+        "context_posts": 2,
+        "same_uuid_payload": true,
+        "lost_success_response": true,
+        "refresh_recovery": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "restore",
+        "real_database_facts": {
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            },
+            {
+              "InputVersion": 5,
+              "CartVersion": 6,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": "d87589de-6d5c-4010-917c-21461ac8b2cc",
+          "creates": 2,
+          "deletes": 1,
+          "discovers": 0,
+          "observes": 0,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": null,
+          "version": 6
+        },
+        "context_posts": 3,
+        "same_uuid_payload": true,
+        "lost_success_response": true,
+        "refresh_recovery": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "delete-unknown",
+        "real_database_facts": {
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": null,
+          "creates": 1,
+          "deletes": 1,
+          "discovers": 0,
+          "observes": 3,
+          "protected_unchanged": true,
+          "receipts": 1,
+          "refresh": null,
+          "version": 6
+        },
+        "context_posts": 3,
+        "same_uuid_payload": true,
+        "lost_success_response": false,
+        "refresh_recovery": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "create-unknown",
+        "real_database_facts": {
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            },
+            {
+              "InputVersion": 5,
+              "CartVersion": 6,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": "fae8bcac-8dcb-4a72-8c5f-925fc064bd28",
+          "creates": 2,
+          "deletes": 1,
+          "discovers": 3,
+          "observes": 0,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": null,
+          "version": 6
+        },
+        "context_posts": 4,
+        "same_uuid_payload": true,
+        "lost_success_response": false,
+        "refresh_recovery": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "paid",
+        "real_database_facts": {
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": "942d3e63-5d25-46bf-bd59-060cc7866336",
+          "creates": 1,
+          "deletes": 1,
+          "discovers": 0,
+          "observes": 2,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": "c2169c37-3ac4-4b4b-bd20-2a6dcb1d0bca",
+          "version": 5
+        },
+        "paid_keeps_frozen": true,
+        "same_uuid_payload": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "replacement-paid",
+        "real_database_facts": {
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            },
+            {
+              "InputVersion": 5,
+              "CartVersion": 6,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": "da532127-2cd9-4518-bff2-a7b7d2542faa",
+          "creates": 2,
+          "deletes": 1,
+          "discovers": 3,
+          "observes": 1,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": null,
+          "version": 6
+        },
+        "context_posts": 5,
+        "same_uuid_payload": true,
+        "lost_success_response": true,
+        "refresh_recovery": true
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scenario": "replacement-authorized",
+        "real_database_facts": {
+          "attempts": [
+            {
+              "InputVersion": 4,
+              "CartVersion": 5,
+              "EffectiveCartVersion": null
+            },
+            {
+              "InputVersion": 5,
+              "CartVersion": 6,
+              "EffectiveCartVersion": null
+            }
+          ],
+          "checkout": "2bb7d9a9-562d-4f70-9a2c-3e776a45412d",
+          "creates": 2,
+          "deletes": 1,
+          "discovers": 3,
+          "observes": 1,
+          "protected_unchanged": true,
+          "receipts": 0,
+          "refresh": null,
+          "version": 6
+        },
+        "context_posts": 5,
+        "same_uuid_payload": true,
+        "lost_success_response": true,
+        "refresh_recovery": true
+      }
+    ],
+    "errors": [],
+    "api_mocking": false,
+    "actual_gin_mysql_redis_astro": true
+  },
+  "scope": {
+    "language": "en",
+    "width": 390,
+    "full_business_chain": false,
+    "order_completion": false
+  },
+  "checks": {
+    "paid_observed_as": "paid_pending_order",
+    "authorization_observed_as": "authorized",
+    "paid_authorized_checkout_url_reoffered": false,
+    "replacement_create_repeated": false
+  }
+}
