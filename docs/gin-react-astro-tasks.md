@@ -6,6 +6,8 @@
 
 2026-11-02 Windows接续：[102→103字段升级](migration/schema103-windows-rehearsal.md)已在用户提供备份的独立MySQL 9.6恢复副本通过：首次1/102、重复0/103，297张业务表45,278行原字段保持一致，结构仅新增预期字段/CHECK，容器/数据卷清理通过。修复Windows CRLF引发的迁移校验和不匹配，固定SQL检出LF；不恢复私钥、不升级已有业务实例。全包额外检查发现promotion fixture计数滞后，另项处理；原服务未启动，付款连续联合及C01—C11继续开放。每完成一项任务后commit并push。
 
+2026-11-02 第二项：同步优惠计算回归用例数量20，恢复执行交接已新增的 `context-usd-high-precision-percentage` 用例；20个原样输入/期望逐项通过，`go test ./...` 全包通过（需显式外部资源的原生SQL/浏览器用例仍受各自门禁，未声称执行）。此项仅修改测试覆盖计数，业务计算和fixture保持原样。字段升级任务已独立push `b9150d6d`。
+
 入口：[换机说明与接续清单](migration/handoff-20261102.md)。当前交付依据仍为 [C01—C11交付清单](migration/current-delivery-scope.md)，不按测试数折算整体进度。
 
 - 当前主预览：Gin9100 / React9200 / Astro9300；MySQL 专有 Unix socket、native FK开启、事件调度关闭，已应用102迁移。源码有103迁移，**当前主库尚未应用**；不要将103版API直接启动在102库上。

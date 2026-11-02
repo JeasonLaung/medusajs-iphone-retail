@@ -39,7 +39,7 @@ func TestOriginalComputeCandidates(t *testing.T) {
 			Expected        ComputeResult
 		}
 	}
-	if json.Unmarshal(data, &fixture) != nil || len(fixture.Cases) != 19 {
+	if json.Unmarshal(data, &fixture) != nil || len(fixture.Cases) != 20 {
 		t.Fatal("compute fixture coverage changed")
 	}
 	for _, row := range fixture.Cases {
