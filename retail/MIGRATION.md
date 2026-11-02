@@ -1,5 +1,7 @@
 # 迁移实现状态
 
+2026-11-03：C06[PayPal已扣款成单](../docs/migration/gin-paypal-completion.md)完成钱包/卡原渠道证据及本地订单/库存预留/实收/出站事务，独立Gin HTTP/MySQL/Redis通过；SDK、webhook、真实PayPal及C01—C11其余验收继续未完成。
+
 2026-11-03：C05仓库设备[批量设为可售](../docs/migration/gin-warehouse-batch-available.md)完成实际两台Ant/Gin联合及200台原生SQL执行/重放验收，整批事务回滚、撤权/移仓保护通过；主数据不变，C01—C11整体保持未完成。
 
 

@@ -81,10 +81,24 @@ func readPaidOrderEvidence(ctx context.Context, tx *gorm.DB, ref sessionstore.Ca
 	if err != nil {
 		return payments.SessionObservation{}, err
 	}
-	var identity struct {
-		ID string `json:"id"`
+	var remoteID string
+	if request.ProviderID == hostedMollie {
+		var identity struct {
+			ID string `json:"id"`
+		}
+		if json.Unmarshal(created.Data, &identity) != nil {
+			return payments.SessionObservation{}, ErrConflict
+		}
+		remoteID = identity.ID
+	} else if initialKnownProvider(request.ProviderID) {
+		remoteID, err = payments.PayPalCreatedOrderID(request, created)
+		if err != nil {
+			return payments.SessionObservation{}, ErrConflict
+		}
+	} else {
+		return payments.SessionObservation{}, ErrConflict
 	}
-	if json.Unmarshal(created.Data, &identity) != nil || identity.ID == "" || payments.ValidateMollieObservation(request, identity.ID, observed) != nil {
+	if remoteID == "" || validateInitialObservation(request, remoteID, observed) != nil {
 		return payments.SessionObservation{}, ErrConflict
 	}
 	return observed, nil

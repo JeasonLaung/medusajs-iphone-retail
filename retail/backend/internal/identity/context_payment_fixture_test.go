@@ -66,7 +66,7 @@ func TestOwnedContextPaymentBrowser(t *testing.T) {
 		t.Fatal(err)
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 104 {
+	if err != nil || result.Applied != 105 {
 		t.Fatal("dedicated context fixture migrations", err)
 	}
 	for _, statement := range strings.Split(contextPaymentSeed, ";\n") {

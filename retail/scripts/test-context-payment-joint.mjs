@@ -91,6 +91,7 @@ try{
  if(paypalOnly){
   assert.equal(await new Promise((resolve,reject)=>{fixture.once('exit',resolve);fixture.once('error',reject)}),0,'PayPal HTTP/SQL subflow failed; inspect fixture.log')
   assert((await readFile(path.join(base,'fixture.log'),'utf8')).includes('PAYPAL_CHECKOUT_SQL:'))
+  assert((await readFile(path.join(base,'fixture.log'),'utf8')).includes('PAYPAL_COMPLETION_SQL:'))
   assert.deepEqual(await inventory(path.join(root,'retail/backend')),backendHashes)
   Object.assign(report,{passed:true,subflow:'paypal-checkout',actual_gin_mysql_redis_astro:false,actual_gin_http_mysql_redis:true,astro_executed:false,frozen_source_verified:true,source_sha256:{backend:backendHashes}})
  }else{

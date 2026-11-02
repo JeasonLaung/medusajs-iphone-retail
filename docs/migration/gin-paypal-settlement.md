@@ -1,5 +1,7 @@
 # PayPal 扣款／授权持久命令
 
+2026-11-03：后续[已扣款成单与账务](gin-paypal-completion.md)已在独立105环境补齐。下文未成单限制为原批次状态；SDK、真实渠道等仍未完成。
+
 2026-11-02 C06 接续。新增 `POST /api/store/carts/:id/paypal-settlement`，继承购物车凭证、Origin、CSRF、限流与严格空 JSON 校验。订单、商户、金额、币种及 CAPTURE/AUTHORIZE 意图均从服务端原创建收据及配置恢复，客户端不能指定。
 
 0104 仅新增 `cart_paypal_settlements`，先事务提交唯一执行占位，再调用渠道。稳定36字符请求编号绑定 provider、collection、session、远程订单及意图；同订单并发和重试共用原记录。执行中返回 processing；响应丢失标记 uncertain，随后只查询恢复，不重新发送扣款／授权 POST。查询仍无交易明细时保持 requires_review。已核实结果加密保存，并通过原观察流水更新购物车状态，未新增订单、库存或实收账目。

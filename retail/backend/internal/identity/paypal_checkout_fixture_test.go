@@ -304,9 +304,6 @@ func checkPayPalCheckout(t *testing.T, ctx context.Context, db *gorm.DB, session
 					if observations != 3 {
 						t.Fatal("missing durable observations")
 					}
-					if _, err := cart.CompleteCurrentPaidOrder(ctx, db, "shop", ref, configured); err == nil {
-						t.Fatal("PayPal completed through Mollie ledger before its own completion integration")
-					}
 				}
 				if _, e = cart.AddItem(ctx, db, "shop", ref, cart.AddItemCommand{OperationID: uuid.NewString(), Version: "5", VariantID: "add-v", Quantity: "1"}); e == nil {
 					t.Fatal("frozen PayPal cart editable")
@@ -322,6 +319,7 @@ func checkPayPalCheckout(t *testing.T, ctx context.Context, db *gorm.DB, session
 		t.Fatal("settlement changed stock/order/cash/notification facts")
 	}
 	t.Log("PAYPAL_CHECKOUT_SQL: wallet/card success/unknown, HTTP guards, six replays, provider binding, frozen cart, encrypted durable requests; CREATE once per cart; protected facts unchanged")
+	checkPayPalCompletion(t, ctx, db, sessions, makeCart, options)
 }
 
 func checkPayPalSettlement(t *testing.T, ctx context.Context, db *gorm.DB, sessions *sessionstore.Store, makeCart func() (sessionstore.CartReference, cart.InitialPaymentCommand), options cart.InitialPaymentOptions) {
@@ -419,8 +417,10 @@ func checkPayPalSettlement(t *testing.T, ctx context.Context, db *gorm.DB, sessi
 				if db.Table("cart_paypal_settlements").Where("cart_id=?", ref.CartID).Take(&row).Error != nil || row.State != "succeeded" || len(row.ResultEnvelope) == 0 || row.Intent != adapter.intent || len(row.ProviderRequestID) != 36 {
 					t.Fatal("durable settlement evidence missing")
 				}
-				if _, err := cart.CompleteCurrentPaidOrder(ctx, db, "shop", ref, configured); err == nil {
-					t.Fatal("unintegrated PayPal cash ledger completed")
+				if adapter.intent == "AUTHORIZE" {
+					if _, err := cart.CompleteCurrentPaidOrder(ctx, db, "shop", ref, configured); err == nil {
+						t.Fatal("PayPal authorization counted as completed cash")
+					}
 				}
 			})
 		}

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 
 	"github.com/eurorefurb/retail/internal/orders"
+	"github.com/eurorefurb/retail/internal/payments"
 	"github.com/eurorefurb/retail/internal/protected"
 	"github.com/eurorefurb/retail/internal/sessionstore"
 	"github.com/google/uuid"
@@ -37,6 +38,10 @@ func StagePaidOrderLedger(ctx context.Context, tx *gorm.DB, store string, ref se
 		return PaidOrderLedger{}, err
 	}
 	observed, err := readPaidOrderEvidence(ctx, tx, ref, in, o, row, key)
+	if err != nil {
+		return PaidOrderLedger{}, err
+	}
+	request, err := payments.ReadSessionRequest(ctx, tx, key, o.Ring)
 	if err != nil {
 		return PaidOrderLedger{}, err
 	}
@@ -109,7 +114,7 @@ func StagePaidOrderLedger(ctx context.Context, tx *gorm.DB, store string, ref se
 		return PaidOrderLedger{}, err
 	}
 	now := gorm.Expr("UTC_TIMESTAMP(6)")
-	if tx.Table("payments").Create(map[string]any{"id": out.PaymentID, "amount": scalar, "raw_amount": raw, "currency_code": row.CurrencyCode, "provider_id": hostedMollie, "data": "ers1." + base64.StdEncoding.EncodeToString(envelope), "payment_collection_id": row.CollectionID, "payment_session_id": row.SessionID, "captured_at": now, "created_at": now, "updated_at": now}).Error != nil {
+	if tx.Table("payments").Create(map[string]any{"id": out.PaymentID, "amount": scalar, "raw_amount": raw, "currency_code": row.CurrencyCode, "provider_id": request.ProviderID, "data": "ers1." + base64.StdEncoding.EncodeToString(envelope), "payment_collection_id": row.CollectionID, "payment_session_id": row.SessionID, "captured_at": now, "created_at": now, "updated_at": now}).Error != nil {
 		return PaidOrderLedger{}, ErrStorage
 	}
 	if tx.Table("payment_captures").Create(map[string]any{"id": out.CaptureID, "payment_id": out.PaymentID, "amount": scalar, "raw_amount": raw, "created_by": "checkout-verified-paid", "created_at": now, "updated_at": now}).Error != nil {

@@ -121,6 +121,18 @@ func completePaidOrder(ctx context.Context, tx *gorm.DB, store string, ref sessi
 	if cart.CompletedAt != nil {
 		return ErrConflict
 	}
+	// Resolve the public command's omitted provider under the owning lock.
+	// Explicit internal choices remain subject to the saved provider binding.
+	if in.ProviderID == "" {
+		current, err := currentInitialCommand(ctx, tx, store, ref, o.Ring)
+		if err != nil {
+			return err
+		}
+		if current.OperationID != in.OperationID || current.Version != in.Version {
+			return ErrConflict
+		}
+		in.ProviderID = current.ProviderID
+	}
 	staged, err := StagePaidOrderAndStock(ctx, tx, store, ref, in, o)
 	if err != nil {
 		return err
