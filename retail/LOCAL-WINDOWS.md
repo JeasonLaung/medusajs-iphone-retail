@@ -69,3 +69,9 @@ Mollie无法访问loopback webhook，本机test模式省略该参数，通过真
 `python retail/scripts/test-local-customer-account.py --warehouse-from-checkpoint=OWNER` 从已真实付款、原客户归属、尚未配货的检查点继续管理员装包与仓库员工调整/释放/发货、客户物流和通知。付款创建关闭，不再调用渠道，也不重新建立订单归属。预留按源副本的实际基数净减1，保留其他订单占用。`--verify-paid-warehouse=OWNER` 对该次执行保留的前后SQL独立核对，不重放业务命令。见 `docs/migration/local-paid-warehouse-main.md`。
 
 本机API访问日志新增 `request_context=active|canceled|deadline_exceeded`，可区分已取消读取和有效请求故障，原HTTP状态保留。隔离运行器可用 `ACCOUNT_TEST_API_BINARY` 指向 `logs/retail-native` 内已构建的.exe，单独验证新API而保持主服务可用。见 `docs/migration/warehouse-request-cancellation.md`。
+
+## 换机在线补款
+
+本机忽略.env显式配置 `ORDER_PAYMENTS_ENABLED=true`、`MOLLIE_NOTIFICATIONS_ENABLED=true`、`LOCAL_PREVIEW_ORDER_PAYMENTS_ENABLED=true`。start.bat调用专用库限定的 `configure-local-preview --order-payments`，构建并启动一个原生补款worker；再次启动会核对精确可执行路径并停止记录的旧worker，防止没有端口的后台进程重复运行。示例默认false，退款/邮件不随此启动。worker PID与日志位于 `logs/retail-native/order-payment-worker.*`。
+
+`--supplement-from-checkpoint=OWNER` 从已付款原客户订单继续真实发货/换机/差额Mollie沙箱付款/替换机发货；会产生一笔新的沙箱补款。`--verify-supplement=OWNER` 只恢复该次保留检查点并运行完成状态worker一次验证无重复账务，不重跑交易。细节和限制见 `docs/migration/local-exchange-supplement-main.md`。

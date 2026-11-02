@@ -29,13 +29,14 @@ func main() {
 	afterSales := flag.Bool("after-sales", false, "Enable existing customer requests, Admin review and device receipt/repair return in the dedicated local preview")
 	warehouses := flag.Bool("warehouse-users", false, "Enable warehouse account management and scoped access in the dedicated local preview")
 	reviews := flag.Bool("reviews", false, "Enable product review reads, customer submissions and Admin moderation in the dedicated local preview")
+	orderPayments := flag.Bool("order-payments", false, "Enable existing customer supplemental payments in the dedicated local Mollie test preview")
 	flag.Parse()
 	_ = godotenv.Load()
 	cfg, err := driver.ParseDSN(os.Getenv("MYSQL_DSN"))
 	if err != nil || os.Getenv("APP_ENV") != "development" || cfg.Net != "tcp" || cfg.Addr != "127.0.0.1:13307" || cfg.DBName != "eurorefurb_local_trial" {
 		log.Fatal("Requires development environment and the dedicated loopback Windows preview database")
 	}
-	if *payments || *contextPayment {
+	if *payments || *contextPayment || *orderPayments {
 		options, e := checkoutconfig.Load(os.Getenv)
 		if e != nil || options == nil || !strings.HasPrefix(os.Getenv("MOLLIE_API_KEY"), "test_") || os.Getenv("MOLLIE_LOCAL_TEST_WITHOUT_WEBHOOK") != "true" {
 			log.Fatal("Valid local Mollie test checkout configuration required")
@@ -46,6 +47,12 @@ func main() {
 				log.Fatal("Explicit local checkout context payment configuration required")
 			}
 		}
+		if *orderPayments {
+			service, err := checkoutconfig.OrderPayments(os.Getenv, options)
+			if err != nil || service == nil {
+				log.Fatal("Explicit local order payment and notification configuration required")
+			}
+		}
 	}
 	db, err := platform.Open()
 	if err != nil {
@@ -54,6 +61,20 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *orderPayments {
+			for _, table := range []string{"order_payment_runtime", "mollie_notification_runtime"} {
+				var row struct{ Version int }
+				if e := tx.Raw("SELECT version FROM " + table + " WHERE id=1 FOR UPDATE").Take(&row).Error; e != nil {
+					return e
+				}
+				if row.Version != 1 {
+					return gorm.ErrInvalidData
+				}
+				if e := tx.Table(table).Where("id=1 AND version=1").Update("enabled", true).Error; e != nil {
+					return e
+				}
+			}
+		}
 		if *reviews {
 			var row struct{ Version int }
 			if e := tx.Raw("SELECT version FROM product_review_runtime WHERE id=1 FOR UPDATE").Take(&row).Error; e != nil {
@@ -256,5 +277,8 @@ func main() {
 	}
 	if *warehouses {
 		log.Print("Local warehouse account management and scoped access enabled; no users, grants, devices or stock created")
+	}
+	if *orderPayments {
+		log.Print("Local customer supplemental payment and observation gates enabled; no instructions, payments or workers created")
 	}
 }

@@ -4,7 +4,7 @@ import {expect} from '@playwright/test'
 import {fileURLToPath} from 'node:url'
 import {lostReply} from './checkout-repair.joint.mjs'
 
-export async function exchangeCheckoutOrder({page,origin,orderID,request,result,index,pack,warehouse,parcel,retryLost,settlePayment,dispatchReplacement}){
+export async function exchangeCheckoutOrder({page,origin,orderID,request,result,index,pack,warehouse,parcel,retryLost,settlePayment,dispatchReplacement,expectedDifference}){
  await page.goto(origin+'/orders/'+orderID)
  const panel=page.getByTestId('order-after-sales');await expect(panel.getByText('Pending',{exact:true})).toBeVisible()
  await panel.getByRole('button',{name:'Save',exact:true}).click();await page.getByRole('button',{name:'Confirm update',exact:true}).click();await expect(panel.locator('.ant-tag')).toHaveText('Processing')
@@ -16,8 +16,9 @@ export async function exchangeCheckoutOrder({page,origin,orderID,request,result,
  await service.getByRole('button',{name:'Assign replacement device',exact:true}).click();const replacement=page.getByRole('dialog').last(),sn='CHECKOUT-DEVICE-'+(index+4),tracking='000-CHECKOUT-EXCHANGE-'+index
  const candidate=replacement.getByRole('combobox',{name:'Replacement device',exact:true});await candidate.fill(sn);await expect(page.locator('.ant-select-item-option').filter({hasText:sn})).toHaveCount(1);await candidate.press('ArrowDown');await candidate.press('Enter')
  const native=await lostReply(page,'**/after-sales/'+request.id+'/devices/*/replacement',replacement,()=>replacement.getByRole('button',{name:'Confirm replacement',exact:true}).click(),'Retry this replacement',()=>expect(replacement.getByText('Replacement device assigned',{exact:true})).toBeVisible())
- assert.equal(native.pending_difference,process.env.CHECKOUT_EXCHANGE_PAYMENT==='1'?'6':process.env.CHECKOUT_EXCHANGE_REFUND==='1'?'-12':'0');assert.ok(native.exchange_id);assert.ok(native.item_id)
- await expect(replacement.getByText('Pending order difference',{exact:true}).locator('..')).toContainText(process.env.CHECKOUT_EXCHANGE_PAYMENT==='1'?'6':process.env.CHECKOUT_EXCHANGE_REFUND==='1'?'-12':'0')
+ const difference=expectedDifference??(process.env.CHECKOUT_EXCHANGE_PAYMENT==='1'?'6':process.env.CHECKOUT_EXCHANGE_REFUND==='1'?'-12':'0')
+ assert.equal(native.pending_difference,difference);assert.ok(native.exchange_id);assert.ok(native.item_id)
+ await expect(replacement.getByText('Pending order difference',{exact:true}).locator('..')).toContainText(difference)
  if(settlePayment){
   await page.reload();await page.getByRole('button',{name:'Create device parcel',exact:true}).click();const unpaid=page.getByRole('dialog')
   await expect(unpaid.getByRole('button',{name:'Pack and deduct stock',exact:true})).toBeDisabled()

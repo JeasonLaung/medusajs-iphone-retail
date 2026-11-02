@@ -13,10 +13,12 @@ import {refundCheckoutOrder,verifyCheckoutRefund} from '../../admin/tests/checko
 import {prepareLocalRefundPayment,resumeLocalRefund} from './local-refund-payment.live.mjs'
 import {fulfillLocalWarehouse} from './local-warehouse.live.mjs'
 import {verifyCheckoutShipment} from '../../admin/tests/checkout-fulfillment.joint.mjs'
+import {settleLocalSupplement} from './local-supplement.live.mjs'
 const logs=process.env.ACCOUNT_TEST_LOGS,owner=process.env.ACCOUNT_TEST_OWNER,customerOwner=process.env.ACCOUNT_TEST_CUSTOMER_OWNER??owner,password='isolated-account-'+customerOwner+'-password',email=`local-account-${customerOwner}-1@example.invalid`
 assert.match(owner??'',/^[0-9a-f]{12}$/)
 const output=pathToFileURL(logs+'/'),errors=[],returning=process.env.ACCOUNT_TEST_SCENARIO==='buyback-return',shop=origin,segment='gb-en',index=1
-const exchange=process.env.ACCOUNT_TEST_SCENARIO==='exchange'
+const supplement=process.env.ACCOUNT_TEST_SCENARIO==='supplement'
+const exchange=['exchange','supplement'].includes(process.env.ACCOUNT_TEST_SCENARIO)
 const refund=process.env.ACCOUNT_TEST_SCENARIO==='refund'
 const warehouse=['warehouse','paid-warehouse'].includes(process.env.ACCOUNT_TEST_SCENARIO)
 const resumePaid=process.env.ACCOUNT_TEST_RESUME_PAID==='true'
@@ -121,6 +123,7 @@ try{
  }else{refundCompleted=true;refundState='refunded'}
  if(refundCompleted)await verifyCheckoutRefund({page,context,shop:origin,orderID,result,request,segment:'gb-en',expectedUnread:4})
  }else if(exchange){
+ if(supplement)execFileSync(process.env.ACCOUNT_TEST_PYTHON,[resolve('../scripts/test-local-customer-account.py'),'--supplement-tax',process.env.ACCOUNT_TEST_DB],{stdio:'pipe'})
  const dispatchReplacement=async(nextSN,nextTracking)=>{
   await admin.getByRole('button',{name:'Create device parcel',exact:true}).click()
   const packing=admin.getByRole('dialog')
@@ -139,13 +142,13 @@ try{
   await expect(shipping.getByText('Parcel operation saved',{exact:true})).toBeVisible()
   return fulfillment
  }
- const replacement=await exchangeCheckoutOrder({page:admin,origin:adminOrigin,orderID,request,result,index:1,dispatchReplacement})
- await verifyCheckoutExchange({page,context,shop:origin,orderID,result,request,replacement,segment:'gb-en',expectedUnread:4})
+ const replacement=await exchangeCheckoutOrder({page:admin,origin:adminOrigin,orderID,request,result,index:1,dispatchReplacement,...(supplement?{expectedDifference:'7.79',settlePayment:()=>settleLocalSupplement({page,context,origin,orderID,logs})}:{})})
+ await verifyCheckoutExchange({page,context,shop:origin,orderID,result,request,replacement,segment:'gb-en',expectedUnread:supplement?5:4})
  }else{
  const returned=await repairCheckoutOrder({page:admin,origin:adminOrigin,orderID,request,result,index:1})
  await verifyCheckoutRepair({page,context,shop:origin,orderID,result,request,tracking:returned,expectedUnread:3})
  }
  assert.deepEqual(errors,[])
- writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:refund?'refund':exchange?'exchange':'repair',request_id:request.id,order_id:orderID,explicit_fixture_ownership:!refund,new_paid_order_attachment_tested:refund,real_mollie_sandbox_refund:refund,refund_completed:refundCompleted,refund_state:refundState,pending_refund_completion_denied:refund&&!refundCompleted,actual_device_allocation_packing_shipping:true,customer_request_admin_receipt_inspection_dispatch_completion:!refund||refundCompleted,customer_repair_tracking:!exchange&&!refund,customer_original_and_replacement_tracking:exchange,lost_reply_original_command_recovery:!existingRefund,browser_errors:0,real_mail_transfer_carrier:false},null,2))
+ writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:supplement?'supplement':refund?'refund':exchange?'exchange':'repair',request_id:request.id,order_id:orderID,explicit_fixture_ownership:!refund&&!resumePaid,new_paid_order_attachment_tested:refund||resumePaid,real_mollie_sandbox_supplement:supplement,real_mollie_sandbox_refund:refund,refund_completed:refundCompleted,refund_state:refundState,pending_refund_completion_denied:refund&&!refundCompleted,actual_device_allocation_packing_shipping:true,customer_request_admin_receipt_inspection_dispatch_completion:!refund||refundCompleted,customer_repair_tracking:!exchange&&!refund,customer_original_and_replacement_tracking:exchange,lost_reply_original_command_recovery:!existingRefund,browser_errors:0,real_mail_transfer_carrier:false},null,2))
  }
 }catch(e){for(const [i,p]of browser.contexts().flatMap(c=>c.pages()).entries()){await p.screenshot({path:resolve(logs,`failure-${i}.png`),fullPage:true}).catch(()=>{});console.error('FAILURE',p.url(),await p.locator('body').innerText().catch(()=>''))}throw e}finally{await browser.close()}

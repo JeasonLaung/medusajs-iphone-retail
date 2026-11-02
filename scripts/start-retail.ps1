@@ -22,6 +22,21 @@ function Test-NodeVersion([string]$exe) {
 }
 
 function Stop-ProjectPorts {
+  # This worker has no TCP listener. Validate its exact executable before
+  # stopping the recorded process; never terminate an unrelated reused PID.
+  $workerPidPath = Join-Path $logRoot 'order-payment-worker.pid'
+  if (Test-Path -LiteralPath $workerPidPath) {
+    $workerPIDValue = 0
+    if (-not [int]::TryParse(([IO.File]::ReadAllText($workerPidPath)).Trim(), [ref]$workerPIDValue) -or $workerPIDValue -le 4) { throw 'Invalid order-payment worker PID record.' }
+    $previousWorker = Get-Process -Id $workerPIDValue -ErrorAction SilentlyContinue
+    if ($previousWorker) {
+      $expectedExecutable = [IO.Path]::GetFullPath((Join-Path $logRoot 'order-payment-worker.exe'))
+      if (-not [string]::Equals($previousWorker.Path, $expectedExecutable, [StringComparison]::OrdinalIgnoreCase)) { throw 'Recorded order-payment worker PID belongs to another executable.' }
+      Stop-Process -Id $workerPIDValue -Force -ErrorAction Stop
+      $previousWorker.WaitForExit()
+    }
+    Remove-Item -LiteralPath $workerPidPath
+  }
   # Ask the legacy supervisors to stop first, so they cannot reclaim old ports.
   foreach ($app in @('backend', 'storefront')) {
     & $script:node (Join-Path $PSScriptRoot 'dev-service.cjs') $app stop
@@ -115,10 +130,25 @@ try {
     & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --reviews
     if ($LASTEXITCODE -ne 0) { throw 'Local product review configuration failed.' }
   }
+  if ($env:LOCAL_PREVIEW_ORDER_PAYMENTS_ENABLED -eq 'true') {
+    & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --order-payments
+    if ($LASTEXITCODE -ne 0) { throw 'Local supplemental payment configuration failed.' }
+  }
   $binary = Join-Path $logRoot 'retail-api.exe'
   & $go -C (Join-Path $retailRoot 'backend') build -o $binary ./cmd/api
   if ($LASTEXITCODE -ne 0) { throw 'Gin API compilation failed.' }
   Start-LocalApp 'api' $binary @() (Join-Path $retailRoot 'backend') 'http://127.0.0.1:9100/health'
+  if ($env:LOCAL_PREVIEW_ORDER_PAYMENTS_ENABLED -eq 'true') {
+    $workerBinary = Join-Path $logRoot 'order-payment-worker.exe'
+    & $go -C (Join-Path $retailRoot 'backend') build -o $workerBinary ./cmd/process-order-payments
+    if ($LASTEXITCODE -ne 0) { throw 'Supplemental payment worker compilation failed.' }
+    $paymentWorker = Start-Process -FilePath $workerBinary -WorkingDirectory (Join-Path $retailRoot 'backend') -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $logRoot 'order-payment-worker.out.log') -RedirectStandardError (Join-Path $logRoot 'order-payment-worker.err.log')
+    Set-Content -LiteralPath (Join-Path $logRoot 'order-payment-worker.pid') -Value $paymentWorker.Id
+    Start-Sleep -Seconds 2
+    $paymentWorker.Refresh()
+    if ($paymentWorker.HasExited) { throw 'Supplemental payment worker exited. Inspect its native logs.' }
+    Write-Host 'Native supplemental payment worker ready.'
+  }
   Start-LocalApp 'admin' $node @('node_modules/vite/bin/vite.js','--host','127.0.0.1','--port','9200','--strictPort') (Join-Path $retailRoot 'admin') 'http://127.0.0.1:9200'
   Read-Environment (Join-Path $retailRoot 'storefront\.env')
   Start-LocalApp 'storefront' $node @('node_modules/astro/bin/astro.mjs','dev','--host','127.0.0.1','--port','9300') (Join-Path $retailRoot 'storefront') 'http://127.0.0.1:9300/dk-en/store'
