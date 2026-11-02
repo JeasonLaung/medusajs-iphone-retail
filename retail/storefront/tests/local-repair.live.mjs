@@ -11,6 +11,7 @@ import {requestCheckoutAfterSales,repairCheckoutOrder,verifyCheckoutRepair} from
 import {exchangeCheckoutOrder,verifyCheckoutExchange} from '../../admin/tests/checkout-exchange.joint.mjs'
 import {refundCheckoutOrder,verifyCheckoutRefund} from '../../admin/tests/checkout-refund.joint.mjs'
 import {prepareLocalRefundPayment,resumeLocalRefund} from './local-refund-payment.live.mjs'
+import {intakePaidWarehouseDevices} from './local-paid-intake.live.mjs'
 import {fulfillLocalWarehouse} from './local-warehouse.live.mjs'
 import {verifyCheckoutShipment} from '../../admin/tests/checkout-fulfillment.joint.mjs'
 import {settleLocalSupplement} from './local-supplement.live.mjs'
@@ -20,7 +21,8 @@ const output=pathToFileURL(logs+'/'),errors=[],returning=process.env.ACCOUNT_TES
 const supplement=process.env.ACCOUNT_TEST_SCENARIO==='supplement'
 const exchange=['exchange','supplement'].includes(process.env.ACCOUNT_TEST_SCENARIO)
 const refund=process.env.ACCOUNT_TEST_SCENARIO==='refund'
-const warehouse=['warehouse','paid-warehouse'].includes(process.env.ACCOUNT_TEST_SCENARIO)
+const intakeWarehouse=process.env.ACCOUNT_TEST_SCENARIO==='intake-warehouse'
+const warehouse=['warehouse','paid-warehouse','intake-warehouse'].includes(process.env.ACCOUNT_TEST_SCENARIO)
 const resumePaid=process.env.ACCOUNT_TEST_RESUME_PAID==='true'
 const existingRefund=process.env.ACCOUNT_TEST_REFUND_EXISTING==='true'
 let refundCompleted=false,refundState
@@ -62,7 +64,7 @@ try{
   // The copied real Mollie guest order must not become this account's property.
   assert.equal((await context.request.get(shop+'/api/store/customer/orders/order_8bffc6dc-112e-4ed5-8a32-57421bc2ae4d')).status(),404)
 
- const orderID=resumePaid?JSON.parse(readFileSync(resolve(logs,'refund-new-paid-order.json'),'utf8')).order_id:refund?await prepareLocalRefundPayment({page,context,origin,email,logs}):'order_8bffc6dc-112e-4ed5-8a32-57421bc2ae4d',sn='ISOLATED-REPAIR-001',tracking='ISOLATED-REPAIR-OUTBOUND-001'
+ const orderID=resumePaid?JSON.parse(readFileSync(resolve(logs,'refund-new-paid-order.json'),'utf8')).order_id:refund?await prepareLocalRefundPayment({page,context,origin,email,logs}):'order_8bffc6dc-112e-4ed5-8a32-57421bc2ae4d',sn=intakeWarehouse?'NATIVE-PAID-INTAKE-001':'ISOLATED-REPAIR-001',tracking='ISOLATED-REPAIR-OUTBOUND-001'
  if(resumePaid)assert.equal((await context.request.get(origin+'/api/store/customer/orders/'+orderID)).status(),200)
  if(!refund&&!resumePaid)execFileSync(process.env.ACCOUNT_TEST_PYTHON,[resolve('../scripts/test-local-customer-account.py'),'--prepare-repair-owner',process.env.ACCOUNT_TEST_DB,email],{stdio:'pipe'})
  const credentials=readFileSync(resolve('../../.private-files/local/admin-credentials.txt'),'utf8')
@@ -73,6 +75,7 @@ try{
  await admin.getByLabel('Email',{exact:true}).fill(credential('Email'));await admin.getByLabel('Password',{exact:true}).fill(credential('Password'));await admin.getByRole('button',{name:'Sign in',exact:true}).click()
  await expect(admin.getByRole('button',{name:'Sign out',exact:true})).toBeVisible()
  await admin.goto(adminOrigin+'/orders/'+orderID)
+ const intakeFacts=intakeWarehouse?await intakePaidWarehouseDevices({admin,origin:adminOrigin,owner,orderID,expect}):{}
  if(!existingRefund){
  await expect(admin.getByRole('button',{name:'Allocate devices',exact:true})).toBeVisible()
  await admin.getByRole('button',{name:'Allocate devices',exact:true}).click()
@@ -81,14 +84,14 @@ try{
  const allocation=admin.waitForResponse(r=>r.request().method()==='POST'&&r.url().endsWith('/allocation'))
  await dialog.getByRole('button',{name:'Save device reservation',exact:true}).click()
  assert.equal((await allocation).status(),200)
- await expect(dialog.getByText('isolated-repair-device',{exact:true})).toBeVisible()
+ await expect(dialog.getByText(intakeFacts.intake_device_id??'isolated-repair-device',{exact:true})).toBeVisible()
  await dialog.getByRole('button',{name:'Cancel',exact:true}).click()
  if(warehouse){
- const result=await fulfillLocalWarehouse({browser,admin,origin:adminOrigin,orderID,owner,sn,tracking,errors})
+ const result=await fulfillLocalWarehouse({browser,admin,origin:adminOrigin,orderID,owner,sn,tracking,errors,...(intakeWarehouse?{locationID:intakeFacts.intake_location_id,spareSN:'NATIVE-PAID-INTAKE-002',deviceID:intakeFacts.intake_device_id}:{})})
  await page.goto(origin+'/gb-en/account/orders/details/'+orderID)
  await verifyCheckoutShipment({page,context,shop:origin,orderID,result,expect})
  assert.deepEqual(errors,[])
- writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:resumePaid?'paid-warehouse':'warehouse',order_id:orderID,explicit_fixture_ownership:!resumePaid,new_paid_order_attachment_tested:resumePaid,paid_checkpoint_continuation:resumePaid,...result,customer_tracking_and_notice:true,browser_errors:0,real_mail_transfer_carrier:false},null,2))
+ writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:intakeWarehouse?'intake-warehouse':resumePaid?'paid-warehouse':'warehouse',...intakeFacts,order_id:orderID,explicit_fixture_ownership:!resumePaid,new_paid_order_attachment_tested:resumePaid,paid_checkpoint_continuation:resumePaid,...result,customer_tracking_and_notice:true,browser_errors:0,real_mail_transfer_carrier:false},null,2))
  }else{
  await admin.getByRole('button',{name:'Create device parcel',exact:true}).click()
  dialog=admin.getByRole('dialog');await dialog.getByRole('row').filter({hasText:sn}).getByRole('checkbox').check()

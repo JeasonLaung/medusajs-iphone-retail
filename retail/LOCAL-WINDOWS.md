@@ -93,3 +93,5 @@ Mollie无法访问loopback webhook，本机test模式省略该参数，通过真
 ### 仓库及设备来源入口
 
 LOCAL_PREVIEW_WAREHOUSE_MANAGEMENT_ENABLED=true使start.bat显式开启既有仓库管理，独立于仓库员工开关。要求专用本地development库及既有设备身份/命令已就绪；不创建仓库或设备。后台http://127.0.0.1:9200/warehouses可管理仓库和设备来源。设备登记保留原独立数量库存语义；新入库验收使用`python retail/scripts/test-local-customer-account.py --scenario=device-entry`隔离副本。
+
+仓库表“配置配送”可显式关联已有配送方案；新设备来源自动建仓后，还需按实际服务区域配置此关系，才可按对应订单方案装包。不会自动改变其他仓库配置。使用`--intake-warehouse-from-checkpoint=OWNER`从已付款检查点验证实际入库到发货，`--verify-intake-delivery=OWNER`仅恢复完成快照核对当前配送关联服务，不重走支付或配货。

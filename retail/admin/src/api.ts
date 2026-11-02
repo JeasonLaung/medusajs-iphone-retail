@@ -704,3 +704,16 @@ export async function saveInventoryLinks(p:string,v:string,body:InventoryLinksIn
  const d=await request<{revision:string;replayed:boolean}>(inventoryLinksPath(p,v),{method:'POST',csrf,body},'/api/admin/')
  if(!d||typeof d.revision!=='string'||!/^[a-f0-9]{64}$/.test(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
 }
+
+export type WarehouseDelivery={revision:string;location_id:string;sets:{id:string;name:string;linked:boolean}[]}
+export type WarehouseDeliveryCommand={operation_id:string;expected_revision:string;location_id:string;set_id:string}
+export async function warehouseDelivery(id:string,signal?:AbortSignal):Promise<WarehouseDelivery>{
+ const d=await request<WarehouseDelivery>(`warehouses/${encodeURIComponent(id)}/delivery-sets`,{signal},'/api/admin/')
+ if(!d||d.location_id!==id||!warehouseRevision(d.revision)||!Array.isArray(d.sets)||d.sets.length>1000||d.sets.some(s=>!warehouseID(s.id)||typeof s.name!=='string'||typeof s.linked!=='boolean'))throw new APIError(0,'request.invalid_response')
+ return d
+}
+export async function linkWarehouseDelivery(body:WarehouseDeliveryCommand):Promise<void>{
+ const csrf=csrfCookie();if(!csrf)throw new APIError(403,'auth.invalid_csrf')
+ const d=await request<{id:string;revision:string;replayed:boolean}>(`warehouses/${encodeURIComponent(body.location_id)}/delivery-sets`,{method:'POST',body,csrf},'/api/admin/')
+ if(!d||d.id!==body.location_id||!warehouseRevision(d.revision)||typeof d.replayed!=='boolean')throw new APIError(0,'request.invalid_response')
+}

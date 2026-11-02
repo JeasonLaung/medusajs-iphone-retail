@@ -191,6 +191,8 @@ func routerWithHandlers(db *gorm.DB, logger *slog.Logger, auth *identity.Handler
 	private.POST("/products/:id/variants/:variant_id/device-tracking", (devices.Handler{DB: db}).EnrollHTTP)
 	private.GET("/warehouse/locations/:location_id/inventory", (inventory.Handler{DB: db}).WarehouseInventory)
 	private.POST("/warehouse/locations/:location_id/inventory/:id/stock", (inventory.Handler{DB: db}).UpdateWarehouseStock)
+	private.GET("/warehouses/:id/delivery-sets", access.Require(authorization.WarehouseRead), (warehouse.Handler{DB: db}).DeliveryHTTP)
+	private.POST("/warehouses/:id/delivery-sets", access.Require(authorization.WarehouseRead, authorization.WarehouseWrite), (warehouse.Handler{DB: db}).DeliveryHTTP)
 	private.GET("/warehouses", access.Require(authorization.WarehouseRead), (warehouse.Handler{DB: db}).Directory)
 	private.POST("/warehouses", access.Require(authorization.WarehouseRead, authorization.WarehouseWrite), (warehouse.Handler{DB: db}).Command)
 	private.GET("/warehouse-users", access.Require(authorization.Read, authorization.WarehouseRead), (warehouseusers.Handler{DB: db}).Directory)

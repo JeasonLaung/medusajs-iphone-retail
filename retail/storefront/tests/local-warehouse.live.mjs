@@ -2,9 +2,8 @@ import assert from 'node:assert/strict'
 import {expect as baseExpect} from '../../admin/node_modules/@playwright/test/index.mjs'
 const expect=baseExpect.configure({timeout:15000})
 
-export async function fulfillLocalWarehouse({browser,admin,origin,orderID,owner,sn,tracking,errors}){
+export async function fulfillLocalWarehouse({browser,admin,origin,orderID,owner,sn,tracking,errors,locationID='sloc_01M4FBP3NDPZHJKVV3VY682QTN',spareSN='CHECKOUT-DEVICE-5',deviceID='isolated-repair-device'}){
  assert.equal(origin,'http://127.0.0.1:19200')
- const locationID='sloc_01M4FBP3NDPZHJKVV3VY682QTN'
  const pack=async()=>{
   await admin.getByRole('button',{name:'Create device parcel',exact:true}).click()
   const drawer=admin.getByRole('dialog')
@@ -38,7 +37,7 @@ export async function fulfillLocalWarehouse({browser,admin,origin,orderID,owner,
   await page.getByRole('button',{name:'Sign in',exact:true}).click();await expect(page.getByRole('button',{name:'Sign out',exact:true})).toBeVisible()
   for(const path of ['/api/admin/orders','/api/admin/orders/'+orderID,'/api/admin/warehouse-users'])assert.equal((await worker.request.get(origin+path)).status(),403)
   assert.equal((await worker.request.get(origin+'/api/admin/warehouse/locations/'+other.id+'/fulfillments?q=&offset=0')).status(),403)
-  // The shared European location is the only authorized scope.
+  // Only the selected location is authorized.
   const access=await worker.request.get(origin+'/api/admin/warehouse/access');assert.equal(access.status(),200)
   const scope=await access.json();assert.deepEqual(scope.locations.map(l=>l.id),[locationID])
   const parcel=async id=>{
@@ -62,10 +61,10 @@ export async function fulfillLocalWarehouse({browser,admin,origin,orderID,owner,
   let drawer=await parcel(canceled)
   const allocation=drawer.getByTestId('warehouse-allocation')
   await allocation.getByRole('row').filter({hasText:sn}).getByRole('checkbox').uncheck()
-  await allocation.getByRole('row').filter({hasText:'CHECKOUT-DEVICE-5'}).getByRole('checkbox').check()
-  await retryLost('**/allocation',allocation,()=>allocation.getByRole('button',{name:'Save',exact:true}).click(),()=>expect(allocation.getByRole('row').filter({hasText:'CHECKOUT-DEVICE-5'}).getByRole('checkbox')).toBeChecked())
+  await allocation.getByRole('row').filter({hasText:spareSN}).getByRole('checkbox').check()
+  await retryLost('**/allocation',allocation,()=>allocation.getByRole('button',{name:'Save',exact:true}).click(),()=>expect(allocation.getByRole('row').filter({hasText:spareSN}).getByRole('checkbox')).toBeChecked())
   // Restore the original identity without deducting quantity stock again.
-  await allocation.getByRole('row').filter({hasText:'CHECKOUT-DEVICE-5'}).getByRole('checkbox').uncheck()
+  await allocation.getByRole('row').filter({hasText:spareSN}).getByRole('checkbox').uncheck()
   await allocation.getByRole('row').filter({hasText:sn}).getByRole('checkbox').check()
   const saved=page.waitForResponse(r=>r.request().method()==='POST'&&r.url().endsWith('/allocation'))
   await allocation.getByRole('button',{name:'Save',exact:true}).click();assert.equal((await saved).status(),200)
@@ -79,7 +78,7 @@ export async function fulfillLocalWarehouse({browser,admin,origin,orderID,owner,
   const reserve=admin.getByRole('dialog');await reserve.getByRole('row').filter({hasText:sn}).getByRole('checkbox').check()
   const reserved=admin.waitForResponse(r=>r.request().method()==='POST'&&r.url().endsWith('/allocation'))
   await reserve.getByRole('button',{name:'Save device reservation',exact:true}).click();assert.equal((await reserved).status(),200)
-  await expect(reserve.getByRole('row').filter({hasText:'isolated-repair-device'}).filter({hasText:'Reserved'})).toBeVisible()
+  await expect(reserve.getByRole('row').filter({hasText:deviceID}).filter({hasText:'Reserved'})).toBeVisible()
   await reserve.getByRole('button',{name:'Cancel',exact:true}).click()
   const shipped=await pack();assert.notEqual(shipped,canceled)
   drawer=await parcel(shipped);const shipping=drawer.getByTestId('warehouse-shipment')

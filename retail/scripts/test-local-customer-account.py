@@ -460,19 +460,54 @@ def verify_completed_refund_checkpoint(owner):
     print('Completed real refund and current worker restart verified: ' + owner)
 
 
+def verify_intake_delivery_checkpoint(owner):
+    values = config()
+    if not re.fullmatch(r'[0-9a-f]{12}', owner):
+        raise RuntimeError('Owned intake checkpoint required')
+    logs = ROOT / 'logs/retail-native' / ('account-' + owner)
+    run = json.loads((logs / 'report.json').read_text())
+    location = run.get('intake_location_id', '')
+    if not run.get('passed') or run.get('scenario') != 'intake-warehouse' or not re.fullmatch(r'sloc_[0-9a-f-]{36}', location):
+        raise RuntimeError('Successful real intake warehouse checkpoint required')
+    database = 'retail_account_' + secrets.token_hex(6)
+    snapshot = '/tmp/intake-verify-' + database + '.sql'
+    created = False
+    try:
+        docker('cp', str(logs / 'payment-context-final.sql'), CONTAINER + ':' + snapshot)
+        docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'CREATE DATABASE ' + database + "; GRANT ALL ON " + database + ".* TO 'retail_local'@'%';")
+        created = True
+        docker('exec', CONTAINER, 'sh', '-c', 'mysql --defaults-extra-file=/tmp/local-root.cnf ' + database + ' < ' + snapshot)
+        before = warehouse_payment_fingerprint(database)
+        env = dict(os.environ, **values)
+        env.update(MYSQL_DSN=values['MYSQL_DSN'].replace('/eurorefurb_local_trial?', '/' + database + '?'), WINDOWS_DELIVERY_RECOVERY='1', WINDOWS_DELIVERY_LOCATION=location)
+        result = subprocess.run(['go', 'test', './internal/warehouse', '-run', '^TestOwnedWindowsDeliveryRecovery$', '-count=1', '-v'], cwd=ROOT / 'retail/backend', env=env, capture_output=True, timeout=90)
+        (logs / 'delivery-recovery.log').write_bytes(result.stdout + result.stderr)
+        if result.returncode or warehouse_payment_fingerprint(database) != before:
+            raise RuntimeError('Delivery recovery failed or payment facts changed')
+        report = {'passed': True, 'owner': owner, 'current_backend_service_test': True, 'concurrent_calls': 6, 'fresh_receipt': 1, 'replayed_receipts': 5, 'stale_and_changed_commands_rejected': True, 'warehouse_principal_denied': True, 'late_failure_rollback': True, 'soft_deleted_link_restored_once': True, 'protected_payment_ownership_unchanged': True, 'checkout_or_warehouse_flow_replayed': False}
+    finally:
+        if created:
+            docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'DROP DATABASE ' + database + "; REVOKE ALL ON " + database + ".* FROM 'retail_local'@'%';")
+        docker('exec', CONTAINER, 'rm', '-f', snapshot)
+    report['resources_removed'] = True
+    (logs / 'delivery-recovery-report.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+    print('Intake delivery checkpoint verified: ' + owner)
+
+
 def main(language, scenario='account', resume=None):
+    intake_warehouse = scenario == 'intake-warehouse'
     device_entry = scenario == 'device-entry'
     product_entry = scenario in ('product-entry', 'device-entry')
     mail = scenario == 'mail'
     reviews = scenario == 'reviews'
-    paid_warehouse = scenario == 'paid-warehouse'
+    paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
     supplement = scenario == 'supplement'
-    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'supplement')
+    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement')
     buyback = scenario in ('buyback', 'buyback-return')
     exchange = scenario in ('exchange', 'supplement')
     refund = scenario == 'refund'
-    warehouse = scenario in ('warehouse', 'paid-warehouse')
-    repair = scenario in ('repair', 'exchange', 'refund', 'warehouse', 'paid-warehouse', 'supplement')
+    warehouse = scenario in ('warehouse', 'paid-warehouse', 'intake-warehouse')
+    repair = scenario in ('repair', 'exchange', 'refund', 'warehouse', 'paid-warehouse', 'intake-warehouse', 'supplement')
     admin_required = buyback or repair or mail or reviews or product_entry
     values = config()
     api_binary = Path(os.environ.get('ACCOUNT_TEST_API_BINARY') or ROOT / 'logs/retail-native/retail-api.exe').resolve()
@@ -576,7 +611,7 @@ def main(language, scenario='account', resume=None):
                 if len(row) != 2 or not re.fullmatch(r'asr_[0-9a-f-]{36}', row[0]) or not re.fullmatch(r'[0-9a-f-]{36}', row[1]):
                     raise RuntimeError('Owned refund receipt identity mismatch')
                 (logs / 'refund-existing.json').write_text(json.dumps({'request_id': row[0], 'operation_id': row[1]}))
-        if repair and (not resume or paid_warehouse or supplement):
+        if repair and not intake_warehouse and (not resume or paid_warehouse or supplement):
             sql(database, "UPDATE customer_after_sales_runtime SET enabled=TRUE WHERE id=1; "
                 "UPDATE after_sales_review_runtime SET enabled=TRUE WHERE id=1; "
                 "UPDATE device_return_runtime SET enabled=TRUE WHERE id=1; "
@@ -622,6 +657,8 @@ def main(language, scenario='account', resume=None):
         # Real sandbox refunds must use a freshly paid order in this copy,
         # never the remote payment belonging to the source preview order.
         env['ORDER_REFUNDS_ENABLED'] = 'true' if refund else 'false'
+        if intake_warehouse:
+            sql(database, 'UPDATE warehouse_management_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE warehouse_user_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE warehouse_scope_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE inventory_command_capabilities SET enabled=TRUE WHERE command=\'inventory.create_level\' AND version=1')
         if device_entry:
             sql(database, 'UPDATE warehouse_management_runtime SET enabled=TRUE WHERE id=1 AND version=1')
         if product_entry:
@@ -794,6 +831,17 @@ def main(language, scenario='account', resume=None):
                 'unused_replacement': "SELECT COUNT(*) FROM devices WHERE id='isolated-exchange-device' AND state='available'",
                 'stock_once': "SELECT COUNT(*) FROM inventory_levels WHERE inventory_item_id='iitem_01M51RN7HTPYQ7YFPXABBF8VJ8' AND location_id='sloc_01M4FBP3NDPZHJKVV3VY682QTN' AND stocked_quantity=" + expected_stock + " AND reserved_quantity=" + expected_reserved + " AND deleted_at IS NULL",
             }
+            if intake_warehouse:
+                device, spare, location = report['intake_device_id'], report['intake_spare_id'], report['intake_location_id']
+                if not all(re.fullmatch(pattern, value) for pattern, value in [(r'dev_[0-9a-f-]{36}', device), (r'dev_[0-9a-f-]{36}', spare), (r'sloc_[0-9a-f-]{36}', location)]):
+                    raise RuntimeError('Owned intake result identity invalid')
+                checks['shipped_device'] = checks['shipped_device'].replace('isolated-repair-device', device)
+                checks['unused_replacement'] = checks['unused_replacement'].replace('isolated-exchange-device', spare)
+                checks['stock_once'] = checks['stock_once'].replace('stocked_quantity=' + expected_stock, 'stocked_quantity=' + stock_before[0])
+                checks['intake_stock'] = "SELECT COUNT(*) FROM inventory_levels WHERE inventory_item_id='iitem_01M51RN7HTPYQ7YFPXABBF8VJ8' AND location_id='" + location + "' AND stocked_quantity=1 AND reserved_quantity=0 AND deleted_at IS NULL"
+                checks['intake_batch'] = "SELECT COUNT(*) FROM device_intake_changes WHERE variant_id='variant_01M51RN7H7HPV9RH69T32QMD2Q'"
+                checks['intake_photo'] = "SELECT COUNT(*) FROM device_photos"
+                checks['return_inspection'] = "SELECT COUNT(*) FROM devices WHERE location_id='" + location + "' AND category='returned' AND state='inspection'"
             facts = {name: int(sql(database, query)) for name, query in checks.items()}
             if any(value != 1 for value in facts.values()):
                 raise RuntimeError('Warehouse terminal facts differ: ' + str(facts))
@@ -803,7 +851,7 @@ def main(language, scenario='account', resume=None):
                     raise RuntimeError('Paid order, ownership or payment facts changed during fulfillment')
                 report['paid_checkpoint_financial_and_ownership_unchanged'] = True
                 report['stock_before'] = stock_before
-                report['stock_after'] = [expected_stock, expected_reserved]
+                report['stock_after'] = [stock_before[0] if intake_warehouse else expected_stock, expected_reserved]
         if repair and not warehouse:
             request = report['request_id']
             if not re.fullmatch(r'[A-Za-z0-9_-]{1,191}', request):
@@ -957,6 +1005,10 @@ if __name__ == '__main__':
         main('en', 'refund')
     elif sys.argv[1:] == ['--scenario=warehouse']:
         main('en', 'warehouse')
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-intake-delivery='):
+        verify_intake_delivery_checkpoint(sys.argv[1].split('=', 1)[1])
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--intake-warehouse-from-checkpoint='):
+        main('en', 'intake-warehouse', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--warehouse-from-checkpoint='):
         main('en', 'paid-warehouse', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--supplement-from-checkpoint='):
