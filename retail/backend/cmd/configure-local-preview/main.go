@@ -19,6 +19,7 @@ import (
 	driver "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 func main() {
@@ -33,6 +34,7 @@ func main() {
 	orderPayments := flag.Bool("order-payments", false, "Enable existing customer supplemental payments in the dedicated local Mollie test preview")
 	refunds := flag.Bool("refunds", false, "Enable existing refund commands in the dedicated local Mollie test preview")
 	notificationMail := flag.Bool("notification-mail", false, "Validate explicit notification mailbox management without starting mail workers")
+	productEntry := flag.Bool("product-entry", false, "Enable existing product, SKU, price and initial inventory entry in the dedicated local preview")
 	flag.Parse()
 	_ = godotenv.Load()
 	cfg, err := driver.ParseDSN(os.Getenv("MYSQL_DSN"))
@@ -78,6 +80,34 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *productEntry {
+			for table, commands := range map[string][]string{
+				"catalog_command_capabilities":   {"product.create"},
+				"inventory_command_capabilities": {"inventory.create_level"},
+			} {
+				for _, command := range commands {
+					var row struct{ Version int }
+					if e := tx.Table(table).Where("command=?", command).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&row).Error; e != nil || row.Version != 1 {
+						return gorm.ErrInvalidData
+					}
+					if e := tx.Table(table).Where("command=? AND version=1", command).Update("enabled", true).Error; e != nil {
+						return e
+					}
+				}
+			}
+			for _, table := range []string{"catalog_variant_create_runtime", "catalog_price_edit_runtime"} {
+				var row struct {
+					Version  int
+					Revision uint64
+				}
+				if e := tx.Table(table).Where("id=1").Clauses(clause.Locking{Strength: "UPDATE"}).Take(&row).Error; e != nil || row.Version != 1 || row.Revision == 0 {
+					return gorm.ErrInvalidData
+				}
+				if e := tx.Table(table).Where("id=1 AND version=1").Update("enabled", true).Error; e != nil {
+					return e
+				}
+			}
+		}
 		if *notificationMail {
 			var row struct{ Revision uint64 }
 			if e := tx.Raw("SELECT revision FROM notification_mail_settings WHERE id=1 FOR SHARE").Take(&row).Error; e != nil {
@@ -324,5 +354,8 @@ func main() {
 	}
 	if *notificationMail {
 		log.Print("Local notification mailbox management ready; sender credentials and mail workers remain independent")
+	}
+	if *productEntry {
+		log.Print("Local product entry gates enabled; no products, prices, inventory or reservations created")
 	}
 }

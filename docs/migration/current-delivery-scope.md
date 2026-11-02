@@ -322,3 +322,5 @@ C06 增加 [Mollie 通知消费及独立 worker](mollie-checkout-consumer.md)：
 
 
 2026-11-02 接续：[Windows通知邮箱配置可用](local-mailbox-configuration.md)主/mailboxes实际API及中英桌面/手机只读检查通过，添加编辑器空密钥/取消与原pending任务可见；新持久MERCHANT keyring及显式启动校验已配置，未创建邮箱或启用发信worker。隔离邮箱保存→注册正文链接验证→订单拒绝/同指令重试回归通过，Resend传输仍为替身。运行器显式关闭非付款场景的付款上下文开关，修复继承主配置导致副本启动失败。真实Resend/收件及C10/C01—C11其余缺口继续。
+
+2026-11-02 接续：[Windows商品录入主流程](local-product-entry-main.md)恢复主新建商品/SKU/基础价/初始仓库库存四项开关并接start.bat，隔离实际Ant建商品→SKU→18位精确价格→European库存3→Astro中英手机可售通过。四收据各1，主八表指纹及十二账户表不变，自有资源清理；主中英桌面/手机只读入口检查通过，原库存50/预留1。此轮不含图片上传/加购付款，C03/C05/C11及整期剩余继续。

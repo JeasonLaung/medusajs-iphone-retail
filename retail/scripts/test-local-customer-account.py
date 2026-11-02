@@ -461,6 +461,7 @@ def verify_completed_refund_checkpoint(owner):
 
 
 def main(language, scenario='account', resume=None):
+    product_entry = scenario == 'product-entry'
     mail = scenario == 'mail'
     reviews = scenario == 'reviews'
     paid_warehouse = scenario == 'paid-warehouse'
@@ -471,7 +472,7 @@ def main(language, scenario='account', resume=None):
     refund = scenario == 'refund'
     warehouse = scenario in ('warehouse', 'paid-warehouse')
     repair = scenario in ('repair', 'exchange', 'refund', 'warehouse', 'paid-warehouse', 'supplement')
-    admin_required = buyback or repair or mail or reviews
+    admin_required = buyback or repair or mail or reviews or product_entry
     values = config()
     api_binary = Path(os.environ.get('ACCOUNT_TEST_API_BINARY') or ROOT / 'logs/retail-native/retail-api.exe').resolve()
     if not api_binary.is_relative_to((ROOT / 'logs/retail-native').resolve()) or api_binary.suffix != '.exe' or not api_binary.is_file():
@@ -522,6 +523,9 @@ def main(language, scenario='account', resume=None):
     processes, streams = [], []
     created = False
     source_counts = source_account_counts()
+    def entry_source_fingerprint():
+        return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', 'eurorefurb_local_trial', 'catalog_products', 'catalog_variants', 'pricing_prices', 'inventory_levels', 'catalog_product_edits', 'catalog_variant_creations', 'catalog_price_edits', 'inventory_level_creations')).hexdigest()
+    entry_source_before = entry_source_fingerprint() if product_entry else None
     report = {'owner': owner, 'database': database, 'real_email_delivery': False,
               'business_api_mocking': False, 'main_database_modified': False,
               'api_sha256': hashlib.sha256(api_binary.read_bytes()).hexdigest()}
@@ -617,6 +621,8 @@ def main(language, scenario='account', resume=None):
         # Real sandbox refunds must use a freshly paid order in this copy,
         # never the remote payment belonging to the source preview order.
         env['ORDER_REFUNDS_ENABLED'] = 'true' if refund else 'false'
+        if product_entry:
+            sql(database, "UPDATE catalog_command_capabilities SET enabled=TRUE WHERE command='product.create' AND version=1; UPDATE inventory_command_capabilities SET enabled=TRUE WHERE command='inventory.create_level' AND version=1; UPDATE catalog_variant_create_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE catalog_price_edit_runtime SET enabled=TRUE WHERE id=1 AND version=1")
         if mail:
             env['NOTIFICATION_MAIL_ENABLED'] = 'true'
             # Fresh mailbox encryption belongs only to this disposable database.
@@ -710,6 +716,8 @@ def main(language, scenario='account', resume=None):
         if resume and payment_context:
             browser_env['ACCOUNT_TEST_CUSTOMER_OWNER'] = customer_owner
             script = 'tests/local-payment-context-resume.live.mjs'
+        if product_entry:
+            script = 'tests/local-product-entry.live.mjs'
         if reviews:
             script = 'tests/local-product-reviews.live.mjs'
         if paid_warehouse or supplement:
@@ -723,7 +731,15 @@ def main(language, scenario='account', resume=None):
         report.update(json.loads((logs / 'browser-result.json').read_text()))
         report['verified_accounts'] = int(sql(database, "SELECT COUNT(*) FROM customer_accounts "
              "WHERE email LIKE 'local-account-" + customer_owner + "-%@example.invalid' AND verified_at IS NOT NULL"))
-        if report['verified_accounts'] != 1:
+        if product_entry:
+            product = report['product_id']
+            if not re.fullmatch(r'prod_[0-9a-f-]{36}', product):
+                raise RuntimeError('Owned created product identity invalid')
+            facts = sql(database, "SELECT (SELECT COUNT(*) FROM catalog_product_edits WHERE product_id='" + product + "'),(SELECT COUNT(*) FROM catalog_variant_creations WHERE product_id='" + product + "'),(SELECT COUNT(*) FROM catalog_price_edits WHERE product_id='" + product + "'),(SELECT COUNT(*) FROM inventory_level_creations WHERE product_id='" + product + "')").split('\t')
+            if facts != ['1', '1', '1', '1']:
+                raise RuntimeError('Expected unique product, SKU, price and stock receipts')
+            report['sql_entry_receipts'] = dict(zip(['product', 'variant', 'price', 'stock'], map(int, facts)))
+        if report['verified_accounts'] != (0 if product_entry else 1):
             raise RuntimeError('Expected exactly one newly verified fixture account')
         if payment_context and not (reviews or paid_warehouse or supplement):
             cart_id, order_id = report['cart_id'], report['order_id']
@@ -889,6 +905,11 @@ def main(language, scenario='account', resume=None):
             docker('exec', CONTAINER, 'rm', '-f', '/tmp/account-' + owner + '.sql')
         except Exception:
             cleanup_errors.append('database cleanup')
+        if product_entry:
+            report['source_product_entry_unchanged'] = entry_source_fingerprint() == entry_source_before
+            if not report['source_product_entry_unchanged']:
+                report['passed'] = False
+                cleanup_errors.append('source catalog changed during rehearsal')
         report['source_account_counts_before'] = source_counts
         report['source_account_counts_after'] = source_account_counts()
         report['resources_removed'] = not cleanup_errors
@@ -941,6 +962,8 @@ if __name__ == '__main__':
         sql(database, "INSERT INTO tax_rates(id,rate,code,name,is_default,is_combinable,tax_region_id,created_at,updated_at) VALUES('isolated-supplement-tax',1,'isolated','Isolated exchange tax',TRUE,FALSE,'txreg_01M4FBP3N26K57MNJK7SJC376H',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-paid-warehouse='):
         verify_paid_warehouse_checkpoint(sys.argv[1].split('=', 1)[1])
+    elif sys.argv[1:] == ['--scenario=product-entry']:
+        main('en', 'product-entry')
     elif sys.argv[1:] == ['--scenario=mail']:
         main('en', 'mail')
     elif sys.argv[1:] == ['--scenario=payment-context']:

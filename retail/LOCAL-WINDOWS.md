@@ -85,3 +85,7 @@ Mollie无法访问loopback webhook，本机test模式省略该参数，通过真
 ## 通知邮箱配置入口
 
 当前本机已启用 `NOTIFICATION_MAIL_ENABLED=true`、`LOCAL_PREVIEW_NOTIFICATION_MAIL_ENABLED=true`，新独立持久MERCHANT keyring保存在忽略.env。start.bat校验该配置及已有邮件设置，不创建邮箱、不启动发信worker。可在 `http://127.0.0.1:9200/mailboxes` 配置Resend发信账户、查看订单邮件任务和原失败重试入口；主库目前空邮箱/1条pending订单邮件。注册和订单邮件worker仍关闭，未发送真实邮件。详情及只读启动验收见 `docs/migration/local-mailbox-configuration.md`。
+
+### 商品录入入口
+
+本机忽略.env的LOCAL_PREVIEW_PRODUCT_ENTRY_ENABLED=true使start.bat显式开启既有商品创建、SKU创建、基础价录入及新增仓库库存命令。只允许专用development本地库；不重置ERP序号、不生成测试商品或库存。访问http://127.0.0.1:9200/products操作；真实写入验收使用`python retail/scripts/test-local-customer-account.py --scenario=product-entry`副本，勿在主库制造测试商品。

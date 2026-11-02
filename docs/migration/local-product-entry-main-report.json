@@ -1,0 +1,114 @@
+{
+  "task": "Restore native local product entry through actual Admin and Astro",
+  "date": "2026-11-02",
+  "passed": true,
+  "full_C01_C11_complete": false,
+  "isolated": {
+    "owner": "b5a0df471e79",
+    "database": "retail_account_b5a0df471e79",
+    "real_email_delivery": false,
+    "business_api_mocking": false,
+    "main_database_modified": false,
+    "api_sha256": "80084eb3e22aa01165c1152764554e2b1b139734a29a2d39dd67c2327ea15ba4",
+    "customer_owner": "b5a0df471e79",
+    "passed": true,
+    "scenario": "product-entry",
+    "product_id": "prod_d02b6d42-65ef-4f0d-9828-9f2bf79a2cfa",
+    "handle": "native-browser-05022665-59b9-4de8-aeb2-90c7753ad442",
+    "generated_sku": "ERP11565",
+    "actual_admin_product_sku_price_stock": true,
+    "exact_price": "129.123456789012345678",
+    "stocked_quantity": 3,
+    "public_inventory_quantity": 3,
+    "astro_en_zh_purchase_enabled": true,
+    "mobile_overflow": false,
+    "browser_errors": 0,
+    "real_payment_created": false,
+    "verified_accounts": 0,
+    "sql_entry_receipts": {
+      "product": 1,
+      "variant": 1,
+      "price": 1,
+      "stock": 1
+    },
+    "redis_keys_removed": 4,
+    "source_product_entry_unchanged": true,
+    "source_account_counts_before": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "source_account_counts_after": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "resources_removed": true,
+    "cleanup_errors": []
+  },
+  "main_read_only": {
+    "passed": true,
+    "read_only": true,
+    "mail_sent": false,
+    "product_writes": 0,
+    "browser_errors": 0,
+    "checks": [
+      {
+        "language": "en",
+        "width": 1440,
+        "creation_http": 200,
+        "creation_enabled": true,
+        "cancel_without_save": true,
+        "no_horizontal_overflow": true
+      },
+      {
+        "language": "zh",
+        "width": 390,
+        "creation_http": 200,
+        "creation_enabled": true,
+        "cancel_without_save": true,
+        "no_horizontal_overflow": true
+      }
+    ]
+  },
+  "configuration_rejections": {
+    "production": true,
+    "wrong_database": true
+  },
+  "main_entry_receipts": {
+    "product": 0,
+    "variant": 0,
+    "price": 0,
+    "stock": 0
+  },
+  "main_european_stock": 50,
+  "main_european_reserved": 1,
+  "real_payment_or_email_created": false,
+  "validation": [
+    "Go configure/catalog/inventory tests",
+    "Go configure vet",
+    "PowerShell parser",
+    "Python AST",
+    "JS syntax",
+    "Actual bilingual Admin readonly",
+    "Actual isolated Admin product/SKU/price/stock and Astro en/zh mobile"
+  ]
+}
