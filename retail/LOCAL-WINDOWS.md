@@ -89,3 +89,7 @@ Mollie无法访问loopback webhook，本机test模式省略该参数，通过真
 ### 商品录入入口
 
 本机忽略.env的LOCAL_PREVIEW_PRODUCT_ENTRY_ENABLED=true使start.bat显式开启既有商品创建、SKU创建、基础价录入及新增仓库库存命令。只允许专用development本地库；不重置ERP序号、不生成测试商品或库存。访问http://127.0.0.1:9200/products操作；真实写入验收使用`python retail/scripts/test-local-customer-account.py --scenario=product-entry`副本，勿在主库制造测试商品。
+
+### 仓库及设备来源入口
+
+LOCAL_PREVIEW_WAREHOUSE_MANAGEMENT_ENABLED=true使start.bat显式开启既有仓库管理，独立于仓库员工开关。要求专用本地development库及既有设备身份/命令已就绪；不创建仓库或设备。后台http://127.0.0.1:9200/warehouses可管理仓库和设备来源。设备登记保留原独立数量库存语义；新入库验收使用`python retail/scripts/test-local-customer-account.py --scenario=device-entry`隔离副本。

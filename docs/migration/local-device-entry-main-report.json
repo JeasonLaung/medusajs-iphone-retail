@@ -1,0 +1,136 @@
+{
+  "task": "Restore warehouse management and verify native photo device intake",
+  "date": "2026-11-02",
+  "passed": true,
+  "full_C01_C11_complete": false,
+  "isolated": {
+    "owner": "fefa0afb0618",
+    "database": "retail_account_fefa0afb0618",
+    "real_email_delivery": false,
+    "business_api_mocking": false,
+    "main_database_modified": false,
+    "api_sha256": "80084eb3e22aa01165c1152764554e2b1b139734a29a2d39dd67c2327ea15ba4",
+    "customer_owner": "fefa0afb0618",
+    "passed": true,
+    "scenario": "device-entry",
+    "variant_id": "variant_1e8a977f-548b-4618-9ef3-5b08dd4bf1ae",
+    "source_name": "Native intake fefa0afb0618",
+    "source_auto_warehouse": true,
+    "tracking_enrolled": true,
+    "photo_uploaded_and_jpeg_read": true,
+    "photos_survive_reload": true,
+    "sale_available_return_inspection": true,
+    "leading_zero_imei": true,
+    "intake_lost_reply_same_command": true,
+    "product_id": "prod_aa23b76f-f8f4-4b32-8295-9ac5c87bc0c0",
+    "handle": "native-browser-a63bf85b-2d25-451f-9aea-3e86c10294d7",
+    "generated_sku": "ERP11565",
+    "actual_admin_product_sku_price_stock": true,
+    "exact_price": "129.123456789012345678",
+    "stocked_quantity": 1,
+    "public_inventory_quantity": 1,
+    "astro_en_zh_purchase_enabled": true,
+    "mobile_overflow": false,
+    "browser_errors": 0,
+    "real_payment_created": false,
+    "verified_accounts": 0,
+    "sql_entry_receipts": {
+      "product": 1,
+      "variant": 1,
+      "price": 1,
+      "stock": 1
+    },
+    "sql_device_facts": {
+      "tracking_receipt": 1,
+      "intake_receipt": 1,
+      "available_sale": 1,
+      "inspection_returned": 1,
+      "photos": 1
+    },
+    "redis_keys_removed": 4,
+    "source_product_entry_unchanged": true,
+    "source_account_counts_before": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "source_account_counts_after": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "resources_removed": true,
+    "cleanup_errors": []
+  },
+  "main_read_only": {
+    "passed": true,
+    "read_only": true,
+    "mail_sent": false,
+    "warehouse_writes": 0,
+    "browser_errors": 0,
+    "checks": [
+      {
+        "language": "en",
+        "width": 1440,
+        "warehouse_directory_http": 200,
+        "source_directory_http": 200,
+        "source_editor_ready": true,
+        "cancel_without_save": true,
+        "no_horizontal_overflow": true
+      },
+      {
+        "language": "zh",
+        "width": 390,
+        "warehouse_directory_http": 200,
+        "source_directory_http": 200,
+        "source_editor_ready": true,
+        "cancel_without_save": true,
+        "no_horizontal_overflow": true
+      }
+    ]
+  },
+  "configuration_rejections": {
+    "production": true,
+    "wrong_database": true
+  },
+  "limitations": [
+    "No checkout or physical allocation performed in this device-entry subflow",
+    "No actual email",
+    "Historical device/files remain independently pending"
+  ],
+  "main_final_verification": {
+    "api_health_http": 200,
+    "admin_warehouses_http": 200,
+    "storefront_store_http": 200,
+    "recent_logs_inspected": true,
+    "devices": 0,
+    "photos": 0,
+    "device_sources": 2,
+    "source_change_receipts": 0,
+    "european_stock": 50,
+    "european_reserved": 1,
+    "warehouse_runtime": {
+      "version": 1,
+      "revision": 1,
+      "enabled": true
+    }
+  }
+}

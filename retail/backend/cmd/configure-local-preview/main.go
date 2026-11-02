@@ -35,6 +35,7 @@ func main() {
 	refunds := flag.Bool("refunds", false, "Enable existing refund commands in the dedicated local Mollie test preview")
 	notificationMail := flag.Bool("notification-mail", false, "Validate explicit notification mailbox management without starting mail workers")
 	productEntry := flag.Bool("product-entry", false, "Enable existing product, SKU, price and initial inventory entry in the dedicated local preview")
+	warehouseManagement := flag.Bool("warehouse-management", false, "Enable existing warehouse management and validate device entry in the dedicated local preview")
 	flag.Parse()
 	_ = godotenv.Load()
 	cfg, err := driver.ParseDSN(os.Getenv("MYSQL_DSN"))
@@ -80,6 +81,26 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *warehouseManagement {
+			var row struct {
+				Version  int
+				Revision uint64
+			}
+			if e := tx.Table("warehouse_management_runtime").Where("id=1").Clauses(clause.Locking{Strength: "UPDATE"}).Take(&row).Error; e != nil || row.Version != 1 || row.Revision == 0 {
+				return gorm.ErrInvalidData
+			}
+			var device struct {
+				Version                          int
+				Revision                         uint64
+				IdentityEnabled, CommandsEnabled bool
+			}
+			if e := tx.Table("device_runtime_schema").Where("id=1").Clauses(clause.Locking{Strength: "SHARE"}).Take(&device).Error; e != nil || device.Version != 1 || device.Revision == 0 || !device.IdentityEnabled || !device.CommandsEnabled {
+				return gorm.ErrInvalidData
+			}
+			if e := tx.Table("warehouse_management_runtime").Where("id=1 AND version=1").Update("enabled", true).Error; e != nil {
+				return e
+			}
+		}
 		if *productEntry {
 			for table, commands := range map[string][]string{
 				"catalog_command_capabilities":   {"product.create"},
@@ -357,5 +378,8 @@ func main() {
 	}
 	if *productEntry {
 		log.Print("Local product entry gates enabled; no products, prices, inventory or reservations created")
+	}
+	if *warehouseManagement {
+		log.Print("Local warehouse management enabled and device entry ready; no warehouses, sources or devices created")
 	}
 }

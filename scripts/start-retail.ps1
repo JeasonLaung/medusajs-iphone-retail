@@ -147,6 +147,10 @@ try {
     & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --warehouse-users
     if ($LASTEXITCODE -ne 0) { throw 'Local warehouse user configuration failed.' }
   }
+  if ($env:LOCAL_PREVIEW_WAREHOUSE_MANAGEMENT_ENABLED -eq 'true') {
+    & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --warehouse-management
+    if ($LASTEXITCODE -ne 0) { throw 'Local warehouse management configuration failed.' }
+  }
   if ($env:LOCAL_PREVIEW_REVIEWS_ENABLED -eq 'true') {
     & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --reviews
     if ($LASTEXITCODE -ne 0) { throw 'Local product review configuration failed.' }

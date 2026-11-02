@@ -461,7 +461,8 @@ def verify_completed_refund_checkpoint(owner):
 
 
 def main(language, scenario='account', resume=None):
-    product_entry = scenario == 'product-entry'
+    device_entry = scenario == 'device-entry'
+    product_entry = scenario in ('product-entry', 'device-entry')
     mail = scenario == 'mail'
     reviews = scenario == 'reviews'
     paid_warehouse = scenario == 'paid-warehouse'
@@ -524,7 +525,7 @@ def main(language, scenario='account', resume=None):
     created = False
     source_counts = source_account_counts()
     def entry_source_fingerprint():
-        return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', 'eurorefurb_local_trial', 'catalog_products', 'catalog_variants', 'pricing_prices', 'inventory_levels', 'catalog_product_edits', 'catalog_variant_creations', 'catalog_price_edits', 'inventory_level_creations')).hexdigest()
+        return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', 'eurorefurb_local_trial', 'catalog_products', 'catalog_variants', 'pricing_prices', 'inventory_levels', 'catalog_product_edits', 'catalog_variant_creations', 'catalog_price_edits', 'inventory_level_creations', 'inventory_locations', 'device_sources', 'devices', 'device_variant_tracking', 'device_photos', 'device_tracking_changes', 'device_source_changes', 'device_intake_changes')).hexdigest()
     entry_source_before = entry_source_fingerprint() if product_entry else None
     report = {'owner': owner, 'database': database, 'real_email_delivery': False,
               'business_api_mocking': False, 'main_database_modified': False,
@@ -621,6 +622,8 @@ def main(language, scenario='account', resume=None):
         # Real sandbox refunds must use a freshly paid order in this copy,
         # never the remote payment belonging to the source preview order.
         env['ORDER_REFUNDS_ENABLED'] = 'true' if refund else 'false'
+        if device_entry:
+            sql(database, 'UPDATE warehouse_management_runtime SET enabled=TRUE WHERE id=1 AND version=1')
         if product_entry:
             sql(database, "UPDATE catalog_command_capabilities SET enabled=TRUE WHERE command='product.create' AND version=1; UPDATE inventory_command_capabilities SET enabled=TRUE WHERE command='inventory.create_level' AND version=1; UPDATE catalog_variant_create_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE catalog_price_edit_runtime SET enabled=TRUE WHERE id=1 AND version=1")
         if mail:
@@ -739,6 +742,14 @@ def main(language, scenario='account', resume=None):
             if facts != ['1', '1', '1', '1']:
                 raise RuntimeError('Expected unique product, SKU, price and stock receipts')
             report['sql_entry_receipts'] = dict(zip(['product', 'variant', 'price', 'stock'], map(int, facts)))
+        if device_entry:
+            variant = report['variant_id']
+            if not re.fullmatch(r'variant_[0-9a-f-]{36}', variant):
+                raise RuntimeError('Owned intake variant identity invalid')
+            facts = sql(database, "SELECT (SELECT COUNT(*) FROM device_tracking_changes WHERE variant_id='" + variant + "'),(SELECT COUNT(*) FROM device_intake_changes WHERE variant_id='" + variant + "'),(SELECT COUNT(*) FROM devices WHERE variant_id='" + variant + "' AND category='sale' AND state='available'),(SELECT COUNT(*) FROM devices WHERE variant_id='" + variant + "' AND category='returned' AND state='inspection'),(SELECT COUNT(*) FROM device_photos)").split('\t')
+            if facts != ['1', '1', '1', '1', '1']:
+                raise RuntimeError('Device intake tracking/batch/states/photo facts differ')
+            report['sql_device_facts'] = dict(zip(['tracking_receipt', 'intake_receipt', 'available_sale', 'inspection_returned', 'photos'], map(int, facts)))
         if report['verified_accounts'] != (0 if product_entry else 1):
             raise RuntimeError('Expected exactly one newly verified fixture account')
         if payment_context and not (reviews or paid_warehouse or supplement):
@@ -962,6 +973,8 @@ if __name__ == '__main__':
         sql(database, "INSERT INTO tax_rates(id,rate,code,name,is_default,is_combinable,tax_region_id,created_at,updated_at) VALUES('isolated-supplement-tax',1,'isolated','Isolated exchange tax',TRUE,FALSE,'txreg_01M4FBP3N26K57MNJK7SJC376H',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-paid-warehouse='):
         verify_paid_warehouse_checkpoint(sys.argv[1].split('=', 1)[1])
+    elif sys.argv[1:] == ['--scenario=device-entry']:
+        main('en', 'device-entry')
     elif sys.argv[1:] == ['--scenario=product-entry']:
         main('en', 'product-entry')
     elif sys.argv[1:] == ['--scenario=mail']:
