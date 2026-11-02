@@ -28,6 +28,7 @@ func main() {
 	buyback := flag.Bool("buyback", false, "Enable existing customer buyback and Admin review commands in the dedicated local preview")
 	afterSales := flag.Bool("after-sales", false, "Enable existing customer requests, Admin review and device receipt/repair return in the dedicated local preview")
 	warehouses := flag.Bool("warehouse-users", false, "Enable warehouse account management and scoped access in the dedicated local preview")
+	reviews := flag.Bool("reviews", false, "Enable product review reads, customer submissions and Admin moderation in the dedicated local preview")
 	flag.Parse()
 	_ = godotenv.Load()
 	cfg, err := driver.ParseDSN(os.Getenv("MYSQL_DSN"))
@@ -53,6 +54,18 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *reviews {
+			var row struct{ Version int }
+			if e := tx.Raw("SELECT version FROM product_review_runtime WHERE id=1 FOR UPDATE").Take(&row).Error; e != nil {
+				return e
+			}
+			if row.Version != 1 {
+				return gorm.ErrInvalidData
+			}
+			if e := tx.Table("product_review_runtime").Where("id=1 AND version=1").Updates(map[string]any{"reads_enabled": true, "writes_enabled": true}).Error; e != nil {
+				return e
+			}
+		}
 		if *contextPayment {
 			var row struct{ Version int }
 			if e := tx.Raw("SELECT version FROM cart_payment_refresh_runtime WHERE id=1 FOR UPDATE").Take(&row).Error; e != nil {

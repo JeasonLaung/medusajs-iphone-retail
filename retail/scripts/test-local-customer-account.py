@@ -295,13 +295,14 @@ def verify_payment_context_checkpoint(owner):
 
 def main(language, scenario='account', resume=None):
     mail = scenario == 'mail'
-    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore')
+    reviews = scenario == 'reviews'
+    payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews')
     buyback = scenario in ('buyback', 'buyback-return')
     exchange = scenario == 'exchange'
     refund = scenario == 'refund'
     warehouse = scenario == 'warehouse'
     repair = scenario in ('repair', 'exchange', 'refund', 'warehouse')
-    admin_required = buyback or repair or mail
+    admin_required = buyback or repair or mail or reviews
     values = config()
     if resume is not None:
         if not (refund or payment_context) or not re.fullmatch(r'[0-9a-f]{12}', resume):
@@ -458,6 +459,16 @@ def main(language, scenario='account', resume=None):
             if sql(database, 'SELECT version FROM cart_payment_refresh_runtime WHERE id=1') != '1':
                 raise RuntimeError('Payment context runtime version mismatch')
             sql(database, 'UPDATE cart_payment_refresh_runtime SET enabled=TRUE WHERE id=1 AND version=1')
+        if reviews:
+            if sql(database, 'SELECT version FROM product_review_runtime WHERE id=1') != '1':
+                raise RuntimeError('Product review runtime version mismatch')
+            sql(database, 'UPDATE product_review_runtime SET reads_enabled=TRUE,writes_enabled=TRUE WHERE id=1 AND version=1')
+            protected_tables = ['orders', 'order_items', 'payments', 'payment_captures', 'order_transactions', 'inventory_levels', 'inventory_reservations', 'device_assignments', 'pricing_prices']
+            def protected_fingerprint():
+                return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', database, *protected_tables)).hexdigest()
+            review_before = protected_fingerprint()
+            env['CHECKOUT_PAYMENT_ENABLED'] = 'false'
+            env['CHECKOUT_CONTEXT_PAYMENT_ENABLED'] = 'false'
         if refund:
             worker = logs / 'refund-worker.exe'
             subprocess.run(['go', 'build', '-o', str(worker), './cmd/process-order-refunds'],
@@ -504,6 +515,8 @@ def main(language, scenario='account', resume=None):
         if resume and payment_context:
             browser_env['ACCOUNT_TEST_CUSTOMER_OWNER'] = customer_owner
             script = 'tests/local-payment-context-resume.live.mjs'
+        if reviews:
+            script = 'tests/local-product-reviews.live.mjs'
         result = subprocess.run([str(node), script],
                                 cwd=ROOT / 'retail/storefront', env=browser_env,
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=420 if refund else 240)
@@ -515,7 +528,7 @@ def main(language, scenario='account', resume=None):
              "WHERE email LIKE 'local-account-" + customer_owner + "-%@example.invalid' AND verified_at IS NOT NULL"))
         if report['verified_accounts'] != 1:
             raise RuntimeError('Expected exactly one newly verified fixture account')
-        if payment_context:
+        if payment_context and not reviews:
             cart_id, order_id = report['cart_id'], report['order_id']
             if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id) or not re.fullmatch(r'order_[0-9a-f-]{36}', order_id):
                 raise RuntimeError('Owned payment context result identity invalid')
@@ -527,6 +540,11 @@ def main(language, scenario='account', resume=None):
             else:
                 facts = payment_context_facts(database, cart_id, order_id)
             report['sql_payment_context_facts'] = facts
+        if reviews:
+            facts = sql(database, "SELECT (SELECT COUNT(*) FROM product_reviews WHERE account_id IS NOT NULL AND verified_purchase=TRUE AND status='approved'),(SELECT COUNT(*) FROM product_review_commands WHERE command='submit'),(SELECT COUNT(*) FROM product_review_commands WHERE command='moderate')").split('\t')
+            if facts != ['1', '1', '4'] or protected_fingerprint() != review_before:
+                raise RuntimeError('Review terminal facts or protected business fingerprint differ')
+            report['sql_review_facts'] = {'approved_verified_review': 1, 'submission_receipt': 1, 'moderation_receipts': 4, 'protected_business_unchanged': True}
         if mail:
             facts = {
                 'verification_sent': int(sql(database, "SELECT COUNT(*) FROM customer_verification_mail WHERE status='sent'")),
@@ -715,6 +733,8 @@ if __name__ == '__main__':
         verify_payment_context_checkpoint(sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--resume-changed-context='):
         main('en', 'payment-context-changed', sys.argv[1].split('=', 1)[1])
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--reviews-from-checkpoint='):
+        main('en', 'reviews', sys.argv[1].split('=', 1)[1])
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--resume-refund='):
         main('en', 'refund', sys.argv[1].split('=', 1)[1])
     else:

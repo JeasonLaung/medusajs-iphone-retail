@@ -57,3 +57,9 @@ Mollie无法访问loopback webhook，本机test模式省略该参数，通过真
 `--scenario=payment-context-changed` 增加副本价格变化、旧会话退役与790 EUR新付款成单；`--resume-changed-context=OWNER` 从已有成单检查点验证本人订单，不再付款。该分支的 `--verify-payment-context=OWNER` 还会认证GET核对两条远端引用；不发起渠道写入。旧open且不可取消的Mollie链接只是本地退役，不能宣称远端取消或免除对账。见 `docs/migration/local-payment-context-changed.md`。
 
 `--scenario=payment-context-restore` 在副本注入最终保存SQL约束失败，实际验证旧会话已处理后刷新、恢复原设置与替代付款、丢恢复响应再刷新，以及替代付款789 EUR成单。可用相同 `--verify-payment-context=OWNER` 复核保留检查点，包含只读渠道GET。测试故障触发器仅限副本指定购物车，主价格/单据不变。见 `docs/migration/local-payment-context-restore.md`。
+
+## 本机商品评价
+
+`LOCAL_PREVIEW_REVIEWS_ENABLED=true` 由start.bat调用 `configure-local-preview --reviews`，限定既定development专用库及版本1，启用评价读取/客户提交/后台审核，不创建或批准任何评价；SQL即时生效。示例默认false。
+
+`python retail/scripts/test-local-customer-account.py --reviews-from-checkpoint=OWNER` 恢复已有真实已付款订单的专有SQL检查点，实际验证本人订单提交、重复拒绝、后台审核和中英公开展示，副本结账入口关闭，不再付款。检查前后九张交易/库存/价格保护表一致，导出指纹排除全实例GTID元信息。见 `docs/migration/local-product-reviews-main.md`。

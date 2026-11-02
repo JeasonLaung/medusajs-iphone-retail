@@ -111,6 +111,10 @@ try {
     & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --warehouse-users
     if ($LASTEXITCODE -ne 0) { throw 'Local warehouse user configuration failed.' }
   }
+  if ($env:LOCAL_PREVIEW_REVIEWS_ENABLED -eq 'true') {
+    & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --reviews
+    if ($LASTEXITCODE -ne 0) { throw 'Local product review configuration failed.' }
+  }
   $binary = Join-Path $logRoot 'retail-api.exe'
   & $go -C (Join-Path $retailRoot 'backend') build -o $binary ./cmd/api
   if ($LASTEXITCODE -ne 0) { throw 'Gin API compilation failed.' }
