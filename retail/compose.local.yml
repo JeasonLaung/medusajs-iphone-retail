@@ -1,0 +1,20 @@
+name: eurorefurb-retail-local
+services:
+  mysql:
+    image: mysql:9.6
+    container_name: eurorefurb-retail-local-mysql
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:13307:3306"
+    command: ["--innodb-native-foreign-keys=ON", "--event-scheduler=OFF", "--mysqlx=OFF"]
+    volumes:
+      - mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+volumes:
+  mysql:
+    external: true
+    name: eurorefurb-retail-local-mysql
