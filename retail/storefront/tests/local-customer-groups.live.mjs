@@ -4,7 +4,7 @@ import {resolve} from 'node:path'
 import {chromium,expect as baseExpect} from '../../admin/node_modules/@playwright/test/index.mjs'
 const expect=baseExpect.configure({timeout:20000}),shop='http://127.0.0.1:19300',origin='http://127.0.0.1:19200',logs=process.env.ACCOUNT_TEST_LOGS,owner=process.env.ACCOUNT_TEST_CUSTOMER_OWNER
 assert.match(owner??'',/^[0-9a-f]{12}$/)
-const browser=await chromium.launch({headless:true,executablePath:resolve(process.env.LOCALAPPDATA,'ms-playwright/chromium-1234/chrome-win64/chrome.exe')}),errors=[]
+ const browser=await chromium.launch({headless:true,executablePath:resolve(process.env.LOCALAPPDATA,'ms-playwright/chromium-1234/chrome-win64/chrome.exe')}),errors=[],newCartCases=[]
 try{
  const adminContext=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'}),admin=await adminContext.newPage()
  admin.on('pageerror',e=>errors.push(e.message));await admin.addInitScript(()=>{if(!localStorage.getItem('eurorefurb.admin.language'))localStorage.setItem('eurorefurb.admin.language','en')})
@@ -51,6 +51,31 @@ try{
  const publicStillAnonymous=await admin.request.get(origin+'/api/store/products/'+publicProduct.id+'?region_id='+region.id,{headers:{Cookie:(await customerContext.cookies(shop)).filter(c=>c.name==='retail_customer_session').map(c=>c.name+'='+c.value).join('; ')}});assert.equal(publicStillAnonymous.status(),200);assert.equal((await publicStillAnonymous.json()).product.variants.find(v=>v.id===variant).calculated_price.calculated_amount,base)
  const anonymous=await browser.newContext();await catalogAmount(anonymous,base)
  await anonymous.addCookies([{name:'retail_customer_session',value:'f'.repeat(64),url:shop}]);await catalogAmount(anonymous,base);await anonymous.close()
+ for(const [index,mode] of ['normal','lost_create','lost_binding','lost_item'].entries()){
+  const segment=index%2?'gb-zh':'gb-en',width=index===1?1440:390,context=await browser.newContext({viewport:{width,height:1000},reducedMotion:'reduce'}),fresh=await context.newPage(),attempts=[];fresh.on('pageerror',e=>errors.push(e.message))
+  await fresh.goto(shop+'/'+segment+'/account');await fresh.getByTestId('email-input').fill(`local-account-${owner}-1@example.invalid`);await fresh.getByTestId('password-input').fill('isolated-account-'+owner+'-password');await fresh.getByTestId('sign-in-button').click();await expect(fresh.getByTestId(width<600?'mobile-account-nav':'account-nav')).toBeVisible()
+  const noCart=await context.request.get(shop+'/api/store/cart');assert.equal(noCart.status(),401)
+  let lost=false
+  await fresh.route(/\/api\/store\/(carts(?:\/[^/]+\/line-items)?|customer\/cart-transfer)$/,async route=>{
+   if(route.request().method()!=='POST')return route.continue()
+   const path=new URL(route.request().url()).pathname,kind=path.endsWith('/cart-transfer')?'binding':path.endsWith('/line-items')?'item':'create',r=await route.fetch();assert.ok([200,201].includes(r.status()))
+   const result=await r.json();attempts.push({kind,body:route.request().postDataJSON(),key:route.request().headers()['idempotency-key'],version:result.version??result.cart?.version})
+   if(mode==='lost_'+kind&&!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})
+  })
+  await fresh.goto(shop+'/'+segment+'/products/swappie-iphone-17e?v_id='+variant);await expect(fresh.getByTestId('product-price')).toHaveAttribute('data-value','321.123456789012345678');await fresh.getByTestId('add-product-button').click()
+  if(mode!=='normal'){
+   await expect.poll(()=>lost).toBe(true);await expect(fresh.getByTestId('product-container').getByRole('status')).toContainText(segment.endsWith('-zh')?'添加失败':'Could not add')
+   const journal=await fresh.evaluate(()=>localStorage.getItem('retail.cart.intent.v1'));assert.ok(journal);assert.equal(JSON.parse(journal).kind,mode==='lost_create'?'create':mode==='lost_binding'?'bind':'add')
+   await fresh.reload();await fresh.getByTestId('add-product-button').click()
+  }
+  await expect(fresh.getByTestId('checkout-button')).toBeVisible();await expect.poll(()=>fresh.evaluate(()=>localStorage.getItem('retail.cart.intent.v1'))).toBe(null)
+  const currentResponse=await context.request.get(shop+'/api/store/cart');assert.equal(currentResponse.status(),200);const current=(await currentResponse.json()).cart
+  const amounts=await (await context.request.get(shop+'/api/store/carts/'+current.id+'/amounts')).json();assert.equal(amounts.lines.length,1);assert.equal(amounts.lines[0].quantity,'1');assert.equal(amounts.lines[0].unit_price,'321.123456789012345678');assert.equal(current.version,'3')
+  assert.ok(attempts.findIndex(a=>a.kind==='binding')<attempts.findIndex(a=>a.kind==='item'))
+  for(const kind of ['create','binding','item']){const same=attempts.filter(a=>a.kind===kind);assert.equal(same.length,mode==='lost_'+kind?2:1);assert.ok(same.every(a=>JSON.stringify(a.body)===JSON.stringify(same[0].body)&&a.key===same[0].key))}
+  await fresh.goto(shop+'/'+segment+'/cart');await expect(fresh.getByTestId('product-price')).toContainText('321.12');await fresh.screenshot({path:resolve(logs,'new-cart-'+mode+'.png'),fullPage:true})
+  newCartCases.push({mode,cart_id:current.id,version:current.version,quantity:'1',unit_price:amounts.lines[0].unit_price,bind_before_first_add:true,retry_preserved:true});await context.close()
+ }
  await page.goto(shop+'/gb-en/cart');await expect(page.getByTestId('product-row')).toBeVisible();await expect(page.getByTestId('product-price')).toContainText('321.12');await page.screenshot({path:resolve(logs,'group-cart-en.png'),fullPage:true})
  await admin.goto(origin+'/customer-groups');await group.getByRole('button',{name:'View members',exact:true}).click();drawer=admin.getByRole('dialog');await drawer.getByRole('row').filter({hasText:`local-account-${owner}-1@example.invalid`}).getByRole('checkbox').check();await lostGroup(()=>drawer.getByRole('button',{name:'Remove selected members (1)',exact:true}).click(),drawer);await drawer.locator('.ant-drawer-close').click()
  // Actual existing cart quantity command causes current membership repricing.
@@ -58,5 +83,5 @@ try{
  await catalogAmount(customerContext,base)
  await page.goto(shop+'/gb-zh/cart');await expect(page.getByTestId('product-row')).toBeVisible();await expect(page.getByTestId('product-select-button')).toHaveValue('2');await page.screenshot({path:resolve(logs,'group-cart-zh-after-removal.png'),fullPage:true});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
  await admin.evaluate(()=>localStorage.setItem('eurorefurb.admin.language','zh'));await admin.reload();await expect(group).toContainText('Verified members');await admin.screenshot({path:resolve(logs,'customer-groups-zh.png'),fullPage:true})
- assert.deepEqual(errors,[]);writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:'customer-groups',group_id:created.group_id,price_list_id:listID,cart_id:cart.id,anonymous_amount:base,group_amount:'321.123456789012345678',create_add_remove_six_concurrent_lost_reply_recovered:true,actual_price_list_group_name_selector:true,login_reprices_original_cart:true,removed_membership_falls_back:true,personalized_product_en_zh:true,personalized_search_and_store:true,personalized_collection:true,private_no_store:true,anonymous_and_expired_session_no_price_leak:true,public_gin_ignores_customer_cookie:true,admin_en_zh:true,customer_mobile_en_zh:true,browser_errors:0},null,2))
+ assert.deepEqual(errors,[]);writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:'customer-groups',group_id:created.group_id,price_list_id:listID,cart_id:cart.id,new_cart_cases:newCartCases,anonymous_amount:base,group_amount:'321.123456789012345678',create_add_remove_six_concurrent_lost_reply_recovered:true,actual_price_list_group_name_selector:true,login_reprices_original_cart:true,removed_membership_falls_back:true,personalized_product_en_zh:true,personalized_search_and_store:true,personalized_collection:true,private_no_store:true,anonymous_and_expired_session_no_price_leak:true,public_gin_ignores_customer_cookie:true,admin_en_zh:true,customer_mobile_en_zh:true,browser_errors:0},null,2))
 }catch(e){for(const [i,p]of browser.contexts().flatMap(c=>c.pages()).entries())await p.screenshot({path:resolve(logs,`groups-failure-${i}.png`),fullPage:true}).catch(()=>{});throw e}finally{await browser.close()}

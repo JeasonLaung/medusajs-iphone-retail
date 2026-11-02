@@ -1,0 +1,128 @@
+{
+  "owner": "6b31eb39e0db",
+  "database": "retail_account_6b31eb39e0db",
+  "real_email_delivery": false,
+  "business_api_mocking": false,
+  "main_database_modified": false,
+  "api_sha256": "fb40707f4b4e02fd1749455872b438f869a4f46d2264946b78715428ebb3dda3",
+  "customer_owner": "790ce0fc9e71",
+  "resumed_paid_checkpoint": "790ce0fc9e71",
+  "passed": true,
+  "scenario": "customer-groups",
+  "group_id": "cgrp_b354e0a7-ba69-4ed8-ba01-1a71ee445acd",
+  "price_list_id": "plist_cfc0c29f-44d3-4ce9-bf14-11d34a75ef3d",
+  "cart_id": "cart_c926a052-0d89-4b27-af0b-165f9203d97b",
+  "new_cart_cases": [
+    {
+      "mode": "normal",
+      "cart_id": "cart_686325f6-8c01-49a9-a85c-2e7ac3fc2d6a",
+      "version": "3",
+      "quantity": "1",
+      "unit_price": "321.123456789012345678",
+      "bind_before_first_add": true,
+      "retry_preserved": true
+    },
+    {
+      "mode": "lost_create",
+      "cart_id": "cart_0a604fcc-28e5-4a01-9ea1-f06a912b98ac",
+      "version": "3",
+      "quantity": "1",
+      "unit_price": "321.123456789012345678",
+      "bind_before_first_add": true,
+      "retry_preserved": true
+    },
+    {
+      "mode": "lost_binding",
+      "cart_id": "cart_f89d7705-501d-47ec-9326-1d4bbb78cb8e",
+      "version": "3",
+      "quantity": "1",
+      "unit_price": "321.123456789012345678",
+      "bind_before_first_add": true,
+      "retry_preserved": true
+    },
+    {
+      "mode": "lost_item",
+      "cart_id": "cart_07d4bdcd-51b3-4b0f-985f-92a9b10b44f5",
+      "version": "3",
+      "quantity": "1",
+      "unit_price": "321.123456789012345678",
+      "bind_before_first_add": true,
+      "retry_preserved": true
+    }
+  ],
+  "anonymous_amount": "779",
+  "group_amount": "321.123456789012345678",
+  "create_add_remove_six_concurrent_lost_reply_recovered": true,
+  "actual_price_list_group_name_selector": true,
+  "login_reprices_original_cart": true,
+  "removed_membership_falls_back": true,
+  "personalized_product_en_zh": true,
+  "personalized_search_and_store": true,
+  "personalized_collection": true,
+  "private_no_store": true,
+  "anonymous_and_expired_session_no_price_leak": true,
+  "public_gin_ignores_customer_cookie": true,
+  "admin_en_zh": true,
+  "customer_mobile_en_zh": true,
+  "browser_errors": 0,
+  "group_guards": {
+    "all_changes_rolled_back": true,
+    "checks": [
+      "gate",
+      "actor",
+      "stale",
+      "changed replay",
+      "rename delete",
+      "foreign account",
+      "unverified account",
+      "partial remove",
+      "receipt failure"
+    ],
+    "passed": true
+  },
+  "verified_accounts": 1,
+  "sql_group_facts": {
+    "active_group": 1,
+    "members_after_removal": 0,
+    "immutable_commands": 3,
+    "revision": 4
+  },
+  "sql_new_cart_facts": {
+    "cases": 4,
+    "each_unique_creation_ownership_binding_item_receipt": true,
+    "each_version": 3
+  },
+  "original_order_payment_inventory_devices_fulfillment_unchanged": true,
+  "payment_durable_snapshot_retained": true,
+  "redis_keys_removed": 34,
+  "source_account_counts_before": {
+    "customer_accounts": 0,
+    "customer_verifications": 0,
+    "customer_verification_mail": 0,
+    "customer_account_addresses": 0,
+    "customer_order_ownership": 0,
+    "buyback_requests": 0,
+    "buyback_prices": 0,
+    "buyback_photo_bytes": 0,
+    "buyback_device_links": 0,
+    "after_sales_requests": 0,
+    "device_return_receipts": 0,
+    "device_service_receipts": 0
+  },
+  "source_account_counts_after": {
+    "customer_accounts": 0,
+    "customer_verifications": 0,
+    "customer_verification_mail": 0,
+    "customer_account_addresses": 0,
+    "customer_order_ownership": 0,
+    "buyback_requests": 0,
+    "buyback_prices": 0,
+    "buyback_photo_bytes": 0,
+    "buyback_device_links": 0,
+    "after_sales_requests": 0,
+    "device_return_receipts": 0,
+    "device_service_receipts": 0
+  },
+  "resources_removed": true,
+  "cleanup_errors": []
+}

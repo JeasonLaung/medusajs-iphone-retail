@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {createHash,randomUUID} from 'node:crypto'
-import {createCartCommerce,contextIntentKey,cartIntentKey,browserCartCommerce} from '../src/lib/cart-commerce.ts'
+import {createCartCommerce,contextIntentKey,cartIntentKey,customerCartIntentKey,browserCartCommerce} from '../src/lib/cart-commerce.ts'
 import {CartError,type CartSnapshot,type CartAmounts} from '../src/lib/cart-client.ts'
 
 function fixture(){
@@ -76,4 +76,31 @@ test('unconfirmed context blocks product addition without changing its journal',
  const f=fixture();f.data.set(contextIntentKey,'pending')
  assert.equal((await createCartCommerce(f.options).addToCart(input)).ok,false)
  assert.deepEqual(f.stats(),{posts:0,creations:0,quantity:0});assert.equal(f.data.get(contextIntentKey),'pending')
+})
+
+test('new cart binds before first item and recovers the same committed binding after lost response',async()=>{
+ const f=fixture();f.noCart();const commands:unknown[]=[],receipts=new Map<string,{cart_id:string;version:string;replayed:boolean}>();let lost=true
+ const customer={current:async()=> 'new_verified_account',transfer:async(cart:string,account:string,command:{operation_id:string;version:string})=>{
+  assert.equal(account,'new_verified_account');commands.push({...command});let result=receipts.get(command.operation_id)
+  if(!result){assert.equal(command.version,'1');(await f.options.client.current())!.version='2';result={cart_id:cart,version:'2',replayed:false};receipts.set(command.operation_id,result)}
+  if(lost){lost=false;throw new CartError('unavailable',null,true)};return {...result,replayed:commands.length>1}
+ }}
+ const options={...f.options,customer}
+ assert.equal((await createCartCommerce(options).addToCart(input)).ok,false);assert.equal(f.stats().posts,0)
+ const pending=f.data.get(cartIntentKey)!;assert.equal(JSON.parse(pending).kind,'bind')
+ const add=f.options.client.addItem;f.options.client.addItem=async(cart,command)=>{assert.equal(command.version,'2');return add(cart,command)}
+ assert.equal((await createCartCommerce(options).addToCart(input)).ok,true);assert.deepEqual(commands[0],commands[1]);assert.equal(receipts.size,1);assert.deepEqual(f.stats(),{creations:1,posts:1,quantity:1});assert.equal(f.data.size,0)
+})
+
+test('new cart identity lookup failure resumes preparation without another create; anonymous cart never transfers',async()=>{
+ const f=fixture();f.noCart();let fail=true,transfers=0
+ const options={...f.options,customer:{current:async()=>{if(fail){fail=false;throw Error('storage unavailable')};return null},transfer:async()=>{transfers++;throw Error('anonymous must not transfer')}}}
+ assert.equal((await createCartCommerce(options).addToCart(input)).ok,false);assert.equal(JSON.parse(f.data.get(cartIntentKey)!).kind,'prepare');assert.deepEqual(f.stats(),{creations:1,posts:0,quantity:0})
+ assert.equal((await createCartCommerce(options).addToCart(input)).ok,true);assert.equal(f.stats().creations,1);assert.equal(transfers,0)
+})
+
+test('unconfirmed binding cannot add items or be bypassed by another customer transfer',async()=>{
+ const f=fixture();f.noCart();const options={...f.options,customer:{current:async()=> 'new_verified_account',transfer:async()=>({cart_id:'foreign',version:'2',replayed:false})}}
+ assert.equal((await createCartCommerce(options).addToCart(input)).ok,false);const pending=f.data.get(cartIntentKey);assert.equal(JSON.parse(pending!).kind,'bind');assert.equal(f.stats().posts,0)
+ f.data.set(customerCartIntentKey,'pending transfer');assert.equal((await createCartCommerce(options).addToCart(input)).ok,false);assert.equal(f.data.get(cartIntentKey),pending);assert.equal(f.stats().posts,0)
 })

@@ -1172,6 +1172,15 @@ def main(language, scenario='account', resume=None):
             if facts != ['1','0','3','4']:
                 raise RuntimeError('Customer group terminal facts differ: '+str(facts))
             report['sql_group_facts'] = dict(active_group=1, members_after_removal=0, immutable_commands=3, revision=4)
+            if report.get('new_cart_cases'):
+                for case in report['new_cart_cases']:
+                    cart_id = case['cart_id']
+                    if not re.fullmatch(r'cart_[0-9a-f-]{36}', cart_id):
+                        raise RuntimeError('Invalid owned first-login cart')
+                    facts = sql(database, "SELECT (SELECT COUNT(*) FROM cart_creation_operations WHERE cart_id='"+cart_id+"'),(SELECT COUNT(*) FROM customer_cart_ownership WHERE cart_id='"+cart_id+"'),(SELECT COUNT(*) FROM customer_cart_operations WHERE cart_id='"+cart_id+"'),(SELECT COUNT(*) FROM cart_item_operations WHERE cart_id='"+cart_id+"'),(SELECT version FROM cart_ownership WHERE cart_id='"+cart_id+"'),(SELECT email FROM carts WHERE id='"+cart_id+"')").split('\t')
+                    if facts != ['1','1','1','1','3','local-account-'+customer_owner+'-1@example.invalid']:
+                        raise RuntimeError('First-login cart receipts, ownership or version differ: '+str(facts))
+                report['sql_new_cart_facts'] = dict(cases=len(report['new_cart_cases']), each_unique_creation_ownership_binding_item_receipt=True, each_version=3)
             report['original_order_payment_inventory_devices_fulfillment_unchanged'] = True
         if cart_login:
             if cart_login_financial_fingerprint() != cart_login_financial_before:
