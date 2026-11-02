@@ -37,6 +37,8 @@ node retail/scripts/test-context-payment-joint.mjs --scenario unbound-unchanged
 node retail/scripts/test-context-payment-joint.mjs --scenario unbound-precision
 # 同一购物车连续保存两次→取消后恢复→替代付款继续保存→查询付款
 node retail/scripts/test-context-payment-joint.mjs --scenario continuous
+# 跨币种：相同数字总额也要取消旧币种付款；失败后恢复原币种
+node retail/scripts/test-context-payment-joint.mjs --scenario currency-save --scenario currency-restore
 # 一次选择多个受影响的场景，共用一次编译及隔离服务
 node retail/scripts/test-context-payment-joint.mjs --scenario unbound-account --scenario unbound-delete-unknown
 # 仅需要检查本项语言/尺寸组合时使用，仍非完整交易链路
@@ -75,3 +77,11 @@ node retail/scripts/test-context-payment-joint.mjs --scenario restore --matrix
 [连续联合报告](context-payment-continuous-report.json)绑定本轮实际二进制与原始报告摘要：中英×390/1440四组通过，无浏览器异常。每组四个独立上下文操作，各操作内的重试和恢复使用相同UUID/原版本/目标；三条目标保存收据、两次CREATE合计、一次DELETE。库存、预留、订单、实收及通知全表指纹不变，冻结源码复核及自有容器/网络/数据卷清理完成。Go identity/cart测试、identity vet与两份脚本语法检查通过；没有改生产业务逻辑，无需整站构建或完整订单链。
 
 脚本现在可重复传入`--scenario`，选中的子场景去重后共用一次构建和同一套独立服务，各场景仍建立自己的购物车，避免每个分项重复初始化。`continuous`刻意不新建中间购物车，证明有效版本与替代付款能够连续衔接。跨币种、后续商品/优惠变化及C01—C11其他交付终点继续开放；完整业务链按用户要求在大任务结束后统一执行。
+
+## 跨币种保存与恢复（2026-11-02 后续任务）
+
+固定基线新增独立加拿大/CAD地区及对应公开价格。原购物车含EUR商品、25%税及配送，总额158.75；目标CAD地区重选商品价158.75，自动税关闭且原配送不再适用，最终总额数字仍为158.75。此构造用于确认币种变化不能被相同数字掩盖，未使用汇率或将原付款换算成新币种。
+
+`currency-save`经原地区抽屉选择Canada，取消旧EUR付款后保存CAD上下文并丢成功响应，刷新同UUID恢复。最终版本6、付款集合CAD/158.75、原EUR会话软删除且无有效会话、checkout退出、清理原CREATE日志、一条保存收据；不会自动发起新币种收款。`currency-restore`在取消后改变目标CAD报价，阻止不一致目标提交；原EUR购物车/金额保持，再显式恢复原付款并丢恢复成功响应，刷新沿用同一编号激活EUR替代会话。最终版本6、集合EUR/158.75、一个有效EUR会话、原CREATE4/cart5保留、替代CREATE5/cart6，无目标保存收据，也未切换页面地区。
+
+[跨币种联合报告](context-payment-currency-report.json)记录中英×390/1440的两个新场景及连续保存回归，共12组实际Astro/Gin/MySQL/Redis浏览器通过。数据库核对集合原始金额/币种和有效会话数；适配器记录证明DELETE收到原EUR/158.75请求，恢复的CREATE也是原EUR/158.75，没有错误币种调用。每组原/替代CREATE及DELETE次数有界，库存/预留/订单/实收/通知指纹不变，源码冻结复核与资源清理完成。14项相关前端测试、Go cart/identity测试、identity vet和脚本语法检查通过。没有新增迁移或修改生产业务逻辑，未调用真实渠道、未进行完整订单链。该证据覆盖两种固定币种的已有付款上下文，不代表所有支付渠道、所有币种精度或C01—C11全部验收；后续商品/优惠变更及正式环境组合仍需继续。

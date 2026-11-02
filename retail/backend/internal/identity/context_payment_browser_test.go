@@ -34,7 +34,12 @@ type contextBrowserProvider struct {
 	mode                                  string
 	creates, deletes, observes, discovers int
 	status                                map[string]string
+	events                                []contextProviderEvent
 	drift                                 func()
+}
+
+type contextProviderEvent struct {
+	Kind, Amount, Currency string
 }
 
 // Independent browser cases receive independent rate-limit keys while keeping
@@ -54,6 +59,7 @@ func (p *contextBrowserProvider) CreateSession(_ context.Context, r payments.Ses
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	p.creates++
+	p.events = append(p.events, contextProviderEvent{"create", r.Amount, r.Currency})
 	p.status[r.SessionID] = "pending"
 	if p.mode == "create-unknown" {
 		return payments.CreateUncertain, payments.CreatedSession{}, nil
@@ -64,6 +70,7 @@ func (p *contextBrowserProvider) DeleteSession(_ context.Context, r payments.Ses
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	p.deletes++
+	p.events = append(p.events, contextProviderEvent{"delete", r.Amount, r.Currency})
 	if p.mode == "delete-unknown" {
 		return payments.DeleteUncertain, nil
 	}
@@ -135,6 +142,7 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	adapter := &contextBrowserProvider{status: map[string]string{}}
 	adapter.drift = func() {
 		exec(`UPDATE pricing_prices SET amount=122,raw_amount='{"value":"122","precision":100}' WHERE id='add-single'`)
+		exec(`UPDATE pricing_prices SET amount=159.75,raw_amount='{"value":"159.75","precision":100}' WHERE id='add-cad'`)
 	}
 	configured := options
 	configured.ReturnOrigin = origin
@@ -213,6 +221,7 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 	finish := make(chan struct{}, 1)
 	fixture.POST("/new", func(c *gin.Context) {
 		customerSessions.rateScope.Add(1)
+		exec(`UPDATE pricing_prices SET amount=158.75,raw_amount='{"value":"158.75","precision":100}' WHERE id='add-cad'`)
 		exec("UPDATE pricing_prices SET amount=?,raw_amount=? WHERE id='add-single'", price.Amount, price.Raw)
 		ref, initial := makeCart()
 		active = ref
@@ -227,6 +236,7 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 		adapter.deletes = 0
 		adapter.observes = 0
 		adapter.discovers = 0
+		adapter.events = nil
 		adapter.mu.Unlock()
 		c.JSON(200, gin.H{"cart_id": ref.CartID, "token": issued.Token, "csrf": issued.CSRF, "version": initial.Version, "account_email": "context-buyer@example.invalid", "other_email": "context-other@example.invalid", "password": password})
 	})
@@ -381,9 +391,19 @@ func checkContextPaymentBrowser(t *testing.T, ctx context.Context, db *gorm.DB, 
 			EffectiveCartVersion      *uint64
 		}
 		db.Table("cart_checkout_attempts").Where("cart_id=?", active.CartID).Order("created_at").Find(&attempts)
+		var collections []struct{ CurrencyCode, RawAmount string }
+		if db.Table("payment_collections p").Select("p.currency_code,p.raw_amount").Joins("JOIN cart_payment_collections l ON l.payment_collection_id=p.id").Where("l.cart_id=? AND l.deleted_at IS NULL AND p.deleted_at IS NULL", active.CartID).Scan(&collections).Error != nil {
+			c.Status(503)
+			return
+		}
+		var liveSessions int64
+		if db.Table("payment_sessions s").Joins("JOIN cart_payment_collections l ON l.payment_collection_id=s.payment_collection_id").Where("l.cart_id=? AND l.deleted_at IS NULL AND s.deleted_at IS NULL", active.CartID).Count(&liveSessions).Error != nil {
+			c.Status(503)
+			return
+		}
 		adapter.mu.Lock()
 		defer adapter.mu.Unlock()
-		c.JSON(200, gin.H{"version": owner.Version, "checkout": owner.CheckoutAttemptID, "refresh": owner.PaymentRefreshOperationID, "receipts": receipts, "attempts": attempts, "creates": adapter.creates, "deletes": adapter.deletes, "observes": adapter.observes, "discovers": adapter.discovers, "protected_unchanged": protectedFacts() == baseline, "transfer_receipts": transferReceipts, "account_owners": accountOwners, "email": email})
+		c.JSON(200, gin.H{"version": owner.Version, "checkout": owner.CheckoutAttemptID, "refresh": owner.PaymentRefreshOperationID, "receipts": receipts, "attempts": attempts, "creates": adapter.creates, "deletes": adapter.deletes, "observes": adapter.observes, "discovers": adapter.discovers, "protected_unchanged": protectedFacts() == baseline, "transfer_receipts": transferReceipts, "account_owners": accountOwners, "email": email, "collections": collections, "live_sessions": liveSessions, "provider_events": adapter.events})
 	})
 	fixture.POST("/case-done", func(c *gin.Context) { completed++; c.Status(200) })
 	fixture.POST("/finish", func(c *gin.Context) { finish <- struct{}{}; c.Status(200) })

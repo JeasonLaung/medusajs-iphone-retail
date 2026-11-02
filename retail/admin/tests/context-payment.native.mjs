@@ -13,6 +13,41 @@ async function control(path,body){const r=await fetch(api+'/__fixture/'+path,{me
 async function open(){await page.locator('astro-island[component-url*="gin-header"]:not([ssr])').waitFor({state:'attached'});await page.getByRole('button',{name:/^(Country and language|国家与语言)$/,exact:true}).click();await expect(page.getByRole('dialog')).toBeVisible()}
 async function journal(k){return page.evaluate(k=>JSON.parse(localStorage.getItem(k)),k)}
 async function current(){return page.evaluate(async()=>{const r=await fetch('/api/store/cart');if(!r.ok)throw Error('cart '+r.status);return r.json()})}
+async function currencyCase(seed,scenario,lang,width,writes){
+ const restoring=scenario==='currency-restore',target=lang==='zh'?'Chinese Simplified (China)':'English (United Kingdom)'
+ await page.goto(origin+'/dk-'+lang+'/checkout?step=payment');await expect(page.getByTestId('submit-payment-button')).toBeEnabled();await page.getByTestId('submit-payment-button').click();await expect(page.getByTestId('submit-order-button')).toBeVisible()
+ const original=await journal(paymentKey),url=origin+'/dk-'+lang+'/about?joint=currency#contact'
+ const amounts=()=>page.evaluate(async id=>{const r=await fetch(`/api/store/carts/${id}/amounts`);if(!r.ok)throw Error('amounts '+r.status);return r.json()},seed.cart_id)
+ const before=await amounts();assert.equal(before.currency_code,'eur');assert.equal(before.totals.total,'158.75')
+ await page.goto(url)
+ if(restoring)await control('mode/restore')
+ let lost=false
+ if(!restoring)await page.route('**/context-payment',async route=>{const r=await route.fetch();assert.equal(r.status(),200);if(!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})})
+ await open();await page.getByRole('dialog').getByRole('button',{name:'Canada — '+target,exact:true}).click();await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible()
+ const pending=await journal(contextKey);assert.equal(pending.version,'5');assert.equal(pending.currency,'cad');assert.equal(pending.regionID,'region-cad')
+ if(restoring){
+  const frozen=await control('facts');assert.equal(frozen.version,5);assert.equal(frozen.deletes,1);assert.equal(frozen.refresh,pending.operationID);assert.deepEqual(await amounts(),before)
+ }
+ await page.reload();await open()
+ if(restoring){
+  await page.route('**/context-payment/restore',async route=>{const r=await route.fetch();assert.equal(r.status(),200);if(!lost){lost=true;await route.abort('failed')}else await route.fulfill({response:r})})
+  await page.getByRole('dialog').getByRole('button',{name:/^(Restore previous preferences|恢复之前的设置)$/,exact:true}).click();await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible()
+  await page.reload();await open();await page.getByRole('dialog').getByRole('button',{name:/^(Restore previous preferences|恢复之前的设置)$/,exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0)
+  assert.equal(page.url(),url);assert.deepEqual(await journal(paymentKey),{cartID:seed.cart_id,version:'5',operationID:pending.operationID})
+ }else{
+  await page.getByRole('dialog').getByRole('button',{name:'Canada — '+target,exact:true}).click();await expect(page).toHaveURL(origin+'/ca-'+lang+'/about?joint=currency#contact');assert.equal(await journal(paymentKey),null)
+ }
+ const after=await amounts(),cart=(await current()).cart,facts=await control('facts')
+ assert.equal(after.currency_code,restoring?'eur':'cad');assert.equal(after.totals.total,'158.75');assert.equal(after.version,'6');assert.equal(cart.region_id,restoring?'region':'region-cad');assert.equal(cart.version,'6')
+ assert.equal(facts.version,6);assert.equal(facts.deletes,1);assert.equal(facts.creates,restoring?2:1);assert.equal(facts.refresh,null);assert.equal(facts.receipts,restoring?0:1);assert.equal(facts.protected_unchanged,true);assert.equal(facts.attempts[0].InputVersion,4);assert.equal(facts.attempts[0].CartVersion,5)
+ assert.equal(facts.collections.length,1);assert.equal(facts.collections[0].CurrencyCode,restoring?'eur':'cad');assert.equal(JSON.parse(facts.collections[0].RawAmount).value,'158.75');assert.equal(facts.live_sessions,restoring?1:0)
+ assert.deepEqual(facts.provider_events,[{Kind:'create',Amount:'158.75',Currency:'eur'},{Kind:'delete',Amount:'158.75',Currency:'eur'},...(restoring?[{Kind:'create',Amount:'158.75',Currency:'eur'}]:[])])
+ if(restoring){assert.equal(facts.checkout,pending.operationID);assert.equal(facts.attempts[1].InputVersion,5);assert.equal(facts.attempts[1].CartVersion,6)}else{assert.equal(facts.checkout,null);assert.equal(after.shipping_methods.length,0);assert.equal(after.totals.tax_total,'0')}
+ assert.equal(await journal(contextKey),null);assert(writes.length>=2);assert(writes.every(w=>w.key===writes[0].key&&JSON.stringify(w.body)===JSON.stringify(writes[0].body)))
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true)
+ await page.screenshot({path:join(output,`${scenario}-${lang}-${width}.png`)})
+ cases.push({scenario,lang,width,before,after,cart,real_database_facts:facts,equal_numeric_total_different_currency:true,lost_response_replayed:lost,original_payment_operation:original.operationID});await control('case-done')
+}
 async function continuousCase(seed,lang,width,writes){
  await page.goto(origin+'/dk-'+lang+'/checkout?step=payment')
  await expect(page.getByTestId('submit-payment-button')).toBeEnabled();await page.getByTestId('submit-payment-button').click();await expect(page.getByTestId('submit-order-button')).toBeVisible()
@@ -155,6 +190,7 @@ try{
   const writes=[];page.on('request',r=>{if(r.method()==='POST'&&r.url().includes('/context-payment'))writes.push({path:new URL(r.url()).pathname,key:r.headers()['idempotency-key'],body:r.postDataJSON()})})
   const seed=await control('new'),url=origin+'/dk-'+lang+'/about?joint=payment#contact'
   await context.addCookies([{name:'retail_cart_possession',value:seed.token,url:origin,sameSite:'Strict'},{name:'retail_cart_csrf',value:seed.csrf,url:origin,sameSite:'Strict'}])
+  if(scenario.startsWith('currency-')){await currencyCase(seed,scenario,lang,width,writes);await context.close();continue}
   if(scenario==='continuous'){await continuousCase(seed,lang,width,writes);await context.close();continue}
   if(scenario==='same-account'||scenario.startsWith('unbound-')){await accountCase(context,seed,scenario,lang,width);await context.close();continue}
   await page.goto(origin+'/dk-'+lang+'/checkout?step=payment')

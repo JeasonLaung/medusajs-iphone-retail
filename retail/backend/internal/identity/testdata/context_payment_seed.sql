@@ -37,6 +37,13 @@ INSERT INTO fulfillment_option_price_sets(shipping_option_id,price_set_id,id,cre
 INSERT INTO payment_providers(id,is_enabled,created_at,updated_at) VALUES('pp_mollie-hosted-checkout_mollie',TRUE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
 INSERT INTO commerce_region_payment_providers(region_id,payment_provider_id,id,created_at,updated_at) VALUES('region','pp_mollie-hosted-checkout_mollie','checkout-region-provider',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
 UPDATE cart_command_capabilities SET enabled=TRUE;
+-- Equal numeric total in a different currency must still retire the EUR session.
+INSERT INTO commerce_currencies(code,symbol,symbol_native,decimal_digits,rounding,raw_rounding,name,created_at,updated_at) VALUES('cad','C$','$',2,0,'{"value":"0","precision":20}','Canadian Dollar',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO commerce_regions(id,name,currency_code,automatic_taxes,created_at,updated_at) VALUES('region-cad','Canada','cad',FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO commerce_store_currencies(id,store_id,currency_code,is_default,created_at,updated_at) VALUES('currency-cad','shop','cad',FALSE,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO commerce_countries(iso_2,iso_3,num_code,name,display_name,region_id,created_at,updated_at) VALUES('ca','CAN','124','CANADA','Canada','region-cad',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO pricing_prices(id,price_set_id,currency_code,amount,raw_amount,rules_count,created_at,updated_at) VALUES('add-cad','add-set','cad',158.75,'{"value":"158.75","precision":100}',0,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
+INSERT INTO commerce_region_payment_providers(region_id,payment_provider_id,id,created_at,updated_at) VALUES('region-cad','pp_mollie-hosted-checkout_mollie','checkout-cad-provider',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6));
 UPDATE cart_item_runtime SET enabled=TRUE WHERE id=1;
 UPDATE cart_contact_runtime SET enabled=TRUE WHERE id=1;
 UPDATE cart_shipping_command_runtime SET enabled=TRUE WHERE id=1;

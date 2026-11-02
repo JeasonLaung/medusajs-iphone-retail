@@ -4,6 +4,8 @@
 
 ## 最新换机交接（2026-11-02，覆盖后文历史运行状态）
 
+2026-11-02 最新接续：账户绑定金额变化的持久付款协调已完成局部验证并推送；同一购物车连续保存两次→恢复替代付款→继续保存到版本9已通过中英双宽度联合。跨币种新增EUR/CAD数字同为158.75的保存与恢复，确认旧付款必须取消、集合币种原子变化或恢复原EUR；与连续场景合计12组实际Gin/MySQL/Redis/Astro通过，保护表无变化、资源已清理。见[账户协调](migration/customer-payment-coordination-report.json)、[连续保存](migration/context-payment-continuous-report.json)、[跨币种](migration/context-payment-currency-report.json)与[可组合子流程用法](migration/context-payment-subflow.md)。上述部分覆盖后文历史“已有付款转移/连续联合/跨币种未补”的记录；后续商品/优惠变化、跨设备合并、正式数据/文件组合、真实渠道与收件及其余C01—C11终点仍缺。完整业务流程仍在大任务结束后统一运行，原服务/主预览仍此前离线状态，未标整体完成。
+
 2026-11-02 匿名已有付款首次账户绑定（金额不变分支）：接入正式客户HTTP与原付款配置，在同一事务内先校验原CREATE/唯一未付会话，再保存新归属、刷新价格/税/客户优惠并精确比较金额/币种；完全相同才保留原付款并更新effective版本。真实12状态英文390px局部联合通过，新增登录丢响应重放/完整付款日志保留、低于分的差异拒绝、仅客户归属后才生效的自动优惠全表回滚、收据末尾故障全表回滚及已付拒绝；Go cart/customer/identity/cmd-api检查通过。见[说明](migration/gin-customer-cart-transfer.md)与[报告](migration/customer-payment-attachment-report.json)。变化金额的渠道删除/未知恢复/补偿及跨设备合并仍缺，不把金额不变分支当整个转移闭环；完整业务全链仍留收尾一次验证，原服务/主预览仍接续前离线。
 
 2026-11-02 同账户冻结结账重登：原已归属客户可在重新验证双凭证后确认同一cart，保留版本、编辑后的邮箱、冻结金额和CREATE日志；首次匿名已有付款归属仍待协调。前端19项局部测试、Astro470文件0错0警告及Go cart/customer/identity通过；真实10状态英文390px与同账户中英×390/1440从头四组合通过，含丢响应自动重放、外账户/匿名首次绑定拒绝、收据末尾故障全表回滚、六并发唯一收据、停用/付款刷新冻结拒绝。见[接续说明](migration/gin-customer-cart-transfer.md)及[报告](migration/customer-frozen-cart-transfer-report.json)。隔离资源清理；原服务/主预览仍接续前离线，完整业务全链未运行，C01—C11继续开放。
