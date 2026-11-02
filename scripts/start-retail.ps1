@@ -116,6 +116,10 @@ try {
     Start-Sleep -Seconds 1
   }
   Write-Host 'Building current Gin API (native apps/local Redis, no automatic database migration)...'
+  if ($env:LOCAL_PREVIEW_CATALOG_OPERATIONS_ENABLED -eq 'true') {
+    & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --catalog-operations
+    if ($LASTEXITCODE -ne 0) { throw 'Local catalog editing configuration failed.' }
+  }
   if ($env:LOCAL_PREVIEW_PRODUCT_ENTRY_ENABLED -eq 'true') {
     & $go -C (Join-Path $retailRoot 'backend') run ./cmd/configure-local-preview --product-entry
     if ($LASTEXITCODE -ne 0) { throw 'Local product entry configuration failed.' }

@@ -103,3 +103,8 @@ LOCAL_PREVIEW_WAREHOUSE_MANAGEMENT_ENABLED=true使start.bat显式开启既有仓
 2026-11-03：专用本机库备份至忽略目录 `logs/retail-native/before-customer-event-mail-0105.sql` 后升级105。新增客户业务事件邮件队列与后台“客户业务邮件任务”，恢复入口保留冻结正文和幂等键。`CUSTOMER_EVENT_MAIL_ENABLED=false` 为缺省；仅显式true时start.bat启动专用 `customer-event-mail-worker`，需后台Resend发信账户及持久CUSTOMER/MERCHANT密钥，不因API启动发信。当前主预览worker关闭，业务邮件队列0、投递0，既有订单邮件pending且attempts0。独立场景 `python retail/scripts/test-local-customer-account.py --scenario=buyback-mail` 已验证实际回收5个事件投递/拒绝恢复；只有Resend外部HTTP传输使用自有隔离夹具，不代表真实收件。详见 `docs/migration/gin-customer-event-mail.md`。
 
 2026-11-03：新增 `--repair-mail-from-checkpoint=OWNER` 从尚未履约的自有已付款检查点运行发货/原机维修邮件联合，实际邮件仍限制隔离Resend传输；`--verify-repair-mail=OWNER` 只恢复前后SQL并补核终态、投递收据及付款/归属不变，不重跑付款/业务命令。实际 owner `d6584b4f9b67` 浏览器通过，原最后汇总cart_id错误已修正，并用持久SQL完成补核；源失败报告保留。主服务、主库和真实发信开关未改动。详见 `docs/migration/customer-order-repair-mail-report.json`。
+
+
+### 商品图片、选项和 SKU 编辑
+
+`LOCAL_PREVIEW_CATALOG_OPERATIONS_ENABLED=true` 使start.bat显式开启既有商品图片/商品选项/共享选项/SKU编辑/库存关联五项命令。本机忽略配置已开启；只更改专用库命令开关，不改商品、库存关系或ERP序号。后台商品详情已有“管理图片”“管理选项”“编辑 SKU”“SKU 图片”和库存关联入口，共享选项使用`/option-definitions`。验收命令：`python retail/scripts/test-local-customer-account.py --scenario=catalog-operations`，只写自有恢复副本。报告见 `docs/migration/local-catalog-operations.md`。

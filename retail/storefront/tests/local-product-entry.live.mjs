@@ -1,11 +1,13 @@
 import assert from 'node:assert/strict'
+import {verifyCatalogOperations} from './local-catalog-operations.live.mjs'
 import {randomUUID} from 'node:crypto'
 import {readFileSync,writeFileSync} from 'node:fs'
 import {resolve} from 'node:path'
 import {chromium,expect} from '../../admin/node_modules/@playwright/test/index.mjs'
 const origin='http://127.0.0.1:19200',logs=process.env.ACCOUNT_TEST_LOGS,deviceEntry=process.env.ACCOUNT_TEST_SCENARIO==='device-entry',stockQuantity=deviceEntry?1:3
-let deviceFacts={}
-if(!logs||!['product-entry','device-entry'].includes(process.env.ACCOUNT_TEST_SCENARIO))throw Error('Owned product-entry runner required')
+const catalogOperations=process.env.ACCOUNT_TEST_SCENARIO==='catalog-operations'
+let deviceFacts={},catalogFacts={}
+if(!logs||!['product-entry','device-entry','catalog-operations'].includes(process.env.ACCOUNT_TEST_SCENARIO))throw Error('Owned product-entry runner required')
 const credentials=readFileSync(resolve('../../.private-files/local/admin-credentials.txt'),'utf8')
 const credential=name=>credentials.split(/\r?\n/).find(line=>new RegExp('^'+name+'\\s*[:=]','i').test(line))?.replace(/^[^:=]+[:=]\s*/,'').trim()
 const errors=[],browser=await chromium.launch({headless:true,executablePath:resolve(process.env.LOCALAPPDATA,'ms-playwright/chromium-1234/chrome-win64/chrome.exe')})
@@ -79,13 +81,15 @@ try{
  await editor.getByRole('button',{name:'Save',exact:true}).click();await expect(editor).toHaveCount(0)
  const stocked=await context.request.get(origin+'/api/store/products/'+productID+'?region_id='+region.id);const stockedData=(await stocked.json()).product
  assert.equal(String(stockedData.variants[0].inventory_quantity),String(stockQuantity))
+ if(catalogOperations)catalogFacts=await verifyCatalogOperations({page,context,origin,productID,variantID:stockedData.variants[0].id,region,sku})
  const shop=await context.newPage();shop.on('pageerror',e=>errors.push(e.message))
  for(const language of ['en','zh']){
   await shop.setViewportSize({width:390,height:844});await shop.goto('http://127.0.0.1:19300/dk-'+language+'/products/'+handle,{waitUntil:'domcontentloaded'})
   await expect(shop.getByTestId('product-title')).toHaveText(title);await expect(shop.getByTestId('add-product-button')).toBeEnabled()
+  if(catalogOperations){await expect(shop.locator('img[src="'+catalogFacts.image_url+'"]').first()).toBeVisible();await shop.waitForFunction(url=>[...document.images].some(i=>i.getAttribute('src')===url&&i.complete&&i.naturalWidth===2),catalogFacts.image_url)}
   assert.equal(await shop.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)
   await shop.screenshot({path:resolve(logs,'product-entry-'+language+'.png'),fullPage:true})
  }
  assert.deepEqual(errors,[])
- writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:deviceEntry?'device-entry':'product-entry',...deviceFacts,product_id:productID,handle,generated_sku:sku,actual_admin_product_sku_price_stock:true,exact_price:'129.123456789012345678',stocked_quantity:stockQuantity,public_inventory_quantity:stockQuantity,astro_en_zh_purchase_enabled:true,mobile_overflow:false,browser_errors:0,real_payment_created:false},null,2))
+ writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:process.env.ACCOUNT_TEST_SCENARIO,...deviceFacts,product_id:productID,handle,generated_sku:sku,actual_admin_product_sku_price_stock:true,exact_price:'129.123456789012345678',stocked_quantity:stockQuantity,public_inventory_quantity:stockQuantity,...catalogFacts,astro_en_zh_purchase_enabled:true,mobile_overflow:false,browser_errors:0,real_payment_created:false},null,2))
 }catch(error){console.error('VISIBLE_DIALOGS',await page?.getByRole('dialog').allTextContents());throw error}finally{await browser.close()}

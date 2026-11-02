@@ -553,7 +553,8 @@ def main(language, scenario='account', resume=None):
     repair_mail = scenario == 'repair-mail'
     intake_warehouse = scenario == 'intake-warehouse'
     device_entry = scenario == 'device-entry'
-    product_entry = scenario in ('product-entry', 'device-entry')
+    catalog_operations = scenario == 'catalog-operations'
+    product_entry = scenario in ('product-entry', 'device-entry', 'catalog-operations')
     mail = scenario == 'mail'
     reviews = scenario == 'reviews'
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
@@ -619,7 +620,7 @@ def main(language, scenario='account', resume=None):
     created = False
     source_counts = source_account_counts()
     def entry_source_fingerprint():
-        return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', 'eurorefurb_local_trial', 'catalog_products', 'catalog_variants', 'pricing_prices', 'inventory_levels', 'catalog_product_edits', 'catalog_variant_creations', 'catalog_price_edits', 'inventory_level_creations', 'inventory_locations', 'device_sources', 'devices', 'device_variant_tracking', 'device_photos', 'device_tracking_changes', 'device_source_changes', 'device_intake_changes')).hexdigest()
+        return hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', 'eurorefurb_local_trial', 'catalog_products', 'catalog_variants', 'pricing_prices', 'inventory_levels', 'catalog_product_edits', 'catalog_variant_creations', 'catalog_price_edits', 'inventory_level_creations', 'inventory_locations', 'device_sources', 'devices', 'device_variant_tracking', 'device_photos', 'device_tracking_changes', 'device_source_changes', 'device_intake_changes', 'catalog_images', 'catalog_image_assets', 'catalog_variant_inventory_items', 'catalog_variant_images', 'catalog_options', 'catalog_option_values', 'catalog_product_options', 'catalog_product_option_values', 'catalog_variant_options', 'catalog_image_edits', 'catalog_option_edits', 'catalog_variant_edits', 'catalog_inventory_edits')).hexdigest()
     entry_source_before = entry_source_fingerprint() if product_entry or buyback_intake else None
     report = {'owner': owner, 'database': database, 'real_email_delivery': False,
               'business_api_mocking': False, 'main_database_modified': False,
@@ -721,6 +722,8 @@ def main(language, scenario='account', resume=None):
             sql(database, 'UPDATE warehouse_management_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE warehouse_user_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE warehouse_scope_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE inventory_command_capabilities SET enabled=TRUE WHERE command=\'inventory.create_level\' AND version=1')
         if device_entry or buyback_intake:
             sql(database, 'UPDATE warehouse_management_runtime SET enabled=TRUE WHERE id=1 AND version=1')
+        if catalog_operations:
+            sql(database, "UPDATE catalog_command_capabilities SET enabled=TRUE WHERE command IN ('product.images','product.options','product.option-definitions','variant.edit','variant.inventory') AND version=1")
         if product_entry:
             sql(database, "UPDATE catalog_command_capabilities SET enabled=TRUE WHERE command='product.create' AND version=1; UPDATE inventory_command_capabilities SET enabled=TRUE WHERE command='inventory.create_level' AND version=1; UPDATE catalog_variant_create_runtime SET enabled=TRUE WHERE id=1 AND version=1; UPDATE catalog_price_edit_runtime SET enabled=TRUE WHERE id=1 AND version=1")
         if mail or event_mail:
@@ -843,6 +846,11 @@ def main(language, scenario='account', resume=None):
             if facts != ['1', '1', '1', '1']:
                 raise RuntimeError('Expected unique product, SKU, price and stock receipts')
             report['sql_entry_receipts'] = dict(zip(['product', 'variant', 'price', 'stock'], map(int, facts)))
+            if catalog_operations:
+                edit_facts = [int(sql(database, "SELECT COUNT(*) FROM " + table + " WHERE product_id='" + product + "'")) for table in ('catalog_image_edits', 'catalog_option_edits', 'catalog_variant_edits', 'catalog_inventory_edits')]
+                if edit_facts != [2, 1, 1, 1]:
+                    raise RuntimeError('Catalog image/option/SKU/inventory receipts differ: ' + str(edit_facts))
+                report['sql_catalog_receipts'] = dict(zip(['image', 'option', 'variant', 'inventory'], edit_facts))
         if device_entry:
             variant = report['variant_id']
             if not re.fullmatch(r'variant_[0-9a-f-]{36}', variant):
@@ -1127,6 +1135,8 @@ if __name__ == '__main__':
         verify_paid_warehouse_checkpoint(sys.argv[1].split('=', 1)[1])
     elif sys.argv[1:] == ['--scenario=device-entry']:
         main('en', 'device-entry')
+    elif sys.argv[1:] == ['--scenario=catalog-operations']:
+        main('en', 'catalog-operations')
     elif sys.argv[1:] == ['--scenario=product-entry']:
         main('en', 'product-entry')
     elif sys.argv[1:] == ['--scenario=mail']:

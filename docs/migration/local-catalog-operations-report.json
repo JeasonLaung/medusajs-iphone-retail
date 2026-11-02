@@ -1,0 +1,149 @@
+{
+  "owner": "011fe7390a47",
+  "database": "retail_account_011fe7390a47",
+  "real_email_delivery": false,
+  "business_api_mocking": false,
+  "main_database_modified": false,
+  "api_sha256": "a3a9667b78197353350751e0cddd751ac07795f82185f6b518846a164806a9bb",
+  "customer_owner": "011fe7390a47",
+  "passed": true,
+  "scenario": "catalog-operations",
+  "product_id": "prod_3a32e218-b69a-4094-b6ce-13fe06247d45",
+  "handle": "native-browser-cd46cdf7-3de0-489a-981a-8325a7626fcd",
+  "generated_sku": "ERP11565",
+  "actual_admin_product_sku_price_stock": true,
+  "exact_price": "129.123456789012345678",
+  "stocked_quantity": 3,
+  "public_inventory_quantity": 1,
+  "variant_id": "variant_bcb41f20-e365-4560-87c2-4b849083f913",
+  "image_url": "/api/store/catalog-images/img_57d8756f-a58e-44de-8cdf-e7e071be472e",
+  "actual_shared_option_creation": true,
+  "actual_images_options_sku_inventory_edits": true,
+  "original_sku_and_link_preserved": true,
+  "uploaded_image_bytes_identical": true,
+  "astro_en_zh_purchase_enabled": true,
+  "mobile_overflow": false,
+  "browser_errors": 0,
+  "real_payment_created": false,
+  "verified_accounts": 0,
+  "sql_entry_receipts": {
+    "product": 1,
+    "variant": 1,
+    "price": 1,
+    "stock": 1
+  },
+  "sql_catalog_receipts": {
+    "image": 2,
+    "option": 1,
+    "variant": 1,
+    "inventory": 1
+  },
+  "redis_keys_removed": 4,
+  "source_product_entry_unchanged": true,
+  "source_account_counts_before": {
+    "customer_accounts": 0,
+    "customer_verifications": 0,
+    "customer_verification_mail": 0,
+    "customer_account_addresses": 0,
+    "customer_order_ownership": 0,
+    "buyback_requests": 0,
+    "buyback_prices": 0,
+    "buyback_photo_bytes": 0,
+    "buyback_device_links": 0,
+    "after_sales_requests": 0,
+    "device_return_receipts": 0,
+    "device_service_receipts": 0
+  },
+  "source_account_counts_after": {
+    "customer_accounts": 0,
+    "customer_verifications": 0,
+    "customer_verification_mail": 0,
+    "customer_account_addresses": 0,
+    "customer_order_ownership": 0,
+    "buyback_requests": 0,
+    "buyback_prices": 0,
+    "buyback_photo_bytes": 0,
+    "buyback_device_links": 0,
+    "after_sales_requests": 0,
+    "device_return_receipts": 0,
+    "device_service_receipts": 0
+  },
+  "resources_removed": true,
+  "cleanup_errors": [],
+  "configuration": {
+    "passed": true,
+    "configuration_runs": 2,
+    "content_and_runtime_counters_unchanged": true,
+    "checked_tables": [
+      "catalog_products",
+      "catalog_variants",
+      "catalog_images",
+      "catalog_image_assets",
+      "catalog_options",
+      "catalog_option_values",
+      "catalog_product_options",
+      "catalog_product_option_values",
+      "catalog_variant_options",
+      "catalog_variant_images",
+      "catalog_variant_inventory_items",
+      "inventory_items",
+      "inventory_levels",
+      "pricing_prices",
+      "devices",
+      "orders",
+      "catalog_variant_create_runtime",
+      "catalog_price_edit_runtime"
+    ],
+    "before_capabilities": "product.create\t1\t1\nproduct.edit_basics\t1\t1\nproduct.images\t1\t0\nproduct.option-definitions\t1\t0\nproduct.options\t1\t0\nstore.buy-policies\t1\t0\nvariant.edit\t1\t0\nvariant.inventory\t1\t0\n",
+    "after_capabilities": "product.create\t1\t1\nproduct.edit_basics\t1\t1\nproduct.images\t1\t1\nproduct.option-definitions\t1\t1\nproduct.options\t1\t1\nstore.buy-policies\t1\t0\nvariant.edit\t1\t1\nvariant.inventory\t1\t1\n"
+  },
+  "failed_rehearsals": {
+    "7e0a81966af9": "Invalid PNG fixture rejected with HTTP 400; fixed fixture CRC.",
+    "03abea7bf9a9": "Ant selected-option overlay intercepted input click; use keyboard focus.",
+    "9381c8e3290b": "Expected unscaled quantity but SQL correctly returned fixed-scale decimal; assertion corrected."
+  },
+  "limitations": [
+    "Local catalog operations only; does not close C03 or C01-C11.",
+    "No real payment, email, main-product edit or inventory movement for verification.",
+    "Complete site/business acceptance remains pending."
+  ],
+  "main_read_only_check": {
+    "passed": true,
+    "read_only": true,
+    "business_writes": 0,
+    "browser_errors": 0,
+    "product_id": "prod_01M4QRKR57T5S95XA5QDPHWN9E",
+    "variant_id": "variant_01M4QRKR735DVY34JY8X2DC05E",
+    "checks": [
+      {
+        "language": "en",
+        "width": 1440,
+        "editors_enabled": true,
+        "no_horizontal_overflow": true
+      },
+      {
+        "language": "zh",
+        "width": 390,
+        "editors_enabled": true,
+        "no_horizontal_overflow": true
+      }
+    ]
+  },
+  "source_catalog_fingerprint_tables": 29,
+  "service_http": {
+    "http://127.0.0.1:9100/health": 200,
+    "http://127.0.0.1:9200/products": 200,
+    "http://127.0.0.1:9300/gb-en/store": 200,
+    "http://127.0.0.1:9300/gb-en/products/swappie-iphone-17e": 200
+  },
+  "configuration_scope_rejections": [
+    {
+      "case": "production",
+      "rejected_before_database_access": true
+    },
+    {
+      "case": "other-database",
+      "rejected_before_database_access": true
+    }
+  ]
+}

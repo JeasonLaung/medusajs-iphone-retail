@@ -35,6 +35,7 @@ func main() {
 	refunds := flag.Bool("refunds", false, "Enable existing refund commands in the dedicated local Mollie test preview")
 	notificationMail := flag.Bool("notification-mail", false, "Validate explicit notification mailbox management without starting mail workers")
 	productEntry := flag.Bool("product-entry", false, "Enable existing product, SKU, price and initial inventory entry in the dedicated local preview")
+	catalogOperations := flag.Bool("catalog-operations", false, "Enable existing product images, options, SKU editing and inventory links in the dedicated local preview")
 	warehouseManagement := flag.Bool("warehouse-management", false, "Enable existing warehouse management and validate device entry in the dedicated local preview")
 	flag.Parse()
 	_ = godotenv.Load()
@@ -81,6 +82,17 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *catalogOperations {
+			for _, command := range []string{"product.images", "product.options", "product.option-definitions", "variant.edit", "variant.inventory"} {
+				var row struct{ Version int }
+				if e := tx.Table("catalog_command_capabilities").Where("command=?", command).Clauses(clause.Locking{Strength: "UPDATE"}).Take(&row).Error; e != nil || row.Version != 1 {
+					return gorm.ErrInvalidData
+				}
+				if e := tx.Table("catalog_command_capabilities").Where("command=? AND version=1", command).Update("enabled", true).Error; e != nil {
+					return e
+				}
+			}
+		}
 		if *warehouseManagement {
 			var row struct {
 				Version  int
@@ -378,6 +390,9 @@ func main() {
 	}
 	if *productEntry {
 		log.Print("Local product entry gates enabled; no products, prices, inventory or reservations created")
+	}
+	if *catalogOperations {
+		log.Print("Local catalog editing gates enabled; no product content, images, SKU identities or inventory links changed")
 	}
 	if *warehouseManagement {
 		log.Print("Local warehouse management enabled and device entry ready; no warehouses, sources or devices created")
