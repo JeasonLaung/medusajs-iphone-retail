@@ -11,8 +11,8 @@ import {chromium,expect as baseExpect} from '../../admin/node_modules/@playwrigh
 const expect=baseExpect.configure({timeout:15000}),origin='http://127.0.0.1:19300',adminOrigin='http://127.0.0.1:19200'
 const logs=process.env.ACCOUNT_TEST_LOGS,owner=process.env.ACCOUNT_TEST_OWNER,password='isolated-account-'+owner+'-password',email=`local-account-${owner}-1@example.invalid`
 assert.match(owner??'',/^[0-9a-f]{12}$/)
-const output=pathToFileURL(logs+'/'),errors=[],returning=['buyback-return','buyback-intake-return'].includes(process.env.ACCOUNT_TEST_SCENARIO),shop=origin,segment='gb-en',index=1
-const actualIntake=['buyback-intake','buyback-intake-return','buyback-mail'].includes(process.env.ACCOUNT_TEST_SCENARIO)
+const output=pathToFileURL(logs+'/'),errors=[],returning=['buyback-return','buyback-intake-return','buyback-return-mail'].includes(process.env.ACCOUNT_TEST_SCENARIO),shop=origin,segment='gb-en',index=1
+const actualIntake=['buyback-intake','buyback-intake-return','buyback-mail','buyback-return-mail'].includes(process.env.ACCOUNT_TEST_SCENARIO)
 let intakeFacts={},deviceID='isolated-buyback-device'
 const browser=await chromium.launch({headless:true,executablePath:resolve(process.env.LOCALAPPDATA,'ms-playwright/chromium-1234/chrome-win64/chrome.exe')})
 try{
@@ -167,7 +167,7 @@ try{
  await page.screenshot({path:fileURLToPath(new URL('closed-customer-mobile.png',output)),fullPage:true})
  await admin.bringToFront();await drawer.getByRole('button',{name:'Refresh request',exact:true}).click();await expect(drawer.getByText(returning?'Returned':'Paid',{exact:true}).first()).toBeVisible();await expect(drawer.getByRole('button',{name:'Record completed payment',exact:true})).toHaveCount(0)
 
- if(process.env.ACCOUNT_TEST_SCENARIO==='buyback-mail')Object.assign(intakeFacts,await verifyBuybackMail({admin,origin:adminOrigin,logs,expect,id}))
+ if(['buyback-mail','buyback-return-mail'].includes(process.env.ACCOUNT_TEST_SCENARIO))Object.assign(intakeFacts,await verifyBuybackMail({admin,origin:adminOrigin,logs,expect,id,...(returning?{expectedKinds:Array(6).fill('buyback.updated')}:{})}))
  assert.deepEqual(errors,[])
  writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:process.env.ACCOUNT_TEST_SCENARIO,...intakeFacts,original_questionnaire:true,registered_verified_customer:true,customer_photos_admin_review_shipping_received:true,device_link_final_offer_decision_closing:true,closed_state:returning?'returned':'paid',real_transfer:false,real_carrier:false,real_email_delivery:false,business_api_mocking:false,browser_errors:0,request_id:id},null,2))
 }catch(e){for(const [i,p]of browser.contexts().flatMap(c=>c.pages()).entries()){await p.screenshot({path:resolve(logs,`failure-${i}.png`),fullPage:true}).catch(()=>{});console.error('FAILURE',p.url(),await p.locator('body').innerText().catch(()=>''))}throw e}finally{await browser.close()}

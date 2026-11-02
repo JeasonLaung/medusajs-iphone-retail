@@ -1,0 +1,87 @@
+{
+  "owner": "684bfe01c6ac",
+  "api_sha256": "4ea91aab832ba0641d998c375df3eb144e48ec0423ead5157491e814b45dd953",
+  "scenario": "buyback-return-mail",
+  "browser_passed": true,
+  "initial_runner_passed": false,
+  "initial_runner_failure": "Post-browser SQL expected two incorrectly named existing actions; production persisted approve_shipping and review_photo. Corrected validation applied to retained snapshots without repeating business flow.",
+  "actual_ui_recycled_intake": true,
+  "sql_seeded_devices": false,
+  "closed_state": "returned",
+  "business_event_mail_jobs": 6,
+  "event_mail_rejected_retry_sent": true,
+  "event_mail_lost_reply_same_command": true,
+  "event_mail_frozen_message_and_key": true,
+  "event_mail_recipient_sender_ownership_expiry_guards": true,
+  "browser_errors": 0,
+  "real_email_delivery": false,
+  "real_carrier": false,
+  "real_transfer": false,
+  "business_api_mocking": false,
+  "main_database_modified": false,
+  "source_product_entry_unchanged": true,
+  "source_account_counts_unchanged": true,
+  "buyback_durable_snapshot_retained": true,
+  "resources_removed": true,
+  "cleanup_errors": [],
+  "durable_verification": {
+    "passed": true,
+    "owner": "684bfe01c6ac",
+    "request_id": "bbr_5fa18ad7-be19-4f9f-84fa-777a87118b07",
+    "sql_customer_event_mail": [
+      "approve_shipping\tsent\t1",
+      "final_offer\tsent\t1",
+      "mark_received\tsent\t1",
+      "mark_returned\tsent\t1",
+      "mark_returning\tsent\t1",
+      "review_photo\tsent\t1"
+    ],
+    "sql_mail_receipts": {
+      "sent_deliveries": 6,
+      "retry_receipts": 1
+    },
+    "sql_terminal_and_intake": {
+      "closed_return_without_payment": 1,
+      "private_photo_bytes": 3,
+      "linked_actual_device": 1,
+      "inspection_device": 1,
+      "intake_receipt": 1,
+      "source_receipt": 1,
+      "device_photo": 1,
+      "seeded_device": 0
+    },
+    "payment_order_inventory_ownership_unchanged": true,
+    "no_business_or_remote_effect_replayed": true,
+    "verification_resources_removed": true
+  },
+  "mail_dispatch": {
+    "event-reject": {
+      "concurrent_claims": true,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-reject",
+      "provider_calls": 1
+    },
+    "event-sent": {
+      "concurrent_claims": true,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-sent",
+      "provider_calls": 1
+    },
+    "event-drain": {
+      "concurrent_claims": false,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-drain",
+      "provider_calls": 5
+    },
+    "event-safety": {
+      "concurrent_claims": false,
+      "external_transport_isolated": true,
+      "passed": true,
+      "phase": "event-safety",
+      "provider_calls": 0
+    }
+  }
+}

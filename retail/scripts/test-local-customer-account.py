@@ -6,6 +6,8 @@ API, frontend dependencies, Node >=22 and Python cryptography. No mail is sent.
 applications through Admin closing with explicit prices/devices in the copy.
 --scenario=buyback-intake / buyback-intake-return replace the seeded device/source with actual Admin
 source creation, photo upload and recycled device intake before inspection.
+--scenario=buyback-return-mail adds six production event mails with isolated
+external delivery; --verify-buyback-return-mail=OWNER checks retained SQL only.
 --scenario=repair or --scenario=exchange continues a copied paid order through
 explicit fixture account ownership, real fulfillment and repair/replacement; never claims ownership
 of an actual guest order in the source preview.
@@ -551,6 +553,70 @@ def verify_repair_mail_checkpoint(owner):
     print('Repair mail durable checkpoint verified: ' + owner)
 
 
+def buyback_return_mail_facts(database, request):
+    mail_facts = sql(database, "SELECT action,status,COUNT(*) FROM customer_event_mail WHERE resource_id='" + request + "' AND kind='buyback.updated' GROUP BY action,status ORDER BY action,status").splitlines()
+    expected_actions = ['approve_shipping', 'final_offer', 'mark_received', 'mark_returned', 'mark_returning', 'review_photo']
+    if mail_facts != [action + '\tsent\t1' for action in expected_actions]:
+        raise RuntimeError('Buyback return mail events differ: ' + str(mail_facts))
+    delivery_facts = sql(database, "SELECT (SELECT COUNT(*) FROM customer_event_mail),(SELECT COUNT(*) FROM customer_event_mail_deliveries WHERE sent_at IS NOT NULL AND provider_id IS NOT NULL AND request_envelope IS NOT NULL),(SELECT COUNT(*) FROM audit_events WHERE action='customer_event_mail.retry')").split('\t')
+    if delivery_facts != ['6', '6', '1']:
+        raise RuntimeError('Buyback return mail receipts differ')
+    return dict(sql_customer_event_mail=mail_facts, sql_mail_receipts=dict(sent_deliveries=6, retry_receipts=1))
+
+
+def verify_buyback_return_mail_checkpoint(owner):
+    config()
+    if not re.fullmatch(r'[0-9a-f]{12}', owner):
+        raise RuntimeError('Owned buyback mail checkpoint required')
+    logs = ROOT / 'logs/retail-native' / ('account-' + owner)
+    browser = json.loads((logs / 'browser-result.json').read_text(encoding='utf-8'))
+    run = json.loads((logs / 'report.json').read_text(encoding='utf-8'))
+    if not browser.get('passed') or browser.get('scenario') != 'buyback-return-mail' or not run.get('buyback_durable_snapshot_retained') or not run.get('resources_removed') or not run.get('source_product_entry_unchanged') or run.get('source_account_counts_before') != run.get('source_account_counts_after'):
+        raise RuntimeError('Completed browser and cleaned durable buyback return mail evidence required')
+    request, device, source, location = (browser[k] for k in ('request_id', 'intake_device_id', 'intake_source_id', 'intake_location_id'))
+    if not all(re.fullmatch(prefix + r'_[0-9a-f-]{36}', value) for prefix, value in (('bbr', request), ('dev', device), ('dsrc', source), ('sloc', location))):
+        raise RuntimeError('Owned return mail identities invalid')
+    fingerprints, facts = [], {}
+    for name in ('snapshot.sql', 'buyback-final.sql'):
+        database = 'retail_account_' + secrets.token_hex(6)
+        snapshot = '/tmp/buyback-mail-verify-' + database + '.sql'
+        created = False
+        try:
+            docker('cp', str(logs / name), CONTAINER + ':' + snapshot)
+            docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'CREATE DATABASE ' + database)
+            created = True
+            docker('exec', CONTAINER, 'sh', '-c', 'mysql --defaults-extra-file=/tmp/local-root.cnf ' + database + ' < ' + snapshot)
+            inventory = hashlib.sha256(docker('exec', CONTAINER, 'mysqldump', '--defaults-extra-file=/tmp/local-root.cnf', '--set-gtid-purged=OFF', '--no-create-info', '--skip-comments', '--skip-dump-date', '--skip-triggers', database, 'inventory_levels', 'inventory_reservations', 'payment_refunds')).hexdigest()
+            fingerprints.append((warehouse_payment_fingerprint(database), inventory))
+            if name == 'buyback-final.sql':
+                facts.update(buyback_return_mail_facts(database, request))
+                checks = {
+                    'closed_return_without_payment': "SELECT COUNT(*) FROM buyback_requests WHERE id='" + request + "' AND status='returned' AND final_amount=270.01 AND payment_reference='' AND return_tracking='RETURN-JOINT' AND closed_at IS NOT NULL",
+                    'private_photo_bytes': 'SELECT COUNT(*) FROM buyback_photo_bytes',
+                    'linked_actual_device': "SELECT COUNT(*) FROM buyback_device_links WHERE request_id='" + request + "' AND device_id='" + device + "' AND deleted_at IS NULL",
+                    'inspection_device': "SELECT COUNT(*) FROM devices WHERE id='" + device + "' AND source_id='" + source + "' AND location_id='" + location + "' AND serial_number='SN-JOINT' AND imei='000000000000001' AND category='recycled' AND state='inspection' AND JSON_LENGTH(photos)=1",
+                    'intake_receipt': 'SELECT COUNT(*) FROM device_intake_changes',
+                    'source_receipt': 'SELECT COUNT(*) FROM device_source_changes',
+                    'device_photo': 'SELECT COUNT(*) FROM device_photos',
+                    'seeded_device': "SELECT COUNT(*) FROM devices WHERE id='isolated-buyback-device'",
+                }
+                rows = {key: int(sql(database, query)) for key, query in checks.items()}
+                if rows != dict(closed_return_without_payment=1, private_photo_bytes=3, linked_actual_device=1, inspection_device=1, intake_receipt=1, source_receipt=1, device_photo=1, seeded_device=0):
+                    raise RuntimeError('Persisted buyback return facts differ: ' + str(rows))
+                facts['sql_terminal_and_intake'] = rows
+        finally:
+            if created:
+                docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e', 'DROP DATABASE ' + database)
+            docker('exec', CONTAINER, 'rm', '-f', snapshot)
+    if fingerprints[0] != fingerprints[1]:
+        raise RuntimeError('Payment, order, ownership, quantity inventory or refund changed')
+    report = dict(passed=True, owner=owner, request_id=request, **facts,
+                  payment_order_inventory_ownership_unchanged=True, no_business_or_remote_effect_replayed=True,
+                  verification_resources_removed=True)
+    (logs / 'buyback-return-mail-verification.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+    print('Buyback return mail durable checkpoint verified: ' + owner)
+
+
 def main(language, scenario='account', resume=None):
     cart_login = scenario == 'cart-login'
     non_device_refund = scenario == 'non-device-refund'
@@ -570,9 +636,10 @@ def main(language, scenario='account', resume=None):
     paid_warehouse = scenario in ('paid-warehouse', 'intake-warehouse')
     supplement = scenario == 'supplement'
     payment_context = scenario in ('payment-context', 'payment-context-changed', 'payment-context-restore', 'reviews', 'paid-warehouse', 'intake-warehouse', 'supplement', 'repair-mail', 'non-device-refund', 'cart-login')
-    event_mail = scenario in ('buyback-mail', 'repair-mail', 'refund-mail')
-    buyback_intake = scenario in ('buyback-intake', 'buyback-intake-return', 'buyback-mail')
-    buyback_return = scenario in ('buyback-return', 'buyback-intake-return')
+    buyback_return_mail = scenario == 'buyback-return-mail'
+    event_mail = scenario in ('buyback-mail', 'buyback-return-mail', 'repair-mail', 'refund-mail')
+    buyback_intake = scenario in ('buyback-intake', 'buyback-intake-return', 'buyback-mail', 'buyback-return-mail')
+    buyback_return = scenario in ('buyback-return', 'buyback-intake-return', 'buyback-return-mail')
     buyback = scenario == 'buyback' or buyback_intake or buyback_return
     exchange = scenario in ('exchange', 'supplement')
     refund = scenario in ('refund', 'refund-mail')
@@ -1157,6 +1224,8 @@ def main(language, scenario='account', resume=None):
             report['sql_device_links'] = int(sql(database, "SELECT COUNT(*) FROM buyback_device_links WHERE request_id='" + request + "'"))
             if report['sql_private_photos'] != 3 or report['sql_device_links'] != 1:
                 raise RuntimeError('Buyback photo/device facts differ')
+            if buyback_return_mail:
+                report.update(buyback_return_mail_facts(database, request))
             if buyback_intake:
                 device, source, location = (report[key] for key in ('intake_device_id', 'intake_source_id', 'intake_location_id'))
                 if not all(re.fullmatch(prefix + r'_[0-9a-f-]{36}', value) for prefix, value in (('dev', device), ('dsrc', source), ('sloc', location))):
@@ -1183,16 +1252,19 @@ def main(language, scenario='account', resume=None):
         for stream in streams:
             stream.close()
         cleanup_errors = []
-        if (refund or payment_context) and created:
+        if (refund or payment_context or buyback_return_mail) and created:
             try:
                 # Keep an ignored durable copy even on browser failure: a real
                 # test payment/refund may already exist and need reconciliation.
-                (logs / ('refund-final.sql' if refund else 'payment-context-final.sql')).write_bytes(docker('exec', CONTAINER, 'mysqldump',
+                (logs / ('refund-final.sql' if refund else 'buyback-final.sql' if buyback_return_mail else 'payment-context-final.sql')).write_bytes(docker('exec', CONTAINER, 'mysqldump',
                     '--defaults-extra-file=/tmp/local-root.cnf', '--single-transaction',
                     '--set-gtid-purged=OFF', '--no-tablespaces', database))
-                report['payment_durable_snapshot_retained'] = True
+                if refund or payment_context:
+                    report['payment_durable_snapshot_retained'] = True
                 if refund:
                     report['refund_durable_snapshot_retained'] = True
+                if buyback_return_mail:
+                    report['buyback_durable_snapshot_retained'] = True
             except Exception:
                 cleanup_errors.append('payment evidence snapshot')
         try:
@@ -1200,7 +1272,7 @@ def main(language, scenario='account', resume=None):
         except Exception:
             cleanup_errors.append('Redis cleanup')
         try:
-            if created and (not (refund or payment_context) or report.get('payment_durable_snapshot_retained')):
+            if created and (not (refund or payment_context or buyback_return_mail) or report.get('payment_durable_snapshot_retained') or report.get('buyback_durable_snapshot_retained')):
                 docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf', '-e',
                        'DROP DATABASE ' + database + "; REVOKE ALL ON " + database + ".* FROM 'retail_local'@'%';")
             docker('exec', CONTAINER, 'rm', '-f', '/tmp/account-' + owner + '.sql')
@@ -1239,6 +1311,10 @@ if __name__ == '__main__':
         main('en', 'buyback')
     elif sys.argv[1:] == ['--scenario=buyback-intake']:
         main('en', 'buyback-intake')
+    elif len(sys.argv) == 2 and sys.argv[1].startswith('--verify-buyback-return-mail='):
+        verify_buyback_return_mail_checkpoint(sys.argv[1].split('=', 1)[1])
+    elif sys.argv[1:] == ['--scenario=buyback-return-mail']:
+        main('en', 'buyback-return-mail')
     elif sys.argv[1:] == ['--scenario=buyback-mail']:
         main('en', 'buyback-mail')
     elif sys.argv[1:] == ['--scenario=buyback-intake-return']:
