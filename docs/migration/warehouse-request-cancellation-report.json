@@ -1,0 +1,110 @@
+{
+  "task": "Classify warehouse HTTP503 request cancellations without hiding active failures",
+  "date": "2026-11-02",
+  "passed": true,
+  "full_C01_C11_complete": false,
+  "run": {
+    "owner": "c1e78ed8c83f",
+    "database": "retail_account_c1e78ed8c83f",
+    "real_email_delivery": false,
+    "business_api_mocking": false,
+    "main_database_modified": false,
+    "api_sha256": "6fd59aa42ff5ec01e32238674d53a97c65c1f4053003f5e588ff88683abc590a",
+    "customer_owner": "790ce0fc9e71",
+    "resumed_paid_checkpoint": "790ce0fc9e71",
+    "passed": true,
+    "scenario": "paid-warehouse",
+    "order_id": "order_2f0cb924-7757-418e-87b3-542ede6b250a",
+    "explicit_fixture_ownership": false,
+    "new_paid_order_attachment_tested": true,
+    "paid_checkpoint_continuation": true,
+    "sn": "ISOLATED-REPAIR-001",
+    "tracking": "ISOLATED-REPAIR-OUTBOUND-001",
+    "canceled": "ful_5aa10ca2-2626-4498-b544-ae6a81d616e5",
+    "shipped": "ful_990ef87d-46aa-4f10-96d2-e769f4bc11db",
+    "warehouse_account_created": true,
+    "warehouse_scope_enforced": true,
+    "warehouse_allocation_release_and_shipment": true,
+    "lost_reply_exact_command_recovery": true,
+    "customer_tracking_and_notice": true,
+    "browser_errors": 0,
+    "real_mail_transfer_carrier": false,
+    "verified_accounts": 1,
+    "sql_warehouse_facts": {
+      "warehouse_user": 1,
+      "canceled_parcel": 1,
+      "shipped_parcel": 1,
+      "shipped_device": 1,
+      "unused_replacement": 1,
+      "stock_once": 1
+    },
+    "paid_checkpoint_financial_and_ownership_unchanged": true,
+    "stock_before": [
+      "50.000000000000000000",
+      "2.000000000000000000"
+    ],
+    "stock_after": [
+      "49.000000000000000000",
+      "1.000000000000000000"
+    ],
+    "payment_durable_snapshot_retained": true,
+    "redis_keys_removed": 10,
+    "source_account_counts_before": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "source_account_counts_after": {
+      "customer_accounts": 0,
+      "customer_verifications": 0,
+      "customer_verification_mail": 0,
+      "customer_account_addresses": 0,
+      "customer_order_ownership": 0,
+      "buyback_requests": 0,
+      "buyback_prices": 0,
+      "buyback_photo_bytes": 0,
+      "buyback_device_links": 0,
+      "after_sales_requests": 0,
+      "device_return_receipts": 0,
+      "device_service_receipts": 0
+    },
+    "resources_removed": true,
+    "cleanup_errors": []
+  },
+  "http503_context_counts": {
+    "canceled": 50,
+    "active": 2
+  },
+  "admin_http503_context_counts": {
+    "canceled": 50
+  },
+  "active_http503_routes": [
+    "/api/store/customer/orders/:id/payments",
+    "/api/store/customer/orders/:id/product-reviews"
+  ],
+  "active_routes_explicitly_disabled_in_copy": true,
+  "business_response_status_unchanged": true,
+  "raw_errors_or_private_request_material_logged": false,
+  "checks": [
+    "go test ./internal/platform ./internal/server",
+    "go vet ./internal/platform ./internal/server",
+    "Python compile",
+    "Owned warehouse browser/SQL rehearsal"
+  ],
+  "api_log_sha256": "2c8cd3f1879a5b863a4fe906d4c8988281fc8f0d29fe0968fd4efa60029b4eeb",
+  "main_services_after_controlled_start": {
+    "http://127.0.0.1:9100/health": 200,
+    "http://127.0.0.1:9200/": 200,
+    "http://127.0.0.1:9300/gb-en/account/orders": 200,
+    "http://127.0.0.1:9300/gb-en/store": 200
+  }
+}

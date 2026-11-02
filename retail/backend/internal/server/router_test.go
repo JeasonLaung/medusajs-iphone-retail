@@ -94,10 +94,13 @@ func TestRequestBoundaryAndPrivateDiagnostics(t *testing.T) {
 		}
 		for key := range record {
 			switch key {
-			case "time", "level", "msg", "request_id", "method", "route", "status", "duration_ms", "panic":
+			case "time", "level", "msg", "request_id", "method", "route", "status", "duration_ms", "panic", "request_context":
 			default:
 				t.Fatal("unreviewed log field")
 			}
+		}
+		if record["request_context"] != "active" {
+			t.Fatal("active requests misclassified")
 		}
 		expectedRoute := "unmatched"
 		if strings.HasPrefix(sample.path, "/fixture/") && sample.method == http.MethodGet {

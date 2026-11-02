@@ -1,6 +1,8 @@
 package platform
 
 import (
+	"context"
+	"errors"
 	"log/slog"
 	"net/http"
 	"strings"
@@ -65,8 +67,16 @@ func RequestBoundary(logger *slog.Logger) gin.HandlerFunc {
 			default:
 				method = "OTHER"
 			}
+			requestContext := "active"
+			switch {
+			case errors.Is(c.Request.Context().Err(), context.Canceled):
+				requestContext = "canceled"
+			case errors.Is(c.Request.Context().Err(), context.DeadlineExceeded):
+				requestContext = "deadline_exceeded"
+			}
 			logger.Info("http_request", "request_id", requestID, "method", method, "route", route,
-				"status", c.Writer.Status(), "duration_ms", time.Since(started).Milliseconds(), "panic", panicked)
+				"status", c.Writer.Status(), "duration_ms", time.Since(started).Milliseconds(), "panic", panicked,
+				"request_context", requestContext)
 		}()
 		limit := MaxJSONBodyBytes
 		if c.Request.Method == http.MethodPost && (c.FullPath() == "/api/admin/device-photos" || c.FullPath() == "/api/admin/warehouse/locations/:location_id/device-intake/:category/photos" || c.FullPath() == "/api/store/customer/buyback/requests/:id/photos") {

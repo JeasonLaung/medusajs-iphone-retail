@@ -67,3 +67,5 @@ Mollie无法访问loopback webhook，本机test模式省略该参数，通过真
 ## 已付款检查点继续仓库发货
 
 `python retail/scripts/test-local-customer-account.py --warehouse-from-checkpoint=OWNER` 从已真实付款、原客户归属、尚未配货的检查点继续管理员装包与仓库员工调整/释放/发货、客户物流和通知。付款创建关闭，不再调用渠道，也不重新建立订单归属。预留按源副本的实际基数净减1，保留其他订单占用。`--verify-paid-warehouse=OWNER` 对该次执行保留的前后SQL独立核对，不重放业务命令。见 `docs/migration/local-paid-warehouse-main.md`。
+
+本机API访问日志新增 `request_context=active|canceled|deadline_exceeded`，可区分已取消读取和有效请求故障，原HTTP状态保留。隔离运行器可用 `ACCOUNT_TEST_API_BINARY` 指向 `logs/retail-native` 内已构建的.exe，单独验证新API而保持主服务可用。见 `docs/migration/warehouse-request-cancellation.md`。

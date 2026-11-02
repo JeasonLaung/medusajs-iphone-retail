@@ -365,6 +365,9 @@ def main(language, scenario='account', resume=None):
     repair = scenario in ('repair', 'exchange', 'refund', 'warehouse', 'paid-warehouse')
     admin_required = buyback or repair or mail or reviews
     values = config()
+    api_binary = Path(os.environ.get('ACCOUNT_TEST_API_BINARY') or ROOT / 'logs/retail-native/retail-api.exe').resolve()
+    if not api_binary.is_relative_to((ROOT / 'logs/retail-native').resolve()) or api_binary.suffix != '.exe' or not api_binary.is_file():
+        raise RuntimeError('Isolated API executable must be an existing owned native log artifact')
     if resume is not None:
         if not (refund or payment_context) or not re.fullmatch(r'[0-9a-f]{12}', resume):
             raise RuntimeError('Only an owned payment checkpoint can resume')
@@ -413,7 +416,7 @@ def main(language, scenario='account', resume=None):
     source_counts = source_account_counts()
     report = {'owner': owner, 'database': database, 'real_email_delivery': False,
               'business_api_mocking': False, 'main_database_modified': False,
-              'api_sha256': hashlib.sha256((ROOT / 'logs/retail-native/retail-api.exe').read_bytes()).hexdigest()}
+              'api_sha256': hashlib.sha256(api_binary.read_bytes()).hexdigest()}
     customer_owner = checkpoint_report.get('customer_owner', resume) if resume else owner
     report['customer_owner'] = customer_owner
     try:
@@ -544,7 +547,7 @@ def main(language, scenario='account', resume=None):
             subprocess.run(['go', 'build', '-o', str(worker), './cmd/process-order-refunds'],
                            cwd=ROOT / 'retail/backend', check=True, capture_output=True, timeout=120)
         services = [
-            ('api', [str(ROOT / 'logs/retail-native/retail-api.exe')], ROOT / 'retail/backend'),
+            ('api', [str(api_binary)], ROOT / 'retail/backend'),
             ('storefront', [str(node), 'node_modules/astro/bin/astro.mjs', 'dev', '--host', '127.0.0.1',
                             '--port', '19300'], storefront)]
         if admin_required:
