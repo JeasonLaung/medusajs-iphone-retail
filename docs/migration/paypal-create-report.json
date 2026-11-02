@@ -1,0 +1,28 @@
+{
+  "task": "C06 PayPal Orders v2 creation subflow",
+  "date_utc": "2026-11-02T09:09:28.4840246Z",
+  "passed": true,
+  "source_sha256": {
+    "medusa-store/node_modules/.pnpm/@easypayment+medusa-payment_6f86ea7b3dfa050e69dbdffe6b024ced/node_modules/@easypayment/medusa-payment-paypal/.medusa/server/src/api/store/paypal/create-order/route.js": "dee77a4c4e4778b32b032a84d35836444372d90f05c583b3a25941537e37e21a",
+    "retail/backend/internal/payments/paypal_create.go": "a5cbdb978f3f1b9f613e813c3b701ec732cc50222f2c1df6a661759964b625ee",
+    "retail/backend/internal/payments/paypal_create_test.go": "ef6f9f1becb3023903bcfc9d071abe762ee74c068e8a89df3253146bc58b23c8"
+  },
+  "test_pass_events_including_parents": 52,
+  "commands": [
+    "go -C retail/backend test ./internal/payments -run PayPal -count=1",
+    "go -C retail/backend test ./internal/payments ./internal/cart ./internal/checkoutconfig ./cmd/api",
+    "go -C retail/backend vet ./internal/payments"
+  ],
+  "actual_local_tls_test": true,
+  "real_paypal_requests": false,
+  "database_writes": false,
+  "full_business_flow": false,
+  "registered_in_main_checkout": false,
+  "remaining": [
+    "durable cart effect and recovery",
+    "original wallet/card SDK and token routes",
+    "capture and authorization evidence",
+    "webhooks and refunds",
+    "Astro Gin MySQL browser joint"
+  ]
+}

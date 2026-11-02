@@ -1,5 +1,7 @@
 # Gin + React + Astro 迁移任务清单
 
+2026-11-02 最新：[PayPal 创建子流程](migration/gin-paypal-create.md)已实现钱包/卡入口共用服务端 adapter，并通过局部 HTTP/TLS、金额及故障验证；尚未接主结账/SDK/实收，不关闭 C06。Windows 三端已通过 `start.bat` 启动，专用 Docker MySQL 9.6 已103迁移，本机 Redis；后文旧 Linux 预览状态为历史，以 `retail/LOCAL-WINDOWS.md` 为当前启动说明。继续按 C01—C11 推进，每个子任务验证后 commit/push。
+
 日期：2026-10-26；交接更新：2026-11-02。状态：C01—C11持续进行中，尚未通过完整联合验收。
 
 ## 最新换机交接（2026-11-02，覆盖后文历史运行状态）
