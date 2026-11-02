@@ -20,10 +20,35 @@ import (
 )
 
 type paypalCheckoutProvider struct {
-	mu        sync.Mutex
-	calls     map[string]int
-	uncertain bool
-	status    string
+	mu             sync.Mutex
+	calls          map[string]int
+	uncertain      bool
+	status         string
+	settlements    int
+	lostSettlement bool
+	intent         string
+	orderID        string
+}
+
+func (p *paypalCheckoutProvider) SettlementIntent() string {
+	if p.intent == "" {
+		return "CAPTURE"
+	}
+	return p.intent
+}
+func (p *paypalCheckoutProvider) SettleOrder(ctx context.Context, r payments.SessionRequest, id string) (payments.SessionObservation, error) {
+	p.mu.Lock()
+	p.settlements++
+	p.status = "paid"
+	if p.SettlementIntent() == "AUTHORIZE" {
+		p.status = "authorized"
+	}
+	lost := p.lostSettlement
+	p.mu.Unlock()
+	if lost {
+		return payments.SessionObservation{}, payments.ErrCreateExecution
+	}
+	return p.ObserveSession(ctx, r, id)
 }
 
 func (p *paypalCheckoutProvider) ObserveSession(_ context.Context, r payments.SessionRequest, id string) (payments.SessionObservation, error) {
@@ -37,7 +62,7 @@ func (p *paypalCheckoutProvider) ObserveSession(_ context.Context, r payments.Se
 	if state == "" {
 		state = "pending"
 	}
-	intent := "CAPTURE"
+	intent := p.SettlementIntent()
 	if state == "authorized" {
 		intent = "AUTHORIZE"
 	}
@@ -70,7 +95,11 @@ func (p *paypalCheckoutProvider) CreateSession(_ context.Context, r payments.Ses
 	}
 	var data map[string]string
 	_ = json.Unmarshal(r.Data, &data)
-	raw, _ := json.Marshal(map[string]any{"cart_id": data["cart_id"], "session_id": r.SessionID, "paypal": map[string]any{"order_id": "5O190127TN364715T", "private": "not-for-browser"}})
+	id := p.orderID
+	if id == "" {
+		id = "5O190127TN364715T"
+	}
+	raw, _ := json.Marshal(map[string]any{"cart_id": data["cart_id"], "session_id": r.SessionID, "paypal": map[string]any{"order_id": id, "private": "not-for-browser"}})
 	return payments.CreateSucceeded, payments.CreatedSession{Status: "pending", Data: raw}, nil
 }
 
@@ -288,5 +317,113 @@ func checkPayPalCheckout(t *testing.T, ctx context.Context, db *gorm.DB, session
 	if protected() != before {
 		t.Fatal("checkout creation changed stock/order/capture/notification facts")
 	}
+	checkPayPalSettlement(t, ctx, db, sessions, makeCart, options)
+	if protected() != before {
+		t.Fatal("settlement changed stock/order/cash/notification facts")
+	}
 	t.Log("PAYPAL_CHECKOUT_SQL: wallet/card success/unknown, HTTP guards, six replays, provider binding, frozen cart, encrypted durable requests; CREATE once per cart; protected facts unchanged")
+}
+
+func checkPayPalSettlement(t *testing.T, ctx context.Context, db *gorm.DB, sessions *sessionstore.Store, makeCart func() (sessionstore.CartReference, cart.InitialPaymentCommand), options cart.InitialPaymentOptions) {
+	for _, provider := range []string{"pp_paypal_paypal", "pp_paypal_card_paypal_card"} {
+		for _, lost := range []bool{false, true} {
+			t.Run(provider+map[bool]string{false: "/settle", true: "/lost-settle"}[lost], func(t *testing.T) {
+				adapter := &paypalCheckoutProvider{calls: map[string]int{}, lostSettlement: lost, intent: "CAPTURE", orderID: strings.ToUpper(strings.ReplaceAll(uuid.NewString(), "-", ""))[:17]}
+				if provider == "pp_paypal_card_paypal_card" {
+					adapter.intent = "AUTHORIZE"
+				}
+				configured := options
+				configured.ReturnOrigin = "http://127.0.0.1:19200"
+				configured.Adapters, _ = payments.NewCreateAdapters(map[string]payments.CreateSessionAdapter{"pp_paypal_paypal": adapter, "pp_paypal_card_paypal_card": adapter, "pp_mollie-hosted-checkout_mollie": adapter})
+				ref, in := makeCart()
+				in.ProviderID = provider
+				if result, err := cart.StartInitialPayment(ctx, db, "shop", ref, in, configured); err != nil || result.State != "sdk_ready" {
+					t.Fatal("settlement fixture CREATE", err)
+				}
+				issued, err := sessions.IssueCart(ctx, ref)
+				if err != nil {
+					t.Fatal(err)
+				}
+				handler, err := cart.NewHTTP(db, cart.HTTPOptions{Sessions: sessions, Origin: configured.ReturnOrigin, StoreID: "shop", ManualProviderIDs: options.ManualProviders, InitialPayment: &configured})
+				if err != nil {
+					t.Fatal(err)
+				}
+				router := gin.New()
+				handler.Register(router.Group("/api/store"))
+				server := httptest.NewServer(router)
+				defer server.Close()
+				post := func(body, origin, csrf string) (int, cart.PaymentStatus) {
+					req, _ := http.NewRequestWithContext(ctx, "POST", server.URL+"/api/store/carts/"+ref.CartID+"/paypal-settlement", strings.NewReader(body))
+					req.Header.Set("Content-Type", "application/json")
+					req.Header.Set("Origin", origin)
+					req.Header.Set("X-CSRF-Token", csrf)
+					req.AddCookie(&http.Cookie{Name: "retail_cart_possession", Value: issued.Token})
+					resp, e := server.Client().Do(req)
+					if e != nil {
+						t.Error(e)
+						return 0, cart.PaymentStatus{}
+					}
+					defer resp.Body.Close()
+					var result cart.PaymentStatus
+					_ = json.NewDecoder(resp.Body).Decode(&result)
+					return resp.StatusCode, result
+				}
+				for _, bad := range []struct{ body, origin, csrf string }{{`{"order_id":"foreign"}`, configured.ReturnOrigin, issued.CSRF}, {"{}", "http://foreign.invalid", issued.CSRF}, {"{}", configured.ReturnOrigin, strings.Repeat("a", 64)}} {
+					code, _ := post(bad.body, bad.origin, bad.csrf)
+					if code < 400 {
+						t.Fatal("settlement security guard failed")
+					}
+				}
+				var n int64
+				db.Table("cart_paypal_settlements").Where("cart_id=?", ref.CartID).Count(&n)
+				if n != 0 {
+					t.Fatal("invalid request staged settlement")
+				}
+				code, result := post("{}", configured.ReturnOrigin, issued.CSRF)
+				if code != 200 {
+					t.Fatal("settlement HTTP failed", code)
+				}
+				want := "paid_pending_order"
+				if adapter.intent == "AUTHORIZE" {
+					want = "authorized"
+				}
+				if lost {
+					if result.State != "requires_review" {
+						t.Fatal("lost settlement response not uncertain")
+					}
+				} else if result.State != want {
+					t.Fatal("settlement wrong state", result.State)
+				}
+				var wg sync.WaitGroup
+				for i := 0; i < 6; i++ {
+					wg.Add(1)
+					go func() {
+						defer wg.Done()
+						code, result := post("{}", configured.ReturnOrigin, issued.CSRF)
+						if code != 200 || result.State != want || result.Version != "5" {
+							t.Errorf("settlement replay %d %+v", code, result)
+						}
+					}()
+				}
+				wg.Wait()
+				adapter.mu.Lock()
+				count := adapter.settlements
+				adapter.mu.Unlock()
+				if count != 1 {
+					t.Fatal("settlement POST duplicated", count)
+				}
+				var row struct {
+					State, ProviderRequestID, Intent string
+					ResultEnvelope                   []byte
+				}
+				if db.Table("cart_paypal_settlements").Where("cart_id=?", ref.CartID).Take(&row).Error != nil || row.State != "succeeded" || len(row.ResultEnvelope) == 0 || row.Intent != adapter.intent || len(row.ProviderRequestID) != 36 {
+					t.Fatal("durable settlement evidence missing")
+				}
+				if _, err := cart.CompleteCurrentPaidOrder(ctx, db, "shop", ref, configured); err == nil {
+					t.Fatal("unintegrated PayPal cash ledger completed")
+				}
+			})
+		}
+	}
+	t.Log("PAYPAL_SETTLEMENT_SQL: capture/authorize, lost response GET recovery, six concurrent replay, one dispatch each, encrypted results and no order/cash/stock writes")
 }

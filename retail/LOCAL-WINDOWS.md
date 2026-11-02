@@ -14,7 +14,7 @@
 
 进程在后台运行，日志与 PID 保存在 `logs/retail-native/`。再次执行脚本会关闭旧项目监听后重新启动；启动失败会指出对应日志文件。可通过 `RETAIL_NODE_EXE` 指定 Node；当前系统版本过旧时也会检测本机已有的 Codex Node runtime。本次新建后台账号 `admin@eurorefurb.local`，随机密码保存在 Git 忽略的 `.private-files/local/admin-credentials.txt`；原 Medusa 的 `.admin-credentials` 不适用于新后台。
 
-本机已从 `mysql-schema102.sql.gz` 恢复专用库 `eurorefurb_local_trial`，显式执行0103字段迁移，重放确认0条待应用。数据库密码及新本机账户加密密钥仅保存在忽略文件中，旧机的私有包没有恢复；历史加密配置及未携带的上传文件可能不可读取。真实付款、退款及外发邮件保持关闭。换机请携带数据库、对应私有配置及必要文件，不能仅依赖本脚本恢复数据。
+本机已从 `mysql-schema102.sql.gz` 恢复专用库 `eurorefurb_local_trial`，显式执行0103字段迁移，并在完整逻辑备份后应用0104 PayPal持久命令表，重放确认0条待应用（共104）。备份存于忽略的 `logs/retail-native/`，尚未演练恢复。数据库密码及新本机账户加密密钥仅保存在忽略文件中，旧机的私有包没有恢复；历史加密配置及未携带的上传文件可能不可读取。真实付款、退款及外发邮件保持关闭。换机请携带数据库、对应私有配置及必要文件，不能仅依赖本脚本恢复数据。
 
 ## Windows Redis 空闲连接
 

@@ -101,6 +101,7 @@ func (h *HTTPHandler) Register(group *gin.RouterGroup) {
 	private.POST("/carts/:id/shipping-methods", h.Shipping)
 	private.POST("/carts/:id/payment-attempts", h.InitialPayment)
 	private.POST("/carts/:id/payment-status", h.PaymentStatus)
+	private.POST("/carts/:id/paypal-settlement", h.PayPalSettlement)
 	private.POST("/carts/:id/complete", h.Complete)
 	private.GET("/carts/:id/contacts", h.ContactDetail)
 	private.POST("/carts/:id/contacts", h.Contacts)

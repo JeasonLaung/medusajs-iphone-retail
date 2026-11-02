@@ -1,5 +1,7 @@
 # Gin + React + Astro 迁移任务清单
 
+2026-11-02 C06 最新：[PayPal 扣款／授权持久命令](migration/gin-paypal-settlement.md)通过104迁移隔离SQL、并发唯一执行、丢响应只查恢复及原Mollie连续保存四组真实浏览器回归。Windows本机备份后升级104，三端可用；SDK、webhook和PayPal成单记账继续，C01—C11保持进行中。以下103及capture待办为此前记录。
+
 2026-11-02 C06 接续：[PayPal 订单认证 GET 与持久查询证据](migration/gin-paypal-observation.md)已接购物车付款状态；只读查询、授权/实收分离、99条局部pass事件及隔离SQL联合通过。SDK/capture/webhook/成单继续待办，完整业务链留最终统一执行。
 
 2026-11-02 C06 接续：[PayPal 创建接购物车持久收据](migration/gin-paypal-checkout.md)通过隔离 Gin HTTP/MySQL/Redis 四状态、六路同编号重放及原 Mollie 连续保存八组页面回归。保留未配置 PayPal 的主服务；原 SDK、capture/观察/webhook及未知恢复继续，C01—C11 未完成。

@@ -134,7 +134,7 @@ func (a *PayPalCreateAdapter) ObserveSession(ctx context.Context, request Sessio
 	if !paypalOrderID.MatchString(id) {
 		return SessionObservation{}, ErrCreateExecution
 	}
-	body, cart, amount, err := a.createBody(request)
+	body, _, _, err := a.createBody(request)
 	if err != nil {
 		return SessionObservation{}, ErrCreateExecution
 	}
@@ -164,6 +164,15 @@ func (a *PayPalCreateAdapter) ObserveSession(ctx context.Context, request Sessio
 		return SessionObservation{}, err
 	}
 	defer clear(raw)
+	return a.verifiedObservation(request, id, raw)
+}
+
+func (a *PayPalCreateAdapter) verifiedObservation(request SessionRequest, id string, raw json.RawMessage) (SessionObservation, error) {
+	body, cart, amount, err := a.createBody(request)
+	if err != nil {
+		return SessionObservation{}, err
+	}
+	clear(body)
 	order, err := verifyPayPalObservedOrder(raw, request, id, cart, a.config.MerchantID, a.config.Intent)
 	if err != nil {
 		return SessionObservation{}, err

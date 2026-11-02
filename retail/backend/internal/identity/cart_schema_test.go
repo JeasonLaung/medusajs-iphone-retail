@@ -59,11 +59,11 @@ func TestOwnedCartSchema(t *testing.T) {
 	}
 	db, gdb := open("cart_schema_fresh")
 	r, err := schema.Apply(ctx, db, plan)
-	if err != nil || r.Applied != 103 || schema.CheckApplied(ctx, db, plan) != nil || cart.Ready(ctx, gdb) != nil {
+	if err != nil || r.Applied != 104 || schema.CheckApplied(ctx, db, plan) != nil || cart.Ready(ctx, gdb) != nil {
 		t.Fatal("fresh cart schema failed")
 	}
 	r, err = schema.Apply(ctx, db, plan)
-	if err != nil || r.Skipped != 103 {
+	if err != nil || r.Skipped != 104 {
 		t.Fatal("cart schema replay changed facts")
 	}
 	ddl, err := migrations.Files.ReadFile("0025_cart_relational.sql")
@@ -221,7 +221,7 @@ func TestOwnedCartSchema(t *testing.T) {
 	if upgradeGDB.Table("cart_checkout_attempts").Take(&original).Error != nil {
 		t.Fatal("checkout upgrade before")
 	}
-	if r, err := schema.Apply(ctx, upgrade, plan); err != nil || r.Applied != 1 || r.Skipped != 102 || schema.CheckApplied(ctx, upgrade, plan) != nil {
+	if r, err := schema.Apply(ctx, upgrade, plan); err != nil || r.Applied != 2 || r.Skipped != 102 || schema.CheckApplied(ctx, upgrade, plan) != nil {
 		t.Fatal("checkout103 upgrade", err)
 	}
 	if upgradeGDB.Table("cart_checkout_attempts").Take(&after).Error != nil || after["effective_cart_version"] != nil {
@@ -237,7 +237,7 @@ func TestOwnedCartSchema(t *testing.T) {
 	if _, err := upgrade.ExecContext(ctx, "UPDATE cart_checkout_attempts SET effective_cart_version=7"); err != nil {
 		t.Fatal("checkout revision advancement rejected", err)
 	}
-	if r, err := schema.Apply(ctx, upgrade, plan); err != nil || r.Applied != 0 || r.Skipped != 103 {
+	if r, err := schema.Apply(ctx, upgrade, plan); err != nil || r.Applied != 0 || r.Skipped != 104 {
 		t.Fatal("checkout103 replay", err)
 	}
 	t.Log(`CHECKOUT_EFFECTIVE_VERSION_UPGRADE {"real_mysql":true,"from":102,"to":103,"original_fields_unchanged":true,"nullable_original_binding":true,"physical_stale_revision_refused":true,"replay_unchanged":true}`)

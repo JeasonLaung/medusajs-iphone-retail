@@ -94,6 +94,12 @@ func (h *HTTPHandler) InitialPayment(c *gin.Context) {
 }
 
 func (h *HTTPHandler) PaymentStatus(c *gin.Context) {
+	h.paymentStatus(c, false)
+}
+func (h *HTTPHandler) PayPalSettlement(c *gin.Context) {
+	h.paymentStatus(c, true)
+}
+func (h *HTTPHandler) paymentStatus(c *gin.Context, settle bool) {
 	if h == nil || h.initialPayment == nil {
 		cartHTTPError(c, ErrConfiguration)
 		return
@@ -144,7 +150,12 @@ func (h *HTTPHandler) PaymentStatus(c *gin.Context) {
 	if !h.allow(c, ctx, "payment-status-possession", token) {
 		return
 	}
-	result, err := ObserveInitialPayment(ctx, h.db, h.store, ref, *h.initialPayment)
+	var result PaymentStatus
+	if settle {
+		result, err = SettlePayPal(ctx, h.db, h.store, ref, *h.initialPayment)
+	} else {
+		result, err = ObserveInitialPayment(ctx, h.db, h.store, ref, *h.initialPayment)
+	}
 	if err != nil {
 		if err == ErrItemUnavailable || err == ErrItemStock {
 			cartHTTPError(c, err)

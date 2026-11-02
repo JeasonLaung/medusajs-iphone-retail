@@ -73,7 +73,7 @@ func TestOwnedSEOCommands(t *testing.T) {
 	if r, e := schema.Apply(ctx, pool, plan); e != nil || r.Applied != 3 || r.Skipped != 100 {
 		t.Fatal("actual100 to103 command migration failed")
 	}
-	if r, e := schema.Apply(ctx, pool, plan); e != nil || r.Applied != 0 || r.Skipped != 103 {
+	if r, e := schema.Apply(ctx, pool, plan); e != nil || r.Applied != 0 || r.Skipped != 104 {
 		t.Fatal("command migration replay failed")
 	}
 	var count int

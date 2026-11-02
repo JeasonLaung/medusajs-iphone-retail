@@ -59,11 +59,11 @@ func TestOwnedAdminAuthentication(t *testing.T) {
 		t.Fatal("embedded schema invalid")
 	}
 	result, err := schema.Apply(ctx, pool, plan)
-	if err != nil || result.Applied != 103 {
+	if err != nil || result.Applied != 104 {
 		t.Fatal("ten explicit migrations not applied")
 	}
 	result, err = schema.Apply(ctx, pool, plan)
-	if err != nil || result.Skipped != 103 {
+	if err != nil || result.Skipped != 104 {
 		t.Fatal("ten migrations not repeatable")
 	}
 	sessions, client, err := sessionstore.Open(ctx, "redis://127.0.0.1:6379/0", "eurorefurb:identity_fixture:v1:")

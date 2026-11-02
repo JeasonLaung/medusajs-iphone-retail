@@ -1,5 +1,7 @@
 # 当前交付范围与端到端验收
 
+2026-11-02 C06 最新：[PayPal 扣款／授权持久命令](gin-paypal-settlement.md)已接私有 Gin 接口、唯一执行占位、加密收据和丢响应只查恢复；104迁移隔离SQL与原Mollie连续保存中英×390/1440四组真实浏览器回归通过。本机备份后升级104并经启动脚本恢复三端；SDK、webhook、PayPal成单仍待，主付款未开放。下文103及capture待办描述为此前记录。
+
 2026-11-02 C06：[PayPal 认证查询/购物车状态](gin-paypal-observation.md)接固定商户 GET、精确金额/币种与最终 capture 证据，以及原加密观察行；两入口各 pending/authorized/paid 状态通过隔离 Gin HTTP/MySQL/Redis。原 SDK、capture 命令、webhook及 PayPal 成单仍未接通，主未启用，不关闭C06或整期。
 
 2026-11-02 C06：[PayPal 购物车付款创建与持久收据](gin-paypal-checkout.md)已接可选渠道命令、原加密 effect/冻结版本和 SDK 订单 ID 投影。独立 Gin HTTP/MySQL/Redis 四状态与六路并发重放通过，单车 CREATE 一次；原 Mollie 金额不变/同车连续保存恢复中英×390/1440八组回归通过。主结账仍未开放 PayPal，SDK/capture/GET/webhook/取消恢复继续待办，不关闭 C06 或整期。

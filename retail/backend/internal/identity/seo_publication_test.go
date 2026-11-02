@@ -82,7 +82,7 @@ func TestOwnedSEOPublication(t *testing.T) {
 	if r, e := schema.Apply(ctx, pool, plan); e != nil || r.Applied != 4 || r.Skipped != 99 {
 		t.Fatal("99 to102 upgrade failed")
 	}
-	if r, e := schema.Apply(ctx, pool, plan); e != nil || r.Skipped != 103 || r.Applied != 0 {
+	if r, e := schema.Apply(ctx, pool, plan); e != nil || r.Skipped != 104 || r.Applied != 0 {
 		t.Fatal("SEO migration replay changed schema")
 	}
 	ring, _ := protected.New("test", map[string][]byte{"test": bytes.Repeat([]byte{71}, 32)})
@@ -175,7 +175,7 @@ func TestOwnedSEOPublication(t *testing.T) {
 	}
 	// Fresh100 is independently applied and validated, not just upgrade.
 	fresh, _ := open("seo_publication_schema_fresh")
-	if r, e := schema.Apply(ctx, fresh, plan); e != nil || r.Applied != 103 || schema.CheckApplied(ctx, fresh, plan) != nil {
+	if r, e := schema.Apply(ctx, fresh, plan); e != nil || r.Applied != 104 || schema.CheckApplied(ctx, fresh, plan) != nil {
 		t.Fatal("fresh100 SEO schema")
 	}
 }

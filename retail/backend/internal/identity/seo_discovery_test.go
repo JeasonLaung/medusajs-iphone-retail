@@ -48,7 +48,7 @@ func TestOwnedSEODiscovery(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result, e := schema.Apply(ctx, pool, plan); e != nil || result.Applied != 103 {
+	if result, e := schema.Apply(ctx, pool, plan); e != nil || result.Applied != 104 {
 		t.Fatal("discovery schema failed")
 	}
 	db, err := gorm.Open(mysql.New(mysql.Config{Conn: pool, SkipInitializeWithVersion: true}), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent), DisableAutomaticPing: true})

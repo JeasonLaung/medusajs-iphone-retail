@@ -1,0 +1,73 @@
+{
+  "task": "C06 PayPal durable capture/authorize",
+  "passed": true,
+  "migration_count": 104,
+  "real_paypal_requests": false,
+  "main_paypal_enabled": false,
+  "full_business_flow": false,
+  "paypal_pass_events_including_parents": 121,
+  "sql": {
+    "owner": "5fa2aff89785",
+    "report_sha256": "4d9573dfe586839a224bb0ba693dd83bcb5eece8d5dfcf7fba6b49056448795e",
+    "binary_sha256": "c979c36839035e0f361675d915a255e5b64c995a80c3b8c30b35e0a9d21d2972",
+    "frozen_source_verified": true,
+    "resources_removed": true,
+    "actual_gin_http_mysql_redis": true,
+    "astro_executed": false,
+    "create_cases": 4,
+    "settlement_cases": 4,
+    "parallel_replays_per_cart": 6,
+    "one_settlement_per_cart": true,
+    "protected_facts_unchanged": true
+  },
+  "mollie_browser": {
+    "owner": "7c930607bd96",
+    "report_sha256": "d9a408a4f77d053fa017545ec55bf1c7d4e6af19884851a48b663e02659860ed",
+    "frozen_source_verified": true,
+    "resources_removed": true,
+    "cases": [
+      {
+        "scenario": "continuous",
+        "language": "en",
+        "width": 390
+      },
+      {
+        "scenario": "continuous",
+        "language": "en",
+        "width": 1440
+      },
+      {
+        "scenario": "continuous",
+        "language": "zh",
+        "width": 390
+      },
+      {
+        "scenario": "continuous",
+        "language": "zh",
+        "width": 1440
+      }
+    ],
+    "errors": []
+  },
+  "local": {
+    "backup_sha256": "b227079e30603e3f12084a21f83171ba9df86287280d17b7ba5c769e81d656a5",
+    "backup_bytes": 12533771,
+    "backup_restore_rehearsed": false,
+    "first_migration": {
+      "skipped": 103,
+      "applied": 1
+    },
+    "repeat_migration": {
+      "skipped": 104,
+      "applied": 0
+    },
+    "health_admin_storefront_http": 200
+  },
+  "remaining": [
+    "original SDK wallet/card UI",
+    "client config/token",
+    "webhook and unknown create recovery",
+    "cancellation/refunds",
+    "PayPal-specific order ledger completion"
+  ]
+}
