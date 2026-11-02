@@ -10,6 +10,8 @@ of an actual guest order in the source preview.
 --scenario=refund creates its own real sandbox payment; pending is reported as
 unfinished, never posted. --resume-refund=OWNER restores an ignored checkpoint
 and reuses the same paid order and durable refund instruction.
+--scenario=warehouse uses the copied paid order and explicit fixture ownership
+to verify a new scoped employee's allocation/release/shipment and customer view.
 Verification links are read from authenticated encrypted intents in the owned
 copy, never returned by an application endpoint or marked verified with SQL.
 """
@@ -149,7 +151,8 @@ def main(language, scenario='account', resume=None):
     buyback = scenario in ('buyback', 'buyback-return')
     exchange = scenario == 'exchange'
     refund = scenario == 'refund'
-    repair = scenario in ('repair', 'exchange', 'refund')
+    warehouse = scenario == 'warehouse'
+    repair = scenario in ('repair', 'exchange', 'refund', 'warehouse')
     admin_required = buyback or repair
     values = config()
     if resume is not None:
@@ -244,7 +247,10 @@ def main(language, scenario='account', resume=None):
                 "WHERE NOT EXISTS(SELECT 1 FROM device_variant_tracking WHERE variant_id='variant_01M51RN7H7HPV9RH69T32QMD2Q' AND deleted_at IS NULL);")
             if refund:
                 sql(database, "UPDATE order_refund_runtime SET enabled=TRUE WHERE id=1 AND version=4")
-            if exchange:
+            if warehouse:
+                sql(database, "UPDATE warehouse_user_runtime SET enabled=TRUE WHERE id=1 AND version=1; "
+                    "UPDATE warehouse_scope_runtime SET enabled=TRUE WHERE id=1 AND version=1")
+            if exchange or warehouse:
                 sql(database, "INSERT INTO devices(id,serial_number,imei,variant_id,source_id,location_id,cost_cents,currency_code,bin,notes,state,category,grade,battery_health,photos,created_at,updated_at) "
                     "VALUES('isolated-exchange-device','CHECKOUT-DEVICE-5','490154203237526','variant_01M51RN7H7HPV9RH69T32QMD2Q','isolated-repair-source','sloc_01M4FBP3NDPZHJKVV3VY682QTN',0,'eur','','','available','sale','S',90,'[]',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6))")
         if buyback:
@@ -326,7 +332,23 @@ def main(language, scenario='account', resume=None):
              "WHERE email LIKE 'local-account-" + customer_owner + "-%@example.invalid' AND verified_at IS NOT NULL"))
         if report['verified_accounts'] != 1:
             raise RuntimeError('Expected exactly one newly verified fixture account')
-        if repair:
+        if warehouse:
+            order = report['order_id']
+            if not re.fullmatch(r'order_[0-9a-f-]{36}', order):
+                raise RuntimeError('Unexpected fixture order')
+            checks = {
+                'warehouse_user': "SELECT COUNT(*) FROM admin_users WHERE email='local-warehouse-" + owner + "@example.invalid'",
+                'canceled_parcel': "SELECT COUNT(*) FROM order_fulfillments o JOIN fulfillments f ON f.id=o.fulfillment_id WHERE o.order_id='" + order + "' AND f.canceled_at IS NOT NULL",
+                'shipped_parcel': "SELECT COUNT(*) FROM order_fulfillments o JOIN fulfillments f ON f.id=o.fulfillment_id WHERE o.order_id='" + order + "' AND f.canceled_at IS NULL AND f.shipped_at IS NOT NULL",
+                'shipped_device': "SELECT COUNT(*) FROM device_assignments a JOIN devices d ON d.id=a.device_id WHERE a.order_id='" + order + "' AND a.status='shipped' AND d.id='isolated-repair-device' AND d.state='shipped'",
+                'unused_replacement': "SELECT COUNT(*) FROM devices WHERE id='isolated-exchange-device' AND state='available'",
+                'stock_once': "SELECT COUNT(*) FROM inventory_levels WHERE inventory_item_id='iitem_01M51RN7HTPYQ7YFPXABBF8VJ8' AND location_id='sloc_01M4FBP3NDPZHJKVV3VY682QTN' AND stocked_quantity=49 AND reserved_quantity=0 AND deleted_at IS NULL",
+            }
+            facts = {name: int(sql(database, query)) for name, query in checks.items()}
+            if any(value != 1 for value in facts.values()):
+                raise RuntimeError('Warehouse terminal facts differ: ' + str(facts))
+            report['sql_warehouse_facts'] = facts
+        if repair and not warehouse:
             request = report['request_id']
             if not re.fullmatch(r'[A-Za-z0-9_-]{1,191}', request):
                 raise RuntimeError('Unexpected owned repair ID')
@@ -462,6 +484,8 @@ if __name__ == '__main__':
         main('en', 'exchange')
     elif sys.argv[1:] == ['--scenario=refund']:
         main('en', 'refund')
+    elif sys.argv[1:] == ['--scenario=warehouse']:
+        main('en', 'warehouse')
     elif len(sys.argv) == 2 and sys.argv[1].startswith('--resume-refund='):
         main('en', 'refund', sys.argv[1].split('=', 1)[1])
     else:

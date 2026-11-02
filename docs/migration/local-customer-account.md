@@ -19,6 +19,8 @@ python retail/scripts/test-local-customer-account.py --scenario=buyback-return
 python retail/scripts/test-local-customer-account.py --scenario=repair
 # 同SKU零差额换机，范围见 local-exchange-main.md
 python retail/scripts/test-local-customer-account.py --scenario=exchange
+# 仓库员工调整/释放/发货及本人物流通知，范围见 local-warehouse-main.md。
+python retail/scripts/test-local-customer-account.py --scenario=warehouse
 # 独立新Mollie沙箱付款及退货退款；pending不会标记退款完成。
 python retail/scripts/test-local-customer-account.py --scenario=refund
 # 继续已有付款/退款检查点，具体owner见 local-refund-main.md。

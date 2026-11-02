@@ -32,6 +32,12 @@
 
 本机 Redis 的空闲超时为65秒。项目客户端在30秒时退休空闲连接，避免 Windows 闲置后首次请求因旧连接关闭而短暂503；不会自动重试会话写入，也不会修改共享 Redis 的服务器设置。专项说明见 `docs/migration/windows-redis-idle.md`。
 
+## 本机仓库用户与授权范围
+
+恢复库的 warehouse_user_runtime 和 warehouse_scope_runtime 原本关闭，仓库用户接口因此503。当前本机显式执行 `go run ./cmd/configure-local-preview --warehouse-users`，只允许既定development/loopback专用数据库并核对版本1；重复执行不创建员工、不授予仓库或改变库存。忽略.env中 `LOCAL_PREVIEW_WAREHOUSE_USERS_ENABLED=true` 使start.bat下次重复应用；示例默认false。实际仓库账号仍须由管理员通过现有页面创建和授权。
+
+独立 `python retail/scripts/test-local-customer-account.py --scenario=warehouse` 已通过员工限定仓库的配货调整、释放取消、重新装包发货及客户物流通知；主库无测试员工/设备。详情见 `docs/migration/local-warehouse-main.md`。
+
 ## Mollie本机测试付款
 
 本机忽略的 `.env` 现配置 `CHECKOUT_PAYMENT_ENABLED=true`、`MOLLIE_LOCAL_TEST_WITHOUT_WEBHOOK=true`、`LOCAL_PREVIEW_PAYMENT_ENABLED=true`、真实 Mollie test key 和独立持久 PAYMENT keyring。start.bat 显式执行 `configure-local-preview --payments`，只允许专用 development/127.0.0.1:13307/eurorefurb_local_trial；启用本地成单与库存预留并初始化独立测试编号，重复执行不重置编号。退款、外发邮件和后台worker仍关闭。

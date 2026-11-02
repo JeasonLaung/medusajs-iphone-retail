@@ -295,3 +295,5 @@ C06 增加 [Mollie 通知消费及独立 worker](mollie-checkout-consumer.md)：
 2026-11-02 Windows换机接续：[同SKU零差额换机主流程](local-exchange-main.md)复用原生售后及独立运行器，完成客户申请、收回原机、原生exchange/return及替换订单行、替换机装包发货、原机检测available、售后completed及本人双物流/四通知。SQL核对1原生exchange/1 received return/1替换关联/2已发包裹，pending_difference=0、paid_total=789、refunded_total=0；主库12表计数未变、自有资源清理。补款/退差、退货退款、真实邮件及完整C01—C11继续开放。
 
 2026-11-02 Windows真实退款接续：[独立Mollie沙箱付款及持久退款恢复](local-refund-main.md)实际验证已登录新付款自动归属、发货/本人退货/收机照片检测、789 EUR退款指令及独立正式worker。渠道唯一退款pending时完成申请409、本地账本0；恢复后正式GET观察refunded，唯一退款/负向流水/汇总/本人通知记账及申请completed均核对通过。忽略SQL检查点可继续原操作，自有资源清理、主库12表不变。其他语言宽度、真实邮件、承运商及完整C01—C11继续开放。
+
+2026-11-02 Windows仓库员工接续：[限定仓库履约主流程](local-warehouse-main.md)在独立恢复库通过实际员工创建/登录、跨全店/其他仓库403、配货替换及还原、取消释放/管理员重装包、员工发货及本人客户物流/通知。SQL核对取消1/发货1、设备shipped/备用available、库存49/预留0，自有资源清理。补本机warehouse用户/scope显式开关并接start.bat，不创建主员工或设备；员工初次创建包裹、其他仓库业务、真实邮件/承运商及完整C01—C11仍不据此关闭。

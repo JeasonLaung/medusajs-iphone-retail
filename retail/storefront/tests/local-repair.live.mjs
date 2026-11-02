@@ -11,11 +11,14 @@ import {requestCheckoutAfterSales,repairCheckoutOrder,verifyCheckoutRepair} from
 import {exchangeCheckoutOrder,verifyCheckoutExchange} from '../../admin/tests/checkout-exchange.joint.mjs'
 import {refundCheckoutOrder,verifyCheckoutRefund} from '../../admin/tests/checkout-refund.joint.mjs'
 import {prepareLocalRefundPayment,resumeLocalRefund} from './local-refund-payment.live.mjs'
+import {fulfillLocalWarehouse} from './local-warehouse.live.mjs'
+import {verifyCheckoutShipment} from '../../admin/tests/checkout-fulfillment.joint.mjs'
 const logs=process.env.ACCOUNT_TEST_LOGS,owner=process.env.ACCOUNT_TEST_OWNER,customerOwner=process.env.ACCOUNT_TEST_CUSTOMER_OWNER??owner,password='isolated-account-'+customerOwner+'-password',email=`local-account-${customerOwner}-1@example.invalid`
 assert.match(owner??'',/^[0-9a-f]{12}$/)
 const output=pathToFileURL(logs+'/'),errors=[],returning=process.env.ACCOUNT_TEST_SCENARIO==='buyback-return',shop=origin,segment='gb-en',index=1
 const exchange=process.env.ACCOUNT_TEST_SCENARIO==='exchange'
 const refund=process.env.ACCOUNT_TEST_SCENARIO==='refund'
+const warehouse=process.env.ACCOUNT_TEST_SCENARIO==='warehouse'
 const resumePaid=process.env.ACCOUNT_TEST_RESUME_PAID==='true'
 const existingRefund=process.env.ACCOUNT_TEST_REFUND_EXISTING==='true'
 let refundCompleted=false,refundState
@@ -78,6 +81,13 @@ try{
  assert.equal((await allocation).status(),200)
  await expect(dialog.getByText('isolated-repair-device',{exact:true})).toBeVisible()
  await dialog.getByRole('button',{name:'Cancel',exact:true}).click()
+ if(warehouse){
+ const result=await fulfillLocalWarehouse({browser,admin,origin:adminOrigin,orderID,owner,sn,tracking,errors})
+ await page.goto(origin+'/gb-en/account/orders/details/'+orderID)
+ await verifyCheckoutShipment({page,context,shop:origin,orderID,result,expect})
+ assert.deepEqual(errors,[])
+ writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:'warehouse',order_id:orderID,explicit_fixture_ownership:true,new_paid_order_attachment_tested:false,...result,customer_tracking_and_notice:true,browser_errors:0,real_mail_transfer_carrier:false},null,2))
+ }else{
  await admin.getByRole('button',{name:'Create device parcel',exact:true}).click()
  dialog=admin.getByRole('dialog');await dialog.getByRole('row').filter({hasText:sn}).getByRole('checkbox').check()
  await dialog.getByRole('button',{name:'Pack and deduct stock',exact:true}).click()
@@ -90,6 +100,8 @@ try{
  await expect(dialog.getByText('Parcel operation saved',{exact:true})).toBeVisible()
  await admin.reload()
  }
+ }
+ if(!warehouse){
  await page.goto(origin+'/gb-en/account/orders/details/'+orderID)
  await expect(page.getByTestId('order-details-container')).toBeVisible()
  await expect(page.getByTestId('shipment')).toContainText(tracking)
@@ -135,4 +147,5 @@ try{
  }
  assert.deepEqual(errors,[])
  writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:refund?'refund':exchange?'exchange':'repair',request_id:request.id,order_id:orderID,explicit_fixture_ownership:!refund,new_paid_order_attachment_tested:refund,real_mollie_sandbox_refund:refund,refund_completed:refundCompleted,refund_state:refundState,pending_refund_completion_denied:refund&&!refundCompleted,actual_device_allocation_packing_shipping:true,customer_request_admin_receipt_inspection_dispatch_completion:!refund||refundCompleted,customer_repair_tracking:!exchange&&!refund,customer_original_and_replacement_tracking:exchange,lost_reply_original_command_recovery:!existingRefund,browser_errors:0,real_mail_transfer_carrier:false},null,2))
+ }
 }catch(e){for(const [i,p]of browser.contexts().flatMap(c=>c.pages()).entries()){await p.screenshot({path:resolve(logs,`failure-${i}.png`),fullPage:true}).catch(()=>{});console.error('FAILURE',p.url(),await p.locator('body').innerText().catch(()=>''))}throw e}finally{await browser.close()}
