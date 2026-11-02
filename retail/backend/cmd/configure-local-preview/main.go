@@ -25,6 +25,7 @@ func main() {
 	payments := flag.Bool("payments", false, "Explicitly prepare test-only checkout and local order numbering")
 	fulfillment := flag.Bool("fulfillment", false, "Enable existing device allocation, packing and parcel commands in the dedicated local preview")
 	buyback := flag.Bool("buyback", false, "Enable existing customer buyback and Admin review commands in the dedicated local preview")
+	afterSales := flag.Bool("after-sales", false, "Enable existing customer requests, Admin review and device receipt/repair return in the dedicated local preview")
 	flag.Parse()
 	_ = godotenv.Load()
 	cfg, err := driver.ParseDSN(os.Getenv("MYSQL_DSN"))
@@ -44,6 +45,20 @@ func main() {
 	pool, _ := db.DB()
 	defer pool.Close()
 	err = db.Transaction(func(tx *gorm.DB) error {
+		if *afterSales {
+			for _, table := range []string{"customer_after_sales_runtime", "after_sales_review_runtime", "device_return_runtime", "device_service_runtime"} {
+				var row struct{ Version int }
+				if e := tx.Raw("SELECT version FROM " + table + " WHERE id=1 FOR UPDATE").Take(&row).Error; e != nil {
+					return e
+				}
+				if row.Version != 1 {
+					return gorm.ErrInvalidData
+				}
+				if e := tx.Table(table).Where("id=1 AND version=1").Update("enabled", true).Error; e != nil {
+					return e
+				}
+			}
+		}
 		if *buyback {
 			for _, table := range []string{"buyback_request_runtime", "buyback_admin_runtime"} {
 				var row struct {
@@ -188,5 +203,8 @@ func main() {
 	}
 	if *buyback {
 		log.Print("Local buyback applications and Admin processing enabled; no prices, devices, mail or transfers created")
+	}
+	if *afterSales {
+		log.Print("Local customer after-sales, review, receipt and repair return enabled; no orders/devices changed, refund workers unchanged")
 	}
 }

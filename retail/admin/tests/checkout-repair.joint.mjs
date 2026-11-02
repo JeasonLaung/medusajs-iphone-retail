@@ -57,14 +57,14 @@ export async function repairCheckoutOrder({page,origin,orderID,request,result,in
  await page.reload();await expect(panel.locator('.ant-tag')).toHaveText('Processing');await panel.locator('.ant-select-selector').click();await page.locator('.ant-select-item-option[title="Completed"]').click();await panel.getByRole('button',{name:'Save',exact:true}).click();await page.getByRole('button',{name:'Confirm update',exact:true}).click();await expect(panel.locator('.ant-tag')).toHaveText('Completed')
  return tracking
 }
-export async function verifyCheckoutRepair({page,context,shop,orderID,result,request,tracking}){
+export async function verifyCheckoutRepair({page,context,shop,orderID,result,request,tracking,expectedUnread=2}){
  await page.reload();const section=page.getByTestId('after-sales-section');await section.getByRole('button').first().click()
  await expect(section).toContainText(request.copy.completedRequest);await expect(section.getByTestId('repair-return')).toHaveCount(1);await expect(section.getByTestId('repair-return')).toContainText(tracking);await expect(section.getByTestId('repair-return')).toContainText(result.sn)
  // Original sales shipment remains a separate immutable fulfillment.
  await expect(page.getByTestId('shipment')).toHaveCount(1);await expect(page.getByTestId('shipment')).toContainText(result.tracking)
  const response=await context.request.get(shop+'/api/store/customer/orders/'+orderID+'/after-sales');assert.equal(response.status(),200);const raw=await response.json();assert.equal(raw.requests.length,1);assert.equal(raw.requests[0].repair_shipments.length,1);assert.equal(raw.requests[0].repair_shipments[0].tracking_number,tracking)
  assert.ok(!JSON.stringify(raw).includes('private inspection'));assert.ok(!JSON.stringify(raw).includes('photos'));assert.ok(!JSON.stringify(raw).includes('actor_id'))
- await expect(page.getByTestId('notification-badge')).toHaveText('2');await page.getByTestId('notification-bell').click()
+ await expect(page.getByTestId('notification-badge')).toHaveText(String(expectedUnread));await page.getByTestId('notification-bell').click()
  const notices=await (await context.request.get(shop+'/api/store/customer/notifications?offset=0')).json();assert.equal(notices.count,3);assert.deepEqual(notices.notifications.map(n=>n.kind).sort(),['after_sales.completed','after_sales.processing','shipment.created'])
  const zh=request.copy.retry==='重试',dialog=page.getByRole('dialog');await dialog.getByRole('button',{name:zh?'全部已读':'Mark all as read',exact:true}).click();await expect(page.getByTestId('notification-badge')).toHaveCount(0);await dialog.getByRole('button',{name:zh?'关闭消息通知':'Close notifications',exact:true}).click()
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true)

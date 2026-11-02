@@ -702,3 +702,5 @@ Four newly registered shoppers now continue actual Astro shopping/payment/shipme
 2026-11-02 Windows账号接续：新增 test-local-customer-account.py 独立子流程及 --language 参数。实际 Astro/Gin/隔离MySQL/原生Redis 验证英文桌面和中文手机注册、正式链接验证、登录、资料与地址持久保存、访客订单拒绝和退出撤销。只从自有副本的加密邮件意图取得验证链接，无真实发信；当前仍需发信配置和实际收件验收。证据见 migration/local-customer-account.md/report.json；不关闭完整C01—C11。
 
 2026-11-02 Windows回收主流程：test-local-customer-account.py 新增 --scenario=buyback / buyback-return，复用真实问卷和前后台登记至paid/returned，当前恢复库副本、原生Redis、独立Astro及Ant运行通过。configure-local-preview --buyback 与start.bat支持显式启用主本机回收申请/后台处理；零报价/申请保持，不伪造主业务数据。详见migration/local-buyback-main.md/report.json，外部邮件/款项/承运商与整体交付仍未验收。
+
+2026-11-02 Windows原机维修：新增 --scenario=repair 复用真实后台及客户页面，沿已付订单副本/明确测试账号归属验证配货发货、维修申请、收机、检测照片、维修返还、完成及双物流/通知；丢响应原命令恢复和SQL终态通过，临时库/授权/Redis/服务清理。configure-local-preview --after-sales 与 start.bat 显式启用既有本机处理，不启用退款worker。见 migration/local-repair-main.md/report.json；退货、换机、实际收件与整体交付保持开放。

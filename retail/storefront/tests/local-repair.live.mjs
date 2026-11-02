@@ -1,0 +1,86 @@
+// Native Windows buyback main flow; reuses the established joint scenarios.
+import assert from 'node:assert/strict'
+import {execFileSync} from 'node:child_process'
+import {readFileSync,writeFileSync} from 'node:fs'
+import {mkdir} from 'node:fs/promises'
+import {resolve} from 'node:path'
+import {pathToFileURL,fileURLToPath} from 'node:url'
+import {chromium,expect as baseExpect} from '../../admin/node_modules/@playwright/test/index.mjs'
+const expect=baseExpect.configure({timeout:15000}),origin='http://127.0.0.1:19300',adminOrigin='http://127.0.0.1:19200'
+import {requestCheckoutAfterSales,repairCheckoutOrder,verifyCheckoutRepair} from '../../admin/tests/checkout-repair.joint.mjs'
+const logs=process.env.ACCOUNT_TEST_LOGS,owner=process.env.ACCOUNT_TEST_OWNER,password='isolated-account-'+owner+'-password',email=`local-account-${owner}-1@example.invalid`
+assert.match(owner??'',/^[0-9a-f]{12}$/)
+const output=pathToFileURL(logs+'/'),errors=[],returning=process.env.ACCOUNT_TEST_SCENARIO==='buyback-return',shop=origin,segment='gb-en',index=1
+const browser=await chromium.launch({headless:true,executablePath:resolve(process.env.LOCALAPPDATA,'ms-playwright/chromium-1234/chrome-win64/chrome.exe')})
+try{
+ const context=await browser.newContext({viewport:{width:390,height:900},reducedMotion:'reduce'}),page=await context.newPage()
+ page.on('pageerror',e=>errors.push(e.message))
+ async function read(path){const r=await context.request.get(origin+'/api/store/customer/'+path);return {status:r.status(),body:await r.json()}}
+  const login=async(status=200)=>{
+   await page.getByTestId('email-input').fill(email)
+   await page.getByTestId('password-input').fill(password)
+   const reply=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/store/customer/auth/login')
+   await page.getByTestId('sign-in-button').click()
+   assert.equal((await reply).status(),status)
+  }
+  await page.goto(`${shop}/${segment}/account`,{waitUntil:'domcontentloaded'})
+  await expect(page.getByTestId('login-page')).toBeVisible()
+  await page.getByTestId('register-button').click()
+  const form=page.getByTestId('register-page')
+  for(const [id,value] of Object.entries({'first-name-input':'Isolated','last-name-input':'Customer','email-input':email,'password-input':password}))await form.getByTestId(id).fill(value)
+  const registration=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/store/customer/auth/register')
+  await form.getByTestId('register-button').click()
+  assert.equal((await registration).status(),202)
+  await expect(page.getByTestId('register-verification-message')).toBeVisible()
+  await page.goto(`${shop}/${segment}/account`,{waitUntil:'domcontentloaded'})
+  await login(403)
+  assert.equal((await context.cookies(shop)).some(c=>c.name==='retail_customer_session'),false)
+  const linkFile=resolve(logs,`verification-${index}.txt`)
+  execFileSync(process.env.ACCOUNT_TEST_PYTHON,[resolve('../scripts/test-local-customer-account.py'),'--verification-link',process.env.ACCOUNT_TEST_DB,email,linkFile],{stdio:'pipe'})
+  const verified=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/store/customer/auth/verify')
+  await page.goto(readFileSync(linkFile,'utf8'),{waitUntil:'domcontentloaded'})
+  assert.equal((await verified).status(),200)
+  await page.goto(`${shop}/${segment}/account/orders`,{waitUntil:'domcontentloaded'})
+  await login()
+  await expect(page.getByTestId('customer-authenticated')).toBeVisible()
+  await expect(page.getByTestId('no-orders-container')).toBeVisible()
+  // The copied real Mollie guest order must not become this account's property.
+  assert.equal((await context.request.get(shop+'/api/store/customer/orders/order_8bffc6dc-112e-4ed5-8a32-57421bc2ae4d')).status(),404)
+
+ const orderID='order_8bffc6dc-112e-4ed5-8a32-57421bc2ae4d',sn='ISOLATED-REPAIR-001',tracking='ISOLATED-REPAIR-OUTBOUND-001'
+ execFileSync(process.env.ACCOUNT_TEST_PYTHON,[resolve('../scripts/test-local-customer-account.py'),'--prepare-repair-owner',process.env.ACCOUNT_TEST_DB,email],{stdio:'pipe'})
+ const credentials=readFileSync(resolve('../../.private-files/local/admin-credentials.txt'),'utf8')
+ const credential=name=>credentials.split(/\r?\n/).find(x=>new RegExp('^'+name+'\\s*[:=]','i').test(x))?.replace(/^[^:=]+[:=]\s*/,'').trim()
+ const admin=await context.newPage();admin.on('pageerror',e=>errors.push(e.message));await admin.setViewportSize({width:1440,height:1000})
+ await admin.addInitScript(()=>localStorage.setItem('eurorefurb.admin.language','en'))
+ await admin.goto(adminOrigin+'/orders/'+orderID)
+ await admin.getByLabel('Email',{exact:true}).fill(credential('Email'));await admin.getByLabel('Password',{exact:true}).fill(credential('Password'));await admin.getByRole('button',{name:'Sign in',exact:true}).click()
+ await expect(admin.getByRole('button',{name:'Sign out',exact:true})).toBeVisible()
+ await admin.goto(adminOrigin+'/orders/'+orderID)
+ await expect(admin.getByRole('button',{name:'Allocate devices',exact:true})).toBeVisible()
+ await admin.getByRole('button',{name:'Allocate devices',exact:true}).click()
+ let dialog=admin.getByRole('dialog')
+ await dialog.getByRole('row').filter({hasText:sn}).getByRole('checkbox').check()
+ await dialog.getByRole('button',{name:'Save device reservation',exact:true}).click()
+ await expect(dialog.getByRole('checkbox').first()).toBeChecked()
+ await dialog.getByRole('button',{name:'Cancel',exact:true}).click()
+ await admin.getByRole('button',{name:'Create device parcel',exact:true}).click()
+ dialog=admin.getByRole('dialog');await dialog.getByRole('row').filter({hasText:sn}).getByRole('checkbox').check()
+ await dialog.getByRole('button',{name:'Pack and deduct stock',exact:true}).click()
+ await expect(dialog.getByText('Parcel created',{exact:true})).toBeVisible()
+ await dialog.getByRole('button',{name:/^Cancel$/}).click()
+ await admin.getByRole('button',{name:'Parcel operations',exact:true}).click()
+ dialog=admin.getByRole('dialog');await dialog.getByLabel('Tracking number',{exact:true}).fill(tracking)
+ await dialog.getByRole('button',{name:'Ship entire parcel',exact:true}).click()
+ await expect(dialog.getByText('Parcel operation saved',{exact:true})).toBeVisible()
+ await admin.reload()
+ await page.goto(origin+'/gb-en/account/orders/details/'+orderID)
+ await expect(page.getByTestId('order-details-container')).toBeVisible()
+ await expect(page.getByTestId('shipment')).toContainText(tracking)
+ const result={sn,tracking}
+ const request=await requestCheckoutAfterSales({page,orderID,result,segment:'gb-en',type:'repair'})
+ const returned=await repairCheckoutOrder({page:admin,origin:adminOrigin,orderID,request,result,index:1})
+ await verifyCheckoutRepair({page,context,shop:origin,orderID,result,request,tracking:returned,expectedUnread:3})
+ assert.deepEqual(errors,[])
+ writeFileSync(resolve(logs,'browser-result.json'),JSON.stringify({passed:true,scenario:'repair',request_id:request.id,order_id:orderID,explicit_fixture_ownership:true,new_paid_order_attachment_tested:false,actual_device_allocation_packing_shipping:true,customer_request_admin_receipt_inspection_dispatch_completion:true,customer_repair_tracking:true,lost_reply_original_command_recovery:true,browser_errors:0,real_mail_transfer_carrier:false},null,2))
+}catch(e){for(const [i,p]of browser.contexts().flatMap(c=>c.pages()).entries()){await p.screenshot({path:resolve(logs,`failure-${i}.png`),fullPage:true}).catch(()=>{});console.error('FAILURE',p.url(),await p.locator('body').innerText().catch(()=>''))}throw e}finally{await browser.close()}

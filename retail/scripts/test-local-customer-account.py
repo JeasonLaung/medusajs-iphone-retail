@@ -4,6 +4,9 @@ Requires the running dedicated MySQL container, native Redis, Go-built preview
 API, frontend dependencies, Node >=22 and Python cryptography. No mail is sent.
 --scenario=buyback and --scenario=buyback-return independently rehearse customer
 applications through Admin closing with explicit prices/devices in the copy.
+--scenario=repair continues a copied paid order through explicit fixture account
+ownership, real fulfillment and original-device repair; never claims ownership
+of an actual guest order in the source preview.
 Verification links are read from authenticated encrypted intents in the owned
 copy, never returned by an application endpoint or marked verified with SQL.
 """
@@ -59,7 +62,8 @@ def sql(database, statement):
 def source_account_counts():
     tables = ('customer_accounts', 'customer_verifications', 'customer_verification_mail',
               'customer_account_addresses', 'customer_order_ownership', 'buyback_requests',
-              'buyback_prices', 'buyback_photo_bytes', 'buyback_device_links')
+              'buyback_prices', 'buyback_photo_bytes', 'buyback_device_links',
+              'after_sales_requests', 'device_return_receipts', 'device_service_receipts')
     statement = 'SELECT ' + ','.join('(SELECT COUNT(*) FROM ' + table + ')' for table in tables)
     values = docker('exec', CONTAINER, 'mysql', '--defaults-extra-file=/tmp/local-root.cnf',
                     '--batch', '--skip-column-names', 'eurorefurb_local_trial', '-e', statement)
@@ -88,6 +92,16 @@ def verification_link(database, email, output):
     if not link or not link.startswith('http://127.0.0.1:19300/'):
         raise RuntimeError('Owned storefront link required')
     Path(output).write_text(link, encoding='utf-8')
+
+
+def prepare_repair_owner(database, email):
+    # Explicit isolated test ownership, not an application claim-by-email flow.
+    if not re.fullmatch(r'local-account-[0-9a-f]{12}-1@example\.invalid', email):
+        raise RuntimeError('Isolated fixture email required')
+    sql(database, "INSERT INTO customer_order_ownership(order_id,customer_id,cart_id,store_id,created_at) "
+        "SELECT r.order_id,c.id,r.cart_id,x.store_id,UTC_TIMESTAMP(6) FROM customer_accounts c "
+        "JOIN cart_completion_receipts r ON r.order_id='order_8bffc6dc-112e-4ed5-8a32-57421bc2ae4d' "
+        "JOIN cart_ownership x ON x.cart_id=r.cart_id WHERE c.email='" + email + "' AND c.verified_at IS NOT NULL")
 
 
 def redis_cleanup(prefix):
@@ -130,6 +144,8 @@ def redis_cleanup(prefix):
 
 def main(language, scenario='account'):
     buyback = scenario in ('buyback', 'buyback-return')
+    repair = scenario == 'repair'
+    admin_required = buyback or repair
     values = config()
     owner = secrets.token_hex(6)
     database = 'retail_account_' + owner
@@ -165,7 +181,7 @@ def main(language, scenario='account'):
               'api_sha256': hashlib.sha256((ROOT / 'logs/retail-native/retail-api.exe').read_bytes()).hexdigest()}
     try:
         # Fail before creating resources when another rehearsal owns these ports.
-        for port in ((19100, 19200, 19300) if buyback else (19100, 19300)):
+        for port in ((19100, 19200, 19300) if admin_required else (19100, 19300)):
             with socket.socket() as check:
                 check.bind(('127.0.0.1', port))
         snapshot = '/tmp/account-' + owner + '.sql'
@@ -178,6 +194,18 @@ def main(language, scenario='account'):
         created = True
         docker('exec', CONTAINER, 'sh', '-c',
                'mysql --defaults-extra-file=/tmp/local-root.cnf ' + database + ' < ' + snapshot)
+        if repair:
+            sql(database, "UPDATE customer_after_sales_runtime SET enabled=TRUE WHERE id=1; "
+                "UPDATE after_sales_review_runtime SET enabled=TRUE WHERE id=1; "
+                "UPDATE device_return_runtime SET enabled=TRUE WHERE id=1; "
+                "UPDATE device_service_runtime SET enabled=TRUE WHERE id=1; "
+                "INSERT INTO device_sources(id,name,type,location_id,created_at,updated_at) VALUES"
+                "('isolated-repair-source','Isolated repair fixture','self','sloc_01M4FBP3NDPZHJKVV3VY682QTN',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)); "
+                "INSERT INTO devices(id,serial_number,imei,variant_id,source_id,location_id,cost_cents,currency_code,bin,notes,state,category,grade,battery_health,photos,created_at,updated_at) VALUES"
+                "('isolated-repair-device','ISOLATED-REPAIR-001','490154203237518','variant_01M51RN7H7HPV9RH69T32QMD2Q','isolated-repair-source','sloc_01M4FBP3NDPZHJKVV3VY682QTN',0,'eur','','','available','sale','S',90,'[]',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6)); "
+                "INSERT INTO device_variant_tracking(id,variant_id,inventory_item_id,created_at,updated_at) "
+                "SELECT 'isolated-repair-tracking','variant_01M51RN7H7HPV9RH69T32QMD2Q','iitem_01M51RN7HTPYQ7YFPXABBF8VJ8',UTC_TIMESTAMP(6),UTC_TIMESTAMP(6) "
+                "WHERE NOT EXISTS(SELECT 1 FROM device_variant_tracking WHERE variant_id='variant_01M51RN7H7HPV9RH69T32QMD2Q' AND deleted_at IS NULL);")
         if buyback:
             sql(database, "UPDATE buyback_request_runtime SET enabled=TRUE WHERE id=1 AND version=1; "
                 "UPDATE buyback_admin_runtime SET enabled=TRUE WHERE id=1 AND version=1; "
@@ -203,7 +231,7 @@ def main(language, scenario='account'):
             ('api', [str(ROOT / 'logs/retail-native/retail-api.exe')], ROOT / 'retail/backend'),
             ('storefront', [str(node), 'node_modules/astro/bin/astro.mjs', 'dev', '--host', '127.0.0.1',
                             '--port', '19300'], storefront)]
-        if buyback:
+        if admin_required:
             env['ADMIN_TEST_API_TARGET'] = 'http://127.0.0.1:19100'
             services.append(('admin', [str(node), 'node_modules/vite/bin/vite.js', '--host', '127.0.0.1',
                                       '--port', '19200', '--strictPort'], ROOT / 'retail/admin'))
@@ -213,7 +241,7 @@ def main(language, scenario='account'):
             processes.append(subprocess.Popen(command, cwd=cwd, env=env, stdout=stream, stderr=stream,
                                                creationflags=subprocess.CREATE_NO_WINDOW))
         urls = ['http://127.0.0.1:19100/health', 'http://127.0.0.1:19300/gb-en/account']
-        if buyback:
+        if admin_required:
             urls.append('http://127.0.0.1:19200')
         for url in urls:
             for _ in range(90):
@@ -230,7 +258,7 @@ def main(language, scenario='account'):
         browser_env = dict(env, ACCOUNT_TEST_OWNER=owner, ACCOUNT_TEST_DB=database,
                            ACCOUNT_TEST_LOGS=str(logs), ACCOUNT_TEST_PYTHON=sys.executable,
                            ACCOUNT_TEST_LANGUAGE=language, ACCOUNT_TEST_SCENARIO=scenario)
-        script = 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
+        script = 'tests/local-repair.live.mjs' if repair else 'tests/local-buyback.live.mjs' if buyback else 'tests/local-customer-account.live.mjs'
         result = subprocess.run([str(node), script],
                                 cwd=ROOT / 'retail/storefront', env=browser_env,
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=240)
@@ -242,6 +270,21 @@ def main(language, scenario='account'):
              "WHERE email LIKE 'local-account-" + owner + "-%@example.invalid' AND verified_at IS NOT NULL"))
         if report['verified_accounts'] != 1:
             raise RuntimeError('Expected exactly one newly verified fixture account')
+        if repair:
+            request = report['request_id']
+            if not re.fullmatch(r'[A-Za-z0-9_-]{1,191}', request):
+                raise RuntimeError('Unexpected owned repair ID')
+            status = sql(database, "SELECT status FROM after_sales_requests WHERE id='" + request + "'")
+            counts = [int(sql(database, "SELECT COUNT(*) FROM " + table + " WHERE request_id='" + request + "'"))
+                      for table in ('device_return_receipts', 'device_service_receipts')]
+            if status != 'completed' or counts != [1, 2]:
+                raise RuntimeError('Repair terminal status or receipt counts differ')
+            report['sql_status'] = status
+            report['sql_device_return_receipts'] = counts[0]
+            report['sql_device_service_receipts'] = counts[1]
+            report['sql_device_state'] = sql(database, "SELECT state FROM devices WHERE id='isolated-repair-device'")
+            if report['sql_device_state'] != 'shipped':
+                raise RuntimeError('Repaired device was not shipped')
         if buyback:
             request = report['request_id']
             if not re.fullmatch(r'bbr_[0-9a-f-]{36}', request):
@@ -293,6 +336,8 @@ def main(language, scenario='account'):
 if __name__ == '__main__':
     if len(sys.argv) == 5 and sys.argv[1] == '--verification-link':
         verification_link(sys.argv[2], sys.argv[3], sys.argv[4])
+    elif len(sys.argv) == 4 and sys.argv[1] == '--prepare-repair-owner':
+        prepare_repair_owner(sys.argv[2], sys.argv[3])
     elif len(sys.argv) == 1:
         for language in ('en', 'zh'):
             main(language)
@@ -302,5 +347,7 @@ if __name__ == '__main__':
         main('en', 'buyback')
     elif sys.argv[1:] == ['--scenario=buyback-return']:
         main('en', 'buyback-return')
+    elif sys.argv[1:] == ['--scenario=repair']:
+        main('en', 'repair')
     else:
         raise RuntimeError('Unknown account rehearsal arguments')
