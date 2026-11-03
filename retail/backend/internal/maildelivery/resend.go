@@ -30,6 +30,7 @@ type Result struct {
 type Resend struct {
 	key, from, reply, fingerprint string
 	client                        *http.Client
+	dispatch                      func(context.Context, string, request) Result
 }
 
 func NewResend(key, from, reply string) (*Resend, error) {
@@ -48,6 +49,10 @@ func newResend(key, from, reply string, transport http.RoundTripper) (*Resend, e
 	return &Resend{key: key, from: from, reply: reply, fingerprint: hex.EncodeToString(digest[:]), client: &http.Client{Transport: transport, Timeout: 8 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}}, nil
 }
 func (s *Resend) Fingerprint() string { return s.fingerprint }
+
+// Resend supplies channel idempotency. SMTP and the inherited Relayme API do
+// not promise it; a durable dispatcher must not blindly replay uncertain sends.
+func (s *Resend) SupportsIdempotency() bool { return s != nil && s.dispatch == nil }
 
 type request struct {
 	From    string   `json:"from"`
@@ -101,6 +106,12 @@ func (s *Resend) Send(ctx context.Context, key string, payload []byte) Result {
 	}
 	if _, err := mail.ParseAddress(message.To[0]); err != nil {
 		return Result{Code: "invalid_request"}
+	}
+	if strings.ContainsAny(message.Subject, "\r\n\x00") {
+		return Result{Code: "invalid_request"}
+	}
+	if s.dispatch != nil {
+		return s.dispatch(ctx, key, message)
 	}
 	req, err := http.NewRequestWithContext(ctx, "POST", "https://api.resend.com/emails", bytes.NewReader(payload))
 	if err != nil {
