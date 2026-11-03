@@ -69,6 +69,7 @@ type IMAPMessage struct {
 	Raw        []byte
 }
 type IMAPBatch struct {
+	LastUID        uint32
 	UIDValidity    uint32
 	Messages       []IMAPMessage
 	ScannedThrough uint32
@@ -123,6 +124,9 @@ func FetchIMAP(ctx context.Context, c IMAPConfig, folder string, expectedValidit
 		return out, ErrIMAP
 	}
 	out.UIDValidity = selected.UidValidity
+	if selected.UidNext > 0 {
+		out.LastUID = selected.UidNext - 1
+	}
 	if selected.UidValidity == 0 {
 		return out, ErrIMAP
 	}

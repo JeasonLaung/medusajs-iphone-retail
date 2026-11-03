@@ -174,6 +174,7 @@ func main() {
 		private := router.Group("/api/admin")
 		private.Use(adminAuth.Require)
 		notificationmail.Store{DB: db, Ring: ring}.Register(private)
+		notificationmail.Store{DB: db, Ring: ring}.RegisterWebhooks(router)
 	default:
 		log.Fatal("NOTIFICATION_MAIL_ENABLED must be true or false")
 	}

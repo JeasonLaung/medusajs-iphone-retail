@@ -2,11 +2,14 @@ package identity_test
 
 import (
 	"bytes"
+	"crypto/hmac"
 	"crypto/sha256"
 	"crypto/tls"
+	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"io"
 	"net"
 	"net/http"
 	"net/http/httptest"
@@ -27,6 +30,7 @@ import (
 	"github.com/eurorefurb/retail/internal/notificationmail"
 	"github.com/eurorefurb/retail/internal/platform"
 	"github.com/eurorefurb/retail/internal/protected"
+	"github.com/gin-gonic/gin"
 	driver "github.com/go-sql-driver/mysql"
 	"gorm.io/gorm"
 )
@@ -74,6 +78,8 @@ func TestWindowsInboxBrowser(t *testing.T) {
 		t.Fatal("mailbox fixture missing")
 	}
 	account := directory.Accounts[0]
+	callbackRouter := gin.New()
+	store.RegisterWebhooks(callbackRouter)
 	var submissions atomic.Int32
 	gateway := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var message struct {
@@ -86,6 +92,23 @@ func TestWindowsInboxBrowser(t *testing.T) {
 			return
 		}
 		submissions.Add(1)
+		early, _ := json.Marshal(map[string]any{"event_id": "early-delay", "event_type": "delivery_status", "occurred_at": time.Now().UTC().Add(-time.Minute), "submission_id": "owned-compose-accepted", "mail_from": account.Email, "recipient": "compose@example.invalid", "status": "delayed"})
+		path := "/api/webhooks/mail/" + account.ID + "/relayme"
+		stamp := strconv.FormatInt(time.Now().Unix(), 10)
+		digest := sha256.Sum256(early)
+		mac := hmac.New(sha256.New, []byte("fixture-secret"))
+		_, _ = mac.Write([]byte("POST\n" + path + "\n" + stamp + "\nnonce\n" + hex.EncodeToString(digest[:])))
+		callback := httptest.NewRequest("POST", path, bytes.NewReader(early))
+		callback.Header.Set("X-Relayme-Key-ID", "owned")
+		callback.Header.Set("X-Relayme-Timestamp", stamp)
+		callback.Header.Set("X-Relayme-Nonce", "nonce")
+		callback.Header.Set("X-Relayme-Signature", base64.RawURLEncoding.EncodeToString(mac.Sum(nil)))
+		response := httptest.NewRecorder()
+		callbackRouter.ServeHTTP(response, callback)
+		if response.Code != 204 {
+			w.WriteHeader(503)
+			return
+		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(201)
 		_, _ = w.Write([]byte(`{"id":"owned-compose-accepted","object":"email","status":"accepted"}`))
@@ -217,6 +240,75 @@ func TestWindowsInboxBrowser(t *testing.T) {
 	if e != nil || len(content.Attachments) != 1 || content.Subject != "Compose fixture" {
 		t.Fatal("encrypted draft did not round trip")
 	}
+	var earlyObserved struct{ DeliveryStatus *string }
+	db.Table("notification_mail_compositions").Where("id=?", composed[0].ID).Take(&earlyObserved)
+	if earlyObserved.DeliveryStatus == nil || *earlyObserved.DeliveryStatus != "delayed" {
+		t.Fatal("callback before submission response was lost")
+	}
+	router := gin.New()
+	_ = db.Callback().Create().After("gorm:create").Register("owned_callback_diagnostic", func(tx *gorm.DB) {
+		var sqlError *driver.MySQLError
+		if errors.As(tx.Error, &sqlError) {
+			t.Logf("callback SQL error code=%d SQL=%s", sqlError.Number, tx.Statement.SQL.String())
+		}
+	})
+	store.RegisterWebhooks(router)
+	callbackTime := time.Now().UTC().Truncate(time.Second)
+	postCallback := func(provider, eventID, body string, when time.Time, tamper bool) int {
+		path := "/api/webhooks/mail/" + account.ID + "/" + provider
+		request := httptest.NewRequest("POST", path, strings.NewReader(body))
+		stamp := strconv.FormatInt(time.Now().Unix(), 10)
+		mac := hmac.New(sha256.New, []byte("fixture-secret"))
+		if provider == "relayme" {
+			digest := sha256.Sum256([]byte(body))
+			_, _ = mac.Write([]byte("POST\n" + path + "\n" + stamp + "\nnonce\n" + hex.EncodeToString(digest[:])))
+			request.Header.Set("X-Relayme-Key-ID", "owned")
+			request.Header.Set("X-Relayme-Timestamp", stamp)
+			request.Header.Set("X-Relayme-Nonce", "nonce")
+			request.Header.Set("X-Relayme-Signature", base64.RawURLEncoding.EncodeToString(mac.Sum(nil)))
+		} else {
+			_, _ = mac.Write([]byte(eventID + "." + stamp + "." + body))
+			request.Header.Set("svix-id", eventID)
+			request.Header.Set("svix-timestamp", stamp)
+			request.Header.Set("svix-signature", "v1,"+base64.StdEncoding.EncodeToString(mac.Sum(nil)))
+		}
+		if tamper {
+			request.Body = io.NopCloser(strings.NewReader(body + " "))
+		}
+		response := httptest.NewRecorder()
+		router.ServeHTTP(response, request)
+		return response.Code
+	}
+	relayEvent := func(id, status string, at time.Time) string {
+		raw, _ := json.Marshal(map[string]any{"event_id": id, "event_type": "delivery_status", "occurred_at": at, "submission_id": "owned-compose-accepted", "mail_from": account.Email, "recipient": "compose@example.invalid", "status": status})
+		return string(raw)
+	}
+	delivered := relayEvent("delivered", "success", callbackTime)
+	first, second, third := postCallback("relayme", "", delivered, callbackTime, true), postCallback("relayme", "", delivered, callbackTime, false), postCallback("relayme", "", delivered, callbackTime, false)
+	if first != 401 || second != 204 || third != 204 {
+		t.Fatalf("Relayme signature or duplicate callback differs: %d/%d/%d", first, second, third)
+	}
+	if postCallback("relayme", "", relayEvent("delivered", "failed", callbackTime), callbackTime, false) != 409 {
+		t.Fatal("conflicting callback ID accepted")
+	}
+	if postCallback("relayme", "", relayEvent("old-delayed", "delayed", callbackTime.Add(-time.Minute)), callbackTime, false) != 204 {
+		t.Fatal("older status rejected")
+	}
+	var observed struct{ DeliveryStatus *string }
+	db.Table("notification_mail_compositions").Where("id=?", composed[0].ID).Take(&observed)
+	if observed.DeliveryStatus == nil || *observed.DeliveryStatus != "success" {
+		t.Fatal("out-of-order callback overwrote latest delivery")
+	}
+	callbackRaw := bytes.Replace(raw, []byte("=?UTF-8?B?SU1BUCDmlLbku7bmtYvor5U=?="), []byte("Webhook triggered inbound"), 1)
+	mailbox.Messages = append(mailbox.Messages, &memory.Message{Uid: 9, Date: callbackTime, Body: callbackRaw, Size: uint32(len(callbackRaw))})
+	inbound, _ := json.Marshal(map[string]any{"event_id": "inbound-fixture", "occurred_at": callbackTime, "mailbox": "INBOX", "to_address": account.Email, "from_address": "buyer@example.invalid", "subject": "Webhook triggered inbound"})
+	if postCallback("relayme", "", string(inbound), callbackTime, false) != 204 {
+		t.Fatal("signed inbound did not resolve archived IMAP message")
+	}
+	db.Table("notification_mail_inbox").Where("account_id=? AND uid=9", account.ID).Count(&count)
+	if count != 1 {
+		t.Fatal("callback did not archive new raw IMAP message")
+	}
 	directory, e = store.Directory(t.Context(), actor)
 	if e != nil {
 		t.Fatal(e)
@@ -224,7 +316,20 @@ func TestWindowsInboxBrowser(t *testing.T) {
 	command.OperationID = "00000000-0000-4000-8000-000000000010"
 	command.ExpectedRevision = directory.Revision
 	command.Transport = &notificationmail.TransportConfig{Provider: "resend"}
+	command.WebhookSecret = "whsec_" + base64.StdEncoding.EncodeToString([]byte("fixture-secret"))
 	if _, e = store.Save(t.Context(), actor, command); e != nil {
 		t.Fatal("restore Resend after compose failed")
+	}
+	resend, _ := json.Marshal(map[string]any{"type": "email.delivered", "created_at": callbackTime, "data": map[string]any{"email_id": "owned-compose-accepted", "to": []string{"compose@example.invalid"}}})
+	if postCallback("resend", "resend-observed", string(resend), callbackTime, true) != 401 || postCallback("resend", "resend-observed", string(resend), callbackTime, false) != 204 {
+		t.Fatal("Resend signed callback differs")
+	}
+	var events int64
+	db.Table("notification_mail_callbacks").Count(&events)
+	if events != 5 {
+		t.Fatal("callback deduplication differs")
+	}
+	if os.WriteFile(filepath.Join(logs, "mail-callbacks-passed.json"), []byte(`{"signed_relayme":true,"signed_resend":true,"tampered_body_rejected":true,"duplicate_deduplicated":true,"conflicting_event_rejected":true,"older_status_ignored":true,"early_callback_reconciled":true,"inbound_callback_archived_uid":9,"stored_events":5,"external_sends":0}`), 0600) != nil {
+		t.Fatal("callback evidence failed")
 	}
 }

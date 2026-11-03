@@ -39,6 +39,7 @@ type syncCursor struct {
 	SourceSHA256            []byte
 }
 type SyncResult struct {
+	More        bool   `json:"more"`
 	Imported    int    `json:"imported"`
 	ScannedUID  uint32 `json:"scanned_uid"`
 	UIDValidity uint32 `json:"uid_validity"`
@@ -66,6 +67,11 @@ func (s Store) activeMailbox(ctx context.Context, tx *gorm.DB, actor identity.Us
 // Network work stays outside SQL; the second transaction rechecks grants,
 // settings and cursor before atomic archive insertion plus cursor advancement.
 func (s Store) SyncInbox(ctx context.Context, actor identity.User, id string) (SyncResult, error) {
+	return s.syncInboxAuthorized(ctx, id, func(tx *gorm.DB) (TransportConfig, error) {
+		return s.activeMailbox(ctx, tx, actor, id, authorization.MailWrite)
+	})
+}
+func (s Store) syncInboxAuthorized(ctx context.Context, id string, authorize func(*gorm.DB) (TransportConfig, error)) (SyncResult, error) {
 	out := SyncResult{}
 	if s.DB == nil || s.Ring == nil {
 		return out, ErrUnavailable
@@ -75,7 +81,7 @@ func (s Store) SyncInbox(ctx context.Context, actor identity.User, id string) (S
 	var source [32]byte
 	e := s.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var e error
-		config, e = s.activeMailbox(ctx, tx, actor, id, authorization.MailWrite)
+		config, e = authorize(tx)
 		if e != nil {
 			return e
 		}
@@ -113,7 +119,7 @@ func (s Store) SyncInbox(ctx context.Context, actor identity.User, id string) (S
 		}
 	}()
 	e = s.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		current, e := s.activeMailbox(ctx, tx, actor, id, authorization.MailWrite)
+		current, e := authorize(tx)
 		if e != nil {
 			return e
 		}
@@ -135,6 +141,7 @@ func (s Store) SyncInbox(ctx context.Context, actor identity.User, id string) (S
 			return ErrUnavailable
 		}
 		if cursor.UIDValidity != 0 && cursor.UIDValidity != batch.UIDValidity {
+			out.More = true
 			out.UIDValidity = batch.UIDValidity
 			// Preserve archives from the old epoch, reset only this mailbox's cursor.
 			return tx.Table("notification_mail_sync").Where("account_id=?", id).Updates(map[string]any{"uid_validity": batch.UIDValidity, "scanned_uid": 0}).Error
@@ -194,6 +201,7 @@ func (s Store) SyncInbox(ctx context.Context, actor identity.User, id string) (S
 		scanned := max(cursor.ScannedUID, batch.ScannedThrough)
 		out.UIDValidity = batch.UIDValidity
 		out.ScannedUID = scanned
+		out.More = scanned < batch.LastUID
 		if tx.Table("notification_mail_sync").Where("account_id=?", id).Updates(map[string]any{"uid_validity": batch.UIDValidity, "scanned_uid": scanned}).Error != nil {
 			return ErrUnavailable
 		}

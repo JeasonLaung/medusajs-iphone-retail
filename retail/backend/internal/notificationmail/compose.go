@@ -16,6 +16,8 @@ import (
 )
 
 type Composition struct {
+	DeliveryStatus  *string    `json:"delivery_status"`
+	DeliveryAt      *time.Time `json:"delivery_at"`
 	ID              string     `json:"id"`
 	AccountID       string     `json:"account_id"`
 	Revision        uint64     `json:"revision"`
@@ -38,7 +40,7 @@ func (s Store) Compositions(ctx context.Context, actor identity.User, account st
 		if _, e := s.activeMailbox(ctx, tx, actor, account, authorization.MailRead); e != nil {
 			return e
 		}
-		return tx.Table("notification_mail_compositions").Select("id,account_id,revision,subject,status,provider_id,error_code,created_at,updated_at,sent_at").Where("account_id=?", account).Order("updated_at DESC,id DESC").Limit(100).Find(&out).Error
+		return tx.Table("notification_mail_compositions").Select("id,account_id,revision,subject,status,provider_id,error_code,created_at,updated_at,sent_at,delivery_status,delivery_at").Where("account_id=?", account).Order("updated_at DESC,id DESC").Limit(100).Find(&out).Error
 	})
 	return out, e
 }
@@ -170,7 +172,7 @@ func (s Store) SendComposition(ctx context.Context, actor identity.User, id stri
 		}
 		out.Status = "sending"
 		claimed = true
-		return tx.Table("notification_mail_compositions").Where("id=?", id).Updates(map[string]any{"status": "sending", "updated_at": time.Now().UTC()}).Error
+		return tx.Table("notification_mail_compositions").Where("id=?", id).Updates(map[string]any{"status": "sending", "submitted_provider": config.Provider, "updated_at": time.Now().UTC()}).Error
 	})
 	defer clear(payload)
 	out.ContentEnvelope = nil
@@ -200,6 +202,34 @@ func (s Store) SendComposition(ctx context.Context, actor identity.User, id stri
 		values["status"] = out.Status
 		values["error_code"] = code
 	}
-	e = s.DB.WithContext(finish).Table("notification_mail_compositions").Where("id=? AND status='sending'", id).Updates(values).Error
+	e = s.DB.WithContext(finish).Transaction(func(tx *gorm.DB) error {
+		if tx.Table("notification_mail_compositions").Where("id=? AND status='sending'", id).Updates(values).Error != nil {
+			return ErrUnavailable
+		}
+		if out.Status != "sent" {
+			return nil
+		}
+		var channel struct{ SubmittedProvider string }
+		if tx.Table("notification_mail_compositions").Where("id=?", id).Take(&channel).Error != nil {
+			return ErrUnavailable
+		}
+		provider := channel.SubmittedProvider
+		if provider == "quguo" {
+			provider = "relayme"
+		}
+		var events []struct {
+			DeliveryStatus string
+			OccurredAt     time.Time
+		}
+		if tx.Table("notification_mail_callbacks").Where("account_id=? AND provider=? AND provider_id=? AND delivery_status IN ?", out.AccountID, provider, result.ID, []string{"success", "delayed", "failed"}).Order("occurred_at DESC,event_id DESC").Limit(1).Find(&events).Error != nil {
+			return ErrUnavailable
+		}
+		if len(events) == 1 {
+			out.DeliveryStatus = &events[0].DeliveryStatus
+			out.DeliveryAt = &events[0].OccurredAt
+			return tx.Table("notification_mail_compositions").Where("id=? AND (delivery_at IS NULL OR delivery_at<?)", id, events[0].OccurredAt).Updates(map[string]any{"delivery_status": events[0].DeliveryStatus, "delivery_at": events[0].OccurredAt}).Error
+		}
+		return nil
+	})
 	return out, e
 }

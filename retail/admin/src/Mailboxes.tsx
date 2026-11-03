@@ -81,6 +81,7 @@ export default function Mailboxes({copy,onExpired}:{copy:Copy;onExpired():void})
   <OrderMailJobs copy={copy} onExpired={onExpired}/>
   <EventMailJobs copy={copy} onExpired={onExpired}/>
   {inbox&&<><MailInbox key={inbox.id} accountID={inbox.id} enabled={!!inbox.transport?.imap} copy={copy} onExpired={onExpired} onReply={setReply}/><MailCompose key={'compose-'+inbox.id} accountID={inbox.id} copy={copy} onExpired={onExpired} reply={reply} onReplyUsed={()=>setReply(undefined)}/></>}
+  {inbox&&<Typography.Paragraph type="secondary">{copy.mailboxes==='通知邮箱'?'渠道回调路径（部署后使用公网 HTTPS 域名）：':'Provider callback path (use the public HTTPS domain after deployment):'} <Typography.Text code copyable>{'/api/webhooks/mail/'+inbox.id+'/'+(inbox.transport?.provider==='quguo'?'relayme':'resend')}</Typography.Text></Typography.Paragraph>}
   {editor&&state.data&&<Editor key={editor.account?.id??'new'} copy={copy} account={editor.account} revision={state.data.revision} onClose={close} onExpired={onExpired} onSaved={()=>{message.success(copy.mailSaved);close()}}/>}
  </Space></section>
 }

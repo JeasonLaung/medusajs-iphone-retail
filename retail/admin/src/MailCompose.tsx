@@ -4,7 +4,7 @@ import {APIError,csrfCookie} from './api'
 import {useAccess} from './Permissions'
 import type {Copy} from './i18n'
 type Content={to:string[];cc:string[];bcc:string[];subject:string;text:string;attachments:{filename:string;content:string}[]}
-type Row={id:string;account_id:string;revision:number;subject:string;status:string;error_code?:string;updated_at:string}
+type Row={id:string;account_id:string;revision:number;subject:string;status:string;delivery_status?:string;error_code?:string;updated_at:string}
 type Values={to:string;cc:string;bcc:string;subject:string;text:string}
 export type Reply={to:string;subject:string;text:string}
 async function api<T>(path:string,body?:unknown):Promise<T>{
@@ -48,6 +48,7 @@ export default function MailCompose({accountID,copy,onExpired,reply,onReplyUsed}
    {title:zh?'主题':'Subject',render:(_,row)=><Button type="link" onClick={()=>void open(row)}>{row.subject}</Button>},
    {title:copy.status,render:(_,row)=><Tag>{({draft:zh?'草稿':'Draft',sent:zh?'服务已接收':'Accepted',sending:zh?'发送结果待核对':'Submission awaiting review',review_required:zh?'需核对渠道':'Channel review required'} as Record<string,string>)[row.status]??row.status}</Tag>},
    {title:zh?'更新时间':'Updated',render:(_,row)=>new Date(row.updated_at).toLocaleString()}
+   ,{title:zh?'投递回执':'Delivery receipt',render:(_,row)=>row.delivery_status?({success:zh?'已投递':'Delivered',delayed:zh?'延迟':'Delayed',failed:zh?'投递失败':'Delivery failed'} as Record<string,string>)[row.delivery_status]??row.delivery_status:'—'}
   ]}/>
   {editor&&<Drawer open width="min(800px,100vw)" title={zh?'邮件':'Email'} onClose={()=>{if(!busy)setEditor(undefined)}} extra={<Space><Button onClick={()=>void recover()} disabled={busy}>{zh?'读取已保存版本':'Load saved version'}</Button><Button onClick={()=>void save()} disabled={busy||!writable||editor.status!=='draft'}>{zh?'保存草稿':'Save draft'}</Button><Button type="primary" onClick={()=>void send()} disabled={busy||!writable||!editor.revision||editor.status!=='draft'||dirty}>{zh?'发送已保存邮件':'Send saved email'}</Button></Space>}>
    {error&&<Alert type="error" showIcon message={zh?'操作未确认，请读取已保存版本后核对。':'Operation unconfirmed. Load the saved version to check its state.'}/>}
